@@ -27,13 +27,15 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
+import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
@@ -47,13 +49,14 @@ import com.saggitt.omega.theme.ThemeOverride;
 import org.jetbrains.annotations.NotNull;
 
 public class SettingsActivity extends SettingsBaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
-        View.OnClickListener {
+        View.OnClickListener, FragmentManager.OnBackStackChangedListener {
     public final static String EXTRA_TITLE = "title";
     public final static String EXTRA_FRAGMENT = "fragment";
     public final static String EXTRA_FRAGMENT_ARGS = "fragmentArgs";
     private boolean isSubSettings;
     protected boolean forceSubSettings = false;
     private boolean hasPreview = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         savedInstanceState = getRelaunchInstanceState(savedInstanceState);
@@ -63,9 +66,13 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         isSubSettings = content != 0 || fragmentName != null || forceSubSettings;
         hasPreview = getIntent().getBooleanExtra(SubSettingsFragment.HAS_PREVIEW, false);
 
+        boolean showSearch = shouldShowSearch();
+
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_settings);
+        getDecorLayout().setHideToolbar(showSearch);
+        getDecorLayout().setUseLargeTitle(shouldUseLargeTitle());
+        setContentView(showSearch ? R.layout.activity_settings_home : R.layout.activity_settings);
 
         if (savedInstanceState == null) {
             Fragment fragment = createLaunchFragment(getIntent());
@@ -75,6 +82,43 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
                     .replace(R.id.content, fragment)
                     .commit();
         }
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+
+        updateUpButton();
+
+        if (showSearch) {
+            Toolbar toolbar = findViewById(R.id.search_action_bar);
+            toolbar.setOnClickListener(this);
+        }
+
+        if (hasPreview) {
+            overrideOpenAnim();
+        }
+    }
+
+    private void updateUpButton() {
+        updateUpButton(isSubSettings || getSupportFragmentManager().getBackStackEntryCount() != 0);
+    }
+
+    private void updateUpButton(boolean enabled) {
+        if (getSupportActionBar() == null) {
+            return;
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(enabled);
+    }
+
+    protected boolean shouldUseLargeTitle() {
+        return !isSubSettings;
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        updateUpButton();
+    }
+
+    protected boolean shouldShowSearch() {
+        return BuildConfig.FEATURE_SETTINGS_SEARCH && !isSubSettings;
     }
 
     @NotNull
@@ -83,7 +127,7 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         /*if (hasPreview) {
             return new ThemeOverride.SettingsTransparent();
         } else {*/
-            return super.getThemeSet();
+        return super.getThemeSet();
         //}
     }
 

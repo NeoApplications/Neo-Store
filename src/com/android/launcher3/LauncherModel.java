@@ -16,16 +16,13 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.LauncherAppState.ACTION_FORCE_ROLOAD;
-import static com.android.launcher3.config.FeatureFlags.IS_DOGFOOD_BUILD;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
-import android.os.Process;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -69,6 +66,11 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
+import static com.android.launcher3.LauncherAppState.ACTION_FORCE_ROLOAD;
+import static com.android.launcher3.config.FeatureFlags.IS_DOGFOOD_BUILD;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 /**
  * Maintains in-memory state of the Launcher. It is expected that there should be only one
  * LauncherModel object held in a static. Also provide APIs for updating the database state
@@ -80,17 +82,30 @@ public class LauncherModel extends BroadcastReceiver
 
     static final String TAG = "Launcher.Model";
 
-    @Thunk final LauncherAppState mApp;
-    @Thunk final Object mLock = new Object();
+    @Thunk
+    final LauncherAppState mApp;
+    @Thunk
+    final Object mLock = new Object();
     @Thunk
     LoaderTask mLoaderTask;
-    @Thunk boolean mIsLoaderTaskRunning;
+    @Thunk
+    boolean mIsLoaderTaskRunning;
+
+    @Thunk
+    static final HandlerThread sUiWorkerThread = new HandlerThread("launcher-ui-loader");
+    @Thunk
+    static final Handler sUiWorker = new Handler(sUiWorkerThread.getLooper());
+
+    static {
+        sUiWorkerThread.start();
+    }
 
     // Indicates whether the current model data is valid or not.
     // We start off with everything not loaded. After that, we assume that
     // our monitoring of the package manager provides all updates and we never
     // need to do a requery. This is only ever touched from the loader thread.
     private boolean mModelLoaded;
+
     public boolean isModelLoaded() {
         synchronized (mLock) {
             return mModelLoaded && mLoaderTask == null;
@@ -553,5 +568,12 @@ public class LauncherModel extends BroadcastReceiver
 
     public Callbacks getCallback() {
         return mCallbacks != null ? mCallbacks.get() : null;
+    }
+
+    /**
+     * @return the looper for the ui worker thread which can be used to start background tasksfor ui.
+     */
+    public static Looper getUiWorkerLooper() {
+        return sUiWorkerThread.getLooper();
     }
 }

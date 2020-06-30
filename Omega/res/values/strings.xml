@@ -37,4 +37,9 @@
     <string name="title__sort_most_used">Most Used</string>
     <string name="title__sort_by_color">By Color</string>
 
+    <!-- DEVELOPER -->
+    <string name="developer_options_enabled">Developer options enabled</string>
+    <string name="search_menu">Find settings</string>
+    <string name="failed">Something went wrong.</string>
+
 </resources>

@@ -16,11 +16,16 @@
 
 package com.android.launcher3;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.graphics.drawable.Drawable;
 import android.util.FloatProperty;
 import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+
+import java.util.WeakHashMap;
 
 public class LauncherAnimUtils {
     /**
@@ -34,6 +39,50 @@ public class LauncherAnimUtils {
 
     // The progress of an animation to all apps must be at least this far along to snap to all apps.
     public static final float MIN_PROGRESS_TO_ALL_APPS = 0.5f;
+
+    static WeakHashMap<Animator, Object> sAnimators = new WeakHashMap<Animator, Object>();
+    static Animator.AnimatorListener sEndAnimListener = new Animator.AnimatorListener() {
+        public void onAnimationStart(Animator animation) {
+            sAnimators.put(animation, null);
+        }
+
+        public void onAnimationRepeat(Animator animation) {
+        }
+
+        public void onAnimationEnd(Animator animation) {
+            sAnimators.remove(animation);
+        }
+
+        public void onAnimationCancel(Animator animation) {
+            sAnimators.remove(animation);
+        }
+    };
+
+    public static ObjectAnimator ofViewAlphaAndScale(View target,
+                                                     float alpha, float scaleX, float scaleY) {
+        return ofPropertyValuesHolder(target,
+                PropertyValuesHolder.ofFloat(View.ALPHA, alpha),
+                PropertyValuesHolder.ofFloat(View.SCALE_X, scaleX),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, scaleY));
+    }
+
+    public static ObjectAnimator ofPropertyValuesHolder(View target,
+                                                        PropertyValuesHolder... values) {
+        return ofPropertyValuesHolder(target, target, values);
+    }
+
+    public static ObjectAnimator ofPropertyValuesHolder(Object target,
+                                                        View view, PropertyValuesHolder... values) {
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(target, values);
+        cancelOnDestroyActivity(anim);
+        new FirstFrameAnimatorHelper(anim, view);
+        return anim;
+    }
+
+    public static void cancelOnDestroyActivity(Animator a) {
+        a.addListener(sEndAnimListener);
+    }
+
 
     public static final Property<Drawable, Integer> DRAWABLE_ALPHA =
             new Property<Drawable, Integer>(Integer.TYPE, "drawableAlpha") {
@@ -110,14 +159,15 @@ public class LauncherAnimUtils {
     public static final FloatProperty<View> VIEW_TRANSLATE_Y =
             View.TRANSLATION_Y instanceof FloatProperty ? (FloatProperty) View.TRANSLATION_Y
                     : new FloatProperty<View>("translateY") {
-                        @Override
-                        public void setValue(View view, float v) {
-                            view.setTranslationY(v);
-                        }
+                @Override
+                public void setValue(View view, float v) {
+                    view.setTranslationY(v);
+                }
 
-                        @Override
-                        public Float get(View view) {
-                            return view.getTranslationY();
-                        }
-                    };
+                @Override
+                public Float get(View view) {
+                    return view.getTranslationY();
+                }
+            };
+
 }

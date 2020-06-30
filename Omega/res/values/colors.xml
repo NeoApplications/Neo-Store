@@ -17,19 +17,7 @@
   ~  *
   ~  */
   -->
-
 <resources>
-    <declare-styleable name="SubPreference">
-        <attr name="content" format="reference" />
-        <attr name="longClickContent" format="reference" />
-        <attr name="hasPreview" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="ControlledPreference">
-        <attr name="searchTitle" format="string" />
-        <attr name="controllerClass" format="string" />
-    </declare-styleable>
-
-    <attr name="settingsBackground" format="color" />
-    <attr name="bottomSheetScrimColor" format="color" />
-    <attr name="settingsSearchBackground" format="color" />
+    <color name="white">#FFFFFF</color>
 </resources>
+

@@ -21,10 +21,42 @@
 package com.saggitt.omega.util
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
+import com.android.launcher3.LauncherModel
+import com.android.launcher3.Utilities
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.math.ceil
 
+val Context.omegaPrefs get() = Utilities.getOmegaPrefs(this)
+
+@ColorInt
+fun Context.getColorAttr(attr: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    @ColorInt val colorAccent = ta.getColor(0, 0)
+    ta.recycle()
+    return colorAccent
+}
+
+fun Context.getBooleanAttr(attr: Int): Boolean {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val value = ta.getBoolean(0, false)
+    ta.recycle()
+    return value
+}
+
+fun Context.getDimenAttr(attr: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val size = ta.getDimensionPixelSize(0, 0)
+    ta.recycle()
+    return size
+}
 
 fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {
     return { it ->
@@ -45,4 +77,54 @@ fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {
 
 fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
     return { it -> creator(it.applicationContext) }
+}
+
+val mainHandler by lazy { Handler(Looper.getMainLooper()) }
+val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
+
+fun runOnUiWorkerThread(r: () -> Unit) {
+    runOnThread(uiWorkerHandler, r)
+}
+
+fun runOnMainThread(r: () -> Unit) {
+    runOnThread(mainHandler, r)
+}
+
+fun runOnThread(handler: Handler, r: () -> Unit) {
+    if (handler.looper.thread.id == Looper.myLooper()?.thread?.id) {
+        r()
+    } else {
+        handler.post(r)
+    }
+}
+
+fun Float.ceilToInt() = ceil(this).toInt()
+
+fun Double.ceilToInt() = ceil(this).toInt()
+
+val Context.hasStoragePermission
+    get() = PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
+            this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+inline fun <T> Iterable<T>.safeForEach(action: (T) -> Unit) {
+    val tmp = ArrayList<T>()
+    tmp.addAll(this)
+    for (element in tmp) action(element)
+}
+
+var View.isVisible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) View.VISIBLE else View.GONE
+    }
+
+inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
+    forEachChildReversedIndexed { view, _ -> action(view) }
+}
+
+inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
+    val count = childCount
+    for (i in (0 until count).reversed()) {
+        action(getChildAt(i), i)
+    }
 }

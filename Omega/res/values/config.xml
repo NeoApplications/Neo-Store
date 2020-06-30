@@ -19,17 +19,7 @@
   -->
 
 <resources>
-    <declare-styleable name="SubPreference">
-        <attr name="content" format="reference" />
-        <attr name="longClickContent" format="reference" />
-        <attr name="hasPreview" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="ControlledPreference">
-        <attr name="searchTitle" format="string" />
-        <attr name="controllerClass" format="string" />
-    </declare-styleable>
-
-    <attr name="settingsBackground" format="color" />
-    <attr name="bottomSheetScrimColor" format="color" />
-    <attr name="settingsSearchBackground" format="color" />
+    <bool name="config_default_enable_blur">false</bool>
+    <!-- Tag id used for view scrim -->
+    <item name="view_scrim" type="id" />
 </resources>

@@ -20,13 +20,48 @@
 
 package com.saggitt.omega.util;
 
+import android.content.Context;
+import android.util.TypedValue;
+
+import com.android.launcher3.R;
+
+import org.jetbrains.annotations.NotNull;
+
 public class Config {
     private static final String TAG = "Config";
 
     //APP DRAWER SORT MODE
-    public static final int SORT_AZ = 0;
-    public static final int SORT_ZA = 1;
-    public static final int SORT_LAST_INSTALLED = 2;
-    public static final int SORT_MOST_USED = 3;
-    public static final int SORT_BY_COLOR = 4;
+    public static final String SORT_AZ = "0";
+    public static final String SORT_ZA = "1";
+    public static final String SORT_LAST_INSTALLED = "2";
+    public static final String SORT_MOST_USED = "3";
+    public static final String SORT_BY_COLOR = "4";
+
+    private static final Object sInstanceLock = new Object();
+    private static Config sInstance;
+    public Context mContext;
+
+    public Config(Context context) {
+        mContext = context;
+    }
+
+    @NotNull
+    public static Config getInstance(@NotNull Context context) {
+        synchronized (sInstanceLock) {
+            if (sInstance == null) {
+                sInstance = new Config(context.getApplicationContext());
+            }
+            return sInstance;
+        }
+    }
+
+    public boolean defaultEnableBlur() {
+        return mContext.getResources().getBoolean(R.bool.config_default_enable_blur);
+    }
+
+    public float getDefaultBlurStrength() {
+        TypedValue typedValue = new TypedValue();
+        mContext.getResources().getValue(R.dimen.config_default_blur_strength, typedValue, true);
+        return typedValue.getFloat();
+    }
 }

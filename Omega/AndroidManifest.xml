@@ -33,6 +33,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="@bool/config_largeHeap"
         android:restoreAnyVersion="true"
+        tools:replace="android:label"
         android:supportsRtl="true" >
 
     <activity
