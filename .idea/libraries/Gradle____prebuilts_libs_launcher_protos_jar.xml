@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: ./prebuilts/libs/launcher_protos.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/prebuilts/libs/launcher_protos.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
