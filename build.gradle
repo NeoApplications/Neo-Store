@@ -89,6 +89,7 @@ android {
         }
 
         omega{
+            applicationId 'com.saggitt.omega'
             dimension "custom"
         }
     }

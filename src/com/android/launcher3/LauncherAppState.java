@@ -16,15 +16,13 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
-
 import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.android.launcher3.compat.LauncherAppsCompat;
@@ -34,32 +32,53 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.notification.NotificationListener;
-import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.OmegaAppKt;
+import com.saggitt.omega.util.MainThreadExecutor;
+
+import java.util.concurrent.ExecutionException;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
 public class LauncherAppState {
 
     public static final String ACTION_FORCE_ROLOAD = "force-reload-launcher";
 
     // We do not need any synchronization for this variable as its only written on UI thread.
-    private static final MainThreadInitializedObject<LauncherAppState> INSTANCE =
-            new MainThreadInitializedObject<>(LauncherAppState::new);
-
+    //private static MainThreadInitializedObject<LauncherAppState> INSTANCE =
+    //        new MainThreadInitializedObject<>(LauncherAppState::new);
+    private static LauncherAppState INSTANCE;
     private final Context mContext;
     private final LauncherModel mModel;
     private final IconCache mIconCache;
     private final WidgetPreviewLoader mWidgetCache;
     private final InvariantDeviceProfile mInvariantDeviceProfile;
     private final SecureSettingsObserver mNotificationDotsObserver;
+    private Launcher mLauncher;
 
     public static LauncherAppState getInstance(final Context context) {
-        return INSTANCE.get(context);
+        //return INSTANCE.get(context);
+        if (INSTANCE == null) {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                INSTANCE = new LauncherAppState(context.getApplicationContext());
+                OmegaAppKt.getOmegaApp(context).onLauncherAppStateCreated();
+            } else {
+                try {
+                    return new MainThreadExecutor().submit(() -> LauncherAppState.getInstance(context)).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     public static LauncherAppState getInstanceNoCreate() {
-        return INSTANCE.getNoCreate();
+        return INSTANCE;
+        //return INSTANCE.getNoCreate();
     }
 
     public Context getContext() {
@@ -153,6 +172,10 @@ public class LauncherAppState {
         CustomWidgetManager.INSTANCE.get(launcher)
                 .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
         return mModel;
+    }
+
+    public Launcher getLauncher() {
+        return mLauncher;
     }
 
     public IconCache getIconCache() {

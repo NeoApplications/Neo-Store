@@ -17,14 +17,7 @@ package com.android.launcher3.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
-
-import com.android.launcher3.Utilities;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Utility class for extracting colors from a bitmap.

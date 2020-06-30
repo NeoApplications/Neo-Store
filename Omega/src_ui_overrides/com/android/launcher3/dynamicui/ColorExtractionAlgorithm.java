@@ -22,6 +22,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Range;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.WallpaperColorsCompat;
@@ -29,10 +33,6 @@ import com.android.launcher3.compat.WallpaperColorsCompat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 
 /**
  * Implementation of tonal color extraction

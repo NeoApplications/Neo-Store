@@ -48,6 +48,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
+import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.DbHelper;
 
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_BY_PUBLISHER;
@@ -92,7 +93,10 @@ public class ItemClickHandler {
             }
         } else if (tag instanceof AppInfo) {
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher,
-                    sourceContainer == null ? CONTAINER_ALL_APPS: sourceContainer);
+                    sourceContainer == null ? CONTAINER_ALL_APPS : sourceContainer);
+            if (Utilities.getOmegaPrefs(Launcher.mContext).getSortMode() == Config.SORT_MOST_USED) {
+                Utilities.getOmegaPrefs(Launcher.mContext).updateSortApps();
+            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);

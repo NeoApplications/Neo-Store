@@ -15,11 +15,6 @@
  */
 package com.android.launcher3.uioverrides;
 
-import static android.app.WallpaperManager.FLAG_SYSTEM;
-
-import static com.android.launcher3.Utilities.getDevicePrefs;
-import static com.android.launcher3.graphics.ColorExtractor.findDominantColorByHue;
-
 import android.Manifest;
 import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
@@ -56,6 +51,10 @@ import com.android.launcher3.compat.WallpaperColorsCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static android.app.WallpaperManager.FLAG_SYSTEM;
+import static com.android.launcher3.Utilities.getDevicePrefs;
+import static com.android.launcher3.graphics.ColorExtractor.findDominantColorByHue;
 
 public class WallpaperManagerCompat {
 
