@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* Copyright 2008, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Attributes used for launcher theme -->
+    <attr name="allAppsScrimColor" format="color" />
+    <attr name="allAppsInterimScrimAlpha" format="integer" />
+    <attr name="allAppsNavBarScrimColor" format="color" />
+    <attr name="popupColorPrimary" format="color" />
+    <attr name="popupColorSecondary" format="color" />
+    <attr name="popupColorTertiary" format="color" />
+    <attr name="isMainColorDark" format="boolean" />
+    <attr name="isWorkspaceDarkText" format="boolean" />
+    <attr name="workspaceTextColor" format="color" />
+    <attr name="workspaceShadowColor" format="color" />
+    <attr name="workspaceAmbientShadowColor" format="color"/>
+    <attr name="workspaceKeyShadowColor" format="color" />
+    <attr name="workspaceStatusBarScrim" format="reference" />
+    <attr name="widgetsTheme" format="reference" />
+    <attr name="loadingIconColor" format="color" />
+
+    <attr name="folderDotColor" format="color" />
+    <attr name="folderFillColor" format="color" />
+    <attr name="folderIconRadius" format="float" />
+    <attr name="folderIconBorderColor" format="color" />
+    <attr name="folderTextColor" format="color" />
+
+    <!-- BubbleTextView specific attributes. -->
+    <declare-styleable name="BubbleTextView">
+        <attr name="layoutHorizontal" format="boolean" />
+        <attr name="iconSizeOverride" format="dimension" />
+        <attr name="iconDisplay" format="integer">
+            <enum name="workspace" value="0" />
+            <enum name="all_apps" value="1" />
+            <enum name="folder" value="2" />
+            <enum name="widget_section" value="3" />
+            <enum name="shortcut_popup" value="4" />
+        </attr>
+        <attr name="centerVertically" format="boolean" />
+    </declare-styleable>
+
+    <!-- BubbleTextView specific attributes. -->
+    <declare-styleable name="FolderIconPreview">
+        <attr name="folderFillColor" />
+        <attr name="folderIconBorderColor" />
+        <attr name="folderDotColor" />
+    </declare-styleable>
+
+    <declare-styleable name="ShadowInfo">
+        <attr name="ambientShadowColor" format="color" />
+        <attr name="ambientShadowBlur" format="dimension" />
+        <attr name="keyShadowColor" format="color" />
+        <attr name="keyShadowBlur" format="dimension" />
+        <attr name="keyShadowOffset" format="dimension" />
+    </declare-styleable>
+
+    <!-- PagedView specific attributes. These attributes are used to customize
+         a PagedView view in XML files. -->
+    <declare-styleable name="PagedView">
+        <!-- The page indicator for this workspace -->
+        <attr name="pageIndicator" format="reference" />
+    </declare-styleable>
+
+    <!-- XML attributes used by default_workspace.xml -->
+    <declare-styleable name="Favorite">
+        <attr name="className" format="string" />
+        <attr name="packageName" format="string" />
+        <attr name="container" format="string" />
+        <attr name="screen" format="string" />
+        <attr name="x" format="string" />
+        <attr name="y" format="string" />
+        <attr name="spanX" format="string" />
+        <attr name="spanY" format="string" />
+        <attr name="icon" format="reference" />
+        <attr name="title" format="string" />
+        <attr name="uri" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="Extra">
+        <attr name="key" format="string" />
+        <attr name="value" format="string" />
+    </declare-styleable>
+    <declare-styleable name="Include">
+        <attr name="workspace" format="reference" />
+        <attr name="folderItems" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="InsettableFrameLayout_Layout">
+        <attr name="layout_ignoreInsets" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="GridDisplayOption">
+        <attr name="name" format="string" />
+
+        <attr name="numRows" format="integer" />
+        <attr name="numColumns" format="integer" />
+        <!-- numFolderRows & numFolderColumns defaults to numRows & numColumns, if not specified -->
+        <attr name="numFolderRows" format="integer" />
+        <attr name="numFolderColumns" format="integer" />
+        <!-- numHotseatIcons defaults to numColumns, if not specified -->
+        <attr name="numHotseatIcons" format="integer" />
+        <attr name="defaultLayoutId" format="reference" />
+        <attr name="demoModeLayoutId" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ProfileDisplayOption">
+        <attr name="name" />
+        <attr name="minWidthDps" format="float" />
+        <attr name="minHeightDps" format="float" />
+
+        <attr name="iconImageSize" format="float" />
+        <!-- landscapeIconSize defaults to iconSize, if not specified -->
+        <attr name="landscapeIconSize" format="float" />
+        <attr name="iconTextSize" format="float" />
+        <!-- If true, this display option is used to determine the default grid -->
+        <attr name="canBeDefault" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CellLayout">
+        <attr name="containerType" format="integer">
+            <enum name="workspace" value="0" />
+            <enum name="hotseat" value="1" />
+            <enum name="folder" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ShadowDrawable">
+        <attr name="android:src" />
+        <attr name="android:shadowColor" />
+        <attr name="android:elevation" />
+        <attr name="darkTintColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="RecyclerViewFastScroller">
+        <attr name="canThumbDetach" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PreviewFragment">
+        <attr name="android:name" />
+        <attr name="android:id" />
+    </declare-styleable>
+</resources>

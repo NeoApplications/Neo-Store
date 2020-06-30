@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./prebuilts/libs/sysui_shared.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/prebuilts/libs/sysui_shared.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

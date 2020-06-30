@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iconloaderlib/IconLoader.iml" filepath="$PROJECT_DIR$/.idea/modules/iconloaderlib/IconLoader.iml" group="Omega/IconLoader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Omega.iml" filepath="$PROJECT_DIR$/.idea/modules/Omega.iml" group="Omega" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Omega_buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/Omega_buildSrc.iml" group="Omega/Omega_buildSrc" />
+    </modules>
+  </component>
+</project>

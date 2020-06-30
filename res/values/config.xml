@@ -1,0 +1,122 @@
+<resources>
+<!-- Miscellaneous -->
+    <bool name="config_largeHeap">false</bool>
+    <bool name="is_tablet">false</bool>
+    <bool name="is_large_tablet">false</bool>
+    <bool name="allow_rotation">false</bool>
+
+    <integer name="extracted_color_gradient_alpha">153</integer>
+
+    <!-- A string pointer to the original app name string. This allows derived projects to
+     easily override the app name without providing all translations -->
+    <string name="derived_app_name" translatable="false">@string/app_name</string>
+
+    <!-- String representing the intent for search on the apps market. To specify a query, add
+    q=<query> to the data to the intent -->
+    <string name="market_search_intent" translatable="false">market://search?c=apps</string>
+
+    <!-- String representing the intent to delete a package.-->
+    <string name="delete_package_intent" translatable="false">#Intent;action=android.intent.action.DELETE;launchFlags=0x10800000;end</string>
+
+    <!-- String representing the fragment class for settings activity.-->
+    <string name="settings_fragment_name" translatable="false">com.android.launcher3.settings.SettingsActivity$LauncherSettingsFragment</string>
+
+<!-- DragController -->
+    <item type="id" name="drag_event_parity" />
+
+<!-- AllApps & Launcher transitions -->
+    <!-- Out of 100, the percent to shrink the workspace during spring loaded mode. -->
+    <integer name="config_workspaceSpringLoadShrinkPercentage">90</integer>
+
+    <!-- The duration of the animation from search hint to text entry -->
+    <integer name="config_searchHintAnimationDuration">50</integer>
+
+    <!-- View tag key used to store SpringAnimation data. -->
+    <item type="id" name="spring_animation_tag" />
+
+<!-- Workspace -->
+    <!-- The duration (in ms) of the fade animation on the object outlines, used when
+         we are dragging objects around on the home screen. -->
+    <integer name="config_dragOutlineFadeTime">900</integer>
+
+    <!-- The alpha value at which to show the most recent drop visualization outline. -->
+    <integer name="config_dragOutlineMaxAlpha">128</integer>
+
+    <!-- Parameters controlling the animation for when an item is dropped on the home screen,
+         and it animates from its old position to the new one. -->
+    <integer name="config_dropAnimMinDuration">100</integer>
+    <integer name="config_dropAnimMaxDuration">500</integer>
+
+    <!-- The duration of the UserFolder opening and closing animation -->
+    <integer name="config_materialFolderExpandDuration">200</integer>
+    <integer name="config_folderDelay">30</integer>
+
+    <!-- The distance at which the animation should take the max duration -->
+    <integer name="config_dropAnimMaxDist">800</integer>
+
+    <!-- The duration of the caret animation -->
+    <integer name="config_caretAnimationDuration">200</integer>
+
+<!-- Hotseat -->
+    <bool name="hotseat_transpose_layout_with_orientation">true</bool>
+
+    <!-- Various classes overriden by projects/build flavors. -->
+    <string name="app_filter_class" translatable="false"></string>
+    <string name="icon_provider_class" translatable="false"></string>
+    <string name="drawable_factory_class" translatable="false"></string>
+    <string name="user_event_dispatcher_class" translatable="false"></string>
+    <string name="stats_log_manager_class" translatable="false"></string>
+    <string name="app_transition_manager_class" translatable="false"></string>
+    <string name="instant_app_resolver_class" translatable="false"></string>
+    <string name="main_process_initializer_class" translatable="false"></string>
+    <string name="system_shortcut_factory_class" translatable="false"></string>
+    <string name="app_launch_tracker_class" translatable="false"></string>
+    <string name="test_information_handler_class" translatable="false"></string>
+    <string name="launcher_activity_logic_class" translatable="false"></string>
+    <string name="color_extraction_impl_class" translatable="false"></string>
+
+    <!-- Package name of the default wallpaper picker. -->
+    <string name="wallpaper_picker_package" translatable="false"></string>
+
+    <!-- Whitelisted package to retrieve packagename for badge. Can be empty. -->
+    <string name="shortcutinfo_badgepkg_whitelist" translatable="false"></string>
+
+    <!-- View ID to use for QSB widget -->
+    <item type="id" name="qsb_widget" />
+
+    <!-- View ID used by cell layout to jail its content -->
+    <item type="id" name="cell_layout_jail_id" />
+
+    <!-- View IDs to store item highlight information -->
+    <item type="id" name="view_unhighlight_background" />
+
+    <!-- Menu id for feature flags -->
+    <item type="id" name="menu_apply_flags" />
+
+    <!-- Popup items -->
+    <integer name="config_popupOpenCloseDuration">150</integer>
+    <integer name="config_popupArrowOpenCloseDuration">40</integer>
+    <integer name="config_removeNotificationViewDuration">300</integer>
+
+<!-- Accessibility actions -->
+    <item type="id" name="action_remove" />
+    <item type="id" name="action_uninstall" />
+    <item type="id" name="action_reconfigure" />
+    <item type="id" name="action_add_to_workspace" />
+    <item type="id" name="action_move" />
+    <item type="id" name="action_move_to_workspace" />
+    <item type="id" name="action_move_screen_backwards" />
+    <item type="id" name="action_move_screen_forwards" />
+    <item type="id" name="action_resize" />
+    <item type="id" name="action_deep_shortcuts" />
+    <item type="id" name="action_shortcuts_and_notifications"/>
+    <item type="id" name="action_dismiss_notification" />
+    <item type="id" name="action_remote_action_shortcut" />
+
+<!-- QSB IDs. DO not change -->
+    <item type="id" name="search_container_workspace" />
+    <item type="id" name="search_container_all_apps" />
+
+<!-- Recents -->
+    <item type="id" name="overview_panel"/>
+</resources>
