@@ -41,6 +41,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+
+        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "false"
     }
     buildTypes {
         debug {
@@ -185,6 +188,8 @@ dependencies {
     implementation "androidx.preference:preference:${ANDROID_X_VERSION}"
     implementation 'cat.ereza:customactivityoncrash:2.2.0'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
+    implementation 'com.github.LawnchairLauncher:hoko-lite:0e21db9ae5'
+    implementation "com.google.android.material:material:${ANDROID_X_VERSION}"
 
     implementation project(':IconLoader')
     implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
