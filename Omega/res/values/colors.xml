@@ -20,6 +20,8 @@
 <resources>
     <color name="white">#FFFFFF</color>
 
+    <color name="colorPrimary">#0788EF</color>
+    <color name="colorPrimaryDark">#03419F</color>
     <color name="colorAccent">#E80142</color>
     <color name="textColorPrimary">#ffffffff</color>
     <color name="textColorSecondary">#ffffffff</color>

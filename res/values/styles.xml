@@ -27,6 +27,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="folderTextColor">?attr/workspaceTextColor</item>
+
+        <!-- Backports -->
+        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
+        <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
+        <item name="android:textColorPrimaryInverse">?android:attr/textColorPrimary</item>
+        <item name="android:textColorSecondaryInverse">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="LauncherTheme" parent="@style/BaseLauncherTheme">
@@ -218,14 +224,18 @@
     <style name="DropTargetButton" parent="DropTargetButtonBase" />
 
     <style name="TextHeadline" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" />
-
-    <style name="TextTitle" parent="@android:style/TextAppearance.DeviceDefault" />
+    <!--
+    <style name="TextTitle" parent="@android:style/TextAppearance.DeviceDefault" />-->
+    <style name="TextTitle">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 
     <style name="AllAppsEmptySearchBackground">
         <item name="android:colorPrimary">#E0E0E0</item>
         <item name="android:colorControlHighlight">#BDBDBD</item>
         <item name="android:colorForeground">@color/all_apps_bg_hand_fill</item>
     </style>
+
     <style name="AllAppsEmptySearchBackground.Dark">
         <item name="android:colorPrimary">#9AA0A6</item>
         <item name="android:colorControlHighlight">#DFE1E5</item>
