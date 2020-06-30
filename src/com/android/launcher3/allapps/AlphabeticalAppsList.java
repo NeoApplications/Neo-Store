@@ -191,7 +191,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         return mApps;
     }
 
-    private void sortApps(int sortType) {
+    private void sortApps(String sortType) {
         switch (sortType) {
             //SORT BY NAME AZ
             case SORT_AZ:
