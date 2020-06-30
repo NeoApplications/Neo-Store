@@ -30,7 +30,14 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
     private val TAG = "OmegaPreferences"
 
     /* --APP DRAWER-- */
-    var sortMode by IntPref("pref_key__sort_mode", 1, reloadApps)
+    var sortMode by StringPref("pref_key__sort_mode", "1", reloadApps)
+
+    /* --BLUR--*/
+    var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
+    val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
+
+    /* --DEV-- */
+    var developerOptionsEnabled by BooleanPref("pref_developerOptionsEnabled", false, doNothing)
 
     companion object {
         private var INSTANCE: OmegaPreferences? = null

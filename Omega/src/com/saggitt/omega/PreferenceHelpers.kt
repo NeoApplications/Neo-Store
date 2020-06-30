@@ -24,6 +24,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.launcher3.LauncherFiles
+import com.saggitt.omega.util.Config
 import java.io.File
 import kotlin.reflect.KProperty
 
@@ -32,8 +33,10 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     val VERSION_KEY = "config_version"
     val mContext = context;
 
-    val reloadApps = { reloadApps() }
     val doNothing = { }
+    val reloadApps = { reloadApps() }
+    val updateBlur = { updateBlur() }
+    val omegaConfig = Config.getInstance(context)
 
     private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
     private val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
@@ -84,11 +87,13 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         }
     }
 
-
     fun reloadApps() {
         onChangeCallback?.reloadApps()
     }
 
+    private fun updateBlur() {
+        onChangeCallback?.updateBlur()
+    }
 
     // ----------------
     // Helper functions and class
@@ -192,7 +197,6 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         }
     }
 
-
     open inner class IntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
             PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
@@ -202,6 +206,32 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         }
     }
 
+    open inner class BooleanPref(key: String, defaultValue: Boolean = false, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Boolean>(key, defaultValue, onChange) {
+        override fun onGetValue(): Boolean = sharedPrefs.getBoolean(getKey(), defaultValue)
+
+        override fun onSetValue(value: Boolean) {
+            edit { putBoolean(getKey(), value) }
+        }
+    }
+
+    open inner class FloatPref(key: String, defaultValue: Float = 0f, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Float>(key, defaultValue, onChange) {
+        override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
+
+        override fun onSetValue(value: Float) {
+            edit { putFloat(getKey(), value) }
+        }
+    }
+
+    open inner class StringPref(key: String, defaultValue: String = "", onChange: () -> Unit = doNothing) :
+            PrefDelegate<String>(key, defaultValue, onChange) {
+        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
+
+        override fun onSetValue(value: String) {
+            edit { putString(getKey(), value) }
+        }
+    }
 
     interface OnPreferenceChangeListener {
         fun onValueChanged(key: String, prefs: PreferenceHelpers, force: Boolean)

@@ -21,9 +21,14 @@
 package com.saggitt.omega
 
 import com.android.launcher3.compat.UserManagerCompat
+import com.saggitt.omega.blur.BlurWallpaperProvider
 
 class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     fun reloadApps() {
         UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.onPackagesReload(it) }
+    }
+
+    fun updateBlur() {
+        BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }
 }
