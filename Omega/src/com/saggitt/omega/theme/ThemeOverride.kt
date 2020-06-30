@@ -20,11 +20,18 @@
 
 package com.saggitt.omega.theme
 
+import android.app.Activity
 import android.content.Context
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
+import java.lang.ref.WeakReference
 
 class ThemeOverride (private val themeSet: ThemeSet, val listener: ThemeOverrideListener?) {
+    constructor(themeSet: ThemeSet, activity: Activity) : this(themeSet, ActivityListener(activity))
+    constructor(themeSet: ThemeSet, context: Context) : this(themeSet, ContextListener(context))
+
+    fun applyTheme(context: Context) {
+        listener?.applyTheme(getTheme(context))
+    }
 
     fun getTheme(context: Context): Int {
         return themeSet.getTheme(context)
@@ -32,13 +39,6 @@ class ThemeOverride (private val themeSet: ThemeSet, val listener: ThemeOverride
 
     fun getTheme(themeFlags: Int) = themeSet.getTheme(themeFlags)
 
-    interface ThemeOverrideListener {
-
-        val isAlive: Boolean
-
-        fun applyTheme(themeRes: Int)
-        fun reloadTheme()
-    }
 
     interface ThemeSet {
 
@@ -76,6 +76,42 @@ class ThemeOverride (private val themeSet: ThemeSet, val listener: ThemeOverride
         override val darkDarkTextTheme = R.style.SettingsTheme_Dark
         override val blackTheme = R.style.SettingsTheme_Black
         override val blackDarkTextTheme = R.style.SettingsTheme_Black
+    }
+
+    interface ThemeOverrideListener {
+
+        val isAlive: Boolean
+
+        fun applyTheme(themeRes: Int)
+        fun reloadTheme()
+    }
+
+    class ActivityListener(activity: Activity) : ThemeOverrideListener {
+
+        private val activityRef = WeakReference(activity)
+        override val isAlive = activityRef.get() != null
+
+        override fun applyTheme(themeRes: Int) {
+            activityRef.get()?.setTheme(themeRes)
+        }
+
+        override fun reloadTheme() {
+            activityRef.get()?.recreate()
+        }
+    }
+
+    class ContextListener(context: Context) : ThemeOverrideListener {
+
+        private val contextRef = WeakReference(context)
+        override val isAlive = contextRef.get() != null
+
+        override fun applyTheme(themeRes: Int) {
+            contextRef.get()?.setTheme(themeRes)
+        }
+
+        override fun reloadTheme() {
+            // Unsupported
+        }
     }
 
 }

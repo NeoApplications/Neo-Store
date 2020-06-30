@@ -34,8 +34,7 @@ android {
     defaultConfig {
         minSdkVersion 25
         targetSdkVersion 29
-
-        //applicationId "com.saggitt.omega"
+        applicationId "com.saggitt.omega"
         versionName name
         versionCode code
 
@@ -43,7 +42,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
 
-        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "false"
+        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
     }
     buildTypes {
         debug {
@@ -89,7 +88,6 @@ android {
         }
 
         omega{
-            applicationId 'com.saggitt.omega'
             dimension "custom"
         }
     }
@@ -185,6 +183,7 @@ repositories {
 
 dependencies {
     implementation "androidx.dynamicanimation:dynamicanimation:${ANDROID_X_VERSION}"
+    implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.recyclerview:recyclerview:${ANDROID_X_VERSION}"
     implementation "androidx.preference:preference:${ANDROID_X_VERSION}"
     implementation 'cat.ereza:customactivityoncrash:2.2.0'

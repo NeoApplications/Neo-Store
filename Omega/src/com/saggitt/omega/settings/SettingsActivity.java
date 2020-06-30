@@ -133,6 +133,9 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.search_action_bar) {
+            //startActivity(new Intent(this, SettingsSearchActivity.class));
+        }
     }
 
     @Override

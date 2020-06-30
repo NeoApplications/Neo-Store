@@ -19,5 +19,11 @@
   -->
 <resources>
     <color name="white">#FFFFFF</color>
+
+    <color name="colorAccent">#E80142</color>
+    <color name="textColorPrimary">#ffffffff</color>
+    <color name="textColorSecondary">#ffffffff</color>
+    <color name="textColorPrimaryInverse">#de000000</color>
+    <color name="textColorSecondaryInverse">#8a000000</color>
 </resources>
 

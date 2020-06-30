@@ -33,4 +33,7 @@
     <attr name="bottomSheetScrimColor" format="color" />
     <attr name="settingsSearchBackground" format="color" />
     <attr name="settingsPopupBackground" format="color" />
+
+
+    <attr name="useLightSystemBars" format="boolean" />
 </resources>

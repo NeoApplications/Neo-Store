@@ -25,11 +25,18 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.android.launcher3.InsettableFrameLayout
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
+import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.getBooleanAttr
 
 open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     val dragLayer by lazy { SettingsDragLayer(this, null) }
@@ -39,13 +46,37 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
     private var paused = false
     private lateinit var themeOverride: ThemeOverride
     protected open val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
+    private val customLayoutInflater by lazy {
+        OmegaLayoutInflater(super.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
+    }
+
     private val fromSettings by lazy { intent.getBooleanExtra(EXTRA_FROM_SETTINGS, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (layoutInflater as OmegaLayoutInflater).installFactory(delegate)
+        themeOverride = ThemeOverride(themeSet, this)
+        themeOverride.applyTheme(this)
+        currentTheme = themeOverride.getTheme(this)
+
         super.onCreate(savedInstanceState ?: intent.getBundleExtra("state"))
         dragLayer.addView(decorLayout, InsettableFrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         super.setContentView(dragLayer)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        var flags = window.decorView.systemUiVisibility
+        val useLightBars = getBooleanAttr(R.attr.useLightSystemBars)
+        flags = Utilities.setFlag(flags, View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, useLightBars)
+        if (Utilities.ATLEAST_OREO) {
+            flags = Utilities.setFlag(flags, View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR, useLightBars)
+        }
+
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.decorView.systemUiVisibility = flags
     }
 
     protected fun overrideOpenAnim() {
@@ -85,6 +116,13 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
             startActivity(createRelaunchIntent(), ActivityOptions.makeCustomAnimation(
                     this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         }
+    }
+
+    override fun getSystemService(name: String): Any? {
+        if (name == Context.LAYOUT_INFLATER_SERVICE) {
+            return customLayoutInflater
+        }
+        return super.getSystemService(name)
     }
 
     companion object {
