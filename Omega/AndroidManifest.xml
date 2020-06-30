@@ -24,6 +24,7 @@
     package="com.android.launcher3">
 
     <application
+        android:name="com.saggitt.omega.OmegaApp"
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
         android:fullBackupOnly="true"
         android:fullBackupContent="@xml/backupscheme"

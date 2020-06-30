@@ -24,6 +24,10 @@ import com.android.launcher3.compat.UserManagerCompat
 import com.saggitt.omega.blur.BlurWallpaperProvider
 
 class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
+    fun recreate() {
+        if (launcher.shouldRecreate()) launcher.recreate()
+    }
+
     fun reloadApps() {
         UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.onPackagesReload(it) }
     }
@@ -31,4 +35,9 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     fun updateBlur() {
         BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }
+
+    fun forceReloadApps() {
+        UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.forceReload() }
+    }
+
 }

@@ -32,4 +32,5 @@
     <attr name="settingsBackground" format="color" />
     <attr name="bottomSheetScrimColor" format="color" />
     <attr name="settingsSearchBackground" format="color" />
+    <attr name="settingsPopupBackground" format="color" />
 </resources>

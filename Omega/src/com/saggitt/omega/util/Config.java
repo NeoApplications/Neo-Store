@@ -31,11 +31,11 @@ public class Config {
     private static final String TAG = "Config";
 
     //APP DRAWER SORT MODE
-    public static final String SORT_AZ = "0";
-    public static final String SORT_ZA = "1";
-    public static final String SORT_LAST_INSTALLED = "2";
-    public static final String SORT_MOST_USED = "3";
-    public static final String SORT_BY_COLOR = "4";
+    public static final int SORT_AZ = 0;
+    public static final int SORT_ZA = 1;
+    public static final int SORT_LAST_INSTALLED = 2;
+    public static final int SORT_MOST_USED = 3;
+    public static final int SORT_BY_COLOR = 4;
 
     private static final Object sInstanceLock = new Object();
     private static Config sInstance;

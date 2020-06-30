@@ -20,7 +20,41 @@
 
 package com.saggitt.omega;
 
+import android.content.Context;
+import android.os.Bundle;
+
 import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.Utilities;
 
 public class OmegaLauncher extends Launcher {
+    public Context mContext;
+    private boolean paused = false;
+    private boolean sRestart = false;
+
+    public static OmegaLauncher getLauncher(Context context) {
+        if (context instanceof OmegaLauncher) {
+            return (OmegaLauncher) context;
+        } else {
+            return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = this;
+    }
+
+    public boolean shouldRecreate() {
+        return !sRestart;
+    }
+
+    public void scheduleRestart() {
+        if (paused) {
+            sRestart = true;
+        } else {
+            Utilities.restartLauncher(mContext);
+        }
+    }
 }
