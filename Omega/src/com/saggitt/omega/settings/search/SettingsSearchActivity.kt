@@ -35,8 +35,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
-import com.android.launcher3.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
 import com.saggitt.omega.settings.SettingsActivity
+import com.saggitt.omega.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
 import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.*
 import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.isVisible

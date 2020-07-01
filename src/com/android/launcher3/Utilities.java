@@ -137,13 +137,15 @@ public final class Utilities {
     public static final int COLOR_EXTRACTION_JOB_ID = 1;
     public static final int WALLPAPER_COMPAT_JOB_ID = 2;
 
+
+    public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
      * add extra logging and not for changing the app behavior.
      */
     public static final boolean IS_DEBUG_DEVICE =
             Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
-            Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
+                    Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
 
     public static boolean isDevelopersOptionsEnabled(Context context) {
         return Settings.Global.getInt(context.getApplicationContext().getContentResolver(),
@@ -764,6 +766,23 @@ public final class Utilities {
     public static boolean hasPermission(Context context, String permission) {
         return ContextCompat.checkSelfPermission(context, permission)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean isAllowRotationPrefEnabled(Context context) {
+        return getPrefs(context).getBoolean(ALLOW_ROTATION_PREFERENCE_KEY,
+                getAllowRotationDefaultValue(context));
+    }
+
+    public static boolean getAllowRotationDefaultValue(Context context) {
+        if (ATLEAST_NOUGAT) {
+            // If the device was scaled, used the original dimensions to determine if rotation
+            // is allowed of not.
+            Resources res = context.getResources();
+            int originalSmallestWidth = res.getConfiguration().smallestScreenWidthDp
+                    * res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEVICE_STABLE;
+            return originalSmallestWidth >= 600;
+        }
+        return false;
     }
 
     /*FIN CUSTOM*/

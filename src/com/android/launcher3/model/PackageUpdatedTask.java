@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.model;
 
-import static com.android.launcher3.WorkspaceItemInfo.FLAG_AUTOINSTALL_ICON;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +46,8 @@ import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.SafeCloseable;
+import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,8 +113,12 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     }
                     appsList.addPackage(context, packages[i], mUser);
 
+                    OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
                     // Automatically add homescreen icon for work profile apps for below O device.
-                    if (!Utilities.ATLEAST_OREO && !Process.myUserHandle().equals(mUser)) {
+                    if (Utilities.ATLEAST_OREO && prefs.getAutoAddInstalled() &&
+                            !OmegaUtilsKt.workspaceContains(dataModel, packages[i])) {
+                        SessionCommitReceiver.queueAppIconAddition(context, packages[i], mUser);
+                    } else if (!Utilities.ATLEAST_OREO && !Process.myUserHandle().equals(mUser)) {
                         SessionCommitReceiver.queueAppIconAddition(context, packages[i], mUser);
                     }
                 }

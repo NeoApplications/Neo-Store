@@ -21,4 +21,18 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_add_icon_to_home"
+        android:persistent="true"
+        android:summary="@string/auto_add_shortcuts_description"
+        android:title="@string/auto_add_shortcuts_label" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/allow_rotation"
+        android:key="pref_allowRotation"
+        android:persistent="true"
+        android:summary="@string/allow_rotation_desc"
+        android:title="@string/allow_rotation_title" />
+
 </PreferenceScreen>

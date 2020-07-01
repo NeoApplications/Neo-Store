@@ -18,12 +18,14 @@
 package com.saggitt.omega.settings;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +49,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
+import com.android.launcher3.SessionCommitReceiver;
 import com.android.launcher3.Utilities;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
@@ -58,6 +61,7 @@ import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
+import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
 
@@ -67,6 +71,9 @@ import java.util.Objects;
 
 public class SettingsActivity extends SettingsBaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         PreferenceFragment.OnPreferenceDisplayDialogCallback, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+
+    public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
+
     public final static String EXTRA_TITLE = "title";
     public final static String EXTRA_FRAGMENT = "fragment";
     public final static String EXTRA_FRAGMENT_ARGS = "fragmentArgs";
@@ -418,6 +425,8 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         public static final String CONTENT_RES_ID = "content_res_id";
         public static final String HAS_PREVIEW = "has_preview";
 
+        private SystemDisplayRotationLockObserver mRotationLockObserver;
+
         private Context mContext;
 
         @Override
@@ -425,6 +434,32 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             super.onCreate(savedInstanceState);
 
             mContext = getActivity();
+            getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+            int preference = getContent();
+            ContentResolver resolver = mContext.getContentResolver();
+            switch (preference) {
+                case R.xml.omega_preferences_desktop:
+                    if (!Utilities.ATLEAST_OREO) {
+                        getPreferenceScreen().removePreference(
+                                findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
+                    }
+                    // Setup allow rotation preference
+                    Preference rotationPref = findPreference(Utilities.ALLOW_ROTATION_PREFERENCE_KEY);
+                    if (getResources().getBoolean(R.bool.allow_rotation)) {
+                        // Launcher supports rotation by default. No need to show this setting.
+                        getPreferenceScreen().removePreference(rotationPref);
+                    } else {
+                        mRotationLockObserver = new SystemDisplayRotationLockObserver(rotationPref, resolver);
+
+                        // Register a content observer to listen for system setting changes while
+                        // this UI is active.
+                        mRotationLockObserver.register(Settings.System.ACCELEROMETER_ROTATION);
+
+                        // Initialize the UI once
+                        rotationPref.setDefaultValue(Utilities.getAllowRotationDefaultValue(getActivity()));
+                    }
+                    break;
+            }
         }
 
         @Override
@@ -514,6 +549,28 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
 
         protected int getRecyclerViewLayoutRes() {
             return R.layout.preference_insettable_recyclerview;
+        }
+    }
+
+    /**
+     * Content observer which listens for system auto-rotate setting changes, and enables/disables
+     * the launcher rotation setting accordingly.
+     */
+    private static class SystemDisplayRotationLockObserver extends SettingsObserver.System {
+
+        private final Preference mRotationPref;
+
+        public SystemDisplayRotationLockObserver(
+                Preference rotationPref, ContentResolver resolver) {
+            super(resolver);
+            mRotationPref = rotationPref;
+        }
+
+        @Override
+        public void onSettingChanged(boolean enabled) {
+            mRotationPref.setEnabled(enabled);
+            mRotationPref.setSummary(enabled
+                    ? R.string.allow_rotation_desc : R.string.allow_rotation_blocked_desc);
         }
     }
 }

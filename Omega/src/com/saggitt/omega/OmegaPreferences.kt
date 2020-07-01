@@ -31,6 +31,9 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
     /* --APP DRAWER-- */
     var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
 
+    /*Desktop*/
+    var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
+
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, restart)

@@ -24,6 +24,8 @@
     <string name="title__general_drawer">Drawer</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_drawer">Customize your Drawer</string>
+    <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
+
     <!-- PREFERENCES DOCK -->
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
@@ -46,7 +48,6 @@
     <string name="search_menu">Find settings</string>
     <string name="failed">Something went wrong.</string>
     <string name="developer_options_title">Developer Options</string>
-
 
     <string name="title__restart_launcher">Restart</string>
     <string name="change_default_home">Set as Home App</string>

@@ -32,6 +32,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherModel
 import com.android.launcher3.Utilities
+import com.android.launcher3.model.BgDataModel
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
@@ -200,4 +201,9 @@ fun android.app.AlertDialog.applyAccent() {
     buttons.forEach {
         it.setTextColor(color)
     }
+}
+
+
+fun BgDataModel.workspaceContains(packageName: String): Boolean {
+    return this.workspaceItems.any { it.targetComponent?.packageName == packageName }
 }
