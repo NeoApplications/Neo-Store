@@ -17,6 +17,7 @@
 
 package com.saggitt.omega.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,13 +29,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
@@ -55,13 +59,14 @@ import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.views.SpringRecyclerView;
+import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 public class SettingsActivity extends SettingsBaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
-        View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+        PreferenceFragment.OnPreferenceDisplayDialogCallback, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
     public final static String EXTRA_TITLE = "title";
     public final static String EXTRA_FRAGMENT = "fragment";
     public final static String EXTRA_FRAGMENT_ARGS = "fragmentArgs";
@@ -225,6 +230,11 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         return true;
     }
 
+    @Override
+    public boolean onPreferenceDisplayDialog(@NonNull PreferenceFragment caller, Preference pref) {
+        return false;
+    }
+
     public static void startFragment(Context context, String fragment, int title) {
         startFragment(context, fragment, null, context.getString(title));
     }
@@ -277,6 +287,7 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             }
         }
 
+        @SuppressLint("RestrictedApi")
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent,
                                                  Bundle savedInstanceState) {
             RecyclerView recyclerView = (RecyclerView) inflater
@@ -401,10 +412,20 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         }
     }
 
-    public static class SubSettingsFragment extends BaseFragment {
+    public static class SubSettingsFragment extends BaseFragment implements
+            Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
         public static final String TITLE = "title";
         public static final String CONTENT_RES_ID = "content_res_id";
         public static final String HAS_PREVIEW = "has_preview";
+
+        private Context mContext;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            mContext = getActivity();
+        }
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
@@ -440,6 +461,33 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         public void onResume() {
             super.onResume();
             setActivityTitle();
+        }
+
+        @Override
+        public void onDisplayPreferenceDialog(Preference preference) {
+            final DialogFragment f;
+            if (preference instanceof ListPreference) {
+                Log.d("success", "onDisplayPreferenceDialog: yay");
+                f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+                return;
+            }
+
+            f.setTargetFragment(this, 0);
+            f.show(getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+            return false;
+        }
+
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+
+            return false;
         }
 
         protected void setActivityTitle() {
