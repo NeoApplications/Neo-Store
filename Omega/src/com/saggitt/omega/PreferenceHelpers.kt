@@ -1,20 +1,17 @@
 /*
+ *  Copyright (c) 2020 Omega Launcher
  *
- *  *
- *  *  * Copyright (c) 2020 Omega Launcher
- *  *  *
- *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  * you may not use this file except in compliance with the License.
- *  *  * You may obtain a copy of the License at
- *  *  *
- *  *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  * See the License for the specific language governing permissions and
- *  *  * limitations under the License.
- *  *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
  */
 
@@ -34,6 +31,7 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     val mContext = context;
 
     val doNothing = { }
+    val restart = { restart() }
     val reloadApps = { reloadApps() }
     val updateBlur = { updateBlur() }
     val recreate = { recreate() }
@@ -90,6 +88,10 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
 
     fun reloadApps() {
         onChangeCallback?.reloadApps()
+    }
+
+    fun restart() {
+        onChangeCallback?.restart()
     }
 
     private fun updateBlur() {
@@ -239,6 +241,19 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
 
         override fun onSetValue(value: String) {
             edit { putString(getKey(), value) }
+        }
+    }
+
+    open inner class StringIntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Int>(key, defaultValue, onChange) {
+        override fun onGetValue(): Int = try {
+            sharedPrefs.getString(getKey(), "$defaultValue")!!.toInt()
+        } catch (e: Exception) {
+            sharedPrefs.getInt(getKey(), defaultValue)
+        }
+
+        override fun onSetValue(value: Int) {
+            edit { putString(getKey(), "$value") }
         }
     }
 
