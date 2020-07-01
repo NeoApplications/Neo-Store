@@ -21,9 +21,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ActionMenuView;
@@ -34,6 +37,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherFiles;
@@ -49,8 +54,11 @@ import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
+import com.saggitt.omega.views.SpringRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class SettingsActivity extends SettingsBaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         View.OnClickListener, FragmentManager.OnBackStackChangedListener {
@@ -255,7 +263,83 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
                 : new LauncherSettingsFragment();
     }
 
-    public abstract static class BaseFragment extends PreferenceFragmentCompat{
+    public abstract static class BaseFragment extends PreferenceFragmentCompat {
+        private static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
+        private HighlightablePreferenceGroupAdapter mAdapter;
+        private boolean mPreferenceHighlighted = false;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            if (savedInstanceState != null) {
+                mPreferenceHighlighted = savedInstanceState.getBoolean(SAVE_HIGHLIGHTED_KEY);
+            }
+        }
+
+        public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent,
+                                                 Bundle savedInstanceState) {
+            RecyclerView recyclerView = (RecyclerView) inflater
+                    .inflate(getRecyclerViewLayoutRes(), parent, false);
+            if (recyclerView instanceof SpringRecyclerView) {
+                ((SpringRecyclerView) recyclerView).setShouldTranslateSelf(false);
+            }
+
+            recyclerView.setLayoutManager(onCreateLayoutManager());
+            recyclerView.setAccessibilityDelegateCompat(
+                    new PreferenceRecyclerViewAccessibilityDelegate(recyclerView));
+
+            return recyclerView;
+        }
+
+        abstract protected int getRecyclerViewLayoutRes();
+
+        @Override
+        public void setDivider(Drawable divider) {
+            super.setDivider(null);
+        }
+
+        @Override
+        public void setDividerHeight(int height) {
+            super.setDividerHeight(0);
+        }
+
+        public void highlightPreferenceIfNeeded() {
+            if (!isAdded()) {
+                return;
+            }
+            if (mAdapter != null) {
+                mAdapter.requestHighlight(Objects.requireNonNull(getView()), getListView());
+            }
+        }
+
+        protected void onDataSetChanged() {
+            highlightPreferenceIfNeeded();
+        }
+
+        public int getInitialExpandedChildCount() {
+            return -1;
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            highlightPreferenceIfNeeded();
+
+            dispatchOnResume(getPreferenceScreen());
+        }
+
+        public void dispatchOnResume(PreferenceGroup group) {
+            int count = group.getPreferenceCount();
+            for (int i = 0; i < count; i++) {
+                Preference preference = group.getPreference(i);
+
+                if (preference instanceof PreferenceGroup) {
+                    dispatchOnResume((PreferenceGroup) preference);
+                }
+            }
+        }
+
         void onPreferencesAdded(PreferenceGroup group) {
             for (int i = 0; i < group.getPreferenceCount(); i++) {
                 Preference preference = group.getPreference(i);
@@ -279,10 +363,13 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
     }
 
     public static class LauncherSettingsFragment extends BaseFragment {
+        private boolean mShowDevOptions;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            mShowDevOptions = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             setHasOptionsMenu(true);
         }
@@ -294,8 +381,23 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            boolean dev = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
+            if (dev != mShowDevOptions) {
+                getActivity().recreate();
+            }
+        }
+
+        @Override
         public boolean onPreferenceTreeClick(Preference preference) {
             return super.onPreferenceTreeClick(preference);
+        }
+
+        @Override
+        protected int getRecyclerViewLayoutRes() {
+            return BuildConfig.FEATURE_SETTINGS_SEARCH ? R.layout.preference_home_recyclerview
+                    : R.layout.preference_dialog_recyclerview;
         }
     }
 
@@ -304,11 +406,6 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         public static final String CONTENT_RES_ID = "content_res_id";
         public static final String HAS_PREVIEW = "has_preview";
 
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(getContent());
-            onPreferencesAdded(getPreferenceScreen());
-        }
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
             if (preference instanceof ColorPreferenceCompat) {
@@ -329,8 +426,18 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             return false;
         }
 
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(getContent());
+            onPreferencesAdded(getPreferenceScreen());
+        }
+
         private int getContent() {
             return getArguments().getInt(CONTENT_RES_ID);
+        }
+
+        protected void setActivityTitle() {
+            getActivity().setTitle(getArguments().getString(TITLE));
         }
 
         public static SubSettingsFragment newInstance(SubPreference preference) {
@@ -349,6 +456,10 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             b.putInt(CONTENT_RES_ID, intent.getIntExtra(CONTENT_RES_ID, 0));
             fragment.setArguments(b);
             return fragment;
+        }
+
+        protected int getRecyclerViewLayoutRes() {
+            return R.layout.preference_insettable_recyclerview;
         }
     }
 }
