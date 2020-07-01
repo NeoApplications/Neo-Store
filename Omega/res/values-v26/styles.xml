@@ -16,8 +16,7 @@
   -->
 
 <resources>
-
-    <style name="SettingsTheme.V2" parent="SettingsTheme.Base">
+    <style name="SettingsTheme_Light" parent="SettingsTheme.Base">
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>
