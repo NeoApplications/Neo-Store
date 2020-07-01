@@ -436,6 +436,12 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             return getArguments().getInt(CONTENT_RES_ID);
         }
 
+        @Override
+        public void onResume() {
+            super.onResume();
+            setActivityTitle();
+        }
+
         protected void setActivityTitle() {
             getActivity().setTitle(getArguments().getString(TITLE));
         }
