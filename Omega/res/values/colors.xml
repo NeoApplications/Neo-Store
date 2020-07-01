@@ -27,5 +27,7 @@
     <color name="textColorSecondary">#ffffffff</color>
     <color name="textColorPrimaryInverse">#de000000</color>
     <color name="textColorSecondaryInverse">#8a000000</color>
+
+    <color name="all_apps_navbar_color">#28000000</color>
 </resources>
 

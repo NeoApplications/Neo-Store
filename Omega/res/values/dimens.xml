@@ -33,4 +33,10 @@
     <dimen name="search_bar_margin">16dp</dimen>
     <dimen name="search_bar_height">48dp</dimen>
     <dimen name="search_bar_text_size">16dp</dimen>
+
+    <!-- Dashboard padding in its container -->
+    <dimen name="dashboard_padding_start">0dp</dimen>
+    <dimen name="dashboard_padding_end">0dp</dimen>
+    <dimen name="dashboard_padding_top">0dp</dimen>
+    <dimen name="dashboard_padding_bottom">0dp</dimen>
 </resources>

@@ -20,8 +20,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.launcher3">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name="com.saggitt.omega.OmegaApp"
@@ -75,7 +74,6 @@
         android:name="com.android.launcher3.settings.SettingsActivity"
         tools:node="remove" />
 
-
         <activity
             android:autoRemoveFromRecents="true"
             android:label="@string/derived_app_name"
@@ -83,9 +81,16 @@
             android:taskAffinity="${applicationId}.tasks.SETTINGS"
             android:theme="@style/SettingsTheme_Light">
             <intent-filter>
-                <action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.saggitt.omega.settings.search.SettingsSearchActivity"
+            android:autoRemoveFromRecents="true"
+            android:label="@string/derived_app_name"
+            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
+            android:theme="@style/SettingsTheme_Light" />
     </application>
 </manifest>

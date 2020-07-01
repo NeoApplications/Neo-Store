@@ -63,6 +63,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 
+import androidx.core.content.ContextCompat;
+
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.ShortcutConfigActivityInfo;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
@@ -757,6 +759,11 @@ public final class Utilities {
         } else {
             return flags & ~flag;
         }
+    }
+
+    public static boolean hasPermission(Context context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     /*FIN CUSTOM*/

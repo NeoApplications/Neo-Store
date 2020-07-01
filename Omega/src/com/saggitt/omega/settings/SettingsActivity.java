@@ -1,20 +1,17 @@
 /*
+ *  Copyright (c) 2020 Omega Launcher
  *
- *  *
- *  *  * Copyright (c) 2020 Omega Launcher
- *  *  *
- *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  * you may not use this file except in compliance with the License.
- *  *  * You may obtain a copy of the License at
- *  *  *
- *  *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  * See the License for the specific language governing permissions and
- *  *  * limitations under the License.
- *  *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
  */
 
@@ -22,11 +19,14 @@ package com.saggitt.omega.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -38,12 +38,16 @@ import androidx.preference.PreferenceGroup;
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
+import com.saggitt.omega.FakeLauncherKt;
+import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.SubPreference;
+import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
 
 import org.jetbrains.annotations.NotNull;
@@ -134,7 +138,65 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.search_action_bar) {
-            //startActivity(new Intent(this, SettingsSearchActivity.class));
+            startActivity(new Intent(this, SettingsSearchActivity.class));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shouldShowSearch()) {
+            Toolbar toolbar = findViewById(R.id.search_action_bar);
+            toolbar.getMenu().clear();
+            OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
+
+            toolbar.inflateMenu(R.menu.menu_settings);
+            ActionMenuView menuView = null;
+            int count = toolbar.getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = toolbar.getChildAt(i);
+                if (child instanceof ActionMenuView) {
+                    menuView = (ActionMenuView) child;
+                    break;
+                }
+            }
+            if (!BuildConfig.APPLICATION_ID.equals(resolveDefaultHome())) {
+                toolbar.inflateMenu(R.menu.menu_change_default_home);
+            }
+            toolbar.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_change_default_home:
+                        FakeLauncherKt.changeDefaultHome(this);
+                        break;
+                    case R.id.action_restart_launcher:
+                        Utilities.killLauncher();
+                        break;
+                    case R.id.action_dev_options:
+                        Intent intent = new Intent(this, SettingsActivity.class);
+                        intent.putExtra(SettingsActivity.SubSettingsFragment.TITLE,
+                                getString(R.string.developer_options_title));
+                        intent.putExtra(SettingsActivity.SubSettingsFragment.CONTENT_RES_ID,
+                                R.xml.omega_preferences_developer);
+                        intent.putExtra(SettingsBaseActivity.EXTRA_FROM_SETTINGS, true);
+                        startActivity(intent);
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            });
+        }
+    }
+
+    private String resolveDefaultHome() {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_HOME);
+        ResolveInfo info = getPackageManager()
+                .resolveActivity(homeIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        if (info != null && info.activityInfo != null) {
+            return info.activityInfo.packageName;
+        } else {
+            return null;
         }
     }
 

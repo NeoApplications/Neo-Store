@@ -1,20 +1,17 @@
 /*
+ *  Copyright (c) 2020 Omega Launcher
  *
- *  *
- *  *  * Copyright (c) 2020 Omega Launcher
- *  *  *
- *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  * you may not use this file except in compliance with the License.
- *  *  * You may obtain a copy of the License at
- *  *  *
- *  *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  * See the License for the specific language governing permissions and
- *  *  * limitations under the License.
- *  *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
  */
 
@@ -37,6 +34,7 @@ import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.getBooleanAttr
+import com.saggitt.omega.util.launcherAppState
 
 open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     val dragLayer by lazy { SettingsDragLayer(this, null) }
@@ -85,6 +83,12 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
         }
     }
 
+    protected fun overrideCloseAnim() {
+        if (fromSettings) {
+            overridePendingTransition("activity_close_enter", "activity_close_exit")
+        }
+    }
+
     private fun getAndroidAnimRes(name: String): Int {
         return resources.getIdentifier(name, "anim", "android")
     }
@@ -97,14 +101,54 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
         }
     }
 
-    protected fun getRelaunchInstanceState(savedInstanceState: Bundle?): Bundle? {
-        return savedInstanceState ?: intent.getBundleExtra("state")
+    override fun onBackPressed() {
+        dragLayer.getTopOpenView()?.let {
+            it.close(true)
+            return
+        }
+        super.onBackPressed()
+    }
+
+    override fun setContentView(v: View) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        contentParent.addView(v)
+    }
+
+    override fun setContentView(resId: Int) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        LayoutInflater.from(this).inflate(resId, contentParent)
+    }
+
+    override fun setContentView(v: View, lp: ViewGroup.LayoutParams) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        contentParent.addView(v, lp)
+    }
+
+    fun getContentFrame(): ViewGroup {
+        return decorLayout.findViewById(android.R.id.content)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        paused = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        paused = true
     }
 
     protected open fun createRelaunchIntent(): Intent {
         val state = Bundle()
         onSaveInstanceState(state)
         return intent.putExtra("state", state)
+    }
+
+    protected fun getRelaunchInstanceState(savedInstanceState: Bundle?): Bundle? {
+        return savedInstanceState ?: intent.getBundleExtra("state")
     }
 
     override fun onThemeChanged() {
@@ -123,6 +167,11 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
             return customLayoutInflater
         }
         return super.getSystemService(name)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        launcherAppState.launcher?.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     companion object {
