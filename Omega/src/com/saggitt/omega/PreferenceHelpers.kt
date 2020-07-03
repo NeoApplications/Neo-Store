@@ -102,10 +102,6 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         onChangeCallback?.recreate()
     }
 
-    fun updateSortApps() {
-        onChangeCallback?.forceReloadApps()
-    }
-
     // ----------------
     // Helper functions and class
     // ----------------

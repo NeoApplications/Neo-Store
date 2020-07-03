@@ -61,7 +61,9 @@ open class SettingsBaseActivity : AppCompatActivity(), ThemeManager.ThemeableAct
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         super.setContentView(dragLayer)
 
+        val prefs = Utilities.getOmegaPrefs(this)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitleTextColor(prefs.accentColor)
         setSupportActionBar(toolbar)
 
         var flags = window.decorView.systemUiVisibility

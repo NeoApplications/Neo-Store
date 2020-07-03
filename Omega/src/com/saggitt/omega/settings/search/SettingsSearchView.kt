@@ -30,6 +30,9 @@ class SettingsSearchView(context: Context, attrs: AttributeSet?) : SearchView(co
 
     private var customTypeface: Typeface? = null
 
+    init {
+        isIconified = false;
+    }
 
     fun setTypeface(typeface: Typeface) {
         customTypeface = typeface

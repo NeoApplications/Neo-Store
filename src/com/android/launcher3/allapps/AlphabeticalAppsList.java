@@ -473,4 +473,8 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
         return result;
     }
+
+    public void reset() {
+        updateAdapterItems();
+    }
 }

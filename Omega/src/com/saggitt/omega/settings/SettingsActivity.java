@@ -28,6 +28,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,10 +40,11 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceFragment.OnPreferenceDisplayDialogCallback;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
@@ -69,8 +73,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class SettingsActivity extends SettingsBaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
-        PreferenceFragment.OnPreferenceDisplayDialogCallback, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+public class SettingsActivity extends SettingsBaseActivity
+        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
+        OnBackStackChangedListener, View.OnClickListener {
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
 
@@ -80,6 +85,7 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
     private boolean isSubSettings;
     protected boolean forceSubSettings = false;
     private boolean hasPreview = false;
+    public static String defaultHome = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +101,6 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         super.onCreate(savedInstanceState);
 
         getDecorLayout().setHideToolbar(showSearch);
-        getDecorLayout().setUseLargeTitle(shouldUseLargeTitle());
         setContentView(showSearch ? R.layout.activity_settings_home : R.layout.activity_settings);
 
         if (savedInstanceState == null) {
@@ -119,6 +124,8 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         if (hasPreview) {
             overrideOpenAnim();
         }
+
+        defaultHome = resolveDefaultHome();
     }
 
     private void updateUpButton() {
@@ -132,25 +139,21 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         getSupportActionBar().setDisplayHomeAsUpEnabled(enabled);
     }
 
-    protected boolean shouldUseLargeTitle() {
-        return !isSubSettings;
-    }
-
     @Override
     public void onBackStackChanged() {
         updateUpButton();
     }
 
     protected boolean shouldShowSearch() {
-        return BuildConfig.FEATURE_SETTINGS_SEARCH && !isSubSettings;
+        return Utilities.getOmegaPrefs(getApplicationContext()).getSettingsSearch() && !isSubSettings;
     }
 
     @NotNull
     @Override
     protected ThemeOverride.ThemeSet getThemeSet() {
-        /*if (hasPreview) {
-            return new ThemeOverride.SettingsTransparent();
-        } else {*/
+        //if (hasPreview) {
+        //    return new ThemeOverride.SettingsTransparent();
+        //} else {
         return super.getThemeSet();
         //}
     }
@@ -386,7 +389,6 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             mShowDevOptions = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             setHasOptionsMenu(true);
@@ -401,10 +403,44 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
         @Override
         public void onResume() {
             super.onResume();
+            getActivity().setTitle(R.string.settings_button_text);
             boolean dev = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
             if (dev != mShowDevOptions) {
                 getActivity().recreate();
             }
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.menu_settings, menu);
+            if (!BuildConfig.APPLICATION_ID.equals(defaultHome)) {
+                inflater.inflate(R.menu.menu_change_default_home, menu);
+            }
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_change_default_home:
+                    FakeLauncherKt.changeDefaultHome(getContext());
+                    break;
+                case R.id.action_restart_launcher:
+                    Utilities.killLauncher();
+                    break;
+                case R.id.action_dev_options:
+                    Intent intent = new Intent(getContext(), SettingsActivity.class);
+                    intent.putExtra(SettingsActivity.SubSettingsFragment.TITLE,
+                            getString(R.string.developer_options_title));
+                    intent.putExtra(SettingsActivity.SubSettingsFragment.CONTENT_RES_ID,
+                            R.xml.omega_preferences_developer);
+                    intent.putExtra(SettingsBaseActivity.EXTRA_FROM_SETTINGS, true);
+                    startActivity(intent);
+                    break;
+                default:
+                    return false;
+            }
+
+            return true;
         }
 
         @Override
@@ -414,7 +450,7 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
 
         @Override
         protected int getRecyclerViewLayoutRes() {
-            return BuildConfig.FEATURE_SETTINGS_SEARCH ? R.layout.preference_home_recyclerview
+            return Utilities.getOmegaPrefs(getContext()).getSettingsSearch() ? R.layout.preference_home_recyclerview
                     : R.layout.preference_dialog_recyclerview;
         }
     }
@@ -498,6 +534,19 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
             setActivityTitle();
         }
 
+        protected void setActivityTitle() {
+            getActivity().setTitle(getArguments().getString(TITLE));
+        }
+
+        @Override
+        public void onDestroy() {
+            if (mRotationLockObserver != null) {
+                mRotationLockObserver.unregister();
+                mRotationLockObserver = null;
+            }
+            super.onDestroy();
+        }
+
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
             final DialogFragment f;
@@ -521,12 +570,7 @@ public class SettingsActivity extends SettingsBaseActivity implements Preference
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-
             return false;
-        }
-
-        protected void setActivityTitle() {
-            getActivity().setTitle(getArguments().getString(TITLE));
         }
 
         public static SubSettingsFragment newInstance(SubPreference preference) {
