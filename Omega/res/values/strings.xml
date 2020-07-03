@@ -22,8 +22,10 @@
     <!-- PREFERENCES DESKTOP -->
     <string name="title__general_desktop">Desktop</string>
     <string name="title__general_drawer">Drawer</string>
+    <string name="title__general_advanced">Advanced</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_drawer">Customize your Drawer</string>
+    <string name="summary__general_advanced">Languaje, back up, setting search</string>
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
 
     <!-- PREFERENCES DOCK -->
@@ -42,6 +44,10 @@
         <xliff:g name="first_item">%1$s</xliff:g> >
         <xliff:g name="second_item">%2$s</xliff:g>
     </string>
+
+    <!-- ADVANCED -->
+    <string name="summary__advanced_setting_search">Display setting search in the action bar</string>
+    <string name="title__advanced_setting_search">Show settings search</string>
 
     <!-- DEVELOPER -->
     <string name="developer_options_enabled">Developer options enabled</string>
