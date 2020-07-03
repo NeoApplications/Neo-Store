@@ -38,18 +38,19 @@ android {
         versionName name
         versionCode code
 
+        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-
-
-        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
     }
     buildTypes {
         debug {
             minifyEnabled false
         }
     }
-
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -62,7 +63,7 @@ android {
     productFlavors {
         aosp {
             dimension "app"
-            applicationId 'com.android.launcher3'
+            applicationId 'com.saggitt.omega'
             testApplicationId 'com.android.launcher3.tests'
         }
 
@@ -88,15 +89,16 @@ android {
         }
 
         omega{
+            applicationId 'com.saggitt.omega'
             dimension "custom"
         }
     }
 
     // Disable release builds for now
     android.variantFilter { variant ->
-        if (variant.buildType.name.endsWith('release')) {
+        /*if (variant.buildType.name.endsWith('release')) {
             variant.setIgnore(true)
-        }
+        }*/
 
         // Icon recents is Go only
         if (name.contains("WithQuickstepIconRecents") && !name.contains("l3go")) {
@@ -173,6 +175,13 @@ android {
         }
     }
 }
+
+afterEvaluate {
+    android.applicationVariants.all { variant ->
+        variant.resValue 'string', 'application_id', variant.applicationId
+    }
+}
+
 apply from: 'Omega/smali.gradle'
 repositories {
     jcenter()
@@ -240,4 +249,11 @@ protobuf {
             }
         }
     }
+}
+
+final String[] ROOT_TO_RAW_COPY_FILES = ["README.md", "CHANGELOG.md", "CONTRIBUTORS.md", "LICENSE.txt", "LICENSE.md", "LICENSE"]
+task copyRepoFiles(type: Copy) {
+    from rootProject.files(ROOT_TO_RAW_COPY_FILES)
+    into "res/raw"
+    rename { String fileName -> fileName.replace(fileName, fileName.toLowerCase()) }
 }
