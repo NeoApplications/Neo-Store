@@ -48,6 +48,7 @@ import androidx.preference.PreferenceFragment.OnPreferenceDisplayDialogCallback;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
+import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.BuildConfig;
@@ -72,6 +73,8 @@ import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+
+import static androidx.recyclerview.widget.RecyclerView.Adapter;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
@@ -137,6 +140,15 @@ public class SettingsActivity extends SettingsBaseActivity
             return;
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(enabled);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -297,6 +309,15 @@ public class SettingsActivity extends SettingsBaseActivity
             }
         }
 
+        public void highlightPreferenceIfNeeded() {
+            if (!isAdded()) {
+                return;
+            }
+            if (mAdapter != null) {
+                mAdapter.requestHighlight(Objects.requireNonNull(getView()), getListView());
+            }
+        }
+
         @SuppressLint("RestrictedApi")
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent,
                                                  Bundle savedInstanceState) {
@@ -325,17 +346,23 @@ public class SettingsActivity extends SettingsBaseActivity
             super.setDividerHeight(0);
         }
 
-        public void highlightPreferenceIfNeeded() {
-            if (!isAdded()) {
-                return;
-            }
-            if (mAdapter != null) {
-                mAdapter.requestHighlight(Objects.requireNonNull(getView()), getListView());
-            }
+        @Override
+        protected Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
+            final Bundle arguments = getActivity().getIntent().getExtras();
+            mAdapter = new HighlightablePreferenceGroupAdapter(preferenceScreen,
+                    arguments == null
+                            ? null : arguments.getString(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY),
+                    mPreferenceHighlighted);
+            return mAdapter;
         }
 
-        protected void onDataSetChanged() {
-            highlightPreferenceIfNeeded();
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
+
+            if (mAdapter != null) {
+                outState.putBoolean(SAVE_HIGHLIGHTED_KEY, mAdapter.isHighlightRequested());
+            }
         }
 
         public int getInitialExpandedChildCount() {
@@ -411,7 +438,7 @@ public class SettingsActivity extends SettingsBaseActivity
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
             inflater.inflate(R.menu.menu_settings, menu);
             if (!BuildConfig.APPLICATION_ID.equals(defaultHome)) {
                 inflater.inflate(R.menu.menu_change_default_home, menu);
@@ -463,13 +490,11 @@ public class SettingsActivity extends SettingsBaseActivity
 
         private SystemDisplayRotationLockObserver mRotationLockObserver;
 
-        private Context mContext;
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            mContext = getActivity();
+            Context mContext = getActivity();
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             int preference = getContent();
             ContentResolver resolver = mContext.getContentResolver();
