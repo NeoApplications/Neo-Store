@@ -18,14 +18,18 @@
 package com.saggitt.omega.theme
 
 import android.content.Context
+import android.content.res.Configuration
+import android.os.Handler
 import com.android.launcher3.uioverrides.WallpaperColorInfo
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.omegaApp
+import com.saggitt.omega.twilight.TwilightListener
 import com.saggitt.omega.twilight.TwilightManager
+import com.saggitt.omega.twilight.TwilightState
 import com.saggitt.omega.util.*
 
-class ThemeManager(val context: Context): WallpaperColorInfo.OnChangeListener {
+class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
     private val app = context.omegaApp
 
     private val wallpaperColorInfo = WallpaperColorInfo.getInstance(context)!!
@@ -36,14 +40,19 @@ class ThemeManager(val context: Context): WallpaperColorInfo.OnChangeListener {
     val isDark get() = themeFlags and THEME_DARK != 0
     val supportsDarkText get() = themeFlags and THEME_DARK_TEXT != 0
     private val twilightManager by lazy { TwilightManager.getInstance(context) }
-
+    private val handler = Handler()
     private var listenToTwilight = false
-
-    init {
-        updateTheme()
-        wallpaperColorInfo.addOnChangeListener(this)
-    }
-
+        set(value) {
+            if (field != value) {
+                field = value
+                if (value) {
+                    twilightManager.registerListener(this, handler)
+                    onTwilightStateChanged(twilightManager.lastTwilightState)
+                } else {
+                    twilightManager.unregisterListener(this)
+                }
+            }
+        }
     private var isDuringNight = false
         set(value) {
             field = value
@@ -52,6 +61,11 @@ class ThemeManager(val context: Context): WallpaperColorInfo.OnChangeListener {
                 updateTheme()
             }
         }
+
+    init {
+        updateTheme()
+        wallpaperColorInfo.addOnChangeListener(this)
+    }
 
     fun addOverride(themeOverride: ThemeOverride) {
         synchronized(listeners) {
@@ -134,6 +148,10 @@ class ThemeManager(val context: Context): WallpaperColorInfo.OnChangeListener {
         return theme.removeFlag(THEME_DARK_MASK)
     }
 
+    override fun onTwilightStateChanged(state: TwilightState?) {
+        isDuringNight = state?.isNight == true
+    }
+
     private fun reloadActivities() {
         HashSet(app.activityHandler.activities).forEach {
             if (it is ThemeableActivity) {
@@ -142,6 +160,10 @@ class ThemeManager(val context: Context): WallpaperColorInfo.OnChangeListener {
                 it.recreate()
             }
         }
+    }
+
+    fun updateNightMode(newConfig: Configuration) {
+        usingNightMode = newConfig.usingNightMode
     }
 
     interface ThemeableActivity {

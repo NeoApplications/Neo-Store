@@ -26,6 +26,9 @@
         <attr name="searchTitle" format="string" />
         <attr name="controllerClass" format="string" />
     </declare-styleable>
+    <declare-styleable name="PreferenceDialogPreference">
+        <attr name="content" />
+    </declare-styleable>
 
     <declare-styleable name="IndexablePreference">
         <attr name="android:key" />

@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/search_bar_height"
                 android:background="?android:attr/selectableItemBackground"
-                android:theme="@style/SettingsTheme.Search.Toolbar"
+                android:theme="@style/Toolbar"
                 app:contentInsetEnd="64dp"
                 app:contentInsetStartWithNavigation="64dp"
                 app:navigationIcon="@drawable/ic_settings_search">

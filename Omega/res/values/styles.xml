@@ -17,6 +17,12 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="background">@color/colorPrimary</item>
+    </style>
+
     <style name="TextAppearance.TileTitle" parent="@android:style/TextAppearance.Material.Subhead">
         <item name="customFontType">settingsTileTitle</item>
     </style>

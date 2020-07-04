@@ -25,7 +25,7 @@ import android.view.View
 import com.android.launcher3.R
 import com.saggitt.omega.settings.SettingsActivity
 
-open class SubPreference(context: Context, attrs: AttributeSet) : ThemedIconPreference(context, attrs),
+open class SubPreference(context: Context, attrs: AttributeSet) : StyledIconPreference(context, attrs),
         View.OnLongClickListener, ControlledPreference by ControlledPreference.Delegate(context, attrs) {
 
     private var mContent: Int = 0

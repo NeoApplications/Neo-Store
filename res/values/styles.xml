@@ -17,7 +17,7 @@
 */
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Launcher theme -->
     <style name="BaseLauncherTheme" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -184,7 +184,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:lines">1</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
-        <item name="android:defaultFocusHighlightEnabled">false</item>
+        <item name="android:defaultFocusHighlightEnabled" tools:ignore="NewApi">false</item>
 
         <!-- No shadows in the base theme -->
         <item name="android:shadowRadius">0</item>

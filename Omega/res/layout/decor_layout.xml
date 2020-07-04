@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:minHeight="?actionBarSize"
-            android:theme="?actionBarTheme"
+            android:theme="@style/Toolbar"
             app:titleTextColor="?colorAccent" />
 
         <View

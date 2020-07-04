@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.saggitt.omega.util.isVisible
 
 class CenteredToolbar @JvmOverloads constructor(
@@ -36,7 +37,7 @@ class CenteredToolbar @JvmOverloads constructor(
     private fun inflateTitle() {
         LayoutInflater.from(context).inflate(R.layout.toolbar_title, this)
         mTitleTextView = findViewById(R.id.toolbar_title)
-        mTitleTextView!!.setTextColor(resources.getColor(R.color.white))
+        mTitleTextView!!.setTextColor(Utilities.getOmegaPrefs(context).accentColor)
         mSubtitleTextView = findViewById(R.id.toolbar_subtitle)
     }
 

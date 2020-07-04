@@ -35,7 +35,7 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     val reloadApps = { reloadApps() }
     val updateBlur = { updateBlur() }
     val recreate = { recreate() }
-    val omegaConfig = Config.getInstance(context)
+    val omegaConfig = Config(context)
 
     private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
     private val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
@@ -88,6 +88,10 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
 
     fun reloadApps() {
         onChangeCallback?.reloadApps()
+    }
+
+    fun reloadDrawer() {
+        onChangeCallback?.reloadDrawer()
     }
 
     fun restart() {

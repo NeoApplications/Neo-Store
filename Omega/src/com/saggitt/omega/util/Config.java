@@ -22,8 +22,6 @@ import android.util.TypedValue;
 
 import com.android.launcher3.R;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Config {
     private static final String TAG = "Config";
 
@@ -34,23 +32,22 @@ public class Config {
     public static final int SORT_MOST_USED = 3;
     public static final int SORT_BY_COLOR = 4;
 
-    private static final Object sInstanceLock = new Object();
-    private static Config sInstance;
+    //private static final Object sInstanceLock = new Object();
+    //private static Config sInstance;
     public Context mContext;
 
     public Config(Context context) {
         mContext = context;
     }
 
-    @NotNull
-    public static Config getInstance(@NotNull Context context) {
+    /*public static Config getInstance(Context context) {
         synchronized (sInstanceLock) {
             if (sInstance == null) {
                 sInstance = new Config(context.getApplicationContext());
             }
             return sInstance;
         }
-    }
+    }*/
 
     public boolean defaultEnableBlur() {
         return mContext.getResources().getBoolean(R.bool.config_default_enable_blur);

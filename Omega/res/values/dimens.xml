@@ -26,7 +26,7 @@
     <dimen name="dashboard_tile_image_margin_end">20dp</dimen>
     <!-- The default blur strength -->
     <item name="config_default_blur_strength" format="float" type="dimen">75</item>
-    <dimen name="large_title_height">84dp</dimen>
+    <dimen name="large_title_height">16dp</dimen>
 
     <dimen name="large_title_horizontal_padding">70dp</dimen>
     <dimen name="large_title_vertical_padding">24dp</dimen>

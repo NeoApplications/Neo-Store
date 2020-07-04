@@ -19,18 +19,51 @@ package com.saggitt.omega
 
 import android.app.Activity
 import android.app.Application
+import android.content.ComponentName
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import androidx.annotation.Keep
+import com.android.launcher3.Utilities
+import com.android.quickstep.RecentsActivity
 import com.saggitt.omega.blur.BlurWallpaperProvider
+import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
     val activityHandler = ActivityHandler()
+    val recentsEnabled by lazy { checkRecentsComponent() }
 
     fun onLauncherAppStateCreated() {
         registerActivityLifecycleCallbacks(activityHandler)
 
         BlurWallpaperProvider.getInstance(this)
         //Flowerpot.Manager.getInstance(this)
+    }
+
+    /*fun restart(recreateLauncher: Boolean = true) {
+        if (recreateLauncher) {
+            activityHandler.finishAll(recreateLauncher)
+        } else {
+            Utilities.restartLauncher(this)
+        }
+    }*/
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        ThemeManager.getInstance(this).updateNightMode(newConfig)
+    }
+
+    @Keep
+    fun checkRecentsComponent(): Boolean {
+        if (!Utilities.ATLEAST_P) return false
+        //if (!Utilities.HIDDEN_APIS_ALLOWED) return false
+
+        val resId = resources.getIdentifier("config_recentsComponentName", "string", "android")
+        if (resId == 0) return false
+        val recentsComponent = ComponentName.unflattenFromString(resources.getString(resId))
+                ?: return false
+        return recentsComponent.packageName == packageName
+                && recentsComponent.className == RecentsActivity::class.java.name
     }
 
     class ActivityHandler : ActivityLifecycleCallbacks {

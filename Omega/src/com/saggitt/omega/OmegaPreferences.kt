@@ -20,8 +20,8 @@ package com.saggitt.omega
 import android.content.Context
 import android.os.Looper
 import com.android.launcher3.R
+import com.android.launcher3.util.Executors
 import com.saggitt.omega.theme.ThemeManager
-import com.saggitt.omega.util.MainThreadExecutor
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 
@@ -37,9 +37,10 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, restart)
+    val primaryColor by IntPref("pref_key__primary_color", R.color.colorPrimary, restart)
 
     /* --ADVANCED-- */
-    var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
+    var settingsSearch by BooleanPref("pref_settings_search", true, restart)
 
     /* --BLUR--*/
     var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
@@ -60,7 +61,7 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
                     INSTANCE = OmegaPreferences(context.applicationContext)
                 } else {
                     try {
-                        return MainThreadExecutor().submit(Callable { getInstance(context) }).get()
+                        return Executors.MAIN_EXECUTOR.submit(Callable { getInstance(context) }).get()
                     } catch (e: InterruptedException) {
                         throw RuntimeException(e)
                     } catch (e: ExecutionException) {

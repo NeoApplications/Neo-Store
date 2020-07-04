@@ -32,11 +32,11 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.notification.NotificationListener;
+import com.android.launcher3.util.Executors;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
 import com.saggitt.omega.OmegaAppKt;
-import com.saggitt.omega.util.MainThreadExecutor;
 
 import java.util.concurrent.ExecutionException;
 
@@ -67,7 +67,7 @@ public class LauncherAppState {
                 OmegaAppKt.getOmegaApp(context).onLauncherAppStateCreated();
             } else {
                 try {
-                    return new MainThreadExecutor().submit(() -> LauncherAppState.getInstance(context)).get();
+                    return new Executors().MAIN_EXECUTOR.submit(() -> LauncherAppState.getInstance(context)).get();
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }

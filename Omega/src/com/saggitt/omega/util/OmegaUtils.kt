@@ -29,10 +29,12 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceGroup
 import com.android.launcher3.LauncherAppState
-import com.android.launcher3.LauncherModel
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.BgDataModel
+import com.android.launcher3.util.Executors
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
@@ -52,6 +54,13 @@ fun Context.getColorAttr(attr: Int): Int {
     @ColorInt val colorAccent = ta.getColor(0, 0)
     ta.recycle()
     return colorAccent
+}
+
+fun Context.getThemeAttr(attr: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val theme = ta.getResourceId(0, 0)
+    ta.recycle()
+    return theme
 }
 
 fun Context.getBooleanAttr(attr: Int): Boolean {
@@ -74,7 +83,7 @@ fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {
             creator(it)
         } else {
             try {
-                MainThreadExecutor().submit(Callable { creator(it) }).get()
+                Executors.MAIN_EXECUTOR.submit(Callable { creator(it) }).get()
             } catch (e: InterruptedException) {
                 throw RuntimeException(e)
             } catch (e: ExecutionException) {
@@ -90,10 +99,10 @@ fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
 }
 
 val mainHandler by lazy { Handler(Looper.getMainLooper()) }
-val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
+//val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
 
 fun runOnUiWorkerThread(r: () -> Unit) {
-    runOnThread(uiWorkerHandler, r)
+    //runOnThread(uiWorkerHandler, r)
 }
 
 fun runOnMainThread(r: () -> Unit) {
@@ -135,6 +144,11 @@ inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
     for (i in (0 until count).reversed()) {
         action(getChildAt(i), i)
     }
+}
+
+operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)
+inline fun PreferenceGroup.forEachIndexed(action: (i: Int, pref: Preference) -> Unit) {
+    for (i in 0 until preferenceCount) action(i, this[i])
 }
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) : FloatPropertyCompat<Any>(name) {

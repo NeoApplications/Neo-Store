@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +37,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.XmlRes;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -56,11 +58,9 @@ import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.SessionCommitReceiver;
 import com.android.launcher3.Utilities;
-import com.jaredrummler.android.colorpicker.ColorPickerDialog;
-import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
+import com.android.launcher3.settings.PreferenceHighlighter;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.SubPreference;
@@ -81,6 +81,7 @@ public class SettingsActivity extends SettingsBaseActivity
         OnBackStackChangedListener, View.OnClickListener {
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
+    private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
 
     public final static String EXTRA_TITLE = "title";
     public final static String EXTRA_FRAGMENT = "fragment";
@@ -118,7 +119,6 @@ public class SettingsActivity extends SettingsBaseActivity
         getSupportFragmentManager().addOnBackStackChangedListener(this);
 
         updateUpButton();
-
         if (showSearch) {
             Toolbar toolbar = findViewById(R.id.search_action_bar);
             toolbar.setOnClickListener(this);
@@ -237,8 +237,10 @@ public class SettingsActivity extends SettingsBaseActivity
 
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference preference) {
-        Fragment fragment;
+        /*Fragment fragment;
         if (preference instanceof SubPreference) {
+            Log.d("Settings", "Loading Subpreference "+preference.getTitle());
+
             ((SubPreference) preference).start(this);
             return true;
         } else {
@@ -249,6 +251,8 @@ public class SettingsActivity extends SettingsBaseActivity
         } else {
             startFragment(this, preference.getFragment(), preference.getExtras(), preference.getTitle());
         }
+        return true;*/
+        startFragment(this, preference.getFragment(), preference.getExtras(), preference.getTitle());
         return true;
     }
 
@@ -299,7 +303,7 @@ public class SettingsActivity extends SettingsBaseActivity
         private static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
         private HighlightablePreferenceGroupAdapter mAdapter;
         private boolean mPreferenceHighlighted = false;
-
+        public String mHighLightKey;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -373,8 +377,30 @@ public class SettingsActivity extends SettingsBaseActivity
         public void onResume() {
             super.onResume();
             highlightPreferenceIfNeeded();
-
+            if (isAdded() && !mPreferenceHighlighted) {
+                PreferenceHighlighter highlighter = createHighlighter();
+                if (highlighter != null) {
+                    getView().postDelayed(highlighter, DELAY_HIGHLIGHT_DURATION_MILLIS);
+                    mPreferenceHighlighted = true;
+                }
+            }
             dispatchOnResume(getPreferenceScreen());
+        }
+
+        private PreferenceHighlighter createHighlighter() {
+            if (TextUtils.isEmpty(mHighLightKey)) {
+                return null;
+            }
+
+            PreferenceScreen screen = getPreferenceScreen();
+            if (screen == null) {
+                return null;
+            }
+
+            RecyclerView list = getListView();
+            PreferenceGroup.PreferencePositionCallback callback = (PreferenceGroup.PreferencePositionCallback) list.getAdapter();
+            int position = Objects.requireNonNull(callback).getPreferenceAdapterPosition(mHighLightKey);
+            return position >= 0 ? new PreferenceHighlighter(list, position) : null;
         }
 
         public void dispatchOnResume(PreferenceGroup group) {
@@ -430,11 +456,17 @@ public class SettingsActivity extends SettingsBaseActivity
         @Override
         public void onResume() {
             super.onResume();
-            getActivity().setTitle(R.string.settings_button_text);
+            Objects.requireNonNull(getActivity()).setTitle(R.string.settings_button_text);
+            getActivity().setTitleColor(R.color.colorAccent);
             boolean dev = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
             if (dev != mShowDevOptions) {
                 getActivity().recreate();
             }
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(Preference preference) {
+            return super.onPreferenceTreeClick(preference);
         }
 
         @Override
@@ -468,11 +500,6 @@ public class SettingsActivity extends SettingsBaseActivity
             }
 
             return true;
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(Preference preference) {
-            return super.onPreferenceTreeClick(preference);
         }
 
         @Override
@@ -524,26 +551,6 @@ public class SettingsActivity extends SettingsBaseActivity
         }
 
         @Override
-        public boolean onPreferenceTreeClick(Preference preference) {
-            if (preference instanceof ColorPreferenceCompat) {
-                ColorPickerDialog dialog = ((ColorPreferenceCompat) preference).getDialog();
-                dialog.setColorPickerDialogListener(new ColorPickerDialogListener() {
-                    public void onColorSelected(int dialogId, int color) {
-                        ((ColorPreferenceCompat) preference).saveValue(color);
-                    }
-
-                    public void onDialogDismissed(int dialogId) {
-                    }
-                });
-                dialog.show((getActivity()).getSupportFragmentManager(), "color-picker-dialog");
-            } else if (preference.getFragment() != null) {
-                Log.d("Settings", "Opening Fragment: " + preference.getFragment());
-                SettingsActivity.startFragment(getContext(), preference.getFragment(), null, preference.getTitle());
-            }
-            return false;
-        }
-
-        @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(getContent());
             onPreferencesAdded(getPreferenceScreen());
@@ -572,19 +579,13 @@ public class SettingsActivity extends SettingsBaseActivity
             super.onDestroy();
         }
 
-        @Override
-        public void onDisplayPreferenceDialog(Preference preference) {
-            final DialogFragment f;
-            if (preference instanceof ListPreference) {
-                Log.d("success", "onDisplayPreferenceDialog: yay");
-                f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
-            } else {
-                super.onDisplayPreferenceDialog(preference);
-                return;
-            }
-
-            f.setTargetFragment(this, 0);
-            f.show(getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+        public static SubSettingsFragment newInstance(String title, @XmlRes int content) {
+            SubSettingsFragment fragment = new SubSettingsFragment();
+            Bundle b = new Bundle(2);
+            b.putString(TITLE, title);
+            b.putInt(CONTENT_RES_ID, content);
+            fragment.setArguments(b);
+            return fragment;
         }
 
         @Override
@@ -616,8 +617,46 @@ public class SettingsActivity extends SettingsBaseActivity
             return fragment;
         }
 
+        @Override
+        public void onDisplayPreferenceDialog(Preference preference) {
+            final DialogFragment f;
+            if (preference instanceof ListPreference) {
+                Log.d("success", "onDisplayPreferenceDialog: yay");
+                f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
+            } else if (preference instanceof PreferenceDialogPreference) {
+                f = PreferenceScreenDialogFragment.Companion
+                        .newInstance((PreferenceDialogPreference) preference);
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+                return;
+            }
+
+            f.setTargetFragment(this, 0);
+            f.show(getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+        }
+
         protected int getRecyclerViewLayoutRes() {
             return R.layout.preference_insettable_recyclerview;
+        }
+    }
+
+    public static class DialogSettingsFragment extends SubSettingsFragment {
+        public static DialogSettingsFragment newInstance(String title, @XmlRes int content) {
+            DialogSettingsFragment fragment = new DialogSettingsFragment();
+            Bundle b = new Bundle(2);
+            b.putString(TITLE, title);
+            b.putInt(CONTENT_RES_ID, content);
+            fragment.setArguments(b);
+            return fragment;
+        }
+
+        @Override
+        protected void setActivityTitle() {
+        }
+
+        @Override
+        protected int getRecyclerViewLayoutRes() {
+            return R.layout.preference_dialog_recyclerview;
         }
     }
 

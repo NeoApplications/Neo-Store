@@ -20,8 +20,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -89,14 +87,6 @@ public class LauncherModel extends BroadcastReceiver
     LoaderTask mLoaderTask;
     @Thunk
     boolean mIsLoaderTaskRunning;
-
-    @Thunk
-    static final HandlerThread sWorkerThread = new HandlerThread("launcher-loader");
-    private static final Looper mWorkerLooper;
-
-    static {
-        mWorkerLooper = sWorkerThread.getLooper();
-    }
 
     // Indicates whether the current model data is valid or not.
     // We start off with everything not loaded. After that, we assume that
@@ -221,10 +211,6 @@ public class LauncherModel extends BroadcastReceiver
         enqueueModelUpdateTask(new PackageUpdatedTask(op, user, packages));
     }
 
-    public void onPackagesReload(UserHandle user) {
-        enqueueModelUpdateTask(new PackageUpdatedTask(PackageUpdatedTask.OP_RELOAD, user));
-    }
-
     @Override
     public void onPackageAdded(String packageName, UserHandle user) {
         int op = PackageUpdatedTask.OP_ADD;
@@ -261,13 +247,16 @@ public class LauncherModel extends BroadcastReceiver
 
     @Override
     public void onShortcutsChanged(String packageName, List<ShortcutInfo> shortcuts,
-            UserHandle user) {
+                                   UserHandle user) {
         enqueueModelUpdateTask(new ShortcutsChangedTask(packageName, shortcuts, user, true));
     }
 
-    public void updatePinnedShortcuts(String packageName, List<ShortcutInfo> shortcuts,
-            UserHandle user) {
+    public void updatePinnedShortcuts(String packageName, List<ShortcutInfo> shortcuts, UserHandle user) {
         enqueueModelUpdateTask(new ShortcutsChangedTask(packageName, shortcuts, user, false));
+    }
+
+    public void onPackagesReload(UserHandle user) {
+        enqueueModelUpdateTask(new PackageUpdatedTask(PackageUpdatedTask.OP_RELOAD, user));
     }
 
     /**
@@ -353,7 +342,6 @@ public class LauncherModel extends BroadcastReceiver
                 final Callbacks oldCallbacks = mCallbacks.get();
                 // Clear any pending bind-runnables from the synchronized load process.
                 MAIN_EXECUTOR.execute(oldCallbacks::clearPendingBinds);
-
                 // If there is already one running, tell it to stop.
                 stopLoader();
                 LoaderResults loaderResults = new LoaderResults(mApp, sBgDataModel,
@@ -367,6 +355,7 @@ public class LauncherModel extends BroadcastReceiver
                     loaderResults.bindAllApps();
                     loaderResults.bindDeepShortcuts();
                     loaderResults.bindWidgets();
+                    Log.d(TAG, "Reloading apps...");
                     return true;
                 } else {
                     startLoaderForResults(loaderResults);
@@ -566,12 +555,5 @@ public class LauncherModel extends BroadcastReceiver
 
     public Callbacks getCallback() {
         return mCallbacks != null ? mCallbacks.get() : null;
-    }
-
-    /**
-     * @return the looper for the ui worker thread which can be used to start background tasksfor ui.
-     */
-    public static Looper getUiWorkerLooper() {
-        return sWorkerThread.getLooper();
     }
 }

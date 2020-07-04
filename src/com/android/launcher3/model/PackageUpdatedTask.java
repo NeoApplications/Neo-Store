@@ -128,20 +128,20 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
             case OP_UPDATE:
                 try (SafeCloseable t =
                              appsList.trackRemoves(a -> removedComponents.add(a.componentName))) {
-                    for (int i = 0; i < N; i++) {
-                        if (DEBUG) Log.d(TAG, "mAllAppsList.updatePackage " + packages[i]);
-                        iconCache.updateIconsForPkg(packages[i], mUser);
-                        appsList.updatePackage(context, packages[i], mUser);
-                        app.getWidgetCache().removePackage(packages[i], mUser);
+                    for (String aPackage : packages) {
+                        if (DEBUG) Log.d(TAG, "mAllAppsList.updatePackage " + aPackage);
+                        iconCache.updateIconsForPkg(aPackage, mUser);
+                        appsList.updatePackage(context, aPackage, mUser);
+                        app.getWidgetCache().removePackage(aPackage, mUser);
                     }
                 }
                 // Since package was just updated, the target must be available now.
                 flagOp = FlagOp.removeFlag(WorkspaceItemInfo.FLAG_DISABLED_NOT_AVAILABLE);
                 break;
             case OP_REMOVE: {
-                for (int i = 0; i < N; i++) {
-                    FileLog.d(TAG, "Removing app icon" + packages[i]);
-                    iconCache.removeIconsForPkg(packages[i], mUser);
+                for (String aPackage : packages) {
+                    FileLog.d(TAG, "Removing app icon" + aPackage);
+                    iconCache.removeIconsForPkg(aPackage, mUser);
                 }
                 // Fall through
             }
