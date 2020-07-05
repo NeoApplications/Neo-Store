@@ -18,7 +18,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreference
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_add_icon_to_home"
         android:persistent="true"
@@ -26,7 +26,7 @@
         android:title="@string/auto_add_shortcuts_label"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreference
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="@bool/allow_rotation"
         android:key="pref_allowRotation"
         android:persistent="true"
