@@ -547,6 +547,9 @@ public class SettingsActivity extends SettingsBaseActivity
                         rotationPref.setDefaultValue(Utilities.getAllowRotationDefaultValue(getActivity()));
                     }
                     break;
+                case R.xml.omega_preferences_developer:
+                    findPreference("kill").setOnPreferenceClickListener(this);
+                    break;
             }
         }
 

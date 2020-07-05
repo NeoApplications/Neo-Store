@@ -55,8 +55,10 @@
     <string name="failed">Something went wrong.</string>
     <string name="developer_options_title">Developer Options</string>
     <string name="title__dev_show_Dev">Show in Settings</string>
-
+    <string name="title__dev_show_debug_info">Show debug info</string>
     <string name="title__restart_launcher">Restart</string>
+    <string name="summary__dev_restart">Can be helpful if some settings are not properly applied</string>
+
     <string name="change_default_home">Set as Home App</string>
 
 </resources>
