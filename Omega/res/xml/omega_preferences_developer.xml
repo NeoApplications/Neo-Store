@@ -14,6 +14,12 @@
   ~  limitations under the License.
   ~
   -->
-<PreferenceScreen>
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_showDevOptions"
+        android:persistent="true"
+        android:title="@string/title__dev_show_Dev"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

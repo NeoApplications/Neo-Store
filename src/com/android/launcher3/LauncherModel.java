@@ -256,7 +256,8 @@ public class LauncherModel extends BroadcastReceiver
     }
 
     public void onPackagesReload(UserHandle user) {
-        enqueueModelUpdateTask(new PackageUpdatedTask(PackageUpdatedTask.OP_RELOAD, user));
+        int op = PackageUpdatedTask.OP_RELOAD;
+        enqueueModelUpdateTask(new PackageUpdatedTask(op, user));
     }
 
     /**

@@ -106,6 +106,26 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         onChangeCallback?.recreate()
     }
 
+    fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
+        keys.forEach { addOnPreferenceChangeListener(it, listener) }
+    }
+
+    fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
+        if (onChangeListeners[key] == null) {
+            onChangeListeners[key] = HashSet()
+        }
+        onChangeListeners[key]?.add(listener)
+        listener.onValueChanged(key, this, true)
+    }
+
+    fun removeOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
+        keys.forEach { removeOnPreferenceChangeListener(it, listener) }
+    }
+
+    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
+        onChangeListeners[key]?.remove(listener)
+    }
+
     // ----------------
     // Helper functions and class
     // ----------------

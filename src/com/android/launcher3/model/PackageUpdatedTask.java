@@ -64,7 +64,7 @@ import static com.android.launcher3.WorkspaceItemInfo.FLAG_RESTORED_ICON;
  */
 public class PackageUpdatedTask extends BaseModelUpdateTask {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final String TAG = "PackageUpdatedTask";
 
     public static final int OP_NONE = 0;

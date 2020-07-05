@@ -18,23 +18,34 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Settings">
+
     <com.saggitt.omega.preferences.SubPreference
         android:icon="@drawable/ic_desktop"
         android:summary="@string/summary__general_desktop"
         android:title="@string/title__general_desktop"
         android:layout="@layout/home_preference"
         app:content="@xml/omega_preferences_desktop" />
+
     <com.saggitt.omega.preferences.SubPreference
         android:icon="@drawable/ic_apps"
         android:summary="@string/summary__general_drawer"
         android:title="@string/title__general_drawer"
         android:layout="@layout/home_preference"
         app:content="@xml/omega_preferences_drawer" />
+
     <com.saggitt.omega.preferences.SubPreference
         android:icon="@drawable/ic_more_horiz"
         android:layout="@layout/home_preference"
         android:summary="@string/summary__general_advanced"
         android:title="@string/title__general_advanced"
         app:content="@xml/omega_preferences_advanced" />
+
+    <com.saggitt.omega.preferences.SubPreference
+        android:icon="@drawable/ic_code"
+        android:key="developerOptions"
+        android:layout="@layout/home_preference"
+        android:title="@string/developer_options_title"
+        app:content="@xml/omega_preferences_developer"
+        app:controllerClass=".DeveloperOptionsController" />
 
 </PreferenceScreen>

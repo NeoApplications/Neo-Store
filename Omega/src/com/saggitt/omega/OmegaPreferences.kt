@@ -47,7 +47,7 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
     /* --DEV-- */
-    var developerOptionsEnabled by BooleanPref("pref_developerOptionsEnabled", false, doNothing)
+    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, doNothing)
     val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
     val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
