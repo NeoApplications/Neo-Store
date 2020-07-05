@@ -34,6 +34,13 @@
         app:content="@xml/omega_preferences_drawer" />
 
     <com.saggitt.omega.preferences.SubPreference
+        android:icon="@drawable/ic_gesture"
+        android:layout="@layout/home_preference"
+        android:summary="@string/summary__general_notifications"
+        android:title="@string/title__general_notifications"
+        app:content="@xml/omega_preferences_notification" />
+
+    <com.saggitt.omega.preferences.SubPreference
         android:icon="@drawable/ic_more_horiz"
         android:layout="@layout/home_preference"
         android:summary="@string/summary__general_advanced"

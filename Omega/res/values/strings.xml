@@ -23,8 +23,10 @@
     <string name="title__general_desktop">Desktop</string>
     <string name="title__general_drawer">Drawer</string>
     <string name="title__general_advanced">Advanced</string>
+    <string name="title__general_notifications">Gestures and Notifications</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_drawer">Customize your Drawer</string>
+    <string name="summary__general_notifications">Notifications and Gestures</string>
     <string name="summary__general_advanced">Languaje, back up, setting search</string>
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
 
@@ -37,6 +39,10 @@
     <string name="title__sort_last_installed">Last Installed</string>
     <string name="title__sort_most_used">Most Used</string>
     <string name="title__sort_by_color">By Color</string>
+
+    <!-- PREFERENCES NOTIFICATION -->
+    <string name="icon_badging_desc_on">On</string>
+    <string name="icon_badging_desc_off">Off</string>
 
     <!-- SEARCH -->
     <string name="search_no_results">No Results</string>
