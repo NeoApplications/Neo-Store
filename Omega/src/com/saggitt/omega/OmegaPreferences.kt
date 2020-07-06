@@ -72,5 +72,12 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
             }
             return INSTANCE!!
         }
+
+        fun destroyInstance() {
+            INSTANCE?.apply {
+                onChangeListeners.clear()
+                onChangeCallback = null;
+            }
+        }
     }
 }

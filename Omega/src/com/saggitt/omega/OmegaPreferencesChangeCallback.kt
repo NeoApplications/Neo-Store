@@ -26,8 +26,7 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     }
 
     fun reloadApps() {
-        //UserManagerCompat.getInstance(launcher.mContext).userProfiles.forEach { launcher.model.onPackagesReload(it) }
-        UserManagerCompat.getInstance(launcher.mContext).userProfiles.forEach { launcher.model.onPackageAdded("", it) }
+        UserManagerCompat.getInstance(launcher.mContext).userProfiles.forEach { launcher.model.onPackagesReload(it) }
     }
 
     fun restart() {
@@ -40,5 +39,9 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
 
     fun reloadDrawer() {
         launcher.appsView.appsLists.forEach { it.reset() }
+    }
+
+    fun forceReloadApps() {
+        UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.forceReload() }
     }
 }

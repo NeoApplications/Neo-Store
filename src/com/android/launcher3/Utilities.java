@@ -18,6 +18,7 @@ package com.android.launcher3;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -63,6 +64,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.android.launcher3.compat.LauncherAppsCompat;
@@ -77,6 +79,7 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.Transposable;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 
 import java.lang.reflect.InvocationTargetException;
@@ -768,9 +771,12 @@ public final class Utilities {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean isAllowRotationPrefEnabled(Context context) {
-        return getPrefs(context).getBoolean(ALLOW_ROTATION_PREFERENCE_KEY,
-                getAllowRotationDefaultValue(context));
+    public static boolean hasStoragePermission(Context context) {
+        return hasPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    public static void requestStoragePermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, OmegaLauncher.REQUEST_PERMISSION_STORAGE_ACCESS);
     }
 
     public static boolean getAllowRotationDefaultValue(Context context) {

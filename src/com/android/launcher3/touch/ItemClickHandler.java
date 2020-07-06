@@ -95,7 +95,7 @@ public class ItemClickHandler {
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher,
                     sourceContainer == null ? CONTAINER_ALL_APPS : sourceContainer);
             if (Utilities.getOmegaPrefs(Launcher.mContext).getSortMode() == Config.SORT_MOST_USED) {
-                Utilities.getOmegaPrefs(Launcher.mContext).reloadApps();
+                Utilities.getOmegaPrefs(Launcher.mContext).updateSortApps();
                 Log.d(TAG, "Sort Mode Most Used");
             }
         } else if (tag instanceof LauncherAppWidgetInfo) {

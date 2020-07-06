@@ -38,8 +38,8 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     val omegaConfig = Config(context)
 
     private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
-    private val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
-    private var onChangeCallback: OmegaPreferencesChangeCallback? = null
+    val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
+    var onChangeCallback: OmegaPreferencesChangeCallback? = null
     val sharedPrefs = migratePrefs()
 
     private fun migratePrefs(): SharedPreferences {
@@ -86,8 +86,18 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
         }
     }
 
+    fun registerCallback(callback: OmegaPreferencesChangeCallback) {
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
+        onChangeCallback = callback
+    }
+
+    fun unregisterCallback() {
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
+        onChangeCallback = null
+    }
+
     fun reloadApps() {
-        onChangeCallback?.reloadApps()
+        onChangeCallback!!.reloadApps()
     }
 
     fun reloadDrawer() {
@@ -105,6 +115,15 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     fun recreate() {
         onChangeCallback?.recreate()
     }
+
+    fun updateSortApps() {
+        onChangeCallback?.forceReloadApps()
+    }
+
+    /*inline fun withChangeCallback(
+            crossinline callback: (OmegaPreferencesChangeCallback) -> Unit): () -> Unit {
+        return { getOnChangeCallback()?.let { callback(it) } }
+    }*/
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
         keys.forEach { addOnPreferenceChangeListener(it, listener) }

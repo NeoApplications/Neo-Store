@@ -18,6 +18,7 @@
 package com.saggitt.omega;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.android.launcher3.Launcher;
@@ -26,11 +27,14 @@ import com.android.launcher3.Utilities;
 
 public class OmegaLauncher extends Launcher {
 
+    public static final int REQUEST_PERMISSION_STORAGE_ACCESS = 666;
     public static final int REQUEST_PERMISSION_LOCATION_ACCESS = 667;
 
     public Context mContext;
     private boolean paused = false;
     private boolean sRestart = false;
+    private OmegaPreferences mOmegaPrefs;
+    private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -42,8 +46,23 @@ public class OmegaLauncher extends Launcher {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
+            Utilities.requestStoragePermission(this);
+        }
         super.onCreate(savedInstanceState);
         mContext = this;
+        mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
+        mOmegaPrefs.registerCallback(prefCallback);
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Utilities.getOmegaPrefs(this).unregisterCallback();
+
+        if (sRestart) {
+            sRestart = false;
+            OmegaPreferences.Companion.destroyInstance();
+        }
     }
 
     public boolean shouldRecreate() {
