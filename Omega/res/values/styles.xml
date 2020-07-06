@@ -137,4 +137,17 @@
         <item name="android:gravity">start</item>
         <item name="android:textSize">@dimen/search_bar_text_size</item>
     </style>
+
+    <style name="TitleAbout">
+        <item name="android:fontFamily">@font/kaushanscript_regular</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textColor">#135784</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:shadowColor">?attr/workspaceShadowColor</item>
+    </style>
+
+    <style name="SubTitleAbout">
+        <item name="android:textSize">15sp</item>
+        <item name="fontWeight">200</item>
+    </style>
 </resources>

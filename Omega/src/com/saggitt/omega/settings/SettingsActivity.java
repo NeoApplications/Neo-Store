@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -70,9 +71,11 @@ import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.PreferenceController;
+import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
+import com.saggitt.omega.util.AboutUtils;
 import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
@@ -571,7 +574,49 @@ public class SettingsActivity extends SettingsBaseActivity
                 case R.xml.omega_preferences_developer:
                     findPreference("kill").setOnPreferenceClickListener(this);
                     break;
+
+                case R.xml.omega_preferences_about:
+                    AboutUtils au = new AboutUtils(getContext());
+                    Preference appInfo = findPreference("pref_key__copy_build_information");
+                    au.getAppInfoSummary(appInfo);
+                    updateProjectTeam(au);
+                    break;
             }
+        }
+
+        private void updateProjectTeam(AboutUtils au) {
+            Preference pref;
+            if ((pref = findPreference("pref_key__project_team")) != null && ((PreferenceGroup) pref).getPreferenceCount() == 0) {
+                String[] data = (au.readTextfileFromRawRes(R.raw.team, "", "").trim() + "\n\n").split("\n");
+
+                for (int i = 0; i + 2 < data.length; i += 4) {
+                    StyledIconPreference person = new StyledIconPreference(au.mContext);
+                    person.setTitle(data[i]);
+                    person.setSummary(data[i + 1]);
+                    person.setIcon(R.drawable.ic_person);
+                    try {
+                        Uri uri = Uri.parse(data[i + 2]);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        person.setIntent(intent);
+                    } catch (Exception ignored) {
+                    }
+                    appendPreference(person, (PreferenceGroup) pref);
+                }
+
+            }
+        }
+
+        private boolean appendPreference(Preference pref, @Nullable PreferenceGroup target) {
+            if (target == null) {
+                if ((target = getPreferenceScreen()) == null) {
+                    return false;
+                }
+            }
+            if (pref.getIcon() != null) {
+                pref.setIcon(pref.getIcon());
+            }
+            return target.addPreference(pref);
         }
 
         @Override
@@ -614,6 +659,33 @@ public class SettingsActivity extends SettingsBaseActivity
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+            return false;
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(Preference preference) {
+            AboutUtils au = new AboutUtils(getContext());
+            if (preference.getKey() != null) {
+                switch (preference.getKey()) {
+                    case "pref_key__donate":
+                        au.openWebBrowser(getString(R.string.app_donate_url));
+                        break;
+
+                    case "pref_key__changelog":
+                        /*SimpleMarkdownParser smp = new SimpleMarkdownParser();
+                        try {
+                            String html = smp.parse(getResources().openRawResource(R.raw.changelog), "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW, SimpleMarkdownParser.FILTER_CHANGELOG).getHtml();
+                            au.showDialogWithHtmlTextView(R.string.changelog, html);
+                        } catch (Exception ignored) {
+
+                        }*/
+                        break;
+                    case "pref_key__copy_build_information":
+                        au.setClipboard(preference.getSummary());
+                        break;
+                }
+            }
 
             return false;
         }

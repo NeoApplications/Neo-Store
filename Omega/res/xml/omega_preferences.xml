@@ -55,4 +55,10 @@
         app:content="@xml/omega_preferences_developer"
         app:controllerClass=".DeveloperOptionsController" />
 
+    <com.saggitt.omega.preferences.SubPreference
+        android:icon="@drawable/ic_info"
+        android:layout="@layout/home_preference"
+        android:summary="@string/summary__general_about"
+        android:title="@string/title__general_about"
+        app:content="@xml/omega_preferences_about" />
 </PreferenceScreen>

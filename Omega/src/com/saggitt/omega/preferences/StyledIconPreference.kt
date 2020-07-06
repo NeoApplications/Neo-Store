@@ -25,10 +25,15 @@ import androidx.preference.PreferenceViewHolder
 import com.android.launcher3.R
 import com.saggitt.omega.util.forEachIndexed
 
-open class StyledIconPreference(context: Context, attrs: AttributeSet) : Preference(context, attrs) {
-
+open class StyledIconPreference : Preference {
     var count = 1
     var index = 0
+
+    @JvmOverloads
+    constructor (context: Context) : super(context)
+
+    @JvmOverloads
+    constructor (context: Context, attrs: AttributeSet) : super(context, attrs)
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
