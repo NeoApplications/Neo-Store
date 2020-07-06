@@ -18,7 +18,6 @@
 package com.saggitt.omega;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.android.launcher3.Launcher;
@@ -46,9 +45,6 @@ public class OmegaLauncher extends Launcher {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
-            Utilities.requestStoragePermission(this);
-        }
         super.onCreate(savedInstanceState);
         mContext = this;
         mOmegaPrefs = Utilities.getOmegaPrefs(mContext);

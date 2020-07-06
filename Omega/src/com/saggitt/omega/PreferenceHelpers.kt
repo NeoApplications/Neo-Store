@@ -20,6 +20,7 @@ package com.saggitt.omega
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.android.launcher3.LauncherFiles
 import com.saggitt.omega.util.Config
 import java.io.File
@@ -42,6 +43,9 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
     var onChangeCallback: OmegaPreferencesChangeCallback? = null
     val sharedPrefs = migratePrefs()
 
+    var restoreSuccess by BooleanPref("pref_restoreSuccess", false)
+    var configVersion by IntPref("config_version", if (restoreSuccess) 0 else CURRENT_VERSION)
+
     private fun migratePrefs(): SharedPreferences {
         val dir = mContext.cacheDir.parent
         val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
@@ -55,6 +59,21 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
                 .apply {
                     migrateConfig(this)
                 }
+    }
+
+    init {
+        migrateConfig()
+    }
+
+    private fun migrateConfig() {
+        if (configVersion != CURRENT_VERSION) {
+            blockingEdit {
+                bulkEdit {
+                    // Migration codes here
+                    configVersion = CURRENT_VERSION
+                }
+            }
+        }
     }
 
     fun migrateConfig(prefs: SharedPreferences) {
@@ -75,7 +94,9 @@ open class PreferenceHelpers(context: Context) : SharedPreferences.OnSharedPrefe
 
     private fun initialConfig(editor: SharedPreferences.Editor, prefs: SharedPreferences) = with(
             editor
-    ) {}
+    ) {
+        Log.d("Preferences", "Loading Initial Preferences")
+    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         onChangeMap[key]?.invoke()

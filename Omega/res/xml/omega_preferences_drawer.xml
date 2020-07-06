@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Settings">
     <ListPreference
-        android:defaultValue="0"
+        android:defaultValue="3"
         android:disableDependentsState="false"
         android:entries="@array/entries__sort_mode"
         android:entryValues="@array/values__zero_to_four"

@@ -29,7 +29,7 @@ class OmegaPreferences(val context: Context) : PreferenceHelpers(context) {
     private val TAG = "OmegaPreferences"
 
     /* --APP DRAWER-- */
-    var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
+    var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)

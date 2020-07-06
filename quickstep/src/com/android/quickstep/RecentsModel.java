@@ -15,12 +15,6 @@
  */
 package com.android.quickstep;
 
-import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
-
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.createAndStartNewLooper;
-import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
-
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ComponentCallbacks2;
@@ -46,6 +40,11 @@ import com.android.systemui.shared.system.TaskStackChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.createAndStartNewLooper;
+import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
 
 /**
  * Singleton class to load and manage recents model.
@@ -76,7 +75,6 @@ public class RecentsModel extends TaskStackChangeListener {
                 new KeyguardManagerCompat(context), ActivityManagerWrapper.getInstance());
         mIconCache = new TaskIconCache(context, looper);
         mThumbnailCache = new TaskThumbnailCache(context, looper);
-        //ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
         if (Utilities.ATLEAST_Q) {
             try {
                 ActivityManagerWrapper.getInstance().registerTaskStackListener(this);

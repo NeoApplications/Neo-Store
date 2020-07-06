@@ -251,10 +251,8 @@ public class SettingsActivity extends SettingsBaseActivity
 
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference preference) {
-        /*Fragment fragment;
+        Fragment fragment;
         if (preference instanceof SubPreference) {
-            Log.d("Settings", "Loading Subpreference "+preference.getTitle());
-
             ((SubPreference) preference).start(this);
             return true;
         } else {
@@ -265,8 +263,6 @@ public class SettingsActivity extends SettingsBaseActivity
         } else {
             startFragment(this, preference.getFragment(), preference.getExtras(), preference.getTitle());
         }
-        return true;*/
-        startFragment(this, preference.getFragment(), preference.getExtras(), preference.getTitle());
         return true;
     }
 
