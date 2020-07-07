@@ -17,6 +17,10 @@ Version 2.0, January 2004<br/>
 ~° Copyright (c) jaredrummler
 ~° ![https://github.com/jaredrummler/ColorPicker](https://github.com/jaredrummler/ColorPicker)<br/>
 
+* **Simple Markdown Parser**
+~° Copyright (c) Gregor Santner
+~° ![https://github.com/gsantner/opoc/](https://github.com/gsantner/opoc/)<br/>
+
 `---------------`
 <small>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
