@@ -1,4 +1,5 @@
 ### v0.2.0 (Build 2)
+* **Add color accent preference**
 
 ### v0.1.0 (Build 1)
 * Based on Launcher3 10 r35.
