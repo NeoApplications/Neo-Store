@@ -73,8 +73,12 @@
     <!-- ABOUT -->
     <string name="title__about_copy_build">Copy build information</string>
     <string name="title__about_donate">Donate</string>
+    <string name="title__about_changelog">Changelog</string>
     <string name="title__about_project_team">Project Team</string>
+    <string name="title__about_open_source">Open Source Libraries</string>
+    <string name="title__about_project_license">Project License</string>
     <string name="summary__about_donate">More information on donating or otherwise supporting this project</string>
+    <string name="category__about_licenses">License</string>
     <string name="app_donate_url" translatable="false">https://paypal.me/saulhenriquez</string>
 
 </resources>

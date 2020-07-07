@@ -31,6 +31,21 @@
         android:title="@string/title__about_project_team" />
 
     <com.saggitt.omega.preferences.StyledIconPreference
+        android:icon="@drawable/ic_list"
+        android:key="pref_key__changelog"
+        android:title="@string/title__about_changelog" />
+
+    <com.saggitt.omega.preferences.StyledIconPreference
+        android:icon="@drawable/ic_copyright"
+        android:key="pref_key__project_license"
+        android:title="@string/title__about_project_license" />
+
+    <com.saggitt.omega.preferences.StyledIconPreference
+        android:icon="@drawable/ic_copyright"
+        android:key="pref_key__open_source"
+        android:title="@string/title__about_open_source" />
+
+    <com.saggitt.omega.preferences.StyledIconPreference
         android:icon="@drawable/ic_code"
         android:key="pref_key__copy_build_information"
         android:title="@string/title__about_copy_build" />

@@ -267,14 +267,6 @@ protobuf {
     }
 }
 
-final String[] ROOT_TO_RAW_COPY_FILES = ["README.md", "CHANGELOG.md", "CONTRIBUTORS.md", "LICENSE.txt", "LICENSE.md", "LICENSE"]
-task copyRepoFiles(type: Copy) {
-    from rootProject.files(ROOT_TO_RAW_COPY_FILES)
-    into "res/raw"
-    rename { String fileName -> fileName.replace(fileName, fileName.toLowerCase()) }
-}
-
-
 @SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
 // Returns the build date in a RFC3339 compatible format. TZ is always converted to UTC
 static String getBuildDate() {

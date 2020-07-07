@@ -30,7 +30,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</small>
 `---------------`
-
+<br/>
 ## GPL v3
 * **Lawnchair Launcher**
 ~° Copyright (c) Till Kottmann
@@ -55,7 +55,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</small>
 `---------------`
-
+<br/>
 ## BSD 2-Clause
 * **Protocol Buffer JavaNano API**
 ~° Copyright (c) Google
@@ -81,8 +81,7 @@ GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
 HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
+<br/>
 ## SIL Open Font License, Version 1.1.
 * **"Kaushan Script" Font**
 opyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com),

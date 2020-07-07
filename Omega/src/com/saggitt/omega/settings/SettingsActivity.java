@@ -80,8 +80,11 @@ import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
 
+import net.gsantner.opoc.format.markdown.SimpleMarkdownParser;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -673,13 +676,32 @@ public class SettingsActivity extends SettingsBaseActivity
                         break;
 
                     case "pref_key__changelog":
-                        /*SimpleMarkdownParser smp = new SimpleMarkdownParser();
+                        SimpleMarkdownParser smp = new SimpleMarkdownParser();
                         try {
                             String html = smp.parse(getResources().openRawResource(R.raw.changelog), "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW, SimpleMarkdownParser.FILTER_CHANGELOG).getHtml();
-                            au.showDialogWithHtmlTextView(R.string.changelog, html);
+                            au.showDialogWithHtmlTextView(R.string.title__about_changelog, html);
                         } catch (Exception ignored) {
 
-                        }*/
+                        }
+                        break;
+
+                    case "pref_key__project_license":
+                        try {
+                            au.showDialogWithHtmlTextView(R.string.category__about_licenses, new SimpleMarkdownParser().parse(
+                                    getResources().openRawResource(R.raw.license),
+                                    "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW).getHtml());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "pref_key__open_source":
+                        try {
+                            au.showDialogWithHtmlTextView(R.string.title__about_open_source, new SimpleMarkdownParser().parse(
+                                    getResources().openRawResource(R.raw.opensource),
+                                    "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW).getHtml());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "pref_key__copy_build_information":
                         au.setClipboard(preference.getSummary());
