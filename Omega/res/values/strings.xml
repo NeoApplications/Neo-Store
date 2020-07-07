@@ -23,10 +23,12 @@
     <string name="title__general_about">About</string>
     <string name="title__general_desktop">Desktop</string>
     <string name="title__general_drawer">Drawer</string>
+    <string name="title__general_theme">Theme</string>
     <string name="title__general_advanced">Advanced</string>
     <string name="title__general_notifications">Gestures and Notifications</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_drawer">Customize your Drawer</string>
+    <string name="summary__general_theme">Change colors, icon pack, icon shape</string>
     <string name="summary__general_notifications">Notifications and Gestures</string>
     <string name="summary__general_advanced">Languaje, back up, setting search</string>
     <string name="summary__general_about">More information about Omega Launcher</string>
@@ -43,6 +45,9 @@
     <string name="title__sort_last_installed">Last Installed</string>
     <string name="title__sort_most_used">Most Used</string>
     <string name="title__sort_by_color">By Color</string>
+
+    <!-- PREFERENCES THEME -->
+    <string name="title__theme_accent_color">Accent Color</string>
 
     <!-- PREFERENCES NOTIFICATION -->
     <string name="icon_badging_desc_on">On</string>
@@ -80,5 +85,9 @@
     <string name="summary__about_donate">More information on donating or otherwise supporting this project</string>
     <string name="category__about_licenses">License</string>
     <string name="app_donate_url" translatable="false">https://paypal.me/saulhenriquez</string>
+
+    <string name="title_storage_permission_required">Storage Access Needed</string>
+    <string name="content_storage_permission_required">To set a wallpaper, grant the Storage permission.</string>
+
 
 </resources>

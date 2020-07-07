@@ -16,8 +16,6 @@
 
 package com.android.launcher3.config;
 
-import android.content.Context;
-
 /**
  * Defines a set of flags used to control various launcher behaviors
  */

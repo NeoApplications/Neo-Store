@@ -29,6 +29,14 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         UserManagerCompat.getInstance(launcher.mContext).userProfiles.forEach { launcher.model.onPackagesReload(it) }
     }
 
+    fun reloadAll() {
+        launcher.model.forceReload()
+    }
+
+    fun reloadDrawer() {
+        launcher.appsView.appsLists.forEach { it.reset() }
+    }
+
     fun restart() {
         launcher.scheduleRestart()
     }
@@ -37,9 +45,6 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }
 
-    fun reloadDrawer() {
-        launcher.appsView.appsLists.forEach { it.reset() }
-    }
 
     fun forceReloadApps() {
         UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.forceReload() }

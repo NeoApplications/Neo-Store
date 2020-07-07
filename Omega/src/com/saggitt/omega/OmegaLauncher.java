@@ -18,22 +18,25 @@
 package com.saggitt.omega;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
+
 public class OmegaLauncher extends Launcher {
-
-    public static final int REQUEST_PERMISSION_STORAGE_ACCESS = 666;
-    public static final int REQUEST_PERMISSION_LOCATION_ACCESS = 667;
-
     public Context mContext;
     private boolean paused = false;
     private boolean sRestart = false;
     private OmegaPreferences mOmegaPrefs;
-    private OmegaPreferencesChangeCallback prefCallback;//= new OmegaPreferencesChangeCallback(this);
+    private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -45,10 +48,14 @@ public class OmegaLauncher extends Launcher {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
+            Utilities.requestStoragePermission(this);
+        }
         super.onCreate(savedInstanceState);
+
         mContext = this;
+
         mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
-        prefCallback = new OmegaPreferencesChangeCallback(this);
         mOmegaPrefs.registerCallback(prefCallback);
     }
 
@@ -62,6 +69,25 @@ public class OmegaLauncher extends Launcher {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION_STORAGE_ACCESS) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle(R.string.title_storage_permission_required)
+                        .setMessage(R.string.content_storage_permission_required)
+                        .setCancelable(false)
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> Utilities.requestStoragePermission(this))
+                        .show();
+            }
+        }
+        if (requestCode == REQUEST_PERMISSION_LOCATION_ACCESS) {
+            //OmegaAppKt.getOmegaApp(this).getSmartspace().updateWeatherData();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     public boolean shouldRecreate() {
         return !sRestart;
     }
@@ -72,5 +98,9 @@ public class OmegaLauncher extends Launcher {
         } else {
             Utilities.restartLauncher(mContext);
         }
+    }
+
+    public void scheduleRestartForLater() {
+        sRestart = true;
     }
 }

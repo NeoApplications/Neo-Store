@@ -22,12 +22,12 @@ import android.content.res.Configuration
 import android.os.Handler
 import com.android.launcher3.uioverrides.WallpaperColorInfo
 import com.saggitt.omega.BlankActivity
-import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.omegaApp
 import com.saggitt.omega.twilight.TwilightListener
 import com.saggitt.omega.twilight.TwilightManager
 import com.saggitt.omega.twilight.TwilightState
 import com.saggitt.omega.util.*
+import com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS
 
 class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
     private val app = context.omegaApp
@@ -137,7 +137,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         }
 
         BlankActivity.requestPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                OmegaLauncher.REQUEST_PERMISSION_LOCATION_ACCESS) { granted ->
+                REQUEST_PERMISSION_LOCATION_ACCESS) { granted ->
             if (granted) {
                 listenToTwilight = true
             } else {

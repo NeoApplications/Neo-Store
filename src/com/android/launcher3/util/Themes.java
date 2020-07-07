@@ -77,8 +77,12 @@ public class Themes {
         return value;
     }
 
+    /*
     public static int getColorAccent(Context context) {
         return getAttrColor(context, android.R.attr.colorAccent);
+    }*/
+    public static int getColorAccent(Context context) {
+        return Utilities.getOmegaPrefs(context).getAccentColor();
     }
 
     public static int getAttrColor(Context context, int attr) {

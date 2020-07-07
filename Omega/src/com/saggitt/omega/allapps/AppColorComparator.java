@@ -40,11 +40,11 @@ public class AppColorComparator extends AppInfoComparator {
         ColorUtils.colorToHSL(b.iconColor, hslB);
 
         Integer h2A = remapHue(hslA[0]);
-        Integer h2B = remapHue(hslB[0]);
+        int h2B = remapHue(hslB[0]);
         Integer s2A = remap(hslA[1]);
-        Integer s2B = remap(hslB[1]);
+        int s2B = remap(hslB[1]);
         Integer l2A = remap(hslA[2]);
-        Integer l2B = remap(hslB[2]);
+        int l2B = remap(hslB[2]);
 
         if (h2A % 2 == 1) {
             s2A = REPETITIONS - s2A;

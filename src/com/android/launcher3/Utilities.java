@@ -79,7 +79,6 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.Transposable;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
-import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 
 import java.lang.reflect.InvocationTargetException;
@@ -95,6 +94,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -776,7 +776,7 @@ public final class Utilities {
     }
 
     public static void requestStoragePermission(Activity activity) {
-        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, OmegaLauncher.REQUEST_PERMISSION_STORAGE_ACCESS);
+        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE_ACCESS);
     }
 
     public static boolean getAllowRotationDefaultValue(Context context) {

@@ -88,5 +88,34 @@
             android:label="@string/derived_app_name"
             android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
             android:theme="@style/SettingsTheme_Light" />
+
+        <activity
+            android:name="com.saggitt.omega.FakeLauncher"
+            android:enabled="false">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <meta-data
+            android:name="com.samsung.android.non_immersive"
+            android:value="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

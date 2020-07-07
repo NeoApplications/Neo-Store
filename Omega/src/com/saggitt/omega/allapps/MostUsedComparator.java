@@ -24,7 +24,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MostUsedComparator implements Comparator<AppInfo> {
-    private String TAG = "MostUsedComparator";
     private List<AppCountInfo> mApps;
 
     public MostUsedComparator(List<AppCountInfo> apps) {

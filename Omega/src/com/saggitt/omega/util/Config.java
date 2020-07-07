@@ -32,6 +32,11 @@ public class Config {
     public static final int SORT_MOST_USED = 3;
     public static final int SORT_BY_COLOR = 4;
 
+    //PERMISION FLAGS
+    public static final int REQUEST_PERMISSION_STORAGE_ACCESS = 666;
+    public static final int REQUEST_PERMISSION_LOCATION_ACCESS = 667;
+    public static final int REQUEST_PERMISSION_CALENDAR_READ_ACCESS = 668;
+
     public Context mContext;
 
     public Config(Context context) {

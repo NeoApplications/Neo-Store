@@ -26,15 +26,18 @@ import com.android.launcher3.R
 import com.android.launcher3.util.Executors
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 import kotlin.reflect.KProperty
 
 class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
-    private val TAG = "OmegaPreferences"
-    val CURRENT_VERSION = 200
-    val VERSION_KEY = "config_version"
     val mContext = context;
 
     val doNothing = { }
@@ -57,8 +60,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, restart)
-    val primaryColor by IntPref("pref_key__primary_color", R.color.colorPrimary, restart)
+    val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
+    val primaryColor by IntPref("pref_key__primary_color", R.color.colorPrimary, recreate)
 
     /* --ADVANCED-- */
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
@@ -85,25 +88,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             oldFile.delete()
         }
         return mContext.applicationContext
-                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_MULTI_PROCESS)
                 .apply {
                     migrateConfig(this)
                 }
-    }
-
-    init {
-        migrateConfig()
-    }
-
-    private fun migrateConfig() {
-        if (configVersion != CURRENT_VERSION) {
-            blockingEdit {
-                bulkEdit {
-                    // Migration codes here
-                    configVersion = CURRENT_VERSION
-                }
-            }
-        }
     }
 
     fun migrateConfig(prefs: SharedPreferences) {
@@ -113,7 +101,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                 // Migration codes here
 
                 if (version == 100) {
-                    migrateFromV1(this, prefs)
+                    initialConfig(this, prefs)
                 }
 
                 putInt(VERSION_KEY, CURRENT_VERSION)
@@ -122,13 +110,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    private fun migrateFromV1(editor: SharedPreferences.Editor, prefs: SharedPreferences) = with(editor) {
+    private fun initialConfig(editor: SharedPreferences.Editor, prefs: SharedPreferences) = with(editor) {
         // Set flags
         putBoolean("pref_legacyUpgrade", true)
         putBoolean("pref_restoreSuccess", false)
 
         // misc
         putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
+        putString("pref_iconShape", "")
 
     }
 
@@ -153,8 +142,16 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     fun getOnChangeCallback() = onChangeCallback
 
+    fun recreate() {
+        onChangeCallback?.recreate()
+    }
+
     fun reloadApps() {
-        onChangeCallback!!.reloadApps()
+        onChangeCallback?.reloadApps()
+    }
+
+    private fun reloadAll() {
+        onChangeCallback?.reloadAll()
     }
 
     fun reloadDrawer() {
@@ -169,10 +166,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         onChangeCallback?.updateBlur()
     }
 
-    fun recreate() {
-        onChangeCallback?.recreate()
-    }
-
     fun updateSortApps() {
         onChangeCallback?.forceReloadApps()
     }
@@ -182,11 +175,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         return { getOnChangeCallback()?.let { callback(it) } }
     }
 
-    fun addOnPreferenceChangeListener(listener: OmegaPreferences.OnPreferenceChangeListener, vararg keys: String) {
+    fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
         keys.forEach { addOnPreferenceChangeListener(it, listener) }
     }
 
-    fun addOnPreferenceChangeListener(key: String, listener: OmegaPreferences.OnPreferenceChangeListener) {
+    fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
         if (onChangeListeners[key] == null) {
             onChangeListeners[key] = HashSet()
         }
@@ -194,11 +187,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         listener.onValueChanged(key, this, true)
     }
 
-    fun removeOnPreferenceChangeListener(listener: OmegaPreferences.OnPreferenceChangeListener, vararg keys: String) {
+    fun removeOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
         keys.forEach { removeOnPreferenceChangeListener(it, listener) }
     }
 
-    fun removeOnPreferenceChangeListener(key: String, listener: OmegaPreferences.OnPreferenceChangeListener) {
+    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
         onChangeListeners[key]?.remove(listener)
     }
 
@@ -251,6 +244,170 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     //PREFERENCE CLASSES
+    abstract inner class MutableListPref<T>(private val prefs: SharedPreferences, private val prefKey: String,
+                                            onChange: () -> Unit = doNothing,
+                                            default: List<T> = emptyList()) : PrefDelegate<List<T>>(prefKey, default, onChange) {
+
+        constructor(prefKey: String, onChange: () -> Unit = doNothing,
+                    default: List<T> = emptyList()) : this(sharedPrefs, prefKey, onChange, default)
+
+        private val valueList = ArrayList<T>()
+        private val listeners: MutableSet<MutableListPrefChangeListener> =
+                Collections.newSetFromMap(WeakHashMap())
+
+        init {
+            var arr: JSONArray
+            try {
+                arr = JSONArray(prefs.getString(prefKey, getJsonString(default)))
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+                arr = JSONArray()
+            }
+            (0 until arr.length()).mapTo(valueList) { unflattenValue(arr.getString(it)) }
+            if (onChange != doNothing) {
+                onChangeMap[prefKey] = onChange
+            }
+        }
+
+        fun toList() = ArrayList<T>(valueList)
+
+        open fun flattenValue(value: T) = value.toString()
+        open fun customAdder(value: T): Unit = error("not implemented in base class")
+
+        abstract fun unflattenValue(value: String): T
+
+        operator fun get(position: Int): T {
+            return valueList[position]
+        }
+
+        operator fun set(position: Int, value: T) {
+            valueList[position] = value
+            saveChanges()
+        }
+
+        fun getAll(): List<T> = valueList
+
+        fun setAll(value: List<T>) {
+            valueList.clear()
+            valueList.addAll(value)
+            saveChanges()
+        }
+
+        fun add(value: T) {
+            valueList.add(value)
+            saveChanges()
+        }
+
+        fun add(position: Int, value: T) {
+            valueList.add(position, value)
+            saveChanges()
+        }
+
+        fun remove(value: T) {
+            valueList.remove(value)
+            saveChanges()
+        }
+
+        fun removeAt(position: Int) {
+            valueList.removeAt(position)
+            saveChanges()
+        }
+
+        fun contains(value: T): Boolean {
+            return valueList.contains(value)
+        }
+
+        fun replaceWith(newList: List<T>) {
+            valueList.clear()
+            valueList.addAll(newList)
+            saveChanges()
+        }
+
+        fun getList() = valueList
+
+        fun addListener(listener: MutableListPrefChangeListener) {
+            listeners.add(listener)
+        }
+
+        fun removeListener(listener: MutableListPrefChangeListener) {
+            listeners.remove(listener)
+        }
+
+        private fun saveChanges() {
+            @SuppressLint("CommitPrefEdits") val editor = prefs.edit()
+            editor.putString(prefKey, getJsonString(valueList))
+            if (!bulkEditing) commitOrApply(editor, blockingEditing)
+            listeners.forEach { it.onListPrefChanged(prefKey) }
+        }
+
+        private fun getJsonString(list: List<T>): String {
+            val arr = JSONArray()
+            list.forEach { arr.put(flattenValue(it)) }
+            return arr.toString()
+        }
+
+        override fun onGetValue(): List<T> {
+            return getAll()
+        }
+
+        override fun onSetValue(value: List<T>) {
+            setAll(value)
+        }
+    }
+
+    interface MutableListPrefChangeListener {
+        fun onListPrefChanged(key: String)
+    }
+
+    abstract inner class MutableMapPref<K, V>(private val prefKey: String, onChange: () -> Unit = doNothing) {
+        private val valueMap = HashMap<K, V>()
+
+        init {
+            val obj = JSONObject(sharedPrefs.getString(prefKey, "{}"))
+            obj.keys().forEach {
+                valueMap[unflattenKey(it)] = unflattenValue(obj.getString(it))
+            }
+            if (onChange !== doNothing) {
+                onChangeMap[prefKey] = onChange
+            }
+        }
+
+        fun toMap() = HashMap<K, V>(valueMap)
+
+        open fun flattenKey(key: K) = key.toString()
+        abstract fun unflattenKey(key: String): K
+
+        open fun flattenValue(value: V) = value.toString()
+        abstract fun unflattenValue(value: String): V
+
+        operator fun set(key: K, value: V?) {
+            if (value != null) {
+                valueMap[key] = value
+            } else {
+                valueMap.remove(key)
+            }
+            saveChanges()
+        }
+
+        private fun saveChanges() {
+            val obj = JSONObject()
+            valueMap.entries.forEach { obj.put(flattenKey(it.key), flattenValue(it.value)) }
+            @SuppressLint("CommitPrefEdits") val editor =
+                    if (bulkEditing) editor!! else sharedPrefs.edit()
+            editor.putString(prefKey, obj.toString())
+            if (!bulkEditing) commitOrApply(editor, blockingEditing)
+        }
+
+        operator fun get(key: K): V? {
+            return valueMap[key]
+        }
+
+        fun clear() {
+            valueMap.clear()
+            saveChanges()
+        }
+    }
+
     abstract inner class PrefDelegate<T : Any>(val key: String, val defaultValue: T, private val onChange: () -> Unit) {
 
         private var cached = false
@@ -304,8 +461,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    open inner class IntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
-            PrefDelegate<Int>(key, defaultValue, onChange) {
+    open inner class IntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) : PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
 
         override fun onSetValue(value: Int) {
@@ -313,8 +469,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    open inner class BooleanPref(key: String, defaultValue: Boolean = false, onChange: () -> Unit = doNothing) :
-            PrefDelegate<Boolean>(key, defaultValue, onChange) {
+    open inner class BooleanPref(key: String, defaultValue: Boolean = false, onChange: () -> Unit = doNothing) : PrefDelegate<Boolean>(key, defaultValue, onChange) {
         override fun onGetValue(): Boolean = sharedPrefs.getBoolean(getKey(), defaultValue)
 
         override fun onSetValue(value: Boolean) {
@@ -322,8 +477,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    open inner class FloatPref(key: String, defaultValue: Float = 0f, onChange: () -> Unit = doNothing) :
-            PrefDelegate<Float>(key, defaultValue, onChange) {
+    open inner class FloatPref(key: String, defaultValue: Float = 0f, onChange: () -> Unit = doNothing) : PrefDelegate<Float>(key, defaultValue, onChange) {
         override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
 
         override fun onSetValue(value: Float) {
@@ -331,8 +485,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    open inner class StringPref(key: String, defaultValue: String = "", onChange: () -> Unit = doNothing) :
-            PrefDelegate<String>(key, defaultValue, onChange) {
+    open inner class StringPref(key: String, defaultValue: String = "", onChange: () -> Unit = doNothing) : PrefDelegate<String>(key, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
 
         override fun onSetValue(value: String) {
@@ -340,8 +493,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-    open inner class StringIntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
-            PrefDelegate<Int>(key, defaultValue, onChange) {
+    open inner class StringIntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) : PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int = try {
             sharedPrefs.getString(getKey(), "$defaultValue")!!.toInt()
         } catch (e: Exception) {
@@ -359,6 +511,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     companion object {
         private var INSTANCE: OmegaPreferences? = null
+        const val CURRENT_VERSION = 200
+        const val VERSION_KEY = "config_version"
 
         fun getInstance(context: Context): OmegaPreferences {
             if (INSTANCE == null) {
@@ -375,6 +529,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
                 }
             }
+            return INSTANCE!!
+        }
+
+        fun getInstanceNoCreate(): OmegaPreferences {
             return INSTANCE!!
         }
 

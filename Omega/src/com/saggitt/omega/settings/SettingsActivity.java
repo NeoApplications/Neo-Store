@@ -58,6 +58,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherFiles;
@@ -67,10 +68,14 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.settings.NotificationDotsPreference;
 import com.android.launcher3.settings.PreferenceHighlighter;
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.PreferenceController;
+import com.saggitt.omega.preferences.ResumablePreference;
 import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
@@ -148,6 +153,7 @@ public class SettingsActivity extends SettingsBaseActivity
             overrideOpenAnim();
         }
 
+        //Utilities.getDevicePrefs(this).edit().putBoolean(OnboardingProvider.PREF_HAS_OPENED_SETTINGS, true).apply();
         defaultHome = resolveDefaultHome();
     }
 
@@ -273,6 +279,15 @@ public class SettingsActivity extends SettingsBaseActivity
     }
 
     @Override
+    public void finish() {
+        super.finish();
+
+        if (hasPreview) {
+            overrideCloseAnim();
+        }
+    }
+
+    @Override
     public boolean onPreferenceDisplayDialog(@NonNull PreferenceFragment caller, Preference pref) {
         return false;
     }
@@ -320,6 +335,43 @@ public class SettingsActivity extends SettingsBaseActivity
         private HighlightablePreferenceGroupAdapter mAdapter;
         private boolean mPreferenceHighlighted = false;
         public String mHighLightKey;
+
+        private RecyclerView.Adapter mCurrentRootAdapter;
+        private boolean mIsDataSetObserverRegistered = false;
+        private AdapterDataObserver mDataSetObserver =
+                new AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        onDataSetChanged();
+                    }
+
+                    @Override
+                    public void onItemRangeChanged(int positionStart, int itemCount) {
+                        onDataSetChanged();
+                    }
+
+                    @Override
+                    public void onItemRangeChanged(int positionStart, int itemCount,
+                                                   Object payload) {
+                        onDataSetChanged();
+                    }
+
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        onDataSetChanged();
+                    }
+
+                    @Override
+                    public void onItemRangeRemoved(int positionStart, int itemCount) {
+                        onDataSetChanged();
+                    }
+
+                    @Override
+                    public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                        onDataSetChanged();
+                    }
+                };
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -385,6 +437,10 @@ public class SettingsActivity extends SettingsBaseActivity
             }
         }
 
+        protected void onDataSetChanged() {
+            highlightPreferenceIfNeeded();
+        }
+
         public int getInitialExpandedChildCount() {
             return -1;
         }
@@ -423,10 +479,44 @@ public class SettingsActivity extends SettingsBaseActivity
             int count = group.getPreferenceCount();
             for (int i = 0; i < count; i++) {
                 Preference preference = group.getPreference(i);
-
+                if (preference instanceof ResumablePreference) {
+                    ((ResumablePreference) preference).onResume();
+                }
                 if (preference instanceof PreferenceGroup) {
                     dispatchOnResume((PreferenceGroup) preference);
                 }
+            }
+        }
+
+        @Override
+        protected void onBindPreferences() {
+            registerObserverIfNeeded();
+        }
+
+        @Override
+        protected void onUnbindPreferences() {
+            unregisterObserverIfNeeded();
+        }
+
+        public void registerObserverIfNeeded() {
+            if (!mIsDataSetObserverRegistered) {
+                if (mCurrentRootAdapter != null) {
+                    mCurrentRootAdapter.unregisterAdapterDataObserver(mDataSetObserver);
+                }
+                mCurrentRootAdapter = getListView().getAdapter();
+                mCurrentRootAdapter.registerAdapterDataObserver(mDataSetObserver);
+                mIsDataSetObserverRegistered = true;
+                onDataSetChanged();
+            }
+        }
+
+        public void unregisterObserverIfNeeded() {
+            if (mIsDataSetObserverRegistered) {
+                if (mCurrentRootAdapter != null) {
+                    mCurrentRootAdapter.unregisterAdapterDataObserver(mDataSetObserver);
+                    mCurrentRootAdapter = null;
+                }
+                mIsDataSetObserverRegistered = false;
             }
         }
 
@@ -706,6 +796,22 @@ public class SettingsActivity extends SettingsBaseActivity
                     case "pref_key__copy_build_information":
                         au.setClipboard(preference.getSummary());
                         break;
+                    default:
+                        if (preference instanceof ColorPreferenceCompat) {
+                            ColorPickerDialog dialog = ((ColorPreferenceCompat) preference).getDialog();
+                            dialog.setColorPickerDialogListener(new ColorPickerDialogListener() {
+                                public void onColorSelected(int dialogId, int color) {
+                                    ((ColorPreferenceCompat) preference).saveValue(color);
+                                }
+
+                                public void onDialogDismissed(int dialogId) {
+                                }
+                            });
+                            dialog.show((getActivity()).getSupportFragmentManager(), "color-picker-dialog");
+                        } else if (preference.getFragment() != null) {
+                            Log.d("Settings", "Opening Fragment: " + preference.getFragment());
+                            SettingsActivity.startFragment(getContext(), preference.getFragment(), null, preference.getTitle());
+                        }
                 }
             }
 

@@ -240,7 +240,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     // Main container view for the all apps screen.
     @Thunk
     AllAppsContainerView mAppsView;
-    AllAppsTransitionController mAllAppsController;
+    public AllAppsTransitionController mAllAppsController;
 
     // Scrim view for the all apps and overview state.
     @Thunk

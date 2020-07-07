@@ -27,6 +27,7 @@ import android.os.Looper
 import android.util.Property
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Switch
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
@@ -81,6 +82,12 @@ fun Context.getDimenAttr(attr: Int): Int {
     val size = ta.getDimensionPixelSize(0, 0)
     ta.recycle()
     return size
+}
+
+fun ImageView.tintDrawable(color: Int) {
+    val drawable = drawable.mutate()
+    drawable.setTint(color)
+    setImageDrawable(drawable)
 }
 
 fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {

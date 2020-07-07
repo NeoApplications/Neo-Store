@@ -39,8 +39,10 @@ import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
 import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.*
 import com.saggitt.omega.settings.SettingsBaseActivity
+import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.tintDrawable
 import kotlinx.android.synthetic.omega.activity_settings_search.*
 
 class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextListener {
@@ -199,7 +201,7 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
 
                 if (entry.iconRes != 0) {
                     iconView.setImageResource(entry.iconRes)
-                    //iconView.tintDrawable(activity.getColorEngineAccent())
+                    iconView.tintDrawable(activity.getColorAccent())
                 }
                 bindBreadcrumbView(entry)
                 if (itemView.context.omegaPrefs.showDebugInfo) {
