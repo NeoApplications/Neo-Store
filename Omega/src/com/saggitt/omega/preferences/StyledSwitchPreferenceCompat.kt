@@ -25,7 +25,7 @@ import androidx.preference.AndroidResources
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreference
 import com.android.launcher3.Utilities
-import com.saggitt.omega.PreferenceHelpers
+import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.settings.search.SearchIndex
 import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.omegaPrefs
@@ -63,7 +63,7 @@ open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? =
             context: Context,
             private val key: String,
             private val defaultValue: Boolean)
-        : Switch(context), PreferenceHelpers.OnPreferenceChangeListener {
+        : Switch(context), OmegaPreferences.OnPreferenceChangeListener {
 
         init {
             applyColor(context.omegaPrefs.accentColor)
@@ -82,7 +82,7 @@ open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? =
             context.omegaPrefs.removeOnPreferenceChangeListener(key, this)
         }
 
-        override fun onValueChanged(key: String, prefs: PreferenceHelpers, force: Boolean) {
+        override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
             isChecked = prefs.sharedPrefs.getBoolean(key, defaultValue)
         }
     }

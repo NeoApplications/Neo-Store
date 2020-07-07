@@ -33,7 +33,7 @@ public class OmegaLauncher extends Launcher {
     private boolean paused = false;
     private boolean sRestart = false;
     private OmegaPreferences mOmegaPrefs;
-    private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
+    private OmegaPreferencesChangeCallback prefCallback;//= new OmegaPreferencesChangeCallback(this);
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -48,6 +48,7 @@ public class OmegaLauncher extends Launcher {
         super.onCreate(savedInstanceState);
         mContext = this;
         mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
+        prefCallback = new OmegaPreferencesChangeCallback(this);
         mOmegaPrefs.registerCallback(prefCallback);
     }
 
