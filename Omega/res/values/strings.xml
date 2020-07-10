@@ -89,5 +89,13 @@
     <string name="title_storage_permission_required">Storage Access Needed</string>
     <string name="content_storage_permission_required">To set a wallpaper, grant the Storage permission.</string>
 
+    <!-- DASH -->
+    <string name="edit_dash">Edit Dash</string>
+    <string name="wallpaper_pick">Pick Wallpaper</string>
+    <string name="drag_to_disable_packs">Drag down to disable</string>
+    <string name="drag_to_enable_packs">Drag up to enable</string>
+    <string name="enabled_icon_packs">Enabled</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
 
 </resources>

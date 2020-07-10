@@ -14,18 +14,16 @@
   ~  limitations under the License.
   ~
   -->
-<resources>
-    <color name="white">#FFFFFF</color>
 
-    <color name="colorPrimary">#0788EF</color>
-    <color name="colorPrimaryDark">#03419F</color>
-    <color name="colorAccent">#E80142</color>
-    <color name="textColorPrimary">#ffffffff</color>
-    <color name="textColorSecondary">#ffffffff</color>
-    <color name="textColorPrimaryInverse">#de000000</color>
-    <color name="textColorSecondaryInverse">#8a000000</color>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <color name="all_apps_navbar_color">#28000000</color>
-    <color name="transparentish">#B0101010</color>
-</resources>
-
+    <com.saggitt.omega.dash.DashListView
+        android:id="@+id/my_circular_list"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent" />
+</RelativeLayout>

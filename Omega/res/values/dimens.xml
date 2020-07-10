@@ -39,4 +39,6 @@
     <dimen name="dashboard_padding_end">0dp</dimen>
     <dimen name="dashboard_padding_top">0dp</dimen>
     <dimen name="dashboard_padding_bottom">0dp</dimen>
+
+    <dimen name="icon_preview_size">48dp</dimen>
 </resources>

@@ -57,6 +57,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
+    val dashEnable by BooleanPref("pref_key__dash_enable", true, recreate)
+    fun setDashEnable(enable: Boolean) {
+        sharedPrefs.edit().putBoolean("pref_key__dash_enable", enable).apply()
+    }
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
@@ -71,7 +75,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
     /* --DEV-- */
-    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, doNothing)
+    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
     val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
     val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode

@@ -1,0 +1,60 @@
+{
+  "dash_items": [
+    {
+      "item_id": 0,
+      "item_name": "dash_item_0",
+      "item_icon": "ic_pencil",
+      "item_action": "EditDash",
+      "item_enabled": true
+    },
+    {
+      "item_id": 1,
+      "item_name": "dash_item_1",
+      "item_icon": "ic_wallpaper",
+      "item_action": "SetWallpaper",
+      "item_enabled": true
+    },
+    {
+      "item_id": 2,
+      "item_name": "dash_item_2",
+      "item_icon": "ic_settings",
+      "item_action": "LauncherSettings",
+      "item_enabled": true
+    },
+    {
+      "item_id": 3,
+      "item_name": "dash_item_3",
+      "item_icon": "ic_volume",
+      "item_action": "VolumeDialog",
+      "item_enabled": true
+    },
+    {
+      "item_id": 4,
+      "item_name": "dash_item_4",
+      "item_icon": "ic_build",
+      "item_action": "DeviceSettings",
+      "item_enabled": true
+    },
+    {
+      "item_id": 5,
+      "item_name": "dash_item_5",
+      "item_icon": "ic_network",
+      "item_action": "MobileNetworkSettings",
+      "item_enabled": true
+    },
+    {
+      "item_id": 6,
+      "item_name": "dash_item_6",
+      "item_icon": "ic_font",
+      "item_action": "AppSettings",
+      "item_enabled": true
+    },
+    {
+      "item_id": 7,
+      "item_name": "dash_item_7",
+      "item_icon": "ic_apps",
+      "item_action": "AppDrawer",
+      "item_enabled": false
+    }
+  ]
+}

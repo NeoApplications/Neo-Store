@@ -12,8 +12,8 @@ Free and Open Source Launcher.
 
 ## Donations
 Want to buy me a coffee? 
-> https://paypal.me/saulhenriquez
-> https://liberapay.com/otakuhqz/donate
+**[Paypal](https://paypal.me/saulhenriquez)**
+**[Liberapay](https://liberapay.com/otakuhqz/donate)**
 
 
 ## Want to contribute?

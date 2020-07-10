@@ -72,6 +72,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.PreferenceController;
@@ -666,6 +667,7 @@ public class SettingsActivity extends SettingsBaseActivity
                     break;
                 case R.xml.omega_preferences_developer:
                     findPreference("kill").setOnPreferenceClickListener(this);
+                    findPreference("dash_activity").setOnPreferenceClickListener(this);
                     break;
 
                 case R.xml.omega_preferences_about:
@@ -822,6 +824,11 @@ public class SettingsActivity extends SettingsBaseActivity
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals("kill"))
                 Utilities.killLauncher();
+            if (preference.getKey().equals("dash_activity")) {
+                Intent intent = new Intent(getContext(), DashActivity.class);
+                preference.getContext().startActivity(intent);
+            }
+
             return false;
         }
 

@@ -35,4 +35,9 @@
         android:persistent="true"
         android:title="@string/title__dev_show_debug_info"
         app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="dash_activity"
+        android:title="Dash Test Activity"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

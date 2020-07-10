@@ -14,18 +14,18 @@
   ~  limitations under the License.
   ~
   -->
-<resources>
-    <color name="white">#FFFFFF</color>
 
-    <color name="colorPrimary">#0788EF</color>
-    <color name="colorPrimaryDark">#03419F</color>
-    <color name="colorAccent">#E80142</color>
-    <color name="textColorPrimary">#ffffffff</color>
-    <color name="textColorSecondary">#ffffffff</color>
-    <color name="textColorPrimaryInverse">#de000000</color>
-    <color name="textColorSecondaryInverse">#8a000000</color>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <color name="all_apps_navbar_color">#28000000</color>
-    <color name="transparentish">#B0101010</color>
-</resources>
-
+    <ImageView
+        android:id="@+id/bt_item"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ripple_circle_bg"
+        android:padding="10dp"
+        android:theme="@style/DashTheme.Item"
+        android:tint="#5C02DA" />
+</LinearLayout>
