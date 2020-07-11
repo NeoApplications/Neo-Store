@@ -67,6 +67,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
     val primaryColor by IntPref("pref_key__primary_color", R.color.colorPrimary, recreate)
 
+    /* --NOTIFICATION-- */
+    val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)
+    val notificationBackground by IntPref("pref_notification_background", R.color.notification_background, recreate)
+
     /* --ADVANCED-- */
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
 
@@ -122,6 +126,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         // misc
         putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
         putString("pref_iconShape", "")
+        //putInt("pref_notification_background", R.color.notification_background)
 
     }
 

@@ -30,4 +30,21 @@
                 android:value="notification_badging" />
         </intent>
     </com.android.launcher3.settings.NotificationDotsPreference>
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_icon_badging"
+        android:key="pref_notification_count"
+        android:persistent="true"
+        android:title="@string/title__notification_count"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.ColorPreferenceCompat
+        android:defaultValue="@color/notification_background"
+        android:dependency="pref_notification_count"
+        android:key="pref_notification_background"
+        android:title="@string/title__notification_background"
+        app:cpv_dialogTitle="@string/title__notification_background"
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

@@ -24,7 +24,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Surface;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
@@ -251,11 +250,16 @@ public class DeviceProfile {
         updateWorkspacePadding();
 
         // This is done last, after iconSizePx is calculated above.
-        mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(),
-                IconShape.DEFAULT_PATH_SIZE);
+        float dotSize = 0.38f;
+        if (!Utilities.getOmegaPrefs(context).getNotificationCount()) {
+            dotSize = 0.228f;
+        }
+
+        //mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE);
+        mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE, dotSize);
         mDotRendererAllApps = iconSizePx == allAppsIconSizePx ? mDotRendererWorkSpace :
-                new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(),
-                        IconShape.DEFAULT_PATH_SIZE);
+                new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE, dotSize);
+        //new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE);
     }
 
     public DeviceProfile copy(Context context) {

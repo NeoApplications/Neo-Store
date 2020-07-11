@@ -52,6 +52,8 @@
     <!-- PREFERENCES NOTIFICATION -->
     <string name="icon_badging_desc_on">On</string>
     <string name="icon_badging_desc_off">Off</string>
+    <string name="title__notification_count">Show Notification Count</string>
+    <string name="title__notification_background">Notification Background Color</string>
 
     <!-- SEARCH -->
     <string name="search_no_results">No Results</string>

@@ -59,6 +59,19 @@ public class OmegaLauncher extends Launcher {
         mOmegaPrefs.registerCallback(prefCallback);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        restartIfPending();
+        paused = false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        paused = true;
+    }
+
     public void onDestroy() {
         super.onDestroy();
         Utilities.getOmegaPrefs(this).unregisterCallback();
@@ -100,7 +113,9 @@ public class OmegaLauncher extends Launcher {
         }
     }
 
-    public void scheduleRestartForLater() {
-        sRestart = true;
+    public void restartIfPending() {
+        if (sRestart) {
+            OmegaAppKt.getOmegaApp(this).restart(false);
+        }
     }
 }
