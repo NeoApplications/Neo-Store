@@ -33,6 +33,10 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
         implements Parcelable {
 
     public final int providerId;
+    public boolean noPadding;
+    public int customizeTitle;
+    public int customizeScreen;
+    public boolean customizeHasPreview;
 
     protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf, int providerId) {
         super(parcel);
@@ -69,12 +73,43 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
         return "WidgetProviderInfo(" + provider + ")";
     }
 
+    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf,
+                                          int providerId, boolean noPadding) {
+        super(parcel);
+        if (readSelf) {
+            this.providerId = parcel.readInt();
+            this.noPadding = parcel.readByte() != 0;
+            this.customizeTitle = parcel.readInt();
+            this.customizeScreen = parcel.readInt();
+            this.customizeHasPreview = parcel.readByte() != 0;
+
+            provider = new ComponentName(parcel.readString(), CLS_CUSTOM_WIDGET_PREFIX + providerId);
+
+            label = parcel.readString();
+            initialLayout = parcel.readInt();
+            icon = parcel.readInt();
+            previewImage = parcel.readInt();
+
+            resizeMode = parcel.readInt();
+            spanX = parcel.readInt();
+            spanY = parcel.readInt();
+            minSpanX = parcel.readInt();
+            minSpanY = parcel.readInt();
+        } else {
+            this.providerId = providerId;
+            this.noPadding = noPadding;
+        }
+    }
+
     @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
         out.writeInt(providerId);
         out.writeString(provider.getPackageName());
-
+        out.writeByte((byte) (noPadding ? 1 : 0));
+        out.writeInt(customizeTitle);
+        out.writeInt(customizeScreen);
+        out.writeByte((byte) (customizeHasPreview ? 1 : 0));
         out.writeString(label);
         out.writeInt(initialLayout);
         out.writeInt(icon);

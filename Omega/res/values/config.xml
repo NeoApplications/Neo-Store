@@ -21,7 +21,6 @@
 <resources>
     <!-- String representing the fragment class for settings activity.-->
     <string name="settings_fragment_name" translatable="false">com.saggitt.omega.settings.SettingsActivity$LauncherSettingsFragment</string>
-
     <bool name="config_default_enable_blur">false</bool>
     <!-- Tag id used for view scrim -->
     <item name="view_scrim" type="id" />

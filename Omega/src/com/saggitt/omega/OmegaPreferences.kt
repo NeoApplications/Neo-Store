@@ -61,11 +61,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     fun setDashEnable(enable: Boolean) {
         sharedPrefs.edit().putBoolean("pref_key__dash_enable", enable).apply()
     }
+    val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
-    val primaryColor by IntPref("pref_key__primary_color", R.color.colorPrimary, recreate)
 
     /* --NOTIFICATION-- */
     val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)

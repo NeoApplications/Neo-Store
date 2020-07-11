@@ -32,12 +32,14 @@ import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.icons.DotRenderer;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DefaultDisplay;
+import com.saggitt.omega.OmegaPreferences;
 
-public class DeviceProfile {
+public class DeviceProfile implements OmegaPreferences.OnPreferenceChangeListener {
 
     public final InvariantDeviceProfile inv;
     // IDP with no grid override values.
-    @Nullable private final InvariantDeviceProfile originalIdp;
+    @Nullable
+    private final InvariantDeviceProfile originalIdp;
 
     // Device properties
     public final boolean isTablet;
@@ -70,7 +72,7 @@ public class DeviceProfile {
 
     // Workspace
     public final int desiredWorkspaceLeftRightMarginPx;
-    public final int cellLayoutPaddingLeftRightPx;
+    private final OmegaPreferences prefs;
     public final int cellLayoutBottomPaddingPx;
     public final int edgeMarginPx;
     public float workspaceSpringLoadShrinkFactor;
@@ -136,10 +138,14 @@ public class DeviceProfile {
     // Notification dots
     public DotRenderer mDotRendererWorkSpace;
     public DotRenderer mDotRendererAllApps;
+    public int cellLayoutPaddingLeftRightPx;
+    public Context mContext;
 
     public DeviceProfile(Context context, InvariantDeviceProfile inv,
-            InvariantDeviceProfile originalIDP, Point minSize, Point maxSize,
-            int width, int height, boolean isLandscape, boolean isMultiWindowMode) {
+                         InvariantDeviceProfile originalIDP, Point minSize, Point maxSize,
+                         int width, int height, boolean isLandscape, boolean isMultiWindowMode) {
+        mContext = context;
+        prefs = Utilities.getOmegaPrefs(context);
 
         this.inv = inv;
         this.originalIdp = inv;
@@ -215,7 +221,7 @@ public class DeviceProfile {
         hotseatBarSizePx = ResourceUtils.pxFromDp(inv.iconSize, dm) + (isVerticalBarLayout()
                 ? (hotseatBarSidePaddingStartPx + hotseatBarSidePaddingEndPx)
                 : (res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_extra_vertical_size)
-                        + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
+                + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
 
         // Calculate all of the remaining variables.
         updateAvailableDimensions(dm, res);
@@ -260,6 +266,18 @@ public class DeviceProfile {
         mDotRendererAllApps = iconSizePx == allAppsIconSizePx ? mDotRendererWorkSpace :
                 new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE, dotSize);
         //new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE);
+
+        prefs.addOnPreferenceChangeListener(this, "pref_fullWidthWidgets");
+    }
+
+    @Override
+    public void onValueChanged(String key, OmegaPreferences prefs, boolean force) {
+        Resources res = mContext.getResources();
+
+        boolean fullWidthWidgets = Utilities.getOmegaPrefs(mContext).getAllowFullWidthWidgets();
+
+        cellLayoutPaddingLeftRightPx = (!isVerticalBarLayout() && fullWidthWidgets) ? 0
+                : res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding);
     }
 
     public DeviceProfile copy(Context context) {
@@ -507,11 +525,11 @@ public class DeviceProfile {
                 padding.set(availablePaddingX / 2, edgeMarginPx + availablePaddingY / 2,
                         availablePaddingX / 2, paddingBottom + availablePaddingY / 2);
             } else {
+                int horizontalPadding = Utilities.getOmegaPrefs(mContext)
+                        .getAllowFullWidthWidgets() ? 0 : desiredWorkspaceLeftRightMarginPx;
+
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
-                padding.set(desiredWorkspaceLeftRightMarginPx,
-                        edgeMarginPx,
-                        desiredWorkspaceLeftRightMarginPx,
-                        paddingBottom);
+                padding.set(horizontalPadding, edgeMarginPx, horizontalPadding, paddingBottom);
             }
         }
     }

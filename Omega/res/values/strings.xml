@@ -35,6 +35,9 @@
 
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
+    <string name="title__desktop_full_width_widgets">Full width widgets</string>
+    <string name="summary__full_width_widgets">Allow widgets to span over the whole width without padding</string>
+
 
     <!-- PREFERENCES DOCK -->
     <!-- PREFERENCES DRAWER -->
@@ -45,6 +48,10 @@
     <string name="title__sort_last_installed">Last Installed</string>
     <string name="title__sort_most_used">Most Used</string>
     <string name="title__sort_by_color">By Color</string>
+
+    <string name="title_disable_suggestions_prompt">Disable App Suggestions</string>
+    <string name="msg_disable_suggestions_prompt">"Usage data will be deleted."</string>
+    <string name="label_turn_off_suggestions">Disable</string>
 
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
