@@ -1,5 +1,6 @@
-### v0.2.0 (Build 2)
+### v0.2.0 (Build 3)
 * **Add color accent preference**
+* **Add notification color and count**
 
 ### v0.1.0 (Build 1)
 * Based on Launcher3 10 r35.
