@@ -16,14 +16,6 @@
 
 package com.android.quickstep.logging;
 
-import static android.stats.launcher.nano.Launcher.ALLAPPS;
-import static android.stats.launcher.nano.Launcher.HOME;
-import static android.stats.launcher.nano.Launcher.LAUNCH_APP;
-import static android.stats.launcher.nano.Launcher.LAUNCH_TASK;
-import static android.stats.launcher.nano.Launcher.DISMISS_TASK;
-import static android.stats.launcher.nano.Launcher.BACKGROUND;
-import static android.stats.launcher.nano.Launcher.OVERVIEW;
-
 import android.content.Context;
 import android.content.Intent;
 import android.stats.launcher.nano.Launcher;
@@ -36,17 +28,25 @@ import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.logging.StatsLogUtils;
-import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
-import com.android.launcher3.userevent.nano.LauncherLogProto.ItemType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
+import com.android.launcher3.userevent.nano.LauncherLogProto.ItemType;
+import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import com.android.launcher3.util.ComponentKey;
 import com.android.systemui.shared.system.StatsLogCompat;
 import com.google.protobuf.nano.MessageNano;
 
+import static android.stats.launcher.nano.Launcher.ALLAPPS;
+import static android.stats.launcher.nano.Launcher.BACKGROUND;
+import static android.stats.launcher.nano.Launcher.DISMISS_TASK;
+import static android.stats.launcher.nano.Launcher.HOME;
+import static android.stats.launcher.nano.Launcher.LAUNCH_APP;
+import static android.stats.launcher.nano.Launcher.LAUNCH_TASK;
+import static android.stats.launcher.nano.Launcher.OVERVIEW;
+
 /**
  * This method calls the StatsLog hidden method until they are made available public.
- *
+ * <p>
  * To see if the logs are properly sent to statsd, execute following command.
  * $ adb root && adb shell statsd
  * $ adb shell cmd stats print-logs
@@ -101,8 +101,8 @@ public class StatsLogCompatManager extends StatsLogManager {
         int srcState = mStateProvider.getCurrentState();
         fillInLauncherExtensionWithPageId(ext, pageId);
         int launcherAction = isSwipingToLeft ? Launcher.SWIPE_LEFT : Launcher.SWIPE_RIGHT;
-        StatsLogCompat.write(launcherAction, srcState, srcState,
-                MessageNano.toByteArray(ext), true);
+        if (Utilities.ATLEAST_R)
+            StatsLogCompat.write(launcherAction, srcState, srcState, MessageNano.toByteArray(ext), true);
     }
 
     public static boolean fillInLauncherExtension(View v, LauncherExtension extension) {

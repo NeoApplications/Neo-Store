@@ -57,6 +57,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.TwoStatePreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 
@@ -71,6 +72,7 @@ import com.android.launcher3.settings.PreferenceHighlighter;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
+import com.saggitt.omega.OmegaLauncherCallbacks;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
@@ -82,6 +84,8 @@ import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.util.AboutUtils;
+import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
@@ -105,6 +109,9 @@ public class SettingsActivity extends SettingsBaseActivity
      * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
      */
     private static final String NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners";
+
+    public final static String SHOW_PREDICTIONS_PREF = "pref_show_predictions";
+    public final static String ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one";
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
@@ -656,6 +663,9 @@ public class SettingsActivity extends SettingsBaseActivity
                     }
                     break;
 
+                case R.xml.omega_preferences_drawer:
+                    findPreference(SHOW_PREDICTIONS_PREF).setOnPreferenceChangeListener(this);
+                    break;
                 case R.xml.omega_preferences_notification:
                     if (getResources().getBoolean(R.bool.notification_dots_enabled)) {
                         NotificationDotsPreference iconBadgingPref = (NotificationDotsPreference) findPreference(NOTIFICATION_DOTS_PREFERENCE_KEY);
@@ -665,6 +675,7 @@ public class SettingsActivity extends SettingsBaseActivity
                         mIconBadgingObserver.register(NOTIFICATION_BADGING, NOTIFICATION_ENABLED_LISTENERS);
                     }
                     break;
+
                 case R.xml.omega_preferences_developer:
                     findPreference("kill").setOnPreferenceClickListener(this);
                     findPreference("dash_activity").setOnPreferenceClickListener(this);
@@ -754,6 +765,22 @@ public class SettingsActivity extends SettingsBaseActivity
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+            switch (preference.getKey()) {
+                case SHOW_PREDICTIONS_PREF:
+                    if ((boolean) newValue) {
+                        return true;
+                    }
+                    SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
+                    confirmationFragment.setTargetFragment(this, 0);
+                    confirmationFragment.show(getFragmentManager(), preference.getKey());
+                    break;
+
+                case ENABLE_MINUS_ONE_PREF:
+                    if (Config.hasPackageInstalled(getActivity(), OmegaLauncherCallbacks.SEARCH_PACKAGE)) {
+                        return true;
+                    }
+                    break;
+            }
             return false;
         }
 
@@ -941,6 +968,34 @@ public class SettingsActivity extends SettingsBaseActivity
             mRotationPref.setEnabled(enabled);
             mRotationPref.setSummary(enabled
                     ? R.string.allow_rotation_desc : R.string.allow_rotation_blocked_desc);
+        }
+    }
+
+    public static class SuggestionConfirmationFragment extends DialogFragment implements DialogInterface.OnClickListener {
+
+        public void onClick(final DialogInterface dialogInterface, final int n) {
+            if (getTargetFragment() instanceof PreferenceFragmentCompat) {
+                Preference preference = ((PreferenceFragmentCompat) getTargetFragment())
+                        .findPreference(SHOW_PREDICTIONS_PREF);
+                if (preference instanceof TwoStatePreference) {
+                    ((TwoStatePreference) preference).setChecked(false);
+                }
+            }
+        }
+
+        public Dialog onCreateDialog(final Bundle bundle) {
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.title_disable_suggestions_prompt)
+                    .setMessage(R.string.msg_disable_suggestions_prompt)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(R.string.label_turn_off_suggestions, this).create();
+        }
+
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            OmegaUtilsKt.applyAccent(((AlertDialog) getDialog()));
         }
     }
 

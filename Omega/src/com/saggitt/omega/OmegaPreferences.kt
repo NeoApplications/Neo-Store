@@ -24,6 +24,7 @@ import android.os.Looper
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.util.Executors
+import com.saggitt.omega.allapps.PredictionsFloatingHeader
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 import org.json.JSONArray
@@ -54,6 +55,13 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --APP DRAWER-- */
     var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
+    val showPredictions by BooleanPref("pref_show_predictions", true, doNothing)
+    val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", true) {
+        val header = onChangeCallback?.launcher?.appsView?.floatingHeaderView as? PredictionsFloatingHeader
+        header?.updateShowAllAppsLabel()
+    }
+    var hiddenAppSet by StringSetPref("hidden-app-set", Collections.emptySet(), reloadApps)
+    var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
@@ -61,6 +69,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     fun setDashEnable(enable: Boolean) {
         sharedPrefs.edit().putBoolean("pref_key__dash_enable", enable).apply()
     }
+
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
 
     /* --THEME-- */
@@ -499,6 +508,15 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
         override fun onSetValue(value: String) {
             edit { putString(getKey(), value) }
+        }
+    }
+
+    open inner class StringSetPref(key: String, defaultValue: Set<String>, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Set<String>>(key, defaultValue, onChange) {
+        override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
+
+        override fun onSetValue(value: Set<String>) {
+            edit { putStringSet(getKey(), value) }
         }
     }
 

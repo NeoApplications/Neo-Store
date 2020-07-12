@@ -16,8 +16,6 @@
 
 package com.android.launcher3.appprediction;
 
-import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKER;
-
 import android.content.Context;
 
 import com.android.launcher3.AppInfo;
@@ -26,7 +24,9 @@ import com.android.launcher3.allapps.AllAppsStore;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ComponentKey;
 
-public class ComponentKeyMapper {
+import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKER;
+
+public class ComponentKeyMapper<T> {
 
     protected final ComponentKey componentKey;
     private final Context mContext;

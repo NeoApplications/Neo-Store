@@ -46,6 +46,10 @@ public class OmegaLauncher extends Launcher {
         }
     }
 
+    public OmegaLauncher() {
+        setLauncherCallbacks(new OmegaLauncherCallbacks(this));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {

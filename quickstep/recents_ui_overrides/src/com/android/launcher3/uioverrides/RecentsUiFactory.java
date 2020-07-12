@@ -16,10 +16,6 @@
 
 package com.android.launcher3.uioverrides;
 
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.quickstep.SysUINavigationMode.Mode.NO_BUTTON;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.view.Gravity;
@@ -52,6 +48,10 @@ import com.android.quickstep.views.RecentsView;
 import com.android.systemui.shared.system.WindowManagerWrapper;
 
 import java.util.ArrayList;
+
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.quickstep.SysUINavigationMode.Mode.NO_BUTTON;
 
 /**
  * Provides recents-related {@link UiFactory} logic and classes.
@@ -158,13 +158,13 @@ public abstract class RecentsUiFactory {
             if (launcher.getDeviceProfile().isVerticalBarLayout()) {
                 list.add(new OverviewToAllAppsTouchController(launcher));
                 list.add(new LandscapeEdgeSwipeController(launcher));
-                if (Utilities.ATLEAST_Q &&mode.hasGestures) {
+                if (Utilities.ATLEAST_R && mode.hasGestures) {
                     list.add(new TransposedQuickSwitchTouchController(launcher));
                 }
             } else {
                 list.add(new PortraitStatesTouchController(launcher,
-                        Utilities.ATLEAST_Q&&mode.hasGestures /* allowDragToOverview */));
-                if (Utilities.ATLEAST_Q&&mode.hasGestures) {
+                        Utilities.ATLEAST_R && mode.hasGestures /* allowDragToOverview */));
+                if (Utilities.ATLEAST_R && mode.hasGestures) {
                     list.add(new QuickSwitchTouchController(launcher));
                 }
             }

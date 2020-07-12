@@ -115,6 +115,7 @@ public final class Utilities {
     //public static final Person[] EMPTY_PERSON_ARRAY = new Person[0];
     public static final String[] EMPTY_PERSON_ARRAY = new String[0];
 
+    public static final boolean ATLEAST_R = false;//Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     public static final boolean ATLEAST_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
 
     public static final boolean ATLEAST_P =

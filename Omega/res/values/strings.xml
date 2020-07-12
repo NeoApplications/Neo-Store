@@ -24,11 +24,13 @@
     <string name="title__general_desktop">Desktop</string>
     <string name="title__general_drawer">Drawer</string>
     <string name="title__general_theme">Theme</string>
+    <string name="title__general_smartspace">Home Widget</string>
     <string name="title__general_advanced">Advanced</string>
     <string name="title__general_notifications">Gestures and Notifications</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_drawer">Customize your Drawer</string>
     <string name="summary__general_theme">Change colors, icon pack, icon shape</string>
+    <string name="summary__general_smartspace">Date, time, home widget</string>
     <string name="summary__general_notifications">Notifications and Gestures</string>
     <string name="summary__general_advanced">Languaje, back up, setting search</string>
     <string name="summary__general_about">More information about Omega Launcher</string>
@@ -42,6 +44,7 @@
     <!-- PREFERENCES DOCK -->
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
+    <string name="title__drawer_all_apps">Show "All Apps" label</string>
     <string name="title__sort_mode">App Sort</string>
     <string name="title__sort_alphabetical_az">Alphabetical AZ</string>
     <string name="title__sort_alphabetical_za">Alphabetical ZA</string>
@@ -55,6 +58,12 @@
 
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
+
+    <!-- PREFERENCES SMARTSPACE -->
+    <string name="title_show_google_app">Show Google app</string>
+    <string name="pref_show_google_now_summary">@string/msg_minus_one_on_left</string>
+    <string name="google_app">Google app</string>
+    <string name="msg_minus_one_on_left">To the left of the main Home screen</string>
 
     <!-- PREFERENCES NOTIFICATION -->
     <string name="icon_badging_desc_on">On</string>

@@ -16,24 +16,13 @@
 
 package com.android.launcher3.logging;
 
-import static com.android.launcher3.logging.LoggerUtils.newAction;
-import static com.android.launcher3.logging.LoggerUtils.newCommandAction;
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.logging.LoggerUtils.newControlTarget;
-import static com.android.launcher3.logging.LoggerUtils.newDropTarget;
-import static com.android.launcher3.logging.LoggerUtils.newItemTarget;
-import static com.android.launcher3.logging.LoggerUtils.newLauncherEvent;
-import static com.android.launcher3.logging.LoggerUtils.newTarget;
-import static com.android.launcher3.logging.LoggerUtils.newTouchAction;
-
-import static java.util.Optional.ofNullable;
-
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.util.Log;
 import android.view.View;
 
@@ -57,6 +46,17 @@ import com.android.launcher3.util.ResourceBasedOverride;
 
 import java.util.Locale;
 import java.util.UUID;
+
+import static com.android.launcher3.logging.LoggerUtils.newAction;
+import static com.android.launcher3.logging.LoggerUtils.newCommandAction;
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.logging.LoggerUtils.newControlTarget;
+import static com.android.launcher3.logging.LoggerUtils.newDropTarget;
+import static com.android.launcher3.logging.LoggerUtils.newItemTarget;
+import static com.android.launcher3.logging.LoggerUtils.newLauncherEvent;
+import static com.android.launcher3.logging.LoggerUtils.newTarget;
+import static com.android.launcher3.logging.LoggerUtils.newTouchAction;
+import static java.util.Optional.ofNullable;
 
 /**
  * Manages the creation of {@link LauncherEvent}.
@@ -136,6 +136,20 @@ public class UserEventDispatcher implements ResourceBasedOverride {
 
     @Deprecated
     public void logAppLaunch(View v, Intent intent) {
+        LauncherEvent event = newLauncherEvent(newTouchAction(Action.Touch.TAP),
+                newItemTarget(v, mInstantAppResolver), newTarget(Target.Type.CONTAINER));
+
+        if (fillInLogContainerData(event, v)) {
+            if (mDelegate != null) {
+                mDelegate.modifyUserEvent(event);
+            }
+            fillIntentInfo(event.srcTarget[0], intent);
+        }
+        dispatchUserEvent(event, intent);
+        mAppOrTaskLaunch = true;
+    }
+
+    public void logAppLaunch(View v, Intent intent, UserHandle user) {
         LauncherEvent event = newLauncherEvent(newTouchAction(Action.Touch.TAP),
                 newItemTarget(v, mInstantAppResolver), newTarget(Target.Type.CONTAINER));
 
