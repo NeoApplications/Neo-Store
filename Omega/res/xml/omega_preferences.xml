@@ -19,60 +19,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Settings">
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_desktop"
-        android:summary="@string/summary__general_desktop"
-        android:title="@string/title__general_desktop"
-        android:layout="@layout/home_preference"
-        app:content="@xml/omega_preferences_desktop" />
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__interfaces">
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_apps"
-        android:summary="@string/summary__general_drawer"
-        android:title="@string/title__general_drawer"
-        android:layout="@layout/home_preference"
-        app:content="@xml/omega_preferences_drawer" />
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_desktop"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_desktop"
+            android:title="@string/title__general_desktop"
+            app:content="@xml/omega_preferences_desktop" />
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_style"
-        android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_theme"
-        android:title="@string/title__general_theme"
-        app:content="@xml/omega_preferences_theme" />
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_apps"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_drawer"
+            android:title="@string/title__general_drawer"
+            app:content="@xml/omega_preferences_drawer" />
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_widgets"
-        android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_smartspace"
-        android:title="@string/title__general_smartspace"
-        app:content="@xml/omega_preferences_smartspace" />
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_style"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_theme"
+            android:title="@string/title__general_theme"
+            app:content="@xml/omega_preferences_theme" />
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__inputs">
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_widgets"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_smartspace"
+            android:title="@string/title__general_smartspace"
+            app:content="@xml/omega_preferences_smartspace" />
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_gesture"
-        android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_notifications"
-        android:title="@string/title__general_notifications"
-        app:content="@xml/omega_preferences_notification" />
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_gesture"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_notifications"
+            android:title="@string/title__general_notifications"
+            app:content="@xml/omega_preferences_notification" />
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__others">
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_more_horiz"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_advanced"
+            android:title="@string/title__general_advanced"
+            app:content="@xml/omega_preferences_advanced" />
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_more_horiz"
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_code"
+            android:key="developerOptions"
         android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_advanced"
-        android:title="@string/title__general_advanced"
-        app:content="@xml/omega_preferences_advanced" />
+            android:title="@string/developer_options_title"
+            app:content="@xml/omega_preferences_developer"
+            app:controllerClass="com.saggitt.omega.settings.controllers.DeveloperOptionsController" />
 
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_code"
-        android:key="developerOptions"
-        android:layout="@layout/home_preference"
-        android:title="@string/developer_options_title"
-        app:content="@xml/omega_preferences_developer"
-        app:controllerClass="com.saggitt.omega.settings.controllers.DeveloperOptionsController" />
-
-    <com.saggitt.omega.preferences.SubPreference
-        android:icon="@drawable/ic_info"
-        android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_about"
-        android:title="@string/title__general_about"
-        app:content="@xml/omega_preferences_about" />
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_info"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_about"
+            android:title="@string/title__general_about"
+            app:content="@xml/omega_preferences_about" />
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>
