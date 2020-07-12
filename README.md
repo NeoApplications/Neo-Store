@@ -9,7 +9,7 @@ Free and Open Source Launcher.
 [![Telegram](https://img.shields.io/badge/Telegram-channel-blue.svg?style=for-the-badge)](https://t.me/omegalauncher)
 
 ## Features
--   Sort apps in the drawer by Alphabetical asc, Alphabetical desc, Install dat, and most used.
+-   Sort apps in the drawer by Alphabetical asc, Alphabetical desc, Install date, and Most used.
 
 ## Donations
 Want to buy me a coffee? 
