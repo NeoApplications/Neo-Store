@@ -1,6 +1,7 @@
 # Omega
 Free and Open Source Launcher.
-
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)    
+[![GitHub release](https://img.shields.io/github/release/otakuhqz/ZimLX.svg?style=for-the-badge)](https://github.com/otakuhqz/ZimLX/releases)
 [![Donate on PayPal](https://img.shields.io/badge/PayPal-Donate%20Now-orange.svg?style=for-the-badge)](https://paypal.me/saulhenriquez)
 [![Donate on Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/otakuhqz/donate)
 
