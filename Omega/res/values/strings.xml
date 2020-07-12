@@ -35,6 +35,9 @@
     <string name="summary__general_advanced">Languaje, back up, setting search</string>
     <string name="summary__general_about">More information about Omega Launcher</string>
 
+    <string name="pref_category__interfaces">Interfaces</string>
+    <string name="pref_category__inputs">Gestures and Search</string>
+    <string name="pref_category__others">Others</string>
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
     <string name="title__desktop_full_width_widgets">Full width widgets</string>
