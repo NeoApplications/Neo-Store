@@ -69,9 +69,9 @@ public class StatsLogCompatManager extends StatsLogManager {
         if (ext.srcTarget[0] != null) {
             ext.srcTarget[0].item = LauncherTarget.APP_ICON;
         }
-        if (Utilities.ATLEAST_Q)
-        StatsLogCompat.write(LAUNCH_APP, srcState, BACKGROUND,
-                MessageNano.toByteArray(ext), true);
+        if (Utilities.ATLEAST_R)
+            StatsLogCompat.write(LAUNCH_APP, srcState, BACKGROUND,
+                    MessageNano.toByteArray(ext), true);
     }
 
     @Override

@@ -16,8 +16,6 @@
 
 package com.android.launcher3.widget.custom;
 
-import static com.android.launcher3.LauncherAppWidgetProviderInfo.CLS_CUSTOM_WIDGET_PREFIX;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
@@ -44,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.android.launcher3.LauncherAppWidgetProviderInfo.CLS_CUSTOM_WIDGET_PREFIX;
+
 /**
  * CustomWidgetManager handles custom widgets implemented as a plugin.
  */
@@ -68,9 +68,9 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         mContexts = new SparseArray<>();
         mCustomWidgets = new ArrayList<>();
         mWidgetsIdMap = new SparseArray<>();
-        if(Utilities.ATLEAST_Q){
-        PluginManagerWrapper.INSTANCE.get(context)
-                .addPluginListener(this, CustomWidgetPlugin.class, true);
+        if (Utilities.ATLEAST_R) {
+            PluginManagerWrapper.INSTANCE.get(context)
+                    .addPluginListener(this, CustomWidgetPlugin.class, true);
         }
     }
 

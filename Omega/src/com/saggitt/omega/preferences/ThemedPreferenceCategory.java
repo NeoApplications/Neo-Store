@@ -32,7 +32,6 @@ public class ThemedPreferenceCategory extends PreferenceCategory {
     public ThemedPreferenceCategory(Context context) {
         this(context, null, 0);
     }
-
     public ThemedPreferenceCategory(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }

@@ -18,6 +18,11 @@ package com.android.quickstep.logging;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.launcher3.Utilities;
+import com.android.launcher3.userevent.nano.LauncherLogProto;
+import com.android.systemui.shared.system.MetricsLoggerCompat;
+import com.saggitt.omega.predictions.OmegaEventPredictor;
+
 import static com.android.launcher3.logging.LoggerUtils.newLauncherEvent;
 import static com.android.launcher3.userevent.nano.LauncherLogProto.ControlType.CANCEL_TARGET;
 import static com.android.systemui.shared.system.LauncherEventUtil.DISMISS;
@@ -25,28 +30,25 @@ import static com.android.systemui.shared.system.LauncherEventUtil.RECENTS_QUICK
 import static com.android.systemui.shared.system.LauncherEventUtil.RECENTS_SWIPE_UP_ONBOARDING_TIP;
 import static com.android.systemui.shared.system.LauncherEventUtil.VISIBLE;
 
-import com.android.launcher3.Utilities;
-import com.android.launcher3.logging.UserEventDispatcher;
-import com.android.launcher3.userevent.nano.LauncherLogProto;
-import com.android.systemui.shared.system.MetricsLoggerCompat;
-
 /**
  * This class handles AOSP MetricsLogger function calls and logging around
  * quickstep interactions.
  */
 @SuppressWarnings("unused")
-public class UserEventDispatcherExtension extends UserEventDispatcher {
+public class UserEventDispatcherExtension extends OmegaEventPredictor {
 
     public static final int ALL_APPS_PREDICTION_TIPS = 2;
 
     private static final String TAG = "UserEventDispatcher";
 
-    public UserEventDispatcherExtension(Context context) { }
+    public UserEventDispatcherExtension(Context context) {
+        super(context);
+    }
 
     public void logStateChangeAction(int action, int dir, int downX, int downY,
                                      int srcChildTargetType, int srcParentContainerType,
                                      int dstContainerType, int pageIndex) {
-        if(Utilities.ATLEAST_Q) {
+        if (Utilities.ATLEAST_R) {
             new MetricsLoggerCompat().visibility(MetricsLoggerCompat.OVERVIEW_ACTIVITY,
                     dstContainerType == LauncherLogProto.ContainerType.TASKSWITCHER);
         }

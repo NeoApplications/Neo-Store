@@ -25,11 +25,15 @@ public class LauncherFiles {
     public static final String WIDGET_PREVIEWS_DB = "widgetpreviews.db";
     public static final String APP_ICONS_DB = "app_icons.db";
 
+    // Google Reflection client preferences
+    public static final String REFLECTION_PREFERENCES_KEY = "reflection.private.properties";
+
     public static final List<String> ALL_FILES = Collections.unmodifiableList(Arrays.asList(
             LAUNCHER_DB,
             SHARED_PREFERENCES_KEY + XML,
             WIDGET_PREVIEWS_DB,
             MANAGED_USER_PREFERENCES_KEY + XML,
             DEVICE_PREFERENCES_KEY + XML,
+            REFLECTION_PREFERENCES_KEY + XML,
             APP_ICONS_DB));
 }

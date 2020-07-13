@@ -39,11 +39,11 @@ if (enable_plugin_kotlin) {
     apply plugin: 'kotlin-kapt'
 }
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion BUILD_TOOLS_VERSION
 
     def name = "0.2.0"
-    def code = 4
+    def code = 5
 
     defaultConfig {
         minSdkVersion 25

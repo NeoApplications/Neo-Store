@@ -171,7 +171,7 @@ public abstract class BaseDraggingActivity extends BaseActivity
                 AppLaunchTracker.INSTANCE.get(this).onStartApp(intent.getComponent(), user,
                         sourceContainer);
             }
-            getUserEventDispatcher().logAppLaunch(v, intent);
+            getUserEventDispatcher().logAppLaunch(v, intent, user);
             getStatsLogManager().logAppLaunch(v, intent);
             return true;
         } catch (NullPointerException|ActivityNotFoundException|SecurityException e) {

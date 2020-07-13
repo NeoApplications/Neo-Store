@@ -75,7 +75,7 @@ class OmegaApp : Application() {
             activities.remove(activity)
         }
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
+        override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
 
         }
 

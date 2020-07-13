@@ -20,6 +20,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -87,6 +89,13 @@ public class LauncherModel extends BroadcastReceiver
     LoaderTask mLoaderTask;
     @Thunk
     boolean mIsLoaderTaskRunning;
+
+    @Thunk
+    static final HandlerThread sUiWorkerThread = new HandlerThread("launcher-ui-loader");
+
+    static {
+        sUiWorkerThread.start();
+    }
 
     // Indicates whether the current model data is valid or not.
     // We start off with everything not loaded. After that, we assume that
@@ -552,6 +561,13 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
         sBgDataModel.dump(prefix, fd, writer, args);
+    }
+
+    /**
+     * @return the looper for the ui worker thread which can be used to start background tasksfor ui.
+     */
+    public static Looper getUiWorkerLooper() {
+        return sUiWorkerThread.getLooper();
     }
 
     public Callbacks getCallback() {

@@ -21,12 +21,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.LauncherCallbacks;
+import com.android.launcher3.LauncherModel;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.appprediction.PredictionUiStateManager;
+import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
+import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.uioverrides.WallpaperColorInfo.OnChangeListener;
 import com.android.launcher3.util.Themes;
@@ -52,6 +57,9 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     private boolean mStarted;
     private boolean mResumed;
     private boolean mAlreadyOnHome;
+    PredictionUiStateManager predictionUiStateManager;
+    private Handler handler = new Handler(LauncherModel.getUiWorkerLooper());
+    private final Runnable mUpdatePredictionsIfResumed = this::updatePredictionsIfResumed;
 
     public OmegaLauncherCallbacks(OmegaLauncher launcher) {
         mLauncher = launcher;
@@ -81,6 +89,12 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         instance.addOnChangeListener(this);
         onExtractedColorsChanged(instance);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
+
+        predictionUiStateManager = PredictionUiStateManager.INSTANCE.get(mLauncher);
+        predictionUiStateManager.setTargetAppsView(mLauncher.getAppsView());
+        if (FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE) {
+            predictionUiStateManager.switchClient(Client.OVERVIEW);
+        }
     }
 
     @Override
@@ -91,6 +105,12 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         }
 
         mLauncherClient.onResume();
+
+        Handler handler = mLauncher.getDragLayer().getHandler();
+        if (handler != null) {
+            handler.removeCallbacks(mUpdatePredictionsIfResumed);
+            Utilities.postAsyncCallback(handler, mUpdatePredictionsIfResumed);
+        }
     }
 
     @Override
@@ -144,21 +164,29 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
 
         Utilities.getPrefs(mLauncher).unregisterOnSharedPreferenceChangeListener(this);
         WallpaperColorInfo.getInstance(mLauncher).removeOnChangeListener(this);
+        PredictionUiStateManager.INSTANCE.get(mLauncher).setTargetAppsView(null);
+    }
+
+    private void updatePredictionsIfResumed() {
+        if (mLauncher.hasBeenResumed()) {
+            //ReflectionClient.getInstance(mLauncher).updatePredictionsNow(FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE ? Client.OVERVIEW.id : Client.HOME.id);
+            handler.post(() -> {
+                mLauncher.getUserEventDispatcher().updatePredictions();
+
+            });
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
     }
 
     @Override
@@ -176,7 +204,6 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
 
     @Override
     public void dump(String prefix, FileDescriptor fd, PrintWriter w, String[] args) {
-
     }
 
     @Override
@@ -191,12 +218,10 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
 
     @Override
     public void onTrimMemory(int level) {
-
     }
 
     @Override
     public void onLauncherProviderChange() {
-
     }
 
     @Override

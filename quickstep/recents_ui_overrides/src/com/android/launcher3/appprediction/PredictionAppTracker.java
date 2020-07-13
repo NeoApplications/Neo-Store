@@ -15,9 +15,6 @@
  */
 package com.android.launcher3.appprediction;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
-
 import android.annotation.TargetApi;
 import android.app.prediction.AppPredictionContext;
 import android.app.prediction.AppPredictionManager;
@@ -39,6 +36,7 @@ import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
 import com.android.launcher3.InvariantDeviceProfile;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
@@ -47,6 +45,9 @@ import com.android.systemui.plugins.PluginListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Subclass of app tracker which publishes the data to the prediction engine and gets back results.
@@ -140,9 +141,12 @@ public class PredictionAppTracker extends AppLaunchTracker
                 destroy();
 
                 // Initialize the clients
-                int count = InvariantDeviceProfile.INSTANCE.get(mContext).numAllAppsColumns;
-                mHomeAppPredictor = createPredictor(Client.HOME, count);
-                mRecentsOverviewPredictor = createPredictor(Client.OVERVIEW, count);
+
+                if (Utilities.ATLEAST_R) {
+                    int count = InvariantDeviceProfile.INSTANCE.get(mContext).numAllAppsColumns;
+                    mHomeAppPredictor = createPredictor(Client.HOME, count);
+                    mRecentsOverviewPredictor = createPredictor(Client.OVERVIEW, count);
+                }
                 return true;
             }
             case MSG_DESTROY: {

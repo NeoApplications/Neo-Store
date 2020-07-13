@@ -21,6 +21,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +125,7 @@ public class FloatingHeaderView extends LinearLayout implements
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child instanceof FloatingHeaderRow) {
+                Log.d("FloatingHeaderView", "Loading row " + child.toString());
                 rows.add((FloatingHeaderRow) child);
             }
         }
@@ -134,16 +136,16 @@ public class FloatingHeaderView extends LinearLayout implements
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (Utilities.ATLEAST_Q){
+        if (Utilities.ATLEAST_R) {
             PluginManagerWrapper.INSTANCE.get(getContext()).addPluginListener(this,
-                AllAppsRow.class, true /* allowMultiple */);
+                    AllAppsRow.class, true /* allowMultiple */);
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (Utilities.ATLEAST_Q){
+        if (Utilities.ATLEAST_R) {
             PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
         }
     }
@@ -219,7 +221,7 @@ public class FloatingHeaderView extends LinearLayout implements
         return updated;
     }
 
-    private void updateExpectedHeight() {
+    protected void updateExpectedHeight() {
         mMaxTranslation = 0;
         if (mCollapsed) {
             return;

@@ -55,8 +55,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --APP DRAWER-- */
     var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
-    val showPredictions by BooleanPref("pref_show_predictions", true, doNothing)
-    val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", true) {
+    val showPredictions by BooleanPref("pref_show_predictions", false, doNothing)
+    val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", false) {
         val header = onChangeCallback?.launcher?.appsView?.floatingHeaderView as? PredictionsFloatingHeader
         header?.updateShowAllAppsLabel()
     }
@@ -105,7 +105,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             oldFile.delete()
         }
         return mContext.applicationContext
-                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_MULTI_PROCESS)
+                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
                 .apply {
                     migrateConfig(this)
                 }
@@ -135,7 +135,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         // misc
         putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
         putString("pref_iconShape", "")
-        //putInt("pref_notification_background", R.color.notification_background)
+        putInt("pref_notification_background", R.color.notification_background)
 
     }
 
@@ -423,6 +423,25 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         fun clear() {
             valueMap.clear()
             saveChanges()
+        }
+    }
+
+    inner class ResettableLazy<out T : Any>(private val create: () -> T) {
+
+        private var initialized = false
+        private var currentValue: T? = null
+
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+            if (!initialized) {
+                currentValue = create()
+                initialized = true
+            }
+            return currentValue!!
+        }
+
+        fun resetValue() {
+            initialized = false
+            currentValue = null
         }
     }
 

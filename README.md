@@ -1,4 +1,4 @@
-# Omega
+# Omega Launcher
 Free and Open Source Launcher. <br/>
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
@@ -10,6 +10,7 @@ Free and Open Source Launcher. <br/>
 
 ## Features
 -   Sort apps in the drawer by Alphabetical asc, Alphabetical desc, Install date, and Most used.
+-   Google Feed integrated.
 
 ## Donations
 Want to buy me a coffee? 

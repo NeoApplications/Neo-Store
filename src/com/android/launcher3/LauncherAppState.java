@@ -167,6 +167,7 @@ public class LauncherAppState {
     }
 
     LauncherModel setLauncher(Launcher launcher) {
+        mLauncher = launcher;
         getLocalProvider(mContext).setLauncherProviderChangeListener(launcher);
         mModel.initialize(launcher);
         CustomWidgetManager.INSTANCE.get(launcher)

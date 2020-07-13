@@ -16,13 +16,6 @@
 
 package com.android.quickstep.views;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
-import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -53,7 +46,6 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.AnimatorPlaybackController;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.logging.UserEventDispatcher;
-import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Direction;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Touch;
@@ -77,6 +69,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static android.widget.Toast.LENGTH_SHORT;
+import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
+
 /**
  * A task in the Recents view.
  */
@@ -84,7 +82,9 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     private static final String TAG = TaskView.class.getSimpleName();
 
-    /** A curve of x from 0 to 1, where 0 is the center of the screen and 1 is the edge. */
+    /**
+     * A curve of x from 0 to 1, where 0 is the center of the screen and 1 is the edge.
+     */
     private static final TimeInterpolator CURVE_INTERPOLATOR
             = x -> (float) -Math.cos(x * Math.PI) / 2f + .5f;
 
@@ -212,7 +212,7 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         });
         mCornerRadius = TaskCornerRadius.get(context);
         //mWindowCornerRadius = QuickStepContract.getWindowCornerRadius(context.getResources());
-        mWindowCornerRadius = Utilities.ATLEAST_Q ? QuickStepContract.getWindowCornerRadius(context.getResources()) : 3f;
+        mWindowCornerRadius = Utilities.ATLEAST_R ? QuickStepContract.getWindowCornerRadius(context.getResources()) : 3f;
         mCurrentFullscreenParams = new FullscreenDrawParams(mCornerRadius);
         mDigitalWellBeingToast = new DigitalWellBeingToast(mActivity, this);
 

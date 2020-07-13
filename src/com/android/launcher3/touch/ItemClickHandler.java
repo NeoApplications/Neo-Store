@@ -278,5 +278,6 @@ public class ItemClickHandler {
             db.close();
         }
         launcher.startActivitySafely(v, intent, item, sourceContainer);
+        launcher.getUserEventDispatcher().logAppLaunch(v, intent, item.user);
     }
 }

@@ -15,12 +15,6 @@
  */
 package com.android.quickstep.util;
 
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
-import static com.android.systemui.shared.system.QuickStepContract.getWindowCornerRadius;
-import static com.android.systemui.shared.system.QuickStepContract.supportsRoundedCornersOnWindows;
-import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.MODE_CLOSING;
-import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.MODE_OPENING;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -50,6 +44,12 @@ import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat;
 import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat.SurfaceParams;
 import com.android.systemui.shared.system.TransactionCompat;
 import com.android.systemui.shared.system.WindowManagerWrapper;
+
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
+import static com.android.systemui.shared.system.QuickStepContract.getWindowCornerRadius;
+import static com.android.systemui.shared.system.QuickStepContract.supportsRoundedCornersOnWindows;
+import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.MODE_CLOSING;
+import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.MODE_OPENING;
 
 /**
  * Utility class to handle window clip animation
@@ -102,7 +102,7 @@ public class ClipAnimationHelper {
     private TargetAlphaProvider mBaseAlphaCallback = (t, a) -> 1;
 
     public ClipAnimationHelper(Context context) {
-        if (Utilities.ATLEAST_Q) {
+        if (Utilities.ATLEAST_R) {
             mWindowCornerRadius = getWindowCornerRadius(context.getResources());
             mSupportsRoundedCornersOnWindows = supportsRoundedCornersOnWindows(context.getResources());
             mTaskCornerRadius = TaskCornerRadius.get(context);

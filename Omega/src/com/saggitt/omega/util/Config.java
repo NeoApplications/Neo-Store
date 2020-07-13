@@ -38,6 +38,7 @@ public class Config {
     public static final int REQUEST_PERMISSION_STORAGE_ACCESS = 666;
     public static final int REQUEST_PERMISSION_LOCATION_ACCESS = 667;
     public static final int REQUEST_PERMISSION_CALENDAR_READ_ACCESS = 668;
+    public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 669;
 
     public Context mContext;
 
