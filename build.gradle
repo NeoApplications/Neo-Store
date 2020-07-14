@@ -43,11 +43,11 @@ android {
     buildToolsVersion BUILD_TOOLS_VERSION
 
     def name = "0.2.0"
-    def code = 5
+    def code = 7
 
     defaultConfig {
         minSdkVersion 25
-        targetSdkVersion 29
+        targetSdkVersion 30
         applicationId "com.saggitt.omega"
         versionName name
         versionCode code
