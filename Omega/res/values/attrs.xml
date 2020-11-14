@@ -84,10 +84,33 @@
         <attr name="numMinColumns" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="GesturePreference">
+        <attr name="gestureClass" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ThemeFlagSwitchPreference">
+        <attr name="switchFlag" format="integer" />
+    </declare-styleable>
+
     <attr name="settingsBackground" format="color" />
     <attr name="bottomSheetScrimColor" format="color" />
     <attr name="settingsSearchBackground" format="color" />
     <attr name="settingsPopupBackground" format="color" />
     <attr name="bottomSheetNavBarColor" format="color" />
     <attr name="useLightSystemBars" format="boolean" />
+    <attr name="qsbEdgeRadius" format="dimension" />
+
+    <attr name="omegaColorAllAppsOverlay" format="color" />
+    <attr name="omegaColorSearchBar" format="color" />
+
+    <attr name="dashIconTint" format="color" />
+    <attr name="dashIconBackground" format="color" />
+
+    <!-- Pixel -->
+    <attr name="gIcon" format="reference" />
+    <attr name="micIcon" format="reference" />
+
+    <declare-styleable name="PreviewPreference">
+        <attr name="previewLayout" format="float" />
+    </declare-styleable>
 </resources>
