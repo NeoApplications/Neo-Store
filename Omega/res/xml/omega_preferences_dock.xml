@@ -15,6 +15,13 @@
   ~
   -->
 
-<PreferenceScreen>
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:key="pref_hideHotseat"
+        android:persistent="true"
+        android:title="@string/title__dock_hide"
+        android:disableDependentsState="true"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
