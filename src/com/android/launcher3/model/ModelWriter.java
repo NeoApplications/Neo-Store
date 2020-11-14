@@ -16,12 +16,11 @@
 
 package com.android.launcher3.model;
 
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,10 +39,12 @@ import com.android.launcher3.LauncherSettings.Settings;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.model.BgDataModel.Callbacks;
 import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.ItemInfoMatcher;
+import com.saggitt.omega.iconpack.IconPackManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +53,9 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Class for handling model updates.
@@ -73,7 +77,7 @@ public class ModelWriter {
     private boolean mPreparingToUndo;
 
     public ModelWriter(Context context, LauncherModel model, BgDataModel dataModel,
-            boolean hasVerticalHotseat, boolean verifyChanges) {
+                       boolean hasVerticalHotseat, boolean verifyChanges) {
         mContext = context;
         mModel = model;
         mBgDataModel = dataModel;
@@ -102,7 +106,7 @@ public class ModelWriter {
      * <container, screen, cellX, cellY>
      */
     public void addOrMoveItemInDatabase(ItemInfo item,
-            int container, int screenId, int cellX, int cellY) {
+                                        int container, int screenId, int cellX, int cellY) {
         if (item.id == ItemInfo.NO_ID) {
             // From all apps
             addItemToDatabase(item, container, screenId, cellX, cellY);
@@ -152,7 +156,7 @@ public class ModelWriter {
      * Move an item in the DB to a new <container, screen, cellX, cellY>
      */
     public void moveItemInDatabase(final ItemInfo item,
-            int container, int screenId, int cellX, int cellY) {
+                                   int container, int screenId, int cellX, int cellY) {
         updateItemInfoProps(item, container, screenId, cellX, cellY);
         enqueueDeleteRunnable(new UpdateItemRunnable(item, () ->
                 new ContentWriter(mContext)
@@ -191,7 +195,7 @@ public class ModelWriter {
      * Move and/or resize item in the DB to a new <container, screen, cellX, cellY, spanX, spanY>
      */
     public void modifyItemInDatabase(final ItemInfo item,
-            int container, int screenId, int cellX, int cellY, int spanX, int spanY) {
+                                     int container, int screenId, int cellX, int cellY, int spanX, int spanY) {
         updateItemInfoProps(item, container, screenId, cellX, cellY);
         item.spanX = spanX;
         item.spanY = spanY;
@@ -205,6 +209,33 @@ public class ModelWriter {
                         .put(Favorites.SPANX, item.spanX)
                         .put(Favorites.SPANY, item.spanY)
                         .put(Favorites.SCREEN, item.screenId)));
+    }
+
+    private void executeUpdateItem(ItemInfo item, Supplier<ContentWriter> writer) {
+        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, writer));
+    }
+
+    public static void modifyItemInDatabase(Context context, final ItemInfo item, String alias,
+                                            String swipeUpAction,
+                                            IconPackManager.CustomIconEntry iconEntry, Bitmap icon,
+                                            boolean updateIcon, boolean reload) {
+        LauncherAppState.getInstance(context).getLauncher().getModelWriter().executeUpdateItem(item, () -> {
+            final ContentWriter writer = new ContentWriter(context);
+            writer.put(Favorites.TITLE_ALIAS, alias);
+            writer.put(Favorites.SWIPE_UP_ACTION, swipeUpAction);
+            if (updateIcon) {
+                writer.put(Favorites.CUSTOM_ICON, icon != null ? GraphicsUtils.flattenBitmap(icon) : null);
+                writer.put(Favorites.CUSTOM_ICON_ENTRY, iconEntry != null ? iconEntry.toString() : null);
+            }
+            return writer;
+        });
+        if (reload) {
+            LauncherAppState.getInstance(context).getModel().forceReload();
+        }
+    }
+
+    private void executeUpdateItem(ItemInfo item, ContentWriter writer) {
+        MAIN_EXECUTOR.execute(new UpdateItemRunnable(item, () -> writer));
     }
 
     /**
@@ -223,7 +254,7 @@ public class ModelWriter {
      * cellY fields of the item. Also assigns an ID to the item.
      */
     public void addItemToDatabase(final ItemInfo item,
-            int container, int screenId, int cellX, int cellY) {
+                                  int container, int screenId, int cellX, int cellY) {
         updateItemInfoProps(item, container, screenId, cellX, cellY);
 
         final ContentResolver cr = mContext.getContentResolver();

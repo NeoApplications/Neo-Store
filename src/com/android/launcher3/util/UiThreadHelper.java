@@ -15,25 +15,38 @@
  */
 package com.android.launcher3.util;
 
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
+import android.os.Process;
 import android.view.inputmethod.InputMethodManager;
+
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Utility class for offloading some class from UI thread
  */
 public class UiThreadHelper {
 
+    private static HandlerThread sHandlerThread;
     private static Handler sHandler;
 
     private static final int MSG_HIDE_KEYBOARD = 1;
     private static final int MSG_SET_ORIENTATION = 2;
     private static final int MSG_RUN_COMMAND = 3;
+
+    public static Looper getBackgroundLooper() {
+        if (sHandlerThread == null) {
+            sHandlerThread =
+                    new HandlerThread("UiThreadHelper", Process.THREAD_PRIORITY_FOREGROUND);
+            sHandlerThread.start();
+        }
+        return sHandlerThread.getLooper();
+    }
 
     private static Handler getHandler(Context context) {
         if (sHandler == null) {

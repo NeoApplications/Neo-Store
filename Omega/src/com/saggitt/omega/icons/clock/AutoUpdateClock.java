@@ -1,20 +1,20 @@
 package com.saggitt.omega.icons.clock;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.SystemClock;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Utilities;
 
 import java.util.TimeZone;
 
-class AutoUpdateClock extends FastBitmapDrawable implements Runnable {
+public class AutoUpdateClock extends FastBitmapDrawable implements Runnable {
     private ClockLayers mLayers;
 
-    AutoUpdateClock(ItemInfoWithIcon info, ClockLayers layers) {
-        super(info);
+    AutoUpdateClock(Bitmap bitmap, ClockLayers layers) {
+        super(bitmap);
         mLayers = layers;
     }
 

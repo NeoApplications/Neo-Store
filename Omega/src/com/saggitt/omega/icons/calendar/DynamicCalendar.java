@@ -11,7 +11,7 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 public class DynamicCalendar {
-    public static final String CALENDAR = "com.google.android.calendar";
+    public static final String GOOGLE_CALENDAR = "com.google.android.calendar";
 
     public static Drawable load(Context context, ComponentName component, int iconDpi) {
         try {
@@ -19,7 +19,7 @@ public class DynamicCalendar {
             Bundle metaData = pm.getActivityInfo(component,
                     PackageManager.GET_META_DATA | PackageManager.GET_UNINSTALLED_PACKAGES).metaData;
 
-            Resources resourcesForApplication = pm.getResourcesForApplication(DynamicCalendar.CALENDAR);
+            Resources resourcesForApplication = pm.getResourcesForApplication(GOOGLE_CALENDAR);
             int dayResId = DynamicCalendar.getDayResId(metaData, resourcesForApplication);
             if (dayResId != 0) {
                 return resourcesForApplication.getDrawableForDensity(dayResId, iconDpi);
@@ -31,7 +31,7 @@ public class DynamicCalendar {
 
     public static int getDayResId(Bundle bundle, Resources resources) {
         if (bundle != null) {
-            int dateArrayId = bundle.getInt(CALENDAR + ".dynamic_icons_nexus_round", 0);
+            int dateArrayId = bundle.getInt(GOOGLE_CALENDAR + ".dynamic_icons_nexus_round", 0);
             if (dateArrayId != 0) {
                 try {
                     TypedArray dateIds = resources.obtainTypedArray(dateArrayId);

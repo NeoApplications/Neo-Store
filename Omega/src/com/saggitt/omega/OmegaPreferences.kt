@@ -20,11 +20,20 @@ package com.saggitt.omega
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Looper
+import android.text.TextUtils
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
+import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
+import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.allapps.PredictionsFloatingHeader
+import com.saggitt.omega.iconpack.IconPackManager
+import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 import org.json.JSONArray
@@ -44,7 +53,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val doNothing = { }
     val restart = { restart() }
     val reloadApps = { reloadApps() }
+    val reloadAll = { reloadAll() }
+    private val refreshGrid = { refreshGrid() }
     val updateBlur = { updateBlur() }
+    val reloadIcons = { reloadIcons() }
+    private val reloadIconPacks = { IconPackManager.getInstance(context).packList.reloadPacks() }
     val recreate = { recreate() }
     val omegaConfig = Config(context)
 
@@ -62,19 +75,48 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
     var hiddenAppSet by StringSetPref("hidden-app-set", Collections.emptySet(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
+    var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
+    val drawerTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
+    val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
+    private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)
+    val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
-    val dashEnable by BooleanPref("pref_key__dash_enable", true, recreate)
-    fun setDashEnable(enable: Boolean) {
-        sharedPrefs.edit().putBoolean("pref_key__dash_enable", enable).apply()
+    var dashEnable by BooleanPref("pref_key__dash_enable", true, recreate)
+    val desktopTextScale by FloatPref("pref_iconTextScale", 1f, reloadAll)
+    val desktopIconScale by FloatPref("pref_iconSize", 1f, recreate)
+    private var gridSizeDelegate = ResettableLazy {
+        GridSize2D(this, "numRows", "numColumns",
+                LauncherAppState.getIDP(context), refreshGrid)
     }
-
+    val gridSize by gridSizeDelegate
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
+    private val homeMultilineLabel by BooleanPref("pref_homeIconLabelsInTwoLines", false, recreate)
+    val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
+
+    /* --DOCK-- */
+    var dockHide by BooleanPref("pref_hideHotseat", false, restart)
+    val dockIconScale by FloatPref("pref_hotseatIconSize", 1f, recreate)
+    var dockSearchBarPref by BooleanPref("pref_dock_search", true, restart)
+    inline val dockSearchBar get() = !dockHide && dockSearchBarPref
+    var dockScale by FloatPref("pref_dockScale", -1f, recreate)
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
+    var iconShape by StringPref("pref_iconShape", "", doNothing)
+    val iconPackMasking by BooleanPref("pref_iconPackMasking", true, reloadIcons)
+    private var iconPack by StringPref("pref_icon_pack", "", reloadIconPacks)
+    val iconPacks = object : MutableListPref<String>("pref_iconPacks", reloadIconPacks,
+            if (!TextUtils.isEmpty(iconPack)) listOf(iconPack) else omegaConfig.defaultIconPacks.asList()) {
+        override fun unflattenValue(value: String) = value
+    }
+    var colorizedLegacyTreatment by BooleanPref("pref_colorizeGeneratedBackgrounds", false, doNothing)
+    var enableWhiteOnlyTreatment by BooleanPref("pref_enableWhiteOnlyTreatment", false, doNothing)
+    var enableLegacyTreatment by BooleanPref("pref_enableLegacyTreatment", false, doNothing)
+    var adaptifyIconPacks by BooleanPref("pref_generateAdaptiveForIconPack", false, doNothing)
+    var forceShapeless by BooleanPref("pref_forceShapeless", false, doNothing)
 
     /* --NOTIFICATION-- */
     val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)
@@ -87,6 +129,13 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
+    /* --SEARCH-- */
+
+    val recentBackups = object : MutableListPref<Uri>(
+            Utilities.getDevicePrefs(context), "pref_recentBackups") {
+        override fun unflattenValue(value: String) = Uri.parse(value)
+    }
+
     /* --DEV-- */
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
     val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
@@ -94,7 +143,21 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val enablePhysics get() = !lowPerformanceMode
 
     var restoreSuccess by BooleanPref("pref_restoreSuccess", false)
-    var configVersion by IntPref("config_version", if (restoreSuccess) 0 else CURRENT_VERSION)
+
+    val customAppName = object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
+        override fun flattenKey(key: ComponentKey) = key.toString()
+        override fun unflattenKey(key: String) = makeComponentKey(context, key)
+        override fun flattenValue(value: String) = value
+        override fun unflattenValue(value: String) = value
+    }
+
+    val customAppIcon = object : MutableMapPref<ComponentKey, IconPackManager.CustomIconEntry>("pref_appIconMap", reloadAll) {
+        override fun flattenKey(key: ComponentKey) = key.toString()
+        override fun unflattenKey(key: String) = makeComponentKey(context, key)
+        override fun flattenValue(value: IconPackManager.CustomIconEntry) = value.toString()
+        override fun unflattenValue(value: String) = IconPackManager.CustomIconEntry.fromString(value)
+    }
+
 
     private fun migratePrefs(): SharedPreferences {
         val dir = mContext.cacheDir.parent
@@ -180,8 +243,17 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         onChangeCallback?.restart()
     }
 
+    fun refreshGrid() {
+        onChangeCallback?.refreshGrid()
+    }
+
     private fun updateBlur() {
         onChangeCallback?.updateBlur()
+    }
+
+    fun reloadIcons() {
+        LauncherAppState.getInstance(context).reloadIconCache()
+        MAIN_EXECUTOR.post { onChangeCallback?.recreate() }
     }
 
     fun updateSortApps() {
@@ -519,6 +591,23 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
         override fun onSetValue(value: Float) {
             edit { putFloat(getKey(), value) }
+        }
+    }
+
+    open inner class StringBasedPref<T : Any>(key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+                                              private val fromString: (String) -> T,
+                                              private val toString: (T) -> String,
+                                              private val dispose: (T) -> Unit) :
+            PrefDelegate<T>(key, defaultValue, onChange) {
+        override fun onGetValue(): T = sharedPrefs.getString(getKey(), null)?.run(fromString)
+                ?: defaultValue
+
+        override fun onSetValue(value: T) {
+            edit { putString(getKey(), toString(value)) }
+        }
+
+        override fun disposeOldValue(oldValue: T) {
+            dispose(oldValue)
         }
     }
 

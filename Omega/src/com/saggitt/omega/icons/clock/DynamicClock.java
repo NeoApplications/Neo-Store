@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -17,7 +18,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
 
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.util.Preconditions;
@@ -137,8 +137,7 @@ public class DynamicClock extends BroadcastReceiver {
 
     private void updateMainThread() {
         MAIN_EXECUTOR.execute(() -> updateWrapper(getClockLayers(mContext,
-                LauncherAppState.getIDP(mContext).fillResIconDpi,
-                true)));
+                LauncherAppState.getIDP(mContext).fillResIconDpi, true)));
     }
 
     private void updateWrapper(ClockLayers wrapper) {
@@ -148,11 +147,12 @@ public class DynamicClock extends BroadcastReceiver {
         }
     }
 
-    public AutoUpdateClock drawIcon(ItemInfoWithIcon info) {
-        final AutoUpdateClock updater = new AutoUpdateClock(info, mLayers.clone());
+    public AutoUpdateClock drawIcon(Bitmap bitmap) {
+        final AutoUpdateClock updater = new AutoUpdateClock(bitmap, mLayers.clone());
         mUpdaters.add(updater);
         return updater;
     }
+
 
     @Override
     public void onReceive(Context context, Intent intent) {

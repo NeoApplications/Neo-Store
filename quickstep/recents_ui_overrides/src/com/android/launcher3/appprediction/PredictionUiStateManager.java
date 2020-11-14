@@ -16,12 +16,6 @@
 
 package com.android.launcher3.appprediction;
 
-import static com.android.launcher3.LauncherState.BACKGROUND_APP;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKER;
-
-import android.app.prediction.AppPredictor;
-import android.app.prediction.AppTarget;
 import android.content.ComponentName;
 import android.content.Context;
 
@@ -36,7 +30,6 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherState;
-import com.android.launcher3.LauncherStateManager.StateListener;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.AllAppsStore.OnUpdateListener;
@@ -46,11 +39,18 @@ import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.MainThreadInitializedObject;
+import com.saggitt.omega.predictions.AppPredictorCompat;
+import com.saggitt.omega.predictions.AppTargetCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import static com.android.launcher3.LauncherState.BACKGROUND_APP;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherStateManager.StateListener;
+import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKER;
 
 /**
  * Handler responsible to updating the UI due to predicted apps changes. Operations:
@@ -157,7 +157,8 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
     }
 
     @Override
-    public void reapplyItemInfo(ItemInfoWithIcon info) { }
+    public void reapplyItemInfo(ItemInfoWithIcon info) {
+    }
 
     @Override
     public void onStateTransitionStart(LauncherState toState) { }
@@ -208,7 +209,7 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
         dispatchOnChange(true);
     }
 
-    public AppPredictor.Callback appPredictorCallback(Client client) {
+    public AppPredictorCompat.Callback appPredictorCallback(Client client) {
         return targets -> {
             mPredictionServicePredictions[client.ordinal()] = targets;
             updatePredictionStateAfterCallback();
@@ -235,9 +236,9 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
 
         state.apps = new ArrayList<>();
 
-        List<AppTarget> appTargets = mPredictionServicePredictions[mActiveClient.ordinal()];
+        List<AppTargetCompat> appTargets = mPredictionServicePredictions[mActiveClient.ordinal()];
         if (!appTargets.isEmpty()) {
-            for (AppTarget appTarget : appTargets) {
+            for (AppTargetCompat appTarget : appTargets) {
                 ComponentKey key;
                 if (appTarget.getShortcutInfo() != null) {
                     key = ShortcutKey.fromInfo(appTarget.getShortcutInfo());

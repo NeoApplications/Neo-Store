@@ -16,9 +16,6 @@
 
 package com.android.launcher3.folder;
 
-import static com.android.launcher3.graphics.IconShape.getShape;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -43,6 +40,9 @@ import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
 import com.android.launcher3.views.ActivityContext;
+
+import static com.android.launcher3.graphics.IconShape.getShape;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
 /**
  * This object represents a FolderIcon preview background. It stores drawing / measurement
@@ -96,6 +96,16 @@ public class PreviewBackground {
     private ObjectAnimator mStrokeAlphaAnimator;
     private ObjectAnimator mShadowAnimator;
 
+    private boolean isInDrawer;
+
+    public PreviewBackground() {
+        this(false);
+    }
+
+    public PreviewBackground(boolean inDrawer) {
+        isInDrawer = inDrawer;
+    }
+
     private static final Property<PreviewBackground, Integer> STROKE_ALPHA =
             new Property<PreviewBackground, Integer>(Integer.class, "strokeAlpha") {
                 @Override
@@ -135,10 +145,11 @@ public class PreviewBackground {
         ta.recycle();
 
         DeviceProfile grid = activity.getWallpaperDeviceProfile();
-        previewSize = grid.folderIconSizePx;
+        previewSize = isInDrawer ? grid.allAppsFolderIconSizePx : grid.folderIconSizePx;
 
         basePreviewOffsetX = (availableSpaceX - previewSize) / 2;
-        basePreviewOffsetY = topPadding + grid.folderIconOffsetYPx;
+        basePreviewOffsetY = topPadding +
+                (isInDrawer ? grid.allAppsFolderIconOffsetYPx : grid.folderIconOffsetYPx);
 
         // Stroke width is 1dp
         mStrokeWidth = context.getResources().getDisplayMetrics().density;
@@ -147,8 +158,8 @@ public class PreviewBackground {
         float shadowRadius = radius + mStrokeWidth;
         int shadowColor = Color.argb(SHADOW_OPACITY, 0, 0, 0);
         mShadowShader = new RadialGradient(0, 0, 1,
-                new int[] {shadowColor, Color.TRANSPARENT},
-                new float[] {radius / shadowRadius, 1},
+                new int[]{shadowColor, Color.TRANSPARENT},
+                new float[]{radius / shadowRadius, 1},
                 Shader.TileMode.CLAMP);
 
         invalidate();
@@ -199,6 +210,10 @@ public class PreviewBackground {
     void setInvalidateDelegate(View invalidateDelegate) {
         mInvalidateDelegate = invalidateDelegate;
         invalidate();
+    }
+
+    public void setStartOpacity(float opacity) {
+        mColorMultiplier = opacity;
     }
 
     public int getBgColor() {

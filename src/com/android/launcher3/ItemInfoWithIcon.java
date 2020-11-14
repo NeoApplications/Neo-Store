@@ -16,11 +16,11 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.icons.BitmapInfo.LOW_RES_ICON;
-
 import android.graphics.Bitmap;
 
 import com.android.launcher3.icons.BitmapInfo;
+
+import static com.android.launcher3.icons.BitmapInfo.LOW_RES_ICON;
 
 /**
  * Represents an ItemInfo which also holds an icon.
@@ -114,6 +114,10 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
     @Override
     public boolean isDisabled() {
         return (runtimeStatusFlags & FLAG_DISABLED_MASK) != 0;
+    }
+
+    public boolean isBadgeVisible() {
+        return (runtimeStatusFlags & FLAG_ICON_BADGED) != 0;
     }
 
     /**

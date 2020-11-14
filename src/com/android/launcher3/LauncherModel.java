@@ -308,6 +308,13 @@ public class LauncherModel extends BroadcastReceiver
         }
     }
 
+    public void forceReloadOnNextLaunch() {
+        synchronized (this.mLock) {
+            stopLoader();
+            mModelLoaded = false;
+        }
+    }
+
     public void forceReload() {
         forceReload(-1);
     }
@@ -315,6 +322,7 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * Reloads the workspace items from the DB and re-binds the workspace. This should generally
      * not be called as DB updates are automatically followed by UI update
+     *
      * @param synchronousBindPage The page to bind first. Can pass -1 to use the current page.
      */
     public void forceReload(int synchronousBindPage) {

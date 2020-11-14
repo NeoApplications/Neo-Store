@@ -16,14 +16,12 @@
 
 package com.android.launcher3.folder;
 
-import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
-import static com.android.launcher3.folder.PreviewItemManager.INITIAL_ITEM_ANIMATION_DURATION;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -74,13 +72,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
+import static com.android.launcher3.folder.PreviewItemManager.INITIAL_ITEM_ANIMATION_DURATION;
+
 /**
  * An icon that can appear on in the workspace representing an {@link Folder}.
  */
 public class FolderIcon extends FrameLayout implements FolderListener, IconLabelDotView {
 
-    @Thunk Launcher mLauncher;
-    @Thunk Folder mFolder;
+    @Thunk
+    Launcher mLauncher;
+    @Thunk
+    Folder mFolder;
     private FolderInfo mInfo;
 
     private CheckLongPressHelper mLongPressHelper;
@@ -120,6 +123,8 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     private float mDotScale;
     private Animator mDotScaleAnim;
 
+    public boolean isCustomIcon = false;
+
     private static final Property<FolderIcon, Float> DOT_SCALE_PROPERTY
             = new Property<FolderIcon, Float>(Float.TYPE, "dotScale") {
         @Override
@@ -154,7 +159,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public static FolderIcon fromXml(int resId, Launcher launcher, ViewGroup group,
-            FolderInfo folderInfo) {
+                                     FolderInfo folderInfo) {
         @SuppressWarnings("all") // suppress dead code warning
         final boolean error = INITIAL_ITEM_ANIMATION_DURATION >= DROP_IN_ANIMATION_DURATION;
         if (error) {
@@ -172,7 +177,13 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         icon.mFolderName.setText(folderInfo.title);
         icon.mFolderName.setCompoundDrawablePadding(0);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) icon.mFolderName.getLayoutParams();
+        //if (folderInfo instanceof DrawerFolderInfo) {
+        //    lp.topMargin = grid.allAppsIconSizePx + grid.allAppsIconDrawablePaddingPx;
+        //    icon.mBackground = new PreviewBackground(true);
+        //    ((DrawerFolderInfo) folderInfo).getAppsStore().registerFolderIcon(icon);
+        //} else {
         lp.topMargin = grid.iconSizePx + grid.iconDrawablePaddingPx;
+        //}
 
         icon.setTag(folderInfo);
         icon.setOnClickListener(ItemClickHandler.INSTANCE);
@@ -209,6 +220,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public float getBackgroundStrokeWidth() {
         return mBackground.getStrokeWidth();
+    }
+
+    public void unbind() {
+        if (mInfo != null) {
+            mInfo.removeListener(this);
+            mInfo.removeListener(mFolder);
+            mInfo = null;
+        }
     }
 
     public Folder getFolder() {
@@ -268,8 +287,8 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void performCreateAnimation(final WorkspaceItemInfo destInfo, final View destView,
-            final WorkspaceItemInfo srcInfo, final DragView srcView, Rect dstRect,
-            float scaleRelativeToDragLayer) {
+                                       final WorkspaceItemInfo srcInfo, final DragView srcView, Rect dstRect,
+                                       float scaleRelativeToDragLayer) {
         prepareCreateAnimation(destView);
         addItem(destInfo);
         // This will animate the first item from it's position as an icon into its
@@ -294,7 +313,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     private void onDrop(final WorkspaceItemInfo item, DragView animateView, Rect finalRect,
-            float scaleRelativeToDragLayer, int index, boolean itemReturnedOnFailedDrop) {
+                        float scaleRelativeToDragLayer, int index, boolean itemReturnedOnFailedDrop) {
         item.cellX = -1;
         item.cellY = -1;
 
@@ -306,7 +325,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             Rect from = new Rect();
             dragLayer.getViewRectRelativeToSelf(animateView, from);
             Rect to = finalRect;
-            if (to == null) {
+            if (to == null && !isInAppDrawer()) {
                 to = new Rect();
                 Workspace workspace = mLauncher.getWorkspace();
                 // Set cellLayout and this to it's final state to compute final animation locations
@@ -328,7 +347,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 List<WorkspaceItemInfo> oldPreviewItems = new ArrayList<>(mCurrentPreviewItems);
                 mInfo.add(item, index, false);
                 mCurrentPreviewItems.clear();
-                mCurrentPreviewItems.addAll(getPreviewItemsOnPage(0));
+                mCurrentPreviewItems.addAll(getPreviewItems());
 
                 if (!oldPreviewItems.equals(mCurrentPreviewItems)) {
                     int newIndex = mCurrentPreviewItems.indexOf(item);
@@ -348,6 +367,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             if (!itemAdded) {
                 mInfo.add(item, index, true);
+            }
+
+            if (isInAppDrawer()) {
+                return;
             }
 
             int[] center = new int[2];
@@ -556,13 +579,55 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     /**
      * Returns the list of items which should be visible in the preview
      */
+
     public List<WorkspaceItemInfo> getPreviewItemsOnPage(int page) {
         return mPreviewVerifier.setFolderInfo(mInfo).previewItemsForPage(page, mInfo.contents);
+    }
+
+    public List<WorkspaceItemInfo> getPreviewItems() {
+        return getPreviewItemsOnPage(0);
+    }
+
+    public void verifyHighRes() {
+        int processedItemCount = 0;
+        List<BubbleTextView> itemsOnPage = mFolder.getItemsOnPage(0);
+        int numItems = itemsOnPage.size();
+        for (int rank = 0; rank < numItems; ++rank) {
+            if (mPreviewVerifier.isItemInPreview(0, rank)) {
+                BubbleTextView item = itemsOnPage.get(rank);
+                item.verifyHighRes(info -> {
+                    item.reapplyItemInfo(info);
+                    updatePreviewItems(false);
+                    invalidate();
+                });
+                processedItemCount++;
+            }
+
+            if (processedItemCount == MAX_NUM_ITEMS_IN_PREVIEW) {
+                break;
+            }
+        }
     }
 
     @Override
     protected boolean verifyDrawable(@NonNull Drawable who) {
         return mPreviewItemManager.verifyDrawable(who) || super.verifyDrawable(who);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!mInfo.useIconMode(mLauncher) && isInAppDrawer()) {
+            DeviceProfile grid = mLauncher.getDeviceProfile();
+            int drawablePadding = grid.allAppsIconDrawablePaddingPx;
+
+            Paint.FontMetrics fm = mFolderName.getPaint().getFontMetrics();
+            int cellHeightPx = mFolderName.getIconSize() + drawablePadding +
+                    (int) Math.ceil(fm.bottom - fm.top);
+            int height = MeasureSpec.getSize(heightMeasureSpec);
+            setPadding(getPaddingLeft(), (height - cellHeightPx) / 2, getPaddingRight(),
+                    getPaddingBottom());
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -576,6 +641,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         mPreviewItemManager.updatePreviewItems(animate);
         mCurrentPreviewItems.clear();
         mCurrentPreviewItems.addAll(getPreviewItemsOnPage(0));
+    }
+
+    @Override
+    public void prepareAutoUpdate() {
     }
 
     /**
@@ -651,6 +720,9 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void clearLeaveBehindIfExists() {
+        if (isInAppDrawer()) {
+            return;
+        }
         ((CellLayout.LayoutParams) getLayoutParams()).canReorder = true;
         if (mInfo.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
             CellLayout cl = (CellLayout) getParent().getParent();
@@ -659,6 +731,9 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void drawLeaveBehindIfExists() {
+        if (isInAppDrawer()) {
+            return;
+        }
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) getLayoutParams();
         // While the folder is open, the position of the icon cannot change.
         lp.canReorder = false;
@@ -670,5 +745,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public void onFolderClose(int currentPage) {
         mPreviewItemManager.onFolderClose(currentPage);
+    }
+
+    public boolean isInAppDrawer() {
+        //return mInfo instanceof DrawerFolderInfo;
+        return false;
     }
 }

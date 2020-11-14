@@ -77,6 +77,8 @@ import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
+import com.saggitt.omega.preferences.GridSizeDialogFragmentCompat;
+import com.saggitt.omega.preferences.GridSizePreference;
 import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.ResumablePreference;
 import com.saggitt.omega.preferences.StyledIconPreference;
@@ -394,7 +396,7 @@ public class SettingsActivity extends SettingsBaseActivity
                 return;
             }
             if (mAdapter != null) {
-                mAdapter.requestHighlight(Objects.requireNonNull(getView()), getListView());
+                mAdapter.requestHighlight(requireView(), getListView());
             }
         }
 
@@ -570,7 +572,7 @@ public class SettingsActivity extends SettingsBaseActivity
         @Override
         public void onResume() {
             super.onResume();
-            Objects.requireNonNull(getActivity()).setTitle(R.string.settings_button_text);
+            requireActivity().setTitle(R.string.settings_button_text);
             getActivity().setTitleColor(R.color.colorAccent);
             boolean dev = Utilities.getOmegaPrefs(getActivity()).getDeveloperOptionsEnabled();
             if (dev != mShowDevOptions) {
@@ -879,7 +881,9 @@ public class SettingsActivity extends SettingsBaseActivity
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
             final DialogFragment f;
-            if (preference instanceof ListPreference) {
+            if (preference instanceof GridSizePreference) {
+                f = GridSizeDialogFragmentCompat.newInstance(preference.getKey());
+            } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
             } else if (preference instanceof PreferenceDialogPreference) {

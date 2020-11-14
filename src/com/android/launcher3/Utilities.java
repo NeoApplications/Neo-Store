@@ -23,12 +23,15 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.WallpaperManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.LauncherActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ShortcutInfo;
@@ -45,12 +48,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.os.Process;
 import android.os.TransactionTooLargeException;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -63,26 +70,34 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.ShortcutConfigActivityInfo;
+import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.RotationMode;
 import com.android.launcher3.graphics.TintedDrawableSpan;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutKey;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.Transposable;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.backup.RestoreBackupActivity;
+import com.saggitt.omega.iconpack.IconPackManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -116,6 +131,7 @@ public final class Utilities {
     public static final String[] EMPTY_PERSON_ARRAY = new String[0];
 
     public static final boolean ATLEAST_R = false;//Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+
     public static final boolean ATLEAST_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
 
     public static final boolean ATLEAST_P = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
@@ -137,7 +153,6 @@ public final class Utilities {
     public static final int COLOR_EXTRACTION_JOB_ID = 1;
     public static final int WALLPAPER_COMPAT_JOB_ID = 2;
 
-
     public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
@@ -149,7 +164,7 @@ public final class Utilities {
 
     public static boolean isDevelopersOptionsEnabled(Context context) {
         return Settings.Global.getInt(context.getApplicationContext().getContentResolver(),
-                        Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
     }
 
     // An intent extra to indicate the horizontal scroll of the wallpaper.
@@ -157,7 +172,7 @@ public final class Utilities {
     public static final String EXTRA_WALLPAPER_FLAVOR = "com.android.launcher3.WALLPAPER_FLAVOR";
 
     public static boolean IS_RUNNING_IN_TEST_HARNESS =
-                    ActivityManager.isRunningInTestHarness();
+            ActivityManager.isRunningInTestHarness();
 
     public static void enableRunningInTestHarnessForTests() {
         IS_RUNNING_IN_TEST_HARNESS = true;
@@ -209,11 +224,11 @@ public final class Utilities {
      *         assumption fails, we will need to return a pair of scale factors.
      */
     public static float getDescendantCoordRelativeToAncestor(View descendant, View ancestor,
-            float[] coord, boolean includeRootScroll, boolean ignoreTransform,
-            float[] outRotation) {
+                                                             float[] coord, boolean includeRootScroll, boolean ignoreTransform,
+                                                             float[] outRotation) {
         float scale = 1.0f;
         View v = descendant;
-        while(v != ancestor && v != null) {
+        while (v != ancestor && v != null) {
             // For TextViews, scroll has a meaning which relates to the text position
             // which is very strange... ignore the scroll.
             if (v != descendant || includeRootScroll) {
@@ -264,9 +279,9 @@ public final class Utilities {
      * Sets {@param out} to be same as {@param in} by rounding individual values
      */
     public static void roundArray(float[] in, int[] out) {
-       for (int i = 0; i < in.length; i++) {
-           out[i] = Math.round(in[i]);
-       }
+        for (int i = 0; i < in.length; i++) {
+            out[i] = Math.round(in[i]);
+        }
     }
 
     public static void offsetPoints(float[] points, float offsetX, float offsetY) {
@@ -353,15 +368,16 @@ public final class Utilities {
 
     /**
      * Maps t from one range to another range.
-     * @param t The value to map.
+     *
+     * @param t       The value to map.
      * @param fromMin The lower bound of the range that t is being mapped from.
      * @param fromMax The upper bound of the range that t is being mapped from.
-     * @param toMin The lower bound of the range that t is being mapped to.
-     * @param toMax The upper bound of the range that t is being mapped to.
+     * @param toMin   The lower bound of the range that t is being mapped to.
+     * @param toMax   The upper bound of the range that t is being mapped to.
      * @return The mapped value of t.
      */
     public static float mapToRange(float t, float fromMin, float fromMax, float toMin, float toMax,
-            Interpolator interpolator) {
+                                   Interpolator interpolator) {
         if (fromMin == fromMax || toMin == toMax) {
             Log.e(TAG, "mapToRange: range has 0 length");
             return toMin;
@@ -539,18 +555,22 @@ public final class Utilities {
     public static void unregisterReceiverSafely(Context context, BroadcastReceiver receiver) {
         try {
             context.unregisterReceiver(receiver);
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     /**
      * Returns the full drawable for {@param info}.
+     *
      * @param outObj this is set to the internal data associated with {@param info},
      *               eg {@link LauncherActivityInfo} or {@link ShortcutInfo}.
      */
     public static Drawable getFullDrawable(Launcher launcher, ItemInfo info, int width, int height,
-            boolean flattenDrawable, Object[] outObj) {
+                                           boolean flattenDrawable, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);
-        if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+        IconPackManager.CustomIconEntry customIconEntry = (info instanceof WorkspaceItemInfo) ?
+                ((WorkspaceItemInfo) info).customIconEntry : null;
+        if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || customIconEntry != null) {
             LauncherActivityInfo activityInfo = LauncherAppsCompat.getInstance(launcher)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
@@ -630,7 +650,6 @@ public final class Utilities {
         return slop * slop;
     }
 
-
     /*INICIO CUSTOM*/
 
     public static OmegaPreferences getOmegaPrefs(Context context) {
@@ -668,39 +687,32 @@ public final class Utilities {
             CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
             TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
+    @Nullable
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            return null;
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(
-                drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
+        return Utilities.drawableToBitmap(drawable, true);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable, boolean forceCreate) {
+        return drawableToBitmap(drawable, forceCreate, 0);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable, boolean forceCreate, int fallbackSize) {
         if (!forceCreate && drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         }
 
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            return null;
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        if (width <= 0 || height <= 0) {
+            if (fallbackSize > 0) {
+                width = height = fallbackSize;
+            } else {
+                return null;
+            }
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(
-                drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -787,9 +799,235 @@ public final class Utilities {
         return false;
     }
 
-    public static SharedPreferences getReflectionPrefs(Context context) {
-        return context.getSharedPreferences(
-                LauncherFiles.REFLECTION_PREFERENCES_KEY, Context.MODE_PRIVATE);
+    public static void openURLinBrowser(Context context, String url) {
+        openURLinBrowser(context, url, null, null);
+    }
+
+    public static void openURLinBrowser(Context context, String url, Rect sourceBounds, Bundle options) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            if (!(context instanceof Activity)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            intent.setSourceBounds(sourceBounds);
+            if (options == null) {
+                context.startActivity(intent);
+            } else {
+                context.startActivity(intent, options);
+            }
+        } catch (ActivityNotFoundException exc) {
+            Toast.makeText(context, R.string.error_no_browser, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static boolean isSystemApp(Context context, Intent intent) {
+        PackageManager pm = context.getPackageManager();
+        ComponentName cn = intent.getComponent();
+        String packageName = null;
+        if (cn == null) {
+            ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if ((info != null) && (info.activityInfo != null)) {
+                packageName = info.activityInfo.packageName;
+            }
+        } else {
+            packageName = cn.getPackageName();
+        }
+        if (packageName != null) {
+            try {
+                PackageInfo info = pm.getPackageInfo(packageName, 0);
+                return (info != null) && (info.applicationInfo != null) &&
+                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isSystemApp(PackageManager pm, String packageName) {
+        if (packageName != null) {
+            try {
+                PackageInfo info = pm.getPackageInfo(packageName, 0);
+                return (info != null) && (info.applicationInfo != null) &&
+                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static <T> T notNullOrDefault(T value, T defValue) {
+        return (value == null) ? defValue : value;
+    }
+
+    private static List<Runnable> onStart = new ArrayList<>();
+
+    /**
+     * ATTENTION: Only ever call this from within LawnchairLauncher.kt
+     */
+    public /* private */ static void onLauncherStart() {
+        Log.d(TAG, "onLauncherStart: " + onStart.size());
+        for (Runnable r : onStart)
+            r.run();
+        onStart.clear();
+    }
+
+    public static void goToHome(Context context) {
+        PackageManager pm = context.getPackageManager();
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ComponentName componentName = intent.resolveActivity(pm);
+        if (!context.getPackageName().equals(componentName.getPackageName())) {
+            intent = pm.getLaunchIntentForPackage(context.getPackageName());
+        }
+        context.startActivity(intent);
+    }
+
+    public static int parseResourceIdentifier(Resources res, String identifier, String packageName) {
+        try {
+            return Integer.parseInt(identifier.substring(1));
+        } catch (NumberFormatException e) {
+            return res.getIdentifier(identifier.substring(1), null, packageName);
+        }
+    }
+
+    /**
+     * Creates a new component key from an encoded component key string in the form of
+     * [flattenedComponentString#userId].  If the userId is not present, then it defaults
+     * to the current user.
+     */
+    public static ComponentKey makeComponentKey(Context context, String componentKeyStr) {
+        ComponentName componentName;
+        UserHandle user;
+        int userDelimiterIndex = componentKeyStr.indexOf("#");
+        if (userDelimiterIndex != -1) {
+            String componentStr = componentKeyStr.substring(0, userDelimiterIndex);
+            long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
+            componentName = ComponentName.unflattenFromString(componentStr);
+            user = Utilities.notNullOrDefault(UserManagerCompat.getInstance(context)
+                    .getUserForSerialNumber(componentUser), Process.myUserHandle());
+        } else {
+            // No user provided, default to the current user
+            componentName = ComponentName.unflattenFromString(componentKeyStr);
+            user = Process.myUserHandle();
+        }
+        try {
+            return new ComponentKey(componentName, user);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Trying to create invalid component key: " + componentKeyStr);
+        }
+    }
+
+    public static boolean isRecentsEnabled() {
+        LauncherAppState las = LauncherAppState.getInstanceNoCreate();
+        if (las != null) {
+            Context context = las.getContext();
+            return OmegaAppKt.getOmegaApp(context).getRecentsEnabled();
+        }
+        return false;
+    }
+
+    public static Boolean isEmui() {
+        return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui", ""));
+    }
+
+    /**
+     * @param bitmap                the Bitmap to be scaled
+     * @param threshold             the maxium dimension (either width or height) of the scaled bitmap
+     * @param isNecessaryToKeepOrig is it necessary to keep the original bitmap? If not recycle the original bitmap to prevent memory leak.
+     *                              <p>
+     *                              Credit: https://gist.github.com/vxhviet/873d142b41217739a1302d337b7285ba
+     */
+    public static Bitmap getScaledDownBitmap(Bitmap bitmap, int threshold, boolean isNecessaryToKeepOrig) {
+        if (bitmap == null) return null;
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = width;
+        int newHeight = height;
+
+        if (width > height && width > threshold) {
+            newWidth = threshold;
+            newHeight = (int) (height * (float) newWidth / width);
+        }
+
+        if (width > height && width <= threshold) {
+            //the bitmap is already smaller than our required dimension, no need to resize it
+            return bitmap;
+        }
+
+        if (width < height && height > threshold) {
+            newHeight = threshold;
+            newWidth = (int) (width * (float) newHeight / height);
+        }
+
+        if (width < height && height <= threshold) {
+            //the bitmap is already smaller than our required dimension, no need to resize it
+            return bitmap;
+        }
+
+        if (width == height && width > threshold) {
+            newWidth = threshold;
+            newHeight = newWidth;
+        }
+
+        if (width == height && width <= threshold) {
+            //the bitmap is already smaller than our required dimension, no need to resize it
+            return bitmap;
+        }
+
+        return getResizedBitmap(bitmap, newWidth, newHeight, isNecessaryToKeepOrig);
+    }
+
+    private static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight, boolean isNecessaryToKeepOrig) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        if (!isNecessaryToKeepOrig) {
+            bm.recycle();
+        }
+        return resizedBitmap;
+    }
+
+    public static void checkRestoreSuccess(Context context) {
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+        if (prefs.getRestoreSuccess()) {
+            prefs.setRestoreSuccess(false);
+            context.startActivity(new Intent(context, RestoreBackupActivity.class)
+                    .putExtra(RestoreBackupActivity.EXTRA_SUCCESS, true));
+        }
+    }
+
+    /**
+     * Returns true if {@param original} contains all entries defined in {@param updates} and
+     * have the same value.
+     * The comparison uses {@link Object#equals(Object)} to compare the values.
+     */
+    public static boolean containsAll(Bundle original, Bundle updates) {
+        for (String key : updates.keySet()) {
+            Object value1 = updates.get(key);
+            Object value2 = original.get(key);
+            if (value1 == null) {
+                if (value2 != null) {
+                    return false;
+                }
+            } else if (!value1.equals(value2)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*FIN CUSTOM*/

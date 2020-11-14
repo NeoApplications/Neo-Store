@@ -221,7 +221,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     private Configuration mOldConfig;
 
     @Thunk
-    Workspace mWorkspace;
+    protected Workspace mWorkspace;
     private View mLauncherView;
     @Thunk
     DragLayer mDragLayer;

@@ -1,6 +1,7 @@
 package com.android.launcher3.uioverrides;
 
 import android.content.Context;
+
 import com.android.launcher3.Utilities;
 
 public abstract class WallpaperColorInfo implements WallpaperManagerCompat.OnColorsChangedListenerCompat {
@@ -32,6 +33,10 @@ public abstract class WallpaperColorInfo implements WallpaperManagerCompat.OnCol
     public abstract int getActualSecondaryColor();
 
     public abstract int getTertiaryColor();
+
+    public boolean isMainColorDark() {
+        return isDark();
+    }
 
     public abstract boolean isDark();
 

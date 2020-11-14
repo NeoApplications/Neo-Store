@@ -16,16 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.LauncherAnimUtils.OVERVIEW_TRANSITION_MS;
-import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
-import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.SPRING_LOADED;
-import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
-import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_OVERLAY;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
@@ -105,6 +95,16 @@ import com.android.launcher3.widget.PendingAppWidgetHostView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.function.Predicate;
+
+import static com.android.launcher3.LauncherAnimUtils.OVERVIEW_TRANSITION_MS;
+import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
+import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.SPRING_LOADED;
+import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
+import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_OVERLAY;
 
 /**
  * The workspace is a wide area with a wallpaper and a finite number of pages.
@@ -3329,6 +3329,23 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         } else if (info.container >= 0) {
             targetParent.containerType = ContainerType.FOLDER;
         }
+    }
+
+    public void refreshChildren() {
+        final int screenCount = getChildCount();
+        int x = mLauncher.getDeviceProfile().inv.numColumns;
+        int y = mLauncher.getDeviceProfile().inv.numRows;
+        for (int i = 0; i < screenCount; i++) {
+            final CellLayout layout = (CellLayout) getChildAt(i);
+            layout.setGridSize(x, y);
+        }
+
+        View qsb = findViewById(R.id.search_container_workspace);
+        if (qsb != null && qsb.getLayoutParams() instanceof CellLayout.LayoutParams) {
+            ((CellLayout.LayoutParams) qsb.getLayoutParams()).cellHSpan = x;
+        }
+
+        requestLayout();
     }
 
     /**

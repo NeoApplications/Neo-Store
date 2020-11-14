@@ -25,8 +25,6 @@ import android.util.TypedValue;
 import com.android.launcher3.R;
 
 public class Config {
-    //private static final String TAG = "Config";
-
     //APP DRAWER SORT MODE
     public static final int SORT_AZ = 0;
     public static final int SORT_ZA = 1;
@@ -37,8 +35,9 @@ public class Config {
     //PERMISION FLAGS
     public static final int REQUEST_PERMISSION_STORAGE_ACCESS = 666;
     public static final int REQUEST_PERMISSION_LOCATION_ACCESS = 667;
-    public static final int REQUEST_PERMISSION_CALENDAR_READ_ACCESS = 668;
-    public static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 669;
+    public static final int CODE_EDIT_ICON = 100;
+
+    public final static String GOOGLE_QSB = "com.google.android.googlequicksearchbox";
 
     public Context mContext;
 
@@ -48,6 +47,15 @@ public class Config {
 
     public boolean defaultEnableBlur() {
         return mContext.getResources().getBoolean(R.bool.config_default_enable_blur);
+    }
+
+    public String getDefaultSearchProvider() {
+        return mContext.getResources().getString(R.string.config_default_search_provider);
+    }
+
+    public String[] getDefaultIconPacks() {
+
+        return mContext.getResources().getStringArray(R.array.config_default_icon_packs);
     }
 
     public float getDefaultBlurStrength() {

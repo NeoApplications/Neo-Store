@@ -26,16 +26,10 @@ import android.provider.BaseColumns;
  * Settings related utilities.
  */
 public class LauncherSettings {
-
     /**
      * Favorites.
      */
     public static final class Favorites implements BaseColumns {
-        /**
-         * The time of the last update to this row.
-         * <P>Type: INTEGER</P>
-         */
-        public static final String MODIFIED = "modified";
 
         /**
          * Descriptive name of the gesture that can be displayed to the user.
@@ -58,10 +52,6 @@ public class LauncherSettings {
          */
         public static final String ITEM_TYPE = "itemType";
 
-        /**
-         * The gesture is a package
-         */
-        public static final int ITEM_TYPE_NON_ACTIONABLE = -1;
         /**
          * The gesture is an application
          */
@@ -89,6 +79,20 @@ public class LauncherSettings {
          * <P>Type: BLOB</P>
          */
         public static final String ICON = "icon";
+
+        public static final String CUSTOM_ICON = "customIcon";
+
+        public static final String CUSTOM_ICON_ENTRY = "customIconEntry";
+        /**
+         * The time of the last update to this row.
+         * <P>Type: INTEGER</P>
+         */
+        public static final String MODIFIED = "modified";
+
+        /**
+         * The gesture is a package
+         */
+        public static final int ITEM_TYPE_NON_ACTIONABLE = -1;
 
         public static final String TABLE_NAME = "favorites";
 
@@ -239,14 +243,18 @@ public class LauncherSettings {
          * Stores general flag based options for {@link ItemInfo}s.
          * <p>Type: INTEGER</p>
          */
+
         public static final String OPTIONS = "options";
+        public static final String TITLE_ALIAS = "titleAlias";
+
+        public static final String SWIPE_UP_ACTION = "swipeUpAction";
 
         public static void addTableToDb(SQLiteDatabase db, long myProfileId, boolean optional) {
             addTableToDb(db, myProfileId, optional, TABLE_NAME);
         }
 
         public static void addTableToDb(SQLiteDatabase db, long myProfileId, boolean optional,
-                String tableName) {
+                                        String tableName) {
             String ifNotExists = optional ? " IF NOT EXISTS " : "";
             db.execSQL("CREATE TABLE " + ifNotExists + tableName + " (" +
                     "_id INTEGER PRIMARY KEY," +
@@ -263,6 +271,10 @@ public class LauncherSettings {
                     "iconPackage TEXT," +
                     "iconResource TEXT," +
                     "icon BLOB," +
+                    "customIcon BLOB," +
+                    "customIconEntry TEXT," +
+                    "titleAlias TEXT," +
+                    "swipeUpAction TEXT," +
                     "appWidgetProvider TEXT," +
                     "modified INTEGER NOT NULL DEFAULT 0," +
                     "restored INTEGER NOT NULL DEFAULT 0," +

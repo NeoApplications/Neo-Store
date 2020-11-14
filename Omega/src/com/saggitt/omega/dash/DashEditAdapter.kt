@@ -227,7 +227,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
 
             switchEnable.setOnCheckedChangeListener { buttonView, isChecked ->
                 buttonView.setText(if (isChecked) R.string.on else R.string.off)
-                prefs.setDashEnable(isChecked)
+                prefs.dashEnable = isChecked
             }
         }
     }

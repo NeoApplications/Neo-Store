@@ -41,6 +41,10 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         launcher.scheduleRestart()
     }
 
+    fun refreshGrid() {
+        launcher.refreshGrid()
+    }
+
     fun updateBlur() {
         BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }

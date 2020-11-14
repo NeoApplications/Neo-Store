@@ -15,9 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.AppInfo.COMPONENT_KEY_COMPARATOR;
-import static com.android.launcher3.AppInfo.EMPTY_ARRAY;
-
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,6 +22,7 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.PromiseAppInfo;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
 
@@ -33,6 +31,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static com.android.launcher3.AppInfo.COMPONENT_KEY_COMPARATOR;
+import static com.android.launcher3.AppInfo.EMPTY_ARRAY;
 
 /**
  * A utility class to maintain the collection of all apps.
@@ -121,6 +122,10 @@ public class AllAppsStore {
 
     public void unregisterIconContainer(ViewGroup container) {
         mIconContainers.remove(container);
+    }
+
+    public void registerFolderIcon(FolderIcon folderIcon) {
+        //mFolderIcons.add(folderIcon);
     }
 
     public void updateNotificationDots(Predicate<PackageUserKey> updatedDots) {

@@ -18,6 +18,7 @@ package com.android.launcher3.icons;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.SparseArray;
+
 import java.util.Arrays;
 
 /**
@@ -123,5 +124,31 @@ public class ColorExtractor {
             }
         }
         return bestColor;
+    }
+
+    private static final int MAGIC_NUMBER = 25;
+
+    /*
+     * References:
+     * https://www.cs.umb.edu/~jreyes/csit114-fall-2007/project4/filters.html#posterize
+     * https://github.com/gitgraghu/image-processing/blob/master/src/Effects/Posterize.java
+     */
+    public static int posterize(int rgb) {
+        int red = (0xff & (rgb >> 16));
+        int green = (0xff & (rgb >> 8));
+        int blue = (0xff & rgb);
+        red -= red % MAGIC_NUMBER;
+        green -= green % MAGIC_NUMBER;
+        blue -= blue % MAGIC_NUMBER;
+        if (red < 0) {
+            red = 0;
+        }
+        if (green < 0) {
+            green = 0;
+        }
+        if (blue < 0) {
+            blue = 0;
+        }
+        return red << 16 | green << 8 | blue;
     }
 }
