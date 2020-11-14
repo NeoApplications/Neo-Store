@@ -24,6 +24,10 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.RectF
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
@@ -31,8 +35,7 @@ import android.util.Property
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Switch
+import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -41,6 +44,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherModel
 import com.android.launcher3.Utilities
@@ -50,11 +54,19 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.ICON_PACK_UI_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.android.launcher3.views.OptionsPopupView
+import org.json.JSONArray
+import org.json.JSONObject
 import org.xmlpull.v1.XmlPullParser
 import java.lang.reflect.Field
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
+import kotlin.math.roundToInt
+import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
@@ -136,8 +148,6 @@ fun runOnThread(handler: Handler, r: () -> Unit) {
     }
 }
 
-fun Float.ceilToInt() = ceil(this).toInt()
-
 val Context.hasStoragePermission
     get() = PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
             this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -153,17 +163,6 @@ var View.isVisible: Boolean
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
     }
-
-inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
-    forEachChildReversedIndexed { view, _ -> action(view) }
-}
-
-inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
-    val count = childCount
-    for (i in (0 until count).reversed()) {
-        action(getChildAt(i), i)
-    }
-}
 
 fun Switch.applyColor(color: Int) {
     val colorForeground = Themes.getAttrColor(context, android.R.attr.colorForeground)
@@ -239,8 +238,30 @@ operator fun XmlPullParser.get(index: Int): String? = getAttributeValue(index)
 operator fun XmlPullParser.get(namespace: String?, key: String): String? = getAttributeValue(namespace, key)
 operator fun XmlPullParser.get(key: String): String? = this[null, key]
 
+inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
+    val count = childCount
+    for (i in (0 until count)) {
+        action(getChildAt(i), i)
+    }
+}
+
+inline fun ViewGroup.forEachChild(action: (View) -> Unit) {
+    forEachChildIndexed { view, _ -> action(view) }
+}
+
+inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
+    val count = childCount
+    for (i in (0 until count).reversed()) {
+        action(getChildAt(i), i)
+    }
+}
+
+inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
+    forEachChildReversedIndexed { view, _ -> action(view) }
+}
+
 fun AlertDialog.applyAccent() {
-    val color = Utilities.getOmegaPrefs(context).accentColor
+    val color = context.getColorAccent()
 
     getButton(AlertDialog.BUTTON_NEGATIVE)?.apply {
         setTextColor(color)
@@ -264,11 +285,71 @@ fun android.app.AlertDialog.applyAccent() {
     }
 }
 
+fun CheckedTextView.applyAccent() {
+    val tintList = ColorStateList.valueOf(context.getColorAccent())
+    compoundDrawableTintList = tintList
+    backgroundTintList = tintList
+}
+
+fun Button.applyColor(color: Int) {
+    val rippleColor = ColorStateList.valueOf(ColorUtils.setAlphaComponent(color, 31))
+    (background as RippleDrawable).setColor(rippleColor)
+    DrawableCompat.setTint(background, color)
+    val tintList = ColorStateList.valueOf(color)
+    if (this is RadioButton) {
+        buttonTintList = tintList
+    }
+}
+
 fun String.toTitleCase(): String = splitToSequence(" ").map { it.capitalize() }.joinToString(" ")
+
+inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>().apply {
+    while (true) {
+        add(generator() ?: break)
+    }
+}
 
 fun BgDataModel.workspaceContains(packageName: String): Boolean {
     return this.workspaceItems.any { it.targetComponent?.packageName == packageName }
 }
+
+fun openPopupMenu(view: View, rect: RectF?, vararg items: OptionsPopupView.OptionItem) {
+    val launcher = Launcher.getLauncher(view.context)
+    OptionsPopupView.show(launcher, rect ?: RectF(launcher.getViewBounds(view)), items.toList())
+}
+
+fun Context.getLauncherOrNull(): Launcher? {
+    return try {
+        Launcher.getLauncher(this)
+    } catch (e: IllegalArgumentException) {
+        null
+    }
+}
+
+val Context.locale: Locale
+    get() {
+        return if (Utilities.ATLEAST_NOUGAT) {
+            this.resources.configuration.locales[0] ?: this.resources.configuration.locale
+        } else {
+            this.resources.configuration.locale
+        }
+    }
+
+fun Context.getIcon(): Drawable = packageManager.getApplicationIcon(applicationInfo)
+
+@Suppress("UNCHECKED_CAST")
+fun <T> JSONArray.toArrayList(): ArrayList<T> {
+    val arrayList = ArrayList<T>()
+    for (i in (0 until length())) {
+        arrayList.add(get(i) as T)
+    }
+    return arrayList
+}
+
+fun Float.round() = roundToInt().toFloat()
+
+fun Float.ceilToInt() = ceil(this).toInt()
+
 
 fun dpToPx(size: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, Resources.getSystem().displayMetrics)
@@ -350,7 +431,66 @@ fun runOnUiWorkerThread(r: () -> Unit) {
     runOnThread(uiWorkerHandler, r)
 }
 
+
+fun Context.createDisabledColor(color: Int): ColorStateList {
+    return ColorStateList(arrayOf(
+            intArrayOf(-android.R.attr.state_enabled),
+            intArrayOf()),
+            intArrayOf(
+                    getDisabled(getColorAttr(android.R.attr.colorForeground)),
+                    color))
+}
+
+@ColorInt
+fun Context.getDisabled(inputColor: Int): Int {
+    return applyAlphaAttr(android.R.attr.disabledAlpha, inputColor)
+}
+
+@ColorInt
+fun Context.applyAlphaAttr(attr: Int, inputColor: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val alpha = ta.getFloat(0, 0f)
+    ta.recycle()
+    return applyAlpha(alpha, inputColor)
+}
+
+@ColorInt
+fun applyAlpha(a: Float, inputColor: Int): Int {
+    var alpha = a
+    alpha *= Color.alpha(inputColor)
+    return Color.argb(alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
+            Color.blue(inputColor))
+}
+
+fun JSONObject.asMap() = JSONMap(this)
+fun JSONObject.getNullable(key: String): Any? {
+    return opt(key)
+}
+
 fun String.asNonEmpty(): String? {
     if (TextUtils.isEmpty(this)) return null
     return this
 }
+
+fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
+    if (contains(obj) != exists) {
+        if (exists) add(obj)
+        else remove(obj)
+        return true
+    }
+    return false
+}
+
+val Long.Companion.random get() = Random.nextLong()
+
+fun <T, U : Comparable<U>> comparing(extractKey: (T) -> U): Comparator<T> {
+    return Comparator { o1, o2 -> extractKey(o1).compareTo(extractKey(o2)) }
+}
+
+fun <T, U : Comparable<U>> Comparator<T>.then(extractKey: (T) -> U): Comparator<T> {
+    return kotlin.Comparator { o1, o2 ->
+        val res = compare(o1, o2)
+        if (res != 0) res else extractKey(o1).compareTo(extractKey(o2))
+    }
+}
+
