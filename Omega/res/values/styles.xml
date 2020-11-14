@@ -16,6 +16,16 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppTheme" parent="@style/LauncherTheme">
+        <item name="omegaColorSearchBar">?popupColorPrimary</item>
+        <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
+        <item name="omegaColorSearchBar">?popupColorPrimary</item>
+        <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
+    </style>
+
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textSize">16sp</item>
         <item name="titleTextColor">@color/white</item>
@@ -57,6 +67,32 @@
         <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
     </style>
 
+    <!-- Theme for the widget container. Overridden on API 26. -->
+    <style name="WidgetContainerTheme" parent="@android:style/Theme.Material.Settings">
+        <item name="android:colorEdgeEffect">?android:attr/textColorSecondaryInverse</item>
+        <item name="android:textColorPrimary">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">?android:attr/textColorSecondaryInverse</item>
+        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
+
+        <!-- Backports -->
+        <item name="android:textColorPrimaryInverse">@color/primary_text_material_light</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_text_material_light</item>
+
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="WidgetContainerTheme.Dark" parent="AppTheme.Dark">
+        <item name="android:colorPrimaryDark">#616161</item> <!-- Gray 700 -->
+        <item name="bottomSheetNavBarColor">#00000000</item>
+    </style>
+
+    <style name="WidgetContainerTheme.Black" parent="AppTheme.Black">
+        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="bottomSheetNavBarColor">#00000000</item>
+    </style>
+
     <style name="DashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="background">@android:color/transparent</item>
     </style>
@@ -65,11 +101,127 @@
         <item name="cpv_borderColor">@color/colorAccent</item>
     </style>
 
-    <style name="SettingsTheme_Light" parent="@style/SettingsTheme.Base" />
+    <style name="SettingsTheme_Light" parent="@style/SettingsTheme.Base">
+        <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+    </style>
 
-    <style name="SettingsTheme_Dark"></style>
+    <style name="SettingsTheme_Dark">
+        <item name="android:windowBackground">@color/settings_background_dark</item>
+        <item name="colorPrimary">?android:windowBackground</item>
+        <item name="colorPrimaryDark">?android:windowBackground</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="android:textColorSecondary">#A8A7A7</item>
+        <item name="android:textColorTertiary">#7C7C7C</item>
+        <item name="actionBarTheme">@style/SettingsTheme_Dark.ActionBar</item>
+        <item name="android:colorEdgeEffect">?colorAccent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="useLightSystemBars">false</item>
+        <item name="alertDialogTheme">@style/SettingsTheme_Dark.Dialog</item>
+        <item name="buttonStyle">@style/SettingsTheme_Light.Button</item>
+        <item name="settingsBackground">@color/settings_background_dark</item>
+        <item name="settingsSearchBackground">@color/settings_background_dark_2dp</item>
+        <item name="settingsPopupBackground">@color/settings_background_dark_8dp</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog</item>
+        <item name="bottomSheetNavBarColor">@android:color/transparent</item>
+        <item name="bottomSheetScrimColor">@android:color/black</item>
+        <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
+        <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
+    </style>
 
-    <style name="SettingsTheme_Black"></style>
+    <style name="SettingsTheme_Dark.Dialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_material_background</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/SettingsTheme_Light.Button</item>
+        <item name="android:buttonStyle">@style/SettingsTheme_Light.Button</item>
+    </style>
+
+    <style name="SettingsTheme_Dark.ActionBar" parent="SettingsTheme_Dark">
+        <item name="titleTextAppearance">@style/SettingsTheme_Light.ActionBar.Title</item>
+    </style>
+
+    <style name="SettingsTheme_Black.ActionBar" parent="SettingsTheme_Black">
+        <item name="titleTextAppearance">@style/SettingsTheme_Light.ActionBar.Title</item>
+    </style>
+
+    <style name="SettingsTheme.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorPrimary">@color/settings_background_dark</item>
+        <item name="android:colorPrimaryDark">@color/settings_background_dark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+        <item name="bottomSheetStyle">@style/SettingsTheme.BottomSheet</item>
+    </style>
+
+    <style name="SettingsTheme_Black" parent="@style/SettingsTheme_Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="settingsBackground">@android:color/black</item>
+        <item name="settingsSearchBackground">@color/settings_background_black_2dp</item>
+        <item name="settingsPopupBackground">@color/settings_background_black_8dp</item>
+        <item name="actionBarTheme">@style/SettingsTheme_Black.ActionBar</item>
+
+        <item name="workspaceTextColor">#FF212121</item>
+        <item name="workspaceShadowColor">@android:color/transparent</item>
+        <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
+        <item name="workspaceKeyShadowColor">@android:color/transparent</item>
+        <item name="isWorkspaceDarkText">true</item>
+    </style>
+
+    <style name="SettingsTheme_Light.Transparent" parent="SettingsTheme_Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="workspaceTextColor">@android:color/white</item>
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#33000000</item>
+        <item name="workspaceKeyShadowColor">#44000000</item>
+    </style>
+
+    <style name="SettingsTheme_Black.Transparent" parent="SettingsTheme_Black">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="workspaceTextColor">@android:color/white</item>
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#33000000</item>
+        <item name="workspaceKeyShadowColor">#44000000</item>
+    </style>
+
+    <style name="SettingsTheme_DarkText.Transparent" parent="SettingsTheme_Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="workspaceTextColor">#FF212121</item>
+        <item name="workspaceShadowColor">@android:color/transparent</item>
+        <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
+        <item name="workspaceKeyShadowColor">@android:color/transparent</item>
+    </style>
+
+    <style name="SettingsTheme_Dark.Transparent" parent="SettingsTheme_Dark">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="workspaceTextColor">@android:color/white</item>
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#33000000</item>
+        <item name="workspaceKeyShadowColor">#44000000</item>
+    </style>
+
+    <style name="SleepTimeoutTheme" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="alertDialogTheme">@style/SettingsTheme_Light.Dialog</item>
+    </style>
 
     <style name="SettingsTheme_Light.ActionBar" parent="SettingsTheme_Light">
         <item name="titleTextAppearance">@style/SettingsTheme_Light.ActionBar.Title</item>
@@ -156,5 +308,62 @@
     <style name="SubTitleAbout">
         <item name="android:textSize">15sp</item>
         <item name="fontWeight">200</item>
+    </style>
+
+    <!-- Pixel -->
+    <style name="HotseatQsbTheme">
+        <item name="gIcon">@drawable/ic_super_g_shadow</item>
+        <item name="micIcon">@drawable/ic_mic_shadow</item>
+    </style>
+
+    <style name="HotseatQsbTheme.Colored" parent="@style/HotseatQsbTheme">
+        <item name="gIcon">@drawable/ic_qsb_logo</item>
+        <item name="micIcon">@drawable/ic_qsb_mic</item>
+    </style>
+
+    <style name="SettingsTheme.Widget.Button" parent="Widget.AppCompat.Button.Borderless">
+        <item name="customFontType">button</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="SettingsTheme.Widget.OutlinedButton" parent="SettingsTheme.Widget.Button">
+        <item name="android:background">@drawable/btn_outlined_material</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="SettingsTheme.Widget.OutlinedButton.Colored" parent="SettingsTheme.Widget.Button">
+        <item name="android:background">@drawable/btn_outlined_colored_material</item>
+        <item name="android:textColor">?android:colorAccent</item>
+    </style>
+
+    <style name="SmartspaceTextHeadline">
+        <item name="android:textColor">?attr/workspaceTextColor</item>
+        <item name="android:letterSpacing">@dimen/smartspaceLetterSpacing</item>
+        <item name="ambientShadowBlur">@dimen/smartspaceAmbientShadowBlur</item>
+        <item name="ambientShadowColor">?attr/workspaceAmbientShadowColor</item>
+        <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
+        <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
+        <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
+        <item name="customFontType">smartspaceText</item>
+    </style>
+
+    <style name="SmartspaceTextTitle">
+        <item name="android:textColor">?attr/workspaceTextColor</item>
+        <item name="android:letterSpacing">@dimen/smartspaceLetterSpacing</item>
+        <item name="ambientShadowBlur">@dimen/smartspaceAmbientShadowBlur</item>
+        <item name="ambientShadowColor">?attr/workspaceAmbientShadowColor</item>
+        <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
+        <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
+        <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
+        <item name="customFontType">smartspaceText</item>
+    </style>
+
+    <!-- Weather widget -->
+    <style name="WeatherWidget" />
+
+    <style name="WeatherWidget.Text">
+        <item name="android:shadowRadius">3.0</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowColor">#33000000</item>
     </style>
 </resources>
