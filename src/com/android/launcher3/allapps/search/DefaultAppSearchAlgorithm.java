@@ -15,24 +15,33 @@
  */
 package com.android.launcher3.allapps.search;
 
+import android.content.Context;
 import android.os.Handler;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.util.ComponentKey;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * The default search implementation.
  */
 public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
+    public final static String SEARCH_HIDDEN_APPS = "pref_search_hidden_apps";
 
     private final List<AppInfo> mApps;
     protected final Handler mResultHandler;
+    private final Context mContext;
 
-    public DefaultAppSearchAlgorithm(List<AppInfo> apps) {
+
+    public DefaultAppSearchAlgorithm(Context context, List<AppInfo> apps) {
+        mContext = context;
         mApps = apps;
         mResultHandler = new Handler();
     }
@@ -45,16 +54,19 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
     }
 
     @Override
-    public void doSearch(final String query,
-            final AllAppsSearchBarController.Callbacks callback) {
+    public void doSearch(final String query, final AllAppsSearchBarController.Callbacks callback) {
         final ArrayList<ComponentKey> result = getTitleMatchResult(query);
-        mResultHandler.post(new Runnable() {
+        final List<String> suggestions = getSuggestions(query);
+        mResultHandler.post(() -> callback.onSearchResult(query, result, suggestions));
+    }
 
-            @Override
-            public void run() {
-                callback.onSearchResult(query, result);
-            }
-        });
+    private List<String> getSuggestions(String query) {
+        SearchProvider provider = SearchProviderController.Companion
+                .getInstance(mContext).getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            return ((WebSearchProvider) provider).getSuggestions(query);
+        }
+        return Collections.emptyList();
     }
 
     private ArrayList<ComponentKey> getTitleMatchResult(String query) {

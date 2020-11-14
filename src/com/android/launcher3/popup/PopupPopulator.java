@@ -22,6 +22,9 @@ import android.os.Handler;
 import android.os.UserHandle;
 import android.service.notification.StatusBarNotification;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.WorkspaceItemInfo;
@@ -37,9 +40,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 /**
  * Contains logic relevant to populating a {@link PopupContainerWithArrow}. In particular,
@@ -123,9 +123,9 @@ public class PopupPopulator {
     }
 
     public static Runnable createUpdateRunnable(final Launcher launcher, final ItemInfo originalInfo,
-            final Handler uiHandler, final PopupContainerWithArrow container,
-            final List<DeepShortcutView> shortcutViews,
-            final List<NotificationKeyData> notificationKeys) {
+                                                final Handler uiHandler, final PopupContainerWithArrow container,
+                                                final List<DeepShortcutView> shortcutViews,
+                                                final List<NotificationKeyData> notificationKeys) {
         final ComponentName activity = originalInfo.getTargetComponent();
         final UserHandle user = originalInfo.user;
         return () -> {
@@ -150,7 +150,7 @@ public class PopupPopulator {
                 final WorkspaceItemInfo si = new WorkspaceItemInfo(shortcut, launcher);
                 // Use unbadged icon for the menu.
                 LauncherIcons li = LauncherIcons.obtain(launcher);
-                si.applyFrom(li.createShortcutIcon(shortcut, false /* badged */));
+                si.applyFrom(li.createShortcutIcon(shortcut, false));
                 li.recycle();
                 si.rank = i;
 

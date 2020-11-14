@@ -28,12 +28,16 @@ import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.allapps.PredictionsFloatingHeader
+import com.saggitt.omega.groups.AppGroupsManager
+import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize2D
+import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 import org.json.JSONArray
@@ -45,6 +49,7 @@ import java.util.concurrent.ExecutionException
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
+import kotlin.math.roundToInt
 import kotlin.reflect.KProperty
 
 class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
@@ -80,6 +85,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
     private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
+    val currentTabsModel
+        get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
+    val drawerTabs get() = appGroupsManager.drawerTabs
+    val appGroupsManager by lazy { AppGroupsManager(this) }
+    val separateWorkApps by BooleanPref("pref_separateWorkApps", true, recreate)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
@@ -94,7 +104,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
     private val homeMultilineLabel by BooleanPref("pref_homeIconLabelsInTwoLines", false, recreate)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
+    val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     val hideAppLabels by BooleanPref("pref_hideAppLabels", false, recreate)
+    val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
 
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)
@@ -102,6 +114,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var dockSearchBarPref by BooleanPref("pref_dock_search", true, restart)
     inline val dockSearchBar get() = !dockHide && dockSearchBarPref
     var dockScale by FloatPref("pref_dockScale", -1f, recreate)
+    val dockBackground by BooleanPref("pref_dockBackground", false, recreate)
+    inline val dockGradientStyle get() = !dockBackground
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
@@ -131,6 +145,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
     /* --SEARCH-- */
+    var searchProvider by StringPref("pref_globalSearchProvider", omegaConfig.defaultSearchProvider) {
+        SearchProviderController.getInstance(context).onSearchProviderChanged()
+    }
+    val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
 
     val recentBackups = object : MutableListPref<Uri>(
             Utilities.getDevicePrefs(context), "pref_recentBackups") {
@@ -142,6 +160,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
     val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
+    val debugOkHttp by BooleanPref("pref_debugOkhttp", onChange = restart)
 
     var restoreSuccess by BooleanPref("pref_restoreSuccess", false)
 
@@ -576,6 +595,56 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
         override fun onSetValue(value: Int) {
             edit { putInt(getKey(), value) }
+        }
+    }
+
+    open inner class AlphaPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Int>(key, defaultValue, onChange) {
+        override fun onGetValue(): Int = (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
+
+        override fun onSetValue(value: Int) {
+            edit { putFloat(getKey(), value.toFloat() / 255) }
+        }
+    }
+
+    open inner class IntSetPref(key: String, defaultValue: Set<Int>, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Set<Int>>(key, defaultValue, onChange) {
+
+        private val defaultStringSet = super.defaultValue.mapTo(mutableSetOf()) { "$it" }
+
+        override fun onGetValue(): Set<Int> = sharedPrefs.getStringSet(getKey(), defaultStringSet)!!
+                .mapTo(mutableSetOf()) { Integer.parseInt(it) }
+
+        override fun onSetValue(value: Set<Int>) {
+            edit {
+                putStringSet(getKey(), value.mapTo(mutableSetOf()) { "$it" })
+            }
+        }
+    }
+
+    inline fun <reified T : Enum<T>> EnumPref(key: String, defaultValue: T,
+                                              noinline onChange: () -> Unit = doNothing): PrefDelegate<T> {
+        return IntBasedPref(key, defaultValue, onChange, { value ->
+            enumValues<T>().firstOrNull { item -> item.ordinal == value } ?: defaultValue
+        }, { it.ordinal }, { })
+    }
+
+    open inner class IntBasedPref<T : Any>(key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+                                           private val fromInt: (Int) -> T,
+                                           private val toInt: (T) -> Int,
+                                           private val dispose: (T) -> Unit) : PrefDelegate<T>(key, defaultValue, onChange) {
+        override fun onGetValue(): T {
+            return if (sharedPrefs.contains(key)) {
+                fromInt(sharedPrefs.getInt(getKey(), toInt(defaultValue)))
+            } else defaultValue
+        }
+
+        override fun onSetValue(value: T) {
+            edit { putInt(getKey(), toInt(value)) }
+        }
+
+        override fun disposeOldValue(oldValue: T) {
+            dispose(oldValue)
         }
     }
 

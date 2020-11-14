@@ -17,6 +17,7 @@
 package com.android.launcher3.graphics;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -31,8 +32,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 
+import androidx.core.content.ContextCompat;
+
 import com.android.launcher3.R;
 import com.android.launcher3.icons.BitmapRenderer;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -68,6 +72,25 @@ public class ShadowDrawable extends Drawable {
             regenerateBitmapCache();
         }
         canvas.drawBitmap(mState.mLastDrawnBitmap, null, bounds, mPaint);
+    }
+
+    public static ShadowDrawable wrap(Context context, Drawable d, int shadowColorRes,
+                                      float elevationDps, int darkTintColorRes) {
+        ShadowDrawable sd = new ShadowDrawable();
+        sd.setChild(d);
+        sd.mState.mShadowColor = ContextCompat.getColor(context, shadowColorRes);
+        sd.mState.mShadowSize = (int) OmegaUtilsKt.dpToPx(elevationDps);
+        sd.mState.mDarkTintColor = ContextCompat.getColor(context, darkTintColorRes);
+        sd.mState.mIntrinsicHeight = d.getIntrinsicHeight() + 2 * sd.mState.mShadowSize;
+        sd.mState.mIntrinsicWidth = d.getIntrinsicWidth() + 2 * sd.mState.mShadowSize;
+        sd.mState.mChangingConfigurations = d.getChangingConfigurations();
+
+        sd.mState.mChildState = d.getConstantState();
+        return sd;
+    }
+
+    public Drawable setChild(Drawable newDrawable) {
+        return (new ShadowDrawableState(mState, newDrawable)).newDrawable();
     }
 
     @Override
@@ -195,6 +218,23 @@ public class ShadowDrawable extends Drawable {
         boolean mIsDark;
         Bitmap mLastDrawnBitmap;
         ConstantState mChildState;
+
+        private ShadowDrawableState() {
+        }
+
+        private ShadowDrawableState(ShadowDrawableState oldState, Drawable newDrawable) {
+            mChangingConfigurations = newDrawable.getChangingConfigurations();
+            mIntrinsicWidth = newDrawable.getIntrinsicWidth() + 2 * oldState.mShadowSize;
+            mIntrinsicHeight = newDrawable.getIntrinsicHeight() + 2 * oldState.mShadowSize;
+
+            mShadowColor = oldState.mShadowColor;
+            mShadowSize = oldState.mShadowSize;
+            mDarkTintColor = oldState.mDarkTintColor;
+
+            mIsDark = oldState.mIsDark;
+            mLastDrawnBitmap = null;
+            mChildState = newDrawable.getConstantState();
+        }
 
         @Override
         public Drawable newDrawable() {

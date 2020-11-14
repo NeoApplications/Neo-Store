@@ -40,6 +40,7 @@ import com.google.android.libraries.gsa.launcherclient.ClientService;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.CustomLauncherClient;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -51,7 +52,7 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     private final OmegaLauncher mLauncher;
     private final Bundle mUiInformation = new Bundle();
     private OverlayCallbackImpl mOverlayCallbacks;
-    private LauncherClient mLauncherClient;
+    private CustomLauncherClient mLauncherClient;
     //private QsbAnimationController mQsbController;
     private SharedPreferences mPrefs;
     private boolean mStarted;
@@ -81,7 +82,7 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     public void onCreate(Bundle savedInstanceState) {
         mPrefs = Utilities.getPrefs(mLauncher);
         mOverlayCallbacks = new OverlayCallbackImpl(mLauncher);
-        mLauncherClient = new LauncherClient(mLauncher, mOverlayCallbacks, getClientOptions(mPrefs));
+        mLauncherClient = new CustomLauncherClient(mLauncher, mOverlayCallbacks, getClientOptions(mPrefs));
         //mQsbController = new QsbAnimationController(mLauncher);
         mOverlayCallbacks.setClient(mLauncherClient);
         mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
@@ -257,7 +258,7 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         mLauncherClient.redraw(mUiInformation);
     }
 
-    public LauncherClient getClient() {
+    public CustomLauncherClient getClient() {
         return mLauncherClient;
     }
 

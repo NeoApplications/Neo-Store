@@ -77,6 +77,7 @@ import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
+import com.saggitt.omega.preferences.CustomDialogPreference;
 import com.saggitt.omega.preferences.GridSizeDialogFragmentCompat;
 import com.saggitt.omega.preferences.GridSizePreference;
 import com.saggitt.omega.preferences.PreferenceController;
@@ -886,9 +887,9 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
-            } else if (preference instanceof PreferenceDialogPreference) {
+            } else if (preference instanceof CustomDialogPreference) {
                 f = PreferenceScreenDialogFragment.Companion
-                        .newInstance((PreferenceDialogPreference) preference);
+                        .newInstance((CustomDialogPreference) preference);
             } else {
                 super.onDisplayPreferenceDialog(preference);
                 return;

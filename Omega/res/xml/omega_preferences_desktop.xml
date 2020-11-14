@@ -51,6 +51,12 @@
         android:title="@string/title__multiline_labels"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.CustomDialogPreference
+        android:key="pref_iconPopupMenu"
+        android:title="@string/title_desktop_icon_popup_menu"
+        app:content="@xml/omega_desktop_icon_popup_menu_preferences"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_add_icon_to_home"

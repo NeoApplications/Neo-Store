@@ -21,12 +21,16 @@ package com.saggitt.omega;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.AppInfo;
@@ -38,11 +42,19 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
+import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.override.CustomInfoProvider;
 import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.CustomLauncherClient;
+import com.saggitt.omega.views.OptionsPanel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 import static com.saggitt.omega.iconpack.IconPackManager.Companion;
 import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
@@ -58,16 +70,22 @@ public class OmegaLauncher extends Launcher {
     private OmegaPreferences mOmegaPrefs;
     private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
+    private OmegaLauncherCallbacks launcherCallbacks;
+    private GestureController mGestureController;
+    public View dummyView;
+    private OptionsPanel optionsView;
+
+    public OmegaLauncher() {
+        launcherCallbacks = new OmegaLauncherCallbacks(this);
+        setLauncherCallbacks(launcherCallbacks);
+    }
+
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
             return (OmegaLauncher) context;
         } else {
             return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
         }
-    }
-
-    public OmegaLauncher() {
-        setLauncherCallbacks(new OmegaLauncherCallbacks(this));
     }
 
     @Override
@@ -80,6 +98,13 @@ public class OmegaLauncher extends Launcher {
 
         mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
         mOmegaPrefs.registerCallback(prefCallback);
+
+    }
+
+    public GestureController getGestureController() {
+        if (mGestureController == null)
+            mGestureController = new GestureController(this);
+        return mGestureController;
     }
 
     @Override
@@ -146,6 +171,10 @@ public class OmegaLauncher extends Launcher {
         }
     }
 
+    public OptionsPanel getOptionsView() {
+        return optionsView = findViewById(R.id.options_view);
+    }
+
     public void startEditIcon(ItemInfo itemInfo, CustomInfoProvider<ItemInfo> infoProvider) {
         ComponentKey component;
         currentEditInfo = itemInfo;
@@ -192,5 +221,33 @@ public class OmegaLauncher extends Launcher {
                 CustomInfoProvider.Companion.forItem(this, itemInfo).setIcon(itemInfo, null);
             }
         }
+    }
+
+    @Nullable
+    public CustomLauncherClient getGoogleNow() {
+        return launcherCallbacks.getClient();
+    }
+
+    public void prepareDummyView(View view, @NotNull Function0<Unit> callback) {
+        Rect rect = new Rect();
+        getDragLayer().getViewRectRelativeToSelf(view, rect);
+        prepareDummyView(rect.left, rect.top, rect.right, rect.bottom, callback);
+    }
+
+    public void prepareDummyView(int left, int top, @NotNull Function0<Unit> callback) {
+        int size = getResources().getDimensionPixelSize(R.dimen.options_menu_thumb_size);
+        int halfSize = size / 2;
+        prepareDummyView(left - halfSize, top - halfSize, left + halfSize, top + halfSize, callback);
+    }
+
+    public void prepareDummyView(int left, int top, int right, int bottom, @NotNull Function0<Unit> callback) {
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) dummyView.getLayoutParams();
+        lp.leftMargin = left;
+        lp.topMargin = top;
+        lp.height = bottom - top;
+        lp.width = right - left;
+        dummyView.setLayoutParams(lp);
+        dummyView.requestLayout();
+        dummyView.post(callback::invoke);
     }
 }

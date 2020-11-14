@@ -149,7 +149,6 @@
     <string name="icon_shape_system_default">Paramètres du système</string>
     <string name="icon_shape_override_label_location">sur l\'écran d\'accueil</string>
     <string name="icon_shape_override_label">Modifier le style d\'icône</string>
-    <string name="action_preferences">\@string/customize</string>
     <string name="hide_app_reset">Réinitialiser</string>
     <string name="hide_app_selected">  masqué</string>
     <string name="selected_count">%1$d sélectionné</string>

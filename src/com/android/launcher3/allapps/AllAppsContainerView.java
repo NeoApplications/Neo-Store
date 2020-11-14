@@ -364,6 +364,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return mSpringViews.get(getSearchView().getId()) ? 0 : mHeader.getTop();
     }
 
+    public void reloadTabs() {
+        //mTabsController.reloadTabs();
+        //rebindAdapters(mTabsController.getShouldShowTabs(), true);
+    }
+
     private void rebindAdapters(boolean showTabs) {
         rebindAdapters(showTabs, false /* force */);
     }

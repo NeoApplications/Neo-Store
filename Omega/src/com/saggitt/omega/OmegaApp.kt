@@ -21,14 +21,17 @@ import android.app.Activity
 import android.app.Application
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.annotation.Keep
 import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
 import com.saggitt.omega.blur.BlurWallpaperProvider
+import com.saggitt.omega.flowerpot.Flowerpot
 import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
@@ -36,11 +39,12 @@ class OmegaApp : Application() {
 
     var mismatchedQuickstepTarget = false
     val recentsEnabled by lazy { checkRecentsComponent() }
+    var accessibilityService: OmegaAccessibilityService? = null
 
     fun onLauncherAppStateCreated() {
         registerActivityLifecycleCallbacks(activityHandler)
         BlurWallpaperProvider.getInstance(this)
-        //Flowerpot.Manager.getInstance(this)
+        Flowerpot.Manager.getInstance(this)
     }
 
     fun restart(recreateLauncher: Boolean = true) {
@@ -48,6 +52,16 @@ class OmegaApp : Application() {
             activityHandler.finishAll(recreateLauncher)
         } else {
             Utilities.restartLauncher(this)
+        }
+    }
+
+    fun performGlobalAction(action: Int): Boolean {
+        return if (accessibilityService != null) {
+            accessibilityService!!.performGlobalAction(action)
+        } else {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            false
         }
     }
 

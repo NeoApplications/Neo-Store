@@ -51,5 +51,7 @@ public interface SearchUiManager {
      * Called as part of state transition to update the content UI
      */
     void setContentVisibility(int visibleElements, PropertySetter setter,
-            Interpolator interpolator);
+                              Interpolator interpolator);
+
+    void startSearch();
 }

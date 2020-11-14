@@ -15,30 +15,6 @@
  */
 package com.android.launcher3;
 
-import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
-import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS;
-import static android.view.View.VISIBLE;
-import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_FADE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_SCALE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_TRANSLATE_X;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_FADE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_SCALE;
-import static com.android.launcher3.anim.Interpolators.ACCEL;
-import static com.android.launcher3.anim.Interpolators.DEACCEL;
-import static com.android.launcher3.anim.Interpolators.DEACCEL_1_7;
-import static com.android.launcher3.anim.Interpolators.clampToProgress;
-import static com.android.launcher3.testing.TestProtocol.ALL_APPS_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.BACKGROUND_APP_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.OVERVIEW_PEEK_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.QUICK_SWITCH_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.SPRING_LOADED_STATE_ORDINAL;
-import static com.android.launcher3.anim.Interpolators.ACCEL_2;
-import static com.android.launcher3.states.RotationHelper.REQUEST_NONE;
-
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.anim.AnimatorSetBuilder;
@@ -47,8 +23,34 @@ import com.android.launcher3.uioverrides.UiFactory;
 import com.android.launcher3.uioverrides.states.AllAppsState;
 import com.android.launcher3.uioverrides.states.OverviewState;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
+import com.saggitt.omega.states.HomeState;
+import com.saggitt.omega.states.OptionsState;
 
 import java.util.Arrays;
+
+import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
+import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS;
+import static android.view.View.VISIBLE;
+import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_FADE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_SCALE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_TRANSLATE_X;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_FADE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_SCALE;
+import static com.android.launcher3.anim.Interpolators.ACCEL;
+import static com.android.launcher3.anim.Interpolators.ACCEL_2;
+import static com.android.launcher3.anim.Interpolators.DEACCEL;
+import static com.android.launcher3.anim.Interpolators.DEACCEL_1_7;
+import static com.android.launcher3.anim.Interpolators.clampToProgress;
+import static com.android.launcher3.states.RotationHelper.REQUEST_NONE;
+import static com.android.launcher3.testing.TestProtocol.ALL_APPS_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.BACKGROUND_APP_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OPTIONS_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OVERVIEW_PEEK_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.QUICK_SWITCH_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.SPRING_LOADED_STATE_ORDINAL;
 
 
 /**
@@ -69,6 +71,7 @@ public class LauncherState {
     public static final int ALL_APPS_CONTENT = 1 << 4;
     public static final int VERTICAL_SWIPE_INDICATOR = 1 << 5;
     public static final int RECENTS_CLEAR_ALL_BUTTON = 1 << 6;
+    public static final int OPTIONS_VIEW = 1 << 7;
 
     protected static final int FLAG_MULTI_PAGE = 1 << 0;
     protected static final int FLAG_DISABLE_ACCESSIBILITY = 1 << 1;
@@ -88,31 +91,25 @@ public class LauncherState {
                     return 1;
                 }
             };
-
-    private static final LauncherState[] sAllStates = new LauncherState[7];
+    private static final LauncherState[] sAllStates = new LauncherState[9];
 
     /**
      * TODO: Create a separate class for NORMAL state.
      */
-    public static final LauncherState NORMAL = new LauncherState(NORMAL_STATE_ORDINAL,
+    public static final LauncherState NORMAL = new HomeState(NORMAL_STATE_ORDINAL,
             ContainerType.WORKSPACE, 0,
             FLAG_DISABLE_RESTORE | FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED | FLAG_HIDE_BACK_BUTTON |
-            FLAG_HAS_SYS_UI_SCRIM);
-
+                    FLAG_HAS_SYS_UI_SCRIM);
     /**
      * Various Launcher states arranged in the increasing order of UI layers
      */
-    public static final LauncherState SPRING_LOADED = new SpringLoadedState(
-            SPRING_LOADED_STATE_ORDINAL);
+    public static final LauncherState SPRING_LOADED = new SpringLoadedState(SPRING_LOADED_STATE_ORDINAL);
     public static final LauncherState ALL_APPS = new AllAppsState(ALL_APPS_STATE_ORDINAL);
-
+    public static final LauncherState OVERVIEW_PEEK = OverviewState.newPeekState(OVERVIEW_PEEK_STATE_ORDINAL);
     public static final LauncherState OVERVIEW = new OverviewState(OVERVIEW_STATE_ORDINAL);
-    public static final LauncherState OVERVIEW_PEEK =
-            OverviewState.newPeekState(OVERVIEW_PEEK_STATE_ORDINAL);
-    public static final LauncherState QUICK_SWITCH =
-            OverviewState.newSwitchState(QUICK_SWITCH_STATE_ORDINAL);
-    public static final LauncherState BACKGROUND_APP =
-            OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
+    public static final LauncherState QUICK_SWITCH = OverviewState.newSwitchState(QUICK_SWITCH_STATE_ORDINAL);
+    public static final LauncherState BACKGROUND_APP = OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
+    public static final LauncherState OPTIONS = new OptionsState(OPTIONS_STATE_ORDINAL);
 
     public final int ordinal;
 
@@ -193,6 +190,7 @@ public class LauncherState {
         this.hasSysUiScrim = (flags & FLAG_HAS_SYS_UI_SCRIM) != 0;
 
         this.ordinal = id;
+
         sAllStates[id] = this;
     }
 
@@ -235,11 +233,20 @@ public class LauncherState {
      *
      * @see com.android.launcher3.allapps.AllAppsTransitionController
      */
+
+    public float getScrimProgress(Launcher launcher) {
+        return getVerticalProgress(launcher);
+    }
+
     public float getVerticalProgress(Launcher launcher) {
         return 1f;
     }
 
     public float getWorkspaceScrimAlpha(Launcher launcher) {
+        return 0;
+    }
+
+    public float getWorkspaceBlurAlpha(Launcher launcher) {
         return 0;
     }
 
@@ -294,7 +301,7 @@ public class LauncherState {
      * - Setting some start values (e.g. scale) for views that are hidden but about to be shown.
      */
     public void prepareForAtomicAnimation(Launcher launcher, LauncherState fromState,
-            AnimatorSetBuilder builder) {
+                                          AnimatorSetBuilder builder) {
         if (this == NORMAL && fromState == OVERVIEW) {
             builder.setInterpolator(ANIM_WORKSPACE_SCALE, DEACCEL);
             builder.setInterpolator(ANIM_WORKSPACE_FADE, ACCEL);

@@ -15,21 +15,28 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.settings
+package com.saggitt.omega.views
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
-import androidx.preference.DialogPreference
-import com.android.launcher3.R
+import android.view.View
+import com.android.launcher3.Insettable
 
-open class PreferenceDialogPreference(context: Context, attrs: AttributeSet?) : DialogPreference(context, attrs) {
-    var content = 0
+open class InsettableNestedScrollView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : SpringNestedScrollView(context, attrs, defStyleAttr), Insettable {
 
-    init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceDialogPreference)
-        content = a.getResourceId(R.styleable.PreferenceDialogPreference_content, 0)
-        a.recycle()
+    private val currentInsets = Rect()
 
-        dialogLayoutResource = R.layout.dialog_preference_fragment
+    override fun setInsets(insets: Rect) {
+        currentInsets.set(insets)
+        (getChildAt(0) as Insettable).setInsets(insets)
+    }
+
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        (child as Insettable).setInsets(currentInsets)
     }
 }
+
