@@ -1,49 +1,49 @@
 # Omega Launcher
-Free and Open Source Launcher. <br/>
+Libre software launcher. <br/>
 [![Travis](https://img.shields.io/travis/otakuhqz/Omega.svg?style=for-the-badge)](https://travis-ci.org/otakuhqz/Omega)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
 
 ## Installation
-The release apks are shared in github and at the Telegram Channel. Some nightly builds 
-are shared at the Telegram Channel only.<br/>
+APKs are available on GitHub and in the Telegram channel. Some nightly builds
+are only available in the Telegram channel.<br/>
 [<img src="badge_github.png" alt="Get it on GitHub" height="80">](https://github.com/otakuhqz/omega/releases)
 
 ## Community
-You can join to the Telegram Channel to have the latest builds. There is also a Telegram Group 
+You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
 [![Telegram](https://img.shields.io/badge/Telegram-channel-blue.svg?style=for-the-badge)](https://t.me/omegalauncher)
 
 ##  Working Features
--   [X] Five mode to sort apps in the drawer.
+-   [X] Five modes of sorting apps in the drawer.
 -   [X] Google feed integration.
--   [X] Themes Support.
+-   [X] Theme support.
 -   [X] Customize search engine.
--   [X] Support Gestures 
+-   [X] Gesture support
         - Partially supported.
--   [X] Notifications configuration.
+-   [X] Notification configuration.
 -   [X] Categorize apps in the drawer.
 -   [X] Icon Shape support.
--   [X] Quick Action shortcuts (Dash).
--   [X] Hide apps
+-   [X] Quick action shortcuts (dash).
+-   [X] Hide apps.
 -   [X] Dock search.
 -   [X] Drawer grid preference.
--   [X] Customize app icon.
--   [X] All Apps Icon Scale.
--   [X] Dock Icon Scale.
--   [X] Workspace Icon Scale.
+-   [X] Customize app icons.
+-   [X] All apps icon scaling.
+-   [X] Dock icon scaling.
+-   [X] Workspace icon scaling.
 -   [X] Desktop grid preference.
--   [X] Apps Predictions (Experimental).
+-   [X] App predictions (experimental).
 
 ##  New Features and TODOs
 -   [ ] Icon pack support.
--   [ ] Disable auto remove empty screen.
+-   [ ] Turn off "auto remove empty screen".
 -   [ ] Add desktop screen manually.
 -   [ ] Reorder empty screens.
 -   [ ] Back up and restore.
 -   [ ] Horizontal drawer.
 -   [ ] Add auto tab mode for drawer.
--   [ ] Support for more news feeds (Like Microsoft Bing).
+-   [ ] Support for more news feeds (like Microsoft Bing).
 -   [ ] Animations.
 
 ##  Screenshots
@@ -74,21 +74,20 @@ to discuss the development, issues and new features.<br/>
     </tr>
 </table>
 
-## Want to buy me a coffee? <br/>
+## Donations <br/>
+[![Donate on Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/otakuhqz/donate)<br/>
 <a href="https://www.buymeacoffee.com/2ulp4f5" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" 
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
     alt="Buy Me A Coffee" width="150" >
-</a>
-
+</a><br/>
 [![Donate on PayPal](https://img.shields.io/badge/PayPal-Donate%20Now-red.svg?style=for-the-badge)](https://paypal.me/saulhenriquez)
-[![Donate on Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/otakuhqz/donate)
 
-## Want to contribute?
-If you have knowledge in Java or Kotlin you can work on additional features!
-I will be happy to work on features you would like to include, just open an issue.
+## Contributions
+If you know Java or Kotlin you can work on additional features!
+I will happily work on features you would like to have, just open an issue.
 
-## Translation?
-Translations are handled in Weblate. If want to help, visit [Weblate](https://hosted.weblate.org/projects/omegalauncher/)
+## Translation
+Translations are handled via Weblate. If want to help, visit [Hosted Weblate](https://hosted.weblate.org/projects/omegalauncher/)
 
 [![Estado de la traducción](https://hosted.weblate.org/widgets/omegalauncher/-/287x66-white.png)](https://hosted.weblate.org/engage/omegalauncher/)
 
