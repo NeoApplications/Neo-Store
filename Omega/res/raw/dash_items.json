@@ -5,7 +5,7 @@
       "item_name": "dash_item_0",
       "item_icon": "ic_pencil",
       "item_action": "EditDash",
-      "item_enabled": true
+      "item_enabled": false
     },
     {
       "item_id": 1,
