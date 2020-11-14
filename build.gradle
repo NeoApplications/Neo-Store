@@ -1,7 +1,6 @@
 import java.text.SimpleDateFormat
+
 buildscript {
-    ext.kotlin_version = '1.3.72'
-    ext.version_plugin_kotlin = "1.3.31"
     ext.enable_plugin_kotlin = true
 
     ext.getGitHash = { ->
@@ -17,22 +16,52 @@ buildscript {
         }
     }
 
+    ext {
+        versions = [
+                dynamicanimation       : "1.0.0",
+                appcompat              : "1.2.0",
+                preferencev14          : "1.0.0",
+                recyclerview           : "1.1.0",
+                preference             : "1.1.1",
+                material               : "1.3.0-alpha02",
+                constraintlayout       : "2.0.0-rc1",
+                customactivityoncrash  : "2.2.0",
+                colorpicker            : "1.1.0",
+                hokolite               : "0e21db9ae5",
+                sunrisesunsetcalculator: "1.2",
+                okhttp                 : "4.8.0",
+                logginginterceptor     : "4.8.0",
+                fuzzywuzzy             : "1.2.0",
+                junit                  : "1.1.1",
+                mockito                : "1.9.5",
+                dexmaker               : "1.2",
+                testjunit              : "1.1.1",
+                testrules              : "1.2.0",
+                uiautomator            : "2.2.0",
+                annotation             : "1.1.0",
+
+                kotlin                 : "1.4.10",
+                protobuf               : "0.8.12"
+        ]
+    }
+
     repositories {
         google()
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath GRADLE_CLASS_PATH
-        classpath PROTOBUF_CLASS_PATH
-        classpath KOTLIN_GRADLE_PLUGIN
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "com.google.protobuf:protobuf-gradle-plugin:${versions.protobuf}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }
 
-String FRAMEWORK_PREBUILTS_DIR = "prebuilts"
+String PREBUILTS_DIR = "prebuilts"
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
+
 if (enable_plugin_kotlin) {
     apply plugin: 'kotlin-android'
     apply plugin: 'kotlin-android-extensions'
@@ -40,18 +69,19 @@ if (enable_plugin_kotlin) {
 }
 android {
     compileSdkVersion 30
-    buildToolsVersion BUILD_TOOLS_VERSION
+    buildToolsVersion "30.0.2"
 
-    def name = "0.2.0"
-    def code = 7
+    def name = "0.6.0"
+    def code = 82
 
     defaultConfig {
         minSdkVersion 25
-        targetSdkVersion 30
+        targetSdkVersion 29
         applicationId "com.saggitt.omega"
         versionName name
         versionCode code
 
+        buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", "${findAndroidLocales()}"
         buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
         buildConfigField "String", "BUILD_DATE", "\"${getBuildDate()}\""
         buildConfigField "String", "GITHASH", "\"${getGitHash()}\""
@@ -61,6 +91,9 @@ android {
     }
     buildTypes {
         debug {
+            minifyEnabled false
+        }
+        release {
             minifyEnabled false
         }
     }
@@ -83,44 +116,27 @@ android {
             testApplicationId 'com.android.launcher3.tests'
         }
 
-        l3go {
-            dimension "app"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
-        }
-
         withQuickstep {
             dimension "recents"
-
             minSdkVersion 25
-        }
-
-        withQuickstepIconRecents {
-            dimension "recents"
-            minSdkVersion 28
         }
 
         withoutQuickstep {
             dimension "recents"
         }
 
-        omega{
+        omega {
             applicationId 'com.saggitt.omega'
             dimension "custom"
         }
     }
 
     // Disable release builds for now
-    android.variantFilter { variant ->
-        /*if (variant.buildType.name.endsWith('release')) {
-            variant.setIgnore(true)
-        }*/
-
-        // Icon recents is Go only
-        if (name.contains("WithQuickstepIconRecents") && !name.contains("l3go")) {
+    /*android.variantFilter { variant ->
+        if (variant.buildType.name.endsWith('release')) {
             variant.setIgnore(true)
         }
-    }
+    }*/
     lintOptions {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
@@ -131,6 +147,7 @@ android {
         main {
             res.srcDirs = ['res']
             java.srcDirs = ['src', 'src_plugins']
+            assets.srcDirs = ['assets']
             manifest.srcFile 'AndroidManifest-common.xml'
             proto {
                 srcDir 'protos/'
@@ -157,12 +174,6 @@ android {
             manifest.srcFile "AndroidManifest.xml"
         }
 
-        l3go {
-            res.srcDirs = ['go/res']
-            java.srcDirs = ['go/src']
-            manifest.srcFile "go/AndroidManifest.xml"
-        }
-
         withoutQuickstep {
             java.srcDirs = ['src_ui_overrides']
         }
@@ -173,21 +184,16 @@ android {
             manifest.srcFile "quickstep/AndroidManifest.xml"
         }
 
-        withQuickstepIconRecents {
-            res.srcDirs = ['quickstep/res', 'go/quickstep/res']
-            java.srcDirs = ['quickstep/src', 'go/quickstep/src']
-            manifest.srcFile "quickstep/AndroidManifest.xml"
-        }
-
-        omega{
+        omega {
             res.srcDirs = ['Omega/res']
-            java.srcDirs=['Omega/src','Omega/src_ui_overrides']
+            java.srcDirs = ['Omega/src', 'Omega/src_ui_overrides']
             manifest.srcFile 'Omega/AndroidManifest.xml'
         }
     }
+
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
-            options.compilerArgs.add("-Xbootclasspath/p:${FRAMEWORK_PREBUILTS_DIR}/libs/framework.jar")
+            options.compilerArgs.add("-Xbootclasspath/p:${PREBUILTS_DIR}/libs/framework.jar")
         }
     }
 }
@@ -201,55 +207,59 @@ afterEvaluate {
 apply from: 'Omega/smali.gradle'
 repositories {
     jcenter()
-    mavenCentral()
-    maven { url "https://maven.google.com" }
-    maven { url 'https://jitpack.io' }
+    google()
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
-    implementation "androidx.dynamicanimation:dynamicanimation:${ANDROID_X_VERSION}"
-    implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.recyclerview:recyclerview:${ANDROID_X_VERSION}"
-    implementation "androidx.preference:preference:${ANDROID_X_VERSION}"
+    implementation "androidx.legacy:legacy-preference-v14:${versions.preferencev14}"
+    implementation "androidx.dynamicanimation:dynamicanimation:${versions.dynamicanimation}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recyclerview}"
+    implementation "androidx.preference:preference-ktx:${versions.preference}"
 
-    implementation "com.google.android.material:material:1.1.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
-    implementation 'cat.ereza:customactivityoncrash:2.2.0'
-    implementation 'com.jaredrummler:colorpicker:1.1.0'
-    implementation 'com.github.LawnchairLauncher:hoko-lite:0e21db9ae5'
-    implementation 'com.luckycatlabs:SunriseSunsetCalculator:1.2'
+    implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    implementation "cat.ereza:customactivityoncrash:${versions.customactivityoncrash}"
+    implementation "com.jaredrummler:colorpicker:${versions.colorpicker}"
+    implementation "com.github.LawnchairLauncher:hoko-lite:${versions.hokolite}"
+    implementation "com.luckycatlabs:SunriseSunsetCalculator:${versions.sunrisesunsetcalculator}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.logginginterceptor}"
+    implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
 
     implementation project(':IconLoader')
-    implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
-    implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'libGoogleFeed.jar')
+    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
+    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'libGoogleFeed.jar')
 
     // Recents lib dependency
-    withQuickstepImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
-
-    // Recents lib dependency for Go
-    withQuickstepIconRecentsImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
+    withQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
+    //withQuickstepImplementation project(':SystemUISharedLib')
 
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
-    withoutQuickstepImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
+    withoutQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
 
     // Tools
     if (enable_plugin_kotlin) {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_plugin_kotlin"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
     }
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation "org.mockito:mockito-core:1.9.5"
-    androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
-    androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.0'
-    androidTestImplementation 'com.android.support.test:rules:1.0.0'
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    androidTestImplementation "androidx.annotation:annotation:${ANDROID_X_VERSION}"
+    implementation "androidx.test.ext:junit:${versions.testjunit}"
+    androidTestImplementation "org.mockito:mockito-core:${versions.mockito}"
+    androidTestImplementation "com.google.dexmaker:dexmaker:${versions.dexmaker}"
+    androidTestImplementation "com.google.dexmaker:dexmaker-mockito:${versions.dexmaker}"
+    androidTestImplementation "androidx.test.ext:junit:${versions.testjunit}"
+    androidTestImplementation "androidx.test:rules:${versions.testrules}"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:${versions.uiautomator}"
+    androidTestImplementation "androidx.annotation:annotation:${versions.annotation}"
 }
 
 protobuf {
     // Configure the protoc executable
     protoc {
+        // later versions seems to miss on javanano support
         artifact = 'com.google.protobuf:protoc:3.0.0'
 
         generateProtoTasks {
@@ -260,12 +270,31 @@ protobuf {
                         option "java_package=launcher_log_extension.proto|com.android.launcher3.userevent.nano"
                         option "java_package=launcher_log.proto|com.android.launcher3.userevent.nano"
                         option "java_package=launcher_dump.proto|com.android.launcher3.model.nano"
+                        option "java_package=search.proto|com.google.android.apps.nexuslauncher.search.nano"
+                        option "java_package=smartspace.proto|com.google.android.apps.nexuslauncher.smartspace.nano"
                         option "enum_style=java"
                     }
                 }
             }
         }
     }
+}
+
+@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
+// Returns used android languages as a buildConfig array: {'de', 'it', ..}"
+static String findAndroidLocales() {
+    Set<String> langs = new HashSet<>()
+    new File('.').eachFileRecurse(groovy.io.FileType.DIRECTORIES) {
+        final foldername = it.name
+        if (foldername.startsWith('values-') && !it.canonicalPath.contains("build" + File.separator + "intermediates")) {
+            new File(it.toString()).eachFileRecurse(groovy.io.FileType.FILES) {
+                if (it.name.toLowerCase().endsWith(".xml") && it.getCanonicalFile().getText('UTF-8').contains("<string")) {
+                    langs.add(foldername.replace("values-", ""))
+                }
+            }
+        }
+    }
+    return '{' + langs.collect { "\"${it}\"" }.join(",") + '}'
 }
 
 @SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
