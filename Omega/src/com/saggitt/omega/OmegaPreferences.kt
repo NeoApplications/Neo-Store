@@ -107,6 +107,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     val hideAppLabels by BooleanPref("pref_hideAppLabels", false, recreate)
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
+    val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
 
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)

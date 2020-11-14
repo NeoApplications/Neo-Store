@@ -73,6 +73,13 @@
         android:title="@string/allow_rotation_title"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+        android:defaultValue="falser"
+        android:key="pref_hideStatusBar"
+        android:persistent="true"
+        android:title="@string/title_desktop_hide_statusbar"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
         android:key="pref_fullWidthWidgets"

@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -61,7 +62,7 @@ import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
-public class OmegaLauncher extends Launcher {
+public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPreferenceChangeListener {
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
     public Context mContext;
@@ -74,6 +75,7 @@ public class OmegaLauncher extends Launcher {
     private GestureController mGestureController;
     public View dummyView;
     private OptionsPanel optionsView;
+    private String hideStatusBarKey = "pref_hideStatusBar";
 
     public OmegaLauncher() {
         launcherCallbacks = new OmegaLauncherCallbacks(this);
@@ -96,8 +98,9 @@ public class OmegaLauncher extends Launcher {
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
+        OmegaPreferences mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
         mOmegaPrefs.registerCallback(prefCallback);
+        mOmegaPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
 
     }
 
@@ -127,10 +130,21 @@ public class OmegaLauncher extends Launcher {
     public void onDestroy() {
         super.onDestroy();
         Utilities.getOmegaPrefs(this).unregisterCallback();
+        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this);
 
         if (sRestart) {
             sRestart = false;
             OmegaPreferences.Companion.destroyInstance();
+        }
+    }
+
+    public void onValueChanged(String key, @NotNull OmegaPreferences prefs, boolean force) {
+        if (key.equals(hideStatusBarKey)) {
+            if (prefs.getHideStatusBar()) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else if (!force) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
         }
     }
 
