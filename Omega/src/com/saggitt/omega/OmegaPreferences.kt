@@ -94,6 +94,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
     private val homeMultilineLabel by BooleanPref("pref_homeIconLabelsInTwoLines", false, recreate)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
+    val hideAppLabels by BooleanPref("pref_hideAppLabels", false, recreate)
 
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)

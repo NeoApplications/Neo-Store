@@ -54,6 +54,7 @@ import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.text.NumberFormat;
 
@@ -141,6 +142,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     private IconLoadRequest mIconLoadRequest;
 
+    private boolean mHideText;
+
     public BubbleTextView(Context context) {
         this(context, null, 0);
     }
@@ -160,9 +163,11 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
         mDisplay = a.getInteger(R.styleable.BubbleTextView_iconDisplay, DISPLAY_WORKSPACE);
         final int defaultIconSize;
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
         if (mDisplay == DISPLAY_WORKSPACE) {
             DeviceProfile grid = mActivity.getWallpaperDeviceProfile();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
+            mHideText = prefs.getHideAppLabels();
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             defaultIconSize = grid.iconSizePx;
             mIgnorePaddingTouch = true;
@@ -174,7 +179,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             mIgnorePaddingTouch = true;
         } else if (mDisplay == DISPLAY_FOLDER) {
             DeviceProfile grid = mActivity.getDeviceProfile();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.folderChildTextSizePx);
+            mHideText = prefs.getHideAppLabels();
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.folderChildTextSizePx);
             setCompoundDrawablePadding(grid.folderChildDrawablePaddingPx);
             defaultIconSize = grid.folderChildIconSizePx;
             mIgnorePaddingTouch = true;
@@ -297,11 +303,21 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             mDotParams.color = IconPalette.getMutedColor(info.iconColor, 0.54f);
         }
         setIcon(iconDrawable);
-        setText(info.title);
+        if (!isTextHidden())
+            setText(getTitle(info));
         if (info.contentDescription != null) {
             setContentDescription(info.isDisabled()
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
                     : info.contentDescription);
+        }
+    }
+
+    private CharSequence getTitle(ItemInfo info) {
+        CustomInfoProvider<ItemInfo> customInfoProvider = CustomInfoProvider.Companion.forItem(getContext(), info);
+        if (customInfoProvider != null) {
+            return customInfoProvider.getTitle(info);
+        } else {
+            return info.title;
         }
     }
 
@@ -718,5 +734,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     public int getIconSize() {
         return mIconSize;
+    }
+
+    protected boolean isTextHidden() {
+        return mHideText;
     }
 }

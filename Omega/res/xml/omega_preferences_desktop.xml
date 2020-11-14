@@ -36,6 +36,14 @@
         app:summaryMultiplier="100" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:disableDependentsState="true"
+        android:key="pref_hideAppLabels"
+        android:persistent="true"
+        android:title="@string/title__desktop_hide_icon_labels"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_add_icon_to_home"
         android:persistent="true"
