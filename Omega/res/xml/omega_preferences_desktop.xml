@@ -44,6 +44,14 @@
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_hideAppLabels"
+        android:key="pref_homeIconLabelsInTwoLines"
+        android:persistent="true"
+        android:title="@string/title__multiline_labels"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_add_icon_to_home"
         android:persistent="true"

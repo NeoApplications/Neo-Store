@@ -170,12 +170,16 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             defaultIconSize = grid.iconSizePx;
+            int lines = prefs.getHomeLabelRows();
+            setLineCount(lines);
             mIgnorePaddingTouch = true;
         } else if (mDisplay == DISPLAY_ALL_APPS) {
             DeviceProfile grid = mActivity.getDeviceProfile();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
             setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
             defaultIconSize = grid.allAppsIconSizePx;
+            int lines = prefs.getHomeLabelRows();
+            setLineCount(lines);
             mIgnorePaddingTouch = true;
         } else if (mDisplay == DISPLAY_FOLDER) {
             DeviceProfile grid = mActivity.getDeviceProfile();
@@ -204,6 +208,14 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         setEllipsize(TruncateAt.END);
         setAccessibilityDelegate(mActivity.getAccessibilityDelegate());
         setTextAlpha(1f);
+    }
+
+    public void setLineCount(int lines) {
+        setMaxLines(lines);
+        setSingleLine(lines == 1);
+        setEllipsize(TruncateAt.END);
+        // This shouldn't even be needed, what is going on?!
+        setLines(lines);
     }
 
     @Override
