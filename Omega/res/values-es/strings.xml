@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2020 Omega Launcher
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  ~
+  -->
+<resources>
+    <string name="title__general_about">Acerca de</string>
+    <string name="title__general_desktop">Escritorio</string>
+    <string name="title__general_dock">Dock</string>
+    <string name="title__general_drawer">Aplicaciones</string>
+    <string name="title__general_theme">Temas</string>
+    <string name="title__general_search">Búsqueda</string>
+    <string name="title__general_advanced">Avanzados</string>
+    <string name="pref_category__others">Otras</string>
+    <string name="title__dock_hide">Ocultar Dock</string>
+    <string name="title__dock_hide_labels">Ocultar Nombres</string>
+    <string name="title__dock_search_bar">Mostrar barra de busqueda</string>
+    <string name="title__drawer_sort">Ordenar Aplicaciones</string>
+    <string name="title__dock_scale">Tamaño del Dock</string>
+    <string name="title__drawer_categorization">Categorias</string>
+    <string name="title__sort_mode">Ordenar Aplicaciones</string>
+    <string name="title__sort_alphabetical_az">Alfabetico AZ</string>
+    <string name="title__sort_alphabetical_za">Alfabetico ZA</string>
+    <string name="title__sort_last_installed">Fecha de Instalacion</string>
+    <string name="title__sort_most_used">Mas usados</string>
+    <string name="title__sort_by_color">Por Color</string>
+    <string name="label_turn_off_suggestions">Deshabilitar</string>
+    <string name="pref_appcategorization_style_text">Estilo</string>
+    <string name="pref_appcategorization_folders_title">Carpetas</string>
+    <string name="pref_app_groups_create">Crear</string>
+    <string name="pref_category__gestures">Gestos</string>
+    <string name="action_none">No hacer nada</string>
+    <string name="title__search_action_assistant">Abrir Asistente</string>
+    <string name="title__search_provider">Motor de busqueda</string>
+    <string name="title__advanced_language">Idioma</string>
+    <string name="title__restart_launcher">Reiniciar</string>
+    <string name="title__about_donate">Donar</string>
+    <string name="category__about_licenses">Licencia</string>
+    <string name="tab_bottom_sheet_save">Guardar</string>
+    <string name="name">Nombre</string>
+    <string name="apps_label">Aplicaciones</string>
+    <string name="search_provider_appsearch" translatable="false">Buscar aplicaciones</string>
+    <string name="theme_black">Negro</string>
+    <string name="theme_black_dark_text">Negro con texto oscuro</string>
+    <string name="customize">Personalizar</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_dark_theme_mode">Tema Oscuro</string>
+    <string name="delete">Borrar</string>
+    <string name="developer_options_title">Opciones de Desarrollador</string>
+    <string name="dismiss_drop_target_label">No mostrar</string>
+    <string name="drawer_folders">Carpetas</string>
+    <string name="default_folder_name">Nueva carpeta</string>
+    <string name="title__about_project_license">Licencia del Proyecto</string>
+    <string name="cat_search_bar">Barra de busqueda</string>
+    <string name="summary__general_desktop">Personaliza tu escritorio</string>
+    <string name="title__general_notifications">Gestos y Notificaciones</string>
+    <string name="summary__general_search">Proveedores de búsqueda, estilos, íconos</string>
+    <string name="title__search_show_assistant">Mostrar el botón de búsqueda por voz</string>
+    <string name="pref_app_groups_edit_tip">Toca para editar, arrastra para reordenar.</string>
+    <string name="title_show_google_app">Mostrar Google App</string>
+    <string name="title__drawer_columns">Número de columnas</string>
+    <string name="title__dev_show_Dev">Mostrar en preferencias</string>
+    <string name="failed">Algo salió mal.</string>
+    <string name="search_menu">Buscar preferencias</string>
+    <string name="title__gesture_swipe_down">Deslizar hacia abajo</string>
+    <string name="title__drawer_hide_icon_labels">Ocultar el nombre de la aplicacion</string>
+    <string name="title__dock_icon_size">Tamaño de Icono</string>
+    <string name="grid_size_width">Ancho</string>
+    <string name="title__desktop_icon_size">Tamaño de icono</string>
+    <string name="allow_rotation_blocked_desc">La configuración actual no permite la rotación de pantalla</string>
+    <string name="pref_category__inputs">Gestos y Búsqueda</string>
+    <string name="pref_category__interfaces">Vistas</string>
+    <string name="summary__general_about">Mas información sobre Omega Launcher</string>
+    <string name="summary__general_advanced">Idioma, respaldo, busqueda de preferencias</string>
+    <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
+    <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
+    <string name="title__notification_count">Mostrar cuenta de notificaciones</string>
+    <string name="icon_badging_desc_off">Desactivado</string>
+    <string name="icon_badging_desc_on">Activado</string>
+    <string name="smartspace_preferences">Preferencias</string>
+    <string name="msg_minus_one_on_left">A la izquierda de la pantalla principal</string>
+    <string name="title_smartspace_feed_theme">Tema del Feed</string>
+    <string name="color_presets">Predeterminados</string>
+    <string name="icon_shape_override_label_location">en la pantalla de inicio</string>
+    <string name="get_more_icon_packs">Obtener mas</string>
+    <string name="icon_pack">Pack de Iconos</string>
+    <string name="theme_default">Predeterminado</string>
+    <string name="theme_use_dark_text">Usar texto oscuro</string>
+    <string name="theme_dark_theme_mode_off">Apagado</string>
+    <string name="theme_dark_theme_mode_on">Encendido</string>
+    <string name="theme_dark_dark_text">Oscuro con texto oscuro</string>
+    <string name="theme_dark_text">Claro con texto oscuro</string>
+    <string name="theme_with_dark_text">Texto oscuro</string>
+    <string name="theme_light">Claro</string>
+    <string name="hide_app_reset">Reiniciar</string>
+    <string name="hide_app_selected">  Oculta</string>
+    <plurals name="hidden_apps_count">
+        <item quantity="one">%1$d Ocultas</item>
+        <item quantity="other" />
+    </plurals>
+    <plurals name="tab_apps_count">
+        <item quantity="one">%1$d Aplicación</item>
+        <item quantity="other">%1$d Aplicaciones</item>
+    </plurals>
+    <string name="selected_count">%1$d seleccionada</string>
+    <string name="tab_type_smart">Automático</string>
+    <string name="tab_type_custom">Personalizada</string>
+    <string name="pref_appcategorization_tabs_title">Tabs</string>
+    <string name="pref_appcategorization_enable_title">Categorizar aplicaciones</string>
+    <string name="pref_appcategorization_flowerpot_title">Categoria de Aplicación</string>
+    <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
+    <string name="title_disable_suggestions_prompt">Deshabilitar sugerencias</string>
+    <string name="summary_all_apps_google_search">Buscar resultados web y aplicaciones</string>
+    <string name="title_all_apps_google_search">Búsqueda global</string>
+    <string name="title__drawer_all_apps">Mostrar la etiqueta All Apps</string>
+    <string name="pref_value_disabled">Deshabilitado</string>
+    <string name="title__dock_hotseat_icons">Cantidad de Iconos</string>
+    <string name="title__dock_colored_icons">Iconos a colores</string>
+    <string name="grid_size_height">Alto</string>
+    <string name="theme_auto_night_mode">Seguir tema del sistema</string>
+    <string name="theme_auto">Seguir wallpaper</string>
+    <string name="title_app_suggestions">Aplicaciones</string>
+    <string name="hotseat_show_page_indicator">Mostrar indicador de página</string>
+    <string name="title_opacity">Opacidad</string>
+    <string name="title__dock_show_arrow">Mostrar flecha</string>
+    <string name="title_dock_background_color">Color de fondo</string>
+    <string name="title_dock_fill">Mostrar fondo</string>
+    <string name="title_desktop_hide_statusbar">Ocultar barra de estado</string>
+    <string name="title__multiline_labels">Nombre de aplicaciones en varias lineas</string>
+    <string name="title__desktop_hide_icon_labels">Ocultar etiquetas en los iconos de la pantalla de inicio</string>
+    <string name="title__desktop_grid_size">Tamaño de la cuadrícula</string>
+    <string name="title__desktop_full_width_widgets">Widgets en ancho completo</string>
+    <string name="pref_category__incubating">Incubando</string>
+    <string name="title__notification_background">Color de la notificación</string>
+</resources>

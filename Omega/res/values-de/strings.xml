@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title__general_desktop">Schreibtisch</string>
+    <string name="title__general_about">Über</string>
+    <string name="title__general_notifications">Gesten und Benachrichtigungen</string>
+    <string name="title__general_advanced">Erweiterte Einstellungen</string>
+    <string name="title__general_search">Suchen</string>
+</resources>

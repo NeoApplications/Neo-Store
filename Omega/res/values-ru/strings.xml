@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="icon_shape_cylinder">Цилиндр</string>
+    <string name="hide_app_reset">Сброс</string>
+    <string name="drawer_tabs">Вкладки</string>
+    <string name="drawer_folders">Папки</string>
+    <string name="tab_type_smart">Автоматически</string>
+    <string name="default_folder_name">Новая папка</string>
+    <string name="pref_appcategorization_tabs_title">Вкладки</string>
+    <string name="pref_appcategorization_folders_title">Папки</string>
+    <string name="pref_app_groups_create">Создать</string>
+    <string name="pref_appcategorization_style_text">Стиль</string>
+    <string name="pref_appcategorization_enable_title">Категоризация приложений</string>
+    <string name="pref_appcategorization_flowerpot_title">Категория приложения</string>
+    <string name="label_turn_off_suggestions">Отключить</string>
+    <string name="title_all_apps_google_search">Глобальный поиск</string>
+    <string name="title__sort_by_color">По цвету</string>
+    <string name="title__sort_mode">Сортировка приложений</string>
+    <string name="title__drawer_categorization">Категории</string>
+    <string name="title__drawer_sort">Сортировка приложений</string>
+    <string name="pref_value_disabled">Отключено</string>
+    <string name="title__dock_colored_icons">Цветные значки</string>
+    <string name="pref_category__inputs">Жесты и поиск</string>
+    <string name="pref_category__interfaces">Интерфейсы</string>
+    <string name="summary__general_notifications">Уведомления и жесты</string>
+    <string name="summary__general_desktop">Настройте свой рабочий стол</string>
+    <string name="title__general_notifications">Жесты и уведомления</string>
+    <string name="title__general_search">Поиск</string>
+    <string name="title__general_theme">Тема</string>
+    <string name="title__general_desktop">Рабочий стол</string>
+    <string name="title__general_about">О программе</string>
+</resources>

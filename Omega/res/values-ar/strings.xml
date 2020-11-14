@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title__general_about">حول</string>
+    <string name="title__general_notifications">الإيماءات والإشعارات</string>
+    <string name="title__general_theme">السمة</string>
+    <string name="title__general_search">ابحث</string>
+</resources>
