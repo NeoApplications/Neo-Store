@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.anim.Interpolators.DEACCEL_1_5;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -77,6 +75,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
+
+import static com.android.launcher3.anim.Interpolators.DEACCEL_1_5;
 
 public class CellLayout extends ViewGroup implements Transposable {
     public static final int WORKSPACE_ACCESSIBILITY_DRAG = 2;
@@ -150,14 +150,19 @@ public class CellLayout extends ViewGroup implements Transposable {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({WORKSPACE, HOTSEAT, FOLDER})
-    public @interface ContainerType{}
+    public @interface ContainerType {
+    }
+
     public static final int WORKSPACE = 0;
     public static final int HOTSEAT = 1;
     public static final int FOLDER = 2;
 
-    @ContainerType private final int mContainerType;
+    @ContainerType
+    private final int mContainerType;
 
     private final float mChildScale = 1f;
+
+    private final int mDockIconSize;
 
     public static final int MODE_SHOW_REORDER_HINT = 0;
     public static final int MODE_DRAG_OVER = 1;
@@ -211,9 +216,11 @@ public class CellLayout extends ViewGroup implements Transposable {
         mCellWidth = mCellHeight = -1;
         mFixedCellWidth = mFixedCellHeight = -1;
 
+        mDockIconSize = grid.hotseatIconSizePx;
+
         mCountX = grid.inv.numColumns;
         mCountY = grid.inv.numRows;
-        mOccupied =  new GridOccupancy(mCountX, mCountY);
+        mOccupied = new GridOccupancy(mCountX, mCountY);
         mTmpOccupied = new GridOccupancy(mCountX, mCountY);
 
         mPreviousReorderDirection[0] = INVALID_DIRECTION;
@@ -579,7 +586,11 @@ public class CellLayout extends ViewGroup implements Transposable {
         // Hotseat icons - remove text
         if (child instanceof BubbleTextView) {
             BubbleTextView bubbleChild = (BubbleTextView) child;
-            bubbleChild.setTextVisibility(mContainerType != HOTSEAT);
+            if (mContainerType == HOTSEAT) {
+                bubbleChild.setTextVisibility(!Utilities.getOmegaPrefs(getContext()).getHideDockLabels());
+                bubbleChild.setIconSize(mDockIconSize);
+                bubbleChild.setLines(Utilities.getOmegaPrefs(getContext()).getDockLabelRows());
+            }
         }
 
         child.setScaleX(mChildScale);

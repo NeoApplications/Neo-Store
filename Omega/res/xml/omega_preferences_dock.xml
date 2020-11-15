@@ -51,4 +51,12 @@
         app:summaryMultiplier="100"
         android:persistent="true" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="true"
+        android:key="pref_hideDockLabels"
+        android:persistent="true"
+        android:disableDependentsState="true"
+        android:title="@string/title__dock_hide_labels"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>
