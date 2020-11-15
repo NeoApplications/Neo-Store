@@ -56,6 +56,18 @@
         android:title="@string/title__dock_hotseat_icons"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.AutoModeScalePreference
+        android:key="pref_hotseatIconSize"
+        android:persistent="true"
+        android:title="@string/title__dock_icon_size"
+        app:defaultSeekbarValue="0"
+        app:iconSpaceReserved="false"
+        app:maxValue="2.0"
+        app:minValue="0.5"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_hideDockLabels"
