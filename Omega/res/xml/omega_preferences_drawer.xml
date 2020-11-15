@@ -17,6 +17,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Settings">
+
+    <com.saggitt.omega.preferences.SeekbarPreference
+        android:key="allAppsIconSize"
+        android:persistent="true"
+        android:title="@string/title__drawer_icon_size"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="2.0"
+        app:minValue="0.5"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
     <ListPreference
         android:defaultValue="3"
         android:disableDependentsState="false"
