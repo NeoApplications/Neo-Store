@@ -68,6 +68,16 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
 
+    <com.saggitt.omega.preferences.AutoModeScalePreference
+        android:key="pref_dockScale"
+        android:persistent="true"
+        android:title="@string/title__dock_scale"
+        app:defaultSeekbarValue="0.80"
+        app:maxValue="1.75"
+        app:minValue="0.70"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_hideDockLabels"
