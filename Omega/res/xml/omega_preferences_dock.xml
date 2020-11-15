@@ -51,6 +51,11 @@
         app:summaryMultiplier="100"
         android:persistent="true" />
 
+    <com.saggitt.omega.preferences.DockGridSizePreference
+        android:key="pref_dock_grid_size"
+        android:title="@string/title__dock_hotseat_icons"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_hideDockLabels"

@@ -36,6 +36,7 @@ import com.saggitt.omega.allapps.PredictionsFloatingHeader
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackManager
+import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.theme.ThemeManager
@@ -122,6 +123,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     inline val dockGradientStyle get() = !dockBackground
     var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
     val dockBackgroundColor by IntPref("pref_dock_background_color", R.color.transparentish, recreate)
+    private val dockGridSizeDelegate = ResettableLazy { GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), restart) }
+    val dockGridSize by dockGridSizeDelegate
     var dockRadius by FloatPref("pref_dockRadius", 16f, recreate)
     var dockShadow by BooleanPref("pref_dockShadow", false, recreate)
     var dockShowArrow by BooleanPref("pref_hotseatShowArrow", true, recreate)

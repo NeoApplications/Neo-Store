@@ -82,6 +82,8 @@ import com.saggitt.omega.preferences.GridSizeDialogFragmentCompat;
 import com.saggitt.omega.preferences.GridSizePreference;
 import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.ResumablePreference;
+import com.saggitt.omega.preferences.SingleDimensionGridSizeDialogFragmentCompat;
+import com.saggitt.omega.preferences.SingleDimensionGridSizePreference;
 import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
@@ -887,6 +889,9 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
+            } else if (preference instanceof SingleDimensionGridSizePreference) {
+                f = SingleDimensionGridSizeDialogFragmentCompat.Companion
+                        .newInstance(preference.getKey());
             } else if (preference instanceof CustomDialogPreference) {
                 f = PreferenceScreenDialogFragment.Companion
                         .newInstance((CustomDialogPreference) preference);

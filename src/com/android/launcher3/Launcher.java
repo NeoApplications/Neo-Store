@@ -132,6 +132,7 @@ import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetListRowEntry;
 import com.android.launcher3.widget.WidgetsFullSheet;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -318,6 +319,11 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         mContext = this;
 
         LauncherAppState app = LauncherAppState.getInstance(this);
+
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
+        prefs.getGridSize();
+        prefs.getDockGridSize();
+
         mOldConfig = new Configuration(getResources().getConfiguration());
         mModel = app.setLauncher(this);
         mRotationHelper = new RotationHelper(this);

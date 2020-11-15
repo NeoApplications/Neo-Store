@@ -72,7 +72,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.6.0"
-    def code = 86
+    def code = 87
 
     defaultConfig {
         minSdkVersion 25
