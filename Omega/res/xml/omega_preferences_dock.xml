@@ -86,6 +86,13 @@
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_hotseatShowPageIndicator"
+        android:title="@string/hotseat_show_page_indicator"
+        android:defaultValue="true"
+        android:persistent="true"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_hideDockLabels"
         android:persistent="true"
