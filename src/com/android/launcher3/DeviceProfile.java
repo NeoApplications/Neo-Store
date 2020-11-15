@@ -445,7 +445,9 @@ public class DeviceProfile {
                     + hotseatBarSidePaddingEndPx;
         }
         hotseatCellHeightPx = hotseatIconSizePx;
-
+        if (prefs.getDockLabelRows() > 1) {
+            hotseatCellHeightPx += 50;
+        }
         if (!isVerticalLayout) {
             int expectedWorkspaceHeight = availableHeightPx - hotseatBarSizePx
                     - verticalDragHandleSizePx - edgeMarginPx;

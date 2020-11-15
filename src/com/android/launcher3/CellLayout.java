@@ -589,7 +589,7 @@ public class CellLayout extends ViewGroup implements Transposable {
             if (mContainerType == HOTSEAT) {
                 bubbleChild.setTextVisibility(!Utilities.getOmegaPrefs(getContext()).getHideDockLabels());
                 bubbleChild.setIconSize(mDockIconSize);
-                bubbleChild.setLines(Utilities.getOmegaPrefs(getContext()).getDockLabelRows());
+                bubbleChild.setLineCount(Utilities.getOmegaPrefs(getContext()).getDockLabelRows());
             }
         }
 
