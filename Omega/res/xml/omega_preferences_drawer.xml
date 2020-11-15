@@ -64,6 +64,12 @@
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.CustomDialogPreference
+        android:key="pref_iconPopupMenu"
+        android:title="@string/title__drawer_icon_popup_menu"
+        app:content="@xml/omega_drawer_icon_popup_menu_preferences"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
         android:key="pref_show_predictions"
