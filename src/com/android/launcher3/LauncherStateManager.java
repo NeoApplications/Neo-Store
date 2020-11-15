@@ -16,9 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -39,6 +36,9 @@ import java.io.PrintWriter;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 
 /**
  * TODO: figure out what kind of tests we can write for this
@@ -118,6 +118,8 @@ public class LauncherStateManager {
     private LauncherState mLastStableState = NORMAL;
     private LauncherState mCurrentStableState = NORMAL;
 
+    private LauncherState mToState = mState;
+
     private LauncherState mRestState;
 
     public LauncherStateManager(Launcher l) {
@@ -127,6 +129,10 @@ public class LauncherStateManager {
 
     public LauncherState getState() {
         return mState;
+    }
+
+    public LauncherState getToState() {
+        return mToState;
     }
 
     public LauncherState getCurrentStableState() {
@@ -224,7 +230,7 @@ public class LauncherStateManager {
     }
 
     private void goToState(LauncherState state, boolean animated, long delay,
-            final Runnable onCompleteRunnable) {
+                           final Runnable onCompleteRunnable) {
         animated &= Utilities.areAnimationsEnabled(mLauncher);
         if (mLauncher.isInState(state)) {
             if (mConfig.mCurrentAnimation == null) {
@@ -249,6 +255,7 @@ public class LauncherStateManager {
 
         // Cancel the current animation. This will reset mState to mCurrentStableState, so store it.
         LauncherState fromState = mState;
+        mToState = state;
         mConfig.reset();
 
         if (!animated) {
@@ -282,7 +289,7 @@ public class LauncherStateManager {
     }
 
     private void goToStateAnimated(LauncherState state, LauncherState fromState,
-            Runnable onCompleteRunnable) {
+                                   Runnable onCompleteRunnable) {
         // Since state NORMAL can be reached from multiple states, just assume that the
         // transition plays in reverse and use the same duration as previous state.
         mConfig.duration = state == NORMAL ? fromState.transitionDuration : state.transitionDuration;
@@ -300,12 +307,12 @@ public class LauncherStateManager {
      * - Setting some start values (e.g. scale) for views that are hidden but about to be shown.
      */
     public void prepareForAtomicAnimation(LauncherState fromState, LauncherState toState,
-            AnimatorSetBuilder builder) {
+                                          AnimatorSetBuilder builder) {
         toState.prepareForAtomicAnimation(mLauncher, fromState, builder);
     }
 
     public AnimatorSet createAtomicAnimation(LauncherState fromState, LauncherState toState,
-            AnimatorSetBuilder builder, @AnimationComponents int atomicComponent, long duration) {
+                                             AnimatorSetBuilder builder, @AnimationComponents int atomicComponent, long duration) {
         prepareForAtomicAnimation(fromState, toState, builder);
         AnimationConfig config = new AnimationConfig();
         config.animComponents = atomicComponent;
@@ -359,8 +366,8 @@ public class LauncherStateManager {
     }
 
     public AnimatorPlaybackController createAnimationToNewWorkspace(LauncherState state,
-            AnimatorSetBuilder builder, long duration, Runnable onCancelRunnable,
-            @AnimationComponents int animComponents) {
+                                                                    AnimatorSetBuilder builder, long duration, Runnable onCancelRunnable,
+                                                                    @AnimationComponents int animComponents) {
         mConfig.reset();
         mConfig.userControlled = true;
         mConfig.animComponents = animComponents;
@@ -372,7 +379,7 @@ public class LauncherStateManager {
     }
 
     protected AnimatorSet createAnimationToNewWorkspaceInternal(final LauncherState state,
-            AnimatorSetBuilder builder, final Runnable onCompleteRunnable) {
+                                                                AnimatorSetBuilder builder, final Runnable onCompleteRunnable) {
 
         for (StateHandler handler : getStateHandlers()) {
             handler.setStateWithAnimation(state, builder, mConfig);
@@ -663,7 +670,7 @@ public class LauncherStateManager {
          * Sets the UI to {@param state} by animating any changes.
          */
         void setStateWithAnimation(LauncherState toState,
-                AnimatorSetBuilder builder, AnimationConfig config);
+                                   AnimatorSetBuilder builder, AnimationConfig config);
     }
 
     public interface StateListener {

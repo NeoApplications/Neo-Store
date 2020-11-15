@@ -90,6 +90,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val drawerTabs get() = appGroupsManager.drawerTabs
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val separateWorkApps by BooleanPref("pref_separateWorkApps", true, recreate)
+    val drawerBackgroundColor by IntPref("pref_drawer_background_color", R.color.white, recreate)
+    val customBackground by BooleanPref("pref_enable_custom_background", false, doNothing)
+    val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
@@ -117,6 +120,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var dockScale by FloatPref("pref_dockScale", -1f, recreate)
     val dockBackground by BooleanPref("pref_dockBackground", false, recreate)
     inline val dockGradientStyle get() = !dockBackground
+    var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
+    val dockBackgroundColor by IntPref("pref_dock_background_color", R.color.transparentish, recreate)
+    var dockRadius by FloatPref("pref_dockRadius", 16f, recreate)
+    var dockShadow by BooleanPref("pref_dockShadow", false, recreate)
+    var dockShowArrow by BooleanPref("pref_hotseatShowArrow", true, recreate)
 
     /* --THEME-- */
     var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }

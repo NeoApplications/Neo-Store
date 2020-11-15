@@ -24,4 +24,21 @@
         android:title="@string/title__dock_hide"
         android:disableDependentsState="true"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_dockBackground"
+        android:title="@string/title_dock_fill"
+        android:dependency="pref_hideHotseat"
+        android:persistent="true"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.ColorPreferenceCompat
+        android:key="pref_dock_background_color"
+        android:title="@string/title_dock_background_color"
+        android:dependency="pref_dockBackground"
+        android:defaultValue="@color/transparentish"
+        app:cpv_dialogTitle="@string/title_dock_background_color"
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>

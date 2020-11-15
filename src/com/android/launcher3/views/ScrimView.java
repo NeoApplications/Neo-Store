@@ -15,17 +15,6 @@
  */
 package com.android.launcher3.views;
 
-import static android.content.Context.ACCESSIBILITY_SERVICE;
-import static android.view.MotionEvent.ACTION_DOWN;
-
-import static androidx.core.graphics.ColorUtils.compositeColors;
-
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.anim.Interpolators.ACCEL;
-import static com.android.launcher3.anim.Interpolators.DEACCEL;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.Keyframe;
@@ -35,6 +24,7 @@ import android.animation.RectEvaluator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -63,7 +53,6 @@ import com.android.launcher3.LauncherStateManager.StateListener;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
-import com.android.launcher3.uioverrides.WallpaperColorInfo.OnChangeListener;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 import com.android.launcher3.util.MultiValueAlpha;
@@ -73,11 +62,20 @@ import com.android.launcher3.widget.WidgetsFullSheet;
 
 import java.util.List;
 
+import static android.content.Context.ACCESSIBILITY_SERVICE;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static androidx.core.graphics.ColorUtils.compositeColors;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.anim.Interpolators.ACCEL;
+import static com.android.launcher3.anim.Interpolators.DEACCEL;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+
 
 /**
  * Simple scrim which draws a flat color
  */
-public class ScrimView extends View implements Insettable, OnChangeListener,
+public class ScrimView extends View implements Insettable, WallpaperColorInfo.OnChangeListener,
         AccessibilityStateChangeListener, StateListener {
 
     public static final Property<ScrimView, Integer> DRAG_HANDLE_ALPHA =
@@ -104,7 +102,7 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
     protected final Launcher mLauncher;
     private final WallpaperColorInfo mWallpaperColorInfo;
     private final AccessibilityManager mAM;
-    protected final int mEndScrim;
+    protected int mEndScrim;
 
     protected float mMaxScrimAlpha;
 
@@ -117,7 +115,7 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
 
     protected final int mDragHandleSize;
     protected float mDragHandleOffset;
-    private final Rect mDragHandleBounds;
+    protected final Rect mDragHandleBounds;
     private final RectF mHitRect = new RectF();
 
     private final MultiValueAlpha mMultiValueAlpha;
@@ -335,8 +333,14 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
         updateDragHandleVisibility(null);
     }
 
+    protected void updateDragHandleVisibility() {
+        updateDragHandleVisibility(null);
+    }
+
     private void updateDragHandleVisibility(Drawable recycle) {
-        boolean visible = mLauncher.getDeviceProfile().isVerticalBarLayout() || mAM.isEnabled();
+        boolean visible = mLauncher.getDeviceProfile().isVerticalBarLayout() ||
+                mAM.isEnabled() || Utilities.getOmegaPrefs(mLauncher).getDockShowArrow();
+        ;
         boolean wasVisible = mDragHandle != null;
         if (visible != wasVisible) {
             if (visible) {
@@ -364,7 +368,7 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
 
     @Override
     public void onFocusChanged(boolean gainFocus, int direction,
-            Rect previouslyFocusedRect) {
+                               Rect previouslyFocusedRect) {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
         mAccessibilityHelper.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
@@ -404,7 +408,7 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
 
         @Override
         protected void onPopulateNodeForVirtualView(int virtualViewId,
-                AccessibilityNodeInfoCompat node) {
+                                                    AccessibilityNodeInfoCompat node) {
             node.setContentDescription(getContext().getString(R.string.all_apps_button_label));
             node.setBoundsInParent(mDragHandleBounds);
 
@@ -469,4 +473,14 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
     public int getDragHandleSize() {
         return mDragHandleSize;
     }
+
+    protected void onDrawFlatColor(Canvas canvas) {
+
+    }
+
+    protected void onDrawRoundRect(Canvas canvas, float left, float top, float right, float bottom,
+                                   float rx, float ry, Paint paint) {
+
+    }
 }
+
