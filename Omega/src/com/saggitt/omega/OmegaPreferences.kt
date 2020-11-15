@@ -82,6 +82,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var hiddenAppSet by StringSetPref("hidden-app-set", Collections.emptySet(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
+    val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.qsb_drawer_text_color_normal, reloadApps)
     val drawerTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
     val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
     private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)

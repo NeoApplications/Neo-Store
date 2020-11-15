@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.view.accessibility.AccessibilityEventCompat;
@@ -36,12 +38,17 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AlphabeticalAppsList.AdapterItem;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.touch.ItemClickHandler;
 import com.android.launcher3.touch.ItemLongClickListener;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.util.List;
 
@@ -65,6 +72,12 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     // A divider that separates the apps list and the search market button
     public static final int VIEW_TYPE_ALL_APPS_DIVIDER = 1 << 4;
     public static final int VIEW_TYPE_WORK_TAB_FOOTER = 1 << 5;
+
+    // Drawer folders
+    public static final int VIEW_TYPE_FOLDER = 1 << 6;
+
+    // Web search suggestions
+    public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -278,6 +291,19 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
             case VIEW_TYPE_WORK_TAB_FOOTER:
                 View footer = mLayoutInflater.inflate(R.layout.work_tab_footer, parent, false);
                 return new ViewHolder(footer);
+
+            case VIEW_TYPE_FOLDER:
+                FrameLayout layout = new FrameLayout(mLauncher);
+
+                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        mLauncher.getDeviceProfile().allAppsCellHeightPx);
+                layout.setLayoutParams(lp);
+                return new ViewHolder(layout);
+
+            case VIEW_TYPE_SEARCH_SUGGESTION:
+                return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
+
             default:
                 throw new RuntimeException("Unexpected view type");
         }
@@ -318,6 +344,33 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 managedByLabel.setText(anyProfileQuietModeEnabled
                         ? R.string.work_mode_off_label : R.string.work_mode_on_label);
                 break;
+
+            case VIEW_TYPE_FOLDER:
+                ViewGroup container = (ViewGroup) holder.itemView;
+                FolderIcon folderIcon = mApps.getAdapterItems().get(position)
+                        .folderItem.getFolderIcon(mLauncher, container);
+
+                container.removeAllViews();
+                container.addView(folderIcon);
+
+                folderIcon.verifyHighRes();
+                break;
+
+            case VIEW_TYPE_SEARCH_SUGGESTION:
+                int color = getDrawerTextColor();
+                ViewGroup group = (ViewGroup) holder.itemView;
+                TextView textView = group.findViewById(R.id.suggestion);
+                String suggestion = mApps.getAdapterItems().get(position).suggestion;
+                textView.setText(suggestion);
+                textView.setTextColor(color);
+                ((ImageView) group.findViewById(android.R.id.icon)).getDrawable().setTint(color);
+                group.setOnClickListener(v -> {
+                    SearchProvider provider = getSearchProvider();
+                    if (provider instanceof WebSearchProvider) {
+                        ((WebSearchProvider) provider).openResults(suggestion);
+                    }
+                });
+                break;
         }
         if (mBindViewCallback != null) {
             mBindViewCallback.onBindView(holder);
@@ -341,4 +394,11 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         return item.viewType;
     }
 
+    public int getDrawerTextColor() {
+        return Utilities.getOmegaPrefs(mLauncher.getApplicationContext()).getDrawerLabelColor();
+    }
+
+    private SearchProvider getSearchProvider() {
+        return SearchProviderController.Companion.getInstance(mLauncher).getSearchProvider();
+    }
 }

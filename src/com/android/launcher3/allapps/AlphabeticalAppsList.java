@@ -29,6 +29,8 @@ import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.InstallTimeComparator;
 import com.saggitt.omega.allapps.MostUsedComparator;
+import com.saggitt.omega.groups.DrawerFolderInfo;
+import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
 import com.saggitt.omega.util.DbHelper;
 
@@ -79,13 +81,17 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * Info about a particular adapter item (can be either section or app)
      */
     public static class AdapterItem {
-        /** Common properties */
+        /**
+         * Common properties
+         */
         // The index of this adapter item in the list
         public int position;
         // The type of this item
         public int viewType;
 
-        /** App-only properties */
+        /**
+         * App-only properties
+         */
         // The section name of this app.  Note that there can be multiple items with different
         // sectionNames in the same section
         public String sectionName = null;
@@ -98,8 +104,19 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         // The index of this app not including sections
         public int appIndex = -1;
 
+        /**
+         * Folder-only properties
+         */
+        // The associated folder for the folder
+        public DrawerFolderItem folderItem = null;
+
+        /**
+         * Search suggestion-only properties
+         */
+        public String suggestion;
+
         public static AdapterItem asApp(int pos, String sectionName, AppInfo appInfo,
-                int appIndex) {
+                                        int appIndex) {
             AdapterItem item = new AdapterItem();
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_ICON;
             item.position = pos;
@@ -134,6 +151,24 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             AdapterItem item = new AdapterItem();
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_WORK_TAB_FOOTER;
             item.position = pos;
+            return item;
+        }
+
+        public static AdapterItem asFolder(int pos, String sectionName,
+                                           DrawerFolderInfo folderInfo, int folderIndex) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = AllAppsGridAdapter.VIEW_TYPE_FOLDER;
+            item.position = pos;
+            item.sectionName = sectionName;
+            item.folderItem = new DrawerFolderItem(folderInfo, folderIndex);
+            return item;
+        }
+
+        public static AdapterItem asSearchSuggestion(int pos, String suggestion) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = AllAppsGridAdapter.VIEW_TYPE_SEARCH_SUGGESTION;
+            item.position = pos;
+            item.suggestion = suggestion;
             return item;
         }
     }
