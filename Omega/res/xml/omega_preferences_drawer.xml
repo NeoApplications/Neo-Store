@@ -70,6 +70,11 @@
         app:content="@xml/omega_drawer_icon_popup_menu_preferences"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.DrawerGridSizePreference
+        android:key="pref_drawer_grid_size"
+        android:title="@string/title__drawer_columns"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
         android:key="pref_show_predictions"

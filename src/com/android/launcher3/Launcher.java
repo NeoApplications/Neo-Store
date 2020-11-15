@@ -321,6 +321,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         LauncherAppState app = LauncherAppState.getInstance(this);
 
         OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
+        prefs.getDrawerGridSize();
         prefs.getGridSize();
         prefs.getDockGridSize();
 
