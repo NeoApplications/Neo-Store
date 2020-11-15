@@ -167,7 +167,7 @@
     <string name="title__theme_blur">Tilslør</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d skjulte</item>
-        <item quantity="other" />
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d program</item>
@@ -318,4 +318,5 @@
     <string name="title_text_color">Tekstfarge</string>
     <string name="title_drawer_enable_background">Bruk tilpasset bakgrunnsfarge</string>
     <string name="title__multiline_labels">Programnavn med linjeskift</string>
+    <string name="num_hotseat_icons_pref_title">Ikonantall</string>
 </resources>
