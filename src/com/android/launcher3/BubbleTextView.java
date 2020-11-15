@@ -71,6 +71,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private static final int DISPLAY_WORKSPACE = 0;
     private static final int DISPLAY_ALL_APPS = 1;
     private static final int DISPLAY_FOLDER = 2;
+    private static final int DISPLAY_DRAWER_FOLDER = 5;
 
     private static final int[] STATE_PRESSED = new int[] {android.R.attr.state_pressed};
 
@@ -175,9 +176,12 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             mIgnorePaddingTouch = true;
         } else if (mDisplay == DISPLAY_ALL_APPS) {
             DeviceProfile grid = mActivity.getDeviceProfile();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
+            mHideText = prefs.getHideAllAppsAppLabels();
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsIconTextSizePx);
             setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
             defaultIconSize = grid.allAppsIconSizePx;
+            int lines = prefs.getDrawerLabelRows();
+            setLineCount(lines);
             mIgnorePaddingTouch = true;
         } else if (mDisplay == DISPLAY_FOLDER) {
             DeviceProfile grid = mActivity.getDeviceProfile();
@@ -187,6 +191,16 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             int lines = prefs.getHomeLabelRows();
             setLineCount(lines);
             defaultIconSize = grid.folderChildIconSizePx;
+            mIgnorePaddingTouch = true;
+        } else if (mDisplay == DISPLAY_DRAWER_FOLDER) {
+            mHideText = prefs.getHideAllAppsAppLabels();
+            DeviceProfile grid = mActivity.getDeviceProfile();
+            setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    isTextHidden() ? 0 : grid.allAppsFolderChildTextSizePx);
+            setCompoundDrawablePadding(grid.allAppsFolderChildDrawablePaddingPx);
+            defaultIconSize = grid.allAppsFolderChildIconSizePx;
+            int lines = prefs.getDrawerLabelRows();
+            setLineCount(lines);
             mIgnorePaddingTouch = true;
         } else {
             // widget_selection or shortcut_popup
