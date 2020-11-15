@@ -25,6 +25,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
+import com.saggitt.omega.OmegaPreferences;
 
 /**
  * A PageIndicator that briefly shows a fraction of a line when moving between pages
@@ -59,7 +60,7 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
     private int mCurrentScroll;
     private int mTotalScroll;
     private Paint mLinePaint;
-    private final int mLineHeight;
+    private int mLineHeight;
 
     private static final Property<WorkspacePageIndicator, Integer> PAINT_ALPHA
             = new Property<WorkspacePageIndicator, Integer>(Integer.class, "paint_alpha") {
@@ -105,6 +106,8 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
 
     private Runnable mHideLineRunnable = () -> animateLineToAlpha(0);
 
+    private boolean mUseBottomLine;
+
     public WorkspacePageIndicator(Context context) {
         this(context, null);
     }
@@ -126,6 +129,16 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         boolean darkText = WallpaperColorInfo.getInstance(context).supportsDarkText();
         mActiveAlpha = darkText ? BLACK_ALPHA : WHITE_ALPHA;
         mLinePaint.setColor(darkText ? Color.BLACK : Color.WHITE);
+
+
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+        mUseBottomLine = !prefs.getDockGradientStyle() || prefs.getDockShowArrow();
+    }
+
+    public void updateLineHeight() {
+        boolean show = Utilities.getOmegaPrefs(getContext()).getDockShowPageIndicator();
+        mLineHeight = !show ? 0 : getResources()
+                .getDimensionPixelSize(R.dimen.dynamic_grid_page_indicator_line_height);
     }
 
     @Override
@@ -140,6 +153,12 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         int lineWidth = (int) (availableWidth / mNumPagesFloat);
         int lineLeft = (int) (progress * (availableWidth - lineWidth));
         int lineRight = lineLeft + lineWidth;
+
+        if (mUseBottomLine) {
+            canvas.drawRoundRect(lineLeft, getHeight() - mLineHeight / 2, lineRight,
+                    getHeight() + mLineHeight / 2, mLineHeight, mLineHeight, mLinePaint);
+            return;
+        }
 
         canvas.drawRoundRect(lineLeft, getHeight() / 2 - mLineHeight / 2, lineRight,
                 getHeight() / 2 + mLineHeight / 2, mLineHeight, mLineHeight, mLinePaint);
