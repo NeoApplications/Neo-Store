@@ -50,6 +50,14 @@
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
+        android:dependency="pref_hideAllAppsAppLabels"
+        android:key="pref_iconLabelsInTwoLines"
+        android:persistent="true"
+        android:title="@string/title__multiline_labels"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
         android:key="pref_show_predictions"
         android:title="@string/title_app_suggestions"
         app:iconSpaceReserved="false"
