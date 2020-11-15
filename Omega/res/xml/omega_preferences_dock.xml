@@ -41,4 +41,14 @@
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.AutoModeSeekbarPreference
+        android:key="pref_hotseatCustomOpacity"
+        android:title="@string/title_opacity"
+        android:dependency="pref_dockBackground"
+        app:minValue="0"
+        app:maxValue="1"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100"
+        android:persistent="true" />
+
 </PreferenceScreen>
