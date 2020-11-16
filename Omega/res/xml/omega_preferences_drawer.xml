@@ -81,11 +81,11 @@
         android:title="@string/title_app_suggestions"
         app:iconSpaceReserved="false"
         app:searchTitle="@string/title_app_suggestions" />
-    <!--
-        <com.saggitt.omega.preferences.StyledSwitchPreference
-            android:key="pref_showAllAppsLabel"
-            android:title="@string/title__drawer_all_apps"
-            android:defaultValue="false"
-            android:persistent="true"
-            app:iconSpaceReserved="false"/> -->
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_showAllAppsLabel"
+        android:title="@string/title__drawer_all_apps"
+        android:defaultValue="false"
+        android:persistent="true"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

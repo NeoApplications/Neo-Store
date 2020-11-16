@@ -32,7 +32,6 @@ import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.allapps.PredictionsFloatingHeader
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackManager
@@ -75,10 +74,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     /* --APP DRAWER-- */
     var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
     var showPredictions by BooleanPref("pref_show_predictions", false, doNothing)
-    val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", false) {
-        val header = onChangeCallback?.launcher?.appsView?.floatingHeaderView as? PredictionsFloatingHeader
-        header?.updateShowAllAppsLabel()
-    }
+    val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", false)
     var hiddenAppSet by StringSetPref("hidden-app-set", Collections.emptySet(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)

@@ -16,8 +16,6 @@
 
 package com.android.launcher3.appprediction;
 
-import static com.android.launcher3.LauncherState.ALL_APPS;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -39,10 +37,13 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.LauncherStateManager;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.FloatingHeaderRow;
 import com.android.launcher3.allapps.FloatingHeaderView;
 import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.util.Themes;
+
+import static com.android.launcher3.LauncherState.ALL_APPS;
 
 /**
  * A view which shows a horizontal divider
@@ -277,7 +278,8 @@ public class AppsDividerView extends View implements LauncherStateManager.StateL
     }
 
     private boolean shouldShowAllAppsLabel() {
-        return getAllAppsVisitedCount() < SHOW_ALL_APPS_LABEL_ON_ALL_APPS_VISITED_COUNT;
+        return Utilities.getOmegaPrefs(getContext()).getShowAllAppsLabel();
+        //return getAllAppsVisitedCount() < SHOW_ALL_APPS_LABEL_ON_ALL_APPS_VISITED_COUNT;
     }
 
     @Override
