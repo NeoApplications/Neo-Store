@@ -145,11 +145,10 @@ public class PreviewBackground {
         ta.recycle();
 
         DeviceProfile grid = activity.getWallpaperDeviceProfile();
-        previewSize = isInDrawer ? grid.allAppsFolderIconSizePx : grid.folderIconSizePx;
+        previewSize = grid.folderIconSizePx;
 
         basePreviewOffsetX = (availableSpaceX - previewSize) / 2;
-        basePreviewOffsetY = topPadding +
-                (isInDrawer ? grid.allAppsFolderIconOffsetYPx : grid.folderIconOffsetYPx);
+        basePreviewOffsetY = topPadding + grid.folderIconOffsetYPx;
 
         // Stroke width is 1dp
         mStrokeWidth = context.getResources().getDisplayMetrics().density;

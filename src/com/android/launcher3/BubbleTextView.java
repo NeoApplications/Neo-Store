@@ -47,6 +47,7 @@ import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.graphics.IconPalette;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.graphics.PreloadIconDrawable;
+import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.DotRenderer;
 import com.android.launcher3.icons.IconCache.IconLoadRequest;
 import com.android.launcher3.icons.IconCache.ItemInfoUpdateReceiver;
@@ -337,6 +338,21 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
                     : info.contentDescription);
         }
+    }
+
+    public void applyIcon(ItemInfoWithIcon info) {
+        FastBitmapDrawable iconDrawable = DrawableFactory.INSTANCE.get(getContext())
+                .newIcon(getContext(), info);
+        mDotParams.color = IconPalette.getMutedColor(info.iconColor, 0.54f);
+
+        setIcon(iconDrawable);
+    }
+
+    public void applyIcon(BitmapInfo info) {
+        FastBitmapDrawable iconDrawable = new FastBitmapDrawable(info);
+        mDotParams.color = IconPalette.getMutedColor(info.color, 0.54f);
+
+        setIcon(iconDrawable);
     }
 
     private CharSequence getTitle(ItemInfo info) {
@@ -683,6 +699,11 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         if (mIcon != null) {
             mIcon.setVisible(getWindowVisibility() == VISIBLE && isShown(), false);
         }
+    }
+
+    public void clearIcon() {
+        mIcon = null;
+        setCompoundDrawables(null, null, null, null);
     }
 
     @Override

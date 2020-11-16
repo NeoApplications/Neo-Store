@@ -76,6 +76,8 @@ public class ItemClickHandler {
         return v -> onClick(v, sourceContainer);
     }
 
+    public static final OnClickListener FOLDER_COVER_INSTANCE = ItemClickHandler::onClickFolderCover;
+
     private static void onClick(View v, String sourceContainer) {
         // Make sure that rogue clicks don't get through while allapps is launching, or after the
         // view has detached (it's possible for this to happen if the view is removed mid touch).
@@ -102,6 +104,22 @@ public class ItemClickHandler {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);
             }
+        }
+    }
+
+    private static void onClickFolderCover(View v) {
+        if (v.getWindowToken() == null) {
+            return;
+        }
+
+        Launcher launcher = Launcher.getLauncher(v.getContext());
+        if (!launcher.getWorkspace().isFinishedSwitchingState()) {
+            return;
+        }
+
+        Object tag = v.getTag();
+        if (tag instanceof FolderInfo) {
+            onClickAppShortcut(v, ((FolderInfo) tag).getCoverInfo(), launcher, null);
         }
     }
 

@@ -79,6 +79,7 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.groups.DrawerFolderInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -720,9 +721,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         clearDragInfo();
         mState = STATE_SMALL;
         mContent.setCurrentPage(0);
-        //if (mInfo instanceof DrawerFolderInfo) {
-        //    ((DrawerFolderInfo) mInfo).onCloseComplete();
-        //}
+        if (mInfo instanceof DrawerFolderInfo) {
+            ((DrawerFolderInfo) mInfo).onCloseComplete();
+        }
     }
 
     @Override

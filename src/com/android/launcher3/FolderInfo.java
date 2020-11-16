@@ -196,7 +196,7 @@ public class FolderInfo extends ItemInfo {
         Bitmap b = BitmapRenderer.createHardwareBitmap(iconSize, iconSize, out -> {
             out.translate(iconSize / 2f, 0);
             // TODO: make folder icons more visible in front of the bottom sheet
-            // out.drawColor(Color.RED);
+            //out.drawColor(Color.RED);
             icon.draw(out);
         });
         icon.unbind();
@@ -204,11 +204,11 @@ public class FolderInfo extends ItemInfo {
     }
 
     public Drawable getDefaultIcon(Launcher launcher) {
-        //if (isCoverMode()) {
-        //    return new FastBitmapDrawable(getCoverInfo().iconBitmap);
-        //} else {
-        return getFolderIcon(launcher);
-        //}
+        if (isCoverMode()) {
+            return new FastBitmapDrawable(getCoverInfo().iconBitmap);
+        } else {
+            return getFolderIcon(launcher);
+        }
     }
 
     public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
