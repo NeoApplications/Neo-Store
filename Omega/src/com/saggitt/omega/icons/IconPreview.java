@@ -45,7 +45,7 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Themes;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.predictions.OmegaAppPredictor;
+import com.saggitt.omega.predictions.CustomAppPredictor;
 import com.saggitt.omega.wallpaper.WallpaperPreviewProvider;
 
 import org.jetbrains.annotations.NotNull;
@@ -122,7 +122,7 @@ public class IconPreview extends LinearLayout implements LogContainerProvider,
 
     public void loadPreviewComponents() {
         List<ComponentKey> list = new ArrayList<>();
-        String[] components = OmegaAppPredictor.Companion.getPLACE_HOLDERS();
+        String[] components = CustomAppPredictor.PLACE_HOLDERS;
 
         for (String placeHolder : components) {
             Intent intent = mPackageManager.getLaunchIntentForPackage(placeHolder);

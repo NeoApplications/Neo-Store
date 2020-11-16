@@ -24,21 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.Insettable;
-import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.FloatingHeaderView;
-import com.android.launcher3.appprediction.ComponentKeyMapper;
-import com.android.launcher3.appprediction.PredictionRowView;
-import com.android.launcher3.appprediction.PredictionUiStateManager;
-
-import java.util.List;
 
 public class PredictionsFloatingHeader extends FloatingHeaderView implements Insettable {
-    private final PredictionUiStateManager mPredictionUiStateManager;
     private Context mContext;
     private boolean mShowAllAppsLabel;
-    private PredictionRowView mPredictionRowView;
 
     public PredictionsFloatingHeader(@NonNull Context context) {
         this(context, null);
@@ -47,13 +39,11 @@ public class PredictionsFloatingHeader extends FloatingHeaderView implements Ins
     public PredictionsFloatingHeader(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mPredictionUiStateManager = PredictionUiStateManager.INSTANCE.get(context);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mPredictionRowView = findViewById(R.id.prediction_row);
         updateShowAllAppsLabel();
     }
 
@@ -72,15 +62,5 @@ public class PredictionsFloatingHeader extends FloatingHeaderView implements Ins
         if (mShowAllAppsLabel != show) {
             mShowAllAppsLabel = show;
         }
-    }
-
-    public boolean hasVisibleContent() {
-        return mPredictionUiStateManager.getCurrentState().isEnabled;
-    }
-
-    public void setPredictedApps(boolean enabled, List<ComponentKeyMapper> list) {
-        mPredictionUiStateManager.getCurrentState().apps = list;
-        mPredictionUiStateManager.getCurrentState().isEnabled = enabled;
-        mPredictionUiStateManager.onAppsUpdated();
     }
 }

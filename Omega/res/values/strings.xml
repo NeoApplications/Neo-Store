@@ -136,6 +136,9 @@
     <string name="hide_app_reset">Reset</string>
     <string name="action_preferences" translatable="false">@string/customize</string>
 
+    <string name="needs_usage_access">Usage access needed</string>
+    <string name="msg_missing_usage_access">To show App Suggestions, turn on usage access for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>

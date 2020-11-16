@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.AppOpsManager;
 import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
@@ -785,6 +786,19 @@ public final class Utilities {
 
     public static void requestStoragePermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE_ACCESS);
+    }
+
+    public static boolean isAccessGranted(Context context) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            ApplicationInfo applicationInfo = pm.getApplicationInfo(BuildConfig.APPLICATION_ID, 0);
+            AppOpsManager appOpsManager = context.getSystemService(AppOpsManager.class);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    applicationInfo.uid, applicationInfo.packageName);
+            return mode == AppOpsManager.MODE_ALLOWED;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     public static boolean getAllowRotationDefaultValue(Context context) {

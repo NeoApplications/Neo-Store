@@ -51,7 +51,7 @@ public class CustomAppPredictor extends UserEventDispatcher implements SharedPre
     private static final String PREDICTION_PREFIX = "pref_prediction_count_";
     private static final String HIDDEN_PREDICTIONS_SET_PREF = "pref_hidden_prediction_set";
     private static final Set<String> EMPTY_SET = new HashSet<>();
-    private final static String[] PLACE_HOLDERS = new String[]{
+    public final static String[] PLACE_HOLDERS = new String[]{
             "com.google.android.apps.photos",
             "com.google.android.apps.maps",
             "com.google.android.gm",

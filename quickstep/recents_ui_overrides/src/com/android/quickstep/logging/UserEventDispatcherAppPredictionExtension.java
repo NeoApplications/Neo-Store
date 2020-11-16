@@ -15,8 +15,6 @@
  */
 package com.android.quickstep.logging;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.android.launcher3.ItemInfo;
@@ -33,10 +31,6 @@ public class UserEventDispatcherAppPredictionExtension extends UserEventDispatch
     public static final int ALL_APPS_PREDICTION_TIPS = 2;
 
     private static final String TAG = "UserEventDispatcher";
-
-    public UserEventDispatcherAppPredictionExtension(Context context) {
-        super(context);
-    }
 
     @Override
     protected void onFillInLogContainerData(
