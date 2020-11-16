@@ -773,8 +773,14 @@ public class SettingsActivity extends SettingsBaseActivity
             switch (preference.getKey()) {
                 case SHOW_PREDICTIONS_PREF:
                     if ((boolean) newValue) {
+                        if (!Utilities.isAccessGranted(getContext())) {
+                            UsageAccessConfirmation fragment = new UsageAccessConfirmation();
+                            fragment.setTargetFragment(this, 0);
+                            fragment.show(getFragmentManager(), preference.getKey());
+                        }
                         return true;
                     }
+
                     SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
                     confirmationFragment.setTargetFragment(this, 0);
                     confirmationFragment.show(getFragmentManager(), preference.getKey());
@@ -987,9 +993,12 @@ public class SettingsActivity extends SettingsBaseActivity
             if (getTargetFragment() instanceof PreferenceFragmentCompat) {
                 Preference preference = ((PreferenceFragmentCompat) getTargetFragment())
                         .findPreference(SHOW_PREDICTIONS_PREF);
+
                 if (preference instanceof TwoStatePreference) {
+                    Utilities.getOmegaPrefs(getContext()).setShowPredictions(false);
                     ((TwoStatePreference) preference).setChecked(false);
                 }
+
             }
         }
 
@@ -1001,11 +1010,33 @@ public class SettingsActivity extends SettingsBaseActivity
                     .setPositiveButton(R.string.label_turn_off_suggestions, this).create();
         }
 
-
         @Override
         public void onStart() {
             super.onStart();
             OmegaUtilsKt.applyAccent(((AlertDialog) getDialog()));
+        }
+    }
+
+    public static class UsageAccessConfirmation
+            extends DialogFragment implements DialogInterface.OnClickListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Context context = getActivity();
+            String msg = context.getString(R.string.msg_missing_usage_access,
+                    context.getString(R.string.derived_app_name));
+            return new AlertDialog.Builder(context)
+                    .setTitle(R.string.needs_usage_access)
+                    .setMessage(msg)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(R.string.title_change_settings, this)
+                    .create();
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            getActivity().startActivity(intent);
         }
     }
 
