@@ -15,23 +15,30 @@
  */
 package com.android.launcher3.allapps;
 
+import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.pageindicators.PageIndicator;
 import com.android.launcher3.util.Themes;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.saggitt.omega.allapps.AllAppsTabs;
+import com.saggitt.omega.preferences.DrawerTabEditBottomSheet;
+import com.saggitt.omega.views.ColoredButton;
 
 /**
  * Supports two indicator colors, dedicated for personal and work tabs.
@@ -55,6 +62,9 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
     private AllAppsContainerView mContainerView;
     private int mLastActivePage = 0;
     private boolean mIsRtl;
+
+    private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
+    private Path mIndicatorPath = new Path();
 
     public PersonalWorkSlidingTabStrip(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -98,11 +108,44 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
     }
 
     private void updateIndicatorPosition() {
+        float scaled = mScrollOffset * (getChildCount() - 1);
         int left = -1, right = -1;
-        final View leftTab = getLeftTab();
-        if (leftTab != null) {
-            left = (int) (leftTab.getLeft() + leftTab.getWidth() * mScrollOffset);
+        int position = (int) Math.floor(scaled);
+        float leftFraction = scaled - position;
+        float rightFraction = 1 - leftFraction;
+        int leftIndex = mIsRtl ? getChildCount() - position - 1 : position;
+        int rightIndex = mIsRtl ? leftIndex - 1 : leftIndex + 1;
+        ColoredButton leftTab = (ColoredButton) getChildAt(leftIndex);
+        ColoredButton rightTab = (ColoredButton) getChildAt(rightIndex);
+        if (leftTab != null && rightTab != null) {
+            int leftWidth = leftTab.getWidth();
+            int rightWidth = rightTab.getWidth();
+            float width = leftWidth + (rightWidth - leftWidth) * leftFraction;
+            float halfWidth = width / 2;
+
+            float leftCenter = leftTab.getLeft() + leftWidth / 2f;
+            float rightCenter = rightTab.getLeft() + rightWidth / 2f;
+            float dis = rightCenter - leftCenter;
+            float center = leftCenter + (int) (dis * leftFraction);
+            left = (int) (center - halfWidth);
+            right = (int) (center + halfWidth);
+
+            int leftColor = leftTab.getColor();
+            int rightColor = rightTab.getColor();
+            if (leftColor == rightColor) {
+                mSelectedIndicatorPaint.setColor(leftColor);
+            } else {
+                mSelectedIndicatorPaint.setColor(
+                        (Integer) mArgbEvaluator.evaluate(leftFraction, leftColor, rightColor));
+            }
+        } else if (leftTab != null) {
+            left = (int) (leftTab.getLeft() + leftTab.getWidth() * leftFraction);
             right = left + leftTab.getWidth();
+            mSelectedIndicatorPaint.setColor(leftTab.getColor());
+        } else if (rightTab != null) {
+            right = (int) (rightTab.getRight() - (rightTab.getWidth() * rightFraction));
+            left = right - rightTab.getWidth();
+            mSelectedIndicatorPaint.setColor(rightTab.getColor());
         }
         setIndicatorPosition(left, right);
     }
@@ -116,7 +159,18 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
             mIndicatorLeft = left;
             mIndicatorRight = right;
             invalidate();
+            centerInScrollView();
         }
+    }
+
+    private void centerInScrollView() {
+        HorizontalScrollView scrollView = (HorizontalScrollView) getParent();
+        int padding = getLeft();
+        int center = (mIndicatorLeft + mIndicatorRight) / 2 + padding;
+        int scroll = center - (scrollView.getWidth() / 2);
+        int maxAmount = getWidth() - scrollView.getWidth() + padding + padding;
+        int boundedScroll = Utilities.boundToRange(scroll, 0, maxAmount);
+        scrollView.scrollTo(boundedScroll, 0);
     }
 
     @Override
@@ -125,8 +179,21 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
 
         float y = getHeight() - mDividerPaint.getStrokeWidth();
         canvas.drawLine(getPaddingLeft(), y, getWidth() - getPaddingRight(), y, mDividerPaint);
-        canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
-            mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+        drawIndicator(canvas, mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
+                mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+    }
+
+    private void drawIndicator(Canvas canvas, int l, int t, int r, int b, Paint paint) {
+        l = Math.max(l, getPaddingLeft());
+        r = Math.min(r, getWidth() - getPaddingRight());
+        paint.setAntiAlias(true);
+        mIndicatorPath.reset();
+        mIndicatorPath.moveTo(l, b);
+        mIndicatorPath.quadTo(l, t, l + mSelectedIndicatorHeight, t);
+        mIndicatorPath.lineTo(r - mSelectedIndicatorHeight, t);
+        mIndicatorPath.quadTo(r, t, r, b);
+        mIndicatorPath.lineTo(r, b);
+        canvas.drawPath(mIndicatorPath, paint);
     }
 
     public void highlightWorkTabIfNecessary() {
@@ -168,10 +235,36 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
     }
 
     @Override
-    public void setMarkersCount(int numMarkers) { }
+    public void setMarkersCount(int numMarkers) {
+    }
 
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+
+    void inflateButtons(AllAppsTabs tabs) {
+        int childCount = getChildCount();
+        int count = tabs.getCount();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (int i = childCount; i < count; i++) {
+            inflater.inflate(R.layout.all_apps_tab, this);
+        }
+        while (getChildCount() > count) {
+            removeViewAt(0);
+        }
+        for (int i = 0; i < tabs.getCount(); i++) {
+            AllAppsTabs.Tab tab = tabs.get(i);
+            ColoredButton button = (ColoredButton) getChildAt(i);
+            button.setColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
+            button.setText(tab.getName());
+            button.setOnLongClickListener(v -> {
+                DrawerTabEditBottomSheet.Companion
+                        .editTab(Launcher.getLauncher(getContext()), tab.getDrawerTab());
+                return true;
+            });
+        }
+        updateIndicatorPosition();
+        invalidate();
     }
 }

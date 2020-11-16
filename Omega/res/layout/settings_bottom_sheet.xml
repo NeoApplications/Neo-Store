@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<ch.deletescape.lawnchair.settings.ui.SettingsBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.settings.SettingsBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,5 +35,4 @@
         android:layout_gravity="bottom"
         android:background="@android:color/black"
         android:focusable="false" />
-
-</ch.deletescape.lawnchair.settings.ui.SettingsBottomSheet>
+</com.saggitt.omega.settings.SettingsBottomSheet>

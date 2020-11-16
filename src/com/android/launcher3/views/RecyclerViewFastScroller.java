@@ -402,4 +402,9 @@ public class RecyclerViewFastScroller extends View {
         // alpha is so low, it does not matter.
         return false;
     }
+
+    public void setColor(int color, int foregroundColor) {
+        mThumbPaint.setColor(color);
+        mPopupView.setTextColor(foregroundColor);
+    }
 }

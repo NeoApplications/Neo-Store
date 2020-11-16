@@ -88,4 +88,10 @@
         android:defaultValue="false"
         android:persistent="true"
         app:iconSpaceReserved="false" />
+
+    <androidx.preference.Preference
+        android:fragment="com.saggitt.omega.groups.ui.AppCategorizationFragment"
+        android:key="pref_categorization"
+        android:title="@string/title__drawer_categorization"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

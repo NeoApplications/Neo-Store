@@ -81,7 +81,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
-    public static final int VIEW_TYPE_MASK_ICON = VIEW_TYPE_ICON;
+    public static final int VIEW_TYPE_MASK_ICON = VIEW_TYPE_ICON | VIEW_TYPE_FOLDER;
 
 
     public interface BindViewCallback {

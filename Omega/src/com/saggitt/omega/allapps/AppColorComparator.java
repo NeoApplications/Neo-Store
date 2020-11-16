@@ -25,7 +25,7 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.allapps.AppInfoComparator;
 
 public class AppColorComparator extends AppInfoComparator {
-    int REPETITIONS = 6;
+    static int REPETITIONS = 6;
 
     public AppColorComparator(Context context) {
         super(context);
@@ -74,10 +74,11 @@ public class AppColorComparator extends AppInfoComparator {
         return super.compare(a, b);
     }
 
-    public int remapHue(Float hue){
+    public static int remapHue(Float hue) {
         return (int) (hue / 360 * REPETITIONS);
     }
-    public int remap(Float value){
+
+    public static int remap(Float value) {
         return (int) (value * REPETITIONS);
     }
 }

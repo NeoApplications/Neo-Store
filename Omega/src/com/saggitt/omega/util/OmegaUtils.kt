@@ -53,6 +53,7 @@ import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.ICON_PACK_UI_EXECUTOR
+import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
 import org.json.JSONArray
@@ -135,6 +136,7 @@ fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
 }
 
 val mainHandler by lazy { Handler(Looper.getMainLooper()) }
+val workerHandler by lazy { Handler(MODEL_EXECUTOR.looper) }
 
 fun runOnMainThread(r: () -> Unit) {
     runOnThread(mainHandler, r)
@@ -326,6 +328,25 @@ fun Context.getLauncherOrNull(): Launcher? {
     }
 }
 
+fun View.runOnAttached(runnable: Runnable) {
+    if (isAttachedToWindow) {
+        runnable.run()
+    } else {
+        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+
+            override fun onViewAttachedToWindow(v: View?) {
+                runnable.run()
+                removeOnAttachStateChangeListener(this)
+            }
+
+            override fun onViewDetachedFromWindow(v: View?) {
+                removeOnAttachStateChangeListener(this)
+            }
+        })
+
+    }
+}
+
 val Context.locale: Locale
     get() {
         return if (Utilities.ATLEAST_NOUGAT) {
@@ -479,6 +500,15 @@ fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
         return true
     }
     return false
+}
+
+fun getTabRipple(context: Context, accent: Int): ColorStateList {
+    return ColorStateList(arrayOf(
+            intArrayOf(android.R.attr.state_selected),
+            intArrayOf()),
+            intArrayOf(
+                    ColorUtils.setAlphaComponent(accent, 31),
+                    context.getColorAttr(android.R.attr.colorControlHighlight)))
 }
 
 val Long.Companion.random get() = Random.nextLong()

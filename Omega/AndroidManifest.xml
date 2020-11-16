@@ -91,6 +91,11 @@
             android:theme="@style/SettingsTheme_Light" />
 
         <activity
+            android:name="com.saggitt.omega.preferences.SelectableAppsActivity"
+            android:autoRemoveFromRecents="true"
+            android:theme="@style/SettingsTheme_Light" />
+
+        <activity
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
 

@@ -18,6 +18,7 @@ package com.android.launcher3.allapps;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
@@ -103,6 +104,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
 
         mViewHeights.clear();
         mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_ICON, grid.allAppsCellHeightPx);
+        mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_FOLDER, grid.allAppsCellHeightPx);
     }
 
     /**
@@ -425,5 +427,9 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+
+    public void setScrollbarColor(int color) {
+        mScrollbar.setColor(color, Color.WHITE);
     }
 }

@@ -16,9 +16,6 @@
 
 package com.android.launcher3.model;
 
-import static com.android.launcher3.AppInfo.COMPONENT_KEY_COMPARATOR;
-import static com.android.launcher3.AppInfo.EMPTY_ARRAY;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -27,6 +24,9 @@ import android.os.LocaleList;
 import android.os.Process;
 import android.os.UserHandle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.AppFilter;
 import com.android.launcher3.AppInfo;
@@ -46,8 +46,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import static com.android.launcher3.AppInfo.COMPONENT_KEY_COMPARATOR;
+import static com.android.launcher3.AppInfo.EMPTY_ARRAY;
 
 
 /**
@@ -56,12 +56,15 @@ import androidx.annotation.Nullable;
 public class AllAppsList {
 
     private static final String TAG = "AllAppsList";
-    private static final Consumer<AppInfo> NO_OP_CONSUMER = a -> { };
+    private static final Consumer<AppInfo> NO_OP_CONSUMER = a -> {
+    };
 
 
     public static final int DEFAULT_APPLICATIONS_NUMBER = 42;
 
-    /** The list off all apps. */
+    /**
+     * The list off all apps.
+     */
     public final ArrayList<AppInfo> data = new ArrayList<>(DEFAULT_APPLICATIONS_NUMBER);
 
     private IconCache mIconCache;
@@ -97,7 +100,7 @@ public class AllAppsList {
      * If the app is already in the list, doesn't add it.
      */
     public void add(AppInfo info, LauncherActivityInfo activityInfo) {
-        if (!mAppFilter.shouldShowApp(info.componentName)) {
+        if (!mAppFilter.shouldShowApp(info.componentName, info.user)) {
             return;
         }
         if (findAppInfo(info.componentName, info.user) != null) {
@@ -271,8 +274,7 @@ public class AllAppsList {
         for (int i = data.size() - 1; i >= 0; i--) {
             final AppInfo applicationInfo = data.get(i);
             if (user.equals(applicationInfo.user) && !mAppFilter.shouldShowApp(applicationInfo.componentName, applicationInfo.user)) {
-                mIconCache.remove(applicationInfo.componentName,applicationInfo.user);
-                data.remove(i);
+                removeApp(i);
             }
         }
     }
@@ -282,7 +284,7 @@ public class AllAppsList {
      * Returns whether <em>apps</em> contains <em>component</em>.
      */
     private static boolean findActivity(List<LauncherActivityInfo> apps,
-            ComponentName component) {
+                                        ComponentName component) {
         for (LauncherActivityInfo info : apps) {
             if (info.getComponentName().equals(component)) {
                 return true;
