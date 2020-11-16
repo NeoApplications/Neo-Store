@@ -94,4 +94,13 @@
         android:key="pref_categorization"
         android:title="@string/title__drawer_categorization"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.AutoModeSeekbarPreference
+        android:key="pref_allAppsOpacitySB"
+        android:title="@string/title_opacity"
+        app:minValue="0"
+        app:maxValue="1"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100"
+        android:persistent="true" />
 </PreferenceScreen>
