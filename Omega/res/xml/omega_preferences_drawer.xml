@@ -103,4 +103,20 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100"
         android:persistent="true" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="true"
+        android:key="pref_enable_custom_background"
+        android:title="@string/title_drawer_enable_background"
+        app:defaultValue="false"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.ColorPreferenceCompat
+        android:key="pref_drawer_background_color"
+        android:title="@string/title_dock_background_color"
+        android:dependency="pref_enable_custom_background"
+        android:defaultValue="@color/transparentish"
+        app:cpv_dialogTitle="@string/title_dock_background_color"
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
