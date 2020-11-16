@@ -30,7 +30,7 @@
         layout="@layout/all_apps_rv_layout"
         android:visibility="gone" />
 
-    <com.saggitt.omega.allapps.PredictionsFloatingHeader
+    <com.android.launcher3.allapps.FloatingHeaderView
         android:id="@+id/all_apps_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:textColor="@color/all_apps_tab_text"
                 android:textSize="14sp" />
         </com.android.launcher3.allapps.PersonalWorkSlidingTabStrip>
-    </com.saggitt.omega.allapps.PredictionsFloatingHeader>
+    </com.android.launcher3.allapps.FloatingHeaderView>
 
     <include
         android:id="@id/search_container_all_apps"

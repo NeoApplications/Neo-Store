@@ -91,6 +91,10 @@
             android:theme="@style/SettingsTheme_Light" />
 
         <activity
+            android:name="com.saggitt.omega.BlankActivity"
+            android:theme="@style/Theme.Transparent" />
+
+        <activity
             android:name="com.saggitt.omega.FakeLauncher"
             android:enabled="false">
 

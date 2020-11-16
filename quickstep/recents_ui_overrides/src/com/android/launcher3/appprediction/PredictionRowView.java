@@ -129,7 +129,7 @@ public class PredictionRowView extends LinearLayout implements
 
         mFocusHelper = new SimpleFocusIndicatorHelper(this);
 
-        mNumPredictedAppsPerRow = LauncherAppState.getIDP(context).numAllAppsColumns;
+        mNumPredictedAppsPerRow = LauncherAppState.getIDP(context).numColsDrawer;
         mLauncher = Launcher.getLauncher(context);
         mLauncher.addOnDeviceProfileChangeListener(this);
 
@@ -227,7 +227,7 @@ public class PredictionRowView extends LinearLayout implements
 
     @Override
     public void onDeviceProfileChanged(DeviceProfile dp) {
-        mNumPredictedAppsPerRow = dp.inv.numAllAppsColumns;
+        mNumPredictedAppsPerRow = dp.inv.numColsDrawer;
         removeAllViews();
         applyPredictionApps();
     }

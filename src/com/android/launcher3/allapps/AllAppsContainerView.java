@@ -65,7 +65,6 @@ import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.BottomUserEducationView;
 import com.android.launcher3.views.RecyclerViewFastScroller;
 import com.android.launcher3.views.SpringRelativeLayout;
-import com.saggitt.omega.allapps.PredictionsFloatingHeader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -94,7 +93,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private SearchUiManager mSearchUiManager;
     private View mSearchContainer;
     private AllAppsPagedView mViewPager;
-    private PredictionsFloatingHeader mHeader;
+    private FloatingHeaderView mHeader;
 
     private SpannableStringBuilder mSearchQueryBuilder = null;
 
@@ -471,7 +470,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return results;
     }
 
-    public PredictionsFloatingHeader getFloatingHeaderView() {
+    public FloatingHeaderView getFloatingHeaderView() {
         return mHeader;
     }
 
