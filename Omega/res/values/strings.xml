@@ -420,7 +420,6 @@
     <string name="backup_error_blank_contents">Contents must not be blank</string>
     <string name="backup_creating">Creating backup</string>
     <string name="no_recent_backups">No recent backups</string>
-    <string name="backup_loading">Loading...</string>
     <string name="backup_invalid">Unavailable</string>
     <string name="backup_remove_from_recents">Remove from list</string>
     <string name="backup_timestamp">Created at</string>

@@ -265,7 +265,6 @@
     <string name="restore_failed">Klarte ikke å gjenopprette sikkerhetskopi</string>
     <string name="backup_failed">Klarte ikke å sikkerhetskopiere</string>
     <string name="restore_success">Gjenopprettet</string>
-    <string name="backup_loading">Laster inn…</string>
     <string name="restore_contents">Gjenopprett innhold</string>
     <string name="backup_restarting">Starter på ny</string>
     <string name="backup_restoring">Gjenoppretter sikkerhetkopi</string>

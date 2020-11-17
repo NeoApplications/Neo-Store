@@ -136,8 +136,8 @@ class BackupListAdapter(val context: Context) : RecyclerView.Adapter<BackupListA
             } else {
                 previewContainer.isVisible = false
                 backupItem.isEnabled = false
-                title.text = context.getString(R.string.backup_loading)
-                summary.text = context.getString(R.string.backup_loading)
+                title.text = context.getString(R.string.loading)
+                summary.text = context.getString(R.string.loading)
                 metaLoader.callback = object : OmegaBackup.MetaLoader.Callback {
                     override fun onMetaLoaded() {
                         notifyItemChanged(backupMetaLoaderList.indexOf(metaLoader) + 1)

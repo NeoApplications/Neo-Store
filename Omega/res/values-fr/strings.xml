@@ -306,7 +306,6 @@
     <string name="title__dock_show_arrow">Afficher la flèche</string>
     <string name="title_dock_background_color">Couleur d\'arrière-plan</string>
     <string name="title_dock_fill">Afficher l\'arrière-plan</string>
-    <string name="backup_loading">Chargement…</string>
     <string name="local_backups">Dans le stockage</string>
     <string name="read_external_storage_required">Pour créer une sauvegarde, accordez l\'autorisation de stockage.</string>
     <string name="backup_location_device_storage">Dossier Omega</string>
