@@ -119,4 +119,11 @@
         app:cpv_dialogTitle="@string/title_dock_background_color"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
+
+    <androidx.preference.Preference
+        android:fragment="com.saggitt.omega.preferences.HiddenAppsFragment"
+        android:key="pref_hiddenApps"
+        android:summary="@string/summary__drawer_hide_apps"
+        android:title="@string/title__drawer_hide_apps"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
