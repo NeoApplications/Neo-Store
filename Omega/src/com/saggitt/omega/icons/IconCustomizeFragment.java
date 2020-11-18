@@ -49,7 +49,6 @@ public class IconCustomizeFragment extends Fragment {
     private boolean legacy;
     private boolean white;
     private boolean adaptive;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,6 +60,7 @@ public class IconCustomizeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Context mContext = getActivity();
 
+        //Load Preferences
         prefs = Utilities.getOmegaPrefs(mContext);
         coloredIcons = prefs.getColorizedLegacyTreatment();
         shapeLess = prefs.getForceShapeless();
@@ -68,28 +68,27 @@ public class IconCustomizeFragment extends Fragment {
         white = prefs.getEnableWhiteOnlyTreatment();
         adaptive = prefs.getAdaptifyIconPacks();
 
+        //Load Shapes
         RecyclerView shapeView = view.findViewById(R.id.shape_view);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
         shapeView.setLayoutManager(layoutManager);
         IconShapeAdapter adapter = new IconShapeAdapter(Objects.requireNonNull(mContext));
         shapeView.setAdapter(adapter);
 
+        //Load switch preferences
         coloredView = view.findViewById(R.id.colored_icons);
         shapeLessView = view.findViewById(R.id.shapeless_icons);
         legacyView = view.findViewById(R.id.legacy_icons);
         whiteView = view.findViewById(R.id.white_icons);
         adaptiveView = view.findViewById(R.id.adaptive_icons);
 
+        //setup switch preferences
         setupSwitchView(shapeLessView, shapeLess);
         setupSwitchView(legacyView, legacy);
         setupSwitchView(whiteView, white);
         setupSwitchView(adaptiveView, adaptive);
         setupSwitchView(coloredView, coloredIcons);
         hideViews();
-    }
-
-    public void onPause() {
-        super.onPause();
     }
 
     /*

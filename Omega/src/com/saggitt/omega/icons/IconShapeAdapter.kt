@@ -77,8 +77,8 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
             iconButton.background = drawable
             iconButton.setOnClickListener {
                 adapterItems.get(itemPosition).isSelected = true
-                notifyDataSetChanged()
                 prefs.iconShape = item.shapeName
+                notifyDataSetChanged()
             }
         }
     }

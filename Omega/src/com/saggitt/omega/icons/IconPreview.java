@@ -26,7 +26,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Process;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.IntProperty;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -40,7 +41,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsStore;
-import com.android.launcher3.logging.StatsLogUtils.LogContainerProvider;
+import com.android.launcher3.logging.StatsLogUtils;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Themes;
 import com.saggitt.omega.OmegaLauncher;
@@ -60,20 +61,9 @@ import static com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static java.lang.Math.max;
 
-public class IconPreview extends LinearLayout implements LogContainerProvider,
-        OmegaPreferences.OnPreferenceChangeListener, AllAppsStore.OnUpdateListener {
-    private static final IntProperty<IconPreview> TEXT_ALPHA =
-            new IntProperty<IconPreview>("textAlpha") {
-                @Override
-                public void setValue(IconPreview view, int alpha) {
-                    view.setTextAlpha(alpha);
-                }
+public class IconPreview extends LinearLayout implements StatsLogUtils.LogContainerProvider, AllAppsStore.OnUpdateListener,
+        OmegaPreferences.OnPreferenceChangeListener {
 
-                @Override
-                public Integer get(IconPreview view) {
-                    return view.mIconLastSetTextAlpha;
-                }
-            };
     private final Drawable wallpaper;
     private final int[] viewLocation = new int[2];
     private final Launcher mLauncher;
@@ -85,6 +75,9 @@ public class IconPreview extends LinearLayout implements LogContainerProvider,
     private int mIconLastSetTextAlpha;
     // Might use mIconFullTextAlpha instead of mIconLastSetTextAlpha if we are translucent.
     private int mIconCurrentTextAlpha;
+    private final LayoutInflater mLayoutInflater;
+    private boolean isFirstLoad = true;
+    private int count = 6;
 
     private final PackageManager mPackageManager;
     private final String[] prefsToWatch = {"pref_iconShape", "pref_colorizeGeneratedBackgrounds",
@@ -107,11 +100,14 @@ public class IconPreview extends LinearLayout implements LogContainerProvider,
         wallpaper = WallpaperPreviewProvider.Companion.getInstance(context).getWallpaper();
         mPackageManager = context.getPackageManager();
         mLauncher = OmegaLauncher.getLauncher(context);
+        mLayoutInflater = LayoutInflater.from(mLauncher);
         prefs = Utilities.getOmegaPrefs(context);
 
         mIconTextColor = Themes.getAttrColor(context, android.R.attr.textColorSecondary);
         mIconFullTextAlpha = Color.alpha(mIconTextColor);
         mIconCurrentTextAlpha = mIconFullTextAlpha;
+
+        MAIN_EXECUTOR.execute(this::loadPreviewComponents);
     }
 
     @Override
@@ -163,21 +159,26 @@ public class IconPreview extends LinearLayout implements LogContainerProvider,
     }
 
     private void applyPreviewIcons() {
-        for (int i = 0; i < 5; i++) {
-            BubbleTextView icon = (BubbleTextView) mLauncher.getLayoutInflater().inflate(
-                    R.layout.all_apps_icon, this, false);
-            LayoutParams lp = (LayoutParams) icon.getLayoutParams();
-            lp.height = mLauncher.getDeviceProfile().allAppsCellHeightPx;
-            lp.width = 0;
-            lp.weight = 1;
-            addView(icon);
-        }
-        for (int i = 0; i < 5; i++) {
-            BubbleTextView icon = (BubbleTextView) getChildAt(i);
-            icon.reset();
-            icon.setVisibility(View.VISIBLE);
-            icon.applyFromApplicationInfo((AppInfo) mPreviewApps.get(i));
-            icon.setTextColor(mIconTextColor);
+        if (mPreviewApps.size() > 1) {
+            for (int i = 0; i < 5; i++) {
+                BubbleTextView icon = (BubbleTextView) mLayoutInflater.inflate(
+                        R.layout.all_apps_icon, this, false);
+                LayoutParams lp = (LayoutParams) icon.getLayoutParams();
+                lp.height = mLauncher.getDeviceProfile().allAppsCellHeightPx;
+                lp.width = 0;
+                lp.weight = 1;
+                addView(icon);
+            }
+            for (int i = 0; i < 5; i++) {
+                BubbleTextView icon = (BubbleTextView) getChildAt(i);
+                icon.reset();
+                icon.setVisibility(View.VISIBLE);
+                icon.applyFromApplicationInfo((AppInfo) mPreviewApps.get(i));
+                icon.setTextColor(mIconTextColor);
+            }
+        } else {
+            View loading = mLayoutInflater.inflate(R.layout.adapter_loading, this, false);
+            addView(loading);
         }
         mLauncher.reapplyUi();
         setVisibility(View.VISIBLE);
@@ -258,8 +259,15 @@ public class IconPreview extends LinearLayout implements LogContainerProvider,
 
     @Override
     public void onValueChanged(@NotNull String key, @NotNull OmegaPreferences prefs, boolean force) {
-        removeAllViews();
-        MAIN_EXECUTOR.execute(this::loadPreviewComponents);
-        invalidate();
+        if (!isFirstLoad && count == 0) {
+            removeAllViews();
+            Log.d("IconPreview", "Cambiando preferencia " + key);
+            prefs.reloadIcons();
+            MAIN_EXECUTOR.execute(this::loadPreviewComponents);
+            invalidate();
+        } else {
+            isFirstLoad = false;
+            count--;
+        }
     }
 }

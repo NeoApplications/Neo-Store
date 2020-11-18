@@ -99,6 +99,26 @@
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
 
+        <!-- Icon picker -->
+        <activity
+            android:name="com.saggitt.omega.iconpack.EditIconActivity"
+            android:taskAffinity="${applicationId}.tasks.EDIT_ICON"
+            android:theme="@style/SettingsTheme_Light" />
+        <activity
+            android:name="com.saggitt.omega.iconpack.IconPickerActivity"
+            android:theme="@style/SettingsTheme_Light" />
+
+        <!-- Apply directly from iconpack -->
+        <activity
+            android:name="com.saggitt.omega.iconpack.ApplyIconPackActivity"
+            android:theme="@style/SettingsTheme_Light.Transparent">
+            <intent-filter>
+                <action android:name="ch.deletescape.lawnchair.APPLY_ICONS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="com.saggitt.omega.FakeLauncher"
             android:enabled="false">

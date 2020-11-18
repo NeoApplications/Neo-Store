@@ -50,7 +50,7 @@ import java.io.IOException
 class DefaultPack(context: Context) : IconPack(context, "") {
 
     private val prefs = context.omegaPrefs
-    private val dynamicClockDrawer by lazy { DynamicClock(context) }
+    val dynamicClockDrawer by lazy { DynamicClock(context) }
     private val appMap = HashMap<ComponentKey, Entry>().apply {
         val launcherApps = LauncherAppsCompat.getInstance(context)
         UserManagerCompat.getInstance(context).userProfiles.forEach { user ->

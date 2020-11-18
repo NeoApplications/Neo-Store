@@ -17,7 +17,6 @@
 
 package com.saggitt.omega
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -26,15 +25,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.view.ContextThemeWrapper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.applyAccent
 
-class BlankActivity : Activity() {
+class BlankActivity : AppCompatActivity() {
 
     private val requestCode by lazy { intent.getIntExtra("requestCode", 0) }
     private val permissionRequestCode by lazy { intent.getIntExtra("permissionRequestCode", 0) }
-    private val resultReceiver by lazy { intent.getParcelableArrayExtra("callback")!! as ResultReceiver }
+    private val resultReceiver by lazy { intent.getParcelableExtra("callback") as ResultReceiver? }
     private var resultSent = false
     private var firstResume = true
     private var targetStarted = false
@@ -73,10 +73,9 @@ class BlankActivity : Activity() {
                     startActivityForResult(intent.getParcelableExtra("intent"), requestCode)
                 }
             }
-            intent.hasExtra("permissions") -> intent.getStringArrayExtra("permissions")?.let {
-                ActivityCompat.requestPermissions(
-                        this, it, permissionRequestCode)
-            }
+            intent.hasExtra("permissions") -> ActivityCompat.requestPermissions(
+                    this, intent.getStringArrayExtra("permissions")!!, permissionRequestCode)
+
             else -> {
                 finish()
                 return
@@ -87,7 +86,7 @@ class BlankActivity : Activity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == permissionRequestCode) {
-            resultReceiver.send(RESULT_OK, Bundle(2).apply {
+            resultReceiver?.send(RESULT_OK, Bundle(2).apply {
                 putStringArray("permissions", permissions)
                 putIntArray("grantResults", grantResults)
             })
@@ -100,11 +99,12 @@ class BlankActivity : Activity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == this.requestCode) {
-            resultReceiver.send(resultCode, data?.extras)
+            if (data != null) {
+                resultReceiver?.send(resultCode, data.extras)
+            }
             resultSent = true
             finish()
         }
-
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -113,7 +113,7 @@ class BlankActivity : Activity() {
 
         if (!resultSent && intent.hasExtra("callback")) {
             resultSent = true
-            resultReceiver.send(RESULT_CANCELED, null)
+            resultReceiver?.send(RESULT_CANCELED, null)
         }
     }
 

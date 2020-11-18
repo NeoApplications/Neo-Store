@@ -45,6 +45,7 @@ import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
+import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.CustomLauncherClient;
@@ -57,7 +58,6 @@ import java.util.Objects;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
-import static com.saggitt.omega.iconpack.IconPackManager.Companion;
 import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
@@ -95,6 +95,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
             Utilities.requestStoragePermission(this);
         }
+        IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
         super.onCreate(savedInstanceState);
         mContext = this;
 
@@ -195,7 +196,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
 
         if (itemInfo instanceof AppInfo) {
             component = ((AppInfo) itemInfo).toComponentKey();
-            currentEditIcon = Objects.requireNonNull(Companion.getInstance(this)
+            currentEditIcon = Objects.requireNonNull(IconPackManager.Companion.getInstance(this)
                     .getEntryForComponent(component)).getDrawable();
         } else if (itemInfo instanceof WorkspaceItemInfo) {
             component = new ComponentKey(itemInfo.getTargetComponent(), itemInfo.user);

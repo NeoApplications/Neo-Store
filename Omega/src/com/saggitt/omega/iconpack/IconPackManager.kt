@@ -164,7 +164,7 @@ class IconPackManager(private val context: Context) {
     fun getPackProviders(): Set<PackProvider> {
         val pm = context.packageManager
         val packs = HashSet<PackProvider>()
-        ICON_INTENTS.forEach { intent ->
+        CustomIconUtils.ICON_INTENTS.forEach { intent ->
             pm.queryIntentActivities(Intent(intent), PackageManager.GET_META_DATA).forEach {
                 packs.add(PackProvider(privateObj, it.activityInfo.packageName))
             }
@@ -175,7 +175,7 @@ class IconPackManager(private val context: Context) {
     fun getPackProviderInfos(): HashMap<String, IconPackInfo> {
         val pm = context.packageManager
         val packs = HashMap<String, IconPackInfo>()
-        ICON_INTENTS.forEach { intent ->
+        CustomIconUtils.ICON_INTENTS.forEach { intent ->
             pm.queryIntentActivities(Intent(intent), PackageManager.GET_META_DATA).forEach {
                 packs[it.activityInfo.packageName] = IconPackInfo.fromResolveInfo(it, pm)
             }
@@ -298,18 +298,9 @@ class IconPackManager(private val context: Context) {
             return INSTANCE!!
         }
 
-        val ICON_INTENTS = arrayOf(
-                "com.fede.launcher.THEME_ICONPACK",
-                "com.anddoes.launcher.THEME",
-                "com.teslacoilsw.launcher.THEME",
-                "com.gau.go.launcherex.theme",
-                "org.adw.launcher.THEMES",
-                "net.oneplus.launcher.icons.ACTION_PICK_ICON",
-                "com.saggitt.omega.ICONPACK")
-
         internal fun isPackProvider(context: Context, packageName: String?): Boolean {
             if (packageName != null && !packageName.isEmpty()) {
-                return ICON_INTENTS.firstOrNull {
+                return CustomIconUtils.ICON_INTENTS.firstOrNull {
                     context.packageManager.queryIntentActivities(
                             Intent(it).setPackage(packageName), PackageManager.GET_META_DATA).iterator().hasNext()
                 } != null

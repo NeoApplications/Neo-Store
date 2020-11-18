@@ -19,7 +19,6 @@ package com.saggitt.omega.iconpack
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -58,7 +57,7 @@ class EditIconActivity : SettingsBaseActivity() {
     private val iconPackManager by lazy { IconPackManager.getInstance(this) }
     private val component by lazy {
         if (intent.hasExtra(EXTRA_COMPONENT)) {
-            ComponentKey(intent.getParcelableExtra<ComponentName>(EXTRA_COMPONENT), intent.getParcelableExtra(EXTRA_USER))
+            ComponentKey(intent.getParcelableExtra(EXTRA_COMPONENT), intent.getParcelableExtra(EXTRA_USER))
         } else null
     }
     private val isFolder by lazy { intent.getBooleanExtra(EXTRA_FOLDER, false) }

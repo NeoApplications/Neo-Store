@@ -25,6 +25,7 @@ import android.content.pm.LauncherActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.UserHandle;
 import android.provider.BaseColumns;
@@ -33,17 +34,17 @@ import android.util.Log;
 import android.util.LongSparseArray;
 
 import com.android.launcher3.AppInfo;
-import com.android.launcher3.WorkspaceItemInfo;
-import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
+import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.BitmapInfo;
+import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.util.ContentWriter;
@@ -76,6 +77,7 @@ public class LoaderCursor extends CursorWrapper {
     private final int iconResourceIndex;
     private final int iconIndex;
     public final int titleIndex;
+    private final int customIconIndex;
 
     private final int idIndex;
     private final int containerIndex;
@@ -104,6 +106,7 @@ public class LoaderCursor extends CursorWrapper {
 
         // Init column indices
         iconIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.ICON);
+        customIconIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.CUSTOM_ICON);
         iconPackageIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_PACKAGE);
         iconResourceIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.ICON_RESOURCE);
         titleIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
@@ -197,6 +200,21 @@ public class LoaderCursor extends CursorWrapper {
         } catch (Exception e) {
             Log.e(TAG, "Failed to decode byte array for info " + info, e);
             return false;
+        }
+    }
+
+    public Bitmap loadCustomIcon(WorkspaceItemInfo info) {
+        byte[] data = getBlob(customIconIndex);
+        try {
+            if (data != null) {
+                return LauncherIcons.obtain(mContext).createIconBitmap(
+                        BitmapFactory.decodeByteArray(data, 0, data.length)).icon;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load custom iconView for info " + info, e);
+            return null;
         }
     }
 
