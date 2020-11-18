@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.saggitt.omega.theme.ui.ThemeDarkModeListPreference
+        android:key="pref_dark_theme_mode"
+        android:summary="%s"
+        android:title="@string/theme_dark_theme_mode"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.theme.ui.ThemeBlackSwitchPreference
+        android:title="@string/theme_use_black"
+        app:iconSpaceReserved="false"
+        app:switchFlag="8" />
+
+    <com.saggitt.omega.theme.ui.ThemeFlagSwitchPreference
+        android:title="@string/theme_use_dark_text"
+        app:iconSpaceReserved="false"
+        app:switchFlag="2" />
+</androidx.preference.PreferenceScreen>
