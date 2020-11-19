@@ -19,6 +19,9 @@ package com.android.launcher3;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.libraries.gsa.launcherclient.LauncherClient;
+import com.saggitt.omega.qsb.QsbAnimationController;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
@@ -67,4 +70,14 @@ public interface LauncherCallbacks {
      */
     boolean startSearch(
             String initialQuery, boolean selectInitialQuery, Bundle appSearchData);
+
+    /*
+     * Retrieves the current Launcher Client
+     */
+    LauncherClient getClient();
+
+    /*
+     * Retrieves the QSB Animation Controller
+     */
+    QsbAnimationController getQsbController();
 }

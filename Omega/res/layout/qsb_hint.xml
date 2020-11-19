@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qsb_hint"
+    style="@style/TextTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center"
+    android:alpha="0.87"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:importantForAccessibility="no"
+    android:includeFontPadding="false"
+    android:maxWidth="220.0dip"
+    android:maxLines="1"
+    android:textColor="#ff80868b"
+    android:textSize="@dimen/qsb_hint_text_size" />

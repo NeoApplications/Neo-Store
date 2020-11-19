@@ -26,7 +26,6 @@ import android.os.Handler;
 import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.LauncherCallbacks;
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.appprediction.PredictionUiStateManager;
@@ -37,7 +36,7 @@ import com.android.launcher3.uioverrides.WallpaperColorInfo.OnChangeListener;
 import com.android.launcher3.util.Themes;
 import com.google.android.libraries.gsa.launcherclient.ClientOptions;
 import com.google.android.libraries.gsa.launcherclient.ClientService;
-import com.google.android.libraries.gsa.launcherclient.LauncherClient;
+import com.saggitt.omega.qsb.QsbAnimationController;
 import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.CustomLauncherClient;
@@ -47,20 +46,20 @@ import java.io.PrintWriter;
 
 public class OmegaLauncherCallbacks implements LauncherCallbacks,
         SharedPreferences.OnSharedPreferenceChangeListener, OnChangeListener {
-    public static final String SEARCH_PACKAGE = "com.google.android.googlequicksearchbox";
+
+    //private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     private final OmegaLauncher mLauncher;
     private final Bundle mUiInformation = new Bundle();
     private OverlayCallbackImpl mOverlayCallbacks;
     private CustomLauncherClient mLauncherClient;
-    //private QsbAnimationController mQsbController;
+    private QsbAnimationController mQsbController;
     private SharedPreferences mPrefs;
     private boolean mStarted;
     private boolean mResumed;
     private boolean mAlreadyOnHome;
-    PredictionUiStateManager predictionUiStateManager;
-    private Handler handler = new Handler(LauncherModel.getUiWorkerLooper());
     private final Runnable mUpdatePredictionsIfResumed = this::updatePredictionsIfResumed;
+    private PredictionUiStateManager predictionUiStateManager;
 
     public OmegaLauncherCallbacks(OmegaLauncher launcher) {
         mLauncher = launcher;
@@ -82,15 +81,16 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     public void onCreate(Bundle savedInstanceState) {
         mPrefs = Utilities.getPrefs(mLauncher);
         mOverlayCallbacks = new OverlayCallbackImpl(mLauncher);
+
         mLauncherClient = new CustomLauncherClient(mLauncher, mOverlayCallbacks, getClientOptions(mPrefs));
-        //mQsbController = new QsbAnimationController(mLauncher);
+        mQsbController = new QsbAnimationController(mLauncher);
         mOverlayCallbacks.setClient(mLauncherClient);
         mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
+        applyFeedTheme(false);
         WallpaperColorInfo instance = WallpaperColorInfo.getInstance(mLauncher);
         instance.addOnChangeListener(this);
         onExtractedColorsChanged(instance);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
-
         predictionUiStateManager = PredictionUiStateManager.INSTANCE.get(mLauncher);
         predictionUiStateManager.setTargetAppsView(mLauncher.getAppsView());
         if (FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE) {
@@ -134,6 +134,9 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     public void onPause() {
         mResumed = false;
         mLauncherClient.onPause();
+        /*for (SmartspaceView smartspace : mSmartspaceViews) {
+            smartspace.onPause();
+        }*/
     }
 
     @Override
@@ -152,7 +155,7 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         }
 
         ClientService service = mLauncherClient.getClientService();
-        LauncherClient client = service.getClient();
+        CustomLauncherClient client = (CustomLauncherClient) service.getClient();
         if (client != null && client.equals(mLauncherClient)) {
             service.mWeakReference = null;
             if (!mLauncherClient.getActivity().isChangingConfigurations()) {
@@ -169,13 +172,6 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     }
 
     private void updatePredictionsIfResumed() {
-        if (mLauncher.hasBeenResumed()) {
-            //ReflectionClient.getInstance(mLauncher).updatePredictionsNow(FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE ? Client.OVERVIEW.id : Client.HOME.id);
-            handler.post(() -> {
-                mLauncher.getUserEventDispatcher().updatePredictions();
-
-            });
-        }
     }
 
     @Override
@@ -202,6 +198,10 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
             mLauncherClient.setParams(null);
         }
     }
+
+    /*void registerSmartspaceView(SmartspaceView smartspace) {
+        mSmartspaceViews.add(smartspace);
+    }*/
 
     @Override
     public void dump(String prefix, FileDescriptor fd, PrintWriter w, String[] args) {
@@ -230,10 +230,10 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         return false;
     }
 
-    /*@Override
+    @Override
     public QsbAnimationController getQsbController() {
         return mQsbController;
-    }*/
+    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -247,6 +247,8 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
                 mLauncherClient.getEventInfo().parse("setClientOptions ", mLauncherClient.mFlags);
             }
         }
+        if (SettingsActivity.FEED_THEME_PREF.equals(key))
+            applyFeedTheme(true);
     }
 
     @Override
@@ -255,7 +257,26 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         mUiInformation.putInt("background_color_hint", primaryColor(wallpaperColorInfo, mLauncher.getApplicationContext(), alpha));
         mUiInformation.putInt("background_secondary_color_hint", secondaryColor(wallpaperColorInfo, mLauncher, alpha));
         mUiInformation.putBoolean("is_background_dark", Themes.getAttrBoolean(mLauncher, R.attr.isMainColorDark));
-        mLauncherClient.redraw(mUiInformation);
+
+        applyFeedTheme(true);
+    }
+
+    private void applyFeedTheme(boolean redraw) {
+        String prefValue = Utilities.getPrefs(mLauncher).getString(SettingsActivity.FEED_THEME_PREF, null);
+        int feedTheme;
+        try {
+            feedTheme = Integer.parseInt(prefValue == null ? "1" : prefValue);
+        } catch (Exception e) {
+            feedTheme = 1;
+        }
+        boolean auto = (feedTheme & 1) != 0;
+        boolean preferDark = (feedTheme & 2) != 0;
+        boolean isDark = auto ? Themes.getAttrBoolean(mLauncher, R.attr.isMainColorDark) : preferDark;
+        mUiInformation.putBoolean("is_background_dark", isDark);
+
+        if (redraw) {
+            mLauncherClient.redraw(mUiInformation);
+        }
     }
 
     public CustomLauncherClient getClient() {
@@ -263,7 +284,7 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     }
 
     private ClientOptions getClientOptions(SharedPreferences prefs) {
-        boolean hasPackage = Config.hasPackageInstalled(mLauncher, SEARCH_PACKAGE);
+        boolean hasPackage = Config.hasPackageInstalled(mLauncher, Config.GOOGLE_QSB);
         boolean isEnabled = prefs.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, true);
         int canUse = hasPackage && isEnabled ? 1 : 0;
         return new ClientOptions(canUse | 2 | 4 | 8);

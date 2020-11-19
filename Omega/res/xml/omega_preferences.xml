@@ -84,7 +84,7 @@
         <com.saggitt.omega.preferences.SubPreference
             android:icon="@drawable/ic_code"
             android:key="developerOptions"
-        android:layout="@layout/home_preference"
+            android:layout="@layout/home_preference"
             android:title="@string/developer_options_title"
             app:content="@xml/omega_preferences_developer"
             app:controllerClass="com.saggitt.omega.settings.controllers.DeveloperOptionsController" />

@@ -18,6 +18,7 @@
 package com.saggitt.omega;
 
 
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -241,6 +242,14 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
     @Nullable
     public CustomLauncherClient getGoogleNow() {
         return launcherCallbacks.getClient();
+    }
+
+    public void playQsbAnimation() {
+        launcherCallbacks.getQsbController().dZ();
+    }
+
+    public AnimatorSet openQsb() {
+        return launcherCallbacks.getQsbController().openQsb();
     }
 
     public void prepareDummyView(View view, @NotNull Function0<Unit> callback) {

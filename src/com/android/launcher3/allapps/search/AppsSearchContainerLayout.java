@@ -16,6 +16,7 @@
 package com.android.launcher3.allapps.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
@@ -175,12 +176,22 @@ public class AppsSearchContainerLayout extends ExtendedEditText
             mApps.setOrderedFilter(apps);
         }
         if (suggestions != null) {
-            //mApps.setSearchSuggestions(suggestions);
+            mApps.setSearchSuggestions(suggestions);
         }
         if (apps != null || suggestions != null) {
             notifyResultChanged();
             mAppsView.setLastSearchQuery(query);
         }
+    }
+
+    @Override
+    public boolean onSubmitSearch() {
+        if (mApps.hasNoFilteredResults()) {
+            return false;
+        }
+        Intent i = mApps.getFilteredApps().get(0).getIntent();
+        getContext().startActivity(i);
+        return true;
     }
 
     @Override

@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
@@ -65,6 +63,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
 
@@ -239,6 +239,11 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
     public static WorkspaceItemInfo fromShortcutIntent(Context context, Intent data) {
         PendingInstallShortcutInfo info = createPendingInfo(context, data);
         return info == null ? null : (WorkspaceItemInfo) info.getItemInfo().first;
+    }
+
+    public static WorkspaceItemInfo fromActivityInfo(LauncherActivityInfo info, Context context) {
+        return (WorkspaceItemInfo)
+                new PendingInstallShortcutInfo(info, context).getItemInfo().first;
     }
 
     public static void queueShortcut(ShortcutInfo info, Context context) {

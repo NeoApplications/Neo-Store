@@ -174,6 +174,8 @@ public class AllAppsSearchBarController
          * Called when the search results should be cleared.
          */
         void clearSearchResult();
+
+        boolean onSubmitSearch();
     }
 
 }

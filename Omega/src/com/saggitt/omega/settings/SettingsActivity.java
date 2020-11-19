@@ -72,7 +72,6 @@ import com.android.launcher3.settings.PreferenceHighlighter;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
-import com.saggitt.omega.OmegaLauncherCallbacks;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
@@ -86,10 +85,11 @@ import com.saggitt.omega.preferences.SingleDimensionGridSizeDialogFragmentCompat
 import com.saggitt.omega.preferences.SingleDimensionGridSizePreference;
 import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
+import com.saggitt.omega.search.SearchProviderPreference;
+import com.saggitt.omega.search.SelectSearchProviderFragment;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.util.AboutUtils;
-import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
@@ -117,6 +117,7 @@ public class SettingsActivity extends SettingsBaseActivity
 
     public final static String SHOW_PREDICTIONS_PREF = "pref_show_predictions";
     public final static String ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one";
+    public final static String FEED_THEME_PREF = "pref_feed_theme";
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
@@ -770,27 +771,13 @@ public class SettingsActivity extends SettingsBaseActivity
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            switch (preference.getKey()) {
-                case SHOW_PREDICTIONS_PREF:
-                    if ((boolean) newValue) {
-                        if (!Utilities.isAccessGranted(getContext())) {
-                            UsageAccessConfirmation fragment = new UsageAccessConfirmation();
-                            fragment.setTargetFragment(this, 0);
-                            fragment.show(getFragmentManager(), preference.getKey());
-                        }
-                        return true;
-                    }
-
-                    SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
-                    confirmationFragment.setTargetFragment(this, 0);
-                    confirmationFragment.show(getFragmentManager(), preference.getKey());
-                    break;
-
-                case ENABLE_MINUS_ONE_PREF:
-                    if (Config.hasPackageInstalled(getActivity(), OmegaLauncherCallbacks.SEARCH_PACKAGE)) {
-                        return true;
-                    }
-                    break;
+            if (SHOW_PREDICTIONS_PREF.equals(preference.getKey())) {
+                if ((boolean) newValue) {
+                    return true;
+                }
+                SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
+                confirmationFragment.setTargetFragment(this, 0);
+                confirmationFragment.show(getFragmentManager(), preference.getKey());
             }
             return false;
         }
@@ -901,6 +888,9 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof CustomDialogPreference) {
                 f = PreferenceScreenDialogFragment.Companion
                         .newInstance((CustomDialogPreference) preference);
+            } else if (preference instanceof SearchProviderPreference) {
+                f = SelectSearchProviderFragment.Companion
+                        .newInstance((SearchProviderPreference) preference);
             } else {
                 super.onDisplayPreferenceDialog(preference);
                 return;

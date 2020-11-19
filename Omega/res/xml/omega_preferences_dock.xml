@@ -51,6 +51,13 @@
         app:summaryMultiplier="100"
         android:persistent="true" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_dock_search"
+        android:title="@string/title__dock_search_bar"
+        android:defaultValue="true"
+        android:persistent="true"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.DockGridSizePreference
         android:key="pref_dock_grid_size"
         android:title="@string/title__dock_hotseat_icons"

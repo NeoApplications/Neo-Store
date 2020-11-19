@@ -40,6 +40,8 @@ import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.dpToPx
+import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -79,6 +81,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
     val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.qsb_drawer_text_color_normal, reloadApps)
+    var allAppsGlobalSearch by BooleanPref("pref_allAppsGoogleSearch", true, doNothing)
+    val allAppsSearch by BooleanPref("pref_allAppsSearch", true, recreate)
     val drawerTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
     val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
     private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)
@@ -164,9 +168,12 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
     /* --SEARCH-- */
+    var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f)
+    val dockColoredGoogle by BooleanPref("pref_dockColoredGoogle", true, doNothing)
     var searchProvider by StringPref("pref_globalSearchProvider", omegaConfig.defaultSearchProvider) {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
+    val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
 
     val recentBackups = object : MutableListPref<Uri>(
@@ -230,14 +237,56 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     private fun initialConfig(editor: SharedPreferences.Editor, prefs: SharedPreferences) = with(editor) {
+
         // Set flags
         putBoolean("pref_legacyUpgrade", true)
         putBoolean("pref_restoreSuccess", false)
 
+        putString("pref_iconShape", "square")
+
         // misc
         putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
-        putString("pref_iconShape", "")
         putInt("pref_notification_background", R.color.notification_background)
+        putInt("pref_key__accent_color", R.color.colorAccent)
+        putBoolean("pref_allAppsGoogleSearch", false)
+        putFloat("pref_dockScale", 0.90f)
+
+        // Home widget
+        val pillQsb = prefs.getBoolean("pref_showPixelBar", true)
+                // The new dock qsb should be close enough I guess
+                && !prefs.getBoolean("pref_fullWidthSearchbar", false)
+        putBoolean("pref_use_pill_qsb", pillQsb)
+        if (pillQsb) {
+            putBoolean("pref_dockSearchBar", false)
+        }
+        /*if (!prefs.getBoolean("pref_showDateOrWeather", true)) {
+            putString("pref_smartspace_widget_provider", BlankDataProvider::class.java.name)
+        }*/
+        val showAssistant = prefs.getBoolean("pref_showMic", false)
+        putBoolean("opa_enabled", showAssistant)
+        putBoolean("opa_assistant", showAssistant)
+
+        // Theme
+        putString("pref_launcherTheme",
+                when (prefs.getString("pref_theme", "0")) {
+                    "1" -> ThemeManager.THEME_DARK
+                    "2" -> ThemeManager.THEME_USE_BLACK or ThemeManager.THEME_DARK
+                    else -> 0
+                }.toString())
+
+        // Gestures
+        /*putString("pref_gesture_swipe_down",
+                when (Integer.parseInt(prefs.getString("pref_pulldownAction", "1"))) {
+                    1 -> NotificationsOpenGestureHandler(context, null)
+                    2 -> StartGlobalSearchGestureHandler(context, null)
+                    3 -> StartAppSearchGestureHandler(context, null)
+                    else -> BlankGestureHandler(context, null)
+                }.toString())
+
+        if (prefs.getBoolean("pref_homeOpensDrawer", false)) {
+            putString("pref_gesture_press_home",
+                    OpenDrawerGestureHandler(context, null).toString())
+        }*/
 
     }
 
@@ -401,7 +450,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         fun toList() = ArrayList<T>(valueList)
 
         open fun flattenValue(value: T) = value.toString()
-        open fun customAdder(value: T): Unit = error("not implemented in base class")
 
         abstract fun unflattenValue(value: String): T
 
@@ -728,6 +776,17 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             edit { putString(getKey(), "$value") }
         }
     }
+
+    open inner class DimensionPref(key: String, defaultValue: Float = 0f, onChange: () -> Unit = doNothing) :
+            PrefDelegate<Float>(key, defaultValue, onChange) {
+
+        override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
+
+        override fun onSetValue(value: Float) {
+            edit { putFloat(getKey(), pxToDp(value)) }
+        }
+    }
+
 
     interface OnPreferenceChangeListener {
         fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
