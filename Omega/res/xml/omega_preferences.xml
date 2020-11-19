@@ -52,6 +52,13 @@
 
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__inputs">
         <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_search_colored"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_search"
+            android:title="@string/title__general_search"
+            app:content="@xml/omega_preferences_search" />
+
+        <com.saggitt.omega.preferences.SubPreference
             android:icon="@drawable/ic_widgets"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_smartspace"
