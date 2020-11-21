@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.saggitt.omega.icons.adaptive.IconShapeCustomizeView
+    <com.saggitt.omega.adaptive.IconShapeCustomizeView
         android:id="@+id/customizeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,5 +49,5 @@
         <include
             android:id="@+id/bottomRightRow"
             layout="@layout/icon_shape_corner_row" />
-    </com.saggitt.omega.icons.adaptive.IconShapeCustomizeView>
+    </com.saggitt.omega.adaptive.IconShapeCustomizeView>
 </ScrollView>

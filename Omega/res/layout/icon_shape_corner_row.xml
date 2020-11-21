@@ -17,7 +17,7 @@
   ~     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.saggitt.omega.icons.adaptive.IconShapeCornerRow xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.adaptive.IconShapeCornerRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,4 +68,4 @@
             android:layout_alignParentEnd="true"
             android:gravity="center|end" />
     </RelativeLayout>
-</com.saggitt.omega.icons.adaptive.IconShapeCornerRow>
+</com.saggitt.omega.adaptive.IconShapeCornerRow>
