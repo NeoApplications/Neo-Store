@@ -16,9 +16,6 @@
 
 package com.android.launcher3.notification;
 
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
-
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -44,6 +41,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
 /**
  * A {@link NotificationListenerService} that sends updates to its
@@ -395,6 +395,9 @@ public class NotificationListener extends NotificationListenerService {
 
     public interface StatusBarNotificationsChangedListener {
         void onNotificationPosted(StatusBarNotification sbn);
+
         void onNotificationRemoved(StatusBarNotification sbn);
+
+        void onNotificationFullRefresh();
     }
 }

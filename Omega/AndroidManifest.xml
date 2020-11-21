@@ -17,6 +17,50 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Pixel -->
+    <permission
+        android:name="${applicationId}.permission.QSB"
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="signatureOrSystem" />
+
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
+    <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
+
+    <uses-permission android:name="${applicationId}.permission.QSB" />
+
+    <uses-permission android:name="android.permission.START_TASKS_FROM_RECENTS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.CREATE_USERS" />
+    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.STATUS_BAR" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_WALLPAPER_INTERNAL" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="com.huawei.wallpaperservcie.permission.SET_WALLPAPER_OFFSET" />
+    <uses-permission android:name="com.huawei.android.thememanager.permission.ACCESS_CHANGE_WALLPAPER" />
+
+    <!-- For weather / sunset/-rise -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="org.pixelexperience.weather.client.READ_WEATHER" />
+    <!-- App prediction -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name="com.saggitt.omega.OmegaApp"
@@ -131,9 +175,81 @@
             </intent-filter>
         </activity>
 
+        <!-- DT2S using screen timeout -->
         <activity
-            android:name="com.saggitt.omega.dash.DashActivity"
-            android:theme="@style/DashTheme" />
+            android:name="com.saggitt.omega.gestures.handlers.SleepTimeoutActivity"
+            android:screenOrientation="locked"
+            android:theme="@style/SleepTimeoutTheme" />
+
+        <!-- DT2S using device admin -->
+        <receiver
+            android:description="@string/dt2s_admin_hint"
+            android:name="com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin$SleepDeviceAdmin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/sleep_admin_policy" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.saggitt.omega.OmegaAccessibilityService"
+            android:label="@string/derived_app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.saggitt.omega.backup.BackupListActivity"
+            android:label="@string/backups"
+            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
+            android:theme="@style/SettingsTheme_Light" />
+        <activity
+            android:name="com.saggitt.omega.backup.NewBackupActivity"
+            android:label="@string/new_backup"
+            android:parentActivityName="com.saggitt.omega.backup.BackupListActivity"
+            android:theme="@style/SettingsTheme_Light" />
+        <activity
+            android:name="com.saggitt.omega.backup.RestoreBackupActivity"
+            android:label="@string/restore_backup"
+            android:parentActivityName="com.saggitt.omega.backup.BackupListActivity"
+            android:theme="@style/SettingsTheme_Light">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="application/vnd.omega.backup" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/x-zip-compressed" />
+                <data android:mimeType="application/zip" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="*/*" />
+                <!--
+                    Work around Android's ugly primitive PatternMatcher
+                    implementation that can't cope with finding a . early in
+                    the path unless it's explicitly matched.
+                -->
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.zbk" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.zbk" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="android.max_aspect"

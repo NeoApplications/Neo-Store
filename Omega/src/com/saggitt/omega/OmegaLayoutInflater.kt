@@ -29,7 +29,7 @@ import org.xmlpull.v1.XmlPullParser
 class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) : LayoutInflater(original, newContext) {
 
     fun installFactory(delegate: AppCompatDelegate) {
-        factory2 = object : LayoutInflater.Factory2 {
+        factory2 = object : Factory2 {
             override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
                 val view = onCreateViewImpl(parent, name, context, attrs)
                 if (view != null) {
