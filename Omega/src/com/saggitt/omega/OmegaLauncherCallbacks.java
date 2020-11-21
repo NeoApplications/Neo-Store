@@ -38,16 +38,20 @@ import com.google.android.libraries.gsa.launcherclient.ClientOptions;
 import com.google.android.libraries.gsa.launcherclient.ClientService;
 import com.saggitt.omega.qsb.QsbAnimationController;
 import com.saggitt.omega.settings.SettingsActivity;
+import com.saggitt.omega.smartspace.SmartspaceView;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.CustomLauncherClient;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public class OmegaLauncherCallbacks implements LauncherCallbacks,
         SharedPreferences.OnSharedPreferenceChangeListener, OnChangeListener {
 
-    //private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
+    private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     private final OmegaLauncher mLauncher;
     private final Bundle mUiInformation = new Bundle();
@@ -134,9 +138,9 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
     public void onPause() {
         mResumed = false;
         mLauncherClient.onPause();
-        /*for (SmartspaceView smartspace : mSmartspaceViews) {
+        for (SmartspaceView smartspace : mSmartspaceViews) {
             smartspace.onPause();
-        }*/
+        }
     }
 
     @Override
@@ -199,9 +203,9 @@ public class OmegaLauncherCallbacks implements LauncherCallbacks,
         }
     }
 
-    /*void registerSmartspaceView(SmartspaceView smartspace) {
+    void registerSmartspaceView(SmartspaceView smartspace) {
         mSmartspaceViews.add(smartspace);
-    }*/
+    }
 
     @Override
     public void dump(String prefix, FileDescriptor fd, PrintWriter w, String[] args) {

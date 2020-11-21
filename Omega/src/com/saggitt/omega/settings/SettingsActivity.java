@@ -684,7 +684,6 @@ public class SettingsActivity extends SettingsBaseActivity
 
                 case R.xml.omega_preferences_developer:
                     findPreference("kill").setOnPreferenceClickListener(this);
-                    findPreference("dash_activity").setOnPreferenceClickListener(this);
                     break;
 
                 case R.xml.omega_preferences_about:

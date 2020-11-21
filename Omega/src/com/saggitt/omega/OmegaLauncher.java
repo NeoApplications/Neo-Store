@@ -48,6 +48,7 @@ import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
+import com.saggitt.omega.smartspace.SmartspaceView;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.CustomLauncherClient;
 import com.saggitt.omega.views.OptionsPanel;
@@ -164,7 +165,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
             }
         }
         if (requestCode == REQUEST_PERMISSION_LOCATION_ACCESS) {
-            //OmegaAppKt.getOmegaApp(this).getSmartspace().updateWeatherData();
+            OmegaAppKt.getOmegaApp(this).getSmartspace().updateWeatherData();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -274,4 +275,9 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         dummyView.requestLayout();
         dummyView.post(callback::invoke);
     }
+
+    public void registerSmartspaceView(SmartspaceView smartspace) {
+        launcherCallbacks.registerSmartspaceView(smartspace);
+    }
+
 }

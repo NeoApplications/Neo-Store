@@ -32,11 +32,12 @@ import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.flowerpot.Flowerpot
+import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
     val activityHandler = ActivityHandler()
-
+    val smartspace by lazy { OmegaSmartspaceController(this) }
     var mismatchedQuickstepTarget = false
     val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null

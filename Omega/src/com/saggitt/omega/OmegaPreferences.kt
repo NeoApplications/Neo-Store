@@ -23,10 +23,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Looper
 import android.text.TextUtils
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.LauncherFiles
-import com.android.launcher3.R
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
@@ -38,8 +35,14 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.smartspace.SmartspaceDataWidget
+import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
+import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
+import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
+import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
@@ -63,6 +66,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val reloadAll = { reloadAll() }
     private val refreshGrid = { refreshGrid() }
     val updateBlur = { updateBlur() }
+    private val updateWeatherData = { onChangeCallback?.updateWeatherData() ?: Unit }
     val reloadIcons = { reloadIcons() }
     private val reloadIconPacks = { IconPackManager.getInstance(context).packList.reloadPacks() }
     val recreate = { recreate() }
@@ -162,6 +166,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --ADVANCED-- */
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
+    val recentBackups = object : MutableListPref<Uri>(
+            Utilities.getDevicePrefs(context), "pref_recentBackups") {
+        override fun unflattenValue(value: String) = Uri.parse(value)
+    }
 
     /* --BLUR--*/
     var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
@@ -176,10 +184,30 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
 
-    val recentBackups = object : MutableListPref<Uri>(
-            Utilities.getDevicePrefs(context), "pref_recentBackups") {
-        override fun unflattenValue(value: String) = Uri.parse(value)
-    }
+    var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
+    val smartspaceTime by BooleanPref("pref_smartspace_time", false, refreshGrid)
+    val smartspaceDate by BooleanPref("pref_smartspace_date", true, refreshGrid)
+    val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, refreshGrid)
+    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", false, refreshGrid)
+    val weatherUnit by StringBasedPref("pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
+            Temperature.Companion::unitFromString, Temperature.Companion::unitToString) { }
+    var smartspaceWidgetId by IntPref("smartspace_widget_id", -1, doNothing)
+    var weatherIconPack by StringPref("pref_weatherIcons", "", updateWeatherData)
+    var weatherProvider by StringPref("pref_smartspace_widget_provider",
+            SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider)
+    var eventProvider by StringPref("pref_smartspace_event_provider",
+            SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider)
+    var eventProviders = StringListPref("pref_smartspace_event_providers",
+            ::updateSmartspaceProvider, listOf(eventProvider,
+            NotificationUnreadProvider::class.java.name,
+            NowPlayingProvider::class.java.name,
+            BatteryStatusProvider::class.java.name,
+            PersonalityProvider::class.java.name))
+
+    /* --DEV-- */
+    var feedProvider by StringPref("pref_feedProvider", "", restart)
+    val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", false, restart)
+    var feedProviderPackage by StringPref("pref_feed_provider_package", BuildConfig.APPLICATION_ID, restart)
 
     /* --DEV-- */
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
@@ -339,6 +367,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         onChangeCallback?.updateBlur()
     }
 
+    private fun updateSmartspaceProvider() {
+        onChangeCallback?.updateSmartspaceProvider()
+    }
+
     fun reloadIcons() {
         LauncherAppState.getInstance(context).reloadIconCache()
         MAIN_EXECUTOR.post { onChangeCallback?.recreate() }
@@ -422,6 +454,16 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     //PREFERENCE CLASSES
+
+    inner class StringListPref(prefKey: String,
+                               onChange: () -> Unit = doNothing,
+                               default: List<String> = emptyList())
+        : MutableListPref<String>(prefKey, onChange, default) {
+
+        override fun unflattenValue(value: String) = value
+        override fun flattenValue(value: String) = value
+    }
+
     abstract inner class MutableListPref<T>(private val prefs: SharedPreferences, private val prefKey: String,
                                             onChange: () -> Unit = doNothing,
                                             default: List<T> = emptyList()) : PrefDelegate<List<T>>(prefKey, default, onChange) {

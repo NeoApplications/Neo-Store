@@ -1,10 +1,5 @@
 package com.android.launcher3.icons;
 
-import static android.graphics.Paint.DITHER_FLAG;
-import static android.graphics.Paint.FILTER_BITMAP_FLAG;
-
-import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,11 +14,19 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.android.launcher3.AdaptiveIconCompat;
+
+import static android.graphics.Paint.DITHER_FLAG;
+import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
 
 /**
  * This class will be moved to androidx library. There shouldn't be any dependency outside
@@ -32,6 +35,7 @@ import androidx.annotation.NonNull;
 public class BaseIconFactory implements AutoCloseable {
 
     private static final String TAG = "BaseIconFactory";
+
     private static final int DEFAULT_WRAPPER_BACKGROUND = Color.WHITE;
     static final boolean ATLEAST_OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     static final boolean ATLEAST_P = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
@@ -56,7 +60,7 @@ public class BaseIconFactory implements AutoCloseable {
     private int mWrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
 
     protected BaseIconFactory(Context context, int fillResIconDpi, int iconBitmapSize,
-            boolean shapeDetection) {
+                              boolean shapeDetection) {
         mContext = context.getApplicationContext();
         mShapeDetection = shapeDetection;
         mFillResIconDpi = fillResIconDpi;
@@ -70,7 +74,7 @@ public class BaseIconFactory implements AutoCloseable {
         clear();
     }
 
-    protected BaseIconFactory(Context context, int fillResIconDpi, int iconBitmapSize) {
+    public BaseIconFactory(Context context, int fillResIconDpi, int iconBitmapSize) {
         this(context, fillResIconDpi, iconBitmapSize, false);
     }
 
@@ -120,22 +124,22 @@ public class BaseIconFactory implements AutoCloseable {
     }
 
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-            boolean shrinkNonAdaptiveIcons) {
+                                             boolean shrinkNonAdaptiveIcons) {
         return createBadgedIconBitmap(icon, user, shrinkNonAdaptiveIcons, false, null);
     }
 
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-            int iconAppTargetSdk) {
+                                             int iconAppTargetSdk) {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, false);
     }
 
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-            int iconAppTargetSdk, boolean isInstantApp) {
+                                             int iconAppTargetSdk, boolean isInstantApp) {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, isInstantApp, null);
     }
 
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-            int iconAppTargetSdk, boolean isInstantApp, float[] scale) {
+                                             int iconAppTargetSdk, boolean isInstantApp, float[] scale) {
         boolean shrinkNonAdaptiveIcons = ATLEAST_P ||
                 (ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O);
         return createBadgedIconBitmap(icon, user, shrinkNonAdaptiveIcons, isInstantApp, scale);
@@ -144,28 +148,28 @@ public class BaseIconFactory implements AutoCloseable {
     public Bitmap createScaledBitmapWithoutShadow(Drawable icon, int iconAppTargetSdk) {
         boolean shrinkNonAdaptiveIcons = ATLEAST_P ||
                 (ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O);
-        return  createScaledBitmapWithoutShadow(icon, shrinkNonAdaptiveIcons);
+        return createScaledBitmapWithoutShadow(icon, shrinkNonAdaptiveIcons);
     }
 
     /**
      * Creates bitmap using the source drawable and various parameters.
      * The bitmap is visually normalized with other icons and has enough spacing to add shadow.
      *
-     * @param icon                      source of the icon
-     * @param user                      info can be used for a badge
-     * @param shrinkNonAdaptiveIcons    {@code true} if non adaptive icons should be treated
-     * @param isInstantApp              info can be used for a badge
-     * @param scale                     returns the scale result from normalization
+     * @param icon                   source of the icon
+     * @param user                   info can be used for a badge
+     * @param shrinkNonAdaptiveIcons {@code true} if non adaptive icons should be treated
+     * @param isInstantApp           info can be used for a badge
+     * @param scale                  returns the scale result from normalization
      * @return a bitmap suitable for disaplaying as an icon at various system UIs.
      */
     public BitmapInfo createBadgedIconBitmap(@NonNull Drawable icon, UserHandle user,
-            boolean shrinkNonAdaptiveIcons, boolean isInstantApp, float[] scale) {
+                                             boolean shrinkNonAdaptiveIcons, boolean isInstantApp, float[] scale) {
         if (scale == null) {
             scale = new float[1];
         }
         icon = normalizeAndWrapToAdaptiveIcon(icon, shrinkNonAdaptiveIcons, null, scale);
         Bitmap bitmap = createIconBitmap(icon, scale[0]);
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
             mCanvas.setBitmap(bitmap);
             getShadowGenerator().recreateIcon(Bitmap.createBitmap(bitmap), mCanvas);
             mCanvas.setBitmap(null);
@@ -209,23 +213,19 @@ public class BaseIconFactory implements AutoCloseable {
     }
 
     private Drawable normalizeAndWrapToAdaptiveIcon(@NonNull Drawable icon,
-            boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
-        if (icon == null) {
-            return null;
-        }
-        //TODO REVISAR ADAPTIVE ICONS
-        /*float scale = 1f;
+                                                    boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
+        float scale;
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
-            if (mWrapperIcon == null) {
-                mWrapperIcon = mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper)
-                        .mutate();
+            if (mWrapperIcon == null || !((AdaptiveIconCompat) mWrapperIcon).isMaskValid()) {
+                mWrapperIcon = AdaptiveIconCompat.wrap(
+                        mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper).mutate());
             }
-            AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
+            AdaptiveIconCompat dr = (AdaptiveIconCompat) mWrapperIcon;
             dr.setBounds(0, 0, 1, 1);
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
-            if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
+            if (!outShape[0] && (icon instanceof NonAdaptiveIconDrawable)) {
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
@@ -234,26 +234,12 @@ public class BaseIconFactory implements AutoCloseable {
 
                 ((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
             }
+
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);
         }
-
         outScale[0] = scale;
-        return icon;*/
-        float scale = 1f;
-        Drawable mIcon = icon;
-        if (ATLEAST_OREO) {
-            boolean[] outShape = new boolean[1];
-            if (mWrapperIcon == null) {
-                mWrapperIcon = mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper)
-                        .mutate();
-            }
-            AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
-            dr.setBounds(0, 0, 1, 1);
-            scale = getNormalizer().getScale(mIcon, outIconBounds, dr.getIconMask(), outShape);
-        }
-        outScale[0] = scale;
-        return mIcon;
+        return icon;
     }
 
     /**
@@ -275,12 +261,12 @@ public class BaseIconFactory implements AutoCloseable {
         badge.draw(target);
     }
 
-    private Bitmap createIconBitmap(Drawable icon, float scale) {
+    public Bitmap createIconBitmap(Drawable icon, float scale) {
         return createIconBitmap(icon, scale, mIconBitmapSize);
     }
 
     /**
-     * @param icon drawable that should be flattened to a bitmap
+     * @param icon  drawable that should be flattened to a bitmap
      * @param scale the scale to apply before drawing {@param icon} on the canvas
      */
     public Bitmap createIconBitmap(@NonNull Drawable icon, float scale, int size) {
@@ -293,7 +279,7 @@ public class BaseIconFactory implements AutoCloseable {
 
         if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
-                    Math.round(size * (1 - scale) / 2 ));
+                    Math.round(size * (1 - scale) / 2));
             icon.setBounds(offset, offset, size - offset, size - offset);
             icon.draw(mCanvas);
         } else {
@@ -375,6 +361,13 @@ public class BaseIconFactory implements AutoCloseable {
         @Override
         public int getIntrinsicWidth() {
             return getBitmap().getWidth();
+        }
+    }
+
+    public static class NonAdaptiveIconDrawable extends DrawableWrapper {
+
+        public NonAdaptiveIconDrawable(@Nullable Drawable dr) {
+            super(dr);
         }
     }
 }

@@ -18,11 +18,31 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<com.saggitt.omega.preferences.StyledSwitchPreference
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:key="pref_settings_search"
+        android:icon="@drawable/ic_search_colored"
         android:persistent="true"
         android:summary="@string/summary__advanced_setting_search"
         android:title="@string/title__advanced_setting_search"
         app:iconSpaceReserved="false" />
+
+    <net.gsantner.opoc.preference.LanguagePreferenceCompat
+        android:defaultValue=""
+        android:icon="@drawable/ic_language"
+        android:key="pref_key__language"
+        android:summary="@string/summary__advanced_language"
+        android:title="@string/title__advanced_language" />
+
+    <Preference
+        android:icon="@drawable/ic_import_export"
+        android:key="backups"
+        android:summary="@string/backup_pref_summary"
+        android:title="@string/backups">
+
+        <!--suppress AndroidDomInspection (Injected at compile time) -->
+        <intent
+            android:targetClass="com.saggitt.omega.backup.BackupListActivity"
+            android:targetPackage="@string/application_id" />
+    </Preference>
 </PreferenceScreen>

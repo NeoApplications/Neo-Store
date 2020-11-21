@@ -50,6 +50,14 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }
 
+    fun updateSmartspaceProvider() {
+        launcher.omegaApp.smartspace.onProviderChanged()
+    }
+
+    fun updateWeatherData() {
+        launcher.omegaApp.smartspace.forceUpdateWeather()
+    }
+
     fun forceReloadApps() {
         UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.forceReload() }
     }

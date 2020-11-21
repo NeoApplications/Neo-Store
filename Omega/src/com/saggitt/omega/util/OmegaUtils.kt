@@ -20,6 +20,7 @@ package com.saggitt.omega.util
 import android.R
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
@@ -30,7 +31,9 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
+import android.service.notification.StatusBarNotification
 import android.text.TextUtils
+import android.text.format.DateFormat
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
@@ -320,6 +323,65 @@ inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>
 
 fun BgDataModel.workspaceContains(packageName: String): Boolean {
     return this.workspaceItems.any { it.targetComponent?.packageName == packageName }
+}
+
+fun formatTime(dateTime: Date, context: Context? = null): String {
+    return when (context) {
+        null -> String.format("%d:%02d", dateTime.hours, dateTime.minutes)
+        else -> if (DateFormat.is24HourFormat(context)) String.format("%02d:%02d", dateTime.hours,
+                dateTime.minutes) else String.format(
+                "%d:%02d %s", if (dateTime.hours % 12 == 0) 12 else dateTime.hours % 12, dateTime.minutes,
+                if (dateTime.hours < 12) "am" else "pm")
+    }
+}
+
+fun formatTime(calendar: Calendar, context: Context? = null): String {
+    return when (context) {
+        null -> String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.HOUR_OF_DAY))
+        else -> if (DateFormat.is24HourFormat(context)) String.format("%02d:%02d", calendar.get(
+                Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)) else String.format("%02d:%02d %s",
+                if (calendar.get(
+                                Calendar.HOUR_OF_DAY) % 12 == 0) 12 else calendar.get(
+                        Calendar.HOUR_OF_DAY) % 12,
+                calendar.get(
+                        Calendar.MINUTE),
+                if (calendar.get(
+                                Calendar.HOUR_OF_DAY) < 12) "AM" else "PM")
+    }
+}
+
+inline val Calendar.hourOfDay get() = get(Calendar.HOUR_OF_DAY)
+inline val Calendar.dayOfYear get() = get(Calendar.DAY_OF_YEAR)
+
+fun ViewGroup.getAllChilds() = ArrayList<View>().also { getAllChilds(it) }
+
+fun ViewGroup.getAllChilds(list: MutableList<View>) {
+    for (i in (0 until childCount)) {
+        val child = getChildAt(i)
+        if (child is ViewGroup) {
+            child.getAllChilds(list)
+        } else {
+            list.add(child)
+        }
+    }
+}
+
+fun StatusBarNotification.loadSmallIcon(context: Context): Drawable? {
+    return notification.smallIcon?.loadDrawable(context)
+}
+
+fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
+    try {
+        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+        info.requestedPermissions.forEachIndexed { index, s ->
+            if (s == permissionName) {
+                return info.requestedPermissionsFlags[index].hasFlag(REQUESTED_PERMISSION_GRANTED)
+            }
+        }
+    } catch (e: PackageManager.NameNotFoundException) {
+    }
+    return false
 }
 
 fun openPopupMenu(view: View, rect: RectF?, vararg items: OptionsPopupView.OptionItem) {

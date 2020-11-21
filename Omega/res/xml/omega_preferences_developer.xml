@@ -36,8 +36,5 @@
         android:title="@string/title__dev_show_debug_info"
         app:iconSpaceReserved="false" />
 
-    <Preference
-        android:key="dash_activity"
-        android:title="Dash Test Activity"
-        app:iconSpaceReserved="false" />
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__incubating"></com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>
