@@ -73,6 +73,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.adaptive.IconShapePreference;
 import com.saggitt.omega.dash.DashActivity;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
@@ -878,6 +879,8 @@ public class SettingsActivity extends SettingsBaseActivity
             final DialogFragment f;
             if (preference instanceof GridSizePreference) {
                 f = GridSizeDialogFragmentCompat.newInstance(preference.getKey());
+            } else if (preference instanceof IconShapePreference) {
+                f = ((IconShapePreference) preference).createDialogFragment();
             } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());

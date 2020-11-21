@@ -17,6 +17,11 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.saggitt.omega.preferences.PreviewPreference
+        android:key="pref_smartspace_preview"
+        app:previewLayout="@layout/smartspace_preview" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
         android:defaultValue="true"
         android:key="pref_enable_minus_one"

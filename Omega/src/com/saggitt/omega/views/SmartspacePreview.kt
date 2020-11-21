@@ -47,7 +47,7 @@ class SmartspacePreview(context: Context, attrs: AttributeSet?) :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
+        //prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
     }
 
     override fun onDetachedFromWindow() {

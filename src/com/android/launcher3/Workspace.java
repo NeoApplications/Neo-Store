@@ -3404,6 +3404,14 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
     }
 
+    public interface OnStateChangeListener {
+
+        /**
+         * Called when the workspace state is changing.
+         */
+        void prepareStateChange(AnimatorSetBuilder builder);
+    }
+
     private class StateTransitionListener extends AnimatorListenerAdapter
             implements AnimatorUpdateListener {
 

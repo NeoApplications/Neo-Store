@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.util
 
-import android.R
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
@@ -28,6 +27,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
@@ -47,10 +47,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
-import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.LauncherModel
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.compat.LauncherAppsCompat
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.util.ComponentKey
@@ -175,8 +172,8 @@ fun Switch.applyColor(color: Int) {
     val switchThumbNormal = context.resources.getColor(androidx.preference.R.color.switch_thumb_normal_material_light)
     val switchThumbDisabled = context.resources.getColor(androidx.preference.R.color.switch_thumb_disabled_material_light)
     val thstateList = ColorStateList(arrayOf(
-            intArrayOf(-R.attr.state_enabled),
-            intArrayOf(R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_enabled),
+            intArrayOf(android.R.attr.state_checked),
             intArrayOf()),
             intArrayOf(
                     switchThumbDisabled,
@@ -424,6 +421,19 @@ val Context.locale: Locale
             this.resources.configuration.locale
         }
     }
+
+fun createRipplePill(context: Context, color: Int, radius: Float): Drawable {
+    return RippleDrawable(ContextCompat.getColorStateList(context, R.color.focused_background)!!,
+            createPill(color, radius), createPill(color, radius))
+}
+
+fun createPill(color: Int, radius: Float): Drawable {
+    return GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        setColor(color)
+        cornerRadius = radius
+    }
+}
 
 fun Context.getIcon(): Drawable = packageManager.getApplicationIcon(applicationInfo)
 
