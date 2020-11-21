@@ -24,4 +24,17 @@
         android:title="@string/title_show_google_app"
         app:controllerClass=".MinusOneController"
         app:iconSpaceReserved="false" />
+
+    <ListPreference
+        android:defaultValue="1"
+        android:dependency="pref_enable_minus_one"
+        android:entries="@array/feedThemes"
+        android:entryValues="@array/feedThemeValues"
+        android:key="pref_feed_theme"
+        android:persistent="true"
+        android:summary="%s"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/title_smartspace_feed_theme"
+        app:controllerClass=".GFeedBackgroundController"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
