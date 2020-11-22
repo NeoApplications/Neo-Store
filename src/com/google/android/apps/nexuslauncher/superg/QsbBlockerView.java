@@ -1,4 +1,4 @@
-package com.saggitt.omega.superg;
+package com.google.android.apps.nexuslauncher.superg;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -1,6 +1,5 @@
-package com.saggitt.omega.superg;
+package com.google.android.apps.nexuslauncher.superg;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -31,7 +30,6 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TEXT_ASSIST = "com.google.android.googlequicksearchbox.TEXT_ASSIST";
 
-    private final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator(); //mArgbEvaluator
     private ObjectAnimator mObjectAnimator;
     protected View mQsbView;
     private float mQsbButtonElevation;

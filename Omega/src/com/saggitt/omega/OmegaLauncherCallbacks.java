@@ -34,11 +34,11 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.uioverrides.WallpaperColorInfo.OnChangeListener;
 import com.android.launcher3.util.Themes;
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.libraries.gsa.launcherclient.ClientOptions;
 import com.google.android.libraries.gsa.launcherclient.ClientService;
 import com.saggitt.omega.qsb.QsbAnimationController;
 import com.saggitt.omega.settings.SettingsActivity;
-import com.saggitt.omega.smartspace.SmartspaceView;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.CustomLauncherClient;
 

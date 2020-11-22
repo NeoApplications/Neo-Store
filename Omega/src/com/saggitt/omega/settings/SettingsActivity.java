@@ -84,6 +84,8 @@ import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.preferences.ResumablePreference;
 import com.saggitt.omega.preferences.SingleDimensionGridSizeDialogFragmentCompat;
 import com.saggitt.omega.preferences.SingleDimensionGridSizePreference;
+import com.saggitt.omega.preferences.SmartspaceEventProvidersFragment;
+import com.saggitt.omega.preferences.SmartspaceEventProvidersPreference;
 import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.search.SearchProviderPreference;
@@ -887,6 +889,8 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof SingleDimensionGridSizePreference) {
                 f = SingleDimensionGridSizeDialogFragmentCompat.Companion
                         .newInstance(preference.getKey());
+            } else if (preference instanceof SmartspaceEventProvidersPreference) {
+                f = SmartspaceEventProvidersFragment.Companion.newInstance(preference.getKey());
             } else if (preference instanceof CustomDialogPreference) {
                 f = PreferenceScreenDialogFragment.Companion
                         .newInstance((CustomDialogPreference) preference);

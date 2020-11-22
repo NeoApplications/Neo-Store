@@ -10,7 +10,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.saggitt.omega.superg.QsbBlockerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.apps.nexuslauncher.superg.QsbBlockerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="end|center"
     android:layout_gravity="end"
     android:clipChildren="false"
@@ -25,4 +25,4 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:contentDescription="" />
-</com.saggitt.omega.superg.QsbBlockerView>
+</com.google.android.apps.nexuslauncher.superg.QsbBlockerView>

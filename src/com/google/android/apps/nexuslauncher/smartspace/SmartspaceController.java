@@ -1,4 +1,4 @@
-package com.saggitt.omega.smartspace;
+package com.google.android.apps.nexuslauncher.smartspace;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.android.launcher3.Alarm;
+import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.ActionIntentFilter;
 
 import java.io.PrintWriter;

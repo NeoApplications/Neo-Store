@@ -212,9 +212,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         mGridLayoutMgr = new AppsGridLayoutManager(launcher);
         mGridLayoutMgr.setSpanSizeLookup(mGridSizer);
         mLayoutInflater = LayoutInflater.from(launcher);
-
-        mAppsPerRow = mLauncher.getDeviceProfile().inv.numColsDrawer;
-        mGridLayoutMgr.setSpanCount(mAppsPerRow);
+        setAppsPerRow(mLauncher.getDeviceProfile().inv.numColsDrawer);
     }
 
     public void setAppsPerRow(int appsPerRow) {

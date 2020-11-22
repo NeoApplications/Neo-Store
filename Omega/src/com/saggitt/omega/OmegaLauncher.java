@@ -22,6 +22,7 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -44,12 +45,14 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
-import com.saggitt.omega.smartspace.SmartspaceView;
+import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.CustomLauncherClient;
 import com.saggitt.omega.views.OptionsPanel;
 
@@ -65,12 +68,12 @@ import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPreferenceChangeListener {
+    public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
     public Context mContext;
     private boolean paused = false;
     private boolean sRestart = false;
-    private OmegaPreferences mOmegaPrefs;
     private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
     private OmegaLauncherCallbacks launcherCallbacks;
@@ -99,11 +102,21 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         }
         IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = Utilities.getPrefs(this);
+        if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
+            prefs.edit().putBoolean("pref_enable_minus_one", false).apply();
+        }
+
         mContext = this;
 
-        OmegaPreferences mOmegaPrefs = Utilities.getOmegaPrefs(mContext);
-        mOmegaPrefs.registerCallback(prefCallback);
-        mOmegaPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
+        OmegaPreferences mPrefs = Utilities.getOmegaPrefs(mContext);
+        mPrefs.registerCallback(prefCallback);
+        mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
+        ContextUtils contextUtils = new ContextUtils(this);
+        contextUtils.setAppLanguage(mPrefs.getLanguage());
+        showFolderNotificationCount = mPrefs.getFolderBadgeCount();
+        dummyView = findViewById(R.id.dummy_view);
 
     }
 
@@ -151,6 +164,10 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         }
     }
 
+    public OptionsPanel getOptionsView() {
+        return optionsView = findViewById(R.id.options_view);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION_STORAGE_ACCESS) {
@@ -186,10 +203,6 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         if (sRestart) {
             OmegaAppKt.getOmegaApp(this).restart(false);
         }
-    }
-
-    public OptionsPanel getOptionsView() {
-        return optionsView = findViewById(R.id.options_view);
     }
 
     public void startEditIcon(ItemInfo itemInfo, CustomInfoProvider<ItemInfo> infoProvider) {

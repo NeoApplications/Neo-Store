@@ -1,4 +1,4 @@
-package com.saggitt.omega.smartspace;
+package com.google.android.apps.nexuslauncher.smartspace;
 
 public interface ISmartspace {
     void onGsaChanged();

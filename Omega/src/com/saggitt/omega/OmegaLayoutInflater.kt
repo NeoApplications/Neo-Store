@@ -92,15 +92,15 @@ class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) : Layou
 
     override fun inflate(parser: XmlPullParser?, root: ViewGroup?, attachToRoot: Boolean): View {
         val view = super.inflate(parser, root, attachToRoot)
-        //hookInflate(view)
+        hookInflate(view)
         return view
     }
 
-    /*private fun hookInflate(view: View) {
+    private fun hookInflate(view: View) {
         if (view is TextView) {
 
         }
-    }*/
+    }
 
     companion object {
 

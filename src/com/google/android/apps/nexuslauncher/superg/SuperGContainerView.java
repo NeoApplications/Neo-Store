@@ -1,4 +1,4 @@
-package com.saggitt.omega.superg;
+package com.google.android.apps.nexuslauncher.superg;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,6 @@ import com.android.launcher3.R;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 public class SuperGContainerView extends BaseGContainerView {
-
-    private int mQsbColor = Color.WHITE;
 
     public SuperGContainerView(Context paramContext) {
         this(paramContext, null);
@@ -86,6 +84,7 @@ public class SuperGContainerView extends BaseGContainerView {
     protected void applyQsbColor() {
         super.applyQsbColor();
         float radius = OmegaUtilsKt.dpToPx(100);
+        int mQsbColor = Color.WHITE;
         mQsbView.setBackground(OmegaUtilsKt.createRipplePill(getContext(), mQsbColor, radius));
     }
 }

@@ -161,8 +161,6 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
 
             Log.d(TAG, "Texts size " + texts.size);
 
-            Log.d(TAG, "Texts size " + texts.get(0).text);
-
             val images = childs.filter { it is ImageView } as List<ImageView>
 
             var weatherIconView: ImageView? = null

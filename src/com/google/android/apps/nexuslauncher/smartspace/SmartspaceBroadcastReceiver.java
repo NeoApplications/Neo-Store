@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.saggitt.omega.smartspace;
+package com.google.android.apps.nexuslauncher.smartspace;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

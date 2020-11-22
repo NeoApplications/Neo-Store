@@ -355,7 +355,6 @@
         <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
         <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
         <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
-        <item name="customFontType">smartspaceText</item>
     </style>
 
     <!-- Weather widget -->

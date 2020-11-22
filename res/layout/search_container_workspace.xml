@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.saggitt.omega.smartspace.SmartspaceView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.apps.nexuslauncher.smartspace.SmartspaceView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/search_container_workspace"
     android:background="?android:selectableItemBackground"
     android:clickable="true"
@@ -31,4 +31,4 @@
         android:contentDescription="" />
 
     <include layout="@layout/smartspace_singleline" />
-</com.saggitt.omega.smartspace.SmartspaceView>
+</com.google.android.apps.nexuslauncher.smartspace.SmartspaceView>

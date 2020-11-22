@@ -1,4 +1,4 @@
-package com.saggitt.omega.smartspace;
+package com.google.android.apps.nexuslauncher.smartspace;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.ShadowGenerator;
+import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.ColorManipulation;
 
 import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.b;

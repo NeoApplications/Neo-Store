@@ -1,4 +1,4 @@
-package com.saggitt.omega.smartspace;
+package com.google.android.apps.nexuslauncher.smartspace;
 
 import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
@@ -40,15 +40,17 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.icons.ShadowGenerator;
 import com.android.launcher3.util.Themes;
+import com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView;
+import com.google.android.apps.nexuslauncher.graphics.IcuDateTextView;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.graphics.DoubleShadowTextView;
-import com.saggitt.omega.graphics.IcuDateTextView;
 import com.saggitt.omega.icons.calendar.DynamicCalendar;
+import com.saggitt.omega.smartspace.OmegaSmartspaceController;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
+import com.saggitt.omega.smartspace.SmartspacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.views.SmartspacePreview;
 
@@ -73,7 +75,6 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     private ViewGroup mSmartspaceContent;
     private final SmartspaceController controller;
     private SmartspaceDataContainer dq;
-    private BubbleTextView dr;
     private boolean ds;
     private boolean mDoubleLine;
     private final OnClickListener mCalendarClickListener;
@@ -85,24 +86,24 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     private TextView mSubtitleText;
     private ViewGroup mSubtitleWeatherContent;
     private ImageView mSubtitleWeatherIcon;
-    private boolean mEnableShadow;
+    private final boolean mEnableShadow;
     private final Handler mHandler;
 
-    private OmegaSmartspaceController mController;
+    private final OmegaSmartspaceController mController;
     private boolean mFinishedInflate;
     private boolean mWeatherAvailable;
-    private OmegaPreferences mPrefs;
+    private final OmegaPreferences mPrefs;
 
-    private ShadowGenerator mShadowGenerator;
+    private final ShadowGenerator mShadowGenerator;
 
-    private int mTitleSize;
-    private int mTitleMinSize;
-    private int mHorizontalPadding;
-    private int mSeparatorWidth;
-    private int mWeatherIconSize;
+    private final int mTitleSize;
+    private final int mTitleMinSize;
+    private final int mHorizontalPadding;
+    private final int mSeparatorWidth;
+    private final int mWeatherIconSize;
 
-    private Paint mTextPaint = new Paint();
-    private Rect mTextBounds = new Rect();
+    private final Paint mTextPaint = new Paint();
+    private final Rect mTextBounds = new Rect();
 
     private boolean mPerformingSetup = false;
 
@@ -129,11 +130,9 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
             }
         };
 
-        mClockClickListener = v -> {
-            Launcher.getLauncher(getContext()).startActivitySafely(v,
-                    new Intent(AlarmClock.ACTION_SHOW_ALARMS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED), null, null);
-        };
+        mClockClickListener = v -> Launcher.getLauncher(getContext()).startActivitySafely(v,
+                new Intent(AlarmClock.ACTION_SHOW_ALARMS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED), null, null);
 
         mWeatherClickListener = v -> {
             if (mController != null)
@@ -244,7 +243,6 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void loadDoubleLine(@Nullable WeatherData weather, @NotNull CardData card) {
         setOnClickListener(mEventClickListener);
         setBackgroundResource(mSmartspaceBackgroundRes);
@@ -258,7 +256,6 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         bindClockAbove(false);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void loadSingleLine(@Nullable WeatherData weather, @Nullable CardData card) {
         setOnClickListener(null);
         setBackgroundResource(0);
@@ -431,7 +428,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         super.onFinishInflate();
         loadViews();
         mFinishedInflate = true;
-        dr = findViewById(R.id.dummyBubbleTextView);
+        BubbleTextView dr = findViewById(R.id.dummyBubbleTextView);
         dr.setTag(new ItemInfo() {
             @Override
             public ComponentName getTargetComponent() {
@@ -449,7 +446,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         super.onLayout(b, n, n2, n3, n4);
         if (dq != null && dq.isDataAvailable() && dq.dP.cv()) {
             final String cn = cn();
-            if (!cn.equals(mTitleText.getText())) {
+            if (!cn.contentEquals(mTitleText.getText())) {
                 mTitleText.setText(cn);
             }
         }

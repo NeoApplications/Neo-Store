@@ -26,8 +26,8 @@ import android.widget.FrameLayout
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.widget.custom.CustomWidgetParser
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
 import com.saggitt.omega.OmegaPreferences
-import com.saggitt.omega.smartspace.SmartspaceView
 import com.saggitt.omega.theme.ThemeOverride
 
 class SmartspacePreview(context: Context, attrs: AttributeSet?) :
@@ -38,6 +38,7 @@ class SmartspacePreview(context: Context, attrs: AttributeSet?) :
     private val usePillQsb = prefs::usePillQsb
     private val prefsToWatch = arrayOf("pref_smartspace_time", "pref_smartspace_time_above",
             "pref_smartspace_time_24_h", "pref_smartspace_date", "pref_use_pill_qsb")
+
     private val needsReinflate = setOf("pref_use_pill_qsb")
     private var currentView: SmartspaceView? = null
     private val themedContext = ContextThemeWrapper(context, ThemeOverride.Launcher().getTheme(context))
@@ -47,7 +48,7 @@ class SmartspacePreview(context: Context, attrs: AttributeSet?) :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        //prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
+        prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
     }
 
     override fun onDetachedFromWindow() {

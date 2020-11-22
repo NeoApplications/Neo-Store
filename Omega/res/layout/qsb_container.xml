@@ -22,4 +22,4 @@
     android:clipToPadding="false"
     android:layout_width="fill_parent"
     android:layout_height="0dp"
-    android:layout_marginStart="16dp" />
+    android:layout_marginStart="@dimen/qsb_overlap_margin" />

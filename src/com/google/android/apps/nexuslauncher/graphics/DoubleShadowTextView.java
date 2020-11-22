@@ -1,4 +1,4 @@
-package com.saggitt.omega.graphics;
+package com.google.android.apps.nexuslauncher.graphics;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

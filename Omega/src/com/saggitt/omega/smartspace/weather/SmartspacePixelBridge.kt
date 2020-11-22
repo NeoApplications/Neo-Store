@@ -19,7 +19,11 @@ package com.saggitt.omega.smartspace.weather
 
 import android.os.Handler
 import android.util.Log
-import com.saggitt.omega.smartspace.*
+import com.google.android.apps.nexuslauncher.smartspace.ISmartspace
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceDataContainer
+import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.SmartspaceDataWidget
 
 class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {

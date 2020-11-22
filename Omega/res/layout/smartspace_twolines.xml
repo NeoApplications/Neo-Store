@@ -22,7 +22,7 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <com.saggitt.omega.graphics.IcuDateTextView
+    <com.google.android.apps.nexuslauncher.graphics.IcuDateTextView
         android:id="@+id/time_above"
         style="@style/SmartspaceTextHeadline"
         android:scrollHorizontally="true"
@@ -42,7 +42,7 @@
         android:layout_marginBottom="4dp"
         tools:visibility="visible" />
 
-    <com.saggitt.omega.graphics.DoubleShadowTextView
+    <com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView
         android:id="@+id/title_text"
         style="@style/SmartspaceTextHeadline"
         android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
             android:layout_marginRight="6dp"
             android:layout_weight="0.0" />
 
-        <com.saggitt.omega.graphics.DoubleShadowTextView
+        <com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView
             android:id="@+id/subtitle_text"
             style="@style/SmartspaceTextTitle"
             android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
                 android:layout_marginRight="4dp"
                 android:scaleType="fitXY" />
 
-            <com.saggitt.omega.graphics.DoubleShadowTextView
+            <com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView
                 android:id="@+id/subtitle_weather_text"
                 style="@style/SmartspaceTextTitle"
                 android:layout_width="wrap_content"

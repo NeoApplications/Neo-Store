@@ -108,7 +108,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private Drawable mIcon;
     private final boolean mCenterVertically;
 
-    private final int mDisplay;
+    private int mDisplay;
 
     private final CheckLongPressHelper mLongPressHelper;
     private final StylusEventHelper mStylusEventHelper;
@@ -140,7 +140,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private boolean mDisableRelayout = false;
 
     @ViewDebug.ExportedProperty(category = "launcher")
-    private final boolean mIgnorePaddingTouch;
+    private boolean mIgnorePaddingTouch = false;
 
     private IconLoadRequest mIconLoadRequest;
 
@@ -156,7 +156,21 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     public BubbleTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mActivity = ActivityContext.lookupContext(context);
+        ActivityContext activity;
+        try {
+            activity = ActivityContext.lookupContext(context);
+        } catch (IllegalArgumentException e) {
+            mActivity = null;
+            mLayoutHorizontal = false;
+            mIconSize = 0;
+            mCenterVertically = true;
+            mLongPressHelper = new CheckLongPressHelper(this);
+            mStylusEventHelper = null;
+            mSlop = 0;
+            return;
+        }
+        mActivity = activity;
+
         mSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 
         TypedArray a = context.obtainStyledAttributes(attrs,
