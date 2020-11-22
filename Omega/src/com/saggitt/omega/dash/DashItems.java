@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DashItems {
-
     ArrayList<DashModel> itemList = new ArrayList<>();
     private Context mContext;
 
@@ -69,7 +68,7 @@ public class DashItems {
 
     private Drawable getDrawable(String iconName) {
         int icon = mContext.getResources().getIdentifier(iconName, "drawable", mContext.getPackageName());
-        return mContext.getResources().getDrawable(icon);
+        return mContext.getResources().getDrawable(icon, null);
 
     }
 

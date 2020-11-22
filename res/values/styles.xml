@@ -61,6 +61,9 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#00000000</item>
         <item name="android:navigationBarColor">#00000000</item>
+
+        <item name="dashIconTint">#0270CF</item>
+        <item name="dashIconBackground">#ffffffff</item>
     </style>
 
     <style name="LauncherTheme.DarkMainColor" parent="@style/LauncherTheme">
@@ -102,6 +105,9 @@
         <item name="folderTextColor">@android:color/white</item>
         <item name="isMainColorDark">true</item>
         <item name="loadingIconColor">#99FFFFFF</item>
+
+        <item name="dashIconTint">#0270CF</item>
+        <item name="dashIconBackground">#3C4043</item>
     </style>
 
     <style name="LauncherTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark">

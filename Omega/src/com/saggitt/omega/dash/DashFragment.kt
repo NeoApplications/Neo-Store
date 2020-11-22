@@ -36,8 +36,8 @@ class DashFragment : RecyclerViewFragment() {
         }
     }
 
-    override fun onPause() {
+    /*override fun onPause() {
         super.onPause()
-        //Utilities.getZimPrefs(context).dashItems = adapter.getDashItems()
-    }
+        Utilities.getOmegaPrefs(context).dashItems = adapter.getDashItems()
+    }*/
 }

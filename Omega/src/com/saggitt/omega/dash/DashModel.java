@@ -18,11 +18,13 @@
 package com.saggitt.omega.dash;
 
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -41,9 +43,6 @@ public class DashModel implements Serializable {
     private String action;
     private boolean isEnabled;
     private Drawable icon;
-
-    public DashModel() {
-    }
 
     public int getId() {
         return id;
@@ -94,6 +93,7 @@ public class DashModel implements Serializable {
     }
 
     public void RunAction(String action, Context context) {
+
         switch (action) {
             case "MobileNetworkSettings":
                 context.startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
@@ -109,16 +109,22 @@ public class DashModel implements Serializable {
                 break;
 
             case "SetWallpaper":
-                context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_SET_WALLPAPER), context.getString(R.string.wallpaper_pick)));
+                try {
+                    context.startActivity(
+                            Intent.createChooser(new Intent(Intent.ACTION_SET_WALLPAPER),
+                                    context.getString(R.string.wallpaper_pick)));
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case "DeviceSettings":
                 context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
                 break;
+
             case "LauncherSettings":
-                Launcher launcher = Launcher.getLauncher(context);
-                launcher.startActivity(new Intent(Intent.ACTION_APPLICATION_PREFERENCES)
-                        .setPackage(launcher.getPackageName())
+                context.startActivity(new Intent(Intent.ACTION_APPLICATION_PREFERENCES)
+                        .setPackage(context.getPackageName())
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
 
@@ -127,6 +133,7 @@ public class DashModel implements Serializable {
                     Launcher.getLauncher(context).getStateManager().goToState(ALL_APPS);
                 }
                 break;
+
             case "VolumeDialog":
                 try {
                     AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);

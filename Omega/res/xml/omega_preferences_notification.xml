@@ -47,4 +47,14 @@
         app:cpv_dialogTitle="@string/title__notification_background"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__gestures">
+        <com.saggitt.omega.gestures.ui.GesturePreference
+            android:defaultValue="@string/action_do_nothing_class"
+            android:key="pref_gesture_double_tap"
+            android:persistent="true"
+            android:title="@string/gesture_double_tap"
+            app:gestureClass="com.saggitt.omega.gestures.gestures.DoubleTapGesture"
+            app:iconSpaceReserved="false" />
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>

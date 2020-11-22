@@ -18,35 +18,41 @@
 package com.saggitt.omega.dash;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.launcher3.AbstractFloatingView;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.util.Themes;
 
 import java.util.ArrayList;
 
 public class DashItemAdapter {
-    private ArrayList<DashModel> mItems;
-    private LayoutInflater mInflater;
-    private ArrayList<View> mItemViews;
+    private final ArrayList<View> mItemViews;
     private DashItemChangeListener circularItemChangeListener;
-    private Context mContext;
+    private final Context mContext;
 
     public DashItemAdapter(LayoutInflater inflater, ArrayList<DashModel> items, Context context) {
-        this.mItemViews = new ArrayList<>();
-        this.mItems = items;
-        this.mInflater = inflater;
-        for (DashModel dashItem : mItems) {
-            View view = mInflater.inflate(R.layout.dash_item, null);
-            ImageView itemView = (ImageView) view.findViewById(R.id.bt_item);
+        mContext = context;
+        mItemViews = new ArrayList<>();
+        for (DashModel dashItem : items) {
+            View view = inflater.inflate(R.layout.dash_item, null);
+            ImageView itemView = view.findViewById(R.id.bt_item);
+            ColorStateList backgroundColor = ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconBackground));
+            itemView.setBackgroundTintList(backgroundColor);
             itemView.setImageDrawable(dashItem.getIcon());
+            ColorStateList iconColor = ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconTint));
+            itemView.setImageTintList(iconColor);
+
             itemView.setOnClickListener((parent) -> {
-                dashItem.RunAction(dashItem.getAction(), parent.getContext());
+                dashItem.RunAction(dashItem.getAction(), mContext);
+                AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(mContext));
             });
             mItemViews.add(view);
         }
-        mContext = context;
     }
 
     public int getCount() {
@@ -74,7 +80,7 @@ public class DashItemAdapter {
     }
 
     public void setOnItemChangeListener(DashItemChangeListener listener) {
-        this.circularItemChangeListener = listener;
+        circularItemChangeListener = listener;
     }
 
     public void notifyItemChange() {
