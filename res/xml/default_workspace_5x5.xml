@@ -22,7 +22,7 @@
         launcher:container="-101"
         launcher:screen="0"
         launcher:x="0"
-        launcher:y="0" >
+        launcher:y="0">
         <favorite launcher:uri="#Intent;action=android.intent.action.DIAL;end" />
         <favorite launcher:uri="tel:123" />
         <favorite launcher:uri="#Intent;action=android.intent.action.CALL_BUTTON;end" />
@@ -32,7 +32,7 @@
         launcher:container="-101"
         launcher:screen="1"
         launcher:x="1"
-        launcher:y="0" >
+        launcher:y="0">
         <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MESSAGING;end" />
         <favorite launcher:uri="sms:" />
         <favorite launcher:uri="smsto:" />
@@ -44,54 +44,64 @@
         launcher:container="-101"
         launcher:screen="2"
         launcher:x="2"
-        launcher:y="0" >
-        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MAPS;end" />
-        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MUSIC;end" />
+        launcher:y="0">
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_BROWSER;end" />
+        <favorite launcher:uri="http://www.example.com/" />
     </resolve>
 
     <resolve
         launcher:container="-101"
         launcher:screen="3"
         launcher:x="3"
-        launcher:y="0" >
-        <favorite
-            launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_BROWSER;end" />
-        <favorite launcher:uri="http://www.example.com/" />
+        launcher:y="0">
+        <favorite launcher:uri="#Intent;action=android.media.action.STILL_IMAGE_CAMERA;end" />
+        <favorite launcher:uri="#Intent;action=android.intent.action.CAMERA_BUTTON;end" />
     </resolve>
 
     <resolve
         launcher:container="-101"
         launcher:screen="4"
         launcher:x="4"
-        launcher:y="0" >
-        <favorite launcher:uri="#Intent;action=android.media.action.STILL_IMAGE_CAMERA;end" />
-        <favorite launcher:uri="#Intent;action=android.intent.action.CAMERA_BUTTON;end" />
+        launcher:y="0">
+        <favorite launcher:uri="#Intent;action=com.saggitt.omega.START_ACTION;package=com.saggitt.omega;component=com.saggitt.omega/.gestures.ui.RunHandlerActivity;S.com.saggitt.omega.EXTRA_HANDLER=%7B%22class%22%3A%22com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler%22%7D;end" />
     </resolve>
 
     <!-- Bottom row -->
     <resolve
         launcher:screen="0"
         launcher:x="0"
-        launcher:y="-1" >
-	    <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_EMAIL;end" />
-	    <favorite launcher:uri="mailto:" />
+        launcher:y="-1">
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_EMAIL;end" />
+        <favorite launcher:uri="mailto:" />
 
     </resolve>
 
     <resolve
         launcher:screen="0"
         launcher:x="1"
-        launcher:y="-1" >
-	    <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_GALLERY;end" />
-	    <favorite launcher:uri="#Intent;type=images/*;end" />
+        launcher:y="-1">
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_GALLERY;end" />
+        <favorite launcher:uri="#Intent;type=images/*;end" />
 
     </resolve>
 
     <resolve
         launcher:screen="0"
         launcher:x="4"
-        launcher:y="-1" >
+        launcher:y="-1">
         <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MARKET;end" />
         <favorite launcher:uri="market://details?id=com.android.launcher" />
     </resolve>
+
+    <resolve
+        launcher:screen="1"
+        launcher:x="0"
+        launcher:y="-1">
+        <favorite launcher:uri="#Intent;action=com.saggitt.omega.START_ACTION;
+            package=com.saggitt.omega;
+            component=com.saggitt.omega/.gestures.ui.RunHandlerActivity;
+            com.saggitt.omega.EXTRA_HANDLER=%7B%22class%22%3A%22com.saggitt.omega.gestures.handlers.OpenSettingsGestureHandler%22%7D;end" />
+
+    </resolve>
+
 </favorites>

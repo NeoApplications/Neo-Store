@@ -139,6 +139,35 @@
             android:autoRemoveFromRecents="true"
             android:theme="@style/SettingsTheme_Light" />
 
+        <!-- Actions -->
+        <activity
+            android:name="com.saggitt.omega.gestures.OmegaShortcutActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/omega_actions"
+            android:theme="@style/SettingsTheme_Light.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
+            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
+            android:theme="@style/SettingsTheme_Light.Transparent">
+            <intent-filter>
+                <action android:name="com.saggitt.omega.START_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
+            android:label="@string/action_open_app_select_app"
+            android:theme="@style/SettingsTheme_Light" />
+
         <activity
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
