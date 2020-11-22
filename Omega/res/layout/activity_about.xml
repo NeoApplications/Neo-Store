@@ -32,7 +32,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center|center_vertical"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/ic_launcher_home" />
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="wrap_content"
