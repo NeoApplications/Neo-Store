@@ -408,6 +408,7 @@ public class DeviceProfile {
                 + Utilities.calculateTextHeight(iconTextSizePx);
         if (prefs.getHomeLabelRows() > 1) {
             cellHeightPx += 50;
+            folderCellHeightPx += 50;
         }
         int cellYPadding = (getCellSize().y - cellHeightPx) / 2;
         if (iconDrawablePaddingPx > cellYPadding && !isVerticalLayout && !isMultiWindowMode) {
