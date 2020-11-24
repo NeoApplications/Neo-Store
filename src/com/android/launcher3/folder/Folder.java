@@ -60,6 +60,7 @@ import com.android.launcher3.OnAlarmListener;
 import com.android.launcher3.PagedView;
 import com.android.launcher3.R;
 import com.android.launcher3.ShortcutAndWidgetContainer;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.Workspace.ItemOperator;
 import com.android.launcher3.WorkspaceItemInfo;
@@ -80,6 +81,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.groups.DrawerFolderInfo;
+import com.saggitt.omega.views.CustomBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,6 +238,20 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         int measureSpec = MeasureSpec.UNSPECIFIED;
         mFooter.measure(measureSpec, measureSpec);
         mFooterHeight = mFooter.getMeasuredHeight();
+
+        View settingsButton = findViewById(R.id.settings_button);
+        if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
+            settingsButton.setVisibility(View.GONE);
+        } else {
+            settingsButton.setOnClickListener(v -> {
+                animateClosed();
+                if (mInfo instanceof DrawerFolderInfo) {
+                    ((DrawerFolderInfo) mInfo).showEdit(mLauncher);
+                } else {
+                    CustomBottomSheet.show(mLauncher, mInfo);
+                }
+            });
+        }
     }
 
     public boolean onLongClick(View v) {
