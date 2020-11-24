@@ -44,7 +44,6 @@ import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
 import com.saggitt.omega.util.DbHelper;
-import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -484,12 +483,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.
      */
     private void updateAdapterItems() {
-        OmegaUtilsKt.getWorkerHandler().postAtFrontOfQueue(() -> {
-            refillAdapterItems();
-            OmegaUtilsKt.getMainHandler().postAtFrontOfQueue(this::refreshRecyclerView);
-        });
+        refillAdapterItems();
+        refreshRecyclerView();
     }
-
 
     private void refreshRecyclerView() {
         if (mAdapter != null) {

@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.ItemInfo;
@@ -108,6 +109,9 @@ public class IconPreview extends LinearLayout implements StatsLogUtils.LogContai
         mIconCurrentTextAlpha = mIconFullTextAlpha;
 
         MAIN_EXECUTOR.execute(this::loadPreviewComponents);
+
+        Drawable x = AdaptiveIconCompat.createFromPath("");
+
     }
 
     @Override
