@@ -2,6 +2,7 @@
 /buildSrc/.gradle/
 /buildSrc/build/
 /buildSrc/build/classes/java/main/
+/aospWithQuickstepOmega/
 db_files
 *.iml
 .project
