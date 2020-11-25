@@ -34,9 +34,9 @@ to discuss the development, issues and new features.<br/>
 -   [X] Workspace icon scaling.
 -   [X] Desktop grid preference.
 -   [X] App predictions (experimental).
+-   [X] Icon pack support.
 
 ##  New Features and TODOs
--   [ ] Icon pack support.
 -   [ ] Turn off "auto remove empty screen".
 -   [ ] Add desktop screen manually.
 -   [ ] Reorder empty screens.
