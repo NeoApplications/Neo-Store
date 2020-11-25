@@ -59,7 +59,6 @@ import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.icons.cache.IconCacheUpdateHandler;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.provider.ImportDataTask;
-import com.android.launcher3.qsb.QsbContainerView;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ComponentKey;
@@ -70,6 +69,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.TraceHelper;
 import com.saggitt.omega.iconpack.IconPackManager;
+import com.saggitt.omega.model.HomeWidgetMigrationTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -266,6 +266,10 @@ public class LoaderTask implements Runnable {
         } catch (Exception e) {
             // Migration failed. Clear workspace.
             clearDb = true;
+        }
+
+        if (!clearDb) {
+            HomeWidgetMigrationTask.migrateIfNeeded(context);
         }
 
         if (!clearDb && !GridSizeMigrationTask.migrateGridIfNeeded(context)) {
@@ -597,16 +601,19 @@ public class LoaderTask implements Runnable {
                                 continue;
                             }
                             // Follow through
-                        case LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET:
-                            // Read all Launcher-specific widget details
-                            boolean customWidget = c.itemType ==
-                                LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET;
+                            case LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET:
+                                // Read all Launcher-specific widget details
+                                boolean customWidget = c.itemType ==
+                                        LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET;
 
-                            int appWidgetId = c.getInt(appWidgetIdIndex);
-                            String savedProvider = c.getString(appWidgetProviderIndex);
-                            final ComponentName component;
+                                int appWidgetId = c.getInt(appWidgetIdIndex);
+                                String savedProvider = c.getString(appWidgetProviderIndex);
 
-                            boolean isSearchWidget = (c.getInt(optionsIndex)
+                                //final ComponentName component;
+                                final ComponentName component =
+                                        ComponentName.unflattenFromString(savedProvider);
+
+                            /*boolean isSearchWidget = (c.getInt(optionsIndex)
                                     & LauncherAppWidgetInfo.OPTION_SEARCH_WIDGET) != 0;
                             if (isSearchWidget) {
                                 component  = QsbContainerView.getSearchComponentName(context);
@@ -617,30 +624,31 @@ public class LoaderTask implements Runnable {
                             } else {
                                 component = ComponentName.unflattenFromString(savedProvider);
                             }
-                            final boolean isIdValid = !c.hasRestoreFlag(
-                                    LauncherAppWidgetInfo.FLAG_ID_NOT_VALID);
-                            final boolean wasProviderReady = !c.hasRestoreFlag(
-                                    LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY);
+                            */
 
-                            if (widgetProvidersMap == null) {
-                                widgetProvidersMap = mAppWidgetManager.getAllProvidersMap();
-                            }
-                            final AppWidgetProviderInfo provider = widgetProvidersMap.get(
+                                final boolean isIdValid = !c.hasRestoreFlag(
+                                        LauncherAppWidgetInfo.FLAG_ID_NOT_VALID);
+                                final boolean wasProviderReady = !c.hasRestoreFlag(
+                                        LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY);
+
+                                if (widgetProvidersMap == null) {
+                                    widgetProvidersMap = mAppWidgetManager.getAllProvidersMap();
+                                }
+                                final AppWidgetProviderInfo provider = widgetProvidersMap.get(
                                     new ComponentKey(component, c.user));
 
                             final boolean isProviderReady = isValidProvider(provider);
-                            if (!isSafeMode && !customWidget &&
-                                    wasProviderReady && !isProviderReady) {
-                                c.markDeleted(
-                                        "Deleting widget that isn't installed anymore: "
-                                        + provider);
-                            } else {
-                                if (isProviderReady) {
-                                    appWidgetInfo = new LauncherAppWidgetInfo(appWidgetId,
-                                            provider.provider);
+                                if (!isSafeMode && !customWidget && wasProviderReady && !isProviderReady) {
+                                    c.markDeleted(
+                                            "Deleting widget that isn't installed anymore: "
+                                                    + provider);
+                                } else {
+                                    if (isProviderReady) {
+                                        appWidgetInfo = new LauncherAppWidgetInfo(appWidgetId,
+                                                provider.provider);
 
-                                    // The provider is available. So the widget is either
-                                    // available or not available. We do not need to track
+                                        // The provider is available. So the widget is either
+                                        // available or not available. We do not need to track
                                     // any future restore updates.
                                     int status = c.restoreFlag &
                                             ~LauncherAppWidgetInfo.FLAG_RESTORE_STARTED &

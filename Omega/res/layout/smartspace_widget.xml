@@ -15,7 +15,7 @@
   ~     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.saggit.omega.views.HomeWidgetSwitchLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.views.HomeWidgetSwitchLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/search_container_workspace"
     android:background="?android:selectableItemBackground"
     android:layout_width="match_parent"

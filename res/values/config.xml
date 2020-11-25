@@ -111,6 +111,7 @@
     <item type="id" name="action_deep_shortcuts" />
     <item type="id" name="action_shortcuts_and_notifications"/>
     <item type="id" name="action_dismiss_notification" />
+    <item type="id" name="action_customize" />
     <item type="id" name="action_remote_action_shortcut" />
 
 <!-- QSB IDs. DO not change -->

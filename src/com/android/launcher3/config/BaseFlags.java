@@ -66,13 +66,16 @@ public abstract class BaseFlags {
                     "Adds a promise icon to the home screen for new install sessions.");
 
     // Enable moving the QSB on the 0th screen of the workspace
-    public static final boolean QSB_ON_FIRST_SCREEN = true;
+    public static final boolean QSB_ON_FIRST_SCREEN = false;
 
     public static final TogglableFlag EXAMPLE_FLAG = new TogglableFlag("EXAMPLE_FLAG", true,
             "An example flag that doesn't do anything. Useful for testing");
 
     //Feature flag to enable pulling down navigation shade from workspace.
     public static final boolean PULL_DOWN_STATUS_BAR = true;
+
+    // When true, custom widgets are loaded using CustomWidgetParser.
+    public static final boolean ENABLE_CUSTOM_WIDGETS = true;
 
     // Features to control Launcher3Go behavior
     public static final boolean GO_DISABLE_WIDGETS = false;

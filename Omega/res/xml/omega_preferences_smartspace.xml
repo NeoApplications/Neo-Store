@@ -22,6 +22,12 @@
         android:key="pref_smartspace_preview"
         app:previewLayout="@layout/smartspace_preview" />
 
+    <com.saggitt.omega.preferences.SmartspaceAddToHomePreference
+        android:key="pref_smartspace_add_to_home"
+        android:title="@string/smartspace_add_to_home"
+        app:indexable="false"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:dependency="pref_use_pill_qsb"

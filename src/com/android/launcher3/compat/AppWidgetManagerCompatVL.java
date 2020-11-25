@@ -31,8 +31,7 @@ import com.android.launcher3.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
-import com.android.launcher3.widget.custom.CustomAppWidgetProviderInfo;
-import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.android.launcher3.widget.custom.CustomWidgetParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,13 +54,17 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
             return Collections.emptyList();
         }
         if (packageUser == null) {
-            ArrayList<AppWidgetProviderInfo> providers = new ArrayList<>();
+            ArrayList<AppWidgetProviderInfo> providers = new ArrayList<AppWidgetProviderInfo>();
             for (UserHandle user : mUserManager.getUserProfiles()) {
                 providers.addAll(mAppWidgetManager.getInstalledProvidersForProfile(user));
             }
-            providers.addAll(getCustomWidgets());
+
+            if (FeatureFlags.ENABLE_CUSTOM_WIDGETS) {
+                providers.addAll(CustomWidgetParser.getCustomWidgets(mContext));
+            }
             return providers;
         }
+
         // Only get providers for the given package/user.
         List<AppWidgetProviderInfo> providers = new ArrayList<>(mAppWidgetManager
                 .getInstalledProvidersForProfile(packageUser.mUser));
@@ -72,9 +75,9 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
             }
         }
 
-        if (Process.myUserHandle().equals(packageUser.mUser)
+        if (FeatureFlags.ENABLE_CUSTOM_WIDGETS && Process.myUserHandle().equals(packageUser.mUser)
                 && mContext.getPackageName().equals(packageUser.mPackageName)) {
-            providers.addAll(getCustomWidgets());
+            providers.addAll(CustomWidgetParser.getCustomWidgets(mContext));
         }
         return providers;
     }
@@ -85,7 +88,8 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
         if (FeatureFlags.GO_DISABLE_WIDGETS) {
             return false;
         }
-        if (appWidgetId <= LauncherAppWidgetInfo.CUSTOM_WIDGET_ID) {
+        if (FeatureFlags.ENABLE_CUSTOM_WIDGETS
+                && appWidgetId <= LauncherAppWidgetInfo.CUSTOM_WIDGET_ID) {
             return true;
         }
         return mAppWidgetManager.bindAppWidgetIdIfAllowed(
@@ -104,8 +108,9 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
             }
         }
 
-        if (Process.myUserHandle().equals(user)) {
-            for (LauncherAppWidgetProviderInfo info : getCustomWidgets()) {
+        if (FeatureFlags.ENABLE_CUSTOM_WIDGETS && Process.myUserHandle().equals(user)) {
+            for (LauncherAppWidgetProviderInfo info :
+                    CustomWidgetParser.getCustomWidgets(mContext)) {
                 if (info.provider.equals(provider)) {
                     return info;
                 }
@@ -126,13 +131,13 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
                 result.put(new ComponentKey(info.provider, user), info);
             }
         }
-        for (LauncherAppWidgetProviderInfo info : getCustomWidgets()) {
-            result.put(new ComponentKey(info.provider, info.getProfile()), info);
+        if (FeatureFlags.ENABLE_CUSTOM_WIDGETS) {
+            for (LauncherAppWidgetProviderInfo info :
+                    CustomWidgetParser.getCustomWidgets(mContext)) {
+                result.put(new ComponentKey(info.provider, info.getProfile()), info);
+            }
         }
-        return result;
-    }
 
-    List<CustomAppWidgetProviderInfo> getCustomWidgets() {
-        return CustomWidgetManager.INSTANCE.get(mContext).getCustomWidgets();
+        return result;
     }
 }

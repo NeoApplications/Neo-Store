@@ -43,7 +43,7 @@ class SmartspacePreview(context: Context, attrs: AttributeSet?) :
     private var currentView: SmartspaceView? = null
     private val themedContext = ContextThemeWrapper(context, ThemeOverride.Launcher().getTheme(context))
 
-    override val provider = CustomWidgetParser.getCustomWidgets(context)[0]!!
+    override val provider = CustomWidgetParser.getCustomWidgets(context)[0]
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

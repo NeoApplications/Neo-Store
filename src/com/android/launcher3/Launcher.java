@@ -131,7 +131,7 @@ import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetListRowEntry;
 import com.android.launcher3.widget.WidgetsFullSheet;
-import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.android.launcher3.widget.custom.CustomWidgetParser;
 import com.saggitt.omega.OmegaPreferences;
 
 import java.io.FileDescriptor;
@@ -1682,8 +1682,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         } else {
             // In this case, we either need to start an activity to get permission to bind
             // the widget, or we need to start an activity to configure the widget, or both.
-            if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET) {
-                appWidgetId = CustomWidgetManager.INSTANCE.get(this).getWidgetIdForCustomProvider(
+            if (FeatureFlags.ENABLE_CUSTOM_WIDGETS && info.itemType == LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET) {
+                appWidgetId = CustomWidgetParser.getWidgetIdForCustomProvider(this,
                         info.componentName);
             } else {
                 appWidgetId = getAppWidgetHost().allocateAppWidgetId();

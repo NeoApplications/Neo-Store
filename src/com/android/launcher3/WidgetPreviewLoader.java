@@ -1,8 +1,5 @@
 package com.android.launcher3;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -48,6 +45,7 @@ import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SQLiteCacheHelper;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.WidgetCell;
+import com.android.launcher3.widget.custom.CustomAppWidgetProviderInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,6 +54,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutionException;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class WidgetPreviewLoader {
 
@@ -319,7 +320,11 @@ public class WidgetPreviewLoader {
         Drawable drawable = null;
         if (info.previewImage != 0) {
             try {
-                drawable = info.loadPreviewImage(mContext, 0);
+                if (info instanceof CustomAppWidgetProviderInfo) {
+                    drawable = launcher.getDrawable(info.previewImage);
+                } else {
+                    drawable = info.loadPreviewImage(mContext, 0);
+                }
             } catch (OutOfMemoryError e) {
                 Log.w(TAG, "Error loading widget preview for: " + info.provider, e);
                 // During OutOfMemoryError, the previous heap stack is not affected. Catching

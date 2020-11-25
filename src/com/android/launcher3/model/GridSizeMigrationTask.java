@@ -1,9 +1,5 @@
 package com.android.launcher3.model;
 
-import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.Utilities.parsePoint;
-
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.util.Log;
 import android.util.SparseArray;
+
+import androidx.annotation.VisibleForTesting;
 
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
@@ -34,14 +32,14 @@ import com.android.launcher3.provider.LauncherDbUtils.SQLiteTransaction;
 import com.android.launcher3.util.GridOccupancy;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSparseArrayMap;
-import com.android.launcher3.util.PackageUserKey;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.function.Consumer;
 
-import androidx.annotation.VisibleForTesting;
+import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.Utilities.parsePoint;
 
 /**
  * This class takes care of shrinking the workspace (by maximum of one row and one column), as a
@@ -184,7 +182,7 @@ public class GridSizeMigrationTask {
     }
 
     @VisibleForTesting
-    static IntArray getWorkspaceScreenIds(SQLiteDatabase db) {
+    public static IntArray getWorkspaceScreenIds(SQLiteDatabase db) {
         return LauncherDbUtils.queryIntArray(db, Favorites.TABLE_NAME, Favorites.SCREEN,
                 Favorites.CONTAINER + " = " + Favorites.CONTAINER_DESKTOP,
                 Favorites.SCREEN, Favorites.SCREEN);
@@ -715,6 +713,7 @@ public class GridSizeMigrationTask {
                                 WT_APPLICATION : WT_SHORTCUT;
                         break;
                     }
+                    case Favorites.ITEM_TYPE_CUSTOM_APPWIDGET:
                     case Favorites.ITEM_TYPE_APPWIDGET: {
                         String provider = c.getString(indexAppWidgetProvider);
                         ComponentName cn = ComponentName.unflattenFromString(provider);

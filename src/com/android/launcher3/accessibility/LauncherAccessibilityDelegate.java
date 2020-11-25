@@ -1,9 +1,5 @@
 package com.android.launcher3.accessibility;
 
-import static android.view.accessibility.AccessibilityNodeInfo.ACTION_LONG_CLICK;
-
-import static com.android.launcher3.LauncherState.NORMAL;
-
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.DialogInterface;
@@ -48,6 +44,9 @@ import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
 import java.util.ArrayList;
 
+import static android.view.accessibility.AccessibilityNodeInfo.ACTION_LONG_CLICK;
+import static com.android.launcher3.LauncherState.NORMAL;
+
 public class LauncherAccessibilityDelegate extends AccessibilityDelegate implements DragListener {
 
     private static final String TAG = "LauncherAccessibilityDelegate";
@@ -61,6 +60,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
     protected static final int RESIZE = R.id.action_resize;
     public static final int DEEP_SHORTCUTS = R.id.action_deep_shortcuts;
     public static final int SHORTCUTS_AND_NOTIFICATIONS = R.id.action_shortcuts_and_notifications;
+    public static final int CUSTOMIZE = R.id.action_customize;
 
     public enum DragType {
         ICON,

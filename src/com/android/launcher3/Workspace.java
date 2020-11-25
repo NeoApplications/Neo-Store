@@ -2546,7 +2546,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 case ITEM_TYPE_APPLICATION:
                 case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
                 case LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT:
-                    if (info instanceof AppInfo) {
+                    if (info.container == NO_ID && info instanceof AppInfo) {
                         // Came from all apps -- make a copy
                         info = ((AppInfo) info).makeWorkspaceItem();
                         d.dragInfo = info;

@@ -122,6 +122,8 @@ public class SettingsActivity extends SettingsBaseActivity
     public final static String SHOW_PREDICTIONS_PREF = "pref_show_predictions";
     public final static String ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one";
     public final static String FEED_THEME_PREF = "pref_feed_theme";
+    public final static String SMARTSPACE_PREF = "pref_smartspace";
+    public final static String ALLOW_OVERLAP_PREF = "pref_allowOverlap";
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;

@@ -16,8 +16,6 @@
 
 package com.android.launcher3.provider;
 
-import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
-
 import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,8 +32,8 @@ import com.android.launcher3.AppWidgetsRestoredReceiver;
 import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherProvider.DatabaseHelper;
 import com.android.launcher3.LauncherSettings.Favorites;
-import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.provider.LauncherDbUtils.SQLiteTransaction;
 import com.android.launcher3.util.IntArray;
@@ -43,9 +41,11 @@ import com.android.launcher3.util.LogConfig;
 
 import java.io.InvalidObjectException;
 
+import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
+
 /**
  * Utility class to update DB schema after it has been restored.
- *
+ * <p>
  * This task is executed when Launcher starts for the first time and not immediately after restore.
  * This helps keep the model consistent if the launcher updates between restore and first startup.
  */
@@ -125,12 +125,17 @@ public class RestoreDbTask {
         db.update(Favorites.TABLE_NAME, values, null, null);
 
         // Mark widgets with appropriate restore flag.
-        values.put(Favorites.RESTORED,  LauncherAppWidgetInfo.FLAG_ID_NOT_VALID |
+        values.put(Favorites.RESTORED, LauncherAppWidgetInfo.FLAG_ID_NOT_VALID |
                 LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY |
                 LauncherAppWidgetInfo.FLAG_UI_NOT_READY |
                 (keepAllIcons ? LauncherAppWidgetInfo.FLAG_RESTORE_STARTED : 0));
         db.update(Favorites.TABLE_NAME, values, "itemType = ?",
                 new String[]{Integer.toString(Favorites.ITEM_TYPE_APPWIDGET)});
+
+        // Mark custom widgets as restore completed
+        values.put(Favorites.RESTORED, LauncherAppWidgetInfo.RESTORE_COMPLETED);
+        db.update(Favorites.TABLE_NAME, values, "itemType = ?",
+                new String[]{Integer.toString(Favorites.ITEM_TYPE_CUSTOM_APPWIDGET)});
 
         // Migrate ids. To avoid any overlap, we initially move conflicting ids to a temp location.
         // Using Long.MIN_VALUE since profile ids can not be negative, so there will be no overlap.

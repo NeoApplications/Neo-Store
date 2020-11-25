@@ -28,9 +28,10 @@ import androidx.annotation.Nullable;
 import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
-import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.android.launcher3.widget.custom.CustomWidgetParser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +63,9 @@ public abstract class AppWidgetManagerCompat {
     }
 
     public LauncherAppWidgetProviderInfo getLauncherAppWidgetInfo(int appWidgetId) {
-        if (appWidgetId <= LauncherAppWidgetInfo.CUSTOM_WIDGET_ID) {
-            return CustomWidgetManager.INSTANCE.get(mContext).getWidgetProvider(appWidgetId);
+        if (FeatureFlags.ENABLE_CUSTOM_WIDGETS
+                && appWidgetId <= LauncherAppWidgetInfo.CUSTOM_WIDGET_ID) {
+            return CustomWidgetParser.getWidgetProvider(mContext, appWidgetId);
         }
         AppWidgetProviderInfo info = mAppWidgetManager.getAppWidgetInfo(appWidgetId);
         return info == null ? null : LauncherAppWidgetProviderInfo.fromProviderInfo(mContext, info);

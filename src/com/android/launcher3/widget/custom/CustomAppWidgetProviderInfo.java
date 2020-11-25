@@ -38,43 +38,7 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
     public int customizeScreen;
     public boolean customizeHasPreview;
 
-    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf, int providerId) {
-        super(parcel);
-        if (readSelf) {
-            this.providerId = parcel.readInt();
-
-            provider = new ComponentName(parcel.readString(), CLS_CUSTOM_WIDGET_PREFIX + providerId);
-
-            label = parcel.readString();
-            initialLayout = parcel.readInt();
-            icon = parcel.readInt();
-            previewImage = parcel.readInt();
-
-            resizeMode = parcel.readInt();
-            spanX = parcel.readInt();
-            spanY = parcel.readInt();
-            minSpanX = parcel.readInt();
-            minSpanY = parcel.readInt();
-        } else {
-            this.providerId = providerId;
-        }
-    }
-
-    @Override
-    public void initSpans(Context context) { }
-
-    @Override
-    public String getLabel(PackageManager packageManager) {
-        return Utilities.trim(label);
-    }
-
-    @Override
-    public String toString() {
-        return "WidgetProviderInfo(" + provider + ")";
-    }
-
-    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf,
-                                          int providerId, boolean noPadding) {
+    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf, int providerId, boolean noPadding) {
         super(parcel);
         if (readSelf) {
             this.providerId = parcel.readInt();
@@ -99,6 +63,19 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
             this.providerId = providerId;
             this.noPadding = noPadding;
         }
+    }
+
+    @Override
+    public void initSpans(Context context) { }
+
+    @Override
+    public String getLabel(PackageManager packageManager) {
+        return Utilities.trim(label);
+    }
+
+    @Override
+    public String toString() {
+        return "WidgetProviderInfo(" + provider + ")";
     }
 
     @Override
@@ -127,7 +104,7 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
 
         @Override
         public CustomAppWidgetProviderInfo createFromParcel(Parcel parcel) {
-            return new CustomAppWidgetProviderInfo(parcel, true, 0);
+            return new CustomAppWidgetProviderInfo(parcel, true, 0, false);
         }
 
         @Override

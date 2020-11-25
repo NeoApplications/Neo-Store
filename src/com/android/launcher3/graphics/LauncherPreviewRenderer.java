@@ -15,10 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static android.view.View.VISIBLE;
-
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
@@ -50,27 +46,31 @@ import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.R;
-import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.WorkspaceLayoutManager;
 import com.android.launcher3.allapps.SearchUiManager;
-import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.BaseIconFactory;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
+import com.saggitt.omega.preferences.SmartspaceAddToHomePreference;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static android.view.View.VISIBLE;
+
 /**
  * Utility class for generating the preview of Launcher for a given InvariantDeviceProfile.
  * Steps:
- *   1) Create a dummy icon info with just white icon
- *   2) Inflate a strip down layout definition for Launcher
- *   3) Place appropriate elements like icons and first-page qsb
- *   4) Measure and draw the view on a canvas
+ * 1) Create a dummy icon info with just white icon
+ * 2) Inflate a strip down layout definition for Launcher
+ * 3) Place appropriate elements like icons and first-page qsb
+ * 4) Measure and draw the view on a canvas
  */
 @TargetApi(Build.VERSION_CODES.O)
 public class LauncherPreviewRenderer implements Callable<Bitmap> {
@@ -260,7 +260,7 @@ public class LauncherPreviewRenderer implements Callable<Bitmap> {
             }
 
             // Add first page QSB
-            if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
+            if (SmartspaceAddToHomePreference.showSmartspaceInPreview(mContext)) {
                 View qsb = mHomeElementInflater.inflate(
                         R.layout.search_container_workspace, mWorkspace, false);
                 CellLayout.LayoutParams lp =
