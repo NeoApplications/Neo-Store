@@ -1,4 +1,4 @@
-### v0.6.0 (Build 80)
+### v0.6.0 (Build 95)
 * **Add: Show All Apps Label**
 * **Add: Open App from Gesture**
 * **Add: At glance widget**
@@ -12,6 +12,7 @@
 * **Add: Device Sleep preference**
 * **Add: Full screen preference**
 * **Fix: Search web results**
+* **Fix: Animation when AllApps opens and Closes**
 
 ### v0.5.0 (Build 40)
 * **Add: Desktop grid preference**
@@ -30,7 +31,7 @@
 * **Add: AllApps Icon Scale**
 * **Add: Dock Icon Scale**
 * **Add: Workspace Icon Scale**
-* **Fixed: Wallpaper chooser crash**
+* **Fix: Wallpaper chooser crash**
 
 ### v0.3.0 (Build 20)
 * **Add gestures preference**
