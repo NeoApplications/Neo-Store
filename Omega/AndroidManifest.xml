@@ -311,5 +311,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <provider
+            android:name="com.saggitt.omega.search.AppSearchProvider"
+            android:authorities="${applicationId}.appssearch"
+            android:exported="true" />
     </application>
 </manifest>
