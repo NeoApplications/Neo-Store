@@ -42,5 +42,10 @@
             android:defaultValue="@string/icon_shape_system_default"
             android:title="Customize Icons"
             app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_widget_feed"
+            android:title="Show Feed"
+            app:iconSpaceReserved="false" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>
