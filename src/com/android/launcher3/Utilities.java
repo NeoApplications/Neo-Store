@@ -94,7 +94,6 @@ import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.backup.RestoreBackupActivity;
-import com.saggitt.omega.iconpack.IconPackManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -569,14 +568,12 @@ public final class Utilities {
     public static Drawable getFullDrawable(Launcher launcher, ItemInfo info, int width, int height,
                                            boolean flattenDrawable, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);
-        IconPackManager.CustomIconEntry customIconEntry = (info instanceof WorkspaceItemInfo) ?
-                ((WorkspaceItemInfo) info).customIconEntry : null;
-        if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || customIconEntry != null) {
+        if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             LauncherActivityInfo activityInfo = LauncherAppsCompat.getInstance(launcher)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
             return (activityInfo != null) ? appState.getIconCache()
-                    .getFullResIcon(activityInfo, flattenDrawable) : null;
+                    .getFullResIcon(activityInfo, info, flattenDrawable) : null;
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =
@@ -596,6 +593,12 @@ public final class Utilities {
                         appState.getInvariantDeviceProfile().fillResIconDpi);
             }
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
+            FolderInfo folderInfo = (FolderInfo) info;
+            if (folderInfo.isCoverMode()) {
+                return getFullDrawable(launcher, folderInfo.getCoverInfo(),
+                        width, height, flattenDrawable, outObj);
+            }
+
             FolderAdaptiveIcon icon = FolderAdaptiveIcon.createFolderAdaptiveIcon(
                     launcher, info.id, new Point(width, height));
             if (icon == null) {

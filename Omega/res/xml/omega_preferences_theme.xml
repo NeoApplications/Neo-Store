@@ -49,6 +49,11 @@
         app:content="@xml/omega_preferences_theme_dialog"
         app:iconSpaceReserved="false" />
 
+    <Preference
+        android:key="pref_resetCustomIcons"
+        android:title="@string/reset_custom_icons"
+        app:iconSpaceReserved="false" />
+
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="@bool/config_default_enable_blur"
         android:key="pref_enableBlur"

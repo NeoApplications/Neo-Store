@@ -16,9 +16,6 @@
 
 package com.android.launcher3.icons;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -37,6 +34,7 @@ import androidx.annotation.NonNull;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.IconProvider;
 import com.android.launcher3.InvariantDeviceProfile;
+import com.android.launcher3.ItemInfo;
 import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.Utilities;
@@ -51,8 +49,12 @@ import com.android.launcher3.icons.cache.HandlerRunnable;
 import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.Preconditions;
+import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.function.Supplier;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -233,6 +235,12 @@ public class IconCache extends BaseIconCache {
 
     public Drawable getFullResIcon(LauncherActivityInfo info, boolean flattenDrawable) {
         return mIconProvider.getIcon(info, mIconDpi, flattenDrawable);
+    }
+
+    public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo, boolean flattenDrawable) {
+        if (mIconProvider instanceof CustomIconProvider)
+            return ((CustomIconProvider) mIconProvider).getIcon(info, itemInfo, mIconDpi, flattenDrawable);
+        return getFullResIcon(info, flattenDrawable);
     }
 
     @Override

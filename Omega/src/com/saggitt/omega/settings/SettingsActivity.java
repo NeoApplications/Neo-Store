@@ -69,11 +69,15 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.settings.NotificationDotsPreference;
 import com.android.launcher3.settings.PreferenceHighlighter;
+import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.ContentWriter;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.OmegaPreferencesChangeCallback;
 import com.saggitt.omega.adaptive.IconShapePreference;
+import com.saggitt.omega.feed.FeedWidgetsActivity;
 import com.saggitt.omega.gestures.ui.GesturePreference;
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
@@ -105,8 +109,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
+import static com.android.launcher3.LauncherSettings.Favorites;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
@@ -650,54 +656,55 @@ public class SettingsActivity extends SettingsBaseActivity
 
             Context mContext = getActivity();
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-            int preference = getContent();
             ContentResolver resolver = mContext.getContentResolver();
-            switch (preference) {
-                case R.xml.omega_preferences_desktop:
-                    if (!Utilities.ATLEAST_OREO) {
-                        getPreferenceScreen().removePreference(
-                                findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
-                    }
-                    // Setup allow rotation preference
-                    Preference rotationPref = findPreference(Utilities.ALLOW_ROTATION_PREFERENCE_KEY);
-                    if (getResources().getBoolean(R.bool.allow_rotation)) {
-                        // Launcher supports rotation by default. No need to show this setting.
-                        getPreferenceScreen().removePreference(rotationPref);
-                    } else {
-                        mRotationLockObserver = new SystemDisplayRotationLockObserver(rotationPref, resolver);
+            if (getContent() == R.xml.omega_preferences_desktop) {
+                if (!Utilities.ATLEAST_OREO) {
+                    getPreferenceScreen().removePreference(
+                            findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
+                }
+                // Setup allow rotation preference
+                Preference rotationPref = findPreference(Utilities.ALLOW_ROTATION_PREFERENCE_KEY);
+                if (getResources().getBoolean(R.bool.allow_rotation)) {
+                    // Launcher supports rotation by default. No need to show this setting.
+                    getPreferenceScreen().removePreference(rotationPref);
+                } else {
+                    mRotationLockObserver = new SystemDisplayRotationLockObserver(rotationPref, resolver);
 
-                        // Register a content observer to listen for system setting changes while
-                        // this UI is active.
-                        mRotationLockObserver.register(Settings.System.ACCELEROMETER_ROTATION);
+                    // Register a content observer to listen for system setting changes while
+                    // this UI is active.
+                    mRotationLockObserver.register(Settings.System.ACCELEROMETER_ROTATION);
 
-                        // Initialize the UI once
-                        rotationPref.setDefaultValue(Utilities.getAllowRotationDefaultValue(getActivity()));
-                    }
-                    break;
+                    // Initialize the UI once
+                    rotationPref.setDefaultValue(Utilities.getAllowRotationDefaultValue(getActivity()));
+                }
+            } else if (getContent() == R.xml.omega_preferences_drawer) {
+                findPreference(SHOW_PREDICTIONS_PREF).setOnPreferenceChangeListener(this);
 
-                case R.xml.omega_preferences_drawer:
-                    findPreference(SHOW_PREDICTIONS_PREF).setOnPreferenceChangeListener(this);
-                    break;
-                case R.xml.omega_preferences_notification:
-                    if (getResources().getBoolean(R.bool.notification_dots_enabled)) {
-                        NotificationDotsPreference iconBadgingPref = (NotificationDotsPreference) findPreference(NOTIFICATION_DOTS_PREFERENCE_KEY);
-                        // Listen to system notification badge settings while this UI is active.
-                        mIconBadgingObserver = new IconBadgingObserver(
-                                iconBadgingPref, getActivity().getContentResolver(), getFragmentManager());
-                        mIconBadgingObserver.register(NOTIFICATION_BADGING, NOTIFICATION_ENABLED_LISTENERS);
-                    }
-                    break;
+            } else if (getContent() == R.xml.omega_preferences_notification) {
+                if (getResources().getBoolean(R.bool.notification_dots_enabled)) {
+                    NotificationDotsPreference iconBadgingPref = (NotificationDotsPreference) findPreference(NOTIFICATION_DOTS_PREFERENCE_KEY);
+                    // Listen to system notification badge settings while this UI is active.
+                    mIconBadgingObserver = new IconBadgingObserver(
+                            iconBadgingPref, getActivity().getContentResolver(), getFragmentManager());
+                    mIconBadgingObserver.register(NOTIFICATION_BADGING, NOTIFICATION_ENABLED_LISTENERS);
+                }
 
-                case R.xml.omega_preferences_developer:
-                    findPreference("kill").setOnPreferenceClickListener(this);
-                    break;
+            } else if (getContent() == R.xml.omega_preferences_theme) {
+                Preference resetIconsPreference = findPreference("pref_resetCustomIcons");
+                resetIconsPreference.setOnPreferenceClickListener(preference -> {
+                    new SettingsActivity.ResetIconsConfirmation()
+                            .show(getFragmentManager(), "reset_icons");
+                    return true;
+                });
+            } else if (getContent() == R.xml.omega_preferences_developer) {
+                findPreference("kill").setOnPreferenceClickListener(this);
 
-                case R.xml.omega_preferences_about:
-                    AboutUtils au = new AboutUtils(getContext());
-                    Preference appInfo = findPreference("pref_key__copy_build_information");
-                    au.getAppInfoSummary(appInfo);
-                    updateProjectTeam(au);
-                    break;
+                findPreference("pref_widget_feed").setOnPreferenceClickListener(this);
+            } else if (getContent() == R.xml.omega_preferences_about) {
+                AboutUtils au = new AboutUtils(getContext());
+                Preference appInfo = findPreference("pref_key__copy_build_information");
+                au.getAppInfoSummary(appInfo);
+                updateProjectTeam(au);
             }
         }
 
@@ -853,6 +860,10 @@ public class SettingsActivity extends SettingsBaseActivity
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals("kill"))
                 Utilities.killLauncher();
+            else if (preference.getKey().equals("pref_widget_feed")) {
+                Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
+                preference.getContext().startActivity(intent);
+            }
 
             return false;
         }
@@ -1015,29 +1026,6 @@ public class SettingsActivity extends SettingsBaseActivity
         }
     }
 
-    public static class UsageAccessConfirmation
-            extends DialogFragment implements DialogInterface.OnClickListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Context context = getActivity();
-            String msg = context.getString(R.string.msg_missing_usage_access,
-                    context.getString(R.string.derived_app_name));
-            return new AlertDialog.Builder(context)
-                    .setTitle(R.string.needs_usage_access)
-                    .setMessage(msg)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setPositiveButton(R.string.title_change_settings, this)
-                    .create();
-        }
-
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            getActivity().startActivity(intent);
-        }
-    }
-
     /**
      * Content observer which listens for system badging setting changes, and updates the launcher
      * badging setting subtext accordingly.
@@ -1097,4 +1085,51 @@ public class SettingsActivity extends SettingsBaseActivity
             return true;
         }
     }
+
+    public static class ResetIconsConfirmation
+            extends DialogFragment implements DialogInterface.OnClickListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Context context = getActivity();
+            return new AlertDialog.Builder(context)
+                    .setTitle(R.string.reset_custom_icons)
+                    .setMessage(R.string.reset_custom_icons_confirmation)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, this)
+                    .create();
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            OmegaUtilsKt.applyAccent(((AlertDialog) getDialog()));
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Context context = getContext();
+
+            // Clear custom app icons
+            OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+            Set<ComponentKey> toUpdateSet = prefs.getCustomAppIcon().toMap().keySet();
+            prefs.beginBlockingEdit();
+            prefs.getCustomAppIcon().clear();
+            prefs.endBlockingEdit();
+
+            // Clear custom shortcut icons
+            ContentWriter writer = new ContentWriter(context, new ContentWriter.CommitParams(null, null));
+            writer.put(Favorites.CUSTOM_ICON, (byte[]) null);
+            writer.put(Favorites.CUSTOM_ICON_ENTRY, (String) null);
+            writer.commit();
+
+            // Reload changes
+            OmegaUtilsKt.reloadIconsFromComponents(context, toUpdateSet);
+            OmegaPreferencesChangeCallback prefsCallback = prefs.getOnChangeCallback();
+            if (prefsCallback != null) {
+                prefsCallback.reloadAll();
+            }
+        }
+    }
+
 }

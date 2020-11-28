@@ -49,13 +49,13 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.*
 import com.android.launcher3.compat.LauncherAppsCompat
+import com.android.launcher3.compat.UserManagerCompat
 import com.android.launcher3.model.BgDataModel
-import com.android.launcher3.util.ComponentKey
-import com.android.launcher3.util.Executors
-import com.android.launcher3.util.Executors.ICON_PACK_UI_EXECUTOR
-import com.android.launcher3.util.Executors.MODEL_EXECUTOR
-import com.android.launcher3.util.Themes
+import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.util.*
+import com.android.launcher3.util.Executors.*
 import com.android.launcher3.views.OptionsPopupView
+import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import org.xmlpull.v1.XmlPullParser
@@ -391,6 +391,35 @@ fun Context.getLauncherOrNull(): Launcher? {
         Launcher.getLauncher(this)
     } catch (e: IllegalArgumentException) {
         null
+    }
+}
+
+fun Context.getBaseDraggingActivityOrNull(): BaseDraggingActivity? {
+    return try {
+        BaseDraggingActivity.fromContext(this)
+    } catch (e: ClassCastException) {
+        null
+    }
+}
+
+fun reloadIconsFromComponents(context: Context, components: Collection<ComponentKey>) {
+    reloadIcons(context, components.map { PackageUserKey(it.componentName.packageName, it.user) })
+}
+
+fun reloadIcons(context: Context, packages: Collection<PackageUserKey>) {
+    LooperExecutor(ICON_PACK_EXECUTOR.looper).execute {
+        val userManagerCompat = UserManagerCompat.getInstance(context)
+        val las = LauncherAppState.getInstance(context)
+        val model = las.model
+
+        for (user in userManagerCompat.userProfiles) {
+            model.onPackagesReload(user)
+        }
+
+        val shortcutManager = DeepShortcutManager.getInstance(context)
+        packages.forEach {
+            CustomIconUtils.reloadIcon(shortcutManager, model, it.mUser, it.mPackageName)
+        }
     }
 }
 
