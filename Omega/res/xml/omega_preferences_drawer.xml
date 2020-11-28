@@ -128,6 +128,21 @@
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="true"
+        android:key="pref_allAppsSearch"
+        android:title="@string/title_all_apps_search"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="true"
+        android:dependency="pref_allAppsSearch"
+        android:disableDependentsState="true"
+        android:key="pref_allAppsGoogleSearch"
+        android:summary="@string/summary_all_apps_google_search"
+        android:title="@string/title_all_apps_google_search"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
         android:key="pref_search_hidden_apps"
         android:title="@string/title_search_hidden_apps"
         android:summary="@string/summary_search_hidden_apps"

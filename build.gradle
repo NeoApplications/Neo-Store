@@ -60,19 +60,16 @@ buildscript {
 String PREBUILTS_DIR = "prebuilts"
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.protobuf'
 
-if (enable_plugin_kotlin) {
-    apply plugin: 'kotlin-android'
-    apply plugin: 'kotlin-android-extensions'
-    apply plugin: 'kotlin-kapt'
-}
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
-    def name = "0.6.0"
-    def code = 95
+    def name = "0.6.1"
+    def code = 96
 
     defaultConfig {
         minSdkVersion 25
@@ -95,6 +92,7 @@ android {
         }
         release {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.flags'
         }
     }
     kotlinOptions {
@@ -236,7 +234,6 @@ dependencies {
 
     // Recents lib dependency
     withQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
-    //withQuickstepImplementation project(':SystemUISharedLib')
 
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
     withoutQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
