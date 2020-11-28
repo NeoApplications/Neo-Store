@@ -88,6 +88,7 @@
     <string name="title__drawer_icon_popup_menu">Shortcut Bubble</string>
     <string name="title__drawer_columns">Number of columns</string>
     <string name="title_drawer_enable_background">Use custom background color</string>
+    <string name="title_drawer_row_height">Row height</string>
     <string name="title__sort_mode">App Sort</string>
     <string name="title__sort_alphabetical_az">Alphabetical AZ</string>
     <string name="title__sort_alphabetical_za">Alphabetical ZA</string>

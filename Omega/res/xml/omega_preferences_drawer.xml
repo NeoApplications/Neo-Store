@@ -59,7 +59,7 @@
     <com.saggitt.omega.preferences.ColorPreferenceCompat
         android:key="pref_drawer_label_color"
         android:title="@string/title_text_color"
-        android:defaultValue="@color/transparentish"
+        android:defaultValue="@color/textColorPrimary"
         app:cpv_dialogTitle="@string/title_text_color"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
@@ -119,6 +119,17 @@
         app:cpv_dialogTitle="@string/title_dock_background_color"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.SeekbarPreference
+        android:key="pref_allAppsPaddingScale"
+        android:persistent="true"
+        android:title="@string/title_drawer_row_height"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="1.5"
+        app:minValue="0.0"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
 
     <androidx.preference.Preference
         android:fragment="com.saggitt.omega.preferences.HiddenAppsFragment"

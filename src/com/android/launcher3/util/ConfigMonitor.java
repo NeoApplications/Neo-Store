@@ -16,8 +16,6 @@ package com.android.launcher3.util;
  * limitations under the License.
  */
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,14 +24,21 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.util.Log;
 
+import com.android.launcher3.Utilities;
+import com.saggitt.omega.OmegaPreferences;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.function.Consumer;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
  * {@link BroadcastReceiver} which watches configuration changes and
  * notifies the callback in case changes which affect the device profile occur.
  */
 public class ConfigMonitor extends BroadcastReceiver implements
-        DefaultDisplay.DisplayInfoChangeListener {
+        DefaultDisplay.DisplayInfoChangeListener, OmegaPreferences.OnPreferenceChangeListener {
 
     private static final String TAG = "ConfigMonitor";
 
@@ -70,6 +75,8 @@ public class ConfigMonitor extends BroadcastReceiver implements
 
         // Listen for configuration change
         mContext.registerReceiver(this, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+
+        Utilities.getOmegaPrefs(context).addOnDeviceProfilePreferenceChangeListener(this);
     }
 
     @Override
@@ -115,8 +122,17 @@ public class ConfigMonitor extends BroadcastReceiver implements
             mContext.unregisterReceiver(this);
             DefaultDisplay display = DefaultDisplay.INSTANCE.get(mContext);
             display.removeChangeListener(this);
+            Utilities.getOmegaPrefs(mContext).removeOnDeviceProfilePreferenceChangeListener(this);
         } catch (Exception e) {
             Log.e(TAG, "Failed to unregister config monitor", e);
+        }
+    }
+
+    @Override
+    public void onValueChanged(@NotNull String key, @NotNull OmegaPreferences prefs,
+                               boolean force) {
+        if (!force) {
+            notifyChange();
         }
     }
 }

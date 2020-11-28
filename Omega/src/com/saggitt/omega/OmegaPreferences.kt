@@ -35,6 +35,7 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.settings.CustomGridProvider
 import com.saggitt.omega.smartspace.BlankDataProvider
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
@@ -390,6 +391,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
         keys.forEach { addOnPreferenceChangeListener(it, listener) }
+    }
+
+    fun addOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
+        addOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
+    }
+
+    fun removeOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
+        removeOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
     }
 
     fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
@@ -832,10 +841,40 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         }
     }
 
-
     interface OnPreferenceChangeListener {
         fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
     }
+
+    private val ICON_CUSTOMIZATIONS_PREFS = arrayOf(
+            "pref_iconShape",
+            "pref_iconPacks",
+            "pref_forceShapeless",
+            "pref_enableLegacyTreatment",
+            "pref_colorizeGeneratedBackgrounds",
+            "pref_enableWhiteOnlyTreatment",
+            "pref_iconPackMasking",
+            "pref_generateAdaptiveForIconPack",
+            "pref_allAppsPaddingScale")
+
+    private val DOCK_CUSTOMIZATIONS_PREFS = arrayOf(
+            "pref_enableDock",
+            "pref_dockRadius",
+            "pref_dockShadow",
+            "pref_hotseatShowArrow",
+            "pref_hotseatCustomOpacity",
+            "pref_dockBackground")
+
+    private val DEVICE_PROFILE_PREFS = ICON_CUSTOMIZATIONS_PREFS +
+            DOCK_CUSTOMIZATIONS_PREFS +
+            CustomGridProvider.GRID_CUSTOMIZATIONS_PREFS +
+            arrayOf(
+                    "pref_iconTextScaleSB",
+                    "pref_iconSize",
+                    "pref_hotseatIconSize",
+                    "pref_allAppsIconSize",
+                    "pref_allAppsIconTextScale",
+                    "pref_dockSearchBar",
+                    "pref_dockScale")
 
     companion object {
         private var INSTANCE: OmegaPreferences? = null
