@@ -364,4 +364,9 @@
         <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
         <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
     </style>
+
+    <style name="WidgetPickerDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:listDivider">@drawable/list_divider_material</item>
+    </style>
 </resources>

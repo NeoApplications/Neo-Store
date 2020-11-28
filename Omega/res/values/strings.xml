@@ -505,4 +505,9 @@
     <string name="folder_cover_mode_desc">Tap to open first app, swipe up to view all.</string>
 
     <string name="loading">Loading…</string>
+
+    <!-- WIDGET FEED -->
+
+    <string name="feed_add_widget">Add Widget</string>
+    <string name="feed_widget">Widgets</string>
 </resources>

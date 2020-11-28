@@ -282,6 +282,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.saggitt.omega.feed.FeedWidgetsActivity"
+            android:label="@string/feed_widget"
+            android:theme="@style/DashTheme" />
+        <activity
+            android:name="com.saggitt.omega.feed.WidgetPicker"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:finishOnCloseSystemDialogs="true"
+            android:label="@string/feed_widget"
+            android:theme="@style/WidgetPickerDialog" />
+
         <receiver
             android:name="com.saggitt.omega.qsb.OPAStatusReceiver"
             android:permission="android.permission.CAPTURE_AUDIO_HOTWORD">
