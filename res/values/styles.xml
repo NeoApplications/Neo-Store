@@ -120,7 +120,7 @@
         <item name="allAppsInterimScrimAlpha">25</item>
         <item name="folderFillColor">#CDFFFFFF</item>
         <item name="folderTextColor">?attr/workspaceTextColor</item>
-        <item name="workspaceTextColor">#FF212121</item>
+        <item name="workspaceTextColor">#959393</item>
         <item name="workspaceShadowColor">@android:color/transparent</item>
         <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
         <item name="workspaceKeyShadowColor">@android:color/transparent</item>
@@ -141,7 +141,7 @@
 
     <style name="LauncherTheme.Black.DarkText" parent="@style/LauncherTheme.Black">
         <item name="allAppsInterimScrimAlpha">25</item>
-        <item name="workspaceTextColor">#FF212121</item>
+        <item name="workspaceTextColor">#FFFFFF</item>
         <item name="workspaceShadowColor">@android:color/transparent</item>
         <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
         <item name="workspaceKeyShadowColor">@android:color/transparent</item>
