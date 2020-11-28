@@ -18,9 +18,10 @@
 -->
 <resources>
     <!-- Theme for the widget container. -->
-    <style name="WidgetContainerTheme" parent="@android:style/Theme.DeviceDefault.Settings">
+    <style name="WidgetContainerTheme" parent="@android:style/Theme.Material.Settings">
         <item name="android:colorPrimaryDark">#E8EAED</item>
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
     </style>
 
@@ -34,5 +35,9 @@
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
         <item name="android:colorPrimaryDark">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
+    </style>
+
+    <style name="SettingsTheme_Light" parent="SettingsTheme.Base">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>

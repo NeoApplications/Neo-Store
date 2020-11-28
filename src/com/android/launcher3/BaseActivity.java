@@ -16,10 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.util.SystemUiController.UI_STATE_OVERVIEW;
-
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -45,6 +41,9 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
+
+import static com.android.launcher3.util.SystemUiController.UI_STATE_OVERVIEW;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public abstract class BaseActivity extends Activity
         implements UserEventDelegate, LogStateProvider, ActivityContext {
@@ -233,7 +232,6 @@ public abstract class BaseActivity extends Activity
     /**
      * Used to set the override visibility state, used only to handle the transition home with the
      * recents animation.
-     * @see QuickstepAppTransitionManagerImpl#getWallpaperOpenRunner()
      */
     public void addForceInvisibleFlag(@InvisibilityFlags int flag) {
         mForceInvisible |= flag;

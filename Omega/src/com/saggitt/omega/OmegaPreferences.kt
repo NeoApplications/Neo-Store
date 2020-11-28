@@ -146,7 +146,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dockLabelRows get() = if (dockMultilineLabel) 2 else 1
 
     /* --THEME-- */
-    var launcherTheme by StringIntPref("pref_launcherTheme", 1) { ThemeManager.getInstance(context).updateTheme() }
+    var launcherTheme by StringIntPref("pref_launcherTheme", ThemeManager.getDefaultTheme()) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
     var iconShape by StringPref("pref_iconShape", "", doNothing)
     val iconPackMasking by BooleanPref("pref_iconPackMasking", true, reloadIcons)

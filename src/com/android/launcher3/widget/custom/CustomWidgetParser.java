@@ -23,6 +23,7 @@ import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.os.Parcel;
 import android.os.Process;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.Xml;
 
@@ -61,7 +62,9 @@ public class CustomWidgetParser {
             parseCustomWidgets(context);
         }
         int index = sWidgetsIdMap.indexOfValue(provider);
+        Log.d("CustomWidgetParser", "Custom Index " + index);
         if (index >= 0) {
+            Log.d("CustomWidgetParser", "Custom Index " + index);
             return LauncherAppWidgetInfo.CUSTOM_WIDGET_ID - sWidgetsIdMap.keyAt(index);
         } else {
             return AppWidgetManager.INVALID_APPWIDGET_ID;

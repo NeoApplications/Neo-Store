@@ -152,18 +152,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
-            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
-            android:theme="@style/SettingsTheme_Light.Transparent">
-            <intent-filter>
-                <action android:name="com.saggitt.omega.START_ACTION" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
             android:label="@string/action_open_app_select_app"
@@ -210,6 +198,19 @@
             android:name="com.saggitt.omega.gestures.handlers.SleepTimeoutActivity"
             android:screenOrientation="locked"
             android:theme="@style/SleepTimeoutTheme" />
+
+        <!-- Widgets -->
+        <activity
+            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
+            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
+            android:theme="@style/SettingsTheme_Light.Transparent">
+            <intent-filter>
+                <action android:name="com.saggitt.omega.START_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
         <!-- DT2S using device admin -->
         <receiver

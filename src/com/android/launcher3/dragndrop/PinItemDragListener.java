@@ -80,7 +80,6 @@ public class PinItemDragListener extends BaseItemDragListener {
             item = new PendingAddShortcutInfo(
                     new PinShortcutRequestActivityInfo(mRequest, mLauncher));
         } else {
-            // mRequest.getRequestType() == PinItemRequestCompat.REQUEST_TYPE_APPWIDGET
             LauncherAppWidgetProviderInfo providerInfo =
                     LauncherAppWidgetProviderInfo.fromProviderInfo(
                             mLauncher, mRequest.getAppWidgetProviderInfo(mLauncher));

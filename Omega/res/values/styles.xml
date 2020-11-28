@@ -310,6 +310,14 @@
         <item name="fontWeight">200</item>
     </style>
 
+    <!-- Weather widget -->
+    <style name="WeatherWidget" />
+
+    <style name="WeatherWidget.Text">
+        <item name="android:shadowRadius">3.0</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowColor">#33000000</item>
+    </style>
     <!-- Pixel -->
     <style name="HotseatQsbTheme">
         <item name="gIcon">@drawable/ic_super_g_shadow</item>
@@ -355,14 +363,5 @@
         <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
         <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
         <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
-    </style>
-
-    <!-- Weather widget -->
-    <style name="WeatherWidget" />
-
-    <style name="WeatherWidget.Text">
-        <item name="android:shadowRadius">3.0</item>
-        <item name="android:shadowDy">0.5</item>
-        <item name="android:shadowColor">#33000000</item>
     </style>
 </resources>
