@@ -69,7 +69,7 @@ class ShortcutInfoProvider private constructor(context: Context) : CustomInfoPro
         return info.customIconEntry
     }
 
-    override fun supportsSwipeUp(info: WorkspaceItemInfo) = true
+    override fun supportsSwipeUp(info: WorkspaceItemInfo) = false
 
     override fun setSwipeUpAction(info: WorkspaceItemInfo, action: String?) {
         info.setSwipeUpAction(context, action)
