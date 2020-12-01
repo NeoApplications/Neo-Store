@@ -35,6 +35,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PatternMatcher;
 import android.os.UserHandle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -212,7 +213,7 @@ public class PackageManagerHelper {
     /**
      * Starts the details activity for {@code info}
      */
-    public void startDetailsActivityForInfo(ItemInfo info, Rect sourceBounds, Bundle opts) {
+/*    public void startDetailsActivityForInfo(ItemInfo info, Rect sourceBounds, Bundle opts) {
         if (info instanceof PromiseAppInfo) {
             PromiseAppInfo promiseAppInfo = (PromiseAppInfo) info;
             mContext.startActivity(promiseAppInfo.getMarketIntent(mContext));
@@ -237,6 +238,40 @@ public class PackageManagerHelper {
                 Log.e(TAG, "Unable to launch settings", e);
             }
         }
+    }
+*/
+
+    /**
+     * Starts the details activity for {@code info}
+     */
+    public Intent startDetailsActivityForInfo(ItemInfo info, Rect sourceBounds, Bundle opts) {
+        if (info instanceof PromiseAppInfo) {
+            PromiseAppInfo promiseAppInfo = (PromiseAppInfo) info;
+            Intent intent = promiseAppInfo.getMarketIntent(mContext);
+            mContext.startActivity(intent);
+            return intent;
+        }
+        ComponentName componentName = null;
+        if (info instanceof AppInfo) {
+            componentName = ((AppInfo) info).componentName;
+        } else if (info instanceof WorkspaceItemInfo) {
+            componentName = info.getTargetComponent();
+        } else if (info instanceof PendingAddItemInfo) {
+            componentName = ((PendingAddItemInfo) info).componentName;
+        } else if (info instanceof LauncherAppWidgetInfo) {
+            componentName = ((LauncherAppWidgetInfo) info).providerName;
+        }
+        if (componentName != null) {
+            try {
+                mLauncherApps.showAppDetailsForProfile(
+                        componentName, info.user, sourceBounds, opts);
+                return new Intent(Settings.ACTION_APPLICATION_SETTINGS);
+            } catch (SecurityException | ActivityNotFoundException e) {
+                Toast.makeText(mContext, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Unable to launch settings", e);
+            }
+        }
+        return null;
     }
 
     /**

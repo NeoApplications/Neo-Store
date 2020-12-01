@@ -858,6 +858,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         return mInfo.isCoverMode();
     }
 
+    public void setStayPressed(boolean stayPressed) {
+        mFolderName.setStayPressed(stayPressed);
+    }
+
+    public void clearPressedBackground() {
+        setStayPressed(false);
+    }
+
     public void updateIconDots(Predicate<PackageUserKey> updatedBadges, PackageUserKey tmpKey) {
         FolderDotInfo folderDotInfo = new FolderDotInfo();
         for (WorkspaceItemInfo si : mInfo.contents) {

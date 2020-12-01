@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1517,6 +1518,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (child instanceof BubbleTextView) {
             BubbleTextView icon = (BubbleTextView) child;
             icon.clearPressedBackground();
+        } else if (child instanceof FolderIcon) {
+            ((FolderIcon) child).clearPressedBackground();
         }
 
         if (child.getParent() instanceof ShortcutAndWidgetContainer) {
@@ -1531,6 +1534,15 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
                 mLauncher.getUserEventDispatcher().resetElapsedContainerMillis("dragging started");
             }
+        }
+
+        if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
+            child.setVisibility(View.VISIBLE);
+
+            if (dragOptions.preDragCondition != null) {
+                mLauncher.getDragLayer().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            }
+            return null;
         }
 
         DragView dv = mDragController.startDrag(b, dragLayerX, dragLayerY, source,
@@ -1879,8 +1891,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     lp.cellVSpan = item.spanY;
                     lp.isLockedToGrid = true;
 
-                    if (container != LauncherSettings.Favorites.CONTAINER_HOTSEAT &&
-                            cell instanceof LauncherAppWidgetHostView) {
+                    if (cell instanceof LauncherAppWidgetHostView) {
                         final CellLayout cellLayout = dropTargetLayout;
                         // We post this call so that the widget has a chance to be placed
                         // in its final location
@@ -3179,7 +3190,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     for (WorkspaceItemInfo si : fi.contents) {
                         folderDotInfo.addDotInfo(mLauncher.getDotInfoForItem(si));
                     }
-                    ((FolderIcon) v).setDotInfo(folderDotInfo);
+                    //((FolderIcon) v).setDotInfo(folderDotInfo);
+                    ((FolderIcon) v).updateIconDots(updatedDots, packageUserKey);
                 }
             }
 

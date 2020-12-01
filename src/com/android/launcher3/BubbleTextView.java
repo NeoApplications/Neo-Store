@@ -447,7 +447,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         return result;
     }
 
-    void setStayPressed(boolean stayPressed) {
+    public void setStayPressed(boolean stayPressed) {
         mStayPressed = stayPressed;
         refreshDrawableState();
     }

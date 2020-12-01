@@ -1682,7 +1682,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         } else {
             // In this case, we either need to start an activity to get permission to bind
             // the widget, or we need to start an activity to configure the widget, or both.
-            if (FeatureFlags.ENABLE_CUSTOM_WIDGETS && info.itemType == LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET) {
+            if (FeatureFlags.ENABLE_CUSTOM_WIDGETS &&
+                    info.itemType == LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET) {
                 appWidgetId = CustomWidgetParser.getWidgetIdForCustomProvider(this,
                         info.componentName);
             } else {

@@ -75,7 +75,7 @@ public class RecentsModel extends TaskStackChangeListener {
                 new KeyguardManagerCompat(context), ActivityManagerWrapper.getInstance());
         mIconCache = new TaskIconCache(context, looper);
         mThumbnailCache = new TaskThumbnailCache(context, looper);
-        if (Utilities.ATLEAST_Q) {
+        if (Utilities.isRecentsEnabled()) {
             try {
                 ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
             } catch (NoSuchMethodError error) {
