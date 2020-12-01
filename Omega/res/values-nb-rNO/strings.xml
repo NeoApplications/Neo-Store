@@ -319,4 +319,10 @@
     <string name="title_drawer_enable_background">Bruk tilpasset bakgrunnsfarge</string>
     <string name="title__multiline_labels">Programnavn med linjeskift</string>
     <string name="num_hotseat_icons_pref_title">Ikonantall</string>
+    <string name="title_desktop_lock_desktop">Lås skrivebord</string>
+    <string name="title_drawer_row_height">Radhøyde</string>
+    <string name="action_open_recents">Åpne nylige</string>
+    <string name="action_press_back">Tilbake-knapp</string>
+    <string name="feed_widget">Miniprogrammer</string>
+    <string name="feed_add_widget">Legg til miniprogram</string>
 </resources>
