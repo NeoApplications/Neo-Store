@@ -119,7 +119,7 @@
     <string name="title__theme_accent_color">Couleur d\'accentuation</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d masqué</item>
-        <item quantity="other" />
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d application</item>
@@ -351,4 +351,17 @@
     <string name="title_theme_icon_packs">Packs d\'icône</string>
     <string name="title_text_color">Couleur du texte</string>
     <string name="title_drawer_enable_background">Utiliser une couleur d\'arrière-plan personnalisée</string>
+    <string name="msg_missing_usage_access">Pour montrer App Suggestions, tourner sur l accès à l usage de 
+\n&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"nom\" exemple=\"Mon Application\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="feed_widget">Widget</string>
+    <string name="feed_add_widget">Ajouter Un Widget</string>
+    <string name="action_open_widgets">Ouvrir Le Tiroir Widget</string>
+    <string name="action_open_drawer_or_recents">Ouvrir récents/tiroir app</string>
+    <string name="action_open_recents">Ouvert récents</string>
+    <string name="action_press_back">Bouton de retour</string>
+    <string name="needs_usage_access">Utilisation Accès nécessaire</string>
+    <string name="title_drawer_row_height">Hauteur de ligne</string>
+    <string name="num_hotseat_icons_pref_title">Icône Comte</string>
+    <string name="dock_colored_google">Icônes De Couleur</string>
+    <string name="title_desktop_lock_desktop">Serrure De Bureau</string>
 </resources>
