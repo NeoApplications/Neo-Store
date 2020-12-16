@@ -124,6 +124,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val hideAppLabels by BooleanPref("pref_hideAppLabels", false, recreate)
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
+    var keepEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
 
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)
@@ -306,6 +307,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                     else -> 0
                 }.toString())
 
+        putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", true))
         // Gestures
         /*putString("pref_gesture_swipe_down",
                 when (Integer.parseInt(prefs.getString("pref_pulldownAction", "1"))) {
@@ -860,7 +862,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             "pref_enableDock",
             "pref_dockRadius",
             "pref_dockShadow",
-            "pref_hotseatShowArrow",
             "pref_hotseatCustomOpacity",
             "pref_dockBackground")
 

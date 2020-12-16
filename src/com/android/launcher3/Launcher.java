@@ -94,7 +94,6 @@ import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.popup.PopupContainerWithArrow;
 import com.android.launcher3.popup.PopupDataProvider;
-import com.android.launcher3.qsb.QsbContainerView;
 import com.android.launcher3.states.InternalStateHandler;
 import com.android.launcher3.states.RotationHelper;
 import com.android.launcher3.touch.ItemClickHandler;
@@ -227,6 +226,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     @Thunk
     DragLayer mDragLayer;
     private DragController mDragController;
+    private View mQsbContainer;
 
     private AppWidgetManagerCompat mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
@@ -341,8 +341,9 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         UiFactory.onCreate(this);
 
         mAppWidgetManager = AppWidgetManagerCompat.getInstance(this);
-        mAppWidgetHost = new LauncherAppWidgetHost(this,
-                appWidgetId -> getWorkspace().removeWidget(appWidgetId));
+        //mAppWidgetHost = new LauncherAppWidgetHost(this,
+        //        appWidgetId -> getWorkspace().removeWidget(appWidgetId));
+        mAppWidgetHost = new LauncherAppWidgetHost(this);
         mAppWidgetHost.startListening();
 
         mLauncherView = LayoutInflater.from(this).inflate(R.layout.launcher, null);
@@ -1112,6 +1113,9 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         mDragLayer = findViewById(R.id.drag_layer);
         mFocusHandler = mDragLayer.getFocusIndicatorHelper();
         mWorkspace = mDragLayer.findViewById(R.id.workspace);
+        if (Utilities.getOmegaPrefs(this).getUsePillQsb()) {
+            mQsbContainer = mDragLayer.findViewById(R.id.workspace_blocked_row);
+        }
         mWorkspace.initParentViews(mDragLayer);
         mOverviewPanel = findViewById(R.id.overview_panel);
         mHotseat = findViewById(R.id.hotseat);
@@ -1351,6 +1355,10 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     public Workspace getWorkspace() {
         return mWorkspace;
+    }
+
+    public View getQsbContainer() {
+        return mQsbContainer;
     }
 
     public Hotseat getHotseat() {
@@ -2154,7 +2162,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             mWorkspace.requestLayout();
         }
     }
-
+/*
     private View inflateAppWidget(LauncherAppWidgetInfo item) {
         if (item.hasOptionFlag(LauncherAppWidgetInfo.OPTION_SEARCH_WIDGET)) {
             item.providerName = QsbContainerView.getSearchComponentName(this);
@@ -2271,6 +2279,116 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         TraceHelper.endSection("BIND_WIDGET", "id=" + item.appWidgetId);
         return view;
     }
+*/
+
+    private View inflateAppWidget(LauncherAppWidgetInfo item) {
+        if (mIsSafeModeEnabled) {
+            PendingAppWidgetHostView view =
+                    new PendingAppWidgetHostView(this, item, mIconCache, true);
+            prepareAppWidget(view, item);
+            return view;
+        }
+
+        TraceHelper.beginSection("BIND_WIDGET");
+
+        final LauncherAppWidgetProviderInfo appWidgetInfo;
+
+        if (item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY)) {
+            // If the provider is not ready, bind as a pending widget.
+            appWidgetInfo = null;
+        } else if (item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_ID_NOT_VALID)) {
+            // The widget id is not valid. Try to find the widget based on the provider info.
+            appWidgetInfo = mAppWidgetManager.findProvider(item.providerName, item.user);
+        } else {
+            appWidgetInfo = mAppWidgetManager.getLauncherAppWidgetInfo(item.appWidgetId);
+        }
+
+        // If the provider is ready, but the width is not yet restored, try to restore it.
+        if (!item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY) &&
+                (item.restoreStatus != LauncherAppWidgetInfo.RESTORE_COMPLETED)) {
+            if (appWidgetInfo == null) {
+                Log.d(TAG, "Removing restored widget: id=" + item.appWidgetId
+                        + " belongs to component " + item.providerName
+                        + ", as the provider is null");
+                getModelWriter().deleteItemFromDatabase(item);
+                return null;
+            }
+
+            // If we do not have a valid id, try to bind an id.
+            if (item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_ID_NOT_VALID)) {
+                if (!item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_ID_ALLOCATED)) {
+                    // Id has not been allocated yet. Allocate a new id.
+                    item.appWidgetId = mAppWidgetHost.allocateAppWidgetId();
+                    item.restoreStatus |= LauncherAppWidgetInfo.FLAG_ID_ALLOCATED;
+
+                    // Also try to bind the widget. If the bind fails, the user will be shown
+                    // a click to setup UI, which will ask for the bind permission.
+                    PendingAddWidgetInfo pendingInfo = new PendingAddWidgetInfo(appWidgetInfo);
+                    pendingInfo.spanX = item.spanX;
+                    pendingInfo.spanY = item.spanY;
+                    pendingInfo.minSpanX = item.minSpanX;
+                    pendingInfo.minSpanY = item.minSpanY;
+                    Bundle options = WidgetHostViewLoader.getDefaultOptionsForWidget(this, pendingInfo);
+
+                    boolean isDirectConfig =
+                            item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_DIRECT_CONFIG);
+                    if (isDirectConfig && item.bindOptions != null) {
+                        Bundle newOptions = item.bindOptions.getExtras();
+                        if (options != null) {
+                            newOptions.putAll(options);
+                        }
+                        options = newOptions;
+                    }
+                    boolean success = mAppWidgetManager.bindAppWidgetIdIfAllowed(
+                            item.appWidgetId, appWidgetInfo, options);
+
+                    // We tried to bind once. If we were not able to bind, we would need to
+                    // go through the permission dialog, which means we cannot skip the config
+                    // activity.
+                    item.bindOptions = null;
+                    item.restoreStatus &= ~LauncherAppWidgetInfo.FLAG_DIRECT_CONFIG;
+
+                    // Bind succeeded
+                    if (success) {
+                        // If the widget has a configure activity, it is still needs to set it up,
+                        // otherwise the widget is ready to go.
+                        item.restoreStatus = (appWidgetInfo.configure == null) || isDirectConfig
+                                ? LauncherAppWidgetInfo.RESTORE_COMPLETED
+                                : LauncherAppWidgetInfo.FLAG_UI_NOT_READY;
+                    }
+
+                    getModelWriter().updateItemInDatabase(item);
+                }
+            } else if (item.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_UI_NOT_READY)
+                    && (appWidgetInfo.configure == null)) {
+                // The widget was marked as UI not ready, but there is no configure activity to
+                // update the UI.
+                item.restoreStatus = LauncherAppWidgetInfo.RESTORE_COMPLETED;
+                getModelWriter().updateItemInDatabase(item);
+            }
+        }
+
+        final AppWidgetHostView view;
+        if (item.restoreStatus == LauncherAppWidgetInfo.RESTORE_COMPLETED) {
+            // Verify that we own the widget
+            if (appWidgetInfo == null) {
+                FileLog.e(TAG, "Removing invalid widget: id=" + item.appWidgetId);
+                getModelWriter().deleteWidgetInfo(item, getAppWidgetHost());
+                return null;
+            }
+
+            item.minSpanX = appWidgetInfo.minSpanX;
+            item.minSpanY = appWidgetInfo.minSpanY;
+            view = mAppWidgetHost.createView(this, item.appWidgetId, appWidgetInfo);
+        } else {
+            view = new PendingAppWidgetHostView(this, item, mIconCache, false);
+        }
+        prepareAppWidget(view, item);
+
+        TraceHelper.endSection("BIND_WIDGET", "id=" + item.appWidgetId);
+        return view;
+    }
+
 
     /**
      * Restores a pending widget.

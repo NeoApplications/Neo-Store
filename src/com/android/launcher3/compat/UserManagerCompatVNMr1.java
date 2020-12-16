@@ -18,6 +18,7 @@ package com.android.launcher3.compat;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
@@ -33,6 +34,7 @@ import java.util.List;
 public class UserManagerCompatVNMr1 extends UserManagerCompat {
 
     protected final UserManager mUserManager;
+    private final PackageManager mPm;
 
     protected LongSparseArray<UserHandle> mUsers;
     // Create a separate reverse map as LongSparseArray.indexOfValue checks if objects are same
@@ -41,6 +43,7 @@ public class UserManagerCompatVNMr1 extends UserManagerCompat {
 
     UserManagerCompatVNMr1(Context context) {
         mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
+        mPm = context.getPackageManager();
     }
 
     @Override
@@ -86,6 +89,14 @@ public class UserManagerCompatVNMr1 extends UserManagerCompat {
             }
         }
         return mUserManager.getUserForSerialNumber(serialNumber);
+    }
+
+    @Override
+    public CharSequence getBadgedLabelForUser(CharSequence label, UserHandle user) {
+        if (user == null) {
+            return label;
+        }
+        return mPm.getUserBadgedLabel(label, user);
     }
 
     @Override

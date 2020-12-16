@@ -92,6 +92,7 @@ import com.android.launcher3.widget.LauncherAppWidgetHostView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -101,6 +102,8 @@ import static com.android.launcher3.LauncherAnimUtils.OVERVIEW_TRANSITION_MS;
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS;
 import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
 import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.LauncherState.SPRING_LOADED;
@@ -247,6 +250,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     // Total over scrollX in the overlay direction.
     private float mOverlayTranslation;
 
+    private int mFirstPageScrollX;
+    public boolean mPillQsb;
     // Handles workspace state transitions
     private final WorkspaceStateTransitionAnimation mStateTransitionAnimation;
 
@@ -254,7 +259,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
      * Used to inflate the Workspace from XML.
      *
      * @param context The application's context.
-     * @param attrs The attributes set containing the Workspace's customization values.
+     * @param attrs   The attributes set containing the Workspace's customization values.
      */
     public Workspace(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -275,6 +280,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mWallpaperManager = WallpaperManager.getInstance(context);
 
         mWallpaperOffset = new WallpaperOffsetInterpolator(this);
+
+        mPillQsb = FeatureFlags.QSB_ON_FIRST_SCREEN && Utilities.getOmegaPrefs(context).getUsePillQsb();
 
         setHapticFeedbackEnabled(false);
         initWorkspace();
@@ -311,7 +318,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             // We assume symmetrical padding in portrait mode.
             setPageSpacing(Math.max(grid.edgeMarginPx, padding.left + 1));
         }
-
 
         int paddingLeftRight = stableGrid.cellLayoutPaddingLeftRightPx;
         int paddingBottom = stableGrid.cellLayoutBottomPaddingPx;
@@ -445,6 +451,28 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mDragSourceInternal = null;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        // Update the QSB to match the cell height. This is treating the QSB essentially as a child
+        // of workspace despite that it's not a true child.
+        // Note that it relies on the strict ordering of measuring the workspace before the QSB
+        // at the dragLayer level.
+        // Only measure the QSB when the view is enabled
+        if (mPillQsb && getChildCount() > 0) {
+            CellLayout firstPage = (CellLayout) getChildAt(0);
+            int cellHeight = firstPage.getCellHeight();
+
+            View qsbContainer = mLauncher.getQsbContainer();
+            ViewGroup.LayoutParams lp = qsbContainer.getLayoutParams();
+            if (cellHeight > 0 && lp.height != cellHeight) {
+                lp.height = cellHeight;
+                qsbContainer.setLayoutParams(lp);
+            }
+        }
+    }
+
     /**
      * Initializes various states for this workspace.
      */
@@ -486,8 +514,25 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         super.onViewAdded(child);
     }
 
+    private int getEmbeddedQsbId() {
+        if (mPillQsb) {
+            return R.id.qsb_container;
+        } else {
+            return R.id.search_container_workspace;
+        }
+    }
+
+    private int getEmbeddedQsbLayout() {
+        if (mPillQsb) {
+            return R.layout.qsb_container;
+        } else {
+            return R.layout.search_container_workspace;
+        }
+    }
+
     /**
      * Initializes and binds the first page
+     *
      * @param qsb an existing qsb to recycle or null.
      */
     public void bindAndInitFirstWorkspaceScreen(View qsb) {
@@ -501,12 +546,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             // In transposed layout, we add the QSB in the Grid. As workspace does not touch the
             // edges, we do not need a full width QSB.
             qsb = LayoutInflater.from(getContext())
-                    .inflate(R.layout.search_container_workspace,firstPage, false);
+                    .inflate(getEmbeddedQsbLayout(), firstPage, false);
         }
 
         CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, firstPage.getCountX(), 1);
         lp.canReorder = false;
-        if (!firstPage.addViewToCellLayout(qsb, 0, R.id.search_container_workspace, lp, true)) {
+        if (!firstPage.addViewToCellLayout(qsb, 0, getEmbeddedQsbId(), lp, true)) {
             Log.e(TAG, "Failed to add to item at (0, 0) to CellLayout");
         }
     }
@@ -517,7 +562,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         disableLayoutTransitions();
 
         // Recycle the QSB widget
-        View qsb = findViewById(R.id.search_container_workspace);
+        View qsb = findViewById(getEmbeddedQsbId());
         if (qsb != null) {
             ((ViewGroup) qsb.getParent()).removeView(qsb);
         }
@@ -788,6 +833,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             return;
         }
 
+        if (OmegaPreferences.Companion.getInstance(mLauncher).getKeepEmptyScreens()) {
+            // Don't strip empty screens if we should keep them
+            return;
+        }
+
         if (isPageInTransition()) {
             mStripScreensOnPageStopMoving = true;
             return;
@@ -989,9 +1039,16 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
     }
 
+    private void onWorkspaceOverallScrollChanged() {
+        if (mPillQsb) {
+            mLauncher.getQsbContainer().setTranslationX(mOverlayTranslation + mFirstPageScrollX - getScrollX());
+        }
+    }
+
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
+        onWorkspaceOverallScrollChanged();
 
         // Update the page indicator progress.
         boolean isTransitioning = mIsSwitchingState
@@ -1261,7 +1318,9 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             mWallpaperOffset.jumpToFinal();
         }
         super.onLayout(changed, left, top, right, bottom);
+        mFirstPageScrollX = getScrollForPage(0);
         updatePageAlphaValues();
+        onWorkspaceOverallScrollChanged();
     }
 
     @Override
@@ -1467,6 +1526,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     + "View: " + child + "  tag: " + child.getTag();
             throw new IllegalStateException(msg);
         }
+
+        if (child instanceof FolderIcon && ((FolderIcon) child).isCoverMode()) {
+            child.setVisibility(View.VISIBLE);
+            child = ((FolderIcon) child).getFolderName();
+        }
+
         beginDragShared(child, source, (ItemInfo) dragObject,
                 new DragPreviewProvider(child), options);
     }
@@ -1656,8 +1721,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         boolean aboveShortcut = (dropOverView.getTag() instanceof WorkspaceItemInfo);
         boolean willBecomeShortcut =
                 (info.itemType == ITEM_TYPE_APPLICATION ||
-                        info.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT ||
-                        info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT);
+                        info.itemType == ITEM_TYPE_SHORTCUT ||
+                        info.itemType == ITEM_TYPE_DEEP_SHORTCUT);
 
         return (aboveShortcut && willBecomeShortcut);
     }
@@ -2482,14 +2547,14 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             final PendingAddItemInfo pendingInfo = (PendingAddItemInfo) info;
 
             boolean findNearestVacantCell = true;
-            if (pendingInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
+            if (pendingInfo.itemType == ITEM_TYPE_SHORTCUT) {
                 mTargetCell = findNearestArea(touchXY[0], touchXY[1], spanX, spanY,
                         cellLayout, mTargetCell);
                 float distance = cellLayout.getDistanceFromCell(mDragViewVisualCenter[0],
                         mDragViewVisualCenter[1], mTargetCell);
                 if (willCreateUserFolder(d.dragInfo, cellLayout, mTargetCell, distance, true)
                         || willAddToExistingUserFolder(
-                                d.dragInfo, cellLayout, mTargetCell, distance)) {
+                        d.dragInfo, cellLayout, mTargetCell, distance)) {
                     findNearestVacantCell = false;
                 }
             }
@@ -2555,12 +2620,23 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
             switch (info.itemType) {
                 case ITEM_TYPE_APPLICATION:
-                case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-                case LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT:
+                case ITEM_TYPE_SHORTCUT:
+                case ITEM_TYPE_DEEP_SHORTCUT:
                     if (info.container == NO_ID && info instanceof AppInfo) {
                         // Came from all apps -- make a copy
                         info = ((AppInfo) info).makeWorkspaceItem();
                         d.dragInfo = info;
+                    }
+                    if (info.container == NO_ID) {
+                        // Came from all apps -- make a copy
+                        if (info instanceof AppInfo) {
+                            info = ((AppInfo) info).makeWorkspaceItem();
+                            d.dragInfo = info;
+                        } else if (info instanceof ShortcutInfo) {
+                            info = new ShortcutInfo((ShortcutInfo) info);
+                            d.dragInfo = info;
+                        }
+
                     }
                     view = mLauncher.createShortcut(cellLayout, (WorkspaceItemInfo) info);
                     break;

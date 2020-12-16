@@ -35,7 +35,6 @@ import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.Executors;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
-import com.android.launcher3.widget.custom.CustomWidgetManager;
 import com.saggitt.omega.OmegaAppKt;
 
 import java.util.concurrent.ExecutionException;
@@ -170,8 +169,8 @@ public class LauncherAppState {
         mLauncher = launcher;
         getLocalProvider(mContext).setLauncherProviderChangeListener(launcher);
         mModel.initialize(launcher);
-        CustomWidgetManager.INSTANCE.get(launcher)
-                .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
+        //CustomWidgetManager.INSTANCE.get(launcher)
+        //        .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
         return mModel;
     }
 

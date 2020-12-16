@@ -141,6 +141,8 @@ public final class Utilities {
     public static final boolean ATLEAST_OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
     public static final boolean ATLEAST_NOUGAT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    public static final boolean ATLEAST_NOUGAT_MR1 =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
 
     public static boolean HIDDEN_APIS_ALLOWED = false;
 

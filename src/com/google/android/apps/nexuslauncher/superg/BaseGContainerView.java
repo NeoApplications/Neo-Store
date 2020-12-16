@@ -170,7 +170,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         changeVisibility(false);
     }
 
-    private void hideQsbImmediately() { //bb
+    private void hideQsbImmediately() {
         mWindowHasFocus = false;
         qsbHidden = true;
         if (mQsbView != null) {

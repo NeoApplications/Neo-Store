@@ -243,6 +243,18 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.saggitt.omega.widget.SmartspaceWidgetProvider"
+            android:exported="false"
+            android:label="@string/title__general_smartspace">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_smartspace" />
+        </receiver>
 
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"

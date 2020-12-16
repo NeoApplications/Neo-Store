@@ -59,6 +59,7 @@ import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.icons.cache.IconCacheUpdateHandler;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.provider.ImportDataTask;
+import com.android.launcher3.qsb.QsbContainerView;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ComponentKey;
@@ -608,23 +609,21 @@ public class LoaderTask implements Runnable {
 
                                 int appWidgetId = c.getInt(appWidgetIdIndex);
                                 String savedProvider = c.getString(appWidgetProviderIndex);
+                                final ComponentName component;
+                                //final ComponentName component =
+                                //        ComponentName.unflattenFromString(savedProvider);
 
-                                //final ComponentName component;
-                                final ComponentName component =
-                                        ComponentName.unflattenFromString(savedProvider);
-
-                            /*boolean isSearchWidget = (c.getInt(optionsIndex)
-                                    & LauncherAppWidgetInfo.OPTION_SEARCH_WIDGET) != 0;
-                            if (isSearchWidget) {
-                                component  = QsbContainerView.getSearchComponentName(context);
-                                if (component == null) {
-                                    c.markDeleted("Discarding SearchWidget without packagename ");
-                                    continue;
-                                }
-                            } else {
+                                boolean isSearchWidget = (c.getInt(optionsIndex)
+                                        & LauncherAppWidgetInfo.OPTION_SEARCH_WIDGET) != 0;
+                                if (isSearchWidget) {
+                                    component = QsbContainerView.getSearchComponentName(context);
+                                    if (component == null) {
+                                        c.markDeleted("Discarding SearchWidget without packagename ");
+                                        continue;
+                                    }
+                                } else {
                                 component = ComponentName.unflattenFromString(savedProvider);
                             }
-                            */
 
                                 final boolean isIdValid = !c.hasRestoreFlag(
                                         LauncherAppWidgetInfo.FLAG_ID_NOT_VALID);

@@ -60,14 +60,8 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
     private IntConsumer mAppWidgetRemovedCallback = null;
 
     public LauncherAppWidgetHost(Context context) {
-        this(context, null);
-    }
-
-    public LauncherAppWidgetHost(Context context,
-            IntConsumer appWidgetRemovedCallback) {
         super(context, APPWIDGET_HOST_ID);
         mContext = context;
-        mAppWidgetRemovedCallback = appWidgetRemovedCallback;
     }
 
     @Override
@@ -147,6 +141,9 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
      * @see #setResumed(boolean)
      */
     public void setListenIfResumed(boolean listenIfResumed) {
+        if (!Utilities.ATLEAST_NOUGAT_MR1) {
+            return;
+        }
         if (listenIfResumed == ((mFlags & FLAG_LISTEN_IF_RESUMED) != 0)) {
             return;
         }

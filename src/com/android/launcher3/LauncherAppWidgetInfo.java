@@ -29,10 +29,9 @@ import com.android.launcher3.util.ContentWriter;
  */
 public class LauncherAppWidgetInfo extends ItemInfo {
 
-    public static final int OPTION_SEARCH_WIDGET = 1;
-
-
     public static final int RESTORE_COMPLETED = 0;
+
+    public static final int OPTION_SEARCH_WIDGET = 1;
 
     /**
      * This is set during the package backup creation.

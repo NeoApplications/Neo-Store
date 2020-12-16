@@ -48,6 +48,11 @@
             android:id="@+id/hotseat"
             layout="@layout/hotseat" />
 
+        <View
+            android:id="@+id/workspace_blocked_row"
+            android:layout_width="0dp"
+            android:layout_height="10dp" />
+
         <include
             android:id="@+id/overview_panel"
             layout="@layout/overview_panel"
