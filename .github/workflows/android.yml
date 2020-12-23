@@ -1,4 +1,4 @@
-name: Main CI Workflow
+name: Omega CI
 
 on:
   push:
