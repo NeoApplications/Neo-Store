@@ -1,6 +1,6 @@
 # Omega Launcher
 Libre software launcher. <br/>
-[![Travis](https://img.shields.io/travis/otakuhqz/Omega.svg?style=for-the-badge)](https://travis-ci.org/otakuhqz/Omega)
+[![Build Status](https://img.shields.io/github/workflow/status/otakuhqz/Omega/Omega%20CI?event=push&logo=github&style=for-the-badge)](https://github.com/otakuhqz/Omega/actions?query=workflow%3A%22Omega+CI%22+event%3Apush)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
 
