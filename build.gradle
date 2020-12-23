@@ -51,7 +51,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "com.google.protobuf:protobuf-gradle-plugin:${versions.protobuf}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
@@ -69,7 +69,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.6.3"
-    def code = 101
+    def code = 102
 
     defaultConfig {
         minSdkVersion 25
@@ -295,7 +295,9 @@ static String findAndroidLocales() {
     Set<String> langs = new HashSet<>()
     new File('.').eachFileRecurse(groovy.io.FileType.DIRECTORIES) {
         final foldername = it.name
-        if (foldername.startsWith('values-') && !it.canonicalPath.contains("build" + File.separator + "intermediates")) {
+        if (foldername.startsWith('values-')
+                && !it.canonicalPath.contains("build" + File.separator + "intermediates")
+                && !it.canonicalPath.contains("gradle" + File.separator + "daemon")) {
             new File(it.toString()).eachFileRecurse(groovy.io.FileType.FILES) {
                 if (it.name.toLowerCase().endsWith(".xml") && it.getCanonicalFile().getText('UTF-8').contains("<string")) {
                     langs.add(foldername.replace("values-", ""))
