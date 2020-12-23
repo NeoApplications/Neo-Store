@@ -35,12 +35,12 @@ to discuss the development, issues and new features.<br/>
 -   [X] Desktop grid preference.
 -   [X] App predictions (experimental).
 -   [X] Icon pack support.
+-   [X] Back up and restore preferences.
 
 ##  New Features and TODOs
 -   [ ] Turn off "auto remove empty screen".
 -   [ ] Add desktop screen manually.
 -   [ ] Reorder empty screens.
--   [ ] Back up and restore.
 -   [ ] Horizontal drawer.
 -   [ ] Add auto tab mode for drawer.
 -   [ ] Support for more news feeds (like Microsoft Bing).
