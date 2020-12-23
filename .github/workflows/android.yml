@@ -2,11 +2,10 @@ name: Main CI Workflow
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +16,4 @@ jobs:
           java-version: 1.8
 
       - name: Compile with Gradle
-        run: ./gradlew compileReleaseSources
-      - name: Clean up
-        run: ./gradlew clean
+        run: ./gradlew assembleAospWithQuickstepOmega
