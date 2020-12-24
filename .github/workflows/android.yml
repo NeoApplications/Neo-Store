@@ -26,3 +26,7 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Compile with Gradle
         run: ./gradlew assembleAospWithQuickstepOmega
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Omega-debug.apk
+          path: build/outputs/apk/aospWithQuickstepOmega/debug/Omega-aosp-withQuickstep-omega-debug.apk
