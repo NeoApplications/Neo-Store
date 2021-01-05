@@ -9,6 +9,9 @@ APKs are available on GitHub and in the Telegram channel. Some nightly builds
 are only available in the Telegram channel.<br/>
 [<img src="badge_github.png" alt="Get it on GitHub" height="80">](https://github.com/otakuhqz/omega/releases)
 
+Nightly builds are now available at Github actions [![artifacts](https://github.com/otakuhqz/Omega/actions)]
+CAUTION: Nightly builds might be unstable.
+
 ## Community
 You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
