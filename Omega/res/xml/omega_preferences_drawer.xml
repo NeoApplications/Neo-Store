@@ -78,6 +78,7 @@
         android:key="pref_showAllAppsLabel"
         android:title="@string/title__drawer_all_apps"
         android:defaultValue="false"
+        android:dependency="pref_show_predictions"
         android:persistent="true"
         app:iconSpaceReserved="false" />
 
