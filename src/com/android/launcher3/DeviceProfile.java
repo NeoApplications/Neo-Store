@@ -25,6 +25,8 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 
+import androidx.annotation.Nullable;
+
 import com.android.launcher3.CellLayout.ContainerType;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.icons.DotRenderer;
@@ -37,6 +39,9 @@ import static java.lang.Math.round;
 public class DeviceProfile {
 
     public final InvariantDeviceProfile inv;
+    // IDP with no grid override values.
+    @Nullable
+    private final InvariantDeviceProfile originalIdp;
 
     // Device properties
     public final boolean isTablet;
@@ -134,6 +139,7 @@ public class DeviceProfile {
 
     // All apps
     public int allAppsCellHeightPx;
+    public int allAppsCellWidthPx;
     public int allAppsIconSizePx;
     public int allAppsIconDrawablePaddingPx;
     public float allAppsIconTextSizePx;
@@ -158,14 +164,14 @@ public class DeviceProfile {
     private int verticalDragHandleOverlapWorkspace;
     public Context mContext;
 
-    public DeviceProfile(Context context, InvariantDeviceProfile inv,
-                         Point minSize, Point maxSize,
+    public DeviceProfile(Context context, InvariantDeviceProfile inv, InvariantDeviceProfile originalIDP, Point minSize, Point maxSize,
                          int width, int height, boolean isLandscape, boolean isMultiWindowMode) {
 
         prefs = Utilities.getOmegaPrefs(context);
         boolean fullWidthWidgets = prefs.getAllowFullWidthWidgets();
 
         this.inv = inv;
+        this.originalIdp = inv;
         this.isLandscape = isLandscape;
         this.isMultiWindowMode = isMultiWindowMode;
 
@@ -325,7 +331,7 @@ public class DeviceProfile {
 
     public DeviceProfile copy(Context context) {
         Point size = new Point(availableWidthPx, availableHeightPx);
-        return new DeviceProfile(context, inv, size, size, widthPx, heightPx, isLandscape,
+        return new DeviceProfile(context, inv, originalIdp, size, size, widthPx, heightPx, isLandscape,
                 isMultiWindowMode);
     }
 
@@ -339,7 +345,7 @@ public class DeviceProfile {
         // widthPx and heightPx values where it's needed.
         /*DeviceProfile profile = new DeviceProfile(context, inv, originalIdp, mwSize, mwSize,
                 mwSize.x, mwSize.y, isLandscape, true);*/
-        DeviceProfile profile = new DeviceProfile(context, inv, mwSize, mwSize, mwSize.x, mwSize.y,
+        DeviceProfile profile = new DeviceProfile(context, inv, originalIdp, mwSize, mwSize, mwSize.x, mwSize.y,
                 isLandscape, true);
 
 
@@ -433,6 +439,7 @@ public class DeviceProfile {
         int minAllAppsCellHeightPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx
                 + Utilities.calculateTextHeight(allAppsIconTextSizePx);
         allAppsCellHeightPx = Math.max(minAllAppsCellHeightPx, (int) (getCellSizeOriginal().y * prefs.getDrawerPaddingScale()));
+        allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
 
         if (prefs.getDrawerLabelRows() > 1) {
             allAppsCellHeightPx += 50;
