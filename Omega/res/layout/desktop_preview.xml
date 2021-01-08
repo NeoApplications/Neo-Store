@@ -14,7 +14,106 @@
   ~  limitations under the License.
   -->
 
-<com.saggitt.omega.icons.IconPreview xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.icons.PreviewFrameView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/icon_preview"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dock_preview_height" />
+    android:layout_height="@dimen/dock_preview_height">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/icon_photos"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_google_photos"
+                android:padding="10dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseIcon"
+                android:text="@string/preview_app_google_photos" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/icon_youtube"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_youtube_color"
+                android:padding="10dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/item_youtube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseIcon"
+                android:text="@string/preview_app_youtube" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/icon_instagram"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_instagram_color"
+                android:padding="10dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/item_instagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseIcon"
+                android:text="@string/preview_app_instagram" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/icon_whatsapp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_whatsapp_color"
+                android:padding="10dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/item_ws"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseIcon"
+                android:text="@string/preview_app_whatsapp" />
+        </LinearLayout>
+    </LinearLayout>
+</com.saggitt.omega.icons.PreviewFrameView>

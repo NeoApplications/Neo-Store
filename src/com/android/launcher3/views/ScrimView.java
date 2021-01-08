@@ -338,9 +338,6 @@ public class ScrimView extends View implements Insettable, WallpaperColorInfo.On
     }
 
     private void updateDragHandleVisibility(Drawable recycle) {
-        //boolean visible = mLauncher.getDeviceProfile().isVerticalBarLayout() ||
-        //        mAM.isEnabled() || Utilities.getOmegaPrefs(mLauncher).getDockShowArrow();
-
         boolean visible = mLauncher.getDeviceProfile().isVerticalBarLayout()
                 || Utilities.getOmegaPrefs(mLauncher).getDockShowArrow();
         boolean wasVisible = mDragHandle != null;

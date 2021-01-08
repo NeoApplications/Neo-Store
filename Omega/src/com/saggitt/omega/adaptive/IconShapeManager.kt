@@ -113,9 +113,6 @@ class IconShapeManager(private val context: Context) {
     }
 
     companion object : OmegaSingletonHolder<IconShapeManager>(::IconShapeManager) {
-
-        private const val KEY_LEGACY_PREFERENCE = "pref_override_icon_shape"
-
         @JvmStatic
         fun getWindowTransitionRadius(context: Context): Float {
             return getInstance(context).iconShape.windowTransitionRadius

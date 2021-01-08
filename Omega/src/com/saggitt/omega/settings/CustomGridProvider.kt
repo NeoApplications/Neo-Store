@@ -20,17 +20,9 @@
 package com.saggitt.omega.settings
 
 import android.content.Context
-import android.graphics.Bitmap
-import com.android.launcher3.InvariantDeviceProfile
-import com.android.launcher3.graphics.LauncherPreviewRenderer
-import com.android.launcher3.util.LooperExecutor
-import com.android.launcher3.util.UiThreadHelper
-import com.saggitt.omega.util.OmegaSingletonHolder
-import com.saggitt.omega.util.omegaPrefs
-import java.util.concurrent.Future
 
-class CustomGridProvider(private val context: Context) : InvariantDeviceProfile.GridCustomizer {
-
+class CustomGridProvider(private val context: Context) {// : InvariantDeviceProfile.GridCustomizer {
+/*
     private val prefs = context.omegaPrefs
 
     // Desktop
@@ -113,5 +105,6 @@ class CustomGridProvider(private val context: Context) : InvariantDeviceProfile.
                 KEY_WORKSPACE_PADDING_RIGHT,
                 KEY_WORKSPACE_PADDING_TOP,
                 KEY_WORKSPACE_PADDING_BOTTOM)
-    }
+    }*/
 }
+

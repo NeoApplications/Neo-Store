@@ -27,7 +27,6 @@ import com.android.launcher3.*
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
-import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
@@ -35,7 +34,6 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.settings.CustomGridProvider
 import com.saggitt.omega.smartspace.BlankDataProvider
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
@@ -86,7 +84,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var hiddenAppSet by StringSetPref("hidden-app-set", Collections.emptySet(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref("pref_hidden_prediction_set", Collections.emptySet(), doNothing)
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
-    val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.qsb_drawer_text_color_normal, reloadApps)
+    val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.textColorPrimary, reloadApps)
     var allAppsGlobalSearch by BooleanPref("pref_allAppsGoogleSearch", true, doNothing)
     val allAppsSearch by BooleanPref("pref_allAppsSearch", true, recreate)
     val drawerTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
@@ -104,8 +102,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
     private val drawerGridSizeDelegate = ResettableLazy { GridSize(this, "numColsDrawer", LauncherAppState.getIDP(context), recreate) }
     val drawerGridSize by drawerGridSizeDelegate
-    private val predictionGridSizeDelegate = ResettableLazy { GridSize(this, "numPredictions", LauncherAppState.getIDP(context), recreate) }
-    val predictionGridSize by predictionGridSizeDelegate
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
@@ -128,7 +124,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)
-    val dockIconScale by FloatPref("pref_hotseatIconSize", 1f, recreate)
+    val dockIconScale by FloatPref("hotseatIconSize", 1f, recreate)
     var dockSearchBarPref by BooleanPref("pref_dock_search", true, restart)
     inline val dockSearchBar get() = !dockHide && dockSearchBarPref
     var dockScale by FloatPref("pref_dockScale", -1f, recreate)
@@ -136,7 +132,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     inline val dockGradientStyle get() = !dockBackground
     var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
     val dockBackgroundColor by IntPref("pref_dock_background_color", R.color.transparentish, recreate)
-    private val dockGridSizeDelegate = ResettableLazy { GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), restart) }
+    private val dockGridSizeDelegate = ResettableLazy {
+        GridSize(this, "numHotseatIcons",
+                LauncherAppState.getIDP(context), recreate)
+    }
     val dockGridSize by dockGridSizeDelegate
     var dockRadius by FloatPref("pref_dockRadius", 16f, recreate)
     var dockShadow by BooleanPref("pref_dockShadow", false, recreate)
@@ -307,7 +306,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                     else -> 0
                 }.toString())
 
-        putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", true))
+        putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", false))
         // Gestures
         /*putString("pref_gesture_swipe_down",
                 when (Integer.parseInt(prefs.getString("pref_pulldownAction", "1"))) {
@@ -393,14 +392,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
         keys.forEach { addOnPreferenceChangeListener(it, listener) }
-    }
-
-    fun addOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        addOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
-    }
-
-    fun removeOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        removeOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
     }
 
     fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
@@ -847,36 +838,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
     }
 
-    private val ICON_CUSTOMIZATIONS_PREFS = arrayOf(
-            "pref_iconShape",
-            "pref_iconPacks",
-            "pref_forceShapeless",
-            "pref_enableLegacyTreatment",
-            "pref_colorizeGeneratedBackgrounds",
-            "pref_enableWhiteOnlyTreatment",
-            "pref_iconPackMasking",
-            "pref_generateAdaptiveForIconPack",
-            "pref_allAppsPaddingScale")
-
-    private val DOCK_CUSTOMIZATIONS_PREFS = arrayOf(
-            "pref_enableDock",
-            "pref_dockRadius",
-            "pref_dockShadow",
-            "pref_hotseatCustomOpacity",
-            "pref_dockBackground")
-
-    private val DEVICE_PROFILE_PREFS = ICON_CUSTOMIZATIONS_PREFS +
-            DOCK_CUSTOMIZATIONS_PREFS +
-            CustomGridProvider.GRID_CUSTOMIZATIONS_PREFS +
-            arrayOf(
-                    "pref_iconTextScaleSB",
-                    "pref_iconSize",
-                    "pref_hotseatIconSize",
-                    "pref_allAppsIconSize",
-                    "pref_allAppsIconTextScale",
-                    "pref_dockSearchBar",
-                    "pref_dockScale")
-
     companion object {
         private var INSTANCE: OmegaPreferences? = null
         const val CURRENT_VERSION = 200
@@ -888,7 +849,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                     INSTANCE = OmegaPreferences(context.applicationContext)
                 } else {
                     try {
-                        return Executors.MAIN_EXECUTOR.submit(Callable { getInstance(context) }).get()
+                        return MAIN_EXECUTOR.submit(Callable { getInstance(context) }).get()
                     } catch (e: InterruptedException) {
                         throw RuntimeException(e)
                     } catch (e: ExecutionException) {
@@ -908,6 +869,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             INSTANCE?.apply {
                 onChangeListeners.clear()
                 onChangeCallback = null
+                dockGridSizeDelegate.resetValue()
+                drawerGridSizeDelegate.resetValue()
             }
         }
     }

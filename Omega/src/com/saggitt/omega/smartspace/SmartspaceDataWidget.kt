@@ -177,9 +177,9 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             if (images.isNotEmpty() && images.size != 2) {
                 cardIconView = images.first()
                 title = texts[0]
-                if (texts.size > 2) {
-                    subtitle = texts[1]
-                }
+                //if (texts.size > 2) {
+                subtitle = texts[1]
+                //}
                 if (texts.size > 3) {
                     subtitle2 = texts[2]
                 }

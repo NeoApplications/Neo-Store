@@ -14,27 +14,25 @@
   ~  limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal">
-
-    <Button
-        android:id="@+id/shape_icon"
-        android:layout_width="@dimen/icon_preview_size"
-        android:layout_height="@dimen/icon_preview_size"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:background="@drawable/shape_teardrop"
-        android:elevation="2dp" />
+    android:orientation="vertical"
+    android:gravity="center_horizontal|center_vertical"
+    android:layout_gravity="center_horizontal">
 
     <ImageView
-        android:id="@+id/check_mark"
-        android:layout_width="wrap_content"
+        android:id="@+id/item_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_instagram_color"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal|center_vertical" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_check"
-        android:elevation="4dp" />
-</RelativeLayout>
+        style="@style/BaseIcon"
+        android:text="@string/preview_app_instagram" />
+</LinearLayout>

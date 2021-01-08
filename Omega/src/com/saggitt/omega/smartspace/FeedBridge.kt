@@ -70,7 +70,7 @@ class FeedBridge(private val context: Context) {
 
         protected open val signatureHash = if (signatureHashRes > 0) context.resources.getInteger(signatureHashRes) else 0
 
-        open val supportsSmartspace = false
+        open val supportsSmartspace = true
 
         fun isAvailable(): Boolean {
             val info = context.packageManager.resolveService(Intent(overlayAction)

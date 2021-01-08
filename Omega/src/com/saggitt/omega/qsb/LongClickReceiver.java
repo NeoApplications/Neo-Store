@@ -26,8 +26,8 @@ import android.os.Bundle;
 
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.util.ComponentKey;
+import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.search.AppSearchProvider;
 
 import java.lang.ref.WeakReference;
 

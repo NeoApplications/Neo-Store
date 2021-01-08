@@ -144,7 +144,7 @@ public class LauncherAppWidgetInfo extends ItemInfo {
         writer.put(LauncherSettings.Favorites.APPWIDGET_ID, appWidgetId)
                 .put(LauncherSettings.Favorites.APPWIDGET_PROVIDER, providerName.flattenToString())
                 .put(LauncherSettings.Favorites.RESTORED, restoreStatus)
-                .put(LauncherSettings.Favorites.OPTIONS, options)
+                //.put(LauncherSettings.Favorites.OPTIONS, options)
                 .put(LauncherSettings.Favorites.INTENT, bindOptions);
     }
 

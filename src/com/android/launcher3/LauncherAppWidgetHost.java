@@ -60,13 +60,19 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
     private IntConsumer mAppWidgetRemovedCallback = null;
 
     public LauncherAppWidgetHost(Context context) {
+        this(context, null);
+    }
+
+    public LauncherAppWidgetHost(Context context,
+                                 IntConsumer appWidgetRemovedCallback) {
         super(context, APPWIDGET_HOST_ID);
         mContext = context;
+        mAppWidgetRemovedCallback = appWidgetRemovedCallback;
     }
 
     @Override
     protected LauncherAppWidgetHostView onCreateView(Context context, int appWidgetId,
-            AppWidgetProviderInfo appWidget) {
+                                                     AppWidgetProviderInfo appWidget) {
         LauncherAppWidgetHostView view = new LauncherAppWidgetHostView(context);
         mViews.put(appWidgetId, view);
         return view;

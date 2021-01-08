@@ -148,10 +148,10 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
                 postReInitUi()
             }
             key_drawer_background -> {
-                if (prefs.customBackground) {
-                    allAppsBackground = prefs.drawerBackgroundColor
+                allAppsBackground = if (prefs.customBackground) {
+                    prefs.drawerBackgroundColor
                 } else {
-                    allAppsBackground = defaultAllAppsBackground
+                    defaultAllAppsBackground
                 }
                 calculateEndScrim()
                 postReInitUi()

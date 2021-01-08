@@ -45,12 +45,12 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
+import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.Columns;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchBase;
 import com.google.protobuf.nano.MessageNano;
 import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.search.AppSearchProvider;
 import com.saggitt.omega.util.Config;
 
 import java.util.ArrayList;

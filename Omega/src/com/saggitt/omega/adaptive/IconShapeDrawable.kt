@@ -27,6 +27,7 @@ class IconShapeDrawable(private val size: Int, iconShape: IconShape) : Drawable(
     constructor(iconShape: IconShape) : this(-1, iconShape)
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.BLACK }
+
     private val path = Path()
 
     var iconShape = iconShape

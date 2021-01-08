@@ -60,20 +60,20 @@ class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
 
     private fun initListeners(e: SmartspaceDataContainer) {
         val weatherData: OmegaSmartspaceController.WeatherData? = if (e.isWeatherAvailable) {
-            SmartspaceDataWidget.parseWeatherData(e.dO.icon, e.dO.title)
+            SmartspaceDataWidget.parseWeatherData(e.weatherCard.icon, e.weatherCard.title)
         } else {
             null
         }
         val cardData: OmegaSmartspaceController.CardData? = if (e.isDataAvailable) {
-            val dp = e.dP
+            val dp = e.dataCard
             OmegaSmartspaceController.CardData(dp.icon, dp.title, dp.cx(true), dp.cy(), dp.cx(false))
         } else {
             null
         }
 
         handler.removeCallbacks(this)
-        if (e.isDataAvailable && e.dP.cv()) {
-            val cw = e.dP.cw()
+        if (e.isDataAvailable && e.dataCard.cv()) {
+            val cw = e.dataCard.cw()
             var min = 61000L - System.currentTimeMillis() % 60000L
             if (cw > 0L) {
                 min = Math.min(min, cw)
