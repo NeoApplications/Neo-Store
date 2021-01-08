@@ -172,6 +172,8 @@
 
     <string name="icon_pack">Icon pack</string>
     <string name="get_more_icon_packs">Get more</string>
+    <string name="menu_icon_shape">Custom Icon Shape</string>
+
     <string name="icon_shape_override_progress">"Applying icon shape changes"</string>
     <!-- Developer setting to change the shape of icons on home screen. [CHAR LIMIT=50] -->
     <string name="icon_shape_override_label">Change icon shape</string>
@@ -219,6 +221,11 @@
     <string name="title_legacy_colored_backgrounds">Coloured backgrounds</string>
     <string name="title_legacy_treatment">Create Adaptive Icons</string>
     <string name="title_white_only_treatment">Replace White Backgrounds</string>
+
+    <string name="preview_app_google_photos" translatable="false">Google Photos</string>
+    <string name="preview_app_instagram" translatable="false">Instagram</string>
+    <string name="preview_app_youtube" translatable="false">Youtube</string>
+    <string name="preview_app_whatsapp" translatable="false">WhatsApp</string>
 
     <!-- PREFERENCES SMARTSPACE -->
     <string name="title_show_google_app">Show Google app</string>
@@ -507,7 +514,6 @@
     <string name="loading">Loading…</string>
 
     <!-- WIDGET FEED -->
-
     <string name="feed_add_widget">Add Widget</string>
     <string name="feed_widget">Widgets</string>
 </resources>
