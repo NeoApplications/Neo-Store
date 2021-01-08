@@ -325,4 +325,9 @@
     <string name="action_press_back">Tilbake-knapp</string>
     <string name="feed_widget">Miniprogrammer</string>
     <string name="feed_add_widget">Legg til miniprogram</string>
+    <string name="title_desktop_icon_popup_menu">Oppsprettsmenyelementer</string>
+    <string name="dock_colored_google">Fargelegg ikoner</string>
+    <string name="needs_usage_access">Brukstilgang behøves</string>
+    <string name="action_open_widgets">Åpne miniprogramsskuff</string>
+    <string name="action_open_drawer_or_recents">Åpne nylige/programskuff</string>
 </resources>
