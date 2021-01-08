@@ -16,9 +16,15 @@
 
 package com.saggitt.omega.icons;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
@@ -32,7 +38,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.adaptive.IconShapeManager;
+import com.saggitt.omega.theme.ThemeOverride;
+import com.saggitt.omega.theme.ThemedContextProvider;
 import com.saggitt.omega.util.OmegaUtilsKt;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -49,6 +60,42 @@ public class IconCustomizeFragment extends Fragment {
     private boolean legacy;
     private boolean white;
     private boolean adaptive;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_icon_shape, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_custom_shape) {
+            showDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showDialog() {
+        ContextThemeWrapper themedContext = new ThemedContextProvider(getContext(), null, new ThemeOverride.Settings()).get();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(themedContext, new ThemeOverride.AlertDialog().getTheme(getContext()));
+        dialog.setTitle(R.string.menu_icon_shape);
+        dialog.setView(R.layout.icon_shape_customize_view);
+        dialog.setPositiveButton(android.R.string.ok, (dialog1, which) -> new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                prefs.setIconShape(IconShapeManager.Companion.getInstance(getContext()).getIconShape().toString());
+                dialog.cancel();
+            }
+        });
+        dialog.setNegativeButton(android.R.string.cancel, null);
+        dialog.create();
+        dialog.show();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,8 +117,7 @@ public class IconCustomizeFragment extends Fragment {
 
         //Load Shapes
         RecyclerView shapeView = view.findViewById(R.id.shape_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
-        shapeView.setLayoutManager(layoutManager);
+        shapeView.setLayoutManager(new GridLayoutManager(mContext, 4));
         IconShapeAdapter adapter = new IconShapeAdapter(Objects.requireNonNull(mContext));
         shapeView.setAdapter(adapter);
 

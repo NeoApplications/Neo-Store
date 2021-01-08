@@ -21,23 +21,26 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import java.util.*
 
-class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter.Holder>() {
-    private val adapterItems = ArrayList<ShapeModel>()
+class IconPreviewAdapter(context: Context) : RecyclerView.Adapter<IconPreviewAdapter.Holder>() {
+    private val adapterItems = ArrayList<PreviewIconModel>()
     private val mContext = context
+    private val iconColor = Color.WHITE
+    private val previewIcons = intArrayOf(R.drawable.ic_google_photos, R.drawable.ic_instagram_color,
+            R.drawable.ic_youtube_color, R.drawable.ic_whatsapp_color)
+    private val previewNames = intArrayOf(R.string.preview_app_google_photos, R.string.preview_app_instagram,
+            R.string.preview_app_youtube, R.string.preview_app_whatsapp)
 
     init {
-        val shapeItems = context.resources.getStringArray(R.array.icon_shape_values)
-        for (shape in shapeItems) {
-            adapterItems.add(ShapeModel(shape, Utilities.getOmegaPrefs(mContext).iconShape == shape))
+        for (i in 0..3) {
+            adapterItems.add(PreviewIconModel(previewIcons[i], previewNames[i], iconColor))
         }
-        adapterItems.removeAt(0)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -49,7 +52,7 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return createHolder(parent, R.layout.item_icon_shape, ::Holder)
+        return createHolder(parent, R.layout.item_icon_preview, ::Holder)
     }
 
     private inline fun createHolder(parent: ViewGroup, resource: Int, creator: (View) -> Holder): Holder {
@@ -57,30 +60,15 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val iconButton = itemView.findViewById<Button>(R.id.shape_icon)
-        private val check = itemView.findViewById<ImageView>(R.id.check_mark)
+        private val icon = itemView.findViewById<ImageView>(R.id.item_icon)
+        private val name = itemView.findViewById<TextView>(R.id.item_name)
         private var prefs = Utilities.getOmegaPrefs(mContext)
 
-        fun bind(item: ShapeModel, itemPosition: Int) {
-            val drawable = item.getIcon(mContext, item.shapeName)
-            drawable.setTint(mContext.getColor(R.color.transparentish))
-            if (prefs.iconShape == item.shapeName) {
-                drawable.setTint(prefs.accentColor)
-                item.isSelected = true
-                check.drawable.setTint(Color.WHITE)
-                check.visibility = View.VISIBLE
-            } else {
-                drawable.setTint(mContext.getColor(R.color.transparentish))
-                item.isSelected = false
-                check.visibility = View.INVISIBLE
-            }
-
-            iconButton.background = drawable
-            iconButton.setOnClickListener {
-                adapterItems.get(itemPosition).isSelected = true
-                prefs.iconShape = item.shapeName
-                notifyDataSetChanged()
-            }
+        fun bind(item: PreviewIconModel, position: Int) {
+            icon.setImageDrawable(item.getItemIcon(mContext))
+            val drawable = item.getShape(mContext, prefs.iconShape, item.itemColor)
+            icon.setBackground(drawable)
+            name.setText(item.getItemName())
         }
     }
 }
