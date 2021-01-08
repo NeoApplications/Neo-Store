@@ -92,20 +92,25 @@ public class PreviewFrameView extends LinearLayout implements OmegaPreferences.O
         Drawable drawable = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
         if (!shapeless) {
             if (prefs.getEnableWhiteOnlyTreatment()) {
-                drawable.setColorFilter(Color.parseColor("#FFFEDA"), PorterDuff.Mode.MULTIPLY);
-                icons[0].setBackground(drawable);
+                /*Instagram*/
+                Drawable drawable1 = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
+                drawable1.setColorFilter(Color.parseColor("#9f47d2"), PorterDuff.Mode.SRC_IN);
+                icons[0].setBackground(drawable1);
 
-                drawable = drawable.mutate();
-                drawable.setColorFilter(Color.parseColor("#DE1313"), PorterDuff.Mode.SRC_IN);
-                icons[1].setBackground(drawable);
+                /*Youtube*/
+                Drawable drawable2 = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
+                drawable2.setColorFilter(Color.parseColor("#bf1919"), PorterDuff.Mode.SRC_IN);
+                icons[1].setBackground(drawable2);
 
-                drawable = drawable.mutate();
-                drawable.setColorFilter(Color.parseColor("#1CA03C"), PorterDuff.Mode.SRC_IN);
-                icons[2].setBackground(drawable);
+                /*WhatsApp*/
+                Drawable drawable3 = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
+                drawable3.setColorFilter(Color.parseColor("#5eea7f"), PorterDuff.Mode.SRC_IN);
+                icons[2].setBackground(drawable3);
 
-                drawable = drawable.mutate();
-                drawable.setColorFilter(Color.parseColor("#0047C5"), PorterDuff.Mode.SRC_IN);
-                icons[3].setBackground(drawable);
+                /*Photos*/
+                Drawable drawable4 = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
+                drawable4.setColorFilter(Color.parseColor("#1c60d8"), PorterDuff.Mode.SRC_IN);
+                icons[3].setBackground(drawable4);
 
             } else {
                 drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
