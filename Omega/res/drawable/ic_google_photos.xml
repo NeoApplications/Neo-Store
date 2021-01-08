@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2020 Omega Launcher
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<vector android:height="32dp"
+    android:viewportHeight="122.88"
+    android:viewportWidth="122.88"
+    android:width="32dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <path
+        android:fillColor="#F6B704"
+        android:pathData="M30.72,27.97c16.95,0 30.72,13.77 30.72,30.72v2.83H2.83c-1.52,0 -2.75,-1.23 -2.83,-2.83C0,41.73 13.77,27.97 30.72,27.97L30.72,27.97z" />
+    <path
+        android:fillColor="#E54335"
+        android:pathData="M94.91,30.72c0,16.95 -13.77,30.72 -30.72,30.72l-2.75,0V2.83C61.44,1.3 62.67,0 64.19,0C81.22,0 94.91,13.77 94.91,30.72L94.91,30.72z" />
+    <path
+        android:fillColor="#4280EF"
+        android:pathData="M92.16,94.99c-16.95,0 -30.72,-13.77 -30.72,-30.72v-2.83h58.61c1.52,0 2.83,1.23 2.83,2.75C122.88,81.22 109.11,94.99 92.16,94.99L92.16,94.99L92.16,94.99z" />
+    <path
+        android:fillColor="#34A353"
+        android:pathData="M27.97,92.16c0,-16.95 13.77,-30.72 30.72,-30.72h2.75v58.61c0,1.52 -1.23,2.75 -2.83,2.83C41.66,122.88 27.97,109.11 27.97,92.16L27.97,92.16L27.97,92.16z" />
+</vector>
