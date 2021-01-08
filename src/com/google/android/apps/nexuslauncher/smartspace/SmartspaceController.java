@@ -129,8 +129,8 @@ public class SmartspaceController implements Handler.Callback {
     public void dumpInfo(final String s, final PrintWriter printWriter) {
         printWriter.println();
         printWriter.println(s + "SmartspaceController");
-        printWriter.println(s + "  weather " + this.dataContainer.dO);
-        printWriter.println(s + "  current " + this.dataContainer.dP);
+        printWriter.println(s + "  weather " + this.dataContainer.weatherCard);
+        printWriter.println(s + "  current " + this.dataContainer.dataCard);
     }
 
     public boolean cY() {
@@ -174,7 +174,7 @@ public class SmartspaceController implements Handler.Callback {
             case 101:
                 SmartspaceCard[] dVarArr = (SmartspaceCard[]) message.obj;
                 if (dVarArr != null) {
-                    this.dataContainer.dO = dVarArr.length > 0 ?
+                    this.dataContainer.dataCard = dVarArr.length > 0 ?
                             dVarArr[0] :
                             null;
 
@@ -183,7 +183,7 @@ public class SmartspaceController implements Handler.Callback {
                         dVar = dVarArr[1];
                     }
 
-                    eVar.dP = dVar;
+                    eVar.weatherCard = dVar;
                 }
                 this.dataContainer.clearAll();
                 update();

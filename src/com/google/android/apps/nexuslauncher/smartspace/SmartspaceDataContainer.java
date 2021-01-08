@@ -1,32 +1,32 @@
 package com.google.android.apps.nexuslauncher.smartspace;
 
 public class SmartspaceDataContainer {
-    public SmartspaceCard dO;
-    public SmartspaceCard dP;
+    public SmartspaceCard weatherCard;
+    public SmartspaceCard dataCard;
 
     public SmartspaceDataContainer() {
-        dO = null;
-        dP = null;
+        weatherCard = null;
+        dataCard = null;
     }
 
     public boolean isWeatherAvailable() {
-        return dO != null;
+        return weatherCard != null;
     }
 
     public boolean isDataAvailable() {
-        return dP != null;
+        return dataCard != null;
     }
 
     public long cT() {
         final long currentTimeMillis = System.currentTimeMillis();
         if (isDataAvailable() && isWeatherAvailable()) {
-            return Math.min(dP.cF(), dO.cF()) - currentTimeMillis;
+            return Math.min(dataCard.cF(), weatherCard.cF()) - currentTimeMillis;
         }
         if (isDataAvailable()) {
-            return dP.cF() - currentTimeMillis;
+            return dataCard.cF() - currentTimeMillis;
         }
         if (isWeatherAvailable()) {
-            return dO.cF() - currentTimeMillis;
+            return weatherCard.cF() - currentTimeMillis;
         }
         return 0L;
     }
@@ -34,18 +34,18 @@ public class SmartspaceDataContainer {
     public boolean clearAll() {
         final boolean b = true;
         boolean b2 = false;
-        if (isWeatherAvailable() && dO.cM()) {
-            dO = null;
+        if (isWeatherAvailable() && weatherCard.cM()) {
+            weatherCard = null;
             b2 = b;
         }
-        if (isDataAvailable() && dP.cM()) {
-            dP = null;
+        if (isDataAvailable() && dataCard.cM()) {
+            dataCard = null;
             b2 = b;
         }
         return b2;
     }
 
     public String toString() {
-        return "{" + dP + "," + dO + "}";
+        return "{" + dataCard + "," + weatherCard + "}";
     }
 }

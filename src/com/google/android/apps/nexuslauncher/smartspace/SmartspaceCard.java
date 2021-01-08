@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -16,9 +15,7 @@ import android.view.View;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.icons.GraphicsUtils;
-import com.android.launcher3.icons.ShadowGenerator;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.ColorManipulation;
 
@@ -29,11 +26,11 @@ import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspacePr
 
 public class SmartspaceCard {
     private final b dI;
-    private final long dJ;
-    private final int dK;
+    private final long gsaUpdateTime;
+    private final int gsaVersion;
     private final boolean dL;
     private final boolean dM;
-    private final long dN;
+    private final long published;
     private final Context mContext;
     private Bitmap mIcon;
     private final Intent mIntent;
@@ -44,9 +41,9 @@ public class SmartspaceCard {
         this.dM = dm;
         this.mIntent = mIntent;
         this.mIcon = mIcon;
-        this.dN = dn;
-        this.dJ = dj;
-        this.dK = dk;
+        this.published = dn;
+        this.gsaUpdateTime = dj;
+        this.gsaVersion = dk;
         this.dL = dl;
     }
 
@@ -62,11 +59,11 @@ public class SmartspaceCard {
                         BitmapFactory.decodeByteArray(iVar.dd, 0, iVar.dd.length, null);
 
                 if (bitmap != null) {
-                    ShadowGenerator shadowGenerator = new ShadowGenerator(
+                    /*ShadowGenerator shadowGenerator = new ShadowGenerator(
                             ResourceUtils.pxFromDp(48, context.getResources().getDisplayMetrics()));
                     Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
                     shadowGenerator.recreateIcon(bitmap, new Canvas(newBitmap));
-                    bitmap = newBitmap;
+                    bitmap = newBitmap;*/
                 }
 
                 return new SmartspaceCard(context, iVar.de, parseUri, z, bitmap, iVar.dc, iVar.df, iVar.dh, iVar.dg);
@@ -356,6 +353,6 @@ public class SmartspaceCard {
     }
 
     public String toString() {
-        return "title:" + this.getTitle() + " expires:" + this.cF() + " published:" + this.dN + " gsaVersion:" + this.dK + " gsaUpdateTime: " + this.dJ;
+        return "title:" + this.getTitle() + " expires:" + this.cF() + " published:" + this.published + " gsaVersion:" + this.gsaVersion + " gsaUpdateTime: " + this.gsaUpdateTime;
     }
 }

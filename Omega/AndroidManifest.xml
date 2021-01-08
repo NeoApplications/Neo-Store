@@ -17,19 +17,23 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Pixel -->
-    <permission
-        android:name="${applicationId}.permission.QSB"
-        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="signatureOrSystem" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.QSB" />
     <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
     <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
+
+    <!-- Pixel -->
+    <permission
+        android:name="${applicationId}.permission.QSB"
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="signatureOrSystem" />
 
     <uses-permission android:name="${applicationId}.permission.QSB" />
 
@@ -58,6 +62,8 @@
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <uses-permission android:name="android.permission.STATUS_BAR" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.INSTALL_SHORTCUT" />
@@ -85,6 +91,7 @@
         android:name="com.saggitt.omega.OmegaApp"
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
         android:fullBackupContent="@xml/backupscheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:fullBackupOnly="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -171,6 +178,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
+            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
+            android:theme="@style/SettingsTheme_Light.Transparent">
+            <intent-filter>
+                <action android:name="com.saggitt.omega.START_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
             android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
             android:label="@string/action_open_app_select_app"
             android:theme="@style/SettingsTheme_Light" />
@@ -217,19 +236,6 @@
             android:screenOrientation="locked"
             android:theme="@style/SleepTimeoutTheme" />
 
-        <!-- Widgets -->
-        <activity
-            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
-            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
-            android:theme="@style/SettingsTheme_Light.Transparent">
-            <intent-filter>
-                <action android:name="com.saggitt.omega.START_ACTION" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
         <!-- DT2S using device admin -->
         <receiver
             android:description="@string/dt2s_admin_hint"
@@ -242,18 +248,6 @@
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.saggitt.omega.widget.SmartspaceWidgetProvider"
-            android:exported="false"
-            android:label="@string/title__general_smartspace">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_smartspace" />
         </receiver>
 
         <service
@@ -325,6 +319,21 @@
             android:label="@string/feed_widget"
             android:theme="@style/WidgetPickerDialog" />
 
+        <!-- Pixel -->
+        <activity
+            android:name="com.google.android.apps.nexuslauncher.search.AppLaunchActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter android:priority="1">
+                <action android:name="com.google.android.apps.nexuslauncher.search.APP_LAUNCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="vnd.android.cursor.dir/vnd.android.search.suggest"
+                    android:scheme="content" />
+            </intent-filter>
+        </activity>
+
         <receiver
             android:name="com.saggitt.omega.qsb.OPAStatusReceiver"
             android:permission="android.permission.CAPTURE_AUDIO_HOTWORD">
@@ -356,7 +365,7 @@
         </provider>
 
         <provider
-            android:name="com.saggitt.omega.search.AppSearchProvider"
+            android:name="com.google.android.apps.nexuslauncher.search.AppSearchProvider"
             android:authorities="${applicationId}.appssearch"
             android:exported="true" />
     </application>

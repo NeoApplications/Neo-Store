@@ -364,7 +364,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
     private String cn() {
         final boolean b = true;
-        final SmartspaceCard dp = dq.dP;
+        final SmartspaceCard dp = dq.dataCard;
         return dp.cC(TextUtils.ellipsize(dp.cB(b), dB, getWidth() - getPaddingLeft()
                 - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) - dB.measureText(dp.cA(b)), TextUtils.TruncateAt.END).toString());
     }
@@ -414,7 +414,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
     public void onClick(final View view) {
         if (dq != null && dq.isDataAvailable()) {
-            dq.dP.click(view);
+            dq.dataCard.click(view);
         }
     }
 
@@ -444,7 +444,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
     protected void onLayout(final boolean b, final int n, final int n2, final int n3, final int n4) {
         super.onLayout(b, n, n2, n3, n4);
-        if (dq != null && dq.isDataAvailable() && dq.dP.cv()) {
+        if (dq != null && dq.isDataAvailable() && dq.dataCard.cv()) {
             final String cn = cn();
             if (!cn.contentEquals(mTitleText.getText())) {
                 mTitleText.setText(cn);
