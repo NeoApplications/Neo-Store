@@ -47,7 +47,6 @@ import com.saggitt.omega.util.DbHelper;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -289,12 +288,12 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         switch (sortType) {
             //SORT BY NAME AZ
             case SORT_AZ:
-                Collections.sort(mApps, mAppNameComparator);
+                mApps.sort(mAppNameComparator);
                 break;
 
             //SORT BY NAME ZA
             case SORT_ZA:
-                Collections.sort(mApps, (p2, p1) -> Collator
+                mApps.sort((p2, p1) -> Collator
                         .getInstance()
                         .compare(p1.title, p2.title));
                 break;
@@ -303,7 +302,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             case SORT_LAST_INSTALLED:
                 PackageManager pm = mLauncher.getApplicationContext().getPackageManager();
                 InstallTimeComparator installTimeComparator = new InstallTimeComparator(pm);
-                Collections.sort(mApps, installTimeComparator);
+                mApps.sort(installTimeComparator);
                 break;
 
             //SORT BY MOST USED DESC
@@ -312,14 +311,14 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 List<AppCountInfo> appsCounter = db.getAppsCount();
                 db.close();
                 MostUsedComparator mostUsedComparator = new MostUsedComparator(appsCounter);
-                Collections.sort(mApps, mostUsedComparator);
+                mApps.sort(mostUsedComparator);
                 break;
 
             case SORT_BY_COLOR:
-                Collections.sort(mApps, mAppColorComparator);
+                mApps.sort(mAppColorComparator);
                 break;
             default:
-                Collections.sort(mApps, mAppNameComparator);
+                mApps.sort(mAppNameComparator);
                 break;
 
         }
