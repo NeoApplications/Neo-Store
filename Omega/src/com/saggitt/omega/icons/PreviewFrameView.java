@@ -89,8 +89,7 @@ public class PreviewFrameView extends LinearLayout implements OmegaPreferences.O
     }
 
     private void loadBackground(boolean shapeless) {
-        String shape = prefs.getIconShape() != null ? prefs.getIconShape() : "squircle";
-        Drawable drawable = new IconShapeDrawable(IconShape.Companion.fromString(shape));
+        Drawable drawable = new IconShapeDrawable(IconShape.Companion.fromString(prefs.getIconShape()));
         if (!shapeless) {
             if (prefs.getEnableWhiteOnlyTreatment()) {
                 /*Instagram*/

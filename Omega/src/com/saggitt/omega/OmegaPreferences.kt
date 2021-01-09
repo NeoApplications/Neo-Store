@@ -102,6 +102,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
     private val drawerGridSizeDelegate = ResettableLazy { GridSize(this, "numColsDrawer", LauncherAppState.getIDP(context), recreate) }
     val drawerGridSize by drawerGridSizeDelegate
+    private val predictionGridSizeDelegate = ResettableLazy { GridSize(this, "numPredictions", LauncherAppState.getIDP(context), recreate) }
+    val predictionGridSize by predictionGridSizeDelegate
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
@@ -254,7 +256,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     fun migrateConfig(prefs: SharedPreferences) {
         val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
-        if (version != CURRENT_VERSION) {
+        /*if (version != CURRENT_VERSION) {
             with(prefs.edit()) {
                 // Migration codes here
 
@@ -265,6 +267,12 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                 putInt(VERSION_KEY, CURRENT_VERSION)
                 commit()
             }
+        }*/
+
+        with(prefs.edit()) {
+
+            putString("pref_iconShape", "squircle")
+            commit()
         }
     }
 
@@ -869,8 +877,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             INSTANCE?.apply {
                 onChangeListeners.clear()
                 onChangeCallback = null
-                dockGridSizeDelegate.resetValue()
-                drawerGridSizeDelegate.resetValue()
+                //dockGridSizeDelegate.resetValue()
+                //drawerGridSizeDelegate.resetValue()
             }
         }
     }

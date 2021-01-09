@@ -22,22 +22,6 @@
     <include
         android:id="@+id/preview_frame"
         layout="@layout/desktop_preview" />
-<!--
-    <com.saggitt.omega.icons.PreviewFrameView
-        android:id="@+id/icon_preview"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dock_preview_height" >
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/preview_icons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:clipChildren="true"
-        android:clipToPadding="true" />
-    </com.saggitt.omega.icons.PreviewFrameView> -->
 
     <RelativeLayout
         android:layout_width="match_parent"
