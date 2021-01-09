@@ -272,63 +272,28 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         with(prefs.edit()) {
 
             putString("pref_iconShape", "squircle")
+            putInt("pref_key__accent_color", R.color.colorAccent)
+            putInt("pref_notification_background", R.color.notification_background)
+            putFloat("pref_dockScale", 0.90f)
+            putBoolean("pref_allAppsGoogleSearch", false)
+            putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", false))
+            putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
+            // Home widget
+            val pillQsb = prefs.getBoolean("pref_showPixelBar", true)
+                    // The new dock qsb should be close enough I guess
+                    && !prefs.getBoolean("pref_fullWidthSearchbar", false)
+            putBoolean("pref_use_pill_qsb", pillQsb)
+            if (pillQsb) {
+                putBoolean("pref_dockSearchBar", false)
+            }
+            if (!prefs.getBoolean("pref_showDateOrWeather", true)) {
+                putString("pref_smartspace_widget_provider", BlankDataProvider::class.java.name)
+            }
+            val showAssistant = prefs.getBoolean("pref_showMic", false)
+            putBoolean("opa_enabled", showAssistant)
+            putBoolean("opa_assistant", showAssistant)
             commit()
         }
-    }
-
-    private fun initialConfig(editor: SharedPreferences.Editor, prefs: SharedPreferences) = with(editor) {
-
-        // Set flags
-        putBoolean("pref_legacyUpgrade", true)
-        putBoolean("pref_restoreSuccess", false)
-
-        putString("pref_iconShape", "square")
-
-        // misc
-        putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
-        putInt("pref_notification_background", R.color.notification_background)
-        putInt("pref_key__accent_color", R.color.colorAccent)
-        putBoolean("pref_allAppsGoogleSearch", false)
-        putFloat("pref_dockScale", 0.90f)
-
-        // Home widget
-        val pillQsb = prefs.getBoolean("pref_showPixelBar", true)
-                // The new dock qsb should be close enough I guess
-                && !prefs.getBoolean("pref_fullWidthSearchbar", false)
-        putBoolean("pref_use_pill_qsb", pillQsb)
-        if (pillQsb) {
-            putBoolean("pref_dockSearchBar", false)
-        }
-        if (!prefs.getBoolean("pref_showDateOrWeather", true)) {
-            putString("pref_smartspace_widget_provider", BlankDataProvider::class.java.name)
-        }
-        val showAssistant = prefs.getBoolean("pref_showMic", false)
-        putBoolean("opa_enabled", showAssistant)
-        putBoolean("opa_assistant", showAssistant)
-
-        // Theme
-        putString("pref_launcherTheme",
-                when (prefs.getString("pref_theme", "0")) {
-                    "1" -> ThemeManager.THEME_DARK
-                    "2" -> ThemeManager.THEME_USE_BLACK or ThemeManager.THEME_DARK
-                    else -> 0
-                }.toString())
-
-        putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", false))
-        // Gestures
-        /*putString("pref_gesture_swipe_down",
-                when (Integer.parseInt(prefs.getString("pref_pulldownAction", "1"))) {
-                    1 -> NotificationsOpenGestureHandler(context, null)
-                    2 -> StartGlobalSearchGestureHandler(context, null)
-                    3 -> StartAppSearchGestureHandler(context, null)
-                    else -> BlankGestureHandler(context, null)
-                }.toString())
-
-        if (prefs.getBoolean("pref_homeOpensDrawer", false)) {
-            putString("pref_gesture_press_home",
-                    OpenDrawerGestureHandler(context, null).toString())
-        }*/
-
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
