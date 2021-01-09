@@ -16,6 +16,7 @@ CAUTION: Nightly builds might be unstable.
 You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
 [![Telegram](https://img.shields.io/badge/Telegram-channel-blue.svg?style=for-the-badge)](https://t.me/omegalauncher)
+[![Telegram](https://img.shields.io/badge/Telegram-group-blue.svg?style=for-the-badge)](https://t.me/joinchat/RajJ6353J0XslUHt)
 
 ##  Working Features
 -   [X] Five modes of sorting apps in the drawer.
