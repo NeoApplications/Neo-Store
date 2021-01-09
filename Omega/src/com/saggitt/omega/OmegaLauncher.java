@@ -54,6 +54,7 @@ import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.CustomLauncherClient;
+import com.saggitt.omega.util.DbHelper;
 import com.saggitt.omega.views.OptionsPanel;
 
 import org.jetbrains.annotations.NotNull;
@@ -117,6 +118,10 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         contextUtils.setAppLanguage(mPrefs.getLanguage());
         showFolderNotificationCount = mPrefs.getFolderBadgeCount();
         dummyView = findViewById(R.id.dummy_view);
+
+        /*CREATE DB TO HANDLE APPS COUNT*/
+        DbHelper db = new DbHelper(this);
+        db.close();
 
     }
 
