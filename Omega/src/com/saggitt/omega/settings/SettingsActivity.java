@@ -96,7 +96,6 @@ import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.search.SearchProviderPreference;
 import com.saggitt.omega.search.SelectSearchProviderFragment;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
-import com.saggitt.omega.smartspace.OnboardingProvider;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.util.AboutUtils;
 import com.saggitt.omega.util.OmegaUtilsKt;
@@ -180,7 +179,7 @@ public class SettingsActivity extends SettingsBaseActivity
             overrideOpenAnim();
         }
 
-        Utilities.getDevicePrefs(this).edit().putBoolean(OnboardingProvider.PREF_HAS_OPENED_SETTINGS, true).apply();
+        //Utilities.getDevicePrefs(this).edit().putBoolean(OnboardingProvider.PREF_HAS_OPENED_SETTINGS, true).apply();
         defaultHome = resolveDefaultHome();
     }
 
@@ -216,11 +215,11 @@ public class SettingsActivity extends SettingsBaseActivity
     @NotNull
     @Override
     protected ThemeOverride.ThemeSet getThemeSet() {
-        if (hasPreview) {
-            return new ThemeOverride.SettingsTransparent();
-        } else {
-            return super.getThemeSet();
-        }
+        //if (hasPreview) {
+        //    return new ThemeOverride.SettingsTransparent();
+        //} else {
+        return super.getThemeSet();
+        //}
     }
 
     @Override
