@@ -69,7 +69,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.6.3"
-    def code = 105
+    def code = 107
 
     defaultConfig {
         minSdkVersion 25
@@ -122,7 +122,6 @@ android {
     productFlavors {
         aosp {
             dimension "app"
-            //applicationId 'com.saggitt.omega'
             testApplicationId 'com.android.launcher3.tests'
         }
 
@@ -141,12 +140,6 @@ android {
         }
     }
 
-    // Disable release builds for now
-    /*android.variantFilter { variant ->
-        if (variant.buildType.name.endsWith('release')) {
-            variant.setIgnore(true)
-        }
-    }*/
     lintOptions {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'

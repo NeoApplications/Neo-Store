@@ -34,7 +34,6 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.smartspace.BlankDataProvider
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
 import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
@@ -135,8 +134,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
     val dockBackgroundColor by IntPref("pref_dock_background_color", R.color.transparentish, recreate)
     private val dockGridSizeDelegate = ResettableLazy {
-        GridSize(this, "numHotseatIcons",
-                LauncherAppState.getIDP(context), recreate)
+        GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), recreate)
     }
     val dockGridSize by dockGridSizeDelegate
     var dockRadius by FloatPref("pref_dockRadius", 16f, recreate)
@@ -255,28 +253,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     fun migrateConfig(prefs: SharedPreferences) {
-        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
-        /*if (version != CURRENT_VERSION) {
-            with(prefs.edit()) {
-                // Migration codes here
-
-                if (version == 100) {
-                    initialConfig(this, prefs)
-                }
-
-                putInt(VERSION_KEY, CURRENT_VERSION)
-                commit()
-            }
-        }*/
-
         with(prefs.edit()) {
 
             putString("pref_iconShape", "squircle")
-            putInt("pref_key__accent_color", R.color.colorAccent)
+            /*putInt("pref_key__accent_color", Color.parseColor("#FFFF0068"))
             putInt("pref_notification_background", R.color.notification_background)
             putFloat("pref_dockScale", 0.90f)
             putBoolean("pref_allAppsGoogleSearch", false)
-            putBoolean("pref_hotseatShowArrow", prefs.getBoolean("pref_hotseatShowArrow", false))
+            putBoolean("pref_hotseatShowArrow", false)
             putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
             // Home widget
             val pillQsb = prefs.getBoolean("pref_showPixelBar", true)
@@ -291,7 +275,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             }
             val showAssistant = prefs.getBoolean("pref_showMic", false)
             putBoolean("opa_enabled", showAssistant)
-            putBoolean("opa_assistant", showAssistant)
+            putBoolean("opa_assistant", showAssistant)*/
             commit()
         }
     }
@@ -842,7 +826,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             INSTANCE?.apply {
                 onChangeListeners.clear()
                 onChangeCallback = null
-                //dockGridSizeDelegate.resetValue()
+                dockGridSizeDelegate.resetValue()
                 //drawerGridSizeDelegate.resetValue()
             }
         }

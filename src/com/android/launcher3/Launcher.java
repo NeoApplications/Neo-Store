@@ -342,8 +342,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         UiFactory.onCreate(this);
 
         mAppWidgetManager = AppWidgetManagerCompat.getInstance(this);
-        mAppWidgetHost = new LauncherAppWidgetHost(this,
-                appWidgetId -> getWorkspace().removeWidget(appWidgetId));
+        /*mAppWidgetHost = new LauncherAppWidgetHost(this,
+                appWidgetId -> getWorkspace().removeWidget(appWidgetId));*/
         mAppWidgetHost = new LauncherAppWidgetHost(this);
         mAppWidgetHost.startListening();
 

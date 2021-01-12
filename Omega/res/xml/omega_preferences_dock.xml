@@ -59,8 +59,9 @@
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.DockGridSizePreference
-        android:key="pref_numHotseatIcons"
+        android:key="pref_dock_grid_size"
         android:title="@string/title__dock_hotseat_icons"
+        android:persistent="true"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.SeekbarPreference

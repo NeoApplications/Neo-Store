@@ -132,6 +132,7 @@ public class SettingsActivity extends SettingsBaseActivity
     public final static String ALLOW_OVERLAP_PREF = "pref_allowOverlap";
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
+    public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
 
     public final static String EXTRA_TITLE = "title";
@@ -891,6 +892,9 @@ public class SettingsActivity extends SettingsBaseActivity
             final DialogFragment f;
             if (preference instanceof GridSizePreference) {
                 f = GridSizeDialogFragmentCompat.newInstance(preference.getKey());
+            } else if (preference instanceof SingleDimensionGridSizePreference) {
+                f = SingleDimensionGridSizeDialogFragmentCompat.Companion
+                        .newInstance(preference.getKey());
             } else if (preference instanceof GesturePreference) {
                 f = SelectGestureHandlerFragment.Companion
                         .newInstance((GesturePreference) preference);
@@ -899,9 +903,6 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
-            } else if (preference instanceof SingleDimensionGridSizePreference) {
-                f = SingleDimensionGridSizeDialogFragmentCompat.Companion
-                        .newInstance(preference.getKey());
             } else if (preference instanceof SmartspaceEventProvidersPreference) {
                 f = SmartspaceEventProvidersFragment.Companion.newInstance(preference.getKey());
             } else if (preference instanceof CustomDialogPreference) {
