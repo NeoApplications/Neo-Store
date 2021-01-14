@@ -69,7 +69,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.6.3"
-    def code = 107
+    def code = 108
 
     defaultConfig {
         minSdkVersion 25
@@ -101,6 +101,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            applicationIdSuffix ".dev"
         }
         release {
             minifyEnabled false
