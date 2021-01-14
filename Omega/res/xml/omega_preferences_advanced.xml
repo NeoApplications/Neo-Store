@@ -42,7 +42,7 @@
 
         <!--suppress AndroidDomInspection (Injected at compile time) -->
         <intent
-            android:targetClass="com.saggitt.omega.backup.BackupListActivity"
-            android:targetPackage="@string/application_id" />
+            android:targetPackage="@string/application_id"
+            android:targetClass="com.saggitt.omega.backup.BackupListActivity" />
     </Preference>
 </PreferenceScreen>

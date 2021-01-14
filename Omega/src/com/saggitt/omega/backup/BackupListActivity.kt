@@ -6,9 +6,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
@@ -45,7 +44,7 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
     }
 
     private fun loadLocalBackups() {
-        if (checkSelfPermission(this, READ_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             READ_EXTERNAL_STORAGE)) {
@@ -153,12 +152,12 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == 1 && resultCode == AppCompatActivity.RESULT_OK) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             if (resultData != null) {
                 adapter.addItem(OmegaBackup(this, resultData.data!!))
                 saveChanges()
             }
-        } else if (requestCode == 2 && resultCode == AppCompatActivity.RESULT_OK) {
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
             if (resultData != null) {
                 val takeFlags = intent.flags and
                         (Intent.FLAG_GRANT_READ_URI_PERMISSION or

@@ -444,7 +444,6 @@
     <string name="backup_location">Location</string>
     <string name="backup_location_device_storage">Omega Folder</string>
     <string name="read_external_storage_required">To create a Backup, grant the Storage permission.</string>
-    <string name="application_id" translatable="false">com.saggitt.omega</string>
     <string name="local_backups">In Storage</string>
 
     <!-- DEVELOPER -->

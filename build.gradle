@@ -40,7 +40,7 @@ buildscript {
                 uiautomator            : "2.2.0",
                 annotation             : "1.1.0",
 
-                kotlin                 : "1.4.10",
+                kotlin                 : "1.4.21",
                 protobuf               : "0.8.12"
         ]
     }
@@ -51,7 +51,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath "com.google.protobuf:protobuf-gradle-plugin:${versions.protobuf}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
@@ -69,7 +69,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.6.3"
-    def code = 108
+    def code = 109
 
     defaultConfig {
         minSdkVersion 25
@@ -123,6 +123,7 @@ android {
     productFlavors {
         aosp {
             dimension "app"
+            applicationId 'com.saggitt.omega'
             testApplicationId 'com.android.launcher3.tests'
         }
 
@@ -136,7 +137,6 @@ android {
         }
 
         omega {
-            applicationId 'com.saggitt.omega'
             dimension "custom"
         }
     }
@@ -202,7 +202,7 @@ android {
     }
 }
 
-afterEvaluate {
+project.afterEvaluate {
     android.applicationVariants.all { variant ->
         variant.resValue 'string', 'application_id', variant.applicationId
     }
