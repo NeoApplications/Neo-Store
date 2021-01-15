@@ -52,6 +52,8 @@ public class AppInfo extends ItemInfoWithIcon {
     // Section name used for indexing.
     public String sectionName = "";
 
+    public CharSequence originalTitle;
+
     public AppInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
     }
@@ -83,6 +85,7 @@ public class AppInfo extends ItemInfoWithIcon {
     public AppInfo(AppInfo info) {
         super(info);
         componentName = info.componentName;
+        originalTitle = Utilities.trim(info.originalTitle);
         title = Utilities.trim(info.title);
         intent = new Intent(info.intent);
         user = info.user;

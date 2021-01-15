@@ -40,7 +40,6 @@ import com.android.launcher3.ItemInfo;
 import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.R;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.allapps.AllAppsStore;
@@ -293,9 +292,7 @@ public class PredictionRowView extends LinearLayout implements
         for (ComponentKeyMapper mapper : components) {
             ItemInfoWithIcon info = mapper.getApp(getAppsStore());
             if (info != null) {
-                ItemInfoWithIcon predictedApp = info.clone();
-                predictedApp.container = LauncherSettings.Favorites.CONTAINER_PREDICTION;
-                predictedApps.add(predictedApp);
+                predictedApps.add(info);
             } else {
                 if (FeatureFlags.IS_DOGFOOD_BUILD) {
                     Log.e(TAG, "Predicted app not found: " + mapper);
