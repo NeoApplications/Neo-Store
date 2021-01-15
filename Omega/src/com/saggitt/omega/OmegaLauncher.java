@@ -1,24 +1,23 @@
 /*
- *  Copyright (c) 2020 Omega Launcher
+ *  This file is part of Omega Launcher.
+ *  Copyright (c) 2021   Saul Henriquez
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.saggitt.omega;
 
-
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,19 +32,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.FolderInfo;
 import com.android.launcher3.ItemInfo;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
+import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
@@ -53,7 +50,6 @@ import com.saggitt.omega.override.CustomInfoProvider;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
-import com.saggitt.omega.util.CustomLauncherClient;
 import com.saggitt.omega.util.DbHelper;
 import com.saggitt.omega.views.OptionsPanel;
 
@@ -68,7 +64,7 @@ import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
-public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPreferenceChangeListener {
+public class OmegaLauncher extends NexusLauncherActivity implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
@@ -77,16 +73,16 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
     private boolean sRestart = false;
     private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
-    private OmegaLauncherCallbacks launcherCallbacks;
+    //private OmegaLauncherCallbacks launcherCallbacks;
     private GestureController mGestureController;
     public View dummyView;
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
 
-    public OmegaLauncher() {
+    /*public OmegaLauncher() {
         launcherCallbacks = new OmegaLauncherCallbacks(this);
         setLauncherCallbacks(launcherCallbacks);
-    }
+    }*/
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -150,8 +146,8 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
 
     public void onDestroy() {
         super.onDestroy();
-        Utilities.getOmegaPrefs(this).unregisterCallback();
-        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this);
+        //Utilities.getOmegaPrefs(this).unregisterCallback();
+        //Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this);
 
         if (sRestart) {
             sRestart = false;
@@ -258,7 +254,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         }
     }
 
-    @Nullable
+    /*@Nullable
     public CustomLauncherClient getGoogleNow() {
         return launcherCallbacks.getClient();
     }
@@ -270,7 +266,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
     public AnimatorSet openQsb() {
         return launcherCallbacks.getQsbController().openQsb();
     }
-
+*/
     public void prepareDummyView(View view, @NotNull Function0<Unit> callback) {
         Rect rect = new Rect();
         getDragLayer().getViewRectRelativeToSelf(view, rect);
@@ -294,8 +290,8 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         dummyView.post(callback::invoke);
     }
 
-    public void registerSmartspaceView(SmartspaceView smartspace) {
+    /*public void registerSmartspaceView(SmartspaceView smartspace) {
         launcherCallbacks.registerSmartspaceView(smartspace);
-    }
+    }*/
 
 }
