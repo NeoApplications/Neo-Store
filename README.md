@@ -12,7 +12,7 @@ are only available in the Telegram channel.<br/>
 Nightly builds are now available at Github actions [![artifacts](https://github.com/otakuhqz/Omega/actions)]
 CAUTION: Nightly builds might be unstable.
 
-F-Droid Repo
+F-Droid Repo:<br>
 Download the current debug version by adding the following repo to the F-Droid App
 [https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo](https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo)
 ## Community
@@ -94,9 +94,9 @@ If you know Java or Kotlin you can work on additional features!
 I will happily work on features you would like to have, just open an issue.
 
 ## Credits
-The LawnchairLauncher team for the great work on Lawnchair.
-@machiav3lli for creating the logo and his great contributions in the project.
-@rafaelvenancio98 for creating the F-droid repo.
+The LawnchairLauncher team for the great work on Lawnchair.<br>
+[Antonios Hazim](https://github.com/machiav3lli) for creating the logo and his great contributions in the project.<br>
+[Rafael Venancio](https://github.com/rafaelvenancio98) for creating the F-droid repo.
 
 ## Translation
 Translations are handled via Weblate. If want to help, visit [Hosted Weblate](https://hosted.weblate.org/projects/omegalauncher/)
