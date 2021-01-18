@@ -12,6 +12,9 @@ are only available in the Telegram channel.<br/>
 Nightly builds are now available at Github actions [![artifacts](https://github.com/otakuhqz/Omega/actions)]
 CAUTION: Nightly builds might be unstable.
 
+F-Droid Repo
+Download the current debug version by adding the following repo to the F-Droid App
+[https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo](https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo)
 ## Community
 You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
@@ -84,11 +87,16 @@ to discuss the development, issues and new features.<br/>
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
     alt="Buy Me A Coffee" width="150" >
 </a><br/>
-[![Donate on PayPal](https://img.shields.io/badge/PayPal-Donate%20Now-red.svg?style=for-the-badge)](https://paypal.me/saulhenriquez)
+[![Donate on PayPal](https://img..ishieldso/badge/PayPal-Donate%20Now-red.svg?style=for-the-badge)](https://paypal.me/saulhenriquez)
 
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
 I will happily work on features you would like to have, just open an issue.
+
+## Credits
+The LawnchairLauncher team for the great work on Lawnchair.
+@machiav3lli for creating the logo and his great contributions in the project.
+@rafaelvenancio98 for creating the F-droid repo.
 
 ## Translation
 Translations are handled via Weblate. If want to help, visit [Hosted Weblate](https://hosted.weblate.org/projects/omegalauncher/)
