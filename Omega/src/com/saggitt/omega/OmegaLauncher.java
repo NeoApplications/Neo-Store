@@ -73,16 +73,10 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
     private boolean sRestart = false;
     private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
 
-    //private OmegaLauncherCallbacks launcherCallbacks;
     private GestureController mGestureController;
     public View dummyView;
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
-
-    /*public OmegaLauncher() {
-        launcherCallbacks = new OmegaLauncherCallbacks(this);
-        setLauncherCallbacks(launcherCallbacks);
-    }*/
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -110,6 +104,12 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         OmegaPreferences mPrefs = Utilities.getOmegaPrefs(mContext);
         mPrefs.registerCallback(prefCallback);
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
+
+        if (mPrefs.getFirstRun()) {
+            mPrefs.setFirstRun(false);
+            mPrefs.setIconShape("cylinder");
+        }
+
         ContextUtils contextUtils = new ContextUtils(this);
         contextUtils.setAppLanguage(mPrefs.getLanguage());
         showFolderNotificationCount = mPrefs.getFolderBadgeCount();

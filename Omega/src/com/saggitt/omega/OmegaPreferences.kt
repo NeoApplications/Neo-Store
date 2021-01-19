@@ -177,6 +177,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var language by StringPref("pref_key__language", "", recreate)
 
     /* --BLUR--*/
+    var firstRun by BooleanPref("pref_first_run", true)
     var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
@@ -254,30 +255,15 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     fun migrateConfig(prefs: SharedPreferences) {
-        with(prefs.edit()) {
+        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
+        if (version != CURRENT_VERSION) {
+            with(prefs.edit()) {
+                // Migration codes here
+                putString("pref_iconShape", "cylinder")
 
-            //putString("pref_iconShape", "squircle")
-            /*putInt("pref_key__accent_color", Color.parseColor("#FFFF0068"))
-            putInt("pref_notification_background", R.color.notification_background)
-            putFloat("pref_dockScale", 0.90f)
-            putBoolean("pref_allAppsGoogleSearch", false)
-            putBoolean("pref_hotseatShowArrow", false)
-            putBoolean("pref_add_icon_to_home", prefs.getBoolean("pref_autoAddShortcuts", true))
-            // Home widget
-            val pillQsb = prefs.getBoolean("pref_showPixelBar", true)
-                    // The new dock qsb should be close enough I guess
-                    && !prefs.getBoolean("pref_fullWidthSearchbar", false)
-            putBoolean("pref_use_pill_qsb", pillQsb)
-            if (pillQsb) {
-                putBoolean("pref_dockSearchBar", false)
+                putInt(VERSION_KEY, CURRENT_VERSION)
+                commit()
             }
-            if (!prefs.getBoolean("pref_showDateOrWeather", true)) {
-                putString("pref_smartspace_widget_provider", BlankDataProvider::class.java.name)
-            }
-            val showAssistant = prefs.getBoolean("pref_showMic", false)
-            putBoolean("opa_enabled", showAssistant)
-            putBoolean("opa_assistant", showAssistant)*/
-            commit()
         }
     }
 
