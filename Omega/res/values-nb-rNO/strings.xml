@@ -327,4 +327,35 @@
     <string name="needs_usage_access">Brukstilgang behøves</string>
     <string name="action_open_widgets">Åpne miniprogramsskuff</string>
     <string name="action_open_drawer_or_recents">Åpne nylige/programskuff</string>
+    <string name="action_sleep_timeout">Dvalgang ved bruk av skjermtidsavbrudd</string>
+    <string name="action_global_search">Start globalt søk</string>
+    <string name="icu_abbrev_time_12h">hh mm aa</string>
+    <string name="icu_abbrev_wday_month_day_no_year">EEEEdMMM</string>
+    <string name="full_wday_month_day_no_year">EEEE, d MMMM</string>
+    <string name="onbording">Førstegangsveivisning</string>
+    <string name="title_use_pill_qsb">Vis pillesøke-snarvei</string>
+    <string name="title_force_shapeless">Påtving formløse ikoner</string>
+    <string name="title_adaptify_pack">Opprett tilpasningsdyktige ikoner for ikonpakke</string>
+    <string name="import_as_adaptive">Som tilpasningsdyktig ikon</string>
+    <string name="menu_icon_shape">Egendefinert ikonform</string>
+    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="title_all_apps_google_search">Globalt søk</string>
+    <string name="pref_category__incubating">Inkubasjon</string>
+    <string name="summary__general_notifications">Skilt-telling, skiltfarge, håndvendinger</string>
+    <string name="summary__general_dock">Hovedsete-ikoner, søkefelt</string>
+    <string name="permission_iplocate_twilight_explanation">Tillat tilgang til omtrentlig posisjon\? Dette tillater mer nøyaktig dagslysutregning.</string>
+    <string name="icu_abbrev_time">HH mm</string>
+    <string name="icu_abbrev_date">dd MMMM</string>
+    <string name="title__folder_badge_count">Vis mappeantall i skilt</string>
+    <string name="action_open_dash">Vis oversikt</string>
+    <string name="action_sleep">Dvalgang</string>
+    <string name="gesture_dock_swipe_up">Dra oppover fra dokken</string>
+    <string name="dt2s_admin_hint">Innvilg tilgangen for å bruke dobbeltklikk for dvalgang.</string>
+    <string name="dt2s_admin_warning">Dobbelttrykk for å skru av dvalgang.</string>
+    <string name="local_backups">I lager</string>
+    <string name="edit_dash">Rediger oversikt</string>
+    <string name="home_widget">I oversikt</string>
+    <string name="smartspace_widget_provider_not_found">Hente Google-programmet.</string>
+    <string name="smartspace_provider_bridge">Rotløs pixel-bro</string>
+    <string name="title_legacy_treatment">Opprett tilpasningsdyktige ikoner</string>
 </resources>
