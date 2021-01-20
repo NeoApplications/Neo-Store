@@ -21,7 +21,6 @@ package com.saggitt.omega;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -47,7 +46,6 @@ import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
-import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.DbHelper;
@@ -93,11 +91,6 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         }
         IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
         super.onCreate(savedInstanceState);
-
-        SharedPreferences prefs = Utilities.getPrefs(this);
-        if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
-            prefs.edit().putBoolean("pref_enable_minus_one", false).apply();
-        }
 
         mContext = this;
 
@@ -146,8 +139,8 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
 
     public void onDestroy() {
         super.onDestroy();
-        //Utilities.getOmegaPrefs(this).unregisterCallback();
-        //Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this);
+        Utilities.getOmegaPrefs(this).unregisterCallback();
+        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this);
 
         if (sRestart) {
             sRestart = false;
@@ -254,19 +247,6 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         }
     }
 
-    /*@Nullable
-    public CustomLauncherClient getGoogleNow() {
-        return launcherCallbacks.getClient();
-    }
-
-    public void playQsbAnimation() {
-        launcherCallbacks.getQsbController().dZ();
-    }
-
-    public AnimatorSet openQsb() {
-        return launcherCallbacks.getQsbController().openQsb();
-    }
-*/
     public void prepareDummyView(View view, @NotNull Function0<Unit> callback) {
         Rect rect = new Rect();
         getDragLayer().getViewRectRelativeToSelf(view, rect);
@@ -289,9 +269,4 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         dummyView.requestLayout();
         dummyView.post(callback::invoke);
     }
-
-    /*public void registerSmartspaceView(SmartspaceView smartspace) {
-        launcherCallbacks.registerSmartspaceView(smartspace);
-    }*/
-
 }

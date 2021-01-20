@@ -69,7 +69,7 @@ import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TransformingTouchDelegate;
 import com.android.launcher3.views.ActivityContext;
-import com.saggitt.omega.OmegaLauncher;
+import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
@@ -400,7 +400,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             float i2;
             i = mIsRtl ? getPaddingLeft() : (getWidth() - getPaddingRight()) - getMicWidth();
             int paddingTop = getPaddingTop();
-            int paddingLeft = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
+            int paddingLeft3 = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
             int paddingBottom = LauncherAppState.getInstance(getContext()).getInvariantDeviceProfile().iconBitmapSize - getPaddingBottom();
             float f = ((float) (paddingBottom - paddingTop)) * 0.5f;
             float i3 = micStrokeWidth / 2.0f;
@@ -408,9 +408,9 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
                 i2 = i3;
             } else {
                 i2 = i3;
-                canvas.drawRoundRect(i + i3, paddingTop + i3, paddingLeft - i3, (paddingBottom - i3) + 1, f, f, CV);
+                canvas.drawRoundRect(i + i3, paddingTop + i3, paddingLeft3 - i3, (paddingBottom - i3) + 1, f, f, CV);
             }
-            canvas.drawRoundRect(i + i2, paddingTop + i2, paddingLeft - i2, (paddingBottom - i2) + 1, f, f, mMicStrokePaint);
+            canvas.drawRoundRect(i + i2, paddingTop + i2, paddingLeft3 - i2, (paddingBottom - i2) + 1, f, f, mMicStrokePaint);
         }
     }
 
@@ -755,8 +755,8 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         return mMicIconView.getVisibility() == View.VISIBLE && Utilities.getOmegaPrefs(mContext).getDualBubbleSearch();
     }
 
-    protected OmegaLauncher getLauncher() {
-        return (OmegaLauncher) mActivity;
+    protected NexusLauncherActivity getLauncher() {
+        return (NexusLauncherActivity) mActivity;
     }
 }
 

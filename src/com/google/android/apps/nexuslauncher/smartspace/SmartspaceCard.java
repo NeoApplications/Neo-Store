@@ -15,7 +15,9 @@ import android.view.View;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.icons.GraphicsUtils;
+import com.android.launcher3.icons.ShadowGenerator;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.ColorManipulation;
 
@@ -59,11 +61,11 @@ public class SmartspaceCard {
                         BitmapFactory.decodeByteArray(iVar.dd, 0, iVar.dd.length, null);
 
                 if (bitmap != null) {
-                    /*ShadowGenerator shadowGenerator = new ShadowGenerator(
+                    ShadowGenerator shadowGenerator = new ShadowGenerator(
                             ResourceUtils.pxFromDp(48, context.getResources().getDisplayMetrics()));
-                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                     shadowGenerator.recreateIcon(bitmap, new Canvas(newBitmap));
-                    bitmap = newBitmap;*/
+                    bitmap = newBitmap;
                 }
 
                 return new SmartspaceCard(context, iVar.de, parseUri, z, bitmap, iVar.dc, iVar.df, iVar.dh, iVar.dg);

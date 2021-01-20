@@ -25,6 +25,7 @@ import androidx.annotation.Keep
 import androidx.preference.Preference
 import com.android.launcher3.R
 import com.saggitt.omega.preferences.PreferenceController
+import com.saggitt.omega.smartspace.FeedBridge
 
 @Keep
 class MinusOneController(context: Context) : PreferenceController(context) {
@@ -32,7 +33,12 @@ class MinusOneController(context: Context) : PreferenceController(context) {
     override val title get() = getDisplayGoogleTitle()
 
     override val onChange = Preference.OnPreferenceChangeListener { pref, newValue ->
-        newValue != true
+        if (newValue == true && !FeedBridge.getInstance(context).isInstalled()) {
+            pref.preferenceManager.showDialog(pref)
+            false
+        } else {
+            true
+        }
     }
 
     @SuppressLint("StringFormatInvalid")

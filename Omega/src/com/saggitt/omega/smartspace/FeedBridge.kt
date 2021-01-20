@@ -120,7 +120,7 @@ class FeedBridge(private val context: Context) {
                     Log.d("FeedBridge", "Feed provider $packageName(0x$hash) isn't whitelisted")
                 }
             }
-            return disableWhitelist || signatureHash != -1 && super.isSigned()
+            return disableWhitelist || signatureHash != -1
         }
     }
 

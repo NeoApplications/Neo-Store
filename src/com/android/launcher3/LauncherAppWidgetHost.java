@@ -24,6 +24,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -290,6 +291,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
         }
 
         try {
+            Log.d("LauncherAppWidget", "Widget ID " + widgetId);
             startAppWidgetConfigureActivityForResult(activity, widgetId, 0, requestCode, null);
         } catch (ActivityNotFoundException | SecurityException e) {
             Toast.makeText(activity, R.string.activity_not_found, Toast.LENGTH_SHORT).show();

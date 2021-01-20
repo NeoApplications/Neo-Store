@@ -29,6 +29,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.RemoteViews
@@ -196,6 +197,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val providers = appWidgetManager.installedProviders.filter { it.provider == smartspaceProviderComponent }
             val provider = providers.firstOrNull()
+            Log.d(TAG, "Provider " + provider)
             if (provider != null) {
                 return provider
             } else {

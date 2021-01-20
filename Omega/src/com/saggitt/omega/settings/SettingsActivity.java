@@ -58,6 +58,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceRecyclerViewAccessibilityDelegate;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 import androidx.preference.TwoStatePreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
@@ -97,6 +98,7 @@ import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.search.SearchProviderPreference;
 import com.saggitt.omega.search.SelectSearchProviderFragment;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
+import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.util.AboutUtils;
 import com.saggitt.omega.util.OmegaUtilsKt;
@@ -217,11 +219,11 @@ public class SettingsActivity extends SettingsBaseActivity
     @NotNull
     @Override
     protected ThemeOverride.ThemeSet getThemeSet() {
-        //if (hasPreview) {
-        //    return new ThemeOverride.SettingsTransparent();
-        //} else {
-        return super.getThemeSet();
-        //}
+        if (hasPreview) {
+            return new ThemeOverride.SettingsTransparent();
+        } else {
+            return super.getThemeSet();
+        }
     }
 
     @Override
@@ -275,6 +277,7 @@ public class SettingsActivity extends SettingsBaseActivity
                 return true;
             });
         }
+
     }
 
     private String resolveDefaultHome() {
@@ -759,6 +762,13 @@ public class SettingsActivity extends SettingsBaseActivity
         public void onResume() {
             super.onResume();
             setActivityTitle();
+            if (getContent() == R.xml.omega_preferences_smartspace) {
+                SwitchPreference minusOne = findPreference(ENABLE_MINUS_ONE_PREF);
+                if (minusOne != null && !FeedBridge.Companion.getInstance(getActivity())
+                        .isInstalled()) {
+                    minusOne.setChecked(false);
+                }
+            }
         }
 
         protected void setActivityTitle() {
@@ -785,13 +795,21 @@ public class SettingsActivity extends SettingsBaseActivity
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            if (SHOW_PREDICTIONS_PREF.equals(preference.getKey())) {
-                if ((boolean) newValue) {
-                    return true;
-                }
-                SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
-                confirmationFragment.setTargetFragment(this, 0);
-                confirmationFragment.show(getFragmentManager(), preference.getKey());
+            switch (preference.getKey()) {
+                case SHOW_PREDICTIONS_PREF:
+                    if ((boolean) newValue) {
+                        return true;
+                    }
+                    SuggestionConfirmationFragment confirmationFragment = new SuggestionConfirmationFragment();
+                    confirmationFragment.setTargetFragment(this, 0);
+                    confirmationFragment.show(getFragmentManager(), preference.getKey());
+                    break;
+                case ENABLE_MINUS_ONE_PREF:
+                    Log.d("SettingsActivity", "Enable Google App");
+                    if (FeedBridge.Companion.getInstance(getActivity()).isInstalled()) {
+                        return true;
+                    }
+                    break;
             }
             return false;
         }
@@ -1133,8 +1151,5 @@ public class SettingsActivity extends SettingsBaseActivity
                 prefsCallback.reloadAll();
             }
         }
-    }
-
-    public interface PreviewFragment {
     }
 }
