@@ -59,10 +59,21 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
                 providers.addAll(mAppWidgetManager.getInstalledProvidersForProfile(user));
             }
 
+            Iterator<AppWidgetProviderInfo> iterator = providers.iterator();
+            while (iterator.hasNext()) {
+                if (isBlacklisted(iterator.next().provider.getPackageName())) {
+                    iterator.remove();
+                }
+            }
+
             if (FeatureFlags.ENABLE_CUSTOM_WIDGETS) {
                 providers.addAll(CustomWidgetParser.getCustomWidgets(mContext));
             }
             return providers;
+        }
+
+        if (isBlacklisted(packageUser.mPackageName)) {
+            return Collections.emptyList();
         }
 
         // Only get providers for the given package/user.

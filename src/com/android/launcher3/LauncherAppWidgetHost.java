@@ -133,7 +133,8 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
         if (isResumed) {
             mFlags |= FLAG_RESUMED;
             // Start listening if we were supposed to start listening on resume
-            if ((mFlags & FLAG_LISTEN_IF_RESUMED) != 0 && (mFlags & FLAG_LISTENING) == 0) {
+            //if ((mFlags & FLAG_LISTEN_IF_RESUMED) != 0 && (mFlags & FLAG_LISTENING) == 0) {
+            if ((mFlags & FLAG_LISTEN_IF_RESUMED) != 0) {
                 startListening();
             }
         } else {
@@ -289,9 +290,8 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
             sendActionCancelled(activity, requestCode);
             return;
         }
-
+        Log.d("LauncherAppWidget", "Widget ID " + widgetId);
         try {
-            Log.d("LauncherAppWidget", "Widget ID " + widgetId);
             startAppWidgetConfigureActivityForResult(activity, widgetId, 0, requestCode, null);
         } catch (ActivityNotFoundException | SecurityException e) {
             Toast.makeText(activity, R.string.activity_not_found, Toast.LENGTH_SHORT).show();

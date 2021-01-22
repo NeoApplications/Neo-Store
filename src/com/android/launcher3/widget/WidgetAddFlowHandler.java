@@ -67,10 +67,10 @@ public class WidgetAddFlowHandler implements Parcelable {
 
     /**
      * Starts the widget configuration flow if needed.
+     *
      * @return true if the configuration flow was started, false otherwise.
      */
-    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info,
-            int requestCode) {
+    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info, int requestCode) {
         if (!needsConfigure()) {
             return false;
         }

@@ -33,11 +33,13 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.custom.CustomWidgetParser;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class AppWidgetManagerCompat {
 
+    private static final List<String> EMUI_BLACKLIST = Arrays.asList("com.android.systemui", "com.android.gallery3d", "com.android.mediacenter", "com.android.settings");
     private static final Object sInstanceLock = new Object();
     private static AppWidgetManagerCompat sInstance;
 
@@ -52,6 +54,10 @@ public abstract class AppWidgetManagerCompat {
             }
             return sInstance;
         }
+    }
+
+    boolean isBlacklisted(String packageName) {
+        return Utilities.isEmui() && (packageName.toLowerCase().contains("huawei") || EMUI_BLACKLIST.contains(packageName));
     }
 
     final AppWidgetManager mAppWidgetManager;

@@ -18,8 +18,10 @@ package com.android.launcher3.compat;
 
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.os.Build;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.util.PackageUserKey;
@@ -33,6 +35,7 @@ class AppWidgetManagerCompatVO extends AppWidgetManagerCompatVL {
         super(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public List<AppWidgetProviderInfo> getAllProviders(@Nullable PackageUserKey packageUser) {
         if (FeatureFlags.GO_DISABLE_WIDGETS) {
@@ -40,6 +43,9 @@ class AppWidgetManagerCompatVO extends AppWidgetManagerCompatVL {
         }
         if (packageUser == null) {
             return super.getAllProviders(null);
+        }
+        if (isBlacklisted(packageUser.mPackageName)) {
+            return Collections.emptyList();
         }
         return mAppWidgetManager.getInstalledProvidersForPackage(packageUser.mPackageName,
                 packageUser.mUser);

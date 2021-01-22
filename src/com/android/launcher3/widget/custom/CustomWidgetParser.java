@@ -64,7 +64,6 @@ public class CustomWidgetParser {
         int index = sWidgetsIdMap.indexOfValue(provider);
         Log.d("CustomWidgetParser", "Custom Index " + index);
         if (index >= 0) {
-            Log.d("CustomWidgetParser", "Custom Index " + index);
             return LauncherAppWidgetInfo.CUSTOM_WIDGET_ID - sWidgetsIdMap.keyAt(index);
         } else {
             return AppWidgetManager.INVALID_APPWIDGET_ID;

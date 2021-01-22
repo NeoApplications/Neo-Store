@@ -163,7 +163,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textColor="?workspaceTextColor"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

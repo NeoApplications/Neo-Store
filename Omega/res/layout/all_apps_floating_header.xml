@@ -23,7 +23,7 @@
     android:layout_below="@id/search_container_all_apps"
     android:clipToPadding="false"
     android:orientation="vertical"
-    android:paddingTop="24dp">
+    android:paddingTop="@dimen/all_apps_header_top_padding">
 
     <include layout="@layout/floating_header_content" />
 
