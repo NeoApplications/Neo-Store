@@ -1,4 +1,4 @@
-### v0.6.0 (Build 95)
+### v0.6.3 (Build 113)
 * **Add: Show All Apps Label**
 * **Add: Open App from Gesture**
 * **Add: At glance widget**
@@ -13,6 +13,7 @@
 * **Add: Full screen preference**
 * **Fix: Search web results**
 * **Fix: Animation when AllApps opens and Closes**
+* **Change License to GPL v3** 
 
 ### v0.5.0 (Build 40)
 * **Add: Desktop grid preference**
