@@ -1614,8 +1614,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     void addAppWidgetImpl(int appWidgetId, ItemInfo info,
             AppWidgetHostView boundWidget, WidgetAddFlowHandler addFlowHandler, int delay) {
-        if (!addFlowHandler.startConfigActivity(this, appWidgetId, info,
-                REQUEST_CREATE_APPWIDGET)) {
+        if (!addFlowHandler.startConfigActivity(this, appWidgetId, info, REQUEST_CREATE_APPWIDGET)) {
             // If the configuration flow was not started, add the widget
 
             Runnable onComplete = new Runnable() {
@@ -1625,8 +1624,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                     mStateManager.goToState(NORMAL, SPRING_LOADED_EXIT_DELAY);
                 }
             };
-            completeAddAppWidget(appWidgetId, info, boundWidget,
-                    addFlowHandler.getProviderInfo(this));
+            completeAddAppWidget(appWidgetId, info, boundWidget, addFlowHandler.getProviderInfo(this));
             mWorkspace.removeExtraEmptyScreenDelayed(true, onComplete, delay, false);
         }
     }

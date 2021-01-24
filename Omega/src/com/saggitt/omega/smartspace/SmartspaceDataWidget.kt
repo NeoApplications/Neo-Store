@@ -28,6 +28,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -37,6 +38,8 @@ import android.widget.TextView
 import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.android.launcher3.AppWidgetResizeFrame
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.BlankActivity
@@ -58,12 +61,25 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
         bindWidget { }
     }
 
+    protected fun createBindOptions(): Bundle {
+        val idp = LauncherAppState.getIDP(context)
+        val opts = Bundle()
+        val size = AppWidgetResizeFrame.getWidgetSizeRanges(context,
+                idp.numColumns, 1, null)
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, size.left)
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, size.top)
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, size.right)
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, size.bottom)
+        return opts
+    }
+
     private fun bindWidget(onSetupComplete: () -> Unit) {
         val widgetManager = AppWidgetManager.getInstance(context)
 
         var widgetId = widgetIdPref.get()
         val widgetInfo = widgetManager.getAppWidgetInfo(widgetId)
         isWidgetBound = widgetInfo != null && widgetInfo.provider == providerInfo.provider
+        val opts: Bundle = createBindOptions()
 
         val oldWidgetId = widgetId
         if (!isWidgetBound) {
@@ -74,7 +90,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
 
             widgetId = smartspaceWidgetHost.allocateAppWidgetId()
             isWidgetBound = widgetManager.bindAppWidgetIdIfAllowed(
-                    widgetId, providerInfo.profile, providerInfo.provider, null)
+                    widgetId, providerInfo.profile, providerInfo.provider, opts)
         }
 
         if (isWidgetBound) {
@@ -173,7 +189,9 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             if (images.isNotEmpty() && images.size != 2) {
                 cardIconView = images.first()
                 title = texts[0]
-                subtitle = texts[1]
+                if (texts.size > 2) {
+                    subtitle = texts[1]
+                }
                 if (texts.size > 3) {
                     subtitle2 = texts[2]
                 }

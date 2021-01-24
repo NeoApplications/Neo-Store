@@ -31,6 +31,9 @@ import com.android.launcher3.allapps.FloatingHeaderView;
 import com.android.launcher3.allapps.search.AllAppsSearchBarController;
 import com.android.launcher3.allapps.search.AllAppsSearchBarController.Callbacks;
 import com.android.launcher3.util.ComponentKey;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,16 +68,6 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
     }
 
     @Override
-    public boolean onSubmitSearch() {
-        if (mApps.hasNoFilteredResults()) {
-            return false;
-        }
-        Intent i = mApps.getFilteredApps().get(0).getIntent();
-        getContext().startActivity(i);
-        return true;
-    }
-
-    @Override
     public void onSearchResult(String query, ArrayList<ComponentKey> apps, List<String> suggestions) {
         if (getParent() != null) {
             if (apps != null) {
@@ -104,6 +97,20 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
         }
     }
 
+    @Override
+    public boolean onSubmitSearch() {
+        if (mApps.hasNoFilteredResults()) {
+            return false;
+        }
+        SearchProvider provider = getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            ((WebSearchProvider) provider).openResults(getText().toString());
+            return true;
+        }
+        Intent i = mApps.getFilteredApps().get(0).getIntent();
+        getContext().startActivity(i);
+        return true;
+    }
 
     public void onAppsUpdated() {
         mSearchBarController.refreshSearchResult();
@@ -117,5 +124,9 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
     private void notifyResultChanged() {
         allAppsQsbLayout.setShadowAlpha(0);
         mAppsView.onSearchResultsChanged();
+    }
+
+    private SearchProvider getSearchProvider() {
+        return SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
     }
 }

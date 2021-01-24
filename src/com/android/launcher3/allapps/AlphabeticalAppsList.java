@@ -44,6 +44,7 @@ import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
 import com.saggitt.omega.util.DbHelper;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -438,6 +439,12 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             for (Map.Entry<String, ArrayList<AppInfo>> entry : sectionMap.entrySet()) {
                 mApps.addAll(entry.getValue());
             }
+        } else {
+            // Just compute the section headers for use below
+            for (AppInfo info : mApps) {
+                // Add the section to the cache
+                getAndUpdateCachedSectionName(info);
+            }
         }
 
         // Recompose the set of adapter items from the current set of apps
@@ -482,8 +489,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.
      */
     private void updateAdapterItems() {
-        refillAdapterItems();
-        refreshRecyclerView();
+        OmegaUtilsKt.getWorkerHandler().postAtFrontOfQueue(() -> {
+            refillAdapterItems();
+            OmegaUtilsKt.getMainHandler().postAtFrontOfQueue(this::refreshRecyclerView);
+        });
     }
 
     private void refreshRecyclerView() {

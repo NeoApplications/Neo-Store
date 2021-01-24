@@ -317,12 +317,20 @@ public abstract class BaseIconCache {
             @NonNull ComponentName componentName, @NonNull UserHandle user,
             @NonNull Supplier<T> infoProvider, @NonNull CachingLogic<T> cachingLogic,
             boolean usePackageIcon, boolean useLowResIcon) {
+        return cacheLocked(componentName, user, infoProvider, cachingLogic, usePackageIcon,
+                useLowResIcon, true);
+    }
+
+    protected <T> CacheEntry cacheLocked(
+            @NonNull ComponentName componentName, @NonNull UserHandle user,
+            @NonNull Supplier<T> infoProvider, @NonNull CachingLogic<T> cachingLogic,
+            boolean usePackageIcon, boolean useLowResIcon, boolean addToMemCache) {
         assertWorkerThread();
         ComponentKey cacheKey = new ComponentKey(componentName, user);
         CacheEntry entry = mCache.get(cacheKey);
         if (entry == null || (entry.isLowRes() && !useLowResIcon)) {
             entry = new CacheEntry();
-            if (cachingLogic.addToMemCache()) {
+            if (addToMemCache) {
                 mCache.put(cacheKey, entry);
             }
 

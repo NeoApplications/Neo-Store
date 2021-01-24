@@ -58,19 +58,13 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
                 .appendPath(componentList.mQuery)
                 .build();
 
-        Cursor cursor = null;
-        try {
-            cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+        try (Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null)) {
             int suggestIntentData = cursor.getColumnIndex("suggest_intent_data");
             while (cursor.moveToNext()) {
                 componentList.mApps.add(AppSearchProvider.uriToComponent(Uri.parse(cursor.getString(suggestIntentData)), mContext));
             }
         } catch (NullPointerException ignored) {
 
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
         componentList.mSuggestions.addAll(getSuggestions(componentList.mQuery));
         Message.obtain(mUiHandler, 200, componentList).sendToTarget();
