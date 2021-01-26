@@ -67,5 +67,6 @@
             tools:fontFamily="sans-serif"
             tools:ignore="SpUsage"
             tools:visibility="visible" />
+
     </FrameLayout>
 </merge>

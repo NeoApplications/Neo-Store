@@ -45,13 +45,10 @@
     <string name="content_storage_permission_required">Pour définir un fond d\'écran, veuillez autoriser l\'accès au stockage.</string>
     <string name="title_storage_permission_required">Accès au stockage requis</string>
     <string name="category__about_licenses">Licence</string>
-    <string name="summary__about_donate">Plus d\'informations sur les dons ou autres contributions à ce projet</string>
-    <string name="title__about_project_license">Licence du projet</string>
-    <string name="title__about_open_source">Open Source</string>
     <string name="title__about_project_team">Équipe de projet</string>
     <string name="title__about_changelog">Journal des modifications</string>
     <string name="title__about_donate">Faire un don</string>
-    <string name="title__about_copy_build">Copier les informations de build</string>
+    <string name="about_build_information">Copier les informations de build</string>
     <string name="change_default_home">Définir comme lanceur par défaut</string>
     <string name="summary__dev_restart">Peut être utile si certains paramètres ne se sont pas correctement appliqués</string>
     <string name="title__restart_launcher">Redémarrer</string>

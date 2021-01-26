@@ -90,11 +90,11 @@
             app:content="@xml/omega_preferences_developer"
             app:controllerClass="com.saggitt.omega.settings.controllers.DeveloperOptionsController" />
 
-        <com.saggitt.omega.preferences.SubPreference
+        <androidx.preference.Preference
             android:icon="@drawable/ic_info"
-            android:layout="@layout/home_preference"
+            android:fragment="com.saggitt.omega.settings.AboutFragment"
+            android:key="pref_categorization"
             android:summary="@string/summary__general_about"
-            android:title="@string/title__general_about"
-            app:content="@xml/omega_preferences_about" />
+            android:title="@string/title__general_about" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>

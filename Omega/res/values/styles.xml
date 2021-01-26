@@ -420,4 +420,14 @@
         <item name="android:windowNoTitle">false</item>
         <item name="android:listDivider">@drawable/list_divider_material</item>
     </style>
+
+    <style name="AboutTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabBackground">@color/white</item>
+        <item name="android:background">@color/white</item>
+        <item name="tabRippleColor">?attr/colorPrimary</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabIndicatorHeight">3dp</item>
+    </style>
 </resources>

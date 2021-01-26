@@ -103,14 +103,6 @@
             android:paddingRight="6dp"
             android:paddingTop="6dp">
 
-            <com.saggitt.omega.smartspace.SmartspaceDividerView
-                android:id="@+id/subtitle_sep"
-                android:layout_width="@dimen/smartspace_title_sep_width"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="6dp"
-                android:layout_marginBottom="4dp" />
-
             <ImageView
                 android:id="@+id/subtitle_weather_icon"
                 android:layout_width="16dp"

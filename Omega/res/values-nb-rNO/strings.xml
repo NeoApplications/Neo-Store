@@ -98,13 +98,10 @@
     <string name="wallpaper_pick">Velg bakgrunnsbilde</string>
     <string name="title_storage_permission_required">Lagringstilgang trengs</string>
     <string name="category__about_licenses">Lisens</string>
-    <string name="summary__about_donate">Mer info om donering og annen støtte av programmet</string>
-    <string name="title__about_project_license">Prosjektlisens</string>
-    <string name="title__about_open_source">Friprog-bibliotek</string>
     <string name="title__about_project_team">Prosjektlag</string>
     <string name="title__about_changelog">Endringslogg</string>
     <string name="title__about_donate">Doner</string>
-    <string name="title__about_copy_build">Kopier bygginfo</string>
+    <string name="about_build_information">Kopier bygginfo</string>
     <string name="change_default_home">Bruk som hjemmeprogram</string>
     <string name="summary__dev_restart">Kan være nyttig når noen innstillinger ikke har trådt i kraft</string>
     <string name="title__restart_launcher">Omstart</string>

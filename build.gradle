@@ -3,19 +3,6 @@ import java.text.SimpleDateFormat
 buildscript {
     ext.enable_plugin_kotlin = true
 
-    ext.getGitHash = { ->
-        try {
-            def stdout = new ByteArrayOutputStream()
-            exec {
-                commandLine 'git', 'rev-parse', 'HEAD'
-                standardOutput = stdout
-            }
-            return stdout.toString().trim()
-        } catch (Exception ignored) {
-            return 'unknown'
-        }
-    }
-
     ext {
         versions = [
                 dynamicanimation       : "1.0.0",
@@ -68,8 +55,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
-    def name = "0.6.3"
-    def code = 113
+    def name = "0.7.0"
+    def code = 114
 
     defaultConfig {
         minSdkVersion 25
@@ -86,7 +73,6 @@ android {
         buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", "${findAndroidLocales()}"
         buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
         buildConfigField "String", "BUILD_DATE", "\"${getBuildDate()}\""
-        buildConfigField "String", "GITHASH", "\"${getGitHash()}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

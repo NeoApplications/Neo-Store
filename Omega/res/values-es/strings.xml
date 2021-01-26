@@ -46,7 +46,6 @@
     <string name="dismiss_drop_target_label">No mostrar</string>
     <string name="drawer_folders">Carpetas</string>
     <string name="default_folder_name">Nueva carpeta</string>
-    <string name="title__about_project_license">Licencia del Proyecto</string>
     <string name="cat_search_bar">Barra de busqueda</string>
     <string name="summary__general_desktop">Personaliza tu escritorio</string>
     <string name="title__general_notifications">Gestos y Notificaciones</string>

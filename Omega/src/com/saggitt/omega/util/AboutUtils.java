@@ -21,29 +21,16 @@ package com.saggitt.omega.util;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.util.TypedValue;
 
-import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.preference.Preference;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -66,29 +53,7 @@ public class AboutUtils {
         }
     }
 
-    public void showDialogWithHtmlTextView(@StringRes int resTitleId, String html) {
-        showDialogWithHtmlTextView(resTitleId, html, true, null);
-    }
-
-    public void showDialogWithHtmlTextView(@StringRes int resTitleId, String text, boolean isHtml, DialogInterface.OnDismissListener dismissedListener) {
-        AppCompatTextView textView = new AppCompatTextView(mContext);
-        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,
-                mContext.getResources().getDisplayMetrics());
-        textView.setMovementMethod(new LinkMovementMethod());
-        textView.setPadding(padding, 0, padding, 0);
-
-        textView.setText(isHtml ? new SpannableString(Html.fromHtml(text)) : text);
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
-                .setPositiveButton(android.R.string.ok, null)
-                .setOnDismissListener(dismissedListener)
-                .setTitle(resTitleId)
-                .setView(textView);
-        dialog.show();
-    }
-
     public boolean setClipboard(CharSequence text) {
-
         android.content.ClipboardManager cm = ((android.content.ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE));
         if (cm != null) {
             ClipData clip = ClipData.newPlainText(mContext.getPackageName(), text);
@@ -98,63 +63,9 @@ public class AboutUtils {
         return false;
     }
 
-    public String readTextfileFromRawRes(@RawRes int rawResId, String linePrefix, String linePostfix) {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = null;
-        String line;
-
-        linePrefix = linePrefix == null ? "" : linePrefix;
-        linePostfix = linePostfix == null ? "" : linePostfix;
-
-        try {
-            br = new BufferedReader(new InputStreamReader(mContext.getResources().openRawResource(rawResId)));
-            while ((line = br.readLine()) != null) {
-                sb.append(linePrefix);
-                sb.append(line);
-                sb.append(linePostfix);
-                sb.append("\n");
-            }
-        } catch (Exception ignored) {
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-        return sb.toString();
-    }
-
-    public void getAppInfoSummary(Preference prefx) {
-        Locale locale = Locale.getDefault();
-        Preference pref;
-        String tmp;
-        if ((pref = prefx) != null && pref.getSummary() == null) {
-            String summary = String.format(locale, "\n<b>Package:</b> %s\n<b>Version:</b> v%s (build %s)", getPackageName(), getAppVersionName(), getAppVersionCode());
-            summary += (tmp = bcstr("FLAVOR", "")).isEmpty() ? "" : ("\n<b>Flavor:</b> " + tmp.replace("flavor", ""));
-            summary += (tmp = bcstr("BUILD_TYPE", "")).isEmpty() ? "" : (" (" + tmp + ")");
-            summary += (tmp = bcstr("BUILD_DATE", "")).isEmpty() ? "" : ("\n<b>Build date:</b> " + tmp);
-            summary += (tmp = getAppInstallationSource()).isEmpty() ? "" : ("\n<b>ISource:</b> " + tmp);
-            summary += (tmp = bcstr("GITHASH", "")).isEmpty() ? "" : ("\n<b>VCS Hash:</b> " + tmp);
-            pref.setSummary(htmlToSpanned(summary.trim().replace("\n", "<br/>")));
-
-        }
-    }
-
-    public Spanned htmlToSpanned(String html) {
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
-    }
-
     public String bcstr(String fieldName, String defaultValue) {
         Object field = getBuildConfigValue(fieldName);
-        if (field != null && field instanceof String) {
+        if (field instanceof String) {
             return (String) field;
         }
         return defaultValue;

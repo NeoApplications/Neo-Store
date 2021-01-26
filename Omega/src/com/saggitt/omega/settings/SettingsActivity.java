@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -93,24 +92,19 @@ import com.saggitt.omega.preferences.SingleDimensionGridSizeDialogFragmentCompat
 import com.saggitt.omega.preferences.SingleDimensionGridSizePreference;
 import com.saggitt.omega.preferences.SmartspaceEventProvidersFragment;
 import com.saggitt.omega.preferences.SmartspaceEventProvidersPreference;
-import com.saggitt.omega.preferences.StyledIconPreference;
 import com.saggitt.omega.preferences.SubPreference;
 import com.saggitt.omega.search.SearchProviderPreference;
 import com.saggitt.omega.search.SelectSearchProviderFragment;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.theme.ThemeOverride;
-import com.saggitt.omega.util.AboutUtils;
 import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.util.SettingsObserver;
 import com.saggitt.omega.views.SpringRecyclerView;
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment;
 
-import net.gsantner.opoc.format.markdown.SimpleMarkdownParser;
-
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -239,7 +233,6 @@ public class SettingsActivity extends SettingsBaseActivity
         if (shouldShowSearch()) {
             Toolbar toolbar = findViewById(R.id.search_action_bar);
             toolbar.getMenu().clear();
-            OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
 
             toolbar.inflateMenu(R.menu.menu_settings);
             ActionMenuView menuView = null;
@@ -705,47 +698,7 @@ public class SettingsActivity extends SettingsBaseActivity
                 findPreference("kill").setOnPreferenceClickListener(this);
 
                 findPreference("pref_widget_feed").setOnPreferenceClickListener(this);
-            } else if (getContent() == R.xml.omega_preferences_about) {
-                AboutUtils au = new AboutUtils(getContext());
-                Preference appInfo = findPreference("pref_key__copy_build_information");
-                au.getAppInfoSummary(appInfo);
-                updateProjectTeam(au);
             }
-        }
-
-        private void updateProjectTeam(AboutUtils au) {
-            Preference pref;
-            if ((pref = findPreference("pref_key__project_team")) != null && ((PreferenceGroup) pref).getPreferenceCount() == 0) {
-                String[] data = (au.readTextfileFromRawRes(R.raw.team, "", "").trim() + "\n\n").split("\n");
-
-                for (int i = 0; i + 2 < data.length; i += 4) {
-                    StyledIconPreference person = new StyledIconPreference(au.mContext);
-                    person.setTitle(data[i]);
-                    person.setSummary(data[i + 1]);
-                    person.setIcon(R.drawable.ic_person);
-                    try {
-                        Uri uri = Uri.parse(data[i + 2]);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        person.setIntent(intent);
-                    } catch (Exception ignored) {
-                    }
-                    appendPreference(person, (PreferenceGroup) pref);
-                }
-
-            }
-        }
-
-        private boolean appendPreference(Preference pref, @Nullable PreferenceGroup target) {
-            if (target == null) {
-                if ((target = getPreferenceScreen()) == null) {
-                    return false;
-                }
-            }
-            if (pref.getIcon() != null) {
-                pref.setIcon(pref.getIcon());
-            }
-            return target.addPreference(pref);
         }
 
         @Override
@@ -816,60 +769,21 @@ public class SettingsActivity extends SettingsBaseActivity
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
-            AboutUtils au = new AboutUtils(getContext());
             if (preference.getKey() != null) {
-                switch (preference.getKey()) {
-                    case "pref_key__donate":
-                        au.openWebBrowser(getString(R.string.app_donate_url));
-                        break;
-
-                    case "pref_key__changelog":
-                        SimpleMarkdownParser smp = new SimpleMarkdownParser();
-                        try {
-                            String html = smp.parse(getResources().openRawResource(R.raw.changelog), "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW, SimpleMarkdownParser.FILTER_CHANGELOG).getHtml();
-                            au.showDialogWithHtmlTextView(R.string.title__about_changelog, html);
-                        } catch (Exception ignored) {
-
+                if (preference instanceof ColorPreferenceCompat) {
+                    ColorPickerDialog dialog = ((ColorPreferenceCompat) preference).getDialog();
+                    dialog.setColorPickerDialogListener(new ColorPickerDialogListener() {
+                        public void onColorSelected(int dialogId, int color) {
+                            ((ColorPreferenceCompat) preference).saveValue(color);
                         }
-                        break;
 
-                    case "pref_key__project_license":
-                        try {
-                            au.showDialogWithHtmlTextView(R.string.category__about_licenses, new SimpleMarkdownParser().parse(
-                                    getResources().openRawResource(R.raw.license),
-                                    "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW).getHtml());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        public void onDialogDismissed(int dialogId) {
                         }
-                        break;
-                    case "pref_key__open_source":
-                        try {
-                            au.showDialogWithHtmlTextView(R.string.title__about_open_source, new SimpleMarkdownParser().parse(
-                                    getResources().openRawResource(R.raw.opensource),
-                                    "", SimpleMarkdownParser.FILTER_ANDROID_TEXTVIEW).getHtml());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "pref_key__copy_build_information":
-                        au.setClipboard(preference.getSummary());
-                        break;
-                    default:
-                        if (preference instanceof ColorPreferenceCompat) {
-                            ColorPickerDialog dialog = ((ColorPreferenceCompat) preference).getDialog();
-                            dialog.setColorPickerDialogListener(new ColorPickerDialogListener() {
-                                public void onColorSelected(int dialogId, int color) {
-                                    ((ColorPreferenceCompat) preference).saveValue(color);
-                                }
-
-                                public void onDialogDismissed(int dialogId) {
-                                }
-                            });
-                            dialog.show((getActivity()).getSupportFragmentManager(), "color-picker-dialog");
-                        } else if (preference.getFragment() != null) {
-                            Log.d("Settings", "Opening Fragment: " + preference.getFragment());
-                            SettingsActivity.startFragment(getContext(), preference.getFragment(), null, preference.getTitle());
-                        }
+                    });
+                    dialog.show((getActivity()).getSupportFragmentManager(), "color-picker-dialog");
+                } else if (preference.getFragment() != null) {
+                    Log.d("Settings", "Opening Fragment: " + preference.getFragment());
+                    SettingsActivity.startFragment(getContext(), preference.getFragment(), null, preference.getTitle());
                 }
             }
 
