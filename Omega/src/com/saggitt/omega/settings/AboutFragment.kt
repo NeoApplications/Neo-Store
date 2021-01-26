@@ -200,7 +200,7 @@ class AboutFragment : Fragment() {
         buildInfoText += if (aboutUtils.getAppInstallationSource().also { tmp = it }.isEmpty()) "" else "<br><b>ISource:</b> $tmp"
         buildInfoText += "<br><b>Manufacturer :</b> " + Build.MANUFACTURER
         buildInfoText += "<br><b>Model :</b> " + Build.MODEL
-        buildInfoText += "<br><b>OS Version :</b> Android" + Build.VERSION.RELEASE
+        buildInfoText += "<br><b>OS Version :</b> Android " + Build.VERSION.RELEASE
         buildInfo.text = Html.fromHtml(buildInfoText, Html.FROM_HTML_MODE_COMPACT)
         buildInfo.setOnClickListener {
             aboutUtils.setClipboard(buildInfoText)
