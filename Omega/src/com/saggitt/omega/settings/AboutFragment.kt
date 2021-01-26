@@ -47,7 +47,6 @@ import com.android.launcher3.R
 import com.android.launcher3.util.Themes
 import com.google.android.material.tabs.TabLayout
 import com.saggitt.omega.util.AboutUtils
-import kotlinx.android.synthetic.main.notification_content.view.*
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -106,9 +105,7 @@ class AboutFragment : Fragment() {
 
             val buildInfo = view.findViewById<TextView>(R.id.build_information)
             loadBuildInfo(aboutUtils, buildInfo)
-            buildInfo.setOnClickListener {
-                aboutUtils.setClipboard(it.text.toString())
-            }
+
 
             val buttonSource = view.findViewById<Button>(R.id.source_code)
             buttonSource.setOnClickListener {
@@ -205,6 +202,9 @@ class AboutFragment : Fragment() {
         buildInfoText += "<br><b>Model :</b> " + Build.MODEL
         buildInfoText += "<br><b>OS Version :</b> Android" + Build.VERSION.RELEASE
         buildInfo.text = Html.fromHtml(buildInfoText, Html.FROM_HTML_MODE_COMPACT)
+        buildInfo.setOnClickListener {
+            aboutUtils.setClipboard(buildInfoText)
+        }
     }
 
     private fun injectCSS(webView: WebView, cssAsset: String) {
