@@ -103,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_github"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:text="@string/about_source"
                     android:textSize="14sp" />
 
@@ -112,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_donate"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:text="@string/title__about_donate"
                     android:textSize="14sp" />
 

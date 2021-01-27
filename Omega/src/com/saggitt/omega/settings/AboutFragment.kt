@@ -44,9 +44,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.util.Themes
 import com.google.android.material.tabs.TabLayout
 import com.saggitt.omega.util.AboutUtils
+import com.saggitt.omega.util.applyColor
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -106,15 +108,21 @@ class AboutFragment : Fragment() {
             val buildInfo = view.findViewById<TextView>(R.id.build_information)
             loadBuildInfo(aboutUtils, buildInfo)
 
-
-            val buttonSource = view.findViewById<Button>(R.id.source_code)
-            buttonSource.setOnClickListener {
-                aboutUtils.openWebBrowser(getString(R.string.about_source_url))
+            val accent = Utilities.getOmegaPrefs(context).accentColor
+            view.findViewById<Button>(R.id.source_code).apply {
+                applyColor(accent)
+                setTextColor(accent)
+                setOnClickListener {
+                    aboutUtils.openWebBrowser(getString(R.string.about_source_url))
+                }
             }
 
-            val buttonDonate = view.findViewById<Button>(R.id.donate)
-            buttonDonate.setOnClickListener {
-                aboutUtils.openWebBrowser(getString(R.string.app_donate_url))
+            view.findViewById<Button>(R.id.donate).apply {
+                applyColor(accent)
+                setTextColor(accent)
+                setOnClickListener {
+                    aboutUtils.openWebBrowser(getString(R.string.app_donate_url))
+                }
             }
 
             val developer = view.findViewById<ConstraintLayout>(R.id.developer)
