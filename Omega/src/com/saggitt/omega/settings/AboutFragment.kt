@@ -135,7 +135,7 @@ class AboutFragment : Fragment() {
             }
             val contrib2 = view.findViewById<ConstraintLayout>(R.id.contributor2)
             contrib2.setOnClickListener {
-                aboutUtils.openWebBrowser("https://github.com/rafaelvenancio98")
+                aboutUtils.openWebBrowser("https://github.com/nonaybay")
             }
 
             license.loadUrl("file:///android_asset/license.htm")
