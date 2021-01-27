@@ -1,7 +1,7 @@
 # Omega Launcher
 Libre software launcher. <br/>
 [![Build Status](https://img.shields.io/github/workflow/status/otakuhqz/Omega/Omega%20CI?event=push&logo=github&style=for-the-badge)](https://github.com/otakuhqz/Omega/actions?query=workflow%3A%22Omega+CI%22+event%3Apush)
-[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0.txt)
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
 
 ## Installation
@@ -14,7 +14,7 @@ CAUTION: Nightly builds might be unstable.
 
 F-Droid Repo:<br>
 Download the current debug version by adding the following repo to the F-Droid App
-[https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo](https://raw.githubusercontent.com/rafaelvenancio98/fdroid/master/fdroid/repo)
+[https://raw.githubusercontent.com/nonaybay/Omega/master/fdroid/repo](https://raw.githubusercontent.com/nonaybay/Omega/master/fdroid/repo)
 ## Community
 You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
