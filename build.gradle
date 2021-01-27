@@ -226,7 +226,6 @@ dependencies {
     implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
 
     // Recents lib dependency
-    //withQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
     withQuickstepImplementation project(':SystemUISharedLib')
 
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
