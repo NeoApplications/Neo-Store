@@ -167,13 +167,12 @@ public abstract class RecentsUiFactory {
             if (launcher.getDeviceProfile().isVerticalBarLayout()) {
                 list.add(new OverviewToAllAppsTouchController(launcher));
                 list.add(new LandscapeEdgeSwipeController(launcher));
-                if (Utilities.ATLEAST_R && mode.hasGestures) {
+                if (mode.hasGestures) {
                     list.add(new TransposedQuickSwitchTouchController(launcher));
                 }
             } else {
-                list.add(new PortraitStatesTouchController(launcher,
-                        Utilities.ATLEAST_R && mode.hasGestures /* allowDragToOverview */));
-                if (Utilities.ATLEAST_R && mode.hasGestures) {
+                list.add(new PortraitStatesTouchController(launcher, mode.hasGestures /* allowDragToOverview */));
+                if (mode.hasGestures) {
                     list.add(new QuickSwitchTouchController(launcher));
                 }
             }

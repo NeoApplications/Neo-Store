@@ -223,7 +223,7 @@ dependencies {
     implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
 
     implementation project(':IconLoader')
-    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
+    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: ['launcher_protos.jar', 'plugin_core.jar'])
 
     // Recents lib dependency
     withQuickstepImplementation project(':SystemUISharedLib')
