@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Themes;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class DashItemAdapter {
             ColorStateList backgroundColor = ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconBackground));
             itemView.setBackgroundTintList(backgroundColor);
             itemView.setImageDrawable(dashItem.getIcon());
-            ColorStateList iconColor = ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconTint));
+            ColorStateList iconColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(mContext).getAccentColor());
             itemView.setImageTintList(iconColor);
 
             itemView.setOnClickListener((parent) -> {
