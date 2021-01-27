@@ -223,13 +223,13 @@ dependencies {
     implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
 
     implementation project(':IconLoader')
-    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: ['launcher_protos.jar', 'plugin_core.jar'])
+    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
 
     // Recents lib dependency
     withQuickstepImplementation project(':SystemUISharedLib')
 
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
-    withoutQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
+    //withoutQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
 
     // Tools
     if (enable_plugin_kotlin) {

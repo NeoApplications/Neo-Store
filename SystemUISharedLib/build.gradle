@@ -24,6 +24,7 @@ android {
 
     sourceSets {
         main {
+            java.srcDirs = ['src', 'src_plugins']
             aidl.srcDirs = ['src/main/java']
         }
     }
@@ -60,7 +61,6 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation fileTree(dir: "../prebuilts/libs", include: 'plugin_core.jar')
     implementation project(':QuickstepCompat')
     implementation project(':QuickstepCompatVP')
     implementation project(':QuickstepCompatVQ')
