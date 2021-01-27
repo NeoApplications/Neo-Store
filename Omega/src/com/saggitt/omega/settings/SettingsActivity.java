@@ -231,7 +231,10 @@ public class SettingsActivity extends SettingsBaseActivity
     protected void onResume() {
         super.onResume();
         if (shouldShowSearch()) {
+            Drawable search = getResources().getDrawable(R.drawable.ic_settings_search, null);
+            search.setTint(Utilities.getOmegaPrefs(getApplicationContext()).getAccentColor());
             Toolbar toolbar = findViewById(R.id.search_action_bar);
+            toolbar.setNavigationIcon(search);
             toolbar.getMenu().clear();
 
             toolbar.inflateMenu(R.menu.menu_settings);
