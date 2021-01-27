@@ -358,4 +358,7 @@
     <string name="smartspace_widget_provider_not_found">Hente Google-programmet.</string>
     <string name="smartspace_provider_bridge">Rotløs pixel-bro</string>
     <string name="title_legacy_treatment">Opprett tilpasningsdyktige ikoner</string>
+    <string name="about_source">Kildekode</string>
+    <string name="about_team">Familiemedlemmer</string>
+    <string name="title_drawer_text_size">Tekststørrelse</string>
 </resources>
