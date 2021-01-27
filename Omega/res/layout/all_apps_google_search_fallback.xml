@@ -25,7 +25,6 @@
     android:imeOptions="actionSearch|flagNoExtractUi"
     android:inputType="textCapWords|textNoSuggestions"
     android:maxLines="1"
-    android:paddingStart="20dp"
     android:scrollHorizontally="true"
     android:singleLine="true"
     android:textColor="@color/qsb_drawer_text_color_normal"
