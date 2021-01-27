@@ -25,7 +25,7 @@ import androidx.preference.DialogPreference
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController
-import com.saggitt.omega.gestures.gestures.NavSwipeUpGesture
+import com.saggitt.omega.gestures.NavSwipeUpGesture
 
 class GesturePreference(context: Context, attrs: AttributeSet?) : DialogPreference(context, attrs), SharedPreferences.OnSharedPreferenceChangeListener {
 

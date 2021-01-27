@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "28.0.3"
 
 
     defaultConfig {
@@ -29,7 +29,6 @@ android {
 
     sourceSets {
         main {
-            java.srcDirs = ['src_plugins']
             aidl.srcDirs = ['src/main/java']
         }
     }
@@ -48,17 +47,11 @@ repositories {
         url 'https://jitpack.io'
     }
 }
-repositories {
-    jcenter()
-    google()
-    maven {
-        url 'https://jitpack.io'
-    }
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation fileTree(dir: "../prebuilts/libs", include: 'plugin_core.jar')
     implementation project(':QuickstepCompat')
     implementation project(':QuickstepCompatVP')
     implementation project(':QuickstepCompatVQ')
