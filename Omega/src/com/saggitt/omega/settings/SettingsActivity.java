@@ -97,6 +97,7 @@ import com.saggitt.omega.search.SearchProviderPreference;
 import com.saggitt.omega.search.SelectSearchProviderFragment;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
+import com.saggitt.omega.smartspace.OnboardingProvider;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.util.SettingsObserver;
@@ -177,7 +178,7 @@ public class SettingsActivity extends SettingsBaseActivity
             overrideOpenAnim();
         }
 
-        //Utilities.getDevicePrefs(this).edit().putBoolean(OnboardingProvider.PREF_HAS_OPENED_SETTINGS, true).apply();
+        Utilities.getDevicePrefs(this).edit().putBoolean(OnboardingProvider.PREF_HAS_OPENED_SETTINGS, true).apply();
         defaultHome = resolveDefaultHome();
     }
 
@@ -247,6 +248,11 @@ public class SettingsActivity extends SettingsBaseActivity
                     break;
                 }
             }
+            if (menuView != null) {
+                menuView.getOverflowIcon()
+                        .setTint(Utilities.getOmegaPrefs(getApplicationContext()).getAccentColor());
+            }
+
             if (!BuildConfig.APPLICATION_ID.equals(resolveDefaultHome())) {
                 toolbar.inflateMenu(R.menu.menu_change_default_home);
             }
