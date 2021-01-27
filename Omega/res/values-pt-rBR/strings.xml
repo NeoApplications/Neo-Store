@@ -93,7 +93,7 @@
     <string name="title__desktop_full_width_widgets">Widgets em largura total</string>
     <string name="allow_rotation_blocked_desc">A configuração de exibição atual não permite rotação</string>
     <string name="dock_search_value" translatable="false">%1$s %2$s</string>
-    <string name="title__general_drawer">Drawer</string>
+    <string name="title__general_drawer">Gaveta</string>
     <string name="title_desktop_hide_statusbar">Ocultar barra de status</string>
     <string name="title_desktop_icon_popup_menu">Itens do menu popup</string>
     <string name="pref_category__others">Outros</string>
@@ -138,7 +138,7 @@
     <string name="title_legacy_colored_backgrounds">Fundos coloridos</string>
     <string name="title_force_shapeless">Forçar ícones sem forma</string>
     <string name="title_adaptify_pack">Crie ícones adaptáveis para pacote de ícones</string>
-    <string name="color_presets">Presets</string>
+    <string name="color_presets">Predefinições</string>
     <string name="reset_custom_icons_confirmation">Reverter para os ícones padrão deste pacote de ícones\? Isso não pode ser desfeito.</string>
     <string name="reset_custom_icons">Remover ícones personalizados</string>
     <string name="dialog_default">Padrão</string>
