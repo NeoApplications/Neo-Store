@@ -37,6 +37,7 @@ import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
@@ -211,7 +212,8 @@ class AboutFragment : Fragment() {
         buildInfoText += "<br><b>OS Version :</b> Android " + Build.VERSION.RELEASE
         buildInfo.text = Html.fromHtml(buildInfoText, Html.FROM_HTML_MODE_COMPACT)
         buildInfo.setOnClickListener {
-            aboutUtils.setClipboard(buildInfoText)
+            Toast.makeText(context, R.string.debug_component_name_copied, Toast.LENGTH_SHORT).show()
+            aboutUtils.setClipboard(buildInfo.text)
         }
     }
 
