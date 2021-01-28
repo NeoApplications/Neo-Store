@@ -361,4 +361,5 @@
     <string name="about_source">Kildekode</string>
     <string name="about_team">Familiemedlemmer</string>
     <string name="title_drawer_text_size">Tekststørrelse</string>
+    <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
 </resources>
