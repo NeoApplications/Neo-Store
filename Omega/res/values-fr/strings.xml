@@ -45,7 +45,7 @@
     <string name="content_storage_permission_required">Pour définir un fond d\'écran, veuillez autoriser l\'accès au stockage.</string>
     <string name="title_storage_permission_required">Accès au stockage requis</string>
     <string name="category__about_licenses">Licence</string>
-    <string name="title__about_project_team">Équipe de projet</string>
+    <string name="title__about_project_team">Équipe du projet</string>
     <string name="title__about_changelog">Journal des modifications</string>
     <string name="title__about_donate">Faire un don</string>
     <string name="about_build_information">Copier les informations de build</string>
@@ -360,5 +360,9 @@
     <string name="title_drawer_row_height">Hauteur de ligne</string>
     <string name="num_hotseat_icons_pref_title">Icône Comte</string>
     <string name="dock_colored_google">Icônes De Couleur</string>
-    <string name="title_desktop_lock_desktop">Serrure De Bureau</string>
+    <string name="title_desktop_lock_desktop">Verrouiller le bureau</string>
+    <string name="about_source">Code source</string>
+    <string name="about_team">Membres de la famille</string>
+    <string name="title_all_apps_keep_scroll_state">Enregistrer la position</string>
+    <string name="title_drawer_text_size">Taille du texte</string>
 </resources>
