@@ -99,6 +99,7 @@
     <string name="title__sort_by_color">By Color</string>
     <string name="title_all_apps_search">Drawer search bar</string>
     <string name="title_all_apps_google_search">Global search</string>
+    <string name="title_all_apps_keep_scroll_state">Remember Position</string>
     <string name="title_search_hidden_apps">Find Hidden Shortcuts</string>
     <string name="summary_search_hidden_apps">Show hidden shortcuts in results.</string>
     <string name="summary_all_apps_google_search">Find web results and apps</string>

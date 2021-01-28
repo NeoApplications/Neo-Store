@@ -23,4 +23,5 @@
     <string name="title__general_search">Cerca</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
+    <string name="keep_scroll_state_pref_title">Ricorda posizione di scorrimento</string>
 </resources>

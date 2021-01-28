@@ -104,6 +104,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val drawerGridSize by drawerGridSizeDelegate
     private val predictionGridSizeDelegate = ResettableLazy { GridSize(this, "numPredictions", LauncherAppState.getIDP(context), recreate) }
     val predictionGridSize by predictionGridSizeDelegate
+    val saveScrollPosition by BooleanPref("pref_keepScrollState", false, doNothing)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)

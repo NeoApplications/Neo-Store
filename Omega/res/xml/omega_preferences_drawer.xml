@@ -174,4 +174,10 @@
         android:dependency="pref_allAppsSearch"
         android:defaultValue="false"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_keepScrollState"
+        android:title="@string/title_all_apps_keep_scroll_state"
+        android:defaultValue="false"
+        android:persistent="true" />
 </PreferenceScreen>
