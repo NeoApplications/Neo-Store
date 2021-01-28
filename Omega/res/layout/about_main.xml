@@ -166,7 +166,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/about_team"
                 android:textStyle="bold"
                 android:textSize="18sp" />
@@ -269,7 +269,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/about_build_information"
                 android:textStyle="bold"
                 android:textSize="18sp" />
