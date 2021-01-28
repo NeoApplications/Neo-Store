@@ -15,9 +15,6 @@
  */
 package com.android.launcher3.views;
 
-import static com.android.launcher3.Utilities.EXTRA_WALLPAPER_FLAVOR;
-import static com.android.launcher3.Utilities.EXTRA_WALLPAPER_OFFSET;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -46,6 +43,9 @@ import com.android.launcher3.widget.WidgetsFullSheet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.launcher3.Utilities.EXTRA_WALLPAPER_FLAVOR;
+import static com.android.launcher3.Utilities.EXTRA_WALLPAPER_OFFSET;
 
 
 /**
@@ -158,7 +158,7 @@ public class OptionsPopupView extends ArrowPopup
                 R.drawable.ic_palette : R.drawable.ic_wallpaper;
         options.add(new OptionItem(resString, resDrawable,
                 ControlType.WALLPAPER_BUTTON, OptionsPopupView::startWallpaperPicker));
-        if (!FeatureFlags.GO_DISABLE_WIDGETS) {
+        if (!FeatureFlags.GO_DISABLE_WIDGETS && !Utilities.getOmegaPrefs(launcher).getLockDesktop()) {
             options.add(new OptionItem(R.string.widget_button_text, R.drawable.ic_widget,
                     ControlType.WIDGETS_BUTTON, OptionsPopupView::onWidgetsClicked));
         }
