@@ -98,7 +98,7 @@
     <string name="wallpaper_pick">Velg bakgrunnsbilde</string>
     <string name="title_storage_permission_required">Lagringstilgang trengs</string>
     <string name="category__about_licenses">Lisens</string>
-    <string name="title__about_project_team">Prosjektlag</string>
+    <string name="title__about_project_team">Utvikler</string>
     <string name="title__about_changelog">Endringslogg</string>
     <string name="title__about_donate">Doner</string>
     <string name="about_build_information">Kopier bygginfo</string>
@@ -362,4 +362,5 @@
     <string name="about_team">Familiemedlemmer</string>
     <string name="title_drawer_text_size">Tekststørrelse</string>
     <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
+    <string name="title_desktop_text_size">Tekststørrelse</string>
 </resources>
