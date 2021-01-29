@@ -113,7 +113,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val desktopIconScale by FloatPref("pref_iconSize", 1f, recreate)
     private var gridSizeDelegate = ResettableLazy {
         GridSize2D(this, "numRows", "numColumns",
-                LauncherAppState.getIDP(context), refreshGrid)
+                LauncherAppState.getIDP(context), recreate)
     }
     val gridSize by gridSizeDelegate
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
