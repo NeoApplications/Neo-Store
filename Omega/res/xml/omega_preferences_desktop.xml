@@ -52,6 +52,18 @@
         android:title="@string/title__multiline_labels"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.SeekbarPreference
+        android:key="pref_iconTextScale"
+        android:persistent="true"
+        android:title="@string/title_desktop_text_size"
+        android:dependency="pref_hideAppLabels"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="2.0"
+        app:minValue="0.5"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
     <com.saggitt.omega.preferences.CustomDialogPreference
         android:key="pref_iconPopupMenu"
         android:title="@string/title_desktop_icon_popup_menu"

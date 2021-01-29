@@ -54,6 +54,7 @@
     <string name="title__multiline_labels">Multiline app names</string>
     <string name="title_desktop_icon_popup_menu">Popup menu items</string>
     <string name="title_desktop_hide_statusbar">Hide status bar</string>
+    <string name="title_desktop_text_size">Text Size</string>
     <string name="summary__full_width_widgets">Allow widgets to span over the whole width without padding</string>
     <string name="grid_size_height">Height</string>
     <string name="grid_size_width">Width</string>

@@ -109,8 +109,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
     var dashEnable by BooleanPref("pref_key__dash_enable", true, recreate)
-    val desktopTextScale by FloatPref("pref_iconTextScale", 1f, reloadAll)
     val desktopIconScale by FloatPref("pref_iconSize", 1f, recreate)
+    val desktopTextScale by FloatPref("pref_iconTextScale", 1f, reloadApps)
     private var gridSizeDelegate = ResettableLazy {
         GridSize2D(this, "numRows", "numColumns",
                 LauncherAppState.getIDP(context), recreate)
@@ -238,7 +238,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         override fun flattenValue(value: IconPackManager.CustomIconEntry) = value.toString()
         override fun unflattenValue(value: String) = IconPackManager.CustomIconEntry.fromString(value)
     }
-
 
     private fun migratePrefs(): SharedPreferences {
         val dir = mContext.cacheDir.parent
