@@ -16,9 +16,6 @@
 
 package com.android.launcher3.dragndrop;
 
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
@@ -48,6 +45,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
+import com.android.launcher3.FolderInfo;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
@@ -61,6 +59,9 @@ import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 
 import java.util.Arrays;
+
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DragView extends View implements LauncherStateManager.StateListener {
     private static final ColorMatrix sTempMatrix1 = new ColorMatrix();
@@ -207,6 +208,9 @@ public class DragView extends View implements LauncherStateManager.StateListener
         if (info.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION &&
                 info.itemType != LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT &&
                 info.itemType != LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
+            return;
+        }
+        if (info instanceof FolderInfo && ((FolderInfo) info).usingCustomIcon(mLauncher)) {
             return;
         }
         // Load the adaptive icon on a background thread and add the view in ui thread.

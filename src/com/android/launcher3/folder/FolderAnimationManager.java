@@ -16,12 +16,6 @@
 
 package com.android.launcher3.folder;
 
-import static com.android.launcher3.BubbleTextView.TEXT_ALPHA_PROPERTY;
-import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
-import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
-import static com.android.launcher3.graphics.IconShape.getShape;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -44,15 +38,23 @@ import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.anim.PropertyResetListener;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.util.Themes;
 
 import java.util.List;
 
+import static com.android.launcher3.BubbleTextView.TEXT_ALPHA_PROPERTY;
+import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
+import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
+import static com.android.launcher3.folder.FolderIcon.ICON_SCALE_PROPERTY;
+import static com.android.launcher3.graphics.IconShape.getShape;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+
 /**
  * Manages the opening and closing animations for a {@link Folder}.
- *
+ * <p>
  * All of the animations are done in the Folder.
  * ie. When the user taps on the FolderIcon, we immediately hide the FolderIcon and show the Folder
  * in its place before starting the animation.
@@ -292,6 +294,7 @@ public class FolderAnimationManager {
         boolean isOnFirstPage = mFolder.mContent.getCurrentPage() == 0;
         final List<BubbleTextView> itemsInPreview = getPreviewIconsOnPage(
                 isOnFirstPage ? 0 : mFolder.mContent.getCurrentPage());
+
         final int numItemsInPreview = itemsInPreview.size();
         final int numItemsInFirstPagePreview = isOnFirstPage
                 ? numItemsInPreview : MAX_NUM_ITEMS_IN_PREVIEW;
@@ -342,6 +345,13 @@ public class FolderAnimationManager {
             Animator scaleAnimator = getAnimator(btv, SCALE_PROPERTY, initialScale, finalScale);
             scaleAnimator.setInterpolator(previewItemInterpolator);
             play(animatorSet, scaleAnimator);
+
+            if (mFolderIcon.isCustomIcon) {
+                Animator iconScaleAnimator = getAnimator(mFolderIcon, ICON_SCALE_PROPERTY, 1f, 1.3f);
+                iconScaleAnimator.setInterpolator(Interpolators.DEACCEL_1_5);
+                iconScaleAnimator.setStartDelay(mIsOpening ? mDelay * 2 : mDelay);
+                play(animatorSet, iconScaleAnimator);
+            }
 
             if (mFolder.getItemCount() > MAX_NUM_ITEMS_IN_PREVIEW) {
                 // These delays allows the preview items to move as part of the Folder's motion,

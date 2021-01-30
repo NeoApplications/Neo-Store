@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderIcon;
+import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.util.ComponentKey;
@@ -178,7 +179,22 @@ public class FolderInfo extends ItemInfo {
 
     public Drawable getIcon(Context context) {
         Launcher launcher = OmegaLauncher.getLauncher(context);
+        Drawable icn = getIconInternal(launcher);
+        if (icn != null) {
+            return icn;
+        }
+        if (isCoverMode()) {
+            return DrawableFactory.INSTANCE.get(context).newIcon(context, getCoverInfo());
+        }
         return getFolderIcon(launcher);
+    }
+
+    public Drawable getDefaultIcon(Launcher launcher) {
+        if (isCoverMode()) {
+            return new FastBitmapDrawable(getCoverInfo().iconBitmap);
+        } else {
+            return getFolderIcon(launcher);
+        }
     }
 
     private Drawable cached;
@@ -201,14 +217,6 @@ public class FolderInfo extends ItemInfo {
         });
         icon.unbind();
         return new BitmapDrawable(launcher.getResources(), b);
-    }
-
-    public Drawable getDefaultIcon(Launcher launcher) {
-        if (isCoverMode()) {
-            return new FastBitmapDrawable(getCoverInfo().iconBitmap);
-        } else {
-            return getFolderIcon(launcher);
-        }
     }
 
     public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
@@ -292,13 +300,9 @@ public class FolderInfo extends ItemInfo {
 
     public interface FolderListener {
         void onAdd(WorkspaceItemInfo item, int rank);
-
         void onRemove(WorkspaceItemInfo item);
-
         void onItemsChanged(boolean animate);
-
         void onTitleChanged(CharSequence title);
-
         void prepareAutoUpdate();
 
         default void onIconChanged() {
