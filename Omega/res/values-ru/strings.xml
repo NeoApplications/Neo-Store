@@ -22,7 +22,7 @@
     <string name="title__dock_colored_icons">Цветные иконки</string>
     <string name="pref_category__inputs">Жесты и поиск</string>
     <string name="pref_category__interfaces">Интерфейсы</string>
-    <string name="summary__general_notifications">Количество и цвет иконок, жесты.</string>
+    <string name="summary__general_notifications">Количество и цвет иконок, жесты</string>
     <string name="summary__general_desktop">Настройте свой рабочий стол</string>
     <string name="title__general_notifications">Жесты и уведомления</string>
     <string name="title__general_search">Поиск</string>
@@ -249,9 +249,9 @@
     <string name="hide_app_selected">  скрыты</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d скрыто</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="few"/>
+        <item quantity="many"/>
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d приложение</item>
