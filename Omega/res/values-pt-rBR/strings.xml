@@ -265,4 +265,38 @@
     <string name="event_provider_missing_notification_dots">Para usar &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;, ative os Pontos de Notificação</string>
     <string name="event_provider_missing_notification_access">To use &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;, enable notifications from &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”.&lt;/xliff:g&gt;</string>
     <string name="home_widget">At a Glance</string>
+    <string name="feed_add_widget">Adicionar Widget</string>
+    <string name="loading">Carregando…</string>
+    <string name="folder_cover_mode_desc">Toque para abrir o primeiro aplicativo, deslize para cima para ver todos.</string>
+    <string name="folder_cover_mode">Usar modo de cobertura</string>
+    <string name="hide_app">Ocultar atalho</string>
+    <string name="feed_widget">Widgets</string>
+    <string name="backup_remove_from_recents">Remover da lista</string>
+    <string name="backup_invalid">Indisponível</string>
+    <string name="no_recent_backups">Sem backups recentes</string>
+    <string name="backup_creating">Criando backup</string>
+    <string name="backup_error_blank_contents">O conteúdo não pode ficar em branco</string>
+    <string name="backup_error_blank_name">O nome não pode ficar em branco</string>
+    <string name="backup_wallpaper">Papel de parede</string>
+    <string name="backup_settings">Configurações</string>
+    <string name="backup_contents">Conteúdo de backup</string>
+    <string name="backup_homescreen">Tela inicial</string>
+    <string name="backup_name">Nome</string>
+    <string name="restore_backup">Restaurar</string>
+    <string name="new_backup">Criar</string>
+    <string name="backup_pref_summary">Salvar tela inicial, restaurar backups</string>
+    <string name="backup_share">Compartilhar</string>
+    <string name="backup_delete_failed">Algo deu errado</string>
+    <string name="backup_delete">Ocultar</string>
+    <string name="backups">Backups</string>
+    <string name="title__advanced_language">Idioma</string>
+    <string name="title__advanced_setting_search">Mostrar configurações de pesquisa</string>
+    <string name="summary__advanced_language">Alterar o idioma deste aplicativo</string>
+    <string name="error_no_browser">Nenhuma atividade encontrada para lidar com URLs</string>
+    <string name="search_no_results">Sem resultados</string>
+    <string name="cat_search_bar">Barra de pesquisa</string>
+    <string name="summary__search_show_as_assistant_summary">Abra o Assistente em vez da Pesquisa por Voz</string>
+    <string name="title__search_show_assistant">Mostrar botão de pesquisa por voz</string>
+    <string name="title_all_apps_keep_scroll_state">Lembrar da posição</string>
+    <string name="title_desktop_text_size">Tamanho do texto</string>
 </resources>
