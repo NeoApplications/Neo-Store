@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title__general_search">Căutare</string>
+    <string name="title__general_theme">Temă</string>
+    <string name="title__general_drawer">Sertar</string>
+    <string name="title__general_dock">Doc</string>
+    <string name="title__general_desktop">Desktop</string>
+    <string name="title__general_about">Despre</string>
+</resources>
