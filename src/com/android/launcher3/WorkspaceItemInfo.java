@@ -268,9 +268,4 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         swipeUpAction = action;
         updateDatabase(context, false, true);
     }
-
-    @Override
-    public ItemInfoWithIcon clone() {
-        return new WorkspaceItemInfo(this);
-    }
 }

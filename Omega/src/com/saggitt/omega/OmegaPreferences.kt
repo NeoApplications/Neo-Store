@@ -222,8 +222,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
     val debugOkHttp by BooleanPref("pref_debugOkhttp", onChange = restart)
-
     var restoreSuccess by BooleanPref("pref_restoreSuccess", false)
+
+    val folderBgColored by BooleanPref("pref_folderBgColorGen", false)
 
     val customAppName = object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
         override fun flattenKey(key: ComponentKey) = key.toString()

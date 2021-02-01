@@ -808,4 +808,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     protected boolean isTextHidden() {
         return mHideText;
     }
+
+    public int getDotColor() {
+        return mDotParams.color;
+    }
 }

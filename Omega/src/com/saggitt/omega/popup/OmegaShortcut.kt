@@ -99,8 +99,10 @@ class OmegaShortcut(private val context: Context) {
                 View.OnClickListener {
                     AbstractFloatingView.closeAllOpenViews(launcher)
 
+                    val currentPage = launcher.workspace.currentPage
+
                     launcher.removeItem(null, itemInfo, true /* deleteFromDb */)
-                    launcher.model.forceReload()
+                    launcher.model.forceReload(currentPage)
                     launcher.workspace.stripEmptyScreens()
                 }
             } else null

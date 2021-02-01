@@ -200,7 +200,7 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
     }
 
     public void startEditIcon(ItemInfo itemInfo, CustomInfoProvider<ItemInfo> infoProvider) {
-        ComponentKey component;
+        ComponentKey component = null;
         currentEditInfo = itemInfo;
 
         if (itemInfo instanceof AppInfo) {
@@ -213,9 +213,6 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         } else if (itemInfo instanceof FolderInfo) {
             component = ((FolderInfo) itemInfo).toComponentKey();
             currentEditIcon = ((FolderInfo) itemInfo).getDefaultIcon(this);
-        } else {
-            component = null;
-            currentEditIcon = null;
         }
 
         boolean folderInfo = itemInfo instanceof FolderInfo;

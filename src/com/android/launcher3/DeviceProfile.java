@@ -312,7 +312,6 @@ public class DeviceProfile {
             dotSize = 0.228f;
         }
 
-        // This is done last, after iconSizePx is calculated above.
         mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE, dotSize);
         mDotRendererAllApps = iconSizePx == allAppsIconSizePx ? mDotRendererWorkSpace :
                 new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(), IconShape.DEFAULT_PATH_SIZE, dotSize);

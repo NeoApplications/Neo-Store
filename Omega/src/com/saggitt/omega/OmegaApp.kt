@@ -82,7 +82,6 @@ class OmegaApp : Application() {
         }
 
         override fun onActivityPaused(activity: Activity) {
-
         }
 
         override fun onActivityResumed(activity: Activity) {

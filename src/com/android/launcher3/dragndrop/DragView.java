@@ -43,6 +43,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.FolderInfo;
@@ -250,10 +251,12 @@ public class DragView extends View implements LauncherStateManager.StateListener
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
                     AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
-
+                    Rect fgBounds = new Rect(bounds);
+                    Rect bgBounds = new Rect(bounds);
+                    Utilities.scaleRectAboutCenter(bgBounds, 1.1f);
                     // Shrink very tiny bit so that the clip path is smaller than the original bitmap
                     // that has anti aliased edges and shadows.
-                    Rect shrunkBounds = new Rect(bounds);
+                    Rect shrunkBounds = new Rect(fgBounds);
                     Utilities.scaleRectAboutCenter(shrunkBounds, 0.98f);
                     adaptiveIcon.setBounds(shrunkBounds);
                     final Path mask = adaptiveIcon.getIconMask();
@@ -263,20 +266,24 @@ public class DragView extends View implements LauncherStateManager.StateListener
                     mTranslateY = new SpringFloatValue(DragView.this,
                             h * AdaptiveIconDrawable.getExtraInsetFraction());
 
-                    bounds.inset(
-                            (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
-                            (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
+                    fgBounds.inset(
+                            (int) (-fgBounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                            (int) (-fgBounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
+                    );
+                    bgBounds.inset(
+                            (int) (-bgBounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                            (int) (-bgBounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
                     );
                     mBgSpringDrawable = adaptiveIcon.getBackground();
                     if (mBgSpringDrawable == null) {
                         mBgSpringDrawable = new ColorDrawable(Color.TRANSPARENT);
                     }
-                    mBgSpringDrawable.setBounds(bounds);
+                    mBgSpringDrawable.setBounds(fgBounds);
                     mFgSpringDrawable = adaptiveIcon.getForeground();
                     if (mFgSpringDrawable == null) {
                         mFgSpringDrawable = new ColorDrawable(Color.TRANSPARENT);
                     }
-                    mFgSpringDrawable.setBounds(bounds);
+                    mFgSpringDrawable.setBounds(fgBounds);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override

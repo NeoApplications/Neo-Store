@@ -54,7 +54,8 @@ import com.android.launcher3.compat.UserManagerCompat
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.*
-import com.android.launcher3.util.Executors.*
+import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
+import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
@@ -555,7 +556,7 @@ fun ComponentKey.getLauncherActivityInfo(context: Context): LauncherActivityInfo
 }
 
 val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
-val iconPackUiHandler by lazy { Handler(ICON_PACK_UI_EXECUTOR.looper) }
+val iconPackUiHandler by lazy { Handler(LauncherModel.getIconPackUiLooper()) }
 
 fun runOnUiWorkerThread(r: () -> Unit) {
     runOnThread(uiWorkerHandler, r)

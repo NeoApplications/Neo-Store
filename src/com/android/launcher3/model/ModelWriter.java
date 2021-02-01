@@ -40,7 +40,6 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.GraphicsUtils;
-import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.model.BgDataModel.Callbacks;
 import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.ItemInfoMatcher;
@@ -52,7 +51,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
@@ -224,6 +222,7 @@ public class ModelWriter {
             writer.put(Favorites.TITLE_ALIAS, alias);
             writer.put(Favorites.SWIPE_UP_ACTION, swipeUpAction);
             if (updateIcon) {
+                Log.d(TAG, "Updating Workspace Icon : " + icon);
                 writer.put(Favorites.CUSTOM_ICON, icon != null ? GraphicsUtils.flattenBitmap(icon) : null);
                 writer.put(Favorites.CUSTOM_ICON_ENTRY, iconEntry != null ? iconEntry.toString() : null);
             }
@@ -298,10 +297,10 @@ public class ModelWriter {
      */
     public void deleteItemsFromDatabase(final Collection<? extends ItemInfo> items) {
         ModelVerifier verifier = new ModelVerifier();
-        FileLog.d(TAG, "removing items from db " + items.stream().map(
+        /*FileLog.d(TAG, "removing items from db " + items.stream().map(
                 (item) -> item.getTargetComponent() == null ? ""
                         : item.getTargetComponent().getPackageName()).collect(
-                Collectors.joining(",")), new Exception());
+                Collectors.joining(",")), new Exception());*/
         enqueueDeleteRunnable(() -> {
             for (ItemInfo item : items) {
                 final Uri uri = Favorites.getContentUri(item.id);

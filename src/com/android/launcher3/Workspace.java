@@ -2622,22 +2622,10 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 case ITEM_TYPE_APPLICATION:
                 case ITEM_TYPE_SHORTCUT:
                 case ITEM_TYPE_DEEP_SHORTCUT:
-                    /*if (info.container == NO_ID && info instanceof AppInfo) {
+                    if (info.container == NO_ID && info instanceof AppInfo) {
                         // Came from all apps -- make a copy
                         info = ((AppInfo) info).makeWorkspaceItem();
                         d.dragInfo = info;
-                    }*/
-                    if (info.container == NO_ID) {
-
-                        // Came from all apps -- make a copy
-                        if (info instanceof AppInfo) {
-                            info = ((AppInfo) info).makeWorkspaceItem();
-                            d.dragInfo = info;
-                        } else if (info instanceof ShortcutInfo) {
-                            info = new ShortcutInfo((ShortcutInfo) info);
-                            d.dragInfo = info;
-                        }
-
                     }
                     view = mLauncher.createShortcut(cellLayout, (WorkspaceItemInfo) info);
                     break;

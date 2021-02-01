@@ -580,25 +580,27 @@ public class LoaderTask implements Runnable {
                             }
                             break;
 
-                        case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
-                            FolderInfo folderInfo = mBgDataModel.findOrMakeFolder(c.id);
-                            c.applyCommonProperties(folderInfo);
+                            case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
+                                FolderInfo folderInfo = mBgDataModel.findOrMakeFolder(c.id);
+                                c.applyCommonProperties(folderInfo);
 
-                            // Do not trim the folder label, as is was set by the user.
-                            folderInfo.title = c.getString(c.titleIndex);
-                            folderInfo.spanX = 1;
-                            folderInfo.spanY = 1;
-                            folderInfo.options = c.getInt(optionsIndex);
+                                // Do not trim the folder label, as is was set by the user.
+                                folderInfo.title = c.getString(c.titleIndex);
+                                folderInfo.spanX = 1;
+                                folderInfo.spanY = 1;
+                                folderInfo.options = c.getInt(optionsIndex);
 
-                            // no special handling required for restored folders
-                            c.markRestored();
+                                folderInfo.swipeUpAction = c.getString(swipeUpActionEntryIndex);
 
-                            c.checkAndAddItem(folderInfo, mBgDataModel);
-                            break;
+                                // no special handling required for restored folders
+                                c.markRestored();
 
-                        case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
-                            if (FeatureFlags.GO_DISABLE_WIDGETS) {
-                                c.markDeleted("Only legacy shortcuts can have null package");
+                                c.checkAndAddItem(folderInfo, mBgDataModel);
+                                break;
+
+                            case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
+                                if (FeatureFlags.GO_DISABLE_WIDGETS) {
+                                    c.markDeleted("Only legacy shortcuts can have null package");
                                 continue;
                             }
                             // Follow through

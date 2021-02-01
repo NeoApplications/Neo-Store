@@ -131,9 +131,4 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
         iconBitmap = info.icon;
         iconColor = info.color;
     }
-
-    /**
-     * @return a copy of this
-     */
-    public abstract ItemInfoWithIcon clone();
 }
