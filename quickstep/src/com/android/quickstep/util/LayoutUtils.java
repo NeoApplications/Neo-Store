@@ -15,8 +15,6 @@
  */
 package com.android.quickstep.util;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -30,6 +28,8 @@ import com.android.quickstep.SysUINavigationMode;
 
 import java.lang.annotation.Retention;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 public class LayoutUtils {
 
     private static final int MULTI_WINDOW_STRATEGY_HALF_SCREEN = 1;
@@ -37,7 +37,8 @@ public class LayoutUtils {
 
     @Retention(SOURCE)
     @IntDef({MULTI_WINDOW_STRATEGY_HALF_SCREEN, MULTI_WINDOW_STRATEGY_DEVICE_PROFILE})
-    private @interface MultiWindowStrategy {}
+    private @interface MultiWindowStrategy {
+    }
 
     /**
      * The height for the swipe up motion
@@ -57,9 +58,7 @@ public class LayoutUtils {
         } else {
             Resources res = context.getResources();
 
-            extraSpace = getDefaultSwipeHeight(context, dp) + dp.verticalDragHandleSizePx
-                    + res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_extra_vertical_size)
-                    + res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_bottom_padding);
+            extraSpace = getDefaultSwipeHeight(context, dp) + dp.verticalDragHandleSizePx;
         }
         calculateTaskSize(context, dp, extraSpace, MULTI_WINDOW_STRATEGY_HALF_SCREEN, outRect);
     }

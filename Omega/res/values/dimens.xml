@@ -59,13 +59,6 @@
     <dimen name="icon_preview_padding">16dp</dimen>
 
     <!-- Hotseat -->
-    <dimen name="v1_dynamic_grid_hotseat_top_padding">4dp</dimen>
-    <dimen name="v1_dynamic_grid_hotseat_bottom_padding">2dp</dimen>
-    <dimen name="v1_dynamic_grid_hotseat_size">80dp</dimen>
-    <dimen name="dynamic_grid_hotseat_size">70dp</dimen>
-    <dimen name="dynamic_grid_cell_layout_bottom_padding">0dp</dimen>
-    <dimen name="dynamic_grid_workspace_page_spacing">4dp</dimen>
-    <dimen name="dynamic_grid_workspace_top_padding">4dp</dimen>
     <dimen name="dock_preview_height">150dp</dimen>
 
     <!-- QSB -->
