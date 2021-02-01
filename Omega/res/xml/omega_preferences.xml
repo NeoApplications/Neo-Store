@@ -64,6 +64,7 @@
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_smartspace"
             android:title="@string/title__general_smartspace"
+            app:controllerClass="com.saggitt.omega.settings.controllers.HomeWidgetController"
             app:content="@xml/omega_preferences_smartspace" />
 
         <com.saggitt.omega.preferences.SubPreference
