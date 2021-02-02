@@ -87,11 +87,8 @@ to discuss the development, issues and new features.<br/>
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
     alt="Buy Me A Coffee" width="150" >
 </a><br/>
-<form action="https://www.paypal.com/donate" method="post" target="_top">
-<input type="hidden" name="hosted_button_id" value="KDSS6XCH8TRSL" />
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-<img alt="" border="0" src="https://www.paypal.com/en_SV/i/scr/pixel.gif" width="1" height="1" />
-</form>
+
+[![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
 
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
