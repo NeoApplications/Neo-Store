@@ -8,6 +8,7 @@ Libre software launcher. <br/>
 APKs are available on GitHub and in the Telegram channel. Some nightly builds
 are only available in the Telegram channel.<br/>
 [<img src="badge_github.png" alt="Get it on GitHub" height="80">](https://github.com/otakuhqz/omega/releases)
+[<img src="badge_izzy.png" alt="Get it on IzzyOnDroid" height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.saggitt.omega)
 
 Nightly builds are now available at Github actions [![artifacts](https://github.com/otakuhqz/Omega/actions)]
 CAUTION: Nightly builds might be unstable.
@@ -82,12 +83,15 @@ to discuss the development, issues and new features.<br/>
 </table>
 
 ## Donations <br/>
-[![Donate on Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/otakuhqz/donate)<br/>
 <a href="https://www.buymeacoffee.com/2ulp4f5" target="_blank">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
     alt="Buy Me A Coffee" width="150" >
 </a><br/>
-[![Donate on PayPal](https://img..ishieldso/badge/PayPal-Donate%20Now-red.svg?style=for-the-badge)](https://paypal.me/saulhenriquez)
+<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="KDSS6XCH8TRSL" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_SV/i/scr/pixel.gif" width="1" height="1" />
+</form>
 
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
