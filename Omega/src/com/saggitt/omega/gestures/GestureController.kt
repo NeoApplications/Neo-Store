@@ -102,7 +102,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
                 "com.saggitt.omega.gestures.handlers.SleepGestureHandlerDeviceAdmin",
                 "com.saggitt.omega.gestures.handlers.SleepGestureHandlerAccessibility")
 
-        fun createGestureHandler(context: Context, jsonString: String, fallback: GestureHandler): GestureHandler {
+        fun createGestureHandler(context: Context, jsonString: String?, fallback: GestureHandler): GestureHandler {
             if (!TextUtils.isEmpty(jsonString)) {
                 val config: JSONObject? = try {
                     JSONObject(jsonString)

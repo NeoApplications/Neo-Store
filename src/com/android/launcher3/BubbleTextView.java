@@ -54,8 +54,14 @@ import com.android.launcher3.icons.IconCache.ItemInfoUpdateReceiver;
 import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.gestures.BlankGestureHandler;
+import com.saggitt.omega.gestures.GestureController;
+import com.saggitt.omega.gestures.GestureHandler;
+import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.override.CustomInfoProvider;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.NumberFormat;
 
@@ -143,6 +149,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private boolean mIgnorePaddingTouch = false;
 
     private IconLoadRequest mIconLoadRequest;
+
+    private GestureHandler mSwipeUpHandler;
 
     private boolean mHideText;
 
@@ -304,6 +312,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     public void applyFromWorkspaceItem(WorkspaceItemInfo info, boolean promiseStateChanged) {
         applyIconAndLabel(info);
+        applySwipeUpAction(info);
         setTag(info);
         if (promiseStateChanged || (info.hasPromiseIconUi())) {
             applyPromiseState(promiseStateChanged);
@@ -369,6 +378,16 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         mDotParams.color = IconPalette.getMutedColor(info.color, 0.54f);
 
         setIcon(iconDrawable);
+    }
+
+    private void applySwipeUpAction(WorkspaceItemInfo info) {
+        GestureHandler handler = GestureController.Companion.createGestureHandler(
+                getContext(), info.swipeUpAction, new BlankGestureHandler(getContext(), null));
+        if (handler instanceof BlankGestureHandler) {
+            mSwipeUpHandler = null;
+        } else {
+            mSwipeUpHandler = new ViewSwipeUpGestureHandler(this, handler);
+        }
     }
 
     private CharSequence getTitle(ItemInfo info) {
@@ -446,6 +465,13 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 }
                 break;
         }
+
+        Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+        if (launcher instanceof OmegaLauncher && mSwipeUpHandler != null) {
+            ((OmegaLauncher) launcher).getGestureController()
+                    .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());
+        }
+
         return result;
     }
 

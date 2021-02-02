@@ -36,7 +36,7 @@ class LauncherGesturePreference(context: Context, attrs: AttributeSet?) : Recycl
     lateinit var onSelectHandler: (GestureHandler) -> Unit
     private val mContext = context
     private val blankGestureHandler = BlankGestureHandler(mContext, null)
-    private val handler get() = GestureController.createGestureHandler(mContext, value.toString(), blankGestureHandler)
+    private val handler get() = GestureController.createGestureHandler(mContext, value, blankGestureHandler)
 
     override fun getSummary() = handler.displayName
 

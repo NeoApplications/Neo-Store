@@ -71,7 +71,11 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.IconLabelDotView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.gestures.BlankGestureHandler;
+import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.gestures.GestureHandler;
+import com.saggitt.omega.gestures.RunnableGestureHandler;
+import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
@@ -845,7 +849,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     private void applySwipeUpAction(FolderInfo info) {
-        /*if (info.isCoverMode()) {
+        if (info.isCoverMode()) {
             mSwipeUpHandler = new RunnableGestureHandler(getContext(), () -> ItemClickHandler.INSTANCE.onClick(this));
         } else {
             mSwipeUpHandler = GestureController.Companion.createGestureHandler(
@@ -855,7 +859,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             mSwipeUpHandler = null;
         } else {
             mSwipeUpHandler = new ViewSwipeUpGestureHandler(this, mSwipeUpHandler);
-        }*/
+        }
     }
 
     private float mIconScale = 1f;

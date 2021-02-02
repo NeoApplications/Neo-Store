@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
@@ -231,10 +230,6 @@ public class ModelWriter {
         if (reload) {
             LauncherAppState.getInstance(context).getModel().forceReload();
         }
-    }
-
-    private void executeUpdateItem(ItemInfo item, ContentWriter writer) {
-        MAIN_EXECUTOR.execute(new UpdateItemRunnable(item, () -> writer));
     }
 
     /**

@@ -206,12 +206,10 @@ public class DeviceProfile {
                 ? PORTRAIT_TABLET_LEFT_RIGHT_PADDING_MULTIPLIER : 1;
         int cellLayoutPadding = res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding);
         if (isLandscape) {
-            //cellLayoutPaddingLeftRightPx = 0;
             cellLayoutPaddingLeftPx = cellLayoutPaddingRightPx = 0;
             cellLayoutBottomPaddingPx = cellLayoutPadding;
         } else {
             // Usage of this is still permitted in the app drawer which should not follow our desktop padding shenanigans
-            //cellLayoutPaddingLeftRightPx = cellLayoutPaddingLeftRightMultiplier * cellLayoutPadding;
             cellLayoutPaddingLeftPx = round(cellLayoutPaddingLeftRightPx * inv.workspacePaddingLeftScale);
             cellLayoutPaddingRightPx = round(cellLayoutPaddingLeftRightPx * inv.workspacePaddingRightScale);
             cellLayoutBottomPaddingPx = 0;

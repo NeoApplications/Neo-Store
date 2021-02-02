@@ -29,7 +29,6 @@ import androidx.annotation.Nullable;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
-import com.android.launcher3.shortcuts.ShortcutInfoCompat;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ContentWriter;
 import com.saggitt.omega.iconpack.IconPackManager;
@@ -100,12 +99,10 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     @NonNull
     private String[] personKeys = Utilities.EMPTY_STRING_ARRAY;
 
-    public String swipeUpAction;
     public CharSequence customTitle;
     public Bitmap customIcon;
     public IconPackManager.CustomIconEntry customIconEntry;
-
-    public ShortcutInfoCompat shortcutInfo;
+    public String swipeUpAction;
     /**
      * The installation progress [0-100] of the package that this shortcut represents.
      */
