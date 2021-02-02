@@ -279,10 +279,6 @@ class IconPackManager(private val context: Context) {
         }
     }
 
-    interface OnPackChangeListener {
-        fun onPackChanged()
-    }
-
     companion object {
 
         const val TAG = "IconPackManager"

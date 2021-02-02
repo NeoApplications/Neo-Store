@@ -22,6 +22,7 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetHostView;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -391,6 +392,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // the folder itself.
         requestFocus();
         super.onAttachedToWindow();
+        if (mFolderIcon != null && mFolderIcon.isCustomIcon && Utilities.getOmegaPrefs(getContext()).getFolderBgColored()) {
+            setBackgroundTintList(ColorStateList.valueOf(mFolderIcon.getFolderName().getDotColor()));
+        }
     }
 
     @Override
@@ -561,6 +565,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         updateTextViewFocus();
 
         mIsOpen = true;
+        if (mFolderIcon.isCustomIcon) {
+            mFolderIcon.mFolderName.setIconVisible(false);
+        }
 
         DragLayer dragLayer = mLauncher.getDragLayer();
         // Just verify that the folder hasn't already been added to the DragLayer.
@@ -656,6 +663,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     @Override
     protected void handleClose(boolean animate) {
         mIsOpen = false;
+        if (mFolderIcon.isCustomIcon) {
+            mFolderIcon.mFolderName.setIconVisible(true);
+        }
 
         if (!animate && mCurrentAnimator != null && mCurrentAnimator.isRunning()) {
             mCurrentAnimator.cancel();

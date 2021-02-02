@@ -1566,11 +1566,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         Rect dragRect = null;
         if (child instanceof BubbleTextView) {
             dragRect = new Rect();
-            BubbleTextView.getIconBounds(child, dragRect, grid.iconSizePx);
+            //BubbleTextView.getIconBounds(child, dragRect, grid.iconSizePx);
+            ((BubbleTextView) child).getIconBounds(dragRect);
             dragLayerY += dragRect.top;
             // Note: The dragRect is used to calculate drag layer offsets, but the
             // dragVisualizeOffset in addition to the dragRect (the size) to position the outline.
-            dragVisualizeOffset = new Point(- halfPadding, halfPadding);
+            dragVisualizeOffset = new Point(-halfPadding, halfPadding);
         } else if (child instanceof FolderIcon) {
             int previewSize = grid.folderIconSizePx;
             dragVisualizeOffset = new Point(- halfPadding, halfPadding - child.getPaddingTop());

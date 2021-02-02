@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
@@ -43,6 +41,9 @@ import android.util.Xml;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
+import androidx.annotation.Nullable;
+
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
@@ -51,6 +52,7 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.ClipPathView;
+import com.saggitt.omega.adaptive.IconShapeManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -59,7 +61,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
+import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
 
 /**
  * Abstract representation of the shape of an icon shape
@@ -89,7 +91,7 @@ public abstract class IconShape {
         return sNormalizationScale;
     }
 
-    private SparseArray<TypedValue> mAttrs;
+    public SparseArray<TypedValue> mAttrs;
 
     public boolean enableShapeDetection(){
         return false;
@@ -179,6 +181,43 @@ public abstract class IconShape {
             });
 
             return va;
+        }
+    }
+
+    public static class AdaptiveIconShape extends PathShape {
+
+        private final com.saggitt.omega.adaptive.IconShape mIconShape;
+
+        public AdaptiveIconShape(Context context) {
+            mIconShape = IconShapeManager.Companion.getInstance(context).getIconShape();
+            mAttrs = new SparseArray<>();
+            int qsbEdgeRadius = mIconShape.getQsbEdgeRadius();
+            if (qsbEdgeRadius != 0) {
+                TypedValue value = new TypedValue();
+                context.getResources().getValue(qsbEdgeRadius, value, false);
+                mAttrs.append(R.attr.qsbEdgeRadius, value);
+            }
+        }
+
+        @Override
+        public void addToPath(Path path, float offsetX, float offsetY, float radius) {
+            mIconShape.addShape(path, offsetX, offsetY, radius);
+        }
+
+        @Override
+        public AnimatorUpdateListener newUpdateListener(Rect startRect, Rect endRect,
+                                                        float endRadius, Path outPath) {
+            float startRadius = startRect.width() / 2f;
+            float[] start = new float[]{startRect.left, startRect.top, startRect.right, startRect.bottom};
+            float[] end = new float[]{endRect.left, endRect.top, endRect.right, endRect.bottom};
+            FloatArrayEvaluator evaluator = new FloatArrayEvaluator();
+            return animation -> {
+                float progress = (float) animation.getAnimatedValue();
+                float[] values = evaluator.evaluate(progress, start, end);
+                mIconShape.addToPath(outPath,
+                        values[0], values[1], values[2], values[3],
+                        startRadius, endRadius, progress);
+            };
         }
     }
 
@@ -381,10 +420,18 @@ public abstract class IconShape {
      * Initializes the shape which is closest to the {@link AdaptiveIconDrawable}
      */
     public static void init(Context context) {
-        if (!Utilities.ATLEAST_OREO) {
-            return;
+        if (Utilities.ATLEAST_OREO) {
+            sInstance = new AdaptiveIconShape(context);
+
+            AdaptiveIconCompat drawable = new AdaptiveIconCompat(
+                    new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
+            // Initialize shape properties
+            drawable.setBounds(0, 0, DEFAULT_PATH_SIZE, DEFAULT_PATH_SIZE);
+            sShapePath = new Path(drawable.getIconMask());
+            sNormalizationScale = IconNormalizer.normalizeAdaptiveIcon(drawable, 200, null);
+        } else {
+            sInstance = getAllShapes(context).get(0);
         }
-        pickBestShape(context);
     }
 
     private static IconShape getShapeDefinition(String type, float radius) {

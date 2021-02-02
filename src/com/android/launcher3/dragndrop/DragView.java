@@ -31,7 +31,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -47,6 +46,7 @@ import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.FolderInfo;
+import com.android.launcher3.IconProvider;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
@@ -58,6 +58,7 @@ import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.util.Arrays;
 
@@ -112,6 +113,9 @@ public class DragView extends View implements LauncherStateManager.StateListener
     private Drawable mBadge;
     private ColorMatrixColorFilter mBaseFilter;
 
+    private final IconProvider iconProvider;
+    private final OmegaPreferences prefs;
+
     /**
      * Construct the drag view.
      * <p>
@@ -129,6 +133,8 @@ public class DragView extends View implements LauncherStateManager.StateListener
         mDragLayer = launcher.getDragLayer();
         mDragController = launcher.getDragController();
         mFirstFrameAnimatorHelper = new FirstFrameAnimatorHelper(this);
+
+        iconProvider = IconProvider.INSTANCE.get(launcher);
 
         final float scale = (bitmap.getWidth() + finalScaleDps) / bitmap.getWidth();
 
@@ -174,6 +180,9 @@ public class DragView extends View implements LauncherStateManager.StateListener
 
         mBlurSizeOutline = getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
         setElevation(getResources().getDimension(R.dimen.drag_elevation));
+
+
+        prefs = Utilities.getOmegaPrefs(mLauncher);
     }
 
     @Override
@@ -199,7 +208,7 @@ public class DragView extends View implements LauncherStateManager.StateListener
 
     /**
      * Initialize {@code #mIconDrawable} if the item can be represented using
-     * an {@link AdaptiveIconDrawable} or {@link FolderAdaptiveIcon}.
+     * an {@link AdaptiveIconCompat} or {@link FolderAdaptiveIcon}.
      */
     @TargetApi(Build.VERSION_CODES.O)
     public void setItemInfo(final ItemInfo info) {
@@ -224,7 +233,7 @@ public class DragView extends View implements LauncherStateManager.StateListener
                 Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h,
                         false /* flattenDrawable */, outObj);
 
-                if (dr instanceof AdaptiveIconDrawable) {
+                if (dr instanceof AdaptiveIconCompat) {
                     int blurMargin = (int) mLauncher.getResources()
                             .getDimension(R.dimen.blur_size_medium_outline) / 2;
 
@@ -245,12 +254,12 @@ public class DragView extends View implements LauncherStateManager.StateListener
                             nDr = dr;
                         } else {
                             // Since we just want the scale, avoid heavy drawing operations
-                            nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
+                            nDr = new AdaptiveIconCompat(new ColorDrawable(Color.BLACK), null);
                         }
                         Utilities.scaleRectAboutCenter(bounds,
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
-                    AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
+                    AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) dr;
                     Rect fgBounds = new Rect(bounds);
                     Rect bgBounds = new Rect(bounds);
                     Utilities.scaleRectAboutCenter(bgBounds, 1.1f);
@@ -262,9 +271,9 @@ public class DragView extends View implements LauncherStateManager.StateListener
                     final Path mask = adaptiveIcon.getIconMask();
 
                     mTranslateX = new SpringFloatValue(DragView.this,
-                            w * AdaptiveIconDrawable.getExtraInsetFraction());
+                            w * AdaptiveIconCompat.getExtraInsetFraction());
                     mTranslateY = new SpringFloatValue(DragView.this,
-                            h * AdaptiveIconDrawable.getExtraInsetFraction());
+                            h * AdaptiveIconCompat.getExtraInsetFraction());
 
                     fgBounds.inset(
                             (int) (-fgBounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
@@ -549,14 +558,11 @@ public class DragView extends View implements LauncherStateManager.StateListener
         mAnimatedShiftX = shiftX;
         mAnimatedShiftY = shiftY;
         applyTranslation();
-        mAnim.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = 1 - animation.getAnimatedFraction();
-                mAnimatedShiftX = (int) (fraction * shiftX);
-                mAnimatedShiftY = (int) (fraction * shiftY);
-                applyTranslation();
-            }
+        mAnim.addUpdateListener(animation -> {
+            float fraction = 1 - animation.getAnimatedFraction();
+            mAnimatedShiftX = (int) (fraction * shiftX);
+            mAnimatedShiftY = (int) (fraction * shiftY);
+            applyTranslation();
         });
     }
 
