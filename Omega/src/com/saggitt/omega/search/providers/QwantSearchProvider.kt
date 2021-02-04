@@ -26,7 +26,6 @@ import com.android.launcher3.util.PackageManagerHelper
 @Keep
 class QwantSearchProvider(context: Context) : FirefoxSearchProvider(context) {
 
-
     override val name = context.getString(R.string.search_provider_qwant)
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_qwant)!!

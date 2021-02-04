@@ -26,7 +26,6 @@ import android.os.Handler
 import android.os.Message
 import android.os.Process
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.TextView
@@ -34,9 +33,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.LauncherModel
 import com.android.launcher3.R
 import com.android.launcher3.compat.LauncherAppsCompat
+import com.android.launcher3.util.Executors.ICON_PACK_UI_EXECUTOR
 import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
 import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.*
@@ -49,10 +48,7 @@ import java.util.concurrent.Semaphore
 class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, SearchView.OnQueryTextListener {
     private val iconPackManager = IconPackManager.getInstance(this)
     private val iconGrid by lazy { findViewById<RecyclerView>(R.id.list_results) }
-    private val iconPack by lazy {
-        iconPackManager.getIconPack(
-                intent.getParcelableExtra<IconPackManager.PackProvider>(EXTRA_ICON_PACK)!!, false)
-    }
+    private val iconPack by lazy { iconPackManager.getIconPack(intent.getParcelableExtra(EXTRA_ICON_PACK)!!, false) }
     private val items get() = searchItems ?: actualItems
     private var actualItems = ArrayList<AdapterItem>()
     private val adapter = IconGridAdapter()
@@ -69,7 +65,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
     }
 
     private var searchItems: MutableList<AdapterItem>? = null
-    private val searchHandler = object : Handler(LauncherModel.getIconPackUiLooper()) {
+    private val searchHandler = object : Handler(ICON_PACK_UI_EXECUTOR.looper) {
         override fun handleMessage(msg: Message) {
             if (msg.what == R.id.message_search) {
                 processSearchQuery(msg.obj as String?)
@@ -139,11 +135,11 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         }
     }
 
-    override fun onQueryTextSubmit(query: String): Boolean {
+    override fun onQueryTextSubmit(query: String?): Boolean {
         return true
     }
 
-    override fun onQueryTextChange(query: String): Boolean {
+    override fun onQueryTextChange(query: String?): Boolean {
         addToSearchQueue(query)
         return true
     }
@@ -154,10 +150,9 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
     }
 
     private fun processSearchQuery(query: String?) {
-        Log.d("IconPicker", "Searching ${query}")
         val q = query?.trim()
         val filtered = if (!TextUtils.isEmpty(q)) {
-            actualItems.filter { it is IconItem && collator.equals(q!!, it.entry.displayName) }.toMutableList()
+            actualItems.filter { it is IconItem && collator.matches(q!!, it.entry.displayName) }.toMutableList()
         } else null
         runOnUiThread {
             val hashCode = items.hashCode()
@@ -337,7 +332,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
                     rightMargin = dynamicPadding
                 }
                 val context = itemView.context
-                title.setTextColor(context.getColorAccent())
+                title.setTextColor(omegaPrefs.accentColor)
             }
 
             fun bind(category: CategoryItem) {

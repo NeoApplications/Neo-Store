@@ -14,7 +14,7 @@ import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 
 public class NexusLauncherActivity extends Launcher {
-    private NexusLauncher mLauncher;
+    private final NexusLauncher mLauncher;
 
     public NexusLauncherActivity() {
         mLauncher = new NexusLauncher(this);

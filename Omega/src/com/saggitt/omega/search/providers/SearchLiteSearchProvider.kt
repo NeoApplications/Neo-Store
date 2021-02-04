@@ -22,6 +22,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.search.SearchProvider
 
@@ -40,7 +41,7 @@ class SearchLiteSearchProvider(context: Context) : SearchProvider(context) {
     override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent(Intent.ACTION_SEARCH).setPackage(PACKAGE))
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
-        //setTint(ColorEngine.getInstance(context).accent)
+        setTint(Utilities.getOmegaPrefs(context).accentColor)
     }
 
     companion object {

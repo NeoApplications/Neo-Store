@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.BaseRecyclerView;
 import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -53,13 +54,15 @@ import com.saggitt.omega.search.SearchThread;
 import com.saggitt.omega.search.providers.AppSearchSearchProvider;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
 import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
 import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
 import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
 import static com.android.launcher3.anim.Interpolators.LINEAR;
 import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 
-public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener {
+public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager,
+        QsbChangeListener, InvariantDeviceProfile.OnIDPChangeListener {
 
     private final QsbConfiguration qsbConfiguration;
     private final int mTopAdjusting;
@@ -126,6 +129,14 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         super.onAttachedToWindow();
         updateConfiguration();
         qsbConfiguration.addListener(this);
+    }
+
+    @Override
+    public void onIdpChanged(int changeFlags, InvariantDeviceProfile profile) {
+        if ((changeFlags & CHANGE_FLAG_ICON_PARAMS) != 0) {
+            mAllAppsShadowBitmap = mHotseatShadowBitmap = mBubbleShadowBitmap = mClearBitmap = null;
+            addOrUpdateSearchRipple();
+        }
     }
 
     @Override

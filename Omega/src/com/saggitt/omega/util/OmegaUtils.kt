@@ -54,8 +54,7 @@ import com.android.launcher3.compat.UserManagerCompat
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.*
-import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
-import com.android.launcher3.util.Executors.MODEL_EXECUTOR
+import com.android.launcher3.util.Executors.*
 import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
@@ -404,6 +403,24 @@ fun Context.getBaseDraggingActivityOrNull(): BaseDraggingActivity? {
     }
 }
 
+private val MAX_UNICODE = '\uFFFF'
+
+/**
+ * Returns true if {@param target} is a search result for {@param query}
+ */
+fun java.text.Collator.matches(query: String, target: String): Boolean {
+    return when (this.compare(query, target)) {
+        0 -> true
+        -1 ->
+            // The target string can contain a modifier which would make it larger than
+            // the query string (even though the length is same). If the query becomes
+            // larger after appending a unicode character, it was originally a prefix of
+            // the target string and hence should match.
+            this.compare(query + MAX_UNICODE, target) > -1 || target.contains(query, ignoreCase = true)
+        else -> false
+    }
+}
+
 fun reloadIconsFromComponents(context: Context, components: Collection<ComponentKey>) {
     reloadIcons(context, components.map { PackageUserKey(it.componentName.packageName, it.user) })
 }
@@ -556,7 +573,8 @@ fun ComponentKey.getLauncherActivityInfo(context: Context): LauncherActivityInfo
 }
 
 val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
-val iconPackUiHandler by lazy { Handler(LauncherModel.getIconPackUiLooper()) }
+val iconPackUiHandler by lazy { Handler(ICON_PACK_UI_EXECUTOR.looper) }
+
 
 fun runOnUiWorkerThread(r: () -> Unit) {
     runOnThread(uiWorkerHandler, r)

@@ -92,12 +92,9 @@ public class LauncherModel extends BroadcastReceiver
 
     @Thunk
     static final HandlerThread sUiWorkerThread = new HandlerThread("launcher-ui-loader");
-    @Thunk
-    static final HandlerThread sIconPackUiThread = new HandlerThread("launcher-icon-pack-ui");
 
     static {
         sUiWorkerThread.start();
-        sIconPackUiThread.start();
     }
 
     // Indicates whether the current model data is valid or not.
@@ -590,9 +587,6 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * @return the looper for the icon pack ui thread which can be used to load icon pickers.
      */
-    public static Looper getIconPackUiLooper() {
-        return sIconPackUiThread.getLooper();
-    }
 
     public Callbacks getCallback() {
         return mCallbacks != null ? mCallbacks.get() : null;
