@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Process;
 import android.os.UserHandle;
 
 import androidx.core.graphics.ColorUtils;
@@ -632,9 +631,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         if (mSearchResults == null) {
             return mApps;
         }
-        LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(mLauncher);
-        UserHandle user = Process.myUserHandle();
-        IconCache iconCache = LauncherAppState.getInstance(mLauncher).getIconCache();
+
+        final LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(mLauncher);
+        final UserHandle user = android.os.Process.myUserHandle();
+        final IconCache iconCache = LauncherAppState.getInstance(mLauncher).getIconCache();
         boolean quietMode = UserManagerCompat.getInstance(mLauncher).isQuietModeEnabled(user);
         ArrayList<AppInfo> result = new ArrayList<>();
         for (ComponentKey key : mSearchResults) {
@@ -645,7 +645,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 for (LauncherActivityInfo info : launcherApps
                         .getActivityList(key.componentName.getPackageName(), user)) {
                     if (info.getComponentName().equals(key.componentName)) {
-                        AppInfo appInfo = new AppInfo(info, user, quietMode);
+                        final AppInfo appInfo = new AppInfo(info, user, quietMode);
                         iconCache.getTitleAndIcon(appInfo, false);
                         result.add(appInfo);
                         break;

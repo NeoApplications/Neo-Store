@@ -334,13 +334,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         int leftRightPadding = grid.desiredWorkspaceLeftRightMarginPx
                 + grid.cellLayoutPaddingLeftRightPx;
 
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].adapter.setAppsPerRow(grid.inv.numColsDrawer);
-            mAH[i].padding.bottom = insets.bottom;
-            mAH[i].padding.left = mAH[i].padding.right = leftRightPadding;
-            mAH[i].applyPadding();
-        }
-
         mTabsController.setPadding(leftRightPadding, insets.bottom);
 
         ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();

@@ -38,7 +38,6 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AlphabeticalAppsList.AdapterItem;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.folder.FolderIcon;
@@ -214,11 +213,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         mGridLayoutMgr = new AppsGridLayoutManager(launcher);
         mGridLayoutMgr.setSpanSizeLookup(mGridSizer);
         mLayoutInflater = LayoutInflater.from(launcher);
-        setAppsPerRow(mLauncher.getDeviceProfile().inv.numColsDrawer);
-    }
 
-    public void setAppsPerRow(int appsPerRow) {
-        mAppsPerRow = appsPerRow;
+        mAppsPerRow = mLauncher.getDeviceProfile().inv.numColsDrawer;
         mGridLayoutMgr.setSpanCount(mAppsPerRow);
     }
 
@@ -357,7 +353,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 break;
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-                //int color = getDrawerTextColor();
                 ViewGroup group = (ViewGroup) holder.itemView;
                 TextView textView = group.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
@@ -393,10 +388,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public int getItemViewType(int position) {
         AlphabeticalAppsList.AdapterItem item = mApps.getAdapterItems().get(position);
         return item.viewType;
-    }
-
-    public int getDrawerTextColor() {
-        return Utilities.getOmegaPrefs(mLauncher.getApplicationContext()).getDrawerLabelColor();
     }
 
     private SearchProvider getSearchProvider() {
