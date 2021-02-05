@@ -218,7 +218,6 @@ public class DeviceProfile {
         cellLayoutPaddingLeftRightPx = (!isVerticalBarLayout() && fullWidthWidgets) ? 0
                 : res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding);
 
-
         verticalDragHandleSizePx = res.getDimensionPixelSize(
                 R.dimen.vertical_drag_handle_size);
         verticalDragHandleOverlapWorkspace =
@@ -287,7 +286,6 @@ public class DeviceProfile {
         }
 
         float targetDockScale = prefs.getDockScale();
-
         if (prefs.getDockHide()) {
             hotseatBarSizePx = 0;
             updateAvailableDimensions(dm, res);
@@ -297,8 +295,8 @@ public class DeviceProfile {
                 hotseatBarSizePx += extraSpace;
 
                 int dockTopSpace = verticalDragHandleSizePx - verticalDragHandleOverlapWorkspace;
-                int dockBottomSpace = Math
-                        .max(hotseatBarBottomPaddingPx - previousDockBottomPadding, dockTopSpace);
+                int dockBottomSpace =
+                        Math.max(hotseatBarBottomPaddingPx - previousDockBottomPadding, dockTopSpace);
                 int dockVerticalSpace = dockTopSpace + dockBottomSpace;
 
                 hotseatBarBottomPaddingPx += extraSpace * ((float) dockBottomSpace / dockVerticalSpace);
@@ -615,17 +613,10 @@ public class DeviceProfile {
                         availablePaddingX / 2, paddingBottom + availablePaddingY / 2);
             } else {
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
-                /*padding.set(desiredWorkspaceLeftRightMarginPx,
-                        edgeMarginPx,
-                        desiredWorkspaceLeftRightMarginPx,
-                        paddingBottom);
-                */
                 int horizontalPadding = prefs.getAllowFullWidthWidgets() ? 0 : desiredWorkspaceLeftRightMarginPx;
 
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
                 padding.set(horizontalPadding, edgeMarginPx, horizontalPadding, paddingBottom);
-
-
             }
             // Pad the top and bottom of the workspace with search/hotseat bar sizes
             padding.set(

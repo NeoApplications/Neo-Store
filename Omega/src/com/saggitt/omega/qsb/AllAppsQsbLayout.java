@@ -368,21 +368,13 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         setTranslationX((float) ((parent.getPaddingLeft() + (
                 (((parent.getWidth() - parent.getPaddingLeft()) - parent.getPaddingRight()) - (right - left))
                         / 2)) - left));
-    }
-
-    public void draw(Canvas canvas) {
-        if (mShadowAlpha > 0) {
-            if (mShadowBitmap == null) {
-                mShadowBitmap = createShadowBitmap(
-                        getResources().getDimension(R.dimen.hotseat_qsb_scroll_shadow_blur_radius),
-                        getResources().getDimension(R.dimen.hotseat_qsb_scroll_key_shadow_offset),
-                        0, true);
-            }
-            mShadowHelper.paint.setAlpha(mShadowAlpha);
-            drawShadow(mShadowBitmap, canvas);
-            mShadowHelper.paint.setAlpha(255);
+        int containerTopMargin = 0;
+        if (!prefs.getAllAppsSearch()) {
+            MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
+            containerTopMargin = -(mlp.topMargin + mlp.height - 125);
+            offsetTopAndBottom((int) mVerticalOffset - containerTopMargin);
         }
-        super.draw(canvas);
+
     }
 
     final void setShadowAlpha(int i) {

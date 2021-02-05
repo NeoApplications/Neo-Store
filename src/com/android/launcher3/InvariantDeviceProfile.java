@@ -177,7 +177,6 @@ public class InvariantDeviceProfile {
         landscapeIconSize = p.landscapeIconSize;
         iconTextSize = p.iconTextSize;
         allAppsIconSize = p.allAppsIconSize;
-        hotseatIconSize = p.hotseatIconSize;
         numHotseatIcons = p.numHotseatIcons;
         numAllAppsColumns = p.numAllAppsColumns;
         defaultLayoutId = p.defaultLayoutId;
@@ -334,59 +333,6 @@ public class InvariantDeviceProfile {
             return "";
         }
         return context.getResources().getString(CONFIG_ICON_MASK_RES_ID);
-    }
-
-    private void initGridOption(Context context, ArrayList<DisplayOption> options,
-                                DisplayOption displayOption, DisplayMetrics metrics) {
-        GridOption closestProfile = options.get(0).grid;
-        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-
-        numRows = closestProfile.numRows;
-        numRowsOriginal = numRows;
-        numColumns = closestProfile.numColumns;
-        numColumnsOriginal = numColumns;
-        numColsDrawer = numColumns;
-        numColsDrawerOriginal = numColumns;
-        numHotseatIcons = closestProfile.numHotseatIcons;
-        numHotseatIconsOriginal = numHotseatIcons;
-        defaultLayoutId = closestProfile.defaultLayoutId;
-        demoModeLayoutId = closestProfile.demoModeLayoutId;
-        numFolderRows = closestProfile.numFolderRows;
-        numFolderColumns = closestProfile.numFolderColumns;
-        numAllAppsColumns = numColumns;
-
-        mExtraAttrs = closestProfile.extraAttrs;
-
-        iconSize = displayOption.iconSize * prefs.getDesktopIconScale();
-        iconSizeOriginal = displayOption.iconSize;
-        iconShapePath = getIconShapePath(context);
-        landscapeIconSize = displayOption.landscapeIconSize;
-        landscapeIconSizeOriginal = displayOption.landscapeIconSize;
-
-        if (prefs.getDockIconScale() > 0) {
-            hotseatIconSize = displayOption.iconSize * prefs.getDockIconScale();
-        } else {
-            hotseatIconSize = iconSize;
-        }
-        hotseatIconSizeOriginal = displayOption.iconSize;
-        if (prefs.getDockIconScale() > 0) {
-            landscapeHotseatIconSize = displayOption.landscapeIconSize * prefs.getDockIconScale();
-        } else {
-            landscapeHotseatIconSize = landscapeIconSize;
-        }
-        landscapeHotseatIconSizeOriginal = displayOption.landscapeIconSize;
-        allAppsIconSize = displayOption.iconSize * prefs.getAllAppsIconScale();
-        allAppsIconSizeOriginal = displayOption.iconSize;
-        landscapeAllAppsIconSize = displayOption.landscapeIconSize;
-        landscapeAllAppsIconSizeOriginal = displayOption.landscapeIconSize;
-
-        iconBitmapSize = Utilities.pxFromDp(max(max(iconSize, allAppsIconSize), hotseatIconSize), metrics);
-        iconTextSize = displayOption.iconTextSize;
-        fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
-
-        // If the partner customization apk contains any grid overrides, apply them
-        // Supported overrides: numRows, numColumns, iconSize
-        applyPartnerDeviceProfileOverrides(context, metrics);
     }
 
     @Nullable
