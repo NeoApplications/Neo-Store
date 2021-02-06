@@ -22,7 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -42,7 +41,7 @@ import com.android.launcher3.util.Preconditions;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
- * {@link AdaptiveIconDrawable} representation of a {@link FolderIcon}
+ * {@link AdaptiveIconCompat} representation of a {@link FolderIcon}
  */
 @TargetApi(Build.VERSION_CODES.O)
 public class FolderAdaptiveIcon extends AdaptiveIconCompat {
@@ -115,11 +114,11 @@ public class FolderAdaptiveIcon extends AdaptiveIconCompat {
         icon.drawDot(c);
 
         // Initialize preview
-        final float sizeScaleFactor = 1 + 2 * AdaptiveIconDrawable.getExtraInsetFraction();
+        final float sizeScaleFactor = 1 + 2 * AdaptiveIconCompat.getExtraInsetFraction();
         final int previewWidth = (int) (dragViewSize.x * sizeScaleFactor);
         final int previewHeight = (int) (dragViewSize.y * sizeScaleFactor);
 
-        final float shiftFactor = AdaptiveIconDrawable.getExtraInsetFraction() / sizeScaleFactor;
+        final float shiftFactor = AdaptiveIconCompat.getExtraInsetFraction() / sizeScaleFactor;
         final float previewShiftX = shiftFactor * previewWidth;
         final float previewShiftY = shiftFactor * previewHeight;
 

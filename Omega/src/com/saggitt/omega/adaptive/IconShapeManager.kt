@@ -25,7 +25,6 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.Region
 import android.graphics.RegionIterator
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.text.TextUtils
 import androidx.annotation.Keep
 import androidx.core.graphics.PathParser
@@ -66,7 +65,7 @@ class IconShapeManager(private val context: Context) {
     private fun getSystemShape(): IconShape {
         if (!Utilities.ATLEAST_OREO) return IconShape.Circle
 
-        val iconMask = AdaptiveIconDrawable(null, null).iconMask
+        val iconMask = AdaptiveIconCompat(null, null).iconMask
         val systemShape = findNearestShape(iconMask)
         return object : IconShape(systemShape) {
 

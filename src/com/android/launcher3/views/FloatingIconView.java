@@ -15,15 +15,6 @@
  */
 package com.android.launcher3.views;
 
-import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.Utilities.getFullDrawable;
-import static com.android.launcher3.Utilities.mapToRange;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
-import static com.android.launcher3.states.RotationHelper.REQUEST_LOCK;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -37,7 +28,6 @@ import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -57,6 +47,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.InsettableFrameLayout.LayoutParams;
 import com.android.launcher3.ItemInfo;
@@ -71,6 +62,15 @@ import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.popup.SystemShortcut;
 import com.android.launcher3.shortcuts.DeepShortcutView;
+
+import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.Utilities.getFullDrawable;
+import static com.android.launcher3.Utilities.mapToRange;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
+import static com.android.launcher3.states.RotationHelper.REQUEST_LOCK;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * A view that is created to look like another view with the purpose of creating fluid animations.
@@ -416,7 +416,7 @@ public class FloatingIconView extends View implements
             int height = isFolderIcon ? originalView.getHeight() : (int) pos.height();
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
-                if (drawable instanceof AdaptiveIconDrawable) {
+                if (drawable instanceof AdaptiveIconCompat) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
                     // The drawable we get back is not an adaptive icon, so we need to use the
@@ -460,11 +460,11 @@ public class FloatingIconView extends View implements
             int iconOffset) {
         mBadge = badge;
 
-        mIsAdaptiveIcon = drawable instanceof AdaptiveIconDrawable;
+        mIsAdaptiveIcon = drawable instanceof AdaptiveIconCompat;
         if (mIsAdaptiveIcon) {
             boolean isFolderIcon = drawable instanceof FolderAdaptiveIcon;
 
-            AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) drawable;
+            AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) drawable;
             Drawable background = adaptiveIcon.getBackground();
             if (background == null) {
                 background = new ColorDrawable(Color.TRANSPARENT);
@@ -614,7 +614,7 @@ public class FloatingIconView extends View implements
     @SuppressWarnings("WrongThread")
     private static int getOffsetForIconBounds(Launcher l, Drawable drawable, RectF position) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
-                !(drawable instanceof AdaptiveIconDrawable)) {
+                !(drawable instanceof AdaptiveIconCompat)) {
             return 0;
         }
         int blurSizeOutline =
@@ -630,8 +630,8 @@ public class FloatingIconView extends View implements
         }
 
         bounds.inset(
-                (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
-                (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
+                (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
         );
 
         return bounds.left;

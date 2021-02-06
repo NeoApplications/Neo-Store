@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -277,7 +276,7 @@ public class BaseIconFactory implements AutoCloseable {
         mCanvas.setBitmap(bitmap);
         mOldBounds.set(icon.getBounds());
 
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
                     Math.round(size * (1 - scale) / 2));
             icon.setBounds(offset, offset, size - offset, size - offset);
