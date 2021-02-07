@@ -22,7 +22,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -70,7 +69,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     public boolean mDoNotRemoveFallback;
     private final boolean mLowPerformanceMode;
     private int mShadowAlpha;
-    private Bitmap mShadowBitmap;
     private boolean mUseFallbackSearch;
     private FallbackAppsSearchView mFallback;
     private TextView mHint;

@@ -1566,8 +1566,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         Rect dragRect = null;
         if (child instanceof BubbleTextView) {
             dragRect = new Rect();
-            //BubbleTextView.getIconBounds(child, dragRect, grid.iconSizePx);
-            ((BubbleTextView) child).getIconBounds(dragRect);
+            BubbleTextView.getIconBounds(child, dragRect, grid.iconSizePx);
+            //((BubbleTextView) child).getIconBounds(dragRect);
             dragLayerY += dragRect.top;
             // Note: The dragRect is used to calculate drag layer offsets, but the
             // dragVisualizeOffset in addition to the dragRect (the size) to position the outline.
@@ -3160,6 +3160,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     View parent = idToViewMap.get(itemToRemove.container);
                     if (parent instanceof FolderIcon) {
                         FolderInfo folderInfo = (FolderInfo) parent.getTag();
+                        folderInfo.prepareAutoUpdate();
                         folderInfo.remove((WorkspaceItemInfo) itemToRemove, false);
                         if (((FolderIcon) parent).getFolder().isOpen()) {
                             ((FolderIcon) parent).getFolder().close(false /* animate */);

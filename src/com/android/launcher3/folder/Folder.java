@@ -594,7 +594,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                mFolderIcon.setIconVisible(false);
+                //mFolderIcon.setIconVisible(false);
+                mFolderIcon.setBackgroundVisible(false);
                 mFolderIcon.drawLeaveBehindIfExists();
             }
             @Override
@@ -721,7 +722,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         if (mFolderIcon != null) {
             mFolderIcon.setVisibility(View.VISIBLE);
             mFolderIcon.setIconVisible(true);
-            mFolderIcon.mFolderName.setTextVisibility(true);
+            mFolderIcon.setBackgroundVisible(true);
+            mFolderIcon.mFolderName.setTextVisibility(mFolderIcon.mFolderName.shouldTextBeVisible());
             if (wasAnimated) {
                 mFolderIcon.animateBgShadowAndStroke();
                 mFolderIcon.onFolderClose(mContent.getCurrentPage());
@@ -1354,6 +1356,11 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         return sDefaultFolderName;
     }
 
+    @Override
+    public void prepareAutoUpdate() {
+        close(false);
+    }
+
     public void onTitleChanged(CharSequence title) {
     }
 
@@ -1576,11 +1583,6 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         } else {
             super.draw(canvas);
         }
-    }
-
-    @Override
-    public void prepareAutoUpdate() {
-        close(false);
     }
 
     public boolean isInAppDrawer() {

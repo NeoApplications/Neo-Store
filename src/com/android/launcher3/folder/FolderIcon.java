@@ -138,6 +138,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     private GestureHandler mSwipeUpHandler;
 
     public boolean isCustomIcon = false;
+    private boolean mIsTextVisible = true;
 
     private static final Property<FolderIcon, Float> DOT_SCALE_PROPERTY
             = new Property<FolderIcon, Float>(Float.TYPE, "dotScale") {
@@ -619,13 +620,13 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         if (mFolder == null) return;
         if (mFolder.getItemCount() == 0 && !mAnimating) return;
 
-        //mPreviewItemManager.recomputePreviewDrawingParams();
+        mPreviewItemManager.recomputePreviewDrawingParams();
 
-        //if (!mBackground.drawingDelegated()) {
-        //    mBackground.drawBackground(canvas);
-        //}
+        if (!mBackground.drawingDelegated()) {
+            mBackground.drawBackground(canvas);
+        }
 
-        //if (mCurrentPreviewItems.isEmpty() && !mAnimating) return;
+        if (mCurrentPreviewItems.isEmpty() && !mAnimating) return;
 
         final int saveCount = canvas.save();
         canvas.clipPath(mBackground.getClipPath());
@@ -697,6 +698,11 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 break;
             }
         }
+    }
+
+    public void setBackgroundVisible(boolean visible) {
+        mBackgroundIsVisible = visible;
+        invalidate();
     }
 
     @Override

@@ -51,23 +51,28 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
         mHandler = new Handler(SearchThread.handlerThread.getLooper(), this);
     }
 
-    private void dj(SearchResult componentList) {
+    private void dj(SearchResult result) {
         Uri uri = new Uri.Builder()
                 .scheme("content")
                 .authority(BuildConfig.APPLICATION_ID + ".appssearch")
-                .appendPath(componentList.mQuery)
+                .appendPath(result.mQuery)
                 .build();
-
-        try (Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null)) {
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, null, null, null, null);
             int suggestIntentData = cursor.getColumnIndex("suggest_intent_data");
             while (cursor.moveToNext()) {
-                componentList.mApps.add(AppSearchProvider.uriToComponent(Uri.parse(cursor.getString(suggestIntentData)), mContext));
+                result.mApps.add(AppSearchProvider.uriToComponent(Uri.parse(cursor.getString(suggestIntentData)), mContext));
             }
         } catch (NullPointerException ignored) {
 
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        componentList.mSuggestions.addAll(getSuggestions(componentList.mQuery));
-        Message.obtain(mUiHandler, 200, componentList).sendToTarget();
+        result.mSuggestions.addAll(getSuggestions(result.mQuery));
+        Message.obtain(mUiHandler, 200, result).sendToTarget();
     }
 
     public void cancel(boolean interruptActiveRequests) {

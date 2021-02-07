@@ -396,7 +396,7 @@ public class FloatingIconView extends View implements
     @SuppressWarnings("WrongThread")
     private static void getIconResult(Launcher l, View originalView, ItemInfo info, RectF pos,
             IconLoadResult iconLoadResult) {
-        Drawable drawable = null;
+        Drawable drawable;
         Drawable badge = null;
         boolean supportsAdaptiveIcons = ADAPTIVE_ICON_WINDOW_ANIM.get()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;

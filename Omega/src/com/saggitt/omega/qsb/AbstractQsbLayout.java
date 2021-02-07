@@ -520,7 +520,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     protected final boolean dE() {
         if (!Dh && !mUseTwoBubbles) {
-            return mUseTwoBubbles;
+            return false;
         }
         return true;
     }
@@ -530,10 +530,10 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected int getMicWidth() {
-        if (!mUseTwoBubbles || TextUtils.isEmpty(this.Dg)) {
+        if (!mUseTwoBubbles || TextUtils.isEmpty(Dg)) {
             return mSearchIconWidth;
         }
-        return (Math.round(qsbTextHintSize.measureText(this.Dg)) + qsbTextSpacing) + mSearchIconWidth;
+        return (Math.round(qsbTextHintSize.measureText(Dg)) + qsbTextSpacing) + mSearchIconWidth;
     }
 
     protected final void addOrUpdateSearchRipple() {
