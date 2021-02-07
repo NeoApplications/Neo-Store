@@ -91,7 +91,7 @@
     <string name="hide_app_selected">  Oculta</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Ocultas</item>
-        <item quantity="other" />
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Aplicación</item>
@@ -127,4 +127,12 @@
     <string name="title__desktop_full_width_widgets">Widgets en ancho completo</string>
     <string name="pref_category__incubating">Incubando</string>
     <string name="title__notification_background">Color de la notificación</string>
+    <string name="theme_use_black">Usar negro puro</string>
+    <string name="title_text_color">Color del Texto</string>
+    <string name="title_all_apps_keep_scroll_state">Recordar posición</string>
+    <string name="title_drawer_text_size">Tamaño del Texto</string>
+    <string name="title_drawer_row_height">Alto de la fila</string>
+    <string name="title_drawer_enable_background">Usar color de fondo personalizado</string>
+    <string name="dock_colored_google">Colores de Iconos</string>
+    <string name="title_desktop_text_size">Tamaño del Texto</string>
 </resources>
