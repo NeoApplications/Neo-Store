@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
-/*
-* Copyright (C) 2008 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
--->
+  ~  This file is part of Omega Launcher
+  ~  Copyright (c) 2008 The Android Open Source Project
+  ~  Copyright (c) 2021 Saul Henriquez
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- General -->
@@ -26,13 +28,13 @@
     <!-- Work folder name -->
     <string name="work_folder_name">Work</string>
     <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
-    <string name="activity_not_found">App isn\'t installed.</string>
+    <string name="activity_not_found">App not installed.</string>
     <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
-    <string name="activity_not_available">App isn\'t available</string>
+    <string name="activity_not_available">App unavailable</string>
     <!-- SafeMode shortcut error string -->
-    <string name="safemode_shortcut_error">Downloaded app disabled in Safe mode</string>
+    <string name="safemode_shortcut_error">Downloaded appoff in safe mode</string>
     <!-- SafeMode widget error string -->
-    <string name="safemode_widget_error">Widgets disabled in Safe mode</string>
+    <string name="safemode_widget_error">Widgets off in safe mode</string>
     <!-- Message shown when a shortcut is not available. It could have been temporarily disabled and may start working again after some time. -->
     <string name="shortcut_not_available">Shortcut isn\'t available</string>
     <!-- User visible name for the launcher/home screen. [CHAR_LIMIT=30] -->
@@ -42,16 +44,16 @@
 
     <!-- Widgets -->
     <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
-    <string name="long_press_widget_to_add">Touch &amp; hold to pick up a widget.</string>
+    <string name="long_press_widget_to_add">Touch and hold to pick up a widget.</string>
     <!-- Accessibility spoken hint message in widget picker, which allows user to add a widget. Custom action is the label for additional accessibility actions available in this mode [CHAR_LIMIT=100] -->
-    <string name="long_accessible_way_to_add">Double-tap &amp; hold to pick up a widget or use custom actions.</string>
+    <string name="long_accessible_way_to_add">Double-tap and hold to pick up a widget or use custom actions.</string>
     <!-- The format string for the dimensions of a widget in the drawer -->
     <!-- There is a special version of this format string for Farsi -->
     <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
     <!-- Accessibility spoken message format for the dimensions of a widget in the drawer -->
     <string name="widget_accessible_dims_format">%1$d wide by %2$d high</string>
     <!-- Message to tell the user to press and hold a widget/icon to add it  -->
-    <string name="add_item_request_drag_hint">Touch &amp; hold to place manually</string>
+    <string name="add_item_request_drag_hint">Touch and hold to place manually.</string>
     <!-- Button label to automatically add icon on home screen [CHAR_LIMIT=50] -->
     <string name="place_automatically">Add automatically</string>
 
@@ -73,20 +75,20 @@
 
     <!-- Drag and drop -->
     <!-- Message to tell the user to press and hold on a shortcut to add it [CHAR_LIMIT=50] -->
-    <string name="long_press_shortcut_to_add">Touch &amp; hold to pick up a shortcut.</string>
+    <string name="long_press_shortcut_to_add">Touch and hold to pick up a shortcut.</string>
     <!-- Accessibility spoken hint message in deep shortcut menu, which allows user to add a shortcut. Custom action is the label for additional accessibility actions available in this mode [CHAR_LIMIT=200] -->
-    <string name="long_accessible_way_to_add_shortcut">Double-tap &amp; hold to pick up a shortcut or use custom actions.</string>
+    <string name="long_accessible_way_to_add_shortcut">Double-tap and hold to pick up a shortcut or use custom actions.</string>
 
     <skip />
     <!-- Error message when user has filled a home screen -->
-    <string name="out_of_space">No more room on this Home screen.</string>
+    <string name="out_of_space">No more room on this home screen.</string>
     <!-- Error message when user has filled the hotseat -->
-    <string name="hotseat_out_of_space">No more room in the Favorites tray</string>
+    <string name="hotseat_out_of_space">No more room in the favorites tray</string>
 
     <!-- All applications label -->
-    <string name="all_apps_button_label">Apps list</string>
-    <string name="all_apps_button_personal_label">Personal apps list</string>
-    <string name="all_apps_button_work_label">Work apps list</string>
+    <string name="all_apps_button_label">App list</string>
+    <string name="all_apps_button_personal_label">Personal app list</string>
+    <string name="all_apps_button_work_label">Work app list</string>
 
     <!-- Label for button in all applications label to go back home (to the workspace / desktop)
          for accessibilty (spoken when the button gets focus). -->
@@ -114,15 +116,15 @@
     <string name="permdesc_install_shortcut">Allows an app to add
         shortcuts without user intervention.</string>
     <!-- Permission short label -->
-    <string name="permlab_read_settings">read Home settings and shortcuts</string>
+    <string name="permlab_read_settings">read home settings and shortcuts</string>
     <!-- Permission description -->
     <string name="permdesc_read_settings">Allows the app to read the settings and
-        shortcuts in Home.</string>
+        shortcuts in home.</string>
     <!-- Permission short label -->
     <string name="permlab_write_settings">write Home settings and shortcuts</string>
     <!-- Permission description -->
-    <string name="permdesc_write_settings">Allows the app to change the settings and
-        shortcuts in Home.</string>
+    <string name="permdesc_write_settings">Allows the app to change the home settings
+        and shortcuts.</string>
 
     <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
     <string name="msg_no_phone_permission"><xliff:g id="app_name" example="Launcher3">%1$s</xliff:g> is not allowed to make phone calls</string>
@@ -134,7 +136,7 @@
     <string name="gadget_error_text">Problem loading widget</string>
 
     <!-- Text to show user in place of a gadget when it is not yet initialized. -->
-    <string name="gadget_setup_text">Setup</string>
+    <string name="gadget_setup_text">Set up</string>
 
     <!-- Text to inform the user that they can't uninstall a system application -->
     <string name="uninstall_system_app_text">This is a system app and can\'t be uninstalled.</string>
@@ -144,7 +146,7 @@
 
     <!-- Accessibility -->
     <!-- The format string for when an app is temporarily disabled. -->
-    <string name="disabled_app_label">Disabled <xliff:g id="app_name" example="Messenger">%1$s</xliff:g></string>
+    <string name="disabled_app_label">Turned off <xliff:g id="app_name" example="Messenger">%1$s</xliff:g></string>
     <!-- The format string for when an app has a notification dot (meaning it has associated notifications). -->
     <plurals name="dotted_app_label">
         <item quantity="one"><xliff:g id="app_name" example="Messenger">%1$s</xliff:g>, has <xliff:g id="notification_count" example="1">%2$d</xliff:g> notification</item>
@@ -165,11 +167,11 @@
     <!-- Instruction that clicking outside will close folder -->
     <string name="folder_tap_to_close">Tap to close folder</string>
     <!-- Instruction that clicking outside will commit folder rename -->
-    <string name="folder_tap_to_rename">Tap to save rename</string>
+    <string name="folder_tap_to_rename">Tap to rename</string>
     <!-- Indication that folder closed -->
     <string name="folder_closed">Folder closed</string>
     <!-- Folder renamed format -->
-    <string name="folder_renamed">Folder renamed to <xliff:g id="name" example="Games">%1$s</xliff:g></string>
+    <string name="folder_renamed">Folder renamed <xliff:g id="name" example="Games">%1$s</xliff:g></string>
     <!-- Folder name format -->
     <string name="folder_name_format">Folder: <xliff:g id="name" example="Games">%1$s</xliff:g></string>
 
@@ -179,17 +181,17 @@
     <!-- Text for wallpaper change button -->
     <string name="wallpaper_button_text">Wallpapers</string>
     <!-- Text for wallpaper change button -->
-    <string name="styles_wallpaper_button_text">Styles &amp; wallpapers</string>
+    <string name="styles_wallpaper_button_text">Styles and wallpapers</string>
     <!-- Text for settings button -->
     <string name="settings_button_text">Home settings</string>
     <!-- Message shown when a feature is disabled by the administrator -->
-    <string name="msg_disabled_by_admin">Disabled by your admin</string>
+    <string name="msg_disabled_by_admin">Turned off by your admin</string>
 
     <!-- Strings for settings -->
     <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
-    <string name="allow_rotation_title">Allow Home screen rotation</string>
+    <string name="allow_rotation_title">Allow home screen rotation</string>
     <!-- Text explaining when the home screen will get rotated. [CHAR LIMIT=100] -->
-    <string name="allow_rotation_desc">When phone is rotated</string>
+    <string name="allow_rotation_desc">When the device is rotated</string>
     <!-- Title for Notification dots setting. Tapping this will link to the system Notifications settings screen where the user can turn off notification dots globally. [CHAR LIMIT=50] -->
     <string name="notification_dots_title">Notification dots</string>
     <!-- Text to indicate that the system notification dots setting is on [CHAR LIMIT=100] -->
@@ -197,16 +199,16 @@
     <!-- Text to indicate that the system notification dots setting is off [CHAR LIMIT=100] -->
     <string name="notification_dots_desc_off">Off</string>
     <!-- Title for the dialog shown when the app does not has notification access, explaining the requirement for notification access [CHAR LIMIT=50] -->
-    <string name="title_missing_notification_access">Notification access needed</string>
+    <string name="title_missing_notification_access">Grant notification access first</string>
     <!-- Message explaining to the user that the notification access is required by the app for showing 'Notification dots' [CHAR LIMIT=NONE] -->
-    <string name="msg_missing_notification_access">To show Notification Dots, turn on app notifications for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_notification_access">To show notification dots, turn on app notifications for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <!-- Button text in the confirmation dialog which would take the user to the system settings [CHAR LIMIT=50] -->
     <string name="title_change_settings">Change settings</string>
     <!-- Summary for Notification dots setting. Tapping this will link enable/disable notification dots feature on the home screen. [CHAR LIMIT=50] -->
     <string name="notification_dots_service_title">Show notification dots</string>
 
     <!-- Label for the setting that allows the automatic placement of launcher shortcuts for applications and games installed on the device [CHAR LIMIT=40] -->
-    <string name="auto_add_shortcuts_label">Add icon to Home screen</string>
+    <string name="auto_add_shortcuts_label">Add icon to home screen</string>
     <!-- Text description of the setting that allows the automatic placement of launcher shortcuts for applications and games installed on the device [CHAR LIMIT=NONE] -->
     <string name="auto_add_shortcuts_description">For new apps</string>
 
@@ -240,7 +242,7 @@
 
 <!-- Strings for accessibility actions -->
     <!-- Accessibility action to add an app to workspace. [CHAR_LIMIT=30] -->
-    <string name="action_add_to_workspace">Add to Home screen</string>
+    <string name="action_add_to_workspace">Add to home screen</string>
 
     <!-- Accessibility action to move item to the current location. [CHAR_LIMIT=30] -->
     <string name="action_move_here">Move item here</string>
@@ -279,28 +281,28 @@
     <string name="added_to_folder">Item added to folder</string>
 
     <!-- Accessibility description to create folder with another item. -->
-    <string name="create_folder_with">Create folder with: <xliff:g id="name" example="Game">%1$s</xliff:g></string>
+    <string name="create_folder_with">Create folder using <xliff:g id="name" example="Game">%1$s</xliff:g></string>
 
     <!-- Accessibility confirmation for folder created. -->
     <string name="folder_created">Folder created</string>
 
     <!-- Accessibility action to move an item from folder to workspace. [CHAR_LIMIT=30] -->
-    <string name="action_move_to_workspace">Move to Home screen</string>
+    <string name="action_move_to_workspace">Move to home screen</string>
 
     <!-- Accessibility action to resize a widget. [CHAR_LIMIT=30] -->
     <string name="action_resize">Resize</string>
 
     <!-- Accessibility action to increase width of a widget. [CHAR_LIMIT=30] -->
-    <string name="action_increase_width">Increase width</string>
+    <string name="action_increase_width">+ width</string>
 
     <!-- Accessibility action to increase height of a widget. [CHAR_LIMIT=30] -->
-    <string name="action_increase_height">Increase height</string>
+    <string name="action_increase_height">+ height</string>
 
     <!-- Accessibility action to decrease width of a widget. [CHAR_LIMIT=30] -->
-    <string name="action_decrease_width">Decrease width</string>
+    <string name="action_decrease_width">- width</string>
 
     <!-- Accessibility action to decrease height of a widget. [CHAR_LIMIT=30] -->
-    <string name="action_decrease_height">Decrease height</string>
+    <string name="action_decrease_height">+ height</string>
 
     <!-- Accessibility confirmation for widget resize. -->
     <string name="widget_resized">Widget resized to width <xliff:g id="number" example="2">%1$s</xliff:g> height <xliff:g id="number" example="1">%2$s</xliff:g></string>
@@ -328,10 +330,10 @@
     <!-- Title of an overlay in All Apps. This overlay is letting a user know about their work profile, which is managed by their employer. "Work apps" are apps in a user's work profile.-->
     <string name="bottom_work_tab_user_education_title">Find work apps here</string>
     <!-- Text in an overlay in All Apps. This overlay is letting a user know about their work profile, which is managed by their employer.-->
-    <string name="bottom_work_tab_user_education_body">Each work app has a badge and is kept secure by your organization. Move apps to your Home screen for easier access.</string>
+    <string name="bottom_work_tab_user_education_body">Each work app has a badge and is kept secure by your org. Move apps to your home screen for easier access.</string>
     <!-- This string is in the work profile tab when a user has All Apps open on their phone. It describes the label of a toggle, "Work profile," as being managed by the user's employer.
     "Organization" is used to represent a variety of businesses, non-profits, and educational institutions).-->
-    <string name="work_mode_on_label">Managed by your organization</string>
+    <string name="work_mode_on_label">Managed by your org</string>
     <!-- This string appears under a the label of a toggle in the work profile tab on a user's phone. It describes the status of the toggle, "Work profile," when it's turned off. "Work profile" means a separate profile on a user's phone that's speficially for their work apps and is managed by their company.-->
     <string name="work_mode_off_label">Notifications and apps are off</string>
     <string name="bottom_work_tab_user_education_close_button">Close</string>
