@@ -77,7 +77,6 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.OmegaPreferencesChangeCallback;
-import com.saggitt.omega.adaptive.IconShapePreference;
 import com.saggitt.omega.feed.FeedWidgetsActivity;
 import com.saggitt.omega.gestures.ui.GesturePreference;
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment;
@@ -840,8 +839,6 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof GesturePreference) {
                 f = SelectGestureHandlerFragment.Companion
                         .newInstance((GesturePreference) preference);
-            } else if (preference instanceof IconShapePreference) {
-                f = ((IconShapePreference) preference).createDialogFragment();
             } else if (preference instanceof ListPreference) {
                 Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());

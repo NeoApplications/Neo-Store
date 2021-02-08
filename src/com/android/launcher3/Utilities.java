@@ -83,6 +83,8 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.RotationMode;
 import com.android.launcher3.graphics.TintedDrawableSpan;
+import com.android.launcher3.icons.BitmapInfo;
+import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutKey;
@@ -952,6 +954,27 @@ public final class Utilities {
             return OmegaAppKt.getOmegaApp(context).getRecentsEnabled();
         }
         return false;
+    }
+
+    public static Drawable getIconForTask(Context context, int userId, String packageName) {
+        IconCache ic = LauncherAppState.getInstanceNoCreate().getIconCache();
+        LauncherAppsCompat lac = LauncherAppsCompat.getInstance(context);
+        UserHandle user = UserHandle.of(userId);
+        List<LauncherActivityInfo> al = lac.getActivityList(packageName, user);
+        if (!al.isEmpty()) {
+            Drawable fullResIcon = ic.getFullResIcon(al.get(0));
+            if (user == Process.myUserHandle()) {
+                return fullResIcon;
+            } else {
+                LauncherIcons li = LauncherIcons.obtain(context);
+                BitmapInfo bitmapInfo = li.createBadgedIconBitmap(fullResIcon, user, 24);
+                li.recycle();
+
+                return new BitmapDrawable(context.getResources(), bitmapInfo.icon);
+            }
+        } else {
+            return null;
+        }
     }
 
     public static Boolean isEmui() {

@@ -231,6 +231,19 @@ open class IconShape(val topLeft: Corner,
         }
     }
 
+    object Sammy : IconShape(IconCornerShape.sammy,
+            IconCornerShape.sammy,
+            IconCornerShape.sammy,
+            IconCornerShape.sammy,
+            1f, 1f, 1f, 1f) {
+
+        override val qsbEdgeRadius = R.dimen.qsb_radius_squircle
+
+        override fun toString(): String {
+            return "sammy"
+        }
+    }
+
     object Teardrop : IconShape(IconCornerShape.arc,
             IconCornerShape.arc,
             IconCornerShape.arc,

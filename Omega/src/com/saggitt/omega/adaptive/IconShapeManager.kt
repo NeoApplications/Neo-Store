@@ -22,16 +22,15 @@ package com.saggitt.omega.adaptive
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Path
-import android.graphics.Rect
 import android.graphics.Region
-import android.graphics.RegionIterator
+import android.graphics.drawable.AdaptiveIconDrawable
 import android.text.TextUtils
 import androidx.annotation.Keep
 import androidx.core.graphics.PathParser
 import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.Utilities
-import com.saggitt.omega.icons.IconShapeOverride
+import com.android.launcher3.icons.GraphicsUtils
 import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.omegaPrefs
 
@@ -42,7 +41,7 @@ class IconShapeManager(private val context: Context) {
             "pref_iconShape", systemIconShape, AdaptiveIconCompat::onShapeChanged,
             {
                 IconShape.fromString(it) ?: systemIconShape
-            }, IconShape::toString) {}
+            }, IconShape::toString) { /* no dispose */ }
 
     init {
         migratePref()
@@ -51,21 +50,32 @@ class IconShapeManager(private val context: Context) {
     @SuppressLint("RestrictedApi")
     private fun migratePref() {
         // Migrate from old path-based override
-        val override = IconShapeOverride.getAppliedValue(context)
+        val override = getLegacyValue()
         if (!TextUtils.isEmpty(override)) {
             try {
                 iconShape = findNearestShape(PathParser.createPathFromPathData(override))
-                Utilities.getPrefs(context).edit().remove(IconShapeOverride.KEY_PREFERENCE).apply()
+                Utilities.getPrefs(context).edit().remove(KEY_LEGACY_PREFERENCE).apply()
             } catch (e: RuntimeException) {
                 // Just ignore the error
             }
         }
     }
 
+    fun getLegacyValue(): String {
+        val devValue = Utilities.getDevicePrefs(context).getString(KEY_LEGACY_PREFERENCE, "")
+        if (!TextUtils.isEmpty(devValue)) {
+            // Migrate to general preferences to back up shape overrides
+            Utilities.getPrefs(context).edit().putString(KEY_LEGACY_PREFERENCE, devValue).apply()
+            Utilities.getDevicePrefs(context).edit().remove(KEY_LEGACY_PREFERENCE).apply()
+        }
+
+        return Utilities.getPrefs(context).getString(KEY_LEGACY_PREFERENCE, "")!!
+    }
+
     private fun getSystemShape(): IconShape {
         if (!Utilities.ATLEAST_OREO) return IconShape.Circle
 
-        val iconMask = AdaptiveIconCompat(null, null).iconMask
+        val iconMask = AdaptiveIconDrawable(null, null).iconMask
         val systemShape = findNearestShape(iconMask)
         return object : IconShape(systemShape) {
 
@@ -82,36 +92,34 @@ class IconShapeManager(private val context: Context) {
     }
 
     private fun findNearestShape(comparePath: Path): IconShape {
-        val clip = Region(0, 0, 100, 100)
-        val systemRegion = Region().apply {
+        val size = 200
+        val clip = Region(0, 0, size, size)
+        val iconR = Region().apply {
             setPath(comparePath, clip)
         }
-        val pathRegion = Region()
-        val path = Path()
-        val rect = Rect()
+        val shapePath = Path()
+        val shapeR = Region()
         return listOf(
                 IconShape.Circle,
                 IconShape.Square,
                 IconShape.RoundedSquare,
                 IconShape.Squircle,
+                IconShape.Sammy,
                 IconShape.Teardrop,
                 IconShape.Cylinder).minBy {
-            path.reset()
-            it.addShape(path, 0f, 0f, 50f)
-            pathRegion.setPath(path, clip)
-            pathRegion.op(systemRegion, Region.Op.XOR)
+            shapePath.reset()
+            it.addShape(shapePath, 0f, 0f, size / 2f)
+            shapeR.setPath(shapePath, clip)
+            shapeR.op(iconR, Region.Op.XOR)
 
-            var difference = 0
-            val iter = RegionIterator(pathRegion)
-            while (iter.next(rect)) {
-                difference += rect.width() * rect.height()
-            }
-
-            difference
+            GraphicsUtils.getArea(shapeR)
         }!!
     }
 
     companion object : OmegaSingletonHolder<IconShapeManager>(::IconShapeManager) {
+
+        private const val KEY_LEGACY_PREFERENCE = "pref_override_icon_shape"
+
         @JvmStatic
         fun getWindowTransitionRadius(context: Context): Float {
             return getInstance(context).iconShape.windowTransitionRadius

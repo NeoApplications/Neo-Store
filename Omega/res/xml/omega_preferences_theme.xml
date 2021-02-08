@@ -25,18 +25,6 @@
         android:persistent="true"
         android:title="@string/title_theme_icon_packs" />
 
-    <!--
-    <com.saggitt.omega.adaptive.IconShapePreference
-        android:defaultValue="@string/icon_shape_system_default"
-        android:entries="@array/icon_shape_names"
-        android:entryValues="@array/icon_shape_values"
-        android:key="pref_iconShape"
-        android:persistent="true"
-        android:summary="%s"
-        android:title="@string/title__theme_icon_shape"
-        app:controllerClass=".IconShapeOverrideController"
-        app:iconSpaceReserved="false" /> -->
-
     <com.saggitt.omega.icons.IconPreference
         android:key="pref_icons"
         android:defaultValue="@string/icon_shape_system_default"

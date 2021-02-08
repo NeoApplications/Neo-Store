@@ -129,7 +129,7 @@ public class IconNormalizer {
     }
 
     /**
-     * @param d Should be AdaptiveIconDrawable
+     * @param d    Should be AdaptiveIconCompat
      * @param size Canvas size to use
      */
     @TargetApi(Build.VERSION_CODES.O)

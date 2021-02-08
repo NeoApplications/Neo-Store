@@ -22,6 +22,7 @@ package com.saggitt.omega.adaptive
 import android.graphics.Path
 import android.graphics.PointF
 import com.android.launcher3.Utilities
+import com.android.launcher3.anim.Interpolators.LINEAR
 
 abstract class IconCornerShape {
 
@@ -29,8 +30,10 @@ abstract class IconCornerShape {
 
     abstract class BaseBezierPath : IconCornerShape() {
 
-        protected abstract val controlDistance: Float
         protected val roundControlDistance = .447771526f
+        protected open val controlDistance = roundControlDistance
+        protected open val controlDistanceX get() = controlDistance
+        protected open val controlDistanceY get() = controlDistance
 
         private fun getControl1X(position: Position, controlDistance: Float): Float {
             return Utilities.mapRange(controlDistance, position.controlX, position.startX)
@@ -50,12 +53,13 @@ abstract class IconCornerShape {
 
         override fun addCorner(path: Path, position: Position, size: PointF, progress: Float,
                                offsetX: Float, offsetY: Float) {
-            val controlDistance = Utilities.mapRange(progress, controlDistance, roundControlDistance)
+            val controlDistanceX = Utilities.mapRange(progress, controlDistanceX, roundControlDistance)
+            val controlDistanceY = Utilities.mapRange(progress, controlDistanceY, roundControlDistance)
             path.cubicTo(
-                    getControl1X(position, controlDistance) * size.x + offsetX,
-                    getControl1Y(position, controlDistance) * size.y + offsetY,
-                    getControl2X(position, controlDistance) * size.x + offsetX,
-                    getControl2Y(position, controlDistance) * size.y + offsetY,
+                    getControl1X(position, controlDistanceX) * size.x + offsetX,
+                    getControl1Y(position, controlDistanceY) * size.y + offsetY,
+                    getControl2X(position, controlDistanceX) * size.x + offsetX,
+                    getControl2Y(position, controlDistanceY) * size.y + offsetY,
                     position.endX * size.x + offsetX,
                     position.endY * size.y + offsetY)
         }
@@ -81,6 +85,16 @@ abstract class IconCornerShape {
         }
     }
 
+    class LightSquircle : BaseBezierPath() {
+
+        override val controlDistance = .1f
+
+        override fun toString(): String {
+            return "lightsquircle"
+        }
+    }
+
+
     class Squircle : BaseBezierPath() {
 
         override val controlDistance = .2f
@@ -90,12 +104,105 @@ abstract class IconCornerShape {
         }
     }
 
-    class Arc : BaseBezierPath() {
+    class StrongSquircle : BaseBezierPath() {
+
+        override val controlDistance = .3f
+
+        override fun toString(): String {
+            return "strongsquircle"
+        }
+    }
+
+    class UltraSquircle : BaseBezierPath() {
+
+        override val controlDistance = .37f
+
+        override fun toString(): String {
+            return "ultrasquircle"
+        }
+    }
+
+    class Sammy : BaseBezierPath() {
+
+        override val controlDistanceX = 0.4431717172f
+        override val controlDistanceY = 0.1401010101f
+    }
+
+    open class Arc : BaseBezierPath() {
 
         override val controlDistance = roundControlDistance
 
         override fun toString(): String {
             return "arc"
+        }
+    }
+
+    class Cupertino : Arc() {
+
+        override fun addCorner(path: Path, position: Position, size: PointF, progress: Float,
+                               offsetX: Float, offsetY: Float) {
+            if (progress >= 0.55f) {
+                val sizeScale = Utilities.mapToRange(progress, 0.55f, 1f, 0.45f, 1f, LINEAR)
+                val adjustment = 1f - sizeScale
+                val xAdjustment = size.x * position.controlX * adjustment
+                val yAdjustment = size.y * position.controlY * adjustment
+                val newSize = PointF(size.x * sizeScale, size.y * sizeScale)
+                path.lineTo(
+                        position.startX * newSize.x + offsetX + xAdjustment,
+                        position.startY * newSize.y + offsetY + yAdjustment)
+                super.addCorner(path, position, newSize, progress, offsetX + xAdjustment, offsetY + yAdjustment)
+                return
+            }
+            val points = points[position] ?: error("")
+            path.lineTo(
+                    points[0].x * size.x + offsetX,
+                    points[0].y * size.y + offsetY)
+            for (i in 1..9 step 3) {
+                path.cubicTo(
+                        points[i].x * size.x + offsetX,
+                        points[i].y * size.y + offsetY,
+                        points[i + 1].x * size.x + offsetX,
+                        points[i + 1].y * size.y + offsetY,
+                        points[i + 2].x * size.x + offsetX,
+                        points[i + 2].y * size.y + offsetY)
+            }
+            path.lineTo(
+                    position.endX * size.x + offsetX,
+                    position.endY * size.y + offsetY)
+        }
+
+        override fun toString(): String {
+            return "cupertino"
+        }
+
+        companion object {
+
+            private val points: Map<Position, List<PointF>>
+
+            init {
+                val tmp = listOf(
+                        PointF(0.302716f, 0f),
+                        PointF(0.5035f, 0f),
+                        PointF(0.603866f, 0f),
+                        PointF(0.71195f, 0.0341666f),
+                        PointF(0.82995f, 0.0771166f))
+                val positions = listOf(Position.TopLeft, Position.TopRight, Position.BottomRight, Position.BottomLeft)
+                val allScales = tmp + tmp.asReversed().map { PointF(it.y, it.x) }
+                val reversedScales = allScales.asReversed()
+                points = positions.associateWith {
+                    val normal = Pair(Pair(it.startX, it.endX), Pair(it.startY, it.endY))
+                    val reversed = Pair(Pair(it.endX, it.startX), Pair(it.endY, it.startY))
+                    when (it) {
+                        Position.TopRight, Position.BottomLeft -> allScales
+                        Position.TopLeft, Position.BottomRight -> reversedScales
+                    }.mapIndexed { index, scale ->
+                        val point = if (index < 5) normal else reversed
+                        val x = Utilities.mapRange(scale.x, point.first.first, point.first.second)
+                        val y = Utilities.mapRange(scale.y, point.second.first, point.second.second)
+                        PointF(x, y)
+                    }
+                }
+            }
         }
     }
 
@@ -154,14 +261,24 @@ abstract class IconCornerShape {
     companion object {
 
         val cut = Cut()
+        val lightsquircle = LightSquircle()
         val squircle = Squircle()
+        val strongsquircle = StrongSquircle()
+        val ultrasquircle = UltraSquircle()
+        val sammy = Sammy()
         val arc = Arc()
+        val cupertino = Cupertino()
 
         fun fromString(value: String): IconCornerShape {
             return when (value) {
                 "cut" -> cut
+                "lightsquircle" -> lightsquircle
                 "cubic", "squircle" -> squircle
+                "strongsquircle" -> strongsquircle
+                "ultrasquircle" -> ultrasquircle
+                "sammy" -> sammy
                 "arc" -> arc
+                "cupertino" -> cupertino
                 else -> error("invalid corner shape $value")
             }
         }

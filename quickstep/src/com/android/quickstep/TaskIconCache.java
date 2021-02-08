@@ -15,9 +15,6 @@
  */
 package com.android.quickstep;
 
-import static com.android.launcher3.uioverrides.RecentsUiFactory.GO_LOW_RAM_RECENTS_ENABLED;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -36,9 +33,13 @@ import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.recents.model.Task.TaskKey;
 import com.android.systemui.shared.recents.model.TaskKeyLruCache;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
+import com.saggitt.omega.adaptive.OmegaIconLoader;
 
 import java.util.Map;
 import java.util.function.Consumer;
+
+import static com.android.launcher3.uioverrides.RecentsUiFactory.GO_LOW_RAM_RECENTS_ENABLED;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
  * Manages the caching of task icons and related data.
@@ -74,7 +75,10 @@ public class TaskIconCache {
         mIconCache = new TaskKeyLruCache<>(cacheSize, mClearActivityInfoOnEviction);
         mContentDescriptionCache = new TaskKeyLruCache<>(cacheSize, mClearActivityInfoOnEviction);
         mActivityInfoCache = new LruCache<>(cacheSize);
-        mIconLoader = new NormalizedIconLoader(context, mIconCache, mActivityInfoCache,
+        //mIconLoader = new NormalizedIconLoader(context, mIconCache, mActivityInfoCache,
+        //        true /* disableColorExtraction */);
+
+        mIconLoader = new OmegaIconLoader(context, mIconCache, mActivityInfoCache,
                 true /* disableColorExtraction */);
     }
 
