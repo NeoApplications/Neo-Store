@@ -221,8 +221,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         } else if (mDisplay == DISPLAY_DRAWER_FOLDER) {
             mHideText = prefs.getHideAllAppsAppLabels();
             DeviceProfile grid = mActivity.getDeviceProfile();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    isTextHidden() ? 0 : grid.allAppsFolderChildTextSizePx);
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsFolderChildTextSizePx);
             setCompoundDrawablePadding(grid.allAppsFolderChildDrawablePaddingPx);
             defaultIconSize = grid.allAppsFolderChildIconSizePx;
             int lines = prefs.getDrawerLabelRows();

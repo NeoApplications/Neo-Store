@@ -495,8 +495,10 @@ public class DeviceProfile {
 
     private void updateFolderCellSize(float scale, DisplayMetrics dm, Resources res) {
         folderChildIconSizePx = (int) (ResourceUtils.pxFromDp(inv.iconSize, dm) * scale);
+        float desktopTextScale = prefs.getDesktopTextScale();
+
         folderChildTextSizePx =
-                (int) (res.getDimensionPixelSize(R.dimen.folder_child_text_size) * scale);
+                (int) (res.getDimensionPixelSize(R.dimen.folder_child_text_size) * desktopTextScale);
 
         int textHeight = Utilities.calculateTextHeight(folderChildTextSizePx);
         int cellPaddingX = (int) (res.getDimensionPixelSize(R.dimen.folder_cell_x_padding) * scale);
