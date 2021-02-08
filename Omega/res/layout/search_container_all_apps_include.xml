@@ -15,7 +15,6 @@
 <!-- Note: we are reusing/repurposing a system attribute for search layout, because of a
  platform bug, which prevents using custom attributes in <include> tag -->
 <merge>
-
     <include layout="@layout/search_container_all_apps_google"
         android:id="@id/search_container_all_apps"
         xmlns:android="http://schemas.android.com/apk/res/android" />

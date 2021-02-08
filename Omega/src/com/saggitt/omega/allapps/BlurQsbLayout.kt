@@ -156,7 +156,7 @@ class BlurQsbLayout @JvmOverloads constructor(
                 paint.color = getBgColor()
                 canvas.drawRoundRect(tmpRectF, blurRadius, blurRadius, paint)
                 if (isBubbleUi) {
-                    tmpRectF.set((if (!isRtl) right - mMicWidth else left).toFloat(),
+                    tmpRectF.set((if (!isRtl) right - mMicWidth + 8 else left).toFloat(),
                             top, (if (isRtl) left + mMicWidth else right).toFloat(),
                             bottom)
                     setBlurBounds(tmpRectF)

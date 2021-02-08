@@ -46,12 +46,12 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.Columns;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchBase;
 import com.google.protobuf.nano.MessageNano;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.util.Config;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ import static com.google.android.apps.nexuslauncher.search.nano.SearchProto.Sear
 
 public class ConfigBuilder {
     private final SearchBase mNano;
-    private final NexusLauncherActivity mActivity;
+    private final OmegaLauncher mActivity;
     private final Bundle mBundle;
     private final AbstractQsbLayout mQsbLayout;
     private final boolean mIsAllApps;

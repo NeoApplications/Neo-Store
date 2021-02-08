@@ -18,6 +18,7 @@
 
 package com.saggitt.omega;
 
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,21 +32,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.FolderInfo;
 import com.android.launcher3.ItemInfo;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
+import com.google.android.apps.nexuslauncher.NexusLauncher;
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
+import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
+import com.saggitt.omega.settings.SettingsActivity;
+import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.DbHelper;
@@ -62,7 +69,7 @@ import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
-public class OmegaLauncher extends NexusLauncherActivity implements OmegaPreferences.OnPreferenceChangeListener {
+public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
@@ -75,6 +82,12 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
     public View dummyView;
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
+
+    private final NexusLauncher launcherClient;
+
+    public OmegaLauncher() {
+        launcherClient = new NexusLauncher(this);
+    }
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
@@ -97,7 +110,9 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         OmegaPreferences mPrefs = Utilities.getOmegaPrefs(mContext);
         mPrefs.registerCallback(prefCallback);
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
-
+        if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
+            mPrefs.getEditor().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
+        }
         if (mPrefs.getFirstRun()) {
             mPrefs.setFirstRun(false);
             mPrefs.setIconShape("cylinder");
@@ -265,5 +280,22 @@ public class OmegaLauncher extends NexusLauncherActivity implements OmegaPrefere
         dummyView.setLayoutParams(lp);
         dummyView.requestLayout();
         dummyView.post(callback::invoke);
+    }
+
+    @Nullable
+    public LauncherClient getGoogleNow() {
+        return launcherClient.mClient;
+    }
+
+    public void playQsbAnimation() {
+        launcherClient.mQsbAnimationController.dZ();
+    }
+
+    public AnimatorSet openQsb() {
+        return launcherClient.mQsbAnimationController.openQsb();
+    }
+
+    public void registerSmartspaceView(SmartspaceView smartspace) {
+        launcherClient.registerSmartspaceView(smartspace);
     }
 }

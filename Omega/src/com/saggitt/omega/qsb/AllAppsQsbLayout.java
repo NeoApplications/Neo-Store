@@ -194,8 +194,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     private void updateConfiguration() {
         az(mColor);
         addOrUpdateSearchPaint(qsbConfiguration.micStrokeWidth());
-        Dh = qsbConfiguration.hintIsForAssistant();
-        mUseTwoBubbles = useTwoBubbles();
+        showHintAssitant = qsbConfiguration.hintIsForAssistant();
         setHintText(qsbConfiguration.hintTextValue(), mHint);
         addOrUpdateSearchRipple();
     }
@@ -203,10 +202,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     public void onClick(View view) {
         super.onClick(view);
         startSearch("", mResult);
-    }
-
-    public final void l(String str) {
-        startSearch(str, 0);
     }
 
     @Override
@@ -366,7 +361,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         setTranslationX((float) ((parent.getPaddingLeft() + (
                 (((parent.getWidth() - parent.getPaddingLeft()) - parent.getPaddingRight()) - (right - left))
                         / 2)) - left));
-        int containerTopMargin = 0;
+        int containerTopMargin;
         if (!prefs.getAllAppsSearch()) {
             MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
             containerTopMargin = -(mlp.topMargin + mlp.height - 125);

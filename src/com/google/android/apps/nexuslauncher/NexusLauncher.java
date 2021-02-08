@@ -22,6 +22,7 @@ import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientService;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.qsb.QsbAnimationController;
 import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.util.ActionIntentFilter;
@@ -38,14 +39,14 @@ public class NexusLauncher {
     private boolean mFeedRunning;
     private final LauncherExterns mExterns;
     private boolean mRunning;
-    LauncherClient mClient;
+    public LauncherClient mClient;
     private NexusLauncherOverlay mOverlay;
     private boolean mStarted;
     private final Bundle mUiInformation = new Bundle();
     private ItemInfoUpdateReceiver mItemInfoUpdateReceiver;
-    QsbAnimationController mQsbAnimationController;
+    public QsbAnimationController mQsbAnimationController;
 
-    public NexusLauncher(NexusLauncherActivity activity) {
+    public NexusLauncher(OmegaLauncher activity) {
         mLauncher = activity;
         mExterns = activity;
         mCallbacks = new NexusLauncherCallbacks();
@@ -53,7 +54,7 @@ public class NexusLauncher {
         mLauncher.addOnDeviceProfileChangeListener(dp -> mClient.redraw());
     }
 
-    void registerSmartspaceView(SmartspaceView smartspace) {
+    public void registerSmartspaceView(SmartspaceView smartspace) {
         mCallbacks.registerSmartspaceView(smartspace);
     }
 

@@ -40,10 +40,10 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.icons.ShadowGenerator;
 import com.android.launcher3.util.Themes;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView;
 import com.google.android.apps.nexuslauncher.graphics.IcuDateTextView;
 import com.saggitt.omega.OmegaAppKt;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.icons.calendar.DynamicCalendar;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController;
@@ -166,8 +166,8 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
         try {
             Launcher launcher = Launcher.getLauncher(getContext());
-            if (launcher instanceof NexusLauncherActivity) {
-                ((NexusLauncherActivity) launcher).registerSmartspaceView(this);
+            if (launcher instanceof OmegaLauncher) {
+                ((OmegaLauncher) launcher).registerSmartspaceView(this);
             }
         } catch (IllegalArgumentException ignored) {
 

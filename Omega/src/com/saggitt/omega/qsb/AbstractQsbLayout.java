@@ -69,7 +69,7 @@ import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TransformingTouchDelegate;
 import com.android.launcher3.views.ActivityContext;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
@@ -102,7 +102,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     private static final Rect mSrcRect = new Rect();
     protected final TextPaint qsbTextHintSize;
     protected final Paint mMicStrokePaint;
-    protected final Paint CV;
     protected final NinePatchDrawHelper mShadowHelper;
     protected final NinePatchDrawHelper mClearShadowHelper;
     protected final ActivityContext mActivity;
@@ -123,7 +122,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     public float micStrokeWidth;
     protected ImageView mMicIconView;
     protected ImageView mLogoIconView;
-    protected boolean Dh;
+    protected boolean showHintAssitant;
     protected ImageView mHotseatLogoIconView;
     protected String Dg;
     protected FrameLayout mMicFrame;
@@ -150,7 +149,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         super(context, attributeSet, i);
         qsbTextHintSize = new TextPaint();
         mMicStrokePaint = new Paint(1);
-        CV = new Paint(1);
         mShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper.paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
@@ -166,7 +164,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         mIsRtl = Utilities.isRtl(getResources());
         mTouchDelegate = new TransformingTouchDelegate(this);
         setTouchDelegate(mTouchDelegate);
-        CV.setColor(Color.WHITE);
         mRadius = round(Utilities.getOmegaPrefs(getContext()).getSearchBarRadius());
         mContext = context;
         mActivity = ActivityContext.lookupContext(context);
@@ -347,13 +344,13 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             drawShadow(mAllAppsShadowBitmap, canvas);
         } else if (mHotseatProgress == 1f) {
             drawShadow(mHotseatShadowBitmap, canvas);
-        } /*else {
+        } else {
             mShadowHelper.paint.setAlpha(Math.round(255 * (1 - mHotseatProgress)));
             drawShadow(mAllAppsShadowBitmap, canvas);
             mShadowHelper.paint.setAlpha(Math.round(255 * mHotseatProgress));
             drawShadow(mHotseatShadowBitmap, canvas);
             mShadowHelper.paint.setAlpha(255);
-        }*/
+        }
     }
 
     protected void clearMainPillBg(Canvas canvas) {
@@ -396,21 +393,20 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             clearPillBg(canvas, paddingLeft, paddingTop, paddingLeft2 + i);
             mShadowHelper.draw(bitmap2, canvas, (float) paddingLeft, (float) paddingTop, (float) (paddingLeft2 + i));
         }
-        if (micStrokeWidth > 0.0f && mMicFrame.getVisibility() == View.VISIBLE) {
+        if (micStrokeWidth > 0f && mMicFrame.getVisibility() == View.VISIBLE) {
             float i2;
             i = mIsRtl ? getPaddingLeft() : (getWidth() - getPaddingRight()) - getMicWidth();
             int paddingTop = getPaddingTop();
-            int paddingLeft3 = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
+            int paddingLeft = mIsRtl ? getPaddingLeft() + getMicWidth() + 8 : getWidth() - getPaddingRight();
             int paddingBottom = LauncherAppState.getInstance(getContext()).getInvariantDeviceProfile().iconBitmapSize - getPaddingBottom();
             float f = ((float) (paddingBottom - paddingTop)) * 0.5f;
-            float i3 = micStrokeWidth / 2.0f;
-            if (mUseTwoBubbles) {
-                i2 = i3;
-            } else {
-                i2 = i3;
-                canvas.drawRoundRect(i + i3, paddingTop + i3, paddingLeft3 - i3, (paddingBottom - i3) + 1, f, f, CV);
-            }
-            canvas.drawRoundRect(i + i2, paddingTop + i2, paddingLeft3 - i2, (paddingBottom - i2) + 1, f, f, mMicStrokePaint);
+            i2 = micStrokeWidth / 2.0f;
+            canvas.drawRoundRect(
+                    i + i2,
+                    paddingTop + i2,
+                    paddingLeft - i2,
+                    paddingBottom - i2 + 1,
+                    f, f, mMicStrokePaint);
         }
     }
 
@@ -472,15 +468,15 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     protected final void drawPill(NinePatchDrawHelper helper, Bitmap bitmap, Canvas canvas) {
         int shadowDimens = getShadowDimens(bitmap);
-        int paddingLeft = getPaddingLeft() - shadowDimens;
-        int paddingTop = getPaddingTop() - ((bitmap.getHeight() - getHeightWithoutPadding()) / 2);
-        int width = (getWidth() - getPaddingRight()) + shadowDimens;
+        int left = getPaddingLeft() - shadowDimens;
+        int top = getPaddingTop() - ((bitmap.getHeight() - getHeightWithoutPadding()) / 2);
+        int right = (getWidth() - getPaddingRight()) + shadowDimens;
         if (mIsRtl) {
-            paddingLeft += getRtlDimens();
+            left += getRtlDimens();
         } else {
-            width -= getRtlDimens();
+            right -= getRtlDimens();
         }
-        helper.draw(bitmap, canvas, (float) paddingLeft, (float) paddingTop, (float) width);
+        helper.draw(bitmap, canvas, (float) left, (float) top, (float) right);
     }
 
     protected final int getShadowDimens(@NotNull Bitmap bitmap) {
@@ -510,7 +506,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             if (mIsRtl) {
                 textView.setPadding(getIconWidth(), 0, 0, 0);
             } else {
-                textView.setPadding(0, 0, getIconWidth() + 75, 0);
+                textView.setPadding(0, 0, getIconWidth(), 0);
             }
         }
         textView.setGravity(i);
@@ -519,10 +515,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected final boolean dE() {
-        if (!Dh && !mUseTwoBubbles) {
-            return false;
-        }
-        return true;
+        return showHintAssitant || mUseTwoBubbles;
     }
 
     protected final int getRtlDimens() {
@@ -550,26 +543,24 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             width = 0;
             height = getRtlDimens();
         }
-        Objects.requireNonNull(oldRipple).setLayerInset(0, width, 0, height, 0);
+        oldRipple.setLayerInset(0, width, 0, height, 0);
         setBackground(insetDrawable);
-        RippleDrawable newRipple = (RippleDrawable) Objects.requireNonNull(oldRipple.getConstantState()).newDrawable().mutate();
+        RippleDrawable newRipple = (RippleDrawable) oldRipple.getConstantState().newDrawable().mutate();
         newRipple.setLayerInset(0, 0, mShadowMargin, 0, mShadowMargin);
         mMicIconView.setBackground(newRipple);
         mMicFrame.getLayoutParams().width = getMicWidth();
         if (mIsRtl) {
             micWidth = 0;
-        } else {
-            micWidth = getMicWidth() - mSearchIconWidth;
-        }
-        if (mIsRtl) {
             micHeight = getMicWidth() - mSearchIconWidth;
         } else {
+            micWidth = getMicWidth() - mSearchIconWidth;
             micHeight = 0;
         }
         mMicIconView.setPadding(micWidth, 0, micHeight, 0);
         mMicIconView.requestLayout();
     }
 
+    //CREAR BOTTON REDONDO AL CLICKEAR
     private InsetDrawable createRipple() {
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
@@ -653,7 +644,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             mUseTwoBubbles = useTwoBubbles();
             mRadius = Utilities.getOmegaPrefs(getContext()).getSearchBarRadius();
             clearBitmaps();
-            addOrUpdateSearchRipple();
             invalidate();
         });
     }
@@ -755,8 +745,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         return mMicIconView.getVisibility() == View.VISIBLE && Utilities.getOmegaPrefs(mContext).getDualBubbleSearch();
     }
 
-    protected NexusLauncherActivity getLauncher() {
-        return (NexusLauncherActivity) mActivity;
+    protected OmegaLauncher getLauncher() {
+        return (OmegaLauncher) mActivity;
     }
 }
-
