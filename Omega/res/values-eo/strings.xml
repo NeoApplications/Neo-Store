@@ -42,7 +42,7 @@
     <string name="hide_app_selected">  kaŝita</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Kaŝita</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Aplikaĵo</item>
@@ -83,4 +83,28 @@
     <string name="title__general_search">Serĉi</string>
     <string name="title__general_theme">Etoso</string>
     <string name="title__general_about">Pri</string>
+    <string name="title__sort_most_used">Plej Uzataj</string>
+    <string name="title__sort_alphabetical_za">Alfabete ZA</string>
+    <string name="title__sort_alphabetical_az">Alfabete AZ</string>
+    <string name="title__sort_mode">Aplikaĵa Ordo</string>
+    <string name="title_drawer_row_height">Viva alto</string>
+    <string name="title__drawer_columns">Nombro da kolumnoj</string>
+    <string name="pref_value_disabled">Malŝaltita</string>
+    <string name="title__dock_show_arrow">Montri Sagon</string>
+    <string name="title__dock_hotseat_icons">Nombro da piktogramoj</string>
+    <string name="title__dock_search_bar">Montri Serĉilon</string>
+    <string name="title_desktop_hide_statusbar">Kaŝi statan breton</string>
+    <string name="title__multiline_labels">Plurliniaj aplikaĵaj etikedoj</string>
+    <string name="title_desktop_lock_desktop">Ŝlosi Labortablon</string>
+    <string name="title__desktop_hide_icon_labels">Kaŝi etikedojn de piktogramoj sur hejmekrano</string>
+    <string name="title__desktop_grid_size">Krada grando</string>
+    <string name="pref_category__others">Aliaj</string>
+    <string name="pref_category__inputs">Gestoj kaj Ŝerĉo</string>
+    <string name="pref_category__interfaces">Interfacoj</string>
+    <string name="summary__general_advanced">Lingvo, savkopio, agordserĉilo</string>
+    <string name="summary__general_smartspace">Dato, tempo, hejmfenestraĵo</string>
+    <string name="summary__general_desktop">Adapti vian labortablon</string>
+    <string name="title__general_advanced">Altnivelaj Agordoj</string>
+    <string name="title__general_smartspace">Hejma Fenestraĵo</string>
+    <string name="title__general_desktop">Labortablo</string>
 </resources>
