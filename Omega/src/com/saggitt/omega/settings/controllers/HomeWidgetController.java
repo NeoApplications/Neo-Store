@@ -19,9 +19,10 @@
 package com.saggitt.omega.settings.controllers;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 
 import com.saggitt.omega.preferences.PreferenceController;
-import com.saggitt.omega.smartspace.FeedBridge;
+import com.saggitt.omega.util.Config;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +36,16 @@ public class HomeWidgetController extends PreferenceController {
 
     @Override
     public boolean isVisible() {
-        return FeedBridge.Companion.getInstance(mContext).isInstalled();
+        PackageManager pm = mContext.getPackageManager();
+        return isPackageInstalled(Config.GOOGLE_QSB, pm);
+    }
+
+    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

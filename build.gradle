@@ -56,7 +56,7 @@ android {
     buildToolsVersion "30.0.2"
 
     def name = "0.7.2"
-    def code = 120
+    def code = 121
 
     defaultConfig {
         minSdkVersion 25
