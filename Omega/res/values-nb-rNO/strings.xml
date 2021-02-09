@@ -355,7 +355,7 @@
     <string name="local_backups">I lager</string>
     <string name="edit_dash">Rediger oversikt</string>
     <string name="home_widget">I oversikt</string>
-    <string name="smartspace_widget_provider_not_found">Hente Google-programmet.</string>
+    <string name="smartspace_widget_provider_not_found">Hent Google-programmet.</string>
     <string name="smartspace_provider_bridge">Rotløs pixel-bro</string>
     <string name="title_legacy_treatment">Opprett tilpasningsdyktige ikoner</string>
     <string name="about_source">Kildekode</string>
