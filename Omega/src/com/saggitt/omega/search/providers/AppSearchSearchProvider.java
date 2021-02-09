@@ -26,6 +26,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.saggitt.omega.search.SearchProvider;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,7 @@ public class AppSearchSearchProvider extends SearchProvider {
     public AppSearchSearchProvider(Context context) {
         super(context);
         mContext = context;
+
     }
 
     @Override
@@ -54,7 +56,9 @@ public class AppSearchSearchProvider extends SearchProvider {
     @NotNull
     @Override
     public Drawable getIcon() {
-        return mContext.getDrawable(R.drawable.ic_allapps_search).mutate();
+        Drawable icon = mContext.getDrawable(R.drawable.ic_allapps_search).mutate();
+        icon.setTint(Utilities.getOmegaPrefs(mContext).getAccentColor());
+        return icon;
     }
 
     @NotNull
