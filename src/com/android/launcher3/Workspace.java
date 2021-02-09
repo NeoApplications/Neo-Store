@@ -3257,7 +3257,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     for (WorkspaceItemInfo si : fi.contents) {
                         folderDotInfo.addDotInfo(mLauncher.getDotInfoForItem(si));
                     }
-                    //((FolderIcon) v).setDotInfo(folderDotInfo);
                     ((FolderIcon) v).updateIconDots(updatedDots, packageUserKey);
                 }
             }
