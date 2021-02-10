@@ -120,7 +120,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
 
         ContextUtils contextUtils = new ContextUtils(this);
         contextUtils.setAppLanguage(mPrefs.getLanguage());
-        showFolderNotificationCount = mPrefs.getFolderBadgeCount();
+        showFolderNotificationCount = mPrefs.getNotificationCount();
         dummyView = findViewById(R.id.dummy_view);
 
         /*CREATE DB TO HANDLE APPS COUNT*/

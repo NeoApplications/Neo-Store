@@ -167,7 +167,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     /* --NOTIFICATION-- */
     val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)
     val notificationBackground by IntPref("pref_notification_background", R.color.notification_background, recreate)
-    val folderBadgeCount by BooleanPref("pref_folder_badge_count", true, recreate)
 
     /* --ADVANCED-- */
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)

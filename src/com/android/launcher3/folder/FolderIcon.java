@@ -138,7 +138,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     private GestureHandler mSwipeUpHandler;
 
     public boolean isCustomIcon = false;
-    private boolean mIsTextVisible = true;
 
     private static final Property<FolderIcon, Float> DOT_SCALE_PROPERTY
             = new Property<FolderIcon, Float>(Float.TYPE, "dotScale") {
@@ -650,7 +649,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             // If we are animating to the accepting state, animate the dot out.
             mDotParams.scale = Math.max(0, mDotScale - mBackground.getScaleProgress());
-            mDotParams.color = mBackground.getDotColor();
+            mDotParams.color = Utilities.getOmegaPrefs(getContext()).getNotificationBackground();
+            mDotParams.count = mDotInfo.getNotificationCount();
+            if (Utilities.getOmegaPrefs(getContext()).getNotificationCount())
+                mDotParams.showCount = true;
             mDotRenderer.draw(canvas, mDotParams);
         }
     }
@@ -910,6 +912,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public void updateIconDots(Predicate<PackageUserKey> updatedBadges, PackageUserKey tmpKey) {
         FolderDotInfo folderDotInfo = new FolderDotInfo();
+
         for (WorkspaceItemInfo si : mInfo.contents) {
             folderDotInfo.addDotInfo(mLauncher.getDotInfoForItem(si));
         }

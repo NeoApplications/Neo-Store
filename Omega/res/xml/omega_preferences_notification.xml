@@ -39,14 +39,6 @@
         android:title="@string/title__notification_count"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.StyledSwitchPreference
-        android:defaultValue="true"
-        android:dependency="pref_icon_badging"
-        android:key="pref_folder_badge_count"
-        android:persistent="true"
-        android:title="@string/title__folder_badge_count"
-        app:iconSpaceReserved="false" />
-
     <com.saggitt.omega.preferences.ColorPreferenceCompat
         android:defaultValue="@color/notification_background"
         android:dependency="pref_notification_count"
