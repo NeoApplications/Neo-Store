@@ -21,8 +21,6 @@ package com.android.launcher3.config;
  */
 public final class FeatureFlags extends BaseFlags {
 
-    public static boolean REFLECTION_FORCE_OVERVIEW_MODE = true;
-
     private FeatureFlags() {
         // Prevent instantiation
     }
