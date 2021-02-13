@@ -387,6 +387,7 @@ public class FolderAnimationManager {
                     btv.setTranslationY(0.0f);
                     btv.setScaleX(1f);
                     btv.setScaleY(1f);
+                    mFolderIcon.setIconScale(1f);
                 }
             });
         }
