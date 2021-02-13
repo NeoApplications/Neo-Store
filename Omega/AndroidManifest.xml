@@ -213,7 +213,7 @@
             android:name="com.saggitt.omega.iconpack.ApplyIconPackActivity"
             android:theme="@style/SettingsTheme_Light.Transparent">
             <intent-filter>
-                <action android:name="ch.deletescape.lawnchair.APPLY_ICONS" />
+                <action android:name="com.saggitt.omega.APPLY_ICONS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
