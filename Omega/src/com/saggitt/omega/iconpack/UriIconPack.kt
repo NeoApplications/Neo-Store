@@ -28,9 +28,8 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.text.TextUtils
 import com.android.launcher3.FastBitmapDrawable
-import com.android.launcher3.ItemInfoWithIcon
+import com.android.launcher3.ItemInfo
 import com.android.launcher3.Utilities
-import com.android.launcher3.shortcuts.ShortcutInfoCompat
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
 import com.saggitt.omega.icons.CustomDrawableFactory
@@ -71,10 +70,6 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         throw NotImplementedError()
     }
 
-    override fun getIcon(shortcutInfo: ShortcutInfoCompat, iconDpi: Int): Drawable? {
-        throw NotImplementedError()
-    }
-
     override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
                          flattenDrawable: Boolean, customIconEntry: IconPackManager.CustomIconEntry?,
                          iconProvider: CustomIconProvider?): Drawable? {
@@ -88,7 +83,7 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         return null
     }
 
-    override fun newIcon(icon: Bitmap, itemInfo: ItemInfoWithIcon,
+    override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
                          customIconEntry: IconPackManager.CustomIconEntry?,
                          drawableFactory: CustomDrawableFactory): FastBitmapDrawable? {
         return FastBitmapDrawable(icon)

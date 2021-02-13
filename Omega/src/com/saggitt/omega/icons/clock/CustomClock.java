@@ -5,18 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Process;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.util.Preconditions;
 
 import java.util.Collections;
@@ -27,31 +23,32 @@ import java.util.WeakHashMap;
 @TargetApi(26)
 public class CustomClock {
     private final Context mContext;
-    private final Set<AutoUpdateClock> mUpdaters = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<AutoUpdateClock> mUpdaters = Collections.newSetFromMap(new WeakHashMap<AutoUpdateClock, Boolean>());
 
     public CustomClock(Context context) {
         mContext = context;
 
         mContext.registerReceiver(new BroadcastReceiver() {
-                                      @Override
-                                      public void onReceive(Context context, Intent intent) {
-                                          loadTimeZone(intent.getStringExtra("time-zone"));
-                                      }
-                                  }, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED), null,
-                new Handler(Looper.getMainLooper()));
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadTimeZone(intent.getStringExtra("time-zone"));
+            }
+        }, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED), null, new Handler(Looper.getMainLooper()));
     }
 
-    public static Drawable getClock(Context context, Drawable drawable, Metadata metadata) {
-        ClockLayers clone = getClockLayers(context, drawable, metadata, false).clone();
-        clone.updateAngles();
-        return clone.mDrawable;
+    public static Drawable getClock(Context context, Drawable drawable, Metadata metadata, int iconDpi) {
+        ClockLayers clone = getClockLayers(context, drawable, metadata, iconDpi, false).clone();
+        if (clone != null) {
+            clone.updateAngles();
+            return clone.mDrawable;
+        }
+        return null;
     }
 
-    private static ClockLayers getClockLayers(Context context, Drawable drawableForDensity,
-                                              Metadata metadata, boolean normalizeIcon) {
+    private static ClockLayers getClockLayers(Context context, Drawable drawableForDensity, Metadata metadata, int iconDpi, boolean normalizeIcon) {
         Preconditions.assertWorkerThread();
         ClockLayers layers = new ClockLayers();
-        layers.setDrawable(drawableForDensity.mutate());
+        layers.mDrawable = drawableForDensity.mutate();
         layers.mHourIndex = metadata.HOUR_LAYER_INDEX;
         layers.mMinuteIndex = metadata.MINUTE_LAYER_INDEX;
         layers.mSecondIndex = metadata.SECOND_LAYER_INDEX;
@@ -59,22 +56,10 @@ public class CustomClock {
         layers.mDefaultMinute = metadata.DEFAULT_MINUTE;
         layers.mDefaultSecond = metadata.DEFAULT_SECOND;
         if (normalizeIcon) {
-            LauncherIcons obtain = LauncherIcons.obtain(context);
-            float[] scale = new float[1];
-            layers.bitmap = obtain.createBadgedIconBitmap(
-                    new AdaptiveIconDrawable(
-                            layers.mDrawable.getBackground().getConstantState().newDrawable(),
-                            null),
-                    Process.myUserHandle(), Build.VERSION_CODES.O, false, scale).icon;
-            layers.scale = scale[0];
-
-            int iconBitmapSize = LauncherAppState.getInstance(context)
-                    .getInvariantDeviceProfile().iconBitmapSize;
-            layers.offset = (int) Math.ceil((double) (0.010416667f * ((float) iconBitmapSize)));
-            obtain.recycle();
+            layers.setupBackground(context);
         }
 
-        LayerDrawable layerDrawable = layers.mLayerDrawable;
+        LayerDrawable layerDrawable = layers.getLayerDrawable();
         int numberOfLayers = layerDrawable.getNumberOfLayers();
 
         if (layers.mHourIndex < 0 || layers.mHourIndex >= numberOfLayers) {
@@ -90,11 +75,12 @@ public class CustomClock {
         return layers;
     }
 
-    public FastBitmapDrawable drawIcon(ItemInfoWithIcon info, Drawable drawableForDensity,
-                                       Metadata metadata) {
-        final AutoUpdateClock updater = new AutoUpdateClock(info.iconBitmap,
-                getClockLayers(mContext, drawableForDensity, metadata, true).clone()
-        );
+    public FastBitmapDrawable drawIcon(Bitmap bitmap, Drawable drawableForDensity, Metadata metadata) {
+        final AutoUpdateClock updater = new AutoUpdateClock(bitmap, getClockLayers(mContext,
+                drawableForDensity,
+                metadata,
+                LauncherAppState.getIDP(mContext).fillResIconDpi,
+                true).clone());
         mUpdaters.add(updater);
         return updater;
     }
@@ -118,8 +104,7 @@ public class CustomClock {
         final int DEFAULT_MINUTE;
         final int DEFAULT_SECOND;
 
-        public Metadata(int hourIndex, int minuteIndex, int secondIndex,
-                        int defaultHour, int defaultMinute, int defaultSecond) {
+        public Metadata(int hourIndex, int minuteIndex, int secondIndex, int defaultHour, int defaultMinute, int defaultSecond) {
             HOUR_LAYER_INDEX = hourIndex;
             MINUTE_LAYER_INDEX = minuteIndex;
             SECOND_LAYER_INDEX = secondIndex;

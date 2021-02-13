@@ -89,7 +89,7 @@ import static com.android.launcher3.folder.PreviewItemManager.INITIAL_ITEM_ANIMA
 /**
  * An icon that can appear on in the workspace representing an {@link Folder}.
  */
-public class FolderIcon extends FrameLayout implements FolderListener, IconLabelDotView {
+public class FolderIcon extends FrameLayout implements FolderListener, IconLabelDotView, Launcher.OnResumeCallback {
 
     @Thunk
     Launcher mLauncher;
@@ -900,6 +900,13 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public boolean isCoverMode() {
         return mInfo.isCoverMode();
+    }
+
+    @Override
+    public void onLauncherResume() {
+        // Reset the pressed state of icon that was locked in the press state while activity
+        // was launching
+        setStayPressed(false);
     }
 
     public void setStayPressed(boolean stayPressed) {

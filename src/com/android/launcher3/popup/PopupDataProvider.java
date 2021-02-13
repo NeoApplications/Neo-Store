@@ -17,8 +17,6 @@
 package com.android.launcher3.popup;
 
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.pm.LauncherApps;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
@@ -31,9 +29,6 @@ import com.android.launcher3.dot.DotInfo;
 import com.android.launcher3.model.WidgetItem;
 import com.android.launcher3.notification.NotificationKeyData;
 import com.android.launcher3.notification.NotificationListener;
-import com.android.launcher3.shortcuts.DeepShortcutManager;
-import com.android.launcher3.shortcuts.DeepShortcutManagerBackport;
-import com.android.launcher3.shortcuts.ShortcutInfoCompat;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.ShortcutUtil;
@@ -162,24 +157,6 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
     public void setDeepShortcutMap(HashMap<ComponentKey, Integer> deepShortcutMapCopy) {
         mDeepShortcutMap = deepShortcutMapCopy;
         if (LOGD) Log.d(TAG, "bindDeepShortcutMap: " + mDeepShortcutMap);
-    }
-
-    public List<String> getShortcutIdsForItem(ItemInfo info) {
-        if (!DeepShortcutManager.supportsShortcuts(info)) {
-            return Collections.EMPTY_LIST;
-        }
-        ComponentName component = info.getTargetComponent();
-        if (component == null) {
-            return Collections.EMPTY_LIST;
-        }
-        List<String> ids = new ArrayList<>();
-        for (ShortcutInfoCompat compat : DeepShortcutManagerBackport.getForPackage(mLauncher,
-                (LauncherApps) mLauncher.getSystemService(Context.LAUNCHER_APPS_SERVICE),
-                info.getTargetComponent(),
-                info.getTargetComponent().getPackageName())) {
-            ids.add(compat.getId());
-        }
-        return ids;
     }
 
     public int getShortcutCountForItem(ItemInfo info) {

@@ -29,7 +29,6 @@ import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.ItemInfo
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.shortcuts.ShortcutInfoCompat
 import com.saggitt.omega.iconpack.IconPackManager
 
 class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
@@ -42,10 +41,6 @@ class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
 
     fun getIcon(launcherActivityInfo: LauncherActivityInfo, itemInfo: ItemInfo, iconDpi: Int, flattenDrawable: Boolean): Drawable {
         return iconPackManager.getIcon(launcherActivityInfo, iconDpi, flattenDrawable, itemInfo, this).assertNotAdaptiveIconDrawable(launcherActivityInfo)
-    }
-
-    fun getIcon(shortcutInfo: ShortcutInfoCompat, iconDpi: Int): Drawable? {
-        return iconPackManager.getIcon(shortcutInfo, iconDpi).assertNotAdaptiveIconDrawable(shortcutInfo)
     }
 
     fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {

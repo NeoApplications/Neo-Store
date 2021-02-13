@@ -28,11 +28,11 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import com.android.launcher3.*
 import com.android.launcher3.compat.LauncherAppsCompat
 import com.android.launcher3.compat.UserManagerCompat
 import com.android.launcher3.shortcuts.DeepShortcutManager
-import com.android.launcher3.shortcuts.ShortcutInfoCompat
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
 import com.saggitt.omega.icons.CustomDrawableFactory
@@ -155,22 +155,19 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         return gen.result
     }
 
-    override fun getIcon(shortcutInfo: ShortcutInfoCompat, iconDpi: Int): Drawable? {
-        ensureInitialLoadComplete()
-
-        val drawable = DeepShortcutManager.getInstance(context).getShortcutIconDrawable(shortcutInfo, iconDpi)
-        val gen = AdaptiveIconGenerator(context, drawable, null)
-        return gen.result
-    }
-
-    override fun newIcon(icon: Bitmap, itemInfo: ItemInfoWithIcon,
+    override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
                          customIconEntry: IconPackManager.CustomIconEntry?,
                          drawableFactory: CustomDrawableFactory): FastBitmapDrawable {
         ensureInitialLoadComplete()
 
         if (Utilities.ATLEAST_OREO && itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             val component = if (customIconEntry?.icon != null) {
-                Utilities.makeComponentKey(context, customIconEntry.icon).componentName
+                try {
+                    Utilities.makeComponentKey(context, customIconEntry.icon).componentName
+                } catch (e: NullPointerException) {
+                    Log.e("DefaultPack", e.message, e)
+                    itemInfo.targetComponent
+                }
             } else {
                 itemInfo.targetComponent
             }

@@ -16,7 +16,6 @@
 
 package com.android.launcher3.shortcuts;
 
-import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.LauncherApps;
@@ -32,7 +31,6 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherSettings;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceItemInfo;
 import com.saggitt.omega.override.CustomInfoProvider;
 
@@ -147,24 +145,6 @@ public class DeepShortcutManager {
     }
 
     private boolean mWasLastCallSuccess;
-
-    @TargetApi(25)
-    public Drawable getShortcutIconDrawable(ShortcutInfoCompat shortcutInfo, int density) {
-        if (Utilities.ATLEAST_NOUGAT) {
-            try {
-                Drawable icon = mLauncherApps.getShortcutIconDrawable(
-                        shortcutInfo.getShortcutInfo(), density);
-                mWasLastCallSuccess = true;
-                return icon;
-            } catch (SecurityException | IllegalStateException e) {
-                Log.e(TAG, "Failed to get shortcut icon", e);
-                mWasLastCallSuccess = false;
-            }
-        } else {
-            return DeepShortcutManagerBackport.getShortcutIconDrawable(shortcutInfo, density);
-        }
-        return null;
-    }
 
     public static boolean supportsEdit(ItemInfo info) {
         return CustomInfoProvider.Companion.isEditable(info) || supportsShortcuts(info);

@@ -20,13 +20,13 @@ package com.saggitt.omega.iconpack
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RotateDrawable
 import android.util.Log
 import android.util.Xml
 import com.android.launcher3.FastBitmapDrawable
-import com.android.launcher3.ItemInfoWithIcon
 import com.saggitt.omega.icons.CustomDrawableFactory
 import com.saggitt.omega.icons.clock.CustomClock
 import com.saggitt.omega.util.get
@@ -34,6 +34,7 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
+
 
 class DynamicDrawable {
     companion object {
@@ -43,12 +44,12 @@ class DynamicDrawable {
             metadata.load(context, iconDpi)
             return when (metadata.type) {
                 Type.CLOCK -> CustomClock.getClock(context, metadata.clockMetadata!!.drawable,
-                        metadata.clockMetadata!!.metadata)
+                        metadata.clockMetadata!!.metadata, iconDpi)
                 else -> drawable
             }
         }
 
-        fun drawIcon(context: Context, icon: ItemInfoWithIcon, metadata: Metadata, drawableFactory: CustomDrawableFactory, iconDpi: Int): FastBitmapDrawable? {
+        fun drawIcon(context: Context, icon: Bitmap, metadata: Metadata, drawableFactory: CustomDrawableFactory, iconDpi: Int): FastBitmapDrawable? {
             metadata.load(context, iconDpi)
             return when (metadata.type) {
                 Type.CLOCK -> drawableFactory.customClockDrawer.drawIcon(icon, metadata.clockMetadata!!.drawable, metadata.clockMetadata!!.metadata)
@@ -157,7 +158,7 @@ class DynamicDrawable {
                 }
             }
             val layerDrawable = LayerDrawable(drawables.toTypedArray())
-            clockMetadata = ClockMetadata(
+            this.clockMetadata = ClockMetadata(
                     layerDrawable,
                     CustomClock.Metadata(
                             1,
@@ -214,7 +215,6 @@ class DynamicDrawable {
                                   val color: String?, val shadowLayerX: String?, val shadowLayerY: String?,
                                   val shadowLayerRadius: Int?, val shadowLayerColor: String?,
                                   val shadowLayerAlpha: String?, val enabled: Boolean = true)
-
     internal class ClockMetadata(val drawable: Drawable, val metadata: CustomClock.Metadata)
 
     internal enum class Type {
