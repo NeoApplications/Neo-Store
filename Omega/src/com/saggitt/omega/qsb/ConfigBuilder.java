@@ -25,7 +25,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +35,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -46,7 +44,6 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
-import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.Columns;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchBase;
@@ -133,19 +130,6 @@ public class ConfigBuilder {
     private int getBackgroundColor() {
         return ColorUtils.compositeColors(Themes.getAttrColor(mActivity, R.attr.allAppsScrimColor),
                 ColorUtils.setAlphaComponent(WallpaperColorInfo.getInstance(mActivity).getMainColor(), 255));
-    }
-
-    public final AppIndex updatePredictions(AppInfo appInfo, int n) {
-        final AppIndex apps = new AppIndex();
-        apps.label = appInfo.title.toString();
-        apps.iconBitmap = "icon_bitmap_" + n;
-        mBundle.putParcelable(apps.iconBitmap, appInfo.iconBitmap);
-        Uri uri = AppSearchProvider.buildUri(appInfo, mUserManager);
-        apps.searchUri = uri.toString();
-        apps.predictionRank = new Intent("com.google.android.apps.nexuslauncher.search.APP_LAUNCH",
-                uri.buildUpon().appendQueryParameter("predictionRank", Integer.toString(n)).build())
-                .toUri(0);
-        return apps;
     }
 
     private RemoteViews searchIconTemplate() {
