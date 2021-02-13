@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.allapps.search;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -110,8 +112,15 @@ public class AllAppsSearchBarController
         // Skip if the query is empty
         String query = v.getText().toString();
         if (query.isEmpty()) {
+            ((InputMethodManager) mLauncher.getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(v.getWindowToken(), 0);
             return false;
         }
+
+        if (mCb.onSubmitSearch()) {
+            return true;
+        }
+
         return mLauncher.startActivitySafely(v,
                 PackageManagerHelper.getMarketSearchIntent(mLauncher, query), null,
                 AppLaunchTracker.CONTAINER_SEARCH);
