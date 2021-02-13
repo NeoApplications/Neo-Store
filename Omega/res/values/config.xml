@@ -24,8 +24,6 @@
     <string name="config_default_search_provider" translatable="false">com.saggitt.omega.search.providers.GoogleSearchProvider</string>
     <string name="default_live_wallpaper" translatable="false">com.breel.wallpapers/com.breel.wallpapers.dioramas.lagos.LagosWallpaperService</string>
     <string name="app_filter_class" translatable="false">com.saggitt.omega.allapps.CustomAppFilter</string>
-    <!-- Name of a custom shortcut class. -->
-    <string name="custom_shortcut_class" translatable="false">com.saggitt.omega.views.CustomEditShortcut</string>
 
     <!-- The default icon packs to use -->
     <!-- (Deprecated) The default icon pack to use; empty = system icons -->
@@ -33,9 +31,6 @@
     <string-array name="config_default_icon_packs">
         <item>@string/config_default_icon_pack</item>
     </string-array>
-
-    <!-- Whitelisted package to retrieve packagename for badge. Can be empty. -->
-    <string name="shortcutinfocompat_badgepkg_whitelist" translatable="false"></string>
 
     <bool name="config_default_enable_blur">true</bool>
     <!-- Tag id used for view scrim -->
