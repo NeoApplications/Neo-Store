@@ -74,8 +74,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
     private HashMap<AppInfo, String> mCachedSectionNames = new HashMap<>();
 
-    private List<String> mSearchSuggestions;
-
     private final Launcher mLauncher;
 
     // The set of apps from the system
@@ -95,12 +93,14 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private ArrayList<ComponentKey> mSearchResults;
     private AlphabeticIndexCompat mIndexer;
     private AllAppsGridAdapter mAdapter;
-    private OmegaPreferences prefs;
     private AppInfoComparator mAppNameComparator;
     private AppColorComparator mAppColorComparator;
     private final int mNumAppsPerRow;
     private int mNumAppRowsInAdapter;
     private ItemInfoMatcher mItemFilter;
+
+    private final OmegaPreferences prefs;
+    private List<String> mSearchSuggestions;
 
     public AlphabeticalAppsList(Context context, AllAppsStore appsStore, boolean isWork) {
         mAllAppsStore = appsStore;

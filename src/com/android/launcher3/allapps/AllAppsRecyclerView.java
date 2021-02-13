@@ -33,7 +33,7 @@ import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
-import com.android.launcher3.allapps.AllAppsGridAdapter.AppsGridLayoutManager;
+import com.android.launcher3.compat.AccessibilityManagerCompat;
 import com.android.launcher3.logging.StatsLogUtils.LogContainerProvider;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
@@ -115,13 +115,13 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
         if (mScrollbar != null) {
             mScrollbar.reattachThumbToScroll();
         }
-        if (getLayoutManager() instanceof AppsGridLayoutManager) {
+        /*if (getLayoutManager() instanceof AppsGridLayoutManager) {
             AppsGridLayoutManager layoutManager = (AppsGridLayoutManager) getLayoutManager();
             if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                 // We are at the top, so don't scrollToPosition (would cause unnecessary relayout).
                 return;
             }
-        }
+        }*/
         scrollToPosition(0);
     }
 
@@ -431,5 +431,13 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
 
     public void setScrollbarColor(int color) {
         mScrollbar.setColor(color, Color.WHITE);
+    }
+
+    public void onScrollStateChanged(int state) {
+        super.onScrollStateChanged(state);
+
+        if (state == SCROLL_STATE_IDLE) {
+            AccessibilityManagerCompat.sendScrollFinishedEventToTest(getContext());
+        }
     }
 }

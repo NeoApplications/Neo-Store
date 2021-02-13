@@ -39,11 +39,6 @@ import com.android.launcher3.icons.LauncherIcons;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.icons.CustomIconProvider;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import kotlin.collections.ArraysKt;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.round;
@@ -62,14 +57,16 @@ public class AdaptiveIconGenerator {
     private static final int SINGLE_COLOR_LIMIT = 5;
     // Minimal alpha to be considered opaque
     private static final int MIN_VISIBLE_ALPHA = 0xEF;
+
+    private final Context context;
+    private Drawable icon;
+    private final Drawable roundIcon;
+
     private final boolean extractColor;
     private final boolean treatWhite;
-    private Context context;
-    private Drawable icon;
-    private Drawable roundIcon;
 
     private boolean ranLoop;
-    private boolean shouldWrap;
+    private final boolean shouldWrap;
     private int backgroundColor = Color.WHITE;
     private boolean isFullBleed;
     private boolean noMixinNeeded;
@@ -95,47 +92,20 @@ public class AdaptiveIconGenerator {
         treatWhite = extractColor && prefs.getEnableWhiteOnlyTreatment();
     }
 
-    public static boolean isSingleColor(Drawable drawable, int color) {
-        if (drawable == null) return true;
-        final int testColor = ColorExtractor.posterize(color);
-        if (drawable instanceof ColorDrawable) {
-            return ColorExtractor.posterize(((ColorDrawable) drawable).getColor()) == testColor;
-        }
-        final Bitmap bitmap = Utilities.drawableToBitmap(drawable);
-        if (bitmap == null) {
-            return false;
-        }
-        final int height = bitmap.getHeight();
-        final int width = bitmap.getWidth();
-
-        int[] pixels = new int[height * width];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        Set<Integer> set = new HashSet<>(ArraysKt.asList(pixels));
-        Integer[] distinctPixels = new Integer[set.size()];
-        set.toArray(distinctPixels);
-
-        for (int pixel : distinctPixels) {
-            if (testColor != ColorExtractor.posterize(pixel)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private void loop() {
         if (Utilities.ATLEAST_OREO && shouldWrap) {
             if (roundIcon != null && roundIcon instanceof AdaptiveIconCompat) {
                 icon = roundIcon;
             }
             Drawable extractee = icon;
-            if (icon instanceof AdaptiveIconCompat) {
+            if (extractee instanceof AdaptiveIconCompat) {
                 if (!treatWhite) {
                     onExitLoop();
                     return;
                 }
                 AdaptiveIconCompat aid = (AdaptiveIconCompat) extractee;
-                // we still check this seperately as this is the only information we need from the background
-                if (!isSingleColor(aid.getBackground(), Color.WHITE)) {
+                // we still check this separately as this is the only information we need from the background
+                if (!ColorExtractor.isSingleColor(aid.getBackground(), Color.WHITE)) {
                     onExitLoop();
                     return;
                 }
@@ -157,7 +127,6 @@ public class AdaptiveIconGenerator {
             RectF bounds = new RectF();
 
             initTmpIfNeeded();
-            //scale = normalizer.getScale(extractee, bounds, tmp.getIconMask(), outShape);
             scale = normalizer.getScale(extractee, bounds, tmp.getIconMask(), outShape, MIN_VISIBLE_ALPHA);
             matchesMaskShape = outShape[0];
 
@@ -286,6 +255,15 @@ public class AdaptiveIconGenerator {
             // Apply light background to mostly dark icons
             boolean veryDark = lightness < .35 && singleColor;
 
+            // Generate pleasant pastel colors for saturated icons
+            if (hsl[1] > .5f && lightness > .2) {
+                hsl[1] = 1f;
+                hsl[2] = .875f;
+                backgroundColor = ColorUtils.HSLToColor(hsl);
+                onExitLoop();
+                return;
+            }
+
             // Adjust color to reach suitable contrast depending on the relationship between the colors
             final int opaqueSize = size - transparentScore;
             final float pxPerColor = opaqueSize / (float) numColors;
@@ -294,7 +272,6 @@ public class AdaptiveIconGenerator {
             // Vary color mix-in based on lightness and amount of colors
             int fill = (light && !veryLight) || veryDark ? 0xFFFFFFFF : 0xFF333333;
             backgroundColor = ColorUtils.blendARGB(bestRGB, fill, mixRatio);
-            //backgroundColor = Utilities.findDominantColorByHue(bitmap, 20);
         }
         onExitLoop();
     }

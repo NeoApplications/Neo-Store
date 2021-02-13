@@ -29,6 +29,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.AppFilter;
 import com.android.launcher3.AppInfo;
@@ -49,7 +50,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -69,18 +69,21 @@ public class AppSearchProvider extends ContentProvider {
     private AppFilter mBaseFilter;
 
     public AppSearchProvider() {
-        mPipeDataWriter = (output, uri, mimeType, opts, args) -> {
-            ParcelFileDescriptor.AutoCloseOutputStream outStream = null;
-            try {
-                outStream = new ParcelFileDescriptor.AutoCloseOutputStream(output);
-                ((Bitmap) args.get()).compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            } catch (Throwable e) {
-                Log.w("AppSearchProvider", "fail to write to pipe", e);
-            }
-            if (outStream != null) {
+        mPipeDataWriter = new PipeDataWriter<Future>() {
+            @Override
+            public void writeDataToPipe(@NonNull ParcelFileDescriptor output, @NonNull Uri uri, @NonNull String mimeType, @Nullable Bundle opts, @Nullable Future args) {
+                ParcelFileDescriptor.AutoCloseOutputStream outStream = null;
                 try {
-                    outStream.close();
-                } catch (Throwable ignored) {
+                    outStream = new ParcelFileDescriptor.AutoCloseOutputStream(output);
+                    ((Bitmap) args.get()).compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                } catch (Throwable e) {
+                    Log.w("AppSearchProvider", "fail to write to pipe", e);
+                }
+                if (outStream != null) {
+                    try {
+                        outStream.close();
+                    } catch (Throwable ignored) {
+                    }
                 }
             }
         };
@@ -122,10 +125,12 @@ public class AppSearchProvider extends ContentProvider {
         if ("loadIcon".equals(s)) try {
             final Uri parse = Uri.parse(s2);
             final ComponentKey dl = uriToComponent(parse, this.getContext());
-            final Callable<Bitmap> g = () -> {
-                final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
-                mApp.getIconCache().getTitleAndIcon(d, false);
-                return d.iconBitmap;
+            final Callable<Bitmap> g = new Callable<Bitmap>() {
+                public Bitmap call() {
+                    final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
+                    mApp.getIconCache().getTitleAndIcon(d, false);
+                    return d.iconBitmap;
+                }
             };
             final Bundle bundle2 = new Bundle();
             bundle2.putParcelable("suggest_icon_1", mLooper.submit(g).get());
@@ -150,8 +155,8 @@ public class AppSearchProvider extends ContentProvider {
     }
 
     public boolean onCreate() {
-        mLooper = new LooperExecutor(MODEL_EXECUTOR.getLooper());
-        mApp = LauncherAppState.getInstance(getContext());
+        this.mLooper = new LooperExecutor(MODEL_EXECUTOR.getLooper());
+        this.mApp = LauncherAppState.getInstance(this.getContext());
         return true;
     }
 
@@ -161,12 +166,14 @@ public class AppSearchProvider extends ContentProvider {
             return null;
         }
         try {
-            final ComponentKey dl = uriToComponent(uri, getContext());
+            final ComponentKey dl = uriToComponent(uri, this.getContext());
             final String s2 = "image/png";
-            final Callable<Bitmap> g = () -> {
-                final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
-                mApp.getIconCache().getTitleAndIcon(d, false);
-                return d.iconBitmap;
+            final Callable<Bitmap> g = new Callable<Bitmap>() {
+                public Bitmap call() {
+                    final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
+                    mApp.getIconCache().getTitleAndIcon(d, false);
+                    return d.iconBitmap;
+                }
             };
             return openPipeHelper(uri, s2, null, mLooper.submit(g), this.mPipeDataWriter);
         } catch (Exception ex) {
@@ -196,18 +203,17 @@ public class AppSearchProvider extends ContentProvider {
     }
 
     public AppFilter getBaseFilter() {
-        if (mBaseFilter == null)
-            mBaseFilter = new OmegaAppFilter(Objects.requireNonNull(getContext()));
+        if (mBaseFilter == null) mBaseFilter = new OmegaAppFilter(getContext());
         return mBaseFilter;
     }
 
     class f implements Callable<List<AppInfo>>, LauncherModel.ModelUpdateTask {
         private final FutureTask<List<AppInfo>> eN;
-        private final String mQuery;
         private AllAppsList mAllAppsList;
         private LauncherAppState mApp;
         private BgDataModel mBgDataModel;
         private LauncherModel mModel;
+        private final String mQuery;
 
         f(final String s) {
             this.mQuery = s.toLowerCase();
@@ -215,22 +221,15 @@ public class AppSearchProvider extends ContentProvider {
         }
 
         public List<AppInfo> call() {
-            if (!mModel.isModelLoaded()) {
+            if (!this.mModel.isModelLoaded()) {
                 Log.d("AppSearchProvider", "Workspace not loaded, loading now");
-                mModel.startLoaderForResults(new LoaderResults(this.mApp, this.mBgDataModel, this.mAllAppsList, 0, null));
+                this.mModel.startLoaderForResults(new LoaderResults(this.mApp, this.mBgDataModel, this.mAllAppsList, 0, null));
             }
-            if (!mModel.isModelLoaded()) {
+            if (!this.mModel.isModelLoaded()) {
                 Log.d("AppSearchProvider", "Loading workspace failed");
                 return Collections.emptyList();
             }
-            final List<AppInfo> results = FuzzyAppSearchAlgorithm.query(mApp.getContext(), mQuery, mAllAppsList.data, getBaseFilter());
-
-            for (AppInfo appInfo : results) {
-                if (appInfo.usingLowResIcon()) {
-                    mApp.getIconCache().getTitleAndIcon(appInfo, false);
-                }
-            }
-            return results;
+            return FuzzyAppSearchAlgorithm.query(mApp.getContext(), mQuery, mAllAppsList.data, getBaseFilter());
         }
 
         public void init(final LauncherAppState mApp, final LauncherModel mModel, final BgDataModel mBgDataModel, final AllAppsList mAllAppsList, final Executor executor) {
