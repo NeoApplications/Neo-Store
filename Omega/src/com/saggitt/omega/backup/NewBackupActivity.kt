@@ -2,6 +2,7 @@ package com.saggitt.omega.backup
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -55,11 +56,14 @@ class NewBackupActivity : SettingsBaseActivity() {
         setContentView(R.layout.activity_new_backup)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         backupName.setText(getTimestamp())
-
         startButton.setOnClickListener {
             onStartBackup()
+        }
+
+        if (ContextCompat.getSystemService(this, WallpaperManager::class.java)?.wallpaperInfo != null) {
+            backupWallpaper.isChecked = false
+            backupWallpaper.isEnabled = false
         }
     }
 
