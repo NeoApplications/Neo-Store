@@ -400,6 +400,9 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         mRotationHelper.initialize();
 
         TraceHelper.endSection("Launcher-onCreate");
+
+        Utilities.checkRestoreSuccess(this);
+
         RaceConditionTracker.onEvent(ON_CREATE_EVT, EXIT);
         mStateManager.addStateListener(new LauncherStateManager.StateListener() {
             @Override
@@ -1871,6 +1874,10 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             BubbleTextView btv = (BubbleTextView) v;
             btv.setStayPressed(true);
             addOnResumeCallback(btv);
+        } else if (success && v instanceof FolderIcon) {
+            FolderIcon folderIcon = (FolderIcon) v;
+            folderIcon.setStayPressed(true);
+            addOnResumeCallback(folderIcon);
         }
         return success;
     }
