@@ -287,7 +287,6 @@
     <string name="summary__general_smartspace">Dato, tid, hjemmeksjermsminiprogram</string>
     <string name="restore_backup">Gjenopprett</string>
     <string name="backup_name">Navn</string>
-    <string name="week_day_format">%1$s, %2$s</string>
     <string name="battery_status">Batteristatus</string>
     <string name="weather_provider_disabled">Avskrudd</string>
     <string name="weather_icons_default">Forvalg</string>

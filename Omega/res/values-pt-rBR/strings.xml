@@ -193,7 +193,6 @@
     <string name="units_kelvin">Kelvin</string>
     <string name="units_imperial">Fahrenheit</string>
     <string name="units_metric">Celsius</string>
-    <string name="week_day_format">%1$s, %2$s</string>
     <string name="battery_status">Status da bateria</string>
     <string name="event_provider_unread_notifications">Notificações</string>
     <string name="event_provider_now_playing">Tocando agora</string>

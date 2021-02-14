@@ -287,7 +287,6 @@
     <string name="units_kelvin">Kelvin</string>
     <string name="units_imperial">Fahrenheit</string>
     <string name="units_metric">Celsius</string>
-    <string name="week_day_format">%1$s, %2$s</string>
     <string name="smartspace_provider_bridge">Pont sans pixel</string>
     <string name="category__behavior_weather">Météo</string>
     <string name="title_smartspace_event_providers">Source des évènements</string>

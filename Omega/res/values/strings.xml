@@ -290,7 +290,7 @@
     <string name="event_provider_unread_notifications">Notifications</string>
     <string name="battery_status">Battery Status</string>
 
-    <string name="week_day_format">%1$s, %2$s</string>
+    <string name="week_day_format" translatable="false">%1$s, %2$s</string>
     <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
     <string name="icu_abbrev_wday_month_day_no_year">EEEEMMMd</string>
     <string name="icu_abbrev_time">HH:mm</string>
