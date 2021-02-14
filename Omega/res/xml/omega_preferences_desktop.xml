@@ -103,6 +103,11 @@
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
+        android:key="pref_allowOverlap"
+        android:title="@string/title_desktop_overlap_placement" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
         android:key="pref_lockDesktop"
         android:title="@string/title_desktop_lock_desktop"
         app:iconSpaceReserved="false" />

@@ -120,6 +120,7 @@
     <string name="title__dock_show_arrow">Mostrar flecha</string>
     <string name="title_dock_background_color">Color de fondo</string>
     <string name="title_dock_fill">Mostrar fondo</string>
+    <string name="title_desktop_overlap_placement">Superposición</string>
     <string name="title_desktop_hide_statusbar">Ocultar barra de estado</string>
     <string name="title__multiline_labels">Nombre de aplicaciones en varias lineas</string>
     <string name="title__desktop_hide_icon_labels">Ocultar etiquetas en los iconos de la pantalla de inicio</string>

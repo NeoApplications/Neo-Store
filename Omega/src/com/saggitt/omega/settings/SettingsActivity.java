@@ -77,7 +77,6 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.OmegaPreferencesChangeCallback;
-import com.saggitt.omega.feed.FeedWidgetsActivity;
 import com.saggitt.omega.gestures.ui.GesturePreference;
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
@@ -803,8 +802,8 @@ public class SettingsActivity extends SettingsBaseActivity
             if (preference.getKey().equals("kill"))
                 Utilities.killLauncher();
             else if (preference.getKey().equals("pref_widget_feed")) {
-                Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
-                preference.getContext().startActivity(intent);
+                //Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
+                //startActivity(intent);
             }
 
             return false;
