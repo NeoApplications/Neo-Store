@@ -327,4 +327,7 @@
     <string name="title__general_smartspace">Домашний виджет</string>
     <string name="title__general_drawer">Выдвижная панель</string>
     <string name="title__general_dock">Панель быстрого доступа</string>
+    <string name="name_provider_alarm_events">Ближайшие будильники</string>
+    <string name="resuable_text_alarm">Будильник</string>
+    <string name="icon_shape_corner_cut">Обрезка</string>
 </resources>
