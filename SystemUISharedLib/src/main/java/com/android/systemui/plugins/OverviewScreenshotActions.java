@@ -17,26 +17,26 @@
 package com.android.systemui.plugins;
 
 import android.app.Activity;
-import android.content.Context;
-import android.widget.FrameLayout;
+import android.graphics.Bitmap;
+import android.view.ViewGroup;
 
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 
 /**
- * Implement this interface to allow extra card on recents overview.
+ * Implement this interface to add action buttons for overview screenshots, e.g. share, edit etc.
  */
-@ProvidesInterface(action = RecentsExtraCard.ACTION, version = RecentsExtraCard.VERSION)
-public interface RecentsExtraCard extends Plugin {
-
-    String ACTION = "com.android.systemui.action.PLUGIN_RECENTS_EXTRA_CARD";
+@ProvidesInterface(
+        action = OverviewScreenshotActions.ACTION, version = OverviewScreenshotActions.VERSION)
+public interface OverviewScreenshotActions extends Plugin {
+    String ACTION = "com.android.systemui.action.PLUGIN_OVERVIEW_SCREENSHOT_ACTIONS";
     int VERSION = 1;
 
     /**
-     * Sets up the recents overview extra card and fills in data.
+     * Setup the actions for the screenshot, including edit, save, etc.
      *
-     * @param context Plugin context
-     * @param frameLayout PlaceholderView
-     * @param activity Recents activity to hold extra view
+     * @param parent     The parent view to add buttons on.
+     * @param screenshot The screenshot we will do actions on.
+     * @param activity   THe host activity.
      */
-    void setupView(Context context, FrameLayout frameLayout, Activity activity);
+    void setupActions(ViewGroup parent, Bitmap screenshot, Activity activity);
 }
