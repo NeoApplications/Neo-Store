@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title__dock_show_arrow">Oku Göster</string>
+    <string name="title__dock_search_bar">Arama Çubuğunu Göster</string>
+    <string name="title__dock_hide_labels">Etiketleri Gizle</string>
+    <string name="title_dock_background_color">Arkaplan Rengi</string>
+    <string name="title_dock_fill">Arkaplanı Göster</string>
+    <string name="grid_size_width">Genişlik</string>
+    <string name="grid_size_height">Yükseklik</string>
+    <string name="title_desktop_text_size">Yazı Boyutu</string>
+    <string name="title_desktop_hide_statusbar">Durum çubuğunu gizle</string>
+    <string name="title__multiline_labels">Çok satırlı uygulama adları</string>
+    <string name="title_desktop_lock_desktop">Masaüstünü Kilitle</string>
+    <string name="title__desktop_hide_icon_labels">Ana ekranda simge etiketlerini gizle</string>
+    <string name="title__desktop_grid_size">Izgara boyutu</string>
+    <string name="title__desktop_icon_size">Simge boyutu</string>
+    <string name="title__desktop_full_width_widgets">Tam genişlikte widget\'lar</string>
+    <string name="allow_rotation_blocked_desc">Geçerli görüntü ayarı döndürmeye izin vermiyor</string>
+    <string name="pref_category__inputs">Hareketler ve Arama</string>
+    <string name="summary__general_about">Omega Launcher hakkında daha fazla bilgi</string>
+    <string name="summary__general_advanced">Dil, yedek, ayar arama</string>
+    <string name="summary__general_notifications">Rozet sayısı, rozet rengi, hareketler</string>
+    <string name="summary__general_search">Arama Sağlayıcısı, stil, simgeler</string>
+    <string name="summary__general_theme">Renkleri değiştir, simge paketi, simge şekli</string>
+    <string name="summary__general_drawer">Çekmeceni özelleştir</string>
+    <string name="summary__general_desktop">Masaüstünü özelleştir</string>
+    <string name="title__general_notifications">Hareketler ve Bildirimler</string>
+    <string name="title__general_advanced">Gelişmiş Ayarlar</string>
+    <string name="title__general_search">Arama</string>
+    <string name="title__general_theme">Tema</string>
+    <string name="title__general_drawer">Çekmece</string>
+    <string name="title__general_dock">Alt panel</string>
+    <string name="title__general_desktop">Masaüstü</string>
+    <string name="title__general_about">Hakkında</string>
+</resources>
