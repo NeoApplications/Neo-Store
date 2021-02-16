@@ -347,8 +347,7 @@
     <string name="title_theme_icon_packs">Packs d\'icône</string>
     <string name="title_text_color">Couleur du texte</string>
     <string name="title_drawer_enable_background">Utiliser une couleur d\'arrière-plan personnalisée</string>
-    <string name="msg_missing_usage_access">Pour montrer App Suggestions, tourner sur l accès à l usage de 
-\n&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"nom\" exemple=\"Mon Application\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="msg_missing_usage_access">Pour montrer App Suggestions, tourner sur l accès à l usage de &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"nom\" exemple=\"Mon Application\"&gt;%1$s&lt;/xliff:g&gt;</string>
     <string name="feed_widget">Widget</string>
     <string name="feed_add_widget">Ajouter Un Widget</string>
     <string name="action_open_widgets">Ouvrir Le Tiroir Widget</string>
