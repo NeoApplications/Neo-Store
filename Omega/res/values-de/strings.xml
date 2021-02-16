@@ -252,7 +252,7 @@
     <string name="show_in_tabs">Reiter</string>
     <string name="default_tab_name">Neuer Reiter</string>
     <string name="custom">Benutzerdefiniert</string>
-    <string name="apps_label">Apps</string>
+    <string name="apps_label">Anwendungen</string>
     <string name="name">Name</string>
     <string name="none">Keiner</string>
     <string name="select_tab_type">Neuer Reiter</string>
@@ -356,4 +356,9 @@
     <string name="action_open_dash">Öffne Dash</string>
     <string name="action_open_overview">Zeige Desktop Blase</string>
     <string name="action_open_settings">Launcher-Einstellungen öffnen</string>
+    <string name="icu_abbrev_time_12h">hh:mm aa</string>
+    <string name="summary__general_dock">Hotseat-Symbole, Suchleiste</string>
+    <string name="title__general_smartspace">Start-Widget</string>
+    <string name="title__general_theme">Thema</string>
+    <string name="title__general_dock">Dock</string>
 </resources>
