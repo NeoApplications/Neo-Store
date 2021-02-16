@@ -93,8 +93,8 @@
         <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
-        <item quantity="one">%1$d App</item>
-        <item quantity="other">%1$d Apps</item>
+        <item quantity="one">%1$d Anwendung</item>
+        <item quantity="other">%1$d Anwendungen</item>
     </plurals>
     <string name="selected_count">%1$d ausgewählt</string>
     <string name="drawer_tabs">Reiter</string>
@@ -115,13 +115,13 @@
     <string name="pref_appcategorization_enable_title">Apps kategorisieren</string>
     <string name="pref_appcategorization_flowerpot_title">App Kategorie</string>
     <string name="title_text_color">Textfarbe</string>
-    <string name="title_app_suggestions">Apps</string>
+    <string name="title_app_suggestions">Anwendungen</string>
     <string name="label_turn_off_suggestions">Deaktivieren</string>
     <string name="msg_disable_suggestions_prompt">Nutzungsdaten werden gelöscht.</string>
     <string name="title_disable_suggestions_prompt">App-Vorschläge deaktivieren</string>
     <string name="summary__drawer_hide_apps">App in der App-Übersicht ausblenden</string>
     <string name="summary_all_apps_google_search">Web-Ergebnisse und Apps finden</string>
-    <string name="summary_search_hidden_apps">Zeige versteckte Verknüpfungen in den Ergebnissen</string>
+    <string name="summary_search_hidden_apps">Zeige versteckte Verknüpfungen in den Ergebnissen.</string>
     <string name="title_search_hidden_apps">Finde ausgeblendete Verknüpfungen</string>
     <string name="title_all_apps_keep_scroll_state">Position merken</string>
     <string name="title_all_apps_google_search">Globale Suche</string>
@@ -238,4 +238,5 @@
     <string name="name_provider_alarm_events">Anstehende Alarme</string>
     <string name="resuable_text_alarm">Alarm</string>
     <string name="smartspace_provider_bridge">Root-lose Pixelbrücke</string>
+    <string name="weather_provider_testing">Fehlersuche</string>
 </resources>
