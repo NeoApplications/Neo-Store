@@ -185,4 +185,21 @@
     <string name="summary__general_drawer">Personalisiere deine App-Übersicht</string>
     <string name="summary__general_desktop">Personalisiere deinen Startbildschirm</string>
     <string name="title__general_drawer">App-Übersicht</string>
+    <string name="smartspace_hours_mins">%1$s %2$s</string>
+    <string name="units_imperial">Fahrenheit</string>
+    <string name="units_romer">Rømer</string>
+    <string name="units_reaumur">Réaumur</string>
+    <string name="units_delisle">Delisle</string>
+    <string name="units_newton">Newton</string>
+    <string name="units_rakine">Rankine</string>
+    <string name="units_kelvin">Kelvin</string>
+    <string name="units_metric">Celsius</string>
+    <string name="icu_abbrev_date">dd. MMMM</string>
+    <string name="icu_abbrev_time">HH:mm</string>
+    <string name="icu_abbrev_wday_month_day_no_year">EEEEdMMM</string>
+    <string name="full_wday_month_day_no_year">EEEE, d. MMMM</string>
+    <string name="weather_provider_oneplus_weather">OnePlus Wetter</string>
+    <string name="weather_provider_pe">Pixel Experience</string>
+    <string name="onbording">Onboarding</string>
+    <string name="event_provider_missing_notification_access">Um &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt; verwenden zu dürfen, musst du die Benachrichtigungen von &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”&lt;/xliff:g&gt; aktivieren.</string>
 </resources>
