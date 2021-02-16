@@ -90,7 +90,7 @@
     <string name="hide_app_selected">  versteckt</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Versteckt</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d App</item>
@@ -202,4 +202,40 @@
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="onbording">Onboarding</string>
     <string name="event_provider_missing_notification_access">Um &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt; verwenden zu dürfen, musst du die Benachrichtigungen von &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”&lt;/xliff:g&gt; aktivieren.</string>
+    <string name="action_open_drawer">App-Übersicht öffnen</string>
+    <string name="action_none">Nichts tun</string>
+    <string name="pref_category__gestures">Gesten</string>
+    <string name="pref_category__notifications">Benachrichtigungen</string>
+    <string name="title__gesture_swipe_down">Nach unten wischen</string>
+    <string name="title__notification_background">Benachrichtigung Hintergrundfarbe</string>
+    <string name="title__folder_badge_count">Zeige Ordner Plakette mit Anzahl</string>
+    <string name="title__notification_count">Zeige Benachrichtigungsanzahl</string>
+    <string name="icon_badging_desc_off">Aus</string>
+    <string name="icon_badging_desc_on">An</string>
+    <string name="battery_status">Batterie Status</string>
+    <string name="event_provider_unread_notifications">Benachrichtigungen</string>
+    <string name="event_provider_now_playing">Jetzt spielt</string>
+    <string name="weather_provider_disabled">Deaktiviert</string>
+    <string name="weather_icons_default">Standard</string>
+    <string name="onboarding_swipe_up">Nach oben wischen um die App-Liste zu öffnen.</string>
+    <string name="onbording_settings_summary">Tippe &amp; halte auf dem Desktop.</string>
+    <string name="onbording_settings_title">Einstellen von %s</string>
+    <string name="personality_provider">Begrüßungen</string>
+    <string name="action_open_recents">Öffne kürzliche Applikationen</string>
+    <string name="action_press_back">Zurück-Taste</string>
+    <string name="smartspace_provider_calendar">Kalender Ereignisse</string>
+    <string name="deny">Ablehnen</string>
+    <string name="allow">Erlauben</string>
+    <string name="permission_iplocate_twilight_explanation">Erlaube Zugriff auf deinen ungefähren Standort\? Dies erlaubt eine genauere Tageslicht Berechnung.</string>
+    <string name="permission_iplocate">Ungefährer Standort</string>
+    <string name="event_provider_missing_notification_dots">&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;, aktiviere Benachrichtigungs Punkte.</string>
+    <string name="battery_low">Batterie niedrig</string>
+    <string name="battery_full">Aufgeladen</string>
+    <string name="battery_charging">Lädt auf</string>
+    <string name="home_widget">Auf einen Blick</string>
+    <string name="zen_mode_enabled">Nicht stören ist aktiviert.</string>
+    <string name="smartspace_widget_provider_not_found">Hole die Google App.</string>
+    <string name="name_provider_alarm_events">Anstehende Alarme</string>
+    <string name="resuable_text_alarm">Alarm</string>
+    <string name="smartspace_provider_bridge">Root-lose Pixelbrücke</string>
 </resources>
