@@ -21,9 +21,12 @@ import android.os.Process;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Switch;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -45,6 +48,18 @@ public class WorkModeSwitch extends Switch {
     @Override
     public void setChecked(boolean checked) {
         // No-op, do not change the checked state until broadcast is received.
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        int accent = Utilities.getOmegaPrefs(getContext()).getAccentColor();
+        OmegaUtilsKt.applyColor(this, accent);
+        if (Utilities.hasKnoxSecureFolder(getContext())) {
+            // Samsung secure folder breaks work mode APIs and completely breaks
+            // when we try to enable quiet mode from Launcher.
+            setVisibility(View.GONE);
+        }
     }
 
     @Override

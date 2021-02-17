@@ -56,6 +56,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.dynamicanimation.animation.SpringForce;
 
 import com.android.launcher3.BaseActivity;
@@ -406,16 +407,11 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         updateTaskStackListenerState();
+        mModel.getThumbnailCache().getHighResLoadingState().addCallback(this);
+        mActivity.addMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
         if (Utilities.isRecentsEnabled()) {
-            mModel.getThumbnailCache().getHighResLoadingState().addCallback(this);
-            mActivity.addMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-
-            try {
-                ActivityManagerWrapper.getInstance().registerTaskStackListener(mTaskStackListener);
-                mSyncTransactionApplier = new SyncRtSurfaceTransactionApplierCompat(this);
-            } catch (NoSuchMethodError error) {
-                error.printStackTrace();
-            }
+            ActivityManagerWrapper.getInstance().registerTaskStackListener(mTaskStackListener);
+            mSyncTransactionApplier = new SyncRtSurfaceTransactionApplierCompat(this);
         }
         RecentsModel.INSTANCE.get(getContext()).addThumbnailChangeListener(this);
         mIdp.addOnChangeListener(this);
@@ -425,19 +421,13 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         updateTaskStackListenerState();
-        //ActivityManagerWrapper.getInstance().unregisterTaskStackListener(mTaskStackListener);
-        mSyncTransactionApplier = null;
+        mModel.getThumbnailCache().getHighResLoadingState().removeCallback(this);
+        mActivity.removeMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
         if (Utilities.isRecentsEnabled()) {
-            mModel.getThumbnailCache().getHighResLoadingState().removeCallback(this);
-            mActivity.removeMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-            try {
-                ActivityManagerWrapper.getInstance().unregisterTaskStackListener(mTaskStackListener);
-                RecentsModel.INSTANCE.get(getContext()).removeThumbnailChangeListener(this);
-            } catch (NoSuchMethodError error) {
-                error.printStackTrace();
-            }
+            ActivityManagerWrapper.getInstance().unregisterTaskStackListener(mTaskStackListener);
         }
-
+        mSyncTransactionApplier = null;
+        RecentsModel.INSTANCE.get(getContext()).removeThumbnailChangeListener(this);
         mIdp.removeOnChangeListener(this);
     }
 
@@ -446,7 +436,7 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
         super.onViewRemoved(child);
 
         // Clear the task data for the removed child if it was visible
-        if (child instanceof TaskView) {
+        if (child != mClearAllButton) {
             TaskView taskView = (TaskView) child;
             mHasVisibleTaskData.delete(taskView.getTask().key.id);
             mTaskViewPool.recycle(taskView);
@@ -560,7 +550,7 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
         // Unload existing visible task data
         unloadVisibleTaskData();
 
-        TaskView ignoreResetTaskView =
+        TaskView ignoreRestTaskView =
                 mIgnoreResetTaskId == -1 ? null : getTaskView(mIgnoreResetTaskId);
 
         final int requiredTaskCount = tasks.size();
@@ -586,18 +576,11 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
             final TaskView taskView = (TaskView) getChildAt(pageIndex);
             taskView.bind(task);
         }
-
-        if (mNextPage == INVALID_PAGE) {
-            // Set the current page to the running task, but not if settling on new task.
-            TaskView runningTaskView = getRunningTaskView();
-            if (runningTaskView != null) {
-                setCurrentPage(indexOfChild(runningTaskView));
-            } else if (getTaskViewCount() > 0) {
-                setCurrentPage(indexOfChild(getTaskViewAt(0)));
-            }
+        TaskView runningTaskView = getRunningTaskView();
+        if (runningTaskView != null) {
+            setCurrentPage(indexOfChild(runningTaskView));
         }
-
-        if (mIgnoreResetTaskId != -1 && getTaskView(mIgnoreResetTaskId) != ignoreResetTaskView) {
+        if (mIgnoreResetTaskId != -1 && getTaskView(mIgnoreResetTaskId) != ignoreRestTaskView) {
             // If the taskView mapping is changing, do not preserve the visuals. Since we are
             // mostly preserving the first task, and new taskViews are added to the end, it should
             // generally map to the same task.
@@ -1827,11 +1810,13 @@ public abstract class RecentsView<T extends BaseActivity> extends PagedView impl
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public int getLeftGestureMargin() {
         final WindowInsets insets = getRootWindowInsets();
         return Math.max(insets.getSystemGestureInsets().left, insets.getSystemWindowInsetLeft());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public int getRightGestureMargin() {
         final WindowInsets insets = getRootWindowInsets();
         return Math.max(insets.getSystemGestureInsets().right, insets.getSystemWindowInsetRight());

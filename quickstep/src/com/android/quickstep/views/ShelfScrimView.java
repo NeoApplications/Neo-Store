@@ -27,6 +27,8 @@ import android.util.AttributeSet;
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.LauncherState;
+import com.android.launcher3.QuickstepAppTransitionManagerImpl;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
@@ -36,11 +38,13 @@ import com.android.quickstep.SysUINavigationMode;
 import com.android.quickstep.SysUINavigationMode.Mode;
 import com.android.quickstep.SysUINavigationMode.NavigationModeChangeListener;
 import com.android.quickstep.util.LayoutUtils;
+import com.android.quickstep.util.ShelfPeekAnim;
 import com.saggitt.omega.OmegaPreferences;
 
 import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
 import static com.android.launcher3.LauncherState.BACKGROUND_APP;
 import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.QUICK_SWITCH;
 import static com.android.launcher3.anim.Interpolators.ACCEL;
 import static com.android.launcher3.anim.Interpolators.ACCEL_2;
 import static com.android.launcher3.anim.Interpolators.LINEAR;
@@ -194,7 +198,7 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
         }
 
         if (mProgress >= 1) {
-            /*mRemainingScreenColor = 0;
+            mRemainingScreenColor = 0;
             mShelfColor = 0;
             ShelfPeekAnim shelfPeekAnim = ((QuickstepAppTransitionManagerImpl)
                     mLauncher.getAppTransitionManager()).getShelfPeekAnim();
@@ -204,7 +208,7 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
                     && shelfPeekAnim.isPeeking()) {
                 // Show the shelf background when peeking during swipe up.
                 mShelfColor = setColorAlphaBound(mEndScrim, mMidAlpha);
-            }*/
+            }
             mRemainingScreenColor = 0;
             mShelfColor = 0;
             if (mSysUINavigationMode == Mode.NO_BUTTON

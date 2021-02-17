@@ -16,11 +16,6 @@
 
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.HOTSEAT;
-import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.PREDICTION;
-
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
@@ -31,12 +26,16 @@ import android.view.MotionEvent;
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
-import com.android.launcher3.LauncherStateManager;
 import com.android.launcher3.LauncherStateManager.StateListener;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.states.InternalStateHandler;
+
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.HOTSEAT;
+import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.PREDICTION;
 
 /**
  * Abstract base class of floating view responsible for showing discovery bounce animation
@@ -168,6 +167,7 @@ public class DiscoveryBounce extends AbstractFloatingView {
 
     private static void showForOverviewIfNeeded(Launcher launcher, boolean withDelay) {
         if (!launcher.isInState(OVERVIEW)
+                || !Utilities.isRecentsEnabled()
                 || !launcher.hasBeenResumed()
                 || launcher.isForceInvisible()
                 || launcher.getDeviceProfile().isVerticalBarLayout()

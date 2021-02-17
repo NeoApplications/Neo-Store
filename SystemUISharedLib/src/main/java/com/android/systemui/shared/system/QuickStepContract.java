@@ -16,12 +16,13 @@
 
 package com.android.systemui.shared.system;
 
-import android.annotation.IntDef;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.view.ViewConfiguration;
 import android.view.WindowManagerPolicyConstants;
+
+import androidx.annotation.IntDef;
 
 import com.android.internal.policy.ScreenDecorationsUtils;
 

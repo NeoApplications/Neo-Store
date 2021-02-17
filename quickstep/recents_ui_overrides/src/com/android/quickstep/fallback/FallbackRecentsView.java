@@ -15,15 +15,16 @@
  */
 package com.android.quickstep.fallback;
 
-import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
-
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.FloatProperty;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.LauncherState.ScaleAndTranslation;
@@ -37,10 +38,12 @@ import com.android.systemui.shared.recents.model.Task.TaskKey;
 
 import java.util.ArrayList;
 
+import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
+
 public class FallbackRecentsView extends RecentsView<RecentsActivity> {
 
     public static final FloatProperty<FallbackRecentsView> ZOOM_PROGRESS =
-            new FloatProperty<FallbackRecentsView> ("zoomInProgress") {
+            new FloatProperty<FallbackRecentsView>("zoomInProgress") {
 
                 @Override
                 public void setValue(FallbackRecentsView view, float value) {
@@ -159,11 +162,13 @@ public class FallbackRecentsView extends RecentsView<RecentsActivity> {
         FULLSCREEN_PROGRESS.set(this, mZoomInProgress);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void onGestureAnimationStart(RunningTaskInfo runningTaskInfo) {
         mRunningTaskInfo = runningTaskInfo;
         onGestureAnimationStart(runningTaskInfo == null ? -1 : runningTaskInfo.taskId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void setCurrentTask(int runningTaskId) {
         super.setCurrentTask(runningTaskId);
@@ -172,6 +177,7 @@ public class FallbackRecentsView extends RecentsView<RecentsActivity> {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void applyLoadPlan(ArrayList<Task> tasks) {
         // When quick-switching on 3p-launcher, we add a "dummy" tile corresponding to Launcher
@@ -189,8 +195,7 @@ public class FallbackRecentsView extends RecentsView<RecentsActivity> {
             if (!found) {
                 ArrayList<Task> newList = new ArrayList<>(tasks.size() + 1);
                 newList.addAll(tasks);
-                //newList.add(Task.from(new TaskKey(mRunningTaskInfo), mRunningTaskInfo, false));
-                tasks = newList;
+                newList.add(Task.from(new TaskKey(mRunningTaskInfo), mRunningTaskInfo, false));
             }
         }
         super.applyLoadPlan(tasks);

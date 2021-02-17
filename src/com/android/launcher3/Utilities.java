@@ -21,7 +21,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.AppOpsManager;
 import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
@@ -153,8 +152,6 @@ public final class Utilities {
      */
     public static final int EDGE_NAV_BAR = 1 << 8;
 
-
-    public static final int COLOR_EXTRACTION_JOB_ID = 1;
     public static final int WALLPAPER_COMPAT_JOB_ID = 2;
 
     public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
@@ -175,8 +172,7 @@ public final class Utilities {
     public static final String EXTRA_WALLPAPER_OFFSET = "com.android.launcher3.WALLPAPER_OFFSET";
     public static final String EXTRA_WALLPAPER_FLAVOR = "com.android.launcher3.WALLPAPER_FLAVOR";
 
-    public static boolean IS_RUNNING_IN_TEST_HARNESS =
-            ActivityManager.isRunningInTestHarness();
+    public static boolean IS_RUNNING_IN_TEST_HARNESS = ActivityManager.isRunningInTestHarness();
 
     public static void enableRunningInTestHarnessForTests() {
         IS_RUNNING_IN_TEST_HARNESS = true;
@@ -304,17 +300,6 @@ public final class Utilities {
     public static boolean pointInView(View v, float localX, float localY, float slop) {
         return localX >= -slop && localY >= -slop && localX < (v.getWidth() + slop) &&
                 localY < (v.getHeight() + slop);
-    }
-
-    public static int[] getCenterDeltaInScreenSpace(View v0, View v1) {
-        v0.getLocationInWindow(sLoc0);
-        v1.getLocationInWindow(sLoc1);
-
-        sLoc0[0] += (v0.getMeasuredWidth() * v0.getScaleX()) / 2;
-        sLoc0[1] += (v0.getMeasuredHeight() * v0.getScaleY()) / 2;
-        sLoc1[0] += (v1.getMeasuredWidth() * v1.getScaleX()) / 2;
-        sLoc1[1] += (v1.getMeasuredHeight() * v1.getScaleY()) / 2;
-        return new int[] {sLoc1[0] - sLoc0[0], sLoc1[1] - sLoc0[1]};
     }
 
     public static void scaleRectFAboutCenter(RectF r, float scale) {
@@ -799,19 +784,6 @@ public final class Utilities {
         ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE_ACCESS);
     }
 
-    public static boolean isAccessGranted(Context context) {
-        try {
-            PackageManager pm = context.getPackageManager();
-            ApplicationInfo applicationInfo = pm.getApplicationInfo(BuildConfig.APPLICATION_ID, 0);
-            AppOpsManager appOpsManager = context.getSystemService(AppOpsManager.class);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                    applicationInfo.uid, applicationInfo.packageName);
-            return mode == AppOpsManager.MODE_ALLOWED;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
     public static boolean getAllowRotationDefaultValue(Context context) {
         if (ATLEAST_NOUGAT) {
             // If the device was scaled, used the original dimensions to determine if rotation
@@ -857,17 +829,7 @@ public final class Utilities {
         } else {
             packageName = cn.getPackageName();
         }
-        if (packageName != null) {
-            try {
-                PackageInfo info = pm.getPackageInfo(packageName, 0);
-                return (info != null) && (info.applicationInfo != null) &&
-                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return isSystemApp(pm, packageName);
     }
 
     public static boolean isSystemApp(PackageManager pm, String packageName) {
@@ -889,16 +851,6 @@ public final class Utilities {
     }
 
     private static List<Runnable> onStart = new ArrayList<>();
-
-    /**
-     * ATTENTION: Only ever call this from within LawnchairLauncher.kt
-     */
-    public /* private */ static void onLauncherStart() {
-        Log.d(TAG, "onLauncherStart: " + onStart.size());
-        for (Runnable r : onStart)
-            r.run();
-        onStart.clear();
-    }
 
     public static void goToHome(Context context) {
         PackageManager pm = context.getPackageManager();
@@ -981,6 +933,18 @@ public final class Utilities {
         return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui", ""));
     }
 
+    public static Boolean isOnePlusStock() {
+        return !TextUtils.isEmpty(getSystemProperty("ro.oxygen.version", ""))
+                || !TextUtils.isEmpty(getSystemProperty("ro.hydrogen.version", ""))
+                // ro.{oxygen|hydrogen}.version has been removed from the 7 series onwards
+                || getSystemProperty("ro.rom.version", "").contains("Oxygen OS")
+                || getSystemProperty("ro.rom.version", "").contains("Hydrogen OS");
+    }
+
+    public static Boolean hasKnoxSecureFolder(Context context) {
+        return PackageManagerHelper.isAppInstalled(context.getPackageManager(), "com.samsung.knox.securefolder", 0);
+    }
+
     /**
      * @param bitmap                the Bitmap to be scaled
      * @param threshold             the maxium dimension (either width or height) of the scaled bitmap
@@ -1054,26 +1018,6 @@ public final class Utilities {
             context.startActivity(new Intent(context, RestoreBackupActivity.class)
                     .putExtra(RestoreBackupActivity.EXTRA_SUCCESS, true));
         }
-    }
-
-    /**
-     * Returns true if {@param original} contains all entries defined in {@param updates} and
-     * have the same value.
-     * The comparison uses {@link Object#equals(Object)} to compare the values.
-     */
-    public static boolean containsAll(Bundle original, Bundle updates) {
-        for (String key : updates.keySet()) {
-            Object value1 = updates.get(key);
-            Object value2 = original.get(key);
-            if (value1 == null) {
-                if (value2 != null) {
-                    return false;
-                }
-            } else if (!value1.equals(value2)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /*FIN CUSTOM*/
