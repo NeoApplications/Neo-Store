@@ -1,2 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title__desktop_full_width_widgets">Widgeti pune širine</string>
+    <string name="allow_rotation_blocked_desc">Trenutna postavka zaslona ne dozvoljava rotaciju</string>
+    <string name="pref_category__incubating">Inkubiranje</string>
+    <string name="pref_category__others">Ostalo</string>
+    <string name="pref_category__inputs">Geste i Pretraga</string>
+    <string name="pref_category__interfaces">Sučelje</string>
+    <string name="summary__general_about">Više informacija o Omega Launcheru</string>
+    <string name="summary__general_advanced">Jezik, sigurnosna kopija, pretraga postavki</string>
+    <string name="summary__general_notifications">Bedž brojač, boja bedža, geste</string>
+    <string name="summary__general_smartspace">Datum, vrijeme, početni widget</string>
+    <string name="summary__general_search">Davatelj usluga pretrage, stil, ikone</string>
+    <string name="summary__general_theme">Promjeni boje, icon pack, oblik ikonica</string>
+    <string name="title__general_drawer">Ladica s aplikacijama</string>
+    <string name="summary__general_drawer">Prilagodi svoju ladicu s aplikacijama</string>
+    <string name="summary__general_desktop">Prilagodi svoju radnu površinu</string>
+    <string name="title__general_notifications">Geste i Obavijesti</string>
+    <string name="title__general_advanced">Napredne Postavke</string>
+    <string name="title__general_smartspace">Početni Widget</string>
+    <string name="title__general_search">Pretraži</string>
+    <string name="title__general_theme">Tema</string>
+    <string name="title__general_dock">Dok</string>
+    <string name="title__general_desktop">Radna površina</string>
+</resources>
