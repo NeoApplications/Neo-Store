@@ -124,12 +124,11 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         mLinePaint.setAlpha(0);
 
         mLauncher = Launcher.getLauncher(context);
-        mLineHeight = res.getDimensionPixelSize(R.dimen.dynamic_grid_page_indicator_line_height);
+        updateLineHeight();
 
         boolean darkText = WallpaperColorInfo.getInstance(context).supportsDarkText();
         mActiveAlpha = darkText ? BLACK_ALPHA : WHITE_ALPHA;
         mLinePaint.setColor(darkText ? Color.BLACK : Color.WHITE);
-
 
         OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
         mUseBottomLine = !prefs.getDockGradientStyle() || prefs.getDockShowArrow();
