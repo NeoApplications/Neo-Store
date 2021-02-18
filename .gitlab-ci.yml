@@ -45,8 +45,8 @@ signRelease:
     - assemble
   script:
     - mkdir outputs
-    - echo "${KEYSTORE}" | base64 -d - > omega.jks
-    - jarsigner -keystore omega.jks build/outputs/apk/${VARIANT}/${FLAVOUR}/${APK_NAME}.apk -storepass "${KEYSTORE_PASSWORD}" -keypass "${KEY_PASSWORD}" "${KEYSTORE_ALIAS}" --signedjar omega-ci-signed.apk
+    - echo -n "${KEYSTORE}" | base64 -di > $(pwd)/omega.jks
+    - jarsigner -keystore $(pwd)/omega.jks build/outputs/apk/${VARIANT}/${FLAVOUR}/${APK_NAME}.apk -storepass "${KEYSTORE_PASSWORD}" -keypass "${KEY_PASSWORD}" "${KEYSTORE_ALIAS}" --signedjar omega-ci-signed.apk
     - ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 omega-ci-signed.apk outputs/omega-ci-signed-aligned.apk
   artifacts:
     paths:
