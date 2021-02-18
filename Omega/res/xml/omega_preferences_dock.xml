@@ -81,7 +81,7 @@
         android:key="pref_dockScale"
         android:persistent="true"
         android:title="@string/title__dock_scale"
-        app:defaultSeekbarValue="0.80"
+        app:defaultSeekbarValue="1.0"
         app:maxValue="1.75"
         app:minValue="0.70"
         app:summaryFormat="%.0f%%"
@@ -116,5 +116,11 @@
         android:dependency="pref_hideDockLabels"
         android:persistent="true"
         app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_twoRowDock"
+        android:title="@string/title_dock_two_row"
+        android:defaultValue="false"
+        android:persistent="true" />
 
 </PreferenceScreen>

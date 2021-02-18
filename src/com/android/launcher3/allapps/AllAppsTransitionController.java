@@ -1,21 +1,9 @@
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.VERTICAL_SWIPE_INDICATOR;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_ALL_APPS_FADE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_ALL_APPS_HEADER_FADE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_SCALE;
-import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_VERTICAL_PROGRESS;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-import static com.android.launcher3.util.SystemUiController.UI_STATE_ALL_APPS;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.util.FloatProperty;
+import android.view.View;
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.DeviceProfile;
@@ -31,6 +19,21 @@ import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.anim.SpringObjectAnimator;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.ScrimView;
+import com.saggitt.omega.allapps.BlurQsbLayout;
+import com.saggitt.omega.blur.BlurScrimView;
+
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.VERTICAL_SWIPE_INDICATOR;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_ALL_APPS_FADE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_ALL_APPS_HEADER_FADE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_OVERVIEW_SCALE;
+import static com.android.launcher3.anim.AnimatorSetBuilder.ANIM_VERTICAL_PROGRESS;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
+import static com.android.launcher3.util.SystemUiController.UI_STATE_ALL_APPS;
 
 /**
  * Handles AllApps view transition.
@@ -255,6 +258,16 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
     public void highlightWorkTabIfNecessary() {
         if (isAllAppsExpanded()) {
             mAppsView.highlightWorkTabIfNecessary();
+        }
+    }
+
+    public void setOverlayScroll(float scroll) {
+        if (mScrimView instanceof BlurScrimView) {
+            ((BlurScrimView) mScrimView).setOverlayScroll(scroll);
+        }
+        View searchView = mAppsView.getSearchView();
+        if (searchView instanceof BlurQsbLayout) {
+            ((BlurQsbLayout) searchView).setOverlayScroll(scroll);
         }
     }
 }

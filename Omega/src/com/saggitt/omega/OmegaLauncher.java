@@ -56,6 +56,7 @@ import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.DbHelper;
+import com.saggitt.omega.views.OmegaBackgroundView;
 import com.saggitt.omega.views.OptionsPanel;
 
 import org.jetbrains.annotations.NotNull;
@@ -80,6 +81,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
 
     private GestureController mGestureController;
     public View dummyView;
+    public OmegaBackgroundView background;
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
 
@@ -171,6 +173,10 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
         }
+    }
+
+    public OmegaBackgroundView getBackground() {
+        return background = findViewById(R.id.omega_background);
     }
 
     public OptionsPanel getOptionsView() {

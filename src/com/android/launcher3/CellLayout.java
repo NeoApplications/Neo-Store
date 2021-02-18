@@ -40,6 +40,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
@@ -67,6 +68,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.Transposable;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -163,6 +165,7 @@ public class CellLayout extends ViewGroup implements Transposable {
     private final float mChildScale = 1f;
 
     private final int mDockIconSize;
+    private final int mDockIconTextSize;
 
     public static final int MODE_SHOW_REORDER_HINT = 0;
     public static final int MODE_DRAG_OVER = 1;
@@ -191,6 +194,8 @@ public class CellLayout extends ViewGroup implements Transposable {
     private boolean mUseTouchHelper = false;
     private RotationMode mRotationMode = RotationMode.NORMAL;
 
+    private final OmegaPreferences mPrefs;
+
     public CellLayout(Context context) {
         this(context, null);
     }
@@ -209,6 +214,7 @@ public class CellLayout extends ViewGroup implements Transposable {
         // the user where a dragged item will land when dropped.
         setWillNotDraw(false);
         setClipToPadding(false);
+        mPrefs = Utilities.getOmegaPrefs(context);
         mActivity = ActivityContext.lookupContext(context);
 
         DeviceProfile grid = mActivity.getWallpaperDeviceProfile();
@@ -217,6 +223,7 @@ public class CellLayout extends ViewGroup implements Transposable {
         mFixedCellWidth = mFixedCellHeight = -1;
 
         mDockIconSize = grid.hotseatIconSizePx;
+        mDockIconTextSize = grid.iconTextSizePx;
 
         mCountX = grid.inv.numColumns;
         mCountY = grid.inv.numRows;
@@ -587,9 +594,10 @@ public class CellLayout extends ViewGroup implements Transposable {
         if (child instanceof BubbleTextView) {
             BubbleTextView bubbleChild = (BubbleTextView) child;
             if (mContainerType == HOTSEAT) {
-                bubbleChild.setTextVisibility(!Utilities.getOmegaPrefs(getContext()).getHideDockLabels());
+                bubbleChild.setTextVisibility(!mPrefs.getHideDockLabels());
                 bubbleChild.setIconSize(mDockIconSize);
-                bubbleChild.setLineCount(Utilities.getOmegaPrefs(getContext()).getDockLabelRows());
+                bubbleChild.setLineCount(mPrefs.getDockLabelRows());
+                bubbleChild.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDockIconTextSize);
             }
         }
 
@@ -1741,6 +1749,11 @@ public class CellLayout extends ViewGroup implements Transposable {
         if (cellX < 0 || cellY < 0) return false;
 
         mIntersectingViews.clear();
+        if (mPrefs.getAllowOverlap()) {
+            // let's pretend no intersections exist
+            solution.intersectingViews = new ArrayList<>(mIntersectingViews);
+            return true;
+        }
         mOccupiedRect.set(cellX, cellY, cellX + spanX, cellY + spanY);
 
         // Mark the desired location of the view currently being dragged.
@@ -2573,7 +2586,7 @@ public class CellLayout extends ViewGroup implements Transposable {
 
     public boolean isOccupied(int x, int y) {
         if (x < mCountX && y < mCountY) {
-            return mOccupied.cells[x][y];
+            return mOccupied.cells[x][y] && !mPrefs.getAllowOverlap();
         } else {
             throw new RuntimeException("Position exceeds the bound of this CellLayout");
         }
@@ -2775,6 +2788,6 @@ public class CellLayout extends ViewGroup implements Transposable {
     }
 
     public boolean isRegionVacant(int x, int y, int spanX, int spanY) {
-        return mOccupied.isRegionVacant(x, y, spanX, spanY);
+        return mOccupied.isRegionVacant(x, y, spanX, spanY) || mPrefs.getAllowOverlap();
     }
 }

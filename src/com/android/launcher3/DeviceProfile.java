@@ -99,10 +99,6 @@ public class DeviceProfile {
     public int folderIconSizePx;
     public int folderIconOffsetYPx;
 
-    // Drawer folder
-    public int allAppsFolderIconSizePx;
-    public int allAppsFolderIconOffsetYPx;
-
     // Folder cell
     public int folderCellWidthPx;
     public int folderCellHeightPx;
@@ -163,6 +159,7 @@ public class DeviceProfile {
                          int width, int height, boolean isLandscape, boolean isMultiWindowMode) {
 
         prefs = Utilities.getOmegaPrefs(context);
+
         boolean fullWidthWidgets = prefs.getAllowFullWidthWidgets();
 
         this.inv = inv;
@@ -216,7 +213,7 @@ public class DeviceProfile {
         }
 
         cellLayoutPaddingLeftRightPx = (!isVerticalBarLayout() && fullWidthWidgets) ? 0
-                : res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding);
+                : cellLayoutPaddingLeftRightMultiplier * cellLayoutPadding;
 
         verticalDragHandleSizePx = res.getDimensionPixelSize(
                 R.dimen.vertical_drag_handle_size);

@@ -62,10 +62,11 @@ public class Hotseat extends CellLayout implements LogContainerProvider, Insetta
         removeAllViewsInLayout();
         mHasVerticalHotseat = hasVerticalHotseat;
         InvariantDeviceProfile idp = mActivity.getDeviceProfile().inv;
+        int rows = Utilities.getOmegaPrefs(getContext()).getDockRowsCount();
         if (hasVerticalHotseat) {
-            setGridSize(1, idp.numHotseatIcons);
+            setGridSize(rows, idp.numHotseatIcons);
         } else {
-            setGridSize(idp.numHotseatIcons, 1);
+            setGridSize(idp.numHotseatIcons, rows);
         }
     }
 
@@ -105,7 +106,8 @@ public class Hotseat extends CellLayout implements LogContainerProvider, Insetta
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return event.getY() > getCellHeight();
+        //return event.getY() > getCellHeight();
+        return true;
     }
 
     @Override

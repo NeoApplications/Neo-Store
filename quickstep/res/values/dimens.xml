@@ -63,7 +63,7 @@
     <dimen name="multi_window_task_divider_size">10dp</dimen>
 
     <!-- same as vertical_drag_handle_size -->
-    <dimen name="shelf_surface_offset">24dp</dimen>
+    <dimen name="shelf_surface_offset">18dp</dimen>
 
     <!-- Assistant Gestures -->
     <!-- Distance from the vertical edges of the screen in which assist gestures are recognized -->

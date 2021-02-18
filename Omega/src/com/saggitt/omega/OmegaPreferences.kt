@@ -35,6 +35,7 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.preferences.GridSize
 import com.saggitt.omega.preferences.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
 import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
@@ -119,7 +120,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
     private val homeMultilineLabel by BooleanPref("pref_homeIconLabelsInTwoLines", false, recreate)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
+    val allowOverlap by BooleanPref(SettingsActivity.ALLOW_OVERLAP_PREF, false, reloadAll)
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
+    var workspaceBlurScreens by IntSetPref("pref_workspaceBlurScreens", emptySet())
     val hideAppLabels by BooleanPref("pref_hideAppLabels", false, recreate)
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
@@ -130,7 +133,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dockIconScale by FloatPref("hotseatIconSize", 1f, recreate)
     var dockSearchBarPref by BooleanPref("pref_dock_search", true, restart)
     inline val dockSearchBar get() = !dockHide && dockSearchBarPref
-    var dockScale by FloatPref("pref_dockScale", -1f, recreate)
+    var dockScale by FloatPref("pref_dockScale", 1f, recreate)
     val dockBackground by BooleanPref("pref_dockBackground", false, recreate)
     inline val dockGradientStyle get() = !dockBackground
     var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
@@ -139,6 +142,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), recreate)
     }
     val dockGridSize by dockGridSizeDelegate
+    val twoRowDock by BooleanPref("pref_twoRowDock", false, restart)
+    val dockRowsCount get() = if (twoRowDock) 2 else 1
     var dockRadius by FloatPref("pref_dockRadius", 16f, recreate)
     var dockShadow by BooleanPref("pref_dockShadow", false, recreate)
     var dockShowArrow by BooleanPref("pref_hotseatShowArrow", false, recreate)

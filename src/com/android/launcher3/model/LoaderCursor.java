@@ -51,6 +51,7 @@ import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.GridOccupancy;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSparseArrayMap;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
@@ -97,6 +98,8 @@ public class LoaderCursor extends CursorWrapper {
     public int itemType;
     public int restoreFlag;
 
+    private final OmegaPreferences prefs;
+
     public LoaderCursor(Cursor c, LauncherAppState app) {
         super(c);
         mContext = app.getContext();
@@ -120,6 +123,9 @@ public class LoaderCursor extends CursorWrapper {
         profileIdIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.PROFILE_ID);
         restoredIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.RESTORED);
         intentIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
+
+
+        prefs = Utilities.getOmegaPrefs(mContext);
     }
 
     @Override
@@ -414,6 +420,11 @@ public class LoaderCursor extends CursorWrapper {
             final GridOccupancy hotseatOccupancy =
                     occupied.get(LauncherSettings.Favorites.CONTAINER_HOTSEAT);
 
+            int hotseatRows = Utilities.getOmegaPrefs(mContext).getDockRowsCount();
+            int hotseatSize = mIDP.numHotseatIcons;
+            int hotseatX = item.screenId % hotseatSize;
+            int hotseatY = item.screenId / hotseatSize;
+
             if (item.screenId >= mIDP.numHotseatIcons) {
                 Log.e(TAG, "Error loading shortcut " + item
                         + " into hotseat position " + item.screenId
@@ -423,18 +434,18 @@ public class LoaderCursor extends CursorWrapper {
             }
 
             if (hotseatOccupancy != null) {
-                if (hotseatOccupancy.cells[(int) item.screenId][0]) {
+                if (hotseatOccupancy.cells[hotseatX][hotseatY]) {
                     Log.e(TAG, "Error loading shortcut into hotseat " + item
                             + " into position (" + item.screenId + ":" + item.cellX + ","
                             + item.cellY + ") already occupied");
                     return false;
                 } else {
-                    hotseatOccupancy.cells[item.screenId][0] = true;
+                    hotseatOccupancy.cells[hotseatX][hotseatY] = true;
                     return true;
                 }
             } else {
-                final GridOccupancy occupancy = new GridOccupancy(mIDP.numHotseatIcons, 1);
-                occupancy.cells[item.screenId][0] = true;
+                final GridOccupancy occupancy = new GridOccupancy(hotseatSize, hotseatRows);
+                occupancy.cells[hotseatX][hotseatY] = true;
                 occupied.put(LauncherSettings.Favorites.CONTAINER_HOTSEAT, occupancy);
                 return true;
             }
@@ -475,7 +486,7 @@ public class LoaderCursor extends CursorWrapper {
                     + " into cell (" + containerIndex + "-" + item.screenId + ":"
                     + item.cellX + "," + item.cellX + "," + item.spanX + "," + item.spanY
                     + ") already occupied");
-            return false;
+            return prefs.getAllowOverlap();
         }
     }
 }
