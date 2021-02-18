@@ -54,10 +54,10 @@ signRelease:
       - outputs/omega-ci-signed-aligned.apk
     expire_in: 1 week
 
-#sendReleaseTelegram:
-#  stage: deploy
-#  script:
-#    - apt-get install curl
-#    - curl -F document=@"outputs/librechair-ci-signed-aligned.apk" "https://api.telegram.org/bot${SECRET_BOT_TOKEN}/sendDocument?chat_id=@${CHAT_ID}"
-#  dependencies:
-#    - signRelease
+sendReleaseTelegram:
+  stage: deploy
+  script:
+    - apt-get install curl
+    - curl -F document=@"outputs/omega-ci-signed-aligne.apk" "https://api.telegram.org/bot${SECRET_BOT_TOKEN}/sendDocument?chat_id=@${CHAT_ID}"
+  dependencies:
+    - signRelease
