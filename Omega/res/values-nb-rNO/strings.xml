@@ -363,4 +363,7 @@
     <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
     <string name="title_desktop_text_size">Tekststørrelse</string>
     <string name="title_desktop_overlap_placement">Tillat overlapping</string>
+    <string name="blur_radius_pref_title">Tilsløringsgrad</string>
+    <string name="blur_pref_title">Tilsløring</string>
+    <string name="title_dock_two_row">Vis rad to</string>
 </resources>
