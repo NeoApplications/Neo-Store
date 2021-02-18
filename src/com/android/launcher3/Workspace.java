@@ -92,7 +92,10 @@ import com.android.launcher3.widget.LauncherAppWidgetHostView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.settings.WorkspaceBlur;
+import com.saggitt.omega.views.OmegaBackgroundView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -265,6 +268,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         this(context, attrs, 0);
     }
 
+    private final WorkspaceBlur mWorkspaceBlur;
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -280,6 +284,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mWallpaperManager = WallpaperManager.getInstance(context);
 
         mWallpaperOffset = new WallpaperOffsetInterpolator(this);
+        mWorkspaceBlur = new WorkspaceBlur(this, mWorkspaceScreens);
 
         mPillQsb = FeatureFlags.QSB_ON_FIRST_SCREEN && Utilities.getOmegaPrefs(context).getUsePillQsb();
 
@@ -1059,6 +1064,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         updatePageAlphaValues();
         enableHwLayersOnVisiblePages();
+        updateBlurAlpha();
     }
 
     public void showPageIndicatorAtCurrentScroll() {
@@ -1157,6 +1163,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         // device I've tried, translating the launcher causes things to get quite laggy.
         mLauncher.getDragLayer().setTranslationX(transX);
         mLauncher.getDragLayer().getAlphaProperty(ALPHA_INDEX_OVERLAY).setValue(alpha);
+
+        if (mLauncher instanceof OmegaLauncher) {
+            ((OmegaLauncher) mLauncher).getBackground().getBlurAlphas().getProperty(
+                    OmegaBackgroundView.ALPHA_INDEX_OVERLAY).setValue(1 - alpha);
+        }
+        mLauncher.mAllAppsController.setOverlayScroll(transX);
     }
 
     /**
@@ -1294,6 +1306,26 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
     }
 
+    public void updateBlurAlpha() {
+        int screenCenter = getScrollX() + getMeasuredWidth() / 2;
+        float totalBlurAlpha = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            CellLayout child = (CellLayout) getChildAt(i);
+            if (child != null) {
+                float scrollProgress = getScrollProgress(screenCenter, child, i);
+                float blurAlpha = 1 - Math.abs(scrollProgress);
+                int id = getScreenIdForPageIndex(i);
+                if (mWorkspaceBlur.get(id)) {
+                    totalBlurAlpha += blurAlpha;
+                }
+            }
+        }
+        if (mLauncher instanceof OmegaLauncher) {
+            ((OmegaLauncher) mLauncher).getBackground().getBlurAlphas().getProperty(
+                    OmegaBackgroundView.ALPHA_INDEX_SCREEN).setValue(Math.min(1, totalBlurAlpha));
+        }
+    }
+
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         IBinder windowToken = getWindowToken();
@@ -1321,6 +1353,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mFirstPageScrollX = getScrollForPage(0);
         updatePageAlphaValues();
         onWorkspaceOverallScrollChanged();
+        updateBlurAlpha();
     }
 
     @Override

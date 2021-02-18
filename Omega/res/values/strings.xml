@@ -65,6 +65,7 @@
     <string name="title__dock_scale">Dock scale</string>
     <string name="title_dock_fill">Show Background</string>
     <string name="title_dock_background_color">Background Color</string>
+    <string name="title_dock_two_row">Show Second Row</string>
     <string name="title__dock_hide">Dock Hide</string>
     <string name="title__dock_hide_labels">Hide Labels</string>
     <string name="title__dock_colored_icons">Colored icons</string>
@@ -152,6 +153,8 @@
     <string name="title__theme_icon_shape">Change icon shape</string>
     <string name="title_theme_icon_packs">Icon Packs</string>
 
+    <string name="blur_pref_title">Blur</string>
+    <string name="blur_radius_pref_title">Blur Intensity</string>
     <string name="summary__theme_blur">Blur page backgrounds</string>
 
     <string name="theme_auto">Follow wallpaper</string>
