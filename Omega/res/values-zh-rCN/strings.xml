@@ -55,5 +55,5 @@
     <string name="title__desktop_icon_size">图标大小</string>
     <string name="title__desktop_full_width_widgets">全屏组件</string>
     <string name="allow_rotation_blocked_desc">当前显示设置不允许屏幕旋转</string>
-    <string name="pref_category__incubating">Incubating</string>
+    <string name="pref_category__incubating">孵化</string>
 </resources>

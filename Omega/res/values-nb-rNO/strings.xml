@@ -108,7 +108,7 @@
     <string name="title__dev_show_debug_info">Vis avlusingsinfo</string>
     <string name="title__dev_show_Dev">Vis i innstillinger</string>
     <string name="developer_options_title">Utviklervalg</string>
-    <string name="failed">Noe gikk galt</string>
+    <string name="failed">Noe gikk galt.</string>
     <string name="developer_options_enabled">Utviklerfunksjoner påslått</string>
     <string name="title__advanced_language">Språk</string>
     <string name="title__advanced_setting_search">Vis innstillingssøk</string>
@@ -362,4 +362,5 @@
     <string name="title_drawer_text_size">Tekststørrelse</string>
     <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
     <string name="title_desktop_text_size">Tekststørrelse</string>
+    <string name="title_desktop_overlap_placement">Tillat overlapping</string>
 </resources>
