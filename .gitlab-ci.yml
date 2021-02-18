@@ -8,7 +8,6 @@ variables:
   FLAVOUR:             "debug"
   CHAT_ID:             "omega"
   APK_NAME:            "Omega-Nightly"
-  SECRET_BOT_TOKEN_PLACEHOLDER: "PLA CE HO LDE R"
 
 before_script:
   - git submodule update --recursive --init
@@ -29,7 +28,7 @@ stages:
 assemble:
   stage: build
   script:
-    #- curl -F text="$(git log --oneline | head -n 5)" "https://api.telegram.org/bot${SECRET_BOT_TOKEN}/sendMessage?chat_id=@${CHAT_ID}"
+    - curl -F text="$(git log --oneline | head -n 5)" "https://api.telegram.org/bot${SECRET_BOT_TOKEN}/sendMessage?chat_id=@${CHAT_ID}"
     - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
     - unzip -d android-sdk-linux android-sdk.zip
     - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" > /dev/null
