@@ -964,7 +964,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     }
 
-    public void onStateSetStart(LauncherState state) {
+    protected void onStateSet(LauncherState state) {
+        getAppWidgetHost().setResumed(state == LauncherState.NORMAL);
         if (mDeferredResumePending) {
             handleDeferredResume();
         }

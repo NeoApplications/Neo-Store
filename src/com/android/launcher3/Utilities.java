@@ -131,8 +131,7 @@ public final class Utilities {
     //public static final Person[] EMPTY_PERSON_ARRAY = new Person[0];
     public static final String[] EMPTY_PERSON_ARRAY = new String[0];
 
-    public static final boolean ATLEAST_R = false;//Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
-
+    public static final boolean ATLEAST_R = Build.VERSION.SDK_INT >= 30;
     public static final boolean ATLEAST_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
 
     public static final boolean ATLEAST_P = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
@@ -1017,6 +1016,33 @@ public final class Utilities {
             prefs.setRestoreSuccess(false);
             context.startActivity(new Intent(context, RestoreBackupActivity.class)
                     .putExtra(RestoreBackupActivity.EXTRA_SUCCESS, true));
+        }
+    }
+
+    public static float ONEPLUS_WINDOW_CORNER_RADIUS = -1;
+    public static boolean IS_ONEPLUS_STOCK = isOnePlusStock();
+
+    public static float getWindowCornerRadius(Context context) {
+        if (IS_ONEPLUS_STOCK) {
+            if (ONEPLUS_WINDOW_CORNER_RADIUS == -1) {
+                try {
+                    String sysui = "com.android.systemui";
+                    Context sysuiContext = context.createPackageContext(sysui, 0);
+                    Resources res = sysuiContext.getResources();
+                    int topId = res.getIdentifier("rounded_corner_radius_top", "dimen", sysui);
+                    int bottomId = res.getIdentifier("rounded_corner_radius_bottom", "dimen", sysui);
+                    float top = res.getDimension(topId);
+                    float bottom = res.getDimension(bottomId);
+                    ONEPLUS_WINDOW_CORNER_RADIUS = Math.min(top, bottom) * 0.8f;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ONEPLUS_WINDOW_CORNER_RADIUS = Utilities.getWindowCornerRadius(context);
+                }
+            }
+            return ONEPLUS_WINDOW_CORNER_RADIUS;
+        } else {
+            //return QuickStepContract.getWindowCornerRadius(context.getResources());
+            return 2;
         }
     }
 

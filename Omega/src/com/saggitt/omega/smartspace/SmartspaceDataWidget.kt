@@ -182,11 +182,11 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             var subtitle2: TextView? = null
             var temperatureText: TextView? = null
             if (texts.isEmpty()) return
-            if (images.size >= 2) {
+            if (images.isNotEmpty()) {
                 weatherIconView = images.last()
                 temperatureText = texts.last()
             }
-            if (images.isNotEmpty() && images.size != 2) {
+            if (images.size > 1) {
                 cardIconView = images.first()
                 title = texts[0]
                 if (texts.size > 2) {

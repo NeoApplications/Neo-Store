@@ -343,6 +343,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         keys.forEach { addOnPreferenceChangeListener(it, listener) }
     }
 
+    fun addOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
+        addOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
+    }
+
+    fun removeOnDeviceProfilePreferenceChangeListener(listener: OnPreferenceChangeListener) {
+        removeOnPreferenceChangeListener(listener, *DEVICE_PROFILE_PREFS)
+    }
+
     fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
         if (onChangeListeners[key] == null) {
             onChangeListeners[key] = HashSet()
@@ -792,6 +800,37 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         const val CURRENT_VERSION = 200
         const val VERSION_KEY = "config_version"
 
+        private val ICON_CUSTOMIZATIONS_PREFS = arrayOf(
+                "pref_iconShape",
+                "pref_iconPacks",
+                "pref_forceShapeless",
+                "pref_enableLegacyTreatment",
+                "pref_colorizeGeneratedBackgrounds",
+                "pref_enableWhiteOnlyTreatment",
+                "pref_iconPackMasking",
+                "pref_generateAdaptiveForIconPack",
+                "pref_allAppsPaddingScale")
+
+        private val DOCK_CUSTOMIZATIONS_PREFS = arrayOf(
+                "pref_hideHotseat",
+                "pref_dockRadius",
+                "pref_dockShadow",
+                "pref_hotseatShowArrow",
+                "pref_hotseatCustomOpacity",
+                "pref_dockBackground")
+
+        private val DEVICE_PROFILE_PREFS = ICON_CUSTOMIZATIONS_PREFS +
+                DOCK_CUSTOMIZATIONS_PREFS +
+                arrayOf(
+                        "pref_iconTextScale",
+                        "pref_iconSize",
+                        "hotseatIconSize",
+                        "allAppsIconSize",
+                        "pref_allAppsIconTextScale",
+                        "pref_dock_search",
+                        "pref_dockScale")
+
+
         fun getInstance(context: Context): OmegaPreferences {
             if (INSTANCE == null) {
                 if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -820,6 +859,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
                 onChangeCallback = null
                 dockGridSizeDelegate.resetValue()
                 drawerGridSizeDelegate.resetValue()
+                predictionGridSizeDelegate.resetValue()
             }
         }
     }

@@ -24,6 +24,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.util.Log;
 
+import com.android.launcher3.Utilities;
 import com.saggitt.omega.OmegaPreferences;
 
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +75,8 @@ public class ConfigMonitor extends BroadcastReceiver implements
 
         // Listen for configuration change
         mContext.registerReceiver(this, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+
+        Utilities.getOmegaPrefs(context).addOnDeviceProfilePreferenceChangeListener(this);
     }
 
     @Override
@@ -119,6 +122,8 @@ public class ConfigMonitor extends BroadcastReceiver implements
             mContext.unregisterReceiver(this);
             DefaultDisplay display = DefaultDisplay.INSTANCE.get(mContext);
             display.removeChangeListener(this);
+            Utilities.getOmegaPrefs(mContext).removeOnDeviceProfilePreferenceChangeListener(this);
+
         } catch (Exception e) {
             Log.e(TAG, "Failed to unregister config monitor", e);
         }

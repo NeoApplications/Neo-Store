@@ -303,8 +303,7 @@ class OmegaBackup(val context: Context, val uri: Uri) {
                 files.add(File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml"))
             }
 
-            val devOptionsEnabled = Utilities.getOmegaPrefs(context)
-                    .developerOptionsEnabled
+            val devOptionsEnabled = Utilities.getOmegaPrefs(context).developerOptionsEnabled
             prepareConfig(context)
             val pfd = context.contentResolver.openFileDescriptor(location, "w")
             val outStream = FileOutputStream(pfd?.fileDescriptor)

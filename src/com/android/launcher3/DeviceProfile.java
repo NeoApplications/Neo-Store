@@ -260,7 +260,6 @@ public class DeviceProfile {
                 ? (hotseatBarSidePaddingStartPx + hotseatBarSidePaddingEndPx)
                 : (res.getDimensionPixelSize(hotseatExtraVerticalSizeRes)
                 + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
-
         // Calculate all of the remaining variables.
         updateAvailableDimensions(dm, res);
 

@@ -16,23 +16,9 @@
 
 package com.android.launcher3.uioverrides;
 
-import static android.app.Activity.RESULT_CANCELED;
-
-import static com.android.launcher3.AbstractFloatingView.TYPE_ALL;
-import static com.android.launcher3.AbstractFloatingView.TYPE_HIDE_BACK_BUTTON;
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.allapps.DiscoveryBounce.BOUNCE_MAX_COUNT;
-import static com.android.launcher3.allapps.DiscoveryBounce.HOME_BOUNCE_COUNT;
-import static com.android.launcher3.allapps.DiscoveryBounce.HOME_BOUNCE_SEEN;
-import static com.android.launcher3.allapps.DiscoveryBounce.SHELF_BOUNCE_COUNT;
-import static com.android.launcher3.allapps.DiscoveryBounce.SHELF_BOUNCE_SEEN;
-
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -56,12 +42,26 @@ import com.android.quickstep.RecentsModel;
 import com.android.quickstep.SysUINavigationMode;
 import com.android.quickstep.SysUINavigationMode.Mode;
 import com.android.quickstep.SysUINavigationMode.NavigationModeChangeListener;
+import com.android.quickstep.TouchInteractionService;
 import com.android.quickstep.util.RemoteFadeOutAnimationListener;
 import com.android.systemui.shared.system.ActivityCompat;
+import com.saggitt.omega.OmegaLauncher;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.zip.Deflater;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static com.android.launcher3.AbstractFloatingView.TYPE_ALL;
+import static com.android.launcher3.AbstractFloatingView.TYPE_HIDE_BACK_BUTTON;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.allapps.DiscoveryBounce.BOUNCE_MAX_COUNT;
+import static com.android.launcher3.allapps.DiscoveryBounce.HOME_BOUNCE_COUNT;
+import static com.android.launcher3.allapps.DiscoveryBounce.HOME_BOUNCE_SEEN;
+import static com.android.launcher3.allapps.DiscoveryBounce.SHELF_BOUNCE_COUNT;
+import static com.android.launcher3.allapps.DiscoveryBounce.SHELF_BOUNCE_SEEN;
 
 public class UiFactory extends RecentsUiFactory {
 
@@ -93,13 +93,22 @@ public class UiFactory extends RecentsUiFactory {
                 && launcher.hasWindowFocus();
         if (shouldBackButtonBeHidden) {
             // Show the back button if there is a floating view visible.
-            shouldBackButtonBeHidden = AbstractFloatingView.getTopOpenViewWithType(launcher,
+            boolean noFloatingView = AbstractFloatingView.getTopOpenViewWithType(launcher,
                     TYPE_ALL & ~TYPE_HIDE_BACK_BUTTON) == null;
+            shouldBackButtonBeHidden &= noFloatingView;
         }
         OverviewInteractionState.INSTANCE.get(launcher)
-                .setBackButtonAlpha(shouldBackButtonBeHidden ? 0 : 1, true /* animate */);
+                .setBackButtonAlpha(shouldBackButtonBeHidden && !hasBackGesture(launcher) ? 0 : 1, true /* animate */);
         if (launcher != null && launcher.getDragLayer() != null) {
             launcher.getRootView().setDisallowBackGesture(shouldBackButtonBeHidden);
+        }
+    }
+
+    public static boolean hasBackGesture(Launcher launcher) {
+        if (launcher instanceof OmegaLauncher) {
+            return ((OmegaLauncher) launcher).getGestureController().getHasBackGesture();
+        } else {
+            return false;
         }
     }
 
@@ -112,8 +121,8 @@ public class UiFactory extends RecentsUiFactory {
 
                 @Override
                 public void onStateTransitionComplete(LauncherState finalState) {
-                    boolean swipeUpEnabled = Utilities.ATLEAST_Q && SysUINavigationMode.INSTANCE.get(launcher).getMode()
-                            .hasGestures;
+                    boolean swipeUpEnabled = SysUINavigationMode.INSTANCE.get(launcher).getMode()
+                            .hasGestures && TouchInteractionService.isConnected();
                     LauncherState prevState = launcher.getStateManager().getLastState();
 
                     if (((swipeUpEnabled && finalState == OVERVIEW) || (!swipeUpEnabled
@@ -147,6 +156,7 @@ public class UiFactory extends RecentsUiFactory {
     }
 
     public static void onEnterAnimationComplete(Context context) {
+        if (!Utilities.isRecentsEnabled()) return;
         // After the transition to home, enable the high-res thumbnail loader if it wasn't enabled
         // as a part of quickstep, so that high-res thumbnails can load the next time we enter
         // overview
