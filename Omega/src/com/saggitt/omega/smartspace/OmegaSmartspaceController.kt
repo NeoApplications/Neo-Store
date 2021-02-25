@@ -531,7 +531,7 @@ class OmegaSmartspaceController(val context: Context) {
 
     data class Line @JvmOverloads constructor(
             val text: CharSequence,
-            val ellipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.END) {
+            val ellipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.MARQUEE) {
 
         constructor(context: Context, textRes: Int) : this(context.getString(textRes))
     }

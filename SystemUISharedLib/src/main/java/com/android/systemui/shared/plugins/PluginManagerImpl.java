@@ -87,11 +87,10 @@ public class PluginManagerImpl extends BroadcastReceiver implements PluginManage
     private Looper mLooper;
 
     public PluginManagerImpl(Context context, PluginInitializer initializer) {
-        this(context, new PluginInstanceManagerFactory(), Build.IS_DEBUGGABLE,
+        this(context, new PluginInstanceManagerFactory(), true,
                 (UncaughtExceptionHandler) invoke(sGetUncaughtExceptionPreHandler, null), initializer);
     }
 
-    @VisibleForTesting
     PluginManagerImpl(Context context, PluginInstanceManagerFactory factory, boolean debuggable,
                       UncaughtExceptionHandler defaultHandler, final PluginInitializer initializer) {
         mContext = context;
