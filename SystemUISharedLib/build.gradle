@@ -57,6 +57,7 @@ dependencies {
     implementation project(':QuickstepCompatVQ')
 
     implementation "androidx.annotation:annotation:${versions.annotation}"
+    implementation "androidx.core:core:${ANDROID_X_VERSION}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

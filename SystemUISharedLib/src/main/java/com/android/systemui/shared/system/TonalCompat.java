@@ -18,8 +18,8 @@ package com.android.systemui.shared.system;
 import android.app.WallpaperColors;
 import android.content.Context;
 
-import com.android.internal.colorextraction.ColorExtractor.GradientColors;
-import com.android.internal.colorextraction.types.Tonal;
+import com.android.systemutils.ColorExtractor.GradientColors;
+import com.android.systemutils.Tonal;
 
 public class TonalCompat {
 
@@ -38,8 +38,7 @@ public class TonalCompat {
         result.secondaryColor = darkColors.getSecondaryColor();
         result.supportsDarkText = darkColors.supportsDarkText();
         if (colors != null) {
-            result.supportsDarkTheme =
-                    (colors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
+            result.supportsDarkTheme = (mTonal.getColorHints(colors) & 2) != 0;
         }
         return result;
     }
