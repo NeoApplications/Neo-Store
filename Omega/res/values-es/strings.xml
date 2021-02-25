@@ -149,7 +149,7 @@
     <string name="action_open_app">Abrir aplicación</string>
     <string name="pref_category__notifications">Notificaciones</string>
     <string name="units_kelvin">Kelvin</string>
-    <string name="units_imperial"></string>
+    <string name="units_imperial"/>
     <string name="units_metric">Centígrados</string>
     <string name="battery_status">Estado de la batería</string>
     <string name="event_provider_unread_notifications">Notificaciones</string>
@@ -194,4 +194,20 @@
     <string name="icon_shape_square">Cuadrado</string>
     <string name="icon_shape_system_default">Predeterminado del sistema</string>
     <string name="title__theme_accent_color">Color de contraste</string>
+    <string name="action_global_search">Abrir búsqueda global</string>
+    <string name="personality_provider">Saludos</string>
+    <string name="smartspace_hours_mins">%1$s %2$s</string>
+    <string name="icon_pack_default">Iconos del Sistema</string>
+    <string name="icon_shape_bottom_right">Inferior derecha</string>
+    <string name="icon_shape_bottom_left">Inferior izquierda</string>
+    <string name="icon_shape_top_left">Superior izquierda</string>
+    <string name="icon_shape_top_right">Superior derecha</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_override_label">Cambiar la forma de los iconos</string>
+    <string name="title__theme_icon_shape">Cambiar la forma de los iconos</string>
+    <string name="drawer_tabs">Pestañas</string>
+    <string name="title_search_hidden_apps">Buscar en aplicaciones ocultas</string>
+    <string name="title__drawer_hide_apps">Aplicaciones ocultas</string>
+    <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
+    <string name="title_dock_two_row">Mostrar segunda fila</string>
 </resources>
