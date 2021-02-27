@@ -93,7 +93,6 @@ import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.settings.WorkspaceBlur;
 import com.saggitt.omega.views.OmegaBackgroundView;
 
@@ -743,6 +742,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         if (hasExtraEmptyScreen() || mScreenOrder.size() == 0) return;
+
+        if (Utilities.getOmegaPrefs(mLauncher).getKeepEmptyScreens()) {
+            return;
+        }
+
         int finalScreenId = mScreenOrder.get(mScreenOrder.size() - 1);
 
         CellLayout finalScreen = mWorkspaceScreens.get(finalScreenId);
@@ -910,7 +914,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             return;
         }
 
-        if (OmegaPreferences.Companion.getInstance(mLauncher).getKeepEmptyScreens()) {
+        if (Utilities.getOmegaPrefs(mLauncher).getKeepEmptyScreens()) {
             // Don't strip empty screens if we should keep them
             return;
         }

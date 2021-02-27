@@ -27,7 +27,7 @@ buildscript {
                 uiautomator            : "2.2.0",
                 annotation             : "1.1.0",
 
-                kotlin                 : "1.4.21",
+                kotlin                 : "1.4.30",
                 protobuf               : "0.8.12"
         ]
     }
@@ -56,7 +56,7 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.7.2"
-    def code = 123
+    def code = 124
 
     defaultConfig {
         minSdkVersion 25
