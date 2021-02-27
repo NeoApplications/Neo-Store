@@ -664,6 +664,78 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return false;
     }
 
+    public void removeScreen(int index, final boolean animate) {
+        if (mLauncher.isWorkspaceLoading()) {
+            return;
+        }
+
+        int currentPage = getNextPage();
+        snapToPage(index, SNAP_OFF_EMPTY_SCREEN_DURATION);
+        int id = getScreenIdForPageIndex(index);
+        fadeAndRemoveScreen(id, SNAP_OFF_EMPTY_SCREEN_DURATION,
+                FADE_EMPTY_SCREEN_DURATION, null, false);
+
+        CellLayout cl = mWorkspaceScreens.get(id);
+        mWorkspaceScreens.remove(id);
+        mScreenOrder.removeValue(id);
+
+        boolean isInAccessibleDrag = mLauncher.getAccessibilityDelegate().isInAccessibleDrag();
+
+        boolean pageShift = indexOfChild(cl) < currentPage;
+
+        if (isInAccessibleDrag) {
+            cl.enableAccessibleDrag(false, CellLayout.WORKSPACE_ACCESSIBILITY_DRAG);
+        }
+
+        removeView(cl);
+
+        if (getChildCount() == 0) {
+            addExtraEmptyScreen();
+        }
+
+        if (pageShift) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    private void fadeAndRemoveScreen(int id, int delay, int duration, final Runnable onComplete,
+                                     final boolean stripEmptyScreens) {
+        // XXX: Do we need to update LM workspace screens below?
+        final CellLayout cl = mWorkspaceScreens.get(id);
+
+        mRemoveEmptyScreenRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (hasExtraEmptyScreen()) {
+                    mWorkspaceScreens.remove(id);
+                    mScreenOrder.removeValue(id);
+                    removeView(cl);
+                    if (stripEmptyScreens) {
+                        stripEmptyScreens();
+                    }
+                    // Update the page indicator to reflect the removed page.
+                    showPageIndicatorAtCurrentScroll();
+                }
+            }
+        };
+
+        ObjectAnimator oa = ObjectAnimator.ofFloat(cl, ALPHA, 0f);
+        oa.setDuration(duration);
+        oa.setStartDelay(delay);
+        oa.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mRemoveEmptyScreenRunnable != null) {
+                    mRemoveEmptyScreenRunnable.run();
+                }
+                if (onComplete != null) {
+                    onComplete.run();
+                }
+            }
+        });
+        oa.start();
+    }
+
     private void convertFinalScreenToEmptyScreenIfNecessary() {
         if (mLauncher.isWorkspaceLoading()) {
             // Invalid and dangerous operation if workspace is loading
@@ -1075,11 +1147,13 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
     @Override
     protected void overScroll(int amount) {
+        boolean inOptionsState = mLauncher.isInState(LauncherState.OPTIONS);
+
         boolean shouldScrollOverlay = mLauncherOverlay != null && !mScroller.isSpringing() &&
-                ((amount <= 0 && !mIsRtl) || (amount >= 0 && mIsRtl));
+                ((amount <= 0 && !mIsRtl) || (amount >= 0 && mIsRtl)) && !inOptionsState;
 
         boolean shouldZeroOverlay = mLauncherOverlay != null && mLastOverlayScroll != 0 &&
-                ((amount >= 0 && !mIsRtl) || (amount <= 0 && mIsRtl));
+                ((amount >= 0 && !mIsRtl) || (amount <= 0 && mIsRtl) || inOptionsState);
 
         if (shouldScrollOverlay) {
             if (!mStartedSendingScrollEvents && mScrollInteractionBegan) {
@@ -1089,7 +1163,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
             mLastOverlayScroll = Math.abs(((float) amount) / getMeasuredWidth());
             mLauncherOverlay.onScrollChange(mLastOverlayScroll, mIsRtl);
-        } else {
+        } else if (!inOptionsState) {
             dampedOverScroll(amount);
         }
 
@@ -3457,6 +3531,10 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         requestLayout();
+    }
+
+    public WorkspaceBlur getWorkspaceBlur() {
+        return mWorkspaceBlur;
     }
 
     /**

@@ -408,8 +408,7 @@ public class LoaderTask implements Runnable {
                                     mLauncherApps.isPackageEnabledForProfile(targetPkg, c.user);
 
                             // If it's a deep shortcut, we'll use pinned shortcuts to restore it
-                            if (cn != null && validTarget && c.itemType
-                                    != LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
+                            if (cn != null && validTarget) {
                                 // If the apk is present and the shortcut points to a specific
                                 // component.
 

@@ -17,12 +17,6 @@
 
 package com.android.launcher3.dragndrop;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.getMode;
-import static android.view.View.MeasureSpec.getSize;
-
-import static com.android.launcher3.compat.AccessibilityManagerCompat.sendCustomAccessibilityEvent;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
@@ -61,8 +55,14 @@ import com.android.launcher3.uioverrides.UiFactory;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.views.Transposable;
+import com.saggitt.omega.touch.WorkspaceOptionModeTouchHelper;
 
 import java.util.ArrayList;
+
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.getMode;
+import static android.view.View.MeasureSpec.getSize;
+import static com.android.launcher3.compat.AccessibilityManagerCompat.sendCustomAccessibilityEvent;
 
 /**
  * A ViewGroup that coordinates dragging across its descendants
@@ -96,6 +96,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
     private final WorkspaceAndHotseatScrim mWorkspaceScrim;
     private final OverviewScrim mOverviewScrim;
 
+    private final WorkspaceOptionModeTouchHelper mWorkspaceOptionModeTouchHelper;
     /**
      * Used to create a new DragLayer from XML.
      *
@@ -110,6 +111,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
         setChildrenDrawingOrderEnabled(true);
 
         mFocusIndicatorHelper = new ViewGroupFocusHelper(this);
+        mWorkspaceOptionModeTouchHelper = new WorkspaceOptionModeTouchHelper(Launcher.getLauncher(context));
         mWorkspaceScrim = new WorkspaceAndHotseatScrim(this);
         mOverviewScrim = new OverviewScrim(this);
     }
@@ -230,7 +232,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         ev.offsetLocation(getTranslationX(), 0);
         try {
-            return super.dispatchTouchEvent(ev);
+            return mWorkspaceOptionModeTouchHelper.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
         } finally {
             ev.offsetLocation(-getTranslationX(), 0);
         }

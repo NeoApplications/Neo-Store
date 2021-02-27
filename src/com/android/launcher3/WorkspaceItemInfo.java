@@ -198,8 +198,8 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         }
         disabledMessage = shortcutInfo.getDisabledMessage();
 
-        /*
-        Person[] persons = UiFactory.getPersons(shortcutInfo);
+
+        /*Person[] persons = UiFactory.getPersons(shortcutInfo);
         personKeys = persons.length == 0 ? Utilities.EMPTY_STRING_ARRAY
             : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);*/
     }

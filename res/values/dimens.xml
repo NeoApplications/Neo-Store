@@ -225,7 +225,7 @@
     <dimen name="swipe_helper_falsing_threshold">70dp</dimen>
 
 <!-- Overview -->
-    <dimen name="options_menu_icon_size">24dp</dimen>
+    <dimen name="options_menu_icon_size">48dp</dimen>
     <dimen name="options_menu_thumb_size">32dp</dimen>
 
 <!-- Snackbar -->

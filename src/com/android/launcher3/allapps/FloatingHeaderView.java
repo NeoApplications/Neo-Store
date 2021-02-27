@@ -36,9 +36,7 @@ import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.PropertySetter;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.systemui.plugins.AllAppsRow;
 import com.android.systemui.plugins.AllAppsRow.OnHeightUpdatedListener;
 import com.android.systemui.plugins.PluginListener;
@@ -134,12 +132,13 @@ public class FloatingHeaderView extends LinearLayout implements
         mAllRows = mFixedRows;
     }
 
+    /*
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (Utilities.ATLEAST_R) {
             PluginManagerWrapper.INSTANCE.get(getContext()).addPluginListener(this,
-                    AllAppsRow.class, true /* allowMultiple */);
+                    AllAppsRow.class, true);
         }
     }
 
@@ -149,7 +148,7 @@ public class FloatingHeaderView extends LinearLayout implements
         if (Utilities.ATLEAST_R) {
             PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
         }
-    }
+    }*/
 
     private void recreateAllRowsArray() {
         int pluginCount = mPluginRows.size();

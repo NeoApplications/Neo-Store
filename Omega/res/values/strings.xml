@@ -528,4 +528,6 @@
     <!-- WIDGET FEED -->
     <string name="feed_add_widget">Add Widget</string>
     <string name="feed_widget">Widgets</string>
+
+    <string name="button_organize_screens">Arrange Pages</string>
 </resources>

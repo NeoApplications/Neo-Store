@@ -66,5 +66,8 @@
     <!-- Text of the tip when user lands in all apps view for the first time, indicating where the tip toast points to is the predicted apps section. [CHAR_LIMIT=50] -->
     <string name="all_apps_prediction_tip">Your predicted apps</string>
 
-
+    <!-- Label for a button that causes the current overview app to be shared. [CHAR_LIMIT=40] -->
+    <string name="action_share">Share</string>
+    <!-- Label for a button that causes a screen shot of the current app to be taken. [CHAR_LIMIT=40] -->
+    <string name="action_screenshot">Screenshot</string>
 </resources>

@@ -20,6 +20,9 @@ package com.saggitt.omega.states
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS
 import com.android.launcher3.LauncherState
+import com.android.launcher3.anim.AnimatorSetBuilder
+import com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_FADE
+import com.android.launcher3.anim.Interpolators.LINEAR
 import com.android.launcher3.states.RotationHelper
 import com.android.launcher3.userevent.nano.LauncherLogProto
 import com.saggitt.omega.OmegaLauncher
@@ -30,9 +33,9 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
     override fun getWorkspaceScaleAndTranslation(launcher: Launcher): ScaleAndTranslation {
         val grid = launcher.deviceProfile
         val ws = launcher.workspace
+        val scale = grid.workspaceOptionsShrinkFactor
 
         if (grid.isVerticalBarLayout) {
-            val scale = grid.workspaceOptionsShrinkFactor
             val optionsView = OmegaLauncher.getLauncher(launcher).optionsView
 
             val wsHeightWithoutInsets = ws.height - grid.insets.top - grid.insets.bottom
@@ -45,7 +48,6 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
             return ScaleAndTranslation(scale, 0f, Math.max(desiredCenter - actualCenter, desiredBottom - actualBottom))
         }
 
-        val scale = grid.workspaceOptionsShrinkFactor
         val insets = launcher.dragLayer.insets
 
         val scaledHeight = scale * ws.normalChildHeight
@@ -68,6 +70,10 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
         return 0.6f
     }
 
+    override fun getWorkspaceBlurAlpha(launcher: Launcher?): Float {
+        return 1f
+    }
+
     override fun getVisibleElements(launcher: Launcher): Int {
         return OPTIONS_VIEW
     }
@@ -75,6 +81,12 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
     override fun onStateEnabled(launcher: Launcher) {
         super.onStateEnabled(launcher)
         launcher.rotationHelper.setCurrentStateRequest(RotationHelper.REQUEST_LOCK)
+    }
+
+    override fun prepareForAtomicAnimation(launcher: Launcher?, fromState: LauncherState?,
+                                           builder: AnimatorSetBuilder) {
+        super.prepareForAtomicAnimation(launcher, fromState, builder)
+        builder.setInterpolator(ANIM_WORKSPACE_FADE, LINEAR)
     }
 
     companion object {

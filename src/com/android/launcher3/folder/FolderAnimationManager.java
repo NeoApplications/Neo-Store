@@ -134,6 +134,8 @@ public class FolderAnimationManager {
                 * scaleRelativeToDragLayer;
         final float finalScale = 1f;
         float scale = mIsOpening ? initialScale : finalScale;
+        mFolder.setScaleX(scale);
+        mFolder.setScaleY(scale);
         mFolder.setPivotX(0);
         mFolder.setPivotY(0);
 
@@ -196,7 +198,9 @@ public class FolderAnimationManager {
             anim.addListener(colorResetListener);
             play(a, anim);
         }
-
+        if (mFolder.mInfo.useIconMode(mContext)) {
+            play(a, getAnimator(mFolder, View.ALPHA, 0f, 1f));
+        }
         play(a, getAnimator(mFolder, View.TRANSLATION_X, xDistance, 0f));
         play(a, getAnimator(mFolder, View.TRANSLATION_Y, yDistance, 0f));
         play(a, getAnimator(mFolder.mContent, SCALE_PROPERTY, initialScale, finalScale));
@@ -243,9 +247,12 @@ public class FolderAnimationManager {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                mFolder.setAlpha(1f);
                 mFolder.setTranslationX(0.0f);
                 mFolder.setTranslationY(0.0f);
                 mFolder.setTranslationZ(0.0f);
+                mFolder.setScaleX(1f);
+                mFolder.setScaleY(1f);
                 mFolder.mContent.setScaleX(1f);
                 mFolder.mContent.setScaleY(1f);
                 mFolder.mFooter.setScaleX(1f);

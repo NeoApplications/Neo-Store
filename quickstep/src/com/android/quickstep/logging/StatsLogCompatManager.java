@@ -18,6 +18,7 @@ package com.android.quickstep.logging;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.stats.launcher.nano.Launcher;
 import android.stats.launcher.nano.LauncherExtension;
 import android.stats.launcher.nano.LauncherTarget;
@@ -69,7 +70,7 @@ public class StatsLogCompatManager extends StatsLogManager {
         if (ext.srcTarget[0] != null) {
             ext.srcTarget[0].item = LauncherTarget.APP_ICON;
         }
-        if (Utilities.ATLEAST_R)
+        if (Build.VERSION.SDK_INT >= 31)
             StatsLogCompat.write(LAUNCH_APP, srcState, BACKGROUND,
                     MessageNano.toByteArray(ext), true);
     }

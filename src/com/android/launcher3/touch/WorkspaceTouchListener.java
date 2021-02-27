@@ -28,13 +28,18 @@ import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.R;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.views.OptionsPopupView;
+import com.android.launcher3.views.OptionsPopupView.OptionItem;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.blur.BlurWallpaperProvider;
 import com.saggitt.omega.gestures.GestureController;
+
+import java.util.ArrayList;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -42,6 +47,7 @@ import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_POINTER_UP;
 import static android.view.MotionEvent.ACTION_UP;
 import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OPTIONS;
 
 /**
  * Helper class to handle touch on empty space in workspace and show options popup on long press
@@ -161,7 +167,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
 
     private boolean canHandleLongPress() {
         return AbstractFloatingView.getTopOpenView(mLauncher) == null
-                && mLauncher.isInState(NORMAL);
+                && mLauncher.isInState(NORMAL) || mLauncher.isInState(OPTIONS);
     }
 
     private void cancelLongPress() {
@@ -180,10 +186,30 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
                 mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.LONGPRESS,
                         Action.Direction.NONE, ContainerType.WORKSPACE,
                         mWorkspace.getCurrentPage());
-                OptionsPopupView.showDefaultOptions(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y);
+                doLongPressAction();
             } else {
                 cancelLongPress();
             }
+        }
+    }
+
+    private void doLongPressAction() {
+        if (mLauncher.isInState(NORMAL)) {
+            mGestureController.onLongPress();
+        } else if (mLauncher.isInState(OPTIONS)) {
+            final int currentScreen = mLauncher.getCurrentWorkspaceScreen();
+            ArrayList<OptionItem> options = new ArrayList<>();
+            options.add(new OptionItem(
+                    R.string.remove_drop_target_label,
+                    R.drawable.ic_remove_no_shadow,
+                    -1, v -> {
+                mLauncher.getWorkspace().removeScreen(currentScreen, true);
+                return true;
+            }));
+            if (BlurWallpaperProvider.Companion.isEnabled()) {
+                options.add(mWorkspace.getWorkspaceBlur().getOptionItem(currentScreen));
+            }
+            OptionsPopupView.show(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y, options);
         }
     }
 }

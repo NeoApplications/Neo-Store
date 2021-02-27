@@ -33,11 +33,9 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.LauncherStateManager.StateListener;
 import com.android.launcher3.R;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.appprediction.PredictionUiStateManager;
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.views.ScrimView;
 import com.android.quickstep.SysUINavigationMode;
 import com.android.quickstep.util.ClipAnimationHelper;
@@ -310,6 +308,7 @@ public class LauncherRecentsView extends RecentsView<Launcher> implements StateL
         return super.shouldStealTouchFromSiblingsBelow(ev);
     }
 
+    /*
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -324,7 +323,7 @@ public class LauncherRecentsView extends RecentsView<Launcher> implements StateL
         if (Utilities.ATLEAST_R)
             PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(
                     mRecentsExtraCardPluginListener);
-    }
+    }*/
 
     @Override
     protected int computeMinScrollX() {
