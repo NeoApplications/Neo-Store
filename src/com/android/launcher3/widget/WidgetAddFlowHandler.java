@@ -20,12 +20,11 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
-import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherAppWidgetProviderInfo;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.util.PendingRequestArgs;
-import com.android.launcher3.widget.custom.CustomAppWidgetProviderInfo;
 
 /**
  * Utility class to handle app widget add flow.
@@ -71,7 +70,8 @@ public class WidgetAddFlowHandler implements Parcelable {
      *
      * @return true if the configuration flow was started, false otherwise.
      */
-    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info, int requestCode) {
+    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info,
+                                       int requestCode) {
         if (!needsConfigure()) {
             return false;
         }
@@ -81,9 +81,6 @@ public class WidgetAddFlowHandler implements Parcelable {
     }
 
     public boolean needsConfigure() {
-        if (mProviderInfo instanceof CustomAppWidgetProviderInfo) {
-            return false;
-        }
         return mProviderInfo.configure != null;
     }
 

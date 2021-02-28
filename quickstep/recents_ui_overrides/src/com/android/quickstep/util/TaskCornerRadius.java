@@ -15,13 +15,13 @@
  */
 package com.android.quickstep.util;
 
+import static com.android.systemui.shared.system.QuickStepContract.supportsRoundedCornersOnWindows;
+
 import android.content.Context;
 
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Themes;
-
-import static com.android.systemui.shared.system.QuickStepContract.supportsRoundedCornersOnWindows;
 
 public class TaskCornerRadius {
 

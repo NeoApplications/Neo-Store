@@ -16,6 +16,9 @@
 
 package com.android.launcher3.folder;
 
+import static com.android.launcher3.graphics.IconShape.getShape;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -41,14 +44,11 @@ import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
 import com.android.launcher3.views.ActivityContext;
 
-import static com.android.launcher3.graphics.IconShape.getShape;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 /**
  * This object represents a FolderIcon preview background. It stores drawing / measurement
  * information, handles drawing, and animation (accept state <--> rest state).
  */
-public class PreviewBackground {
+public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
 
     private static final int CONSUMPTION_ANIMATION_DURATION = 100;
 
@@ -76,8 +76,6 @@ public class PreviewBackground {
     int basePreviewOffsetY;
 
     private CellLayout mDrawingDelegate;
-    public int delegateCellX;
-    public int delegateCellY;
 
     // When the PreviewBackground is drawn under an icon (for creating a folder) the border
     // should not occlude the icon
@@ -95,16 +93,6 @@ public class PreviewBackground {
     private ValueAnimator mScaleAnimator;
     private ObjectAnimator mStrokeAlphaAnimator;
     private ObjectAnimator mShadowAnimator;
-
-    private boolean isInDrawer;
-
-    public PreviewBackground() {
-        this(false);
-    }
-
-    public PreviewBackground(boolean inDrawer) {
-        isInDrawer = inDrawer;
-    }
 
     private static final Property<PreviewBackground, Integer> STROKE_ALPHA =
             new Property<PreviewBackground, Integer>(Integer.class, "strokeAlpha") {
@@ -134,6 +122,27 @@ public class PreviewBackground {
                 }
             };
 
+    /**
+     * Draws folder background under cell layout
+     */
+    @Override
+    public void drawUnderItem(Canvas canvas) {
+        drawBackground(canvas);
+        if (!isClipping) {
+            drawBackgroundStroke(canvas);
+        }
+    }
+
+    /**
+     * Draws folder background on cell layout
+     */
+    @Override
+    public void drawOverItem(Canvas canvas) {
+        if (isClipping) {
+            drawBackgroundStroke(canvas);
+        }
+    }
+
     public void setup(Context context, ActivityContext activity, View invalidateDelegate,
                       int availableSpaceX, int topPadding) {
         mInvalidateDelegate = invalidateDelegate;
@@ -141,11 +150,10 @@ public class PreviewBackground {
         TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.FolderIconPreview);
         mDotColor = ta.getColor(R.styleable.FolderIconPreview_folderDotColor, 0);
         mStrokeColor = ta.getColor(R.styleable.FolderIconPreview_folderIconBorderColor, 0);
-        //TODO: CREAR COLOR PERSONALIZADO DE FOLDER ICON
         mBgColor = ta.getColor(R.styleable.FolderIconPreview_folderFillColor, 0);
         ta.recycle();
 
-        DeviceProfile grid = activity.getWallpaperDeviceProfile();
+        DeviceProfile grid = activity.getDeviceProfile();
         previewSize = grid.folderIconSizePx;
 
         basePreviewOffsetX = (availableSpaceX - previewSize) / 2;
@@ -332,19 +340,19 @@ public class PreviewBackground {
 
     private void delegateDrawing(CellLayout delegate, int cellX, int cellY) {
         if (mDrawingDelegate != delegate) {
-            delegate.addFolderBackground(this);
+            delegate.addDelegatedCellDrawing(this);
         }
 
         mDrawingDelegate = delegate;
-        delegateCellX = cellX;
-        delegateCellY = cellY;
+        mDelegateCellX = cellX;
+        mDelegateCellY = cellY;
 
         invalidate();
     }
 
     private void clearDrawingDelegate() {
         if (mDrawingDelegate != null) {
-            mDrawingDelegate.removeFolderBackground(this);
+            mDrawingDelegate.removeDelegatedCellDrawing(this);
         }
 
         mDrawingDelegate = null;
@@ -410,8 +418,8 @@ public class PreviewBackground {
         // is saved and restored at the beginning of the animation, since cancelling the
         // existing animation can clear the delgate.
         CellLayout cl = mDrawingDelegate;
-        int cellX = delegateCellX;
-        int cellY = delegateCellY;
+        int cellX = mDelegateCellX;
+        int cellY = mDelegateCellY;
         animateScale(1f, 1f, () -> delegateDrawing(cl, cellX, cellY), this::clearDrawingDelegate);
     }
 

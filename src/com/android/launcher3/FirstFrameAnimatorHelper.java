@@ -15,22 +15,21 @@
  */
 package com.android.launcher3;
 
+import static com.android.launcher3.util.DefaultDisplay.getSingleFrameMs;
+
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
-import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnDrawListener;
-
-import static com.android.launcher3.util.DefaultDisplay.getSingleFrameMs;
 
 /*
  *  This is a helper class that listens to updates from the corresponding animation.
  *  For the first two frames, it adjusts the current play time of the animation to
  *  prevent jank at the beginning of the animation
  */
-public class FirstFrameAnimatorHelper implements OnDrawListener, OnAttachStateChangeListener, ValueAnimator.AnimatorUpdateListener {
+public class FirstFrameAnimatorHelper implements OnDrawListener, OnAttachStateChangeListener {
 
     private static final String TAG = "FirstFrameAnimatorHlpr";
     private static final boolean DEBUG = false;
@@ -38,21 +37,12 @@ public class FirstFrameAnimatorHelper implements OnDrawListener, OnAttachStateCh
 
     private View mRootView;
     private long mGlobalFrameCount;
-    private static ViewTreeObserver.OnDrawListener sGlobalDrawListener;
-    private static boolean sVisible;
-    private final View mTarget;
 
     public FirstFrameAnimatorHelper(View target) {
-        mTarget = target;
         target.addOnAttachStateChangeListener(this);
         if (target.isAttachedToWindow()) {
             onViewAttachedToWindow(target);
         }
-    }
-
-    public FirstFrameAnimatorHelper(ValueAnimator animator, View target) {
-        mTarget = target;
-        animator.addUpdateListener(this);
     }
 
     public <T extends ValueAnimator> T addTo(T anim) {
@@ -77,11 +67,6 @@ public class FirstFrameAnimatorHelper implements OnDrawListener, OnAttachStateCh
             mRootView.getViewTreeObserver().removeOnDrawListener(this);
             mRootView = null;
         }
-    }
-
-    @Override
-    public void onAnimationUpdate(ValueAnimator animation) {
-
     }
 
     private class MyListener implements AnimatorUpdateListener {

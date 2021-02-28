@@ -15,11 +15,15 @@
  */
 package com.android.quickstep.logging;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.appprediction.PredictionUiStateManager;
+import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
+
+import java.util.ArrayList;
 
 /**
  * This class handles AOSP MetricsLogger function calls and logging around
@@ -32,10 +36,14 @@ public class UserEventDispatcherAppPredictionExtension extends UserEventDispatch
 
     private static final String TAG = "UserEventDispatcher";
 
+    public UserEventDispatcherAppPredictionExtension(Context context) {
+        super(context);
+    }
+
     @Override
     protected void onFillInLogContainerData(
             @NonNull ItemInfo itemInfo, @NonNull LauncherLogProto.Target target,
-            @NonNull LauncherLogProto.Target targetParent) {
+            @NonNull ArrayList<LauncherLogProto.Target> targets) {
         PredictionUiStateManager.fillInPredictedRank(itemInfo, target);
     }
 }

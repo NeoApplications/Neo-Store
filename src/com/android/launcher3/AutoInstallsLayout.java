@@ -44,12 +44,12 @@ import com.android.launcher3.LauncherProvider.SqlArguments;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.LauncherIcons;
+import com.android.launcher3.model.data.LauncherAppWidgetInfo;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.qsb.QsbContainerView;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Thunk;
-import com.android.launcher3.widget.custom.CustomAppWidgetProviderInfo;
-import com.android.launcher3.widget.custom.CustomWidgetParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -132,8 +132,8 @@ public class AutoInstallsLayout {
     private static final String ATTR_PACKAGE_NAME = "packageName";
     private static final String ATTR_CLASS_NAME = "className";
     private static final String ATTR_TITLE = "title";
+    private static final String ATTR_TITLE_TEXT = "titleText";
     private static final String ATTR_SCREEN = "screen";
-    private static final String ATTR_PROVIDER_ID = "providerId";
 
     // x and y can be specified as negative integers, in which case -1 represents the
     // last row / column, -2 represents the second last, and so on.
@@ -550,75 +550,6 @@ public class AutoInstallsLayout {
         }
     }
 
-    protected class CustomAppWidgetParser implements TagParser {
-
-        @Override
-        public int parseAndAdd(XmlPullParser parser) throws XmlPullParserException, IOException {
-            final int providerId = Integer.parseInt(getAttributeValue(parser, ATTR_PROVIDER_ID));
-            LauncherAppWidgetProviderInfo provider = null;
-
-            for (LauncherAppWidgetProviderInfo each : CustomWidgetParser.getCustomWidgets(mContext)) {
-                if (each instanceof CustomAppWidgetProviderInfo) {
-                    if (((CustomAppWidgetProviderInfo) each).providerId == providerId) {
-                        provider = each;
-                        break;
-                    }
-                }
-            }
-
-            if (provider == null) {
-                if (LOGD) Log.d(TAG, "Skipping invalid <custom-appwidget> with no provider");
-                return -1;
-            }
-
-            mValues.put(Favorites.SPANX, getAttributeValue(parser, ATTR_SPAN_X));
-            mValues.put(Favorites.SPANY, getAttributeValue(parser, ATTR_SPAN_Y));
-            mValues.put(Favorites.ITEM_TYPE, Favorites.ITEM_TYPE_CUSTOM_APPWIDGET);
-            mValues.put(Favorites.APPWIDGET_ID, CustomWidgetParser
-                    .getWidgetIdForCustomProvider(mContext, provider.provider));
-
-            // Read the extras
-            Bundle extras = new Bundle();
-            int widgetDepth = parser.getDepth();
-            int type;
-            while ((type = parser.next()) != XmlPullParser.END_TAG ||
-                    parser.getDepth() > widgetDepth) {
-                if (type != XmlPullParser.START_TAG) {
-                    continue;
-                }
-
-                if (TAG_EXTRA.equals(parser.getName())) {
-                    String key = getAttributeValue(parser, ATTR_KEY);
-                    String value = getAttributeValue(parser, ATTR_VALUE);
-                    if (key != null && value != null) {
-                        extras.putString(key, value);
-                    } else {
-                        throw new RuntimeException("Widget extras must have a key and value");
-                    }
-                } else {
-                    throw new RuntimeException("Widgets can contain only extras");
-                }
-            }
-
-            return verifyAndInsert(provider.provider, extras);
-        }
-
-        protected int verifyAndInsert(ComponentName cn, Bundle extras) {
-            mValues.put(Favorites.APPWIDGET_PROVIDER, cn.flattenToString());
-            mValues.put(Favorites._ID, mCallback.generateNewItemId());
-            if (!extras.isEmpty()) {
-                mValues.put(Favorites.INTENT, new Intent().putExtras(extras).toUri(0));
-            }
-
-            int insertedId = mCallback.insertAndCheck(mDb, mValues);
-            if (insertedId < 0) {
-                return -1;
-            } else {
-                return insertedId;
-            }
-        }
-    }
-
     protected class SearchWidgetParser extends PendingWidgetParser {
         @Override
         @Nullable
@@ -655,7 +586,8 @@ public class AutoInstallsLayout {
             if (titleResId != 0) {
                 title = mSourceRes.getString(titleResId);
             } else {
-                title = "";
+                String titleText = getAttributeValue(parser, ATTR_TITLE_TEXT);
+                title = TextUtils.isEmpty(titleText) ? "" : titleText;
             }
 
             mValues.put(Favorites.TITLE, title);

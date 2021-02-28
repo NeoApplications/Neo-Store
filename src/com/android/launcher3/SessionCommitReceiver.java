@@ -16,6 +16,8 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.pm.InstallSessionHelper.getUserHandle;
+
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -23,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageInstaller;
 import android.content.pm.PackageInstaller.SessionInfo;
 import android.content.pm.PackageManager;
@@ -37,13 +40,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.launcher3.compat.LauncherAppsCompat;
+import com.android.launcher3.pm.InstallSessionHelper;
 import com.android.launcher3.util.Executors;
-import com.android.launcher3.compat.PackageInstallerCompat;
 
 import java.util.List;
-
-import static com.android.launcher3.compat.PackageInstallerCompat.getUserHandle;
 
 /**
  * BroadcastReceiver to handle session commit intent.
@@ -62,6 +62,26 @@ public class SessionCommitReceiver extends BroadcastReceiver {
     public static final String ADD_ICON_PREFERENCE_INITIALIZED_KEY =
             "pref_add_icon_to_home_initialized";
 
+    public static void queuePromiseAppIconAddition(Context context, SessionInfo sessionInfo) {
+        String packageName = sessionInfo.getAppPackageName();
+        if (context.getSystemService(LauncherApps.class)
+                .getActivityList(packageName, getUserHandle(sessionInfo)).isEmpty()) {
+            // Ensure application isn't already installed.
+            queueAppIconAddition(context, packageName, sessionInfo.getAppLabel(),
+                    sessionInfo.getAppIcon(), getUserHandle(sessionInfo));
+        }
+    }
+
+    public static void queueAppIconAddition(Context context, String packageName, UserHandle user) {
+        List<LauncherActivityInfo> activities = context.getSystemService(LauncherApps.class)
+                .getActivityList(packageName, user);
+        if (activities.isEmpty()) {
+            // no activity found
+            return;
+        }
+        queueAppIconAddition(context, packageName, activities.get(0).getLabel(), null, user);
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!isEnabled(context) || !Utilities.ATLEAST_OREO) {
@@ -77,7 +97,8 @@ public class SessionCommitReceiver extends BroadcastReceiver {
             return;
         }
 
-        PackageInstallerCompat packageInstallerCompat = PackageInstallerCompat.getInstance(context);
+        InstallSessionHelper packageInstallerCompat = InstallSessionHelper.INSTANCE.get(context);
+        packageInstallerCompat.restoreDbIfApplicable(info);
         if (TextUtils.isEmpty(info.getAppPackageName())
                 || info.getInstallReason() != PackageManager.INSTALL_REASON_USER
                 || packageInstallerCompat.promiseIconAddedForId(info.getSessionId())) {
@@ -86,27 +107,6 @@ public class SessionCommitReceiver extends BroadcastReceiver {
         }
 
         queueAppIconAddition(context, info.getAppPackageName(), user);
-    }
-
-    public static void queuePromiseAppIconAddition(Context context, SessionInfo sessionInfo) {
-        String packageName = sessionInfo.getAppPackageName();
-        List<LauncherActivityInfo> activities = LauncherAppsCompat.getInstance(context)
-                .getActivityList(packageName, getUserHandle(sessionInfo));
-        if (activities == null || activities.isEmpty()) {
-            // Ensure application isn't already installed.
-            queueAppIconAddition(context, packageName, sessionInfo.getAppLabel(),
-                    sessionInfo.getAppIcon(), getUserHandle(sessionInfo));
-        }
-    }
-
-    public static void queueAppIconAddition(Context context, String packageName, UserHandle user) {
-        List<LauncherActivityInfo> activities = LauncherAppsCompat.getInstance(context)
-                .getActivityList(packageName, user);
-        if (activities == null || activities.isEmpty()) {
-            // no activity found
-            return;
-        }
-        queueAppIconAddition(context, packageName, activities.get(0).getLabel(), null, user);
     }
 
     private static void queueAppIconAddition(Context context, String packageName,

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,20 @@
 
 package com.android.launcher3.appprediction;
 
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
+import static com.android.launcher3.LauncherState.BACKGROUND_APP;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+
 import android.content.ComponentName;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.android.launcher3.AppInfo;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.InvariantDeviceProfile.OnIDPChangeListener;
-import com.android.launcher3.ItemInfo;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
@@ -33,9 +37,12 @@ import com.android.launcher3.LauncherState;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.AllAppsStore.OnUpdateListener;
-import com.android.launcher3.icons.IconCache;
+import com.android.launcher3.hybridhotseat.HotseatPredictionController;
 import com.android.launcher3.icons.IconCache.ItemInfoUpdateReceiver;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.shortcuts.ShortcutKey;
+import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.MainThreadInitializedObject;
@@ -45,12 +52,8 @@ import com.saggitt.omega.predictions.AppTargetCompat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.IntStream;
-
-import static com.android.launcher3.LauncherState.BACKGROUND_APP;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherStateManager.StateListener;
-import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKER;
 
 /**
  * Handler responsible to updating the UI due to predicted apps changes. Operations:
@@ -65,8 +68,8 @@ import static com.android.quickstep.InstantAppResolverImpl.COMPONENT_CLASS_MARKE
  * 4) Maintains the current active client id (for the predictions) and all updates are performed on
  * that client id.
  */
-public class PredictionUiStateManager implements StateListener, ItemInfoUpdateReceiver,
-        OnIDPChangeListener, OnUpdateListener {
+public class PredictionUiStateManager implements StateListener<LauncherState>,
+        ItemInfoUpdateReceiver, OnIDPChangeListener, OnUpdateListener {
 
     public static final String LAST_PREDICTION_ENABLED_STATE = "last_prediction_enabled_state";
 
@@ -156,12 +159,35 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
         updateDependencies(mCurrentState);
     }
 
-    @Override
-    public void reapplyItemInfo(ItemInfoWithIcon info) {
-    }
+    /**
+     * Fill in predicted_rank field based on app prediction.
+     * Only applicable when {@link ItemInfo#itemType} is one of the followings:
+     * {@link LauncherSettings.Favorites#ITEM_TYPE_APPLICATION},
+     * {@link LauncherSettings.Favorites#ITEM_TYPE_SHORTCUT},
+     * {@link LauncherSettings.Favorites#ITEM_TYPE_DEEP_SHORTCUT}
+     */
+    public static void fillInPredictedRank(
+            @NonNull ItemInfo itemInfo, @NonNull LauncherLogProto.Target target) {
 
-    @Override
-    public void onStateTransitionStart(LauncherState toState) { }
+        final PredictionUiStateManager manager = PredictionUiStateManager.INSTANCE.getNoCreate();
+        if (manager == null || itemInfo.getTargetComponent() == null || itemInfo.user == null
+                || (itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+                && itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT
+                && itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT)) {
+            return;
+        }
+        if (itemInfo.container != LauncherSettings.Favorites.CONTAINER_PREDICTION) {
+            HotseatPredictionController.encodeHotseatLayoutIntoPredictionRank(itemInfo, target);
+            return;
+        }
+
+        final ComponentKey k = new ComponentKey(itemInfo.getTargetComponent(), itemInfo.user);
+        final List<ComponentKeyMapper> predictedApps = manager.getCurrentState().apps;
+        IntStream.range(0, predictedApps.size())
+                .filter((i) -> k.equals(predictedApps.get(i).getComponentKey()))
+                .findFirst()
+                .ifPresent((rank) -> target.predictedRank = 0 - rank);
+    }
 
     @Override
     public void onStateTransitionComplete(LauncherState state) {
@@ -216,9 +242,16 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
         };
     }
 
+    @Override
+    public void reapplyItemInfo(ItemInfoWithIcon info) {
+    }
+
     private void dispatchOnChange(boolean changed) {
-        PredictionState newState = changed ? parseLastState() :
-                (mPendingState == null ? mCurrentState : mPendingState);
+        PredictionState newState = changed
+                ? parseLastState()
+                : mPendingState != null && canApplyPredictions(mPendingState)
+                ? mPendingState
+                : mCurrentState;
         if (changed && mAppsView != null && !canApplyPredictions(newState)) {
             scheduleApplyPredictedApps(newState);
         } else {
@@ -246,44 +279,11 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
                     key = new ComponentKey(new ComponentName(appTarget.getPackageName(),
                             appTarget.getClassName()), appTarget.getUser());
                 }
-                state.apps.add(new ComponentKeyMapper(mContext, key, mDynamicItemCache));
+                state.apps.add(new ComponentKeyMapper(key, mDynamicItemCache));
             }
         }
         updateDependencies(state);
         return state;
-    }
-
-    private void updateDependencies(PredictionState state) {
-        if (!state.isEnabled || mAppsView == null) {
-            return;
-        }
-
-        IconCache iconCache = LauncherAppState.getInstance(mContext).getIconCache();
-        List<String> instantAppsToLoad = new ArrayList<>();
-        List<ShortcutKey> shortcutsToLoad = new ArrayList<>();
-        int total = state.apps.size();
-        for (int i = 0, count = 0; i < total && count < mMaxIconsPerRow; i++) {
-            ComponentKeyMapper mapper = state.apps.get(i);
-            // Update instant apps
-            if (COMPONENT_CLASS_MARKER.equals(mapper.getComponentClass())) {
-                instantAppsToLoad.add(mapper.getPackage());
-                count++;
-            } else if (mapper.getComponentKey() instanceof ShortcutKey) {
-                shortcutsToLoad.add((ShortcutKey) mapper.getComponentKey());
-                count++;
-            } else {
-                // Reload high res icon
-                AppInfo info = (AppInfo) mapper.getApp(mAppsView.getAppsStore());
-                if (info != null) {
-                    if (info.usingLowResIcon()) {
-                        // TODO: Update icon cache to support null callbacks.
-                        iconCache.updateIconInBackground(this, info);
-                    }
-                    count++;
-                }
-            }
-        }
-        mDynamicItemCache.cacheItems(shortcutsToLoad, instantAppsToLoad);
     }
 
     @Override
@@ -329,28 +329,38 @@ public class PredictionUiStateManager implements StateListener, ItemInfoUpdateRe
         return mCurrentState;
     }
 
+    private void updateDependencies(PredictionState state) {
+        if (!state.isEnabled || mAppsView == null) {
+            return;
+        }
+        mDynamicItemCache.updateDependencies(state.apps, mAppsView.getAppsStore(), this,
+                mMaxIconsPerRow);
+    }
+
     /**
-     * Fill in predicted_rank field based on app prediction.
+     * Returns ranking info for the app within all apps prediction.
      * Only applicable when {@link ItemInfo#itemType} is one of the followings:
      * {@link LauncherSettings.Favorites#ITEM_TYPE_APPLICATION},
      * {@link LauncherSettings.Favorites#ITEM_TYPE_SHORTCUT},
      * {@link LauncherSettings.Favorites#ITEM_TYPE_DEEP_SHORTCUT}
      */
-    public static void fillInPredictedRank(
-            @NonNull ItemInfo itemInfo, @NonNull LauncherLogProto.Target target) {
-        final PredictionUiStateManager manager = PredictionUiStateManager.INSTANCE.getNoCreate();
-        if (manager == null || itemInfo.getTargetComponent() == null || itemInfo.user == null
-                || (itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-                && itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT
-                && itemInfo.itemType != LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT)) {
-            return;
+    public OptionalInt getAllAppsRank(@Nullable ItemInfo itemInfo) {
+        if (itemInfo == null || itemInfo.getTargetComponent() == null || itemInfo.user == null) {
+            return OptionalInt.empty();
         }
-        final ComponentKey k = new ComponentKey(itemInfo.getTargetComponent(), itemInfo.user);
-        final List<ComponentKeyMapper> predictedApps = manager.getCurrentState().apps;
-        IntStream.range(0, predictedApps.size())
-                .filter((i) -> k.equals(predictedApps.get(i).getComponentKey()))
-                .findFirst()
-                .ifPresent((rank) -> target.predictedRank = rank);
+
+        if (itemInfo.itemType == ITEM_TYPE_APPLICATION
+                || itemInfo.itemType == ITEM_TYPE_SHORTCUT
+                || itemInfo.itemType == ITEM_TYPE_DEEP_SHORTCUT) {
+            ComponentKey key = new ComponentKey(itemInfo.getTargetComponent(),
+                    itemInfo.user);
+            final List<ComponentKeyMapper> apps = getCurrentState().apps;
+            return IntStream.range(0, apps.size())
+                    .filter(index -> key.equals(apps.get(index).getComponentKey()))
+                    .findFirst();
+        }
+
+        return OptionalInt.empty();
     }
 
     public static class PredictionState {

@@ -15,13 +15,14 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.android.launcher3.LauncherAnimUtils.VIEW_ALPHA;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.anim.PropertySetter;
+import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.systemui.plugins.AllAppsRow;
 import com.android.systemui.plugins.AllAppsRow.OnHeightUpdatedListener;
 import com.android.systemui.plugins.PluginListener;
@@ -90,10 +92,12 @@ public class FloatingHeaderView extends LinearLayout implements
 
     protected boolean mTabsHidden;
     protected int mMaxTranslation;
-    private int mActiveRV = 0;
-    private ArrayList<AllAppsRecyclerView> mRVs = new ArrayList<>();
+    private boolean mMainRVActive = true;
 
     private boolean mCollapsed = false;
+
+    private int mActiveRV = 0;
+    private ArrayList<AllAppsRecyclerView> mRVs = new ArrayList<>();
 
     // This is initialized once during inflation and stays constant after that. Fixed views
     // cannot be added or removed dynamically.
@@ -124,7 +128,6 @@ public class FloatingHeaderView extends LinearLayout implements
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child instanceof FloatingHeaderRow) {
-                Log.d("FloatingHeaderView", "Loading row " + child.toString());
                 rows.add((FloatingHeaderRow) child);
             }
         }
@@ -132,23 +135,18 @@ public class FloatingHeaderView extends LinearLayout implements
         mAllRows = mFixedRows;
     }
 
-    /*
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (Utilities.ATLEAST_R) {
-            PluginManagerWrapper.INSTANCE.get(getContext()).addPluginListener(this,
-                    AllAppsRow.class, true);
-        }
+        PluginManagerWrapper.INSTANCE.get(getContext()).addPluginListener(this,
+                AllAppsRow.class, true /* allowMultiple */);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (Utilities.ATLEAST_R) {
-            PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
-        }
-    }*/
+        PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
+    }
 
     private void recreateAllRowsArray() {
         int pluginCount = mPluginRows.size();
@@ -230,7 +228,7 @@ public class FloatingHeaderView extends LinearLayout implements
         return updated;
     }
 
-    protected void updateExpectedHeight() {
+    private void updateExpectedHeight() {
         mMaxTranslation = 0;
         if (mCollapsed) {
             return;
@@ -240,7 +238,8 @@ public class FloatingHeaderView extends LinearLayout implements
         }
     }
 
-    /*public void setMainActive(boolean active) {
+    /*
+    public void setMainActive(boolean active) {
         mCurrentRV = active ? mMainRV : mWorkRV;
         mMainRVActive = active;
     }*/
@@ -391,7 +390,7 @@ public class FloatingHeaderView extends LinearLayout implements
         }
 
         allowTouchForwarding(hasAllAppsContent);
-        setter.setFloat(mTabLayout, ALPHA, hasAllAppsContent ? 1 : 0, headerFade);
+        setter.setFloat(mTabLayout, VIEW_ALPHA, hasAllAppsContent ? 1 : 0, headerFade);
     }
 
     protected void allowTouchForwarding(boolean allow) {
@@ -414,7 +413,7 @@ public class FloatingHeaderView extends LinearLayout implements
 
     @Override
     public void setInsets(Rect insets) {
-        DeviceProfile grid = Launcher.getLauncher(getContext()).getDeviceProfile();
+        DeviceProfile grid = BaseDraggingActivity.fromContext(getContext()).getDeviceProfile();
         for (FloatingHeaderRow row : mAllRows) {
             row.setInsets(insets, grid);
         }

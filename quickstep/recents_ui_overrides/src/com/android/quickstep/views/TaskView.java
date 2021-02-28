@@ -16,6 +16,27 @@
 
 package com.android.quickstep.views;
 
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.CENTER_HORIZONTAL;
+import static android.view.Gravity.CENTER_VERTICAL;
+import static android.view.Gravity.END;
+import static android.view.Gravity.START;
+import static android.view.Gravity.TOP;
+import static android.view.Surface.ROTATION_180;
+import static android.view.Surface.ROTATION_270;
+import static android.view.Surface.ROTATION_90;
+import static android.widget.Toast.LENGTH_SHORT;
+
+import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
+import static com.android.launcher3.Utilities.comp;
+import static com.android.launcher3.Utilities.getDescendantCoordRelativeToAncestor;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.Interpolators.TOUCH_RESPONSE_INTERPOLATOR;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_LAUNCH_TAP;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -23,17 +44,21 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.FloatProperty;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.Surface;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -41,25 +66,35 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.launcher3.BaseDraggingActivity;
+import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.AnimatorPlaybackController;
 import com.android.launcher3.anim.Interpolators;
+import com.android.launcher3.anim.PendingAnimation;
 import com.android.launcher3.logging.UserEventDispatcher;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
+import com.android.launcher3.popup.SystemShortcut;
+import com.android.launcher3.testing.TestLogging;
+import com.android.launcher3.testing.TestProtocol;
+import com.android.launcher3.touch.PagedOrientationHandler;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Direction;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Touch;
-import com.android.launcher3.util.PendingAnimation;
+import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.TransformingTouchDelegate;
 import com.android.launcher3.util.ViewPool.Reusable;
 import com.android.quickstep.RecentsModel;
 import com.android.quickstep.TaskIconCache;
 import com.android.quickstep.TaskOverlayFactory;
-import com.android.quickstep.TaskSystemShortcut;
 import com.android.quickstep.TaskThumbnailCache;
 import com.android.quickstep.TaskUtils;
+import com.android.quickstep.util.RecentsOrientedState;
 import com.android.quickstep.util.TaskCornerRadius;
 import com.android.quickstep.views.RecentsView.PageCallbacks;
 import com.android.quickstep.views.RecentsView.ScrollState;
+import com.android.quickstep.views.TaskThumbnailView.PreviewPositionHelper;
 import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.ActivityOptionsCompat;
@@ -68,12 +103,6 @@ import com.android.systemui.shared.system.QuickStepContract;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static android.widget.Toast.LENGTH_SHORT;
-import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
 
 /**
  * A task in the Recents view.
@@ -101,22 +130,11 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     public static final long SCALE_ICON_DURATION = 120;
     private static final long DIM_ANIM_DURATION = 700;
+    private final float[] mIconCenterCoords = new float[2];
+    private final float[] mChipCenterCoords = new float[2];
 
     private static final List<Rect> SYSTEM_GESTURE_EXCLUSION_RECT =
             Collections.singletonList(new Rect());
-
-    public static final FloatProperty<TaskView> FULLSCREEN_PROGRESS =
-            new FloatProperty<TaskView>("fullscreenProgress") {
-                @Override
-                public void setValue(TaskView taskView, float v) {
-                    taskView.setFullscreenProgress(v);
-                }
-
-                @Override
-                public Float get(TaskView taskView) {
-                    return taskView.mFullscreenProgress;
-                }
-            };
 
     private static final FloatProperty<TaskView> FOCUS_TRANSITION =
             new FloatProperty<TaskView>("focusTransition") {
@@ -156,13 +174,18 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
     private float mCurveScale;
     private float mFullscreenProgress;
     private final FullscreenDrawParams mCurrentFullscreenParams;
-    private final float mCornerRadius;
-    private final float mWindowCornerRadius;
     private final BaseDraggingActivity mActivity;
 
     private ObjectAnimator mIconAndDimAnimator;
     private float mIconScaleAnimStartProgress = 0;
     private float mFocusTransitionProgress = 1;
+    /**
+     * This technically can be a vanilla {@link TouchDelegate} class, however that class requires
+     * setting the touch bounds at construction, so we'd repeatedly be created many instances
+     * unnecessarily as scrolling occurs, whereas {@link TransformingTouchDelegate} allows touch
+     * delegated bounds only to be updated.
+     */
+    private TransformingTouchDelegate mIconTouchDelegate;
     private float mStableAlpha = 1;
 
     private boolean mShowScreenshot;
@@ -173,11 +196,14 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     // Order in which the footers appear. Lower order appear below higher order.
     public static final int INDEX_DIGITAL_WELLBEING_TOAST = 0;
-    public static final int INDEX_PROACTIVE_SUGGEST = 1;
     private final FooterWrapper[] mFooters = new FooterWrapper[2];
     private float mFooterVerticalOffset = 0;
     private float mFooterAlpha = 1;
     private int mStackHeight;
+    private TransformingTouchDelegate mChipTouchDelegate;
+    private float mModalness = 0;
+    private View mContextualChipWrapper;
+    private View mContextualChip;
 
     public TaskView(Context context) {
         this(context, null);
@@ -207,17 +233,30 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
             mActivity.getUserEventDispatcher().logTaskLaunchOrDismiss(
                     Touch.TAP, Direction.NONE, getRecentsView().indexOfChild(this),
                     TaskUtils.getLaunchComponentKeyForTask(getTask().key));
-            mActivity.getStatsLogManager().logTaskLaunch(getRecentsView(),
-                    TaskUtils.getLaunchComponentKeyForTask(getTask().key));
+            mActivity.getStatsLogManager().logger().withItemInfo(getItemInfo())
+                    .log(LAUNCHER_TASK_LAUNCH_TAP);
         });
-        mCornerRadius = TaskCornerRadius.get(context);
-        //mWindowCornerRadius = QuickStepContract.getWindowCornerRadius(context.getResources());
-        mWindowCornerRadius = Utilities.ATLEAST_R ? QuickStepContract.getWindowCornerRadius(context.getResources()) : 3f;
-        mCurrentFullscreenParams = new FullscreenDrawParams(mCornerRadius);
+
+        mCurrentFullscreenParams = new FullscreenDrawParams(context);
         mDigitalWellBeingToast = new DigitalWellBeingToast(mActivity, this);
 
-        mOutlineProvider = new TaskOutlineProvider(getResources(), mCurrentFullscreenParams);
+        mOutlineProvider = new TaskOutlineProvider(getContext(), mCurrentFullscreenParams);
         setOutlineProvider(mOutlineProvider);
+    }
+
+    /**
+     * Builds proto for logging
+     */
+    public WorkspaceItemInfo getItemInfo() {
+        ComponentKey componentKey = TaskUtils.getLaunchComponentKeyForTask(getTask().key);
+        WorkspaceItemInfo dummyInfo = new WorkspaceItemInfo();
+        dummyInfo.itemType = LauncherSettings.Favorites.ITEM_TYPE_TASK;
+        dummyInfo.container = LauncherSettings.Favorites.CONTAINER_TASKSWITCHER;
+        dummyInfo.user = componentKey.user;
+        dummyInfo.intent = new Intent().setComponent(componentKey.componentName);
+        dummyInfo.title = TaskUtils.getTitle(getContext(), getTask());
+        dummyInfo.screenId = getRecentsView().indexOfChild(this);
+        return dummyInfo;
     }
 
     @Override
@@ -225,6 +264,76 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         super.onFinishInflate();
         mSnapshotView = findViewById(R.id.snapshot);
         mIconView = findViewById(R.id.icon);
+        mIconTouchDelegate = new TransformingTouchDelegate(mIconView);
+    }
+
+    /**
+     * Whether the taskview should take the touch event from parent. Events passed to children
+     * that might require special handling.
+     */
+    public boolean offerTouchToChildren(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            computeAndSetIconTouchDelegate();
+            computeAndSetChipTouchDelegate();
+        }
+        if (mIconTouchDelegate != null && mIconTouchDelegate.onTouchEvent(event)) {
+            return true;
+        }
+        if (mChipTouchDelegate != null && mChipTouchDelegate.onTouchEvent(event)) {
+            return true;
+        }
+        return false;
+    }
+
+    private void computeAndSetIconTouchDelegate() {
+        float iconHalfSize = mIconView.getWidth() / 2f;
+        mIconCenterCoords[0] = mIconCenterCoords[1] = iconHalfSize;
+        getDescendantCoordRelativeToAncestor(mIconView, mActivity.getDragLayer(), mIconCenterCoords,
+                false);
+        mIconTouchDelegate.setBounds(
+                (int) (mIconCenterCoords[0] - iconHalfSize),
+                (int) (mIconCenterCoords[1] - iconHalfSize),
+                (int) (mIconCenterCoords[0] + iconHalfSize),
+                (int) (mIconCenterCoords[1] + iconHalfSize));
+    }
+
+    private void computeAndSetChipTouchDelegate() {
+        if (mContextualChipWrapper != null) {
+            float chipHalfWidth = mContextualChipWrapper.getWidth() / 2f;
+            float chipHalfHeight = mContextualChipWrapper.getHeight() / 2f;
+            mChipCenterCoords[0] = chipHalfWidth;
+            mChipCenterCoords[1] = chipHalfHeight;
+            getDescendantCoordRelativeToAncestor(mContextualChipWrapper, mActivity.getDragLayer(),
+                    mChipCenterCoords,
+                    false);
+            mChipTouchDelegate.setBounds(
+                    (int) (mChipCenterCoords[0] - chipHalfWidth),
+                    (int) (mChipCenterCoords[1] - chipHalfHeight),
+                    (int) (mChipCenterCoords[0] + chipHalfWidth),
+                    (int) (mChipCenterCoords[1] + chipHalfHeight));
+        }
+    }
+
+    /**
+     * The modalness of this view is how it should be displayed when it is shown on its own in the
+     * modal state of overview.
+     *
+     * @param modalness [0, 1] 0 being in context with other tasks, 1 being shown on its own.
+     */
+    public void setModalness(float modalness) {
+        if (mModalness == modalness) {
+            return;
+        }
+        mModalness = modalness;
+        mIconView.setAlpha(comp(modalness));
+        if (mContextualChip != null) {
+            mContextualChip.setScaleX(comp(modalness));
+            mContextualChip.setScaleY(comp(modalness));
+        }
+        if (mContextualChipWrapper != null) {
+            mContextualChipWrapper.setAlpha(comp(modalness));
+        }
+        updateFooterVerticalOffset(mFooterVerticalOffset);
     }
 
     public TaskMenuView getMenuView() {
@@ -237,11 +346,15 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     /**
      * Updates this task view to the given {@param task}.
+     * <p>
+     * TODO(b/142282126) Re-evaluate if we need to pass in isMultiWindowMode after
+     * that issue is fixed
      */
-    public void bind(Task task) {
+    public void bind(Task task, RecentsOrientedState orientedState) {
         cancelPendingLoadTasks();
         mTask = task;
         mSnapshotView.bind(task);
+        setOrientationState(orientedState);
     }
 
     public Task getTask() {
@@ -257,11 +370,9 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
     }
 
     public AnimatorPlaybackController createLaunchAnimationForRunningTask() {
-        final PendingAnimation pendingAnimation =
-                getRecentsView().createTaskLauncherAnimation(this, RECENTS_LAUNCH_DURATION);
-        pendingAnimation.anim.setInterpolator(Interpolators.TOUCH_RESPONSE_INTERPOLATOR);
-        AnimatorPlaybackController currentAnimation = AnimatorPlaybackController
-                .wrap(pendingAnimation.anim, RECENTS_LAUNCH_DURATION, null);
+        final PendingAnimation pendingAnimation = getRecentsView().createTaskLaunchAnimation(
+                this, RECENTS_LAUNCH_DURATION, TOUCH_RESPONSE_INTERPOLATOR);
+        AnimatorPlaybackController currentAnimation = pendingAnimation.createPlaybackController();
         currentAnimation.setEndAction(() -> {
             pendingAnimation.finish(true, Touch.SWIPE);
             launchTask(false);
@@ -289,11 +400,19 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
     public void launchTask(boolean animate, boolean freezeTaskList, Consumer<Boolean> resultCallback,
             Handler resultCallbackHandler) {
         if (ENABLE_QUICKSTEP_LIVE_TILE.get()) {
+            RecentsView recentsView = getRecentsView();
             if (isRunningTask()) {
-                getRecentsView().finishRecentsAnimation(false /* toRecents */,
+                recentsView.finishRecentsAnimation(false /* toRecents */,
                         () -> resultCallbackHandler.post(() -> resultCallback.accept(true)));
             } else {
-                launchTaskInternal(animate, freezeTaskList, resultCallback, resultCallbackHandler);
+                // This is a workaround against the WM issue that app open is not correctly animated
+                // when recents animation is being cleaned up (b/143774568). When that's possible,
+                // we should rely on the framework side to cancel the recents animation, and we will
+                // clean up the screenshot on the launcher side while we launch the next task.
+                recentsView.switchToScreenshot(null,
+                        () -> recentsView.finishRecentsAnimation(true /* toRecents */,
+                                () -> launchTaskInternal(animate, freezeTaskList, resultCallback,
+                                        resultCallbackHandler)));
             }
         } else {
             launchTaskInternal(animate, freezeTaskList, resultCallback, resultCallbackHandler);
@@ -304,6 +423,8 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
             Consumer<Boolean> resultCallback, Handler resultCallbackHandler) {
         if (mTask != null) {
             final ActivityOptions opts;
+            TestLogging.recordEvent(
+                    TestProtocol.SEQUENCE_MAIN, "startActivityFromRecentsAsync", mTask);
             if (animate) {
                 opts = mActivity.getActivityLaunchOptions(this);
                 if (freezeTaskList) {
@@ -332,6 +453,7 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
                             }
                         }, resultCallbackHandler);
             }
+            getRecentsView().onTaskLaunched(mTask);
         }
     }
 
@@ -377,12 +499,17 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
     }
 
     private boolean showTaskMenu(int action) {
-        getRecentsView().snapToPage(getRecentsView().indexOfChild(this));
-        mMenuView = TaskMenuView.showForTask(this);
-        UserEventDispatcher.newInstance(getContext()).logActionOnItem(action, Direction.NONE,
-                LauncherLogProto.ItemType.TASK_ICON);
-        if (mMenuView != null) {
-            mMenuView.addOnAttachStateChangeListener(mTaskMenuStateListener);
+        if (!getRecentsView().isClearAllHidden()) {
+            getRecentsView().snapToPage(getRecentsView().indexOfChild(this));
+        } else {
+            mMenuView = TaskMenuView.showForTask(this);
+            mActivity.getStatsLogManager().logger().withItemInfo(getItemInfo())
+                    .log(LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS);
+            UserEventDispatcher.newInstance(getContext()).logActionOnItem(action, Direction.NONE,
+                    LauncherLogProto.ItemType.TASK_ICON);
+            if (mMenuView != null) {
+                mMenuView.addOnAttachStateChangeListener(mTaskMenuStateListener);
+            }
         }
         return mMenuView != null;
     }
@@ -402,6 +529,44 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         }
     }
 
+    public void setOrientationState(RecentsOrientedState orientationState) {
+        PagedOrientationHandler orientationHandler = orientationState.getOrientationHandler();
+        boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+        LayoutParams snapshotParams = (LayoutParams) mSnapshotView.getLayoutParams();
+        int thumbnailPadding = (int) getResources().getDimension(R.dimen.task_thumbnail_top_margin);
+        LayoutParams iconParams = (LayoutParams) mIconView.getLayoutParams();
+        switch (orientationHandler.getRotation()) {
+            case ROTATION_90:
+                iconParams.gravity = (isRtl ? START : END) | CENTER_VERTICAL;
+                iconParams.rightMargin = -thumbnailPadding;
+                iconParams.leftMargin = 0;
+                iconParams.topMargin = snapshotParams.topMargin / 2;
+                break;
+            case ROTATION_180:
+                iconParams.gravity = BOTTOM | CENTER_HORIZONTAL;
+                iconParams.bottomMargin = -thumbnailPadding;
+                iconParams.leftMargin = iconParams.topMargin = iconParams.rightMargin = 0;
+                break;
+            case ROTATION_270:
+                iconParams.gravity = (isRtl ? END : START) | CENTER_VERTICAL;
+                iconParams.leftMargin = -thumbnailPadding;
+                iconParams.rightMargin = 0;
+                iconParams.topMargin = snapshotParams.topMargin / 2;
+                break;
+            case Surface.ROTATION_0:
+            default:
+                iconParams.gravity = TOP | CENTER_HORIZONTAL;
+                iconParams.leftMargin = iconParams.topMargin = iconParams.rightMargin = 0;
+                break;
+        }
+        mIconView.setLayoutParams(iconParams);
+        mIconView.setRotation(orientationHandler.getDegreesRotated());
+
+        if (mMenuView != null) {
+            mMenuView.onRotationChanged();
+        }
+    }
+
     private void setIconAndDimTransitionProgress(float progress, boolean invert) {
         if (invert) {
             progress = 1 - progress;
@@ -415,13 +580,12 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
                 .getInterpolation(progress);
         mIconView.setScaleX(scale);
         mIconView.setScaleY(scale);
-
-        mFooterVerticalOffset = 1.0f - scale;
-        for (FooterWrapper footer : mFooters) {
-            if (footer != null) {
-                footer.updateFooterOffset();
-            }
+        if (mContextualChip != null && mContextualChipWrapper != null) {
+            mContextualChipWrapper.setAlpha(scale);
+            mContextualChip.setScaleX(scale);
+            mContextualChip.setScaleY(scale);
         }
+        updateFooterVerticalOffset(1.0f - scale);
     }
 
     public void setIconScaleAnimStartProgress(float startProgress) {
@@ -455,18 +619,13 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         setIconAndDimTransitionProgress(iconScale, invert);
     }
 
-    private void resetViewTransforms() {
+    protected void resetViewTransforms() {
         setCurveScale(1);
         setTranslationX(0f);
         setTranslationY(0f);
         setTranslationZ(0);
         setAlpha(mStableAlpha);
         setIconScaleAndDim(1);
-    }
-
-    public void resetVisualProperties() {
-        resetViewTransforms();
-        setFullscreenProgress(0);
     }
 
     public void setStableAlpha(float parentAlpha) {
@@ -486,11 +645,17 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     @Override
     public void onPageScroll(ScrollState scrollState) {
+        // Don't do anything if it's modal.
+        if (mModalness > 0) {
+            return;
+        }
+
         float curveInterpolation =
                 CURVE_INTERPOLATOR.getInterpolation(scrollState.linearInterpolation);
-
+        float curveScaleForCurveInterpolation = getCurveScaleForCurveInterpolation(
+                curveInterpolation);
         mSnapshotView.setDimAlpha(curveInterpolation * MAX_PAGE_SCRIM_ALPHA);
-        setCurveScale(getCurveScaleForCurveInterpolation(curveInterpolation));
+        setCurveScale(curveScaleForCurveInterpolation);
 
         mFooterAlpha = Utilities.boundToRange(1.0f - 2 * scrollState.linearInterpolation, 0f, 1f);
         for (FooterWrapper footer : mFooters) {
@@ -500,12 +665,14 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         }
 
         if (mMenuView != null) {
-            mMenuView.setPosition(getX() - getRecentsView().getScrollX(), getY());
+            PagedOrientationHandler pagedOrientationHandler = getPagedOrientationHandler();
+            RecentsView recentsView = getRecentsView();
+            mMenuView.setPosition(getX() - recentsView.getScrollX(),
+                    getY() - recentsView.getScrollY(), pagedOrientationHandler);
             mMenuView.setScaleX(getScaleX());
             mMenuView.setScaleY(getScaleY());
         }
     }
-
 
     /**
      * Sets the footer at the specific index and returns the previously set footer.
@@ -534,8 +701,10 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
             }
 
             addView(view, indexToAdd);
-            ((LayoutParams) view.getLayoutParams()).gravity =
-                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
+            layoutParams.gravity = BOTTOM | CENTER_HORIZONTAL;
+            layoutParams.bottomMargin =
+                    ((MarginLayoutParams) mSnapshotView.getLayoutParams()).bottomMargin;
             view.setAlpha(mFooterAlpha);
             mFooters[index] = new FooterWrapper(view);
             if (shouldAnimateEntry) {
@@ -556,6 +725,70 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         return oldFooter;
     }
 
+    /**
+     * Sets the contextual chip.
+     *
+     * @param view Wrapper view containing contextual chip.
+     */
+    public void setContextualChip(View view) {
+        if (mContextualChipWrapper != null) {
+            removeView(mContextualChipWrapper);
+        }
+        if (view != null) {
+            mContextualChipWrapper = view;
+            LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = BOTTOM | CENTER_HORIZONTAL;
+            int expectedChipHeight = getExpectedViewHeight(view);
+            float chipOffset = getResources().getDimension(R.dimen.chip_hint_vertical_offset);
+            layoutParams.bottomMargin = (int)
+                    (((MarginLayoutParams) mSnapshotView.getLayoutParams()).bottomMargin
+                            - expectedChipHeight + chipOffset);
+            mContextualChip = ((FrameLayout) mContextualChipWrapper).getChildAt(0);
+            mContextualChip.setScaleX(0f);
+            mContextualChip.setScaleY(0f);
+            GradientDrawable scrimDrawable = (GradientDrawable) getResources().getDrawable(
+                    R.drawable.chip_scrim_gradient, mActivity.getTheme());
+            float cornerRadius = getTaskCornerRadius();
+            scrimDrawable.setCornerRadii(
+                    new float[]{0, 0, 0, 0, cornerRadius, cornerRadius, cornerRadius,
+                            cornerRadius});
+            InsetDrawable scrimDrawableInset = new InsetDrawable(scrimDrawable, 0, 0, 0,
+                    (int) (expectedChipHeight - chipOffset));
+            mContextualChipWrapper.setBackground(scrimDrawableInset);
+            mContextualChipWrapper.setPadding(0, 0, 0, 0);
+            mContextualChipWrapper.setAlpha(0f);
+            addView(view, getChildCount(), layoutParams);
+            if (mContextualChip != null) {
+                mContextualChip.animate().scaleX(1f).scaleY(1f).setDuration(50);
+            }
+            if (mContextualChipWrapper != null) {
+                mChipTouchDelegate = new TransformingTouchDelegate(mContextualChipWrapper);
+                mContextualChipWrapper.animate().alpha(1f).setDuration(50);
+            }
+        }
+    }
+
+    public float getTaskCornerRadius() {
+        return TaskCornerRadius.get(mActivity);
+    }
+
+    /**
+     * Clears the contextual chip from TaskView.
+     *
+     * @return The contextual chip wrapper view to be recycled.
+     */
+    public View clearContextualChip() {
+        if (mContextualChipWrapper != null) {
+            removeView(mContextualChipWrapper);
+        }
+        View oldContextualChipWrapper = mContextualChipWrapper;
+        mContextualChipWrapper = null;
+        mContextualChip = null;
+        mChipTouchDelegate = null;
+        return oldContextualChipWrapper;
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -572,6 +805,12 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
                 mStackHeight += footer.mView.getHeight();
             }
         }
+        updateFooterVerticalOffset(0);
+    }
+
+    private void updateFooterVerticalOffset(float offset) {
+        mFooterVerticalOffset = offset;
+
         for (FooterWrapper footer : mFooters) {
             if (footer != null) {
                 footer.updateFooterOffset();
@@ -588,19 +827,14 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         return 1 - curveInterpolation * EDGE_SCALE_DOWN_FACTOR;
     }
 
-    public void setCurveScale(float curveScale) {
+    private void setCurveScale(float curveScale) {
         mCurveScale = curveScale;
-        onScaleChanged();
+        setScaleX(mCurveScale);
+        setScaleY(mCurveScale);
     }
 
     public float getCurveScale() {
         return mCurveScale;
-    }
-
-    private void onScaleChanged() {
-        float scale = mCurveScale;
-        setScaleX(scale);
-        setScaleY(scale);
     }
 
     @Override
@@ -609,13 +843,133 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         return false;
     }
 
+    private int getExpectedViewHeight(View view) {
+        int expectedHeight;
+        int h = view.getLayoutParams().height;
+        if (h > 0) {
+            expectedHeight = h;
+        } else {
+            int m = MeasureSpec.makeMeasureSpec(MeasureSpec.EXACTLY - 1, MeasureSpec.AT_MOST);
+            view.measure(m, m);
+            expectedHeight = view.getMeasuredHeight();
+        }
+        return expectedHeight;
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+
+        info.addAction(
+                new AccessibilityNodeInfo.AccessibilityAction(R.string.accessibility_close,
+                        getContext().getText(R.string.accessibility_close)));
+
+        final Context context = getContext();
+        for (SystemShortcut s : TaskOverlayFactory.getEnabledShortcuts(this)) {
+            info.addAction(s.createAccessibilityAction(context));
+        }
+
+        if (mDigitalWellBeingToast.hasLimit()) {
+            info.addAction(
+                    new AccessibilityNodeInfo.AccessibilityAction(
+                            R.string.accessibility_app_usage_settings,
+                            getContext().getText(R.string.accessibility_app_usage_settings)));
+        }
+
+        final RecentsView recentsView = getRecentsView();
+        final AccessibilityNodeInfo.CollectionItemInfo itemInfo =
+                AccessibilityNodeInfo.CollectionItemInfo.obtain(
+                        0, 1, recentsView.getTaskViewCount() - recentsView.indexOfChild(this) - 1,
+                        1, false);
+        info.setCollectionItemInfo(itemInfo);
+    }
+
+    @Override
+    public boolean performAccessibilityAction(int action, Bundle arguments) {
+        if (action == R.string.accessibility_close) {
+            getRecentsView().dismissTask(this, true /*animateTaskView*/,
+                    true /*removeTask*/);
+            return true;
+        }
+
+        if (action == R.string.accessibility_app_usage_settings) {
+            mDigitalWellBeingToast.openAppUsageSettings(this);
+            return true;
+        }
+
+        for (SystemShortcut s : TaskOverlayFactory.getEnabledShortcuts(this)) {
+            if (s.hasHandlerForAction(action)) {
+                s.onClick(this);
+                return true;
+            }
+        }
+
+        return super.performAccessibilityAction(action, arguments);
+    }
+
+    PagedOrientationHandler getPagedOrientationHandler() {
+        return getRecentsView().mOrientationState.getOrientationHandler();
+    }
+
+    /**
+     * Hides the icon and shows insets when this TaskView is about to be shown fullscreen.
+     *
+     * @param progress: 0 = show icon and no insets; 1 = don't show icon and show full insets.
+     */
+    public void setFullscreenProgress(float progress) {
+        progress = Utilities.boundToRange(progress, 0, 1);
+        mFullscreenProgress = progress;
+        boolean isFullscreen = mFullscreenProgress > 0;
+        mIconView.setVisibility(progress < 1 ? VISIBLE : INVISIBLE);
+        setClipChildren(!isFullscreen);
+        setClipToPadding(!isFullscreen);
+
+        TaskThumbnailView thumbnail = getThumbnail();
+        updateCurrentFullscreenParams(thumbnail.getPreviewPositionHelper());
+
+        if (!getRecentsView().isTaskIconScaledDown(this)) {
+            // Some of the items in here are dependent on the current fullscreen params, but don't
+            // update them if the icon is supposed to be scaled down.
+            setIconScaleAndDim(progress, true /* invert */);
+        }
+
+        thumbnail.setFullscreenParams(mCurrentFullscreenParams);
+        mOutlineProvider.setFullscreenParams(mCurrentFullscreenParams);
+        invalidateOutline();
+    }
+
+    public RecentsView getRecentsView() {
+        return (RecentsView) getParent();
+    }
+
+    void updateCurrentFullscreenParams(PreviewPositionHelper previewPositionHelper) {
+        if (getRecentsView() == null) {
+            return;
+        }
+        mCurrentFullscreenParams.setProgress(
+                mFullscreenProgress,
+                getRecentsView().getScaleX(),
+                getWidth(), mActivity.getDeviceProfile(),
+                previewPositionHelper);
+    }
+
+    public void notifyTaskLaunchFailed(String tag) {
+        String msg = "Failed to launch task";
+        if (mTask != null) {
+            msg += " (task=" + mTask.key.baseIntent + " userId=" + mTask.key.userId + ")";
+        }
+        Log.w(tag, msg);
+        Toast.makeText(getContext(), R.string.activity_not_available, LENGTH_SHORT).show();
+    }
+
     private static final class TaskOutlineProvider extends ViewOutlineProvider {
 
         private final int mMarginTop;
         private FullscreenDrawParams mFullscreenParams;
 
-        TaskOutlineProvider(Resources res, FullscreenDrawParams fullscreenParams) {
-            mMarginTop = res.getDimensionPixelSize(R.dimen.task_thumbnail_top_margin);
+        TaskOutlineProvider(Context context, FullscreenDrawParams fullscreenParams) {
+            mMarginTop = context.getResources().getDimensionPixelSize(
+                    R.dimen.task_thumbnail_top_margin);
             mFullscreenParams = fullscreenParams;
         }
 
@@ -635,198 +989,54 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         }
     }
 
-    private class FooterWrapper extends ViewOutlineProvider {
-
-        final View mView;
-        final ViewOutlineProvider mOldOutlineProvider;
-        final ViewOutlineProvider mDelegate;
-
-        final int mExpectedHeight;
-        final int mOldPaddingBottom;
-
-        int mAnimationOffset = 0;
-        int mEntryAnimationOffset = 0;
-
-        public FooterWrapper(View view) {
-            mView = view;
-            mOldOutlineProvider = view.getOutlineProvider();
-            mDelegate = mOldOutlineProvider == null
-                    ? ViewOutlineProvider.BACKGROUND : mOldOutlineProvider;
-
-            int h = view.getLayoutParams().height;
-            if (h > 0) {
-                mExpectedHeight = h;
-            } else {
-                int m = MeasureSpec.makeMeasureSpec(MeasureSpec.EXACTLY - 1, MeasureSpec.AT_MOST);
-                view.measure(m, m);
-                mExpectedHeight = view.getMeasuredHeight();
-            }
-            mOldPaddingBottom = view.getPaddingBottom();
-
-            if (mOldOutlineProvider != null) {
-                view.setOutlineProvider(this);
-                view.setClipToOutline(true);
-            }
-        }
-
-        public void setVerticalShift(int shift) {
-            mView.setPadding(mView.getPaddingLeft(), mView.getPaddingTop(),
-                    mView.getPaddingRight(), mOldPaddingBottom + shift);
-        }
-
-        @Override
-        public void getOutline(View view, Outline outline) {
-            mDelegate.getOutline(view, outline);
-            outline.offset(0, -mAnimationOffset - mEntryAnimationOffset);
-        }
-
-        void updateFooterOffset() {
-            mAnimationOffset = Math.round(mStackHeight * mFooterVerticalOffset);
-            mView.setTranslationY(mAnimationOffset + mEntryAnimationOffset
-                    + mCurrentFullscreenParams.mCurrentDrawnInsets.bottom
-                    + mCurrentFullscreenParams.mCurrentDrawnInsets.top);
-            mView.invalidateOutline();
-        }
-
-        void release() {
-            mView.setOutlineProvider(mOldOutlineProvider);
-            setVerticalShift(0);
-        }
-
-        void animateEntry() {
-            ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-            animator.addUpdateListener(anim -> {
-               float factor = 1 - anim.getAnimatedFraction();
-               int totalShift = mExpectedHeight + mView.getPaddingBottom() - mOldPaddingBottom;
-                mEntryAnimationOffset = Math.round(factor * totalShift);
-                updateFooterOffset();
-            });
-            animator.setDuration(100);
-            animator.start();
-        }
-    }
-
-    @Override
-    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-        super.onInitializeAccessibilityNodeInfo(info);
-
-        info.addAction(
-                new AccessibilityNodeInfo.AccessibilityAction(R.string.accessibility_close_task,
-                        getContext().getText(R.string.accessibility_close_task)));
-
-        final Context context = getContext();
-        final List<TaskSystemShortcut> shortcuts =
-                TaskOverlayFactory.INSTANCE.get(getContext()).getEnabledShortcuts(this);
-        final int count = shortcuts.size();
-        for (int i = 0; i < count; ++i) {
-            final TaskSystemShortcut menuOption = shortcuts.get(i);
-            OnClickListener onClickListener = menuOption.getOnClickListener(mActivity, this);
-            if (onClickListener != null) {
-                info.addAction(menuOption.createAccessibilityAction(context));
-            }
-        }
-
-        if (mDigitalWellBeingToast.hasLimit()) {
-            info.addAction(
-                    new AccessibilityNodeInfo.AccessibilityAction(
-                            R.string.accessibility_app_usage_settings,
-                            getContext().getText(R.string.accessibility_app_usage_settings)));
-        }
-
-        final RecentsView recentsView = getRecentsView();
-        final AccessibilityNodeInfo.CollectionItemInfo itemInfo =
-                AccessibilityNodeInfo.CollectionItemInfo.obtain(
-                        0, 1, recentsView.getChildCount() - recentsView.indexOfChild(this) - 1, 1,
-                        false);
-        info.setCollectionItemInfo(itemInfo);
-    }
-
-    @Override
-    public boolean performAccessibilityAction(int action, Bundle arguments) {
-        if (action == R.string.accessibility_close_task) {
-            getRecentsView().dismissTask(this, true /*animateTaskView*/,
-                    true /*removeTask*/);
-            return true;
-        }
-
-        if (action == R.string.accessibility_app_usage_settings) {
-            mDigitalWellBeingToast.openAppUsageSettings(this);
-            return true;
-        }
-
-        final List<TaskSystemShortcut> shortcuts =
-                TaskOverlayFactory.INSTANCE.get(getContext()).getEnabledShortcuts(this);
-        final int count = shortcuts.size();
-        for (int i = 0; i < count; ++i) {
-            final TaskSystemShortcut menuOption = shortcuts.get(i);
-            if (menuOption.hasHandlerForAction(action)) {
-                OnClickListener onClickListener = menuOption.getOnClickListener(mActivity, this);
-                if (onClickListener != null) {
-                    onClickListener.onClick(this);
-                }
-                return true;
-            }
-        }
-
-        return super.performAccessibilityAction(action, arguments);
-    }
-
-    public RecentsView getRecentsView() {
-        return (RecentsView) getParent();
-    }
-
-    public void notifyTaskLaunchFailed(String tag) {
-        String msg = "Failed to launch task";
-        if (mTask != null) {
-            msg += " (task=" + mTask.key.baseIntent + " userId=" + mTask.key.userId + ")";
-        }
-        Log.w(tag, msg);
-        Toast.makeText(getContext(), R.string.activity_not_available, LENGTH_SHORT).show();
-    }
-
     /**
-     * Hides the icon and shows insets when this TaskView is about to be shown fullscreen.
-     * @param progress: 0 = show icon and no insets; 1 = don't show icon and show full insets.
+     * We update and subsequently draw these in {@link #setFullscreenProgress(float)}.
      */
-    public void setFullscreenProgress(float progress) {
-        progress = Utilities.boundToRange(progress, 0, 1);
-        if (progress == mFullscreenProgress) {
-            return;
-        }
-        mFullscreenProgress = progress;
-        boolean isFullscreen = mFullscreenProgress > 0;
-        mIconView.setVisibility(progress < 1 ? VISIBLE : INVISIBLE);
-        setClipChildren(!isFullscreen);
-        setClipToPadding(!isFullscreen);
+    public static class FullscreenDrawParams {
 
-        TaskThumbnailView thumbnail = getThumbnail();
-        boolean isMultiWindowMode = mActivity.getDeviceProfile().isMultiWindowMode;
-        RectF insets = thumbnail.getInsetsToDrawInFullscreen(isMultiWindowMode);
-        float currentInsetsLeft = insets.left * mFullscreenProgress;
-        float currentInsetsRight = insets.right * mFullscreenProgress;
-        mCurrentFullscreenParams.setInsets(currentInsetsLeft,
-                insets.top * mFullscreenProgress,
-                currentInsetsRight,
-                insets.bottom * mFullscreenProgress);
-        float fullscreenCornerRadius = isMultiWindowMode ? 0 : mWindowCornerRadius;
-        mCurrentFullscreenParams.setCornerRadius(Utilities.mapRange(mFullscreenProgress,
-                mCornerRadius, fullscreenCornerRadius) / getRecentsView().getScaleX());
-        // We scaled the thumbnail to fit the content (excluding insets) within task view width.
-        // Now that we are drawing left/right insets again, we need to scale down to fit them.
-        if (getWidth() > 0) {
-            mCurrentFullscreenParams.setScale(getWidth()
-                    / (getWidth() + currentInsetsLeft + currentInsetsRight));
+        private final float mCornerRadius;
+        private final float mWindowCornerRadius;
+
+        public RectF mCurrentDrawnInsets = new RectF();
+        public float mCurrentDrawnCornerRadius;
+        /**
+         * The current scale we apply to the thumbnail to adjust for new left/right insets.
+         */
+        public float mScale = 1;
+
+        public FullscreenDrawParams(Context context) {
+            mCornerRadius = TaskCornerRadius.get(context);
+            if (Utilities.ATLEAST_R)
+                mWindowCornerRadius = QuickStepContract.getWindowCornerRadius(context.getResources());
+            else
+                mWindowCornerRadius = mCornerRadius;
+            mCurrentDrawnCornerRadius = mCornerRadius;
         }
 
-        if (!getRecentsView().isTaskIconScaledDown(this)) {
-            // Some of the items in here are dependent on the current fullscreen params, but don't
-            // update them if the icon is supposed to be scaled down.
-            setIconScaleAndDim(progress, true /* invert */);
+        /**
+         * Sets the progress in range [0, 1]
+         */
+        public void setProgress(float fullscreenProgress, float parentScale, int previewWidth,
+                                DeviceProfile dp, PreviewPositionHelper pph) {
+            RectF insets = pph.getInsetsToDrawInFullscreen();
+
+            float currentInsetsLeft = insets.left * fullscreenProgress;
+            float currentInsetsRight = insets.right * fullscreenProgress;
+            mCurrentDrawnInsets.set(currentInsetsLeft, insets.top * fullscreenProgress,
+                    currentInsetsRight, insets.bottom * fullscreenProgress);
+            float fullscreenCornerRadius = dp.isMultiWindowMode ? 0 : mWindowCornerRadius;
+
+            mCurrentDrawnCornerRadius =
+                    Utilities.mapRange(fullscreenProgress, mCornerRadius, fullscreenCornerRadius)
+                            / parentScale;
+
+            // We scaled the thumbnail to fit the content (excluding insets) within task view width.
+            // Now that we are drawing left/right insets again, we need to scale down to fit them.
+            if (previewWidth > 0) {
+                mScale = previewWidth / (previewWidth + currentInsetsLeft + currentInsetsRight);
+            }
         }
 
-        thumbnail.setFullscreenParams(mCurrentFullscreenParams);
-        mOutlineProvider.setFullscreenParams(mCurrentFullscreenParams);
-        invalidateOutline();
     }
 
     public boolean isRunningTask() {
@@ -851,29 +1061,68 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         mSnapshotView.setOverlayEnabled(overlayEnabled);
     }
 
-    /**
-     * We update and subsequently draw these in {@link #setFullscreenProgress(float)}.
-     */
-    static class FullscreenDrawParams {
-        RectF mCurrentDrawnInsets = new RectF();
-        float mCurrentDrawnCornerRadius;
-        /** The current scale we apply to the thumbnail to adjust for new left/right insets. */
-        float mScale = 1;
+    private class FooterWrapper extends ViewOutlineProvider {
 
-        public FullscreenDrawParams(float cornerRadius) {
-            setCornerRadius(cornerRadius);
+        final View mView;
+        final ViewOutlineProvider mOldOutlineProvider;
+        final ViewOutlineProvider mDelegate;
+
+        final int mExpectedHeight;
+        final int mOldPaddingBottom;
+
+        int mAnimationOffset = 0;
+        int mEntryAnimationOffset = 0;
+
+        public FooterWrapper(View view) {
+            mView = view;
+            mOldOutlineProvider = view.getOutlineProvider();
+            mDelegate = mOldOutlineProvider == null
+                    ? ViewOutlineProvider.BACKGROUND : mOldOutlineProvider;
+
+            mExpectedHeight = getExpectedViewHeight(view);
+            mOldPaddingBottom = view.getPaddingBottom();
+
+            if (mOldOutlineProvider != null) {
+                view.setOutlineProvider(this);
+                view.setClipToOutline(true);
+            }
         }
 
-        public void setInsets(float left, float top, float right, float bottom) {
-            mCurrentDrawnInsets.set(left, top, right, bottom);
+        public void setVerticalShift(int shift) {
+            mView.setPadding(mView.getPaddingLeft(), mView.getPaddingTop(),
+                    mView.getPaddingRight(), mOldPaddingBottom + shift);
         }
 
-        public void setCornerRadius(float cornerRadius) {
-            mCurrentDrawnCornerRadius = cornerRadius;
+        @Override
+        public void getOutline(View view, Outline outline) {
+            mDelegate.getOutline(view, outline);
+            outline.offset(0, -mAnimationOffset - mEntryAnimationOffset);
         }
 
-        public void setScale(float scale) {
-            mScale = scale;
+        void updateFooterOffset() {
+            float offset = Utilities.or(mFooterVerticalOffset, mModalness);
+            mAnimationOffset = Math.round(mStackHeight * offset);
+            mView.setTranslationY(mAnimationOffset + mEntryAnimationOffset
+                    + mCurrentFullscreenParams.mCurrentDrawnInsets.bottom
+                    + mCurrentFullscreenParams.mCurrentDrawnInsets.top);
+            mView.invalidateOutline();
+        }
+
+        void release() {
+            mView.setOutlineProvider(mOldOutlineProvider);
+            setVerticalShift(0);
+        }
+
+        void animateEntry() {
+            ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+            animator.addUpdateListener(anim -> {
+                float factor = 1 - anim.getAnimatedFraction();
+                int totalShift = mExpectedHeight + mView.getPaddingBottom() - mOldPaddingBottom;
+                mEntryAnimationOffset = Math.round(factor * totalShift);
+                updateFooterOffset();
+            });
+            animator.setDuration(100);
+            animator.start();
         }
     }
 }

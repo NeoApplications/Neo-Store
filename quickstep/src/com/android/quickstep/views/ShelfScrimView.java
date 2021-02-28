@@ -15,6 +15,16 @@
  */
 package com.android.quickstep.views;
 
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
+import static com.android.launcher3.LauncherState.BACKGROUND_APP;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.QUICK_SWITCH;
+import static com.android.launcher3.anim.Interpolators.ACCEL;
+import static com.android.launcher3.anim.Interpolators.ACCEL_2;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+import static com.android.launcher3.util.SystemUiController.UI_STATE_SCRIM_VIEW;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -26,38 +36,31 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.animation.Interpolator;
 
+import com.android.launcher3.BaseQuickstepLauncher;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.LauncherState;
-import com.android.launcher3.QuickstepAppTransitionManagerImpl;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
+import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.uioverrides.states.OverviewState;
+import com.android.launcher3.util.OnboardingPrefs;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.ScrimView;
 import com.android.quickstep.SysUINavigationMode;
 import com.android.quickstep.SysUINavigationMode.Mode;
 import com.android.quickstep.SysUINavigationMode.NavigationModeChangeListener;
 import com.android.quickstep.util.LayoutUtils;
-import com.android.quickstep.util.ShelfPeekAnim;
-import com.saggitt.omega.OmegaPreferences;
-
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
-import static com.android.launcher3.LauncherState.BACKGROUND_APP;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.QUICK_SWITCH;
-import static com.android.launcher3.anim.Interpolators.ACCEL;
-import static com.android.launcher3.anim.Interpolators.ACCEL_2;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
 /**
  * Scrim used for all-apps and shelf in Overview
  * In transposed layout, it behaves as a simple color scrim.
  * In portrait layout, it draws a rounded rect such that
- *    From normal state to overview state, the shelf just fades in and does not move
- *    From overview state to all-apps state the shelf moves up and fades in to cover the screen
+ * From normal state to overview state, the shelf just fades in and does not move
+ * From overview state to all-apps state the shelf moves up and fades in to cover the screen
  */
-public class ShelfScrimView extends ScrimView implements NavigationModeChangeListener {
+public class ShelfScrimView extends ScrimView<BaseQuickstepLauncher>
+        implements NavigationModeChangeListener {
 
     // If the progress is more than this, shelf follows the finger, otherwise it moves faster to
     // cover the whole screen
@@ -69,38 +72,37 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
     // In transposed layout, we simply draw a flat color.
     private boolean mDrawingFlatColor;
 
-    // For shelf mode
-    protected int mEndAlpha;
+    public final int mMaxScrimAlpha;
     public float mRadius;
-    protected int mMaxScrimAlpha;
+    private final OnboardingPrefs mOnboardingPrefs;
     private final Paint mPaint;
-
+    // For shelf mode
+    public int mEndAlpha;
     // Mid point where the alpha changes
-    protected int mMidAlpha;
-    protected float mMidProgress;
+    public int mMidAlpha;
+    public float mMidProgress;
 
     // The progress at which the drag handle starts moving up with the shelf.
     private float mDragHandleProgress;
 
-    protected Interpolator mBeforeMidProgressColorInterpolator = ACCEL;
-    protected Interpolator mAfterMidProgressColorInterpolator = ACCEL;
+    public Interpolator mBeforeMidProgressColorInterpolator = ACCEL;
+    public Interpolator mAfterMidProgressColorInterpolator = ACCEL;
 
     private float mShiftRange;
 
-    private final float mShelfOffset;
     private float mTopOffset;
-    protected float mShelfTop;
+    public float mShelfTop;
     private float mShelfTopAtThreshold;
 
-    protected int mShelfColor;
+    public int mShelfColor;
     private int mRemainingScreenColor;
 
     private final Path mTempPath = new Path();
     private final Path mRemainingScreenPath = new Path();
     private boolean mRemainingScreenPathValid = false;
 
-    protected Mode mSysUINavigationMode;
-    protected final OmegaPreferences prefs;
+    public Mode mSysUINavigationMode;
+    private boolean mIsTwoZoneSwipeModel;
 
     public ShelfScrimView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,11 +111,10 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
         mEndAlpha = Color.alpha(mEndScrim);
         mRadius = BOTTOM_CORNER_RADIUS_RATIO * Themes.getDialogCornerRadius(context);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mOnboardingPrefs = mLauncher.getOnboardingPrefs();
 
-        mShelfOffset = context.getResources().getDimension(R.dimen.shelf_surface_offset);
         // Just assume the easiest UI for now, until we have the proper layout information.
         mDrawingFlatColor = true;
-        prefs = Utilities.getOmegaPrefs(context);
     }
 
     @Override
@@ -143,9 +144,11 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
             // Show the shelf more quickly before reaching overview progress.
             mBeforeMidProgressColorInterpolator = ACCEL_2;
             mAfterMidProgressColorInterpolator = ACCEL;
+            mIsTwoZoneSwipeModel = FeatureFlags.ENABLE_OVERVIEW_ACTIONS.get();
         } else {
             mBeforeMidProgressColorInterpolator = ACCEL;
             mAfterMidProgressColorInterpolator = Interpolators.clampToProgress(ACCEL, 0.5f, 1f);
+            mIsTwoZoneSwipeModel = false;
         }
     }
 
@@ -158,12 +161,19 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
             mRemainingScreenPathValid = false;
             mShiftRange = mLauncher.getAllAppsController().getShiftRange();
 
+            Context context = getContext();
             if ((OVERVIEW.getVisibleElements(mLauncher) & ALL_APPS_HEADER_EXTRA) == 0) {
-                mMidProgress = 1;
                 mDragHandleProgress = 1;
-                mMidAlpha = 0;
+                if (FeatureFlags.ENABLE_OVERVIEW_ACTIONS.get()
+                        && SysUINavigationMode.removeShelfFromOverview(context)) {
+                    // Fade in all apps background quickly to distinguish from swiping from nav bar.
+                    mMidAlpha = Themes.getAttrInteger(context, R.attr.allAppsInterimScrimAlpha);
+                    mMidProgress = OverviewState.getDefaultVerticalProgress(mLauncher);
+                } else {
+                    mMidAlpha = 0;
+                    mMidProgress = 1;
+                }
             } else {
-                Context context = getContext();
                 mMidAlpha = Themes.getAttrInteger(context, R.attr.allAppsInterimScrimAlpha);
                 mMidProgress =  OVERVIEW.getVerticalProgress(mLauncher);
                 Rect hotseatPadding = dp.getHotseatLayoutPadding();
@@ -173,10 +183,11 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
                         Math.min(hotseatSize, LayoutUtils.getDefaultSwipeHeight(context, dp));
                 mDragHandleProgress =  1 - (dragHandleTop / mShiftRange);
             }
-            mTopOffset = dp.getInsets().top - mShelfOffset;
+            mTopOffset = dp.getInsets().top - mDragHandleSize.y;
             mShelfTopAtThreshold = mShiftRange * SCRIM_CATCHUP_THRESHOLD + mTopOffset;
         }
         updateColors();
+        updateSysUiColors();
         updateDragHandleAlpha();
         invalidate();
     }
@@ -184,12 +195,15 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
     @Override
     public void updateColors() {
         super.updateColors();
+        mDragHandleOffset = 0;
         if (mDrawingFlatColor) {
-            mDragHandleOffset = 0;
             return;
         }
 
-        mDragHandleOffset = mShelfOffset - mDragHandleSize;
+        if (mProgress < mDragHandleProgress) {
+            mDragHandleOffset = mShiftRange * (mDragHandleProgress - mProgress);
+        }
+
         if (mProgress >= SCRIM_CATCHUP_THRESHOLD) {
             mShelfTop = mShiftRange * mProgress + mTopOffset;
         } else {
@@ -200,19 +214,10 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
         if (mProgress >= 1) {
             mRemainingScreenColor = 0;
             mShelfColor = 0;
-            ShelfPeekAnim shelfPeekAnim = ((QuickstepAppTransitionManagerImpl)
-                    mLauncher.getAppTransitionManager()).getShelfPeekAnim();
             LauncherState state = mLauncher.getStateManager().getState();
             if (mSysUINavigationMode == Mode.NO_BUTTON
                     && (state == BACKGROUND_APP || state == QUICK_SWITCH)
-                    && shelfPeekAnim.isPeeking()) {
-                // Show the shelf background when peeking during swipe up.
-                mShelfColor = setColorAlphaBound(mEndScrim, mMidAlpha);
-            }
-            mRemainingScreenColor = 0;
-            mShelfColor = 0;
-            if (mSysUINavigationMode == Mode.NO_BUTTON
-                    && mLauncher.getStateManager().getState() == BACKGROUND_APP) {
+                    && mLauncher.getShelfPeekAnim().isPeeking()) {
                 // Show the shelf background when peeking during swipe up.
                 mShelfColor = setColorAlphaBound(mEndScrim, mMidAlpha);
             }
@@ -234,10 +239,29 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
                             (float) 0, LINEAR));
             mRemainingScreenColor = setColorAlphaBound(mScrimColor, remainingScrimAlpha);
         }
+    }
 
-        if (mProgress < mDragHandleProgress) {
-            mDragHandleOffset += mShiftRange * (mDragHandleProgress - mProgress);
+    @Override
+    protected void updateSysUiColors() {
+        if (mDrawingFlatColor) {
+            super.updateSysUiColors();
+        } else {
+            // Use a light system UI (dark icons) if all apps is behind at least half of the
+            // status bar.
+            boolean forceChange = mShelfTop <= mLauncher.getDeviceProfile().getInsets().top / 2f;
+            if (forceChange) {
+                mLauncher.getSystemUiController().updateUiState(UI_STATE_SCRIM_VIEW, !mIsScrimDark);
+            } else {
+                mLauncher.getSystemUiController().updateUiState(UI_STATE_SCRIM_VIEW, 0);
+            }
         }
+    }
+
+    @Override
+    protected boolean shouldDragHandleBeVisible() {
+        boolean needsAllAppsEdu = mIsTwoZoneSwipeModel
+                && !mOnboardingPrefs.hasReachedMaxCount(OnboardingPrefs.ALL_APPS_COUNT);
+        return needsAllAppsEdu || super.shouldDragHandleBeVisible();
     }
 
     @Override
@@ -288,20 +312,7 @@ public class ShelfScrimView extends ScrimView implements NavigationModeChangeLis
     }
 
     @Override
-    protected void onDrawRoundRect(Canvas canvas, float left, float top, float right, float bottom,
-                                   float rx, float ry, Paint paint) {
-        canvas.drawRoundRect(left, top, right, bottom, rx, ry, paint);
-    }
-
-    public int getShelfColor() {
-        return mShelfColor;
-    }
-
-    protected float getMidProgress() {
-        return OVERVIEW.getVerticalProgress(mLauncher);
-    }
-
-    protected int getMidAlpha() {
-        return Themes.getAttrInteger(getContext(), R.attr.allAppsInterimScrimAlpha);
+    public float getVisualTop() {
+        return mShelfTop;
     }
 }

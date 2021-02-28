@@ -16,6 +16,8 @@
 
 package com.android.launcher3.model;
 
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -26,21 +28,21 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.android.launcher3.FolderInfo;
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherAppWidgetHost;
-import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherProvider;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.LauncherSettings.Settings;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.WorkspaceItemInfo;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.GraphicsUtils;
-import com.android.launcher3.model.BgDataModel.Callbacks;
+import com.android.launcher3.logging.FileLog;
+import com.android.launcher3.model.data.FolderInfo;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.LauncherAppWidgetInfo;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.saggitt.omega.iconpack.IconPackManager;
@@ -51,8 +53,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
-
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import java.util.stream.Collectors;
 
 /**
  * Class for handling model updates.
@@ -117,8 +118,9 @@ public class ModelWriter {
         ItemInfo modelItem = mBgDataModel.itemsIdMap.get(itemId);
         if (modelItem != null && item != modelItem) {
             // check all the data is consistent
-            if (!Utilities.IS_DEBUG_DEVICE && !FeatureFlags.IS_DOGFOOD_BUILD &&
-                    modelItem instanceof WorkspaceItemInfo && item instanceof WorkspaceItemInfo) {
+            if (!Utilities.IS_DEBUG_DEVICE && !FeatureFlags.IS_STUDIO_BUILD
+                    && modelItem instanceof WorkspaceItemInfo
+                    && item instanceof WorkspaceItemInfo) {
                 if (modelItem.title.toString().equals(item.title.toString()) &&
                         modelItem.getIntent().filterEquals(item.getIntent()) &&
                         modelItem.id == item.id &&
@@ -197,7 +199,7 @@ public class ModelWriter {
         item.spanX = spanX;
         item.spanY = spanY;
 
-        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, () ->
+        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, () ->
                 new ContentWriter(mContext)
                         .put(Favorites.CONTAINER, item.container)
                         .put(Favorites.CELLX, item.cellX)
@@ -209,7 +211,7 @@ public class ModelWriter {
     }
 
     private void executeUpdateItem(ItemInfo item, Supplier<ContentWriter> writer) {
-        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, writer));
+        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, writer));
     }
 
     public static void modifyItemInDatabase(Context context, final ItemInfo item, String alias,
@@ -221,7 +223,6 @@ public class ModelWriter {
             writer.put(Favorites.TITLE_ALIAS, alias);
             writer.put(Favorites.SWIPE_UP_ACTION, swipeUpAction);
             if (updateIcon) {
-                Log.d(TAG, "Updating Workspace Icon : " + icon);
                 writer.put(Favorites.CUSTOM_ICON, icon != null ? GraphicsUtils.flattenBitmap(icon) : null);
                 writer.put(Favorites.CUSTOM_ICON_ENTRY, iconEntry != null ? iconEntry.toString() : null);
             }
@@ -292,10 +293,10 @@ public class ModelWriter {
      */
     public void deleteItemsFromDatabase(final Collection<? extends ItemInfo> items) {
         ModelVerifier verifier = new ModelVerifier();
-        /*FileLog.d(TAG, "removing items from db " + items.stream().map(
+        FileLog.d(TAG, "removing items from db " + items.stream().map(
                 (item) -> item.getTargetComponent() == null ? ""
                         : item.getTargetComponent().getPackageName()).collect(
-                Collectors.joining(",")), new Exception());*/
+                Collectors.joining(",")), new Exception());
         enqueueDeleteRunnable(() -> {
             for (ItemInfo item : items) {
                 final Uri uri = Favorites.getContentUri(item.id);
@@ -346,7 +347,7 @@ public class ModelWriter {
      */
     public void prepareToUndoDelete() {
         if (!mPreparingToUndo) {
-            if (!mDeleteRunnables.isEmpty() && FeatureFlags.IS_DOGFOOD_BUILD) {
+            if (!mDeleteRunnables.isEmpty() && FeatureFlags.IS_STUDIO_BUILD) {
                 throw new IllegalStateException("There are still uncommitted delete operations!");
             }
             mDeleteRunnables.clear();
@@ -375,12 +376,15 @@ public class ModelWriter {
         mDeleteRunnables.clear();
     }
 
-    public void abortDelete(int pageToBindFirst) {
+    /**
+     * Aborts a previous delete operation pending commit
+     */
+    public void abortDelete() {
         mPreparingToUndo = false;
         mDeleteRunnables.clear();
         // We do a full reload here instead of just a rebind because Folders change their internal
         // state when dragging an item out, which clobbers the rebind unless we load from the DB.
-        mModel.forceReload(pageToBindFirst);
+        mModel.forceReload();
     }
 
     private class UpdateItemRunnable extends UpdateItemBaseRunnable {
@@ -497,7 +501,7 @@ public class ModelWriter {
         }
 
         void verifyModel() {
-            if (!mVerifyChanges || mModel.getCallback() == null) {
+            if (!mVerifyChanges || !mModel.hasCallbacks()) {
                 return;
             }
 
@@ -513,11 +517,9 @@ public class ModelWriter {
                     // Bound model has not changed during the job
                     return;
                 }
+
                 // Bound model was changed between submitting the job and executing the job
-                Callbacks callbacks = mModel.getCallback();
-                if (callbacks != null) {
-                    callbacks.rebindModel();
-                }
+                mModel.rebindCallbacks();
             });
         }
     }

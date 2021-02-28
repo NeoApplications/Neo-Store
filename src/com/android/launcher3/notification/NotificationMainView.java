@@ -34,10 +34,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.anim.AnimationSuccessListener;
+import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.touch.BaseSwipeDetector;
 import com.android.launcher3.touch.OverScroll;
 import com.android.launcher3.touch.SingleAxisSwipeDetector;
@@ -51,17 +51,17 @@ import com.android.launcher3.util.Themes;
 @TargetApi(Build.VERSION_CODES.N)
 public class NotificationMainView extends FrameLayout implements SingleAxisSwipeDetector.Listener {
 
-    private static FloatProperty<NotificationMainView> CONTENT_TRANSLATION =
+    private static final FloatProperty<NotificationMainView> CONTENT_TRANSLATION =
             new FloatProperty<NotificationMainView>("contentTranslation") {
-        @Override
-        public void setValue(NotificationMainView view, float v) {
-            view.setContentTranslation(v);
-        }
+                @Override
+                public void setValue(NotificationMainView view, float v) {
+                    view.setContentTranslation(v);
+                }
 
-        @Override
-        public Float get(NotificationMainView view) {
-            return view.mTextAndBackground.getTranslationX();
-        }
+                @Override
+                public Float get(NotificationMainView view) {
+                    return view.mTextAndBackground.getTranslationX();
+                }
     };
 
     // This is used only to track the notification view, so that it can be properly logged.
@@ -176,7 +176,8 @@ public class NotificationMainView extends FrameLayout implements SingleAxisSwipe
 
     // SingleAxisSwipeDetector.Listener's
     @Override
-    public void onDragStart(boolean start) { }
+    public void onDragStart(boolean start, float startDisplacement) {
+    }
 
 
     @Override

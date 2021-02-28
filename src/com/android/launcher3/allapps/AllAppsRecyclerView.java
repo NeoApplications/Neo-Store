@@ -15,6 +15,12 @@
  */
 package com.android.launcher3.allapps;
 
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.UNSPECIFIED;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -27,21 +33,21 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.BaseRecyclerView;
 import com.android.launcher3.DeviceProfile;
-import com.android.launcher3.ItemInfo;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
+import com.android.launcher3.allapps.AllAppsGridAdapter.AppsGridLayoutManager;
 import com.android.launcher3.compat.AccessibilityManagerCompat;
 import com.android.launcher3.logging.StatsLogUtils.LogContainerProvider;
+import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import com.android.launcher3.views.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.View.MeasureSpec.UNSPECIFIED;
 
 /**
  * A RecyclerView with custom fast scroll support for the all apps view.
@@ -49,16 +55,18 @@ import static android.view.View.MeasureSpec.UNSPECIFIED;
 public class AllAppsRecyclerView extends BaseRecyclerView implements LogContainerProvider {
 
     private AlphabeticalAppsList mApps;
-    private AllAppsFastScrollHelper mFastScrollHelper;
     private final int mNumAppsPerRow;
 
     // The specific view heights that we use to calculate scroll
-    private SparseIntArray mViewHeights = new SparseIntArray();
-    private SparseIntArray mCachedScrollPositions = new SparseIntArray();
+    private final SparseIntArray mViewHeights = new SparseIntArray();
+    private final SparseIntArray mCachedScrollPositions = new SparseIntArray();
+    private final AllAppsFastScrollHelper mFastScrollHelper;
 
     // The empty-search result background
     private AllAppsBackgroundDrawable mEmptySearchBackground;
     private int mEmptySearchBackgroundTopOffset;
+
+    private ArrayList<View> mAutoSizedOverlays = new ArrayList<>();
 
     public AllAppsRecyclerView(Context context) {
         this(context, null);
@@ -78,15 +86,15 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
         Resources res = getResources();
         mEmptySearchBackgroundTopOffset = res.getDimensionPixelSize(
                 R.dimen.all_apps_empty_search_bg_top_offset);
-        mNumAppsPerRow = LauncherAppState.getIDP(context).numColsDrawer;
+        mNumAppsPerRow = LauncherAppState.getIDP(context).numColumns;
+        mFastScrollHelper = new AllAppsFastScrollHelper(this);
     }
 
     /**
      * Sets the list of apps in this view, used to determine the fastscroll position.
      */
-    public void setApps(AlphabeticalAppsList apps, boolean usingTabs) {
+    public void setApps(AlphabeticalAppsList apps) {
         mApps = apps;
-        mFastScrollHelper = new AllAppsFastScrollHelper(this, apps);
     }
 
     public AlphabeticalAppsList getApps() {
@@ -94,7 +102,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
     }
 
     private void updatePoolSize() {
-        DeviceProfile grid = Launcher.getLauncher(getContext()).getDeviceProfile();
+        DeviceProfile grid = BaseDraggingActivity.fromContext(getContext()).getDeviceProfile();
         RecyclerView.RecycledViewPool pool = getRecycledViewPool();
         int approxRows = (int) Math.ceil(grid.availableHeightPx / grid.allAppsIconSizePx);
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_EMPTY_SEARCH, 1);
@@ -104,7 +112,6 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
 
         mViewHeights.clear();
         mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_ICON, grid.allAppsCellHeightPx);
-        mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_FOLDER, grid.allAppsCellHeightPx);
     }
 
     /**
@@ -115,13 +122,13 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
         if (mScrollbar != null) {
             mScrollbar.reattachThumbToScroll();
         }
-        /*if (getLayoutManager() instanceof AppsGridLayoutManager) {
+        if (getLayoutManager() instanceof AppsGridLayoutManager) {
             AppsGridLayoutManager layoutManager = (AppsGridLayoutManager) getLayoutManager();
             if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                 // We are at the top, so don't scrollToPosition (would cause unnecessary relayout).
                 return;
             }
-        }*/
+        }
         scrollToPosition(0);
     }
 
@@ -144,15 +151,37 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         updateEmptySearchBackgroundBounds();
         updatePoolSize();
+        for (int i = 0; i < mAutoSizedOverlays.size(); i++) {
+            View overlay = mAutoSizedOverlays.get(i);
+            overlay.measure(makeMeasureSpec(w, EXACTLY), makeMeasureSpec(w, EXACTLY));
+            overlay.layout(0, 0, w, h);
+        }
+    }
+
+    /**
+     * Adds an overlay that automatically rescales with the recyclerview.
+     */
+    public void addAutoSizedOverlay(View overlay) {
+        mAutoSizedOverlays.add(overlay);
+        getOverlay().add(overlay);
+        onSizeChanged(getWidth(), getHeight(), getWidth(), getHeight());
+    }
+
+    /**
+     * Clears auto scaling overlay views added by #addAutoSizedOverlay
+     */
+    public void clearAutoSizedOverlays() {
+        for (View v : mAutoSizedOverlays) {
+            getOverlay().remove(v);
+        }
+        mAutoSizedOverlays.clear();
     }
 
     @Override
-    public void fillInLogContainerData(View v, ItemInfo info, Target target, Target targetParent) {
-        if (mApps.hasFilter()) {
-            targetParent.containerType = ContainerType.SEARCHRESULT;
-        } else {
-            targetParent.containerType = ContainerType.ALLAPPS;
-        }
+    public void fillInLogContainerData(ItemInfo childInfo, Target child,
+                                       ArrayList<Target> parents) {
+        parents.add(newContainerTarget(
+                getApps().hasFilter() ? ContainerType.SEARCHRESULT : ContainerType.ALLAPPS));
     }
 
     public void onSearchResultsChanged() {
@@ -194,9 +223,6 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
             return "";
         }
 
-        // Stop the scroller if it is scrolling
-        stopScroll();
-
         // Find the fastscroll section that maps to this touch fraction
         List<AlphabeticalAppsList.FastScrollSectionInfo> fastScrollSections =
                 mApps.getFastScrollerSections();
@@ -209,10 +235,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
             lastInfo = info;
         }
 
-        // Update the fast scroll
-        int scrollY = getCurrentScrollY();
-        int availableScrollHeight = getAvailableScrollHeight();
-        mFastScrollHelper.smoothScrollToSection(scrollY, availableScrollHeight, lastInfo);
+        mFastScrollHelper.smoothScrollToSection(lastInfo);
         return lastInfo.sectionName;
     }
 
@@ -230,7 +253,6 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
                 mCachedScrollPositions.clear();
             }
         });
-        mFastScrollHelper.onSetAdapter((AllAppsGridAdapter) adapter);
     }
 
     @Override
@@ -428,7 +450,6 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
     public boolean hasOverlappingRendering() {
         return false;
     }
-
     public void setScrollbarColor(int color) {
         mScrollbar.setColor(color, Color.WHITE);
     }

@@ -28,7 +28,7 @@
         launcher:containerType="workspace"
         launcher:pageIndicator="@+id/page_indicator"/>
 
-    <com.saggitt.omega.blur.CustomHotseat
+    <com.android.launcher3.Hotseat
         android:id="@+id/hotseat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,7 +43,7 @@
 
         <include
             android:id="@id/search_container_all_apps"
-            layout="@layout/search_container_all_apps_google" />
+            layout="@layout/search_container_all_apps" />
 
     </com.android.launcher3.InsettableFrameLayout>
 

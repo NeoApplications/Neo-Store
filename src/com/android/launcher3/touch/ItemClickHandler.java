@@ -15,6 +15,16 @@
  */
 package com.android.launcher3.touch;
 
+import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
+import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_FOLDER_OPEN;
+import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_ALL_APPS;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_BY_PUBLISHER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_QUIET_USER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.LauncherApps;
@@ -29,36 +39,28 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.AppInfo;
 import com.android.launcher3.BubbleTextView;
-import com.android.launcher3.FolderInfo;
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
-import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherAppWidgetProviderInfo;
-import com.android.launcher3.PromiseAppInfo;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.WorkspaceItemInfo;
-import com.android.launcher3.compat.AppWidgetManagerCompat;
-import com.android.launcher3.compat.PackageInstallerCompat;
 import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderIcon;
+import com.android.launcher3.logging.StatsLogManager;
+import com.android.launcher3.model.data.AppInfo;
+import com.android.launcher3.model.data.FolderInfo;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.LauncherAppWidgetInfo;
+import com.android.launcher3.model.data.PromiseAppInfo;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
+import com.android.launcher3.pm.InstallSessionHelper;
+import com.android.launcher3.testing.TestLogging;
+import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
-import com.saggitt.omega.util.Config;
-import com.saggitt.omega.util.DbHelper;
-
-import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_BY_PUBLISHER;
-import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
-import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_QUIET_USER;
-import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
-import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
-import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
-import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
-import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_ALL_APPS;
+import com.android.launcher3.widget.WidgetManagerHelper;
 
 /**
  * Class for handling clicks on workspace and all-apps items
@@ -75,8 +77,6 @@ public class ItemClickHandler {
     public static final OnClickListener getInstance(String sourceContainer) {
         return v -> onClick(v, sourceContainer);
     }
-
-    public static final OnClickListener FOLDER_COVER_INSTANCE = ItemClickHandler::onClickFolderCover;
 
     private static void onClick(View v, String sourceContainer) {
         // Make sure that rogue clicks don't get through while allapps is launching, or after the
@@ -96,30 +96,10 @@ public class ItemClickHandler {
         } else if (tag instanceof AppInfo) {
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher,
                     sourceContainer == null ? CONTAINER_ALL_APPS : sourceContainer);
-            if (Utilities.getOmegaPrefs(Launcher.mContext).getSortMode() == Config.SORT_MOST_USED) {
-                Utilities.getOmegaPrefs(Launcher.mContext).updateSortApps();
-                Log.d(TAG, "Sort Mode Most Used");
-            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);
             }
-        }
-    }
-
-    private static void onClickFolderCover(View v) {
-        if (v.getWindowToken() == null) {
-            return;
-        }
-
-        Launcher launcher = Launcher.getLauncher(v.getContext());
-        if (!launcher.getWorkspace().isFinishedSwitchingState()) {
-            return;
-        }
-
-        Object tag = v.getTag();
-        if (tag instanceof FolderInfo) {
-            onClickAppShortcut(v, ((FolderInfo) tag).getCoverInfo(), launcher, null);
         }
     }
 
@@ -133,6 +113,8 @@ public class ItemClickHandler {
         if (!folder.isOpen() && !folder.isDestroyed()) {
             // Open the requested folder
             folder.animateOpen();
+            StatsLogManager.newInstance(v.getContext()).logger().withItemInfo(folder.mInfo)
+                    .log(LAUNCHER_FOLDER_OPEN);
         }
     }
 
@@ -147,8 +129,8 @@ public class ItemClickHandler {
 
         final LauncherAppWidgetInfo info = (LauncherAppWidgetInfo) v.getTag();
         if (v.isReadyForClickSetup()) {
-            LauncherAppWidgetProviderInfo appWidgetInfo = AppWidgetManagerCompat
-                    .getInstance(launcher).findProvider(info.providerName, info.user);
+            LauncherAppWidgetProviderInfo appWidgetInfo = new WidgetManagerHelper(launcher)
+                    .findProvider(info.providerName, info.user);
             if (appWidgetInfo == null) {
                 return;
             }
@@ -193,8 +175,8 @@ public class ItemClickHandler {
     private static void startMarketIntentForPackage(View v, Launcher launcher, String packageName) {
         ItemInfo item = (ItemInfo) v.getTag();
         if (Utilities.ATLEAST_Q) {
-            PackageInstallerCompat pkgInstaller = PackageInstallerCompat.getInstance(launcher);
-            SessionInfo sessionInfo = pkgInstaller.getActiveSessionInfo(item.user, packageName);
+            SessionInfo sessionInfo = InstallSessionHelper.INSTANCE.get(launcher)
+                    .getActiveSessionInfo(item.user, packageName);
             if (sessionInfo != null) {
                 LauncherApps launcherApps = launcher.getSystemService(LauncherApps.class);
                 try {
@@ -248,8 +230,9 @@ public class ItemClickHandler {
 
         // Check for abandoned promise
         if ((v instanceof BubbleTextView) && shortcut.hasPromiseIconUi()) {
-            String packageName = shortcut.intent.getComponent() != null ?
-                    shortcut.intent.getComponent().getPackageName() : shortcut.intent.getPackage();
+            String packageName = shortcut.getIntent().getComponent() != null
+                    ? shortcut.getIntent().getComponent().getPackageName()
+                    : shortcut.getIntent().getPackage();
             if (!TextUtils.isEmpty(packageName)) {
                 onClickPendingAppItem(v, launcher, packageName,
                         shortcut.hasStatusFlag(WorkspaceItemInfo.FLAG_INSTALL_SESSION_ACTIVE));
@@ -263,6 +246,8 @@ public class ItemClickHandler {
 
     private static void startAppShortcutOrInfoActivity(View v, ItemInfo item, Launcher launcher,
             @Nullable String sourceContainer) {
+        TestLogging.recordEvent(
+                TestProtocol.SEQUENCE_MAIN, "start: startAppShortcutOrInfoActivity");
         Intent intent;
         if (item instanceof PromiseAppInfo) {
             PromiseAppInfo promiseAppInfo = (PromiseAppInfo) item;
@@ -289,13 +274,6 @@ public class ItemClickHandler {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
         }
-        if (item instanceof AppInfo) {
-            Log.i(TAG, "Clicking App " + item.title);
-            DbHelper db = new DbHelper(launcher.getApplicationContext());
-            db.updateAppCount(((AppInfo) item).componentName.getPackageName());
-            db.close();
-        }
         launcher.startActivitySafely(v, intent, item, sourceContainer);
-        launcher.getUserEventDispatcher().logAppLaunch(v, intent, item.user);
     }
 }

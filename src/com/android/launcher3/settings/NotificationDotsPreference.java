@@ -15,9 +15,11 @@
  */
 package com.android.launcher3.settings;
 
+import static com.android.launcher3.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
+import static com.android.launcher3.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,15 +29,13 @@ import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import com.android.launcher3.R;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.SecureSettingsObserver;
-
-import static com.android.launcher3.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
-import static com.android.launcher3.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
 
 /**
  * A {@link Preference} for indicating notification dots status.

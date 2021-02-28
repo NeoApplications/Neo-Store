@@ -74,25 +74,6 @@ public class ShadowDrawable extends Drawable {
         canvas.drawBitmap(mState.mLastDrawnBitmap, null, bounds, mPaint);
     }
 
-    public static ShadowDrawable wrap(Context context, Drawable d, int shadowColorRes,
-                                      float elevationDps, int darkTintColorRes) {
-        ShadowDrawable sd = new ShadowDrawable();
-        sd.setChild(d);
-        sd.mState.mShadowColor = ContextCompat.getColor(context, shadowColorRes);
-        sd.mState.mShadowSize = (int) OmegaUtilsKt.dpToPx(elevationDps);
-        sd.mState.mDarkTintColor = ContextCompat.getColor(context, darkTintColorRes);
-        sd.mState.mIntrinsicHeight = d.getIntrinsicHeight() + 2 * sd.mState.mShadowSize;
-        sd.mState.mIntrinsicWidth = d.getIntrinsicWidth() + 2 * sd.mState.mShadowSize;
-        sd.mState.mChangingConfigurations = d.getChangingConfigurations();
-
-        sd.mState.mChildState = d.getConstantState();
-        return sd;
-    }
-
-    public Drawable setChild(Drawable newDrawable) {
-        return (new ShadowDrawableState(mState, newDrawable)).newDrawable();
-    }
-
     @Override
     public void setAlpha(int alpha) {
         mPaint.setAlpha(alpha);
@@ -132,7 +113,7 @@ public class ShadowDrawable extends Drawable {
 
     @Override
     public void applyTheme(Resources.Theme t) {
-        TypedArray ta = t.obtainStyledAttributes(new int[] {R.attr.isWorkspaceDarkText});
+        TypedArray ta = t.obtainStyledAttributes(new int[]{R.attr.isWorkspaceDarkText});
         boolean isDark = ta.getBoolean(0, false);
         ta.recycle();
         if (mState.mIsDark != isDark) {
@@ -142,42 +123,57 @@ public class ShadowDrawable extends Drawable {
         }
     }
 
-    private void regenerateBitmapCache() {
-        Bitmap bitmap = Bitmap.createBitmap(mState.mIntrinsicWidth, mState.mIntrinsicHeight,
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+    public static ShadowDrawable wrap(Context context, Drawable d, int shadowColorRes,
+                                      float elevationDps, int darkTintColorRes) {
+        ShadowDrawable sd = new ShadowDrawable();
+        sd.setChild(d);
+        sd.mState.mShadowColor = ContextCompat.getColor(context, shadowColorRes);
+        sd.mState.mShadowSize = (int) OmegaUtilsKt.dpToPx(elevationDps);
+        sd.mState.mDarkTintColor = ContextCompat.getColor(context, darkTintColorRes);
+        sd.mState.mIntrinsicHeight = d.getIntrinsicHeight() + 2 * sd.mState.mShadowSize;
+        sd.mState.mIntrinsicWidth = d.getIntrinsicWidth() + 2 * sd.mState.mShadowSize;
+        sd.mState.mChangingConfigurations = d.getChangingConfigurations();
 
+        sd.mState.mChildState = d.getConstantState();
+        return sd;
+    }
+
+    private void regenerateBitmapCache() {
         // Call mutate, so that the pixel allocation by the underlying vector drawable is cleared.
         Drawable d = mState.mChildState.newDrawable().mutate();
         d.setBounds(mState.mShadowSize, mState.mShadowSize,
                 mState.mIntrinsicWidth - mState.mShadowSize,
                 mState.mIntrinsicHeight - mState.mShadowSize);
         d.setTint(mState.mIsDark ? mState.mDarkTintColor : Color.WHITE);
-        d.draw(canvas);
 
-        // Do not draw shadow on dark theme
-        if (!mState.mIsDark) {
+        if (mState.mIsDark) {
+            // Dark text do not have any shadow, but just the bitmap
+            mState.mLastDrawnBitmap = BitmapRenderer.createHardwareBitmap(
+                    mState.mIntrinsicWidth, mState.mIntrinsicHeight, d::draw);
+        } else {
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
             paint.setMaskFilter(new BlurMaskFilter(mState.mShadowSize, BlurMaskFilter.Blur.NORMAL));
+
+            // Generate the shadow bitmap
             int[] offset = new int[2];
-            Bitmap shadow = bitmap.extractAlpha(paint, offset);
+            Bitmap shadow = BitmapRenderer.createSoftwareBitmap(
+                    mState.mIntrinsicWidth, mState.mIntrinsicHeight, d::draw)
+                    .extractAlpha(paint, offset);
 
             paint.setMaskFilter(null);
             paint.setColor(mState.mShadowColor);
-            bitmap.eraseColor(Color.TRANSPARENT);
-            canvas.drawBitmap(shadow, offset[0], offset[1], paint);
-            d.draw(canvas);
+            mState.mLastDrawnBitmap = BitmapRenderer.createHardwareBitmap(
+                    mState.mIntrinsicWidth, mState.mIntrinsicHeight, c -> {
+                        c.drawBitmap(shadow, offset[0], offset[1], paint);
+                        d.draw(c);
+                    });
         }
-
-        if (BitmapRenderer.USE_HARDWARE_BITMAP) {
-            bitmap = bitmap.copy(Bitmap.Config.HARDWARE, false);
-        }
-        mState.mLastDrawnBitmap = bitmap;
     }
+
 
     @Override
     public void inflate(Resources r, XmlPullParser parser, AttributeSet attrs,
-            Resources.Theme theme) throws XmlPullParserException, IOException {
+                        Resources.Theme theme) throws XmlPullParserException, IOException {
         super.inflate(r, parser, attrs, theme);
 
         final TypedArray a = theme == null
@@ -205,6 +201,10 @@ public class ShadowDrawable extends Drawable {
         }
     }
 
+    public Drawable setChild(Drawable newDrawable) {
+        return (new ShadowDrawableState(mState, newDrawable)).newDrawable();
+    }
+
     private static class ShadowDrawableState extends ConstantState {
 
         int mChangingConfigurations;
@@ -220,6 +220,7 @@ public class ShadowDrawable extends Drawable {
         ConstantState mChildState;
 
         private ShadowDrawableState() {
+
         }
 
         private ShadowDrawableState(ShadowDrawableState oldState, Drawable newDrawable) {

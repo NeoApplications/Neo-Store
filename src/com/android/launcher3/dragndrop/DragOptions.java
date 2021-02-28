@@ -25,16 +25,25 @@ import com.android.launcher3.DropTarget;
  */
 public class DragOptions {
 
-    /** Whether or not an accessible drag operation is in progress. */
+    /**
+     * Whether or not an accessible drag operation is in progress.
+     */
     public boolean isAccessibleDrag = false;
 
-    /** Specifies the start location for the system DnD, null when using internal DnD */
-    public Point systemDndStartPoint = null;
+    /**
+     * Specifies the start location for a simulated DnD (like system drag or accessibility drag),
+     * null when using internal DnD
+     */
+    public Point simulatedDndStartPoint = null;
 
-    /** Determines when a pre-drag should transition to a drag. By default, this is immediate. */
+    /**
+     * Determines when a pre-drag should transition to a drag. By default, this is immediate.
+     */
     public PreDragCondition preDragCondition = null;
 
-    /** Scale of the icons over the workspace icon size. */
+    /**
+     * Scale of the icons over the workspace icon size.
+     */
     public float intrinsicIconScaleFactor = 1f;
 
     public boolean isFlingToDelete;

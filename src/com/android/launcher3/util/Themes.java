@@ -48,12 +48,12 @@ public class Themes {
 
         if (darkTheme) {
             return wallpaperColorInfo.supportsDarkText() ?
-                    R.style.AppTheme_Dark_DarkText : wallpaperColorInfo.isDark() ?
-                            R.style.AppTheme_Dark_DarkMainColor : R.style.AppTheme_Dark;
+                    R.style.AppTheme_Dark_DarkText : wallpaperColorInfo.isMainColorDark() ?
+                    R.style.AppTheme_Dark_DarkMainColor : R.style.AppTheme_Dark;
         } else {
             return wallpaperColorInfo.supportsDarkText() ?
-                    R.style.AppTheme_DarkText : wallpaperColorInfo.isDark() ?
-                            R.style.AppTheme_DarkMainColor : R.style.AppTheme;
+                    R.style.AppTheme_DarkText : wallpaperColorInfo.isMainColorDark() ?
+                    R.style.AppTheme_DarkMainColor : R.style.AppTheme;
         }
     }
 
@@ -77,12 +77,8 @@ public class Themes {
         return value;
     }
 
-    /*
     public static int getColorAccent(Context context) {
         return getAttrColor(context, android.R.attr.colorAccent);
-    }*/
-    public static int getColorAccent(Context context) {
-        return Utilities.getOmegaPrefs(context).getAccentColor();
     }
 
     public static int getAttrColor(Context context, int attr) {
@@ -117,10 +113,17 @@ public class Themes {
      * Returns the alpha corresponding to the theme attribute {@param attr}, in the range [0, 255].
      */
     public static int getAlpha(Context context, int attr) {
+        return (int) (255 * getFloat(context, attr, 0) + 0.5f);
+    }
+
+    /**
+     * Returns the alpha corresponding to the theme attribute {@param attr}
+     */
+    public static float getFloat(Context context, int attr, float defValue) {
         TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
-        float alpha = ta.getFloat(0, 0);
+        float value = ta.getFloat(0, defValue);
         ta.recycle();
-        return (int) (255 * alpha + 0.5f);
+        return value;
     }
 
     /**

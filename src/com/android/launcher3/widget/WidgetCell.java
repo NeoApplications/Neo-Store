@@ -31,12 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.launcher3.BaseActivity;
+import com.android.launcher3.CheckLongPressHelper;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
-import com.android.launcher3.SimpleOnStylusPressListener;
-import com.android.launcher3.StylusEventHelper;
 import com.android.launcher3.WidgetPreviewLoader;
-import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.icons.BaseIconFactory;
 import com.android.launcher3.model.WidgetItem;
 
@@ -56,8 +54,10 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     private static final int FADE_IN_DURATION_MS = 90;
 
-    /** Widget cell width is calculated by multiplying this factor to grid cell width. */
-    private static final float WIDTH_SCALE = 2.6f;
+    /**
+     * Widget cell width is calculated by multiplying this factor to grid cell width.
+     */
+    private static final float WIDTH_SCALE = 3f;
 
     /** Widget preview width is calculated by multiplying this factor to the widget cell width. */
     private static final float PREVIEW_SCALE = 0.8f;
@@ -72,7 +72,6 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
     protected WidgetItem mItem;
 
     private WidgetPreviewLoader mWidgetPreviewLoader;
-    private StylusEventHelper mStylusEventHelper;
 
     protected CancellationSignal mActiveRequest;
     private boolean mAnimatePreview = true;
@@ -81,7 +80,8 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
     private Bitmap mDeferredBitmap;
 
     protected final BaseActivity mActivity;
-    protected DeviceProfile mDeviceProfile;
+    protected final DeviceProfile mDeviceProfile;
+    private final CheckLongPressHelper mLongPressHelper;
 
     public WidgetCell(Context context) {
         this(context, null);
@@ -96,8 +96,9 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
         mActivity = BaseActivity.fromContext(context);
         mDeviceProfile = mActivity.getDeviceProfile();
-        mStylusEventHelper = new StylusEventHelper(new SimpleOnStylusPressListener(this), this);
+        mLongPressHelper = new CheckLongPressHelper(this);
 
+        mLongPressHelper.setLongPressTimeoutFactor(1);
         setContainerWidth();
         setWillNotDraw(false);
         setClipToPadding(false);
@@ -105,7 +106,7 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
     }
 
     private void setContainerWidth() {
-        mCellSize = (int) (mDeviceProfile.cellWidthPx * WIDTH_SCALE);
+        mCellSize = (int) (mDeviceProfile.allAppsIconSizePx * WIDTH_SCALE);
         mPresetPreviewSize = (int) (mCellSize * PREVIEW_SCALE);
     }
 
@@ -182,10 +183,8 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
             return;
         }
         if (bitmap != null) {
-            mWidgetImage.setBitmap(bitmap,
-                    DrawableFactory.INSTANCE.get(getContext()).getBadgeForUser(mItem.user,
-                            getContext(), BaseIconFactory.getBadgeSizeForIconSize(
-                                    mDeviceProfile.allAppsIconSizePx)));
+            mWidgetImage.setBitmap(bitmap, mWidgetPreviewLoader.getBadgeForUser(mItem.user,
+                    BaseIconFactory.getBadgeSizeForIconSize(mDeviceProfile.allAppsIconSizePx)));
             if (mAnimatePreview) {
                 mWidgetImage.setAlpha(0f);
                 ViewPropertyAnimator anim = mWidgetImage.animate();
@@ -206,18 +205,22 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-            int oldTop, int oldRight, int oldBottom) {
+                               int oldTop, int oldRight, int oldBottom) {
         removeOnLayoutChangeListener(this);
         ensurePreview();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        boolean handled = super.onTouchEvent(ev);
-        if (mStylusEventHelper.onMotionEvent(ev)) {
-            return true;
-        }
-        return handled;
+        super.onTouchEvent(ev);
+        mLongPressHelper.onTouchEvent(ev);
+        return true;
+    }
+
+    @Override
+    public void cancelLongPress() {
+        super.cancelLongPress();
+        mLongPressHelper.cancelLongPress();
     }
 
     /**

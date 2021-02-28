@@ -16,8 +16,9 @@
 
 package com.android.launcher3.dragndrop;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.animation.FloatArrayEvaluator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -31,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -42,30 +44,23 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
-import com.android.launcher3.FolderInfo;
-import com.android.launcher3.IconProvider;
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherState;
-import com.android.launcher3.LauncherStateManager;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.icons.LauncherIcons;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
-import com.saggitt.omega.OmegaPreferences;
 
 import java.util.Arrays;
 
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
-public class DragView extends View implements LauncherStateManager.StateListener {
+public class DragView extends View implements StateListener<LauncherState> {
     private static final ColorMatrix sTempMatrix1 = new ColorMatrix();
     private static final ColorMatrix sTempMatrix2 = new ColorMatrix();
 
@@ -75,7 +70,8 @@ public class DragView extends View implements LauncherStateManager.StateListener
     private boolean mDrawBitmap = true;
     private Bitmap mBitmap;
     private Bitmap mCrossFadeBitmap;
-    @Thunk Paint mPaint;
+    @Thunk
+    Paint mPaint;
     private final int mBlurSizeOutline;
     private final int mRegistrationX;
     private final int mRegistrationY;
@@ -113,9 +109,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
     private Drawable mBadge;
     private ColorMatrixColorFilter mBaseFilter;
 
-    private final IconProvider iconProvider;
-    private final OmegaPreferences prefs;
-
     /**
      * Construct the drag view.
      * <p>
@@ -134,8 +127,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
         mDragController = launcher.getDragController();
         mFirstFrameAnimatorHelper = new FirstFrameAnimatorHelper(this);
 
-        iconProvider = IconProvider.INSTANCE.get(launcher);
-
         final float scale = (bitmap.getWidth() + finalScaleDps) / bitmap.getWidth();
 
         // Set the initial scale to avoid any jumps
@@ -151,15 +142,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
             setScaleY(initialScale + (value * (scale - initialScale)));
             if (!isAttachedToWindow()) {
                 animation.cancel();
-            }
-        });
-
-        mAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (!mAnimationCancelled) {
-                    mDragController.onDragViewAnimationEnd();
-                }
             }
         });
 
@@ -180,9 +162,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
 
         mBlurSizeOutline = getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
         setElevation(getResources().getDimension(R.dimen.drag_elevation));
-
-
-        prefs = Utilities.getOmegaPrefs(mLauncher);
     }
 
     @Override
@@ -198,9 +177,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
     }
 
     @Override
-    public void onStateTransitionStart(LauncherState toState) { }
-
-    @Override
     public void onStateTransitionComplete(LauncherState finalState) {
         setVisibility((finalState == LauncherState.NORMAL
                 || finalState == LauncherState.SPRING_LOADED) ? VISIBLE : INVISIBLE);
@@ -208,7 +184,7 @@ public class DragView extends View implements LauncherStateManager.StateListener
 
     /**
      * Initialize {@code #mIconDrawable} if the item can be represented using
-     * an {@link AdaptiveIconCompat} or {@link FolderAdaptiveIcon}.
+     * an {@link AdaptiveIconDrawable} or {@link FolderAdaptiveIcon}.
      */
     @TargetApi(Build.VERSION_CODES.O)
     public void setItemInfo(final ItemInfo info) {
@@ -220,9 +196,6 @@ public class DragView extends View implements LauncherStateManager.StateListener
                 info.itemType != LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
             return;
         }
-        if (info instanceof FolderInfo && ((FolderInfo) info).usingCustomIcon(mLauncher)) {
-            return;
-        }
         // Load the adaptive icon on a background thread and add the view in ui thread.
         MODEL_EXECUTOR.getHandler().postAtFrontOfQueue(new Runnable() {
             @Override
@@ -230,10 +203,9 @@ public class DragView extends View implements LauncherStateManager.StateListener
                 Object[] outObj = new Object[1];
                 int w = mBitmap.getWidth();
                 int h = mBitmap.getHeight();
-                Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h,
-                        false /* flattenDrawable */, outObj);
+                Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h, outObj);
 
-                if (dr instanceof AdaptiveIconCompat) {
+                if (dr instanceof AdaptiveIconDrawable) {
                     int blurMargin = (int) mLauncher.getResources()
                             .getDimension(R.dimen.blur_size_medium_outline) / 2;
 
@@ -254,45 +226,39 @@ public class DragView extends View implements LauncherStateManager.StateListener
                             nDr = dr;
                         } else {
                             // Since we just want the scale, avoid heavy drawing operations
-                            nDr = new AdaptiveIconCompat(new ColorDrawable(Color.BLACK), null);
+                            nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
                         }
                         Utilities.scaleRectAboutCenter(bounds,
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
-                    AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) dr;
-                    Rect fgBounds = new Rect(bounds);
-                    Rect bgBounds = new Rect(bounds);
-                    Utilities.scaleRectAboutCenter(bgBounds, 1.1f);
+                    AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
+
                     // Shrink very tiny bit so that the clip path is smaller than the original bitmap
                     // that has anti aliased edges and shadows.
-                    Rect shrunkBounds = new Rect(fgBounds);
+                    Rect shrunkBounds = new Rect(bounds);
                     Utilities.scaleRectAboutCenter(shrunkBounds, 0.98f);
                     adaptiveIcon.setBounds(shrunkBounds);
                     final Path mask = adaptiveIcon.getIconMask();
 
                     mTranslateX = new SpringFloatValue(DragView.this,
-                            w * AdaptiveIconCompat.getExtraInsetFraction());
+                            w * AdaptiveIconDrawable.getExtraInsetFraction());
                     mTranslateY = new SpringFloatValue(DragView.this,
-                            h * AdaptiveIconCompat.getExtraInsetFraction());
+                            h * AdaptiveIconDrawable.getExtraInsetFraction());
 
-                    fgBounds.inset(
-                            (int) (-fgBounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
-                            (int) (-fgBounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
-                    );
-                    bgBounds.inset(
-                            (int) (-bgBounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
-                            (int) (-bgBounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
+                    bounds.inset(
+                            (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
+                            (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
                     );
                     mBgSpringDrawable = adaptiveIcon.getBackground();
                     if (mBgSpringDrawable == null) {
                         mBgSpringDrawable = new ColorDrawable(Color.TRANSPARENT);
                     }
-                    mBgSpringDrawable.setBounds(fgBounds);
+                    mBgSpringDrawable.setBounds(bounds);
                     mFgSpringDrawable = adaptiveIcon.getForeground();
                     if (mFgSpringDrawable == null) {
                         mFgSpringDrawable = new ColorDrawable(Color.TRANSPARENT);
                     }
-                    mFgSpringDrawable.setBounds(fgBounds);
+                    mFgSpringDrawable.setBounds(bounds);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -558,11 +524,14 @@ public class DragView extends View implements LauncherStateManager.StateListener
         mAnimatedShiftX = shiftX;
         mAnimatedShiftY = shiftY;
         applyTranslation();
-        mAnim.addUpdateListener(animation -> {
-            float fraction = 1 - animation.getAnimatedFraction();
-            mAnimatedShiftX = (int) (fraction * shiftX);
-            mAnimatedShiftY = (int) (fraction * shiftY);
-            applyTranslation();
+        mAnim.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float fraction = 1 - animation.getAnimatedFraction();
+                mAnimatedShiftX = (int) (fraction * shiftX);
+                mAnimatedShiftY = (int) (fraction * shiftY);
+                applyTranslation();
+            }
         });
     }
 

@@ -29,17 +29,23 @@ import com.android.launcher3.util.UiThreadHelper;
 
 /**
  * The edit text that reports back when the back key has been pressed.
+ * Note: AppCompatEditText doesn't fully support #displayCompletions and #onCommitCompletion
  */
 public class ExtendedEditText extends EditText {
 
     private boolean mShowImeAfterFirstLayout;
     private boolean mForceDisableSuggestions = false;
 
-    /**
-     * Implemented by listeners of the back key.
-     */
-    public interface OnBackKeyListener {
-        public boolean onBackKey();
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mShowImeAfterFirstLayout) {
+            // soft input only shows one frame after the layout of the EditText happens,
+            post(() -> {
+                showSoftInput();
+                mShowImeAfterFirstLayout = false;
+            });
+        }
     }
 
     private OnBackKeyListener mBackKeyListener;
@@ -80,19 +86,10 @@ public class ExtendedEditText extends EditText {
         return false;
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (mShowImeAfterFirstLayout) {
-            // soft input only shows one frame after the layout of the EditText happens,
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    showSoftInput();
-                    mShowImeAfterFirstLayout = false;
-                }
-            });
-        }
+    private boolean showSoftInput() {
+        return requestFocus() &&
+                getContext().getSystemService(InputMethodManager.class)
+                        .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void showKeyboard() {
@@ -103,10 +100,11 @@ public class ExtendedEditText extends EditText {
         UiThreadHelper.hideKeyboardAsync(getContext(), getWindowToken());
     }
 
-    private boolean showSoftInput() {
-        return requestFocus() &&
-                ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+    /**
+     * Implemented by listeners of the back key.
+     */
+    public interface OnBackKeyListener {
+        boolean onBackKey();
     }
 
     public void dispatchBackKey() {

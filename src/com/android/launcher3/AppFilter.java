@@ -12,9 +12,6 @@ public class AppFilter implements ResourceBasedOverride {
         return Overrides.getObject(AppFilter.class, context, R.string.app_filter_class);
     }
 
-    public boolean shouldShowApp(ComponentName app) {
-        return true;
-    }
     public boolean shouldShowApp(ComponentName app, UserHandle user) {
         return true;
     }

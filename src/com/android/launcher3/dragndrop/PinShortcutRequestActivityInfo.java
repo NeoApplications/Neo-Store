@@ -29,16 +29,16 @@ import android.os.Build;
 import android.os.Process;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.IconProvider;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAnimUtils;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
+import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
-import com.android.launcher3.WorkspaceItemInfo;
-import com.android.launcher3.compat.LauncherAppsCompatVO;
-import com.android.launcher3.compat.ShortcutConfigActivityInfo;
 import com.android.launcher3.icons.IconCache;
-import com.saggitt.omega.icons.CustomIconProvider;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
+import com.android.launcher3.pm.PinRequestHelper;
+import com.android.launcher3.pm.ShortcutConfigActivityInfo;
 
 /**
  * Extension of ShortcutConfigActivityInfo to be used in the confirmation prompt for pin item
@@ -54,7 +54,6 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
     private final PinItemRequest mRequest;
     private final ShortcutInfo mInfo;
     private final Context mContext;
-    private final IconProvider mIconProvider;
 
     public PinShortcutRequestActivityInfo(PinItemRequest request, Context context) {
         super(new ComponentName(request.getShortcutInfo().getPackage(), DUMMY_COMPONENT_CLASS),
@@ -62,7 +61,6 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
         mRequest = request;
         mInfo = request.getShortcutInfo();
         mContext = context;
-        mIconProvider = IconProvider.INSTANCE.get(context);
     }
 
     @Override
@@ -77,14 +75,8 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
 
     @Override
     public Drawable getFullResIcon(IconCache cache) {
-        int iconDpi = LauncherAppState.getIDP(mContext).fillResIconDpi;
-        Drawable d;
-        if (mIconProvider instanceof CustomIconProvider) {
-            d = ((CustomIconProvider) mIconProvider).getIcon(mInfo, iconDpi);
-        } else {
-            d = mContext.getSystemService(LauncherApps.class)
-                    .getShortcutIconDrawable(mInfo, iconDpi);
-        }
+        Drawable d = mContext.getSystemService(LauncherApps.class)
+                .getShortcutIconDrawable(mInfo, LauncherAppState.getIDP(mContext).fillResIconDpi);
         if (d == null) {
             d = new FastBitmapDrawable(cache.getDefaultIcon(Process.myUserHandle()));
         }
@@ -96,9 +88,9 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
         // Total duration for the drop animation to complete.
         long duration = mContext.getResources().getInteger(R.integer.config_dropAnimMaxDuration) +
                 LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY +
-                LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS;
+                LauncherState.SPRING_LOADED.getTransitionDuration(Launcher.getLauncher(mContext));
         // Delay the actual accept() call until the drop animation is complete.
-        return LauncherAppsCompatVO.createWorkspaceItemFromPinItemRequest(
+        return PinRequestHelper.createWorkspaceItemFromPinItemRequest(
                 mContext, mRequest, duration);
     }
 

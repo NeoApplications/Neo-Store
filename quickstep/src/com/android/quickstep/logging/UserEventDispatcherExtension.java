@@ -15,11 +15,8 @@
  */
 package com.android.quickstep.logging;
 
+import android.content.Context;
 import android.util.Log;
-
-import com.android.launcher3.logging.UserEventDispatcher;
-import com.android.launcher3.userevent.nano.LauncherLogProto;
-import com.android.systemui.shared.system.MetricsLoggerCompat;
 
 import static com.android.launcher3.logging.LoggerUtils.newLauncherEvent;
 import static com.android.launcher3.userevent.nano.LauncherLogProto.ControlType.CANCEL_TARGET;
@@ -27,6 +24,10 @@ import static com.android.systemui.shared.system.LauncherEventUtil.DISMISS;
 import static com.android.systemui.shared.system.LauncherEventUtil.RECENTS_QUICK_SCRUB_ONBOARDING_TIP;
 import static com.android.systemui.shared.system.LauncherEventUtil.RECENTS_SWIPE_UP_ONBOARDING_TIP;
 import static com.android.systemui.shared.system.LauncherEventUtil.VISIBLE;
+
+import com.android.launcher3.logging.UserEventDispatcher;
+import com.android.launcher3.userevent.nano.LauncherLogProto;
+import com.android.systemui.shared.system.MetricsLoggerCompat;
 
 /**
  * This class handles AOSP MetricsLogger function calls and logging around
@@ -38,6 +39,9 @@ public class UserEventDispatcherExtension extends UserEventDispatcher {
     public static final int ALL_APPS_PREDICTION_TIPS = 2;
 
     private static final String TAG = "UserEventDispatcher";
+
+    public UserEventDispatcherExtension(Context context) {
+    }
 
     public void logStateChangeAction(int action, int dir, int downX, int downY,
                                      int srcChildTargetType, int srcParentContainerType,

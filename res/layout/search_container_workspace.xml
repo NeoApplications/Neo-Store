@@ -14,21 +14,16 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.google.android.apps.nexuslauncher.smartspace.SmartspaceView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.qsb.QsbContainerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/search_container_workspace"
-    android:background="?android:selectableItemBackground"
-    android:clickable="true"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:animateLayoutChanges="true">
+    android:orientation="vertical"
+    android:padding="0dp">
 
-    <com.android.launcher3.BubbleTextView
-        android:layout_gravity="center"
-        android:id="@+id/dummyBubbleTextView"
-        android:visibility="invisible"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:contentDescription="" />
-
-    <include layout="@layout/smartspace_singleline" />
-</com.google.android.apps.nexuslauncher.smartspace.SmartspaceView>
+    <fragment
+        android:name="com.android.launcher3.qsb.QsbContainerView$QsbFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="qsb_view" />
+</com.android.launcher3.qsb.QsbContainerView>
