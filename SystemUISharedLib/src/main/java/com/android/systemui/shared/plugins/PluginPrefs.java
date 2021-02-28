@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * Storage for all plugin actions in SharedPreferences.
- * <p>
+ *
  * This allows the list of actions that the Tuner needs to search for to be generated
  * instead of hard coded.
  */

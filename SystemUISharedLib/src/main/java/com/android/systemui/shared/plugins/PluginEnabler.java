@@ -38,19 +38,15 @@ public interface PluginEnabler {
      */
     void setEnabled(ComponentName component);
 
-    /**
-     * Disables a plugin via the PackageManager and records the reason for disabling.
-     */
+    /** Disables a plugin via the PackageManager and records the reason for disabling. */
     void setDisabled(ComponentName component, @DisableReason int reason);
 
-    /**
-     * Returns true if the plugin is enabled in the PackageManager.
-     */
+    /** Returns true if the plugin is enabled in the PackageManager. */
     boolean isEnabled(ComponentName component);
 
     /**
      * Returns the reason that a plugin is disabled, (if it is).
-     * <p>
+     *
      * It should return {@link #ENABLED} if the plugin is turned on.
      * It should return {@link #DISABLED_MANUALLY} if the plugin is off but the reason is unknown.
      */

@@ -18,12 +18,8 @@ package com.android.systemui.shared.system;
 
 import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.os.Build;
-import android.os.IBinder;
-import android.view.Surface;
+import android.view.SurfaceControl;
 import android.view.SurfaceControl.Transaction;
-
-import com.android.systemui.shared.QuickstepCompat;
 
 public class TransactionCompat {
 
@@ -54,9 +50,9 @@ public class TransactionCompat {
         return this;
     }
 
-    public TransactionCompat setSize(SurfaceControlCompat surfaceControl, int w, int h) {
-        QuickstepCompat.getRecentsCompat().setSurfaceBufferSize(mTransaction, surfaceControl.mSurfaceControl, w, h);
-        return this;
+    public static void deferTransactionUntil(Transaction t, SurfaceControl surfaceControl,
+                                             SurfaceControl barrier, long frameNumber) {
+        t.deferTransactionUntil(surfaceControl, barrier, frameNumber);
     }
 
     public TransactionCompat setLayer(SurfaceControlCompat surfaceControl, int z) {
@@ -69,10 +65,9 @@ public class TransactionCompat {
         return this;
     }
 
-    public TransactionCompat setMatrix(SurfaceControlCompat surfaceControl, float dsdx, float dtdx,
-                                       float dtdy, float dsdy) {
-        mTransaction.setMatrix(surfaceControl.mSurfaceControl, dsdx, dtdx, dtdy, dsdy);
-        return this;
+    public static void setRelativeLayer(Transaction t, SurfaceControl surfaceControl,
+                                        SurfaceControl relativeTo, int z) {
+        t.setRelativeLayer(surfaceControl, relativeTo, z);
     }
 
     public TransactionCompat setMatrix(SurfaceControlCompat surfaceControl, Matrix matrix) {
@@ -85,33 +80,46 @@ public class TransactionCompat {
         return this;
     }
 
+    @Deprecated
+    public static void setEarlyWakeup(Transaction t) {
+    }
+
+    public TransactionCompat setSize(SurfaceControlCompat surfaceControl, int w, int h) {
+        mTransaction.setBufferSize(surfaceControl.mSurfaceControl, w, h);
+        return this;
+    }
+
+    public TransactionCompat setMatrix(SurfaceControlCompat surfaceControl, float dsdx, float dtdx,
+                                       float dtdy, float dsdy) {
+        mTransaction.setMatrix(surfaceControl.mSurfaceControl, dsdx, dtdx, dtdy, dsdy);
+        return this;
+    }
+
     public TransactionCompat setCornerRadius(SurfaceControlCompat surfaceControl, float radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mTransaction.setCornerRadius(surfaceControl.mSurfaceControl, radius);
-        }
-        return this;
-    }
-
-    public TransactionCompat deferTransactionUntil(SurfaceControlCompat surfaceControl,
-                                                   IBinder handle, long frameNumber) {
-        mTransaction.deferTransactionUntil(surfaceControl.mSurfaceControl, handle, frameNumber);
-        return this;
-    }
-
-    public TransactionCompat deferTransactionUntil(SurfaceControlCompat surfaceControl,
-                                                   Surface barrier, long frameNumber) {
-        mTransaction.deferTransactionUntilSurface(surfaceControl.mSurfaceControl, barrier,
-                frameNumber);
-        return this;
-    }
-
-    public TransactionCompat setEarlyWakeup() {
-        mTransaction.setEarlyWakeup();
+        mTransaction.setCornerRadius(surfaceControl.mSurfaceControl, radius);
         return this;
     }
 
     public TransactionCompat setColor(SurfaceControlCompat surfaceControl, float[] color) {
         mTransaction.setColor(surfaceControl.mSurfaceControl, color);
+        return this;
+    }
+
+    public TransactionCompat setBackgroundBlurRadius(SurfaceControlCompat surfaceControl,
+                                                     int radius) {
+        mTransaction.setBackgroundBlurRadius(surfaceControl.mSurfaceControl, radius);
+        return this;
+    }
+
+    public TransactionCompat deferTransactionUntil(SurfaceControlCompat surfaceControl,
+                                                   SurfaceControl barrier, long frameNumber) {
+        mTransaction.deferTransactionUntil(surfaceControl.mSurfaceControl, barrier,
+                frameNumber);
+        return this;
+    }
+
+    @Deprecated
+    public TransactionCompat setEarlyWakeup() {
         return this;
     }
 }

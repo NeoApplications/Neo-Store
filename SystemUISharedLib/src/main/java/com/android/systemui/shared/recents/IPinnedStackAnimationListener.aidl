@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The Android Open Source Project
+ * Copyright (C) 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.systemui.shared.system;
 
-import static android.view.Choreographer.CALLBACK_INPUT;
-
-import android.view.Choreographer;
+package com.android.systemui.shared.recents;
 
 /**
- * Wraps the internal choreographer.
+ * Listener interface that Launcher attaches to SystemUI to get
+ * pinned stack animation callbacks.
  */
-public class ChoreographerCompat {
-
+oneway interface IPinnedStackAnimationListener {
     /**
-     * Posts an input callback to the choreographer.
+     * Notifies the pinned stack animation is started.
      */
-    public static void postInputFrame(Choreographer choreographer, Runnable runnable) {
-        choreographer.postCallback(CALLBACK_INPUT, runnable, null);
-    }
-
-    public static Choreographer getSfInstance() {
-        return Choreographer.getSfInstance();
-    }
+    void onPinnedStackAnimationStarted();
 }

@@ -16,16 +16,15 @@
 
 package com.android.systemui.shared.system;
 
-import android.app.ActivityOptions;
-import android.content.Context;
-import android.os.Build;
-import android.os.Handler;
-
 import static android.app.ActivityTaskManager.SPLIT_SCREEN_CREATE_MODE_BOTTOM_OR_RIGHT;
 import static android.app.ActivityTaskManager.SPLIT_SCREEN_CREATE_MODE_TOP_OR_LEFT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 import static android.app.WindowConfiguration.WINDOWING_MODE_SPLIT_SCREEN_PRIMARY;
 import static android.app.WindowConfiguration.WINDOWING_MODE_SPLIT_SCREEN_SECONDARY;
+
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.os.Handler;
 
 /**
  * Wrapper around internal ActivityOptions creation.
@@ -77,16 +76,14 @@ public abstract class ActivityOptionsCompat {
                             callbackHandler.post(callback);
                         }
                     }
-                });
+                }, null /* finishedListener */);
     }
 
     /**
      * Sets the flag to freeze the recents task list reordering as a part of launching the activity.
      */
     public static ActivityOptions setFreezeRecentTasksList(ActivityOptions opts) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            opts.setFreezeRecentTasksReordering();
-        }
+        opts.setFreezeRecentTasksReordering();
         return opts;
     }
 }

@@ -15,23 +15,14 @@
  */
 package com.android.systemui.shared.system;
 
-import static android.view.Choreographer.CALLBACK_INPUT;
-
-import android.view.Choreographer;
+import android.content.res.Configuration;
 
 /**
- * Wraps the internal choreographer.
+ * Wraps the Configuration to access the window configuration.
  */
-public class ChoreographerCompat {
+public class ConfigurationCompat {
 
-    /**
-     * Posts an input callback to the choreographer.
-     */
-    public static void postInputFrame(Choreographer choreographer, Runnable runnable) {
-        choreographer.postCallback(CALLBACK_INPUT, runnable, null);
-    }
-
-    public static Choreographer getSfInstance() {
-        return Choreographer.getSfInstance();
+    public static int getWindowConfigurationRotation(Configuration c) {
+        return c.windowConfiguration.getRotation();
     }
 }

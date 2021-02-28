@@ -1,5 +1,6 @@
 package com.android.systemui.shared.system;
 
+import android.app.ActivityManager;
 import android.os.Looper;
 import android.os.RemoteException;
 

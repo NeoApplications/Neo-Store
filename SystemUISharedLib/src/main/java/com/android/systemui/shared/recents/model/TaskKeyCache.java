@@ -71,28 +71,21 @@ public abstract class TaskKeyCache<V> {
     }
 
 
-    /**
-     * Removes a cache entry for a specific key.
-     */
+    /** Removes a cache entry for a specific key. */
     public final synchronized void remove(TaskKey key) {
         // Remove the key after the cache value because we need it to make the callback
         removeCacheEntry(key.id);
         mKeys.remove(key.id);
     }
 
-    /**
-     * Removes all the entries in the cache.
-     */
+    /** Removes all the entries in the cache. */
     public final synchronized void evictAll() {
         evictAllCache();
         mKeys.clear();
     }
 
     protected abstract V getCacheEntry(int id);
-
     protected abstract void putCacheEntry(int id, V value);
-
     protected abstract void removeCacheEntry(int id);
-
     protected abstract void evictAllCache();
 }

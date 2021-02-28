@@ -1,23 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 30
+    buildToolsVersion BUILD_TOOLS_VERSION
 
 
     defaultConfig {
         minSdkVersion 25
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -33,19 +28,7 @@ android {
         }
     }
 
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs.add("-Xbootclasspath/p:prebuilts/libs/framework.jar")
-        }
-    }
-}
-
-repositories {
-    jcenter()
-    google()
-    maven {
-        url 'https://jitpack.io'
-    }
+    addFrameworkJar('framework.jar')
 }
 
 dependencies {
@@ -56,8 +39,7 @@ dependencies {
     implementation project(':QuickstepCompatVP')
     implementation project(':QuickstepCompatVQ')
 
-    implementation "androidx.annotation:annotation:${versions.annotation}"
-    implementation "androidx.core:core:${ANDROID_X_VERSION}"
+    implementation "androidx.annotation:annotation:${ANDROID_X_VERSION}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

@@ -26,7 +26,7 @@ import java.io.PrintWriter;
  * A mapping of {@link TaskKey} to value, with additional LRU functionality where the least
  * recently referenced key/values will be evicted as more values than the given cache size are
  * inserted.
- * <p>
+ *
  * In addition, this also allows the caller to invalidate cached values for keys that have since
  * changed.
  */

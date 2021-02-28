@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.ISystemGestureExclusionListener;
 import android.view.WindowManagerGlobal;
 
-import androidx.annotation.Keep;
-
 /**
  * Utility class to listen for exclusion rect changes.
  */
@@ -43,12 +41,6 @@ public abstract class SystemGestureExclusionListenerCompat {
                         onExclusionChanged(systemGestureExclusion, unrestricted);
                     }
                 }
-
-                @Keep
-                public void onSystemGestureExclusionChanged(int displayId,
-                                                            Region systemGestureExclusion) {
-                    onSystemGestureExclusionChanged(displayId, systemGestureExclusion, null);
-                }
             };
     private boolean mRegistered;
 
@@ -67,10 +59,9 @@ public abstract class SystemGestureExclusionListenerCompat {
     /**
      * Called when the exclusion region has changed.
      *
-     * @param systemGestureExclusion the system gesture exclusion to be applied
+     * @param systemGestureExclusion             the system gesture exclusion to be applied
      * @param systemGestureExclusionUnrestricted what would be the system gesture exclusion, if
-     *           there were no restrictions being applied. For logging purposes only.
-     *
+     *                                           there were no restrictions being applied. For logging purposes only.
      */
     public void onExclusionChanged(Region systemGestureExclusion,
                                    Region systemGestureExclusionUnrestricted) {

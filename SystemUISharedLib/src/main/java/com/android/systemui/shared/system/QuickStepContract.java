@@ -16,21 +16,21 @@
 
 package com.android.systemui.shared.system;
 
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
+
+import android.annotation.IntDef;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.view.ViewConfiguration;
 import android.view.WindowManagerPolicyConstants;
 
-import androidx.annotation.IntDef;
+import com.android.internal.policy.ScreenDecorationsUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.StringJoiner;
-
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON;
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON;
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
 
 /**
  * Various shared constants between Launcher and SysUI as part of quickstep
@@ -48,15 +48,6 @@ public class QuickStepContract {
             WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON_OVERLAY;
     public static final String NAV_BAR_MODE_GESTURAL_OVERLAY =
             WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL_OVERLAY;
-
-    // Action sent by a system app to switch to gesture nav
-    public static final String ACTION_ENABLE_GESTURE_NAV =
-            "com.android.systemui.ENABLE_GESTURE_NAV";
-    // Action for the intent to receive the result
-    public static final String ACTION_ENABLE_GESTURE_NAV_RESULT =
-            "com.android.systemui.action.ENABLE_GESTURE_NAV_RESULT";
-    // Extra containing the pending intent to receive the result
-    public static final String EXTRA_RESULT_INTENT = "com.android.systemui.EXTRA_RESULT_INTENT";
 
     // Overview is disabled, either because the device is in lock task mode, or because the device
     // policy has disabled the feature
@@ -82,26 +73,21 @@ public class QuickStepContract {
     public static final int SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING_OCCLUDED = 1 << 9;
     // The search feature is disabled (either by SUW/SysUI/device policy)
     public static final int SYSUI_STATE_SEARCH_DISABLED = 1 << 10;
-    // The notification panel is expanded and interactive (either locked or unlocked), and the
-    // quick settings is not expanded
+    // The notification panel is expanded and interactive (either locked or unlocked), and quick
+    // settings is expanded.
     public static final int SYSUI_STATE_QUICK_SETTINGS_EXPANDED = 1 << 11;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({SYSUI_STATE_SCREEN_PINNING,
-            SYSUI_STATE_NAV_BAR_HIDDEN,
-            SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED,
-            SYSUI_STATE_QUICK_SETTINGS_EXPANDED,
-            SYSUI_STATE_BOUNCER_SHOWING,
-            SYSUI_STATE_A11Y_BUTTON_CLICKABLE,
-            SYSUI_STATE_A11Y_BUTTON_LONG_CLICKABLE,
-            SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING,
-            SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING_OCCLUDED,
-            SYSUI_STATE_OVERVIEW_DISABLED,
-            SYSUI_STATE_HOME_DISABLED,
-            SYSUI_STATE_SEARCH_DISABLED
-    })
-    public @interface SystemUiStateFlags {
-    }
+    // Winscope tracing is enabled
+    public static final int SYSUI_STATE_TRACING_ENABLED = 1 << 12;
+    // The Assistant gesture should be constrained. It is up to the launcher implementation to
+    // decide how to constrain it
+    public static final int SYSUI_STATE_ASSIST_GESTURE_CONSTRAINED = 1 << 13;
+    // The bubble stack is expanded. This means that the home gesture should be ignored, since a
+    // swipe up is an attempt to close the bubble stack, but that the back gesture should remain
+    // enabled (since it's used to navigate back within the bubbled app, or to collapse the bubble
+    // stack.
+    public static final int SYSUI_STATE_BUBBLES_EXPANDED = 1 << 14;
+    // The global actions dialog is showing
+    public static final int SYSUI_STATE_GLOBAL_ACTIONS_SHOWING = 1 << 15;
 
     public static String getSystemUiStateString(int flags) {
         StringJoiner str = new StringJoiner("|");
@@ -116,9 +102,31 @@ public class QuickStepContract {
         str.add((flags & SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING_OCCLUDED) != 0
                 ? "keygrd_occluded" : "");
         str.add((flags & SYSUI_STATE_BOUNCER_SHOWING) != 0 ? "bouncer_visible" : "");
+        str.add((flags & SYSUI_STATE_GLOBAL_ACTIONS_SHOWING) != 0 ? "global_actions" : "");
         str.add((flags & SYSUI_STATE_A11Y_BUTTON_CLICKABLE) != 0 ? "a11y_click" : "");
         str.add((flags & SYSUI_STATE_A11Y_BUTTON_LONG_CLICKABLE) != 0 ? "a11y_long_click" : "");
+        str.add((flags & SYSUI_STATE_TRACING_ENABLED) != 0 ? "tracing" : "");
+        str.add((flags & SYSUI_STATE_ASSIST_GESTURE_CONSTRAINED) != 0
+                ? "asst_gesture_constrain" : "");
+        str.add((flags & SYSUI_STATE_BUBBLES_EXPANDED) != 0 ? "bubbles_expanded" : "");
         return str.toString();
+    }
+
+    /**
+     * Returns whether the specified sysui state is such that the back gesture should be
+     * disabled.
+     */
+    public static boolean isBackGestureDisabled(int sysuiStateFlags) {
+        // Always allow when the bouncer/global actions is showing (even on top of the keyguard)
+        if ((sysuiStateFlags & SYSUI_STATE_BOUNCER_SHOWING) != 0
+                || (sysuiStateFlags & SYSUI_STATE_GLOBAL_ACTIONS_SHOWING) != 0) {
+            return false;
+        }
+        // Disable when in immersive, or the notifications are interactive
+        int disableFlags = SYSUI_STATE_NAV_BAR_HIDDEN
+                | SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED
+                | SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING;
+        return (sysuiStateFlags & disableFlags) != 0;
     }
 
     /**
@@ -181,19 +189,12 @@ public class QuickStepContract {
     }
 
     /**
-     * Returns whether the specified sysui state is such that the back gesture should be
-     * disabled.
+     * Corner radius that should be used on windows in order to cover the display.
+     * These values are expressed in pixels because they should not respect display or font
+     * scaling, this means that we don't have to reload them on config changes.
      */
-    public static boolean isBackGestureDisabled(int sysuiStateFlags) {
-        // Always allow when the bouncer is showing (even on top of the keyguard)
-        if ((sysuiStateFlags & SYSUI_STATE_BOUNCER_SHOWING) != 0) {
-            return false;
-        }
-        // Disable when in immersive, or the notifications are interactive
-        int disableFlags = SYSUI_STATE_NAV_BAR_HIDDEN
-                | SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED
-                | SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING;
-        return (sysuiStateFlags & disableFlags) != 0;
+    public static float getWindowCornerRadius(Resources resources) {
+        return ScreenDecorationsUtils.getWindowCornerRadius(resources);
     }
 
     /**
@@ -218,27 +219,30 @@ public class QuickStepContract {
     }
 
     /**
-     * Corner radius that should be used on windows in order to cover the display.
-     * These values are expressed in pixels because they should not respect display or font
-     * scaling, this means that we don't have to reload them on config changes.
-     */
-    public static float getWindowCornerRadius(Resources resources) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return 4;//ScreenDecorationsUtils.getWindowCornerRadius(resources);
-        } else {
-            return 0;
-        }
-    }
-
-    /**
      * If live rounded corners are supported on windows.
      */
     public static boolean supportsRoundedCornersOnWindows(Resources resources) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            //return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
-            return false;
-        } else {
-            return true;
-        }
+        return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({SYSUI_STATE_SCREEN_PINNING,
+            SYSUI_STATE_NAV_BAR_HIDDEN,
+            SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED,
+            SYSUI_STATE_QUICK_SETTINGS_EXPANDED,
+            SYSUI_STATE_BOUNCER_SHOWING,
+            SYSUI_STATE_A11Y_BUTTON_CLICKABLE,
+            SYSUI_STATE_A11Y_BUTTON_LONG_CLICKABLE,
+            SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING,
+            SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING_OCCLUDED,
+            SYSUI_STATE_OVERVIEW_DISABLED,
+            SYSUI_STATE_HOME_DISABLED,
+            SYSUI_STATE_SEARCH_DISABLED,
+            SYSUI_STATE_TRACING_ENABLED,
+            SYSUI_STATE_ASSIST_GESTURE_CONSTRAINED,
+            SYSUI_STATE_BUBBLES_EXPANDED,
+            SYSUI_STATE_GLOBAL_ACTIONS_SHOWING
+    })
+    public @interface SystemUiStateFlags {
     }
 }
