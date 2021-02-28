@@ -14,26 +14,34 @@
  * limitations under the License.
  */
 
-package com.android.launcher3;
+package com.android.launcher3.model.data;
 
+import android.app.Person;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
+import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.shortcuts.ShortcutKey;
+import com.android.launcher3.uioverrides.ApiWrapper;
 import com.android.launcher3.util.ContentWriter;
 import com.saggitt.omega.iconpack.IconPackManager;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  * Represents a launchable icon on the workspaces and in folders.
@@ -52,7 +60,7 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
      * The icon was added as an auto-install app, and is not ready to be used. This flag can't
      * be present along with {@link #FLAG_RESTORED_ICON}, and is set during default layout
      * parsing.
-     *
+     * <p>
      * OR this icon was added due to it being an active install session created by the user.
      */
     public static final int FLAG_AUTOINSTALL_ICON = 1 << 1;
@@ -91,18 +99,16 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     public CharSequence disabledMessage;
 
     public int status;
-
+    public CharSequence customTitle;
+    public Bitmap customIcon;
+    public IconPackManager.CustomIconEntry customIconEntry;
+    public String swipeUpAction;
     /**
      * A set of person's Id associated with the WorkspaceItemInfo, this is only used if the item
      * represents a deep shortcut.
      */
     @NonNull
     private String[] personKeys = Utilities.EMPTY_STRING_ARRAY;
-
-    public CharSequence customTitle;
-    public Bitmap customIcon;
-    public IconPackManager.CustomIconEntry customIconEntry;
-    public String swipeUpAction;
     /**
      * The installation progress [0-100] of the package that this shortcut represents.
      */
@@ -122,11 +128,13 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         personKeys = info.personKeys.clone();
     }
 
-    /** TODO: Remove this.  It's only called by ApplicationInfo.makeWorkspaceItem. */
+    /**
+     * TODO: Remove this.  It's only called by ApplicationInfo.makeWorkspaceItem.
+     */
     public WorkspaceItemInfo(AppInfo info) {
         super(info);
         title = Utilities.trim(info.title);
-        intent = new Intent(info.intent);
+        intent = new Intent(info.getIntent());
     }
 
     /**
@@ -146,7 +154,7 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
                 .put(Favorites.RESTORED, status);
 
         if (!usingLowResIcon()) {
-            writer.putIcon(iconBitmap, user);
+            writer.putIcon(bitmap, user);
         }
         if (iconResource != null) {
             writer.put(Favorites.ICON_PACKAGE, iconResource.packageName)
@@ -181,6 +189,7 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         status |= FLAG_INSTALL_SESSION_ACTIVE;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public void updateFromDeepShortcutInfo(ShortcutInfo shortcutInfo, Context context) {
         // {@link ShortcutInfo#getActivity} can change during an update. Recreate the intent
         intent = ShortcutKey.makeIntent(shortcutInfo);
@@ -198,16 +207,17 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         }
         disabledMessage = shortcutInfo.getDisabledMessage();
 
-
-        /*Person[] persons = UiFactory.getPersons(shortcutInfo);
+        Person[] persons = ApiWrapper.getPersons(shortcutInfo);
         personKeys = persons.length == 0 ? Utilities.EMPTY_STRING_ARRAY
-            : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);*/
+                : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);
     }
 
-    /** Returns the WorkspaceItemInfo id associated with the deep shortcut. */
+    /**
+     * Returns the WorkspaceItemInfo id associated with the deep shortcut.
+     */
     public String getDeepShortcutId() {
-        return itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT ?
-                getIntent().getStringExtra(ShortcutKey.EXTRA_SHORTCUT_ID) : null;
+        return itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT
+                ? getIntent().getStringExtra(ShortcutKey.EXTRA_SHORTCUT_ID) : null;
     }
 
     @NonNull
@@ -218,8 +228,8 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     @Override
     public ComponentName getTargetComponent() {
         ComponentName cn = super.getTargetComponent();
-        if (cn == null && (itemType == Favorites.ITEM_TYPE_SHORTCUT
-                || hasStatusFlag(FLAG_SUPPORTS_WEB_UI | FLAG_AUTOINSTALL_ICON | FLAG_RESTORED_ICON))) {
+        if (cn == null && (itemType == Favorites.ITEM_TYPE_SHORTCUT || hasStatusFlag(
+                FLAG_SUPPORTS_WEB_UI | FLAG_AUTOINSTALL_ICON | FLAG_RESTORED_ICON))) {
             // Legacy shortcuts and promise icons with web UI may not have a componentName but just
             // a packageName. In that case create a dummy componentName instead of adding additional
             // check everywhere.
@@ -229,13 +239,18 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         return cn;
     }
 
+    @Override
+    public ItemInfoWithIcon clone() {
+        return new WorkspaceItemInfo(this);
+    }
+
     private void updateDatabase(Context context, boolean updateIcon, boolean reload) {
         if (updateIcon)
-            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction,
-                    customIconEntry, customIcon, true, reload);
+            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
+                    , customIconEntry, customIcon, true, reload);
         else
-            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction,
-                    null, null, false, reload);
+            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
+                    , null, null, false, reload);
     }
 
     public void onLoadCustomizations(String titleAlias, String swipeUpAction,
@@ -261,7 +276,7 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         updateDatabase(context, true, true);
     }
 
-    public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
+    public void setSwipeUpAction(@NotNull Context context, @Nullable String action) {
         swipeUpAction = action;
         updateDatabase(context, false, true);
     }
