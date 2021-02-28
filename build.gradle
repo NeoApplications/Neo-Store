@@ -1,7 +1,5 @@
-import java.text.SimpleDateFormat
-
 buildscript {
-    ext.enable_plugin_kotlin = true
+    ext.kotlin_version = '1.4.30'
 
     ext {
         versions = [
@@ -10,7 +8,7 @@ buildscript {
                 preferencev14          : "1.0.0",
                 recyclerview           : "1.1.0",
                 preference             : "1.1.1",
-                material               : "1.3.0-alpha04",
+                material               : "1.3.0",
                 constraintlayout       : "2.0.0-rc1",
                 customactivityoncrash  : "2.2.0",
                 colorpicker            : "1.1.0",
@@ -31,20 +29,40 @@ buildscript {
                 protobuf               : "0.8.12"
         ]
     }
-
     repositories {
+        mavenCentral()
         google()
         jcenter()
-        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath "com.google.protobuf:protobuf-gradle-plugin:${versions.protobuf}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath PROTOBUF_CLASS_PATH
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-String PREBUILTS_DIR = "prebuilts"
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    ext.addFrameworkJar = { String path ->
+        def frameworkJar = new File(rootProject.projectDir, 'prebuilts/libs/' + path)
+        if (!frameworkJar.exists()) {
+            throw new IllegalArgumentException("Framework jar path doesn't exist")
+        }
+        gradle.projectsEvaluated {
+            tasks.withType(JavaCompile) {
+                options.bootstrapClasspath = files([frameworkJar] + (options.bootstrapClasspath.files as Iterable<File>))
+            }
+        }
+    }
+}
+
+final String FRAMEWORK_PREBUILTS_DIR = "prebuilts/"
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -55,48 +73,35 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-    def name = "0.7.2"
-    def code = 124
+    def name = "0.8.0"
+    def code = 123
 
     defaultConfig {
         minSdkVersion 25
         targetSdkVersion 30
-        applicationId "com.saggitt.omega"
-        ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
-        ndk {
-            abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
-        }
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName name
         versionCode code
 
-        buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", "${findAndroidLocales()}"
-        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
-        buildConfigField "String", "BUILD_DATE", "\"${getBuildDate()}\""
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-    }
-     packagingOptions{
-        packagingOptions {
-            exclude 'lib/armeabi-v7a/libhoko_blur.so'
-            exclude 'lib/x86/libhoko_blur.so'
-            exclude 'lib/arm64-v8a/libhoko_blur.so'
+        applicationId 'com.saggitt.omega'
+
+        ndk {
+            abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         }
     }
+
     buildTypes {
         debug {
             minifyEnabled false
-            applicationIdSuffix ".dev"
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.flags'
+            applicationIdSuffix ".alpha"
         }
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -113,9 +118,14 @@ android {
             testApplicationId 'com.android.launcher3.tests'
         }
 
+        /*l3go {
+            dimension "app"
+            applicationId 'com.android.launcher3'
+            testApplicationId 'com.android.launcher3.tests'
+        }*/
+
         withQuickstep {
             dimension "recents"
-            minSdkVersion 25
         }
 
         withoutQuickstep {
@@ -127,28 +137,17 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        disable 'ExtraTranslation'
-        abortOnError false
-        checkReleaseBuilds false
-    }
-
     sourceSets {
         main {
             res.srcDirs = ['res']
-            java.srcDirs = ['src']
+            java.srcDirs = ['src', 'src_plugins']
             aidl.srcDirs = ['src']
-            assets.srcDirs = ['assets']
             manifest.srcFile 'AndroidManifest-common.xml'
             proto {
                 srcDir 'protos/'
+                srcDir 'proto_pixel/'
                 srcDir 'proto_overrides/'
             }
-        }
-
-        debug {
-            manifest.srcFile "AndroidManifest.xml"
         }
 
         androidTest {
@@ -163,8 +162,21 @@ android {
 
         aosp {
             java.srcDirs = ['src_flags', 'src_shortcuts_overrides']
+        }
+
+        /*aospWithoutQuickstep {
             manifest.srcFile "AndroidManifest.xml"
         }
+
+        aospWithQuickstep {
+            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
+        }
+
+        l3go {
+            res.srcDirs = ['go/res']
+            java.srcDirs = ['go/src']
+            manifest.srcFile "go/AndroidManifest.xml"
+        }*/
 
         withoutQuickstep {
             java.srcDirs = ['src_ui_overrides']
@@ -185,27 +197,33 @@ android {
 
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
-            options.compilerArgs.add("-Xbootclasspath/p:${PREBUILTS_DIR}/libs/framework.jar")
+            options.compilerArgs.add("-Xbootclasspath/p:${FRAMEWORK_PREBUILTS_DIR}/libs/framework.jar")
         }
     }
 }
 
-project.afterEvaluate {
+allprojects {
+    repositories {
+        maven { url "../../../prebuilts/sdk/current/androidx/m2repository" }
+        maven { url "../../../prebuilts/fullsdk-darwin/extras/android/m2repository" }
+        maven { url "../../../prebuilts/fullsdk-linux/extras/android/m2repository" }
+        mavenCentral()
+        google()
+    }
+}
+
+afterEvaluate {
     android.applicationVariants.all { variant ->
         variant.resValue 'string', 'application_id', variant.applicationId
     }
 }
 
-apply from: 'Omega/smali.gradle'
-repositories {
-    jcenter()
-    google()
-    maven {
-        url 'https://jitpack.io'
-    }
-}
-
 dependencies {
+    implementation "androidx.dynamicanimation:dynamicanimation:${ANDROID_X_VERSION}"
+    implementation "androidx.recyclerview:recyclerview:${ANDROID_X_VERSION}"
+    implementation "androidx.preference:preference:${ANDROID_X_VERSION}"
+    implementation project(':IconLoader')
+    implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
     implementation "androidx.legacy:legacy-preference-v14:${versions.preferencev14}"
     implementation "androidx.dynamicanimation:dynamicanimation:${versions.dynamicanimation}"
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
@@ -222,77 +240,50 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.logginginterceptor}"
     implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
 
-    implementation project(':IconLoader')
-    implementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: ['launcher_protos.jar', 'plugin_core.jar'])
 
     // Recents lib dependency
     withQuickstepImplementation project(':SystemUISharedLib')
 
+    // Recents lib dependency for Go
+    //withQuickstepIconRecentsImplementation project(':SystemUISharedLib')
+
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
-    //withoutQuickstepImplementation fileTree(dir: "${PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
+    implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
 
-    // Tools
-    if (enable_plugin_kotlin) {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
-    }
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation "org.mockito:mockito-core:1.9.5"
+    androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
+    androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.0'
+    androidTestImplementation 'com.android.support.test:rules:1.0.0'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestImplementation "androidx.annotation:annotation:${ANDROID_X_VERSION}"
 
-    implementation "androidx.test.ext:junit:${versions.testjunit}"
-    androidTestImplementation "org.mockito:mockito-core:${versions.mockito}"
-    androidTestImplementation "com.google.dexmaker:dexmaker:${versions.dexmaker}"
-    androidTestImplementation "com.google.dexmaker:dexmaker-mockito:${versions.dexmaker}"
-    androidTestImplementation "androidx.test.ext:junit:${versions.testjunit}"
-    androidTestImplementation "androidx.test:rules:${versions.testrules}"
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:${versions.uiautomator}"
-    androidTestImplementation "androidx.annotation:annotation:${versions.annotation}"
+    implementation 'com.google.protobuf:protobuf-lite:3.0.0'
 }
 
 protobuf {
     // Configure the protoc executable
     protoc {
-        // later versions seems to miss on javanano support
         artifact = 'com.google.protobuf:protoc:3.0.0'
-
-        generateProtoTasks {
-            all().each { task ->
-                task.builtins {
-                    remove java
-                    javanano {
-                        option "java_package=launcher_log_extension.proto|com.android.launcher3.userevent.nano"
-                        option "java_package=launcher_log.proto|com.android.launcher3.userevent.nano"
-                        option "java_package=launcher_dump.proto|com.android.launcher3.model.nano"
-                        option "java_package=search.proto|com.google.android.apps.nexuslauncher.search.nano"
-                        option "java_package=smartspace.proto|com.google.android.apps.nexuslauncher.smartspace.nano"
-                        option "enum_style=java"
-                    }
+    }
+    plugins {
+        javalite {
+            // The codegen for lite comes as a separate artifact
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                remove java
+                javanano {
+                    option "enum_style=java"
                 }
+            }
+            task.plugins {
+                javalite { }
             }
         }
     }
-}
-
-@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
-// Returns used android languages as a buildConfig array: {'de', 'it', ..}"
-static String findAndroidLocales() {
-    Set<String> langs = new HashSet<>()
-    new File('.').eachFileRecurse(groovy.io.FileType.DIRECTORIES) {
-        final foldername = it.name
-        if (foldername.startsWith('values-')
-                && !it.canonicalPath.contains("build" + File.separator + "intermediates")
-                && !it.canonicalPath.contains("gradle" + File.separator + "daemon")) {
-            new File(it.toString()).eachFileRecurse(groovy.io.FileType.FILES) {
-                if (it.name.toLowerCase().endsWith(".xml") && it.getCanonicalFile().getText('UTF-8').contains("<string")) {
-                    langs.add(foldername.replace("values-", ""))
-                }
-            }
-        }
-    }
-    return '{' + langs.collect { "\"${it}\"" }.join(",") + '}'
-}
-
-@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
-// Returns the build date in a RFC3339 compatible format. TZ is always converted to UTC
-static String getBuildDate() {
-    final SimpleDateFormat RFC3339_LIKE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
-    RFC3339_LIKE.setTimeZone(TimeZone.getTimeZone("UTC"))
-    return RFC3339_LIKE.format(new Date())
 }
