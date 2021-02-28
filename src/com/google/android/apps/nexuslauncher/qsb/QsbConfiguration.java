@@ -2,31 +2,28 @@ package com.google.android.apps.nexuslauncher.qsb;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 
 @TargetApi(26)
-public class k {
-    private static k INSTANCE;
-    private final ArrayList<o> mListeners = new ArrayList<>(2);
-    Bitmap DX;
+public class QsbConfiguration {
+    private static QsbConfiguration INSTANCE;
+    private final ArrayList<QsbChangeListener> mListeners = new ArrayList<>(2);
 
-    private k(Context context) {
-
+    private QsbConfiguration(Context context) {
     }
 
-    public static k getInstance(Context context) {
+    public static QsbConfiguration getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new k(context.getApplicationContext());
+            INSTANCE = new QsbConfiguration(context.getApplicationContext());
         }
         return INSTANCE;
     }
 
     private void notifyListeners() {
-        for (o listener : mListeners) {
-            listener.dM();
+        for (QsbChangeListener listener : mListeners) {
+            listener.onChange();
         }
     }
 
@@ -65,11 +62,11 @@ public class k {
         return false;
     }
 
-    public final void a(o oVar) {
-        this.mListeners.add(oVar);
+    public final void addListener(QsbChangeListener qsbChangeListener) {
+        mListeners.add(qsbChangeListener);
     }
 
-    public final void b(o oVar) {
-        this.mListeners.remove(oVar);
+    public final void removeListener(QsbChangeListener qsbChangeListener) {
+        mListeners.remove(qsbChangeListener);
     }
 }
