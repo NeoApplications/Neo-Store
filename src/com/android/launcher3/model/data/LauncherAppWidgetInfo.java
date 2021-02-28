@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package com.android.launcher3;
+package com.android.launcher3.model.data;
 
 import android.appwidget.AppWidgetHostView;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Process;
 
-import com.android.launcher3.model.PackageItemInfo;
+import androidx.annotation.Nullable;
+
+import com.android.launcher3.AppWidgetResizeFrame;
+import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherSettings;
+import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.util.ContentWriter;
 
 /**
@@ -29,9 +34,10 @@ import com.android.launcher3.util.ContentWriter;
  */
 public class LauncherAppWidgetInfo extends ItemInfo {
 
-    public static final int RESTORE_COMPLETED = 0;
-
     public static final int OPTION_SEARCH_WIDGET = 1;
+
+
+    public static final int RESTORE_COMPLETED = 0;
 
     /**
      * This is set during the package backup creation.
@@ -129,7 +135,9 @@ public class LauncherAppWidgetInfo extends ItemInfo {
         restoreStatus = RESTORE_COMPLETED;
     }
 
-    /** Used for testing **/
+    /**
+     * Used for testing
+     **/
     public LauncherAppWidgetInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET;
     }
@@ -138,12 +146,19 @@ public class LauncherAppWidgetInfo extends ItemInfo {
         return appWidgetId <= CUSTOM_WIDGET_ID;
     }
 
+    @Nullable
+    @Override
+    public ComponentName getTargetComponent() {
+        return providerName;
+    }
+
     @Override
     public void onAddToDatabase(ContentWriter writer) {
         super.onAddToDatabase(writer);
         writer.put(LauncherSettings.Favorites.APPWIDGET_ID, appWidgetId)
                 .put(LauncherSettings.Favorites.APPWIDGET_PROVIDER, providerName.flattenToString())
                 .put(LauncherSettings.Favorites.RESTORED, restoreStatus)
+                .put(LauncherSettings.Favorites.OPTIONS, options)
                 .put(LauncherSettings.Favorites.INTENT, bindOptions);
     }
 
@@ -151,7 +166,7 @@ public class LauncherAppWidgetInfo extends ItemInfo {
      * When we bind the widget, we should notify the widget that the size has changed if we have not
      * done so already (only really for default workspace widgets).
      */
-    void onBindAppWidget(Launcher launcher, AppWidgetHostView hostView) {
+    public void onBindAppWidget(Launcher launcher, AppWidgetHostView hostView) {
         if (!mHasNotifiedInitialWidgetSizeChanged) {
             AppWidgetResizeFrame.updateWidgetSizeRanges(hostView, launcher, spanX, spanY);
             mHasNotifiedInitialWidgetSizeChanged = true;
@@ -160,12 +175,14 @@ public class LauncherAppWidgetInfo extends ItemInfo {
 
     @Override
     protected String dumpProperties() {
-        return super.dumpProperties() + " appWidgetId=" + appWidgetId;
+        return super.dumpProperties()
+                + " providerName=" + providerName
+                + " appWidgetId=" + appWidgetId;
     }
 
     public final boolean isWidgetIdAllocated() {
-        return (restoreStatus & FLAG_ID_NOT_VALID) == 0 ||
-                (restoreStatus & FLAG_ID_ALLOCATED) == FLAG_ID_ALLOCATED;
+        return (restoreStatus & FLAG_ID_NOT_VALID) == 0
+                || (restoreStatus & FLAG_ID_ALLOCATED) == FLAG_ID_ALLOCATED;
     }
 
     public final boolean hasRestoreFlag(int flag) {
@@ -174,10 +191,20 @@ public class LauncherAppWidgetInfo extends ItemInfo {
 
     /**
      * returns if widget options include an option or not
+     *
      * @param option
      * @return
      */
     public final boolean hasOptionFlag(int option) {
         return (options & option) != 0;
+    }
+
+    @Override
+    public void setItemBuilder(LauncherAtom.ItemInfo.Builder builder) {
+        builder.setWidget(LauncherAtom.Widget.newBuilder()
+                .setSpanX(spanX)
+                .setSpanY(spanY)
+                .setComponentName(providerName.toString())
+                .setPackageName(providerName.getPackageName()));
     }
 }
