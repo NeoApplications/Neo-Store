@@ -2,9 +2,9 @@ name: Omega CI
 
 on:
   push:
-    branches: [main]
+    branches: [omega-11]
   pull_request:
-    branches: [main]
+    branches: [omega-11]
 
 jobs:
   build:
