@@ -23,23 +23,12 @@ android {
         }
     }
 
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs.add("-Xbootclasspath/p:prebuilts/libs/framework_pie.jar")
-        }
-    }
-}
-repositories {
-    jcenter()
-    google()
-    maven {
-        url 'https://jitpack.io'
-    }
+    addFrameworkJar('framework_pie.jar')
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation project(':QuickstepCompat')

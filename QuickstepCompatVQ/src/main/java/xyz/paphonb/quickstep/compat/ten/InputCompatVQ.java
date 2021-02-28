@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.view.BatchedInputEventReceiver;
+import android.view.BatchedInputEventReceiver;;
 import android.view.Choreographer;
 import android.view.IWindowManager;
 import android.view.InputChannel;
@@ -13,8 +13,6 @@ import android.view.InputEvent;
 import androidx.annotation.RequiresApi;
 
 import xyz.paphonb.quickstep.compat.InputCompat;
-
-;
 
 @RequiresApi(Build.VERSION_CODES.Q)
 public class InputCompatVQ extends InputCompat {

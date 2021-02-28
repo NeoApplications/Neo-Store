@@ -1,1 +1,2 @@
-<manifest package="xyz.paphonb.quickstep.compat" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="xyz.paphonb.quickstep.compat" />

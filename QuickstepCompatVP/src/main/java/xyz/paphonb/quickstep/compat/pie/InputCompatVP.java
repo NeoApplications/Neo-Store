@@ -3,15 +3,13 @@ package xyz.paphonb.quickstep.compat.pie;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.view.BatchedInputEventReceiver;
+import android.view.BatchedInputEventReceiver;;
 import android.view.Choreographer;
 import android.view.IWindowManager;
 import android.view.InputChannel;
 import android.view.InputEvent;
 
 import xyz.paphonb.quickstep.compat.InputCompat;
-
-;
 
 public class InputCompatVP extends InputCompat {
 

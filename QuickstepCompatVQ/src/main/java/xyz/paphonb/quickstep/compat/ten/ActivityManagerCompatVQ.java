@@ -1,5 +1,7 @@
 package xyz.paphonb.quickstep.compat.ten;
 
+import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.TaskSnapshot;
 import android.app.ActivityTaskManager;
@@ -22,35 +24,48 @@ import xyz.paphonb.quickstep.compat.RecentsAnimationRunner;
 public class ActivityManagerCompatVQ extends ActivityManagerCompat {
 
     @Override
-    public List<ActivityManager.RunningTaskInfo> getFilteredTasks(int maxNum, int ignoreActivityType, int ignoreWindowingMode) throws RemoteException {
-        return ActivityTaskManager.getService().getFilteredTasks(maxNum, ignoreActivityType, ignoreWindowingMode);
+    public List<ActivityManager.RunningTaskInfo> getFilteredTasks(int maxNum,
+                                                                  boolean filterOnlyVisibleRecents) throws RemoteException {
+        return ActivityTaskManager.getService().getFilteredTasks(maxNum, filterOnlyVisibleRecents);
     }
 
     @Override
-    public List<ActivityManager.RecentTaskInfo> getRecentTasks(int maxNum, int flags, int userId) throws RemoteException {
+    public List<ActivityManager.RecentTaskInfo> getRecentTasks(int maxNum, int flags, int userId)
+            throws RemoteException {
         return ActivityTaskManager.getService().getRecentTasks(maxNum, flags, userId).getList();
     }
 
     @Override
-    public ActivityManager.TaskSnapshot getTaskSnapshot(int taskId, boolean reducedResolution) throws RemoteException {
+    public ActivityManager.TaskSnapshot getTaskSnapshot(int taskId, boolean reducedResolution)
+            throws RemoteException {
         return ActivityTaskManager.getService().getTaskSnapshot(taskId, reducedResolution);
     }
 
     @Override
-    public void startRecentsActivity(Intent intent, IAssistDataReceiver assistDataReceiver, final RecentsAnimationRunner recentsAnimationRunner) throws RemoteException {
+    public void startRecentsActivity(Intent intent, IAssistDataReceiver assistDataReceiver,
+                                     final RecentsAnimationRunner recentsAnimationRunner) throws RemoteException {
         IRecentsAnimationRunner runner = null;
         if (recentsAnimationRunner != null) {
             runner = new IRecentsAnimationRunner.Stub() {
                 @Override
                 public void onAnimationStart(IRecentsAnimationController controller,
-                                             RemoteAnimationTarget[] apps, Rect homeContentInsets,
+                                             RemoteAnimationTarget[] apps,
+                                             RemoteAnimationTarget[] wallpaperTargets,
+                                             Rect homeContentInsets,
                                              Rect minimizedHomeBounds) {
-                    recentsAnimationRunner.onAnimationStart(controller, apps, homeContentInsets, minimizedHomeBounds);
+                    recentsAnimationRunner
+                            .onAnimationStart(controller, apps, wallpaperTargets, homeContentInsets,
+                                    minimizedHomeBounds);
                 }
 
                 @Override
-                public void onAnimationCanceled(boolean deferredWithScreenshot) {
-                    recentsAnimationRunner.onAnimationCanceled(deferredWithScreenshot);
+                public void onAnimationCanceled(TaskSnapshot taskSnapshot) {
+                    recentsAnimationRunner.onAnimationCanceled(taskSnapshot);
+                }
+
+                @Override
+                public void onTaskAppeared(RemoteAnimationTarget app) {
+                    recentsAnimationRunner.onTaskAppeared(app);
                 }
             };
         }
@@ -69,10 +84,9 @@ public class ActivityManagerCompatVQ extends ActivityManagerCompat {
 
     @Override
     public boolean setTaskWindowingModeSplitScreenPrimary(
-            int taskId, int createMode, boolean toTop, boolean animate,
-            Rect initialBounds, boolean showRecents) throws RemoteException {
-        return ActivityTaskManager.getService().setTaskWindowingModeSplitScreenPrimary(taskId,
-                createMode, toTop, animate, initialBounds, showRecents);
+            int taskId, boolean toTop) throws RemoteException {
+        return ActivityTaskManager.getService()
+                .setTaskWindowingModeSplitScreenPrimary(taskId, toTop);
     }
 
     @Override
