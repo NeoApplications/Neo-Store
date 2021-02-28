@@ -12,7 +12,11 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
+import org.jetbrains.annotations.NotNull;
+
 public class SuperGContainerView extends BaseGContainerView {
+
+    private int mQsbColor = Color.WHITE;
 
     public SuperGContainerView(Context paramContext) {
         this(paramContext, null);
@@ -84,7 +88,6 @@ public class SuperGContainerView extends BaseGContainerView {
     protected void applyQsbColor() {
         super.applyQsbColor();
         float radius = OmegaUtilsKt.dpToPx(100);
-        int mQsbColor = Color.WHITE;
         mQsbView.setBackground(OmegaUtilsKt.createRipplePill(getContext(), mQsbColor, radius));
     }
 }

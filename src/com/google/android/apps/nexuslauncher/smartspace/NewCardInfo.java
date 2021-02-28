@@ -12,21 +12,18 @@ import android.util.Log;
 
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
-import com.saggitt.omega.util.Config;
-
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.b;
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.f;
+import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.*;
 
 public class NewCardInfo {
     public final b di;
-    public final boolean forWeather;
+    public final boolean dj;
     public final PackageInfo dk;
     public final long dl;
     public final Intent intent;
 
-    public NewCardInfo(b di, Intent intent, boolean forWeather, long dl, PackageInfo dk) {
+    public NewCardInfo(b di, Intent intent, boolean dj, long dl, PackageInfo dk) {
         this.di = di;
-        this.forWeather = forWeather;
+        this.dj = dj;
         this.intent = intent;
         this.dl = dl;
         this.dk = dk;
@@ -40,7 +37,7 @@ public class NewCardInfo {
     }
 
     public Bitmap getBitmap(final Context context) {
-        f fVar = this.di.cx;
+        com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.f fVar = this.di.cx;
         if (fVar == null) {
             return null;
         }
@@ -51,8 +48,7 @@ public class NewCardInfo {
         try {
             if (TextUtils.isEmpty(fVar.cW)) {
                 if (!TextUtils.isEmpty(fVar.cX)) {
-                    Resources resourcesForApplication = context.getPackageManager()
-                            .getResourcesForApplication(Config.GOOGLE_QSB);
+                    Resources resourcesForApplication = context.getPackageManager().getResourcesForApplication("com.google.android.googlequicksearchbox");
                     return LauncherIcons.obtain(context).createIconBitmap(
                             resourcesForApplication.getDrawableForDensity(resourcesForApplication.getIdentifier(fVar.cX, null, null),
                                     LauncherAppState.getIDP(context).fillResIconDpi), 1f);

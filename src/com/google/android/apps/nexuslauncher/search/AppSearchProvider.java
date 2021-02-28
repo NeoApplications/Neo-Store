@@ -1,19 +1,6 @@
-/*
- * Copyright (c) 2020 Omega Launcher
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package com.google.android.apps.nexuslauncher.search;
+
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 import android.content.ComponentName;
 import android.content.ContentProvider;
@@ -32,19 +19,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.AppFilter;
-import com.android.launcher3.AppInfo;
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
-import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.AllAppsList;
 import com.android.launcher3.model.BgDataModel;
 import com.android.launcher3.model.LoaderResults;
+import com.android.launcher3.model.data.AppInfo;
+import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.LooperExecutor;
 import com.saggitt.omega.allapps.FuzzyAppSearchAlgorithm;
 import com.saggitt.omega.allapps.OmegaAppFilter;
-import com.saggitt.omega.search.AppItemInfoWithIcon;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -57,8 +43,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class AppSearchProvider extends ContentProvider {
     private static final String[] eK = new String[]{"_id", "suggest_text_1", "suggest_icon_1", "suggest_intent_action", "suggest_intent_data"};
@@ -91,21 +75,21 @@ public class AppSearchProvider extends ContentProvider {
 
     public static ComponentKey uriToComponent(final Uri uri, final Context context) {
         return new ComponentKey(ComponentName.unflattenFromString(uri.getQueryParameter("component")),
-                UserManagerCompat.getInstance(context).getUserForSerialNumber(Long.parseLong(uri.getQueryParameter("user"))));
+                UserCache.INSTANCE.get(context).getUserForSerialNumber(Long.parseLong(uri.getQueryParameter("user"))));
     }
 
-    public static Uri buildUri(final AppInfo appInfo, final UserManagerCompat userManagerCompat) {
+    public static Uri buildUri(final AppInfo appInfo, final UserCache userCache) {
         return new Uri.Builder()
                 .scheme("content")
                 .authority(BuildConfig.APPLICATION_ID + ".appssearch")
                 .appendQueryParameter("component", appInfo.componentName.flattenToShortString())
-                .appendQueryParameter("user", Long.toString(userManagerCompat.getSerialNumberForUser(appInfo.user)))
+                .appendQueryParameter("user", Long.toString(userCache.getSerialNumberForUser(appInfo.user)))
                 .build();
     }
 
     private Cursor listToCursor(final List<AppInfo> list) {
         final MatrixCursor matrixCursor = new MatrixCursor(AppSearchProvider.eK, list.size());
-        final UserManagerCompat instance = UserManagerCompat.getInstance(this.getContext());
+        final UserCache instance = UserCache.INSTANCE.get(this.getContext());
 
         int n = 0;
         for (AppInfo appInfo : list) {
@@ -129,7 +113,7 @@ public class AppSearchProvider extends ContentProvider {
                 public Bitmap call() {
                     final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
                     mApp.getIconCache().getTitleAndIcon(d, false);
-                    return d.iconBitmap;
+                    return d.bitmap.icon;
                 }
             };
             final Bundle bundle2 = new Bundle();
@@ -155,7 +139,7 @@ public class AppSearchProvider extends ContentProvider {
     }
 
     public boolean onCreate() {
-        this.mLooper = new LooperExecutor(MODEL_EXECUTOR.getLooper());
+        this.mLooper = MODEL_EXECUTOR;
         this.mApp = LauncherAppState.getInstance(this.getContext());
         return true;
     }
@@ -172,7 +156,7 @@ public class AppSearchProvider extends ContentProvider {
                 public Bitmap call() {
                     final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
                     mApp.getIconCache().getTitleAndIcon(d, false);
-                    return d.iconBitmap;
+                    return d.bitmap.icon;
                 }
             };
             return openPipeHelper(uri, s2, null, mLooper.submit(g), this.mPipeDataWriter);
@@ -223,7 +207,7 @@ public class AppSearchProvider extends ContentProvider {
         public List<AppInfo> call() {
             if (!this.mModel.isModelLoaded()) {
                 Log.d("AppSearchProvider", "Workspace not loaded, loading now");
-                this.mModel.startLoaderForResults(new LoaderResults(this.mApp, this.mBgDataModel, this.mAllAppsList, 0, null));
+                this.mModel.startLoaderForResults(new LoaderResults(this.mApp, this.mBgDataModel, this.mAllAppsList, null));
             }
             if (!this.mModel.isModelLoaded()) {
                 Log.d("AppSearchProvider", "Loading workspace failed");
@@ -232,6 +216,7 @@ public class AppSearchProvider extends ContentProvider {
             return FuzzyAppSearchAlgorithm.query(mApp.getContext(), mQuery, mAllAppsList.data, getBaseFilter());
         }
 
+        @Override
         public void init(final LauncherAppState mApp, final LauncherModel mModel, final BgDataModel mBgDataModel, final AllAppsList mAllAppsList, final Executor executor) {
             this.mApp = mApp;
             this.mModel = mModel;

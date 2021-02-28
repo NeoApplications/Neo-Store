@@ -20,10 +20,10 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-
 import com.google.android.libraries.launcherclient.ILauncherOverlay;
 import com.google.android.libraries.launcherclient.ILauncherOverlayCallback;
 import com.saggitt.omega.smartspace.FeedBridge;
+import com.saggitt.omega.smartspace.FeedBridge.BridgeInfo;
 
 import java.lang.ref.WeakReference;
 
@@ -386,7 +386,7 @@ public class LauncherClient {
     }
 
     static Intent getIntent(Context context, boolean proxy) {
-        FeedBridge.BridgeInfo bridgeInfo = proxy ? FeedBridge.Companion.getInstance(context).resolveBridge() : null;
+        BridgeInfo bridgeInfo = proxy ? FeedBridge.Companion.getInstance(context).resolveBridge() : null;
         String pkg = context.getPackageName();
         return new Intent("com.android.launcher3.WINDOW_OVERLAY")
                 .setPackage(bridgeInfo != null ? bridgeInfo.getPackageName() : "com.google.android.googlequicksearchbox")

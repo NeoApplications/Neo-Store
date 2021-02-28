@@ -1,5 +1,6 @@
 package com.google.android.apps.nexuslauncher.superg;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -24,12 +25,14 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.util.Config;
 
-public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
+public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TEXT_ASSIST = "com.google.android.googlequicksearchbox.TEXT_ASSIST";
 
+    private final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator(); //mArgbEvaluator
     private ObjectAnimator mObjectAnimator;
     protected View mQsbView;
     private float mQsbButtonElevation;
@@ -108,9 +111,12 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
                     null);
         } else {
             SearchProvider provider = controller.getSearchProvider();
-            provider.startSearch(intent -> {
-                getContext().startActivity(intent, ActivityOptionsCompat.makeClipRevealAnimation(mQsbView, 0, 0, mQsbView.getWidth(), mQsbView.getWidth()).toBundle());
-                return null;
+            provider.startSearch(new Function1<Intent, Unit>() {
+                @Override
+                public Unit invoke(Intent intent) {
+                    getContext().startActivity(intent, ActivityOptionsCompat.makeClipRevealAnimation(mQsbView, 0, 0, mQsbView.getWidth(), mQsbView.getWidth()).toBundle());
+                    return null;
+                }
             });
         }
     }
@@ -130,7 +136,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         return intent.putExtra("source_round_left", true)
                 .putExtra("source_round_right", true)
                 .putExtra("source_logo_offset", midLocation(findViewById(R.id.g_icon), rect))
-                .setPackage(Config.GOOGLE_QSB)
+                .setPackage("com.google.android.googlequicksearchbox")
                 .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -170,7 +176,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         changeVisibility(false);
     }
 
-    private void hideQsbImmediately() {
+    private void hideQsbImmediately() { //bb
         mWindowHasFocus = false;
         qsbHidden = true;
         if (mQsbView != null) {
@@ -211,7 +217,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         Context context = getContext();
         try {
             context.startActivity(new Intent(action).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .setPackage(Config.GOOGLE_QSB));
+                    .setPackage("com.google.android.googlequicksearchbox"));
         } catch (ActivityNotFoundException ignored) {
             try {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com")),

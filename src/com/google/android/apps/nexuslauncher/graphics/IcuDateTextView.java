@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.icu.text.DateFormat;
 import android.icu.text.DisplayContext;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
-
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.saggitt.omega.OmegaPreferences;
 
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 public class IcuDateTextView extends DoubleShadowTextView {
     private DateFormat mDateFormat;

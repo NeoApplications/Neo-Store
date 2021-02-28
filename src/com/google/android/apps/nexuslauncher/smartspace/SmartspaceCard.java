@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -16,23 +18,26 @@ import android.view.View;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.ShadowGenerator;
+import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.b;
+import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.c;
+import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.e;
+import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.i;
+import com.google.android.apps.nexuslauncher.utils.ColorManipulation;
+import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.saggitt.omega.smartspace.FeedBridge;
-import com.saggitt.omega.util.ColorManipulation;
 
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.b;
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.c;
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.e;
-import static com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.i;
+import java.net.URISyntaxException;
 
 public class SmartspaceCard {
     private final b dI;
-    private final long gsaUpdateTime;
-    private final int gsaVersion;
+    private final long dJ;
+    private final int dK;
     private final boolean dL;
     private final boolean dM;
-    private final long published;
+    private final long dN;
     private final Context mContext;
     private Bitmap mIcon;
     private final Intent mIntent;
@@ -43,9 +48,9 @@ public class SmartspaceCard {
         this.dM = dm;
         this.mIntent = mIntent;
         this.mIcon = mIcon;
-        this.published = dn;
-        this.gsaUpdateTime = dj;
-        this.gsaVersion = dk;
+        this.dN = dn;
+        this.dJ = dj;
+        this.dK = dk;
         this.dL = dl;
     }
 
@@ -63,7 +68,7 @@ public class SmartspaceCard {
                 if (bitmap != null) {
                     ShadowGenerator shadowGenerator = new ShadowGenerator(
                             ResourceUtils.pxFromDp(48, context.getResources().getDisplayMetrics()));
-                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
                     shadowGenerator.recreateIcon(bitmap, new Canvas(newBitmap));
                     bitmap = newBitmap;
                 }
@@ -203,7 +208,7 @@ public class SmartspaceCard {
         final Bitmap ci = a.getBitmap(context);
         Bitmap cp;
         if (ci != null && i.dc) {
-            if (a.forWeather) {
+            if (a.dj) {
                 cp = cP(ci, -1);
             } else {
                 cp = ci;
@@ -355,6 +360,6 @@ public class SmartspaceCard {
     }
 
     public String toString() {
-        return "title:" + this.getTitle() + " expires:" + this.cF() + " published:" + this.published + " gsaVersion:" + this.gsaVersion + " gsaUpdateTime: " + this.gsaUpdateTime;
+        return "title:" + this.getTitle() + " expires:" + this.cF() + " published:" + this.dN + " gsaVersion:" + this.dK + " gsaUpdateTime: " + this.dJ;
     }
 }

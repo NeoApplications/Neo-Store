@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.core.graphics.ColorUtils;
-
 import com.android.launcher3.R;
 
 public class QsbConnector extends View {

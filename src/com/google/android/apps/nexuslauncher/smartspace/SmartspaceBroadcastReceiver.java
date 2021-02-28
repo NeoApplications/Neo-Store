@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2020 Omega Launcher
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package com.google.android.apps.nexuslauncher.smartspace;
 
 import android.content.BroadcastReceiver;
@@ -26,18 +10,17 @@ import android.util.Log;
 
 import com.google.android.apps.nexuslauncher.smartspace.nano.SmartspaceProto.b;
 import com.google.protobuf.nano.InvalidProtocolBufferNanoException;
-import com.saggitt.omega.util.Config;
 
 public class SmartspaceBroadcastReceiver extends BroadcastReceiver {
     private void cg(b b, Context context, Intent intent, boolean b2) throws PackageManager.NameNotFoundException {
         if (b.cy) {
-            SmartspaceController.get(context).updateData(null);
+            SmartspaceController.get(context).cV(null);
             return;
         }
         try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(Config.GOOGLE_QSB, 0);
-            SmartspaceController.get(context).updateData(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
-        } catch (PackageManager.NameNotFoundException ignored) {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo("com.google.android.googlequicksearchbox", 0);
+            SmartspaceController.get(context).cV(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
+        } catch (PackageManager.NameNotFoundException ex) {
         }
     }
 

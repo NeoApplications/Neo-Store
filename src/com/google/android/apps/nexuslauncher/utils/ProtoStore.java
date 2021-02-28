@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.android.apps.nexuslauncher.utils;
 
 import android.content.Context;
 import android.util.Log;

@@ -11,21 +11,20 @@ import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherCallbacks;
-import com.android.launcher3.LauncherExterns;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
+import com.android.systemui.plugins.shared.LauncherExterns;
+import com.google.android.apps.nexuslauncher.qsb.QsbAnimationController;
 import com.google.android.apps.nexuslauncher.search.ItemInfoUpdateReceiver;
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController;
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
+import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientService;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
-import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.qsb.QsbAnimationController;
 import com.saggitt.omega.settings.SettingsActivity;
-import com.saggitt.omega.util.ActionIntentFilter;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -46,11 +45,11 @@ public class NexusLauncher {
     private ItemInfoUpdateReceiver mItemInfoUpdateReceiver;
     public QsbAnimationController mQsbAnimationController;
 
-    public NexusLauncher(OmegaLauncher activity) {
+    public NexusLauncher(NexusLauncherActivity activity) {
         mLauncher = activity;
         mExterns = activity;
         mCallbacks = new NexusLauncherCallbacks();
-        mExterns.setLauncherCallbacks(mCallbacks);
+        mLauncher.setLauncherCallbacks(mCallbacks);
         mLauncher.addOnDeviceProfileChangeListener(dp -> mClient.redraw());
     }
 
@@ -61,6 +60,9 @@ public class NexusLauncher {
     class NexusLauncherCallbacks implements LauncherCallbacks, SharedPreferences.OnSharedPreferenceChangeListener, WallpaperColorInfo.OnChangeListener {
         private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
         private final FeedReconnector mFeedReconnector = new FeedReconnector();
+
+        private final Runnable mUpdatePredictionsIfResumed = this::updatePredictionsIfResumed;
+
         private ItemInfoUpdateReceiver getUpdateReceiver() {
             if (mItemInfoUpdateReceiver == null) {
                 mItemInfoUpdateReceiver = new ItemInfoUpdateReceiver(mLauncher, mCallbacks);
@@ -69,10 +71,22 @@ public class NexusLauncher {
         }
 
         public void dump(final String s, final FileDescriptor fileDescriptor, final PrintWriter printWriter, final String[] array) {
-            SmartspaceController.get(mLauncher).dumpInfo(s, printWriter);
+            SmartspaceController.get(mLauncher).cX(s, printWriter);
         }
+
+        public void finishBindingItems(final boolean b) {
+        }
+
         public boolean handleBackPressed() {
             return false;
+        }
+
+        public boolean hasCustomContentToLeft() {
+            return false;
+        }
+
+        public boolean hasSettings() {
+            return true;
         }
 
         public void onActivityResult(final int n, final int n2, final Intent intent) {
@@ -96,13 +110,13 @@ public class NexusLauncher {
 
             prefs.registerOnSharedPreferenceChangeListener(this);
 
-            SmartspaceController.get(mLauncher).sendMessage();
+            SmartspaceController.get(mLauncher).cW();
 
             mQsbAnimationController = new QsbAnimationController(mLauncher);
 
             mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
             applyFeedTheme(false);
-            WallpaperColorInfo instance = WallpaperColorInfo.getInstance(mLauncher);
+            WallpaperColorInfo instance = WallpaperColorInfo.INSTANCE.get(mLauncher);
             instance.addOnChangeListener(this);
             onExtractedColorsChanged(instance);
 
@@ -138,10 +152,9 @@ public class NexusLauncher {
             }
 
             Utilities.getPrefs(mLauncher).unregisterOnSharedPreferenceChangeListener(this);
-            WallpaperColorInfo.getInstance(mLauncher).removeOnChangeListener(this);
+            WallpaperColorInfo.INSTANCE.get(mLauncher).removeOnChangeListener(this);
 
             getUpdateReceiver().onDestroy();
-
         }
 
         public void onDetachedFromWindow() {
@@ -155,6 +168,7 @@ public class NexusLauncher {
         }
 
         public void onLauncherProviderChange() {
+            // ReflectionClient.getInstance(mLauncher).onProviderChanged();
         }
 
         public void onPause() {
@@ -178,6 +192,10 @@ public class NexusLauncher {
             mClient.onResume();
 
             Handler handler = mLauncher.getDragLayer().getHandler();
+            if (handler != null) {
+                handler.removeCallbacks(mUpdatePredictionsIfResumed);
+                Utilities.postAsyncCallback(handler, mUpdatePredictionsIfResumed);
+            }
         }
 
         public void onSaveInstanceState(final Bundle bundle) {
@@ -267,6 +285,17 @@ public class NexusLauncher {
 
             if (redraw) {
                 mClient.redraw(mUiInformation);
+            }
+        }
+
+        private void updatePredictionsIfResumed() {
+            if (mLauncher.hasBeenResumed()) {
+                // ReflectionClient.getInstance(mLauncher).updatePredictionsNow(
+                //         FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE ? Client.OVERVIEW.id : Client.HOME.id);
+                // handler.post(() -> {
+                //     mLauncher.getUserEventDispatcher().updatePredictions();
+                //     mLauncher.getUserEventDispatcher().updateActions();
+                // });
             }
         }
 

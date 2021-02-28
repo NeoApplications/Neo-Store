@@ -1,38 +1,26 @@
 package com.google.android.apps.nexuslauncher.graphics;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
 import com.android.launcher3.views.DoubleShadowBubbleTextView;
 
-@SuppressLint("AppCompatCustomView")
 public class DoubleShadowTextView extends TextView {
     private final DoubleShadowBubbleTextView.ShadowInfo mShadowInfo;
 
     public DoubleShadowTextView(Context context) {
-        super(context, null);
-        mShadowInfo = new DoubleShadowBubbleTextView.ShadowInfo(context, null, 0);
-        setShadowLayer(Math.max(mShadowInfo.keyShadowBlur + mShadowInfo.keyShadowOffset,
-                mShadowInfo.ambientShadowBlur), 0f, 0f,
-                mShadowInfo.keyShadowColor);
+        this(context, null);
     }
 
     public DoubleShadowTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mShadowInfo = new DoubleShadowBubbleTextView.ShadowInfo(context, attrs, 0);
-        setShadowLayer(Math.max(mShadowInfo.keyShadowBlur + mShadowInfo.keyShadowOffset,
-                mShadowInfo.ambientShadowBlur), 0f, 0f,
-                mShadowInfo.keyShadowColor);
+        this(context, attrs, 0);
     }
 
     public DoubleShadowTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mShadowInfo = new DoubleShadowBubbleTextView.ShadowInfo(context, attrs, defStyleAttr);
-        setShadowLayer(Math.max(mShadowInfo.keyShadowBlur
-                + mShadowInfo.keyShadowOffset, mShadowInfo.ambientShadowBlur), 0f, 0f, mShadowInfo.keyShadowColor);
+        setShadowLayer(Math.max(mShadowInfo.keyShadowBlur + mShadowInfo.keyShadowOffset, mShadowInfo.ambientShadowBlur), 0f, 0f, mShadowInfo.keyShadowColor);
     }
 
     protected void onDraw(Canvas canvas) {

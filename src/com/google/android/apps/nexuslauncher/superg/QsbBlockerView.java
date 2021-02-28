@@ -9,23 +9,23 @@ import android.util.AttributeSet;
 import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.DeviceProfile;
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.Workspace.OnStateChangeListener;
-import com.android.launcher3.anim.AnimatorSetBuilder;
+import com.android.launcher3.Workspace;
+import com.android.launcher3.model.data.ItemInfo;
+import com.google.android.material.animation.AnimatorSetCompat;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController;
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
-import com.saggitt.omega.smartspace.SmartspacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,15 +33,14 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A simple view used to show the region blocked by QSB during drag and drop.
  */
-public class QsbBlockerView extends FrameLayout implements
-        OnStateChangeListener, OmegaSmartspaceController.Listener,
-        View.OnLongClickListener, View.OnClickListener {
+public class QsbBlockerView extends FrameLayout implements Workspace.OnStateChangeListener, OmegaSmartspaceController.Listener,
+        OnClickListener, OnLongClickListener {
     public static final Property<QsbBlockerView, Integer> QSB_BLOCKER_VIEW_ALPHA = new QsbBlockerViewAlpha(Integer.TYPE, "bgAlpha");
-    private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private OmegaSmartspaceController mController;
+    private final OmegaSmartspaceController mController;
     private int mState = 0;
     private View mView;
-    private BubbleTextView mDummyBubbleTextView;
+
+    private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public QsbBlockerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,7 +55,7 @@ public class QsbBlockerView extends FrameLayout implements
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mDummyBubbleTextView = findViewById(R.id.dummyBubbleTextView);
+        BubbleTextView mDummyBubbleTextView = findViewById(R.id.dummyBubbleTextView);
         mDummyBubbleTextView.setTag(new ItemInfo() {
             @Override
             public ComponentName getTargetComponent() {
@@ -106,7 +105,7 @@ public class QsbBlockerView extends FrameLayout implements
     }
 
     @Override
-    public void prepareStateChange(AnimatorSetBuilder builder) {
+    public void prepareStateChange(AnimatorSetCompat builder) {
 
     }
 
@@ -116,7 +115,7 @@ public class QsbBlockerView extends FrameLayout implements
     }
 
     @Override
-    public void onDataUpdated(@Nullable WeatherData weather, @Nullable CardData card) {
+    public void onDataUpdated(@Nullable WeatherData weather, @Nullable OmegaSmartspaceController.CardData card) {
         final int oldState = mState;
         final View oldView = mView;
 
@@ -140,7 +139,8 @@ public class QsbBlockerView extends FrameLayout implements
 
         if (oldState != mState) {
             if (oldView != null) {
-                oldView.animate().setDuration(200L).alpha(0f).withEndAction(() -> removeView(oldView));
+                oldView.animate().setDuration(200L).alpha(0f).withEndAction(
+                        () -> removeView(oldView));
             }
             addView(mView);
             mView.setAlpha(0f);
@@ -176,9 +176,7 @@ public class QsbBlockerView extends FrameLayout implements
 
     @Override
     public boolean onLongClick(View v) {
-        // TODO: move it to below the widget view
-        OmegaUtilsKt.openPopupMenu(mView, null, new SmartspacePreferencesShortcut());
-        return true;
+        return false;
     }
 
     static class QsbBlockerViewAlpha extends Property<QsbBlockerView, Integer> {
