@@ -20,6 +20,7 @@ package com.saggitt.omega.iconpack
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -34,8 +35,8 @@ import androidx.appcompat.widget.ActionMenuView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.util.Executors.ICON_PACK_UI_EXECUTOR
+import com.android.launcher3.Utilities
+import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
 import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
 import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.*
@@ -48,7 +49,12 @@ import java.util.concurrent.Semaphore
 class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, SearchView.OnQueryTextListener {
     private val iconPackManager = IconPackManager.getInstance(this)
     private val iconGrid by lazy { findViewById<RecyclerView>(R.id.list_results) }
-    private val iconPack by lazy { iconPackManager.getIconPack(intent.getParcelableExtra(EXTRA_ICON_PACK)!!, false) }
+    private val iconPack by lazy {
+        intent.getParcelableExtra<IconPackManager.PackProvider>(EXTRA_ICON_PACK)?.let {
+            iconPackManager.getIconPack(
+                    it, false)
+        }
+    }
     private val items get() = searchItems ?: actualItems
     private var actualItems = ArrayList<AdapterItem>()
     private val adapter = IconGridAdapter()
@@ -60,12 +66,12 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
     private var dynamicPadding = 0
 
     private val pickerComponent by lazy {
-        LauncherAppsCompat.getInstance(this)
-                .getActivityList(iconPack.packPackageName, Process.myUserHandle()).firstOrNull()?.componentName
+        this.getSystemService(LauncherApps::class.java)
+                .getActivityList(iconPack?.packPackageName, Process.myUserHandle()).firstOrNull()?.componentName
     }
 
     private var searchItems: MutableList<AdapterItem>? = null
-    private val searchHandler = object : Handler(ICON_PACK_UI_EXECUTOR.looper) {
+    private val searchHandler = object : Handler(ICON_PACK_EXECUTOR.looper) {
         override fun handleMessage(msg: Message) {
             if (msg.what == R.id.message_search) {
                 processSearchQuery(msg.obj as String?)
@@ -79,14 +85,16 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         decorLayout.hideToolbar = true
 
         setContentView(R.layout.activity_settings_search)
+
         getContentFrame().addOnLayoutChangeListener(this)
+
         setSupportActionBar(search_toolbar)
         supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
 
-        search_view.queryHint = iconPack.displayName
+        search_view.queryHint = iconPack?.displayName
         search_view.setOnQueryTextListener(this)
 
         items.add(LoadingItem())
@@ -94,7 +102,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         runOnUiWorkerThread {
             // make sure whatever running on ui worker has finished, then start parsing the pack
             runOnThread(iconPackUiHandler) {
-                iconPack.getAllIcons(::addEntries, { canceled })
+                iconPack?.getAllIcons(::addEntries, { canceled })
                 // Wait for the ui to finish processing new data
                 val waiter = Semaphore(0)
                 runOnUiThread {
@@ -170,7 +178,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         }
 
         search_toolbar.childs.firstOrNull { it is ActionMenuView }?.let {
-            (it as ActionMenuView).overflowIcon?.setTint(omegaPrefs.accentColor)
+            (it as ActionMenuView).overflowIcon?.setTint(Utilities.getOmegaPrefs(applicationContext).accentColor)
         }
         return true
     }
@@ -204,8 +212,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK && data != null) {
             if (data.hasExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)) {
                 val icon = data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
-                val entry = (iconPack as IconPackImpl).createEntry(icon!!)
-                onSelectIcon(entry)
+                val entry = icon?.let { (iconPack as IconPackImpl).createEntry(it) }
+                entry?.let { onSelectIcon(it) }
                 return
             }
         }
@@ -332,7 +340,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
                     rightMargin = dynamicPadding
                 }
                 val context = itemView.context
-                title.setTextColor(omegaPrefs.accentColor)
+                title.setTextColor(Utilities.getOmegaPrefs(context).accentColor)
             }
 
             fun bind(category: CategoryItem) {

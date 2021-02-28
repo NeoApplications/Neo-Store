@@ -21,12 +21,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.LauncherApps
 import android.net.Uri
 import android.view.View
 import com.android.launcher3.*
-import com.android.launcher3.ItemInfoWithIcon.FLAG_SYSTEM_YES
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-import com.android.launcher3.compat.LauncherAppsCompat
+import com.android.launcher3.model.data.*
+import com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES
 import com.android.launcher3.popup.SystemShortcut
 import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.util.OmegaSingletonHolder
@@ -38,85 +39,93 @@ import java.net.URISyntaxException
 class OmegaShortcut(private val context: Context) {
 
     private val shortcuts = listOf(
-            ShortcutEntry("edit", Edit(), true),
-            ShortcutEntry("info", SystemShortcut.AppInfo(), true),
-            ShortcutEntry("widgets", SystemShortcut.Widgets(), true),
-            ShortcutEntry("install", SystemShortcut.Install(), true),
-            ShortcutEntry("remove", Remove(), false),
-            ShortcutEntry("uninstall", Uninstall(), false)
-    )
+            ShortcutEntry("edit", Edit.FACTORY, true),
+            ShortcutEntry("info", SystemShortcut.APP_INFO, true),
+            ShortcutEntry("widgets", SystemShortcut.WIDGETS, true),
+            ShortcutEntry("install", SystemShortcut.INSTALL, true),
+            ShortcutEntry("remove", Remove.FACTORY, false),
+            ShortcutEntry("uninstall", Uninstall.FACTORY, false))
 
-    inner class ShortcutEntry(key: String, val shortcut: SystemShortcut<*>, enabled: Boolean) {
-
+    inner class ShortcutEntry(key: String, val shortcut: SystemShortcut.Factory<in Launcher>, enabled: Boolean) {
         val enabled by context.omegaPrefs.BooleanPref("pref_iconPopup_$key", enabled)
     }
 
     val enabledShortcuts get() = shortcuts.filter { it.enabled }.map { it.shortcut }
 
-    class Uninstall : SystemShortcut<Launcher>(R.drawable.ic_uninstall_no_shadow, R.string.uninstall_drop_target_label) {
+    class Uninstall(private val target: BaseDraggingActivity, private val itemInfo: ItemInfo,
+                    private val componentName: ComponentName) :
+            SystemShortcut<BaseDraggingActivity>(R.drawable.ic_uninstall_no_shadow,
+                    R.string.uninstall_drop_target_label, target, itemInfo) {
 
-        override fun getOnClickListener(launcher: Launcher, itemInfo: ItemInfo): View.OnClickListener? {
-            if (itemInfo is ItemInfoWithIcon) {
-                if (itemInfo.runtimeStatusFlags.hasFlag(FLAG_SYSTEM_YES)) {
-                    return null
-                }
-            }
+        override fun onClick(v: View?) {
+            AbstractFloatingView.closeAllOpenViews(target)
+            val i = Intent.parseUri(target.getString(R.string.delete_package_intent), 0)
+                    .setData(Uri.fromParts("package", componentName.packageName, componentName.className))
+                    .putExtra(Intent.EXTRA_USER, itemInfo.user)
+            target.startActivity(i)
+        }
 
-            return getUninstallTarget(launcher, itemInfo)?.let { cn ->
-                View.OnClickListener {
-                    AbstractFloatingView.closeAllOpenViews(launcher)
-                    try {
-                        val i = Intent.parseUri(launcher.getString(R.string.delete_package_intent), 0)
-                                .setData(Uri.fromParts("package", cn.packageName, cn.className))
-                                .putExtra(Intent.EXTRA_USER, itemInfo.user)
-                        launcher.startActivity(i)
-                    } catch (e: URISyntaxException) {
+        companion object {
+
+            val FACTORY = Factory<BaseDraggingActivity> { launcher, itemInfo ->
+                if (itemInfo is ItemInfoWithIcon && itemInfo.runtimeStatusFlags.hasFlag(FLAG_SYSTEM_YES)) {
+                    null
+                } else {
+                    getUninstallTarget(launcher, itemInfo)?.let { cn ->
+                        Uninstall(launcher, itemInfo, cn)
                     }
                 }
             }
-        }
 
-        private fun getUninstallTarget(launcher: Launcher, item: ItemInfo): ComponentName? {
-            if (item.itemType == ITEM_TYPE_APPLICATION && item.id == ItemInfo.NO_ID) {
-                val intent = item.intent
-                val user = item.user
-                if (intent != null) {
-                    val info = LauncherAppsCompat.getInstance(launcher).resolveActivity(intent, user)
-                    if (info != null && !info.applicationInfo.flags.hasFlag(ApplicationInfo.FLAG_SYSTEM)) {
-                        return info.componentName
+            private fun getUninstallTarget(target: BaseDraggingActivity, item: ItemInfo): ComponentName? {
+                if (item.itemType == ITEM_TYPE_APPLICATION && item.id == ItemInfo.NO_ID) {
+                    val intent = item.intent
+                    val user = item.user
+                    if (intent != null) {
+                        val info = target.getSystemService(LauncherApps::class.java).resolveActivity(intent, user)
+                        if (info != null && !info.applicationInfo.flags.hasFlag(ApplicationInfo.FLAG_SYSTEM)) {
+                            return info.componentName
+                        }
                     }
                 }
+                return null
             }
-            return null
         }
     }
 
-    class Remove : SystemShortcut<Launcher>(R.drawable.ic_remove_no_shadow, R.string.remove_drop_target_label) {
+    class Remove(private val target: Launcher, private val itemInfo: ItemInfo) :
+            SystemShortcut<Launcher>(R.drawable.ic_remove_no_shadow, R.string.remove_drop_target_label, target,
+                    itemInfo) {
+        override fun onClick(v: View?) {
+            AbstractFloatingView.closeAllOpenViews(target)
+            target.removeItem(null, itemInfo, true)
+            target.model.forceReload()
+            target.workspace.stripEmptyScreens()
+        }
 
-        override fun getOnClickListener(launcher: Launcher, itemInfo: ItemInfo): View.OnClickListener? {
-            if (itemInfo.id == ItemInfo.NO_ID) return null
-            return if (itemInfo is WorkspaceItemInfo || itemInfo is LauncherAppWidgetInfo || itemInfo is FolderInfo) {
-                View.OnClickListener {
-                    AbstractFloatingView.closeAllOpenViews(launcher)
-
-                    val currentPage = launcher.workspace.currentPage
-
-                    launcher.removeItem(null, itemInfo, true /* deleteFromDb */)
-                    launcher.model.forceReload(currentPage)
-                    launcher.workspace.stripEmptyScreens()
+        companion object {
+            val FACTORY = Factory<Launcher> { target, itemInfo ->
+                when {
+                    itemInfo.id == ItemInfo.NO_ID -> null
+                    itemInfo is WorkspaceItemInfo || itemInfo is LauncherAppWidgetInfo || itemInfo is FolderInfo -> Remove(target, itemInfo)
+                    else -> null
                 }
-            } else null
+            }
         }
     }
 
-    class Edit : SystemShortcut<Launcher>(R.drawable.ic_edit_no_shadow, R.string.action_preferences) {
+    class Edit(private val target: Launcher, private val itemInfo: ItemInfo) :
+            SystemShortcut<Launcher>(R.drawable.ic_edit_no_shadow, R.string.action_preferences, target, itemInfo) {
+        override fun onClick(v: View?) {
+            AbstractFloatingView.closeAllOpenViews(target)
+            CustomBottomSheet.show(target, itemInfo)
+        }
 
-        override fun getOnClickListener(launcher: Launcher, itemInfo: ItemInfo): View.OnClickListener? {
-            if (launcher.omegaPrefs.lockDesktop) return null
-            if (!CustomInfoProvider.isEditable(itemInfo)) return null
-            return View.OnClickListener {
-                AbstractFloatingView.closeAllOpenViews(launcher)
-                CustomBottomSheet.show(launcher, itemInfo)
+        companion object {
+            val FACTORY = Factory<Launcher> { target, itemInfo ->
+                if (!target.omegaPrefs.lockDesktop && CustomInfoProvider.isEditable(itemInfo)) {
+                    Edit(target, itemInfo)
+                } else null
             }
         }
     }

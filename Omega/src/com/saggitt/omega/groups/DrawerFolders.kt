@@ -18,65 +18,60 @@
 package com.saggitt.omega.groups
 
 import android.content.Context
-import com.android.launcher3.AppInfo
 import com.android.launcher3.R
 import com.android.launcher3.allapps.AlphabeticalAppsList
+import com.android.launcher3.model.ModelWriter
+import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.random
 
-class DrawerFolders(private val manager: AppGroupsManager) : AppGroups<DrawerFolders.Folder>(manager, AppGroupsManager.CategorizationType.Folders) {
+class DrawerFolders(manager: AppGroupsManager) :
+        AppGroups<DrawerFolders.Folder>(manager, AppGroupsManager.CategorizationType.Folders) {
+
+    init {
+        loadGroups()
+    }
 
     override fun getDefaultCreators(): List<GroupCreator<Folder>> {
         return emptyList()
     }
 
-    override fun getGroupCreator(type: Int): GroupCreator<Folder> {
+    override fun getGroupCreator(type: String): GroupCreator<Folder> {
         return when (type) {
-            TYPE_CUSTOM -> ::createCustomFolder
-            else -> ::createNull
+            TYPE_CUSTOM -> GroupCreator { context -> CustomFolder(context) }
+            else -> GroupCreator { null }
         }
     }
-
-    private fun createCustomFolder(context: Context) = CustomFolder(context)
 
     override fun onGroupsChanged(changeCallback: OmegaPreferencesChangeCallback) {
         // TODO: reload after icon cache is ready to ensure high res folder previews
         changeCallback.reloadDrawer()
     }
 
-    fun getFolderInfos(apps: AlphabeticalAppsList) = getFolderInfos(buildAppsMap(apps)::get)
+    fun getFolderInfos(apps: AlphabeticalAppsList, modelWriter: ModelWriter) = getFolderInfos(buildAppsMap(apps)::get, modelWriter)
 
     private fun buildAppsMap(apps: AlphabeticalAppsList): Map<ComponentKey, AppInfo> {
+        // Copy the list before accessing it to prevent concurrent list access
         return apps.apps.toList().associateBy { it.toComponentKey() }
     }
 
-    private fun getFolderInfos(getAppInfo: (ComponentKey) -> AppInfo?): List<DrawerFolderInfo> = getGroups()
+    private fun getFolderInfos(
+            getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter): List<DrawerFolderInfo> = getGroups()
             .asSequence()
             .filter { !it.isEmpty }
-            .map { it.toFolderInfo(getAppInfo) }
+            .map { it.toFolderInfo(getAppInfo, modelWriter) }
             .toList()
 
-    private fun getHiddenItems() = getGroups()
+    fun getHiddenComponents() = getGroups()
             .asSequence()
             .filterIsInstance<CustomFolder>()
             .filter { it.hideFromAllApps.value() }
             .mapNotNull { it.contents.value }
             .flatMapTo(mutableSetOf()) { it.asSequence() }
 
-    fun getHiddenComponents(): MutableSet<ComponentKey> {
-        val hiddenComponents: ArrayList<ComponentKey> = ArrayList()
-        val components = getHiddenItems()
-
-        components.forEach {
-            val comp = ComponentKey(it.componentName, it.user)
-            hiddenComponents.add(comp)
-        }
-
-        return hiddenComponents.toMutableSet()
-    }
-
-    abstract class Folder(val context: Context, type: Int, titleRes: Int) : Group(type, context, titleRes) {
+    abstract class Folder(val context: Context, type: String, titleRes: Int) :
+            Group(type, context, context.getString(titleRes)) {
         // Ensure icon customization sticks across group changes
         val id = LongCustomization(KEY_ID, Long.random + 9999L)
         open val isEmpty = true
@@ -86,14 +81,16 @@ class DrawerFolders(private val manager: AppGroupsManager) : AppGroups<DrawerFol
             addCustomization(id)
         }
 
-        open fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?) = DrawerFolderInfo(this).apply {
-            setTitle(this@Folder.getTitle())
+        open fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter) = DrawerFolderInfo(
+                this).apply {
+            setTitle(this@Folder.getTitle(), modelWriter)
             id = this@Folder.id.value().toInt()
             contents = ArrayList()
         }
     }
 
-    class CustomFolder(context: Context) : Folder(context, TYPE_CUSTOM, R.string.default_folder_name) {
+    class CustomFolder(context: Context) :
+            Folder(context, TYPE_CUSTOM, R.string.default_folder_name) {
 
         val hideFromAllApps = SwitchRow(R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
                 KEY_HIDE_FROM_ALL_APPS, true)
@@ -116,16 +113,18 @@ class DrawerFolders(private val manager: AppGroupsManager) : AppGroups<DrawerFol
 
         fun getFilter(context: Context): Filter<*> = CustomFilter(context, contents.value())
 
-        override fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?) = super.toFolderInfo(getAppInfo).apply {
-            this@CustomFolder.contents.value?.mapNotNullTo(contents) { key ->
-                getAppInfo(ComponentKey(key.componentName, key.user))?.makeWorkspaceItem()
-            }?.sortWith(comparator)
-        }
+        override fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter) = super
+                .toFolderInfo(getAppInfo, modelWriter).apply {
+                    // ✨
+                    this@CustomFolder.contents.value?.mapNotNullTo(contents) { key ->
+                        getAppInfo(key)?.makeWorkspaceItem()
+                    }?.sortWith(comparator)
+                }
     }
 
     companion object {
 
-        const val TYPE_CUSTOM = 0
+        const val TYPE_CUSTOM = "0"
 
         const val KEY_ITEMS = "items"
     }

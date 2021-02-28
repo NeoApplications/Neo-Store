@@ -11,7 +11,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 
 public class QsbActionMode implements ActionMode.Callback {
-    final /* synthetic */ AbstractQsbLayout qsbLayout;
+    final AbstractQsbLayout qsbLayout;
     private final String clipboardText;
     private final Intent settingsBroadcast;
     private final Intent settingsIntent;

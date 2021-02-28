@@ -17,8 +17,8 @@
 
 package com.saggitt.omega.folder
 
-import com.android.launcher3.FolderInfo
-import com.android.launcher3.WorkspaceItemInfo
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.WorkspaceItemInfo
 
 class FirstItemProvider(private val info: FolderInfo) : FolderInfo.FolderListener {
 
@@ -37,6 +37,4 @@ class FirstItemProvider(private val info: FolderInfo) : FolderInfo.FolderListene
 
     override fun onAdd(item: WorkspaceItemInfo?, rank: Int) = Unit
     override fun onRemove(item: WorkspaceItemInfo?) = Unit
-    override fun onTitleChanged(title: CharSequence?) = Unit
-    override fun prepareAutoUpdate() = Unit
 }

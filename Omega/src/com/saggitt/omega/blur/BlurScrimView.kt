@@ -92,6 +92,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
     }
 
     private val defaultEndAlpha = Color.alpha(mEndScrim)
+    private val prefs = Utilities.getOmegaPrefs(context)
 
     val currentBlurAlpha get() = blurDrawable?.alpha
 
@@ -171,7 +172,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
         val hasRecents = Utilities.isRecentsEnabled() && recentsProgress < 1f
 
         val fullShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, mEndAlpha)
-        val recentsShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, super.getMidAlpha())
+        val recentsShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, getMidAlpha())
         val nullShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, 0)
 
         val colors = ArrayList<Pair<Float, Int>>()
@@ -196,8 +197,8 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
         }
     }
 
-    override fun getMidAlpha(): Int {
-        return prefs.dockOpacity.takeIf { it >= 0 } ?: super.getMidAlpha()
+    private fun getMidAlpha(): Int {
+        return prefs.dockOpacity.takeIf { it >= 0 } ?: mMidAlpha
     }
 
     override fun onDetachedFromWindow() {
@@ -247,7 +248,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
         }
         blurDrawable?.alpha = alpha
 
-        mDragHandleOffset = Math.max(0f, mDragHandleBounds.top + mDragHandleSize - mShelfTop)
+        mDragHandleOffset = 0f.coerceAtLeast(mDragHandleBounds.top + mDragHandleSize.y - mShelfTop)
 
         if (!useFlatColor) {
             if (mProgress >= 1 && mSysUINavigationMode == SysUINavigationMode.Mode.NO_BUTTON
@@ -305,6 +306,10 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
 
     fun setOverlayScroll(scroll: Float) {
         blurDrawable?.viewOffsetX = scroll
+    }
+
+    public fun getShelfColor(): Int {
+        return mShelfColor
     }
 
     companion object {

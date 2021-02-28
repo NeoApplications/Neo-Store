@@ -21,6 +21,7 @@ package com.saggitt.omega.iconpack
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.res.Resources
@@ -30,15 +31,14 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import com.android.launcher3.*
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
-import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.icons.ShortcutCachingLogic
+import com.android.launcher3.model.data.ItemInfo
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
+import com.google.android.apps.nexuslauncher.DynamicIconProvider
+import com.google.android.apps.nexuslauncher.clock.DynamicClock
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
-import com.saggitt.omega.icons.CustomDrawableFactory
 import com.saggitt.omega.icons.CustomIconProvider
-import com.saggitt.omega.icons.calendar.DynamicCalendar.GOOGLE_CALENDAR
-import com.saggitt.omega.icons.clock.DynamicClock
 import com.saggitt.omega.util.ApkAssets
 import com.saggitt.omega.util.getLauncherActivityInfo
 import com.saggitt.omega.util.omegaPrefs
@@ -52,8 +52,8 @@ class DefaultPack(context: Context) : IconPack(context, "") {
     private val prefs = context.omegaPrefs
     val dynamicClockDrawer by lazy { DynamicClock(context) }
     private val appMap = HashMap<ComponentKey, Entry>().apply {
-        val launcherApps = LauncherAppsCompat.getInstance(context)
-        UserManagerCompat.getInstance(context).userProfiles.forEach { user ->
+        val launcherApps = context.getSystemService(LauncherApps::class.java)
+        UserCache.INSTANCE.get(context).userProfiles.forEach { user ->
             launcherApps.getActivityList(null, user).forEach {
                 put(ComponentKey(it.componentName, user), Entry(it))
             }
@@ -69,19 +69,12 @@ class DefaultPack(context: Context) : IconPack(context, "") {
 
     override fun onDateChanged() {
         val model = LauncherAppState.getInstance(context).model
-        UserManagerCompat.getInstance(context).userProfiles.forEach { user ->
-            model.onPackageChanged(GOOGLE_CALENDAR, user)
-            val shortcuts = DeepShortcutManager
-                    .getInstance(context).queryForPinnedShortcuts(GOOGLE_CALENDAR, user)
-            if (!shortcuts.isEmpty()) {
-                model.updatePinnedShortcuts(GOOGLE_CALENDAR, shortcuts, user)
-            }
+        UserCache.INSTANCE.get(context).userProfiles.forEach { user ->
+            model.onAppIconChanged(DynamicIconProvider.GOOGLE_CALENDAR, user)
         }
     }
 
-    override fun loadPack() {
-
-    }
+    override fun loadPack() {}
 
     override fun getEntryForComponent(key: ComponentKey) = appMap[key]
 
@@ -108,10 +101,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         return gen.result
     }
 
-    override fun getIcon(launcherActivityInfo: LauncherActivityInfo,
-                         iconDpi: Int, flattenDrawable: Boolean,
+    override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
+                         flattenDrawable: Boolean,
                          customIconEntry: IconPackManager.CustomIconEntry?,
-                         iconProvider: CustomIconProvider?): Drawable {
+                         iconProvider: CustomIconProvider?): Drawable? {
         ensureInitialLoadComplete()
 
         val key: ComponentKey
@@ -129,7 +122,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         getLegacyIcon(component, iconDpi, prefs.forceShapeless)?.let {
             originalIcon = it.apply { mutate() }
         }
-        if (iconProvider == null || (GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
+        if (iconProvider == null || (DynamicIconProvider.GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
             var roundIcon: Drawable? = null
             if (!prefs.forceShapeless) {
                 getRoundIcon(component, iconDpi)?.let {
@@ -139,25 +132,19 @@ class DefaultPack(context: Context) : IconPack(context, "") {
             val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
             return gen.result
         }
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
-        } else {
-            return originalIcon
-        }
+        return iconProvider.getDynamicIcon(info, iconDpi)
     }
 
     override fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
         ensureInitialLoadComplete()
 
-        val drawable = DeepShortcutManager.getInstance(context).getShortcutIconDrawable(shortcutInfo, iconDpi)
+        val drawable = ShortcutCachingLogic.getIcon(context, shortcutInfo, iconDpi)
         val gen = AdaptiveIconGenerator(context, drawable, null)
         return gen.result
     }
 
     override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?,
-                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable {
+                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable {
         ensureInitialLoadComplete()
 
         if (Utilities.ATLEAST_OREO && itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
@@ -187,9 +174,17 @@ class DefaultPack(context: Context) : IconPack(context, "") {
 
         try {
             val resourcesForApplication = context.packageManager.getResourcesForApplication(component.packageName)
-            val assets = resourcesForApplication.assets
+            val info = context.packageManager.getApplicationInfo(component.packageName, PackageManager.GET_SHARED_LIBRARY_FILES or PackageManager.GET_META_DATA)
 
-            val parseXml = assets.openXmlResourceParser("AndroidManifest.xml")
+            val parseXml = try {
+                // For apps which are installed as Split APKs the asset instance we can get via PM won't hold the right Manifest for us.
+                ApkAssets(info.publicSourceDir).openXml("AndroidManifest.xml")
+            } catch (ex: Exception) {
+                ex.message
+                val assets = resourcesForApplication.assets
+                assets.openXmlResourceParser("AndroidManifest.xml")
+            }
+
             while (parseXml.next() != XmlPullParser.END_DOCUMENT) {
                 if (parseXml.eventType == XmlPullParser.START_TAG) {
                     val name = parseXml.name
@@ -240,6 +235,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
                 // For apps which are installed as Split APKs the asset instance we can get via PM won't hold the right Manifest for us.
                 ApkAssets(info.publicSourceDir).openXml("AndroidManifest.xml")
             } catch (ex: Exception) {
+                ex.message
                 val assets = resourcesForApplication.assets
                 assets.openXmlResourceParser("AndroidManifest.xml")
             }

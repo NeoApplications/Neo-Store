@@ -3,16 +3,11 @@ package com.google.android.apps.nexuslauncher.qsb;
 import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.android.launcher3.DeviceProfile;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.views.ActivityContext;
 
 public class HotseatQsbWidget extends FrameLayout {
 

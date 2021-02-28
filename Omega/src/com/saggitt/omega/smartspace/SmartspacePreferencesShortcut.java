@@ -5,14 +5,14 @@ import android.view.View;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.android.launcher3.userevent.nano.LauncherLogProto;
+import com.android.launcher3.logging.StatsLogManager;
+import com.android.launcher3.userevent.LauncherLogProto;
 import com.android.launcher3.views.OptionsPopupView;
 import com.saggitt.omega.settings.SettingsActivity;
 
 public class SmartspacePreferencesShortcut extends OptionsPopupView.OptionItem {
-
-    public SmartspacePreferencesShortcut() {
-        super(R.string.customize, R.drawable.ic_smartspace_preferences, LauncherLogProto.ControlType.SETTINGS_BUTTON,
+    public SmartspacePreferencesShortcut(int labelRes, int iconRes, StatsLogManager.EventEnum eventId, View.OnLongClickListener clickListener) {
+        super(R.string.customize, R.drawable.ic_smartspace_preferences, eventId,
                 SmartspacePreferencesShortcut::startSmartspacePreferences);
     }
 

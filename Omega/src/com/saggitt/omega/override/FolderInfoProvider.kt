@@ -18,9 +18,10 @@
 package com.saggitt.omega.override
 
 import android.content.Context
-import com.android.launcher3.FolderInfo
-import com.android.launcher3.ItemInfo
 import com.android.launcher3.R
+import com.android.launcher3.model.ModelWriter
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.ItemInfo
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
@@ -43,8 +44,8 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
         return info.title.toString()
     }
 
-    override fun setTitle(info: FolderInfo, title: String?) {
-        info.setTitle(title ?: "")
+    override fun setTitle(info: FolderInfo, title: String?, modelWriter: ModelWriter) {
+        info.setTitle(title ?: "", modelWriter)
     }
 
     override fun setIcon(info: FolderInfo, entry: IconPackManager.CustomIconEntry?) {

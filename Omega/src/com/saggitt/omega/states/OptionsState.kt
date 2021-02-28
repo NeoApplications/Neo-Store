@@ -17,24 +17,24 @@
 
 package com.saggitt.omega.states
 
+import android.content.Context
 import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_MS
+import com.android.launcher3.LauncherAnimUtils
 import com.android.launcher3.LauncherState
-import com.android.launcher3.anim.AnimatorSetBuilder
-import com.android.launcher3.anim.AnimatorSetBuilder.ANIM_WORKSPACE_FADE
-import com.android.launcher3.anim.Interpolators.LINEAR
-import com.android.launcher3.states.RotationHelper
 import com.android.launcher3.userevent.nano.LauncherLogProto
 import com.saggitt.omega.OmegaLauncher
+import kotlin.math.max
 
-class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.OVERVIEW,
-        SPRING_LOADED_TRANSITION_MS, STATE_FLAGS) {
+class OptionsState(id: Int) :
+        LauncherState(id, LauncherLogProto.ContainerType.OVERVIEW, STATE_FLAGS) {
+    override fun getTransitionDuration(context: Context?): Int =
+            LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY
 
     override fun getWorkspaceScaleAndTranslation(launcher: Launcher): ScaleAndTranslation {
         val grid = launcher.deviceProfile
         val ws = launcher.workspace
-        val scale = grid.workspaceOptionsShrinkFactor
 
+        val scale = grid.workspaceOptionsShrinkFactor
         if (grid.isVerticalBarLayout) {
             val optionsView = OmegaLauncher.getLauncher(launcher).optionsView
 
@@ -45,7 +45,8 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
             val desiredBottom = grid.heightPx - optionsView.height
             val actualBottom = ws.height * 0.5f + (ws.height * 0.5f * scale)
 
-            return ScaleAndTranslation(scale, 0f, Math.max(desiredCenter - actualCenter, desiredBottom - actualBottom))
+            return ScaleAndTranslation(scale, 0f, max(desiredCenter - actualCenter,
+                    desiredBottom - actualBottom))
         }
 
         val insets = launcher.dragLayer.insets
@@ -78,19 +79,8 @@ class OptionsState(id: Int) : LauncherState(id, LauncherLogProto.ContainerType.O
         return OPTIONS_VIEW
     }
 
-    override fun onStateEnabled(launcher: Launcher) {
-        super.onStateEnabled(launcher)
-        launcher.rotationHelper.setCurrentStateRequest(RotationHelper.REQUEST_LOCK)
-    }
-
-    override fun prepareForAtomicAnimation(launcher: Launcher?, fromState: LauncherState?,
-                                           builder: AnimatorSetBuilder) {
-        super.prepareForAtomicAnimation(launcher, fromState, builder)
-        builder.setInterpolator(ANIM_WORKSPACE_FADE, LINEAR)
-    }
-
     companion object {
-        private const val STATE_FLAGS = FLAG_MULTI_PAGE or FLAG_DISABLE_RESTORE or
-                FLAG_DISABLE_PAGE_CLIPPING or FLAG_PAGE_BACKGROUNDS
+        private val STATE_FLAGS: Int by lazy { FLAG_MULTI_PAGE or FLAG_DISABLE_RESTORE }
     }
 }
+

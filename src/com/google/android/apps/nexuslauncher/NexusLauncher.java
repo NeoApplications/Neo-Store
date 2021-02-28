@@ -116,7 +116,7 @@ public class NexusLauncher {
 
             mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
             applyFeedTheme(false);
-            WallpaperColorInfo instance = WallpaperColorInfo.INSTANCE.get(mLauncher);
+            WallpaperColorInfo instance = WallpaperColorInfo.getInstance(mLauncher);
             instance.addOnChangeListener(this);
             onExtractedColorsChanged(instance);
 
@@ -152,7 +152,7 @@ public class NexusLauncher {
             }
 
             Utilities.getPrefs(mLauncher).unregisterOnSharedPreferenceChangeListener(this);
-            WallpaperColorInfo.INSTANCE.get(mLauncher).removeOnChangeListener(this);
+            WallpaperColorInfo.getInstance(mLauncher).removeOnChangeListener(this);
 
             getUpdateReceiver().onDestroy();
         }

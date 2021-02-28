@@ -27,8 +27,7 @@ import android.graphics.drawable.RotateDrawable
 import android.util.Log
 import android.util.Xml
 import com.android.launcher3.FastBitmapDrawable
-import com.saggitt.omega.icons.CustomDrawableFactory
-import com.saggitt.omega.icons.clock.CustomClock
+import com.google.android.apps.nexuslauncher.clock.CustomClock
 import com.saggitt.omega.util.get
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -49,10 +48,11 @@ class DynamicDrawable {
             }
         }
 
-        fun drawIcon(context: Context, icon: Bitmap, metadata: Metadata, drawableFactory: CustomDrawableFactory, iconDpi: Int): FastBitmapDrawable? {
+        fun drawIcon(context: Context, icon: Bitmap, metadata: Metadata, iconDpi: Int): FastBitmapDrawable? {
             metadata.load(context, iconDpi)
+            val customClockDrawer = CustomClock(context)
             return when (metadata.type) {
-                Type.CLOCK -> drawableFactory.customClockDrawer.drawIcon(icon, metadata.clockMetadata!!.drawable, metadata.clockMetadata!!.metadata)
+                Type.CLOCK -> customClockDrawer.drawIcon(icon, metadata.clockMetadata!!.drawable, metadata.clockMetadata!!.metadata)
                 else -> null
             }
         }

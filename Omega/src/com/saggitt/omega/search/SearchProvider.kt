@@ -20,11 +20,12 @@ package com.saggitt.omega.search
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.DrawableCompat.applyTheme
 import com.android.launcher3.R
 import com.android.launcher3.graphics.ShadowDrawable
 import com.saggitt.omega.settings.search.SettingsSearchActivity
 
-abstract class SearchProvider(val context: Context) {
+abstract class SearchProvider(protected val context: Context) {
     abstract val name: String
     abstract val supportsVoiceSearch: Boolean
     abstract val supportsAssistant: Boolean
@@ -38,11 +39,9 @@ abstract class SearchProvider(val context: Context) {
     open val isAvailable: Boolean = true
 
     abstract fun startSearch(callback: (intent: Intent) -> Unit = {})
-
     open fun startVoiceSearch(callback: (intent: Intent) -> Unit = {}) {
         if (supportsVoiceSearch) throw RuntimeException("Voice search supported but not implemented")
     }
-
     open fun startAssistant(callback: (intent: Intent) -> Unit = {}) {
         if (supportsAssistant) throw RuntimeException("Assistant supported but not implemented")
     }
@@ -51,16 +50,15 @@ abstract class SearchProvider(val context: Context) {
         if (supportsFeed) throw RuntimeException("Feed supported but not implemented")
     }
 
-    protected fun wrapInShadowDrawable(d: Drawable): Drawable {
+    protected fun wrapInShadowDrawable(d: Drawable?): Drawable {
         return ShadowDrawable.wrap(context, d, R.color.qsb_icon_shadow_color,
                 4f, R.color.qsb_dark_icon_tint).apply { applyTheme(context.theme) }
     }
 
     fun getIcon(colored: Boolean) = if (colored) getIcon() else getShadowIcon()
 
-    abstract fun getIcon(): Drawable
-
-    open fun getShadowIcon(): Drawable {
+    abstract fun getIcon(): Drawable?
+    open fun getShadowIcon(): Drawable? {
         return wrapInShadowDrawable(getIcon())
     }
 
@@ -77,8 +75,7 @@ abstract class SearchProvider(val context: Context) {
     open fun getAssistantIcon(): Drawable? = if (supportsAssistant)
         throw RuntimeException("Assistant supported but not implemented")
     else null
-
     open fun getShadowAssistantIcon() = getAssistantIcon()?.let { wrapInShadowDrawable(it) }
 
-    override fun toString() = this::class.java.name
+    override fun toString(): String = this::class.java.name
 }

@@ -19,9 +19,10 @@ package com.saggitt.omega.override
 
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
-import com.android.launcher3.AppInfo
+import android.content.pm.LauncherApps
 import com.android.launcher3.LauncherAppState
-import com.android.launcher3.compat.LauncherAppsCompat
+import com.android.launcher3.model.ModelWriter
+import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.util.SingletonHolder
@@ -32,7 +33,7 @@ import com.saggitt.omega.util.useApplicationContext
 class AppInfoProvider private constructor(context: Context) : CustomInfoProvider<AppInfo>(context) {
 
     private val prefs = context.omegaPrefs
-    private val launcherApps by lazy { LauncherAppsCompat.getInstance(context) }
+    private val launcherApps by lazy { context.getSystemService(LauncherApps::class.java) }
 
     override fun getTitle(info: AppInfo): String {
         return prefs.customAppName[info.toComponentKey()] ?: info.title.toString()
@@ -51,8 +52,8 @@ class AppInfoProvider private constructor(context: Context) : CustomInfoProvider
         return prefs.customAppName[getComponentKey(app)] ?: app.label
     }
 
-    override fun setTitle(info: AppInfo, title: String?) {
-        setTitle(info.toComponentKey(), title)
+    override fun setTitle(info: AppInfo, title: String?, modelWriter: ModelWriter) {
+        setTitle(info, title, modelWriter)
     }
 
     fun setTitle(key: ComponentKey, title: String?) {

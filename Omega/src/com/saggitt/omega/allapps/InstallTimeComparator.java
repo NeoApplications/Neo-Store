@@ -20,7 +20,7 @@ package com.saggitt.omega.allapps;
 
 import android.content.pm.PackageManager;
 
-import com.android.launcher3.AppInfo;
+import com.android.launcher3.model.data.AppInfo;
 
 import java.util.Comparator;
 

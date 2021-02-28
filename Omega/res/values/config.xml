@@ -25,6 +25,8 @@
     <string name="default_live_wallpaper" translatable="false">com.breel.wallpapers/com.breel.wallpapers.dioramas.lagos.LagosWallpaperService</string>
     <string name="app_filter_class" translatable="false">com.saggitt.omega.allapps.CustomAppFilter</string>
 
+    <string name="color_extraction_impl_class" translatable="false"></string>
+
     <!-- The default icon packs to use -->
     <!-- (Deprecated) The default icon pack to use; empty = system icons -->
     <string name="config_default_icon_pack" translatable="false" />

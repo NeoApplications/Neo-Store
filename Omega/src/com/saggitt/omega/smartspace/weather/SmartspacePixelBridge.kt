@@ -24,12 +24,14 @@ import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceDataContainer
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
+import com.saggitt.omega.util.makeBasicHandler
+
 
 class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {
 
     private val smartspaceController = SmartspaceController.get(controller.context)
-    private val handler = Handler()
+    private val handler = makeBasicHandler(true)
     private var data: SmartspaceDataContainer? = null
     private var ds = false
 
@@ -48,32 +50,32 @@ class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
     override fun onGsaChanged() {
         ds = smartspaceController.cY()
         if (data != null) {
-            postUpdate(data)
+            cr(data)
         } else {
             Log.d("SmartspacePixelBridge", "onGsaChanged but no data present")
         }
     }
 
-    override fun postUpdate(data: SmartspaceDataContainer?) {
+    override fun cr(data: SmartspaceDataContainer?) {
         this.data = data?.also { initListeners(it) }
     }
 
     private fun initListeners(e: SmartspaceDataContainer) {
         val weatherData: OmegaSmartspaceController.WeatherData? = if (e.isWeatherAvailable) {
-            SmartspaceDataWidget.parseWeatherData(e.weatherCard.icon, e.weatherCard.title)
+            SmartspaceDataWidget.parseWeatherData(e.dO.icon, e.dO.title)
         } else {
             null
         }
-        val cardData: OmegaSmartspaceController.CardData? = if (e.isDataAvailable) {
-            val dp = e.dataCard
+        val cardData: OmegaSmartspaceController.CardData? = if (e.cS()) {
+            val dp = e.dP
             OmegaSmartspaceController.CardData(dp.icon, dp.title, dp.cx(true), dp.cy(), dp.cx(false))
         } else {
             null
         }
 
         handler.removeCallbacks(this)
-        if (e.isDataAvailable && e.dataCard.cv()) {
-            val cw = e.dataCard.cw()
+        if (e.cS() && e.dP.cv()) {
+            val cw = e.dP.cw()
             var min = 61000L - System.currentTimeMillis() % 60000L
             if (cw > 0L) {
                 min = Math.min(min, cw)
@@ -88,3 +90,4 @@ class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         data?.let { initListeners(it) }
     }
 }
+

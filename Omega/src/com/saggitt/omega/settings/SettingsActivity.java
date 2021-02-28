@@ -109,6 +109,7 @@ import java.util.Set;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.android.launcher3.LauncherSettings.Favorites;
+import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
@@ -668,7 +669,7 @@ public class SettingsActivity extends SettingsBaseActivity
                             findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
                 }
                 // Setup allow rotation preference
-                Preference rotationPref = findPreference(Utilities.ALLOW_ROTATION_PREFERENCE_KEY);
+                Preference rotationPref = findPreference(ALLOW_ROTATION_PREFERENCE_KEY);
                 if (getResources().getBoolean(R.bool.allow_rotation)) {
                     // Launcher supports rotation by default. No need to show this setting.
                     getPreferenceScreen().removePreference(rotationPref);

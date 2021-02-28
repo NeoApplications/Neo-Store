@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 buildscript {
     ext.kotlin_version = '1.4.30'
 
@@ -29,6 +30,7 @@ buildscript {
                 protobuf               : "0.8.12"
         ]
     }
+
     repositories {
         mavenCentral()
         google()
@@ -74,17 +76,22 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
-    def code = 123
+    def code = 124
 
     defaultConfig {
         minSdkVersion 25
         targetSdkVersion 30
+        applicationId 'com.saggitt.omega'
+
         versionName name
         versionCode code
 
+        buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", "${findAndroidLocales()}"
+        buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
+        buildConfigField "String", "BUILD_DATE", "\"${getBuildDate()}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        applicationId 'com.saggitt.omega'
 
         ndk {
             abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
@@ -94,7 +101,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            applicationIdSuffix ".alpha"
+            applicationIdSuffix ".dev"
         }
     }
 
@@ -286,4 +293,31 @@ protobuf {
             }
         }
     }
+}
+
+@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
+// Returns used android languages as a buildConfig array: {'de', 'it', ..}"
+static String findAndroidLocales() {
+    Set<String> langs = new HashSet<>()
+    new File('.').eachFileRecurse(groovy.io.FileType.DIRECTORIES) {
+        final foldername = it.name
+        if (foldername.startsWith('values-')
+                && !it.canonicalPath.contains("build" + File.separator + "intermediates")
+                && !it.canonicalPath.contains("gradle" + File.separator + "daemon")) {
+            new File(it.toString()).eachFileRecurse(groovy.io.FileType.FILES) {
+                if (it.name.toLowerCase().endsWith(".xml") && it.getCanonicalFile().getText('UTF-8').contains("<string")) {
+                    langs.add(foldername.replace("values-", ""))
+                }
+            }
+        }
+    }
+    return '{' + langs.collect { "\"${it}\"" }.join(",") + '}'
+}
+
+@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
+// Returns the build date in a RFC3339 compatible format. TZ is always converted to UTC
+static String getBuildDate() {
+    final SimpleDateFormat RFC3339_LIKE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
+    RFC3339_LIKE.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return RFC3339_LIKE.format(new Date())
 }

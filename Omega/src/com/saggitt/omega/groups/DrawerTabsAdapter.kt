@@ -22,7 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.android.launcher3.R
-import com.android.launcher3.compat.UserManagerCompat
+import com.android.launcher3.pm.UserCache
 import com.saggitt.omega.groups.ui.AppGroupsAdapter
 import com.saggitt.omega.preferences.DrawerTabTypeSelectionBottomSheet
 import com.saggitt.omega.util.isVisible
@@ -33,8 +33,8 @@ open class DrawerTabsAdapter(context: Context) : AppGroupsAdapter<DrawerTabsAdap
     override val groupsModel: DrawerTabs = manager.drawerTabs
     override val headerText = R.string.drawer_tabs
 
-    private val hasWorkApps = context.omegaPrefs.separateWorkApps
-            && UserManagerCompat.getInstance(context).userProfiles.size > 1
+    private val hasWorkApps = context.omegaPrefs.separateWorkApps &&
+            UserCache.INSTANCE.get(context).userProfiles.size > 1
 
     override fun createGroup(callback: (DrawerTabs.Tab, Boolean) -> Unit) {
         DrawerTabTypeSelectionBottomSheet.show(context, mapOf(
@@ -54,9 +54,9 @@ open class DrawerTabsAdapter(context: Context) : AppGroupsAdapter<DrawerTabsAdap
 
     override fun filterGroups(): Collection<DrawerTabs.Tab> {
         return if (hasWorkApps) {
-            groupsModel.getGroups().filter { it !is DrawerTabs.AllAppsTab }
+            groupsModel.getGroups().filter { it !is DrawerTabs.ProfileTab || !it.profile.matchesAll }
         } else {
-            groupsModel.getGroups().filter { it !is DrawerTabs.PersonalTab && it !is DrawerTabs.WorkTab }
+            groupsModel.getGroups().filter { it !is DrawerTabs.ProfileTab || it.profile.matchesAll }
         }
     }
 

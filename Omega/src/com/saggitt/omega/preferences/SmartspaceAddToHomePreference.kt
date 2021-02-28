@@ -26,7 +26,7 @@ import androidx.preference.Preference
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
-import com.android.launcher3.states.InternalStateHandler
+import com.android.launcher3.util.ActivityTracker
 import com.android.launcher3.widget.WidgetsFullSheet
 
 class SmartspaceAddToHomePreference(context: Context, attrs: AttributeSet?) :
@@ -38,24 +38,21 @@ class SmartspaceAddToHomePreference(context: Context, attrs: AttributeSet?) :
     }
 
     override fun onClick() {
-        val homeIntent = OpenWidgetsInitListener().addToIntent(
+        val homeIntent =
                 Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_HOME)
                         .setPackage(BuildConfig.APPLICATION_ID)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        openWidgetsActivityTracker.addToIntent(homeIntent)
 
         context.startActivity(homeIntent)
     }
 
-    class OpenWidgetsInitListener : InternalStateHandler() {
-
-        override fun init(launcher: Launcher, alreadyOnHome: Boolean): Boolean {
-            WidgetsFullSheet.show(launcher, true)
-            return true
-        }
-    }
-
     companion object {
+        private val openWidgetsActivityTracker = ActivityTracker.SchedulerCallback<Launcher> { activity, _ ->
+            WidgetsFullSheet.show(activity, true)
+            true
+        }
 
         fun hasSmartspaceWidget(context: Context): Boolean? {
             return LauncherAppState.getInstance(context).model.loadedWidgets?.any { it.isCustomWidget }

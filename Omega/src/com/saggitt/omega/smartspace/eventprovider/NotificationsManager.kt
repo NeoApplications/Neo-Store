@@ -18,20 +18,23 @@
 package com.saggitt.omega.smartspace.eventprovider
 
 import android.service.notification.StatusBarNotification
+import com.android.launcher3.notification.NotificationKeyData
 import com.android.launcher3.notification.NotificationListener
+import com.android.launcher3.util.PackageUserKey
 import com.saggitt.omega.util.runOnMainThread
 import com.saggitt.omega.util.runOnUiWorkerThread
 
-object NotificationsManager : NotificationListener.StatusBarNotificationsChangedListener {
+object NotificationsManager : NotificationListener.NotificationsChangedListener {
 
-    private val notificationsMap = mutableMapOf<String, StatusBarNotification>()
+    private val notificationsMap = mutableMapOf<String?, NotificationKeyData?>()
     private val listeners = mutableListOf<OnChangeListener>()
 
-    var notifications = emptyList<StatusBarNotification>()
+    var sbNotifications = emptyList<StatusBarNotification>()
+    var notifications = emptyList<NotificationKeyData?>()
         private set
 
     init {
-        NotificationListener.setStatusBarNotificationsChangedListener(this)
+        NotificationListener.setNotificationsChangedListener(this)
     }
 
     fun addListener(listener: OnChangeListener) {
@@ -42,38 +45,48 @@ object NotificationsManager : NotificationListener.StatusBarNotificationsChanged
         listeners.remove(listener)
     }
 
-    override fun onNotificationPosted(sbn: StatusBarNotification) {
-        notificationsMap[sbn.key] = sbn
+    private fun onChange() {
+        val notifications = notificationsMap.values.toList()
+        this.notifications = notifications
+        listeners.forEach(OnChangeListener::onNotificationsChanged)
+        this.sbNotifications =
+                NotificationListener.getInstanceIfConnected()?.activeNotifications?.toList()
+                        ?: emptyList()
+    }
+
+    interface OnChangeListener {
+        fun onNotificationsChanged()
+    }
+
+    override fun onNotificationRemoved(removedPackageUserKey: PackageUserKey?,
+                                       notificationKey: NotificationKeyData?) {
+        notificationsMap.remove(removedPackageUserKey?.mPackageName)
         onChange()
     }
 
-    override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        notificationsMap.remove(sbn.key)
-        onChange()
-    }
-
-    override fun onNotificationFullRefresh() {
+    override fun onNotificationFullRefresh(
+            activeNotifications: MutableList<StatusBarNotification>?) {
         runOnUiWorkerThread {
-            val tmpMap = NotificationListener.getInstanceIfConnected()
-                    ?.activeNotifications?.associateBy { it.key }
-            runOnMainThread {
-                notificationsMap.clear()
-                if (tmpMap != null) {
-                    notificationsMap.putAll(tmpMap)
+            val tmpMap: MutableMap<String, NotificationKeyData> =
+                    emptyMap<String, NotificationKeyData>().toMutableMap()
+            if (activeNotifications != null) {
+                for (notification: StatusBarNotification in activeNotifications) {
+                    tmpMap[PackageUserKey.fromNotification(notification).mPackageName] =
+                            NotificationKeyData.fromNotification(notification)
                 }
-                onChange()
+                runOnMainThread {
+                    notificationsMap.clear()
+                    notificationsMap.putAll(tmpMap)
+                    onChange()
+                }
             }
         }
     }
 
-    private fun onChange() {
-        val notifications = notificationsMap.values.toList()
-        NotificationsManager.notifications = notifications
-        listeners.forEach(OnChangeListener::onNotificationsChanged)
-    }
-
-    interface OnChangeListener {
-
-        fun onNotificationsChanged()
+    override fun onNotificationPosted(postedPackageUserKey: PackageUserKey?,
+                                      notificationKey: NotificationKeyData?) {
+        notificationsMap[postedPackageUserKey?.mPackageName] = notificationKey
+        onChange()
     }
 }
+

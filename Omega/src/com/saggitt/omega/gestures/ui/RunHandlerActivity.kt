@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
+import com.android.launcher3.util.ActivityTracker
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController
@@ -43,13 +44,12 @@ class RunHandlerActivity : Activity() {
             if (handlerString != null) {
                 val handler = GestureController.createGestureHandler(this.applicationContext, handlerString, fallback)
                 if (handler.requiresForeground) {
-                    val listener = GestureHandlerInitListener(handler)
-                    val homeIntent = listener.addToIntent(
+                    val homeIntent =
                             Intent(Intent.ACTION_MAIN)
                                     .addCategory(Intent.CATEGORY_HOME)
                                     .setPackage(packageName)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    RunHandlerActivityTracker(handler).addToIntent(homeIntent)
                     startActivity(homeIntent)
                 } else {
                     triggerGesture(handler)
@@ -63,5 +63,12 @@ class RunHandlerActivity : Activity() {
         handler.onGestureTrigger(controller!!)
     } else {
         Toast.makeText(this.applicationContext, R.string.failed, Toast.LENGTH_LONG).show()
+    }
+
+    class RunHandlerActivityTracker(private val handler: GestureHandler) : ActivityTracker.SchedulerCallback<OmegaLauncher> {
+        override fun init(activity: OmegaLauncher, alreadyOnHome: Boolean): Boolean {
+            handler.onGestureTrigger(activity.gestureController)
+            return true
+        }
     }
 }

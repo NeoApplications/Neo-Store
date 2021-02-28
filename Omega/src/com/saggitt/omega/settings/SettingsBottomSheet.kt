@@ -71,7 +71,7 @@ class SettingsBottomSheet(context: Context, attrs: AttributeSet) : LinearLayout(
         setWillNotDraw(false)
         mInsets = Rect()
 
-        openCloseAnimator = LauncherAnimUtils.ofPropertyValuesHolder(this)
+        openCloseAnimator = ObjectAnimator.ofPropertyValuesHolder(this)
         openCloseAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 mSwipeDetector.finishedScrolling()

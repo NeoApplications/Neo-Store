@@ -327,8 +327,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     fun reloadIcons() {
-        LauncherAppState.getInstance(context).reloadIconCache()
-        MAIN_EXECUTOR.post { onChangeCallback?.recreate() }
+        //LauncherAppState.getInstance(context).reloadIconCache()
+        //MAIN_EXECUTOR.post { onChangeCallback?.recreate() }
     }
 
     fun updateSortApps() {

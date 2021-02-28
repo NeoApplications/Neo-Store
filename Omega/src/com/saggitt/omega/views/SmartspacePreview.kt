@@ -25,7 +25,8 @@ import android.view.View
 import android.widget.FrameLayout
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.widget.custom.CustomWidgetParser
+import com.android.launcher3.model.data.LauncherAppWidgetInfo
+import com.android.launcher3.widget.custom.CustomWidgetManager
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.theme.ThemeOverride
@@ -43,7 +44,8 @@ class SmartspacePreview(context: Context, attrs: AttributeSet?) :
     private var currentView: SmartspaceView? = null
     private val themedContext = ContextThemeWrapper(context, ThemeOverride.Launcher().getTheme(context))
 
-    override val provider = CustomWidgetParser.getCustomWidgets(context)[0]
+    override val provider = CustomWidgetManager.INSTANCE.get(context).getWidgetProvider(LauncherAppWidgetInfo.CUSTOM_WIDGET_ID)!!
+
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

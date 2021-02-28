@@ -1,42 +1,57 @@
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 syntax = "proto2";
 
 option java_package = "com.google.android.apps.nexuslauncher.search";
 option java_outer_classname = "SearchProto";
 
-package nano;
+package search;
 
-message a_search {
-    optional int32 ef = 1;
-    optional int32 eg = 2;
-    optional int32 eh = 3;
-    optional int32 ee = 4;
+message Columns {
+  optional int32 edgeMargin = 1;
+  optional int32 innerMargin = 2;
+  optional int32 iconDistance = 3;
+  optional int32 height = 4;
 }
 
-message b_search {
-    optional string label = 1;
-    optional string ek = 2;
-    optional string ej = 3;
-    optional string el = 4;
+message AppIndex {
+  optional string label = 1;
+  optional string predictionRank = 2;
+  optional string iconBitmap = 3;
+  optional string searchUri = 4;
 }
 
-message c_search {
-    optional int32 em = 1;
-    optional string ep = 2;
-    optional string er = 3;
-    optional a_search en = 4;
-    optional int32 es = 5;
-    repeated b_search eo = 6;
-    optional a_search ev = 7;
-    optional string ey = 8;
-    optional int32 ew = 9;
-    optional int32 ex = 10;
-    optional string eu = 11;
-    optional a_search et = 12;
-    optional bool eA = 13;
-    optional a_search ez = 14;
-    optional bool eq = 15;
+message SearchBase {
+  optional int32 bgColor = 1;
+  optional string iconViewTemplate = 2;
+  optional string iconLongClick = 3;
+  optional Columns apps = 4;
+  optional int32 allAppsCols = 5;
+  repeated AppIndex index = 6;
+  optional Columns bounds = 7;
+  optional string searchTemplate = 8;
+  optional int32 gIcon = 9;
+  optional int32 micIcon = 10;
+  optional string view = 11;
+  optional Columns viewBounds = 12;
+  optional bool isAllApps = 13;
+  optional Columns appsView = 14;
+  optional bool isDark = 15;
 }
 
-message d_search {
-    optional c_search eB = 1;
+message SearchView {
+  optional SearchBase base = 1;
 }

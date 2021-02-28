@@ -27,7 +27,7 @@ import android.view.View;
 
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
-import com.saggitt.omega.qsb.AllAppsQsbLayout;
+import com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout;
 
 public class AllAppsSearchContainerView extends AllAppsContainerView {
     private boolean mClearQsb;

@@ -1,4 +1,6 @@
 /*
+ *     Copyright (C) 2020 Lawnchair Team.
+ *
  *     This file is part of Lawnchair Launcher.
  *
  *     Lawnchair Launcher is free software: you can redistribute it and/or modify
@@ -15,24 +17,15 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.groups
+package com.saggitt.omega.groups;
 
-import android.view.ViewGroup
-import com.android.launcher3.Launcher
-import com.android.launcher3.R
-import com.android.launcher3.folder.FolderIcon
+import android.content.Context;
 
-class DrawerFolderItem(private val info: DrawerFolderInfo, private val index: Int) {
+import androidx.annotation.Nullable;
 
-    private var icon: FolderIcon? = null
+public interface GroupCreator<T> {
 
-    fun getFolderIcon(launcher: Launcher, container: ViewGroup): FolderIcon {
-        if (icon == null) {
-            icon = FolderIcon.inflateFolderAndIcon(R.layout.all_apps_folder_icon, launcher,
-                    container, info)
-        }
-        return icon!!.apply {
-            (parent as? ViewGroup)?.removeView(this)
-        }
-    }
+    @Nullable
+    T createGroup(Context context);
 }
+

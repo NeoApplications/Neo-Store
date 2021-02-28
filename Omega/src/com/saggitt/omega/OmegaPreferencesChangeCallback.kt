@@ -18,7 +18,8 @@
 
 package com.saggitt.omega
 
-import com.android.launcher3.compat.UserManagerCompat
+import android.content.Context.USER_SERVICE
+import android.os.UserManager
 import com.android.launcher3.pageindicators.WorkspacePageIndicator
 import com.saggitt.omega.blur.BlurWallpaperProvider
 
@@ -28,7 +29,10 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     }
 
     fun reloadApps() {
-        UserManagerCompat.getInstance(launcher.mContext).userProfiles.forEach { launcher.model.onPackagesReload(it) }
+        (launcher.applicationContext.getSystemService(
+                USER_SERVICE) as UserManager).userProfiles.forEach {
+            launcher.model.onPackagesReload(it)
+        }
     }
 
     fun reloadAll() {
@@ -60,7 +64,10 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     }
 
     fun forceReloadApps() {
-        UserManagerCompat.getInstance(launcher).userProfiles.forEach { launcher.model.forceReload() }
+        (launcher.applicationContext.getSystemService(
+                USER_SERVICE) as UserManager).userProfiles.forEach {
+            launcher.model.forceReload()
+        }
     }
 
     fun updatePageIndicator() {

@@ -19,6 +19,7 @@ package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -29,11 +30,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.AppFilter
-import com.android.launcher3.AppInfo
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
+import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
@@ -99,9 +99,9 @@ open class AppsAdapter(
 
     private fun getAppsList(context: Context): List<LauncherActivityInfo> {
         val apps = ArrayList<LauncherActivityInfo>()
-        val profiles = UserManagerCompat.getInstance(context).userProfiles
-        val launcherAppsCompat = LauncherAppsCompat.getInstance(context)
-        profiles.forEach { apps += launcherAppsCompat.getActivityList(null, it) }
+        val profiles = UserCache.INSTANCE.get(context).userProfiles
+        val launcherApps = context.getSystemService(LauncherApps::class.java)
+        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
         return if (filter != null) {
             apps.filter { filter.shouldShowApp(it.componentName, it.user) }
         } else {
@@ -117,7 +117,7 @@ open class AppsAdapter(
         init {
             val appInfo = AppInfo(context, info, info.user)
             LauncherAppState.getInstance(context).iconCache.getTitleAndIcon(appInfo, false)
-            iconDrawable = BitmapDrawable(context.resources, appInfo.iconBitmap)
+            iconDrawable = BitmapDrawable(context.resources, appInfo.bitmap.icon)
         }
     }
 

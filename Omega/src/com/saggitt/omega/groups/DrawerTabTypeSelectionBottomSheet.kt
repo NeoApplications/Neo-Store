@@ -28,22 +28,24 @@ import android.widget.Space
 import android.widget.TextView
 import androidx.core.graphics.ColorUtils
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.saggitt.omega.settings.SettingsBottomSheet
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.getColorAttr
 import com.saggitt.omega.util.tintDrawable
 
-class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<Int, Array<Int>>, callback: (which: Int) -> Unit) : FrameLayout(context) {
+class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<String, Array<Int>>, callback: (which: String) -> Unit) : FrameLayout(context) {
     init {
         View.inflate(context, R.layout.drawer_tab_select_type_bottom_sheet, this)
 
-        val accent = context.getColorAccent()
+        val accent = Utilities.getOmegaPrefs(context).accentColor
         val container = findViewById<ViewGroup>(R.id.types_container)
 
         findViewById<TextView>(android.R.id.title).setTextColor(accent)
 
-        val tintNormal = ColorUtils.setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
+        val tintNormal = ColorUtils
+                .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
         val tintList = ColorStateList(arrayOf(
                 intArrayOf(android.R.attr.state_selected),
                 intArrayOf()),
@@ -83,7 +85,7 @@ class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<In
     }
 
     companion object {
-        fun show(context: Context, selectionItems: Map<Int, Array<Int>>, callback: (which: Int) -> Unit) {
+        fun show(context: Context, selectionItems: Map<String, Array<Int>>, callback: (which: String) -> Unit) {
             val sheet = SettingsBottomSheet.inflate(context)
             sheet.show(DrawerTabTypeSelectionBottomSheet(context, selectionItems) {
                 sheet.close(false)

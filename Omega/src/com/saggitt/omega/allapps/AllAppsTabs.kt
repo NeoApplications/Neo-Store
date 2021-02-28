@@ -20,7 +20,7 @@ package com.saggitt.omega.allapps
 import android.content.ComponentName
 import android.content.Context
 import android.os.Process
-import com.android.launcher3.ItemInfo
+import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.ItemInfoMatcher
 import com.saggitt.omega.groups.DrawerTabs
@@ -32,7 +32,7 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
     val tabs = ArrayList<Tab>()
     val count get() = tabs.size
 
-    var hasWorkApps = false
+    private var hasWorkApps = false
         set(value) {
             if (value != field) {
                 field = value
@@ -51,19 +51,18 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
         tabs.clear()
         context.omegaPrefs.currentTabsModel.getGroups().mapNotNullTo(tabs) {
             when {
-                hasWorkApps && it is DrawerTabs.PersonalTab ->
-                    PersonalTab(createMatcher(addedApps, personalMatcher), drawerTab = it)
-                hasWorkApps && it is DrawerTabs.WorkTab ->
-                    WorkTab(createMatcher(addedApps, workMatcher), drawerTab = it)
-                !hasWorkApps && it is DrawerTabs.AllAppsTab ->
-                    AllAppsTab(createMatcher(addedApps), drawerTab = it)
+                it is DrawerTabs.ProfileTab -> {
+                    if (hasWorkApps != it.profile.matchesAll) {
+                        ProfileTab(createMatcher(addedApps, it.profile.matcher), it)
+                    } else null
+                }
                 it is DrawerTabs.CustomTab -> {
                     if (it.hideFromAllApps.value()) {
                         addedApps.addAll(it.contents.value())
                     }
                     Tab(it.getTitle(), it.getFilter(context).matcher, drawerTab = it)
                 }
-                it is FlowerpotTabs.FlowerpotTab && !it.getMatches().isEmpty() -> {
+                it is FlowerpotTabs.FlowerpotTab && it.getMatches().isNotEmpty() -> {
                     addedApps.addAll(it.getMatches())
                     Tab(it.getTitle(), it.getFilter(context).matcher, drawerTab = it)
                 }
@@ -87,17 +86,8 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
 
     operator fun get(index: Int) = tabs[index]
 
-    class AllAppsTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.Tab)
-        : Tab(drawerTab.getTitle(), matcher, drawerTab = drawerTab)
-
-    private val personalMatcher = ItemInfoMatcher.ofUser(Process.myUserHandle())!!
-    private val workMatcher = ItemInfoMatcher.not(personalMatcher)!!
-
-    inner class PersonalTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.Tab)
-        : Tab(drawerTab.getTitle(), matcher, drawerTab = drawerTab)
-
-    inner class WorkTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.Tab)
-        : Tab(drawerTab.getTitle(), matcher, true, drawerTab)
+    inner class ProfileTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.ProfileTab)
+        : Tab(drawerTab.getTitle(), matcher, drawerTab.profile.isWork, drawerTab)
 
     open class Tab(val name: String, val matcher: ItemInfoMatcher?,
                    val isWork: Boolean = false, val drawerTab: DrawerTabs.Tab)

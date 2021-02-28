@@ -35,9 +35,6 @@ import com.saggitt.omega.util.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-
-typealias GroupCreator<T> = (Context) -> T?
-
 abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsManager,
                                               private val type: AppGroupsManager.CategorizationType) {
 
@@ -52,19 +49,29 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
     var isEnabled = manager.categorizationEnabled && manager.categorizationType == type
         private set
 
-    private val defaultGroups by lazy { getDefaultCreators().mapNotNull { it(context) } }
-
-    init {
-        loadGroups()
-    }
+    private val defaultGroups by lazy { getDefaultCreators().mapNotNull { it.createGroup(context) } }
 
     private fun loadGroupsArray(): JSONArray {
         try {
             val obj = JSONObject(groupsDataJson)
             val version = if (obj.has(KEY_VERSION)) obj.getInt(KEY_VERSION) else 0
-            if (version > currentVersion) return JSONArray()
-            return obj.getJSONArray(KEY_GROUPS)
-        } catch (ignored: JSONException) {
+            if (version > currentVersion) throw IllegalArgumentException("Version $version is higher than supported ($currentVersion)")
+
+            val groups = obj.getJSONArray(KEY_GROUPS)
+
+            // Change the "type" value to string
+            if (version < 2) {
+                for (i in 0 until groups.length()) {
+                    val group = groups.getJSONObject(i)
+                    if (group.has(KEY_TYPE)) {
+                        group.put(KEY_TYPE, "${group.getInt(KEY_TYPE)}")
+                    }
+                }
+            }
+
+            return groups
+        } catch (e: IllegalArgumentException) {
+        } catch (e: JSONException) {
         }
 
         try {
@@ -75,21 +82,21 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         return JSONArray()
     }
 
-    private fun loadGroups() {
+    protected fun loadGroups() {
         groups.clear()
         val arr = loadGroupsArray()
         val used = mutableSetOf<GroupCreator<T>>()
         (0 until arr.length())
                 .map { arr.getJSONObject(it) }
                 .mapNotNullTo(groups) { group ->
-                    val type = if (group.has(KEY_TYPE)) group.getInt(KEY_TYPE) else TYPE_UNDEFINED
+                    val type = if (group.has(KEY_TYPE)) group.getString(KEY_TYPE) else TYPE_UNDEFINED
                     val creator = getGroupCreator(type)
                     used.add(creator)
-                    creator(context)?.apply { loadCustomizations(context, group.asMap()) }
+                    creator.createGroup(context)?.apply { loadCustomizations(context, group.asMap()) }
                 }
         getDefaultCreators().asReversed().forEach { creator ->
             if (creator !in used) {
-                creator(context)?.let { groups.add(0, it) }
+                creator.createGroup(context)?.let { groups.add(0, it) }
             }
         }
     }
@@ -104,7 +111,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
     abstract fun getDefaultCreators(): List<GroupCreator<T>>
 
-    abstract fun getGroupCreator(type: Int): GroupCreator<T>
+    abstract fun getGroupCreator(type: String): GroupCreator<T>
 
     @Suppress("UNUSED_PARAMETER")
     protected fun createNull(context: Context) = null
@@ -129,7 +136,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
         getDefaultCreators().asReversed().forEach { creator ->
             if (creator !in used) {
-                creator(context)?.let { this.groups.add(0, it) }
+                creator.createGroup(context)?.let { this.groups.add(0, it) }
             }
         }
     }
@@ -148,7 +155,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
     companion object {
 
-        const val currentVersion = 1
+        const val currentVersion = 2
 
         const val KEY_VERSION = "version"
         const val KEY_GROUPS = "tabs"
@@ -159,18 +166,18 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         const val KEY_TITLE = "title"
         const val KEY_HIDE_FROM_ALL_APPS = "hideFromAllApps"
 
-        const val TYPE_UNDEFINED = -1
+        const val TYPE_UNDEFINED = "-1"
     }
 
-    open class Group(val type: Int, context: Context, titleRes: Int) {
+    open class Group(val type: String, context: Context, title: String) {
 
-        private val defaultTitle: String = context.getString(titleRes)
+        private val defaultTitle = title
 
         val customizations = CustomizationMap()
         val title = CustomTitle(KEY_TITLE, defaultTitle)
 
         init {
-            addCustomization(title)
+            addCustomization(this.title)
         }
 
         fun getTitle(): String {
@@ -344,8 +351,9 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             }
         }
 
-        /*open class ColorCustomization(key: String, default: Int) :
-                Customization<Int, String>(key, default) {
+        /*
+        open class ColorCustomization(key: String, default: ColorEngine.ColorResolver) :
+                Customization<ColorEngine.ColorResolver, String>(key, default) {
 
             override fun loadFromJson(context: Context, obj: String?) {
                 value = obj?.let { AppGroupsUtils.getInstance(context).createColorResolver(it) }
@@ -359,8 +367,9 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                 return ColorCustomization(key, default).also { it.value = value }
             }
         }
-
-        class ColorRow(key: String, default: Int) :
+        */
+/*
+        class ColorRow(key: String, default: ColorEngine.ColorResolver) :
                 ColorCustomization(key, default) {
 
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
@@ -408,8 +417,8 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             override fun clone(): Customization<ColorEngine.ColorResolver, String> {
                 return ColorRow(key, default).also { it.value = value }
             }
-        }*/
-
+        }
+*/
         abstract class SetCustomization<T : Any, S : Any>(key: String, default: MutableSet<T>) :
                 Customization<MutableSet<T>, JSONArray>(key, default) {
 
@@ -478,7 +487,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                             value = HashSet(newSelections)
                             updateCount(view)
                         }
-                    })
+                    }, DrawerTabs.Profile())
                 }
 
                 return view
@@ -546,6 +555,16 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 }
 
 class AppGroupsUtils(context: Context) {
+
+    /*private val colorEngine = ColorEngine.getInstance(context)
+    val defaultColorResolver = LawnchairAccentResolver(
+            ColorEngine.ColorResolver.Config("groups", colorEngine))
+
+    fun createColorResolver(resolver: String?): ColorEngine.ColorResolver {
+        return colorEngine.createColorResolverNullable("group", resolver ?: "")
+                ?: defaultColorResolver
+    }*/
+
     companion object : SingletonHolder<AppGroupsUtils, Context>(
             ensureOnMainThread(useApplicationContext(::AppGroupsUtils)))
 }

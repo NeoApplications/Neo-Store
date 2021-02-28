@@ -28,11 +28,10 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.text.TextUtils
 import com.android.launcher3.FastBitmapDrawable
-import com.android.launcher3.ItemInfo
 import com.android.launcher3.Utilities
+import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
-import com.saggitt.omega.icons.CustomDrawableFactory
 import com.saggitt.omega.icons.CustomIconProvider
 import java.io.FileDescriptor
 
@@ -84,8 +83,7 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
     }
 
     override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?,
-                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable? {
+                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable? {
         return FastBitmapDrawable(icon)
     }
 

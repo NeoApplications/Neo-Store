@@ -24,6 +24,7 @@ import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
 import com.android.launcher3.notification.NotificationInfo
+import com.android.launcher3.notification.NotificationMainView.NOTIFICATION_ITEM_INFO
 import com.android.launcher3.util.PackageUserKey
 import com.saggitt.omega.flowerpot.Flowerpot
 import com.saggitt.omega.flowerpot.FlowerpotApps
@@ -33,7 +34,6 @@ import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line
 import com.saggitt.omega.util.loadSmallIcon
 import com.saggitt.omega.util.runOnMainThread
 import com.saggitt.omega.util.runOnUiWorkerThread
-
 @Keep
 class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.NotificationBasedDataProvider(controller),
@@ -81,7 +81,7 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
     private fun getEventCard(): CardData? {
         if (!flowerpotLoaded) return null
 
-        val sbn = manager.notifications
+        val sbn = manager.sbNotifications
                 .asSequence()
                 .filter { !it.isOngoing }
                 .filter { it.notification.priority >= PRIORITY_DEFAULT }
@@ -97,7 +97,7 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         }
 
         val context = controller.context
-        val notif = NotificationInfo(context, sbn)
+        val notif = NotificationInfo(context, sbn, NOTIFICATION_ITEM_INFO)
         val app = getApp(sbn).toString()
         val title = notif.title?.toString() ?: ""
         val splitted = splitTitle(title)
@@ -134,3 +134,4 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         zenModeListener.stopListening()
     }
 }
+

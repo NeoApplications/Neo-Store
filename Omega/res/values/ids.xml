@@ -17,6 +17,7 @@
   -->
 
 <resources>
+    <item name="action_dismiss_suggestion" type="id" />
     <item name="preference_highlighted" type="id" />
 
     <item name="hotseat_qsb_menu_item" type="id" />

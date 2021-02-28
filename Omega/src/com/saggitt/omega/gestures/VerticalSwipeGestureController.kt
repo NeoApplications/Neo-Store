@@ -28,6 +28,7 @@ import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
 import java.lang.Math.abs
 import java.lang.reflect.InvocationTargetException
 
+
 class VerticalSwipeGestureController(private val launcher: Launcher) : TouchController, SingleAxisSwipeDetector.Listener {
 
     enum class GestureState {
@@ -119,7 +120,7 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
         }
     }
 
-    override fun onDragStart(start: Boolean) {
+    override fun onDragStart(start: Boolean, velocity: Float) {
         state = GestureState.Free
         (swipeUpOverride as? VerticalSwipeGestureHandler)?.onDragStart(start)
         overrideDragging = true
@@ -152,7 +153,7 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
             }
 
             if (wasFree && state == GestureState.NotificationOpened) {
-                sendOnDragEnd(velocity, false)
+                sendOnDragEnd(velocity)
             } else if (velocity < -triggerVelocity && state == GestureState.Free) {
                 controller.getSwipeUpOverride(downTime)?.let {
                     state = GestureState.Triggered
@@ -200,12 +201,12 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
 
     override fun onDragEnd(velocity: Float) {
         launcher.workspace.postDelayed(detector::finishedScrolling, 200)
-        sendOnDragEnd(velocity, true)
+        sendOnDragEnd(velocity)
     }
 
-    private fun sendOnDragEnd(velocity: Float, fling: Boolean) {
+    private fun sendOnDragEnd(velocity: Float) {
         if (overrideDragging) {
-            (swipeUpOverride as? VerticalSwipeGestureHandler)?.onDragEnd(velocity, fling)
+            (swipeUpOverride as? VerticalSwipeGestureHandler)?.onDragEnd(velocity)
             overrideDragging = false
         }
     }

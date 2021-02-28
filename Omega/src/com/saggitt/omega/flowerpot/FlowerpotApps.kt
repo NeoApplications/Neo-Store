@@ -19,32 +19,33 @@ package com.saggitt.omega.flowerpot
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.content.pm.ShortcutInfo
 import android.os.UserHandle
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageUserKey
 import com.saggitt.omega.flowerpot.rules.CodeRule
 import com.saggitt.omega.flowerpot.rules.Rule
 
-class FlowerpotApps(private val context: Context, private val pot: Flowerpot) : LauncherAppsCompat.OnAppsChangedCallbackCompat {
+class FlowerpotApps(private val context: Context, private val pot: Flowerpot) : LauncherApps.Callback() {
 
-    private val launcherApps = LauncherAppsCompat.getInstance(context)
+    private val launcherApps = context.getSystemService(LauncherApps::class.java)
     private val intentMatches = mutableSetOf<String>()
     val matches = mutableSetOf<ComponentKey>()
     val packageMatches = mutableSetOf<PackageUserKey>()
 
     init {
         filterApps()
-        launcherApps.addOnAppsChangedCallback(this)
+        context.getSystemService(
+                LauncherApps::class.java).registerCallback(this)
     }
 
     private fun filterApps() {
         queryIntentMatches()
         matches.clear()
         packageMatches.clear()
-        UserManagerCompat.getInstance(context).userProfiles.forEach {
+        UserCache.INSTANCE.get(context).userProfiles.forEach {
             addFromPackage(null, it)
         }
     }
@@ -113,10 +114,6 @@ class FlowerpotApps(private val context: Context, private val pot: Flowerpot) : 
 
     override fun onPackagesUnsuspended(packageNames: Array<out String>, user: UserHandle) {
         packageNames.forEach { onPackageAdded(it, user) }
-    }
-
-    override fun onShortcutsChanged(packageName: String?, shortcuts: MutableList<ShortcutInfo>?, user: UserHandle?) {
-
     }
 }
 

@@ -25,6 +25,7 @@ import android.content.SharedPreferences
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.DiscoveryBounce
+import com.android.launcher3.util.OnboardingPrefs.HOME_BOUNCE_SEEN
 import com.saggitt.omega.settings.SettingsActivity
 
 // TODO: add event for after installing a new Icon Pack with apply activity as intent
@@ -33,7 +34,7 @@ class OnboardingProvider(controller: OmegaSmartspaceController) :
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val deviceKeys = arrayOf(PREF_HAS_OPENED_SETTINGS)
-    private val prefKeys = arrayOf(DiscoveryBounce.HOME_BOUNCE_SEEN)
+    private val prefKeys = arrayOf(HOME_BOUNCE_SEEN)
 
     private val devicePrefs = Utilities.getDevicePrefs(context)
     private val prefs = Utilities.getPrefs(context)
@@ -64,7 +65,7 @@ class OnboardingProvider(controller: OmegaSmartspaceController) :
 
     private fun update() {
         val card = when {
-            !prefs.getBoolean(DiscoveryBounce.HOME_BOUNCE_SEEN, false) -> OmegaSmartspaceController.CardData(
+            !prefs.getBoolean(HOME_BOUNCE_SEEN, false) -> OmegaSmartspaceController.CardData(
                     lines = listOf(OmegaSmartspaceController.Line(context, R.string.onboarding_swipe_up)))
             !devicePrefs.getBoolean(PREF_HAS_OPENED_SETTINGS, false) -> OmegaSmartspaceController.CardData(
                     icon = null,

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 
 import androidx.core.graphics.ColorUtils;
+import androidx.core.os.UserManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,17 +33,21 @@ import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
-import com.google.android.apps.nexuslauncher.search.nano.SearchProto.a_search;
-import com.google.android.apps.nexuslauncher.search.nano.SearchProto.b_search;
-import com.google.android.apps.nexuslauncher.search.nano.SearchProto.c_search;
-import com.google.android.apps.nexuslauncher.search.nano.SearchProto.d_search;
+import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
+import com.google.android.apps.nexuslauncher.search.nano.SearchProto.Columns;
+import com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchBase;
+import com.google.protobuf.nano.MessageNano;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.util.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchView;
+
 public class ConfigBuilder {
-    private final c_search mNano;
-    private final NexusLauncherActivity mActivity;
+    private final SearchBase mNano;
+    private final OmegaLauncher mActivity;
     private final Bundle mBundle;
     private final AbstractQsbLayout mQsbLayout;
     private final boolean mIsAllApps;
@@ -52,7 +57,7 @@ public class ConfigBuilder {
 
     public ConfigBuilder(AbstractQsbLayout qsbLayout, boolean isAllApps) {
         mBundle = new Bundle();
-        mNano = new c_search();
+        mNano = new SearchBase();
         mQsbLayout = qsbLayout;
         mActivity = qsbLayout.getLauncher();
         mIsAllApps = isAllApps;
@@ -70,7 +75,7 @@ public class ConfigBuilder {
                 .putExtra("source_logo_offset", getCenter(gIcon, sourceBounds))
                 .putExtra("source_mic_offset", getCenter(micIcon, sourceBounds))
                 .putExtra("use_fade_animation", true)
-                .setPackage("com.google.android.googlequicksearchbox")
+                .setPackage(Config.GOOGLE_QSB)
                 .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -83,28 +88,28 @@ public class ConfigBuilder {
         return point;
     }
 
-    private static a_search getViewBounds(final View view) {
-        final a_search a = new a_search();
-        a.eh = view.getWidth();
-        a.ee = view.getHeight();
+    private static Columns getViewBounds(final View view) {
+        final Columns a = new Columns();
+        a.iconDistance = view.getWidth();
+        a.height = view.getHeight();
         final int[] array = new int[2];
         view.getLocationInWindow(array);
-        a.ef = array[0];
-        a.eg = array[1];
+        a.edgeMargin = array[0];
+        a.innerMargin = array[1];
         return a;
     }
 
-    private void bW() {
-        if (mNano.ez != null) {
+    private void updateHotseatSearchDimens() {
+        if (mNano.appsView != null) {
             return;
         }
-        final a_search en = mNano.en;
-        final a_search ez = new a_search();
-        ez.ef = en.ef;
-        ez.eg = en.eg + en.ee;
-        ez.ee = en.ee;
-        ez.eh = en.eh;
-        mNano.ez = ez;
+        final Columns apps = mNano.apps;
+        final Columns appsView = new Columns();
+        appsView.edgeMargin = apps.edgeMargin;
+        appsView.innerMargin = apps.innerMargin + apps.height;
+        appsView.height = apps.height;
+        appsView.iconDistance = apps.iconDistance;
+        mNano.appsView = appsView;
     }
 
     private AllAppsRecyclerView getAppsView() {
@@ -113,23 +118,7 @@ public class ConfigBuilder {
 
     private int getBackgroundColor() {
         return ColorUtils.compositeColors(Themes.getAttrColor(mActivity, R.attr.allAppsScrimColor),
-                ColorUtils.setAlphaComponent(WallpaperColorInfo.INSTANCE.get(mActivity).getMainColor(), 255));
-    }
-
-    private b_search bZ(final AppInfo appInfo, final int n) {
-        if (appInfo == null) {
-            return null;
-        }
-        final b_search b = new b_search();
-        b.label = appInfo.title.toString();
-        b.ej = "icon_bitmap_" + n;
-        mBundle.putParcelable(b.ej, appInfo.bitmap.icon);
-        Uri uri = AppSearchProvider.buildUri(appInfo, userCache);
-        b.el = uri.toString();
-        b.ek = new Intent("com.google.android.apps.nexuslauncher.search.APP_LAUNCH",
-                uri.buildUpon().appendQueryParameter("predictionRank", Integer.toString(n)).build())
-                .toUri(0);
-        return b;
+                ColorUtils.setAlphaComponent(WallpaperColorInfo.getInstance(mActivity).getMainColor(), 255));
     }
 
     private RemoteViews searchIconTemplate() {
@@ -176,40 +165,40 @@ public class ConfigBuilder {
         return remoteViews;
     }
 
-    private void cd() {
-        mNano.ey = "search_box_template";
-        mBundle.putParcelable(mNano.ey, searchQsbTemplate());
-        mNano.ew = R.id.g_icon;
-        mNano.ex = mQsbLayout.mMicIconView.getVisibility() == View.VISIBLE ?
+    private void createSearchTemplate() {
+        mNano.searchTemplate = "search_box_template";
+        mBundle.putParcelable(mNano.searchTemplate, searchQsbTemplate());
+        mNano.gIcon = R.id.g_icon;
+        mNano.micIcon = mQsbLayout.mMicIconView.getVisibility() == View.VISIBLE ?
                 R.id.mic_icon :
                 0;
-        final a_search viewBounds = getViewBounds(mActivity.getDragLayer());
-        final int topShift = mNano.en.eg + (co ? 0 : mNano.en.ee);
-        viewBounds.eg += topShift;
-        viewBounds.ee -= topShift;
-        mNano.et = viewBounds;
-        if (viewBounds.eh > 0 && viewBounds.ee > 0) {
-            Bitmap bitmap = BitmapRenderer.createHardwareBitmap(viewBounds.eh, viewBounds.ee, out -> a(topShift, out));
-            mBundle.putParcelable(mNano.eu, bitmap);
+        final Columns viewBounds = getViewBounds(mActivity.getDragLayer());
+        final int topShift = mNano.apps.innerMargin + (co ? 0 : mNano.apps.height);
+        viewBounds.innerMargin += topShift;
+        viewBounds.height -= topShift;
+        mNano.viewBounds = viewBounds;
+        if (viewBounds.iconDistance > 0 && viewBounds.height > 0) {
+            Bitmap bitmap = BitmapRenderer.createHardwareBitmap(viewBounds.iconDistance, viewBounds.height, out -> a(topShift, out));
+            mBundle.putParcelable(mNano.view, bitmap);
         } else {
             String stringBuilder = "Invalid preview bitmap size. width: " +
-                    viewBounds.eh +
+                    viewBounds.iconDistance +
                     "hight: " +
-                    viewBounds.ee +
+                    viewBounds.height +
                     " top shift: " +
                     topShift;
             Log.e("ConfigBuilder", stringBuilder);
-            viewBounds.ee = 0;
-            viewBounds.ef = 0;
-            viewBounds.eg = 0;
-            viewBounds.eh = 0;
+            viewBounds.height = 0;
+            viewBounds.edgeMargin = 0;
+            viewBounds.innerMargin = 0;
+            viewBounds.iconDistance = 0;
             Bitmap bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             bitmap.setPixel(0, 0, 0);
-            mBundle.putParcelable(mNano.eu, bitmap);
+            mBundle.putParcelable(mNano.view, bitmap);
         }
     }
 
-    private /* synthetic */ void a(int i, Canvas canvas) {
+    private void a(int i, Canvas canvas) {
         int save = canvas.save();
         canvas.translate(0.0f, (float) (-i));
         a(canvas, mActivity.getAppsView().getRecyclerViewContainer());
@@ -226,13 +215,12 @@ public class ConfigBuilder {
         canvas.translate((float) array[0], (float) array[1]);
     }
 
-    private void ce() {
+    private void setAllAppsSearchView() {
         View view = null;
         AllAppsRecyclerView appsView = getAppsView();
         GridLayoutManager.SpanSizeLookup spanSizeLookup = ((GridLayoutManager) appsView.getLayoutManager())
                 .getSpanSizeLookup();
-        int allAppsCols = Math
-                .min(mActivity.getDeviceProfile().inv.numColsDrawer, appsView.getChildCount());
+        int allAppsCols = Math.min(mActivity.getDeviceProfile().inv.numColsDrawer, appsView.getChildCount());
         int childCount = appsView.getChildCount();
         BubbleTextView[] bubbleTextViewArr = new BubbleTextView[allAppsCols];
         int i4 = -1;
@@ -255,11 +243,11 @@ public class ConfigBuilder {
         }
         if (bubbleTextViewArr.length == 0 || bubbleTextViewArr[0] == null) {
             Log.e("ConfigBuilder", "No icons rendered in all apps");
-            cf();
+            setHotseatSearchView();
             return;
         }
         mBubbleTextView = bubbleTextViewArr[0];
-        mNano.es = allAppsCols;
+        mNano.allAppsCols = allAppsCols;
         int iconCountOffset = 0;
         for (int i = 0; i < bubbleTextViewArr.length; i++) {
             if (bubbleTextViewArr[i] == null) {
@@ -269,95 +257,82 @@ public class ConfigBuilder {
             }
         }
         co = appsView.getChildViewHolder(bubbleTextViewArr[0]).getItemViewType() == 4;
-        a_search lastColumn = getViewBounds(bubbleTextViewArr[allAppsCols - 1]);
-        a_search firstColumn = getViewBounds(bubbleTextViewArr[0]);
+        Columns lastColumn = getViewBounds(bubbleTextViewArr[allAppsCols - 1]);
+        Columns firstColumn = getViewBounds(bubbleTextViewArr[0]);
         if (Utilities.isRtl(mActivity.getResources())) {
-            a_search temp = lastColumn;
+            Columns temp = lastColumn;
             lastColumn = firstColumn;
             firstColumn = temp;
         }
-        int iconWidth = lastColumn.eh;
-        int totalIconDistance = lastColumn.ef - firstColumn.ef;
+        int iconWidth = lastColumn.iconDistance;
+        int totalIconDistance = lastColumn.edgeMargin - firstColumn.edgeMargin;
         int iconDistance = totalIconDistance / allAppsCols;
-        firstColumn.eh = iconWidth + totalIconDistance;
+        firstColumn.iconDistance = iconWidth + totalIconDistance;
         if (Utilities.isRtl(mActivity.getResources())) {
-            firstColumn.ef -= iconCountOffset * iconWidth;
-            firstColumn.eh += iconCountOffset * iconWidth;
+            firstColumn.edgeMargin -= iconCountOffset * iconWidth;
+            firstColumn.iconDistance += iconCountOffset * iconWidth;
         } else {
-            firstColumn.eh += iconCountOffset * (iconDistance + iconWidth);
+            firstColumn.iconDistance += iconCountOffset * (iconDistance + iconWidth);
         }
-        mNano.en = firstColumn;
+        mNano.apps = firstColumn;
         if (!this.co) {
-            firstColumn.eg -= firstColumn.ee;
+            firstColumn.innerMargin -= firstColumn.height;
         } else if (view != null) {
-            a_search viewBounds3 = getViewBounds(view);
-            viewBounds3.eh = firstColumn.eh;
-            mNano.ez = viewBounds3;
+            Columns viewBounds3 = getViewBounds(view);
+            viewBounds3.iconDistance = firstColumn.iconDistance;
+            mNano.appsView = viewBounds3;
         }
-        bW();
-        List<ItemInfoWithIcon> predictedApps = mActivity.getAppsView().getFloatingHeaderView().findFixedRowByType(
-                PredictionRowView.class).getPredictedApps();
-        List<b_search> bSearches = new ArrayList<>();
-        final int count = Math.min(predictedApps.size(), allAppsCols);
-        for (int i = 0; i < count; i++) {
-            ItemInfoWithIcon item = predictedApps.get(i);
-            if (item instanceof AppInfo) {
-                b_search bSearch = bZ((AppInfo) item, i);
-                if (bSearch != null) {
-                    bSearches.add(bSearch);
-                }
-            }
-        }
-        mNano.eo = new b_search[bSearches.size()];
-        bSearches.toArray(mNano.eo);
+        updateHotseatSearchDimens();
     }
 
-    private void cf() {
-        int n2 = 0;
-        mNano.es = mActivity.getDeviceProfile().inv.numColumns;
+    private void setHotseatSearchView() {
+        mNano.allAppsCols = mActivity.getDeviceProfile().inv.numColumns;
         final int width = mActivity.getHotseat().getWidth();
         final int dimensionPixelSize = mActivity.getResources().getDimensionPixelSize(R.dimen.dynamic_grid_edge_margin);
-        final a_search en = new a_search();
-        en.ef = dimensionPixelSize;
-        en.eh = width - dimensionPixelSize - dimensionPixelSize;
-        en.ee = mActivity.getDeviceProfile().allAppsCellHeightPx;
-        mNano.en = en;
-        bW();
-        final AlphabeticalAppsList apps = getAppsView().getApps();
+        final Columns appCol = new Columns();
+        appCol.edgeMargin = dimensionPixelSize;
+        appCol.iconDistance = width - dimensionPixelSize - dimensionPixelSize;
+        appCol.height = mActivity.getDeviceProfile().allAppsCellHeightPx;
+        mNano.apps = appCol;
+        updateHotseatSearchDimens();
+        AlphabeticalAppsList apps = getAppsView().getApps();
         mBubbleTextView = (BubbleTextView) mActivity.getLayoutInflater().inflate(R.layout.all_apps_icon, getAppsView(), false);
-        final ViewGroup.LayoutParams layoutParams = mBubbleTextView.getLayoutParams();
-        layoutParams.height = en.ee;
-        layoutParams.width = en.eh / mNano.es;
+        ViewGroup.LayoutParams layoutParams = mBubbleTextView.getLayoutParams();
+        layoutParams.height = appCol.height;
+        layoutParams.width = appCol.iconDistance / mNano.allAppsCols;
         if (!apps.getApps().isEmpty()) {
             mBubbleTextView.applyFromApplicationInfo(apps.getApps().get(0));
         }
         mBubbleTextView.measure(View.MeasureSpec.makeMeasureSpec(layoutParams.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(layoutParams.height, View.MeasureSpec.EXACTLY));
         mBubbleTextView.layout(0, 0, layoutParams.width, layoutParams.height);
-        final ArrayList<b_search> list = new ArrayList<>(mNano.es);
-        mNano.eo = list.toArray(new b_search[list.size()]);
+        final ArrayList<AppIndex> list = new ArrayList<>(mNano.allAppsCols);
+        mNano.index = list.toArray(new AppIndex[0]);
     }
 
     public byte[] build() {
-        mNano.em = getBackgroundColor();
-        mNano.eq = Themes.getAttrBoolean(mActivity, R.attr.isMainColorDark);
+        mNano.bgColor = getBackgroundColor();
+        mNano.isDark = Themes.getAttrBoolean(mActivity, R.attr.isMainColorDark);
         if (mIsAllApps) {
-            ce();
+            setAllAppsSearchView();
         } else {
-            cf();
+            setHotseatSearchView();
         }
-        mNano.ep = "icon_view_template";
-        mBundle.putParcelable(mNano.ep, searchIconTemplate());
-        mNano.er = "icon_long_click";
-        mBundle.putParcelable(mNano.er, PendingIntent.getBroadcast(mActivity, 2055, new Intent().setComponent(new ComponentName(mActivity, LongClickReceiver.class)), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT));
+        mNano.iconViewTemplate = "icon_view_template";
+        mBundle.putParcelable(mNano.iconViewTemplate, searchIconTemplate());
+        mNano.iconLongClick = "icon_long_click";
+        mBundle.putParcelable(mNano.iconLongClick, PendingIntent
+                .getBroadcast(mActivity, 2055, new Intent()
+                                .setComponent(new ComponentName(mActivity, LongClickReceiver.class)),
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT));
         LongClickReceiver.bq(mActivity);
-        mNano.ev = getViewBounds(mQsbLayout);
-        mNano.eA = mIsAllApps;
+        mNano.bounds = getViewBounds(mQsbLayout);
+        mNano.isAllApps = mIsAllApps;
         if (mIsAllApps) {
-            cd();
+            createSearchTemplate();
         }
-        final d_search d = new d_search();
-        d.eB = mNano;
-        return com.google.protobuf.nano.MessageNano.toByteArray(d);
+        SearchView searchView = new SearchView();
+        searchView.base = mNano;
+        return MessageNano.toByteArray(searchView);
     }
 
     public Bundle getExtras() {

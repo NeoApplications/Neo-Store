@@ -20,18 +20,18 @@ package com.saggitt.omega.gestures.handlers
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import android.os.UserHandle
+import android.os.UserManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.Keep
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
-import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.widget.WidgetsFullSheet
@@ -89,7 +89,7 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) : G
 
     private val searchProvider get() = SearchProviderController.getInstance(context).searchProvider
     override val displayName: String = context.getString(R.string.action_global_search)
-    override val icon: Drawable by lazy { searchProvider.getIcon() }
+    override val icon: Drawable? by lazy { searchProvider.getIcon() }
     override val requiresForeground = true
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
@@ -162,7 +162,8 @@ class StartAppGestureHandler(context: Context, config: JSONObject?) : GestureHan
                 target = Utilities.makeComponentKey(context, config.getString("target"))
             } else {
                 intent = Intent.parseUri(config.getString("intent"), 0)
-                user = UserManagerCompat.getInstance(context).getUserForSerialNumber(config.getLong("user"))
+                user = context.getSystemService(UserManager::class.java)
+                        .getUserForSerialNumber(config.getLong("user"))
                 packageName = config.getString("packageName")
                 id = config.getString("id")
             }
@@ -179,7 +180,8 @@ class StartAppGestureHandler(context: Context, config: JSONObject?) : GestureHan
             }
             "shortcut" -> {
                 config.put("intent", intent!!.toUri(0))
-                config.put("user", UserManagerCompat.getInstance(context).getSerialNumberForUser(user))
+                config.put("user",
+                        context.getSystemService(UserManager::class.java).getSerialNumberForUser(user))
                 config.put("packageName", packageName)
                 config.put("id", id)
             }
@@ -206,8 +208,6 @@ class StartAppGestureHandler(context: Context, config: JSONObject?) : GestureHan
     }
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
-        Log.d("Open App", "Opening app")
-
         if (view == null) {
             val down = controller.touchDownPoint
             controller.launcher.prepareDummyView(down.x.toInt(), down.y.toInt()) {
@@ -215,23 +215,27 @@ class StartAppGestureHandler(context: Context, config: JSONObject?) : GestureHan
             }
             return
         }
+
         val opts = view.let { controller.launcher.getActivityLaunchOptionsAsBundle(it) }
+
+        fun showErrorToast() {
+            Toast.makeText(context, R.string.failed, Toast.LENGTH_LONG).show()
+        }
+
         when (type) {
             "app" -> {
-                try {
-                    LauncherAppsCompat.getInstance(context)
-                            .startActivityForProfile(target!!.componentName, target!!.user, null, opts)
-                } catch (e: NullPointerException) {
-                    // App is probably not installed anymore, show a Toast
-                    Toast.makeText(context, R.string.failed, Toast.LENGTH_LONG).show()
-                } catch (e: SecurityException) {
-                    // App is probably not installed anymore, show a Toast
-                    Toast.makeText(context, R.string.failed, Toast.LENGTH_LONG).show()
+                target?.let {
+                    try {
+                        context.getSystemService(LauncherApps::class.java).startMainActivity(it.componentName, it.user, null, opts)
+                    } catch (e: SecurityException) {
+                        showErrorToast()
+                    }
+                } ?: run {
+                    showErrorToast()
                 }
             }
             "shortcut" -> {
-                DeepShortcutManager.getInstance(context)
-                        .startShortcut(packageName, id, null, opts, user)
+                Launcher.getLauncher(context).startShortcut(packageName, id, null, opts, user)
             }
         }
     }
@@ -286,7 +290,7 @@ interface VerticalSwipeGestureHandler {
 
     fun onDrag(displacement: Float, velocity: Float) {}
 
-    fun onDragEnd(velocity: Float, fling: Boolean) {}
+    fun onDragEnd(velocity: Float) {}
 }
 
 interface StateChangeGestureHandler {

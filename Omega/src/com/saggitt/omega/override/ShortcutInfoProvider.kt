@@ -19,14 +19,15 @@ package com.saggitt.omega.override
 
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.os.Build
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT
 import com.android.launcher3.Utilities
-import com.android.launcher3.WorkspaceItemInfo
-import com.android.launcher3.compat.LauncherAppsCompat
 import com.android.launcher3.icons.LauncherIcons
+import com.android.launcher3.model.ModelWriter
+import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
@@ -34,7 +35,7 @@ import com.saggitt.omega.util.useApplicationContext
 
 class ShortcutInfoProvider private constructor(context: Context) : CustomInfoProvider<WorkspaceItemInfo>(context) {
 
-    private val launcherApps by lazy { LauncherAppsCompat.getInstance(context) }
+    private val launcherApps by lazy { context.getSystemService(LauncherApps::class.java) }
 
     override fun getTitle(info: WorkspaceItemInfo): String {
         return (info.customTitle ?: info.title).toString()
@@ -48,8 +49,8 @@ class ShortcutInfoProvider private constructor(context: Context) : CustomInfoPro
         return info.customTitle?.toString()
     }
 
-    override fun setTitle(info: WorkspaceItemInfo, title: String?) {
-        info.setTitle(context, title)
+    override fun setTitle(info: WorkspaceItemInfo, title: String?, modelWriter: ModelWriter) {
+        info.setTitle(title, modelWriter)
     }
 
     override fun setIcon(info: WorkspaceItemInfo, entry: IconPackManager.CustomIconEntry?) {
@@ -57,7 +58,7 @@ class ShortcutInfoProvider private constructor(context: Context) : CustomInfoPro
         if (entry != null) {
             val launcherActivityInfo = getLauncherActivityInfo(info)
             val iconCache = LauncherAppState.getInstance(context).iconCache
-            val drawable = iconCache.getFullResIcon(launcherActivityInfo, false)
+            val drawable = iconCache.getFullResIcon(launcherActivityInfo, info)
             val bitmap = LauncherIcons.obtain(context).createBadgedIconBitmap(drawable, info.user, Build.VERSION_CODES.O_MR1)
             info.setIcon(context, bitmap.icon)
         } else {

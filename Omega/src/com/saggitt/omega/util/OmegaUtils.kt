@@ -20,6 +20,7 @@ package com.saggitt.omega.util
 
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -49,10 +50,8 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.*
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
 import com.android.launcher3.model.BgDataModel
-import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.*
 import com.android.launcher3.util.Executors.*
 import com.android.launcher3.views.OptionsPopupView
@@ -369,6 +368,13 @@ fun StatusBarNotification.loadSmallIcon(context: Context): Drawable? {
     return notification.smallIcon?.loadDrawable(context)
 }
 
+@JvmOverloads
+fun makeBasicHandler(preferMyLooper: Boolean = false, callback: Handler.Callback? = null): Handler =
+        if (preferMyLooper)
+            Handler(Looper.myLooper() ?: Looper.getMainLooper(), callback)
+        else
+            Handler(Looper.getMainLooper(), callback)
+
 fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
     try {
         val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
@@ -426,8 +432,8 @@ fun reloadIconsFromComponents(context: Context, components: Collection<Component
 }
 
 fun reloadIcons(context: Context, packages: Collection<PackageUserKey>) {
-    LooperExecutor(ICON_PACK_EXECUTOR.looper).execute {
-        val userManagerCompat = UserManagerCompat.getInstance(context)
+    ICON_PACK_EXECUTOR.execute {
+        val userManagerCompat = UserCache.INSTANCE.get(context)
         val las = LauncherAppState.getInstance(context)
         val model = las.model
 
@@ -435,9 +441,8 @@ fun reloadIcons(context: Context, packages: Collection<PackageUserKey>) {
             model.onPackagesReload(user)
         }
 
-        val shortcutManager = DeepShortcutManager.getInstance(context)
         packages.forEach {
-            CustomIconUtils.reloadIcon(shortcutManager, model, it.mUser, it.mPackageName)
+            CustomIconUtils.reloadIcon(model, it.mUser, it.mPackageName)
         }
     }
 }
@@ -568,12 +573,12 @@ class JavaField<T>(private val targetObject: Any, fieldName: String, targetClass
 }
 
 fun ComponentKey.getLauncherActivityInfo(context: Context): LauncherActivityInfo? {
-    return LauncherAppsCompat.getInstance(context).getActivityList(componentName.packageName, user)
+    return context.getSystemService(LauncherApps::class.java).getActivityList(componentName.packageName, user)
             .firstOrNull { it.componentName == componentName }
 }
 
-val uiWorkerHandler by lazy { Handler(LauncherModel.getUiWorkerLooper()) }
-val iconPackUiHandler by lazy { Handler(ICON_PACK_UI_EXECUTOR.looper) }
+val uiWorkerHandler by lazy { UI_HELPER_EXECUTOR.handler }
+val iconPackUiHandler by lazy { Handler(ICON_PACK_EXECUTOR.looper) }
 
 
 fun runOnUiWorkerThread(r: () -> Unit) {

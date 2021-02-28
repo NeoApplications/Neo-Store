@@ -35,16 +35,17 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.android.launcher3.AppInfo;
-import com.android.launcher3.FolderInfo;
-import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.WorkspaceItemInfo;
+import com.android.launcher3.model.data.AppInfo;
+import com.android.launcher3.model.data.FolderInfo;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.google.android.apps.nexuslauncher.NexusLauncher;
+import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.saggitt.omega.gestures.GestureController;
@@ -70,7 +71,7 @@ import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
-public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPreferenceChangeListener {
+public class OmegaLauncher extends NexusLauncherActivity implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
@@ -230,7 +231,7 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
                     .getEntryForComponent(component)).getDrawable();
         } else if (itemInfo instanceof WorkspaceItemInfo) {
             component = new ComponentKey(itemInfo.getTargetComponent(), itemInfo.user);
-            currentEditIcon = new BitmapDrawable(mContext.getResources(), ((WorkspaceItemInfo) itemInfo).iconBitmap);
+            currentEditIcon = new BitmapDrawable(mContext.getResources(), ((WorkspaceItemInfo) itemInfo).bitmap.icon);
         } else if (itemInfo instanceof FolderInfo) {
             component = ((FolderInfo) itemInfo).toComponentKey();
             currentEditIcon = ((FolderInfo) itemInfo).getDefaultIcon(this);
@@ -297,9 +298,10 @@ public class OmegaLauncher extends Launcher implements OmegaPreferences.OnPrefer
         launcherClient.mQsbAnimationController.dZ();
     }
 
+    /*
     public AnimatorSet openQsb() {
         return launcherClient.mQsbAnimationController.openQsb();
-    }
+    }*/
 
     public void registerSmartspaceView(SmartspaceView smartspace) {
         launcherClient.registerSmartspaceView(smartspace);

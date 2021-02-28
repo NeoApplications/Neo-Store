@@ -361,6 +361,7 @@
             android:name="com.samsung.android.non_immersive"
             android:value="true" />
 
+        <!--
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -369,7 +370,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
+        </provider> -->
 
         <provider
             android:name="com.google.android.apps.nexuslauncher.search.AppSearchProvider"

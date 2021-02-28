@@ -18,10 +18,11 @@
 package com.saggitt.omega.override
 
 import android.content.Context
-import com.android.launcher3.AppInfo
-import com.android.launcher3.FolderInfo
-import com.android.launcher3.ItemInfo
-import com.android.launcher3.WorkspaceItemInfo
+import com.android.launcher3.model.ModelWriter
+import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.ItemInfo
+import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.saggitt.omega.iconpack.IconPackManager
 
 abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
@@ -32,7 +33,7 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
 
     abstract fun getCustomTitle(info: T): String?
 
-    abstract fun setTitle(info: T, title: String?)
+    abstract fun setTitle(info: T, title: String?, modelWriter: ModelWriter)
 
     open fun supportsIcon() = true
 

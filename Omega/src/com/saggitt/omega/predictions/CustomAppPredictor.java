@@ -30,13 +30,13 @@ import android.view.View;
 import android.view.ViewParent;
 
 import com.android.launcher3.AppFilter;
-import com.android.launcher3.AppInfo;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.AllAppsStore;
 import com.android.launcher3.appprediction.ComponentKeyMapper;
 import com.android.launcher3.appprediction.DynamicItemCache;
 import com.android.launcher3.logging.UserEventDispatcher;
+import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.saggitt.omega.settings.SettingsActivity;
 
@@ -159,7 +159,7 @@ public class CustomAppPredictor extends UserEventDispatcher implements SharedPre
                         if (componentInfo != null) {
                             ComponentKey key = new ComponentKey(componentInfo, Process.myUserHandle());
                             if (!predictionList.contains(key.toString())) {
-                                list.add(new ComponentKeyMapper(mContext, key, mDynamicItemCache));
+                                list.add(new ComponentKeyMapper(key, mDynamicItemCache));
                             }
                         }
                     }
@@ -264,9 +264,8 @@ public class CustomAppPredictor extends UserEventDispatcher implements SharedPre
         }
     }
 
-    protected ComponentKeyMapper<AppInfo> getComponentFromString(String str) {
-        return new ComponentKeyMapper<>(mContext,
-                new ComponentKey(new ComponentName(mContext, str), Process.myUserHandle()), mDynamicItemCache);
+    protected ComponentKeyMapper getComponentFromString(String str) {
+        return new ComponentKeyMapper(new ComponentKey(new ComponentName(mContext, str), Process.myUserHandle()), mDynamicItemCache);
     }
 
     private void clearNonExistentPackages() {

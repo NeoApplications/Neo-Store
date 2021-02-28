@@ -38,15 +38,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.launcher3.AppInfo;
-import com.android.launcher3.FolderInfo;
-import com.android.launcher3.ItemInfo;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.WorkspaceItemInfo;
+import com.android.launcher3.model.data.AppInfo;
+import com.android.launcher3.model.data.FolderInfo;
+import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.widget.WidgetsBottomSheet;
@@ -103,7 +103,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             if (itemInfo instanceof WorkspaceItemInfo && ((WorkspaceItemInfo) itemInfo).customIcon != null) {
                 icon.setImageBitmap(((WorkspaceItemInfo) itemInfo).customIcon);
             } else if (itemInfo instanceof ItemInfoWithIcon) {
-                icon.setImageBitmap(((ItemInfoWithIcon) itemInfo).iconBitmap);
+                icon.setImageBitmap(((ItemInfoWithIcon) itemInfo).bitmap.icon);
             } else if (itemInfo instanceof FolderInfo) {
                 FolderInfo folderInfo = (FolderInfo) itemInfo;
                 icon.setImageDrawable(folderInfo.getIcon(mLauncher));
@@ -153,7 +153,8 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             if (!newTitle.equals(mPreviousTitle)) {
                 if (newTitle.equals(""))
                     newTitle = null;
-                mInfoProvider.setTitle(mItemInfo, newTitle);
+                mInfoProvider.setTitle(mItemInfo, newTitle, mLauncher.getModel().getWriter(false, true));
+
             }
         }
         super.onDetachedFromWindow();

@@ -33,7 +33,7 @@ import com.saggitt.omega.util.loadSmallIcon
 class NowPlayingProvider(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.NotificationBasedDataProvider(controller) {
 
-    private val media = MediaListener(context, this::reload, Handler(MAIN_EXECUTOR.looper))
+    private val media = MediaListener(context, this::reload)
     private val defaultIcon = context.getDrawable(R.drawable.ic_music_note)!!.toBitmap()
 
     init {

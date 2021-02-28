@@ -159,12 +159,5 @@ public class BaseBottomSheet extends AbstractSlideInView implements Insettable {
 
     @Override
     public final void logActionCommand(int command) {
-
-    }
-
-    @Nullable
-    @Override
-    public Animator createHintCloseAnim(float distanceToMove) {
-        return ObjectAnimator.ofInt(this, PADDING_BOTTOM, (int) (distanceToMove + mInsets.bottom));
     }
 }

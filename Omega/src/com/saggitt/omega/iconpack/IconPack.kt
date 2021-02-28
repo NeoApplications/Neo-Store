@@ -23,11 +23,11 @@ import android.content.pm.ShortcutInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.android.launcher3.FastBitmapDrawable
-import com.android.launcher3.ItemInfo
 import com.android.launcher3.compat.AlphabeticIndexCompat
+import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.icons.CustomDrawableFactory
 import com.saggitt.omega.icons.CustomIconProvider
 import java.util.concurrent.Semaphore
 
@@ -37,7 +37,7 @@ abstract class IconPack(val context: Context, val packPackageName: String) {
     private val loadCompleteListeners = ArrayList<(IconPack) -> Unit>()
 
     fun executeLoadPack() {
-        MAIN_EXECUTOR.execute {
+        ICON_PACK_EXECUTOR.execute {
             loadPack()
             waiter?.release()
             loadCompleteListeners.forEach { it.invoke(this) }
@@ -84,12 +84,14 @@ abstract class IconPack(val context: Context, val packPackageName: String) {
     abstract fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable?
 
     abstract fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?,
-                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable?
+                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable?
 
-    open fun getAllIcons(callback: (List<PackEntry>) -> Unit, cancel: () -> Boolean, filter: (item: String) -> Boolean = { _ -> true }) {
+    open fun getAllIcons(callback: (List<PackEntry>) -> Unit, cancel: () -> Boolean,
+                         filter: (item: String) -> Boolean = { _ -> true }) {
         ensureInitialLoadComplete()
-        callback(categorize(filterDuplicates(entries)).filter { if (it is Entry) filter(it.identifierName) else true })
+        callback(categorize(filterDuplicates(entries)).filter {
+            if (it is Entry) filter(it.identifierName) else true
+        })
     }
 
     abstract fun supportsMasking(): Boolean

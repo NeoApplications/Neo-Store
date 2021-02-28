@@ -49,14 +49,12 @@ import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import org.jetbrains.annotations.NotNull;
 
-public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, o, OnIDPChangeListener {
+public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 
-    private final k Ds;
-    private final int Dt;
+    private final QsbConfiguration qsbConfiguration;
     private final boolean mLowPerformanceMode;
     private final int mTopAdjusting;
     private final int mVerticalOffset;
-    public float Dy;
     boolean mDoNotRemoveFallback;
     private int mShadowAlpha;
     private Bitmap Dv;
@@ -80,15 +78,13 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         super(context, attributeSet, i);
         this.mShadowAlpha = 0;
         setOnClickListener(this);
-        this.Ds = k.getInstance(context);
-        this.Dt = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
-        this.Dy = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
+        qsbConfiguration = QsbConfiguration.getInstance(context);
+        mTopAdjusting = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
+        mVerticalOffset = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
         setClipToPadding(false);
         prefs = OmegaPreferences.Companion.getInstanceNoCreate();
 
         mLowPerformanceMode = prefs.getLowPerformanceMode();
-        mTopAdjusting = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
-        mVerticalOffset = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
     }
 
     protected void onFinishInflate() {
@@ -106,7 +102,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     public void setWidgetMode(boolean enable) {
         widgetMode = enable;
-        dz();
+        loadIcons();
         setContentVisibility(HOTSEAT_SEARCH_BOX, NO_ANIM_PROPERTY_SETTER, LINEAR);
     }
 
@@ -118,21 +114,21 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     public int getTopMargin(Rect rect) {
-        return Math.max(Math.round(-this.Dy), rect.top - this.Dt);
+        return Math.max(Math.round(-mVerticalOffset), rect.top - mTopAdjusting);
     }
 
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         LauncherAppState.getIDP(getContext()).addOnChangeListener(this);
-        dN();
-        Ds.a(this);
+        updateConfiguration();
+        qsbConfiguration.addListener(this);
     }
 
     @Override
     public void onIdpChanged(int changeFlags, InvariantDeviceProfile profile) {
         if ((changeFlags & CHANGE_FLAG_ICON_PARAMS) != 0) {
             mAllAppsShadowBitmap = mHotseatShadowBitmap = mBubbleShadowBitmap = mClearBitmap = null;
-            dH();
+            addOrUpdateSearchRipple();
         }
     }
 
@@ -166,7 +162,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     protected void onDetachedFromWindow() {
         LauncherAppState.getIDP(getContext()).removeOnChangeListener(this);
         super.onDetachedFromWindow();
-        Ds.b(this);
+        qsbConfiguration.addListener(this);
     }
 
     protected final int aA(int i) {
@@ -193,24 +189,24 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         mAppsView.setRecyclerViewVerticalFadingEdgeEnabled(!mLowPerformanceMode);
     }
 
-    public final void dM() {
-        dN();
+    public final void onChange() {
+        updateConfiguration();
         invalidate();
     }
 
-    private void dN() {
+    private void updateConfiguration() {
         az(this.mAllAppsBgColor);
-        h(this.Ds.micStrokeWidth());
-        this.Dh = this.Ds.hintIsForAssistant();
+        addOrUpdateSearchPaint(qsbConfiguration.micStrokeWidth());
+        showHintAssitant = qsbConfiguration.hintIsForAssistant();
         mUseTwoBubbles = useTwoBubbles();
-        setHintText(this.Ds.hintTextValue(), this.mHint);
-        dH();
+        setHintText(qsbConfiguration.hintTextValue(), mHint);
+        addOrUpdateSearchRipple();
     }
 
     public void onClick(View view) {
         super.onClick(view);
         if (view == this) {
-            startSearch("", this.Di);
+            startSearch("", mResult);
         }
     }
 
@@ -220,7 +216,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     @Override
     public void startSearch() {
-        post(() -> startSearch("", Di));
+        post(() -> startSearch("", mResult));
     }
 
     @Override
@@ -383,7 +379,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
             containerTopMargin = -(mlp.topMargin + mlp.height);
         }
-        offsetTopAndBottom((int) Dy - containerTopMargin);
+        offsetTopAndBottom((int) mVerticalOffset - containerTopMargin);
     }
 
     @Override

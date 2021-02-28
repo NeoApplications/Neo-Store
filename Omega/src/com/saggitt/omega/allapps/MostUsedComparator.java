@@ -18,7 +18,7 @@
 
 package com.saggitt.omega.allapps;
 
-import com.android.launcher3.AppInfo;
+import com.android.launcher3.model.data.AppInfo;
 import com.saggitt.omega.model.AppCountInfo;
 
 import java.util.Comparator;

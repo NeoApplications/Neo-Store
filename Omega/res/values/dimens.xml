@@ -97,4 +97,5 @@
     <dimen name="select_dialog_drawable_padding_start_material">20dp</dimen>
 
     <dimen name="dialog_corner_radius">8dp</dimen>
+    <dimen name="dynamic_grid_page_indicator_line_height">1dp</dimen>
 </resources>

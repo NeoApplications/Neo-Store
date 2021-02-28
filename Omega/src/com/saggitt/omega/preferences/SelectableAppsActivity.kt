@@ -58,21 +58,20 @@ class SelectableAppsActivity : SettingsActivity() {
 
         override fun onRecyclerViewCreated(recyclerView: RecyclerView) {
             val arguments = requireArguments()
-            val isWork = if (arguments.containsKey(KEY_FILTER_IS_WORK))
-                arguments.getBoolean(KEY_FILTER_IS_WORK) else null
+            val profile = arguments.getParcelable<DrawerTabs.Profile>(KEY_FILTER_IS_WORK)!!
             selection = HashSet(arguments.getStringArrayList(KEY_SELECTION))
 
             val context = recyclerView.context
             recyclerView.setHasFixedSize(true)
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = SelectableAppsAdapter.ofProperty(requireActivity(),
-                    ::selection, this, createAppFilter(context, DrawerTabs.getWorkFilter(isWork)))
+                    ::selection, this, createAppFilter(context, DrawerTabs.getWorkFilter(profile)))
         }
 
         override fun onDestroy() {
             super.onDestroy()
 
-            val receiver = arguments?.getParcelable<Parcelable>(KEY_CALLBACK) as ResultReceiver
+            val receiver = requireArguments().getParcelable<ResultReceiver>(KEY_CALLBACK)!!
             if (changed) {
                 receiver.send(Activity.RESULT_OK, Bundle(1).apply {
                     putStringArrayList(KEY_SELECTION, ArrayList(selection))
@@ -105,7 +104,7 @@ class SelectableAppsActivity : SettingsActivity() {
         private const val KEY_FILTER_IS_WORK = "filterIsWork"
 
         fun start(context: Context, selection: Collection<ComponentKey>,
-                  callback: (Collection<ComponentKey>?) -> Unit, filterIsWork: Boolean? = null) {
+                  callback: (Collection<ComponentKey>?) -> Unit, profile: DrawerTabs.Profile) {
             val intent = Intent(context, SelectableAppsActivity::class.java).apply {
                 putStringArrayListExtra(KEY_SELECTION, ArrayList(selection.map { it.toString() }))
                 putExtra(KEY_CALLBACK, object : ResultReceiver(Handler()) {
@@ -120,7 +119,7 @@ class SelectableAppsActivity : SettingsActivity() {
                         }
                     }
                 })
-                filterIsWork?.let { putExtra(KEY_FILTER_IS_WORK, it) }
+                putExtra(KEY_FILTER_IS_WORK, profile)
             }
             context.startActivity(intent)
         }

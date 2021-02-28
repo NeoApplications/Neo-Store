@@ -34,13 +34,13 @@ import com.android.launcher3.LauncherState.HOTSEAT_ICONS
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.anim.PropertySetter
+import com.google.android.apps.nexuslauncher.qsb.AbstractQsbLayout
+import com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.blur.BlurDrawable
 import com.saggitt.omega.blur.BlurHotseat
 import com.saggitt.omega.blur.BlurScrimView
 import com.saggitt.omega.blur.BlurWallpaperProvider
-import com.saggitt.omega.qsb.AbstractQsbLayout
-import com.saggitt.omega.qsb.AllAppsQsbLayout
 import com.saggitt.omega.util.getLauncherOrNull
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
@@ -173,7 +173,7 @@ class BlurQsbLayout @JvmOverloads constructor(
         val hotseatBgColor = hotseat.bgColor
         val hotseatBgAlpha = hotseat.bgAlpha * hotseatBgProgress
         val hotseatBg = ColorUtils.setAlphaComponent(hotseatBgColor, (hotseatBgAlpha * 255).toInt())
-        return ColorUtils.compositeColors(scrimView?.shelfColor ?: return hotseatBg, hotseatBg)
+        return ColorUtils.compositeColors(scrimView?.getShelfColor() ?: return hotseatBg, hotseatBg)
     }
 
     fun setOverlayScroll(scroll: Float) {

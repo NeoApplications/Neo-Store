@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.content.pm.ShortcutInfo
 import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
@@ -37,19 +38,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.*
-import com.android.launcher3.compat.LauncherAppsCompat
-import com.android.launcher3.compat.UserManagerCompat
-import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.icons.IconProvider
+import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.pm.UserCache
+import com.android.launcher3.shortcuts.ShortcutRequest
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.saggitt.omega.icons.CustomIconProvider
 import com.saggitt.omega.util.isVisible
+import com.saggitt.omega.util.makeBasicHandler
+
 
 open class AppsAdapterWithShortcuts(
         private val context: Context,
         private val callback: Callback? = null,
         private val filter: AppFilter? = null)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     companion object {
         private const val TYPE_LOADING = 0
@@ -63,14 +68,13 @@ open class AppsAdapterWithShortcuts(
 
     var items = ArrayList<Item>().apply { add(LoadingItem()) }
     val apps = ArrayList<AppItem>()
-    val handler = Handler()
-    val shortcutManager = DeepShortcutManager.getInstance(context)
+    val handler = makeBasicHandler(true)
 
     init {
         if (iconProvider == null) {
-            iconProvider = IconProvider.INSTANCE.get(context)
+            iconProvider = IconProvider(context)
         }
-        Handler(MODEL_EXECUTOR.looper).postAtFrontOfQueue(::loadAppsList)
+        MODEL_EXECUTOR.handler.postAtFrontOfQueue(::loadAppsList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -143,9 +147,9 @@ open class AppsAdapterWithShortcuts(
 
     private fun getAppsList(context: Context): List<LauncherActivityInfo> {
         val apps = ArrayList<LauncherActivityInfo>()
-        val profiles = UserManagerCompat.getInstance(context).userProfiles
-        val launcherAppsCompat = LauncherAppsCompat.getInstance(context)
-        profiles.forEach { apps += launcherAppsCompat.getActivityList(null, it) }
+        val profiles = UserCache.INSTANCE.get(context).userProfiles
+        val launcherApps = context.getSystemService(LauncherApps::class.java)
+        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
         return if (filter != null) {
             apps.filter { filter.shouldShowApp(it.componentName, it.user) }
         } else {
@@ -166,12 +170,13 @@ open class AppsAdapterWithShortcuts(
         init {
             val appInfo = AppInfo(context, info, info.user)
             LauncherAppState.getInstance(context).iconCache.getTitleAndIcon(appInfo, false)
-            iconDrawable = BitmapDrawable(context.resources, appInfo.iconBitmap)
+            iconDrawable = BitmapDrawable(context.resources, appInfo.bitmap.icon)
         }
 
         private fun loadShortcuts(): List<ShortcutItem> {
-            val shortcuts = shortcutManager.queryForShortcutsContainer(key.componentName, key.user) as? List<ShortcutInfo>
-                    ?: emptyList()
+            val shortcuts = ShortcutRequest(context, key.user)
+                    .withContainer(key.componentName)
+                    .query(ShortcutRequest.PUBLISHED)
             return shortcuts.map { ShortcutItem(it) }
         }
 
@@ -181,12 +186,13 @@ open class AppsAdapterWithShortcuts(
     inner class ShortcutItem(val info: ShortcutInfo) : Item {
 
         val label = if (!TextUtils.isEmpty(info.longLabel)) info.longLabel else info.shortLabel
-
         // TODO: debug why wrong icons are loaded from the provider at times
         val iconDrawable = if (iconProvider is CustomIconProvider && false) {
             (iconProvider as CustomIconProvider).getIcon(info, iconDpi)
         } else {
-            shortcutManager.getShortcutIconDrawable(info, DisplayMetrics.DENSITY_XXHIGH)
+            context.getSystemService(
+                    LauncherApps::class.java)
+                    .getShortcutIconDrawable(info, DisplayMetrics.DENSITY_XXHIGH)
         }
     }
 
