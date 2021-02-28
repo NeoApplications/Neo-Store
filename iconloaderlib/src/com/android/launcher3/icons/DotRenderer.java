@@ -16,6 +16,9 @@
 
 package com.android.launcher3.icons;
 
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,11 +26,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.ViewDebug;
-
-import static android.graphics.Paint.ANTI_ALIAS_FLAG;
-import static android.graphics.Paint.FILTER_BITMAP_FLAG;
 
 /**
  * Used to draw a notification dot on top of an icon.
@@ -37,32 +38,20 @@ public class DotRenderer {
     private static final String TAG = "DotRenderer";
 
     // The dot size is defined as a percentage of the app icon size.
-    //private static final float SIZE_PERCENTAGE = 0.38f;
-    //private static final float CHAR_SIZE_PERCENTAGE = 0.12f;
-    private static final float TEXT_SIZE_PERCENTAGE = 0.26f;
-    private static final float STACK_OFFSET_PERCENTAGE_X = 0.05f;
-    private static final float STACK_OFFSET_PERCENTAGE_Y = 0.06f;
-    private static final float OFFSET_PERCENTAGE = 0.02f;
+    private static final float SIZE_PERCENTAGE = 0.228f;
 
     private final float mCircleRadius;
     private final Paint mCirclePaint = new Paint(ANTI_ALIAS_FLAG | FILTER_BITMAP_FLAG);
-    private final Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private final Bitmap mBackgroundWithShadow;
     private final float mBitmapOffset;
-    private final Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
 
     // Stores the center x and y position as a percentage (0 to 1) of the icon size
     private final float[] mRightDotPosition;
     private final float[] mLeftDotPosition;
-    private final int mStackOffsetX;
-    private final int mStackOffsetY;
-    private final int mTextHeight;
-    private final int size;
-    private final int mOffset;
-    private Bitmap mBackgroundWithShadow;
 
-    //public DotRenderer(int iconSizePx, Path iconShapePath, int pathSize) {
-    public DotRenderer(int iconSizePx, Path iconShapePath, int pathSize, float dotSize) {
-        size = Math.round(dotSize * iconSizePx);
+    public DotRenderer(int iconSizePx, Path iconShapePath, int pathSize) {
+        int size = Math.round(SIZE_PERCENTAGE * iconSizePx);
         ShadowGenerator.Builder builder = new ShadowGenerator.Builder(Color.TRANSPARENT);
         builder.ambientShadowAlpha = 88;
         mBackgroundWithShadow = builder.setupBlurForSize(size).createPill(size, size);
@@ -70,20 +59,9 @@ public class DotRenderer {
 
         mBitmapOffset = -mBackgroundWithShadow.getHeight() * 0.5f; // Same as width.
 
-        mStackOffsetX = (int) (STACK_OFFSET_PERCENTAGE_X * iconSizePx);
-        mStackOffsetY = (int) (STACK_OFFSET_PERCENTAGE_Y * iconSizePx);
-        mOffset = (int) (OFFSET_PERCENTAGE * iconSizePx);
-
         // Find the points on the path that are closest to the top left and right corners.
         mLeftDotPosition = getPathPoint(iconShapePath, pathSize, -1);
         mRightDotPosition = getPathPoint(iconShapePath, pathSize, 1);
-
-        // Measure the text height.
-        Rect tempTextHeight = new Rect();
-        mTextPaint.setTextSize(iconSizePx * TEXT_SIZE_PERCENTAGE);
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.getTextBounds("0", 0, 1, tempTextHeight);
-        mTextHeight = tempTextHeight.height();
     }
 
     private static float[] getPathPoint(Path path, float size, float direction) {
@@ -141,35 +119,10 @@ public class DotRenderer {
         canvas.translate(dotCenterX + offsetX, dotCenterY + offsetY);
         canvas.scale(params.scale, params.scale);
 
-        // Prepare the background and shadow and possible stacking effect.
-        int backgroundWithShadowSize = mBackgroundWithShadow.getHeight(); // Same as width.
-        mTextPaint.setColor(Color.WHITE);
-        boolean isText = params.showCount && params.count != 0;
-        String count = String.valueOf(params.count);
-        boolean shouldStack = isText && params.notificationKeys > 1;
-
-        ShadowGenerator.Builder builder = new ShadowGenerator.Builder(params.color);
-        mBackgroundWithShadow = builder.setupBlurForSize(size).createPill(size, size);
         mCirclePaint.setColor(Color.BLACK);
         canvas.drawBitmap(mBackgroundWithShadow, mBitmapOffset, mBitmapOffset, mCirclePaint);
-
-        if (shouldStack) {
-
-            int offsetDiffX = mStackOffsetX - mOffset;
-            int offsetDiffY = mStackOffsetY - mOffset;
-            canvas.translate(offsetDiffX, offsetDiffY);
-            canvas.drawBitmap(mBackgroundWithShadow, -backgroundWithShadowSize / 2,
-                    -backgroundWithShadowSize / 2, mBackgroundPaint);
-            canvas.translate(-offsetDiffX, -offsetDiffY);
-        }
-        if (isText) {
-            mBackgroundPaint.setColor(params.color);
-            canvas.drawBitmap(mBackgroundWithShadow, -backgroundWithShadowSize / 2, -backgroundWithShadowSize / 2, mBackgroundPaint);
-            canvas.drawText(count, 0, mTextHeight / 2, mTextPaint);
-        } else {
-            mCirclePaint.setColor(params.color);
-            canvas.drawCircle(0, 0, mCircleRadius, mCirclePaint);
-        }
+        mCirclePaint.setColor(params.color);
+        canvas.drawCircle(0, 0, mCircleRadius, mCirclePaint);
         canvas.restore();
     }
 
@@ -182,23 +135,11 @@ public class DotRenderer {
          */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public Rect iconBounds = new Rect();
-        /**
-         * The progress of the animation, from 0 to 1.
-         */
+        /** The progress of the animation, from 0 to 1. */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public float scale;
-        /**
-         * Whether the dot should align to the top left of the icon rather than the top right.
-         */
+        /** Whether the dot should align to the top left of the icon rather than the top right. */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public boolean leftAlign;
-
-        //CUSTOM BADGE
-        @ViewDebug.ExportedProperty(category = "notification dot")
-        public boolean showCount;
-        @ViewDebug.ExportedProperty(category = "notification dot")
-        public int count;
-        @ViewDebug.ExportedProperty(category = "notification dot")
-        public int notificationKeys;
     }
 }
