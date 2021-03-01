@@ -61,6 +61,7 @@ import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.util.Config;
 
 /**
  * Class for handling clicks on workspace and all-apps items
@@ -77,6 +78,8 @@ public class ItemClickHandler {
     public static final OnClickListener getInstance(String sourceContainer) {
         return v -> onClick(v, sourceContainer);
     }
+
+    public static final OnClickListener FOLDER_COVER_INSTANCE = ItemClickHandler::onClickFolderCover;
 
     private static void onClick(View v, String sourceContainer) {
         // Make sure that rogue clicks don't get through while allapps is launching, or after the
@@ -96,10 +99,30 @@ public class ItemClickHandler {
         } else if (tag instanceof AppInfo) {
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher,
                     sourceContainer == null ? CONTAINER_ALL_APPS : sourceContainer);
+            if (Utilities.getOmegaPrefs(v.getContext()).getSortMode() == Config.SORT_MOST_USED) {
+                Utilities.getOmegaPrefs(v.getContext()).updateSortApps();
+                Log.d(TAG, "Sort Mode Most Used");
+            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);
             }
+        }
+    }
+
+    private static void onClickFolderCover(View v) {
+        if (v.getWindowToken() == null) {
+            return;
+        }
+
+        Launcher launcher = Launcher.getLauncher(v.getContext());
+        if (!launcher.getWorkspace().isFinishedSwitchingState()) {
+            return;
+        }
+
+        Object tag = v.getTag();
+        if (tag instanceof FolderInfo) {
+            onClickAppShortcut(v, ((FolderInfo) tag).getCoverInfo(), launcher, null);
         }
     }
 

@@ -19,8 +19,11 @@ package com.android.launcher3.allapps;
 import android.content.Context;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
+import android.content.pm.PackageManager;
 import android.os.UserHandle;
 import android.os.UserManager;
+
+import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.LauncherAppState;
@@ -33,9 +36,16 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.allapps.AppColorComparator;
+import com.saggitt.omega.allapps.InstallTimeComparator;
+import com.saggitt.omega.allapps.MostUsedComparator;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
+import com.saggitt.omega.model.AppCountInfo;
+import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.DbHelper;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +53,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import static com.saggitt.omega.util.Config.SORT_AZ;
+import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
+import static com.saggitt.omega.util.Config.SORT_LAST_INSTALLED;
+import static com.saggitt.omega.util.Config.SORT_MOST_USED;
+import static com.saggitt.omega.util.Config.SORT_ZA;
 
 /**
  * The alphabetically sorted list of applications.
@@ -58,15 +74,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
     private final BaseDraggingActivity mLauncher;
 
-    public AlphabeticalAppsList(Context context, AllAppsStore appsStore, boolean isWork) {
-        mAllAppsStore = appsStore;
-        mLauncher = BaseDraggingActivity.fromContext(context);
-        mAppNameComparator = new AppInfoComparator(context);
-        mIsWork = isWork;
-        mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColumns;
-        mAllAppsStore.addUpdateListener(this);
-        prefs = Utilities.getOmegaPrefs(context);
-    }
+    private AppColorComparator mAppColorComparator;
 
     public void updateItemFilter(ItemInfoMatcher itemFilter) {
         this.mItemFilter = itemFilter;
@@ -90,6 +98,18 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private ArrayList<ComponentKey> mSearchResults;
     private AllAppsGridAdapter mAdapter;
     private AppInfoComparator mAppNameComparator;
+
+    public AlphabeticalAppsList(Context context, AllAppsStore appsStore, boolean isWork) {
+        mAllAppsStore = appsStore;
+        mLauncher = BaseDraggingActivity.fromContext(context);
+        mAppNameComparator = new AppInfoComparator(context);
+        mAppColorComparator = new AppColorComparator(context);
+        mIsWork = isWork;
+        mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColumns;
+        mAllAppsStore.addUpdateListener(this);
+        prefs = Utilities.getOmegaPrefs(context);
+    }
+
     private final int mNumAppsPerRow;
     private int mNumAppRowsInAdapter;
     private ItemInfoMatcher mItemFilter;
@@ -109,6 +129,46 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      */
     public List<AppInfo> getApps() {
         return mApps;
+    }
+
+    private void sortApps(int sortType) {
+        switch (sortType) {
+            //SORT BY NAME AZ
+            case SORT_AZ:
+                mApps.sort(mAppNameComparator);
+                break;
+
+            //SORT BY NAME ZA
+            case SORT_ZA:
+                mApps.sort((p2, p1) -> Collator
+                        .getInstance()
+                        .compare(p1.title, p2.title));
+                break;
+
+            //SORT BY LAST INSTALLED
+            case SORT_LAST_INSTALLED:
+                PackageManager pm = mLauncher.getApplicationContext().getPackageManager();
+                InstallTimeComparator installTimeComparator = new InstallTimeComparator(pm);
+                mApps.sort(installTimeComparator);
+                break;
+
+            //SORT BY MOST USED DESC
+            case SORT_MOST_USED:
+                DbHelper db = new DbHelper(mLauncher.getApplicationContext());
+                List<AppCountInfo> appsCounter = db.getAppsCount();
+                db.close();
+                MostUsedComparator mostUsedComparator = new MostUsedComparator(appsCounter);
+                mApps.sort(mostUsedComparator);
+                break;
+
+            case SORT_BY_COLOR:
+                mApps.sort(mAppColorComparator);
+                break;
+            default:
+                mApps.sort(mAppNameComparator);
+                break;
+
+        }
     }
 
     /**
@@ -201,7 +261,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             }
         }
 
-        Collections.sort(mApps, mAppNameComparator);
+        //Collections.sort(mApps, mAppNameComparator);
+        Context context = mLauncher.getApplicationContext();
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+        sortApps(prefs.getSortMode());
 
         // As a special case for some languages (currently only Simplified Chinese), we may need to
         // coalesce sections
