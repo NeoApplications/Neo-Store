@@ -39,6 +39,7 @@ import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.FloatingHeaderRow;
 import com.android.launcher3.allapps.FloatingHeaderView;
 import com.android.launcher3.anim.PropertySetter;
@@ -275,7 +276,7 @@ public class AppsDividerView extends View implements StateListener<LauncherState
     }
 
     private boolean shouldShowAllAppsLabel() {
-        return getAllAppsVisitedCount() < SHOW_ALL_APPS_LABEL_ON_ALL_APPS_VISITED_COUNT;
+        return Utilities.getOmegaPrefs(getContext()).getShowAllAppsLabel();
     }
 
     @Override
