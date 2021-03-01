@@ -22,6 +22,8 @@ import static android.view.MotionEvent.ACTION_POINTER_UP;
 import static android.view.MotionEvent.ACTION_UP;
 
 import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OPTIONS;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.IGNORE;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_WORKSPACE_LONGPRESS;
 
 import android.graphics.PointF;
@@ -37,11 +39,17 @@ import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.R;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.views.OptionsPopupView;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.blur.BlurWallpaperProvider;
+import com.saggitt.omega.gestures.GestureController;
+
+import java.util.ArrayList;
 
 /**
  * Helper class to handle touch on empty space in workspace and show options popup on long press
@@ -69,6 +77,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
     private int mLongPressState = STATE_CANCELLED;
 
     private final GestureDetector mGestureDetector;
+    private final GestureController mGestureController;
 
     public WorkspaceTouchListener(Launcher launcher, Workspace workspace) {
         mLauncher = launcher;
@@ -77,6 +86,8 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
         // likely to cause movement.
         mTouchSlop = 2 * ViewConfiguration.get(launcher).getScaledTouchSlop();
         mGestureDetector = new GestureDetector(workspace.getContext(), this);
+        mGestureController = ((OmegaLauncher) launcher).getGestureController();
+        mGestureController.attachDoubleTapListener(mGestureDetector);
     }
 
     @Override
@@ -103,6 +114,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
             if (handleLongPress) {
                 mLongPressState = STATE_REQUESTED;
                 mTouchDownPoint.set(ev.getX(), ev.getY());
+                mGestureController.setTouchDownPoint(mTouchDownPoint);
             }
 
             mWorkspace.onTouchEvent(ev);
@@ -175,10 +187,31 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
                 mWorkspace.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                         HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
                 mLauncher.getStatsLogManager().logger().log(LAUNCHER_WORKSPACE_LONGPRESS);
-                OptionsPopupView.showDefaultOptions(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y);
+
+                doLongPressAction();
             } else {
                 cancelLongPress();
             }
+        }
+    }
+
+    private void doLongPressAction() {
+        if (mLauncher.isInState(NORMAL)) {
+            mGestureController.onLongPress();
+        } else if (mLauncher.isInState(OPTIONS)) {
+            final int currentScreen = mLauncher.getWorkspace().getCurrentPage();
+            ArrayList<OptionsPopupView.OptionItem> options = new ArrayList<>();
+            options.add(new OptionsPopupView.OptionItem(
+                    R.string.remove_drop_target_label,
+                    R.drawable.ic_remove_no_shadow,
+                    IGNORE, v -> {
+                mLauncher.getWorkspace().removeScreen(currentScreen, true);
+                return true;
+            }));
+            if (BlurWallpaperProvider.Companion.isEnabled()) {
+                options.add(mWorkspace.getWorkspaceBlur().getOptionItem(currentScreen));
+            }
+            OptionsPopupView.show(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y, options);
         }
     }
 }

@@ -35,6 +35,7 @@ import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCH
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
@@ -618,6 +619,73 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             return true;
         }
         return false;
+    }
+
+    public void removeScreen(int index, final boolean animate) {
+        if (mLauncher.isWorkspaceLoading()) {
+            return;
+        }
+
+        int currentPage = getNextPage();
+        // Duration is zero since we don't want to animate here
+        // Reference: https://android.googlesource.com/platform/packages/apps/Launcher3/+/6e379fc78472b0ada5d35afe7188dfa1eaa5a836
+        snapToPage(index, 0);
+        int id = getScreenIdForPageIndex(index);
+        removeExtraScreen(id, false);
+
+        CellLayout cl = mWorkspaceScreens.get(id);
+        mWorkspaceScreens.remove(id);
+        mScreenOrder.removeValue(id);
+
+        boolean isInAccessibleDrag = mLauncher.getAccessibilityDelegate().isInAccessibleDrag();
+
+        boolean pageShift = indexOfChild(cl) < currentPage;
+
+        removeView(cl);
+
+        if (getChildCount() == 0) {
+            addExtraEmptyScreen();
+        }
+
+        if (pageShift) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    public void removeExtraScreen(int id, boolean stripEmptyScreens) {
+        removeExtraScreenDelayed(id, 0, stripEmptyScreens, null);
+    }
+
+    public void removeExtraScreenDelayed(int id,
+                                         int delay, boolean stripEmptyScreens, Runnable onComplete) {
+        if (mLauncher.isWorkspaceLoading()) {
+            // Don't strip empty screens if the workspace is still loading
+            return;
+        }
+
+        if (delay > 0) {
+            postDelayed(
+                    () -> removeExtraEmptyScreenDelayed(0, stripEmptyScreens, onComplete), delay);
+            return;
+        }
+
+        convertFinalScreenToEmptyScreenIfNecessary();
+        if (hasExtraEmptyScreen()) {
+            removeView(mWorkspaceScreens.get(id));
+            mWorkspaceScreens.remove(id);
+            mScreenOrder.removeValue(id);
+
+            // Update the page indicator to reflect the removed page.
+            showPageIndicatorAtCurrentScroll();
+        }
+
+        if (stripEmptyScreens) {
+            stripEmptyScreens();
+        }
+
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 
     private void convertFinalScreenToEmptyScreenIfNecessary() {

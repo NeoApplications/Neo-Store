@@ -54,6 +54,7 @@ import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.GridOccupancy;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSparseArrayMap;
+import com.saggitt.omega.OmegaPreferences;
 
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
@@ -100,6 +101,8 @@ public class LoaderCursor extends CursorWrapper {
     public int itemType;
     public int restoreFlag;
 
+    private final OmegaPreferences prefs;
+
     public LoaderCursor(Cursor cursor, Uri contentUri, LauncherAppState app,
                         UserManagerState userManagerState) {
         super(cursor);
@@ -126,6 +129,8 @@ public class LoaderCursor extends CursorWrapper {
         profileIdIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.PROFILE_ID);
         restoredIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.RESTORED);
         intentIndex = getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
+
+        prefs = Utilities.getOmegaPrefs(mContext);
     }
 
     @Override
@@ -460,7 +465,7 @@ public class LoaderCursor extends CursorWrapper {
                     + " into cell (" + containerIndex + "-" + item.screenId + ":"
                     + item.cellX + "," + item.cellX + "," + item.spanX + "," + item.spanY
                     + ") already occupied");
-            return false;
+            return prefs.getAllowOverlap();
         }
     }
 }

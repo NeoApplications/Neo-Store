@@ -28,8 +28,12 @@ import android.view.ViewGroup;
 import com.android.launcher3.CellLayout.ContainerType;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
+import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.settings.SettingsActivity;
 
-public class ShortcutAndWidgetContainer extends ViewGroup {
+import org.jetbrains.annotations.NotNull;
+
+public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPreferences.OnPreferenceChangeListener {
     static final String TAG = "ShortcutAndWidgetContainer";
 
     // These are temporary variables to prevent having to allocate a new object just to
@@ -48,11 +52,33 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
     private ActivityContext mActivity;
     private boolean mInvertIfRtl = false;
 
+    private OmegaPreferences mPrefs;
+
     public ShortcutAndWidgetContainer(Context context, @ContainerType int containerType) {
         super(context);
         mActivity = ActivityContext.lookupContext(context);
         mWallpaperManager = WallpaperManager.getInstance(context);
         mContainerType = containerType;
+        mPrefs = Utilities.getOmegaPrefs(context);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mPrefs.addOnPreferenceChangeListener(SettingsActivity.ALLOW_OVERLAP_PREF, this);
+    }
+
+    @Override
+    public void onValueChanged(@NotNull String key, @NotNull OmegaPreferences prefs, boolean force) {
+        setClipChildren(!prefs.getAllowOverlap());
+        setClipToPadding(!prefs.getAllowOverlap());
+        setClipToOutline(!prefs.getAllowOverlap());
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mPrefs.removeOnPreferenceChangeListener(SettingsActivity.ALLOW_OVERLAP_PREF, this);
     }
 
     public void setCellDimensions(int cellWidth, int cellHeight, int countX, int countY) {
