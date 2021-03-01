@@ -135,11 +135,22 @@ public class DotRenderer {
          */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public Rect iconBounds = new Rect();
-        /** The progress of the animation, from 0 to 1. */
+        /**
+         * The progress of the animation, from 0 to 1.
+         */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public float scale;
-        /** Whether the dot should align to the top left of the icon rather than the top right. */
+        /**
+         * Whether the dot should align to the top left of the icon rather than the top right.
+         */
         @ViewDebug.ExportedProperty(category = "notification dot")
         public boolean leftAlign;
+        //CUSTOM BADGE
+        @ViewDebug.ExportedProperty(category = "notification dot")
+        public boolean showCount;
+        @ViewDebug.ExportedProperty(category = "notification dot")
+        public int count;
+        @ViewDebug.ExportedProperty(category = "notification dot")
+        public int notificationKeys;
     }
 }

@@ -24,6 +24,13 @@ import com.android.launcher3.icons.BitmapInfo;
 public abstract class ItemInfoWithIcon extends ItemInfo {
 
     public static final String TAG = "ItemInfoDebug";
+
+    /**
+     * Dominant color in the .
+     */
+    public int iconColor;
+
+
     /**
      * Indicates that the icon is disabled due to safe mode restrictions.
      */

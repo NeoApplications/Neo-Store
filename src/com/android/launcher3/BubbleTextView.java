@@ -63,6 +63,8 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
+import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.text.NumberFormat;
 
@@ -113,7 +115,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     private final ActivityContext mActivity;
     private Drawable mIcon;
-    private final int mIconSize;
+    private int mIconSize;
     private float mScaleForReorderBounce = 1f;
 
     private final CheckLongPressHelper mLongPressHelper;
@@ -145,6 +147,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     private IconLoadRequest mIconLoadRequest;
 
+    private boolean mHideText;
+
     public BubbleTextView(Context context) {
         this(context, null, 0);
     }
@@ -164,15 +168,19 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
         mDisplay = a.getInteger(R.styleable.BubbleTextView_iconDisplay, DISPLAY_WORKSPACE);
         final int defaultIconSize;
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
         if (mDisplay == DISPLAY_WORKSPACE) {
+            mHideText = prefs.getHideAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             defaultIconSize = grid.iconSizePx;
         } else if (mDisplay == DISPLAY_ALL_APPS) {
+            mHideText = prefs.getHideAllAppsAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
             setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
             defaultIconSize = grid.allAppsIconSizePx;
         } else if (mDisplay == DISPLAY_FOLDER) {
+            mHideText = prefs.getHideAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.folderChildTextSizePx);
             setCompoundDrawablePadding(grid.folderChildDrawablePaddingPx);
             defaultIconSize = grid.folderChildIconSizePx;
@@ -287,13 +295,28 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private void applyIconAndLabel(ItemInfoWithIcon info) {
         FastBitmapDrawable iconDrawable = newIcon(getContext(), info);
         mDotParams.color = IconPalette.getMutedColor(info.bitmap.color, 0.54f);
-
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
+        if (prefs.getNotificationCount()) {
+            mDotParams.color = prefs.getNotificationBackground();
+        } else {
+            mDotParams.color = IconPalette.getMutedColor(info.iconColor, 0.54f);
+        }
         setIcon(iconDrawable);
-        setText(info.title);
+        if (!isTextHidden())
+            setText(getTitle(info));
         if (info.contentDescription != null) {
             setContentDescription(info.isDisabled()
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
                     : info.contentDescription);
+        }
+    }
+
+    private CharSequence getTitle(ItemInfo info) {
+        CustomInfoProvider<ItemInfo> customInfoProvider = CustomInfoProvider.Companion.forItem(getContext(), info);
+        if (customInfoProvider != null) {
+            return customInfoProvider.getTitle(info);
+        } else {
+            return info.title;
         }
     }
 
@@ -411,6 +434,16 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             final int scrollX = getScrollX();
             final int scrollY = getScrollY();
             canvas.translate(scrollX, scrollY);
+            if (mDotInfo != null) {
+                OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
+                mDotParams.count = mDotInfo.getNotificationCount();
+                mDotParams.notificationKeys = mDotInfo.getNotificationKeys().size();
+                mDotParams.showCount = prefs.getNotificationCount();
+                if (prefs.getNotificationCount()) {
+                    mDotParams.showCount = true;
+                    mDotParams.color = prefs.getNotificationBackground();
+                }
+            }
             mDotRenderer.draw(canvas, mDotParams);
             canvas.translate(-scrollX, -scrollY);
         }
@@ -764,5 +797,18 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         if (mIcon instanceof FastBitmapDrawable) {
             ((FastBitmapDrawable) mIcon).setScale(1f);
         }
+    }
+
+    public void setIconSize(int iconSize) {
+        mIconSize = iconSize;
+        setIcon(mIcon);
+    }
+
+    protected boolean isTextHidden() {
+        return mHideText;
+    }
+
+    public int getDotColor() {
+        return mDotParams.color;
     }
 }
