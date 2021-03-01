@@ -944,7 +944,9 @@ public final class Utilities {
         int userDelimiterIndex = componentKeyStr.indexOf("#");
         if (userDelimiterIndex != -1) {
             String componentStr = componentKeyStr.substring(0, userDelimiterIndex);
-            long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
+            Log.e("MakeComponents", componentKeyStr);
+            //long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
+            long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 1, componentKeyStr.length()));
             componentName = ComponentName.unflattenFromString(componentStr);
             user = Utilities.notNullOrDefault(UserCache.INSTANCE.get(context)
                     .getUserForSerialNumber(componentUser), Process.myUserHandle());

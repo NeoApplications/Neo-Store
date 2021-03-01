@@ -127,6 +127,7 @@ public class InvariantDeviceProfile {
      * Number of icons inside the hotseat area.
      */
     public int numHotseatIcons;
+    public int numHotseatIconsOriginal;
 
     /**
      * Number of columns in the all apps list.
@@ -454,6 +455,11 @@ public class InvariantDeviceProfile {
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
         numHotseatIcons = closestProfile.numHotseatIcons;
+
+        numRowsOriginal = closestProfile.numRows;
+        numColumnsOriginal = closestProfile.numColumns;
+        numHotseatIconsOriginal = closestProfile.numHotseatIcons;
+
         dbFile = closestProfile.dbFile;
         defaultLayoutId = closestProfile.defaultLayoutId;
         demoModeLayoutId = closestProfile.demoModeLayoutId;
@@ -592,6 +598,14 @@ public class InvariantDeviceProfile {
         public final int numRows;
         public final int numColumns;
 
+        public final int numColsDrawer;
+        public final int numPredictions;
+
+        public float workspacePaddingLeftScale;
+        public float workspacePaddingRightScale;
+        public float workspacePaddingTopScale;
+        public float workspacePaddingBottomScale;
+
         private final int numFolderRows;
         private final int numFolderColumns;
 
@@ -611,6 +625,8 @@ public class InvariantDeviceProfile {
             name = a.getString(R.styleable.GridDisplayOption_name);
             numRows = a.getInt(R.styleable.GridDisplayOption_numRows, 0);
             numColumns = a.getInt(R.styleable.GridDisplayOption_numColumns, 0);
+            numColsDrawer = numColumns;
+            numPredictions = numColsDrawer;
 
             dbFile = a.getString(R.styleable.GridDisplayOption_dbFile);
             defaultLayoutId = a.getResourceId(
@@ -630,6 +646,63 @@ public class InvariantDeviceProfile {
 
             extraAttrs = Themes.createValueMap(context, attrs,
                     IntArray.wrap(R.styleable.GridDisplayOption));
+        }
+
+        private GridOption(GridOverrides override) {
+            GridOption option = override.originalGrid;
+
+            name = option.name;
+            numRows = override.numRows;
+            numColumns = override.numColumns;
+            numHotseatIcons = override.numHotseatIcons;
+            numColsDrawer = override.numColsDrawer;
+            numPredictions = override.numPredictions;
+
+            workspacePaddingLeftScale = override.workspacePaddingLeftScale;
+            workspacePaddingRightScale = override.workspacePaddingRightScale;
+            workspacePaddingTopScale = override.workspacePaddingTopScale;
+            workspacePaddingBottomScale = override.workspacePaddingBottomScale;
+
+            dbFile = option.dbFile;
+            numAllAppsColumns = override.numColsDrawer;
+
+            defaultLayoutId = option.defaultLayoutId;
+            demoModeLayoutId = option.demoModeLayoutId;
+            numFolderRows = option.numFolderRows;
+            numFolderColumns = option.numFolderColumns;
+
+            extraAttrs = option.extraAttrs;
+        }
+    }
+
+    public static final class GridOverrides {
+
+        public int numRows;
+        public int numColumns;
+        public int numHotseatIcons;
+        public int numColsDrawer;
+        public int numPredictions;
+
+        public float workspacePaddingLeftScale;
+        public float workspacePaddingRightScale;
+        public float workspacePaddingTopScale;
+        public float workspacePaddingBottomScale;
+
+        private GridOption originalGrid;
+
+        private GridOverrides(GridOption option) {
+            numRows = option.numRows;
+            numColumns = option.numColumns;
+            numHotseatIcons = option.numHotseatIcons;
+            numColsDrawer = option.numColsDrawer;
+            numPredictions = option.numPredictions;
+
+            workspacePaddingLeftScale = option.workspacePaddingLeftScale;
+            workspacePaddingRightScale = option.workspacePaddingRightScale;
+            workspacePaddingTopScale = option.workspacePaddingTopScale;
+            workspacePaddingBottomScale = option.workspacePaddingBottomScale;
+
+            originalGrid = option;
         }
     }
 

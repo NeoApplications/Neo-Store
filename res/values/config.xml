@@ -106,6 +106,7 @@
     <item type="id" name="action_deep_shortcuts" />
     <item type="id" name="action_shortcuts_and_notifications" />
     <item type="id" name="action_dismiss_notification" />
+    <item name="action_customize" type="id" />
     <item type="id" name="action_remote_action_shortcut" />
     <item name="action_dismiss_prediction" type="id" />
     <item name="action_pin_prediction" type="id" />

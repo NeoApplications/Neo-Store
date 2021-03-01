@@ -4,6 +4,7 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 import static android.appwidget.AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE;
 
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
+import static com.android.launcher3.accessibility.LauncherAccessibilityDelegate.CUSTOMIZE;
 import static com.android.launcher3.accessibility.LauncherAccessibilityDelegate.DISMISS_PREDICTION;
 import static com.android.launcher3.accessibility.LauncherAccessibilityDelegate.RECONFIGURE;
 import static com.android.launcher3.accessibility.LauncherAccessibilityDelegate.UNINSTALL;
@@ -119,6 +120,10 @@ public class SecondaryDropTarget extends ButtonDropTarget implements OnAlarmList
             mHoverColor = Themes.getColorAccent(getContext());
             setDrawable(R.drawable.ic_block_shadow);
             updateText(R.string.dismiss_prediction_label);
+        } else if (action == CUSTOMIZE) {
+            mHoverColor = Themes.getColorAccent(getContext());
+            setDrawable(R.drawable.ic_smartspace_preferences);
+            updateText(R.string.customize);
         } else if (action == RECONFIGURE) {
             mHoverColor = Themes.getColorAccent(getContext());
             setDrawable(R.drawable.ic_setup_shadow);

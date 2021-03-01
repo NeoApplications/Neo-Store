@@ -23,10 +23,7 @@ import android.bluetooth.BluetoothHeadset
 import android.bluetooth.BluetoothProfile
 import android.content.*
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Process
-import android.os.SystemClock
+import android.os.*
 import android.text.TextUtils
 import com.android.launcher3.AppFilter
 import com.android.launcher3.Utilities
@@ -158,7 +155,6 @@ open class OmegaAppPredictor(
     }
 
     override fun destroy() {
-
     }
 
     private fun updatePredictions() {
@@ -269,12 +265,6 @@ open class OmegaAppPredictor(
     }
 
     companion object {
-
-        const val KEY_ID = "id"
-        const val KEY_EXPIRATION = "expiration"
-        const val KEY_PUBLISHER = "publisher"
-        const val KEY_BADGE = "badge"
-        const val KEY_POSITION = "position"
 
         // TODO: Increase to two?
         const val MAX_HEADPHONE_SUGGESTIONS = 1
