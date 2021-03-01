@@ -37,6 +37,7 @@ import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.accessibility.LauncherAccessibilityDelegate;
 import com.android.launcher3.graphics.IconPalette;
 import com.android.launcher3.hybridhotseat.HotseatPredictionController;
@@ -174,8 +175,10 @@ public class PredictedAppIcon extends DoubleShadowBubbleTextView implements
             if (launcher == null || launcher.getHotseatPredictionController() == null) {
                 return false;
             }
-            HotseatPredictionController controller = launcher.getHotseatPredictionController();
-            controller.pinPrediction(info);
+            if (Utilities.ATLEAST_R) {
+                HotseatPredictionController controller = launcher.getHotseatPredictionController();
+                controller.pinPrediction(info);
+            }
             return true;
         }
         return false;

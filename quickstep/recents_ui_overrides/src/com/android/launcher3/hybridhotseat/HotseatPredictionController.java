@@ -74,6 +74,9 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.OnboardingPrefs;
 import com.android.launcher3.views.ArrowTipView;
 import com.android.launcher3.views.Snackbar;
+import com.saggitt.omega.predictions.AppPredictorCompat;
+import com.saggitt.omega.predictions.AppTargetCompat;
+import com.saggitt.omega.predictions.AppTargetEventCompat;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -120,7 +123,7 @@ public class HotseatPredictionController implements DragController.DragListener,
     };
     private List<ComponentKeyMapper> mComponentKeyMappers = new ArrayList<>();
     private DynamicItemCache mDynamicItemCache;
-    private AppPredictor mAppPredictor;
+    private AppPredictorCompat mAppPredictor;
     private AllAppsStore mAllAppsStore;
     private AnimatorSet mIconRemoveAnimators;
     private boolean mUIUpdatePaused = false;
@@ -330,10 +333,10 @@ public class HotseatPredictionController implements DragController.DragListener,
      * Creates App Predictor with all the current apps pinned on the hotseat
      */
     public void createPredictor() {
-        AppPredictionManager apm = mLauncher.getSystemService(AppPredictionManager.class);
+        /*AppPredictionManager apm = mLauncher.getSystemService(AppPredictionManager.class);
         if (apm == null) {
             return;
-        }
+        }*/
         if (mAppPredictor != null) {
             mAppPredictor.destroy();
             mAppPredictor = null;
@@ -343,7 +346,7 @@ public class HotseatPredictionController implements DragController.DragListener,
 
         mPredictionModel.createBundle(bundle -> {
             if (mIsDestroyed) return;
-            mAppPredictor = apm.createAppPredictionSession(
+            /*mAppPredictor = apm.createAppPredictionSession(
                     new AppPredictionContext.Builder(mLauncher)
                             .setUiSurface(PREDICTION_CLIENT)
                             .setPredictedTargetCount(mHotSeatItemsCount)
@@ -356,7 +359,7 @@ public class HotseatPredictionController implements DragController.DragListener,
                             controllerRef.get().setPredictedApps(list);
                         }
                     });
-            mAppPredictor.requestPredictionUpdate();
+            mAppPredictor.requestPredictionUpdate();*/
         });
         setPauseUIUpdate(false);
     }
@@ -384,14 +387,14 @@ public class HotseatPredictionController implements DragController.DragListener,
         bindItems(items, false, null);
     }
 
-    private void setPredictedApps(List<AppTarget> appTargets) {
+    private void setPredictedApps(List<AppTargetCompat> appTargets) {
         mComponentKeyMappers.clear();
         if (appTargets.isEmpty()) {
             mRestoreHelper.restoreBackup();
         }
         StringBuilder predictionLog = new StringBuilder("predictedApps: [\n");
         ArrayList<ComponentKey> componentKeys = new ArrayList<>();
-        for (AppTarget appTarget : appTargets) {
+        for (AppTargetCompat appTarget : appTargets) {
             ComponentKey key;
             if (appTarget.getShortcutInfo() != null) {
                 key = ShortcutKey.fromInfo(appTarget.getShortcutInfo());
@@ -436,10 +439,10 @@ public class HotseatPredictionController implements DragController.DragListener,
                 workspaceItemInfo.cellX, workspaceItemInfo.cellY);
         ObjectAnimator.ofFloat(icon, SCALE_PROPERTY, 1, 0.8f, 1).start();
         icon.pin(workspaceItemInfo);
-        AppTarget appTarget = mPredictionModel.getAppTargetFromInfo(workspaceItemInfo);
+        AppTargetCompat appTarget = mPredictionModel.getAppTargetFromInfo(workspaceItemInfo);
         if (appTarget != null) {
             notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(appTarget,
-                    AppTargetEvent.ACTION_PIN, workspaceItemInfo));
+                    AppTargetEventCompat.ACTION_PIN, workspaceItemInfo));
         }
     }
 
@@ -519,7 +522,7 @@ public class HotseatPredictionController implements DragController.DragListener,
         mIconRemoveAnimators.start();
     }
 
-    private void notifyItemAction(AppTargetEvent event) {
+    private void notifyItemAction(AppTargetEventCompat event) {
         if (mAppPredictor != null) {
             mAppPredictor.notifyAppTargetEvent(event);
         }
@@ -540,17 +543,17 @@ public class HotseatPredictionController implements DragController.DragListener,
      * Unpins pinned app when it's converted into a folder
      */
     public void folderCreatedFromWorkspaceItem(ItemInfo itemInfo, FolderInfo folderInfo) {
-        AppTarget folderTarget = mPredictionModel.getAppTargetFromInfo(folderInfo);
-        AppTarget itemTarget = mPredictionModel.getAppTargetFromInfo(itemInfo);
+        AppTargetCompat folderTarget = mPredictionModel.getAppTargetFromInfo(folderInfo);
+        AppTargetCompat itemTarget = mPredictionModel.getAppTargetFromInfo(itemInfo);
         if (folderTarget != null && HotseatPredictionModel.isTrackedForPrediction(folderInfo)) {
             notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(folderTarget,
-                    AppTargetEvent.ACTION_PIN, folderInfo));
+                    AppTargetEventCompat.ACTION_PIN, folderInfo));
         }
         // using folder info with isTrackedForPrediction as itemInfo.container is already changed
         // to folder by this point
         if (itemTarget != null && HotseatPredictionModel.isTrackedForPrediction(folderInfo)) {
             notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(itemTarget,
-                    AppTargetEvent.ACTION_UNPIN, folderInfo
+                    AppTargetEventCompat.ACTION_UNPIN, folderInfo
             ));
         }
     }
@@ -559,15 +562,15 @@ public class HotseatPredictionController implements DragController.DragListener,
      * Pins workspace item created when all folder items are removed but one
      */
     public void folderConvertedToWorkspaceItem(ItemInfo itemInfo, FolderInfo folderInfo) {
-        AppTarget folderTarget = mPredictionModel.getAppTargetFromInfo(folderInfo);
-        AppTarget itemTarget = mPredictionModel.getAppTargetFromInfo(itemInfo);
+        AppTargetCompat folderTarget = mPredictionModel.getAppTargetFromInfo(folderInfo);
+        AppTargetCompat itemTarget = mPredictionModel.getAppTargetFromInfo(itemInfo);
         if (folderTarget != null && HotseatPredictionModel.isTrackedForPrediction(folderInfo)) {
             notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(folderTarget,
-                    AppTargetEvent.ACTION_UNPIN, folderInfo));
+                    AppTargetEventCompat.ACTION_UNPIN, folderInfo));
         }
         if (itemTarget != null && HotseatPredictionModel.isTrackedForPrediction(itemInfo)) {
             notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(itemTarget,
-                    AppTargetEvent.ACTION_PIN, itemInfo));
+                    AppTargetEventCompat.ACTION_PIN, itemInfo));
         }
     }
 
@@ -579,17 +582,17 @@ public class HotseatPredictionController implements DragController.DragListener,
 
         ItemInfo dragInfo = mDragObject.dragInfo;
         if (mDragObject.isMoved()) {
-            AppTarget appTarget = mPredictionModel.getAppTargetFromInfo(dragInfo);
+            AppTargetCompat appTarget = mPredictionModel.getAppTargetFromInfo(dragInfo);
             //always send pin event first to prevent AiAi from predicting an item moved within
             // the same page
             if (appTarget != null && HotseatPredictionModel.isTrackedForPrediction(dragInfo)) {
                 notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(appTarget,
-                        AppTargetEvent.ACTION_PIN, dragInfo));
+                        AppTargetEventCompat.ACTION_PIN, dragInfo));
             }
             if (appTarget != null && HotseatPredictionModel.isTrackedForPrediction(
                     mDragObject.originalDragInfo)) {
                 notifyItemAction(mPredictionModel.wrapAppTargetWithLocation(appTarget,
-                        AppTargetEvent.ACTION_UNPIN, mDragObject.originalDragInfo));
+                        AppTargetEventCompat.ACTION_UNPIN, mDragObject.originalDragInfo));
             }
         }
         mDragObject = null;

@@ -17,9 +17,6 @@ package com.android.launcher3.hybridhotseat;
 
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
-import android.app.prediction.AppTarget;
-import android.app.prediction.AppTargetEvent;
-import android.app.prediction.AppTargetId;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
@@ -35,6 +32,9 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.shortcuts.ShortcutKey;
+import com.saggitt.omega.predictions.AppTargetCompat;
+import com.saggitt.omega.predictions.AppTargetEventCompat;
+import com.saggitt.omega.predictions.AppTargetIdCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -72,17 +72,17 @@ public class HotseatPredictionModel extends PredictionModel {
             @Override
             public void execute(LauncherAppState app, BgDataModel dataModel, AllAppsList apps) {
                 Bundle bundle = new Bundle();
-                ArrayList<AppTargetEvent> events = new ArrayList<>();
+                ArrayList<AppTargetEventCompat> events = new ArrayList<>();
                 ArrayList<ItemInfo> workspaceItems = new ArrayList<>(dataModel.workspaceItems);
                 workspaceItems.addAll(dataModel.appWidgets);
                 for (ItemInfo item : workspaceItems) {
-                    AppTarget target = getAppTargetFromInfo(item);
+                    AppTargetCompat target = getAppTargetFromInfo(item);
                     if (target != null && !isTrackedForPrediction(item)) continue;
-                    events.add(wrapAppTargetWithLocation(target, AppTargetEvent.ACTION_PIN, item));
+                    events.add(wrapAppTargetWithLocation(target, AppTargetEventCompat.ACTION_PIN, item));
                 }
-                ArrayList<AppTarget> currentTargets = new ArrayList<>();
+                ArrayList<AppTargetCompat> currentTargets = new ArrayList<>();
                 for (ItemInfo itemInfo : dataModel.cachedPredictedItems) {
-                    AppTarget target = getAppTargetFromInfo(itemInfo);
+                    AppTargetCompat target = getAppTargetFromInfo(itemInfo);
                     if (target != null) currentTargets.add(target);
                 }
                 bundle.putParcelableArrayList(BUNDLE_KEY_PIN_EVENTS, events);
@@ -93,44 +93,44 @@ public class HotseatPredictionModel extends PredictionModel {
     }
 
     /**
-     * Creates and returns for {@link AppTarget} object given an {@link ItemInfo}. Returns null
+     * Creates and returns for {@link AppTargetCompat} object given an {@link ItemInfo}. Returns null
      * if item is not supported prediction
      */
-    public AppTarget getAppTargetFromInfo(ItemInfo info) {
+    public AppTargetCompat getAppTargetFromInfo(ItemInfo info) {
         if (info == null) return null;
         if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET
                 && info instanceof LauncherAppWidgetInfo
                 && ((LauncherAppWidgetInfo) info).providerName != null) {
             ComponentName cn = ((LauncherAppWidgetInfo) info).providerName;
-            return new AppTarget.Builder(new AppTargetId("widget:" + cn.getPackageName()),
+            return new AppTargetCompat.Builder(new AppTargetIdCompat("widget:" + cn.getPackageName()),
                     cn.getPackageName(), info.user).setClassName(cn.getClassName()).build();
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
                 && info.getTargetComponent() != null) {
             ComponentName cn = info.getTargetComponent();
-            return new AppTarget.Builder(new AppTargetId("app:" + cn.getPackageName()),
+            return new AppTargetCompat.Builder(new AppTargetIdCompat("app:" + cn.getPackageName()),
                     cn.getPackageName(), info.user).setClassName(cn.getClassName()).build();
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
                 && info instanceof WorkspaceItemInfo) {
             ShortcutKey shortcutKey = ShortcutKey.fromItemInfo(info);
             //TODO: switch to using full shortcut info
-            return new AppTarget.Builder(new AppTargetId("shortcut:" + shortcutKey.getId()),
+            return new AppTargetCompat.Builder(new AppTargetIdCompat("shortcut:" + shortcutKey.getId()),
                     shortcutKey.componentName.getPackageName(), shortcutKey.user).build();
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
-            return new AppTarget.Builder(new AppTargetId("folder:" + info.id),
+            return new AppTargetCompat.Builder(new AppTargetIdCompat("folder:" + info.id),
                     mContext.getPackageName(), info.user).build();
         }
         return null;
     }
 
     /**
-     * Creates and returns {@link AppTargetEvent} from an {@link AppTarget}, action, and item
+     * Creates and returns {@link AppTargetEventCompat} from an {@link AppTargetCompat}, action, and item
      * location using {@link ItemInfo}
      */
-    public AppTargetEvent wrapAppTargetWithLocation(AppTarget target, int action, ItemInfo info) {
+    public AppTargetEventCompat wrapAppTargetWithLocation(AppTargetCompat target, int action, ItemInfo info) {
         String location = String.format(Locale.ENGLISH, "%s/%d/[%d,%d]/[%d,%d]",
                 info.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT
                         ? APP_LOCATION_HOTSEAT : APP_LOCATION_WORKSPACE,
                 info.screenId, info.cellX, info.cellY, info.spanX, info.spanY);
-        return new AppTargetEvent.Builder(target, action).setLaunchLocation(location).build();
+        return new AppTargetEventCompat.Builder(target, action).setLaunchLocation(location).build();
     }
 }

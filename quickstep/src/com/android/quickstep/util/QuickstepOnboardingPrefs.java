@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 
 import com.android.launcher3.BaseQuickstepLauncher;
 import com.android.launcher3.LauncherState;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.hybridhotseat.HotseatPredictionController;
@@ -113,11 +114,14 @@ public class QuickstepOnboardingPrefs extends OnboardingPrefs<BaseQuickstepLaunc
 
                 @Override
                 public void onStateTransitionComplete(LauncherState finalState) {
-                    HotseatPredictionController client = mLauncher.getHotseatPredictionController();
-                    if (mFromAllApps && finalState == NORMAL && client.hasPredictions()) {
-                        if (incrementEventCount(HOTSEAT_DISCOVERY_TIP_COUNT)) {
-                            client.showEdu();
-                            stateManager.removeStateListener(this);
+                    if (Utilities.ATLEAST_R) {
+
+                        HotseatPredictionController client = mLauncher.getHotseatPredictionController();
+                        if (mFromAllApps && finalState == NORMAL && client.hasPredictions()) {
+                            if (incrementEventCount(HOTSEAT_DISCOVERY_TIP_COUNT)) {
+                                client.showEdu();
+                                stateManager.removeStateListener(this);
+                            }
                         }
                     }
                 }

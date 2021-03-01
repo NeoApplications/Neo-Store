@@ -97,6 +97,8 @@ public abstract class LauncherState implements BaseState<LauncherState> {
                 }
             };
 
+    private static final LauncherState[] sAllStates = new LauncherState[10];
+
     /**
      * Various Launcher states arranged in the increasing order of UI layers
      */
@@ -122,7 +124,6 @@ public abstract class LauncherState implements BaseState<LauncherState> {
     public static final LauncherState OVERVIEW = new OverviewState(OVERVIEW_STATE_ORDINAL);
     public static final LauncherState QUICK_SWITCH = OverviewState.newSwitchState(QUICK_SWITCH_STATE_ORDINAL);
     public static final LauncherState BACKGROUND_APP = OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
-    private static final LauncherState[] sAllStates = new LauncherState[10];
     public static final LauncherState OPTIONS = new OptionsState(OPTIONS_STATE_ORDINAL);
 
     public final int ordinal;

@@ -54,6 +54,7 @@ public final class AppTargetEventCompat implements Parcelable {
      * Event type constant indicating an app target has been pinned.
      */
     public static final int ACTION_PIN = 3;
+    public static final int ACTION_UNPIN = 4;
 
     private final AppTargetCompat mTarget;
     private final String mLocation;

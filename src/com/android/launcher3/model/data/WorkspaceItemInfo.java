@@ -189,7 +189,6 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         status |= FLAG_INSTALL_SESSION_ACTIVE;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public void updateFromDeepShortcutInfo(ShortcutInfo shortcutInfo, Context context) {
         // {@link ShortcutInfo#getActivity} can change during an update. Recreate the intent
         intent = ShortcutKey.makeIntent(shortcutInfo);
@@ -207,9 +206,9 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         }
         disabledMessage = shortcutInfo.getDisabledMessage();
 
-        Person[] persons = ApiWrapper.getPersons(shortcutInfo);
+        /*Person[] persons = ApiWrapper.getPersons(shortcutInfo);
         personKeys = persons.length == 0 ? Utilities.EMPTY_STRING_ARRAY
-                : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);
+                : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);*/
     }
 
     /**
