@@ -138,8 +138,8 @@ public interface TaskShortcutFactory {
             InstantAppResolver.newInstance(activity).isInstantApp(activity,
                     view.getTask().getTopComponent().getPackageName())
                     ? new SystemShortcut.Install(activity, view.getItemInfo()) : null;
-    TaskShortcutFactory WELLBEING = (activity, view) ->
-            WellbeingModel.SHORTCUT_FACTORY.getShortcut(activity, view.getItemInfo());
+    //TaskShortcutFactory WELLBEING = (activity, view) ->
+    //        WellbeingModel.SHORTCUT_FACTORY.getShortcut(activity, view.getItemInfo());
     TaskShortcutFactory SCREENSHOT = (activity, tv) -> {
         if (ENABLE_OVERVIEW_ACTIONS.get()) {
             return tv.getThumbnail().getTaskOverlay()

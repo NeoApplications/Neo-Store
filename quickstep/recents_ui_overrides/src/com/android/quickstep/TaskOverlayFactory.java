@@ -63,7 +63,7 @@ public class TaskOverlayFactory implements ResourceBasedOverride {
             TaskShortcutFactory.PIN,
             TaskShortcutFactory.INSTALL,
             TaskShortcutFactory.FREE_FORM,
-            TaskShortcutFactory.WELLBEING
+            //TaskShortcutFactory.WELLBEING
     };
 
     public static List<SystemShortcut> getEnabledShortcuts(TaskView taskView) {

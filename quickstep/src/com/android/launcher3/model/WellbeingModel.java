@@ -76,11 +76,12 @@ public final class WellbeingModel {
     /**
      * Shortcut factory for generating wellbeing action
      */
-    public static final SystemShortcut.Factory SHORTCUT_FACTORY =
+    /*public static final SystemShortcut.Factory SHORTCUT_FACTORY =
             (activity, info) -> (info.getTargetComponent() == null) ? null : INSTANCE.get(activity)
                     .getShortcutForApp(
                             info.getTargetComponent().getPackageName(), info.user.getIdentifier(),
-                            activity, info);
+                            activity, info);*/
+
     private static final int MSG_PACKAGE_ADDED = 1;
     private static final int MSG_PACKAGE_REMOVED = 2;
     private static final int MSG_FULL_REFRESH = 3;

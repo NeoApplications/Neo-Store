@@ -305,14 +305,15 @@ public abstract class BaseQuickstepLauncher extends Launcher
         // Instantiate and initialize WellbeingModel now that its loading won't interfere with
         // populating workspace.
         // TODO: Find a better place for this
-        WellbeingModel.INSTANCE.get(this);
+        //if(Utilities.ATLEAST_R)
+        //    WellbeingModel.INSTANCE.get(this);
     }
 
-    @Override
+    /*@Override
     public Stream<SystemShortcut.Factory> getSupportedShortcuts() {
         return Stream.concat(super.getSupportedShortcuts(),
                 Stream.of(WellbeingModel.SHORTCUT_FACTORY));
-    }
+    }*/
 
     public ShelfPeekAnim getShelfPeekAnim() {
         return mShelfPeekAnim;
