@@ -454,10 +454,12 @@ public class InvariantDeviceProfile {
         GridOption closestProfile = displayOption.grid;
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
+        numColsDrawer = closestProfile.numColsDrawer;
         numHotseatIcons = closestProfile.numHotseatIcons;
 
         numRowsOriginal = closestProfile.numRows;
         numColumnsOriginal = closestProfile.numColumns;
+        numColsDrawerOriginal = closestProfile.numColsDrawer;
         numHotseatIconsOriginal = closestProfile.numHotseatIcons;
 
         dbFile = closestProfile.dbFile;
