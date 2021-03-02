@@ -30,6 +30,7 @@
         android:key="opa_enabled"
         android:persistent="true"
         android:title="@string/title__search_show_assistant"
+        app:controllerClass=".SearchController"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
@@ -39,12 +40,14 @@
         android:persistent="true"
         android:summary="@string/summary__search_show_as_assistant_summary"
         android:title="@string/title__search_action_assistant"
+        app:controllerClass=".SearchController"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_bubbleSearchStyle"
         android:title="@string/title__search_bubble_searchbar"
+        app:controllerClass=".SearchController"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.AutoModeSeekbarPreference

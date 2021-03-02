@@ -27,12 +27,18 @@ open class PreferenceController(val context: Context) {
     open val onClick: Preference.OnPreferenceClickListener? = null
     open val onChange: Preference.OnPreferenceChangeListener? = null
     open val isVisible = true
+    open val isEnabled = true
 
     open fun onPreferenceAdded(preference: Preference): Boolean {
         if (!isVisible) {
             preference.parent?.removePreference(preference)
             return false
         }
+
+        if (!isEnabled) {
+            preference.isEnabled = false
+        }
+
         title?.let { preference.title = it }
         summary?.let { preference.summary = it }
         onClick?.let { preference.onPreferenceClickListener = it }
