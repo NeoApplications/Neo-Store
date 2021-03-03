@@ -677,6 +677,27 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         return mPreviewVerifier.setFolderInfo(mInfo).previewItemsForPage(page, mInfo.contents);
     }
 
+    public void verifyHighRes() {
+        int processedItemCount = 0;
+        List<BubbleTextView> itemsOnPage = mFolder.getItemsOnPage(0);
+        int numItems = itemsOnPage.size();
+        for (int rank = 0; rank < numItems; ++rank) {
+            if (mPreviewVerifier.isItemInPreview(0, rank)) {
+                BubbleTextView item = itemsOnPage.get(rank);
+                item.verifyHighRes(info -> {
+                    item.reapplyItemInfo(info);
+                    updatePreviewItems(false);
+                    invalidate();
+                });
+                processedItemCount++;
+            }
+
+            if (processedItemCount == MAX_NUM_ITEMS_IN_PREVIEW) {
+                break;
+            }
+        }
+    }
+
     @Override
     protected boolean verifyDrawable(@NonNull Drawable who) {
         return mPreviewItemManager.verifyDrawable(who) || super.verifyDrawable(who);

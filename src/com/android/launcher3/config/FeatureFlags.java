@@ -43,6 +43,9 @@ public final class FeatureFlags {
      * and should be modified at a project level.
      */
     public static final boolean QSB_ON_FIRST_SCREEN = false;
+
+    // When enabled shows a work profile tab in all apps
+    public static final boolean ALL_APPS_TABS_ENABLED = true;
     /**
      * Feature flag to handle define config changes dynamically instead of killing the process.
      * <p>

@@ -55,6 +55,7 @@ import com.android.launcher3.Insettable;
 import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.keyboard.FocusedItemDecorator;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.model.data.ItemInfo;
@@ -198,17 +199,20 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private void onAppsUpdated() {
-        boolean hasWorkApps = false;
-        for (AppInfo app : mAllAppsStore.getApps()) {
-            if (mWorkMatcher.matches(app, null)) {
-                hasWorkApps = true;
-                break;
+        boolean force = false;
+        if (FeatureFlags.ALL_APPS_TABS_ENABLED && Utilities.getOmegaPrefs(getContext()).getSeparateWorkApps()) {
+            boolean hasWorkApps = false;
+            for (AppInfo app : mAllAppsStore.getApps()) {
+                if (mWorkMatcher.matches(app, null)) {
+                    hasWorkApps = true;
+                    break;
+                }
             }
+            AllAppsTabs allAppsTabs = mTabsController.getTabs();
+            force = allAppsTabs.getHasWorkApps() != hasWorkApps;
+            allAppsTabs.setHasWorkApps(hasWorkApps);
         }
-        rebindAdapters(hasWorkApps);
-        if (hasWorkApps) {
-            resetWorkProfile();
-        }
+        rebindAdapters(mTabsController.getShouldShowTabs(), force);
     }
 
     private void resetWorkProfile() {
@@ -307,9 +311,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     public void reset(boolean animate, boolean force) {
         if (force || !Utilities.getOmegaPrefs(getContext()).getSaveScrollPosition()) {
-            for (int i = 0; i < mAH.length; i++) {
-                if (mAH[i].recyclerView != null) {
-                    mAH[i].recyclerView.scrollToTop();
+            for (AdapterHolder adapterHolder : mAH) {
+                if (adapterHolder.recyclerView != null) {
+                    adapterHolder.recyclerView.scrollToTop();
                 }
             }
             if (isHeaderVisible()) {
@@ -368,11 +372,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         int leftRightPadding = grid.desiredWorkspaceLeftRightMarginPx
                 + grid.cellLayoutPaddingLeftRightPx;
 
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].padding.bottom = insets.bottom;
-            mAH[i].padding.left = mAH[i].padding.right = leftRightPadding;
-            mAH[i].applyPadding();
-            mAH[i].setupOverlay();
+        for (AdapterHolder adapterHolder : mAH) {
+            adapterHolder.padding.bottom = insets.bottom;
+            adapterHolder.padding.left = adapterHolder.padding.right = leftRightPadding;
+            adapterHolder.applyPadding();
+            adapterHolder.setupOverlay();
         }
 
         ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
@@ -514,6 +518,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mHeader.setCurrentActive(pos);
         if (mAH[pos].recyclerView != null) {
             mAH[pos].recyclerView.bindFastScrollbar();
+            mAH[pos].recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
         }
         reset(true /* animate */, true);
         if (mWorkModeSwitch != null) {
@@ -578,9 +583,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mHeader.setup(mAH, !mUsingTabs);
 
         int padding = mHeader.getMaxTranslation();
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].padding.top = padding;
-            mAH[i].applyPadding();
+        for (AdapterHolder adapterHolder : mAH) {
+            adapterHolder.padding.top = padding;
+            adapterHolder.applyPadding();
         }
     }
 

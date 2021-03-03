@@ -32,7 +32,7 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
     val tabs = ArrayList<Tab>()
     val count get() = tabs.size
 
-    private var hasWorkApps = false
+    var hasWorkApps = false
         set(value) {
             if (value != field) {
                 field = value

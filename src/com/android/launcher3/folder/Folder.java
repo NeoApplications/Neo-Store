@@ -33,6 +33,7 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetHostView;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -396,6 +397,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // the folder itself.
         requestFocus();
         super.onAttachedToWindow();
+        if (mFolderIcon != null && mFolderIcon.isCustomIcon && Utilities.getOmegaPrefs(getContext()).getFolderBgColored()) {
+            setBackgroundTintList(ColorStateList.valueOf(mFolderIcon.getFolderName().getDotColor()));
+        }
     }
 
     @Override
