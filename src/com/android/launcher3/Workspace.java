@@ -695,6 +695,10 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         if (hasExtraEmptyScreen() || mScreenOrder.size() == 0) return;
+        if (OmegaPreferences.Companion
+                .getInstance(mLauncher).getKeepEmptyScreens()) {
+            return;
+        }
         int finalScreenId = mScreenOrder.get(mScreenOrder.size() - 1);
 
         CellLayout finalScreen = mWorkspaceScreens.get(finalScreenId);
