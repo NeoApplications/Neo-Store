@@ -80,6 +80,7 @@ import org.xmlpull.v1.XmlPullParserException;
  *      getBounds().bottom + getBounds().getHeight() * #getExtraInsetFraction())
  * </pre>
  */
+@SuppressLint("SoonBlockedPrivateApi")
 public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
 
     public static final String TAG = "AdaptiveIconCompat";

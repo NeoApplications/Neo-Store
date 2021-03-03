@@ -24,7 +24,6 @@ import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -38,12 +37,13 @@ import com.android.launcher3.folder.PreviewBackground;
 import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.util.Preconditions;
+import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 /**
- * {@link AdaptiveIconDrawable} representation of a {@link FolderIcon}
+ * {@link AdaptiveIconCompat} representation of a {@link FolderIcon}
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class FolderAdaptiveIcon extends AdaptiveIconDrawable {
+public class FolderAdaptiveIcon extends AdaptiveIconCompat {
     private static final String TAG = "FolderAdaptiveIcon";
 
     private final Drawable mBadge;

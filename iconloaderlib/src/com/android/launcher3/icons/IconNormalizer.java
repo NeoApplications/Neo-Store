@@ -30,7 +30,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
@@ -39,6 +38,8 @@ import java.nio.ByteBuffer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 public class IconNormalizer {
 
@@ -137,7 +138,7 @@ public class IconNormalizer {
         Rect tmpBounds = new Rect(d.getBounds());
         d.setBounds(0, 0, size, size);
 
-        Path path = ((AdaptiveIconDrawable) d).getIconMask();
+        Path path = ((AdaptiveIconCompat) d).getIconMask();
         Region region = new Region();
         region.setPath(path, new Region(0, 0, size, size));
 
@@ -160,7 +161,7 @@ public class IconNormalizer {
      * Returns if the shape of the icon is same as the path.
      * For this method to work, the shape path bounds should be in [0,1]x[0,1] bounds.
      */
-    private boolean isShape(Path maskPath) {
+    private boolean isShape(Path maskPath, int minVisibleAlpha) {
         // Condition1:
         // If width and height of the path not close to a square, then the icon shape is
         // not same as the mask shape.
@@ -189,13 +190,13 @@ public class IconNormalizer {
         mCanvas.drawPath(mShapePath, mPaintMaskShapeOutline);
 
         // Check if the result is almost transparent
-        return isTransparentBitmap();
+        return isTransparentBitmap(minVisibleAlpha);
     }
 
     /**
      * Used to determine if certain the bitmap is transparent.
      */
-    private boolean isTransparentBitmap() {
+    private boolean isTransparentBitmap(int minVisibleAlpha) {
         ByteBuffer buffer = ByteBuffer.wrap(mPixels);
         buffer.rewind();
         mBitmap.copyPixelsToBuffer(buffer);
@@ -210,7 +211,7 @@ public class IconNormalizer {
         for (; y < mBounds.bottom; y++) {
             index += mBounds.left;
             for (int x = mBounds.left; x < mBounds.right; x++) {
-                if ((mPixels[index] & 0xFF) > MIN_VISIBLE_ALPHA) {
+                if ((mPixels[index] & 0xFF) > minVisibleAlpha) {
                     sum++;
                 }
                 index++;
@@ -222,23 +223,28 @@ public class IconNormalizer {
         return percentageDiffPixels < PIXEL_DIFF_PERCENTAGE_THRESHOLD;
     }
 
+    public synchronized float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
+                                       @Nullable Path path, @Nullable boolean[] outMaskShape) {
+        return getScale(d, outBounds, path, outMaskShape, MIN_VISIBLE_ALPHA);
+    }
+
     /**
      * Returns the amount by which the {@param d} should be scaled (in both dimensions) so that it
      * matches the design guidelines for a launcher icon.
-     *
+     * <p>
      * We first calculate the convex hull of the visible portion of the icon.
      * This hull then compared with the bounding rectangle of the hull to find how closely it
      * resembles a circle and a square, by comparing the ratio of the areas. Note that this is not an
      * ideal solution but it gives satisfactory result without affecting the performance.
-     *
+     * <p>
      * This closeness is used to determine the ratio of hull area to the full icon size.
      * Refer {@link #MAX_CIRCLE_AREA_FACTOR} and {@link #MAX_SQUARE_AREA_FACTOR}
      *
      * @param outBounds optional rect to receive the fraction distance from each edge.
      */
     public synchronized float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
-                                       @Nullable Path path, @Nullable boolean[] outMaskShape) {
-        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconDrawable) {
+                                       @Nullable Path path, @Nullable boolean[] outMaskShape, int minVisibleAlpha) {
+        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconCompat) {
             if (mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
                 mAdaptiveIconScale = normalizeAdaptiveIcon(d, mMaxSize, mAdaptiveIconBounds);
             }
@@ -286,7 +292,7 @@ public class IconNormalizer {
         for (int y = 0; y < height; y++) {
             firstX = lastX = -1;
             for (int x = 0; x < width; x++) {
-                if ((mPixels[index] & 0xFF) > MIN_VISIBLE_ALPHA) {
+                if ((mPixels[index] & 0xFF) > minVisibleAlpha) {
                     if (firstX == -1) {
                         firstX = x;
                     }
@@ -340,7 +346,7 @@ public class IconNormalizer {
                     1 - ((float) mBounds.bottom) / height);
         }
         if (outMaskShape != null && mEnableShapeDetection && outMaskShape.length > 0) {
-            outMaskShape[0] = isShape(path);
+            outMaskShape[0] = isShape(path, minVisibleAlpha);
         }
         // Area of the rectangle required to fit the convex hull
         float rectArea = (bottomY + 1 - topY) * (rightX + 1 - leftX);

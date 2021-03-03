@@ -31,7 +31,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.CancellationSignal;
@@ -60,6 +59,7 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.popup.SystemShortcut;
 import com.android.launcher3.shortcuts.DeepShortcutView;
 import com.android.launcher3.testing.TestProtocol;
+import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 /**
  * A view that is created to look like another view with the purpose of creating fluid animations.
@@ -213,7 +213,7 @@ public class FloatingIconView extends FrameLayout implements
             int height = (int) pos.height();
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
-                if (drawable instanceof AdaptiveIconDrawable) {
+                if (drawable instanceof AdaptiveIconCompat) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
                     // The drawable we get back is not an adaptive icon, so we need to use the
@@ -248,7 +248,7 @@ public class FloatingIconView extends FrameLayout implements
     @SuppressWarnings("WrongThread")
     private static int getOffsetForIconBounds(Launcher l, Drawable drawable, RectF position) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                || !(drawable instanceof AdaptiveIconDrawable)
+                || !(drawable instanceof AdaptiveIconCompat)
                 || (drawable instanceof FolderAdaptiveIcon)) {
             return 0;
         }
@@ -265,8 +265,8 @@ public class FloatingIconView extends FrameLayout implements
         }
 
         bounds.inset(
-                (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
-                (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
+                (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
         );
 
         return bounds.left;
@@ -422,7 +422,7 @@ public class FloatingIconView extends FrameLayout implements
         mBadge = badge;
         mClipIconView.setIcon(drawable, iconOffset, lp, mIsOpening, mIsVerticalBarLayout,
                 mLauncher.getDeviceProfile());
-        if (drawable instanceof AdaptiveIconDrawable) {
+        if (drawable instanceof AdaptiveIconCompat) {
             final int originalHeight = lp.height;
             final int originalWidth = lp.width;
 

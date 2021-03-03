@@ -22,7 +22,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
@@ -32,16 +31,17 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.android.launcher3.FastBitmapDrawable;
+import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Wrapper over {@link AdaptiveIconDrawable} to intercept icon flattening logic for dynamic
+ * Wrapper over {@link AdaptiveIconCompat} to intercept icon flattening logic for dynamic
  * clock icons
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class ClockDrawableWrapper extends AdaptiveIconDrawable implements BitmapInfo.Extender {
+public class ClockDrawableWrapper extends AdaptiveIconCompat implements BitmapInfo.Extender {
 
     public static final int INVALID_VALUE = -1;
     private static final String TAG = "ClockDrawableWrapper";
@@ -68,7 +68,7 @@ public class ClockDrawableWrapper extends AdaptiveIconDrawable implements Bitmap
     private final AnimationInfo mAnimationInfo = new AnimationInfo();
     private int mTargetSdkVersion;
 
-    public ClockDrawableWrapper(AdaptiveIconDrawable base) {
+    public ClockDrawableWrapper(AdaptiveIconCompat base) {
         super(base.getBackground(), base.getForeground());
     }
 
@@ -92,12 +92,12 @@ public class ClockDrawableWrapper extends AdaptiveIconDrawable implements Bitmap
 
             Drawable drawable = pm.getResourcesForApplication(appInfo).getDrawableForDensity(
                     drawableId, iconDpi).mutate();
-            if (!(drawable instanceof AdaptiveIconDrawable)) {
+            if (!(drawable instanceof AdaptiveIconCompat)) {
                 return null;
             }
 
             ClockDrawableWrapper wrapper =
-                    new ClockDrawableWrapper((AdaptiveIconDrawable) drawable);
+                    new ClockDrawableWrapper((AdaptiveIconCompat) drawable);
             wrapper.mTargetSdkVersion = appInfo.targetSdkVersion;
             AnimationInfo info = wrapper.mAnimationInfo;
 
@@ -136,7 +136,7 @@ public class ClockDrawableWrapper extends AdaptiveIconDrawable implements Bitmap
     public BitmapInfo getExtendedInfo(Bitmap bitmap, int color, BaseIconFactory iconFactory) {
         iconFactory.disableColorExtraction();
         float[] scale = new float[1];
-        AdaptiveIconDrawable background = new AdaptiveIconDrawable(
+        AdaptiveIconCompat background = new AdaptiveIconCompat(
                 getBackground().getConstantState().newDrawable(), null);
         BitmapInfo bitmapInfo = iconFactory.createBadgedIconBitmap(background,
                 Process.myUserHandle(), mTargetSdkVersion, false, scale);
@@ -222,7 +222,7 @@ public class ClockDrawableWrapper extends AdaptiveIconDrawable implements Bitmap
 
         private final ClockBitmapInfo mInfo;
 
-        private final AdaptiveIconDrawable mFullDrawable;
+        private final AdaptiveIconCompat mFullDrawable;
         private final LayerDrawable mForeground;
 
         ClockIconDrawable(ClockBitmapInfo clockInfo) {
@@ -230,7 +230,7 @@ public class ClockDrawableWrapper extends AdaptiveIconDrawable implements Bitmap
 
             mInfo = clockInfo;
 
-            mFullDrawable = (AdaptiveIconDrawable) mInfo.animInfo.baseDrawableState.newDrawable();
+            mFullDrawable = (AdaptiveIconCompat) mInfo.animInfo.baseDrawableState.newDrawable();
             mForeground = (LayerDrawable) mFullDrawable.getForeground();
         }
 
