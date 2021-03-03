@@ -39,6 +39,8 @@ import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.views.ScrimView;
 import com.android.systemui.plugins.AllAppsSearchPlugin;
 import com.android.systemui.plugins.PluginListener;
+import com.saggitt.omega.allapps.BlurQsbLayout;
+import com.saggitt.omega.blur.BlurScrimView;
 
 /**
  * Handles AllApps view transition.
@@ -250,8 +252,30 @@ public class AllAppsTransitionController implements StateHandler<LauncherState>,
     private void onProgressAnimationEnd() {
         if (Float.compare(mProgress, 1f) == 0) {
             mAppsView.reset(false /* animate */);
+        } else if (isAllAppsExpanded()) {
+            mAppsView.onScrollUpEnd();
         }
         updatePluginAnimationEnd();
+    }
+
+    private boolean isAllAppsExpanded() {
+        return Float.compare(mProgress, 0f) == 0;
+    }
+
+    public void highlightWorkTabIfNecessary() {
+        if (isAllAppsExpanded()) {
+            mAppsView.highlightWorkTabIfNecessary();
+        }
+    }
+
+    public void setOverlayScroll(float scroll) {
+        if (mScrimView instanceof BlurScrimView) {
+            ((BlurScrimView) mScrimView).setOverlayScroll(scroll);
+        }
+        View searchView = mAppsView.getSearchView();
+        if (searchView instanceof BlurQsbLayout) {
+            ((BlurQsbLayout) searchView).setOverlayScroll(scroll);
+        }
     }
 
     @Override

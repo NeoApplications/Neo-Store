@@ -1142,6 +1142,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         // device I've tried, translating the launcher causes things to get quite laggy.
         mLauncher.getDragLayer().setTranslationX(transX);
         mLauncher.getDragLayer().getAlphaProperty(ALPHA_INDEX_OVERLAY).setValue(alpha);
+
+        if (mLauncher instanceof OmegaLauncher) {
+            ((OmegaLauncher) mLauncher).getBackground().getBlurAlphas().getProperty(
+                    OmegaBackgroundView.ALPHA_INDEX_OVERLAY).setValue(1 - alpha);
+        }
+        mLauncher.mAllAppsController.setOverlayScroll(transX);
     }
 
     /**

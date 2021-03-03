@@ -533,6 +533,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return view.getGlobalVisibleRect(new Rect());
     }
 
+    /*
     // Used by tests only
     public boolean isPersonalTabVisible() {
         return isDescendantViewVisible(R.id.tab_personal);
@@ -541,7 +542,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     // Used by tests only
     public boolean isWorkTabVisible() {
         return isDescendantViewVisible(R.id.tab_work);
-    }
+    }*/
 
     public AlphabeticalAppsList getApps() {
         return mAH[AdapterHolder.MAIN].appsList;
@@ -624,6 +625,17 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return mHeader != null && mHeader.getVisibility() == View.VISIBLE;
     }
 
+    public void onScrollUpEnd() {
+        highlightWorkTabIfNecessary();
+    }
+
+    void highlightWorkTabIfNecessary() {
+        if (mUsingTabs) {
+            ((PersonalWorkSlidingTabStrip) findViewById(R.id.tabs))
+                    .highlightWorkTabIfNecessary();
+        }
+    }
+
     /**
      * Adds an update listener to {@param animator} that adds springs to the animation.
      */
@@ -684,7 +696,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             appsList.updateItemFilter(matcher);
             recyclerView = (AllAppsRecyclerView) rv;
             recyclerView.setEdgeEffectFactory(createEdgeEffectFactory());
-            recyclerView.setApps(appsList);
+            recyclerView.setApps(appsList, mUsingTabs);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);

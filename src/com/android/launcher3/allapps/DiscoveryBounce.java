@@ -20,19 +20,25 @@ import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.LauncherState.OVERVIEW;
 import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.HOTSEAT;
 import static com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType.PREDICTION;
+import static com.android.launcher3.util.OnboardingPrefs.HOME_BOUNCE_COUNT;
+import static com.android.launcher3.util.OnboardingPrefs.SHELF_BOUNCE_COUNT;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.UserManager;
 import android.view.MotionEvent;
+
+import androidx.core.os.UserManagerCompat;
 
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.touch.PagedOrientationHandler;
 import com.android.launcher3.util.OnboardingPrefs;
@@ -43,6 +49,13 @@ import com.android.launcher3.util.OnboardingPrefs;
 public class DiscoveryBounce extends AbstractFloatingView {
 
     private static final long DELAY_MS = 450;
+
+    public static final String HOME_BOUNCE_SEEN = "launcher.apps_view_shown";
+    public static final String SHELF_BOUNCE_SEEN = "launcher.shelf_bounce_seen";
+    public static final String HOME_BOUNCE_COUNT = "launcher.home_bounce_count";
+    public static final String SHELF_BOUNCE_COUNT = "launcher.shelf_bounce_count";
+
+    public static final int BOUNCE_MAX_COUNT = 3;
 
     private final Launcher mLauncher;
     private final Animator mDiscoBounceAnimation;
@@ -150,7 +163,7 @@ public class DiscoveryBounce extends AbstractFloatingView {
             new Handler().postDelayed(() -> showForHomeIfNeeded(launcher, false), DELAY_MS);
             return;
         }
-        onboardingPrefs.incrementEventCount(OnboardingPrefs.HOME_BOUNCE_COUNT);
+        onboardingPrefs.incrementEventCount(HOME_BOUNCE_COUNT);
 
         new DiscoveryBounce(launcher, 0).show(HOTSEAT);
     }
@@ -182,7 +195,7 @@ public class DiscoveryBounce extends AbstractFloatingView {
             // TODO: Move these checks to the top and call this method after invalidate handler.
             return;
         }
-        onboardingPrefs.incrementEventCount(OnboardingPrefs.SHELF_BOUNCE_COUNT);
+        onboardingPrefs.incrementEventCount(SHELF_BOUNCE_COUNT);
 
         new DiscoveryBounce(launcher, (1 - OVERVIEW.getVerticalProgress(launcher)))
                 .show(PREDICTION);

@@ -60,7 +60,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
     // The specific view heights that we use to calculate scroll
     private final SparseIntArray mViewHeights = new SparseIntArray();
     private final SparseIntArray mCachedScrollPositions = new SparseIntArray();
-    private final AllAppsFastScrollHelper mFastScrollHelper;
+    private AllAppsFastScrollHelper mFastScrollHelper;
 
     // The empty-search result background
     private AllAppsBackgroundDrawable mEmptySearchBackground;
@@ -86,15 +86,15 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
         Resources res = getResources();
         mEmptySearchBackgroundTopOffset = res.getDimensionPixelSize(
                 R.dimen.all_apps_empty_search_bg_top_offset);
-        mNumAppsPerRow = LauncherAppState.getIDP(context).numColumns;
-        mFastScrollHelper = new AllAppsFastScrollHelper(this);
+        mNumAppsPerRow = LauncherAppState.getIDP(context).numColsDrawer;
     }
 
     /**
      * Sets the list of apps in this view, used to determine the fastscroll position.
      */
-    public void setApps(AlphabeticalAppsList apps) {
+    public void setApps(AlphabeticalAppsList apps, boolean usingTabs) {
         mApps = apps;
+        mFastScrollHelper = new AllAppsFastScrollHelper(this, apps);
     }
 
     public AlphabeticalAppsList getApps() {
@@ -112,6 +112,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
 
         mViewHeights.clear();
         mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_ICON, grid.allAppsCellHeightPx);
+        mViewHeights.put(AllAppsGridAdapter.VIEW_TYPE_FOLDER, grid.allAppsCellHeightPx);
     }
 
     /**

@@ -124,6 +124,14 @@ public class InvariantDeviceProfile {
     private SparseArray<TypedValue> mExtraAttrs;
 
     /**
+     * Padding scales for the workspace
+     */
+    public float workspacePaddingLeftScale;
+    public float workspacePaddingRightScale;
+    public float workspacePaddingTopScale;
+    public float workspacePaddingBottomScale;
+
+    /**
      * Number of icons inside the hotseat area.
      */
     public int numHotseatIcons;
@@ -470,6 +478,10 @@ public class InvariantDeviceProfile {
         numAllAppsColumns = closestProfile.numAllAppsColumns;
 
         mExtraAttrs = closestProfile.extraAttrs;
+        workspacePaddingLeftScale = closestProfile.workspacePaddingLeftScale;
+        workspacePaddingRightScale = closestProfile.workspacePaddingRightScale;
+        workspacePaddingTopScale = closestProfile.workspacePaddingTopScale;
+        workspacePaddingBottomScale = closestProfile.workspacePaddingBottomScale;
 
         iconSize = displayOption.iconSize;
         iconShapePath = getIconShapePath(context);
@@ -629,6 +641,8 @@ public class InvariantDeviceProfile {
             numColumns = a.getInt(R.styleable.GridDisplayOption_numColumns, 0);
             numColsDrawer = numColumns;
             numPredictions = numColsDrawer;
+            workspacePaddingLeftScale = workspacePaddingRightScale = 1f;
+            workspacePaddingTopScale = workspacePaddingBottomScale = 1f;
 
             dbFile = a.getString(R.styleable.GridDisplayOption_dbFile);
             defaultLayoutId = a.getResourceId(
