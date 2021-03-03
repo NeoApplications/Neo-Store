@@ -90,6 +90,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.iconpack.IconPackManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -360,6 +361,12 @@ public class LoaderTask implements Runnable {
                         LauncherSettings.Favorites.RANK);
                 final int optionsIndex = c.getColumnIndexOrThrow(
                         LauncherSettings.Favorites.OPTIONS);
+                final int titleAliasIndex = c.getColumnIndexOrThrow(
+                        LauncherSettings.Favorites.TITLE_ALIAS);
+                final int customIconEntryIndex = c.getColumnIndexOrThrow(
+                        LauncherSettings.Favorites.CUSTOM_ICON_ENTRY);
+                final int swipeUpActionEntryIndex = c.getColumnIndexOrThrow(
+                        LauncherSettings.Favorites.SWIPE_UP_ACTION);
 
                 final LongSparseArray<UserHandle> allUsers = c.allUsers;
                 final LongSparseArray<Boolean> unlockedUsers = new LongSparseArray<>();
@@ -395,6 +402,9 @@ public class LoaderTask implements Runnable {
                 LauncherAppWidgetInfo appWidgetInfo;
                 Intent intent;
                 String targetPkg;
+                String titleAlias;
+                String customIconEntry;
+                String swipeUpAction;
 
                 while (!mStopped && c.moveToNext()) {
                     try {
@@ -419,6 +429,9 @@ public class LoaderTask implements Runnable {
                                         ? WorkspaceItemInfo.FLAG_DISABLED_QUIET_USER : 0;
                                 ComponentName cn = intent.getComponent();
                                 targetPkg = cn == null ? intent.getPackage() : cn.getPackageName();
+                                titleAlias = c.getString(titleAliasIndex);
+                                customIconEntry = c.getString(customIconEntryIndex);
+                                swipeUpAction = c.getString(swipeUpActionEntryIndex);
 
                                 if (allUsers.indexOfValue(c.user) < 0) {
                                     if (c.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
@@ -428,7 +441,7 @@ public class LoaderTask implements Runnable {
                                         // Don't restore items for other profiles.
                                         c.markDeleted("Restore from other profiles not supported");
                                         continue;
-                                }
+                                    }
                             }
                             if (TextUtils.isEmpty(targetPkg) &&
                                     c.itemType != LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
@@ -580,7 +593,9 @@ public class LoaderTask implements Runnable {
 
                             if (info != null) {
                                 c.applyCommonProperties(info);
-
+                                info.onLoadCustomizations(titleAlias, swipeUpAction,
+                                        IconPackManager.CustomIconEntry.Companion.fromNullableString(customIconEntry),
+                                        c.loadCustomIcon(info));
                                 info.intent = intent;
                                 info.rank = c.getInt(rankIndex);
                                 info.spanX = 1;
@@ -615,6 +630,7 @@ public class LoaderTask implements Runnable {
                                 folderInfo.spanX = 1;
                                 folderInfo.spanY = 1;
                                 folderInfo.options = c.getInt(optionsIndex);
+                                folderInfo.swipeUpAction = c.getString(swipeUpActionEntryIndex);
 
                                 // no special handling required for restored folders
                                 c.markRestored();

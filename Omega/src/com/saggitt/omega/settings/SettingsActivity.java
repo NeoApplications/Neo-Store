@@ -112,6 +112,7 @@ import java.util.Set;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.android.launcher3.LauncherSettings.Favorites;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
+import static com.android.launcher3.util.ContentWriter.*;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
@@ -1061,7 +1062,7 @@ public class SettingsActivity extends SettingsBaseActivity
             prefs.endBlockingEdit();
 
             // Clear custom shortcut icons
-            ContentWriter writer = new ContentWriter(context, new ContentWriter.CommitParams(null, null));
+            ContentWriter writer = new ContentWriter(context, new CommitParams(null, null));
             writer.put(Favorites.CUSTOM_ICON, (byte[]) null);
             writer.put(Favorites.CUSTOM_ICON_ENTRY, (String) null);
             writer.commit();

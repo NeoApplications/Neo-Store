@@ -19,6 +19,7 @@ package com.android.launcher3.folder;
 import static com.android.launcher3.BubbleTextView.TEXT_ALPHA_PROPERTY;
 import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
 import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
+import static com.android.launcher3.folder.FolderIcon.ICON_SCALE_PROPERTY;
 import static com.android.launcher3.graphics.IconShape.getShape;
 import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
@@ -44,6 +45,7 @@ import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.anim.PropertyResetListener;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.util.Themes;
@@ -342,6 +344,13 @@ public class FolderAnimationManager {
             Animator scaleAnimator = getAnimator(btv, SCALE_PROPERTY, initialScale, finalScale);
             scaleAnimator.setInterpolator(previewItemInterpolator);
             play(animatorSet, scaleAnimator);
+
+            if (mFolderIcon.isCustomIcon) {
+                Animator iconScaleAnimator = getAnimator(mFolderIcon, ICON_SCALE_PROPERTY, 1f, 1.3f);
+                iconScaleAnimator.setInterpolator(Interpolators.DEACCEL_1_5);
+                iconScaleAnimator.setStartDelay(mIsOpening ? mDelay * 2 : mDelay);
+                play(animatorSet, iconScaleAnimator);
+            }
 
             if (mFolder.getItemCount() > MAX_NUM_ITEMS_IN_PREVIEW) {
                 // These delays allows the preview items to move as part of the Folder's motion,

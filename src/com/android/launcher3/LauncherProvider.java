@@ -96,7 +96,7 @@ public class LauncherProvider extends ContentProvider {
      * Represents the schema of the database. Changes in scheme need not be backwards compatible.
      * When increasing the scheme version, ensure that downgrade_schema.json is updated
      */
-    public static final int SCHEMA_VERSION = 28;
+    public static final int SCHEMA_VERSION = 32;
     public static final String KEY_LAYOUT_PROVIDER_AUTHORITY = "KEY_LAYOUT_PROVIDER_AUTHORITY";
 
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".settings";
@@ -855,33 +855,9 @@ public class LauncherProvider extends ContentProvider {
                             !LauncherDbUtils.prepareScreenZeroToHostQsb(mContext, db)) {
                         break;
                     }
-                case 27: {
-                    // Update the favorites table so that the screen ids are ordered based on
-                    // workspace page rank.
-                    IntArray finalScreens = LauncherDbUtils.queryIntArray(db, "workspaceScreens",
-                            BaseColumns._ID, null, null, "screenRank");
-                    int[] original = finalScreens.toArray();
-                    Arrays.sort(original);
-                    String updatemap = "";
-                    for (int i = 0; i < original.length; i++) {
-                        if (finalScreens.get(i) != original[i]) {
-                            updatemap += String.format(Locale.ENGLISH, " WHEN %1$s=%2$d THEN %3$d",
-                                    Favorites.SCREEN, finalScreens.get(i), original[i]);
-                        }
-                    }
-                    if (!TextUtils.isEmpty(updatemap)) {
-                        String query = String.format(Locale.ENGLISH,
-                                "UPDATE %1$s SET %2$s=CASE %3$s ELSE %2$s END WHERE %4$s = %5$d",
-                                Favorites.TABLE_NAME, Favorites.SCREEN, updatemap,
-                                Favorites.CONTAINER, Favorites.CONTAINER_DESKTOP);
-                        db.execSQL(query);
-                    }
-                    dropTable(db, "workspaceScreens");
-                }
-                case 28:
-                    // DB Upgraded successfully
-                    return;
-
+                case 27:
+                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.TITLE_ALIAS + " TEXT;");
+                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.CUSTOM_ICON + " BLOB;");
                 case 29:
                     db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.CUSTOM_ICON_ENTRY + " TEXT;");
                 case 30:

@@ -331,6 +331,10 @@ public class LauncherSettings {
                     "iconPackage TEXT," +
                     "iconResource TEXT," +
                     "icon BLOB," +
+                    "customIcon BLOB," +
+                    "customIconEntry TEXT," +
+                    "titleAlias TEXT," +
+                    "swipeUpAction TEXT," +
                     "appWidgetProvider TEXT," +
                     "modified INTEGER NOT NULL DEFAULT 0," +
                     "restored INTEGER NOT NULL DEFAULT 0," +
