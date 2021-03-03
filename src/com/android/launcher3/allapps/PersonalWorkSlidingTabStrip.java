@@ -93,9 +93,24 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
     public void updateTabTextColor(int pos) {
         mSelectedPosition = pos;
         for (int i = 0; i < getChildCount(); i++) {
-            Button tab = (Button) getChildAt(i);
+            ColoredButton tab = (ColoredButton) getChildAt(i);
             tab.setSelected(i == pos);
         }
+    }
+
+    private void resetTabTextColor() {
+        for (int i = 0; i < getChildCount(); i++) {
+            ColoredButton tab = (ColoredButton) getChildAt(i);
+            tab.reset();
+        }
+    }
+
+    private int getChildWidth() {
+        int width = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            width += getChildAt(i).getMeasuredWidth();
+        }
+        return width;
     }
 
     private void updateIndicatorPosition(float scrollOffset) {
@@ -105,9 +120,40 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
+        int childWidth = getChildWidth();
+        if (childWidth < getMeasuredWidth()) {
+            boolean isLayoutRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+            int count = getChildCount();
+            int start = 0;
+            int dir = 1;
+            //In case of RTL, start drawing from the last child.
+            if (isLayoutRtl) {
+                start = count - 1;
+                dir = -1;
+            }
+
+            int horizontalPadding = getPaddingLeft() + getPaddingRight();
+            int padding = (getMeasuredWidth() - childWidth - horizontalPadding) / (count + 1);
+            int left = getPaddingLeft();
+
+            for (int i = 0; i < count; i++) {
+                final int childIndex = start + dir * i;
+                View child = getChildAt(childIndex);
+
+                left += padding;
+                setChildFrame(child, left, getPaddingTop(), child.getMeasuredWidth(), child.getMeasuredHeight());
+                left += child.getMeasuredWidth();
+            }
+        } else {
+            super.onLayout(changed, l, t, r, b);
+        }
+
         updateTabTextColor(mSelectedPosition);
         updateIndicatorPosition(mScrollOffset);
+    }
+
+    private void setChildFrame(View child, int left, int top, int width, int height) {
+        child.layout(left, top, left + width, top + height);
     }
 
     private void updateIndicatorPosition() {
@@ -156,6 +202,10 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
 
     private View getLeftTab() {
         return mIsRtl ? getChildAt(1) : getChildAt(0);
+    }
+
+    private View getRightTab() {
+        return mIsRtl ? getChildAt(0) : getChildAt(getChildCount() - 1);
     }
 
     private void setIndicatorPosition(int left, int right) {
