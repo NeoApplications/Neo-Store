@@ -50,6 +50,8 @@ import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.SafeCloseable;
+import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,6 +102,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
 
         switch (mOp) {
             case OP_ADD: {
+                OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
                 for (int i = 0; i < N; i++) {
                     if (DEBUG) Log.d(TAG, "mAllAppsList.addPackage " + packages[i]);
                     iconCache.updateIconsForPkg(packages[i], mUser);
@@ -109,7 +112,10 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     appsList.addPackage(context, packages[i], mUser);
 
                     // Automatically add homescreen icon for work profile apps for below O device.
-                    if (!Utilities.ATLEAST_OREO && !Process.myUserHandle().equals(mUser)) {
+                    if (Utilities.ATLEAST_OREO && prefs.getAutoAddInstalled() &&
+                            !OmegaUtilsKt.workspaceContains(dataModel, packages[i])) {
+                        SessionCommitReceiver.queueAppIconAddition(context, packages[i], mUser);
+                    } else if (!Utilities.ATLEAST_OREO && !Process.myUserHandle().equals(mUser)) {
                         SessionCommitReceiver.queueAppIconAddition(context, packages[i], mUser);
                     }
                 }
