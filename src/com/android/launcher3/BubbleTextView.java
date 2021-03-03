@@ -79,6 +79,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private static final int DISPLAY_WORKSPACE = 0;
     private static final int DISPLAY_ALL_APPS = 1;
     private static final int DISPLAY_FOLDER = 2;
+    private static final int DISPLAY_DRAWER_FOLDER = 5;
 
     private static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
 
@@ -171,19 +172,32 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
         if (mDisplay == DISPLAY_WORKSPACE) {
             mHideText = prefs.getHideAppLabels();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             defaultIconSize = grid.iconSizePx;
+            int lines = prefs.getHomeLabelRows();
+            setLineCount(lines);
         } else if (mDisplay == DISPLAY_ALL_APPS) {
             mHideText = prefs.getHideAllAppsAppLabels();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsIconTextSizePx);
             setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
             defaultIconSize = grid.allAppsIconSizePx;
+            int lines = prefs.getDrawerLabelRows();
+            setLineCount(lines);
         } else if (mDisplay == DISPLAY_FOLDER) {
             mHideText = prefs.getHideAppLabels();
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.folderChildTextSizePx);
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.folderChildTextSizePx);
             setCompoundDrawablePadding(grid.folderChildDrawablePaddingPx);
             defaultIconSize = grid.folderChildIconSizePx;
+            int lines = prefs.getHomeLabelRows();
+            setLineCount(lines);
+        } else if (mDisplay == DISPLAY_DRAWER_FOLDER) {
+            mHideText = prefs.getHideAllAppsAppLabels();
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsFolderChildTextSizePx);
+            setCompoundDrawablePadding(grid.allAppsFolderChildDrawablePaddingPx);
+            defaultIconSize = grid.allAppsFolderChildIconSizePx;
+            int lines = prefs.getDrawerLabelRows();
+            setLineCount(lines);
         } else {
             // widget_selection or shortcut_popup
             defaultIconSize = grid.iconSizePx;
@@ -199,9 +213,17 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
         mDotParams = new DotRenderer.DrawParams();
 
-        setEllipsize(TruncateAt.END);
+        //setEllipsize(TruncateAt.END);
         setAccessibilityDelegate(mActivity.getAccessibilityDelegate());
         setTextAlpha(1f);
+    }
+
+    public void setLineCount(int lines) {
+        setMaxLines(lines);
+        setSingleLine(lines == 1);
+        setEllipsize(TruncateAt.END);
+        // This shouldn't even be needed, what is going on?!
+        setLines(lines);
     }
 
     @Override
