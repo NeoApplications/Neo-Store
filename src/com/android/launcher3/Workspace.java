@@ -115,6 +115,7 @@ import com.android.launcher3.widget.WidgetManagerHelper;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.settings.WorkspaceBlur;
 import com.saggitt.omega.views.OmegaBackgroundView;
 
@@ -816,6 +817,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (mLauncher.isWorkspaceLoading()) {
             // Don't strip empty screens if the workspace is still loading.
             // This is dangerous and can result in data loss.
+            return;
+        }
+
+        if (OmegaPreferences.Companion.getInstance(mLauncher).getKeepEmptyScreens()) {
+            // Don't strip empty screens if we should keep them
             return;
         }
 
