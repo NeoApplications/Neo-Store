@@ -1,6 +1,5 @@
 import java.text.SimpleDateFormat
 buildscript {
-    ext.kotlin_version = '1.4.31'
 
     ext {
         versions = [
@@ -39,7 +38,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
         classpath PROTOBUF_CLASS_PATH
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
     }
 }
 
