@@ -19,8 +19,6 @@
 package com.saggitt.omega.util;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.util.TypedValue;
 
 import com.android.launcher3.R;
@@ -63,14 +61,5 @@ public class Config {
         TypedValue typedValue = new TypedValue();
         mContext.getResources().getValue(R.dimen.config_default_blur_strength, typedValue, true);
         return typedValue.getFloat();
-    }
-
-    public static boolean hasPackageInstalled(Context context, String pkgName) {
-        try {
-            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(pkgName, 0);
-            return ai.enabled;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
     }
 }

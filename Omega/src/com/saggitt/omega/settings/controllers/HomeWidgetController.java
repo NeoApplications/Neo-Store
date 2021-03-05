@@ -19,6 +19,7 @@
 package com.saggitt.omega.settings.controllers;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import com.saggitt.omega.preferences.PreferenceController;
@@ -42,8 +43,8 @@ public class HomeWidgetController extends PreferenceController {
 
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {
-            packageManager.getPackageInfo(packageName, 0);
-            return true;
+            ApplicationInfo ai = packageManager.getApplicationInfo(packageName, 0);
+            return ai.enabled;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }

@@ -49,13 +49,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * <p>This class can also be created via XML inflation using <code>&lt;adaptive-icon></code> tag
@@ -186,6 +186,7 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
      * @param backgroundDrawable drawable that should be rendered in the background
      * @param foregroundDrawable drawable that should be rendered in the foreground
      */
+    @RequiresApi(api = VERSION_CODES.O)
     public AdaptiveIconCompat(Drawable backgroundDrawable,
                               Drawable foregroundDrawable) {
         this((LayerState) null, null);
