@@ -15,11 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
-
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -76,6 +71,11 @@ import com.saggitt.omega.util.OmegaUtilsKt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
 
 /**
  * The all apps view container.
@@ -519,6 +519,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         if (mAH[pos].recyclerView != null) {
             mAH[pos].recyclerView.bindFastScrollbar();
             mAH[pos].recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
+            mTabsController.bindButtons(findViewById(R.id.tabs), mViewPager);
         }
         reset(true /* animate */, true);
         if (mWorkModeSwitch != null) {
