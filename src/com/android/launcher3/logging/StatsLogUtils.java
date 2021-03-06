@@ -11,7 +11,17 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import java.util.ArrayList;
 
 public class StatsLogUtils {
+    // Defined in android.stats.launcher.nano
+    // As they cannot be linked in this file, defining again.
+    public final static int LAUNCHER_STATE_BACKGROUND = 0;
+    public final static int LAUNCHER_STATE_HOME = 1;
+    public final static int LAUNCHER_STATE_OVERVIEW = 2;
+    public final static int LAUNCHER_STATE_ALLAPPS = 3;
     private final static int MAXIMUM_VIEW_HIERARCHY_LEVEL = 5;
+
+    public interface LogStateProvider {
+        int getCurrentState();
+    }
 
     /**
      * Implemented by containers to provide a container source for a given child.

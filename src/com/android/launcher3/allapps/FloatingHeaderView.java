@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.LauncherAnimUtils.VIEW_ALPHA;
-
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Point;
@@ -38,13 +36,14 @@ import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
 import com.android.launcher3.R;
 import com.android.launcher3.anim.PropertySetter;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.systemui.plugins.AllAppsRow;
 import com.android.systemui.plugins.AllAppsRow.OnHeightUpdatedListener;
 import com.android.systemui.plugins.PluginListener;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import static com.android.launcher3.LauncherAnimUtils.VIEW_ALPHA;
 
 public class FloatingHeaderView extends LinearLayout implements
         ValueAnimator.AnimatorUpdateListener, PluginListener<AllAppsRow>, Insettable,
@@ -135,18 +134,18 @@ public class FloatingHeaderView extends LinearLayout implements
         mAllRows = mFixedRows;
     }
 
-    @Override
+    /*@Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         PluginManagerWrapper.INSTANCE.get(getContext()).addPluginListener(this,
-                AllAppsRow.class, true /* allowMultiple */);
+                AllAppsRow.class, true);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
-    }
+    }*/
 
     private void recreateAllRowsArray() {
         int pluginCount = mPluginRows.size();

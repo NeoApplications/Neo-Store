@@ -26,7 +26,6 @@ import android.content.pm.ShortcutInfo
 import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Handler
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -37,7 +36,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.*
+import com.android.launcher3.AppFilter
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
@@ -48,13 +50,11 @@ import com.saggitt.omega.icons.CustomIconProvider
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.makeBasicHandler
 
-
 open class AppsAdapterWithShortcuts(
         private val context: Context,
         private val callback: Callback? = null,
         private val filter: AppFilter? = null)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
     companion object {
         private const val TYPE_LOADING = 0

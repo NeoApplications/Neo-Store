@@ -91,10 +91,8 @@ import com.saggitt.omega.preferences.SingleDimensionGridSizePreference;
 import com.saggitt.omega.preferences.SmartspaceEventProvidersFragment;
 import com.saggitt.omega.preferences.SmartspaceEventProvidersPreference;
 import com.saggitt.omega.preferences.SubPreference;
-import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.SearchProviderPreference;
 import com.saggitt.omega.search.SelectSearchProviderFragment;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
 import com.saggitt.omega.settings.search.SettingsSearchActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.smartspace.OnboardingProvider;
@@ -112,7 +110,7 @@ import java.util.Set;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.android.launcher3.LauncherSettings.Favorites;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
-import static com.android.launcher3.util.ContentWriter.*;
+import static com.android.launcher3.util.ContentWriter.CommitParams;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,

@@ -93,6 +93,8 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-permission android:name="android.permission.READ_DEVICE_CONFIG" />
+
     <application
         android:name="com.saggitt.omega.OmegaApp"
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
@@ -342,7 +344,7 @@
         </activity>
 
         <receiver
-            android:name="com.saggitt.omega.qsb.OPAStatusReceiver"
+            android:name="com.google.android.apps.nexuslauncher.qsb.OPAStatusReceiver"
             android:permission="android.permission.CAPTURE_AUDIO_HOTWORD">
             <intent-filter>
                 <action android:name="com.google.android.systemui.OPA_ENABLED" />

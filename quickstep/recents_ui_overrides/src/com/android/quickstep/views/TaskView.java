@@ -16,27 +16,6 @@
 
 package com.android.quickstep.views;
 
-import static android.view.Gravity.BOTTOM;
-import static android.view.Gravity.CENTER_HORIZONTAL;
-import static android.view.Gravity.CENTER_VERTICAL;
-import static android.view.Gravity.END;
-import static android.view.Gravity.START;
-import static android.view.Gravity.TOP;
-import static android.view.Surface.ROTATION_180;
-import static android.view.Surface.ROTATION_270;
-import static android.view.Surface.ROTATION_90;
-import static android.widget.Toast.LENGTH_SHORT;
-
-import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
-import static com.android.launcher3.Utilities.comp;
-import static com.android.launcher3.Utilities.getDescendantCoordRelativeToAncestor;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.Interpolators.TOUCH_RESPONSE_INTERPOLATOR;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_LAUNCH_TAP;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -98,11 +77,30 @@ import com.android.quickstep.views.TaskThumbnailView.PreviewPositionHelper;
 import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.ActivityOptionsCompat;
-import com.android.systemui.shared.system.QuickStepContract;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.CENTER_HORIZONTAL;
+import static android.view.Gravity.CENTER_VERTICAL;
+import static android.view.Gravity.END;
+import static android.view.Gravity.START;
+import static android.view.Gravity.TOP;
+import static android.view.Surface.ROTATION_180;
+import static android.view.Surface.ROTATION_270;
+import static android.view.Surface.ROTATION_90;
+import static android.widget.Toast.LENGTH_SHORT;
+import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
+import static com.android.launcher3.Utilities.comp;
+import static com.android.launcher3.Utilities.getDescendantCoordRelativeToAncestor;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.Interpolators.TOUCH_RESPONSE_INTERPOLATOR;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_LAUNCH_TAP;
 
 /**
  * A task in the Recents view.
@@ -1007,7 +1005,7 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
         public FullscreenDrawParams(Context context) {
             mCornerRadius = TaskCornerRadius.get(context);
             if (Utilities.ATLEAST_R)
-                mWindowCornerRadius = QuickStepContract.getWindowCornerRadius(context.getResources());
+                mWindowCornerRadius = 4;//QuickStepContract.getWindowCornerRadius(context.getResources());
             else
                 mWindowCornerRadius = mCornerRadius;
             mCurrentDrawnCornerRadius = mCornerRadius;

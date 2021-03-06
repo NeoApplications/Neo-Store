@@ -75,20 +75,27 @@ public final class FeatureFlags {
     public static final BooleanFlag ENABLE_QUICKSTEP_LIVE_TILE = getDebugFlag(
             "ENABLE_QUICKSTEP_LIVE_TILE", false, "Enable live tile in Quickstep overview");
     // Keep as DeviceFlag to allow remote disable in emergency.
-    public static final BooleanFlag ENABLE_SUGGESTED_ACTIONS_OVERVIEW = Utilities.ATLEAST_P ? new DeviceFlag(
+    /*public static final BooleanFlag ENABLE_SUGGESTED_ACTIONS_OVERVIEW = Utilities.ATLEAST_P ? new DeviceFlag(
             "ENABLE_SUGGESTED_ACTIONS_OVERVIEW", false, "Show chip hints on the overview screen")
-            : new BooleanFlag("ENABLE_SUGGESTED_ACTIONS_OVERVIEW", false);
-    public static final BooleanFlag FOLDER_NAME_SUGGEST = Utilities.ATLEAST_P ? new DeviceFlag(
+            : new BooleanFlag("ENABLE_SUGGESTED_ACTIONS_OVERVIEW", false);*/
+    public static final BooleanFlag ENABLE_SUGGESTED_ACTIONS_OVERVIEW =
+            new BooleanFlag("ENABLE_SUGGESTED_ACTIONS_OVERVIEW", true);
+    /*public static final BooleanFlag FOLDER_NAME_SUGGEST = Utilities.ATLEAST_P ? new DeviceFlag(
             "FOLDER_NAME_SUGGEST", true,
             "Suggests folder names instead of blank text.")
-            : new BooleanFlag("FOLDER_NAME_SUGGEST", false);
+            : new BooleanFlag("FOLDER_NAME_SUGGEST", false);*/
+    public static final BooleanFlag FOLDER_NAME_SUGGEST =
+            new BooleanFlag("FOLDER_NAME_SUGGEST", true);
+
     public static final BooleanFlag FOLDER_NAME_MAJORITY_RANKING = getDebugFlag(
             "FOLDER_NAME_MAJORITY_RANKING", true,
             "Suggests folder names based on majority based ranking.");
-    public static final BooleanFlag APP_SEARCH_IMPROVEMENTS = Utilities.ATLEAST_P ? new DeviceFlag(
+    /*public static final BooleanFlag APP_SEARCH_IMPROVEMENTS = Utilities.ATLEAST_P ? new DeviceFlag(
             "APP_SEARCH_IMPROVEMENTS", true,
             "Adds localized title and keyword search and ranking")
-            : new BooleanFlag("APP_SEARCH_IMPROVEMENTS", false);
+            : new BooleanFlag("APP_SEARCH_IMPROVEMENTS", false);*/
+    public static final BooleanFlag APP_SEARCH_IMPROVEMENTS =
+            new BooleanFlag("APP_SEARCH_IMPROVEMENTS", true);
     public static final BooleanFlag ENABLE_PREDICTION_DISMISS = getDebugFlag(
             "ENABLE_PREDICTION_DISMISS", true, "Allow option to dimiss apps from predicted list");
     public static final BooleanFlag ENABLE_QUICK_CAPTURE_GESTURE = getDebugFlag(
@@ -115,9 +122,12 @@ public final class FeatureFlags {
             "ENABLE_OVERVIEW_ACTIONS", true, "Show app actions instead of the shelf in Overview."
                     + " As part of this decoupling, also distinguish swipe up from nav bar vs above it.");
     // Keep as DeviceFlag for remote disable in emergency.
-    public static final BooleanFlag ENABLE_OVERVIEW_SELECTIONS = Utilities.ATLEAST_P ? new DeviceFlag(
+    /*public static final BooleanFlag ENABLE_OVERVIEW_SELECTIONS = Utilities.ATLEAST_P ? new DeviceFlag(
             "ENABLE_OVERVIEW_SELECTIONS", true, "Show Select Mode button in Overview Actions")
-            : new BooleanFlag("ENABLE_OVERVIEW_SELECTIONS", false);
+            : new BooleanFlag("ENABLE_OVERVIEW_SELECTIONS", false);*/
+    public static final BooleanFlag ENABLE_OVERVIEW_SELECTIONS =
+            new BooleanFlag("ENABLE_OVERVIEW_SELECTIONS", true);
+
     public static final BooleanFlag ENABLE_OVERVIEW_SHARE = getDebugFlag(
             "ENABLE_OVERVIEW_SHARE", false, "Show Share button in Overview Actions");
     public static final BooleanFlag ENABLE_DATABASE_RESTORE = getDebugFlag(
@@ -139,13 +149,17 @@ public final class FeatureFlags {
     public static final BooleanFlag SEPARATE_RECENTS_ACTIVITY = getDebugFlag(
             "SEPARATE_RECENTS_ACTIVITY", false,
             "Uses a separate recents activity instead of using the integrated recents+Launcher UI");
-    public static final BooleanFlag USER_EVENT_DISPATCHER = Utilities.ATLEAST_P ? new DeviceFlag(
+    /*public static final BooleanFlag USER_EVENT_DISPATCHER = Utilities.ATLEAST_P ? new DeviceFlag(
             "USER_EVENT_DISPATCHER", true, "User event dispatcher collects logs.")
-            : new BooleanFlag("USER_EVENT_DISPATCHER", false);
+            : new BooleanFlag("USER_EVENT_DISPATCHER", true);
     public static final BooleanFlag ENABLE_MINIMAL_DEVICE = Utilities.ATLEAST_P ? new DeviceFlag(
-            "ENABLE_MINIMAL_DEVICE", false,
+            "ENABLE_MINIMAL_DEVICE", true,
             "Allow user to toggle minimal device mode in launcher.")
-            : new BooleanFlag("ENABLE_MINIMAL_DEVICE", false);
+            : new BooleanFlag("ENABLE_MINIMAL_DEVICE", false);*/
+    public static final BooleanFlag USER_EVENT_DISPATCHER =
+            new BooleanFlag("USER_EVENT_DISPATCHER", true);
+    public static final BooleanFlag ENABLE_MINIMAL_DEVICE =
+            new BooleanFlag("ENABLE_MINIMAL_DEVICE", true);
     private static final List<DebugFlag> sDebugFlags = new ArrayList<>();
 
     private FeatureFlags() {

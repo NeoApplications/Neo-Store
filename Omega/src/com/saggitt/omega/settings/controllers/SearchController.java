@@ -28,7 +28,7 @@ import com.saggitt.omega.search.webproviders.WebSearchProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class SearchController extends PreferenceController {
-    private SearchProvider provider;
+    private final SearchProvider provider;
 
     //TODO: implement a listener
     public SearchController(@NotNull Context context) {

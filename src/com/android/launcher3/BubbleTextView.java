@@ -16,10 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.FastBitmapDrawable.newIcon;
-import static com.android.launcher3.graphics.PreloadIconDrawable.newPendingIcon;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -72,6 +68,10 @@ import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.text.NumberFormat;
+
+import static com.android.launcher3.FastBitmapDrawable.newIcon;
+import static com.android.launcher3.graphics.PreloadIconDrawable.newPendingIcon;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
@@ -184,6 +184,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             defaultIconSize = grid.iconSizePx;
             int lines = prefs.getHomeLabelRows();
             setLineCount(lines);
+            if (prefs.getCustomBackground()) {
+                setTextColor(prefs.getDrawerLabelColor());
+            }
         } else if (mDisplay == DISPLAY_ALL_APPS) {
             mHideText = prefs.getHideAllAppsAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsIconTextSizePx);

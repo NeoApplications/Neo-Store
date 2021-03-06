@@ -15,17 +15,6 @@
  */
 package com.android.quickstep.views;
 
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.OVERVIEW_BUTTONS;
-import static com.android.launcher3.LauncherState.OVERVIEW_MODAL_TASK;
-import static com.android.launcher3.LauncherState.SPRING_LOADED;
-import static com.android.launcher3.QuickstepAppTransitionManagerImpl.ALL_APPS_PROGRESS_OFF_SCREEN;
-import static com.android.launcher3.allapps.AllAppsTransitionController.ALL_APPS_PROGRESS;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
@@ -40,14 +29,12 @@ import android.widget.FrameLayout;
 import com.android.launcher3.BaseQuickstepLauncher;
 import com.android.launcher3.Hotseat;
 import com.android.launcher3.LauncherState;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.appprediction.PredictionUiStateManager;
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.statehandlers.DepthController;
 import com.android.launcher3.statemanager.StateManager.StateListener;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.views.ScrimView;
 import com.android.quickstep.LauncherActivityInterface;
@@ -57,6 +44,17 @@ import com.android.quickstep.util.TransformParams;
 import com.android.systemui.plugins.PluginListener;
 import com.android.systemui.plugins.RecentsExtraCard;
 import com.android.systemui.shared.recents.model.Task;
+
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.OVERVIEW_BUTTONS;
+import static com.android.launcher3.LauncherState.OVERVIEW_MODAL_TASK;
+import static com.android.launcher3.LauncherState.SPRING_LOADED;
+import static com.android.launcher3.QuickstepAppTransitionManagerImpl.ALL_APPS_PROGRESS_OFF_SCREEN;
+import static com.android.launcher3.allapps.AllAppsTransitionController.ALL_APPS_PROGRESS;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
 
 /**
  * {@link RecentsView} used in Launcher activity
@@ -285,7 +283,7 @@ public class LauncherRecentsView extends RecentsView<BaseQuickstepLauncher>
         return super.shouldStealTouchFromSiblingsBelow(ev);
     }
 
-    @Override
+    /*@Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (Utilities.ATLEAST_R)
@@ -299,7 +297,7 @@ public class LauncherRecentsView extends RecentsView<BaseQuickstepLauncher>
         if (Utilities.ATLEAST_R)
             PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(
                     mRecentsExtraCardPluginListener);
-    }
+    }*/
 
     @Override
     protected int computeMinScroll() {

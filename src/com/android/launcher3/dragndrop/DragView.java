@@ -16,9 +16,6 @@
 
 package com.android.launcher3.dragndrop;
 
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.animation.FloatArrayEvaluator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -32,6 +29,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -57,9 +55,11 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Arrays;
+
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DragView extends View implements StateListener<LauncherState> {
     private static final ColorMatrix sTempMatrix1 = new ColorMatrix();
@@ -209,7 +209,7 @@ public class DragView extends View implements StateListener<LauncherState> {
                 int h = mBitmap.getHeight();
                 Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h, outObj);
 
-                if (dr instanceof AdaptiveIconCompat) {
+                if (dr instanceof AdaptiveIconDrawable) {
                     int blurMargin = (int) mLauncher.getResources()
                             .getDimension(R.dimen.blur_size_medium_outline) / 2;
 
@@ -230,12 +230,12 @@ public class DragView extends View implements StateListener<LauncherState> {
                             nDr = dr;
                         } else {
                             // Since we just want the scale, avoid heavy drawing operations
-                            nDr = new AdaptiveIconCompat(new ColorDrawable(Color.BLACK), null);
+                            nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
                         }
                         Utilities.scaleRectAboutCenter(bounds,
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
-                    AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) dr;
+                    AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
 
                     // Shrink very tiny bit so that the clip path is smaller than the original bitmap
                     // that has anti aliased edges and shadows.
@@ -245,13 +245,13 @@ public class DragView extends View implements StateListener<LauncherState> {
                     final Path mask = adaptiveIcon.getIconMask();
 
                     mTranslateX = new SpringFloatValue(DragView.this,
-                            w * AdaptiveIconCompat.getExtraInsetFraction());
+                            w * AdaptiveIconDrawable.getExtraInsetFraction());
                     mTranslateY = new SpringFloatValue(DragView.this,
-                            h * AdaptiveIconCompat.getExtraInsetFraction());
+                            h * AdaptiveIconDrawable.getExtraInsetFraction());
 
                     bounds.inset(
-                            (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
-                            (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
+                            (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
+                            (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
                     );
                     mBgSpringDrawable = adaptiveIcon.getBackground();
                     if (mBgSpringDrawable == null) {

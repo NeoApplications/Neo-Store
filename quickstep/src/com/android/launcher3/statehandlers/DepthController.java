@@ -16,10 +16,6 @@
 
 package com.android.launcher3.statehandlers;
 
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_DEPTH;
-import static com.android.launcher3.states.StateAnimationConfig.SKIP_DEPTH_CONTROLLER;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -41,6 +37,10 @@ import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
 import com.android.systemui.shared.system.SurfaceControlCompat;
 import com.android.systemui.shared.system.TransactionCompat;
 import com.android.systemui.shared.system.WallpaperManagerCompat;
+
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_DEPTH;
+import static com.android.launcher3.states.StateAnimationConfig.SKIP_DEPTH_CONTROLLER;
 
 /**
  * Controls blur and wallpaper zoom, for the Launcher surface only.
@@ -81,8 +81,8 @@ public class DepthController implements StateHandler<LauncherState>,
                 @Override
                 public void onDraw() {
                     View view = mLauncher.getDragLayer();
-                    if (Utilities.ATLEAST_R)
-                        setSurface(new SurfaceControlCompat(view));
+                    //if (Utilities.ATLEAST_R)
+                    //setSurface(new SurfaceControlCompat(view));
                     view.post(() -> view.getViewTreeObserver().removeOnDrawListener(this));
                 }
             };

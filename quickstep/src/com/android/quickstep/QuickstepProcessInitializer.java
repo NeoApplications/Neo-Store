@@ -17,8 +17,11 @@ package com.android.quickstep;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.UserManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.MainProcessInitializer;
@@ -32,6 +35,7 @@ public class QuickstepProcessInitializer extends MainProcessInitializer {
 
     public QuickstepProcessInitializer(Context context) { }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void init(Context context) {
         // Workaround for b/120550382, an external app can cause the launcher process to start for
@@ -50,12 +54,11 @@ public class QuickstepProcessInitializer extends MainProcessInitializer {
         super.init(context);
 
         // Elevate GPU priority for Quickstep and Remote animations.
-        if (Utilities.ATLEAST_Q) {
-            try {
-                ThreadedRendererCompat.setContextPriority(
-                        ThreadedRendererCompat.EGL_CONTEXT_PRIORITY_HIGH_IMG);
-            } catch (NoSuchMethodError e) {
-                e.printStackTrace();
+        try {
+            ThreadedRendererCompat.setContextPriority(ThreadedRendererCompat.EGL_CONTEXT_PRIORITY_HIGH_IMG);
+        } catch (Throwable t) {
+            if (Utilities.ATLEAST_P && Utilities.HIDDEN_APIS_ALLOWED) {
+                Log.e("QuickstepProcessInit", "Hidden APIs allowed but can't invoke setContextPriority", t);
             }
         }
     }

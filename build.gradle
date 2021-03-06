@@ -78,7 +78,7 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
-    def code = 129
+    def code = 130
 
     defaultConfig {
         minSdkVersion 25
@@ -103,7 +103,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            applicationIdSuffix ".dev"
+            applicationIdSuffix ".devx"
         }
     }
 
@@ -126,12 +126,6 @@ android {
             applicationId 'com.saggitt.omega'
             testApplicationId 'com.android.launcher3.tests'
         }
-
-        /*l3go {
-            dimension "app"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
-        }*/
 
         withQuickstep {
             dimension "recents"
@@ -173,20 +167,6 @@ android {
         aosp {
             java.srcDirs = ['src_flags', 'src_shortcuts_overrides']
         }
-
-        /*aospWithoutQuickstep {
-            manifest.srcFile "AndroidManifest.xml"
-        }
-
-        aospWithQuickstep {
-            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
-        }
-
-        l3go {
-            res.srcDirs = ['go/res']
-            java.srcDirs = ['go/src']
-            manifest.srcFile "go/AndroidManifest.xml"
-        }*/
 
         withoutQuickstep {
             java.srcDirs = ['src_ui_overrides']
@@ -236,12 +216,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.logginginterceptor}"
     implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
 
-
     // Recents lib dependency
     withQuickstepImplementation project(':SystemUISharedLib')
-
-    // Recents lib dependency for Go
-    //withQuickstepIconRecentsImplementation project(':SystemUISharedLib')
 
     // Required for AOSP to compile. This is already included in the sysui_shared.jar
     implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'plugin_core.jar')

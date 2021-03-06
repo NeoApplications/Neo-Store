@@ -15,13 +15,9 @@
  */
 package com.android.launcher3.logging;
 
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.IGNORE;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_CLOSE_DOWN;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_OPEN_UP;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_HOME_GESTURE;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_OVERVIEW_GESTURE;
-
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -31,9 +27,15 @@ import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.userevent.LauncherLogProto;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ResourceBasedOverride;
 
 import java.util.List;
+
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_CLOSE_DOWN;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_OPEN_UP;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_HOME_GESTURE;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_OVERVIEW_GESTURE;
 
 /**
  * Handles the user event logging in R+.
@@ -72,7 +74,7 @@ public class StatsLogManager implements ResourceBasedOverride {
     }
 
     /**
-     * Returns event enum based on the two {@link ContainerType} transition information when swipe
+     * Returns event enum based on the two {@link LauncherLogProto.ContainerType} transition information when swipe
      * gesture happens(to be removed during UserEventDispatcher cleanup).
      */
     public static EventEnum getLauncherAtomEvent(int startContainerType,
@@ -99,8 +101,24 @@ public class StatsLogManager implements ResourceBasedOverride {
     public static StatsLogManager newInstance(Context context) {
         StatsLogManager mgr = Overrides.getObject(StatsLogManager.class,
                 context.getApplicationContext(), R.string.stats_log_manager_class);
+        mgr.verify();
         return mgr;
     }
+
+    public void logAppLaunch(View v, Intent intent) {
+    }
+
+    public void logTaskLaunch(View v, ComponentKey key) {
+    }
+
+    public void logTaskDismiss(View v, ComponentKey key) {
+    }
+
+    public void logSwipeOnContainer(boolean isSwipingToLeft, int pageId) {
+    }
+
+    public void verify() {
+    }     // TODO: should move into robo tests
 
     /**
      * Returns new logger object.

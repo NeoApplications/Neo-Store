@@ -1,20 +1,5 @@
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
-import static com.android.launcher3.LauncherState.APPS_VIEW_ITEM_MASK;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.VERTICAL_SWIPE_INDICATOR;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.FINAL_FRAME;
-import static com.android.launcher3.anim.Interpolators.INSTANT;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_ALL_APPS_FADE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_ALL_APPS_HEADER_FADE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_OVERVIEW_SCALE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_VERTICAL_PROGRESS;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -41,6 +26,21 @@ import com.android.systemui.plugins.AllAppsSearchPlugin;
 import com.android.systemui.plugins.PluginListener;
 import com.saggitt.omega.allapps.BlurQsbLayout;
 import com.saggitt.omega.blur.BlurScrimView;
+
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER_EXTRA;
+import static com.android.launcher3.LauncherState.APPS_VIEW_ITEM_MASK;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.VERTICAL_SWIPE_INDICATOR;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.FINAL_FRAME;
+import static com.android.launcher3.anim.Interpolators.INSTANT;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_ALL_APPS_FADE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_ALL_APPS_HEADER_FADE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_OVERVIEW_SCALE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_VERTICAL_PROGRESS;
 
 /**
  * Handles AllApps view transition.
@@ -229,8 +229,8 @@ public class AllAppsTransitionController implements StateHandler<LauncherState>,
     public void setupViews(AllAppsContainerView appsView, ScrimView scrimView) {
         mAppsView = appsView;
         mScrimView = scrimView;
-        PluginManagerWrapper.INSTANCE.get(mLauncher)
-                .addPluginListener(this, AllAppsSearchPlugin.class, false);
+        //PluginManagerWrapper.INSTANCE.get(mLauncher)
+        //        .addPluginListener(this, AllAppsSearchPlugin.class, false);
     }
 
     /**

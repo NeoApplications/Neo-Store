@@ -16,10 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
-
 import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -45,6 +41,10 @@ import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
 public class LauncherAppState {
 
@@ -218,6 +218,11 @@ public class LauncherAppState {
 
     public InvariantDeviceProfile getInvariantDeviceProfile() {
         return mInvariantDeviceProfile;
+    }
+
+    public void reloadIconCache() {
+        mIconCache.removeAllIcons();
+        mModel.forceReloadOnNextLaunch();
     }
 
     /**

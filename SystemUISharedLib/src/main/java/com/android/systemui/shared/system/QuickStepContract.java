@@ -16,13 +16,10 @@
 
 package com.android.systemui.shared.system;
 
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON;
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON;
-import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
-
 import android.annotation.IntDef;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.ViewConfiguration;
 import android.view.WindowManagerPolicyConstants;
 
@@ -31,6 +28,10 @@ import com.android.internal.policy.ScreenDecorationsUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.StringJoiner;
+
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
 
 /**
  * Various shared constants between Launcher and SysUI as part of quickstep
@@ -222,7 +223,13 @@ public class QuickStepContract {
      * If live rounded corners are supported on windows.
      */
     public static boolean supportsRoundedCornersOnWindows(Resources resources) {
-        return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
+        //return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Retention(RetentionPolicy.SOURCE)

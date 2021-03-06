@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
@@ -42,6 +40,8 @@ import android.util.Xml;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
+import androidx.annotation.Nullable;
+
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
@@ -60,7 +60,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
+import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
 
 /**
  * Abstract representation of the shape of an icon shape
@@ -96,7 +96,18 @@ public abstract class IconShape {
         return false;
     }
 
-    ;
+    public abstract void drawShape(Canvas canvas, float offsetX, float offsetY, float radius,
+                                   Paint paint);
+
+    public abstract void addToPath(Path path, float offsetX, float offsetY, float radius);
+
+    public abstract <T extends View & ClipPathView> Animator createRevealAnimator(T target,
+                                                                                  Rect startRect, Rect endRect, float endRadius, boolean isReversed);
+
+    @Nullable
+    public TypedValue getAttrValue(int attr) {
+        return mAttrs == null ? null : mAttrs.get(attr);
+    }
 
     /**
      * Initializes the shape which is closest to the {@link AdaptiveIconCompat}
@@ -116,8 +127,6 @@ public abstract class IconShape {
         }
     }
 
-    public abstract void addToPath(Path path, float offsetX, float offsetY, float radius);
-
     private static IconShape getShapeDefinition(String type, float radius) {
         switch (type) {
             case "Circle":
@@ -131,11 +140,6 @@ public abstract class IconShape {
             default:
                 throw new IllegalArgumentException("Invalid shape type: " + type);
         }
-    }
-
-    @Nullable
-    public TypedValue getAttrValue(int attr) {
-        return mAttrs == null ? null : mAttrs.get(attr);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -178,9 +182,6 @@ public abstract class IconShape {
         sShapePath = new Path(drawable.getIconMask());
         sNormalizationScale = IconNormalizer.normalizeAdaptiveIcon(drawable, size, null);
     }
-
-    public abstract void drawShape(Canvas canvas, float offsetX, float offsetY, float radius,
-                                   Paint paint);
 
     public static class AdaptiveIconShape extends PathShape {
 
@@ -241,9 +242,6 @@ public abstract class IconShape {
             return true;
         }
     }
-
-    public abstract <T extends View & ClipPathView> Animator createRevealAnimator(T target,
-                                                                                  Rect startRect, Rect endRect, float endRadius, boolean isReversed);
 
     /**
      * Abstract shape where the reveal animation is a derivative of a round rect animation
