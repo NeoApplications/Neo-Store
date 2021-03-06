@@ -45,6 +45,6 @@ public class MetricsLoggerCompat {
     }
 
     public void visibility(int category, boolean visible) {
-        mMetricsLogger.visibility(category, visible);
+        //mMetricsLogger.visibility(category, visible);
     }
 }
