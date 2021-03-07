@@ -103,7 +103,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            applicationIdSuffix ".devx"
+            applicationIdSuffix ".dev"
         }
     }
 

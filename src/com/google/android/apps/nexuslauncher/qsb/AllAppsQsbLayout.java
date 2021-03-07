@@ -1,12 +1,5 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
-import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +30,6 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.SearchUiManager;
-import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.google.android.apps.nexuslauncher.search.SearchThread;
@@ -47,7 +39,12 @@ import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.providers.AppSearchSearchProvider;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
-import org.jetbrains.annotations.NotNull;
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
+import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 
 public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 
@@ -338,10 +335,10 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             mFallback = (FallbackAppsSearchView) getLauncher().getLayoutInflater()
                     .inflate(R.layout.all_apps_google_search_fallback, this, false);
             AllAppsContainerView allAppsContainerView = this.mAppsView;
-            mFallback.DJ = this;
+            mFallback.allAppsQsbLayout = this;
             mFallback.mApps = allAppsContainerView.getApps();
             mFallback.mAppsView = allAppsContainerView;
-            mFallback.DI.initialize(new SearchThread(mFallback.getContext()), mFallback,
+            mFallback.mSearchBarController.initialize(new SearchThread(mFallback.getContext()), mFallback,
                     Launcher.getLauncher(mFallback.getContext()), mFallback);
             addView(this.mFallback);
             mFallback.setTextColor(mForegroundColor);

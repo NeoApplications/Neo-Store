@@ -67,7 +67,7 @@
     <dimen name="hotseat_qsb_scroll_shadow_blur_radius">1.5dp</dimen>
     <dimen name="hotseat_navbar_padding">24dp</dimen>
     <dimen name="qsb_margin_top_adjusting">20dp</dimen>
-    <dimen name="qsb_mic_width">56dp</dimen>
+    <dimen name="qsb_mic_width">48dp</dimen>
     <dimen name="qsb_shadow_margin">6dp</dimen>
     <dimen name="qsb_widget_height">56dp</dimen>
     <dimen name="qsb_widget_padding">8dp</dimen>
@@ -98,11 +98,4 @@
 
     <dimen name="dialog_corner_radius">8dp</dimen>
     <dimen name="dynamic_grid_page_indicator_line_height">1dp</dimen>
-
-    <dimen name="noqsb_hotseat_top_padding">8dp</dimen>
-    <dimen name="noqsb_hotseat_bottom_padding">2dp</dimen>
-    <!-- Extra bottom padding for non-tall devices. -->
-    <dimen name="noqsb_hotseat_bottom_non_tall_padding">0dp</dimen>
-    <dimen name="noqsb_hotseat_extra_vertical_size">34dp</dimen>
-    <dimen name="noqsb_hotseat_side_padding">0dp</dimen>
 </resources>

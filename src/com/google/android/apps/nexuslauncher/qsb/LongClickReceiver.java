@@ -1,25 +1,18 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
 import android.content.BroadcastReceiver;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.LauncherActivityInfo;
-import android.content.pm.LauncherApps;
-import android.os.Bundle;
 
-import com.android.launcher3.util.ComponentKey;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
-import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
+import com.saggitt.omega.OmegaLauncher;
 
 import java.lang.ref.WeakReference;
 
 public class LongClickReceiver extends BroadcastReceiver {
 
-    private static WeakReference<NexusLauncherActivity> bR = new WeakReference<>(null);
+    private static WeakReference<OmegaLauncher> bR = new WeakReference<>(null);
 
-    public static void bq(final NexusLauncherActivity nexusLauncherActivity) {
+    public static void bq(final OmegaLauncher nexusLauncherActivity) {
         LongClickReceiver.bR = new WeakReference<>(nexusLauncherActivity);
     }
 

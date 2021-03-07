@@ -44,7 +44,7 @@
 
     <FrameLayout
         android:id="@+id/mic_frame"
-        android:layout_width="@dimen/qsb_mic_width"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_gravity="end|center">
 

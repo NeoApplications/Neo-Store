@@ -1,7 +1,5 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
-import static java.lang.Math.round;
-
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -44,6 +42,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
@@ -54,6 +53,7 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.graphics.NinePatchDrawHelper;
 import com.android.launcher3.icons.ShadowGenerator.Builder;
+import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TransformingTouchDelegate;
 import com.android.launcher3.views.ActivityContext;
@@ -61,8 +61,10 @@ import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
+import static java.lang.Math.round;
+
 public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedPreferenceChangeListener,
-        OnClickListener, OnLongClickListener, Insettable, SearchProviderController.OnProviderChangeListener {
+        OnClickListener, OnLongClickListener, Insettable, SearchProviderController.OnProviderChangeListener, WallpaperColorInfo.OnChangeListener {
     private static final Rect mSrcRect = new Rect();
     public static FloatProperty HOTSEAT_PROGRESS = new FloatProperty<AbstractQsbLayout>("hotseatProgress") {
         @Override
@@ -83,6 +85,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     protected final NinePatchDrawHelper mShadowHelper;
     protected final NinePatchDrawHelper mClearShadowHelper;
     protected final ActivityContext mActivity;
+    protected Context mContext;
     protected final int qsbTextSpacing;
     protected final int twoBubbleGap;
     protected final int mSearchIconWidth;
@@ -91,6 +94,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     private final int mShadowMargin;
     private final int qsbHintLenght;
     private final TransformingTouchDelegate mTouchDelegate;
+    protected int mColor;
     private final boolean mIsWorkspaceDarkText;
     public float micStrokeWidth;
     protected Bitmap mBubbleShadowBitmap;
@@ -111,6 +115,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     protected float mHotseatProgress = 1f;
     private boolean mShowAssistant;
     private float mRadius = -1.0f;
+    SearchProvider searchProvider;
 
     public AbstractQsbLayout(Context context) {
         this(context, null);
@@ -128,7 +133,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         mClearShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper.paint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
         mResult = 0;
-        mActivity = ActivityContext.lookupContext(context);
         mIsWorkspaceDarkText = Themes.getAttrBoolean(context, R.attr.isWorkspaceDarkText);
         setOnLongClickListener(this);
         qsbDoodle = getResources().getDimensionPixelSize(R.dimen.qsb_doodle_tap_target_logo_width);
@@ -141,6 +145,8 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         mIsRtl = Utilities.isRtl(getResources());
         mTouchDelegate = new TransformingTouchDelegate(this);
         setTouchDelegate(mTouchDelegate);
+        mContext = context;
+        mActivity = ActivityContext.lookupContext(context);
     }
 
     public static float getCornerRadius(Context context, float defaultRadius) {
@@ -167,6 +173,16 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         getDevicePreferences().registerOnSharedPreferenceChangeListener(this);
         mTouchDelegate.setDelegateView(mMicFrame);
         SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
+        WallpaperColorInfo instance = WallpaperColorInfo.getInstance(getContext());
+        instance.addOnChangeListener(this);
+        onExtractedColorsChanged(instance);
+
+        updateConfiguration();
+    }
+
+    private void updateConfiguration() {
+        addOrUpdateSearchPaint(0.0f);
+        addOrUpdateSearchRipple();
     }
 
     public boolean onTouchEvent(MotionEvent motionEvent) {
@@ -220,7 +236,25 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     protected void onDetachedFromWindow() {
         Utilities.getPrefs(getContext()).unregisterOnSharedPreferenceChangeListener(this);
         SearchProviderController.Companion.getInstance(getContext()).removeOnProviderChangeListener(this);
+        WallpaperColorInfo.getInstance(getContext()).removeOnChangeListener(this);
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void onExtractedColorsChanged(WallpaperColorInfo wallpaperColorInfo) {
+        setColor(ColorUtils.compositeColors(ColorUtils.compositeColors(
+                Themes.getAttrBoolean(mContext, R.attr.isMainColorDark)
+                        ? -650362813 : -855638017, Themes.getAttrColor(mContext, R.attr.allAppsScrimColor)), wallpaperColorInfo.getMainColor()));
+    }
+
+    private void setColor(int color) {
+        if (mColor != color) {
+            mColor = color;
+            mAllAppsShadowBitmap = null;
+            setHotseatBgColor(color);
+            setAllAppsBgColor(color);
+            invalidate();
+        }
     }
 
     public final void setAllAppsBgColor(int color) {
@@ -450,7 +484,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         int i = 17;
         if (dE()) {
             i = 8388629;
-            if (this.mIsRtl) {
+            if (mIsRtl) {
                 textView.setPadding(dD(), 0, 0, 0);
             } else {
                 textView.setPadding(0, 0, dD(), 0);
@@ -471,11 +505,11 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected final int getRtlDimens() {
-        return this.mUseTwoBubbles ? getMicWidth() + twoBubbleGap : 0;
+        return mUseTwoBubbles ? getMicWidth() + twoBubbleGap : 0;
     }
 
     protected final int getMicWidth() {
-        if (!this.mUseTwoBubbles || TextUtils.isEmpty(this.Dg)) {
+        if (!mUseTwoBubbles || TextUtils.isEmpty(this.Dg)) {
             return mSearchIconWidth;
         }
         return (Math.round(qsbTextHintSize.measureText(this.Dg)) + qsbTextSpacing) + mSearchIconWidth;
@@ -602,8 +636,8 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     protected void loadPreferences(SharedPreferences sharedPreferences) {
         post(() -> {
-            SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-            boolean providerSupported = provider.getSupportsAssistant() || provider.getSupportsVoiceSearch();
+            searchProvider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
+            boolean providerSupported = searchProvider.getSupportsAssistant() || searchProvider.getSupportsVoiceSearch();
             boolean showMic = sharedPreferences.getBoolean("opa_enabled", true) && providerSupported;
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true);
             mLogoIconView.setImageDrawable(getIcon());
@@ -624,8 +658,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected Drawable getIcon(boolean colored) {
-        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-        return provider.getIcon(colored);
+        return searchProvider.getIcon(colored);
     }
 
     protected Drawable getHotseatIcon(boolean colored) {
@@ -637,11 +670,10 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected Drawable getMicIcon(boolean colored) {
-        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-        if (provider.getSupportsAssistant()) {
-            return provider.getAssistantIcon(colored);
-        } else if (provider.getSupportsVoiceSearch()) {
-            return provider.getVoiceIcon(colored);
+        if (searchProvider.getSupportsAssistant()) {
+            return searchProvider.getAssistantIcon(colored);
+        } else if (searchProvider.getSupportsVoiceSearch()) {
+            return searchProvider.getVoiceIcon(colored);
         } else {
             mMicIconView.setVisibility(GONE);
             return new ColorDrawable(Color.TRANSPARENT);

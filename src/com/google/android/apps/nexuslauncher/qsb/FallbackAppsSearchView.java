@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdateListener, Callbacks {
-    final AllAppsSearchBarController DI;
-    AllAppsQsbLayout DJ;
+    AllAppsSearchBarController mSearchBarController;
+    AllAppsQsbLayout allAppsQsbLayout;
     AlphabeticalAppsList mApps;
     AllAppsContainerView mAppsView;
 
@@ -35,7 +35,7 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
 
     public FallbackAppsSearchView(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
-        DI = new AllAppsSearchBarController();
+        mSearchBarController = new AllAppsSearchBarController();
     }
 
     protected void onAttachedToWindow() {
@@ -58,8 +58,8 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
                 mApps.setSearchSuggestions(suggestions);
             }
             if (apps != null || suggestions != null) {
-                dV();
-                x(true);
+                notifyResultChanged();
+                hidePredictionRowView(true);
                 mAppsView.setLastSearchQuery(query);
             }
         }
@@ -69,12 +69,12 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
     public final void clearSearchResult() {
         if (getParent() != null) {
             if (mApps.setOrderedFilter(null) || mApps.setSearchSuggestions(null)) {
-                dV();
+                notifyResultChanged();
             }
-            x(false);
-            DJ.mDoNotRemoveFallback = true;
+            hidePredictionRowView(false);
+            allAppsQsbLayout.mDoNotRemoveFallback = true;
             mAppsView.onClearSearchResult();
-            DJ.mDoNotRemoveFallback = false;
+            allAppsQsbLayout.mDoNotRemoveFallback = false;
         }
     }
 
@@ -94,15 +94,15 @@ public class FallbackAppsSearchView extends ExtendedEditText implements OnUpdate
     }
 
     public void onAppsUpdated() {
-        this.DI.refreshSearchResult();
+        mSearchBarController.refreshSearchResult();
     }
 
-    private void x(boolean z) {
+    private void hidePredictionRowView(boolean z) {
         mAppsView.getFloatingHeaderView().setCollapsed(z);
     }
 
-    private void dV() {
-        this.DJ.setShadowAlpha(0);
+    private void notifyResultChanged() {
+        allAppsQsbLayout.setShadowAlpha(0);
         mAppsView.onSearchResultsChanged();
     }
 

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 
 import androidx.core.graphics.ColorUtils;
-import androidx.core.os.UserManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,15 +22,10 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsRecyclerView;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
-import com.android.launcher3.appprediction.PredictionRowView;
 import com.android.launcher3.icons.BitmapRenderer;
-import com.android.launcher3.model.data.AppInfo;
-import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
-import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.Columns;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchBase;
@@ -41,7 +34,6 @@ import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.util.Config;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.google.android.apps.nexuslauncher.search.nano.SearchProto.SearchView;
 
