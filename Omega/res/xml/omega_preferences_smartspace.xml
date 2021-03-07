@@ -19,6 +19,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--
     <com.saggitt.omega.preferences.PreviewPreference
         android:key="pref_smartspace_preview"
         app:previewLayout="@layout/smartspace_preview" />
@@ -27,7 +28,7 @@
         android:key="pref_smartspace_add_to_home"
         android:title="@string/smartspace_add_to_home"
         app:indexable="false"
-        app:iconSpaceReserved="false" />
+        app:iconSpaceReserved="false" /> -->
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
