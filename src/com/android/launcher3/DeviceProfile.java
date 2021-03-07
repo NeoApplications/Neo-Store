@@ -283,11 +283,17 @@ public class DeviceProfile {
         updateWorkspacePadding();
 
         // This is done last, after iconSizePx is calculated above.
+        float dotSize = 0.38f;
+        if (!Utilities.getOmegaPrefs(context).getNotificationCount()) {
+            dotSize = 0.228f;
+        }
+
+        // This is done last, after iconSizePx is calculated above.
         mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(),
-                IconShape.DEFAULT_PATH_SIZE);
+                IconShape.DEFAULT_PATH_SIZE, dotSize);
         mDotRendererAllApps = iconSizePx == allAppsIconSizePx ? mDotRendererWorkSpace :
                 new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(),
-                        IconShape.DEFAULT_PATH_SIZE);
+                        IconShape.DEFAULT_PATH_SIZE, dotSize);
     }
 
     private static Context getContext(Context c, DefaultDisplay.Info info, int orientation) {
