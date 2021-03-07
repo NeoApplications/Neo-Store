@@ -16,9 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -60,8 +57,8 @@ import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.os.TransactionTooLargeException;
 import android.os.Process;
+import android.os.TransactionTooLargeException;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.Spannable;
@@ -81,7 +78,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.os.BuildCompat;
-import androidx.core.os.UserManagerCompat;
 
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
@@ -89,7 +85,6 @@ import com.android.launcher3.graphics.GridOptionsProvider;
 import com.android.launcher3.graphics.TintedDrawableSpan;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.IconCache;
-import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.icons.ShortcutCachingLogic;
 import com.android.launcher3.model.data.ItemInfo;
@@ -119,6 +114,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -635,8 +633,10 @@ public final class Utilities {
             LauncherActivityInfo activityInfo = launcher.getSystemService(LauncherApps.class)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
-            return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
-                    activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);
+            /*return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
+                    activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);*/
+            return (activityInfo != null) ? appState.getIconCache()
+                    .getFullResIcon(activityInfo, info) : null;
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =

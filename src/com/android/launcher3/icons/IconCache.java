@@ -327,10 +327,14 @@ public class IconCache extends BaseIconCache {
         return mIconProvider.getIcon(info, mIconDpi);
     }
 
-    public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo) {
+    public Drawable getFullResIcon(LauncherActivityInfo info, boolean flattenDrawable) {
+        return mIconProvider.getIcon(info, mIconDpi, flattenDrawable);
+    }
+
+    public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo, boolean flattenDrawable) {
         if (mIconProvider instanceof CustomIconProvider)
-            return mIconProvider.getIcon(info, mIconDpi);
-        return getFullResIcon(info);
+            return ((CustomIconProvider) mIconProvider).getIcon(info, itemInfo, mIconDpi, flattenDrawable);
+        return getFullResIcon(info, flattenDrawable);
     }
 
     public void updateSessionCache(PackageUserKey key, PackageInstaller.SessionInfo info) {

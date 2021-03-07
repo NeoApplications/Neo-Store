@@ -33,6 +33,7 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.R;
 import com.android.launcher3.icons.BitmapInfo.Extender;
 import com.android.launcher3.pm.UserCache;
@@ -219,6 +220,14 @@ public class IconProvider {
      */
     private int getDay() {
         return Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 1;
+    }
+
+    /**
+     * @param flattenDrawable true if the caller does not care about the specification of the
+     *                        original icon as long as the flattened version looks the same.
+     */
+    public Drawable getIcon(LauncherActivityInfo info, int iconDpi, boolean flattenDrawable) {
+        return AdaptiveIconCompat.wrap(info.getIcon(iconDpi));
     }
 
     private static class DateTimeChangeReceiver extends BroadcastReceiver {
