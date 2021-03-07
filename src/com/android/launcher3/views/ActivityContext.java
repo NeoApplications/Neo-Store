@@ -56,6 +56,15 @@ public interface ActivityContext {
 
     DeviceProfile getDeviceProfile();
 
+    /**
+     * Device profile to be used by UI elements which are shown directly on top of the wallpaper
+     * and whose presentation is tied to the wallpaper (and physical device) and not the activity
+     * configuration.
+     */
+    default DeviceProfile getWallpaperDeviceProfile() {
+        return getDeviceProfile();
+    }
+
     static ActivityContext lookupContext(Context context) {
         if (context instanceof ActivityContext) {
             return (ActivityContext) context;

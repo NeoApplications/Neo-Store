@@ -5,13 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-
 import android.os.Process;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
-
 import com.android.launcher3.icons.LauncherIcons;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Calendar;
 import java.util.TimeZone;

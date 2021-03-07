@@ -100,8 +100,8 @@ public class LauncherAppState {
 
         // TODO: remove listener on terminate
         FeatureFlags.APP_SEARCH_IMPROVEMENTS.addChangeListener(context, mModel::forceReload);
-        CustomWidgetManager.INSTANCE.get(mContext)
-                .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
+        //CustomWidgetManager.INSTANCE.get(mContext)
+        //        .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
 
         mUserChangeListener = UserCache.INSTANCE.get(mContext)
                 .addUserChangeListener(mModel::forceReload);
@@ -202,13 +202,6 @@ public class LauncherAppState {
     }
 
     public LauncherModel getModel() {
-        return mModel;
-    }
-
-    LauncherModel setLauncher(Launcher launcher) {
-        mLauncher = launcher;
-        //getLocalProvider(mContext).setLauncherProviderChangeListener(launcher);
-        //mModel.initialize(launcher);
         return mModel;
     }
 

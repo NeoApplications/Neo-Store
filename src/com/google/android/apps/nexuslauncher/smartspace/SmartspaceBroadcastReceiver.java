@@ -20,7 +20,7 @@ public class SmartspaceBroadcastReceiver extends BroadcastReceiver {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo("com.google.android.googlequicksearchbox", 0);
             SmartspaceController.get(context).cV(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
-        } catch (PackageManager.NameNotFoundException ex) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
     }
 

@@ -2,10 +2,10 @@ package com.google.android.apps.nexuslauncher.search;
 
 import android.content.SharedPreferences;
 
-import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherCallbacks;
 import com.android.launcher3.icons.IconCache;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 
 public class ItemInfoUpdateReceiver implements IconCache.ItemInfoUpdateReceiver, SharedPreferences.OnSharedPreferenceChangeListener {
     private final LauncherCallbacks mCallbacks;
@@ -18,30 +18,6 @@ public class ItemInfoUpdateReceiver implements IconCache.ItemInfoUpdateReceiver,
         this.eD = launcher.getDeviceProfile().inv.numColumns;
     }
 
-    public void di() {
-//        final AlphabeticalAppsList apps = ((AllAppsRecyclerView)this.mLauncher.findViewById(R.id.apps_list_view)).getApps();
-//        final IconCache iconCache = LauncherAppState.getInstance(this.mLauncher).getIconCache();
-//        final Iterator<ComponentKeyMapper<AppInfo>> iterator = this.mCallbacks.getPredictedApps().iterator();
-//        int n = 0;
-//        while (iterator.hasNext()) {
-//            final AppInfo app = apps.findApp(iterator.next());
-//            int n2;
-//            if (app != null) {
-//                if (app.usingLowResIcon) {
-//                    iconCache.updateIconInBackground(this, app);
-//                }
-//                n2 = n + 1;
-//                if (n2 >= this.eD) {
-//                    break;
-//                }
-//            }
-//            else {
-//                n2 = n;
-//            }
-//            n = n2;
-//        }
-    }
-
     public void onCreate() {
         mLauncher.getSharedPrefs().registerOnSharedPreferenceChangeListener(this);
     }
@@ -52,7 +28,7 @@ public class ItemInfoUpdateReceiver implements IconCache.ItemInfoUpdateReceiver,
 
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String s) {
         if ("reflection_last_predictions".equals(s) || "pref_show_predictions".equals(s)) {
-            this.di();
+            //this.di();
         }
     }
 

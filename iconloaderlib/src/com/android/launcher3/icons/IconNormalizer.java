@@ -36,7 +36,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconCompat;
 
 import java.nio.ByteBuffer;
 

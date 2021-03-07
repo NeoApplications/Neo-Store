@@ -19,7 +19,7 @@ import android.os.UserHandle;
 
 import androidx.annotation.NonNull;
 
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconCompat;
 
 import static android.graphics.Paint.DITHER_FLAG;
 import static android.graphics.Paint.FILTER_BITMAP_FLAG;

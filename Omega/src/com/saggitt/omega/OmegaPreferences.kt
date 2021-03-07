@@ -332,7 +332,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     fun updateSortApps() {
-        onChangeCallback?.forceReloadApps()
+        onChangeCallback?.reloadApps()
     }
 
     inline fun withChangeCallback(

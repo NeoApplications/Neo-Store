@@ -283,7 +283,8 @@ public class LauncherRecentsView extends RecentsView<BaseQuickstepLauncher>
         return super.shouldStealTouchFromSiblingsBelow(ev);
     }
 
-    /*@Override
+    /*
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (Utilities.ATLEAST_R)
@@ -297,7 +298,8 @@ public class LauncherRecentsView extends RecentsView<BaseQuickstepLauncher>
         if (Utilities.ATLEAST_R)
             PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(
                     mRecentsExtraCardPluginListener);
-    }*/
+    }
+*/
 
     @Override
     protected int computeMinScroll() {

@@ -63,13 +63,6 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         launcher.omegaApp.smartspace.forceUpdateWeather()
     }
 
-    fun forceReloadApps() {
-        (launcher.applicationContext.getSystemService(
-                USER_SERVICE) as UserManager).userProfiles.forEach {
-            launcher.model.forceReload()
-        }
-    }
-
     fun updatePageIndicator() {
         val indicator = launcher.workspace.pageIndicator
         if (indicator is WorkspacePageIndicator) {

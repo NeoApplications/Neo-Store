@@ -1,9 +1,10 @@
 package com.google.android.apps.nexuslauncher.clock;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,14 +15,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
 import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.WeakHashMap;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DynamicClock extends BroadcastReceiver {
     public static final ComponentName DESK_CLOCK = new ComponentName("com.google.android.deskclock", "com.android.deskclock.DeskClock");

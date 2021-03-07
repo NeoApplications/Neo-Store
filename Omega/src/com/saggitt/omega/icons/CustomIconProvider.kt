@@ -23,13 +23,10 @@ import android.content.pm.LauncherActivityInfo
 import android.content.pm.ShortcutInfo
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.annotation.RequiresApi
+import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.model.data.ItemInfo
 import com.google.android.apps.nexuslauncher.DynamicIconProvider
-import com.saggitt.omega.iconpack.AdaptiveIconCompat
 import com.saggitt.omega.iconpack.IconPackManager
 
 class CustomIconProvider(context: Context) : DynamicIconProvider(context) {

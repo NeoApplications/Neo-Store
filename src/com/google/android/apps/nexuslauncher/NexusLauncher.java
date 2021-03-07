@@ -24,6 +24,7 @@ import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientService;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.settings.SettingsActivity;
 
 import java.io.FileDescriptor;
@@ -45,7 +46,7 @@ public class NexusLauncher {
     private ItemInfoUpdateReceiver mItemInfoUpdateReceiver;
     public QsbAnimationController mQsbAnimationController;
 
-    public NexusLauncher(NexusLauncherActivity activity) {
+    public NexusLauncher(OmegaLauncher activity) {
         mLauncher = activity;
         mExterns = activity;
         mCallbacks = new NexusLauncherCallbacks();

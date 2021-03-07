@@ -1,20 +1,22 @@
 /*
- * Copyright (C) 2017 The Android Open Source Project
+ *  This file is part of Omega Launcher
+ *  Copyright (c) 2021   Saul Henriquez
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.iconpack;
+package com.android.launcher3;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
@@ -106,15 +108,39 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
      */
     private static final float EXTRA_INSET_PERCENTAGE = 1 / 4f;
     private static final float DEFAULT_VIEW_PORT_SCALE = 1f / (1 + 2 * EXTRA_INSET_PERCENTAGE);
-    private static final int BACKGROUND_ID = 0;
-    private static final int FOREGROUND_ID = 1;
+
     /**
      * Clip path defined in R.string.config_icon_mask.
      */
     private static Path sMask;
+
+    /**
+     * Scaled mask based on the view bounds.
+     */
+    private final Path mMask;
+    private final Matrix mMaskMatrix;
+    private final Region mTransparentRegion;
+    private final int mMaskId;
+    private static final int BACKGROUND_ID = 0;
+    private static final int FOREGROUND_ID = 1;
     private static Method methodGetAdaptiveIconMaskPath;
+
+    /**
+     * State variable that maintains the {@link ChildDrawable} array.
+     */
+    LayerState mLayerState;
+
+    private Shader mLayersShader;
+    private Bitmap mLayersBitmap;
     private static Method methodExtractThemeAttrs;
+    private Rect mHotspotBounds;
+    private boolean mMutated;
+
+    private boolean mSuspendChildInvalidation;
+    private boolean mChildRequestedInvalidation;
     private static Method methodCreateFromXmlInnerForDensity;
+    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG |
+            Paint.FILTER_BITMAP_FLAG);
 
     static {
         try {
@@ -130,28 +156,9 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         }
     }
 
-    /**
-     * Scaled mask based on the view bounds.
-     */
-    private final Path mMask;
-    private final Matrix mMaskMatrix;
-    private final Region mTransparentRegion;
-    private final int mMaskId;
     private final Rect mTmpOutRect = new Rect();
     private final Canvas mCanvas;
-    /**
-     * State variable that maintains the {@link ChildDrawable} array.
-     */
-    LayerState mLayerState;
     private Bitmap mMaskBitmap;
-    private Shader mLayersShader;
-    private Bitmap mLayersBitmap;
-    private Rect mHotspotBounds;
-    private boolean mMutated;
-    private boolean mSuspendChildInvalidation;
-    private boolean mChildRequestedInvalidation;
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG |
-            Paint.FILTER_BITMAP_FLAG);
 
     /**
      * Constructor used for xml inflation.
@@ -180,6 +187,22 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         mMaskId = sMask.hashCode();
     }
 
+    private int getInt(Field field, Object obj) {
+        try {
+            return field.getInt(obj);
+        } catch (IllegalAccessException e) {
+            return 0;
+        }
+    }
+
+    private <T> T invoke(Method method, Object obj, Object... params) {
+        try {
+            return (T) method.invoke(obj, params);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            return null;
+        }
+    }
+
     /**
      * Constructor used to dynamically create this drawable.
      *
@@ -198,100 +221,6 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         }
     }
 
-    static int resolveDensity(@Nullable Resources r, int parentDensity) {
-        final int densityDpi = r == null ? parentDensity : r.getDisplayMetrics().densityDpi;
-        return densityDpi == 0 ? DisplayMetrics.DENSITY_DEFAULT : densityDpi;
-    }
-
-    /**
-     * All four sides of the layers are padded with extra inset so as to provide
-     * extra content to reveal within the clip path when performing affine transformations on the
-     * layers.
-     *
-     * @see #getForeground() and #getBackground() for more info on how this value is used
-     */
-    public static float getExtraInsetFraction() {
-        return EXTRA_INSET_PERCENTAGE;
-    }
-
-    /**
-     * @hide
-     */
-    public static float getExtraInsetPercentage() {
-        return EXTRA_INSET_PERCENTAGE;
-    }
-
-    private static Drawable createFromXmlInnerForDensity(@NonNull Resources r,
-                                                         @NonNull XmlPullParser parser, @NonNull AttributeSet attrs, int density,
-                                                         @Nullable Theme theme) {
-        try {
-            return (Drawable) methodCreateFromXmlInnerForDensity.invoke(null,
-                    r, parser, attrs, density, theme);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Error while creating adaptive icon", e);
-        }
-    }
-
-    protected static @NonNull
-    TypedArray obtainAttributes(@NonNull Resources res,
-                                @Nullable Theme theme, @NonNull AttributeSet set, @NonNull int[] attrs) {
-        if (theme == null) {
-            return res.obtainAttributes(set, attrs);
-        }
-        return theme.obtainStyledAttributes(set, attrs, 0, 0);
-    }
-
-    @NonNull
-    public static Drawable wrap(@NonNull Drawable icon) {
-        if (VERSION.SDK_INT >= VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
-            AdaptiveIconDrawable adaptive = (AdaptiveIconDrawable) icon;
-            return new AdaptiveIconCompat(adaptive.getBackground(), adaptive.getForeground());
-        } else {
-            return icon;
-        }
-    }
-
-    @Nullable
-    public static Drawable wrapNullable(@Nullable Drawable icon) {
-        if (VERSION.SDK_INT >= VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
-            AdaptiveIconDrawable adaptive = (AdaptiveIconDrawable) icon;
-            return new AdaptiveIconCompat(adaptive.getBackground(), adaptive.getForeground());
-        } else {
-            return icon;
-        }
-    }
-
-    public static void onShapeChanged() {
-        sMask = null;
-    }
-
-    private int getInt(Field field, Object obj) {
-        try {
-            return field.getInt(obj);
-        } catch (IllegalAccessException e) {
-            return 0;
-        }
-    }
-
-    private <T> T invoke(Method method, Object obj, Object... params) {
-        try {
-            return (T) method.invoke(obj, params);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            return null;
-        }
-    }
-
-    @RequiresApi(api = VERSION_CODES.O)
-    @SuppressLint("RestrictedApi")
-    private Path createMaskPath() {
-        try {
-            return (Path) methodGetAdaptiveIconMaskPath.invoke(null);
-        } catch (Exception e) {
-            Log.d(TAG, "Can't load icon mask", e);
-        }
-        return new AdaptiveIconDrawable(null, null).getIconMask();
-    }
-
     private ChildDrawable createChildDrawable(Drawable drawable) {
         final ChildDrawable layer = new ChildDrawable(mLayerState.mDensity);
         layer.mDrawable = drawable;
@@ -303,6 +232,11 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
 
     LayerState createConstantState(@Nullable LayerState state, @Nullable Resources res) {
         return new LayerState(state, this, res);
+    }
+
+    static int resolveDensity(@Nullable Resources r, int parentDensity) {
+        final int densityDpi = r == null ? parentDensity : r.getDisplayMetrics().densityDpi;
+        return densityDpi == 0 ? DisplayMetrics.DENSITY_DEFAULT : densityDpi;
     }
 
     /**
@@ -339,6 +273,35 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         }
 
         inflateLayers(r, parser, attrs, theme);
+    }
+
+    /**
+     * All four sides of the layers are padded with extra inset so as to provide
+     * extra content to reveal within the clip path when performing affine transformations on the
+     * layers.
+     *
+     * @see #getForeground() and #getBackground() for more info on how this value is used
+     */
+    public static float getExtraInsetFraction() {
+        return EXTRA_INSET_PERCENTAGE;
+    }
+
+    /**
+     * @hide
+     */
+    public static float getExtraInsetPercentage() {
+        return EXTRA_INSET_PERCENTAGE;
+    }
+
+    private static Drawable createFromXmlInnerForDensity(@NonNull Resources r,
+                                                         @NonNull XmlPullParser parser, @NonNull AttributeSet attrs, int density,
+                                                         @Nullable Theme theme) {
+        try {
+            return (Drawable) methodCreateFromXmlInnerForDensity.invoke(null,
+                    r, parser, attrs, density, theme);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Error while creating adaptive icon", e);
+        }
     }
 
     /**
@@ -489,77 +452,32 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         return safezoneRegion;
     }
 
-    @Override
-    public @Nullable
-    Region getTransparentRegion() {
-        if (mTransparentRegion.isEmpty()) {
-            mMask.toggleInverseFillType();
-            mTransparentRegion.set(getBounds());
-            mTransparentRegion.setPath(mMask, mTransparentRegion);
-            mMask.toggleInverseFillType();
+    protected static @NonNull
+    TypedArray obtainAttributes(@NonNull Resources res,
+                                @Nullable Theme theme, @NonNull AttributeSet set, @NonNull int[] attrs) {
+        if (theme == null) {
+            return res.obtainAttributes(set, attrs);
         }
-        return mTransparentRegion;
+        return theme.obtainStyledAttributes(set, attrs, 0, 0);
     }
 
-    /**
-     * Inflates child layers using the specified parser.
-     */
-    private void inflateLayers(@NonNull Resources r, @NonNull XmlPullParser parser,
-                               @NonNull AttributeSet attrs, @Nullable Theme theme)
-            throws XmlPullParserException, IOException {
-        final LayerState state = mLayerState;
+    @NonNull
+    public static Drawable wrap(@NonNull Drawable icon) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
+            AdaptiveIconDrawable adaptive = (AdaptiveIconDrawable) icon;
+            return new AdaptiveIconCompat(adaptive.getBackground(), adaptive.getForeground());
+        } else {
+            return icon;
+        }
+    }
 
-        final int innerDepth = parser.getDepth() + 1;
-        int type;
-        int depth;
-        int childIndex = 0;
-        while ((type = parser.next()) != XmlPullParser.END_DOCUMENT
-                && ((depth = parser.getDepth()) >= innerDepth || type != XmlPullParser.END_TAG)) {
-            if (type != XmlPullParser.START_TAG) {
-                continue;
-            }
-
-            if (depth > innerDepth) {
-                continue;
-            }
-            String tagName = parser.getName();
-            switch (tagName) {
-                case "background":
-                    childIndex = BACKGROUND_ID;
-                    break;
-                case "foreground":
-                    childIndex = FOREGROUND_ID;
-                    break;
-                default:
-                    continue;
-            }
-
-            final ChildDrawable layer = new ChildDrawable(state.mDensity);
-            final TypedArray a = obtainAttributes(r, theme, attrs, new int[]{android.R.attr.drawable});
-            updateLayerFromTypedArray(layer, a);
-            a.recycle();
-
-            // If the layer doesn't have a drawable or unresolved theme
-            // attribute for a drawable, attempt to parse one from the child
-            // element. If multiple child elements exist, we'll only use the
-            // first one.
-            if (layer.mDrawable == null && (layer.mThemeAttrs == null)) {
-                while ((type = parser.next()) == XmlPullParser.TEXT) {
-                }
-                if (type != XmlPullParser.START_TAG) {
-                    throw new XmlPullParserException(parser.getPositionDescription()
-                            + ": <foreground> or <background> tag requires a 'drawable'"
-                            + "attribute or child tag defining a drawable");
-                }
-
-                // We found a child drawable. Take ownership.
-                layer.mDrawable = createFromXmlInnerForDensity(r, parser, attrs,
-                        mLayerState.mSrcDensityOverride, theme);
-                layer.mDrawable.setCallback(this);
-                state.mChildrenChangingConfigurations |=
-                        layer.mDrawable.getChangingConfigurations();
-            }
-            addLayer(childIndex, layer);
+    @Nullable
+    public static Drawable wrapNullable(@Nullable Drawable icon) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
+            AdaptiveIconDrawable adaptive = (AdaptiveIconDrawable) icon;
+            return new AdaptiveIconCompat(adaptive.getBackground(), adaptive.getForeground());
+        } else {
+            return icon;
         }
     }
 
@@ -762,21 +680,16 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         }
     }
 
+    public static void onShapeChanged() {
+        sMask = null;
+    }
+
     @Override
     public int getOpacity() {
         if (mLayerState.mOpacityOverride != PixelFormat.UNKNOWN) {
             return mLayerState.mOpacityOverride;
         }
         return mLayerState.getOpacity();
-    }
-
-    public void setOpacity(int opacity) {
-        mLayerState.mOpacityOverride = opacity;
-    }
-
-    @Override
-    public boolean isAutoMirrored() {
-        return mLayerState.mAutoMirrored;
     }
 
     @Override
@@ -790,6 +703,17 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
                 dr.setAutoMirrored(mirrored);
             }
         }
+    }
+
+    @RequiresApi(api = VERSION_CODES.O)
+    @SuppressLint("RestrictedApi")
+    private Path createMaskPath() {
+        try {
+            return (Path) methodGetAdaptiveIconMaskPath.invoke(null);
+        } catch (Exception e) {
+            Log.d(TAG, "Can't load icon mask", e);
+        }
+        return new AdaptiveIconDrawable(null, null).getIconMask();
     }
 
     @Override
@@ -847,8 +771,15 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
     }
 
     @Override
-    public int getIntrinsicWidth() {
-        return (int) (getMaxIntrinsicWidth() * DEFAULT_VIEW_PORT_SCALE);
+    public @Nullable
+    Region getTransparentRegion() {
+        if (mTransparentRegion.isEmpty()) {
+            mMask.toggleInverseFillType();
+            mTransparentRegion.set(getBounds());
+            mTransparentRegion.setPath(mMask, mTransparentRegion);
+            mMask.toggleInverseFillType();
+        }
+        return mTransparentRegion;
     }
 
     private int getMaxIntrinsicWidth() {
@@ -866,9 +797,66 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         return width;
     }
 
-    @Override
-    public int getIntrinsicHeight() {
-        return (int) (getMaxIntrinsicHeight() * DEFAULT_VIEW_PORT_SCALE);
+    /**
+     * Inflates child layers using the specified parser.
+     */
+    private void inflateLayers(@NonNull Resources r, @NonNull XmlPullParser parser,
+                               @NonNull AttributeSet attrs, @Nullable Theme theme)
+            throws XmlPullParserException, IOException {
+        final LayerState state = mLayerState;
+
+        final int innerDepth = parser.getDepth() + 1;
+        int type;
+        int depth;
+        int childIndex = 0;
+        while ((type = parser.next()) != XmlPullParser.END_DOCUMENT
+                && ((depth = parser.getDepth()) >= innerDepth || type != XmlPullParser.END_TAG)) {
+            if (type != XmlPullParser.START_TAG) {
+                continue;
+            }
+
+            if (depth > innerDepth) {
+                continue;
+            }
+            String tagName = parser.getName();
+            switch (tagName) {
+                case "background":
+                    childIndex = BACKGROUND_ID;
+                    break;
+                case "foreground":
+                    childIndex = FOREGROUND_ID;
+                    break;
+                default:
+                    continue;
+            }
+
+            final ChildDrawable layer = new ChildDrawable(state.mDensity);
+            final TypedArray a = obtainAttributes(r, theme, attrs, new int[]{android.R.attr.drawable});
+            updateLayerFromTypedArray(layer, a);
+            a.recycle();
+
+            // If the layer doesn't have a drawable or unresolved theme
+            // attribute for a drawable, attempt to parse one from the child
+            // element. If multiple child elements exist, we'll only use the
+            // first one.
+            if (layer.mDrawable == null && (layer.mThemeAttrs == null)) {
+                while ((type = parser.next()) == XmlPullParser.TEXT) {
+                }
+                if (type != XmlPullParser.START_TAG) {
+                    throw new XmlPullParserException(parser.getPositionDescription()
+                            + ": <foreground> or <background> tag requires a 'drawable'"
+                            + "attribute or child tag defining a drawable");
+                }
+
+                // We found a child drawable. Take ownership.
+                layer.mDrawable = createFromXmlInnerForDensity(r, parser, attrs,
+                        mLayerState.mSrcDensityOverride, theme);
+                layer.mDrawable.setCallback(this);
+                state.mChildrenChangingConfigurations |=
+                        layer.mDrawable.getChangingConfigurations();
+            }
+            addLayer(childIndex, layer);
+        }
     }
 
     private int getMaxIntrinsicHeight() {
@@ -908,6 +896,25 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
             mMutated = true;
         }
         return this;
+    }
+
+    public void setOpacity(int opacity) {
+        mLayerState.mOpacityOverride = opacity;
+    }
+
+    @Override
+    public boolean isAutoMirrored() {
+        return mLayerState.mAutoMirrored;
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        return (int) (getMaxIntrinsicWidth() * DEFAULT_VIEW_PORT_SCALE);
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        return (int) (getMaxIntrinsicHeight() * DEFAULT_VIEW_PORT_SCALE);
     }
 
     public boolean isMaskValid() {
@@ -963,17 +970,23 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
     }
 
     static class LayerState extends ConstantState {
+        private int[] mThemeAttrs;
+
         final static int N_CHILDREN = 2;
         ChildDrawable[] mChildren;
+
         // The density at which to render the drawable and its children.
         int mDensity;
+
         // The density to use when inflating/looking up the children drawables. A value of 0 means
         // use the system's density.
         int mSrcDensityOverride = 0;
+
         int mOpacityOverride = PixelFormat.UNKNOWN;
+
         int mChangingConfigurations;
         int mChildrenChangingConfigurations;
-        private int[] mThemeAttrs;
+
         private boolean mCheckedOpacity;
         private int mOpacity;
 
@@ -1126,3 +1139,4 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         }
     }
 }
+

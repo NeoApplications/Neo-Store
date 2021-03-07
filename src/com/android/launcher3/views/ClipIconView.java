@@ -15,10 +15,6 @@
  */
 package com.android.launcher3.views;
 
-import static com.android.launcher3.Utilities.mapToRange;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.views.FloatingIconView.SHAPE_PROGRESS_DURATION;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -43,12 +39,16 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.IconShape;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
+
+import static com.android.launcher3.Utilities.mapToRange;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.views.FloatingIconView.SHAPE_PROGRESS_DURATION;
 
 /**
  * A view used to draw both layers of an {@link AdaptiveIconCompat}.

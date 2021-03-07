@@ -1,7 +1,5 @@
 package com.google.android.apps.nexuslauncher;
 
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,25 +7,24 @@ import android.content.IntentFilter;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ShortcutInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Process;
 import android.os.UserHandle;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.pm.UserCache;
 import com.google.android.apps.nexuslauncher.clock.DynamicClock;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Calendar;
-import java.util.List;
+
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DynamicIconProvider extends IconProvider {
     public static final String GOOGLE_CALENDAR = "com.google.android.calendar";

@@ -16,9 +16,6 @@
 
 package com.android.launcher3.icons;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +58,9 @@ import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -329,7 +329,7 @@ public class IconCache extends BaseIconCache {
 
     public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo) {
         if (mIconProvider instanceof CustomIconProvider)
-            return ((CustomIconProvider) mIconProvider).getIcon(info, mIconDpi);
+            return mIconProvider.getIcon(info, mIconDpi);
         return getFullResIcon(info);
     }
 

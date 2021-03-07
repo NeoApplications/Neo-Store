@@ -40,6 +40,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.Launcher;
@@ -54,7 +55,6 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Arrays;
 

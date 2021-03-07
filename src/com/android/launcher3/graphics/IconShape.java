@@ -42,6 +42,7 @@ import android.view.ViewOutlineProvider;
 
 import androidx.annotation.Nullable;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
@@ -51,7 +52,6 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.ClipPathView;
 import com.saggitt.omega.adaptive.IconShapeManager;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

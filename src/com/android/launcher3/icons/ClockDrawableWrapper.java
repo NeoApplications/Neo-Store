@@ -30,8 +30,8 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;

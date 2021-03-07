@@ -27,10 +27,10 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.text.TextUtils
 import androidx.annotation.Keep
 import androidx.core.graphics.PathParser
+import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.GraphicsUtils
-import com.saggitt.omega.iconpack.AdaptiveIconCompat
 import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.omegaPrefs
 

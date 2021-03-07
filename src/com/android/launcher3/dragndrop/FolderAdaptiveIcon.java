@@ -16,8 +16,6 @@
 
 package com.android.launcher3.dragndrop;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -31,13 +29,15 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.PreviewBackground;
 import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.util.Preconditions;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
+
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
  * {@link AdaptiveIconCompat} representation of a {@link FolderIcon}

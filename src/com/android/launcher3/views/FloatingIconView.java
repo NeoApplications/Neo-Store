@@ -44,6 +44,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.Launcher;
@@ -58,7 +59,6 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.popup.SystemShortcut;
 import com.android.launcher3.shortcuts.DeepShortcutView;
 import com.android.launcher3.testing.TestProtocol;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
 import static com.android.launcher3.Utilities.getBadge;

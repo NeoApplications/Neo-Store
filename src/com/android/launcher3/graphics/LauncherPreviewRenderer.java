@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextClock;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
@@ -80,7 +81,6 @@ import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
-import com.saggitt.omega.iconpack.AdaptiveIconCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;

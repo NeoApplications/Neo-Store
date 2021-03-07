@@ -40,21 +40,21 @@ import com.android.launcher3.icons.ShadowGenerator;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.DynamicIconProvider;
-import com.google.android.apps.nexuslauncher.NexusLauncherActivity;
 import com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView;
 import com.google.android.apps.nexuslauncher.graphics.IcuDateTextView;
 import com.saggitt.omega.OmegaAppKt;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
 import com.saggitt.omega.views.SmartspacePreview;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAnimator.AnimatorUpdateListener,
         View.OnClickListener, Runnable, OmegaSmartspaceController.Listener {
@@ -158,8 +158,8 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
         try {
             Launcher launcher = Launcher.getLauncher(getContext());
-            if (launcher instanceof NexusLauncherActivity) {
-                ((NexusLauncherActivity) launcher).registerSmartspaceView(this);
+            if (launcher instanceof OmegaLauncher) {
+                ((OmegaLauncher) launcher).registerSmartspaceView(this);
             }
         } catch (IllegalArgumentException e) {
 
