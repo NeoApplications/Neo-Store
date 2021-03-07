@@ -636,7 +636,7 @@ public final class Utilities {
             /*return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
                     activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);*/
             return (activityInfo != null) ? appState.getIconCache()
-                    .getFullResIcon(activityInfo, info) : null;
+                    .getFullResIcon(activityInfo, info, false) : null;
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =
