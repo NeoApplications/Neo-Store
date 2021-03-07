@@ -47,6 +47,9 @@
     <style name="AppTheme" parent="@style/LauncherTheme">
         <item name="omegaColorSearchBar">?popupColorPrimary</item>
         <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
+
+        <item name="dashIconTint">#0270CF</item>
+        <item name="dashIconBackground">#ffffffff</item>
     </style>
 
     <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
