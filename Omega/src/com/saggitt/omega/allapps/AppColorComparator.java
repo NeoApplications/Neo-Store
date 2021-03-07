@@ -22,7 +22,6 @@ import android.content.Context;
 import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.allapps.AppInfoComparator;
-import com.android.launcher3.icons.ColorExtractor;
 import com.android.launcher3.model.data.AppInfo;
 
 public class AppColorComparator extends AppInfoComparator {
@@ -37,10 +36,8 @@ public class AppColorComparator extends AppInfoComparator {
         float[] hslA = new float[3];
         float[] hslB = new float[3];
 
-        ColorExtractor colorExtractor = new ColorExtractor();
-
-        ColorUtils.colorToHSL(colorExtractor.findDominantColorByHue(a.bitmap.icon), hslA);
-        ColorUtils.colorToHSL(colorExtractor.findDominantColorByHue(b.bitmap.icon), hslB);
+        ColorUtils.colorToHSL(a.iconColor, hslA);
+        ColorUtils.colorToHSL(b.iconColor, hslB);
 
         Integer h2A = remapHue(hslA[0]);
         int h2B = remapHue(hslB[0]);
