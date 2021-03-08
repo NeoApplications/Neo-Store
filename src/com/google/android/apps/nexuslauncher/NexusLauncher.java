@@ -1,7 +1,6 @@
 package com.google.android.apps.nexuslauncher;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,8 +61,6 @@ public class NexusLauncher {
         private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
         private final FeedReconnector mFeedReconnector = new FeedReconnector();
 
-        private final Runnable mUpdatePredictionsIfResumed = this::updatePredictionsIfResumed;
-
         private ItemInfoUpdateReceiver getUpdateReceiver() {
             if (mItemInfoUpdateReceiver == null) {
                 mItemInfoUpdateReceiver = new ItemInfoUpdateReceiver(mLauncher, mCallbacks);
@@ -73,24 +70,6 @@ public class NexusLauncher {
 
         public void dump(final String s, final FileDescriptor fileDescriptor, final PrintWriter printWriter, final String[] array) {
             SmartspaceController.get(mLauncher).cX(s, printWriter);
-        }
-
-        public void finishBindingItems(final boolean b) {
-        }
-
-        public boolean handleBackPressed() {
-            return false;
-        }
-
-        public boolean hasCustomContentToLeft() {
-            return false;
-        }
-
-        public boolean hasSettings() {
-            return true;
-        }
-
-        public void onActivityResult(final int n, final int n2, final Intent intent) {
         }
 
         public void onAttachedToWindow() {
@@ -168,10 +147,6 @@ public class NexusLauncher {
             mClient.hideOverlay(mFeedRunning);
         }
 
-        public void onLauncherProviderChange() {
-            // ReflectionClient.getInstance(mLauncher).onProviderChanged();
-        }
-
         public void onPause() {
             mRunning = false;
             mClient.onPause();
@@ -181,9 +156,6 @@ public class NexusLauncher {
             }
         }
 
-        public void onRequestPermissionsResult(final int n, final String[] array, final int[] array2) {
-        }
-
         public void onResume() {
             mRunning = true;
             if (mStarted) {
@@ -191,15 +163,6 @@ public class NexusLauncher {
             }
 
             mClient.onResume();
-
-            Handler handler = mLauncher.getDragLayer().getHandler();
-            if (handler != null) {
-                handler.removeCallbacks(mUpdatePredictionsIfResumed);
-                Utilities.postAsyncCallback(handler, mUpdatePredictionsIfResumed);
-            }
-        }
-
-        public void onSaveInstanceState(final Bundle bundle) {
         }
 
         public void onStart() {
@@ -220,9 +183,6 @@ public class NexusLauncher {
             if (mOverlay.mFlagsChanged) {
                 mOverlay.mLauncher.recreate();
             }
-        }
-
-        public void onTrimMemory(int n) {
         }
 
         public boolean startSearch(String s, boolean b, Bundle bundle) {
@@ -286,17 +246,6 @@ public class NexusLauncher {
 
             if (redraw) {
                 mClient.redraw(mUiInformation);
-            }
-        }
-
-        private void updatePredictionsIfResumed() {
-            if (mLauncher.hasBeenResumed()) {
-                // ReflectionClient.getInstance(mLauncher).updatePredictionsNow(
-                //         FeatureFlags.REFLECTION_FORCE_OVERVIEW_MODE ? Client.OVERVIEW.id : Client.HOME.id);
-                // handler.post(() -> {
-                //     mLauncher.getUserEventDispatcher().updatePredictions();
-                //     mLauncher.getUserEventDispatcher().updateActions();
-                // });
             }
         }
 

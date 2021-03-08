@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+
 import com.google.android.libraries.launcherclient.ILauncherOverlay;
 import com.google.android.libraries.launcherclient.ILauncherOverlayCallback;
 import com.saggitt.omega.smartspace.FeedBridge;
@@ -358,9 +359,7 @@ public class LauncherClient {
 
     public final void redraw(Bundle layoutBundle) {
         mLayoutBundle = layoutBundle;
-        if (mLayoutParams != null && apiVersion >= 7) {
-            exchangeConfig();
-        }
+        redraw();
     }
 
     public final void redraw() {
