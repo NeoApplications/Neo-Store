@@ -40,6 +40,7 @@ import android.view.ViewDebug;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.launcher3.AbstractFloatingView;
@@ -259,7 +260,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         mFooter.measure(measureSpec, measureSpec);
         mFooterHeight = mFooter.getMeasuredHeight();
 
-        View settingsButton = findViewById(R.id.settings_button);
+        ImageView settingsButton = findViewById(R.id.settings_button);
+        settingsButton.setColorFilter(Utilities.getOmegaPrefs(mLauncher).getAccentColor(), android.graphics.PorterDuff.Mode.SRC_IN);
         if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
             settingsButton.setVisibility(View.GONE);
         } else {
