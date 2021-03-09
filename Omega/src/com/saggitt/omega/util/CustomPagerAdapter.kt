@@ -16,13 +16,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.settings
+package com.saggitt.omega.util
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 
-class AboutPagerAdapter(private val mLists: Array<View>?, private val mTitles: Array<String>) : PagerAdapter() {
+class CustomPagerAdapter(private val mLists: Array<View>?, private val mTitles: Array<String>) : PagerAdapter() {
     override fun getCount(): Int {
         return mLists?.size ?: 0
     }

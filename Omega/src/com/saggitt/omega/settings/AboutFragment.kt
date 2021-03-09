@@ -49,6 +49,7 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.Themes
 import com.google.android.material.tabs.TabLayout
 import com.saggitt.omega.util.AboutUtils
+import com.saggitt.omega.util.CustomPagerAdapter
 import com.saggitt.omega.util.applyColor
 import kotlinx.coroutines.launch
 import java.util.*
@@ -73,7 +74,7 @@ class AboutFragment : Fragment() {
 
         val viewPager = view.findViewById<ViewPager>(R.id.pager).apply {
             offscreenPageLimit = MODE_TOTAL - 1
-            adapter = AboutPagerAdapter(lists as Array<View>, titles)
+            adapter = CustomPagerAdapter(lists as Array<View>, titles)
         }
 
         requireActivity().findViewById<TabLayout>(R.id.sliding_tabs).apply {
