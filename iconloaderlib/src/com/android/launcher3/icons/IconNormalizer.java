@@ -241,8 +241,8 @@ public class IconNormalizer {
      *
      * @param outBounds optional rect to receive the fraction distance from each edge.
      */
-    public synchronized float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
-                                       @Nullable Path path, @Nullable boolean[] outMaskShape, int minVisibleAlpha) {
+    public float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
+                          @Nullable Path path, @Nullable boolean[] outMaskShape, int minVisibleAlpha) {
         if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconCompat) {
             if (mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
                 mAdaptiveIconScale = normalizeAdaptiveIcon(d, mMaxSize, mAdaptiveIconBounds);

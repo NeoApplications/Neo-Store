@@ -16,21 +16,6 @@
 
 package com.android.launcher3.model.data;
 
-import static android.text.TextUtils.isEmpty;
-
-import static androidx.core.util.Preconditions.checkNotNull;
-
-import static com.android.launcher3.FastBitmapDrawable.newIcon;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
-import static com.android.launcher3.logger.LauncherAtom.Attribute.EMPTY_LABEL;
-import static com.android.launcher3.logger.LauncherAtom.Attribute.MANUAL_LABEL;
-import static com.android.launcher3.logger.LauncherAtom.Attribute.SUGGESTED_LABEL;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_CUSTOM;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_EMPTY;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_FOLDER_LABEL_STATE_UNSPECIFIED;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_SUGGESTED;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -74,6 +59,19 @@ import java.util.ArrayList;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
+import static android.text.TextUtils.isEmpty;
+import static androidx.core.util.Preconditions.checkNotNull;
+import static com.android.launcher3.FastBitmapDrawable.newIcon;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
+import static com.android.launcher3.logger.LauncherAtom.Attribute.EMPTY_LABEL;
+import static com.android.launcher3.logger.LauncherAtom.Attribute.MANUAL_LABEL;
+import static com.android.launcher3.logger.LauncherAtom.Attribute.SUGGESTED_LABEL;
+import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_CUSTOM;
+import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_EMPTY;
+import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_FOLDER_LABEL_STATE_UNSPECIFIED;
+import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_SUGGESTED;
+
 
 /**
  * Represents a folder containing shortcuts or apps.
@@ -101,6 +99,7 @@ public class FolderInfo extends ItemInfo {
 
     public static final int FLAG_COVER_MODE = 0x00000016;
     public static final String EXTRA_FOLDER_SUGGESTIONS = "suggest";
+
     public int options;
     public FolderNameInfos suggestedFolderNames;
     /**
@@ -312,14 +311,6 @@ public class FolderInfo extends ItemInfo {
     private boolean hasCustomIcon(Context context) {
         Launcher launcher = OmegaLauncher.getLauncher(context);
         return getIconInternal(launcher) != null;
-    }
-
-    public void clearCustomIcon(Context context) {
-        Launcher launcher = OmegaLauncher.getLauncher(context);
-        CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
-        if (infoProvider != null) {
-            infoProvider.setIcon(this, null);
-        }
     }
 
     public boolean isCoverMode() {

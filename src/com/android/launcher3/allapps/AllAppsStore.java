@@ -15,13 +15,11 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.model.data.AppInfo.COMPONENT_KEY_COMPARATOR;
-import static com.android.launcher3.model.data.AppInfo.EMPTY_ARRAY;
-
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.launcher3.BubbleTextView;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.PromiseAppInfo;
@@ -30,10 +28,17 @@ import com.android.launcher3.util.PackageUserKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static com.android.launcher3.model.data.AppInfo.COMPONENT_KEY_COMPARATOR;
+import static com.android.launcher3.model.data.AppInfo.EMPTY_ARRAY;
 
 /**
  * A utility class to maintain the collection of all apps.
@@ -52,6 +57,7 @@ public class AllAppsStore {
 
     private final List<OnUpdateListener> mUpdateListeners = new CopyOnWriteArrayList<>();
     private final ArrayList<ViewGroup> mIconContainers = new ArrayList<>();
+    private final Set<FolderIcon> mFolderIcons = Collections.newSetFromMap(new WeakHashMap<>());
     private int mModelFlags;
 
     private int mDeferUpdatesFlags = 0;
@@ -134,6 +140,10 @@ public class AllAppsStore {
         mIconContainers.remove(container);
     }
 
+    public void registerFolderIcon(FolderIcon folderIcon) {
+        mFolderIcons.add(folderIcon);
+    }
+
     public void updateNotificationDots(Predicate<PackageUserKey> updatedDots) {
         updateAllIcons((child) -> {
             if (child.getTag() instanceof ItemInfo) {
@@ -143,6 +153,22 @@ public class AllAppsStore {
                 }
             }
         });
+        Set<FolderIcon> foldersToUpdate = new HashSet<>();
+        for (FolderIcon folderIcon : mFolderIcons) {
+            folderIcon.getFolder().iterateOverItems((info, view) -> {
+                if (mTempKey.updateFromItemInfo(info) && updatedDots.test(mTempKey)) {
+                    if (view instanceof BubbleTextView) {
+                        ((BubbleTextView) view).applyDotState(info, true);
+                    }
+                    foldersToUpdate.add(folderIcon);
+                }
+                return false;
+            });
+        }
+
+        for (FolderIcon folderIcon : foldersToUpdate) {
+            folderIcon.updateIconDots(updatedDots, mTempKey);
+        }
     }
 
     public void updatePromiseAppProgress(PromiseAppInfo app) {
