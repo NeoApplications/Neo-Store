@@ -26,11 +26,11 @@ import android.graphics.drawable.Drawable
 import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.model.data.ItemInfo
-import com.google.android.apps.nexuslauncher.DynamicIconProvider
 import com.saggitt.omega.iconpack.IconPackManager
 
-class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
+class CustomIconProvider(context: Context) : IconProvider(context) {
     private val iconPackManager by lazy { IconPackManager.getInstance(context) }
 
     fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
