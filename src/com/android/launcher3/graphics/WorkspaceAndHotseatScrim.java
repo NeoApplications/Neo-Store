@@ -16,12 +16,6 @@
 
 package com.android.launcher3.graphics;
 
-import static android.content.Intent.ACTION_SCREEN_OFF;
-import static android.content.Intent.ACTION_USER_PRESENT;
-
-import static com.android.launcher3.config.FeatureFlags.KEYGUARD_ANIMATION;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -51,6 +45,12 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
+import com.saggitt.omega.theme.ThemeManager;
+
+import static android.content.Intent.ACTION_SCREEN_OFF;
+import static android.content.Intent.ACTION_USER_PRESENT;
+import static com.android.launcher3.config.FeatureFlags.KEYGUARD_ANIMATION;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
 /**
  * View scrim which draws behind hotseat and workspace
@@ -133,9 +133,15 @@ public class WorkspaceAndHotseatScrim extends Scrim {
 
         mMaskHeight = ResourceUtils.pxFromDp(ALPHA_MASK_BITMAP_DP,
                 view.getResources().getDisplayMetrics());
-        mTopScrim = Themes.getAttrDrawable(view.getContext(), R.attr.workspaceStatusBarScrim);
-        mBottomMask = mTopScrim == null ? null : createDitheredAlphaMask();
-        mHideSysUiScrim = mTopScrim == null;
+        mHideSysUiScrim = ThemeManager.Companion.getInstance(mLauncher).getSupportsDarkText()
+                || !Utilities.getOmegaPrefs(mLauncher).getShowTopShadow();
+        if (!mHideSysUiScrim) {
+            mTopScrim = Themes.getAttrDrawable(view.getContext(), R.attr.workspaceStatusBarScrim);
+            mBottomMask = createDitheredAlphaMask();
+        } else {
+            mTopScrim = null;
+            mBottomMask = null;
+        }
 
         onExtractedColorsChanged(mWallpaperColorInfo);
     }
