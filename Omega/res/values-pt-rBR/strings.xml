@@ -298,4 +298,8 @@
     <string name="title__search_show_assistant">Mostrar botão de pesquisa por voz</string>
     <string name="title_all_apps_keep_scroll_state">Lembrar da posição</string>
     <string name="title_desktop_text_size">Tamanho do texto</string>
+    <string name="blur_radius_pref_title">Intensidade do Blur</string>
+    <string name="blur_pref_title">Blur</string>
+    <string name="title_dock_two_row">Exibir a segunda linha</string>
+    <string name="title_desktop_overlap_placement">Permitir sobreposições</string>
 </resources>
