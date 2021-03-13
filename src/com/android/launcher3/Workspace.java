@@ -16,26 +16,9 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.FLAG_MULTI_PAGE;
-import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED;
-import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_INACCESSIBLE;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.SPRING_LOADED;
-import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
-import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_OVERLAY;
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_HOME;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SWIPELEFT;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SWIPERIGHT;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
@@ -56,6 +39,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -122,6 +106,22 @@ import com.saggitt.omega.views.OmegaBackgroundView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.function.Predicate;
+
+import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.FLAG_MULTI_PAGE;
+import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED;
+import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_INACCESSIBLE;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.SPRING_LOADED;
+import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
+import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_OVERLAY;
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_HOME;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SWIPELEFT;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SWIPERIGHT;
 
 /**
  * The workspace is a wide area with a wallpaper and a finite number of pages.
@@ -1556,6 +1556,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     + "View: " + child + "  tag: " + child.getTag();
             throw new IllegalStateException(msg);
         }
+
+        if (child instanceof FolderIcon && ((FolderIcon) child).isCoverMode()) {
+            child.setVisibility(View.VISIBLE);
+            child = ((FolderIcon) child).getFolderName();
+        }
+
         beginDragShared(child, null, source, (ItemInfo) dragObject,
                 new DragPreviewProvider(child), options);
     }
@@ -1617,6 +1623,16 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 dragOptions.preDragCondition = popupContainer.createPreDragCondition();
                 mLauncher.getUserEventDispatcher().resetElapsedContainerMillis("dragging started");
             }
+        } else if (child instanceof FolderIcon) {
+            ((FolderIcon) child).clearPressedBackground();
+        }
+        if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
+            child.setVisibility(View.VISIBLE);
+
+            if (dragOptions.preDragCondition != null) {
+                mLauncher.getDragLayer().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            }
+            return null;
         }
 
         DragView dv = mDragController.startDrag(b, draggableView, dragLayerX, dragLayerY, source,
