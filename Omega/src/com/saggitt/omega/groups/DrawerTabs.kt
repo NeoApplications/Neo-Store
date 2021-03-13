@@ -17,6 +17,7 @@
 
 package com.saggitt.omega.groups
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
@@ -84,10 +85,10 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
     abstract class Tab(context: Context, type: String, title: String) : Group(type, context, title) {
 
-        //val colorResolver = ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColorResolver)
+        val colorResolver = ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColor)
 
         init {
-            //addCustomization(colorResolver)
+            addCustomization(colorResolver)
         }
     }
 
@@ -229,6 +230,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
         constructor() : this(null, true)
 
+        @SuppressLint("NewApi")
         constructor(parcel: Parcel) : this(
                 parcel.readParcelable<UserHandle?>(UserHandle::class.java.classLoader),
                 parcel.readBoolean())
@@ -246,6 +248,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             return matches(key.user)
         }
 
+        @SuppressLint("NewApi")
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeParcelable(user, flags)
             dest.writeBoolean(matchesAll)

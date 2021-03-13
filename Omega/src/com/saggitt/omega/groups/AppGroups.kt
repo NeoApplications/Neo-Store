@@ -26,15 +26,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaPreferencesChangeCallback
+import com.saggitt.omega.colors.ColorDialogFragment
 import com.saggitt.omega.preferences.SelectableAppsActivity
+import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+
 abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsManager,
                                               private val type: AppGroupsManager.CategorizationType) {
 
@@ -351,59 +356,39 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             }
         }
 
-        /*
-        open class ColorCustomization(key: String, default: ColorEngine.ColorResolver) :
-                Customization<ColorEngine.ColorResolver, String>(key, default) {
-
+        open class ColorCustomization(key: String, default: Int) : Customization<Int, String>(key, default) {
             override fun loadFromJson(context: Context, obj: String?) {
-                value = obj?.let { AppGroupsUtils.getInstance(context).createColorResolver(it) }
+                value = obj?.let { AppGroupsUtils.getInstance(context).defaultColor }
             }
 
             override fun saveToJson(context: Context): String? {
-                return if (value is LawnchairAccentResolver) null else value.toString()
+                return value.toString()
             }
 
-            override fun clone(): Customization<ColorEngine.ColorResolver, String> {
+            override fun clone(): Customization<Int, String> {
                 return ColorCustomization(key, default).also { it.value = value }
             }
         }
-        */
-/*
-        class ColorRow(key: String, default: ColorEngine.ColorResolver) :
-                ColorCustomization(key, default) {
 
+        class ColorRow(key: String, default: Int) : ColorCustomization(key, default) {
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
                 val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_color_row, parent, false)
                 val resources = context.resources
 
                 updateColor(view)
 
-                view.setOnClickListener {
-                    val dialog = AlertDialog.Builder(context).create()
-                    val current = value()
-                    val resolvers = resources.getStringArray(R.array.resolver_tabs)
-                    with(dialog) {
-                        val tabbedPickerView = TabbedPickerView(this.context, "tabs", current.resolveColor(),
-                                ColorMode.RGB, resolvers, current.isCustom, {
-                            value = it
-                            updateColor(view)
-                        }, dialog::dismiss)
-                        setView(tabbedPickerView)
-                        setOnShowListener {
-                            val width: Int; val height: Int
-                            if (orientation(this.context) == Configuration.ORIENTATION_LANDSCAPE) {
-                                height = WindowManager.LayoutParams.WRAP_CONTENT
-                                width = 80 percentOf screenDimensions(this.context).widthPixels
-                            } else {
-                                height = WindowManager.LayoutParams.WRAP_CONTENT
-                                width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width)
-                            }
-                            window!!.setLayout(width, height)
+                val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
-                            // for some reason it won't respect the windowBackground attribute in the theme
-                            window!!.setBackgroundDrawable(this.context.getDrawable(R.drawable.dialog_material_background))
-                        }
-                    }
+                view.setOnClickListener {
+                    val colorFrament = ColorDialogFragment(context)
+
+                    val builder = AlertDialog.Builder(themedContext)
+                    builder.setNegativeButton(R.string.dialog_cancel, null)
+                    builder.setView(colorFrament);
+                    val dialog = builder.create()
+                            .apply {
+                                applyAccent()
+                            }
                     dialog.show()
                 }
 
@@ -411,14 +396,14 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             }
 
             private fun updateColor(view: View) {
-                view.findViewById<ImageView>(R.id.color_ring_icon).tintDrawable(value().resolveColor())
+                view.findViewById<ImageView>(R.id.color_ring_icon).tintDrawable(value())
             }
 
-            override fun clone(): Customization<ColorEngine.ColorResolver, String> {
+            override fun clone(): Customization<Int, String> {
                 return ColorRow(key, default).also { it.value = value }
             }
         }
-*/
+
         abstract class SetCustomization<T : Any, S : Any>(key: String, default: MutableSet<T>) :
                 Customization<MutableSet<T>, JSONArray>(key, default) {
 
@@ -556,6 +541,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
 class AppGroupsUtils(context: Context) {
 
+    val defaultColor = Utilities.getOmegaPrefs(context).accentColor
     /*private val colorEngine = ColorEngine.getInstance(context)
     val defaultColorResolver = LawnchairAccentResolver(
             ColorEngine.ColorResolver.Config("groups", colorEngine))
