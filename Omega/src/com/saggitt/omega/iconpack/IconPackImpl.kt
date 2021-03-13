@@ -28,11 +28,13 @@ import android.content.res.Resources
 import android.content.res.XmlResourceParser
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.util.Xml
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.android.launcher3.*
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.pm.UserCache
@@ -238,6 +240,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
                          flattenDrawable: Boolean,
                          customIconEntry: IconPackManager.CustomIconEntry?,
@@ -287,6 +290,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
         ensureInitialLoadComplete()
 
