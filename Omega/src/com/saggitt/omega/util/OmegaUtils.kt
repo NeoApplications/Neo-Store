@@ -52,8 +52,11 @@ import androidx.preference.PreferenceGroup
 import com.android.launcher3.*
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.pm.UserCache
-import com.android.launcher3.util.*
+import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.*
+import com.android.launcher3.util.PackageUserKey
+import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
@@ -135,8 +138,14 @@ fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
     return { it -> creator(it.applicationContext) }
 }
 
-val mainHandler by lazy { Handler(Looper.getMainLooper()) }
-val workerHandler by lazy { Handler(MODEL_EXECUTOR.looper) }
+val mainHandler by lazy { makeBasicHandler() }
+val workerHandler by lazy { MODEL_EXECUTOR.handler }
+val uiWorkerHandler by lazy { UI_HELPER_EXECUTOR.handler }
+val iconPackUiHandler by lazy { ICON_PACK_EXECUTOR.handler }
+
+fun runOnUiWorkerThread(r: () -> Unit) {
+    runOnThread(uiWorkerHandler, r)
+}
 
 fun runOnMainThread(r: () -> Unit) {
     runOnThread(mainHandler, r)
@@ -577,13 +586,6 @@ fun ComponentKey.getLauncherActivityInfo(context: Context): LauncherActivityInfo
             .firstOrNull { it.componentName == componentName }
 }
 
-val uiWorkerHandler by lazy { UI_HELPER_EXECUTOR.handler }
-val iconPackUiHandler by lazy { Handler(ICON_PACK_EXECUTOR.looper) }
-
-
-fun runOnUiWorkerThread(r: () -> Unit) {
-    runOnThread(uiWorkerHandler, r)
-}
 
 
 fun Context.createDisabledColor(color: Int): ColorStateList {
