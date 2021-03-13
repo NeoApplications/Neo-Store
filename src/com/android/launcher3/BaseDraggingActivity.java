@@ -16,9 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
-import static com.android.launcher3.util.DefaultDisplay.CHANGE_ROTATION;
-
 import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -40,6 +37,7 @@ import android.view.WindowInsets.Type;
 import android.view.WindowMetrics;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.Launcher.OnResumeCallback;
@@ -58,6 +56,11 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.util.WindowBounds;
+import com.saggitt.omega.theme.ThemeOverride;
+import com.saggitt.omega.theme.ThemeOverride.ThemeSet;
+
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
+import static com.android.launcher3.util.DefaultDisplay.CHANGE_ROTATION;
 
 /**
  * Extension of BaseActivity allowing support for drag-n-drop
@@ -94,6 +97,15 @@ public abstract class BaseDraggingActivity extends BaseActivity
             mThemeRes = themeRes;
             setTheme(themeRes);
         }
+
+        // Register theme override
+        ThemeOverride themeOverride = new ThemeOverride(getLauncherThemeSet(), this);
+        themeOverride.applyTheme(this);
+    }
+
+    @NonNull
+    protected ThemeSet getLauncherThemeSet() {
+        return new ThemeOverride.Launcher();
     }
 
     @Override
