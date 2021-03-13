@@ -78,7 +78,7 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
-    def code = 130
+    def code = 132
 
     defaultConfig {
         minSdkVersion 25
@@ -114,6 +114,13 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+        abortOnError false
+        checkReleaseBuilds false
     }
 
     // The flavor dimensions for build variants (e.g. aospWithQuickstep, aospWithoutQuickstep)
