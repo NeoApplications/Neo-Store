@@ -90,7 +90,7 @@ public class IconCustomizeFragment extends Fragment {
         dialog.setPositiveButton(android.R.string.ok, (dialog1, which) -> new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 prefs.setIconShape(IconShapeManager.Companion.getInstance(getContext()).getIconShape().toString());
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         dialog.setNegativeButton(android.R.string.cancel, null);

@@ -103,6 +103,7 @@
     <attr name="omegaColorAllAppsOverlay" format="color" />
     <attr name="omegaColorSearchBar" format="color" />
 
+    <attr name="iconShapeTint" format="color" />
     <attr name="dashIconTint" format="color" />
     <attr name="dashIconBackground" format="color" />
 

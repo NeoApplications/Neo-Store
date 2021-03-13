@@ -28,6 +28,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.util.Themes
 import java.util.*
 
 class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter.Holder>() {
@@ -60,19 +61,21 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val iconButton = itemView.findViewById<Button>(R.id.shape_icon)
+
         private val check = itemView.findViewById<ImageView>(R.id.check_mark)
         private var prefs = Utilities.getOmegaPrefs(mContext)
+        private val backgroundColor = Themes.getAttrColor(mContext, R.attr.iconShapeTint)
 
         fun bind(item: ShapeModel, itemPosition: Int) {
             val drawable = item.getIcon(mContext, item.shapeName)
-            drawable.setTint(mContext.getColor(R.color.transparentish))
+            drawable.setTint(backgroundColor)
             if (prefs.iconShape == item.shapeName) {
                 drawable.setTint(prefs.accentColor)
                 item.isSelected = true
                 check.drawable.setTint(Color.WHITE)
                 check.visibility = View.VISIBLE
             } else {
-                drawable.setTint(mContext.getColor(R.color.transparentish))
+                drawable.setTint(backgroundColor)
                 item.isSelected = false
                 check.visibility = View.INVISIBLE
             }

@@ -25,5 +25,7 @@
         <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SettingsTheme_Light" parent="SettingsTheme.Base" />
+    <style name="SettingsTheme_Light" parent="SettingsTheme.Base">
+        <item name="iconShapeTint">@color/transparentish</item>
+    </style>
 </resources>
