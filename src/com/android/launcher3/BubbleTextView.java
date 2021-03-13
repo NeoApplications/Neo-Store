@@ -194,6 +194,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             defaultIconSize = grid.allAppsIconSizePx;
             int lines = prefs.getDrawerLabelRows();
             setLineCount(lines);
+            if (prefs.getCustomBackground()) {
+                setTextColor(prefs.getDrawerLabelColor());
+            }
         } else if (mDisplay == DISPLAY_FOLDER) {
             mHideText = prefs.getHideAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.folderChildTextSizePx);
@@ -208,6 +211,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             defaultIconSize = grid.allAppsFolderChildIconSizePx;
             int lines = prefs.getDrawerLabelRows();
             setLineCount(lines);
+            if (prefs.getCustomBackground()) {
+                setTextColor(prefs.getDrawerLabelColor());
+            }
         } else {
             // widget_selection or shortcut_popup
             defaultIconSize = grid.iconSizePx;
@@ -431,7 +437,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 || x > getWidth() - getPaddingRight();
     }
 
-    void setStayPressed(boolean stayPressed) {
+    public void setStayPressed(boolean stayPressed) {
         mStayPressed = stayPressed;
         refreshDrawableState();
     }
