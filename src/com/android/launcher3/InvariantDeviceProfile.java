@@ -47,6 +47,7 @@ import com.android.launcher3.util.DefaultDisplay.Info;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Themes;
+import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.adaptive.IconShapeManager;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -114,8 +115,10 @@ public class InvariantDeviceProfile {
     public int numFolderRows;
     public int numFolderColumns;
     public float iconSize;
+    public float hotseatIconSize;
     public String iconShapePath;
     public float landscapeIconSize;
+    public float landscapeHotseatIconSize;
     public int iconBitmapSize;
     public int fillResIconDpi;
     public float iconTextSize;
@@ -463,6 +466,8 @@ public class InvariantDeviceProfile {
 
     private void initGrid(
             Context context, DefaultDisplay.Info displayInfo, DisplayOption displayOption) {
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+
         GridOption closestProfile = displayOption.grid;
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
@@ -490,16 +495,22 @@ public class InvariantDeviceProfile {
         iconSize = displayOption.iconSize;
         iconShapePath = getIconShapePath(context);
         landscapeIconSize = displayOption.landscapeIconSize;
+        if (prefs.getDockIconScale() > 0) {
+            landscapeHotseatIconSize = displayOption.landscapeIconSize * prefs.getDockIconScale();
+        } else {
+            landscapeHotseatIconSize = landscapeIconSize;
+        }
         iconBitmapSize = ResourceUtils.pxFromDp(iconSize, displayInfo.metrics);
-        iconTextSize = displayOption.iconTextSize;
+        iconTextSize = displayOption.iconTextSize * prefs.getDesktopTextScale();
+        allAppsIconTextSize = displayOption.iconTextSize * prefs.getDrawerTextScale();
         fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
-        if (Utilities.isGridOptionsEnabled(context)) {
+        /*if (Utilities.isGridOptionsEnabled(context)) {
             allAppsIconSize = displayOption.allAppsIconSize;
             allAppsIconTextSize = displayOption.allAppsIconTextSize;
         } else {
             allAppsIconSize = iconSize;
             allAppsIconTextSize = iconTextSize;
-        }
+        }*/
 
         // If the partner customization apk contains any grid overrides, apply them
         // Supported overrides: numRows, numColumns, iconSize
@@ -549,8 +560,11 @@ public class InvariantDeviceProfile {
             changeFlags |= CHANGE_FLAG_GRID;
         }
 
-        if (iconSize != oldProfile.iconSize || iconBitmapSize != oldProfile.iconBitmapSize ||
-                !iconShapePath.equals(oldProfile.iconShapePath)) {
+        if (iconSize != oldProfile.iconSize
+                || allAppsIconSize != oldProfile.allAppsIconSize
+                || hotseatIconSize != oldProfile.hotseatIconSize
+                || iconBitmapSize != oldProfile.iconBitmapSize
+                || !iconShapePath.equals(oldProfile.iconShapePath)) {
             changeFlags |= CHANGE_FLAG_ICON_PARAMS;
         }
         if (!iconShapePath.equals(oldProfile.iconShapePath)) {

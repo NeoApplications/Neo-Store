@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.anim.Interpolators.DEACCEL_1_5;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -43,6 +41,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
@@ -75,6 +74,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
+
+import static com.android.launcher3.anim.Interpolators.DEACCEL_1_5;
 
 public class CellLayout extends ViewGroup {
     private static final String TAG = "CellLayout";
@@ -162,6 +163,9 @@ public class CellLayout extends ViewGroup {
 
     private final float mChildScale = 1f;
 
+    private final int mDockIconSize;
+    private final int mDockIconTextSize;
+
     public static final int MODE_SHOW_REORDER_HINT = 0;
     public static final int MODE_DRAG_OVER = 1;
     public static final int MODE_ON_DROP = 2;
@@ -203,6 +207,8 @@ public class CellLayout extends ViewGroup {
         mCellWidth = mCellHeight = -1;
         mFixedCellWidth = mFixedCellHeight = -1;
 
+        mDockIconSize = grid.hotseatIconSizePx;
+        mDockIconTextSize = grid.iconTextSizePx;
         mCountX = grid.inv.numColumns;
         mCountY = grid.inv.numRows;
         mOccupied = new GridOccupancy(mCountX, mCountY);
@@ -558,7 +564,12 @@ public class CellLayout extends ViewGroup {
         // Hotseat icons - remove text
         if (child instanceof BubbleTextView) {
             BubbleTextView bubbleChild = (BubbleTextView) child;
-            bubbleChild.setTextVisibility(mContainerType != HOTSEAT);
+            if (mContainerType == HOTSEAT) {
+                bubbleChild.setTextVisibility(!mPrefs.getHideDockLabels());
+                //bubbleChild.setIconSize(mDockIconSize);
+                bubbleChild.setLineCount(mPrefs.getDockLabelRows());
+                bubbleChild.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDockIconTextSize);
+            }
         }
 
         child.setScaleX(mChildScale);

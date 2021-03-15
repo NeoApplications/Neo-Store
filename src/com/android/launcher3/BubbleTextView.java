@@ -297,6 +297,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     public void applyFromWorkspaceItem(WorkspaceItemInfo info, boolean promiseStateChanged) {
         applyIconAndLabel(info);
+        applySwipeUpAction(info);
         setTag(info);
         if (promiseStateChanged || (info.hasPromiseIconUi())) {
             applyPromiseState(promiseStateChanged);
@@ -574,8 +575,13 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         // Text should be visible everywhere but the hotseat.
         Object tag = getParent() instanceof FolderIcon ? ((View) getParent()).getTag() : getTag();
         ItemInfo info = tag instanceof ItemInfo ? (ItemInfo) tag : null;
-        return info == null || (info.container != LauncherSettings.Favorites.CONTAINER_HOTSEAT
-                && info.container != LauncherSettings.Favorites.CONTAINER_HOTSEAT_PREDICTION);
+        /*return info == null || (info.container != LauncherSettings.Favorites.CONTAINER_HOTSEAT
+                && info.container != LauncherSettings.Favorites.CONTAINER_HOTSEAT_PREDICTION)
+                && !Utilities.getOmegaPrefs(getContext()).getHideDockLabels();*/
+        if (info != null && info.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
+            return !Utilities.getOmegaPrefs(getContext()).getHideDockLabels();
+        }
+        return true;
     }
 
     public void setTextVisibility(boolean visible) {

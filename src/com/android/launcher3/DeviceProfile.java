@@ -119,6 +119,7 @@ public class DeviceProfile {
     public int allAppsFolderChildTextSizePx;
 
     // Hotseat
+    public int hotseatIconSizePx;
     public int hotseatCellHeightPx;
     // In portrait: size = height, in landscape: size = width
     public int hotseatBarSizePx;
@@ -440,9 +441,13 @@ public class DeviceProfile {
             adjustToHideWorkspaceLabels();
         }
 
+        DisplayMetrics dm = res.getDisplayMetrics();
+
         // Hotseat
+        invIconSizeDp = isVerticalLayout ? inv.landscapeHotseatIconSize : inv.hotseatIconSize;
+        hotseatIconSizePx = Math.max(1, (int) (ResourceUtils.pxFromDp(invIconSizeDp, dm) * scale));
         if (isVerticalLayout) {
-            hotseatBarSizePx = iconSizePx + hotseatBarSidePaddingStartPx
+            hotseatBarSizePx = hotseatIconSizePx + hotseatBarSidePaddingStartPx
                     + hotseatBarSidePaddingEndPx;
         }
         hotseatCellHeightPx = iconSizePx;
