@@ -26,12 +26,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
+import com.saggitt.colorpickerlib.ColorPicker
+import com.saggitt.colorpickerlib.OnChooseColorListener
 import com.saggitt.omega.OmegaPreferencesChangeCallback
-import com.saggitt.omega.colors.ColorDialogFragment
 import com.saggitt.omega.preferences.SelectableAppsActivity
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
@@ -380,16 +380,18 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
-                    val colorFrament = ColorDialogFragment(context)
+                    val colorPicker = ColorPicker(context)
+                    colorPicker.show()
+                    colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
+                        override fun onChooseColor(position: Int, color: Int) {
+                            // put code
+                        }
 
-                    val builder = AlertDialog.Builder(themedContext)
-                    builder.setNegativeButton(R.string.dialog_cancel, null)
-                    builder.setView(colorFrament);
-                    val dialog = builder.create()
-                            .apply {
-                                applyAccent()
-                            }
-                    dialog.show()
+                        override fun onCancel() {
+                            // put code
+                        }
+                    })
+
                 }
 
                 return view
