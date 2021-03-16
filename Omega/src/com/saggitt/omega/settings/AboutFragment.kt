@@ -25,6 +25,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,8 +47,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.util.Themes
+import com.android.launcher3.uioverrides.WallpaperColorInfo
 import com.google.android.material.tabs.TabLayout
+import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.AboutUtils
 import com.saggitt.omega.util.CustomPagerAdapter
 import com.saggitt.omega.util.applyColor
@@ -57,6 +60,7 @@ import java.util.*
 class AboutFragment : Fragment() {
 
     private val MODE_TOTAL = 3
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.about, container, false)
     }
@@ -82,12 +86,7 @@ class AboutFragment : Fragment() {
         }
 
         val aboutUtils = AboutUtils(context)
-        val isDark = Themes.getAttrBoolean(context, R.attr.isMainColorDark);
-        val cssFile = if (isDark) {
-            "about_dark.css"
-        } else {
-            "about_light.css"
-        }
+        val themedContext = ThemedContextProvider(requireContext(), null, ThemeOverride.Settings()).get()
 
         lifecycleScope.launch {
             //Load view Items
@@ -139,11 +138,20 @@ class AboutFragment : Fragment() {
             contrib2.setOnClickListener {
                 aboutUtils.openWebBrowser("https://github.com/nonaybay")
             }
+            val isDark = WallpaperColorInfo.getInstance(requireContext()).isDark
+            //val isDark =  Themes.getAttrBoolean(requireContext(), R.attr.isMainColorDark);
+            Log.d("AboutFragment", "Theme is " + isDark)
+            val cssFile = if (!isDark) {
+                "about_dark.css"
+            } else {
+                "about_light.css"
+            }
 
             license.loadUrl("file:///android_asset/license.htm")
             license.webViewClient = object : WebViewClient() {
 
                 override fun onPageFinished(view: WebView, url: String) {
+
                     if (url.startsWith("file:///android_asset")) {
                         // Inject CSS when page is done loading
                         injectCSS(license, cssFile)
