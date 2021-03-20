@@ -21,7 +21,6 @@ package com.saggitt.omega;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -92,10 +91,9 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         launcherClient = new NexusLauncher(this);
     }
 
-    @NotNull
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
-            return (OmegaLauncher) ((ContextWrapper) context).getBaseContext();
+            return (OmegaLauncher) context;
         } else {
             return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
         }
@@ -106,7 +104,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
             Utilities.requestStoragePermission(this);
         }
-        IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
+        IconPackManager.Companion.getInstance(this);
         super.onCreate(savedInstanceState);
 
         mContext = this;
