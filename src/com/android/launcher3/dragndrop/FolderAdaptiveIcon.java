@@ -29,7 +29,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.PreviewBackground;
@@ -40,10 +40,10 @@ import com.android.launcher3.util.Preconditions;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
- * {@link AdaptiveIconCompat} representation of a {@link FolderIcon}
+ * {@link com.android.launcher3.AdaptiveIconDrawableExt} representation of a {@link FolderIcon}
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class FolderAdaptiveIcon extends AdaptiveIconCompat {
+public class FolderAdaptiveIcon extends AdaptiveIconDrawableExt {
     private static final String TAG = "FolderAdaptiveIcon";
 
     private final Drawable mBadge;
