@@ -16,8 +16,6 @@
 
 package com.android.launcher3.model;
 
-import static android.graphics.BitmapFactory.decodeByteArray;
-
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,6 +58,8 @@ import com.saggitt.omega.OmegaPreferences;
 
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
+
+import static android.graphics.BitmapFactory.decodeByteArray;
 
 /**
  * Extension of {@link Cursor} with utility methods for workspace loading.
@@ -423,6 +423,11 @@ public class LoaderCursor extends CursorWrapper {
             final GridOccupancy hotseatOccupancy =
                     occupied.get(LauncherSettings.Favorites.CONTAINER_HOTSEAT);
 
+            int hotseatRows = Utilities.getOmegaPrefs(mContext).getDockRowsCount();
+            int hotseatSize = mIDP.numHotseatIcons;
+            int hotseatX = (int) (item.screenId % hotseatSize);
+            int hotseatY = (int) (item.screenId / hotseatSize);
+
             if (item.screenId >= mIDP.numHotseatIcons) {
                 Log.e(TAG, "Error loading shortcut " + item
                         + " into hotseat position " + item.screenId
@@ -432,18 +437,18 @@ public class LoaderCursor extends CursorWrapper {
             }
 
             if (hotseatOccupancy != null) {
-                if (hotseatOccupancy.cells[(int) item.screenId][0]) {
+                if (hotseatOccupancy.cells[hotseatX][hotseatY]) {
                     Log.e(TAG, "Error loading shortcut into hotseat " + item
                             + " into position (" + item.screenId + ":" + item.cellX + ","
                             + item.cellY + ") already occupied");
                     return false;
                 } else {
-                    hotseatOccupancy.cells[item.screenId][0] = true;
+                    hotseatOccupancy.cells[hotseatX][hotseatY] = true;
                     return true;
                 }
             } else {
-                final GridOccupancy occupancy = new GridOccupancy(mIDP.numHotseatIcons, 1);
-                occupancy.cells[item.screenId][0] = true;
+                final GridOccupancy occupancy = new GridOccupancy(hotseatSize, hotseatRows);
+                occupancy.cells[hotseatX][hotseatY] = true;
                 occupied.put(LauncherSettings.Favorites.CONTAINER_HOTSEAT, occupancy);
                 return true;
             }
