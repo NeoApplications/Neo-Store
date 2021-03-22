@@ -24,7 +24,6 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -311,7 +310,8 @@ public class PersonalWorkSlidingTabStrip extends LinearLayout implements PageInd
         for (int i = 0; i < tabs.getCount(); i++) {
             AllAppsTabs.Tab tab = tabs.get(i);
             ColoredButton button = (ColoredButton) getChildAt(i);
-            button.setColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
+            button.setColor(tab.getDrawerTab().getColor().value());
+            button.refreshTextColor();
             button.setText(tab.getName());
             button.setOnLongClickListener(v -> {
                 DrawerTabEditBottomSheet.Companion

@@ -91,6 +91,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         launcherClient = new NexusLauncher(this);
     }
 
+    @NotNull
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
             return (OmegaLauncher) context;
@@ -104,7 +105,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
             Utilities.requestStoragePermission(this);
         }
-        IconPackManager.Companion.getInstance(this);
+        IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
         super.onCreate(savedInstanceState);
 
         mContext = this;

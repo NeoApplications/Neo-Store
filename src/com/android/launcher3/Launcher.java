@@ -354,7 +354,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     private SafeCloseable mUserChangedCallbackCloseable;
 
     public static Launcher getLauncher(Context context) {
-        return fromContext(context);
+        return (Launcher) fromContext(context);
     }
 
     @Override

@@ -54,6 +54,7 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.Preconditions;
+import com.google.android.apps.nexuslauncher.DynamicIconProvider;
 import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.function.Predicate;
@@ -79,7 +80,7 @@ public class IconCache extends BaseIconCache {
     private final LauncherApps mLauncherApps;
     private final UserCache mUserManager;
     private final InstantAppResolver mInstantAppResolver;
-    private final IconProvider mIconProvider;
+    private final DynamicIconProvider mIconProvider;
 
     private int mPendingIconRequestCount = 0;
 
@@ -96,7 +97,7 @@ public class IconCache extends BaseIconCache {
         mLauncherApps = mContext.getSystemService(LauncherApps.class);
         mUserManager = UserCache.INSTANCE.get(mContext);
         mInstantAppResolver = InstantAppResolver.newInstance(mContext);
-        mIconProvider = new IconProvider(context);
+        mIconProvider = new DynamicIconProvider(context);
     }
 
     @Override
@@ -328,7 +329,7 @@ public class IconCache extends BaseIconCache {
     }
 
     public Drawable getFullResIcon(LauncherActivityInfo info, boolean flattenDrawable) {
-        return mIconProvider.getIcon(info, mIconDpi, flattenDrawable);
+        return mIconProvider.getIcon(info, mIconDpi);
     }
 
     public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo, boolean flattenDrawable) {

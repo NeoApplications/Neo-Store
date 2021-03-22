@@ -23,9 +23,11 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.CancellationSignal;
@@ -44,7 +46,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.Launcher;
@@ -54,6 +56,7 @@ import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.graphics.IconShape;
+import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.popup.SystemShortcut;
@@ -92,6 +95,7 @@ public class FloatingIconView extends FrameLayout implements
     private CancellationSignal mLoadIconSignal;
 
     private final Launcher mLauncher;
+    private final int mBlurSizeOutline;
     private final boolean mIsRtl;
 
     private boolean mIsVerticalBarLayout = false;
@@ -173,6 +177,8 @@ public class FloatingIconView extends FrameLayout implements
     public FloatingIconView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mLauncher = Launcher.getLauncher(context);
+        mBlurSizeOutline = getResources().getDimensionPixelSize(
+                R.dimen.blur_size_medium_outline);
         mIsRtl = Utilities.isRtl(getResources());
         mListenerView = new ListenerView(context, attrs);
         mClipIconView = new ClipIconView(context, attrs);
@@ -280,7 +286,7 @@ public class FloatingIconView extends FrameLayout implements
             int height = (int) pos.height();
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
-                if (drawable instanceof AdaptiveIconCompat) {
+                if (drawable instanceof AdaptiveIconDrawableExt) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
                     // The drawable we get back is not an adaptive icon, so we need to use the
@@ -327,7 +333,7 @@ public class FloatingIconView extends FrameLayout implements
     @SuppressWarnings("WrongThread")
     private static int getOffsetForIconBounds(Launcher l, Drawable drawable, RectF position) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                || !(drawable instanceof AdaptiveIconCompat)
+                || !(drawable instanceof AdaptiveIconDrawableExt)
                 || (drawable instanceof FolderAdaptiveIcon)) {
             return 0;
         }
@@ -344,8 +350,8 @@ public class FloatingIconView extends FrameLayout implements
         }
 
         bounds.inset(
-                (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
-                (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
+                (int) (-bounds.width() * AdaptiveIconDrawableExt.getExtraInsetFraction()),
+                (int) (-bounds.height() * AdaptiveIconDrawableExt.getExtraInsetFraction())
         );
 
         return bounds.left;
@@ -561,17 +567,36 @@ public class FloatingIconView extends FrameLayout implements
      * @param iconOffset The amount of offset needed to match this view with the original view.
      */
     @UiThread
-    private void setIcon(@Nullable Drawable drawable, @Nullable Drawable badge, int iconOffset) {
+    private void setIcon(View originalView, @Nullable Drawable drawable, @Nullable Drawable badge, int iconOffset) {
         final InsettableFrameLayout.LayoutParams lp =
                 (InsettableFrameLayout.LayoutParams) getLayoutParams();
         mBadge = badge;
         mClipIconView.setIcon(drawable, iconOffset, lp, mIsOpening, mIsVerticalBarLayout,
                 mLauncher.getDeviceProfile());
-        if (drawable instanceof AdaptiveIconCompat) {
+        if (drawable instanceof AdaptiveIconDrawableExt) {
+            boolean isFolderIcon = drawable instanceof FolderAdaptiveIcon;
+            AdaptiveIconDrawableExt adaptiveIcon = (AdaptiveIconDrawableExt) drawable;
+            Drawable background = adaptiveIcon.getBackground();
+            if (background == null) {
+                background = new ColorDrawable(Color.TRANSPARENT);
+            }
+            mBackground = background;
+            Drawable foreground = adaptiveIcon.getForeground();
+            if (foreground == null) {
+                foreground = new ColorDrawable(Color.TRANSPARENT);
+            }
+            mForeground = foreground;
+
             final int originalHeight = lp.height;
             final int originalWidth = lp.width;
 
+            int blurMargin = mBlurSizeOutline / 2;
             mFinalDrawableBounds.set(0, 0, originalWidth, originalHeight);
+            if (!isFolderIcon) {
+                mFinalDrawableBounds.inset(iconOffset - blurMargin, iconOffset - blurMargin);
+            }
+            mForeground.setBounds(mFinalDrawableBounds);
+            mBackground.setBounds(mFinalDrawableBounds);
 
             float aspectRatio = mLauncher.getDeviceProfile().aspectRatio;
             if (mIsVerticalBarLayout) {
@@ -589,7 +614,28 @@ public class FloatingIconView extends FrameLayout implements
             mClipIconView.setLayoutParams(clipViewLp);
 
             if (mBadge != null) {
-                mBadge.setBounds(0, 0, clipViewOgWidth, clipViewOgHeight);
+                mBadge.setBounds(mStartRevealRect);
+                if (!mIsOpening && !isFolderIcon) {
+                    DRAWABLE_ALPHA.set(mBadge, 0);
+                }
+            }
+
+            if (isFolderIcon) {
+                ((FolderIcon) originalView).getPreviewBounds(sTmpRect);
+                float bgStroke = ((FolderIcon) originalView).getBackgroundStrokeWidth();
+                if (mForeground instanceof ShiftedBitmapDrawable) {
+                    ShiftedBitmapDrawable sbd = (ShiftedBitmapDrawable) mForeground;
+                    sbd.setShiftX(sbd.getShiftX() - sTmpRect.left - bgStroke);
+                    sbd.setShiftY(sbd.getShiftY() - sTmpRect.top - bgStroke);
+                }
+                if (mBadge instanceof ShiftedBitmapDrawable) {
+                    ShiftedBitmapDrawable sbd = (ShiftedBitmapDrawable) mBadge;
+                    sbd.setShiftX(sbd.getShiftX() - sTmpRect.left - bgStroke);
+                    sbd.setShiftY(sbd.getShiftY() - sTmpRect.top - bgStroke);
+                }
+            } else {
+                Utilities.scaleRectAboutCenter(mStartRevealRect,
+                        IconShape.getNormalizationScale());
             }
         }
         invalidate();
@@ -609,7 +655,7 @@ public class FloatingIconView extends FrameLayout implements
 
         synchronized (mIconLoadResult) {
             if (mIconLoadResult.isIconLoaded) {
-                setIcon(mIconLoadResult.drawable, mIconLoadResult.badge,
+                setIcon(originalView, mIconLoadResult.drawable, mIconLoadResult.badge,
                         mIconLoadResult.iconOffset);
                 setIconAndDotVisible(originalView, false);
             } else {
@@ -618,7 +664,7 @@ public class FloatingIconView extends FrameLayout implements
                         return;
                     }
 
-                    setIcon(mIconLoadResult.drawable, mIconLoadResult.badge,
+                    setIcon(originalView, mIconLoadResult.drawable, mIconLoadResult.badge,
                             mIconLoadResult.iconOffset);
 
                     setVisibility(VISIBLE);

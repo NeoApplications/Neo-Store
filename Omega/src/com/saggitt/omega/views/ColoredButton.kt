@@ -29,12 +29,16 @@ class ColoredButton(context: Context, attrs: AttributeSet) : Button(context, att
 
     var color: Int = 0
 
-    private var defaultColor = currentTextColor
+    private val defaultColor = currentTextColor
 
     fun reset() {
         color = Utilities.getOmegaPrefs(context).accentColor
         setTextColor()
         setRippleColor()
+    }
+
+    fun refreshTextColor() {
+        setTextColor()
     }
 
     private fun setTextColor() {

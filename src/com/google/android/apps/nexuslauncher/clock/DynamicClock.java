@@ -10,12 +10,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import androidx.annotation.RequiresApi;
+
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.LauncherAppState;
 import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 
@@ -67,6 +70,7 @@ public class DynamicClock extends BroadcastReceiver {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private static ClockLayers getClockLayers(Context context, int iconDpi, boolean normalizeIcon) {
         ClockLayers layers = new ClockLayers();
         try {
@@ -77,7 +81,7 @@ public class DynamicClock extends BroadcastReceiver {
                 int levelPerTickIcon = metaData.getInt("com.google.android.apps.nexuslauncher.LEVEL_PER_TICK_ICON_ROUND", 0);
                 if (levelPerTickIcon != 0) {
                     Drawable drawableForDensity = packageManager.getResourcesForApplication(applicationInfo).getDrawableForDensity(levelPerTickIcon, iconDpi);
-                    layers.mDrawable = AdaptiveIconCompat.wrap(drawableForDensity.mutate());
+                    layers.mDrawable = AdaptiveIconDrawableExt.wrap(drawableForDensity.mutate());
                     layers.mHourIndex = metaData.getInt("com.google.android.apps.nexuslauncher.HOUR_LAYER_INDEX", -1);
                     layers.mMinuteIndex = metaData.getInt("com.google.android.apps.nexuslauncher.MINUTE_LAYER_INDEX", -1);
                     layers.mSecondIndex = metaData.getInt("com.google.android.apps.nexuslauncher.SECOND_LAYER_INDEX", -1);

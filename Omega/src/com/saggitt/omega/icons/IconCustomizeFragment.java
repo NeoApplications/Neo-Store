@@ -40,7 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.adaptive.IconShapeManager;
+import com.saggitt.omega.adaptive.IconShapeCustomizeView;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.theme.ThemedContextProvider;
 import com.saggitt.omega.util.OmegaUtilsKt;
@@ -62,40 +62,12 @@ public class IconCustomizeFragment extends Fragment {
     private boolean legacy;
     private boolean white;
     private boolean adaptive;
+    private IconShapeAdapter adapter;
 
+    private IconShapeCustomizeView customizeView;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_icon_shape, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_custom_shape) {
-            showDialog();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void showDialog() {
-        ContextThemeWrapper themedContext = new ThemedContextProvider(getContext(), null, new ThemeOverride.Settings()).get();
-        AlertDialog.Builder dialog = new AlertDialog.Builder(themedContext, new ThemeOverride.AlertDialog().getTheme(getContext()));
-        dialog.setTitle(R.string.menu_icon_shape);
-        dialog.setView(R.layout.icon_shape_customize_view);
-        dialog.setPositiveButton(android.R.string.ok, (dialog1, which) -> new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                prefs.setIconShape(IconShapeManager.Companion.getInstance(getContext()).getIconShape().toString());
-                dialog.dismiss();
-            }
-        });
-        dialog.setNegativeButton(android.R.string.cancel, null);
-        dialog.create();
-        dialog.show();
     }
 
     @Nullable
@@ -120,7 +92,7 @@ public class IconCustomizeFragment extends Fragment {
         //Load Shapes
         RecyclerView shapeView = view.findViewById(R.id.shape_view);
         shapeView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        IconShapeAdapter adapter = new IconShapeAdapter(Objects.requireNonNull(mContext));
+        adapter = new IconShapeAdapter(Objects.requireNonNull(mContext));
         shapeView.setAdapter(adapter);
 
         //Load switch preferences
@@ -137,6 +109,39 @@ public class IconCustomizeFragment extends Fragment {
         setupSwitchView(adaptiveView, adaptive);
         setupSwitchView(coloredView, coloredIcons);
         hideViews();
+
+        customizeView = view.findViewById(R.id.customizeView);
+    }
+
+    public void showDialog() {
+        ContextThemeWrapper themedContext = new ThemedContextProvider(getContext(), null, new ThemeOverride.Settings()).get();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(themedContext, new ThemeOverride.AlertDialog().getTheme(getContext()));
+        dialog.setTitle(R.string.menu_icon_shape);
+        dialog.setView(R.layout.icon_shape_customize_view);
+        dialog.setPositiveButton(android.R.string.ok, (dialog1, which) -> new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                prefs.setIconShape(customizeView.getCurrentShape().getHashString());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        dialog.setNegativeButton(android.R.string.cancel, null);
+        dialog.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_icon_shape, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_custom_shape) {
+            showDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /*

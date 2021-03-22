@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,7 +20,9 @@ import android.os.UserHandle;
 
 import androidx.annotation.NonNull;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.icons.cache.IconPack;
+import com.android.launcher3.icons.cache.IconPackProvider;
 
 import static android.graphics.Paint.DITHER_FLAG;
 import static android.graphics.Paint.FILTER_BITMAP_FLAG;
@@ -102,8 +105,12 @@ public class BaseIconFactory implements AutoCloseable {
             if (resources != null) {
                 final int id = resources.getIdentifier(iconRes.resourceName, null, null);
                 // do not stamp old legacy shortcuts as the app may have already forgotten about it
-                return createBadgedIconBitmap(
-                        resources.getDrawableForDensity(id, mFillResIconDpi),
+                IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+                Drawable icon = resources.getDrawableForDensity(id, mFillResIconDpi);
+                if (iconPack != null) {
+                    icon = iconPack.getIcon(iconRes.packageName, icon, mPm.getApplicationInfo(iconRes.packageName, 0).name);
+                }
+                return createBadgedIconBitmap(icon,
                         Process.myUserHandle() /* only available on primary user */,
                         false /* do not apply legacy treatment */);
             }
@@ -167,7 +174,7 @@ public class BaseIconFactory implements AutoCloseable {
         }
         icon = normalizeAndWrapToAdaptiveIcon(icon, shrinkNonAdaptiveIcons, null, scale);
         Bitmap bitmap = createIconBitmap(icon, scale[0]);
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawableExt) {
             mCanvas.setBitmap(bitmap);
             getShadowGenerator().recreateIcon(Bitmap.createBitmap(bitmap), mCanvas);
             mCanvas.setBitmap(null);
@@ -222,21 +229,21 @@ public class BaseIconFactory implements AutoCloseable {
 
     private Drawable normalizeAndWrapToAdaptiveIcon(@NonNull Drawable icon,
                                                     boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
-        if (icon == null) {
-            return null;
-        }
         float scale = 1f;
 
+        /*
+            En esta seccion se crea el Icono adaptivo.
+        */
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
-            if (mWrapperIcon == null || !((AdaptiveIconCompat) mWrapperIcon).isMaskValid()) {
-                mWrapperIcon = AdaptiveIconCompat.wrap(
+            if (mWrapperIcon == null || !((AdaptiveIconDrawableExt) mWrapperIcon).isMaskValid()) {
+                mWrapperIcon = AdaptiveIconDrawableExt.wrap(
                         mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper).mutate());
             }
-            AdaptiveIconCompat dr = (AdaptiveIconCompat) mWrapperIcon;
+            AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
             dr.setBounds(0, 0, 1, 1);
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
-            if (!(icon instanceof AdaptiveIconCompat) && !outShape[0]) {
+            if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
@@ -292,7 +299,7 @@ public class BaseIconFactory implements AutoCloseable {
         mCanvas.setBitmap(bitmap);
         mOldBounds.set(icon.getBounds());
 
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawableExt) {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
                     Math.round(size * (1 - scale) / 2));
             icon.setBounds(offset, offset, size - offset, size - offset);

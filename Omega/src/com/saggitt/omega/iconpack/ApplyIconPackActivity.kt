@@ -32,9 +32,11 @@ class ApplyIconPackActivity : Activity() {
         super.onCreate(savedInstanceState)
         ThemeOverride(themeSet, this).applyTheme(this)
 
-        val packageName = intent.getStringExtra("packageName")
-        prefs.iconPacks.remove(packageName!!)
-        prefs.iconPacks.add(0, packageName)
+        intent.getStringExtra("packageName")?.let {
+
+            prefs.iconPacks.remove(it)
+            prefs.iconPacks.add(0, it)
+        }
         val packName = IconPackManager.getInstance(this).packList.currentPack().displayName
         val message = String.format(getString(R.string.icon_pack_applied_toast), packName)
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()

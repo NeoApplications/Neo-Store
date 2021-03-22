@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.UserHandle;
 import android.os.UserManager;
 
@@ -29,6 +30,7 @@ import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.compat.AlphabeticIndexCompat;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.model.data.AppInfo;
@@ -42,12 +44,11 @@ import com.saggitt.omega.allapps.MostUsedComparator;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
-import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.DbHelper;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -98,14 +99,17 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private ArrayList<ComponentKey> mSearchResults;
     private AllAppsGridAdapter mAdapter;
     private AppInfoComparator mAppNameComparator;
+    private HashMap<AppInfo, String> mCachedSectionNames = new HashMap<>();
+    private AlphabeticIndexCompat mIndexer;
 
     public AlphabeticalAppsList(Context context, AllAppsStore appsStore, boolean isWork) {
         mAllAppsStore = appsStore;
         mLauncher = BaseDraggingActivity.fromContext(context);
+        mIndexer = new AlphabeticIndexCompat(context);
         mAppNameComparator = new AppInfoComparator(context);
         mAppColorComparator = new AppColorComparator(context);
         mIsWork = isWork;
-        mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColumns;
+        mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColsDrawer;
         mAllAppsStore.addUpdateListener(this);
         prefs = Utilities.getOmegaPrefs(context);
     }
@@ -292,6 +296,12 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             for (Map.Entry<String, ArrayList<AppInfo>> entry : sectionMap.entrySet()) {
                 mApps.addAll(entry.getValue());
             }
+        } else {
+            // Just compute the section headers for use below
+            for (AppInfo info : mApps) {
+                // Add the section to the cache
+                getAndUpdateCachedSectionName(info);
+            }
         }
 
         // Recompose the set of adapter items from the current set of apps
@@ -332,15 +342,48 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             }
         }
 
+        // Drawer folders are arranged before all the apps
+        if (!hasFilter()) {
+            for (DrawerFolderInfo info : getFolderInfos()) {
+                String sectionName = "#";
+
+                // Create a new section if the section names do not match
+                if (!sectionName.equals(lastSectionName)) {
+                    lastSectionName = sectionName;
+                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, Color.WHITE);
+                    mFastScrollerSections.add(lastFastScrollerSectionInfo);
+                }
+
+                info.setAppsStore(mAllAppsStore);
+                // Create an folder item
+                AdapterItem appItem = AdapterItem
+                        .asFolder(position++, sectionName, info, folderIndex++);
+                if (lastFastScrollerSectionInfo.fastScrollToItem == null) {
+                    lastFastScrollerSectionInfo.fastScrollToItem = appItem;
+                }
+                mAdapterItems.add(appItem);
+            }
+        }
+
+        Set<ComponentKey> folderFilters = getFolderFilteredApps();
+
         // Recreate the filtered and sectioned apps (for convenience for the grid layout) from the
         // ordered set of sections
         for (AppInfo info : getFiltersAppInfos()) {
+            if (!hasFilter() && folderFilters.contains(info.toComponentKey())) {
+                continue;
+            }
+
             String sectionName = info.sectionName;
 
             // Create a new section if the section names do not match
             if (!sectionName.equals(lastSectionName)) {
                 lastSectionName = sectionName;
-                lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName);
+                int color = 0;
+                if (prefs.getSortMode() == SORT_BY_COLOR) {
+                    color = info.bitmap.color;
+                }
+                lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, color);
                 mFastScrollerSections.add(lastFastScrollerSectionInfo);
             }
 
@@ -447,6 +490,25 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         return result;
     }
 
+    /**
+     * Returns the cached section name for the given title, recomputing and updating the cache if
+     * the title has no cached section name.
+     */
+    private String getAndUpdateCachedSectionName(AppInfo info) {
+        String sectionName = mCachedSectionNames.get(info);
+        if (sectionName == null) {
+            if (prefs.getSortMode() == SORT_BY_COLOR) {
+                float[] hsl = new float[3];
+                ColorUtils.colorToHSL(info.iconColor, hsl);
+                sectionName = String.format("%d:%d:%d", AppColorComparator.remapHue(hsl[0]), AppColorComparator.remap(hsl[2]), AppColorComparator.remap(hsl[1]));
+            } else {
+                sectionName = mIndexer.computeSectionName(info.title);
+            }
+            mCachedSectionNames.put(info, sectionName);
+        }
+        return sectionName;
+    }
+
     public void setIsWork(boolean isWork) {
         mIsWork = isWork;
     }
@@ -480,9 +542,12 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         public AdapterItem fastScrollToItem;
         // The touch fraction that should map to this fast scroll section info
         public float touchFraction;
+        // The color of this fast scroll section
+        public int color;
 
-        public FastScrollSectionInfo(String sectionName) {
+        public FastScrollSectionInfo(String sectionName, int color) {
             this.sectionName = sectionName;
+            this.color = color;
         }
     }
 

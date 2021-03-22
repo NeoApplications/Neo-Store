@@ -68,7 +68,7 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
     public static final int FLAG_SYSTEM_NO = 1 << 7;
     public static final int FLAG_SYSTEM_MASK = FLAG_SYSTEM_YES | FLAG_SYSTEM_NO;
     /**
-     * Flag indicating that the icon is an {@link android.graphics.drawable.AdaptiveIconDrawable}
+     * Flag indicating that the icon is an {@link com.android.launcher3.AdaptiveIconDrawableExt}
      * that can be optimized in various way.
      */
     public static final int FLAG_ADAPTIVE_ICON = 1 << 8;

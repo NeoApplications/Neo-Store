@@ -30,12 +30,12 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.android.launcher3.*
 import com.android.launcher3.icons.ShortcutCachingLogic
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
-import com.google.android.apps.nexuslauncher.DynamicIconProvider
 import com.google.android.apps.nexuslauncher.clock.DynamicClock
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
 import com.saggitt.omega.icons.CustomIconProvider
@@ -51,6 +51,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
 
     private val prefs = context.omegaPrefs
     val dynamicClockDrawer by lazy { DynamicClock(context) }
+    val GOOGLE_CALENDAR = "com.google.android.calendar"
     private val appMap = HashMap<ComponentKey, Entry>().apply {
         val launcherApps = context.getSystemService(LauncherApps::class.java)
         UserCache.INSTANCE.get(context).userProfiles.forEach { user ->
@@ -70,7 +71,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
     override fun onDateChanged() {
         val model = LauncherAppState.getInstance(context).model
         UserCache.INSTANCE.get(context).userProfiles.forEach { user ->
-            model.onAppIconChanged(DynamicIconProvider.GOOGLE_CALENDAR, user)
+            model.onAppIconChanged(GOOGLE_CALENDAR, user)
         }
     }
 
@@ -78,10 +79,12 @@ class DefaultPack(context: Context) : IconPack(context, "") {
 
     override fun getEntryForComponent(key: ComponentKey) = appMap[key]
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(entry: IconPackManager.CustomIconEntry, iconDpi: Int): Drawable? {
         return getIcon(Utilities.makeComponentKey(context, entry.icon), iconDpi)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getIcon(key: ComponentKey, iconDpi: Int): Drawable? {
         ensureInitialLoadComplete()
 
@@ -101,6 +104,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         return gen.result
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
                          flattenDrawable: Boolean,
                          customIconEntry: IconPackManager.CustomIconEntry?,
@@ -122,7 +126,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         getLegacyIcon(component, iconDpi, prefs.forceShapeless)?.let {
             originalIcon = it.apply { mutate() }
         }
-        if (iconProvider == null || (DynamicIconProvider.GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
+        if (iconProvider == null) {
             var roundIcon: Drawable? = null
             if (!prefs.forceShapeless) {
                 getRoundIcon(component, iconDpi)?.let {
@@ -132,9 +136,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
             val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
             return gen.result
         }
-        return iconProvider.getDynamicIcon(info, iconDpi)
+        return iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
         ensureInitialLoadComplete()
 
@@ -288,7 +293,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         override val isAvailable = true
 
         override fun drawableForDensity(density: Int): Drawable {
-            return AdaptiveIconCompat.wrap(app.getIcon(density)!!)
+            return AdaptiveIconDrawableExt.wrap(app.getIcon(density)!!)
         }
 
         override fun toCustomEntry() = IconPackManager.CustomIconEntry("", ComponentKey(app.componentName, app.user).toString())

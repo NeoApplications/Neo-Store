@@ -26,6 +26,7 @@ import android.content.pm.LauncherActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -33,11 +34,16 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import androidx.annotation.RequiresApi;
+
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.R;
 import com.android.launcher3.icons.BitmapInfo.Extender;
+import com.android.launcher3.icons.cache.IconPack;
+import com.android.launcher3.icons.cache.IconPackProvider;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.ResourceBasedOverride;
 import com.android.launcher3.util.SafeCloseable;
 
 import java.util.Calendar;
@@ -47,7 +53,7 @@ import java.util.function.BiFunction;
 /**
  * Class to handle icon loading from different packages
  */
-public class IconProvider {
+public class IconProvider implements ResourceBasedOverride {
 
     private static final String TAG = "IconProvider";
     private static final boolean DEBUG = false;
@@ -65,46 +71,18 @@ public class IconProvider {
     private static final BiFunction<ActivityInfo, PackageManager, Drawable> AI_LOADER =
             ActivityInfo::loadUnbadgedIcon;
 
-
     private final Context mContext;
     private final ComponentName mCalendar;
     private final ComponentName mClock;
+
+    public static IconProvider newInstance(Context context) {
+        return ResourceBasedOverride.Overrides.getObject(IconProvider.class, context, R.string.icon_provider_class);
+    }
 
     public IconProvider(Context context) {
         mContext = context;
         mCalendar = parseComponentOrNull(context, R.string.calendar_component_name);
         mClock = parseComponentOrNull(context, R.string.clock_component_name);
-    }
-
-    /**
-     * Registers a callback to listen for calendar icon changes.
-     * The callback receives the packageName for the calendar icon
-     */
-    public static SafeCloseable registerIconChangeListener(Context context,
-                                                           BiConsumer<String, UserHandle> callback, Handler handler) {
-        ComponentName calendar = parseComponentOrNull(context, R.string.calendar_component_name);
-        ComponentName clock = parseComponentOrNull(context, R.string.clock_component_name);
-
-        if (calendar == null && clock == null) {
-            return () -> {
-            };
-        }
-
-        BroadcastReceiver receiver = new DateTimeChangeReceiver(callback);
-        final IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-        if (calendar != null) {
-            filter.addAction(Intent.ACTION_TIME_CHANGED);
-            filter.addAction(Intent.ACTION_DATE_CHANGED);
-        }
-        context.registerReceiver(receiver, filter, null, handler);
-
-        return () -> context.unregisterReceiver(receiver);
-    }
-
-    private static ComponentName parseComponentOrNull(Context context, int resId) {
-        String cn = context.getString(resId);
-        return TextUtils.isEmpty(cn) ? null : ComponentName.unflattenFromString(cn);
-
     }
 
     /**
@@ -147,6 +125,11 @@ public class IconProvider {
                 AI_LOADER);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Drawable getIcon(LauncherActivityInfo info, int iconDpi, boolean flattenDrawable) {
+        return AdaptiveIconDrawableExt.wrap(info.getIcon(iconDpi));
+    }
+
     private <T, P> Drawable getIcon(String packageName, UserHandle user, T obj, P param,
                                     BiFunction<T, P, Drawable> loader) {
         Drawable icon = null;
@@ -157,7 +140,20 @@ public class IconProvider {
                 && Process.myUserHandle().equals(user)) {
             icon = loadClockDrawable(0);
         }
-        return icon == null ? loader.apply(obj, param) : icon;
+        Drawable ret = icon == null ? loader.apply(obj, param) : icon;
+        IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+        try {
+            if (iconPack != null) {
+                ret = iconPack.getIcon(packageName, ret, mContext.getPackageManager().getApplicationInfo(packageName, 0).name);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            ret = iconPack.getIcon(packageName, ret, "");
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !(ret instanceof AdaptiveIconDrawableExt)) {
+            ret = IconPack.wrapAdaptiveIcon(ret, mContext);
+        }
+        return ret;
     }
 
     private Drawable loadCalendarDrawable(int iconDpi) {
@@ -222,12 +218,30 @@ public class IconProvider {
         return Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 1;
     }
 
+
     /**
-     * @param flattenDrawable true if the caller does not care about the specification of the
-     *                        original icon as long as the flattened version looks the same.
+     * Registers a callback to listen for calendar icon changes.
+     * The callback receives the packageName for the calendar icon
      */
-    public Drawable getIcon(LauncherActivityInfo info, int iconDpi, boolean flattenDrawable) {
-        return AdaptiveIconCompat.wrap(info.getIcon(iconDpi));
+    public static SafeCloseable registerIconChangeListener(Context context,
+                                                           BiConsumer<String, UserHandle> callback, Handler handler) {
+        ComponentName calendar = parseComponentOrNull(context, R.string.calendar_component_name);
+        ComponentName clock = parseComponentOrNull(context, R.string.clock_component_name);
+
+        if (calendar == null && clock == null) {
+            return () -> {
+            };
+        }
+
+        BroadcastReceiver receiver = new DateTimeChangeReceiver(callback);
+        final IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
+        if (calendar != null) {
+            filter.addAction(Intent.ACTION_TIME_CHANGED);
+            filter.addAction(Intent.ACTION_DATE_CHANGED);
+        }
+        context.registerReceiver(receiver, filter, null, handler);
+
+        return () -> context.unregisterReceiver(receiver);
     }
 
     private static class DateTimeChangeReceiver extends BroadcastReceiver {
@@ -256,5 +270,11 @@ public class IconProvider {
             }
 
         }
+    }
+
+    private static ComponentName parseComponentOrNull(Context context, int resId) {
+        String cn = context.getString(resId);
+        return TextUtils.isEmpty(cn) ? null : ComponentName.unflattenFromString(cn);
+
     }
 }

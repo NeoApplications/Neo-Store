@@ -40,6 +40,7 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
         for (shape in shapeItems) {
             adapterItems.add(ShapeModel(shape, Utilities.getOmegaPrefs(mContext).iconShape == shape))
         }
+        adapterItems.add(ShapeModel("custom", false))
         adapterItems.removeAt(0)
     }
 
@@ -84,6 +85,7 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
             iconButton.setOnClickListener {
                 adapterItems.get(itemPosition).isSelected = true
                 prefs.iconShape = item.shapeName
+
                 notifyDataSetChanged()
             }
         }

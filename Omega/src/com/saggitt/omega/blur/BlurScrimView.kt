@@ -308,7 +308,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
         blurDrawable?.viewOffsetX = scroll
     }
 
-    public fun getShelfColor(): Int {
+    fun getShelfColor(): Int {
         return mShelfColor
     }
 

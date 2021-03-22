@@ -40,7 +40,6 @@ import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.shortcuts.ShortcutRequest
@@ -63,7 +62,7 @@ open class AppsAdapterWithShortcuts(
 
         private val iconDpi = LauncherAppState.getInstanceNoCreate().invariantDeviceProfile.fillResIconDpi
 
-        private var iconProvider: IconProvider? = null
+        private var iconProvider: CustomIconProvider? = null
     }
 
     var items = ArrayList<Item>().apply { add(LoadingItem()) }
@@ -72,7 +71,7 @@ open class AppsAdapterWithShortcuts(
 
     init {
         if (iconProvider == null) {
-            iconProvider = IconProvider(context)
+            iconProvider = CustomIconProvider(context)
         }
         MODEL_EXECUTOR.handler.postAtFrontOfQueue(::loadAppsList)
     }

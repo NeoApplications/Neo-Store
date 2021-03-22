@@ -18,31 +18,39 @@
 
 package com.saggitt.omega.icons
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.ShortcutInfo
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
-import com.android.launcher3.AdaptiveIconCompat
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.android.launcher3.AdaptiveIconDrawableExt
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.model.data.ItemInfo
+import com.google.android.apps.nexuslauncher.DynamicIconProvider
 import com.saggitt.omega.iconpack.IconPackManager
 
-class CustomIconProvider(context: Context) : IconProvider(context) {
+class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
     private val iconPackManager by lazy { IconPackManager.getInstance(context) }
 
     fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
         return iconPackManager.getIcon(shortcutInfo, iconDpi).assertNotAdaptiveIconDrawable(shortcutInfo)
     }
 
+    override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int, flattenDrawable: Boolean): Drawable {
+        return iconPackManager.getIcon(launcherActivityInfo, iconDpi, flattenDrawable, null, this).assertNotAdaptiveIconDrawable(launcherActivityInfo)
+    }
+
     fun getIcon(launcherActivityInfo: LauncherActivityInfo, itemInfo: ItemInfo, iconDpi: Int, flattenDrawable: Boolean): Drawable {
         return iconPackManager.getIcon(launcherActivityInfo, iconDpi, flattenDrawable, itemInfo, this).assertNotAdaptiveIconDrawable(launcherActivityInfo)
     }
 
-    fun getDynamicIcon(launcherActivityInfo: LauncherActivityInfo?, iconDpi: Int): Drawable {
-        return super.getIcon(launcherActivityInfo, iconDpi).assertNotAdaptiveIconDrawable(launcherActivityInfo)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getDynamicIcon(launcherActivityInfo: LauncherActivityInfo?, iconDpi: Int, flattenDrawable: Boolean): Drawable {
+        return super.getIcon(launcherActivityInfo, iconDpi, flattenDrawable).assertNotAdaptiveIconDrawable(launcherActivityInfo)
     }
 
     private fun <T> T.assertNotAdaptiveIconDrawable(info: Any?): T {
@@ -56,10 +64,12 @@ class CustomIconProvider(context: Context) : IconProvider(context) {
 
     companion object {
 
+        @SuppressLint("UseCompatLoadingForDrawables")
+        @RequiresApi(Build.VERSION_CODES.O)
         @JvmStatic
-        fun getAdaptiveIconDrawableWrapper(context: Context): AdaptiveIconCompat {
-            return AdaptiveIconCompat.wrap(context.getDrawable(
-                    R.drawable.adaptive_icon_drawable_wrapper)!!.mutate()) as AdaptiveIconCompat
+        fun getAdaptiveIconDrawableWrapper(context: Context): AdaptiveIconDrawableExt {
+            return AdaptiveIconDrawableExt.wrap(context.getDrawable(
+                    R.drawable.adaptive_icon_drawable_wrapper)!!.mutate()) as AdaptiveIconDrawableExt
         }
     }
 }

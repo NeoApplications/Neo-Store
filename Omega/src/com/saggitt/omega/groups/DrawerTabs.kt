@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.groups
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
@@ -57,8 +56,8 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
     }
 
     override fun getDefaultCreators(): List<GroupCreator<Tab>> {
-        return listOf(allAppsTabCreator) + personalTabCreator + UserCache.INSTANCE.get(context)
-                .userProfiles.mapNotNull {
+        return listOf(allAppsTabCreator) + personalTabCreator +
+                UserCache.INSTANCE.get(context).userProfiles.mapNotNull {
                     if (it != Process.myUserHandle()) ProfileTabCreator(Profile(it)) else null
                 }
     }
@@ -85,15 +84,14 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
     abstract class Tab(context: Context, type: String, title: String) : Group(type, context, title) {
 
-        val colorResolver = ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColor)
+        val color = ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColor)
 
         init {
-            addCustomization(colorResolver)
+            addCustomization(color)
         }
     }
 
     class CustomTab(context: Context) : Tab(context, TYPE_CUSTOM, context.getString(R.string.default_tab_name)) {
-
         val hideFromAllApps = SwitchRow(R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
                 KEY_HIDE_FROM_ALL_APPS, true)
         val contents = AppsRow(KEY_ITEMS, mutableSetOf())
@@ -110,7 +108,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
         }
 
-        fun getFilter(context: Context): Filter<*> = CustomFilter(context, contents.value()) // IconPackFilter(context)
+        fun getFilter(context: Context): Filter<*> = CustomFilter(context, contents.value())
     }
 
     open class ProfileTab(context: Context, val profile: Profile) : Tab(context, "$TYPE_PROFILE_PREFIX$profile}", getTitle(context, profile)) {
@@ -230,7 +228,6 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
         constructor() : this(null, true)
 
-        @SuppressLint("NewApi")
         constructor(parcel: Parcel) : this(
                 parcel.readParcelable<UserHandle?>(UserHandle::class.java.classLoader),
                 parcel.readBoolean())
@@ -248,7 +245,6 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             return matches(key.user)
         }
 
-        @SuppressLint("NewApi")
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeParcelable(user, flags)
             dest.writeBoolean(matchesAll)

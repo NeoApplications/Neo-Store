@@ -5,9 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Process;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import androidx.annotation.RequiresApi;
+
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
 
@@ -56,12 +59,13 @@ public class ClockLayers {
         return ret;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void setupBackground(Context context) {
         LauncherIcons launcherIcons = LauncherIcons.obtain(context);
         float[] tmp = new float[1];
         Drawable icon = getBackground().getConstantState().newDrawable();
-        if (mDrawable instanceof AdaptiveIconCompat) {
-            icon = new AdaptiveIconCompat(icon, null);
+        if (mDrawable instanceof AdaptiveIconDrawableExt) {
+            icon = new AdaptiveIconDrawableExt(icon, null);
         }
         iconBitmap = launcherIcons.createBadgedIconBitmap(icon, Process.myUserHandle(), 26, false, tmp).icon;
         scale = tmp[0];
@@ -94,12 +98,13 @@ public class ClockLayers {
         mCurrentTime.setTimeZone(timeZone);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     LayerDrawable getLayerDrawable() {
         if (mDrawable instanceof LayerDrawable) {
             return (LayerDrawable) mDrawable;
         }
-        if (mDrawable instanceof AdaptiveIconCompat) {
-            AdaptiveIconCompat adaptiveIconDrawable = (AdaptiveIconCompat) mDrawable;
+        if (mDrawable instanceof AdaptiveIconDrawableExt) {
+            AdaptiveIconDrawableExt adaptiveIconDrawable = (AdaptiveIconDrawableExt) mDrawable;
             if (adaptiveIconDrawable.getForeground() instanceof LayerDrawable) {
                 return (LayerDrawable) adaptiveIconDrawable.getForeground();
             }
@@ -107,23 +112,26 @@ public class ClockLayers {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     Drawable getBackground() {
-        if (mDrawable instanceof AdaptiveIconCompat) {
-            return ((AdaptiveIconCompat) mDrawable).getBackground();
+        if (mDrawable instanceof AdaptiveIconDrawableExt) {
+            return ((AdaptiveIconDrawableExt) mDrawable).getBackground();
         } else {
             return mDrawable;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void clipToMask(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconCompat) {
-            canvas.clipPath(((AdaptiveIconCompat) mDrawable).getIconMask());
+        if (mDrawable instanceof AdaptiveIconDrawableExt) {
+            canvas.clipPath(((AdaptiveIconDrawableExt) mDrawable).getIconMask());
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void drawForeground(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconCompat) {
-            ((AdaptiveIconCompat) mDrawable).getForeground().draw(canvas);
+        if (mDrawable instanceof AdaptiveIconDrawableExt) {
+            ((AdaptiveIconDrawableExt) mDrawable).getForeground().draw(canvas);
         } else {
             mDrawable.draw(canvas);
         }

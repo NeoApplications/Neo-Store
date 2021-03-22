@@ -39,7 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextClock;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
@@ -142,7 +142,7 @@ public class LauncherPreviewRenderer {
         BaseIconFactory iconFactory =
                 new BaseIconFactory(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize) {
                 };
-        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new AdaptiveIconCompat(
+        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new AdaptiveIconDrawableExt(
                         new ColorDrawable(Color.WHITE), new ColorDrawable(Color.WHITE)),
                 Process.myUserHandle(),
                 Build.VERSION.SDK_INT);

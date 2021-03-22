@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -54,6 +52,8 @@ import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.util.List;
+
+import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
 
 /**
  * The grid view adapter of all the apps.
@@ -295,7 +295,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
         @Override
         public int getSpanSize(int position) {
-            if (isIconViewType(mApps.getAdapterItems().get(position).viewType)) {
+            if (isIconViewType(mApps.getAdapterItems().get(position).viewType)
+                    || mApps.getAdapterItems().size() <= position) {
                 return 1;
             } else {
                 // Section breaks span the full width

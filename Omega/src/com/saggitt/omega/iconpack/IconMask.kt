@@ -23,7 +23,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
-import com.android.launcher3.AdaptiveIconCompat
+import com.android.launcher3.AdaptiveIconDrawableExt
 import com.android.launcher3.FastBitmapDrawable
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
@@ -54,8 +54,8 @@ class IconMask {
         var adaptiveBackground: Drawable? = null
         // Some random magic to get an acceptable resolution
         var size = (LauncherAppState.getIDP(context).iconBitmapSize * (3 - scale)).toInt()
-        if (Utilities.ATLEAST_OREO && iconBack?.drawableId != 0 && iconBack?.drawable is AdaptiveIconCompat) {
-            size += (size * AdaptiveIconCompat.getExtraInsetFraction()).toInt()
+        if (Utilities.ATLEAST_OREO && iconBack?.drawableId != 0 && iconBack?.drawable is AdaptiveIconDrawableExt) {
+            size += (size * AdaptiveIconDrawableExt.getExtraInsetFraction()).toInt()
         }
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
@@ -82,7 +82,7 @@ class IconMask {
         // Draw iconBack
         if (iconBack != null && iconBack.drawableId != 0) {
             val drawable = iconBack.drawable
-            if (Utilities.ATLEAST_OREO && drawable is AdaptiveIconCompat) {
+            if (Utilities.ATLEAST_OREO && drawable is AdaptiveIconDrawableExt) {
                 adaptiveBackground = drawable.background
             } else {
                 drawable.toBitmap().let {
@@ -104,16 +104,16 @@ class IconMask {
             }
         }
         if (adaptiveBackground != null) {
-            if (onlyMaskLegacy && baseIcon is AdaptiveIconCompat) {
+            if (onlyMaskLegacy && baseIcon is AdaptiveIconDrawableExt) {
                 return baseIcon
             }
-            return AdaptiveIconCompat(adaptiveBackground, FastBitmapDrawable(bitmap))
+            return AdaptiveIconDrawableExt(adaptiveBackground, FastBitmapDrawable(bitmap))
         }
         return FastBitmapDrawable(bitmap)
     }
 
     private fun getScale(iconBack: IconPackImpl.Entry?): Float {
-        return if (Utilities.ATLEAST_OREO && iconBack?.drawable is AdaptiveIconCompat) {
+        return if (Utilities.ATLEAST_OREO && iconBack?.drawable is AdaptiveIconDrawableExt) {
             iconScale - (1f - FixedScaleDrawable.LEGACY_ICON_SCALE)
         } else {
             iconScale

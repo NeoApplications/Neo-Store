@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.IconCache;
-import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.model.PredictionModel;
 import com.android.launcher3.notification.NotificationListener;
@@ -41,6 +40,7 @@ import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.google.android.apps.nexuslauncher.DynamicIconProvider;
 
 import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
@@ -95,7 +95,7 @@ public class LauncherAppState {
             mModelChangeReceiver.register(mContext, ACTION_FORCE_ROLOAD);
         }
 
-        mCalendarChangeTracker = IconProvider.registerIconChangeListener(mContext,
+        mCalendarChangeTracker = DynamicIconProvider.registerIconChangeListener(mContext,
                 mModel::onAppIconChanged, MODEL_EXECUTOR.getHandler());
 
         // TODO: remove listener on terminate

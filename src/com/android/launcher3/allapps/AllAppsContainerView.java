@@ -17,7 +17,6 @@ package com.android.launcher3.allapps;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -207,6 +206,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     hasWorkApps = true;
                     break;
                 }
+            }
+            rebindAdapters(hasWorkApps);
+            if (hasWorkApps) {
+                resetWorkProfile();
             }
             AllAppsTabs allAppsTabs = mTabsController.getTabs();
             force = allAppsTabs.getHasWorkApps() != hasWorkApps;
@@ -478,14 +481,14 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
     }
 
-    @Override
+    /*@Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         View overlay = mAH[AdapterHolder.WORK].getOverlayView();
         int v = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? GONE : VISIBLE;
         overlay.findViewById(R.id.work_apps_paused_title).setVisibility(v);
         overlay.findViewById(R.id.work_apps_paused_content).setVisibility(v);
-    }
+    }*/
 
     private void replaceRVContainer(boolean showTabs) {
         for (int i = 0; i < mAH.length; i++) {

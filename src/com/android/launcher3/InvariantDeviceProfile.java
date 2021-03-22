@@ -504,13 +504,6 @@ public class InvariantDeviceProfile {
         iconTextSize = displayOption.iconTextSize * prefs.getDesktopTextScale();
         allAppsIconTextSize = displayOption.iconTextSize * prefs.getDrawerTextScale();
         fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
-        /*if (Utilities.isGridOptionsEnabled(context)) {
-            allAppsIconSize = displayOption.allAppsIconSize;
-            allAppsIconTextSize = displayOption.allAppsIconTextSize;
-        } else {
-            allAppsIconSize = iconSize;
-            allAppsIconTextSize = iconTextSize;
-        }*/
 
         // If the partner customization apk contains any grid overrides, apply them
         // Supported overrides: numRows, numColumns, iconSize

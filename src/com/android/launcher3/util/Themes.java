@@ -17,7 +17,6 @@
 package com.android.launcher3.util;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -28,13 +27,16 @@ import android.util.TypedValue;
 
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.uioverrides.WallpaperColorInfo;
+import com.saggitt.omega.theme.ThemeOverride.Launcher;
 
 /**
  * Various utility methods associated with theming.
  */
 public class Themes {
-
+    public static int getActivityThemeRes(Context context) {
+        return new Launcher().getTheme(context);
+    }
+    /*
     public static int getActivityThemeRes(Context context) {
         WallpaperColorInfo wallpaperColorInfo = WallpaperColorInfo.getInstance(context);
         boolean darkTheme;
@@ -48,14 +50,14 @@ public class Themes {
 
         if (darkTheme) {
             return wallpaperColorInfo.supportsDarkText() ?
-                    R.style.AppTheme_Dark_DarkText : wallpaperColorInfo.isMainColorDark() ?
+                    R.style.AppTheme_Dark_DarkText : wallpaperColorInfo.isDark() ?
                     R.style.AppTheme_Dark_DarkMainColor : R.style.AppTheme_Dark;
         } else {
             return wallpaperColorInfo.supportsDarkText() ?
-                    R.style.AppTheme_DarkText : wallpaperColorInfo.isMainColorDark() ?
+                    R.style.AppTheme_DarkText : wallpaperColorInfo.isDark() ?
                     R.style.AppTheme_DarkMainColor : R.style.AppTheme;
         }
-    }
+    }*/
 
     public static String getDefaultBodyFont(Context context) {
         TypedArray ta = context.obtainStyledAttributes(android.R.style.TextAppearance_DeviceDefault,
@@ -78,7 +80,8 @@ public class Themes {
     }
 
     public static int getColorAccent(Context context) {
-        return getAttrColor(context, android.R.attr.colorAccent);
+        //return getAttrColor(context, android.R.attr.colorAccent);
+        return Utilities.getOmegaPrefs(context).getAccentColor();
     }
 
     public static int getAttrColor(Context context, int attr) {

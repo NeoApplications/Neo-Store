@@ -119,6 +119,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
     val gridSize by gridSizeDelegate
     val allowFullWidthWidgets by BooleanPref("pref_fullWidthWidgets", false, restart)
+    val showTopShadow by BooleanPref("pref_showTopShadow", true, recreate)
     private val homeMultilineLabel by BooleanPref("pref_homeIconLabelsInTwoLines", false, recreate)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
     val allowOverlap by BooleanPref(SettingsActivity.ALLOW_OVERLAP_PREF, false, reloadAll)

@@ -29,6 +29,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -40,7 +41,6 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.Launcher;
@@ -185,7 +185,7 @@ public class DragView extends View implements StateListener<LauncherState> {
 
     /**
      * Initialize {@code #mIconDrawable} if the item can be represented using
-     * an {@link AdaptiveIconCompat} or {@link FolderAdaptiveIcon}.
+     * an {@link AdaptiveIconDrawable} or {@link FolderAdaptiveIcon}.
      */
     @TargetApi(Build.VERSION_CODES.O)
     public void setItemInfo(final ItemInfo info) {
@@ -209,7 +209,7 @@ public class DragView extends View implements StateListener<LauncherState> {
                 int h = mBitmap.getHeight();
                 Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h, outObj);
 
-                if (dr instanceof AdaptiveIconCompat) {
+                if (dr instanceof AdaptiveIconDrawable) {
                     int blurMargin = (int) mLauncher.getResources()
                             .getDimension(R.dimen.blur_size_medium_outline) / 2;
 
@@ -230,12 +230,12 @@ public class DragView extends View implements StateListener<LauncherState> {
                             nDr = dr;
                         } else {
                             // Since we just want the scale, avoid heavy drawing operations
-                            nDr = new AdaptiveIconCompat(new ColorDrawable(Color.BLACK), null);
+                            nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
                         }
                         Utilities.scaleRectAboutCenter(bounds,
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
-                    AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) dr;
+                    AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
 
                     // Shrink very tiny bit so that the clip path is smaller than the original bitmap
                     // that has anti aliased edges and shadows.
@@ -245,13 +245,13 @@ public class DragView extends View implements StateListener<LauncherState> {
                     final Path mask = adaptiveIcon.getIconMask();
 
                     mTranslateX = new SpringFloatValue(DragView.this,
-                            w * AdaptiveIconCompat.getExtraInsetFraction());
+                            w * AdaptiveIconDrawable.getExtraInsetFraction());
                     mTranslateY = new SpringFloatValue(DragView.this,
-                            h * AdaptiveIconCompat.getExtraInsetFraction());
+                            h * AdaptiveIconDrawable.getExtraInsetFraction());
 
                     bounds.inset(
-                            (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
-                            (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
+                            (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
+                            (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
                     );
                     mBgSpringDrawable = adaptiveIcon.getBackground();
                     if (mBgSpringDrawable == null) {
@@ -264,19 +264,16 @@ public class DragView extends View implements StateListener<LauncherState> {
                     }
                     mFgSpringDrawable.setBounds(bounds);
 
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Assign the variable on the UI thread to avoid race conditions.
-                            mScaledMaskPath = mask;
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        // Assign the variable on the UI thread to avoid race conditions.
+                        mScaledMaskPath = mask;
 
-                            if (info.isDisabled()) {
-                                FastBitmapDrawable d = new FastBitmapDrawable((Bitmap) null);
-                                d.setIsDisabled(true);
-                                mBaseFilter = (ColorMatrixColorFilter) d.getColorFilter();
-                            }
-                            updateColorFilter();
+                        if (info.isDisabled()) {
+                            FastBitmapDrawable d = new FastBitmapDrawable((Bitmap) null);
+                            d.setIsDisabled(true);
+                            mBaseFilter = (ColorMatrixColorFilter) d.getColorFilter();
                         }
+                        updateColorFilter();
                     });
                 }
             }});

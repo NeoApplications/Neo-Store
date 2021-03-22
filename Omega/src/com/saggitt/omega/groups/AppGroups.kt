@@ -29,8 +29,8 @@ import android.widget.TextView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.colorpickerlib.ColorPicker
-import com.saggitt.colorpickerlib.OnChooseColorListener
+import com.saggitt.colorpickerx.ColorPickerTab
+import com.saggitt.colorpickerx.OnChooseColorListener
 import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.preferences.SelectableAppsActivity
 import com.saggitt.omega.theme.ThemeOverride
@@ -380,18 +380,19 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
-                    val colorPicker = ColorPicker(context)
+                    val colorPicker = ColorPickerTab(themedContext)
+                    colorPicker.setRoundColorButton(true)
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
-                        override fun onChooseColor(position: Int, color: Int) {
-                            // put code
+                        override fun onCancel() {
+                            colorPicker.dismissDialog()
                         }
 
-                        override fun onCancel() {
-                            // put code
+                        override fun onChooseColor(position: Int, color: Int) {
+                            value = color;
+                            updateColor(view)
                         }
                     })
-
                 }
 
                 return view
@@ -544,14 +545,6 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 class AppGroupsUtils(context: Context) {
 
     val defaultColor = Utilities.getOmegaPrefs(context).accentColor
-    /*private val colorEngine = ColorEngine.getInstance(context)
-    val defaultColorResolver = LawnchairAccentResolver(
-            ColorEngine.ColorResolver.Config("groups", colorEngine))
-
-    fun createColorResolver(resolver: String?): ColorEngine.ColorResolver {
-        return colorEngine.createColorResolverNullable("group", resolver ?: "")
-                ?: defaultColorResolver
-    }*/
 
     companion object : SingletonHolder<AppGroupsUtils, Context>(
             ensureOnMainThread(useApplicationContext(::AppGroupsUtils)))

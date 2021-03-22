@@ -51,7 +51,6 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class IconPackImpl(context: Context, packPackageName: String) : IconPack(context, packPackageName) {
 
     private val packComponents: MutableMap<ComponentName, Entry> = HashMap()
@@ -218,6 +217,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         return MaskEntry(key)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getIcon(entry: IconPackManager.CustomIconEntry, iconDpi: Int): Drawable? {
         val drawableId = getDrawableId(entry.icon ?: return null)
         if (drawableId != 0) {
@@ -257,7 +257,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
 
         if (drawableId != 0) {
             try {
-                var drawable = AdaptiveIconCompat.wrap(
+                var drawable = AdaptiveIconDrawableExt.wrap(
                         packResources.getDrawableForDensity(drawableId, iconDpi)
                                 ?: packResources.getDrawable(drawableId))
                 if (Utilities.ATLEAST_OREO && packClocks.containsKey(drawableId)) {
@@ -321,7 +321,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
                 else -> 0
             }
             if (packClocks.containsKey(drawableId)) {
-                val drawable = AdaptiveIconCompat
+                val drawable = AdaptiveIconDrawableExt
                         .wrap(packResources.getDrawable(drawableId))
                 val customClockDrawer = CustomClock(context)
                 return customClockDrawer.drawIcon(icon, drawable, packClocks[drawableId])
@@ -434,12 +434,13 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         val debugName get() = "$drawableName in $packPackageName"
         val drawableId: Int by lazy { id ?: getDrawableId(drawableName) }
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun drawableForDensity(density: Int): Drawable {
             if (!isAvailable) {
                 throw IllegalStateException("Trying to access an unavailable entry $debugName")
             }
             try {
-                return AdaptiveIconCompat
+                return AdaptiveIconDrawableExt
                         .wrap(packResources.getDrawableForDensity(drawableId, density)!!)
             } catch (e: Resources.NotFoundException) {
                 throw Exception("Failed to get drawable $drawableId ($debugName)", e)
@@ -464,6 +465,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         override val displayName = identifierName
         override val isAvailable = true
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun drawableForDensity(density: Int): Drawable {
             val baseIcon = defaultPack.getIcon(key, density)!!
             val icon = packMask.getIcon(context, baseIcon, key.componentName)

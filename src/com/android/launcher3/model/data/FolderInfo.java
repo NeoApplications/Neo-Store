@@ -263,7 +263,7 @@ public class FolderInfo extends ItemInfo {
     }
 
     public Drawable getIcon(Context context) {
-        Launcher launcher = OmegaLauncher.getLauncher(context);
+        Launcher launcher = Launcher.getLauncher(context);
         Drawable icn = getIconInternal(launcher);
         if (icn != null) {
             return icn;

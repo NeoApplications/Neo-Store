@@ -20,6 +20,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
@@ -28,7 +29,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -38,10 +41,11 @@ import android.view.ViewOutlineProvider;
 
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.AdaptiveIconCompat;
+import com.android.launcher3.AdaptiveIconDrawableExt;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
+import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.Themes;
@@ -105,13 +109,13 @@ public abstract class IconShape {
     }
 
     /**
-     * Initializes the shape which is closest to the {@link AdaptiveIconCompat}
+     * Initializes the shape which is closest to the {@link AdaptiveIconDrawableExt}
      */
     public static void init(Context context) {
         if (Utilities.ATLEAST_OREO) {
             sInstance = new AdaptiveIconShape(context);
 
-            AdaptiveIconCompat drawable = new AdaptiveIconCompat(
+            AdaptiveIconDrawableExt drawable = new AdaptiveIconDrawableExt(
                     new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
             // Initialize shape properties
             drawable.setBounds(0, 0, DEFAULT_PATH_SIZE, DEFAULT_PATH_SIZE);
@@ -388,6 +392,47 @@ public abstract class IconShape {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    protected static void pickBestShape(Context context) {
+        // Pick any large size
+        final int size = 200;
+
+        Region full = new Region(0, 0, size, size);
+        Region iconR = new Region();
+        AdaptiveIconDrawableExt drawable = new AdaptiveIconDrawableExt(
+                new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
+        drawable.setBounds(0, 0, size, size);
+        iconR.setPath(drawable.getIconMask(), full);
+
+        Path shapePath = new Path();
+        Region shapeR = new Region();
+
+        // Find the shape with minimum area of divergent region.
+        int minArea = Integer.MAX_VALUE;
+        IconShape closestShape = null;
+        for (IconShape shape : getAllShapes(context)) {
+            shapePath.reset();
+            shape.addToPath(shapePath, 0, 0, size / 2f);
+            shapeR.setPath(shapePath, full);
+            shapeR.op(iconR, Region.Op.XOR);
+
+            int area = GraphicsUtils.getArea(shapeR);
+            if (area < minArea) {
+                minArea = area;
+                closestShape = shape;
+            }
+        }
+
+        if (closestShape != null) {
+            sInstance = closestShape;
+        }
+
+        // Initialize shape properties
+        drawable.setBounds(0, 0, DEFAULT_PATH_SIZE, DEFAULT_PATH_SIZE);
+        sShapePath = new Path(drawable.getIconMask());
+        sNormalizationScale = IconNormalizer.normalizeAdaptiveIcon(drawable, size, null);
     }
 
     public static class Squircle extends PathShape {
