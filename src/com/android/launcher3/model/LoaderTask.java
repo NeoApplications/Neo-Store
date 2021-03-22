@@ -16,18 +16,6 @@
 
 package com.android.launcher3.model;
 
-import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
-import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-import static com.android.launcher3.util.PackageManagerHelper.hasShortcutsPermission;
-import static com.android.launcher3.util.PackageManagerHelper.isSystemApp;
-
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -91,6 +79,7 @@ import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.widget.WidgetManagerHelper;
 import com.saggitt.omega.iconpack.IconPackManager;
+import com.saggitt.omega.model.HomeWidgetMigrationTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,6 +88,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
+
+import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
+import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import static com.android.launcher3.util.PackageManagerHelper.hasShortcutsPermission;
+import static com.android.launcher3.util.PackageManagerHelper.isSystemApp;
 
 /**
  * Runnable for the thread that loads the contents of the launcher:
@@ -314,6 +315,10 @@ public class LoaderTask implements Runnable {
         } catch (Exception e) {
             // Migration failed. Clear workspace.
             clearDb = true;
+        }
+
+        if (!clearDb) {
+            HomeWidgetMigrationTask.migrateIfNeeded(context);
         }
 
         if (!clearDb && (MULTI_DB_GRID_MIRATION_ALGO.get()
