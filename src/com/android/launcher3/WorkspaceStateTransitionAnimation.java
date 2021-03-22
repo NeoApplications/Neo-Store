@@ -16,29 +16,6 @@
 
 package com.android.launcher3;
 
-import static androidx.dynamicanimation.animation.DynamicAnimation.MIN_VISIBLE_CHANGE_SCALE;
-
-import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
-import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
-import static com.android.launcher3.LauncherAnimUtils.VIEW_ALPHA;
-import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_X;
-import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_Y;
-import static com.android.launcher3.LauncherState.FLAG_HAS_SYS_UI_SCRIM;
-import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_HAS_BACKGROUNDS;
-import static com.android.launcher3.LauncherState.HINT_STATE;
-import static com.android.launcher3.LauncherState.HOTSEAT_ICONS;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.Interpolators.ZOOM_OUT;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-import static com.android.launcher3.graphics.Scrim.SCRIM_PROGRESS;
-import static com.android.launcher3.graphics.WorkspaceAndHotseatScrim.SYSUI_PROGRESS;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_SCALE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_TRANSLATE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_FADE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_SCALE;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_TRANSLATE;
-
 import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.animation.Interpolator;
@@ -53,6 +30,31 @@ import com.android.launcher3.graphics.WorkspaceAndHotseatScrim;
 import com.android.launcher3.states.StateAnimationConfig;
 import com.android.launcher3.util.DynamicResource;
 import com.android.systemui.plugins.ResourceProvider;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.views.OptionsPanel;
+
+import static androidx.dynamicanimation.animation.DynamicAnimation.MIN_VISIBLE_CHANGE_SCALE;
+import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
+import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
+import static com.android.launcher3.LauncherAnimUtils.VIEW_ALPHA;
+import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_X;
+import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_Y;
+import static com.android.launcher3.LauncherState.FLAG_HAS_SYS_UI_SCRIM;
+import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_HAS_BACKGROUNDS;
+import static com.android.launcher3.LauncherState.HINT_STATE;
+import static com.android.launcher3.LauncherState.HOTSEAT_ICONS;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OPTIONS_VIEW;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.Interpolators.ZOOM_OUT;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
+import static com.android.launcher3.graphics.Scrim.SCRIM_PROGRESS;
+import static com.android.launcher3.graphics.WorkspaceAndHotseatScrim.SYSUI_PROGRESS;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_SCALE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_TRANSLATE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_FADE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_SCALE;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_TRANSLATE;
 
 /**
  * Manages the animations between each of the workspace states.
@@ -164,6 +166,10 @@ public class WorkspaceStateTransitionAnimation {
             propertySetter.setViewAlpha(mLauncher.getWorkspace().getPageIndicator(),
                     hotseatIconsAlpha, fadeInterpolator);
         }
+
+        // Set options view
+        OptionsPanel optionsPanel = OmegaLauncher.getLauncher(mLauncher).getOptionsView();
+        propertySetter.setViewAlpha(optionsPanel, (elements & OPTIONS_VIEW) != 0 ? 1 : 0, fadeInterpolator);
 
         if (config.onlyPlayAtomicComponent()) {
             // Only the alpha and scale, handled above, are included in the atomic animation.
