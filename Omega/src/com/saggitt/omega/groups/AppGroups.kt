@@ -29,7 +29,7 @@ import android.widget.TextView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.colorpickerx.ColorPickerTab
+import com.saggitt.colorpickerx.ColorPicker
 import com.saggitt.colorpickerx.OnChooseColorListener
 import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.preferences.SelectableAppsActivity
@@ -380,7 +380,8 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
-                    val colorPicker = ColorPickerTab(themedContext)
+                    val colorPicker = ColorPicker(themedContext)
+                    colorPicker.setTitle(context.getString(R.string.tab_color));
                     colorPicker.setRoundColorButton(true)
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
