@@ -67,6 +67,7 @@ import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.provider.ImportDataTask;
 import com.android.launcher3.qsb.QsbContainerView;
+import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.shortcuts.ShortcutRequest;
 import com.android.launcher3.shortcuts.ShortcutRequest.QueryResult;
@@ -121,6 +122,7 @@ public class LoaderTask implements Runnable {
 
     private final LauncherApps mLauncherApps;
     private final UserManager mUserManager;
+    private final DeepShortcutManager mShortcutManager;
     private final UserCache mUserCache;
 
     private final InstallSessionHelper mSessionHelper;
@@ -141,6 +143,7 @@ public class LoaderTask implements Runnable {
 
         mLauncherApps = mApp.getContext().getSystemService(LauncherApps.class);
         mUserManager = mApp.getContext().getSystemService(UserManager.class);
+        mShortcutManager = DeepShortcutManager.getInstance(mApp.getContext());
         mUserCache = UserCache.INSTANCE.get(mApp.getContext());
         mSessionHelper = InstallSessionHelper.INSTANCE.get(mApp.getContext());
         mIconCache = mApp.getIconCache();
@@ -300,8 +303,7 @@ public class LoaderTask implements Runnable {
                 null /* selection */);
     }
 
-    protected void loadWorkspace(List<ShortcutInfo> allDeepShortcuts, Uri contentUri,
-                                 String selection) {
+    protected void loadWorkspace(List<ShortcutInfo> allDeepShortcuts, Uri contentUri, String selection) {
         final Context context = mApp.getContext();
         final ContentResolver contentResolver = context.getContentResolver();
         final PackageManagerHelper pmHelper = new PackageManagerHelper(context);
@@ -320,7 +322,10 @@ public class LoaderTask implements Runnable {
         if (!clearDb) {
             HomeWidgetMigrationTask.migrateIfNeeded(context);
         }
-
+        if (!clearDb && !GridSizeMigrationTask.migrateGridIfNeeded(context)) {
+            // Migration failed. Clear workspace.
+            clearDb = true;
+        }
         if (!clearDb && (MULTI_DB_GRID_MIRATION_ALGO.get()
                 ? !GridSizeMigrationTaskV2.migrateGridIfNeeded(context)
                 : !GridSizeMigrationTask.migrateGridIfNeeded(context))) {

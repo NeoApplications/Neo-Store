@@ -15,9 +15,6 @@
  */
 package com.android.launcher3.appprediction;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
-
 import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,6 +47,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Subclass of app tracker which publishes the data to the prediction engine and gets back results.
@@ -156,7 +156,7 @@ public class PredictionAppTracker extends AppLaunchTracker
                 destroy();
 
                 // Initialize the clients
-                int count = InvariantDeviceProfile.INSTANCE.get(mContext).numAllAppsColumns;
+                int count = InvariantDeviceProfile.INSTANCE.get(mContext).numColsDrawer;
                 mHomeAppPredictor = createPredictor(Client.HOME, count);
                 mRecentsOverviewPredictor = createPredictor(Client.OVERVIEW, count);
                 return true;

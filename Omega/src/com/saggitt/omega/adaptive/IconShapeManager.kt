@@ -86,7 +86,7 @@ class IconShapeManager(private val context: Context) {
             override fun toString() = ""
 
             override fun getHashString(): String {
-                return InvariantDeviceProfile.getSystemIconShapePath(context)
+                return InvariantDeviceProfile.getIconShapePath(context)
             }
         }
     }

@@ -189,7 +189,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
         mOnIconClickListener = launcher.getItemOnClickListener();
 
-        setAppsPerRow(mLauncher.getDeviceProfile().inv.numAllAppsColumns);
+        setAppsPerRow(mLauncher.getDeviceProfile().inv.numColsDrawer);
     }
 
     // The intent to send off to the market app, updated each time the search query changes.

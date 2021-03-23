@@ -16,12 +16,6 @@
 
 package com.android.launcher3.appprediction;
 
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.logging.LoggerUtils.newTarget;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -70,6 +64,12 @@ import com.android.quickstep.AnimatedFloat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.logging.LoggerUtils.newTarget;
 
 @TargetApi(Build.VERSION_CODES.P)
 public class PredictionRowView extends LinearLayout implements
@@ -134,7 +134,7 @@ public class PredictionRowView extends LinearLayout implements
 
         mFocusHelper = new SimpleFocusIndicatorHelper(this);
 
-        mNumPredictedAppsPerRow = LauncherAppState.getIDP(context).numAllAppsColumns;
+        mNumPredictedAppsPerRow = LauncherAppState.getIDP(context).numColsDrawer;
         mLauncher = Launcher.getLauncher(context);
         mLauncher.addOnDeviceProfileChangeListener(this);
 
@@ -232,7 +232,7 @@ public class PredictionRowView extends LinearLayout implements
 
     @Override
     public void onDeviceProfileChanged(DeviceProfile dp) {
-        mNumPredictedAppsPerRow = dp.inv.numAllAppsColumns;
+        mNumPredictedAppsPerRow = dp.inv.numColsDrawer;
         removeAllViews();
         applyPredictionApps();
     }

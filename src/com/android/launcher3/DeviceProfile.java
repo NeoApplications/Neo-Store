@@ -739,7 +739,7 @@ public class DeviceProfile {
      * Returns true when the number of workspace columns and all apps columns differs.
      */
     private boolean allAppsHasDifferentNumColumns() {
-        return inv.numAllAppsColumns != inv.numColumns;
+        return inv.numColsDrawer != inv.numColumns;
     }
 
     /**

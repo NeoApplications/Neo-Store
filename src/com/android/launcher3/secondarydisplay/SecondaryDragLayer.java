@@ -15,11 +15,6 @@
  */
 package com.android.launcher3.secondarydisplay;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-
-import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -40,6 +35,10 @@ import com.android.launcher3.views.BaseDragLayer;
 
 import java.util.Arrays;
 import java.util.Collections;
+
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
 
 /**
  * DragLayer for Secondary launcher
@@ -118,10 +117,10 @@ public class SecondaryDragLayer extends BaseDragLayer<SecondaryDisplayLauncher> 
                 int padding = 2 * (grid.desiredWorkspaceLeftRightMarginPx
                         + grid.cellLayoutPaddingLeftRightPx);
 
-                int maxWidth = grid.allAppsCellWidthPx * idp.numAllAppsColumns + padding;
+                int maxWidth = grid.allAppsCellWidthPx * idp.numColsDrawer + padding;
                 int appsWidth = Math.min(width, maxWidth);
 
-                int maxHeight = grid.allAppsCellHeightPx * idp.numAllAppsColumns + padding;
+                int maxHeight = grid.allAppsCellHeightPx * idp.numColsDrawer + padding;
                 int appsHeight = Math.min(height, maxHeight);
 
                 mAppsView.measure(
