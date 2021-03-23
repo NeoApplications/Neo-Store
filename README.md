@@ -90,6 +90,8 @@ to discuss the development, issues and new features.<br/>
 
 [![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
 
+[![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge)](https://www.patreon.com/omegalauncher)
+
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
 I will happily work on features you would like to have, just open an issue.
