@@ -19,7 +19,6 @@ package com.saggitt.omega.smartspace
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE
 import android.content.pm.ApplicationInfo.FLAG_SYSTEM
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -32,7 +31,7 @@ import okhttp3.internal.toHexString
 
 class FeedBridge(private val context: Context) {
 
-    private val shouldUseFeed = context.applicationInfo.flags and (FLAG_DEBUGGABLE or FLAG_SYSTEM) == 0
+    private val shouldUseFeed = context.applicationInfo.flags and FLAG_SYSTEM == 0
     private val prefs = context.omegaPrefs
     private val bridgePackages by lazy {
         listOf(
@@ -73,18 +72,24 @@ class FeedBridge(private val context: Context) {
         open val supportsSmartspace = true
 
         fun isAvailable(): Boolean {
-            val info = context.packageManager.resolveService(Intent(overlayAction)
-                    .setPackage(packageName)
-                    .setData(Uri.parse(StringBuilder(packageName.length + 18)
-                            .append("app://")
-                            .append(packageName)
-                            .append(":")
-                            .append(Process.myUid())
-                            .toString())
-                            .buildUpon()
-                            .appendQueryParameter("v", Integer.toString(7))
-                            .appendQueryParameter("cv", Integer.toString(9))
-                            .build()), 0)
+            val info = context.packageManager.resolveService(
+                    Intent(overlayAction)
+                            .setPackage(packageName)
+                            .setData(
+                                    Uri.parse(
+                                            StringBuilder(packageName.length + 18)
+                                                    .append("app://")
+                                                    .append(packageName)
+                                                    .append(":")
+                                                    .append(Process.myUid())
+                                                    .toString()
+                                    )
+                                            .buildUpon()
+                                            .appendQueryParameter("v", 7.toString())
+                                            .appendQueryParameter("cv", 9.toString())
+                                            .build()
+                            ), 0
+            )
             return info != null && isSigned()
         }
 
@@ -148,6 +153,5 @@ class FeedBridge(private val context: Context) {
 
         @JvmStatic
         fun useBridge(context: Context) = getInstance(context).let { it.shouldUseFeed || it.customBridgeAvailable() }
-
     }
 }

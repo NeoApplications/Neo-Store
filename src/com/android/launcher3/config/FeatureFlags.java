@@ -42,7 +42,7 @@ public final class FeatureFlags {
      * Enable moving the QSB on the 0th screen of the workspace. This is not a configuration feature
      * and should be modified at a project level.
      */
-    public static final boolean QSB_ON_FIRST_SCREEN = false;
+    public static final boolean QSB_ON_FIRST_SCREEN = true;
 
     // When enabled shows a work profile tab in all apps
     public static final boolean ALL_APPS_TABS_ENABLED = true;

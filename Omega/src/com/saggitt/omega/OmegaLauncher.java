@@ -51,7 +51,6 @@ import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
-import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
@@ -114,7 +113,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         mPrefs.registerCallback(prefCallback);
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
         if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
-            mPrefs.getEditor().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
+            ///mPrefs.getEditor().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
         }
         if (mPrefs.getFirstRun()) {
             mPrefs.setFirstRun(false);
