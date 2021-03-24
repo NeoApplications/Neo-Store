@@ -88,7 +88,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.textColorPrimary, reloadApps)
     var allAppsGlobalSearch by BooleanPref("pref_allAppsGoogleSearch", true, doNothing)
     val allAppsSearch by BooleanPref("pref_allAppsSearch", true, recreate)
-    val drawerTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
+    val allAppsTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
     val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
     private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1

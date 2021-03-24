@@ -61,6 +61,7 @@ import static com.android.launcher3.Utilities.getPointString;
 import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
+import static java.lang.Math.max;
 
 public class InvariantDeviceProfile {
 
@@ -480,17 +481,24 @@ public class InvariantDeviceProfile {
         workspacePaddingTopScale = closestProfile.workspacePaddingTopScale;
         workspacePaddingBottomScale = closestProfile.workspacePaddingBottomScale;
 
-        iconSize = displayOption.iconSize;
+        iconSize = displayOption.iconSize * prefs.getDesktopIconScale();
+        ;
+        if (prefs.getDockIconScale() > 0) {
+            hotseatIconSize = displayOption.iconSize * prefs.getDockIconScale();
+        } else {
+            hotseatIconSize = iconSize;
+        }
+        allAppsIconSize = displayOption.iconSize * prefs.getAllAppsIconScale();
         iconShapePath = getIconShapePath(context);
-        landscapeIconSize = displayOption.landscapeIconSize;
+        landscapeIconSize = displayOption.landscapeIconSize * prefs.getDesktopIconScale();
         if (prefs.getDockIconScale() > 0) {
             landscapeHotseatIconSize = displayOption.landscapeIconSize * prefs.getDockIconScale();
         } else {
             landscapeHotseatIconSize = landscapeIconSize;
         }
-        iconBitmapSize = ResourceUtils.pxFromDp(iconSize, displayInfo.metrics);
+        iconBitmapSize = ResourceUtils.pxFromDp(max(iconSize, max(hotseatIconSize, allAppsIconSize)), displayInfo.metrics);
         iconTextSize = displayOption.iconTextSize * prefs.getDesktopTextScale();
-        allAppsIconTextSize = displayOption.iconTextSize * prefs.getDrawerTextScale();
+        allAppsIconTextSize = displayOption.iconTextSize * prefs.getAllAppsTextScale();
         fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
 
         // If the partner customization apk contains any grid overrides, apply them
@@ -501,7 +509,7 @@ public class InvariantDeviceProfile {
         // The real size never changes. smallSide and largeSide will remain the
         // same in any orientation.
         int smallSide = Math.min(realSize.x, realSize.y);
-        int largeSide = Math.max(realSize.x, realSize.y);
+        int largeSide = max(realSize.x, realSize.y);
 
         DeviceProfile.Builder builder = new DeviceProfile.Builder(context, this, displayInfo)
                 .setSizeRange(new Point(displayInfo.smallestSize),
@@ -517,7 +525,7 @@ public class InvariantDeviceProfile {
                     (int) (largeSide * wallpaperTravelToScreenWidthRatio(largeSide, smallSide)),
                     largeSide);
         } else {
-            defaultWallpaperSize = new Point(Math.max(smallSide * 2, largeSide), largeSide);
+            defaultWallpaperSize = new Point(max(smallSide * 2, largeSide), largeSide);
         }
 
         ComponentName cn = new ComponentName(context.getPackageName(), getClass().getName());

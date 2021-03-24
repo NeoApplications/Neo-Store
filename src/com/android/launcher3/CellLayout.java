@@ -566,7 +566,7 @@ public class CellLayout extends ViewGroup {
             BubbleTextView bubbleChild = (BubbleTextView) child;
             if (mContainerType == HOTSEAT) {
                 bubbleChild.setTextVisibility(!mPrefs.getHideDockLabels());
-                //bubbleChild.setIconSize(mDockIconSize);
+                bubbleChild.setIconSize(mDockIconSize);
                 bubbleChild.setLineCount(mPrefs.getDockLabelRows());
                 bubbleChild.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDockIconTextSize);
             }

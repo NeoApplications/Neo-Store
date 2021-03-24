@@ -402,8 +402,7 @@ public class DeviceProfile {
         // Workspace
         final boolean isVerticalLayout = isVerticalBarLayout();
         float invIconSizeDp = isVerticalLayout ? inv.landscapeIconSize : inv.iconSize;
-        iconSizePx = Math.max(1, (int) (ResourceUtils.pxFromDp(invIconSizeDp, mInfo.metrics)
-                * scale));
+        iconSizePx = Math.max(1, (int) (ResourceUtils.pxFromDp(invIconSizeDp, mInfo.metrics) * scale));
         iconTextSizePx = (int) (Utilities.pxFromSp(inv.iconTextSize, mInfo.metrics) * scale);
         iconDrawablePaddingPx = (int) (iconDrawablePaddingOriginalPx * scale);
 
@@ -450,7 +449,7 @@ public class DeviceProfile {
             hotseatBarSizePx = hotseatIconSizePx + hotseatBarSidePaddingStartPx
                     + hotseatBarSidePaddingEndPx;
         }
-        hotseatCellHeightPx = iconSizePx;
+        hotseatCellHeightPx = hotseatIconSizePx;
 
         if (!isVerticalLayout) {
             int expectedWorkspaceHeight = availableHeightPx - hotseatBarSizePx
@@ -469,6 +468,13 @@ public class DeviceProfile {
         // Folder icon
         folderIconSizePx = IconNormalizer.getNormalizedCircleSize(iconSizePx);
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
+
+        //Customize Icon and text size
+        iconSizePx *= prefs.getDesktopIconScale();
+        iconTextSizePx *= prefs.getDesktopTextScale();
+        hotseatIconSizePx *= prefs.getDockIconScale();
+        allAppsIconSizePx *= prefs.getAllAppsIconScale();
+        allAppsIconTextSizePx *= prefs.getAllAppsTextScale();
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {
