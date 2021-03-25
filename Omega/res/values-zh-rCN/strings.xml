@@ -36,8 +36,8 @@
     <string name="title__dock_show_arrow">显示箭头</string>
     <string name="title__dock_hotseat_icons">图标</string>
     <string name="title__dock_search_bar">显示搜索框</string>
-    <string name="title__dock_colored_icons">图标颜色</string>
-    <string name="title__dock_hide_labels">隐藏角标</string>
+    <string name="title__dock_colored_icons">彩色的图标</string>
+    <string name="title__dock_hide_labels">隐藏标签</string>
     <string name="title__dock_hide">隐藏Dock栏</string>
     <string name="title_dock_background_color">背景颜色</string>
     <string name="title_dock_fill">显示背景</string>
@@ -51,7 +51,7 @@
     <string name="title_desktop_icon_popup_menu">弹出列表项</string>
     <string name="title__multiline_labels">允许多行应用名</string>
     <string name="title_desktop_lock_desktop">锁定桌面</string>
-    <string name="title__desktop_hide_icon_labels">在桌面隐藏应用角标</string>
+    <string name="title__desktop_hide_icon_labels">在主屏幕上隐藏图标标签</string>
     <string name="title__desktop_icon_size">图标大小</string>
     <string name="title__desktop_full_width_widgets">全屏组件</string>
     <string name="allow_rotation_blocked_desc">当前显示设置不允许屏幕旋转</string>
