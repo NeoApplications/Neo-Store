@@ -350,4 +350,10 @@
     <string name="title_dock_two_row">Exibir a segunda linha</string>
     <string name="title_desktop_keep_empty">Permitir páginas vazias</string>
     <string name="title_desktop_overlap_placement">Permitir sobreposições</string>
+    <string name="tab_color">Cor da aba</string>
+    <string name="tab_hide_from_main">Ocultar da aba principal</string>
+    <string name="tab_bottom_sheet_save">Salvar</string>
+    <string name="customize">Personalizar</string>
+    <string name="label_voice_search">Pesquisa por voz</string>
+    <string name="automatic_short">Automático</string>
 </resources>
