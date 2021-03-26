@@ -33,10 +33,9 @@ buildscript {
     repositories {
         mavenCentral()
         google()
-        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha12'
         classpath PROTOBUF_CLASS_PATH
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
     }
@@ -49,7 +48,6 @@ allprojects {
         maven { url "../../../prebuilts/fullsdk-linux/extras/android/m2repository" }
         google()
         mavenCentral()
-        jcenter()
         maven { url 'https://jitpack.io' }
     }
 
@@ -78,7 +76,7 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
-    def code = 132
+    def code = 137
 
     defaultConfig {
         minSdkVersion 25
@@ -193,12 +191,6 @@ android {
     }
 
     addFrameworkJar('framework.jar')
-}
-
-afterEvaluate {
-    android.applicationVariants.all { variant ->
-        variant.resValue 'string', 'application_id', variant.applicationId
-    }
 }
 
 dependencies {
