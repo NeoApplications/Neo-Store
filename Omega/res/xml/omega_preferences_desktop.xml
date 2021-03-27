@@ -25,7 +25,7 @@
         android:persistent="true"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.AutoModeSeekbarPreference
+    <com.saggitt.omega.preferences.SeekbarPreference
         android:key="pref_iconSize"
         android:persistent="true"
         android:title="@string/title__desktop_icon_size"

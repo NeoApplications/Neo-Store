@@ -43,5 +43,11 @@
             android:key="pref_widget_feed"
             android:title="Show Feed"
             app:iconSpaceReserved="false" />
+
+        <com.saggitt.omega.preferences.FeedProviderPreference
+            android:title="@string/feed_provider"
+            android:key="pref_feedProvider"
+            app:controllerClass=".FeedProviderController" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
+
 </PreferenceScreen>

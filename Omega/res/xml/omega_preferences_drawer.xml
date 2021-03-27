@@ -140,7 +140,7 @@
         android:title="@string/title_drawer_row_height"
         app:defaultSeekbarValue="1.0"
         app:maxValue="1.5"
-        app:minValue="0.0"
+        app:minValue="0.75"
         app:steps="150"
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />

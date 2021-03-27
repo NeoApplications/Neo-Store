@@ -77,7 +77,7 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
 
-    <com.saggitt.omega.preferences.AutoModeScalePreference
+    <com.saggitt.omega.preferences.SeekbarPreference
         android:key="pref_dockScale"
         android:persistent="true"
         android:title="@string/title__dock_scale"
