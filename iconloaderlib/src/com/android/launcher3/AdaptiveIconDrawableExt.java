@@ -21,10 +21,13 @@ package com.android.launcher3;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Region;
+import android.graphics.Shader;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -58,6 +61,14 @@ public class AdaptiveIconDrawableExt extends AdaptiveIconDrawable {
     private static Method methodGetAdaptiveIconMaskPath;
     private static Method methodExtractThemeAttrs;
     private static Method methodCreateFromXmlInnerForDensity;
+
+    private Bitmap mLayersBitmap;
+    private Bitmap mMaskBitmap;
+    AdaptiveIconDrawable mLayerState;
+    private Shader mLayersShader;
+
+    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG |
+            Paint.FILTER_BITMAP_FLAG);
 
     static {
         try {
