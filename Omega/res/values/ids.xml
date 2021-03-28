@@ -23,4 +23,5 @@
     <item name="hotseat_qsb_menu_item" type="id" />
 
     <item name="message_search" type="id" />
+    <item name="search_container_hotseat" type="id" />
 </resources>
