@@ -43,7 +43,7 @@ jobs:
 
   send-end-notification:
     runs-on: ubuntu-latest
-    needs: build-debug-apk
+    needs: build
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
