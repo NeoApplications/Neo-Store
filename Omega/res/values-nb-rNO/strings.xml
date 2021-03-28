@@ -365,4 +365,7 @@
     <string name="blur_radius_pref_title">Tilsløringsgrad</string>
     <string name="blur_pref_title">Tilsløring</string>
     <string name="title_dock_two_row">Vis rad to</string>
+    <string name="button_organize_screens">Sorter sider</string>
+    <string name="feed_provider">Informasjonskanalstilbyder</string>
+    <string name="title_desktop_keep_empty">Tillat tomme sider</string>
 </resources>
