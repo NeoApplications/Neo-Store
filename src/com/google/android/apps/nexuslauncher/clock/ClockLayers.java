@@ -10,7 +10,7 @@ import android.os.Process;
 
 import androidx.annotation.RequiresApi;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
 
@@ -64,8 +64,8 @@ public class ClockLayers {
         LauncherIcons launcherIcons = LauncherIcons.obtain(context);
         float[] tmp = new float[1];
         Drawable icon = getBackground().getConstantState().newDrawable();
-        if (mDrawable instanceof AdaptiveIconDrawableExt) {
-            icon = new AdaptiveIconDrawableExt(icon, null);
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            icon = new AdaptiveIconCompat(icon, null);
         }
         iconBitmap = launcherIcons.createBadgedIconBitmap(icon, Process.myUserHandle(), 26, false, tmp).icon;
         scale = tmp[0];
@@ -103,8 +103,8 @@ public class ClockLayers {
         if (mDrawable instanceof LayerDrawable) {
             return (LayerDrawable) mDrawable;
         }
-        if (mDrawable instanceof AdaptiveIconDrawableExt) {
-            AdaptiveIconDrawableExt adaptiveIconDrawable = (AdaptiveIconDrawableExt) mDrawable;
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            AdaptiveIconCompat adaptiveIconDrawable = (AdaptiveIconCompat) mDrawable;
             if (adaptiveIconDrawable.getForeground() instanceof LayerDrawable) {
                 return (LayerDrawable) adaptiveIconDrawable.getForeground();
             }
@@ -114,8 +114,8 @@ public class ClockLayers {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     Drawable getBackground() {
-        if (mDrawable instanceof AdaptiveIconDrawableExt) {
-            return ((AdaptiveIconDrawableExt) mDrawable).getBackground();
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            return ((AdaptiveIconCompat) mDrawable).getBackground();
         } else {
             return mDrawable;
         }
@@ -123,15 +123,15 @@ public class ClockLayers {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void clipToMask(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconDrawableExt) {
-            canvas.clipPath(((AdaptiveIconDrawableExt) mDrawable).getIconMask());
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            canvas.clipPath(((AdaptiveIconCompat) mDrawable).getIconMask());
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void drawForeground(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconDrawableExt) {
-            ((AdaptiveIconDrawableExt) mDrawable).getForeground().draw(canvas);
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            ((AdaptiveIconCompat) mDrawable).getForeground().draw(canvas);
         } else {
             mDrawable.draw(canvas);
         }

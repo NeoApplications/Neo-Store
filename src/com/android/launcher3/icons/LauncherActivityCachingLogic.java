@@ -18,7 +18,10 @@ package com.android.launcher3.icons;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.LauncherActivityInfo;
+import android.os.Build;
 import android.os.UserHandle;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.R;
 import com.android.launcher3.icons.cache.CachingLogic;
@@ -53,11 +56,12 @@ public class LauncherActivityCachingLogic
         return object.getLabel();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public BitmapInfo loadIcon(Context context, LauncherActivityInfo object) {
         try (LauncherIcons li = LauncherIcons.obtain(context)) {
-            return li.createBadgedIconBitmap(new IconProvider(context)
-                            .getIcon(object, li.mFillResIconDpi),
+            return li.createBadgedIconBitmap(IconProvider.INSTANCE.get(context)
+                            .getIcon(object, li.mFillResIconDpi, false),
                     object.getUser(), object.getApplicationInfo().targetSdkVersion);
         }
     }

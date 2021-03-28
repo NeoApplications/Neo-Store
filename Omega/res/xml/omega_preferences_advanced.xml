@@ -41,9 +41,10 @@
         android:summary="@string/backup_pref_summary"
         android:title="@string/backups">
 
-        <!--suppress AndroidDomInspection (Injected at compile time) -->
+        <!--
+        -suppress AndroidDomInspection (Injected at compile time)
         <intent
             android:targetPackage="@string/application_id"
-            android:targetClass="com.saggitt.omega.backup.BackupListActivity" />
+            android:targetClass="com.saggitt.omega.backup.BackupListActivity" /> -->
     </Preference>
 </PreferenceScreen>

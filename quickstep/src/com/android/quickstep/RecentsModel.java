@@ -16,7 +16,6 @@
 package com.android.quickstep;
 
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
-
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.Executors.createAndStartNewLooper;
 import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
@@ -31,7 +30,6 @@ import android.os.Process;
 import android.os.UserHandle;
 
 import com.android.launcher3.Utilities;
-import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.recents.model.ThumbnailData;
@@ -76,8 +74,8 @@ public class RecentsModel extends TaskStackChangeListener {
                 error.printStackTrace();
             }
         }
-        IconProvider.registerIconChangeListener(context,
-                this::onPackageIconChanged, MAIN_EXECUTOR.getHandler());
+        //IconProvider.registerIconChangeListener(context,
+        //        this::onPackageIconChanged, MAIN_EXECUTOR.getHandler());
     }
 
     public TaskIconCache getIconCache() {

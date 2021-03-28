@@ -15,6 +15,15 @@
  */
 package com.android.launcher3.graphics;
 
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static android.view.View.VISIBLE;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
+import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
+import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
+import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.appwidget.AppWidgetHostView;
@@ -39,7 +48,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextClock;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
@@ -97,15 +106,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static android.view.View.VISIBLE;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
-import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
-import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
-import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 /**
  * Utility class for generating the preview of Launcher for a given InvariantDeviceProfile.
  * Steps:
@@ -142,7 +142,7 @@ public class LauncherPreviewRenderer {
         BaseIconFactory iconFactory =
                 new BaseIconFactory(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize) {
                 };
-        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new AdaptiveIconDrawableExt(
+        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new AdaptiveIconCompat(
                         new ColorDrawable(Color.WHITE), new ColorDrawable(Color.WHITE)),
                 Process.myUserHandle(),
                 Build.VERSION.SDK_INT);

@@ -27,7 +27,6 @@ import com.android.launcher3.compat.AlphabeticIndexCompat
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
-import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.icons.CustomIconProvider
 import java.util.concurrent.Semaphore
 

@@ -27,7 +27,7 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.text.TextUtils
 import androidx.annotation.Keep
 import androidx.core.graphics.PathParser
-import com.android.launcher3.AdaptiveIconDrawableExt
+import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.GraphicsUtils
@@ -38,7 +38,7 @@ class IconShapeManager(private val context: Context) {
 
     private val systemIconShape = getSystemShape()
     var iconShape by context.omegaPrefs.StringBasedPref(
-            "pref_iconShape", systemIconShape, AdaptiveIconDrawableExt::onShapeChanged,
+            "pref_iconShape", systemIconShape, AdaptiveIconCompat::onShapeChanged,
             {
                 IconShape.fromString(it) ?: systemIconShape
             }, IconShape::toString) { /* no dispose */ }
@@ -86,7 +86,7 @@ class IconShapeManager(private val context: Context) {
             override fun toString() = ""
 
             override fun getHashString(): String {
-                return InvariantDeviceProfile.getIconShapePath(context)
+                return InvariantDeviceProfile.getSystemIconShapePath(context)
             }
         }
     }

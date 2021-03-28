@@ -18,10 +18,15 @@
 
 package com.saggitt.omega;
 
+import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
+
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -51,6 +56,7 @@ import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.iconpack.EditIconActivity;
 import com.saggitt.omega.iconpack.IconPackManager;
 import com.saggitt.omega.override.CustomInfoProvider;
+import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.ContextUtils;
@@ -64,10 +70,6 @@ import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
-
-import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
@@ -109,12 +111,14 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
 
         mContext = this;
 
+        SharedPreferences prefs = Utilities.getPrefs(this);
+        if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
+            prefs.edit().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
+        }
+
         OmegaPreferences mPrefs = Utilities.getOmegaPrefs(mContext);
         mPrefs.registerCallback(prefCallback);
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
-        if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
-            ///mPrefs.getEditor().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
-        }
         if (mPrefs.getFirstRun()) {
             mPrefs.setFirstRun(false);
             mPrefs.setIconShape("cylinder");

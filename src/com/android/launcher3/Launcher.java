@@ -16,6 +16,38 @@
 
 package com.android.launcher3;
 
+import static android.content.pm.ActivityInfo.CONFIG_ORIENTATION;
+import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
+import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+import static com.android.launcher3.AbstractFloatingView.TYPE_ALL;
+import static com.android.launcher3.AbstractFloatingView.TYPE_ICON_SURFACE;
+import static com.android.launcher3.AbstractFloatingView.TYPE_REBIND_SAFE;
+import static com.android.launcher3.AbstractFloatingView.TYPE_SNACKBAR;
+import static com.android.launcher3.InstallShortcutReceiver.FLAG_DRAG_AND_DROP;
+import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.FLAG_CLOSE_POPUPS;
+import static com.android.launcher3.LauncherState.FLAG_MULTI_PAGE;
+import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.NO_OFFSET;
+import static com.android.launcher3.LauncherState.NO_SCALE;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.OVERVIEW_PEEK;
+import static com.android.launcher3.LauncherState.SPRING_LOADED;
+import static com.android.launcher3.Utilities.postAsyncCallback;
+import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_LAUNCHER_LOAD;
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_BACKGROUND;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ONRESUME;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ONSTOP;
+import static com.android.launcher3.logging.StatsLogManager.containerTypeToAtomState;
+import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
+import static com.android.launcher3.popup.SystemShortcut.INSTALL;
+import static com.android.launcher3.popup.SystemShortcut.WIDGETS;
+import static com.android.launcher3.states.RotationHelper.REQUEST_LOCK;
+import static com.android.launcher3.states.RotationHelper.REQUEST_NONE;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -111,7 +143,6 @@ import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.touch.AllAppsSwipeController;
 import com.android.launcher3.touch.ItemClickHandler;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
@@ -167,38 +198,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import static android.content.pm.ActivityInfo.CONFIG_ORIENTATION;
-import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
-import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-import static com.android.launcher3.AbstractFloatingView.TYPE_ALL;
-import static com.android.launcher3.AbstractFloatingView.TYPE_ICON_SURFACE;
-import static com.android.launcher3.AbstractFloatingView.TYPE_REBIND_SAFE;
-import static com.android.launcher3.AbstractFloatingView.TYPE_SNACKBAR;
-import static com.android.launcher3.InstallShortcutReceiver.FLAG_DRAG_AND_DROP;
-import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
-import static com.android.launcher3.LauncherState.ALL_APPS;
-import static com.android.launcher3.LauncherState.FLAG_CLOSE_POPUPS;
-import static com.android.launcher3.LauncherState.FLAG_MULTI_PAGE;
-import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.NO_OFFSET;
-import static com.android.launcher3.LauncherState.NO_SCALE;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.OVERVIEW_PEEK;
-import static com.android.launcher3.LauncherState.SPRING_LOADED;
-import static com.android.launcher3.Utilities.postAsyncCallback;
-import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_LAUNCHER_LOAD;
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_BACKGROUND;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ONRESUME;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ONSTOP;
-import static com.android.launcher3.logging.StatsLogManager.containerTypeToAtomState;
-import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
-import static com.android.launcher3.popup.SystemShortcut.INSTALL;
-import static com.android.launcher3.popup.SystemShortcut.WIDGETS;
-import static com.android.launcher3.states.RotationHelper.REQUEST_LOCK;
-import static com.android.launcher3.states.RotationHelper.REQUEST_NONE;
 
 /**
  * Default launcher application.
@@ -1547,7 +1546,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
         unregisterReceiver(mScreenOffReceiver);
         mWorkspace.removeFolderListeners();
-        PluginManagerWrapper.INSTANCE.get(this).removePluginListener(this);
+        //PluginManagerWrapper.INSTANCE.get(this).removePluginListener(this);
 
         mModel.removeCallbacks(this);
         mRotationHelper.destroy();
@@ -1565,7 +1564,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         mOverlayManager.onActivityDestroyed(this);
         mAppTransitionManager.unregisterRemoteAnimations();
         mUserChangedCallbackCloseable.close();
-        mAllAppsController.onActivityDestroyed();
+        //mAllAppsController.onActivityDestroyed();
     }
 
     @Override

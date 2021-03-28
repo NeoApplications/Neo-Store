@@ -28,16 +28,14 @@ import android.content.pm.ResolveInfo
 import android.content.pm.ShortcutInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Handler
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 import com.android.launcher3.FastBitmapDrawable
-import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.ItemInfo
-import com.android.launcher3.model.data.ItemInfoWithIcon
 import com.android.launcher3.util.ComponentKey
-import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.saggitt.omega.iconpack.CustomIconUtils.ICON_INTENTS
 import com.saggitt.omega.icons.CustomIconProvider
@@ -104,6 +102,7 @@ class IconPackManager(private val context: Context) {
         return getIconPackInternal(packProvider.name, put, load)!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getIcon(launcherActivityInfo: LauncherActivityInfo,
                 iconDpi: Int, flattenDrawable: Boolean, itemInfo: ItemInfo?,
                 iconProvider: CustomIconProvider?): Drawable {
@@ -123,6 +122,7 @@ class IconPackManager(private val context: Context) {
         return defaultPack.getIcon(launcherActivityInfo, iconDpi, flattenDrawable, null, iconProvider)!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
         packList.iterator().forEach { pack ->
             pack.getIcon(shortcutInfo, iconDpi)?.let { return it }
@@ -143,8 +143,6 @@ class IconPackManager(private val context: Context) {
         }
         return defaultPack.newIcon(icon, itemInfo, customEntry)
     }
-
-    fun maskSupported(): Boolean = packList.appliedPacks.any { it.supportsMasking() }
 
     fun getEntryForComponent(component: ComponentKey): IconPack.Entry? {
         packList.iterator().forEach {

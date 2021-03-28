@@ -17,6 +17,10 @@
 
 package com.saggitt.omega.adaptive;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.round;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -32,7 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.ColorExtractor;
 import com.android.launcher3.icons.FixedScaleDrawable;
@@ -40,10 +44,6 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.icons.LauncherIcons;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.icons.CustomIconProvider;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.round;
 
 // TODO: Make this thing async somehow (maybe using some drawable wrappers?)
 public class AdaptiveIconGenerator {
@@ -82,13 +82,13 @@ public class AdaptiveIconGenerator {
     private float aWidth;
     private Drawable result;
 
-    private AdaptiveIconDrawableExt tmp;
+    private AdaptiveIconCompat tmp;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public AdaptiveIconGenerator(Context context, @NonNull Drawable icon, @Nullable Drawable roundIcon) {
         this.context = context;
-        this.icon = AdaptiveIconDrawableExt.wrap(icon);
-        this.roundIcon = AdaptiveIconDrawableExt.wrapNullable(roundIcon);
+        this.icon = AdaptiveIconCompat.wrap(icon);
+        this.roundIcon = AdaptiveIconCompat.wrapNullable(roundIcon);
         OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
         shouldWrap = prefs.getEnableLegacyTreatment();
         extractColor = shouldWrap && prefs.getColorizedLegacyTreatment();
@@ -97,16 +97,16 @@ public class AdaptiveIconGenerator {
 
     private void loop() {
         if (Utilities.ATLEAST_OREO && shouldWrap) {
-            if (roundIcon != null && roundIcon instanceof AdaptiveIconDrawableExt) {
+            if (roundIcon != null && roundIcon instanceof AdaptiveIconCompat) {
                 icon = roundIcon;
             }
             Drawable extractee = icon;
-            if (extractee instanceof AdaptiveIconDrawableExt) {
+            if (extractee instanceof AdaptiveIconCompat) {
                 if (!treatWhite) {
                     onExitLoop();
                     return;
                 }
-                AdaptiveIconDrawableExt aid = (AdaptiveIconDrawableExt) extractee;
+                AdaptiveIconCompat aid = (AdaptiveIconCompat) extractee;
                 // we still check this separately as this is the only information we need from the background
                 if (!ColorExtractor.isSingleColor(aid.getBackground(), Color.WHITE)) {
                     onExitLoop();
@@ -287,24 +287,24 @@ public class AdaptiveIconGenerator {
     private Drawable genResult() {
         if (!Utilities.ATLEAST_OREO || !shouldWrap) {
             if (roundIcon != null) {
-                if (icon instanceof AdaptiveIconDrawableExt &&
-                        !(roundIcon instanceof AdaptiveIconDrawableExt)) {
+                if (icon instanceof AdaptiveIconCompat &&
+                        !(roundIcon instanceof AdaptiveIconCompat)) {
                     return icon;
                 }
                 return roundIcon;
             }
             return icon;
         }
-        if (icon instanceof AdaptiveIconDrawableExt) {
+        if (icon instanceof AdaptiveIconCompat) {
             if (!treatWhite || !isBackgroundWhite) {
                 return icon;
             }
-            if (((AdaptiveIconDrawableExt) icon).getBackground() instanceof ColorDrawable) {
-                AdaptiveIconDrawableExt mutIcon = (AdaptiveIconDrawableExt) icon.mutate();
+            if (((AdaptiveIconCompat) icon).getBackground() instanceof ColorDrawable) {
+                AdaptiveIconCompat mutIcon = (AdaptiveIconCompat) icon.mutate();
                 ((ColorDrawable) mutIcon.getBackground()).setColor(backgroundColor);
                 return mutIcon;
             }
-            return new AdaptiveIconDrawableExt(new ColorDrawable(backgroundColor), ((AdaptiveIconDrawableExt) icon).getForeground());
+            return new AdaptiveIconCompat(new ColorDrawable(backgroundColor), ((AdaptiveIconCompat) icon).getForeground());
         }
         initTmpIfNeeded();
         ((FixedScaleDrawable) tmp.getForeground()).setDrawable(icon);

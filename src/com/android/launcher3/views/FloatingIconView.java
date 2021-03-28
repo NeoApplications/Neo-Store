@@ -15,6 +15,15 @@
  */
 package com.android.launcher3.views;
 
+import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.Utilities.getFullDrawable;
+import static com.android.launcher3.Utilities.mapToRange;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import static com.android.launcher3.views.IconLabelDotView.setIconAndDotVisible;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -46,7 +55,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.Launcher;
@@ -62,15 +71,6 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.popup.SystemShortcut;
 import com.android.launcher3.shortcuts.DeepShortcutView;
 import com.android.launcher3.testing.TestProtocol;
-
-import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.Utilities.getFullDrawable;
-import static com.android.launcher3.Utilities.mapToRange;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.config.FeatureFlags.ADAPTIVE_ICON_WINDOW_ANIM;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-import static com.android.launcher3.views.IconLabelDotView.setIconAndDotVisible;
 
 /**
  * A view that is created to look like another view with the purpose of creating fluid animations.
@@ -286,7 +286,7 @@ public class FloatingIconView extends FrameLayout implements
             int height = (int) pos.height();
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
-                if (drawable instanceof AdaptiveIconDrawableExt) {
+                if (drawable instanceof AdaptiveIconCompat) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
                     // The drawable we get back is not an adaptive icon, so we need to use the
@@ -333,7 +333,7 @@ public class FloatingIconView extends FrameLayout implements
     @SuppressWarnings("WrongThread")
     private static int getOffsetForIconBounds(Launcher l, Drawable drawable, RectF position) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                || !(drawable instanceof AdaptiveIconDrawableExt)
+                || !(drawable instanceof AdaptiveIconCompat)
                 || (drawable instanceof FolderAdaptiveIcon)) {
             return 0;
         }
@@ -350,8 +350,8 @@ public class FloatingIconView extends FrameLayout implements
         }
 
         bounds.inset(
-                (int) (-bounds.width() * AdaptiveIconDrawableExt.getExtraInsetFraction()),
-                (int) (-bounds.height() * AdaptiveIconDrawableExt.getExtraInsetFraction())
+                (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
         );
 
         return bounds.left;
@@ -573,9 +573,9 @@ public class FloatingIconView extends FrameLayout implements
         mBadge = badge;
         mClipIconView.setIcon(drawable, iconOffset, lp, mIsOpening, mIsVerticalBarLayout,
                 mLauncher.getDeviceProfile());
-        if (drawable instanceof AdaptiveIconDrawableExt) {
+        if (drawable instanceof AdaptiveIconCompat) {
             boolean isFolderIcon = drawable instanceof FolderAdaptiveIcon;
-            AdaptiveIconDrawableExt adaptiveIcon = (AdaptiveIconDrawableExt) drawable;
+            AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) drawable;
             Drawable background = adaptiveIcon.getBackground();
             if (background == null) {
                 background = new ColorDrawable(Color.TRANSPARENT);

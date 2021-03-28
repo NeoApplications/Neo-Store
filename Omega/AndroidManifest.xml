@@ -149,7 +149,6 @@
         <activity
             android:name="com.android.launcher3.settings.SettingsActivity"
             tools:node="remove" />
-
         <activity
             android:name="com.saggitt.omega.settings.SettingsActivity"
             android:autoRemoveFromRecents="true"

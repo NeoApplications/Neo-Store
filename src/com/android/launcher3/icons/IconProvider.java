@@ -16,44 +16,99 @@
 
 package com.android.launcher3.icons;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
+import static com.android.launcher3.util.MainThreadInitializedObject.forOverride;
+
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Process;
 import android.os.UserHandle;
-import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.R;
-import com.android.launcher3.icons.BitmapInfo.Extender;
 import com.android.launcher3.icons.cache.IconPack;
 import com.android.launcher3.icons.cache.IconPackProvider;
-import com.android.launcher3.pm.UserCache;
-import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.ResourceBasedOverride;
-import com.android.launcher3.util.SafeCloseable;
 
-import java.util.Calendar;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+
+public class IconProvider implements ResourceBasedOverride {
+    private Context mContext;
+    public static MainThreadInitializedObject<IconProvider> INSTANCE =
+            forOverride(IconProvider.class, R.string.icon_provider_class);
+
+    private static final BiFunction<LauncherActivityInfo, Integer, Drawable> LAI_LOADER =
+            LauncherActivityInfo::getIcon;
+
+    private static final BiFunction<ActivityInfo, PackageManager, Drawable> AI_LOADER =
+            ActivityInfo::loadUnbadgedIcon;
+
+    public static IconProvider newInstance(Context context) {
+        return Overrides.getObject(IconProvider.class, context, R.string.icon_provider_class);
+    }
+
+    public IconProvider(Context context) {
+        mContext = context;
+    }
+
+    public String getSystemStateForPackage(String systemState, String packageName) {
+        return systemState;
+    }
+
+    /**
+     * @param flattenDrawable true if the caller does not care about the specification of the
+     *                        original icon as long as the flattened version looks the same.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Drawable getIcon(LauncherActivityInfo info, int iconDpi, boolean flattenDrawable) {
+        return AdaptiveIconCompat.wrap(info.getIcon(iconDpi));
+    }
+
+    /**
+     * Loads the icon for the provided LauncherActivityInfo
+     */
+    public Drawable getIcon(LauncherActivityInfo info, int iconDpi) {
+        return getIcon(info.getApplicationInfo().packageName, info.getUser(),
+                info, iconDpi, LAI_LOADER);
+    }
+
+    private <T, P> Drawable getIcon(String packageName, UserHandle user, T obj, P param,
+                                    BiFunction<T, P, Drawable> loader) {
+        Drawable icon = null;
+        /*if (mCalendar != null && mCalendar.getPackageName().equals(packageName)) {
+            icon = loadCalendarDrawable(0);
+        } else if (mClock != null
+                && mClock.getPackageName().equals(packageName)
+                && Process.myUserHandle().equals(user)) {
+            icon = loadClockDrawable(0);
+        }*/
+        Drawable ret = icon == null ? loader.apply(obj, param) : icon;
+        IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+        try {
+            if (iconPack != null) {
+                ret = iconPack.getIcon(packageName, ret, mContext.getPackageManager().getApplicationInfo(packageName, 0).name);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            ret = iconPack.getIcon(packageName, ret, "");
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !(ret instanceof AdaptiveIconCompat)) {
+            ret = IconPack.wrapAdaptiveIcon(ret, mContext);
+        }
+        return ret;
+    }
+}
+
 
 /**
  * Class to handle icon loading from different packages
  */
-public class IconProvider implements ResourceBasedOverride {
+/*public class IconProvider implements ResourceBasedOverride {
 
     private static final String TAG = "IconProvider";
     private static final boolean DEBUG = false;
@@ -89,7 +144,7 @@ public class IconProvider implements ResourceBasedOverride {
      * Adds any modification to the provided systemState for dynamic icons. This system state
      * is used by caches to check for icon invalidation.
      */
-    public String getSystemStateForPackage(String systemState, String packageName) {
+/*    public String getSystemStateForPackage(String systemState, String packageName) {
         if (mCalendar != null && mCalendar.getPackageName().equals(packageName)) {
             return systemState + SYSTEM_STATE_SEPARATOR + getDay();
         } else {
@@ -101,7 +156,7 @@ public class IconProvider implements ResourceBasedOverride {
      * Loads the icon for the provided LauncherActivityInfo such that it can be drawn directly
      * on the UI
      */
-    public Drawable getIconForUI(LauncherActivityInfo info, int iconDpi) {
+/*    public Drawable getIconForUI(LauncherActivityInfo info, int iconDpi) {
         Drawable icon = getIcon(info, iconDpi);
         if (icon instanceof BitmapInfo.Extender) {
             ((Extender) icon).prepareToDrawOnUi();
@@ -112,7 +167,7 @@ public class IconProvider implements ResourceBasedOverride {
     /**
      * Loads the icon for the provided LauncherActivityInfo
      */
-    public Drawable getIcon(LauncherActivityInfo info, int iconDpi) {
+/*    public Drawable getIcon(LauncherActivityInfo info, int iconDpi) {
         return getIcon(info.getApplicationInfo().packageName, info.getUser(),
                 info, iconDpi, LAI_LOADER);
     }
@@ -120,7 +175,7 @@ public class IconProvider implements ResourceBasedOverride {
     /**
      * Loads the icon for the provided activity info
      */
-    public Drawable getIcon(ActivityInfo info, UserHandle user) {
+ /*   public Drawable getIcon(ActivityInfo info, UserHandle user) {
         return getIcon(info.applicationInfo.packageName, user, info, mContext.getPackageManager(),
                 AI_LOADER);
     }
@@ -166,9 +221,9 @@ public class IconProvider implements ResourceBasedOverride {
             final Resources resources = pm.getResourcesForApplication(mCalendar.getPackageName());
             final int id = getDynamicIconId(metadata, resources);
             if (id != NO_ID) {
-                if (DEBUG) Log.d(TAG, "Got icon #" + id);
-                return resources.getDrawableForDensity(id, iconDpi, null /* theme */);
-            }
+ /*               if (DEBUG) Log.d(TAG, "Got icon #" + id);
+                return resources.getDrawableForDensity(id, iconDpi, null);
+           }
         } catch (PackageManager.NameNotFoundException e) {
             if (DEBUG) {
                 Log.d(TAG, "Could not get activityinfo or resources for package: "
@@ -178,7 +233,7 @@ public class IconProvider implements ResourceBasedOverride {
         return null;
     }
 
-    private Drawable loadClockDrawable(int iconDpi) {
+/*    private Drawable loadClockDrawable(int iconDpi) {
         return ClockDrawableWrapper.forPackage(mContext, mClock.getPackageName(), iconDpi);
     }
 
@@ -192,7 +247,7 @@ public class IconProvider implements ResourceBasedOverride {
      * @param resources from the Calendar package
      * @return the resource id for today's Calendar icon; 0 if resources cannot be found.
      */
-    private int getDynamicIconId(Bundle metadata, Resources resources) {
+/*    private int getDynamicIconId(Bundle metadata, Resources resources) {
         if (metadata == null) {
             return NO_ID;
         }
@@ -214,7 +269,7 @@ public class IconProvider implements ResourceBasedOverride {
     /**
      * @return Today's day of the month, zero-indexed.
      */
-    private int getDay() {
+/*    private int getDay() {
         return Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 1;
     }
 
@@ -223,6 +278,7 @@ public class IconProvider implements ResourceBasedOverride {
      * Registers a callback to listen for calendar icon changes.
      * The callback receives the packageName for the calendar icon
      */
+    /*
     public static SafeCloseable registerIconChangeListener(Context context,
                                                            BiConsumer<String, UserHandle> callback, Handler handler) {
         ComponentName calendar = parseComponentOrNull(context, R.string.calendar_component_name);
@@ -278,3 +334,4 @@ public class IconProvider implements ResourceBasedOverride {
 
     }
 }
+*/

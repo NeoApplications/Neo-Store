@@ -16,6 +16,13 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.Utilities.getDevicePrefs;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
+import static java.lang.Math.max;
+
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetHostView;
 import android.content.BroadcastReceiver;
@@ -48,6 +55,7 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Themes;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.adaptive.IconShapeManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -55,13 +63,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.android.launcher3.Utilities.getDevicePrefs;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
-import static java.lang.Math.max;
 
 public class InvariantDeviceProfile {
 
@@ -245,7 +246,17 @@ public class InvariantDeviceProfile {
     /**
      * Retrieve system defined or RRO overriden icon shape.
      */
-    public static String getIconShapePath(Context context) {
+    public static String getIconShapePath(Context context) {/*
+        if (CONFIG_ICON_MASK_RES_ID == 0) {
+            Log.e(TAG, "Icon mask res identifier failed to retrieve.");
+            return "";
+        }
+        return context.getResources().getString(CONFIG_ICON_MASK_RES_ID);*/
+
+        return IconShapeManager.Companion.getInstance(context).getIconShape().getHashString();
+    }
+
+    public static String getSystemIconShapePath(Context context) {
         if (CONFIG_ICON_MASK_RES_ID == 0) {
             Log.e(TAG, "Icon mask res identifier failed to retrieve.");
             return "";

@@ -43,7 +43,7 @@
         android:focusable="true"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_vertical"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
         tools:text="Launcher Apk" />
 </LinearLayout>

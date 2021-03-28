@@ -1,5 +1,7 @@
 package com.google.android.apps.nexuslauncher;
 
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,7 @@ import android.os.UserHandle;
 
 import androidx.annotation.RequiresApi;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
@@ -29,8 +31,6 @@ import com.google.android.apps.nexuslauncher.clock.DynamicClock;
 
 import java.util.Calendar;
 import java.util.List;
-
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DynamicIconProvider extends IconProvider {
     public static final String GOOGLE_CALENDAR = "com.google.android.calendar";
@@ -86,7 +86,7 @@ public class DynamicIconProvider extends IconProvider {
                     int dateId = dateIds.getResourceId(getDayOfMonth(), 0);
                     dateIds.recycle();
                     return dateId;
-                } catch (Resources.NotFoundException ex) {
+                } catch (Resources.NotFoundException ignored) {
                 }
             }
         }
@@ -107,7 +107,7 @@ public class DynamicIconProvider extends IconProvider {
                 Resources resourcesForApplication = mPackageManager.getResourcesForApplication(packageName);
                 int dayResId = getDayResId(metaData, resourcesForApplication);
                 if (dayResId != 0) {
-                    drawable = AdaptiveIconDrawableExt.wrapNullable(resourcesForApplication.getDrawableForDensity(dayResId, iconDpi));
+                    drawable = AdaptiveIconCompat.wrapNullable(resourcesForApplication.getDrawableForDensity(dayResId, iconDpi));
                 }
             } catch (PackageManager.NameNotFoundException ignored) {
             }
@@ -117,7 +117,7 @@ public class DynamicIconProvider extends IconProvider {
                 Process.myUserHandle().equals(launcherActivityInfo.getUser())) {
             drawable = DynamicClock.getClock(mContext, iconDpi);
         }
-        return drawable == null ? super.getIcon(launcherActivityInfo, iconDpi) : drawable;
+        return drawable == null ? super.getIcon(launcherActivityInfo, iconDpi, flattenDrawable) : drawable;
     }
 
     @Override

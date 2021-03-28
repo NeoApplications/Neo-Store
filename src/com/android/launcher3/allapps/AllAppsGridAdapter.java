@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -41,19 +43,17 @@ import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AlphabeticalAppsList.AdapterItem;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
-import com.android.launcher3.util.Themes;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.util.List;
-
-import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
 
 /**
  * The grid view adapter of all the apps.
@@ -343,10 +343,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 break;
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
+                int color = getDrawerTextColor();
                 ViewGroup group = (ViewGroup) holder.itemView;
                 TextView textView = group.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
-                int color = Themes.getAttrColor(textView.getContext(), android.R.attr.textColorPrimary);
                 textView.setText(suggestion);
                 textView.setTextColor(color);
                 ((ImageView) group.findViewById(android.R.id.icon)).getDrawable().setTint(color);
@@ -375,6 +375,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public int getItemViewType(int position) {
         AlphabeticalAppsList.AdapterItem item = mApps.getAdapterItems().get(position);
         return item.viewType;
+    }
+
+    public int getDrawerTextColor() {
+        return Utilities.getOmegaPrefs(mLauncher.getApplicationContext()).getDrawerLabelColor();
     }
 
     private SearchProvider getSearchProvider() {

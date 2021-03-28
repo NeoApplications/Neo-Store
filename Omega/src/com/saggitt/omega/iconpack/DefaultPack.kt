@@ -104,11 +104,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         return gen.result
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
-                         flattenDrawable: Boolean,
+    override fun getIcon(launcherActivityInfo: LauncherActivityInfo,
+                         iconDpi: Int, flattenDrawable: Boolean,
                          customIconEntry: IconPackManager.CustomIconEntry?,
-                         iconProvider: CustomIconProvider?): Drawable? {
+                         iconProvider: CustomIconProvider?): Drawable {
         ensureInitialLoadComplete()
 
         val key: ComponentKey
@@ -126,7 +125,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         getLegacyIcon(component, iconDpi, prefs.forceShapeless)?.let {
             originalIcon = it.apply { mutate() }
         }
-        if (iconProvider == null) {
+        if (iconProvider == null || (GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
             var roundIcon: Drawable? = null
             if (!prefs.forceShapeless) {
                 getRoundIcon(component, iconDpi)?.let {
@@ -136,7 +135,12 @@ class DefaultPack(context: Context) : IconPack(context, "") {
             val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
             return gen.result
         }
-        return iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
+        } else {
+            return originalIcon
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -292,8 +296,9 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         override val identifierName = ComponentKey(app.componentName, app.user).toString()
         override val isAvailable = true
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun drawableForDensity(density: Int): Drawable {
-            return AdaptiveIconDrawableExt.wrap(app.getIcon(density)!!)
+            return AdaptiveIconCompat.wrap(app.getIcon(density)!!)
         }
 
         override fun toCustomEntry() = IconPackManager.CustomIconEntry("", ComponentKey(app.componentName, app.user).toString())

@@ -47,7 +47,6 @@ public class OmegaAccessibilityService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-
     }
 
     @Override

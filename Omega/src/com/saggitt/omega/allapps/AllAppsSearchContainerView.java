@@ -26,10 +26,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.android.launcher3.Utilities;
-import com.android.launcher3.allapps.AllAppsContainerView;
+import com.android.launcher3.allapps.LauncherAllAppsContainerView;
 import com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout;
 
-public class AllAppsSearchContainerView extends AllAppsContainerView {
+public class AllAppsSearchContainerView extends LauncherAllAppsContainerView {
     private boolean mClearQsb;
 
     public AllAppsSearchContainerView(Context context) {

@@ -16,6 +16,9 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
+
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -114,9 +117,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -519,9 +519,12 @@ public final class Utilities {
 
     public static SharedPreferences getPrefs(Context context) {
         // Use application context for shared preferences, so that we use a single cached instance
-        return context.getApplicationContext().getSharedPreferences(
-                LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        //return context.getApplicationContext().getSharedPreferences(
+        //        LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+
+        return getOmegaPrefs(context).getSharedPrefs();
     }
+
 
     public static SharedPreferences getDevicePrefs(Context context) {
         // Use application context for shared preferences, so that we use a single cached instance

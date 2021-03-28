@@ -257,7 +257,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
 
         if (drawableId != 0) {
             try {
-                var drawable = AdaptiveIconDrawableExt.wrap(
+                var drawable = AdaptiveIconCompat.wrap(
                         packResources.getDrawableForDensity(drawableId, iconDpi)
                                 ?: packResources.getDrawable(drawableId))
                 if (Utilities.ATLEAST_OREO && packClocks.containsKey(drawableId)) {
@@ -279,10 +279,10 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
         if ((prefs.iconPackMasking || isCustomPack) && packMask.hasMask) {
             val baseIcon = defaultPack.getIcon(launcherActivityInfo, iconDpi, flattenDrawable,
                     customIconEntry, iconProvider)
-            val icon = baseIcon?.let { packMask.getIcon(context, it, launcherActivityInfo.componentName) }
+            val icon = baseIcon.let { packMask.getIcon(context, baseIcon, launcherActivityInfo.componentName) }
             if (prefs.adaptifyIconPacks) {
-                val gen = icon?.let { AdaptiveIconGenerator(context, it, null) }
-                return gen?.result
+                val gen = icon.let { AdaptiveIconGenerator(context, icon, null) }
+                return gen.result
             }
             return icon
         }
@@ -321,7 +321,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
                 else -> 0
             }
             if (packClocks.containsKey(drawableId)) {
-                val drawable = AdaptiveIconDrawableExt
+                val drawable = AdaptiveIconCompat
                         .wrap(packResources.getDrawable(drawableId))
                 val customClockDrawer = CustomClock(context)
                 return customClockDrawer.drawIcon(icon, drawable, packClocks[drawableId])
@@ -440,7 +440,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
                 throw IllegalStateException("Trying to access an unavailable entry $debugName")
             }
             try {
-                return AdaptiveIconDrawableExt
+                return AdaptiveIconCompat
                         .wrap(packResources.getDrawableForDensity(drawableId, density)!!)
             } catch (e: Resources.NotFoundException) {
                 throw Exception("Failed to get drawable $drawableId ($debugName)", e)

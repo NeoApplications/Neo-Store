@@ -169,11 +169,9 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
         val iconPack get() = pack
 
         open fun register() {
-
         }
 
         open fun unregister() {
-
         }
 
         open fun reloadPack() {

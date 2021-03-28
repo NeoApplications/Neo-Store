@@ -16,6 +16,8 @@
 
 package com.android.launcher3;
 
+import static java.lang.Math.round;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -32,8 +34,6 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DefaultDisplay;
 import com.android.launcher3.util.WindowBounds;
 import com.saggitt.omega.OmegaPreferences;
-
-import static java.lang.Math.round;
 
 public class DeviceProfile {
 
@@ -374,9 +374,10 @@ public class DeviceProfile {
      * Re-computes the all-apps cell size to be independent of workspace
      */
     public void autoResizeAllAppsCells() {
+        int labelRows = prefs.getDrawerLabelRows();
         int topBottomPadding = allAppsIconDrawablePaddingPx * (isVerticalBarLayout() ? 2 : 1);
         allAppsCellHeightPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx
-                + Utilities.calculateTextHeight(allAppsIconTextSizePx)
+                + Utilities.calculateTextHeight(allAppsIconTextSizePx) * labelRows
                 + topBottomPadding * 2;
     }
 
@@ -425,8 +426,11 @@ public class DeviceProfile {
             allAppsIconTextSizePx = Utilities.pxFromSp(inv.allAppsIconTextSize, mInfo.metrics);
             allAppsIconDrawablePaddingPx = iconDrawablePaddingOriginalPx;
             // We use 4 below to ensure labels are closer to their corresponding icon.
-            allAppsCellHeightPx = round(allAppsIconSizePx + allAppsIconTextSizePx
+            int minAllAppsCellHeightPx = round(allAppsIconSizePx + allAppsIconTextSizePx
                     + (4 * allAppsIconDrawablePaddingPx));
+
+            allAppsCellHeightPx = Math.max(minAllAppsCellHeightPx, (int) (getCellSizeOriginal().y * prefs.getDrawerPaddingScale()));
+
         } else {
             allAppsIconSizePx = iconSizePx;
             allAppsIconTextSizePx = iconTextSizePx;
@@ -434,7 +438,9 @@ public class DeviceProfile {
             allAppsCellHeightPx = getCellSize().y;
         }
         allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
-
+        if (prefs.getDrawerLabelRows() > 1) {
+            allAppsCellHeightPx += 20;
+        }
         if (isVerticalBarLayout()) {
             // Always hide the Workspace text with vertical bar layout.
             adjustToHideWorkspaceLabels();

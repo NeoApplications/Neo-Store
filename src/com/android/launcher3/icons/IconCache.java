@@ -16,6 +16,9 @@
 
 package com.android.launcher3.icons;
 
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,12 +31,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Process;
 import android.os.UserHandle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherFiles;
@@ -54,14 +59,10 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.Preconditions;
-import com.google.android.apps.nexuslauncher.DynamicIconProvider;
 import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -80,7 +81,7 @@ public class IconCache extends BaseIconCache {
     private final LauncherApps mLauncherApps;
     private final UserCache mUserManager;
     private final InstantAppResolver mInstantAppResolver;
-    private final DynamicIconProvider mIconProvider;
+    private final IconProvider mIconProvider;
 
     private int mPendingIconRequestCount = 0;
 
@@ -97,7 +98,8 @@ public class IconCache extends BaseIconCache {
         mLauncherApps = mContext.getSystemService(LauncherApps.class);
         mUserManager = UserCache.INSTANCE.get(mContext);
         mInstantAppResolver = InstantAppResolver.newInstance(mContext);
-        mIconProvider = new DynamicIconProvider(context);
+
+        mIconProvider = IconProvider.INSTANCE.get(context);
     }
 
     @Override
@@ -324,14 +326,17 @@ public class IconCache extends BaseIconCache {
         info.bitmap = (entry.bitmap == null) ? getDefaultIcon(info.user) : entry.bitmap;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Drawable getFullResIcon(LauncherActivityInfo info) {
-        return mIconProvider.getIcon(info, mIconDpi);
+        return mIconProvider.getIcon(info, mIconDpi, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Drawable getFullResIcon(LauncherActivityInfo info, boolean flattenDrawable) {
-        return mIconProvider.getIcon(info, mIconDpi);
+        return mIconProvider.getIcon(info, mIconDpi, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Drawable getFullResIcon(LauncherActivityInfo info, ItemInfo itemInfo, boolean flattenDrawable) {
         if (mIconProvider instanceof CustomIconProvider)
             return ((CustomIconProvider) mIconProvider).getIcon(info, itemInfo, mIconDpi, flattenDrawable);
@@ -350,10 +355,10 @@ public class IconCache extends BaseIconCache {
 
     @Override
     protected boolean getEntryFromDB(ComponentKey cacheKey, CacheEntry entry, boolean lowRes) {
-        if (mIconProvider.isClockIcon(cacheKey)) {
-            // For clock icon, we always load the dynamic icon
-            return false;
-        }
+        //if (mIconProvider.isClockIcon(cacheKey)) {
+        // For clock icon, we always load the dynamic icon
+        //    return false;
+        //}
         return super.getEntryFromDB(cacheKey, entry, lowRes);
     }
 

@@ -16,6 +16,9 @@
 
 package com.android.launcher3.dragndrop;
 
+import static com.android.launcher3.Utilities.getBadge;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.animation.FloatArrayEvaluator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -29,7 +32,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -41,6 +43,7 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.Launcher;
@@ -57,9 +60,6 @@ import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 
 import java.util.Arrays;
-
-import static com.android.launcher3.Utilities.getBadge;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 public class DragView extends View implements StateListener<LauncherState> {
     private static final ColorMatrix sTempMatrix1 = new ColorMatrix();
@@ -185,7 +185,7 @@ public class DragView extends View implements StateListener<LauncherState> {
 
     /**
      * Initialize {@code #mIconDrawable} if the item can be represented using
-     * an {@link AdaptiveIconDrawable} or {@link FolderAdaptiveIcon}.
+     * an {@link AdaptiveIconCompat} or {@link FolderAdaptiveIcon}.
      */
     @TargetApi(Build.VERSION_CODES.O)
     public void setItemInfo(final ItemInfo info) {
@@ -209,7 +209,7 @@ public class DragView extends View implements StateListener<LauncherState> {
                 int h = mBitmap.getHeight();
                 Drawable dr = Utilities.getFullDrawable(mLauncher, info, w, h, outObj);
 
-                if (dr instanceof AdaptiveIconDrawable) {
+                if (dr instanceof AdaptiveIconCompat) {
                     int blurMargin = (int) mLauncher.getResources()
                             .getDimension(R.dimen.blur_size_medium_outline) / 2;
 
@@ -230,12 +230,12 @@ public class DragView extends View implements StateListener<LauncherState> {
                             nDr = dr;
                         } else {
                             // Since we just want the scale, avoid heavy drawing operations
-                            nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
+                            nDr = new AdaptiveIconCompat(new ColorDrawable(Color.BLACK), null);
                         }
                         Utilities.scaleRectAboutCenter(bounds,
                                 li.getNormalizer().getScale(nDr, null, null, null));
                     }
-                    AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) dr;
+                    AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) dr;
 
                     // Shrink very tiny bit so that the clip path is smaller than the original bitmap
                     // that has anti aliased edges and shadows.
@@ -245,13 +245,13 @@ public class DragView extends View implements StateListener<LauncherState> {
                     final Path mask = adaptiveIcon.getIconMask();
 
                     mTranslateX = new SpringFloatValue(DragView.this,
-                            w * AdaptiveIconDrawable.getExtraInsetFraction());
+                            w * AdaptiveIconCompat.getExtraInsetFraction());
                     mTranslateY = new SpringFloatValue(DragView.this,
-                            h * AdaptiveIconDrawable.getExtraInsetFraction());
+                            h * AdaptiveIconCompat.getExtraInsetFraction());
 
                     bounds.inset(
-                            (int) (-bounds.width() * AdaptiveIconDrawable.getExtraInsetFraction()),
-                            (int) (-bounds.height() * AdaptiveIconDrawable.getExtraInsetFraction())
+                            (int) (-bounds.width() * AdaptiveIconCompat.getExtraInsetFraction()),
+                            (int) (-bounds.height() * AdaptiveIconCompat.getExtraInsetFraction())
                     );
                     mBgSpringDrawable = adaptiveIcon.getBackground();
                     if (mBgSpringDrawable == null) {

@@ -87,6 +87,7 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         return FastBitmapDrawable(icon)
     }
 
+
     override fun supportsMasking() = false
 
     class UriEntry(private val context: Context, val uri: Uri, var adaptive: Boolean) : Entry() {

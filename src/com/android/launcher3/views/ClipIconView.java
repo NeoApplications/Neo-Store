@@ -15,6 +15,10 @@
  */
 package com.android.launcher3.views;
 
+import static com.android.launcher3.Utilities.mapToRange;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.views.FloatingIconView.SHAPE_PROGRESS_DURATION;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -26,7 +30,6 @@ import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -40,19 +43,15 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.IconShape;
 
-import static com.android.launcher3.Utilities.mapToRange;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.views.FloatingIconView.SHAPE_PROGRESS_DURATION;
-
 /**
- * A view used to draw both layers of an {@link AdaptiveIconDrawableExt}.
+ * A view used to draw both layers of an {@link AdaptiveIconCompat}.
  * Supports springing just the foreground layer.
  * Supports clipping the icon to/from its icon shape.
  */
@@ -258,11 +257,11 @@ public class ClipIconView extends View implements ClipPathView {
      */
     public void setIcon(@Nullable Drawable drawable, int iconOffset, MarginLayoutParams lp,
                         boolean isOpening, boolean isVerticalBarLayout, DeviceProfile dp) {
-        mIsAdaptiveIcon = drawable instanceof AdaptiveIconDrawable;
+        mIsAdaptiveIcon = drawable instanceof AdaptiveIconCompat;
         if (mIsAdaptiveIcon) {
             boolean isFolderIcon = drawable instanceof FolderAdaptiveIcon;
 
-            AdaptiveIconDrawable adaptiveIcon = (AdaptiveIconDrawable) drawable;
+            AdaptiveIconCompat adaptiveIcon = (AdaptiveIconCompat) drawable;
             Drawable background = adaptiveIcon.getBackground();
             if (background == null) {
                 background = new ColorDrawable(Color.TRANSPARENT);

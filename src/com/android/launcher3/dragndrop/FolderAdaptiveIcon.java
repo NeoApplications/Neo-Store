@@ -16,6 +16,8 @@
 
 package com.android.launcher3.dragndrop;
 
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -29,7 +31,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.PreviewBackground;
@@ -37,13 +39,11 @@ import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.util.Preconditions;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-
 /**
- * {@link com.android.launcher3.AdaptiveIconDrawableExt} representation of a {@link FolderIcon}
+ * {@link com.android.launcher3.AdaptiveIconCompat} representation of a {@link FolderIcon}
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class FolderAdaptiveIcon extends AdaptiveIconDrawableExt {
+public class FolderAdaptiveIcon extends AdaptiveIconCompat {
     private static final String TAG = "FolderAdaptiveIcon";
 
     private final Drawable mBadge;

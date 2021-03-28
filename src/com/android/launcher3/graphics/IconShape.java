@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.graphics;
 
+import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
@@ -41,7 +43,7 @@ import android.view.ViewOutlineProvider;
 
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
@@ -58,8 +60,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
 
 /**
  * Abstract representation of the shape of an icon shape
@@ -109,13 +109,13 @@ public abstract class IconShape {
     }
 
     /**
-     * Initializes the shape which is closest to the {@link AdaptiveIconDrawableExt}
+     * Initializes the shape which is closest to the {@link AdaptiveIconCompat}
      */
     public static void init(Context context) {
         if (Utilities.ATLEAST_OREO) {
             sInstance = new AdaptiveIconShape(context);
 
-            AdaptiveIconDrawableExt drawable = new AdaptiveIconDrawableExt(
+            AdaptiveIconCompat drawable = new AdaptiveIconCompat(
                     new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
             // Initialize shape properties
             drawable.setBounds(0, 0, DEFAULT_PATH_SIZE, DEFAULT_PATH_SIZE);
@@ -401,7 +401,7 @@ public abstract class IconShape {
 
         Region full = new Region(0, 0, size, size);
         Region iconR = new Region();
-        AdaptiveIconDrawableExt drawable = new AdaptiveIconDrawableExt(
+        AdaptiveIconCompat drawable = new AdaptiveIconCompat(
                 new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
         drawable.setBounds(0, 0, size, size);
         iconR.setPath(drawable.getIconMask(), full);

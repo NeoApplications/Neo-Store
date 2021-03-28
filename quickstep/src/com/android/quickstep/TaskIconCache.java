@@ -15,7 +15,6 @@
  */
 package com.android.quickstep;
 
-import static com.android.launcher3.FastBitmapDrawable.newIcon;
 import static com.android.launcher3.uioverrides.QuickstepLauncher.GO_LOW_RAM_RECENTS_ENABLED;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
@@ -33,6 +32,7 @@ import android.os.UserHandle;
 import android.util.SparseArray;
 import android.view.accessibility.AccessibilityManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.WorkerThread;
 
 import com.android.launcher3.FastBitmapDrawable;
@@ -73,7 +73,7 @@ public class TaskIconCache {
         Resources res = context.getResources();
         int cacheSize = res.getInteger(R.integer.recentsIconCacheSize);
         mIconCache = new TaskKeyLruCache<>(cacheSize);
-        mIconProvider = new IconProvider(context);
+        mIconProvider = IconProvider.INSTANCE.get(context);
     }
 
     /**
@@ -125,6 +125,7 @@ public class TaskIconCache {
                         pkg.equals(key.getPackageName()) && handle.getIdentifier() == key.userId));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @WorkerThread
     private TaskCacheEntry getCacheEntry(Task task) {
         TaskCacheEntry entry = mIconCache.getAndInvalidateIfModified(task.key);
@@ -151,16 +152,16 @@ public class TaskIconCache {
         } else {
             activityInfo = PackageManagerWrapper.getInstance().getActivityInfo(
                     key.getComponent(), key.userId);
-            if (activityInfo != null) {
+            /*if (activityInfo != null) {
                 BitmapInfo bitmapInfo = getBitmapInfo(
                         mIconProvider.getIcon(activityInfo, UserHandle.of(key.userId)),
                         key.userId,
                         desc.getPrimaryColor(),
                         activityInfo.applicationInfo.isInstantApp());
                 entry.icon = newIcon(mContext, bitmapInfo);
-            } else {
-                entry.icon = getDefaultIcon(key.userId);
-            }
+            } else {*/
+            entry.icon = getDefaultIcon(key.userId);
+            //}
         }
 
         // Loading content descriptions if accessibility or low RAM recents is enabled.

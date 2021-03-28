@@ -33,7 +33,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
@@ -145,7 +145,7 @@ public class DeepShortcutManager {
         try {
             Drawable icon = mLauncherApps.getShortcutIconDrawable(shortcutInfo, density);
             mWasLastCallSuccess = true;
-            return AdaptiveIconDrawableExt.wrapNullable(icon);
+            return AdaptiveIconCompat.wrapNullable(icon);
         } catch (SecurityException | IllegalStateException e) {
             Log.e(TAG, "Failed to get shortcut icon", e);
             mWasLastCallSuccess = false;

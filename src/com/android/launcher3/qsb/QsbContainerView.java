@@ -63,6 +63,7 @@ public class QsbContainerView extends FrameLayout {
 
     /**
      * Returns the package name for user configured search provider or from searchManager
+     *
      * @param context
      * @return String
      */
@@ -82,6 +83,7 @@ public class QsbContainerView extends FrameLayout {
 
     /**
      * returns it's AppWidgetProviderInfo using package name from getSearchWidgetPackageName
+     *
      * @param context
      * @return AppWidgetProviderInfo
      */
@@ -112,7 +114,7 @@ public class QsbContainerView extends FrameLayout {
      * returns componentName for searchWidget if package name is known.
      */
     @Nullable
-    public static ComponentName getSearchComponentName(@NonNull  Context context) {
+    public static ComponentName getSearchComponentName(@NonNull Context context) {
         AppWidgetProviderInfo providerInfo =
                 QsbContainerView.getSearchWidgetProviderInfo(context);
         if (providerInfo != null) {
@@ -307,17 +309,21 @@ public class QsbContainerView extends FrameLayout {
             // Return a default widget with setup icon.
             View v = QsbWidgetHostView.getDefaultView(container);
             if (showSetupIcon) {
+                requestQsbCreate();
                 View setupButton = v.findViewById(R.id.btn_qsb_setup);
                 setupButton.setVisibility(View.VISIBLE);
-                setupButton.setOnClickListener((v2) -> startActivityForResult(
-                        new Intent(ACTION_APPWIDGET_BIND)
-                                .putExtra(EXTRA_APPWIDGET_ID, mQsbWidgetHost.allocateAppWidgetId())
-                                .putExtra(EXTRA_APPWIDGET_PROVIDER, mWidgetInfo.provider),
-                        REQUEST_BIND_QSB));
+                setupButton.setOnClickListener((v2) -> requestQsbCreate());
             }
             return v;
         }
 
+        void requestQsbCreate() {
+            startActivityForResult(
+                    new Intent(ACTION_APPWIDGET_BIND)
+                            .putExtra(EXTRA_APPWIDGET_ID, mQsbWidgetHost.allocateAppWidgetId())
+                            .putExtra(EXTRA_APPWIDGET_PROVIDER, mWidgetInfo.provider),
+                    REQUEST_BIND_QSB);
+        }
 
         /**
          * Returns a widget with category {@link AppWidgetProviderInfo#WIDGET_CATEGORY_SEARCHBOX}
@@ -336,7 +342,7 @@ public class QsbContainerView extends FrameLayout {
         private final WidgetProvidersUpdateCallback mWidgetsUpdateCallback;
 
         public QsbWidgetHost(Context context, int hostId, WidgetViewFactory viewFactory,
-                WidgetProvidersUpdateCallback widgetProvidersUpdateCallback) {
+                             WidgetProvidersUpdateCallback widgetProvidersUpdateCallback) {
             super(context, hostId);
             mViewFactory = viewFactory;
             mWidgetsUpdateCallback = widgetProvidersUpdateCallback;

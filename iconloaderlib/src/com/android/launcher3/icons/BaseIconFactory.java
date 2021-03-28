@@ -1,5 +1,9 @@
 package com.android.launcher3.icons;
 
+import static android.graphics.Paint.DITHER_FLAG;
+import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,23 +14,20 @@ import android.graphics.Color;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.android.launcher3.AdaptiveIconDrawableExt;
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.icons.cache.IconPack;
 import com.android.launcher3.icons.cache.IconPackProvider;
-
-import static android.graphics.Paint.DITHER_FLAG;
-import static android.graphics.Paint.FILTER_BITMAP_FLAG;
-import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
 
 /**
  * This class will be moved to androidx library. There shouldn't be any dependency outside
@@ -174,7 +175,7 @@ public class BaseIconFactory implements AutoCloseable {
         }
         icon = normalizeAndWrapToAdaptiveIcon(icon, shrinkNonAdaptiveIcons, null, scale);
         Bitmap bitmap = createIconBitmap(icon, scale[0]);
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawableExt) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
             mCanvas.setBitmap(bitmap);
             getShadowGenerator().recreateIcon(Bitmap.createBitmap(bitmap), mCanvas);
             mCanvas.setBitmap(null);
@@ -235,15 +236,15 @@ public class BaseIconFactory implements AutoCloseable {
             En esta seccion se crea el Icono adaptivo.
         */
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
-            if (mWrapperIcon == null || !((AdaptiveIconDrawableExt) mWrapperIcon).isMaskValid()) {
-                mWrapperIcon = AdaptiveIconDrawableExt.wrap(
+            if (mWrapperIcon == null || !((AdaptiveIconCompat) mWrapperIcon).isMaskValid()) {
+                mWrapperIcon = AdaptiveIconCompat.wrap(
                         mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper).mutate());
             }
-            AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
+            AdaptiveIconCompat dr = (AdaptiveIconCompat) mWrapperIcon;
             dr.setBounds(0, 0, 1, 1);
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
-            if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
+            if (!outShape[0] && (icon instanceof NonAdaptiveIconDrawable)) {
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
@@ -299,7 +300,7 @@ public class BaseIconFactory implements AutoCloseable {
         mCanvas.setBitmap(bitmap);
         mOldBounds.set(icon.getBounds());
 
-        if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawableExt) {
+        if (ATLEAST_OREO && icon instanceof AdaptiveIconCompat) {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
                     Math.round(size * (1 - scale) / 2));
             icon.setBounds(offset, offset, size - offset, size - offset);
@@ -398,6 +399,13 @@ public class BaseIconFactory implements AutoCloseable {
         @Override
         public int getIntrinsicWidth() {
             return getBitmap().getWidth();
+        }
+    }
+
+    public static class NonAdaptiveIconDrawable extends DrawableWrapper {
+
+        public NonAdaptiveIconDrawable(@Nullable Drawable dr) {
+            super(dr);
         }
     }
 }

@@ -96,6 +96,7 @@ public class DragPreviewProvider {
         int height = 0;
         // Assume scaleX == scaleY, which is always the case for workspace items.
         float scale = mView.getScaleX();
+
         if (mView instanceof DraggableView) {
             ((DraggableView) mView).getSourceVisualDragBounds(mTempRect);
             width = mTempRect.width();
@@ -104,7 +105,12 @@ public class DragPreviewProvider {
             width = mView.getWidth();
             height = mView.getHeight();
         }
-
+        if (mView instanceof BubbleTextView) {
+            Drawable d = ((BubbleTextView) mView).getIcon();
+            Rect bounds = getDrawableBounds(d);
+            width = bounds.width();
+            height = bounds.height();
+        }
         return BitmapRenderer.createHardwareBitmap(width + blurSizeOutline,
                 height + blurSizeOutline, (c) -> drawDragView(c, scale));
     }
