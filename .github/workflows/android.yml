@@ -15,7 +15,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: New push to “Omega-dev”. Building debug APK…
+          message: New push to “Omega-11”. Building debug APK…
   build:
     runs-on: ubuntu-latest
 
@@ -47,7 +47,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: Debug APK
+          name: Omega-debug.apk
           path: artifacts/debug-apk
       - uses: technote-space/workflow-conclusion-action@v2.1.5
       - name: Send notification
