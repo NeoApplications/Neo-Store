@@ -19,11 +19,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.saggitt.omega.search.SearchProviderPreference
-        android:defaultValue="@string/config_default_search_provider"
+        android:title="@string/title_search_provider"
         android:key="pref_globalSearchProvider"
-        android:title="@string/title__search_provider"
-        android:persistent="true"
-        app:iconSpaceReserved="false" />
+        android:defaultValue="@string/config_default_search_provider" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
         android:defaultValue="false"

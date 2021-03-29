@@ -91,7 +91,7 @@ class SelectGestureHandlerFragment : PreferenceDialogFragmentCompat() {
     companion object {
 
         fun newInstance(preference: GesturePreference) = SelectGestureHandlerFragment().apply {
-            arguments = Bundle(2).apply {
+            arguments = Bundle(3).apply {
                 putString("key", preference.key)
                 putString("value", preference.value)
                 putBoolean("isSwipeUp", preference.isSwipeUp)

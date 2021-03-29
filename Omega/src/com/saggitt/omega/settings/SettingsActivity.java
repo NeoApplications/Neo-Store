@@ -18,6 +18,11 @@
 
 package com.saggitt.omega.settings;
 
+import static androidx.recyclerview.widget.RecyclerView.Adapter;
+import static com.android.launcher3.LauncherSettings.Favorites;
+import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
+import static com.android.launcher3.util.ContentWriter.CommitParams;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -77,6 +82,8 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.OmegaPreferencesChangeCallback;
+import com.saggitt.omega.feed.FeedProviderDialogFragment;
+import com.saggitt.omega.feed.FeedProviderPreference;
 import com.saggitt.omega.gestures.ui.GesturePreference;
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment;
 import com.saggitt.omega.preferences.ColorPreferenceCompat;
@@ -106,11 +113,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
-
-import static androidx.recyclerview.widget.RecyclerView.Adapter;
-import static com.android.launcher3.LauncherSettings.Favorites;
-import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
-import static com.android.launcher3.util.ContentWriter.CommitParams;
 
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, OnPreferenceDisplayDialogCallback,
@@ -835,27 +837,23 @@ public class SettingsActivity extends SettingsBaseActivity
             if (preference instanceof GridSizePreference) {
                 f = GridSizeDialogFragmentCompat.newInstance(preference.getKey());
             } else if (preference instanceof SingleDimensionGridSizePreference) {
-                f = SingleDimensionGridSizeDialogFragmentCompat.Companion
-                        .newInstance(preference.getKey());
+                f = SingleDimensionGridSizeDialogFragmentCompat.Companion.newInstance(preference.getKey());
             } else if (preference instanceof GesturePreference) {
-                f = SelectGestureHandlerFragment.Companion
-                        .newInstance((GesturePreference) preference);
+                f = SelectGestureHandlerFragment.Companion.newInstance((GesturePreference) preference);
             } else if (preference instanceof ListPreference) {
-                Log.d("success", "onDisplayPreferenceDialog: yay");
                 f = ThemedListPreferenceDialogFragment.Companion.newInstance(preference.getKey());
             } else if (preference instanceof SmartspaceEventProvidersPreference) {
                 f = SmartspaceEventProvidersFragment.Companion.newInstance(preference.getKey());
             } else if (preference instanceof CustomDialogPreference) {
-                f = PreferenceScreenDialogFragment.Companion
-                        .newInstance((CustomDialogPreference) preference);
+                f = PreferenceScreenDialogFragment.Companion.newInstance((CustomDialogPreference) preference);
             } else if (preference instanceof SearchProviderPreference) {
-                f = SelectSearchProviderFragment.Companion
-                        .newInstance((SearchProviderPreference) preference);
+                f = SelectSearchProviderFragment.Companion.newInstance();
+            } else if (preference instanceof FeedProviderPreference) {
+                f = FeedProviderDialogFragment.Companion.newInstance();
             } else {
                 super.onDisplayPreferenceDialog(preference);
                 return;
             }
-
             f.setTargetFragment(this, 0);
             f.show(getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
         }

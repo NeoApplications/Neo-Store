@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.preferences
+package com.saggitt.omega.feed
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -37,7 +37,7 @@ class FeedProviderPreference(context: Context, attrs: AttributeSet? = null) :
                 ?: providers(context)[0]
 
     init {
-        layoutResource = R.layout.pref_with_preview_icon
+        layoutResource = R.layout.preference_preview_icon
         dialogLayoutResource = R.layout.pref_dialog_icon_pack
     }
 

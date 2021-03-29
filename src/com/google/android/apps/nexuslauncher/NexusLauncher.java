@@ -25,6 +25,7 @@ import com.google.android.libraries.gsa.launcherclient.LauncherClientService;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.settings.SettingsActivity;
+import com.saggitt.omega.smartspace.FeedBridge;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -85,7 +86,8 @@ public class NexusLauncher {
             SharedPreferences prefs = Utilities.getPrefs(mLauncher);
             mOverlay = new NexusLauncherOverlay(mLauncher);
             mClient = new LauncherClient(mLauncher, mOverlay, new StaticInteger(
-                    (prefs.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, true) ? 1 : 0) | 2 | 4 | 8));
+                    (prefs.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF,
+                            FeedBridge.useBridge(mLauncher)) ? 1 : 0) | 2 | 4 | 8));
             mOverlay.setClient(mClient);
 
             prefs.registerOnSharedPreferenceChangeListener(this);
@@ -205,15 +207,8 @@ public class NexusLauncher {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             switch (key) {
                 case SettingsActivity.ENABLE_MINUS_ONE_PREF:
-                    LauncherClient launcherClient = mClient;
-                    StaticInteger i = new StaticInteger(
-                            (sharedPreferences.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, true) ? 1 : 0) | 2 | 4 | 8);
-                    if (i.mData != launcherClient.mFlags) {
-                        launcherClient.mFlags = i.mData;
-                        if (launcherClient.mLayoutParams != null) {
-                            launcherClient.exchangeConfig();
-                        }
-                    }
+                    mClient.showOverlay(sharedPreferences.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF,
+                            FeedBridge.useBridge(mLauncher)));
                     break;
                 case SettingsActivity.FEED_THEME_PREF:
                     applyFeedTheme(true);
