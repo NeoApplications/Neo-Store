@@ -36,7 +36,7 @@ class IconPreference(context: Context, attrs: AttributeSet? = null) : Preference
     }
 
     init {
-        layoutResource = R.layout.pref_with_preview_icon
+        layoutResource = R.layout.preference_preview_icon
         fragment = IconCustomizeFragment::class.java.name
         updatePreview()
     }
