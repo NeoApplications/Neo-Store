@@ -41,9 +41,8 @@ public class EcosiaWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_ecosia);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://www.ecosia.org/search?q=%s";
     }
 

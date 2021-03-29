@@ -27,19 +27,19 @@ import com.saggitt.omega.search.SearchProvider
 
 @Keep
 class CoolSearchSearchProvider(context: Context) : SearchProvider(context) {
-
-    val PACKAGE = "com.coolapk.searchbox"
-
     override val name = context.getString(R.string.search_provider_cool_search)
     override val supportsVoiceSearch: Boolean
         get() = false
     override val supportsAssistant: Boolean
         get() = false
     override val supportsFeed = false
+    override val packageName: String
+        get() = "com.coolapk.searchbox"
     override val isAvailable: Boolean
-        get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
+        get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
-    override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent(Intent.ACTION_SEARCH_LONG_PRESS).setPackage(PACKAGE))
+    override fun startSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent(Intent.ACTION_SEARCH_LONG_PRESS).setPackage(packageName))
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
         //setTint(ColorEngine.getInstance(context).accent)

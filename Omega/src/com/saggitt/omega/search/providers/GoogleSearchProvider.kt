@@ -39,6 +39,8 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
     override val settingsIntent: Intent
         get() = Intent("com.google.android.apps.gsa.nowoverlayservice.PIXEL_DOODLE_QSB_SETTINGS")
                 .setPackage(Config.GOOGLE_QSB).addFlags(268435456)
+    override val packageName: String
+        get() = Config.GOOGLE_QSB
     override val isBroadcast: Boolean
         get() = true
 

@@ -27,18 +27,22 @@ import com.saggitt.omega.search.SearchProvider
 
 @Keep
 open class FirefoxSearchProvider(context: Context) : SearchProvider(context) {
-
-
     override val name = context.getString(R.string.search_provider_firefox)
     override val supportsVoiceSearch = false
     override val supportsAssistant = false
     override val supportsFeed = true
+    override val packageName: String
+        get() = getPackage(context)!!
 
     override val isAvailable: Boolean
         get() = getPackage(context) != null
 
-    override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent(Intent.ACTION_ASSIST).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage(getPackage(context)))
-    override fun startFeed(callback: (intent: Intent) -> Unit) = callback(Intent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage(getPackage(context)))
+    override fun startSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent(Intent.ACTION_ASSIST).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .setPackage(getPackage(context)))
+
+    override fun startFeed(callback: (intent: Intent) -> Unit) = callback(Intent()
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage(getPackage(context)))
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_firefox)!!
 

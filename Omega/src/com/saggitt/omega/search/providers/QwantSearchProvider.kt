@@ -27,13 +27,10 @@ import com.android.launcher3.util.PackageManagerHelper
 class QwantSearchProvider(context: Context) : FirefoxSearchProvider(context) {
 
     override val name = context.getString(R.string.search_provider_qwant)
+    override val packageName = "com.qwant.liberty"
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_qwant)!!
     override fun getPackage(context: Context) = listOf(
             "com.qwant.liberty"
     ).firstOrNull { PackageManagerHelper.isAppEnabled(context.packageManager, it, 0) }
-
-    companion object {
-        const val PACKAGE = "com.qwant.liberty"
-    }
 }

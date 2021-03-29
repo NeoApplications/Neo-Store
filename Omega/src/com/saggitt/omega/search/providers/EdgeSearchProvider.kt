@@ -31,18 +31,16 @@ open class EdgeSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsVoiceSearch = false
     override val supportsAssistant = false
     override val supportsFeed = false
+    override val packageName: String
+        get() = "com.microsoft.emmx"
 
     override val isAvailable: Boolean
-        get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
+        get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
         callback(Intent(Intent.ACTION_MAIN)
-                .setClassName(PACKAGE, "com.microsoft.bingsearchsdk.api.ui.activities.RubyBingSearchActivity"))
+                .setClassName(packageName, "com.microsoft.bingsearchsdk.api.ui.activities.RubyBingSearchActivity"))
     }
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_edge)!!
-
-    companion object {
-        private const val PACKAGE = "com.microsoft.emmx"
-    }
 }

@@ -34,15 +34,14 @@ class DuckDuckGoSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsAssistant: Boolean
         get() = false
     override val supportsFeed = false
+    override val packageName: String
+        get() = "com.duckduckgo.mobile.android"
 
     override val isAvailable: Boolean
-        get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
+        get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
-    override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent(Intent.ACTION_ASSIST).setPackage(PACKAGE))
+    override fun startSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent(Intent.ACTION_ASSIST).setPackage(packageName))
 
     override fun getIcon(): Drawable = context.resources.getDrawable(R.drawable.ic_ddg)
-
-    companion object {
-        private const val PACKAGE = "com.duckduckgo.mobile.android"
-    }
 }

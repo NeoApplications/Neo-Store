@@ -36,9 +36,8 @@ public class BingWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_bing);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://www.bing.com/search?q=%s";
     }
 

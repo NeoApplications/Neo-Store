@@ -33,10 +33,11 @@ class SFinderSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsVoiceSearch: Boolean
         get() = true
 
-    // TODO: Support bixby
     override val supportsAssistant: Boolean
         get() = false
     override val supportsFeed = false
+    override val packageName: String
+        get() = PACKAGE
 
     override val isAvailable: Boolean
         get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)

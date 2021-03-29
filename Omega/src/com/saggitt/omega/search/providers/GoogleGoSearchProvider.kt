@@ -32,18 +32,24 @@ class GoogleGoSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsVoiceSearch = true
     override val supportsAssistant = false
     override val supportsFeed = true
+    override val packageName: String
+        get() = "com.google.android.apps.searchlite"
     override val isAvailable: Boolean
-        get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
+        get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
-    override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent("$PACKAGE.SEARCH").putExtra("showKeyboard", true).putExtra("$PACKAGE.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(PACKAGE))
-    override fun startVoiceSearch(callback: (intent: Intent) -> Unit) = callback(Intent("$PACKAGE.SEARCH").putExtra("openMic", true).putExtra("$PACKAGE.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(PACKAGE))
-    override fun startFeed(callback: (intent: Intent) -> Unit) = callback(Intent("$PACKAGE.SEARCH").putExtra("$PACKAGE.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(PACKAGE))
+    override fun startSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent("$packageName.SEARCH").putExtra("showKeyboard", true)
+                    .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName))
+
+    override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent("$packageName.SEARCH").putExtra("openMic", true)
+                    .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName))
+
+    override fun startFeed(callback: (intent: Intent) -> Unit) =
+            callback(Intent("$packageName.SEARCH").putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true)
+                    .setPackage(packageName))
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_logo)!!
 
     override fun getVoiceIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_mic)!!
-
-    companion object {
-        private const val PACKAGE = "com.google.android.apps.searchlite"
-    }
 }

@@ -36,9 +36,8 @@ public class DDGWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_ddg);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://duckduckgo.com/?q=%s";
     }
 

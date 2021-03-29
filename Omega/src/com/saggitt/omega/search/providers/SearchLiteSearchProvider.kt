@@ -35,16 +35,15 @@ class SearchLiteSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsAssistant: Boolean
         get() = false
     override val supportsFeed = false
+    override val packageName: String
+        get() = "com.orekie.search"
     override val isAvailable: Boolean
-        get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
+        get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
-    override fun startSearch(callback: (intent: Intent) -> Unit) = callback(Intent(Intent.ACTION_SEARCH).setPackage(PACKAGE))
+    override fun startSearch(callback: (intent: Intent) -> Unit) =
+            callback(Intent(Intent.ACTION_SEARCH).setPackage(packageName))
 
     override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
         setTint(Utilities.getOmegaPrefs(context).accentColor)
-    }
-
-    companion object {
-        const val PACKAGE = "com.orekie.search"
     }
 }

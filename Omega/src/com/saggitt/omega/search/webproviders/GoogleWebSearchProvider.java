@@ -40,9 +40,8 @@ public class GoogleWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_qsb_logo);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://www.google.com/search?q=%s";
     }
 

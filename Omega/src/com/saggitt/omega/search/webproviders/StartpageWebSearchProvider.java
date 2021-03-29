@@ -36,9 +36,8 @@ public class StartpageWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_startpage_search);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://www.startpage.com/rvd/search?query=%s&language=auto";
     }
 

@@ -37,12 +37,6 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsVoiceSearch = false
     override val supportsAssistant = false
     override val supportsFeed = false
-
-    /**
-     * Web URL to the search results page. %s will be replaced with the search query.
-     */
-    protected abstract val searchUrl: String
-
     /**
      * Suggestions API URL. %s will be replaced with the search query.
      */
@@ -76,7 +70,7 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
         Utilities.openURLinBrowser(context, getResultUrl(query))
     }
 
-    protected open fun getResultUrl(query: String) = searchUrl.format(query)
+    protected open fun getResultUrl(query: String) = packageName.format(query)
 
     companion object {
         const val MAX_SUGGESTIONS = 5

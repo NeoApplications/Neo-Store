@@ -36,9 +36,8 @@ public class YahooWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_yahoo);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://search.yahoo.com/search?q=%s";
     }
 

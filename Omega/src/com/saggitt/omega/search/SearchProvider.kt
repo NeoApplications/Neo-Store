@@ -20,7 +20,6 @@ package com.saggitt.omega.search
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import androidx.core.graphics.drawable.DrawableCompat.applyTheme
 import com.android.launcher3.R
 import com.android.launcher3.graphics.ShadowDrawable
 import com.saggitt.omega.settings.search.SettingsSearchActivity
@@ -31,6 +30,8 @@ abstract class SearchProvider(protected val context: Context) {
     abstract val supportsAssistant: Boolean
     abstract val supportsFeed: Boolean
     open val settingsIntent get() = Intent().setClass(context, SettingsSearchActivity::class.java)
+
+    abstract val packageName: String
 
     /**
      * Whether the settings intent needs to be sent as broadcast

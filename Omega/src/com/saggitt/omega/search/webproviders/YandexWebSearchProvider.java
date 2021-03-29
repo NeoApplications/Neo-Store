@@ -41,9 +41,8 @@ public class YandexWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_yandex);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://yandex.com/search/?text=%s";
     }
 

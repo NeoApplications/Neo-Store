@@ -18,47 +18,35 @@
 
 package com.saggitt.omega.search
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckedTextView
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceDialogFragmentCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.util.applyAccent
+import com.saggitt.omega.util.applyColor
+import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
 class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
 
-    private val key by lazy { requireArguments().getString("key") }
-    private val value by lazy { requireArguments().getString("value") }
-
-    private var selectedProvider: SearchProvider? = null
+    private val searchProviders by lazy { SearchProviderController.getSearchProviders(requireActivity()) }
+    private lateinit var list: ListView
 
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.adapter = ProviderListAdapter(activity as Context)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-    }
-
-    private fun saveChanges() {
-        Utilities.getOmegaPrefs(activity).sharedPrefs.edit().putString(key, selectedProvider.toString()).apply()
-        dismiss()
-    }
-
-    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
-        super.onPrepareDialogBuilder(builder)
-
-        builder.setPositiveButton(null, null)
+        list = view.findViewById(R.id.pack_list)
+        list.adapter = SearchProviderAdapter(requireContext(),
+                searchProviders,
+                requireContext().omegaPrefs.searchProvider) {
+            context?.omegaPrefs?.searchProvider = it
+            dismiss()
+        }
     }
 
     override fun onStart() {
@@ -69,42 +57,45 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
     override fun onDialogClosed(positiveResult: Boolean) {
     }
 
-    inner class ProviderListAdapter(private val context: Context) : RecyclerView.Adapter<ProviderListAdapter.Holder>() {
+    inner class SearchProviderAdapter(context: Context,
+                                      private val providers: List<SearchProvider>,
+                                      private val selected: String,
+                                      private val onSelect: (String) -> Unit) :
+            ArrayAdapter<SearchProvider>(context, R.layout.list_item_icon, 0, providers) {
 
-        val Providers = SearchProviderController.getSearchProviders(context)
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            return Holder(LayoutInflater.from(context).inflate(R.layout.list_item_icon, parent, false))
-        }
+        private val color = Utilities.getOmegaPrefs(context).accentColor
+        private val showDebug = context.omegaPrefs.showDebugInfo
 
-        override fun getItemCount() = Providers.size
-
-        override fun onBindViewHolder(holder: Holder, position: Int) {
-            holder.text.text = Providers[position].name
-            holder.text.isChecked = Providers[position]::class.java.name == value
-            holder.providerIcon.setImageDrawable((Providers[position].getIcon()))
-        }
-
-        inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-            val providerIcon = itemView.findViewById<ImageView>(R.id.provider_icon)
-            val text = itemView.findViewById<CheckedTextView>(android.R.id.text1)!!.apply {
-                setOnClickListener(this@Holder)
-                val tintList = ColorStateList.valueOf(context.omegaPrefs.accentColor)
-                compoundDrawableTintList = tintList
-                backgroundTintList = tintList
-            }
-
-            override fun onClick(v: View) {
-                selectedProvider = Providers[adapterPosition]
-                saveChanges()
+        @SuppressLint("ViewHolder")
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return View.inflate(context, R.layout.list_item_icon, null).apply {
+                val provider = providers[position]
+                findViewById<ImageView>(R.id.icon).setImageDrawable(provider.getIcon())
+                findViewById<TextView>(R.id.title).text = provider.name
+                if (showDebug) {
+                    findViewById<TextView>(R.id.summary).apply {
+                        text = provider.packageName
+                        isVisible = true
+                    }
+                }
+                findViewById<RadioButton>(R.id.select).apply {
+                    isChecked = provider.name == selected
+                    setOnCheckedChangeListener { _, _ ->
+                        onSelect(provider.name)
+                    }
+                    applyColor(color)
+                }
+                setOnClickListener {
+                    onSelect(provider.name)
+                }
             }
         }
     }
 
     companion object {
-        fun newInstance(preference: SearchProviderPreference) = SelectSearchProviderFragment().apply {
-            arguments = Bundle(2).apply {
-                putString("key", preference.key)
-                putString("value", preference.value)
+        fun newInstance() = SelectSearchProviderFragment().apply {
+            arguments = Bundle(1).apply {
+                putString(ARG_KEY, SearchProviderPreference.KEY)
             }
         }
     }

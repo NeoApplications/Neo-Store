@@ -1,5 +1,12 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
+import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,15 +43,8 @@ import com.google.android.apps.nexuslauncher.search.SearchThread;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.providers.AppSearchSearchProvider;
+import com.saggitt.omega.search.providers.AppsSearchProvider;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
-
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
-import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 
 public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 
@@ -142,7 +142,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         if (prefs.getAllAppsGlobalSearch()) {
             return super.getIcon(colored);
         } else {
-            return new AppSearchSearchProvider(getContext()).getIcon(colored);
+            return new AppsSearchProvider(getContext()).getIcon(colored);
         }
     }
 
@@ -310,7 +310,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     private boolean shouldUseFallbackSearch(SearchProvider provider) {
         return !Utilities
                 .getOmegaPrefs(getContext()).getAllAppsGlobalSearch()
-                || provider instanceof AppSearchSearchProvider
+                || provider instanceof AppsSearchProvider
                 || provider instanceof WebSearchProvider;
     }
 

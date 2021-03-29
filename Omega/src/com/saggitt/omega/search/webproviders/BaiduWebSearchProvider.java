@@ -36,12 +36,6 @@ public class BaiduWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_baidu);
     }
 
-    @NotNull
-    @Override
-    protected String getSearchUrl() {
-        return "https://www.baidu.com/s?wd=%s";
-    }
-
     @Nullable
     @Override
     protected String getSuggestionsUrl() {
@@ -52,5 +46,11 @@ public class BaiduWebSearchProvider extends WebSearchProvider {
     @Override
     public String getName() {
         return getContext().getResources().getString(R.string.web_search_baidu);
+    }
+
+    @NotNull
+    @Override
+    public String getPackageName() {
+        return "https://www.baidu.com/s?wd=%s";
     }
 }

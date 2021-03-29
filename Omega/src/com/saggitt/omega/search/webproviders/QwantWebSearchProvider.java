@@ -41,9 +41,8 @@ public class QwantWebSearchProvider extends WebSearchProvider {
         return getContext().getResources().getDrawable(R.drawable.ic_qwant);
     }
 
-    @NotNull
     @Override
-    protected String getSearchUrl() {
+    public String getPackageName() {
         return "https://www.qwant.com/?q=%s";
     }
 
