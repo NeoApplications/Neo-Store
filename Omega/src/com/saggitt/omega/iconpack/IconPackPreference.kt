@@ -37,7 +37,7 @@ class IconPackPreference(context: Context, attrs: AttributeSet? = null) : Prefer
     private val onChangeListener = ::updatePreview
 
     init {
-        layoutResource = R.layout.pref_with_preview_icon
+        layoutResource = R.layout.preference_preview_icon
         fragment = IconPackFragment::class.java.name
         updatePreview()
     }
