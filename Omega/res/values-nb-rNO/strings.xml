@@ -119,7 +119,7 @@
     <string name="search_no_results">Resultatløst</string>
     <string name="cat_search_bar">Søkefelt</string>
     <string name="summary__search_show_as_assistant_summary">Åpne assistent istedenfor stemmesøk</string>
-    <string name="title__search_provider">Søkemotor</string>
+    <string name="title_search_provider">Søkemotor</string>
     <string name="title__search_show_assistant">Vis stemmesøkeknapp</string>
     <string name="title__search_action_assistant">Åpne assistent</string>
     <string name="title__search_bubble_searchbar">Vis to bobler</string>
@@ -245,7 +245,6 @@
     <string name="battery_full">Ladet</string>
     <string name="battery_charging">Lading</string>
     <string name="smartspace_setup_text">Trykk for å sette opp</string>
-    <string name="title_feed_provider_package">Informasjonskanaltilbyder</string>
     <string name="title_smartspace_event_providers">Hendelseskilder</string>
     <string name="title_smartspace_time">Vis tid</string>
     <string name="title_smartspace_feed_theme">Informasjonskanalens drakt</string>

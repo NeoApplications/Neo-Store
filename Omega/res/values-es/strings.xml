@@ -27,7 +27,7 @@
     <string name="pref_category__gestures">Gestos</string>
     <string name="action_none">No hacer nada</string>
     <string name="title__search_action_assistant">Abrir Asistente</string>
-    <string name="title__search_provider">Motor de busqueda</string>
+    <string name="title_search_provider">Motor de búsqueda</string>
     <string name="title__advanced_language">Idioma</string>
     <string name="title__restart_launcher">Reiniciar</string>
     <string name="title__about_donate">Donar</string>

@@ -122,7 +122,6 @@
     <string name="smartspace_preferences">Preferências</string>
     <string name="msg_minus_one_on_left">À esquerda da tela inicial principal</string>
     <string name="category__behavior_weather">Clima</string>
-    <string name="title_feed_provider_package">Provedor do Feed</string>
     <string name="title_smartspace_event_providers">Fontes de eventos</string>
     <string name="title_smartspace_weather_units">Unidade de temperatura</string>
     <string name="title_smartspace_widget_provider">Fonte do tempo</string>
@@ -341,7 +340,7 @@
     <string name="summary__advanced_setting_search">Mostrar pesquisa de configurações na barra de ação</string>
     <string name="search_provider_appsearch">Pesquisa de apps</string>
     <string name="title__search_bar_radius">Raio do canto</string>
-    <string name="title__search_provider">Mecanismo de pesquisa</string>
+    <string name="title_search_provider">Mecanismo de pesquisa</string>
     <string name="title__search_bubble_searchbar">Mostrar duas bolhas</string>
     <string name="action_open_widgets">Abrir Gaveta de Widgets</string>
     <string name="action_open_overview">Mostrar bolha da área de trabalho</string>

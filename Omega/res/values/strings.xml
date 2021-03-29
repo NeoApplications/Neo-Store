@@ -247,7 +247,6 @@
     <string name="title_smartspace_weather_units">Temperature unit</string>
     <string name="title_smartspace_event_providers">Events sources</string>
     <string name="pref_show_google_now_summary" translatable="false">@string/msg_minus_one_on_left</string>
-    <string name="title_feed_provider_package">Feed provider</string>
 
     <string name="category__behavior_weather">Weather</string>
     <string name="google_app" translatable="false">Google app</string>
@@ -380,7 +379,7 @@
     <string name="title__search_bubble_searchbar">Show Two Bubbles</string>
     <string name="title__search_action_assistant">Open Assistant</string>
     <string name="title__search_show_assistant">Show Voice Search Button</string>
-    <string name="title__search_provider">Search engine</string>
+    <string name="title_search_provider">Search engine</string>
     <string name="title__search_bar_radius">Corner Radius</string>
     <string name="summary__search_show_as_assistant_summary">Open Assistant instead of Voice Search</string>
     <string name="cat_search_bar">Search Bar</string>
@@ -461,10 +460,13 @@
     <string name="developer_options_title">Developer Options</string>
     <string name="title__dev_show_Dev">Show in Settings</string>
     <string name="title__dev_show_debug_info">Show debug info</string>
-    <string name="feed_provider">Feed Provider</string>
+    <string name="title_feed_provider">Feed Provider</string>
     <string name="title__restart_launcher">Restart</string>
     <string name="summary__dev_restart">Can be helpful if some settings are not properly applied</string>
     <string name="change_default_home">Set as Home App</string>
+
+    <string name="feed_add_widget">Add Widget</string>
+    <string name="feed_widget">Widgets</string>
 
     <!-- ABOUT -->
     <string name="about_build_information">Build information</string>
@@ -528,8 +530,6 @@
     <string name="loading">Loading…</string>
 
     <!-- WIDGET FEED -->
-    <string name="feed_add_widget">Add Widget</string>
-    <string name="feed_widget">Widgets</string>
 
     <string name="button_organize_screens">Arrange Pages</string>
 </resources>

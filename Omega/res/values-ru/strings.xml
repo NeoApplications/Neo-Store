@@ -114,7 +114,7 @@
     <string name="cat_search_bar">Панель поиска</string>
     <string name="summary__search_show_as_assistant_summary">Открыть Ассистент вместо голосового поиска</string>
     <string name="title__search_bar_radius">Радиус скругления</string>
-    <string name="title__search_provider">Поисковая система</string>
+    <string name="title_search_provider">Поисковая система</string>
     <string name="title__search_show_assistant">Показать кнопку голосового поиска</string>
     <string name="title__search_action_assistant">Открыть Ассистент</string>
     <string name="dt2s_admin_warning">Двойное нажатие для перехода в спящий режим будет отключено.</string>

@@ -12,7 +12,6 @@
     <string name="smartspace_preferences">Einstellungen</string>
     <string name="msg_minus_one_on_left">Links vom Startbildschirm</string>
     <string name="category__behavior_weather">Wetter</string>
-    <string name="title_feed_provider_package">Feed Anbieter</string>
     <string name="title_smartspace_event_providers">Ereignis Quellen</string>
     <string name="title_smartspace_weather_units">Temperatur Einheit</string>
     <string name="title_smartspace_widget_provider">Wetter Quelle</string>
@@ -332,7 +331,7 @@
     <string name="cat_search_bar">Suchleiste</string>
     <string name="summary__search_show_as_assistant_summary">Öffne Assistent anstelle der Sprachsuche</string>
     <string name="title__search_bar_radius">Eckenradius</string>
-    <string name="title__search_provider">Such Anbieter</string>
+    <string name="title_search_provider">Such Anbieter</string>
     <string name="title__search_show_assistant">Zeige Sprachsuchtaste</string>
     <string name="title__search_action_assistant">Assistent öffnen</string>
     <string name="title__search_bubble_searchbar">Zeige zwei Blasen</string>

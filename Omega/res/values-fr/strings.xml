@@ -67,7 +67,7 @@
     <string name="search_no_results">Aucun résultat</string>
     <string name="cat_search_bar">Barre de recherche</string>
     <string name="summary__search_show_as_assistant_summary">Ouvrir l\'assistant au lieu de la recherche vocale</string>
-    <string name="title__search_provider">Moteur de recherche</string>
+    <string name="title_search_provider">Moteur de recherche</string>
     <string name="title__search_show_assistant">Afficher le bouton de recherche vocale</string>
     <string name="title__search_action_assistant">Ouvrir l\'assistant</string>
     <string name="title__search_bubble_searchbar">Afficher deux bulles</string>
@@ -342,7 +342,6 @@
     <string name="action_sleep_timeout">Veille à l’aide du délai d’expiration de l’écran</string>
     <string name="name_provider_alarm_events">Alarmes à venir</string>
     <string name="resuable_text_alarm">Alarme</string>
-    <string name="title_feed_provider_package">Fournisseur de flux</string>
     <string name="pref_category__incubating">En incubation</string>
     <string name="title_theme_icon_packs">Packs d\'icône</string>
     <string name="title_text_color">Couleur du texte</string>
