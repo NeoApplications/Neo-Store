@@ -35,16 +35,18 @@ class FeedBridge(private val context: Context) {
     private val prefs = context.omegaPrefs
     private val bridgePackages by lazy {
         listOf(
-                PixelBridgeInfo("com.google.android.apps.nexuslauncher", R.integer.bridge_signature_hash))
+                PixelBridgeInfo("com.google.android.apps.nexuslauncher", R.integer.bridge_signature_hash),
+                BridgeInfo("app.lawnchair.lawnfeed", R.integer.lawnfeed_signature_hash)
+        )
     }
 
     fun resolveBridge(): BridgeInfo? {
         val customBridge = customBridgeOrNull()
-        if (customBridge != null) {
-            return customBridge
+        return when {
+            customBridge != null -> customBridge
+            !shouldUseFeed -> null
+            else -> bridgePackages.firstOrNull { it.isAvailable() }
         }
-        if (!shouldUseFeed) return null
-        return bridgePackages.firstOrNull { it.isAvailable() }
     }
 
     private fun customBridgeOrNull() = if (prefs.feedProvider.isNotBlank()) {
@@ -125,7 +127,7 @@ class FeedBridge(private val context: Context) {
                     Log.d("FeedBridge", "Feed provider $packageName(0x$hash) isn't whitelisted")
                 }
             }
-            return disableWhitelist || signatureHash != -1
+            return disableWhitelist || signatureHash != -1 && super.isSigned()
         }
     }
 
