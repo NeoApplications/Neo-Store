@@ -205,7 +205,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val weatherUnit by StringBasedPref("pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
             Temperature.Companion::unitFromString, Temperature.Companion::unitToString) { }
     var smartspaceWidgetId by IntPref("smartspace_widget_id", -1, doNothing)
-    var weatherIconPack by StringPref("pref_weatherIcons", "", updateWeatherData)
+    var weatherIconPack by StringPref("pref_weatherIcons", "", doNothing)
     var weatherProvider by StringPref("pref_smartspace_widget_provider",
             SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider)
     var eventProvider by StringPref("pref_smartspace_event_provider",

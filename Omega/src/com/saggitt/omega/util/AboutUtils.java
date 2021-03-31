@@ -18,6 +18,8 @@
 
 package com.saggitt.omega.util;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
@@ -31,9 +33,9 @@ import android.text.TextUtils;
 
 import androidx.annotation.StringRes;
 
-import java.util.Locale;
+import com.android.launcher3.BuildConfig;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import java.util.Locale;
 
 public class AboutUtils {
     public Context mContext;
@@ -72,7 +74,7 @@ public class AboutUtils {
     }
 
     public Object getBuildConfigValue(String fieldName) {
-        String pkg = "com.android.launcher3.BuildConfig";
+        String pkg = BuildConfig.APPLICATION_ID;
         try {
             Class<?> c = Class.forName(pkg);
             return c.getField(fieldName).get(null);

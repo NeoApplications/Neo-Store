@@ -71,7 +71,6 @@ class FlowerpotTabs(manager: AppGroupsManager) : DrawerTabs(manager, AppGroupsMa
 
         init {
             addCustomization(potName)
-
             customizations.setOrder(KEY_TITLE, KEY_FLOWERPOT, KEY_COLOR)
         }
 
@@ -137,7 +136,7 @@ class FlowerpotTabs(manager: AppGroupsManager) : DrawerTabs(manager, AppGroupsMa
             return view
         }
 
-        override fun saveToJson(context: Context): String? {
+        override fun saveToJson(context: Context): String {
             return value ?: default
         }
 

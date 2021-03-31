@@ -20,6 +20,7 @@ package com.saggitt.omega.groups
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -358,7 +359,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
         open class ColorCustomization(key: String, default: Int) : Customization<Int, String>(key, default) {
             override fun loadFromJson(context: Context, obj: String?) {
-                value = obj?.let { AppGroupsUtils.getInstance(context).defaultColor }
+                value = obj?.let { AppGroupsUtils.getInstance(context).getTabColor(it) }
             }
 
             override fun saveToJson(context: Context): String? {
@@ -373,7 +374,6 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         class ColorRow(key: String, default: Int) : ColorCustomization(key, default) {
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
                 val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_color_row, parent, false)
-                val resources = context.resources
 
                 updateColor(view)
 
@@ -546,6 +546,15 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 class AppGroupsUtils(context: Context) {
 
     val defaultColor = Utilities.getOmegaPrefs(context).accentColor
+
+    fun getTabColor(color: String): Int {
+        Log.d("AppGroupsUtils", "Loading tab color for $color")
+        return if (color != "null") {
+            color.toInt();
+        } else {
+            defaultColor
+        }
+    }
 
     companion object : SingletonHolder<AppGroupsUtils, Context>(
             ensureOnMainThread(useApplicationContext(::AppGroupsUtils)))
