@@ -1,5 +1,7 @@
 package com.google.android.apps.nexuslauncher;
 
+import static android.content.pm.ApplicationInfo.FLAG_SYSTEM;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -87,7 +89,7 @@ public class NexusLauncher {
             mOverlay = new NexusLauncherOverlay(mLauncher);
             mClient = new LauncherClient(mLauncher, mOverlay, new StaticInteger(
                     (prefs.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF,
-                            FeedBridge.useBridge(mLauncher)) ? 1 : 0) | 2 | 4 | 8));
+                            minusOneAvailable()) ? 1 : 0) | 2 | 4 | 8));
             mOverlay.setClient(mClient);
 
             prefs.registerOnSharedPreferenceChangeListener(this);
@@ -208,12 +210,17 @@ public class NexusLauncher {
             switch (key) {
                 case SettingsActivity.ENABLE_MINUS_ONE_PREF:
                     mClient.showOverlay(sharedPreferences.getBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF,
-                            FeedBridge.useBridge(mLauncher)));
+                            minusOneAvailable()));
                     break;
                 case SettingsActivity.FEED_THEME_PREF:
                     applyFeedTheme(true);
                     break;
             }
+        }
+
+        boolean minusOneAvailable() {
+            return FeedBridge.useBridge(mLauncher)
+                    || ((mLauncher.getApplicationInfo().flags & FLAG_SYSTEM) == FLAG_SYSTEM);
         }
 
         @Override

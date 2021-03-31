@@ -63,6 +63,7 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -108,7 +109,6 @@
         android:restoreAnyVersion="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         tools:replace="android:label">
 
         <activity
@@ -276,6 +276,7 @@
             android:name="com.saggitt.omega.backup.NewBackupActivity"
             android:label="@string/new_backup"
             android:parentActivityName="com.saggitt.omega.backup.BackupListActivity"
+            android:requestLegacyExternalStorage="true"
             android:theme="@style/SettingsTheme_Light" />
         <activity
             android:name="com.saggitt.omega.backup.RestoreBackupActivity"
@@ -362,16 +363,15 @@
             android:name="com.samsung.android.non_immersive"
             android:value="true" />
 
-        <!--
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="${packageName}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider> -->
+        </provider>
 
         <provider
             android:name="com.google.android.apps.nexuslauncher.search.AppSearchProvider"

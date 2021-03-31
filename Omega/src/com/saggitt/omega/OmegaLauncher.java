@@ -68,7 +68,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
 public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences.OnPreferenceChangeListener {
@@ -269,19 +268,19 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         }
     }
 
-    public void prepareDummyView(View view, @NotNull Function0<Unit> callback) {
+    public void prepareDummyView(View view, @NotNull Function0<kotlin.Unit> callback) {
         Rect rect = new Rect();
         getDragLayer().getViewRectRelativeToSelf(view, rect);
         prepareDummyView(rect.left, rect.top, rect.right, rect.bottom, callback);
     }
 
-    public void prepareDummyView(int left, int top, @NotNull Function0<Unit> callback) {
+    public void prepareDummyView(int left, int top, @NotNull Function0 callback) {
         int size = getResources().getDimensionPixelSize(R.dimen.options_menu_thumb_size);
         int halfSize = size / 2;
         prepareDummyView(left - halfSize, top - halfSize, left + halfSize, top + halfSize, callback);
     }
 
-    public void prepareDummyView(int left, int top, int right, int bottom, @NotNull Function0<Unit> callback) {
+    public void prepareDummyView(int left, int top, int right, int bottom, @NotNull Function0 callback) {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) dummyView.getLayoutParams();
         lp.leftMargin = left;
         lp.topMargin = top;

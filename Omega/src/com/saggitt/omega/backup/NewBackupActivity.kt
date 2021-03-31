@@ -2,14 +2,12 @@ package com.saggitt.omega.backup
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
@@ -41,12 +39,6 @@ class NewBackupActivity : SettingsBaseActivity() {
     private val startButton by lazy { findViewById<FloatingActionButton>(R.id.fab) }
     private val progress by lazy { findViewById<View>(R.id.progress) }
 
-    private val PERMISSION_READ_EXTERNAL_STORAGE = 5
-    private val permissions = arrayOf(
-            Manifest.permission.ACCESS_MEDIA_LOCATION,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
     private var backupUri = Uri.parse("/")
     private var inProgress = false
         set(value) {
@@ -76,94 +68,34 @@ class NewBackupActivity : SettingsBaseActivity() {
     }
 
     private fun onStartBackup() {
-        /*if (!isPermissionGranted()){
-            ActivityCompat.requestPermissions(this, permissions, 1337)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = Uri.parse("package:" + this.opPackageName)
-                this.startActivity(intent)
-            } else {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        Snackbar.make(findViewById(R.id.content), R.string.read_external_storage_required,
-                                Snackbar.LENGTH_SHORT).show()
-                    }
-                    ActivityCompat.requestPermissions(this,
-                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                            permissionRequestReadExternalStorage)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Snackbar.make(findViewById(R.id.content), R.string.read_external_storage_required,
+                        Snackbar.LENGTH_SHORT).show()
+            }
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    permissionRequestReadExternalStorage)
+        } else {
+            val error = validateOptions()
+            if (error == 0) {
+                val fileName = "${backupName.text}_${getTimestamp()}.${OmegaBackup.EXTENSION}"
+                if (backupLocationDevice.isChecked) {
+                    backupUri = Uri.fromFile(File(OmegaBackup.getFolder(this), fileName))
+                    startBackup()
+                } else {
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                    intent.type = OmegaBackup.MIME_TYPE
+                    intent.putExtra(Intent.EXTRA_TITLE, fileName)
+                    startActivityForResult(intent, 1)
                 }
+            } else {
+                Snackbar.make(findViewById(R.id.content), error, Snackbar.LENGTH_SHORT).show()
             }
         }
-        val error = validateOptions()
-        if (error == 0) {
-            val fileName = "${backupName.text}.${OmegaBackup.EXTENSION}"
-            if (backupLocationDevice.isChecked) {
-                backupUri = Uri.fromFile(File(OmegaBackup.getFolder(), fileName))
-                startBackup()
-            } else {
-                val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = OmegaBackup.MIME_TYPE
-                intent.putExtra(Intent.EXTRA_TITLE, fileName)
-                startActivityForResult(intent, 1)
-            }
-        } else {
-            Snackbar.make(findViewById(R.id.content), error, Snackbar.LENGTH_SHORT).show()
-        }*/
-
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (checkPermissionForReadWrite(this)) {
-                prepareBackup()
-            } else {
-                requestPermissionForReadWrite(this)
-            }
-        } else {
-            prepareBackup()
-        }
-    }
-
-    private fun prepareBackup() {
-        val error = validateOptions()
-        if (error == 0) {
-            val fileName = "${backupName.text}.${OmegaBackup.EXTENSION}"
-            if (backupLocationDevice.isChecked) {
-                backupUri = Uri.fromFile(File(OmegaBackup.getFolder(), fileName))
-                startBackup()
-            } else {
-                val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = OmegaBackup.MIME_TYPE
-                intent.putExtra(Intent.EXTRA_TITLE, fileName)
-                startActivityForResult(intent, 1)
-            }
-        } else {
-            Snackbar.make(findViewById(R.id.content), error, Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    //Check if you already have read storage permission
-    private fun checkPermissionForReadWrite(context: Context): Boolean {
-        val result: Int =
-                ContextCompat.checkSelfPermission(
-                        context,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-
-        return result == PackageManager.PERMISSION_GRANTED
-    }
-
-    //Request Permission For Read Storage
-    private fun requestPermissionForReadWrite(context: Context) {
-        ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ), PERMISSION_READ_EXTERNAL_STORAGE
-        )
     }
 
     private fun startBackup() {

@@ -82,6 +82,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.OmegaPreferencesChangeCallback;
+import com.saggitt.omega.backup.BackupListActivity;
 import com.saggitt.omega.feed.FeedProviderDialogFragment;
 import com.saggitt.omega.feed.FeedProviderPreference;
 import com.saggitt.omega.gestures.ui.GesturePreference;
@@ -705,9 +706,15 @@ public class SettingsActivity extends SettingsBaseActivity
                             .show(getFragmentManager(), "reset_icons");
                     return true;
                 });
+            } else if (getContent() == R.xml.omega_preferences_advanced) {
+                findPreference("backups").setOnPreferenceClickListener(preference -> {
+                    Intent intent = new Intent();
+                    intent.setClassName(BuildConfig.APPLICATION_ID, BackupListActivity.class.getName());
+                    requireActivity().startActivity(intent);
+                    return false;
+                });
             } else if (getContent() == R.xml.omega_preferences_developer) {
                 findPreference("kill").setOnPreferenceClickListener(this);
-
                 findPreference("pref_widget_feed").setOnPreferenceClickListener(this);
             }
         }

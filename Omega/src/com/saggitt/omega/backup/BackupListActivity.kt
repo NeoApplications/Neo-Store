@@ -1,9 +1,15 @@
 package com.saggitt.omega.backup
 
+import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings;
 import android.view.View
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -30,7 +36,21 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
         setContentView(R.layout.activity_backup_list)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (!isPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.data = Uri.parse("package:" + this.opPackageName)
+                startActivity(intent)
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE
+                ),
+                        1337)
+            }
 
+        }
         adapter.callbacks = this
         loadLocalBackups()
         recyclerView.layoutManager = GridLayoutManager(this, 2).apply {
@@ -41,6 +61,15 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
         recyclerView.adapter = adapter
 
         Utilities.checkRestoreSuccess(this)
+    }
+
+    fun isPermissionGranted(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
+            ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     private fun loadLocalBackups() {

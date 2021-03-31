@@ -67,7 +67,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val reloadAll = { reloadAll() }
     private val refreshGrid = { refreshGrid() }
     val updateBlur = { updateBlur() }
-    private val updateWeatherData = { onChangeCallback?.updateWeatherData() ?: Unit }
+    private val updateWeatherData = { onChangeCallback?.updateWeatherData() }
     val reloadIcons = { reloadIcons() }
     private val reloadIconPacks = { IconPackManager.getInstance(context).packList.reloadPacks() }
     val recreate = { recreate() }

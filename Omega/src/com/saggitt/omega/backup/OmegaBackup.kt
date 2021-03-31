@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.android.launcher3.BuildConfig
@@ -260,8 +259,9 @@ class OmegaBackup(val context: Context, val uri: Uri) {
         const val WALLPAPER_FILE_NAME = "wallpaper.png"
         val timestampFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
 
-        fun getFolder(): File {
-            val folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Omega/backup")
+        fun getFolder(context: Context): File {
+            val folder = File(context.getExternalFilesDir(null),
+                    "backup")
             Log.d(TAG, "path: $folder")
             if (!folder.exists()) {
                 folder.mkdirs()
@@ -270,7 +270,7 @@ class OmegaBackup(val context: Context, val uri: Uri) {
         }
 
         fun listLocalBackups(context: Context): List<OmegaBackup> {
-            return getFolder().listFiles { file -> file.extension == EXTENSION }
+            return getFolder(context).listFiles { file -> file.extension == EXTENSION }
                     ?.sortedByDescending { it.lastModified() }
                     ?.map { FileProvider.getUriForFile(context, "${BuildConfig.APPLICATION_ID}.provider", it) }
                     ?.map { OmegaBackup(context, it) }
