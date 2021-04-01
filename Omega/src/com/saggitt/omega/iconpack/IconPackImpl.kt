@@ -38,6 +38,7 @@ import androidx.annotation.RequiresApi
 import com.android.launcher3.*
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.pm.UserCache
+import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.ComponentKey
 import com.google.android.apps.nexuslauncher.clock.CustomClock
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
@@ -75,11 +76,12 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
     override fun onDateChanged() {
         val apps = context.getSystemService(LauncherApps::class.java)
         val model = LauncherAppState.getInstance(context).model
+        val shortcutManager = DeepShortcutManager.getInstance(context)
         for (user in UserCache.INSTANCE.get(context).userProfiles) {
             packCalendars.keys.forEach {
                 val pkg = it.packageName
                 if (apps.getActivityList(pkg, user).isNotEmpty()) {
-                    CustomIconUtils.reloadIcon(model, user, pkg)
+                    CustomIconUtils.reloadIcon(shortcutManager, model, user, pkg)
                 }
             }
         }
@@ -310,7 +312,8 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
     }
 
     override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable? {
+                         customIconEntry: IconPackManager.CustomIconEntry?,
+                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable? {
         ensureInitialLoadComplete()
 
         if (Utilities.ATLEAST_OREO && itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
@@ -323,12 +326,11 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
             if (packClocks.containsKey(drawableId)) {
                 val drawable = AdaptiveIconCompat
                         .wrap(packResources.getDrawable(drawableId))
-                val customClockDrawer = CustomClock(context)
-                return customClockDrawer.drawIcon(icon, drawable, packClocks[drawableId])
+                return drawableFactory.customClockDrawer.drawIcon(icon, drawable, packClocks[drawableId])
             } else if (packDynamicDrawables.containsKey(drawableId)) {
                 val iconDpi = LauncherAppState.getIDP(context).fillResIconDpi
                 val icn = DynamicDrawable.drawIcon(context, icon, packDynamicDrawables[drawableId]!!,
-                        iconDpi)
+                        drawableFactory, iconDpi)
                 if (icn != null) return icn
             }
             if (drawableId != 0) {

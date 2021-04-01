@@ -35,7 +35,9 @@ import com.android.launcher3.*
 import com.android.launcher3.icons.ShortcutCachingLogic
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.pm.UserCache
+import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.ComponentKey
+import com.google.android.apps.nexuslauncher.DynamicIconProvider
 import com.google.android.apps.nexuslauncher.clock.DynamicClock
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
 import com.saggitt.omega.icons.CustomIconProvider
@@ -72,6 +74,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         val model = LauncherAppState.getInstance(context).model
         UserCache.INSTANCE.get(context).userProfiles.forEach { user ->
             model.onAppIconChanged(GOOGLE_CALENDAR, user)
+            val shortcuts = DeepShortcutManager.getInstance(context).queryForPinnedShortcuts(DynamicIconProvider.GOOGLE_CALENDAR, user)
+            if (!shortcuts.isEmpty()) {
+                model.updatePinnedShortcuts(DynamicIconProvider.GOOGLE_CALENDAR, shortcuts, user)
+            }
         }
     }
 
@@ -125,7 +131,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         getLegacyIcon(component, iconDpi, prefs.forceShapeless)?.let {
             originalIcon = it.apply { mutate() }
         }
-        if (iconProvider == null || (GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
+        if (iconProvider == null || (DynamicIconProvider.GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
             var roundIcon: Drawable? = null
             if (!prefs.forceShapeless) {
                 getRoundIcon(component, iconDpi)?.let {
@@ -135,12 +141,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
             val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
             return gen.result
         }
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
-        } else {
-            return originalIcon
-        }
+        return iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -153,7 +154,8 @@ class DefaultPack(context: Context) : IconPack(context, "") {
     }
 
     override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable {
+                         customIconEntry: IconPackManager.CustomIconEntry?,
+                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable {
         ensureInitialLoadComplete()
 
         if (Utilities.ATLEAST_OREO && itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {

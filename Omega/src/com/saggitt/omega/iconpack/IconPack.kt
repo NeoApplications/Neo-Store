@@ -83,7 +83,8 @@ abstract class IconPack(val context: Context, val packPackageName: String) {
     abstract fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable?
 
     abstract fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable?
+                         customIconEntry: IconPackManager.CustomIconEntry?,
+                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable?
 
     open fun getAllIcons(callback: (List<PackEntry>) -> Unit, cancel: () -> Boolean,
                          filter: (item: String) -> Boolean = { _ -> true }) {

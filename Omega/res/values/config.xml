@@ -23,6 +23,7 @@
     <string name="default_live_wallpaper" translatable="false">com.breel.wallpapers/com.breel.wallpapers.dioramas.lagos.LagosWallpaperService</string>
     <string name="app_filter_class" translatable="false">com.saggitt.omega.allapps.CustomAppFilter</string>
     <string name="icon_provider_class" translatable="false">com.saggitt.omega.icons.CustomIconProvider</string>
+    <string name="drawable_factory_class" translatable="false">com.saggitt.omega.iconpack.CustomDrawableFactory</string>
 
     <string name="color_extraction_impl_class" translatable="false"></string>
 

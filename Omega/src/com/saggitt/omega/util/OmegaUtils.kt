@@ -26,6 +26,7 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -52,6 +53,7 @@ import androidx.preference.PreferenceGroup
 import com.android.launcher3.*
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.pm.UserCache
+import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.*
@@ -278,6 +280,10 @@ inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
     forEachChildReversedIndexed { view, _ -> action(view) }
 }
 
+fun Drawable.toBitmap(forceCreate: Boolean = true, fallbackSize: Int = 0): Bitmap? {
+    return Utilities.drawableToBitmap(this, forceCreate, fallbackSize)
+}
+
 fun AlertDialog.applyAccent() {
     val color = context.getColorAccent()
 
@@ -450,8 +456,9 @@ fun reloadIcons(context: Context, packages: Collection<PackageUserKey>) {
             model.onPackagesReload(user)
         }
 
+        val shortcutManager = DeepShortcutManager.getInstance(context)
         packages.forEach {
-            CustomIconUtils.reloadIcon(model, it.mUser, it.mPackageName)
+            CustomIconUtils.reloadIcon(shortcutManager, model, it.mUser, it.mPackageName)
         }
     }
 }

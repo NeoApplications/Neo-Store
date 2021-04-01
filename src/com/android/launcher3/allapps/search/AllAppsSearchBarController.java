@@ -15,7 +15,6 @@
  */
 package com.android.launcher3.allapps.search;
 
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -68,7 +67,6 @@ public class AllAppsSearchBarController
         mInput.setOnEditorActionListener(this);
         mInput.setOnBackKeyListener(this);
         mInput.setOnFocusChangeListener(this);
-        mInput.setTextColor(Color.BLUE);
         mSearchAlgorithm = searchAlgorithm;
     }
 

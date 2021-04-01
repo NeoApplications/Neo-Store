@@ -83,10 +83,10 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
     }
 
     override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?): FastBitmapDrawable? {
+                         customIconEntry: IconPackManager.CustomIconEntry?,
+                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable? {
         return FastBitmapDrawable(icon)
     }
-
 
     override fun supportsMasking() = false
 

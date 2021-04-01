@@ -25,6 +25,7 @@ import android.content.pm.ShortcutInfo;
 import android.os.UserHandle;
 
 import com.android.launcher3.LauncherModel;
+import com.android.launcher3.shortcuts.DeepShortcutManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +54,14 @@ public class CustomIconUtils {
         return packs;
     }
 
-    public static void reloadIcon(LauncherModel model, UserHandle user, String pkg) {
+    public static void reloadIcon(DeepShortcutManager shortcutManager, LauncherModel model, UserHandle user, String pkg) {
         model.onAppIconChanged(pkg, user);
+        if (shortcutManager.wasLastCallSuccess()) {
+            List<ShortcutInfo> shortcuts = shortcutManager.queryForPinnedShortcuts(pkg, user);
+            if (!shortcuts.isEmpty()) {
+                model.updatePinnedShortcuts(pkg, shortcuts, user);
+            }
+        }
     }
 }
 

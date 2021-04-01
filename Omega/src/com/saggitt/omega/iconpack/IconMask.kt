@@ -22,12 +22,12 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.AdaptiveIconCompat
 import com.android.launcher3.FastBitmapDrawable
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.FixedScaleDrawable
+import com.saggitt.omega.util.toBitmap
 
 class IconMask {
     val hasMask by lazy { validBacks.isNotEmpty() || validMasks.isNotEmpty() || validUpons.isNotEmpty() }
@@ -61,7 +61,8 @@ class IconMask {
         val canvas = Canvas(bitmap)
 
         // Draw the app icon
-        var bb = baseIcon.toBitmap()
+        val iconBitmapSize = LauncherAppState.getIDP(context).iconBitmapSize
+        var bb = baseIcon.toBitmap(fallbackSize = iconBitmapSize)!!
         if (!bb.isMutable) bb = bb.copy(bb.config, true)
         matrix.setScale((size * scale) / bb.width, (size * scale) / bb.height)
         matrix.postTranslate((size / 2) * (1 - scale), (size / 2) * (1 - scale))
@@ -70,7 +71,7 @@ class IconMask {
 
         // Mask the app icon
         if (iconMask != null && iconMask.drawableId != 0) {
-            iconMask.drawable.toBitmap().let {
+            iconMask.drawable.toBitmap(fallbackSize = iconBitmapSize)?.let {
                 paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
                 matrix.setScale(size.toFloat() / it.width, size.toFloat() / it.height)
                 canvas.drawBitmap(it, matrix, paint)
@@ -87,8 +88,8 @@ class IconMask {
             } else {
                 drawable.toBitmap().let {
                     paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER)
-                    matrix.setScale(size.toFloat() / it.width, size.toFloat() / it.height)
-                    canvas.drawBitmap(it, matrix, paint)
+                    matrix.setScale(size.toFloat() / it!!.width, size.toFloat() / it.height)
+                    canvas.drawBitmap(it!!, matrix, paint)
                     matrix.reset()
                 }
                 paint.reset()
@@ -98,8 +99,8 @@ class IconMask {
         // Draw iconUpon
         if (iconUpon != null && iconUpon.drawableId != 0) {
             iconUpon.drawable.toBitmap().let {
-                matrix.setScale(size.toFloat() / it.width, size.toFloat() / it.height)
-                canvas.drawBitmap(it, matrix, paint)
+                matrix.setScale(size.toFloat() / it!!.width, size.toFloat() / it.height)
+                canvas.drawBitmap(it!!, matrix, paint)
                 matrix.reset()
             }
         }

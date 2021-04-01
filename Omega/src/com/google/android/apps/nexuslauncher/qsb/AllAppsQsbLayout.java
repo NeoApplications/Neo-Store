@@ -93,8 +93,10 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     public float getScrollRangeDelta(Rect insets) {
         DeviceProfile deviceProfile = mActivity.getDeviceProfile();
         int i = (deviceProfile.hotseatBarSizePx - deviceProfile.hotseatCellHeightPx) - getLayoutParams().height;
-        int i2 = insets.bottom;
-        return (float) (((getLayoutParams().height + Math.max(-mVerticalOffset, insets.top - mTopAdjusting)) + mVerticalOffset) + (i2 + ((int) (((float) (i - i2)) * 0.45f))));
+        int bottom = insets.bottom;
+        return (float) (((getLayoutParams().height
+                + Math.max(-mVerticalOffset, insets.top - mTopAdjusting))
+                + mVerticalOffset) + (bottom + ((int) (((float) (i - bottom)) * 0.45f))));
     }
 
     public void setWidgetMode(boolean enable) {
@@ -404,7 +406,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     protected final boolean dK() {
-        if (this.mFallback != null) {
+        if (mFallback != null) {
             return false;
         }
         return super.dK();
@@ -452,8 +454,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     @Override
-    public void setContentVisibility(int visibleElements, PropertySetter setter,
-                                     Interpolator interpolator) {
+    public void setContentVisibility(int visibleElements, PropertySetter setter, Interpolator interpolator) {
         OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
         boolean hotseatQsbEnabled = prefs.getDockSearchBar() || widgetMode;
         boolean drawerQsbEnabled = prefs.getAllAppsSearch();
