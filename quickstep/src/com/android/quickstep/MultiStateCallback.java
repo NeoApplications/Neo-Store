@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  */
 public class MultiStateCallback {
 
-    public static final boolean DEBUG_STATES = false;
+    public static final boolean DEBUG_STATES = true;
     private static final String TAG = "MultiStateCallback";
     private final SparseArray<LinkedList<Runnable>> mCallbacks = new SparseArray<>();
     private final SparseArray<ArrayList<Consumer<Boolean>>> mStateChangeListeners =

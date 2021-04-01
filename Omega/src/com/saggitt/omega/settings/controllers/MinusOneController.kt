@@ -34,7 +34,7 @@ class MinusOneController(context: Context) : PreferenceController(context) {
 
     override val onChange = Preference.OnPreferenceChangeListener { pref, newValue ->
         if (newValue == true && !FeedBridge.getInstance(context).isInstalled()) {
-            pref.preferenceManager.showDialog(pref)
+           // pref.preferenceManager.showDialog(pref)
             false
         } else {
             true

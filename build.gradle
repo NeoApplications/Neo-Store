@@ -129,7 +129,6 @@ android {
     productFlavors {
         aosp {
             dimension "app"
-            applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
         }
 
@@ -149,7 +148,6 @@ android {
     sourceSets {
         main {
             res.srcDirs = ['res']
-            aidl.srcDirs = ['src']
             java.srcDirs = ['src', 'src_plugins']
             assets.srcDirs = ['assets']
             manifest.srcFile 'AndroidManifest-common.xml'
@@ -186,6 +184,7 @@ android {
 
         omega {
             res.srcDirs = ['Omega/res']
+            aidl.srcDirs = ['Omega/aidl']
             java.srcDirs = ['Omega/src', 'Omega/src_ui_overrides']
             manifest.srcFile 'Omega/AndroidManifest.xml'
         }

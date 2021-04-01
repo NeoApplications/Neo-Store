@@ -94,10 +94,15 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     @NotNull
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
-            return (OmegaLauncher) context;
+            Log.d("OmegaLauncher", "Context es instancia de Omega Launcher");
+            //return (OmegaLauncher) ((ContextWrapper) context).getBaseContext();
+            return (OmegaLauncher) fromContext(context);
         } else {
+            Log.d("OmegaLauncher", "Context NO es instancia de Omega Launcher");
             return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
         }
+
+        //return (OmegaLauncher) fromContext(context);
     }
 
     @Override

@@ -33,8 +33,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.StringRes;
 
-import com.android.launcher3.BuildConfig;
-
 import java.util.Locale;
 
 public class AboutUtils {
@@ -74,7 +72,7 @@ public class AboutUtils {
     }
 
     public Object getBuildConfigValue(String fieldName) {
-        String pkg = BuildConfig.APPLICATION_ID;
+        String pkg = "com.android.launcher3.BuildConfig";
         try {
             Class<?> c = Class.forName(pkg);
             return c.getField(fieldName).get(null);
