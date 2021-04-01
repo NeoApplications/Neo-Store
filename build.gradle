@@ -129,7 +129,7 @@ android {
     productFlavors {
         aosp {
             dimension "app"
-            applicationId 'com.saggitt.omega'
+            applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
         }
 

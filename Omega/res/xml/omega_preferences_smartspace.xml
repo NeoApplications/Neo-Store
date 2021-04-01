@@ -85,15 +85,13 @@
         android:title="@string/title_smartspace_feed_theme"
         app:controllerClass=".GFeedBackgroundController"
         app:iconSpaceReserved="false" />
-
+<!--
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/category__behavior_weather">
 
-        <!--
         <com.saggitt.omega.preferences.SmartspaceProviderPreference
             android:key="pref_smartspace_widget_provider"
             android:summary="%s"
-            android:title="@string/title_smartspace_widget_provider"
-            app:iconSpaceReserved="false" />
+            android:title="@string/title_smartspace_widget_provider" />
 
         <androidx.preference.ListPreference
             android:defaultValue="metric"
@@ -109,6 +107,8 @@
             android:dependency="pref_use_pill_qsb"
             android:key="pref_smartspace_event_providers"
             android:title="@string/title_smartspace_event_providers"
-            app:iconSpaceReserved="false" />-->
+            app:iconSpaceReserved="false" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
+-->
+
 </PreferenceScreen>
