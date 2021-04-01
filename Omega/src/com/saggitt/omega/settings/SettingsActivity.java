@@ -854,7 +854,7 @@ public class SettingsActivity extends SettingsBaseActivity
             } else if (preference instanceof CustomDialogPreference) {
                 f = PreferenceScreenDialogFragment.Companion.newInstance((CustomDialogPreference) preference);
             } else if (preference instanceof SearchProviderPreference) {
-                f = SelectSearchProviderFragment.Companion.newInstance();
+                f = SelectSearchProviderFragment.Companion.newInstance((SearchProviderPreference) preference);
             } else if (preference instanceof FeedProviderPreference) {
                 f = FeedProviderDialogFragment.Companion.newInstance();
             } else {

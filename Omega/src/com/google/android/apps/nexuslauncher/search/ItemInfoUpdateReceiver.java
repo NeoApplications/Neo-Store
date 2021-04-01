@@ -8,14 +8,11 @@ import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.data.ItemInfoWithIcon;
 
 public class ItemInfoUpdateReceiver implements IconCache.ItemInfoUpdateReceiver, SharedPreferences.OnSharedPreferenceChangeListener {
-    private final LauncherCallbacks mCallbacks;
-    private final int eD;
     private final Launcher mLauncher;
 
     public ItemInfoUpdateReceiver(final Launcher launcher, final LauncherCallbacks callbacks) {
         this.mLauncher = launcher;
-        this.mCallbacks = callbacks;
-        this.eD = launcher.getDeviceProfile().inv.numColumns;
+        int eD = launcher.getDeviceProfile().inv.numColumns;
     }
 
     public void onCreate() {

@@ -33,5 +33,4 @@ public class HotseatQsbWidget extends FrameLayout {
         return wallpaperInfo != null && wallpaperInfo.getComponent().flattenToString()
                 .equals(context.getString(R.string.default_live_wallpaper));
     }
-
 }

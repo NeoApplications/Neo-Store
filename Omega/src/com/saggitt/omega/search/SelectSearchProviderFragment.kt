@@ -34,6 +34,8 @@ import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
 class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
+    private val key by lazy { requireArguments().getString("key") }
+    private val value by lazy { requireArguments().getString("value") }
 
     private val searchProviders by lazy { SearchProviderController.getSearchProviders(requireActivity()) }
     private lateinit var list: ListView
@@ -44,23 +46,15 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
         list.adapter = SearchProviderAdapter(requireContext(),
                 searchProviders,
                 requireContext().omegaPrefs.searchProvider) {
-            context?.omegaPrefs?.searchProvider = it
+            context?.omegaPrefs?.searchProvider = it.toString()
             dismiss()
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        (dialog as AlertDialog).applyAccent()
-    }
-
-    override fun onDialogClosed(positiveResult: Boolean) {
-    }
-
     inner class SearchProviderAdapter(context: Context,
                                       private val providers: List<SearchProvider>,
-                                      private val selected: String,
-                                      private val onSelect: (String) -> Unit) :
+                                      private val currentProvider: String,
+                                      private val onSelect: (SearchProvider) -> Unit) :
             ArrayAdapter<SearchProvider>(context, R.layout.list_item_icon, 0, providers) {
 
         private val color = Utilities.getOmegaPrefs(context).accentColor
@@ -79,23 +73,31 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
                     }
                 }
                 findViewById<RadioButton>(R.id.select).apply {
-                    isChecked = provider.name == selected
+                    isChecked = providers[position]::class.java.name == currentProvider
                     setOnCheckedChangeListener { _, _ ->
-                        onSelect(provider.name)
+                        onSelect(provider)
                     }
                     applyColor(color)
                 }
                 setOnClickListener {
-                    onSelect(provider.name)
+                    onSelect(provider)
                 }
             }
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        (dialog as AlertDialog).applyAccent()
+    }
+
+    override fun onDialogClosed(positiveResult: Boolean) {
+    }
+
     companion object {
-        fun newInstance() = SelectSearchProviderFragment().apply {
+        fun newInstance(preference: SearchProviderPreference) = SelectSearchProviderFragment().apply {
             arguments = Bundle(1).apply {
-                putString(ARG_KEY, SearchProviderPreference.KEY)
+                putString("key", preference.key)
             }
         }
     }

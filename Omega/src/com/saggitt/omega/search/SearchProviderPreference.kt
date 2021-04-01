@@ -30,7 +30,7 @@ class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
     private val prefs = context.omegaPrefs
     private val mProviders = SearchProviderController.getSearchProviders(context)
     private val current
-        get() = mProviders.firstOrNull { it.name == prefs.searchProvider }
+        get() = mProviders.firstOrNull { it::class.java.name == prefs.searchProvider }
                 ?: mProviders[0]
 
     init {
@@ -40,12 +40,12 @@ class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
 
     override fun onAttached() {
         super.onAttached()
-        context.omegaPrefs.addOnPreferenceChangeListener(KEY, this)
+        context.omegaPrefs.addOnPreferenceChangeListener("pref_globalSearchProvider", this)
     }
 
     override fun onDetached() {
         super.onDetached()
-        context.omegaPrefs.removeOnPreferenceChangeListener(KEY, this)
+        context.omegaPrefs.removeOnPreferenceChangeListener("pref_globalSearchProvider", this)
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
@@ -55,9 +55,5 @@ class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
     private fun updateSummaryAndIcon() {
         icon = current.getIcon()
         summary = current.name
-    }
-
-    companion object {
-        const val KEY = "pref_globalSearchProvider"
     }
 }
