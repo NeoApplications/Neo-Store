@@ -54,6 +54,7 @@ public class DeviceProfile {
     public final boolean isLandscape;
     public final boolean isMultiWindowMode;
     public final int windowY;
+
     // Workspace
     public final int desiredWorkspaceLeftRightMarginPx;
     public final int cellLayoutPaddingLeftPx;
@@ -152,6 +153,7 @@ public class DeviceProfile {
     public DotRenderer mDotRendererWorkSpace;
     public DotRenderer mDotRendererAllApps;
     public int allAppsFolderChildDrawablePaddingPx;
+    private int verticalDragHandleOverlapWorkspace;
     public Context mContext;
 
     DeviceProfile(Context context, InvariantDeviceProfile inv, DefaultDisplay.Info info,
@@ -281,6 +283,29 @@ public class DeviceProfile {
             // Recalculate the available dimensions using the new hotseat size.
             updateAvailableDimensions(res);
         }
+        float targetDockScale = prefs.getDockScale();
+
+        int previousDockSize = hotseatBarSizePx;
+        int previousDockBottomPadding = hotseatBarBottomPaddingPx;
+        if (prefs.getDockHide()) {
+            hotseatBarSizePx = 0;
+            updateAvailableDimensions(res);
+        } else if (targetDockScale > 0f && !isVerticalBarLayout()) {
+            int extraSpace = (int) (targetDockScale * previousDockSize - hotseatBarSizePx);
+            if (extraSpace != 0) {
+                hotseatBarSizePx += extraSpace;
+
+                int dockTopSpace = workspacePageIndicatorHeight - verticalDragHandleOverlapWorkspace;
+                int dockBottomSpace =
+                        Math.max(hotseatBarBottomPaddingPx - previousDockBottomPadding, dockTopSpace);
+                int dockVerticalSpace = dockTopSpace + dockBottomSpace;
+
+                hotseatBarBottomPaddingPx += extraSpace * ((float) dockBottomSpace / dockVerticalSpace);
+
+                updateAvailableDimensions(res);
+            }
+        }
+
         updateWorkspacePadding();
 
         // This is done last, after iconSizePx is calculated above.
