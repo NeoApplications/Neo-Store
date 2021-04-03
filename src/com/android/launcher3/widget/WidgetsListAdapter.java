@@ -213,6 +213,18 @@ public class WidgetsListAdapter extends Adapter<WidgetsRowViewHolder> {
 
         @Override
         public int compare(WidgetListRowEntry a, WidgetListRowEntry b) {
+            boolean leftIsLC = a.pkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
+            boolean rightIsLc = b.pkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
+            if (leftIsLC || rightIsLc) {
+                if (leftIsLC && rightIsLc) {
+                    return 0;
+                }
+                if (leftIsLC) {
+                    return -1;
+                }
+                return 1;
+            }
+
             return mComparator.compare(a.pkgItem.title.toString(), b.pkgItem.title.toString());
         }
     }
