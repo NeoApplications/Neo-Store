@@ -252,11 +252,8 @@
     <style name="TextHeadline" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" />
 
     <style name="PrimaryHeadline" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" />
-    <!--
-    <style name="TextTitle" parent="@android:style/TextAppearance.DeviceDefault" />-->
-    <style name="TextTitle">
-        <item name="android:fontFamily">sans-serif</item>
-    </style>
+
+    <style name="TextTitle" parent="@android:style/TextAppearance.DeviceDefault" />
 
     <style name="AllAppsEmptySearchBackground">
         <item name="android:colorPrimary">#E0E0E0</item>

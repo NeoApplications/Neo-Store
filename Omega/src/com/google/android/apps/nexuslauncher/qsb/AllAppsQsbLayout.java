@@ -60,7 +60,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     private TextView mHint;
     private AllAppsContainerView mAppsView;
     private OmegaPreferences prefs;
-    private int mForegroundColor;
     private boolean widgetMode;
 
     public AllAppsQsbLayout(Context context) {
@@ -73,7 +72,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     public AllAppsQsbLayout(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
-        this.mShadowAlpha = 0;
+        mShadowAlpha = 0;
         setOnClickListener(this);
         qsbConfiguration = QsbConfiguration.getInstance(context);
         mTopAdjusting = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
@@ -105,7 +104,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     public void setInsets(Rect rect) {
-        c(Utilities.getDevicePrefs(getContext()));
+        removeFallBack();
         MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
         mlp.topMargin = getTopMargin(rect);
         requestLayout();
@@ -157,6 +156,17 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         return super.logoCanOpenFeed() && prefs.getAllAppsGlobalSearch();
     }
 
+    @Override
+    protected Drawable getMicIcon(boolean colored) {
+        if (prefs.getAllAppsGlobalSearch()) {
+            mMicIconView.setVisibility(View.VISIBLE);
+            return super.getMicIcon(colored);
+        } else {
+            mMicIconView.setVisibility(View.GONE);
+            return null;
+        }
+    }
+
     protected void onDetachedFromWindow() {
         LauncherAppState.getIDP(getContext()).removeOnChangeListener(this);
         super.onDetachedFromWindow();
@@ -202,9 +212,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     public void onClick(View view) {
         super.onClick(view);
-        if (view == this) {
-            startSearch("", mResult);
-        }
+        startSearch("", mResult);
     }
 
     public final void l(String str) {
@@ -341,7 +349,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             mFallback.mSearchBarController.initialize(new SearchThread(mFallback.getContext()), mFallback,
                     Launcher.getLauncher(mFallback.getContext()), mFallback);
             addView(this.mFallback);
-            mFallback.setTextColor(mForegroundColor);
         }
     }
 
@@ -410,13 +417,10 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         return super.dK();
     }
 
-    protected final void c(SharedPreferences sharedPreferences) {
+    protected final void removeFallBack() {
         if (mUseFallbackSearch) {
             removeFallbackView();
-            this.mUseFallbackSearch = false;
-            if (this.mUseFallbackSearch) {
-                ensureFallbackView();
-            }
+            mUseFallbackSearch = false;
         }
     }
 
