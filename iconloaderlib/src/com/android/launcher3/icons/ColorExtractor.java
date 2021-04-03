@@ -24,8 +24,6 @@ import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class ColorExtractor {
     private final int NUM_SAMPLES = 20;
     private final float[] mTmpHsv = new float[3];
     private final float[] mTmpHueScoreHistogram = new float[360];
-    private final int[] mTmpPixels = new int[NUM_SAMPLES];
+    private final int[] mTmpPixels = new int[112 * 112];
     private final SparseArray<Float> mTmpRgbScores = new SparseArray<>();
 
     /**

@@ -99,14 +99,6 @@ android {
         }
     }
 
-    packagingOptions{
-        packagingOptions {
-            exclude 'lib/armeabi-v7a/libhoko_blur.so'
-            exclude 'lib/x86/libhoko_blur.so'
-            exclude 'lib/arm64-v8a/libhoko_blur.so'
-        }
-    }
-
     buildTypes {
         debug {
             minifyEnabled false
