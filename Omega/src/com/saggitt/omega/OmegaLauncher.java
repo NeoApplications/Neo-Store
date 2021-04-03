@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.LauncherAppState;
@@ -74,7 +73,6 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
     public ItemInfo currentEditInfo = null;
-    public Context mContext;
     private boolean paused = false;
     private boolean sRestart = false;
     private OmegaPreferencesChangeCallback prefCallback = new OmegaPreferencesChangeCallback(this);
@@ -86,23 +84,22 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     private String hideStatusBarKey = "pref_hideStatusBar";
 
     private final NexusLauncher launcherClient;
+    private static OmegaLauncher mLauncher;
 
     public OmegaLauncher() {
         launcherClient = new NexusLauncher(this);
     }
 
-    @NotNull
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
             Log.d("OmegaLauncher", "Context es instancia de Omega Launcher");
+            //return (OmegaLauncher) fromContext(context);
             //return (OmegaLauncher) ((ContextWrapper) context).getBaseContext();
-            return (OmegaLauncher) fromContext(context);
+            return (OmegaLauncher) context;
         } else {
             Log.d("OmegaLauncher", "Context NO es instancia de Omega Launcher");
             return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
         }
-
-        //return (OmegaLauncher) fromContext(context);
     }
 
     @Override
@@ -110,17 +107,15 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(this)) {
             Utilities.requestStoragePermission(this);
         }
-        IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
         super.onCreate(savedInstanceState);
-
-        mContext = this;
+        IconPackManager.Companion.getInstance(this).getDefaultPack().getDynamicClockDrawer();
 
         SharedPreferences prefs = Utilities.getPrefs(this);
         if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
-            prefs.edit().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
+            prefs.edit().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, true).apply();
         }
 
-        OmegaPreferences mPrefs = Utilities.getOmegaPrefs(mContext);
+        OmegaPreferences mPrefs = Utilities.getOmegaPrefs(this);
         mPrefs.registerCallback(prefCallback);
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this);
         if (mPrefs.getFirstRun()) {
@@ -218,7 +213,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (paused) {
             sRestart = true;
         } else {
-            Utilities.restartLauncher(mContext);
+            Utilities.restartLauncher(this);
         }
     }
 
@@ -238,7 +233,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
                     .getEntryForComponent(component)).getDrawable();
         } else if (itemInfo instanceof WorkspaceItemInfo) {
             component = new ComponentKey(itemInfo.getTargetComponent(), itemInfo.user);
-            currentEditIcon = new BitmapDrawable(mContext.getResources(), ((WorkspaceItemInfo) itemInfo).bitmap.icon);
+            currentEditIcon = new BitmapDrawable(this.getResources(), ((WorkspaceItemInfo) itemInfo).bitmap.icon);
         } else if (itemInfo instanceof FolderInfo) {
             component = ((FolderInfo) itemInfo).toComponentKey();
             currentEditIcon = ((FolderInfo) itemInfo).getDefaultIcon(this);
@@ -279,13 +274,13 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         prepareDummyView(rect.left, rect.top, rect.right, rect.bottom, callback);
     }
 
-    public void prepareDummyView(int left, int top, @NotNull Function0 callback) {
+    public void prepareDummyView(int left, int top, @NotNull Function0<kotlin.Unit> callback) {
         int size = getResources().getDimensionPixelSize(R.dimen.options_menu_thumb_size);
         int halfSize = size / 2;
         prepareDummyView(left - halfSize, top - halfSize, left + halfSize, top + halfSize, callback);
     }
 
-    public void prepareDummyView(int left, int top, int right, int bottom, @NotNull Function0 callback) {
+    public void prepareDummyView(int left, int top, int right, int bottom, @NotNull Function0<kotlin.Unit> callback) {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) dummyView.getLayoutParams();
         lp.leftMargin = left;
         lp.topMargin = top;
@@ -296,7 +291,6 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         dummyView.post(callback::invoke);
     }
 
-    @Nullable
     public LauncherClient getGoogleNow() {
         return launcherClient.mClient;
     }

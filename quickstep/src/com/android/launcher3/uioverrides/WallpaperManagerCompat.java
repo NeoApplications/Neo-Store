@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.launcher3.uioverrides.dynamicui;
+package com.android.launcher3.uioverrides;
 
 import static android.app.WallpaperManager.FLAG_SYSTEM;
-
 import static com.android.launcher3.Utilities.getDevicePrefs;
 
 import android.app.WallpaperInfo;
@@ -45,14 +44,28 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+
 import com.android.launcher3.icons.ColorExtractor;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
+public class WallpaperManagerCompat {
 
-public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
+    private static final Object sInstanceLock = new Object();
+    private static WallpaperManagerCompat sInstance;
+
+    public static WallpaperManagerCompat getInstance(Context context) {
+        synchronized (sInstanceLock) {
+            if (sInstance == null) {
+                context = context.getApplicationContext();
+                sInstance = new WallpaperManagerCompat(context);
+            }
+            return sInstance;
+        }
+    }
 
     private static final String TAG = "WMCompatVL";
 
@@ -61,14 +74,12 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
     private static final String ACTION_EXTRACTION_COMPLETE =
             "com.android.launcher3.uioverrides.dynamicui.WallpaperManagerCompatVL.EXTRACTION_COMPLETE";
 
-    public static final int WALLPAPER_COMPAT_JOB_ID = 1;
-
     private final ArrayList<OnColorsChangedListenerCompat> mListeners = new ArrayList<>();
 
     private final Context mContext;
     private WallpaperColorsCompat mColorsCompat;
 
-    WallpaperManagerCompatVL(Context context) {
+    WallpaperManagerCompat(Context context) {
         mContext = context;
 
         String colors = getDevicePrefs(mContext).getString(KEY_COLORS, "");
@@ -113,17 +124,14 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
     }
 
     @Nullable
-    @Override
     public WallpaperColorsCompat getWallpaperColors(int which) {
         return which == FLAG_SYSTEM ? mColorsCompat : null;
     }
 
-    @Override
     public void addOnColorsChangedListener(OnColorsChangedListenerCompat listener) {
         mListeners.add(listener);
     }
 
-    @Override
     public void updateAllListeners() {
         for (OnColorsChangedListenerCompat listener : mListeners) {
             listener.onColorsChanged(mColorsCompat, FLAG_SYSTEM);
@@ -131,7 +139,7 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
     }
 
     private void reloadColors() {
-        JobInfo job = new JobInfo.Builder(WALLPAPER_COMPAT_JOB_ID,
+        JobInfo job = new JobInfo.Builder(2,
                 new ComponentName(mContext, ColorExtractionService.class))
                 .setMinimumLatency(0).build();
         ((JobScheduler) mContext.getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(job);
@@ -146,7 +154,17 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
     }
 
     private static final int getWallpaperId(Context context) {
-        return context.getSystemService(WallpaperManager.class).getWallpaperId(FLAG_SYSTEM);
+        Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
+        if (wallpaper != null) {
+            Bitmap bm = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            Canvas cv = new Canvas(bm);
+            wallpaper.setBounds(0, 0, cv.getWidth(), cv.getHeight());
+            wallpaper.draw(cv);
+            int c = bm.getPixel(0, 0);
+            bm.recycle();
+            return c;
+        }
+        return -1;
     }
 
     /**
@@ -186,7 +204,8 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
 
         private HandlerThread mWorkerThread;
         private Handler mWorkerHandler;
-        private ColorExtractor mColorExtractor;
+
+        private ColorExtractor mColorExtractor = new ColorExtractor();
 
         @Override
         public void onCreate() {
@@ -194,7 +213,6 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
             mWorkerThread = new HandlerThread("ColorExtractionService");
             mWorkerThread.start();
             mWorkerHandler = new Handler(mWorkerThread.getLooper());
-            mColorExtractor = new ColorExtractor();
         }
 
         @Override
@@ -252,11 +270,7 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
                     Log.e(TAG, "Fetching partial bitmap failed, trying old method", e);
                 }
                 if (bitmap == null) {
-                    try {
-                        drawable = wm.getDrawable();
-                    } catch (RuntimeException e) {
-                        Log.e(TAG, "Failed to extract the wallpaper drawable", e);
-                    }
+                    drawable = wm.getDrawable();
                 }
             }
 
@@ -279,9 +293,9 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
             String value = VERSION_PREFIX + wallpaperId;
 
             if (bitmap != null) {
-                int color = mColorExtractor.findDominantColorByHue(bitmap,
-                        MAX_WALLPAPER_EXTRACTION_AREA);
-                value += "," + color;
+                int hints = calculateDarkHints(bitmap);
+                int color = mColorExtractor.findDominantColorByHue(bitmap, MAX_WALLPAPER_EXTRACTION_AREA);
+                value += "," + hints + "," + color;
             }
 
             // Send the result
@@ -330,5 +344,13 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
             }
             return hints;
         }
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when colors change on a wallpaper.
+     */
+    public interface OnColorsChangedListenerCompat {
+
+        void onColorsChanged(WallpaperColorsCompat colors, int which);
     }
 }

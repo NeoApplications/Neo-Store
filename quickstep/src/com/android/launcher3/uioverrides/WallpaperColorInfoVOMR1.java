@@ -28,7 +28,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.android.launcher3.compat.WallpaperColorsCompat;
 import com.android.systemui.shared.system.TonalCompat;
 import com.android.systemui.shared.system.TonalCompat.ExtractionInfo;
 
@@ -99,12 +98,6 @@ public class WallpaperColorInfoVOMR1 extends WallpaperColorInfo implements OnCol
         }
     }
 
-
-    @Override
-    public void onColorsChanged(WallpaperColorsCompat colors, int which) {
-
-    }
-
     private void update(WallpaperColors wallpaperColors) {
         mColors = wallpaperColors;
         mExtractionInfo = mTonalCompat.extractDarkColors(wallpaperColors);
@@ -129,5 +122,4 @@ public class WallpaperColorInfoVOMR1 extends WallpaperColorInfo implements OnCol
             }
         }
     }
-
 }

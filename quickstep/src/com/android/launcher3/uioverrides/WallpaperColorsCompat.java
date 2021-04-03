@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.launcher3.uioverrides.dynamicui;
+package com.android.launcher3.uioverrides;
 
 /**
  * A compatibility layer around platform implementation of WallpaperColors
@@ -22,6 +22,7 @@ public class WallpaperColorsCompat {
 
     public static final int HINT_SUPPORTS_DARK_TEXT = 0x1;
     public static final int HINT_SUPPORTS_DARK_THEME = 0x2;
+    public static final int HINT_SUPPORTS_TRANSPARENCY = 0x4;
 
     private final int mPrimaryColor;
     private final int mSecondaryColor;
@@ -29,7 +30,7 @@ public class WallpaperColorsCompat {
     private final int mColorHints;
 
     public WallpaperColorsCompat(int primaryColor, int secondaryColor, int tertiaryColor,
-            int colorHints) {
+                                 int colorHints) {
         mPrimaryColor = primaryColor;
         mSecondaryColor = secondaryColor;
         mTertiaryColor = tertiaryColor;

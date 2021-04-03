@@ -80,7 +80,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             return qsb.mHotseatProgress;
         }
     };
-    protected final TextPaint qsbTextHintSize;
+    protected final TextPaint qsbTextHint;
     protected final Paint mMicStrokePaint;
     protected final NinePatchDrawHelper mShadowHelper;
     protected final NinePatchDrawHelper mClearShadowHelper;
@@ -127,7 +127,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     public AbstractQsbLayout(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
-        qsbTextHintSize = new TextPaint();
+        qsbTextHint = new TextPaint();
         mMicStrokePaint = new Paint(1);
         mShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper = new NinePatchDrawHelper();
@@ -139,7 +139,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         mSearchIconWidth = getResources().getDimensionPixelSize(R.dimen.qsb_mic_width);
         qsbTextSpacing = getResources().getDimensionPixelSize(R.dimen.qsb_text_spacing);
         twoBubbleGap = getResources().getDimensionPixelSize(R.dimen.qsb_two_bubble_gap);
-        qsbTextHintSize.setTextSize((float) getResources().getDimensionPixelSize(R.dimen.qsb_hint_text_size));
+        qsbTextHint.setTextSize((float) getResources().getDimensionPixelSize(R.dimen.qsb_hint_text_size));
         mShadowMargin = getResources().getDimensionPixelSize(R.dimen.qsb_shadow_margin);
         qsbHintLenght = getResources().getDimensionPixelSize(R.dimen.qsb_max_hint_length);
         mIsRtl = Utilities.isRtl(getResources());
@@ -398,19 +398,19 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     private void drawMainPill(Canvas canvas) {
         if (mAllAppsBgColor == mHotseatBgColor || mHotseatProgress == 0f) {
-            a(mAllAppsShadowBitmap, canvas);
+            drawShadow(mAllAppsShadowBitmap, canvas);
         } else if (mHotseatProgress == 1f) {
-            a(mHotseatShadowBitmap, canvas);
+            drawShadow(mHotseatShadowBitmap, canvas);
         } else {
             mShadowHelper.paint.setAlpha(Math.round(255 * (1 - mHotseatProgress)));
-            a(mAllAppsShadowBitmap, canvas);
+            drawShadow(mAllAppsShadowBitmap, canvas);
             mShadowHelper.paint.setAlpha(Math.round(255 * mHotseatProgress));
-            a(mHotseatShadowBitmap, canvas);
+            drawShadow(mHotseatShadowBitmap, canvas);
             mShadowHelper.paint.setAlpha(255);
         }
     }
 
-    protected final void a(Bitmap bitmap, Canvas canvas) {
+    protected final void drawShadow(Bitmap bitmap, Canvas canvas) {
         drawPill(mShadowHelper, bitmap, canvas);
     }
 
@@ -477,10 +477,10 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         if (TextUtils.isEmpty(str) || !dE()) {
             str2 = str;
         } else {
-            str2 = TextUtils.ellipsize(str, qsbTextHintSize, (float) qsbHintLenght, TruncateAt.END).toString();
+            str2 = TextUtils.ellipsize(str, qsbTextHint, (float) qsbHintLenght, TruncateAt.END).toString();
         }
         Dg = str2;
-        textView.setText(this.Dg);
+        textView.setText(Dg);
         int i = 17;
         if (dE()) {
             i = 8388629;
@@ -497,9 +497,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     protected final boolean dE() {
         if (!showHintAssitant) {
-            if (!this.mUseTwoBubbles) {
-                return false;
-            }
+            return mUseTwoBubbles;
         }
         return true;
     }
@@ -512,7 +510,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         if (!mUseTwoBubbles || TextUtils.isEmpty(this.Dg)) {
             return mSearchIconWidth;
         }
-        return (Math.round(qsbTextHintSize.measureText(this.Dg)) + qsbTextSpacing) + mSearchIconWidth;
+        return (Math.round(qsbTextHint.measureText(this.Dg)) + qsbTextSpacing) + mSearchIconWidth;
     }
 
     protected final void addOrUpdateSearchRipple() {
@@ -590,7 +588,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         } else if (view == mLogoIconView) {
             if (provider.getSupportsFeed() && logoCanOpenFeed()) {
                 provider.startFeed(intent -> {
-                    getContext().startActivity(intent);
+                    mContext.startActivity(intent);
                     return null;
                 });
             } else {
@@ -740,7 +738,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
                 Utilities.getOmegaPrefs(getContext()).getDualBubbleSearch();
     }
 
-    protected OmegaLauncher getLauncher() {
+    public OmegaLauncher getLauncher() {
         return (OmegaLauncher) mActivity;
     }
 }

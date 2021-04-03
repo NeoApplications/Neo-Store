@@ -28,7 +28,7 @@ import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.compat.WallpaperColorsCompat;
+import com.android.launcher3.uioverrides.WallpaperColorsCompat;
 
 import java.util.Arrays;
 import java.util.LinkedList;

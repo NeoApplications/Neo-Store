@@ -16,16 +16,15 @@
 
 package com.android.launcher3.uioverrides;
 
+import static android.app.WallpaperManager.FLAG_SYSTEM;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Pair;
 
-import com.android.launcher3.compat.WallpaperColorsCompat;
 import com.android.launcher3.dynamicui.ColorExtractionAlgorithm;
 
 import java.util.ArrayList;
-
-import static android.app.WallpaperManager.FLAG_SYSTEM;
 
 public class WallpaperColorInfoVL extends WallpaperColorInfo implements WallpaperManagerCompat.OnColorsChangedListenerCompat {
 

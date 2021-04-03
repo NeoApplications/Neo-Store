@@ -16,23 +16,6 @@
 
 package com.android.launcher3;
 
-import android.animation.ValueAnimator;
-import android.view.View;
-import android.view.animation.Interpolator;
-
-import com.android.launcher3.LauncherState.PageAlphaProvider;
-import com.android.launcher3.LauncherState.ScaleAndTranslation;
-import com.android.launcher3.allapps.AllAppsContainerView;
-import com.android.launcher3.anim.PendingAnimation;
-import com.android.launcher3.anim.PropertySetter;
-import com.android.launcher3.anim.SpringAnimationBuilder;
-import com.android.launcher3.graphics.WorkspaceAndHotseatScrim;
-import com.android.launcher3.states.StateAnimationConfig;
-import com.android.launcher3.util.DynamicResource;
-import com.android.systemui.plugins.ResourceProvider;
-import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.views.OptionsPanel;
-
 import static androidx.dynamicanimation.animation.DynamicAnimation.MIN_VISIBLE_CHANGE_SCALE;
 import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
 import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
@@ -55,6 +38,23 @@ import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_TRA
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_FADE;
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_SCALE;
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_TRANSLATE;
+
+import android.animation.ValueAnimator;
+import android.view.View;
+import android.view.animation.Interpolator;
+
+import com.android.launcher3.LauncherState.PageAlphaProvider;
+import com.android.launcher3.LauncherState.ScaleAndTranslation;
+import com.android.launcher3.allapps.AllAppsContainerView;
+import com.android.launcher3.anim.PendingAnimation;
+import com.android.launcher3.anim.PropertySetter;
+import com.android.launcher3.anim.SpringAnimationBuilder;
+import com.android.launcher3.graphics.WorkspaceAndHotseatScrim;
+import com.android.launcher3.states.StateAnimationConfig;
+import com.android.launcher3.util.DynamicResource;
+import com.android.systemui.plugins.ResourceProvider;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.views.OptionsPanel;
 
 /**
  * Manages the animations between each of the workspace states.

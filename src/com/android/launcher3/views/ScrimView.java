@@ -68,7 +68,6 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.statemanager.StateManager;
 import com.android.launcher3.statemanager.StateManager.StateListener;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
-import com.android.launcher3.uioverrides.WallpaperColorInfo.OnChangeListener;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 import com.android.launcher3.util.MultiValueAlpha;
@@ -81,7 +80,7 @@ import java.util.List;
 /**
  * Simple scrim which draws a flat color
  */
-public class ScrimView<T extends Launcher> extends View implements Insettable, OnChangeListener,
+public class ScrimView<T extends Launcher> extends View implements Insettable, WallpaperColorInfo.OnChangeListener,
         AccessibilityStateChangeListener {
 
     public static final IntProperty<ScrimView> DRAG_HANDLE_ALPHA =

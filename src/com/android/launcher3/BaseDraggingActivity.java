@@ -16,6 +16,9 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
+import static com.android.launcher3.util.DefaultDisplay.CHANGE_ROTATION;
+
 import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -58,9 +61,6 @@ import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.util.WindowBounds;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.theme.ThemeOverride.ThemeSet;
-
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
-import static com.android.launcher3.util.DefaultDisplay.CHANGE_ROTATION;
 
 /**
  * Extension of BaseActivity allowing support for drag-n-drop
@@ -119,7 +119,7 @@ public abstract class BaseDraggingActivity extends BaseActivity
         updateTheme();
     }
 
-    private void updateTheme() {
+    /*private void updateTheme() {
         if (mThemeRes != Themes.getActivityThemeRes(this)) {
             // Workaround (b/162812884): The system currently doesn't allow recreating an activity
             // when it is not resumed, in such a case defer recreation until it is possible
@@ -128,6 +128,12 @@ public abstract class BaseDraggingActivity extends BaseActivity
             } else {
                 addOnResumeCallback(this::recreate);
             }
+        }
+    }*/
+
+    private void updateTheme() {
+        if (mThemeRes != Themes.getActivityThemeRes(this)) {
+            recreate();
         }
     }
 

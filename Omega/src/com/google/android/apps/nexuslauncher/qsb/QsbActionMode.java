@@ -43,15 +43,15 @@ public class QsbActionMode implements ActionMode.Callback {
     }
 
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-        if (menuItem.getItemId() == 16908322 && !TextUtils.isEmpty(this.clipboardText)) {
-            this.qsbLayout.startSearch(this.clipboardText, 3);
+        if (menuItem.getItemId() == 16908322 && !TextUtils.isEmpty(clipboardText)) {
+            qsbLayout.startSearch(clipboardText, 3);
             actionMode.finish();
             return true;
         } else if (menuItem.getItemId() == R.id.hotseat_qsb_menu_item && !(this.settingsBroadcast == null && this.settingsIntent == null)) {
             if (settingsBroadcast != null) {
-                this.qsbLayout.getContext().sendBroadcast(this.settingsBroadcast);
+                qsbLayout.getContext().sendBroadcast(this.settingsBroadcast);
             } else if (settingsIntent != null) {
-                this.qsbLayout.getContext().startActivity(settingsIntent);
+                qsbLayout.getContext().startActivity(settingsIntent);
             }
             actionMode.finish();
             return true;

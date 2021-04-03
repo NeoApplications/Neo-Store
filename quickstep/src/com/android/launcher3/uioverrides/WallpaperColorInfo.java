@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.android.launcher3.Utilities;
 
-public abstract class WallpaperColorInfo implements WallpaperManagerCompat.OnColorsChangedListenerCompat {
-
+public abstract class WallpaperColorInfo {
     private static final Object sInstanceLock = new Object();
     private static WallpaperColorInfo sInstance;
 
@@ -14,6 +13,8 @@ public abstract class WallpaperColorInfo implements WallpaperManagerCompat.OnCol
             if (sInstance == null) {
                 if (Utilities.ATLEAST_Q && !Utilities.HIDDEN_APIS_ALLOWED) {
                     sInstance = new WallpaperColorInfoVL(context.getApplicationContext());
+                } else if (Utilities.ATLEAST_P) {
+                    sInstance = new WallpaperColorInfoVP(context.getApplicationContext());
                 } else if (Utilities.ATLEAST_OREO_MR1) {
                     sInstance = new WallpaperColorInfoVOMR1(context.getApplicationContext());
                 } else {

@@ -80,7 +80,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         mVerticalOffset = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
         setClipToPadding(false);
         prefs = OmegaPreferences.Companion.getInstanceNoCreate();
-
         mLowPerformanceMode = prefs.getLowPerformanceMode();
     }
 
@@ -169,7 +168,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             return i;
         }
         if (mActivity.getDeviceProfile().isVerticalBarLayout()) {
-            return (i - this.mAppsView.getActiveRecyclerView().getPaddingLeft()) - this.mAppsView
+            return (i - mAppsView.getActiveRecyclerView().getPaddingLeft()) - mAppsView
                     .getActiveRecyclerView().getPaddingRight();
         }
         Rect padding = mActivity.getDeviceProfile().getHotseatLayoutPadding();
@@ -177,8 +176,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     public final void initialize(AllAppsContainerView allAppsContainerView) {
-        this.mAppsView = allAppsContainerView;
-        int i = 0;
+        mAppsView = allAppsContainerView;
         mAppsView.addElevationController(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -194,7 +192,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     }
 
     private void updateConfiguration() {
-        az(this.mAllAppsBgColor);
+        az(mAllAppsBgColor);
         addOrUpdateSearchPaint(qsbConfiguration.micStrokeWidth());
         showHintAssitant = qsbConfiguration.hintIsForAssistant();
         mUseTwoBubbles = useTwoBubbles();
@@ -229,7 +227,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     private void startDrawerSearch(String str, int i) {
         SearchProviderController controller = SearchProviderController.Companion
-                .getInstance(getContext());
+                .getInstance(mContext);
         SearchProvider provider = controller.getSearchProvider();
         if (shouldUseFallbackSearch(provider)) {
             searchFallback(str);
@@ -383,24 +381,24 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     @Override
     protected void drawQsb(@NonNull Canvas canvas) {
-        if (this.mShadowAlpha > 0) {
-            if (this.Dv == null) {
-                this.Dv = createShadowBitmap(
+        if (mShadowAlpha > 0) {
+            if (Dv == null) {
+                Dv = createShadowBitmap(
                         getResources().getDimension(R.dimen.hotseat_qsb_scroll_shadow_blur_radius),
                         getResources().getDimension(R.dimen.hotseat_qsb_scroll_key_shadow_offset),
                         0, true);
             }
-            this.mShadowHelper.paint.setAlpha(this.mShadowAlpha);
-            a(this.Dv, canvas);
-            this.mShadowHelper.paint.setAlpha(255);
+            mShadowHelper.paint.setAlpha(mShadowAlpha);
+            drawShadow(Dv, canvas);
+            mShadowHelper.paint.setAlpha(255);
         }
         super.drawQsb(canvas);
     }
 
     final void setShadowAlpha(int i) {
         i = Utilities.boundToRange(i, 0, 255);
-        if (this.mShadowAlpha != i) {
-            this.mShadowAlpha = i;
+        if (mShadowAlpha != i) {
+            mShadowAlpha = i;
             invalidate();
         }
     }
