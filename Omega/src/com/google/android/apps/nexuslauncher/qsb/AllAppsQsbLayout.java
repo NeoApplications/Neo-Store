@@ -39,6 +39,7 @@ import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.search.SearchThread;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.search.SearchProvider;
@@ -61,6 +62,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     private AllAppsContainerView mAppsView;
     private OmegaPreferences prefs;
     private boolean widgetMode;
+    private int textColor;
 
     public AllAppsQsbLayout(Context context) {
         this(context, null);
@@ -80,6 +82,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         setClipToPadding(false);
         prefs = OmegaPreferences.Companion.getInstanceNoCreate();
         mLowPerformanceMode = prefs.getLowPerformanceMode();
+        textColor = Themes.getAttrColor(context, R.color.textColorPrimary);
     }
 
     protected void onFinishInflate() {

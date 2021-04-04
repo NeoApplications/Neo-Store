@@ -24,17 +24,20 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.net.Uri
 import android.view.View
-import com.android.launcher3.*
+import com.android.launcher3.AbstractFloatingView
+import com.android.launcher3.BaseDraggingActivity
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+import com.android.launcher3.R
 import com.android.launcher3.model.data.*
 import com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES
 import com.android.launcher3.popup.SystemShortcut
+import com.android.launcher3.popup.SystemShortcut.Factory
 import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.views.CustomBottomSheet
-import java.net.URISyntaxException
 
 class OmegaShortcut(private val context: Context) {
 
@@ -52,9 +55,9 @@ class OmegaShortcut(private val context: Context) {
 
     val enabledShortcuts get() = shortcuts.filter { it.enabled }.map { it.shortcut }
 
-    class Uninstall(private val target: BaseDraggingActivity, private val itemInfo: ItemInfo,
+    class Uninstall(private val target: Launcher, private val itemInfo: ItemInfo,
                     private val componentName: ComponentName) :
-            SystemShortcut<BaseDraggingActivity>(R.drawable.ic_uninstall_no_shadow,
+            SystemShortcut<Launcher>(R.drawable.ic_uninstall_no_shadow,
                     R.string.uninstall_drop_target_label, target, itemInfo) {
 
         override fun onClick(v: View?) {
@@ -67,7 +70,7 @@ class OmegaShortcut(private val context: Context) {
 
         companion object {
 
-            val FACTORY = Factory<BaseDraggingActivity> { launcher, itemInfo ->
+            val FACTORY = Factory<Launcher> { launcher, itemInfo ->
                 if (itemInfo is ItemInfoWithIcon && itemInfo.runtimeStatusFlags.hasFlag(FLAG_SYSTEM_YES)) {
                     null
                 } else {
@@ -77,7 +80,7 @@ class OmegaShortcut(private val context: Context) {
                 }
             }
 
-            private fun getUninstallTarget(target: BaseDraggingActivity, item: ItemInfo): ComponentName? {
+            private fun getUninstallTarget(target: Launcher, item: ItemInfo): ComponentName? {
                 if (item.itemType == ITEM_TYPE_APPLICATION && item.id == ItemInfo.NO_ID) {
                     val intent = item.intent
                     val user = item.user
@@ -114,15 +117,17 @@ class OmegaShortcut(private val context: Context) {
         }
     }
 
-    class Edit(private val target: Launcher, private val itemInfo: ItemInfo) :
-            SystemShortcut<Launcher>(R.drawable.ic_edit_no_shadow, R.string.action_preferences, target, itemInfo) {
+    class Edit(private val target: BaseDraggingActivity, private val itemInfo: ItemInfo) :
+            SystemShortcut<BaseDraggingActivity>(
+                    R.drawable.ic_edit_no_shadow,
+                    R.string.action_preferences, target, itemInfo) {
         override fun onClick(v: View?) {
             AbstractFloatingView.closeAllOpenViews(target)
-            CustomBottomSheet.show(target, itemInfo)
+            CustomBottomSheet.show(target as Launcher, itemInfo)
         }
 
         companion object {
-            val FACTORY = Factory<Launcher> { target, itemInfo ->
+            val FACTORY = Factory<BaseDraggingActivity> { target, itemInfo ->
                 if (!target.omegaPrefs.lockDesktop && CustomInfoProvider.isEditable(itemInfo)) {
                     Edit(target, itemInfo)
                 } else null
