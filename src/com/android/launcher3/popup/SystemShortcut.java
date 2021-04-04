@@ -1,16 +1,27 @@
 package com.android.launcher3.popup;
 
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherState.ALL_APPS;
+import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SYSTEM_SHORTCUT_APP_INFO_TAP;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SYSTEM_SHORTCUT_WIDGETS_TAP;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES;
 
 import android.app.ActivityOptions;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.UserHandle;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -18,8 +29,12 @@ import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.model.WidgetItem;
+import com.android.launcher3.model.data.FolderInfo;
 import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
+import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
@@ -27,7 +42,12 @@ import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.WidgetsBottomSheet;
+import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.override.CustomInfoProvider;
+import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.views.CustomBottomSheet;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -72,6 +92,57 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
         return new Install(activity, itemInfo);
     };
+    public static final Factory<Launcher> APP_EDIT = (launcher, itemInfo) -> {
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
+        AppEdit appEdit = null;
+
+        if (Launcher.getLauncher(launcher).isInState(ALL_APPS)) {
+            if (prefs.getDrawerPopupEdit()) {
+                appEdit = new AppEdit(launcher, itemInfo);
+            }
+        } else if (Launcher.getLauncher(launcher).isInState(NORMAL)) {
+            if (prefs.getDesktopPopupEdit()
+                    && !prefs.getLockDesktop()
+                    && CustomInfoProvider.Companion.isEditable(itemInfo)) {
+                appEdit = new AppEdit(launcher, itemInfo);
+            }
+        }
+        return appEdit;
+    };
+
+    public static final Factory<Launcher> APP_REMOVE = (launcher, itemInfo) -> {
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
+        AppRemove appRemove = null;
+        if (Launcher.getLauncher(launcher).isInState(NORMAL)) {
+            if (itemInfo instanceof WorkspaceItemInfo
+                    || itemInfo instanceof LauncherAppWidgetInfo
+                    || itemInfo instanceof FolderInfo) {
+                if (prefs.getDesktopPopupRemove()
+                        && !prefs.getLockDesktop()
+                        && CustomInfoProvider.Companion.isEditable(itemInfo)) {
+                    appRemove = new AppRemove(launcher, itemInfo);
+                }
+            }
+        }
+        return appRemove;
+    };
+    public static final Factory<Launcher> APP_UNINSTALL = (launcher, itemInfo) -> {
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
+        AppUninstall appUninstall = null;
+
+        ;
+
+        if (prefs.getDrawerPopupUninstall() || Launcher.getLauncher(launcher).isInState(ALL_APPS)) {
+            if (itemInfo instanceof ItemInfoWithIcon
+                    && OmegaUtilsKt.hasFlag(((ItemInfoWithIcon) itemInfo).runtimeStatusFlags, FLAG_SYSTEM_YES)) {
+                appUninstall = null;
+            } else {
+                appUninstall = new AppUninstall(launcher, itemInfo);
+            }
+        }
+        return appUninstall;
+    };
+
     protected final T mTarget;
 
     /**
@@ -181,6 +252,71 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
                     mItemInfo.getTargetComponent().getPackageName());
             mTarget.startActivitySafely(view, intent, mItemInfo, null);
             AbstractFloatingView.closeAllOpenViews(mTarget);
+        }
+    }
+
+    public static class AppEdit extends SystemShortcut {
+        public AppEdit(Launcher target, ItemInfo itemInfo) {
+            super(R.drawable.ic_edit_no_shadow, R.string.action_preferences, target, itemInfo);
+        }
+
+        public void onClick(View v) {
+            AbstractFloatingView.closeAllOpenViews(mTarget);
+            CustomBottomSheet.show((Launcher) mTarget, mItemInfo);
+        }
+    }
+
+    public static class AppRemove extends SystemShortcut {
+        Launcher mLauncher;
+
+        public AppRemove(Launcher target, ItemInfo itemInfo) {
+            super(R.drawable.ic_remove_no_shadow, R.string.remove_drop_target_label, target, itemInfo);
+            mLauncher = target;
+        }
+
+        public void onClick(View v) {
+            AbstractFloatingView.closeAllOpenViews(mTarget);
+            mLauncher.removeItem(null, mItemInfo, true);
+            mLauncher.getModel().forceReload();
+            mLauncher.getWorkspace().stripEmptyScreens();
+        }
+    }
+
+    public static class AppUninstall extends SystemShortcut {
+        Launcher mLauncher;
+
+        public AppUninstall(Launcher target, ItemInfo itemInfo) {
+            super(R.drawable.ic_uninstall_no_shadow, R.string.uninstall_drop_target_label, target, itemInfo);
+            mLauncher = target;
+        }
+
+        public void onClick(View v) {
+            AbstractFloatingView.closeAllOpenViews(mTarget);
+            try {
+                ComponentName componentName = getUninstallTarget((Launcher) mTarget, mItemInfo);
+                Intent i = Intent.parseUri(mTarget.getString(R.string.delete_package_intent), 0)
+                        .setData(Uri.fromParts("package", componentName.getPackageName(), componentName.getClassName()))
+                        .putExtra(Intent.EXTRA_USER, mItemInfo.user);
+                mTarget.startActivity(i);
+            } catch (URISyntaxException e) {
+                Toast.makeText(mLauncher, R.string.uninstall_failed, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private ComponentName getUninstallTarget(Launcher launcher, ItemInfo item) {
+            if (item.itemType == ITEM_TYPE_APPLICATION && item.id == ItemInfo.NO_ID) {
+                Intent intent = item.getIntent();
+                UserHandle user = item.user;
+                if (intent != null) {
+                    LauncherActivityInfo info = launcher
+                            .getSystemService(LauncherApps.class)
+                            .resolveActivity(intent, user);
+                    if (info != null && !(OmegaUtilsKt.hasFlag(info.getApplicationInfo().flags, ApplicationInfo.FLAG_SYSTEM))) {
+                        return info.getComponentName();
+                    }
+                }
+            }
+            return null;
         }
     }
 }

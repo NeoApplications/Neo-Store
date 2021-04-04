@@ -20,14 +20,14 @@
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_uninstall_no_shadow"
-        android:key="pref_iconPopup_uninstall"
+        android:key="drawer_popup_uninstall"
         android:persistent="true"
         android:title="@string/uninstall_drop_target_label" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
         android:icon="@drawable/ic_edit_no_shadow"
-        android:key="pref_iconPopup_edit"
+        android:key="drawer_popup_edit"
         android:persistent="true"
         android:title="@string/action_preferences" />
 </PreferenceScreen>

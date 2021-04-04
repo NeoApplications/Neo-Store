@@ -528,6 +528,7 @@
     <string name="folder_cover_mode_desc">Tap to open first app, swipe up to view all.</string>
 
     <string name="loading">Loading…</string>
+    <string name="uninstall_failed">The app uninstall failed</string>
 
     <!-- WIDGET FEED -->
 

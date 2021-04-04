@@ -130,6 +130,12 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
     var keepEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
 
+    /*POPUP DIALOG PREFERENCES */
+    val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
+    val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)
+    val drawerPopupEdit by BooleanPref("drawer_popup_edit", true, doNothing)
+    val drawerPopupUninstall by BooleanPref("drawer_popup_uninstall", false, doNothing)
+
     /* --DOCK-- */
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)
     val dockIconScale by FloatPref("hotseatIconSize", 1f, recreate)
