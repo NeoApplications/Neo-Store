@@ -368,4 +368,6 @@
     <string name="button_organize_screens">Sorter sider</string>
     <string name="feed_provider">Informasjonskanalstilbyder</string>
     <string name="title_desktop_keep_empty">Tillat tomme sider</string>
+    <string name="title_feed_provider">Informasjonskanalstilbyder</string>
+    <string name="uninstall_failed">Klarte ikke å avinstallere program</string>
 </resources>
