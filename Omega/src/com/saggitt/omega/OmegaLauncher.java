@@ -58,7 +58,6 @@ import com.saggitt.omega.override.CustomInfoProvider;
 import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
 import com.saggitt.omega.util.Config;
-import com.saggitt.omega.util.ContextUtils;
 import com.saggitt.omega.util.DbHelper;
 import com.saggitt.omega.views.OmegaBackgroundView;
 import com.saggitt.omega.views.OptionsPanel;
@@ -117,9 +116,8 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
             mPrefs.setFirstRun(false);
             mPrefs.setIconShape("cylinder");
         }
-
-        ContextUtils contextUtils = new ContextUtils(this);
-        contextUtils.setAppLanguage(mPrefs.getLanguage());
+        Config config = new Config(this);
+        config.setAppLanguage(mPrefs.getLanguage());
         showFolderNotificationCount = mPrefs.getNotificationCount();
         dummyView = findViewById(R.id.dummy_view);
 

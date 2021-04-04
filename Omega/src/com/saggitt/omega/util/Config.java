@@ -19,9 +19,14 @@
 package com.saggitt.omega.util;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.text.TextUtils;
 import android.util.TypedValue;
 
 import com.android.launcher3.R;
+
+import java.util.Locale;
 
 public class Config {
     //APP DRAWER SORT MODE
@@ -61,5 +66,22 @@ public class Config {
         TypedValue typedValue = new TypedValue();
         mContext.getResources().getValue(R.dimen.config_default_blur_strength, typedValue, true);
         return typedValue.getFloat();
+    }
+
+    public void setAppLanguage(String androidLC) {
+        Locale locale = getLocaleByAndroidCode(androidLC);
+        Configuration config = mContext.getResources().getConfiguration();
+        config.locale = (locale != null && !androidLC.isEmpty())
+                ? locale : Resources.getSystem().getConfiguration().locale;
+        mContext.getResources().updateConfiguration(config, null);
+    }
+
+    public Locale getLocaleByAndroidCode(String androidLC) {
+        if (!TextUtils.isEmpty(androidLC)) {
+            return androidLC.contains("-r")
+                    ? new Locale(androidLC.substring(0, 2), androidLC.substring(4, 6)) // de-rAt
+                    : new Locale(androidLC); // de
+        }
+        return Resources.getSystem().getConfiguration().locale;
     }
 }
