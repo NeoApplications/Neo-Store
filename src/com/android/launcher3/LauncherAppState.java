@@ -192,6 +192,10 @@ public class LauncherAppState {
         }
     }
 
+    public void setLauncher(Launcher launcher) {
+        mLauncher = launcher;
+    }
+
     public Launcher getLauncher() {
         return mLauncher;
     }

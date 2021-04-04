@@ -84,7 +84,6 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     private String hideStatusBarKey = "pref_hideStatusBar";
 
     private final NexusLauncher launcherClient;
-    private static OmegaLauncher mLauncher;
 
     public OmegaLauncher() {
         launcherClient = new NexusLauncher(this);
@@ -92,12 +91,8 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
 
     public static OmegaLauncher getLauncher(Context context) {
         if (context instanceof OmegaLauncher) {
-            Log.d("OmegaLauncher", "Context es instancia de Omega Launcher");
-            //return (OmegaLauncher) fromContext(context);
-            //return (OmegaLauncher) ((ContextWrapper) context).getBaseContext();
             return (OmegaLauncher) context;
         } else {
-            Log.d("OmegaLauncher", "Context NO es instancia de Omega Launcher");
             return (OmegaLauncher) LauncherAppState.getInstance(context).getLauncher();
         }
     }

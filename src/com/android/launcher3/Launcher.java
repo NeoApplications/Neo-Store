@@ -378,6 +378,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         super.onCreate(savedInstanceState);
 
         LauncherAppState app = LauncherAppState.getInstance(this);
+        app.setLauncher(this);
 
         OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
         prefs.getDrawerGridSize();
