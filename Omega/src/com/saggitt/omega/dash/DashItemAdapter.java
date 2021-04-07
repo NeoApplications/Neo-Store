@@ -31,16 +31,17 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Themes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashItemAdapter {
     private final ArrayList<View> mItemViews;
     private DashItemChangeListener circularItemChangeListener;
     private final Context mContext;
 
-    public DashItemAdapter(LayoutInflater inflater, ArrayList<DashModel> items, Context context) {
+    public DashItemAdapter(LayoutInflater inflater, List<DashProvider> items, Context context) {
         mContext = context;
         mItemViews = new ArrayList<>();
-        for (DashModel dashItem : items) {
+        for (DashProvider dashItem : items) {
             View view = inflater.inflate(R.layout.dash_item, null);
             ImageView itemView = view.findViewById(R.id.bt_item);
             ColorStateList backgroundColor = ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconBackground));
@@ -50,7 +51,7 @@ public class DashItemAdapter {
             itemView.setImageTintList(iconColor);
 
             itemView.setOnClickListener((parent) -> {
-                dashItem.RunAction(dashItem.getAction(), mContext);
+                dashItem.runAction(mContext);
                 AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(mContext));
             });
             mItemViews.add(view);

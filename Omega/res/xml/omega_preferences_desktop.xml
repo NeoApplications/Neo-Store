@@ -116,4 +116,11 @@
         android:key="pref_lockDesktop"
         android:title="@string/title_desktop_lock_desktop"
         app:iconSpaceReserved="false" />
+
+    <androidx.preference.Preference
+        android:fragment="com.saggitt.omega.dash.DashFragment"
+        android:key="pref_dash_providers"
+        android:title="@string/edit_dash"
+        android:summary="@string/edit_dash_summary"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

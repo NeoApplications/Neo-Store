@@ -491,6 +491,21 @@
     <!-- DASH -->
     <string name="edit_dash">Edit Dash</string>
     <string name="wallpaper_pick">Pick Wallpaper</string>
+    <string name="dash_all_apps_title">Open All Apps</string>
+    <string name="dash_device_settings_title">Device Settings</string>
+    <string name="dash_volume_title">Volume Dialog</string>
+    <string name="dash_launch_app_title">Launch App</string>
+    <string name="dash_mobile_network_title">Mobile Network</string>
+    <string name="dash_manage_apps_title">Manage Apps</string>
+    <string name="dash_manage_apps_summary">Open the Android App Manager</string>
+    <string name="dash_mobile_network_summary">Show the mobile networks settings</string>
+    <string name="dash_all_apps_summary">Show the all App button</string>
+    <string name="edit_dash_summary">Enable or disable de shortcuts</string>
+    <string name="wallpaper_pick_summary">Open the Wallpaper chooser</string>
+    <string name="dash_launcher_settings_summary">Display the launcher settings</string>
+    <string name="dash_volume_summary">Display the device audio selector</string>
+    <string name="dash_device_settings_summary">Open the Device Settings</string>
+
     <string name="drag_to_disable_packs">Drag down to disable</string>
     <string name="drag_to_enable_packs">Drag up to enable</string>
     <string name="enabled_icon_packs">Enabled</string>

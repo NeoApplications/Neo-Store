@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.views.RecyclerViewFragment
-
 
 class DashFragment : RecyclerViewFragment() {
     private val adapter by lazy { DashEditAdapter(requireContext()) }
@@ -37,8 +37,9 @@ class DashFragment : RecyclerViewFragment() {
         }
     }
 
-    /*override fun onPause() {
+    override fun onPause() {
         super.onPause()
-        Utilities.getOmegaPrefs(context).dashItems = adapter.getDashItems()
-    }*/
+
+        OmegaPreferences.getInstance(requireContext()).dashProviders.setAll(adapter.saveSpecs())
+    }
 }

@@ -32,7 +32,6 @@
         app:controllerClass=".IconShapeOverrideController"
         app:iconSpaceReserved="false" />
 
-
     <com.saggitt.omega.preferences.ColorPreferenceCompat
         android:defaultValue="@color/colorAccent"
         android:key="pref_key__accent_color"

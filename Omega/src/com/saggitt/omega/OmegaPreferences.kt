@@ -29,6 +29,8 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.saggitt.omega.dash.provider.AllAppsShortcut
+import com.saggitt.omega.dash.provider.MobileNetwork
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackManager
@@ -110,7 +112,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
-    var dashEnable by BooleanPref("pref_key__dash_enable", true, recreate)
     val desktopIconScale by FloatPref("pref_iconSize", 1f, recreate)
     val desktopTextScale by FloatPref("pref_iconTextScale", 1f, reloadApps)
     private var gridSizeDelegate = ResettableLazy {
@@ -213,20 +214,40 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var smartspaceWidgetId by IntPref("smartspace_widget_id", -1, doNothing)
     var weatherIconPack by StringPref("pref_weatherIcons", "", doNothing)
     var weatherProvider by StringPref("pref_smartspace_widget_provider",
-            SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider)
-    var eventProvider by StringPref("pref_smartspace_event_provider",
-            SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider)
-    var eventProviders = StringListPref("pref_smartspace_event_providers",
-            ::updateSmartspaceProvider, listOf(eventProvider,
+        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+    )
+    var eventProvider by StringPref(
+        "pref_smartspace_event_provider",
+        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+    )
+    var eventProviders = StringListPref(
+        "pref_smartspace_event_providers",
+        ::updateSmartspaceProvider, listOf(
+            eventProvider,
             NotificationUnreadProvider::class.java.name,
             NowPlayingProvider::class.java.name,
             BatteryStatusProvider::class.java.name,
-            PersonalityProvider::class.java.name))
+            PersonalityProvider::class.java.name
+        )
+    )
+
+    var dashProviders = StringListPref(
+        "pref_dash_providers",
+        doNothing,
+        listOf(
+            AllAppsShortcut::class.java.name,
+            MobileNetwork::class.java.name
+        )
+    )
 
     /* --FEED-- */
     var feedProvider by StringPref("pref_feedProvider", "", restart)
     val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", false, restart)
-    var feedProviderPackage by StringPref("pref_feed_provider_package", BuildConfig.APPLICATION_ID, restart)
+    var feedProviderPackage by StringPref(
+        "pref_feed_provider_package",
+        BuildConfig.APPLICATION_ID,
+        restart
+    )
 
     /* --DEV-- */
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)

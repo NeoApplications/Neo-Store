@@ -180,7 +180,7 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
 
         val icon: ImageView = itemView.findViewById(android.R.id.icon)
         val title: TextView = itemView.findViewById(android.R.id.title)
-        val summary: TextView = itemView.findViewById(android.R.id.summary)
+        val summary: TextView = itemView.findViewById(R.id.summary)
         private val dragHandle: View = itemView.findViewById(R.id.drag_handle)
         private val packItem
             get() = adapterItems[adapterPosition] as? IconPackItem

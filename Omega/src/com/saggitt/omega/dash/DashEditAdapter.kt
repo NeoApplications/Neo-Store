@@ -20,77 +20,58 @@ package com.saggitt.omega.dash
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.widget.CompoundButtonCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
+import com.saggitt.omega.dash.provider.*
+import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
+import com.saggitt.omega.util.omegaPrefs
 
 class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.Holder>() {
-    private val prefs = Utilities.getOmegaPrefs(context)
-    private val allItems = ArrayList<CustomDashItem>()
+    private val prefs = context.omegaPrefs
+    private val allItems = ArrayList<ProviderItem>()
     private val handler = Handler()
-
     private var dividerIndex = 0
     private val adapterItems = ArrayList<Item>()
     private val currentSpecs = ArrayList<String>()
+    private val otherItems = ArrayList<ProviderItem>()
+
     private val divider = DividerItem()
-    private val enabledItems = ArrayList<CustomDashItem>()
     private var isDragging = false
-    private var enable: Boolean = false
+
     var itemTouchHelper: ItemTouchHelper? = null
 
     init {
-        val currentItems = ArrayList<String>()
-        val dashItems = ArrayList<CustomDashItem>()
+        allItems.addAll(getDashProviders(context)
+            .map { ProviderItem(it) })
 
-        /*for (action in prefs.dashItems) {
-            if (action.length > 1) {
-                var item: DashItem? = null
-                if (action.length == 2) {
-                    item = DashUtils.getDashItemFromString(action)
-                } else if (action.length > 2) {
-                    /*val keyMapper = ComponentKey(mContext, action)
-                    val info = getApp(keyMapper)
+        currentSpecs.addAll(prefs.dashProviders.getAll())
 
-                    if (info != null) {
-                        item = DashItem.asApp(info.get(0), 99)
-                        dashItems.add(CustomDashItem(item))
-                    }*/
-                }
-
-                if (item != null) {
-                    currentItems.add(item.title)
-                }
-            }
-        }
-
-        for (item in DashUtils.actionDisplayItems) {
-            dashItems.add(CustomDashItem(item))
-        }*/
-        currentSpecs.addAll(currentItems)
-        allItems.addAll(dashItems)
         fillItems()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return when (viewType) {
-            TYPE_ENABLE -> createHolder(parent, R.layout.dash_enable_item, ::EnableHolder)
-            TYPE_HEADER -> createHolder(parent, R.layout.dash_text_item, ::HeaderHolder)
-            TYPE_DASH_ITEM -> createHolder(parent, R.layout.dash_dialog_item, ::DashItemHolder)
-            TYPE_DIVIDER -> createHolder(parent, R.layout.dash_divider_item, ::DividerHolder)
-            else -> throw IllegalArgumentException("type must be either TYPE_TEXT, " +
-                    "TYPE_DASH_ITEM, TYPE_DIVIDER or TYPE_ENABLE")
+            TYPE_HEADER -> createHolder(parent, R.layout.icon_pack_text_item, ::HeaderHolder)
+            TYPE_DASH_ITEM -> createHolder(parent, R.layout.icon_pack_dialog_item, ::DashItemHolder)
+            TYPE_DIVIDER -> createHolder(
+                parent,
+                R.layout.event_providers_divider_item,
+                ::DividerHolder
+            )
+            else -> throw IllegalArgumentException(
+                "type must be either TYPE_TEXT, " +
+                        "TYPE_PACK, TYPE_DIVIDER or TYPE_DOWNLOAD"
+            )
         }
     }
 
@@ -104,32 +85,26 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         return adapterItems[position].type
     }
 
-    fun getDashItems(): Set<String> {
-        val items = HashSet<String>()
+    fun saveSpecs(): ArrayList<String> {
+        val newSpecs = ArrayList<String>()
         val iterator = adapterItems.iterator()
+
         while (iterator.hasNext()) {
             val item = iterator.next()
-            if (item is CustomDashItem) {
-                items.add(item.info.id.toString())
-                /*if (item.info.viewType == VIEW_TYPE_DASH_ITEM) {
-                    items.add(item.info.id.toString())
-                } else if (item.info.viewType == VIEW_TYPE_DASH_APP) {
-                    items.add(item.info.component)
-                }*/
-
-            } else if (item is DividerItem)
-                break
-            iterator.remove()
+            if (item is ProviderItem) {
+                newSpecs.add(item.info.name)
+                Log.d("SmartspaceEventProvider", "adding item ${item.info.name}")
+            }
+            if (item is DividerItem) break
         }
-        return items
+        return newSpecs
     }
 
     private fun fillItems() {
-        enabledItems.clear()
-        enabledItems.addAll(allItems)
-        //Fill Adapter
+        otherItems.clear()
+        otherItems.addAll(allItems)
+
         adapterItems.clear()
-        adapterItems.add(EnableItem())
         adapterItems.add(HeaderItem())
         currentSpecs.forEach {
             val item = getAndRemoveOther(it)
@@ -137,20 +112,17 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
                 adapterItems.add(item)
             }
         }
-
         dividerIndex = adapterItems.count()
-
         adapterItems.add(divider)
-        adapterItems.addAll(enabledItems)
+        adapterItems.addAll(otherItems)
     }
 
-    private fun getAndRemoveOther(s: String): CustomDashItem? {
-        val iterator = enabledItems.iterator()
+    private fun getAndRemoveOther(s: String): ProviderItem? {
+        val iterator = otherItems.iterator()
         while (iterator.hasNext()) {
             val item = iterator.next()
-            if (item.info.title == s) {
+            if (item.info.name == s) {
                 iterator.remove()
-
                 return item
             }
         }
@@ -183,7 +155,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         override val type = TYPE_HEADER
     }
 
-    class CustomDashItem(val info: DashModel) : Item() {
+    open class ProviderItem(val info: DashProvider) : Item() {
         override val isStatic = false
         override val type = TYPE_DASH_ITEM
     }
@@ -193,59 +165,28 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         override val type = TYPE_DIVIDER
     }
 
-    class EnableItem : Item() {
-        override val isStatic = true
-        override val type = TYPE_ENABLE
-    }
-
     abstract class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         open fun bind(item: Item) {
 
         }
     }
 
-    inner class EnableHolder(itemView: View) : Holder(itemView) {
-        private val switchEnable: SwitchCompat = itemView.findViewById(R.id.enableSwitch)
-
-        @SuppressLint("PrivateResource")
-        override fun bind(item: Item) {
-            super.bind(item)
-            val states = arrayOf(intArrayOf(-android.R.attr.state_enabled), intArrayOf(android.R.attr.state_checked), intArrayOf())
-            val colors = intArrayOf(androidx.preference.R.color.switch_thumb_normal_material_light, //Normal
-                    prefs.accentColor, //checked
-                    androidx.preference.R.color.switch_thumb_disabled_material_light//Disabled
-            )
-            val thstateList = ColorStateList(states, colors)
-            CompoundButtonCompat.setButtonTintList(switchEnable, thstateList)
-
-            enable = prefs.dashEnable
-            switchEnable.isChecked = enable
-            switchEnable.thumbTintList = thstateList
-            switchEnable.setText(if (enable) R.string.on else R.string.off)
-
-            switchEnable.setOnCheckedChangeListener { buttonView, isChecked ->
-                buttonView.setText(if (isChecked) R.string.on else R.string.off)
-                prefs.dashEnable = isChecked
-            }
-        }
-    }
-
-    inner class HeaderHolder(itemView: View) : Holder(itemView) {
-
+    class HeaderHolder(itemView: View) : Holder(itemView) {
         init {
             itemView.findViewById<TextView>(android.R.id.text1).setText(R.string.enabled_icon_packs)
         }
     }
 
-    inner class DashItemHolder(itemView: View) : Holder(itemView), View.OnClickListener, View.OnTouchListener {
+    open inner class DashItemHolder(itemView: View) : Holder(itemView), View.OnClickListener,
+        View.OnTouchListener {
 
         val icon: ImageView = itemView.findViewById(android.R.id.icon)
         val title: TextView = itemView.findViewById(android.R.id.title)
-        val summary: TextView = itemView.findViewById(android.R.id.summary)
+        val summary: TextView = itemView.findViewById(R.id.summary)
         private val dragHandle: View = itemView.findViewById(R.id.drag_handle)
         private val dashItem
-            get() = adapterItems[adapterPosition] as? CustomDashItem
-                    ?: throw IllegalArgumentException("item must be DashItem")
+            get() = adapterItems[bindingAdapterPosition] as? ProviderItem
+                ?: throw IllegalArgumentException("item must be DashProviderItem")
 
         init {
             itemView.setOnClickListener(this)
@@ -253,27 +194,27 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         }
 
         override fun bind(item: Item) {
-            val packDash = item as? CustomDashItem
-                    ?: throw IllegalArgumentException("item must be CustomDashItem")
-            val drawable = packDash.info.icon
-            icon.setImageDrawable(drawable)
-            title.text = packDash.info.title
-            summary.text = packDash.info.description
-            itemView.isClickable = !packDash.isStatic
-            dragHandle.isVisible = !packDash.isStatic
+            val mDashItem = item as? ProviderItem
+                ?: throw IllegalArgumentException("item must be DashProviderItem. Item is ${item.type}")
+            icon.setImageDrawable(mDashItem.info.getIcon())
+            title.text = mDashItem.info.name
+            summary.text = mDashItem.info.description
+            summary.visibility = View.VISIBLE
+            itemView.isClickable = !mDashItem.isStatic
+            dragHandle.isVisible = !mDashItem.isStatic
         }
 
         override fun onClick(v: View) {
             val item = dashItem
-            if (adapterPosition > dividerIndex) {
-                adapterItems.removeAt(adapterPosition)
-                adapterItems.add(2, item)
-                notifyItemMoved(adapterPosition, 2)
+            if (bindingAdapterPosition > dividerIndex) {
+                adapterItems.removeAt(bindingAdapterPosition)
+                adapterItems.add(1, item)
+                notifyItemMoved(bindingAdapterPosition, 1)
                 dividerIndex++
             } else {
-                adapterItems.removeAt(adapterPosition)
+                adapterItems.removeAt(bindingAdapterPosition)
                 adapterItems.add(dividerIndex, item)
-                notifyItemMoved(adapterPosition, dividerIndex)
+                notifyItemMoved(bindingAdapterPosition, dividerIndex)
                 dividerIndex--
             }
             notifyItemChanged(dividerIndex)
@@ -286,26 +227,26 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
             }
             return false
         }
-
     }
 
     inner class DividerHolder(itemView: View) : Holder(itemView) {
-
         val text: TextView = itemView.findViewById(android.R.id.text1)
+
+        init {
+            text.setTextColor(text.context.getColorAccent())
+        }
 
         override fun bind(item: Item) {
             super.bind(item)
-            if (isDragging) {
+            if (isDragging || dividerIndex == adapterItems.size - 1) {
                 text.setText(R.string.drag_to_disable_packs)
             } else {
                 text.setText(R.string.drag_to_enable_packs)
             }
-            text.isVisible = isDragging || dividerIndex != adapterItems.size - 1
         }
     }
 
     inner class TouchHelperCallback : ItemTouchHelper.Callback() {
-
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
             super.onSelectedChanged(viewHolder, actionState)
             isDragging = actionState == ItemTouchHelper.ACTION_STATE_DRAG
@@ -313,7 +254,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         }
 
         override fun canDropOver(recyclerView: RecyclerView, current: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return target.adapterPosition in 2..dividerIndex
+            return target.adapterPosition in 1..dividerIndex
         }
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -332,9 +273,19 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
     }
 
     companion object {
-        const val TYPE_ENABLE = 0
-        const val TYPE_HEADER = 1
-        const val TYPE_DASH_ITEM = 2
-        const val TYPE_DIVIDER = 3
+        const val TYPE_HEADER = 0
+        const val TYPE_DASH_ITEM = 1
+        const val TYPE_DIVIDER = 2
+
+        fun getDashProviders(context: Context) = listOf(
+            EditDash(context),
+            ChangeWallpaper(context),
+            OpenLauncherSettings(context),
+            ManageVolume(context),
+            OpenDeviceSetting(context),
+            MobileNetwork(context),
+            ManageApps(context),
+            AllAppsShortcut(context)
+        )
     }
 }

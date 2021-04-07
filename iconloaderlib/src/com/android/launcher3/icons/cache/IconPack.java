@@ -19,6 +19,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
 import androidx.palette.graphics.Palette;
 
 import com.android.launcher3.icons.Utilities;
@@ -93,10 +95,20 @@ public class IconPack {
     }
 
     private static Bitmap pad(Bitmap src) {
-        Bitmap ret = Bitmap.createBitmap(src.getWidth() + 150, src.getHeight() + 150, Bitmap.Config.ARGB_8888);
+        int dpi = (int) Resources.getSystem().getDisplayMetrics().density;
+        int newSrcSize = 192;
+        int retSize = newSrcSize + 200;
+        int cOffsetTopLeft = (retSize - newSrcSize) / 2;
+
+        Bitmap newSrc = Bitmap.createScaledBitmap(src, newSrcSize, newSrcSize, true);
+        newSrc.setDensity(dpi);
+
+        Bitmap ret = Bitmap.createBitmap(retSize, retSize, Bitmap.Config.ARGB_8888);
+        ret.setDensity(dpi);
+
         Canvas c = new Canvas(ret);
-        c.drawARGB(0x0, 0xFF, 0xFF, 0xFF);
-        c.drawBitmap(src, (c.getWidth() - src.getWidth()) >> 1, (c.getHeight() - src.getHeight()) >> 1, null);
+        c.drawBitmap(newSrc, cOffsetTopLeft, cOffsetTopLeft, null);
+
         return ret;
     }
 
@@ -133,11 +145,22 @@ public class IconPack {
             Bitmap b = drawableToBitmap(d);
             // Already running on UI_HELPER, no need to async this.
             Palette p = (new Palette.Builder(b)).generate();
-            boolean makeColoredBackgrounds = sharedPrefs.getBoolean("pref_makeColoredBackgrounds", false);
-            ColorDrawable backgroundColor = makeColoredBackgrounds ? new ColorDrawable(p.getDominantColor(Color.WHITE)) : new ColorDrawable(Color.WHITE);
+            ColorDrawable backgroundColor = new ColorDrawable(makeBackgroundColor(p.getDominantColor(Color.WHITE), sharedPrefs));
             d = new AdaptiveIconDrawable(backgroundColor, new BitmapDrawable(pad(b)));
         }
         return d;
+    }
+
+    private static @ColorInt
+    int makeBackgroundColor(@ColorInt int dominantColor, SharedPreferences sharedPrefs) {
+        float lightness = sharedPrefs.getFloat("pref_coloredBackgroundLightness", 0.9F);
+        if (dominantColor != Color.WHITE) {
+            float[] outHsl = new float[]{0F, 0F, 0F};
+            ColorUtils.colorToHSL(dominantColor, outHsl);
+            outHsl[2] = lightness;
+            return ColorUtils.HSLToColor(outHsl);
+        }
+        return dominantColor;
     }
 
     private Drawable getIconBackFor(CharSequence tag) {
