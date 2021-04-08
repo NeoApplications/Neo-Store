@@ -34,6 +34,7 @@ import com.android.launcher3.views.AbstractSlideInView;
 public class CenterFloatingView extends AbstractSlideInView implements Insettable {
     private static final int DEFAULT_CLOSE_DURATION = 200;
     private final Rect mInsets;
+    protected final ColorScrim mColorScrim;
 
     public CenterFloatingView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -42,6 +43,7 @@ public class CenterFloatingView extends AbstractSlideInView implements Insettabl
     public CenterFloatingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
+        mColorScrim = ColorScrim.createExtractedColorScrim(this);
         mInsets = new Rect();
         mContent = this;
     }
