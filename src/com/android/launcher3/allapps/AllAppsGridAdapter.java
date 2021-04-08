@@ -49,6 +49,7 @@ import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.android.launcher3.util.Themes;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.webproviders.WebSearchProvider;
@@ -343,7 +344,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 break;
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-                int color = getDrawerTextColor();
+                int color = Themes.getAttrColor(holder.itemView.getContext(), R.color.textColorPrimary);
                 ViewGroup group = (ViewGroup) holder.itemView;
                 TextView textView = group.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
