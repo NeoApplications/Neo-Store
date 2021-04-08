@@ -344,7 +344,13 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 break;
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-                int color = Themes.getAttrColor(holder.itemView.getContext(), R.color.textColorPrimary);
+                int color = 0;
+                if (Utilities.getOmegaPrefs(holder.itemView.getContext()).getCustomBackground()) {
+                    color = Utilities.getOmegaPrefs(holder.itemView.getContext()).getDrawerLabelColor();
+                } else {
+                    color = Themes.getAttrColor(holder.itemView.getContext(), R.color.textColorPrimary);
+                }
+
                 ViewGroup group = (ViewGroup) holder.itemView;
                 TextView textView = group.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
