@@ -370,4 +370,19 @@
     <string name="title_desktop_keep_empty">Tillat tomme sider</string>
     <string name="title_feed_provider">Informasjonskanalstilbyder</string>
     <string name="uninstall_failed">Klarte ikke å avinstallere program</string>
+    <string name="edit_dash_summary">Skru på eller av snarveier</string>
+    <string name="dash_volume_summary">Vis lydenhetsvelger</string>
+    <string name="wallpaper_pick_summary">Åpne bakgrunnsbildevelger</string>
+    <string name="dash_all_apps_summary">Vis knapp for «Alle programmer»</string>
+    <string name="action_overlay">Åpne Google-informasjonskanal</string>
+    <string name="dash_volume_title">Lydstyrkedialog</string>
+    <string name="dash_launch_app_title">Kjør program</string>
+    <string name="dash_mobile_network_summary">Vis mobilnettverksinnstillinger</string>
+    <string name="dash_launcher_settings_summary">Vis oppstarterinnstillingene</string>
+    <string name="dash_device_settings_summary">Åpne enhetsinnstillingene</string>
+    <string name="dash_manage_apps_summary">Åpne Android-programhåndtering</string>
+    <string name="dash_manage_apps_title">Håndter programmer</string>
+    <string name="dash_mobile_network_title">Mobilnettverk</string>
+    <string name="dash_device_settings_title">Enhetsinnstillinger</string>
+    <string name="dash_all_apps_title">Åpne alle programmer</string>
 </resources>
