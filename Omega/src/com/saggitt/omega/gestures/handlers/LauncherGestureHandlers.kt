@@ -118,6 +118,35 @@ class StartAppSearchGestureHandler(context: Context, config: JSONObject?) : Open
     }
 }
 
+@Keep
+class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
+    GestureHandler(context, config) {
+
+    override val displayName: String = context.getString(R.string.action_overlay)
+    override val iconResource: Intent.ShortcutIconResource by lazy {
+        Intent.ShortcutIconResource.fromContext(
+            context,
+            R.drawable.ic_super_g_color
+        )
+    }
+
+    override fun onGestureTrigger(controller: GestureController, view: View?) {
+        if (controller.launcher.googleNow != null) {
+            controller.launcher.googleNow?.showOverlay(true)
+        } else {
+            controller.launcher.startActivity(
+                Intent(Intent.ACTION_MAIN).setClassName(
+                    PACKAGE,
+                    "$PACKAGE.SearchActivity"
+                )
+            )
+        }
+    }
+
+    companion object {
+        private const val PACKAGE = "com.google.android.googlequicksearchbox"
+    }
+}
 
 @Keep
 class StartAppGestureHandler(context: Context, config: JSONObject?) : GestureHandler(context, config) {

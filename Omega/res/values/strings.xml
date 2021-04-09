@@ -363,6 +363,7 @@
     <string name="action_app_search">Open app search</string>
     <string name="action_open_widgets">Open Widget Drawer</string>
     <string name="action_open_notifications">Open notifications</string>
+    <string name="action_overlay">Open Google Feed</string>
     <string name="action_close_notifications">Close notifications</string>
     <string name="action_global_search">Launch Global Search</string>
     <string name="action_sleep">Sleep</string>
