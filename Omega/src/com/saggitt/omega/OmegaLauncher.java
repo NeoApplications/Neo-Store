@@ -48,7 +48,8 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.uioverrides.QuickstepLauncher;
 import com.android.launcher3.util.ComponentKey;
-import com.google.android.apps.nexuslauncher.NexusLauncher;
+import com.android.systemui.plugins.shared.LauncherOverlayManager;
+import com.google.android.apps.nexuslauncher.OverlayCallbackImpl;
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.saggitt.omega.gestures.GestureController;
@@ -82,10 +83,27 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
 
-    private final NexusLauncher launcherClient;
+    //private final NexusLauncher launcherClient;
+    private OverlayCallbackImpl overlayCallback;
 
-    public OmegaLauncher() {
+    /*public OmegaLauncher(){
         launcherClient = new NexusLauncher(this);
+    }*/
+
+    protected LauncherOverlayManager getDefaultOverlay() {
+        if (overlayCallback != null) {
+            return overlayCallback;
+        } else {
+            loadOverlay();
+            return overlayCallback;
+        }
+
+    }
+
+    private void loadOverlay() {
+        if (overlayCallback == null) {
+            overlayCallback = new OverlayCallbackImpl(this);
+        }
     }
 
     public static OmegaLauncher getLauncher(Context context) {
@@ -106,7 +124,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
 
         SharedPreferences prefs = Utilities.getPrefs(this);
         if (!FeedBridge.Companion.getInstance(this).isInstalled()) {
-            prefs.edit().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, true).apply();
+            prefs.edit().putBoolean(SettingsActivity.ENABLE_MINUS_ONE_PREF, false).apply();
         }
 
         OmegaPreferences mPrefs = Utilities.getOmegaPrefs(this);
@@ -124,7 +142,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         /*CREATE DB TO HANDLE APPS COUNT*/
         DbHelper db = new DbHelper(this);
         db.close();
-
+        loadOverlay();
     }
 
     public GestureController getGestureController() {
@@ -285,18 +303,18 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     }
 
     public LauncherClient getGoogleNow() {
-        return launcherClient.mClient;
+        return overlayCallback.mClient;
     }
 
     public void playQsbAnimation() {
-        launcherClient.mQsbAnimationController.dZ();
+        overlayCallback.mQsbAnimationController.dZ();
     }
 
     public AnimatorSet openQsb() {
-        return launcherClient.mQsbAnimationController.openQsb();
+        return overlayCallback.mQsbAnimationController.openQsb();
     }
 
     public void registerSmartspaceView(SmartspaceView smartspace) {
-        launcherClient.registerSmartspaceView(smartspace);
+        //overlayCallback.mClient.registerSmartspaceView(smartspace);
     }
 }

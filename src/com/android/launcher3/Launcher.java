@@ -460,8 +460,8 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
             mLauncherCallbacks.onCreate(savedInstanceState);
         }
         mOverlayManager = getDefaultOverlay();
-        //PluginManagerWrapper.INSTANCE.get(this).addPluginListener(this,
-        //        OverlayPlugin.class, false /* allowedMultiple */);
+        /*PluginManagerWrapper.INSTANCE.get(this).addPluginListener(this,
+                OverlayPlugin.class, false);*/
 
         mRotationHelper.initialize();
 
