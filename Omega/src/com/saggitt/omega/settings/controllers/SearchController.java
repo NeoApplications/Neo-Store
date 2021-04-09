@@ -23,7 +23,7 @@ import android.content.Context;
 import com.saggitt.omega.preferences.PreferenceController;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import org.jetbrains.annotations.NotNull;
 

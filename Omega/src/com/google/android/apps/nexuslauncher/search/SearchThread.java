@@ -12,7 +12,7 @@ import com.android.launcher3.allapps.search.AllAppsSearchBarController;
 import com.android.launcher3.allapps.search.SearchAlgorithm;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.Collections;
 import java.util.List;

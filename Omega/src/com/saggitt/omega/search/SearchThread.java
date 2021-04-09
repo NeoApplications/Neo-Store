@@ -29,7 +29,6 @@ import com.android.launcher3.BuildConfig;
 import com.android.launcher3.allapps.search.AllAppsSearchBarController;
 import com.android.launcher3.allapps.search.SearchAlgorithm;
 import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 import java.util.Collections;
 import java.util.List;

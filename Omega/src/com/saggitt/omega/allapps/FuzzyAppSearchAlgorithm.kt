@@ -30,7 +30,7 @@ import com.android.launcher3.allapps.search.SearchAlgorithm
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.search.webproviders.WebSearchProvider
+import com.saggitt.omega.search.WebSearchProvider
 import com.saggitt.omega.util.omegaPrefs
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import me.xdrop.fuzzywuzzy.ToStringFunction

@@ -44,8 +44,8 @@ import com.google.android.apps.nexuslauncher.search.SearchThread;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.WebSearchProvider;
 import com.saggitt.omega.search.providers.AppsSearchProvider;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
 
 public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 

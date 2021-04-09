@@ -32,7 +32,7 @@ import com.android.launcher3.util.ComponentKey;
 import com.saggitt.omega.allapps.OmegaAppFilter;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.text.Collator;
 import java.util.ArrayList;

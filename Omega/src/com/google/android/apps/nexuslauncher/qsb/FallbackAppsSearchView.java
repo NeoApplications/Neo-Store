@@ -14,7 +14,7 @@ import com.android.launcher3.allapps.search.AllAppsSearchBarController.Callbacks
 import com.android.launcher3.util.ComponentKey;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
 import java.util.List;

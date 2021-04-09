@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.android.launcher3.R;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

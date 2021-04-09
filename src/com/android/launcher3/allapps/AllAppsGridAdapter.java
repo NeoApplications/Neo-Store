@@ -52,7 +52,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Themes;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.webproviders.WebSearchProvider;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.List;
 
