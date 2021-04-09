@@ -33,7 +33,6 @@ import java.util.List;
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_HOME = LauncherFiles.LAUNCHER_DB2;
     private static final String TABLE_APP_COUNT = "app_count";
-    //private static final String TABLE_DASH_ITEMS = "dash_items";
 
     /*CREAR TABLA PARA CONTAR APPS*/
     private static final String COLUMN_PACKAGE_NAME = "package_name";
@@ -47,7 +46,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DELETE = "DROP TABLE IF EXISTS ";
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public DbHelper(Context c) {
         super(c, DATABASE_HOME, null, 1);

@@ -18,7 +18,6 @@ package com.android.launcher3.config;
 
 import android.content.Context;
 
-import com.android.launcher3.BuildConfig;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.uioverrides.DeviceFlag;
 
@@ -37,7 +36,7 @@ public final class FeatureFlags {
     /**
      * True when the build has come from Android Studio and is being used for local debugging.
      */
-    public static final boolean IS_STUDIO_BUILD = BuildConfig.DEBUG;
+    public static final boolean IS_STUDIO_BUILD = false; //BuildConfig.DEBUG;
     /**
      * Enable moving the QSB on the 0th screen of the workspace. This is not a configuration feature
      * and should be modified at a project level.

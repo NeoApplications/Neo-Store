@@ -44,6 +44,8 @@ import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.shortcuts.ShortcutRequest;
+import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.FlagOp;
 import com.android.launcher3.util.IntSparseArrayMap;
 import com.android.launcher3.util.ItemInfoMatcher;
@@ -51,6 +53,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.SafeCloseable;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.OmegaPreferencesChangeCallback;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.util.ArrayList;
@@ -58,6 +61,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles updates due to changes in package manager (app installed/updated/removed)
@@ -139,6 +143,26 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                 for (int i = 0; i < N; i++) {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
+
+                    // Clear custom app icons
+                    OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+                    Set<ComponentKey> toUpdateSet = prefs.getCustomAppIcon().toMap().keySet();
+                    prefs.beginBlockingEdit();
+                    prefs.getCustomAppIcon().clear();
+                    prefs.endBlockingEdit();
+
+                    ContentWriter writer = new ContentWriter(context,
+                            new ContentWriter.CommitParams(Favorites.CUSTOM_ICON_ENTRY +
+                                    " LIKE ?", new String[]{"%" + packages[i] + "%"}));
+                    writer.put(Favorites.CUSTOM_ICON, (byte[]) null);
+                    writer.put(Favorites.CUSTOM_ICON_ENTRY, (String) null);
+                    writer.commit();
+
+                    OmegaUtilsKt.reloadIconsFromComponents(context, toUpdateSet);
+                    OmegaPreferencesChangeCallback prefsCallback = prefs.getOnChangeCallback();
+                    if (prefsCallback != null) {
+                        prefsCallback.reloadAll();
+                    }
                 }
                 // Fall through
             }
