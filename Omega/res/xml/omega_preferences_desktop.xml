@@ -106,10 +106,11 @@
         android:key="pref_allowOverlap"
         android:title="@string/title_desktop_overlap_placement" />
 
+    <!--
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
         android:key="pref_keepEmptyScreens"
-        android:title="@string/title_desktop_keep_empty" />
+        android:title="@string/title_desktop_keep_empty" /> -->
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="false"
