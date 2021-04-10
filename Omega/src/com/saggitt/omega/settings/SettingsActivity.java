@@ -87,7 +87,6 @@ import com.saggitt.omega.feed.FeedProviderDialogFragment;
 import com.saggitt.omega.feed.FeedProviderPreference;
 import com.saggitt.omega.gestures.ui.GesturePreference;
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment;
-import com.saggitt.omega.preferences.ColorPreferenceCompat;
 import com.saggitt.omega.preferences.ControlledPreference;
 import com.saggitt.omega.preferences.CustomDialogPreference;
 import com.saggitt.omega.preferences.GridSizeDialogFragmentCompat;

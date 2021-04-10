@@ -39,13 +39,14 @@
         android:title="@string/title__notification_count"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.ColorPreferenceCompat
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:defaultValue="@color/notification_background"
         android:dependency="pref_notification_count"
         android:key="pref_notification_background"
         android:title="@string/title__notification_background"
         app:cpv_dialogTitle="@string/title__notification_background"
         app:cpv_showAlphaSlider="true"
+        app:cpv_previewSize="large"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__gestures">

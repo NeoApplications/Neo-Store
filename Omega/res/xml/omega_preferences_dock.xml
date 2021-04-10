@@ -33,13 +33,14 @@
         android:persistent="true"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.ColorPreferenceCompat
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:key="pref_dock_background_color"
         android:title="@string/title_dock_background_color"
         android:dependency="pref_dockBackground"
         android:defaultValue="@color/transparentish"
         app:cpv_dialogTitle="@string/title_dock_background_color"
         app:cpv_showAlphaSlider="true"
+        app:cpv_previewSize="large"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.AutoModeSeekbarPreference

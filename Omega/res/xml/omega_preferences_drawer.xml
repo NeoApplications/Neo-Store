@@ -116,22 +116,24 @@
         app:defaultValue="false"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.ColorPreferenceCompat
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:key="pref_drawer_background_color"
         android:title="@string/title_dock_background_color"
         android:dependency="pref_enable_custom_background"
         android:defaultValue="@color/transparentish"
         app:cpv_dialogTitle="@string/title_dock_background_color"
         app:cpv_showAlphaSlider="true"
+        app:cpv_previewSize="large"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.ColorPreferenceCompat
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:key="pref_drawer_label_color"
         android:title="@string/title_text_color"
         android:defaultValue="@color/textColorPrimary"
-        app:cpv_dialogTitle="@string/title_text_color"
         android:dependency="pref_enable_custom_background"
+        app:cpv_dialogTitle="@string/title_text_color"
         app:cpv_showAlphaSlider="true"
+        app:cpv_previewSize="large"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.SeekbarPreference
