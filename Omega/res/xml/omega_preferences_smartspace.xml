@@ -23,7 +23,7 @@
     <com.saggitt.omega.preferences.PreviewPreference
         android:key="pref_smartspace_preview"
         app:previewLayout="@layout/smartspace_preview" />
--->
+
     <com.saggitt.omega.preferences.SmartspaceAddToHomePreference
         android:key="pref_smartspace_add_to_home"
         android:title="@string/smartspace_add_to_home"
@@ -64,6 +64,7 @@
         android:key="pref_use_pill_qsb"
         android:title="@string/title_use_pill_qsb"
         app:iconSpaceReserved="false" />
+-->
 
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
         android:defaultValue="true"
@@ -85,7 +86,7 @@
         app:useSimpleSummaryProvider="true"
         android:title="@string/title_smartspace_feed_theme"
         app:controllerClass=".GFeedBackgroundController"
-        app:iconSpaceReserved="false" /> -->
+        app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/category__behavior_weather">
 
@@ -110,5 +111,5 @@
             android:title="@string/title_smartspace_event_providers"
             app:iconSpaceReserved="false" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
-
+-->
 </PreferenceScreen>
