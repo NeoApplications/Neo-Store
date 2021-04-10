@@ -384,9 +384,12 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
                 view.setOnClickListener {
                     val frm = OmegaLauncher.getLauncher(themedContext).fragmentManager
-
                     val dialog = ColorPickerDialog.newBuilder()
                         .setDialogType(TYPE_PRESETS)
+                        .setDialogTitle(R.string.tab_color)
+                        .setColor(
+                            AppGroupsUtils.getInstance(themedContext).getTabColor(value.toString())
+                        )
                         .setDialogId(0)
                         .create()
                     dialog.setColorPickerDialogListener(object : ColorPickerDialogListener {
@@ -399,7 +402,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
                         }
                     })
-                    dialog.show(frm, "A")
+                    dialog.show(frm, "TabColor")
                 }
 
                 return view
