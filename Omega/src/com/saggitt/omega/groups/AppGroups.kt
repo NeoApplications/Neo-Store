@@ -30,13 +30,16 @@ import android.widget.TextView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.colorpickerx.ColorPicker
-import com.saggitt.colorpickerx.OnChooseColorListener
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.OmegaPreferencesChangeCallback
+import com.saggitt.omega.color.ColorPickerDialog
+import com.saggitt.omega.color.ColorPickerDialog.TYPE_PRESETS
 import com.saggitt.omega.preferences.SelectableAppsActivity
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.*
+import kotlinx.android.synthetic.main.arrow_toast.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -380,20 +383,23 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
-                    val colorPicker = ColorPicker(themedContext)
-                    colorPicker.setTitle(context.getString(R.string.tab_color));
-                    colorPicker.setRoundColorButton(true)
-                    colorPicker.show()
-                    colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
-                        override fun onCancel() {
-                            colorPicker.dismissDialog()
-                        }
+                    val frm = OmegaLauncher.getLauncher(themedContext).fragmentManager
 
-                        override fun onChooseColor(position: Int, color: Int) {
-                            value = color;
+                    val dialog = ColorPickerDialog.newBuilder()
+                        .setDialogType(TYPE_PRESETS)
+                        .setDialogId(0)
+                        .create()
+                    dialog.setColorPickerDialogListener(object : ColorPickerDialogListener {
+                        override fun onColorSelected(dialogId: Int, color: Int) {
+                            value = color
                             updateColor(view)
                         }
+
+                        override fun onDialogDismissed(dialogId: Int) {
+
+                        }
                     })
+                    dialog.show(frm, "A")
                 }
 
                 return view

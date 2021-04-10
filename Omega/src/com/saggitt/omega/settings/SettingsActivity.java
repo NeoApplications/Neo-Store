@@ -77,8 +77,6 @@ import com.android.launcher3.settings.NotificationDotsPreference;
 import com.android.launcher3.settings.PreferenceHighlighter;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ContentWriter;
-import com.jaredrummler.android.colorpicker.ColorPickerDialog;
-import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.saggitt.omega.FakeLauncherKt;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.OmegaPreferencesChangeCallback;
@@ -787,18 +785,7 @@ public class SettingsActivity extends SettingsBaseActivity
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
             if (preference.getKey() != null) {
-                if (preference instanceof ColorPreferenceCompat) {
-                    ColorPickerDialog dialog = ((ColorPreferenceCompat) preference).getDialog();
-                    dialog.setColorPickerDialogListener(new ColorPickerDialogListener() {
-                        public void onColorSelected(int dialogId, int color) {
-                            ((ColorPreferenceCompat) preference).saveValue(color);
-                        }
-
-                        public void onDialogDismissed(int dialogId) {
-                        }
-                    });
-                    dialog.show((getActivity()).getSupportFragmentManager(), "color-picker-dialog");
-                } else if (preference.getFragment() != null) {
+                if (preference.getFragment() != null) {
                     Log.d("Settings", "Opening Fragment: " + preference.getFragment());
                     SettingsActivity.startFragment(getContext(), preference.getFragment(), null, preference.getTitle());
                 }
@@ -811,10 +798,10 @@ public class SettingsActivity extends SettingsBaseActivity
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals("kill"))
                 Utilities.killLauncher();
-            else if (preference.getKey().equals("pref_widget_feed")) {
-                //Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
-                //startActivity(intent);
-            }
+            //else if (preference.getKey().equals("pref_widget_feed")) {
+            //Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
+            //startActivity(intent);
+            //}
 
             return false;
         }
