@@ -1,5 +1,9 @@
-html,body{color:#fafafa;background:#323232;}a:link {color: #ff7d00;}a:visited {color: #ffca7d;}
+html,body{
+color:#fafafa;
+background:#303030;}
 
+a:link {color: #ff7d00;}
+a:visited {color: #ffca7d;}
 
 .license .name{
     font-weight:bold;

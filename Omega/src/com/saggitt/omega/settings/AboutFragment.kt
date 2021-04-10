@@ -21,11 +21,12 @@ package com.saggitt.omega.settings
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +48,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.uioverrides.WallpaperColorInfo
 import com.google.android.material.tabs.TabLayout
+import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.AboutUtils
@@ -86,7 +87,9 @@ class AboutFragment : Fragment() {
         }
 
         val aboutUtils = AboutUtils(context)
-        val themedContext = ThemedContextProvider(requireContext(), null, ThemeOverride.Settings()).get()
+        val themedContext =
+            ThemedContextProvider(requireContext(), null, ThemeOverride.Settings()).get()
+        val isDark = ThemeManager.getInstance(themedContext).isDark
 
         lifecycleScope.launch {
             //Load view Items
@@ -113,6 +116,12 @@ class AboutFragment : Fragment() {
             view.findViewById<Button>(R.id.source_code).apply {
                 applyColor(accent)
                 setTextColor(accent)
+                compoundDrawableTintList = if (isDark) {
+                    ColorStateList.valueOf(Color.WHITE)
+                } else {
+                    ColorStateList.valueOf(Color.BLACK)
+                }
+
                 setOnClickListener {
                     aboutUtils.openWebBrowser(getString(R.string.about_source_url))
                 }
@@ -121,6 +130,11 @@ class AboutFragment : Fragment() {
             view.findViewById<Button>(R.id.donate).apply {
                 applyColor(accent)
                 setTextColor(accent)
+                compoundDrawableTintList = if (isDark) {
+                    ColorStateList.valueOf(Color.WHITE)
+                } else {
+                    ColorStateList.valueOf(Color.BLACK)
+                }
                 setOnClickListener {
                     aboutUtils.openWebBrowser(getString(R.string.app_donate_url))
                 }
@@ -130,18 +144,18 @@ class AboutFragment : Fragment() {
             developer.setOnClickListener {
                 aboutUtils.openWebBrowser("https://github.com/otakuhqz")
             }
+
             val contrib1 = view.findViewById<ConstraintLayout>(R.id.contributor1)
             contrib1.setOnClickListener {
                 aboutUtils.openWebBrowser("https://github.com/machiav3lli")
             }
+
             val contrib2 = view.findViewById<ConstraintLayout>(R.id.contributor2)
             contrib2.setOnClickListener {
                 aboutUtils.openWebBrowser("https://github.com/nonaybay")
             }
-            val isDark = WallpaperColorInfo.getInstance(requireContext()).isDark
-            //val isDark =  Themes.getAttrBoolean(requireContext(), R.attr.isMainColorDark);
-            Log.d("AboutFragment", "Theme is " + isDark)
-            val cssFile = if (!isDark) {
+
+            val cssFile = if (isDark) {
                 "about_dark.css"
             } else {
                 "about_light.css"
@@ -214,8 +228,10 @@ class AboutFragment : Fragment() {
             "<br><b>Flavor:</b> " + tmp!!.replace("flavor", "")
         }
         buildInfoText += if (aboutUtils.bcstr("BUILD_TYPE", "").also { tmp = it }.isEmpty()) "" else " ($tmp)"
-        buildInfoText += if (aboutUtils.bcstr("BUILD_DATE", "").also { tmp = it }.isEmpty()) "" else "<br><b>Build date:</b> $tmp"
-        buildInfoText += if (aboutUtils.getAppInstallationSource().also { tmp = it }.isEmpty()) "" else "<br><b>ISource:</b> $tmp"
+        buildInfoText += if (aboutUtils.bcstr("BUILD_DATE", "").also { tmp = it }
+                .isEmpty()) "" else "<br><b>Build date:</b> $tmp"
+        buildInfoText += if (aboutUtils.appInstallationSource.also { tmp = it }
+                .isEmpty()) "" else "<br><b>ISource:</b> $tmp"
         buildInfoText += "<br><b>Manufacturer :</b> " + Build.MANUFACTURER
         buildInfoText += "<br><b>Model :</b> " + Build.MODEL
         buildInfoText += "<br><b>OS Version :</b> Android " + Build.VERSION.RELEASE
