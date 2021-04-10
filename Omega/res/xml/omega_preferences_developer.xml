@@ -53,7 +53,7 @@
             android:key="pref_feedProviderAllowAll"
             android:title="Disable feed provider whitelist"
             android:summary="Allow selecting feed implementations which haven't been checked by the lawnchair team"
-            android:defaultValue="false" />
+            android:defaultValue="true" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 
 </PreferenceScreen>

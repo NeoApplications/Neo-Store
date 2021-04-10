@@ -242,7 +242,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --FEED-- */
     var feedProvider by StringPref("pref_feedProvider", "", restart)
-    val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", false, restart)
+    val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", true, restart)
     var feedProviderPackage by StringPref(
         "pref_feed_provider_package",
         BuildConfig.APPLICATION_ID,
