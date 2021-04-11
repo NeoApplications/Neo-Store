@@ -43,7 +43,7 @@ public class GestureState implements RecentsAnimationCallbacks.RecentsAnimationL
     public static final GestureState DEFAULT_STATE = new GestureState();
     private static final String TAG = "GestureState";
 
-    private static final ArrayList<String> STATE_NAMES = new ArrayList<>();
+    private static ArrayList<String> STATE_NAMES = new ArrayList<>();
     private static int FLAG_COUNT = 0;
     // Called when the end target as been set
     public static final int STATE_END_TARGET_SET =
@@ -86,6 +86,7 @@ public class GestureState implements RecentsAnimationCallbacks.RecentsAnimationL
     private int mLastStartedTaskId = -1;
 
     public GestureState(OverviewComponentObserver componentObserver, int gestureId) {
+        InitializeStateNames();
         mHomeIntent = componentObserver.getHomeIntent();
         mOverviewIntent = componentObserver.getOverviewIntent();
         mActivityInterface = componentObserver.getActivityInterface();
@@ -108,11 +109,29 @@ public class GestureState implements RecentsAnimationCallbacks.RecentsAnimationL
 
     public GestureState() {
         // Do nothing, only used for initializing the gesture state prior to user unlock
+        InitializeStateNames();
         mHomeIntent = new Intent();
         mOverviewIntent = new Intent();
         mActivityInterface = null;
         mStateCallback = new MultiStateCallback(STATE_NAMES.toArray(new String[0]));
         mGestureId = -1;
+    }
+
+    private static void InitializeStateNames() {
+        if (STATE_NAMES == null) {
+            STATE_NAMES = new ArrayList<>();
+        }
+
+        if (STATE_NAMES.isEmpty()) {
+            STATE_NAMES.add("STATE_END_TARGET_ANIMATION_FINISHED");
+            STATE_NAMES.add("STATE_RECENTS_ANIMATION_INITIALIZED");
+            STATE_NAMES.add("STATE_RECENTS_ANIMATION_STARTED");
+            STATE_NAMES.add("STATE_RECENTS_ANIMATION_CANCELED");
+            STATE_NAMES.add("STATE_RECENTS_ANIMATION_FINISHED");
+            STATE_NAMES.add("STATE_RECENTS_ANIMATION_ENDED");
+            STATE_NAMES.add("STATE_OVERSCROLL_WINDOW_CREATED");
+            STATE_NAMES.add("STATE_RECENTS_SCROLLING_FINISHED");
+        }
     }
 
     private static int getFlagForIndex(String name) {
