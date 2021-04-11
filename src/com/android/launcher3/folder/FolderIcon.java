@@ -27,6 +27,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -380,7 +381,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             Rect from = new Rect();
             dragLayer.getViewRectRelativeToSelf(animateView, from);
             Rect to = finalRect;
-            if (to == null) {
+            if (to == null && !isInAppDrawer()) {
                 to = new Rect();
                 Workspace workspace = launcher.getWorkspace();
                 // Set cellLayout and this to it's final state to compute final animation locations
@@ -422,6 +423,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             if (!itemAdded) {
                 mInfo.add(item, index, true);
+            }
+
+            if (isInAppDrawer()) {
+                return;
             }
 
             int[] center = new int[2];
@@ -760,6 +765,22 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (!mInfo.useIconMode(mActivity.getDeviceProfile().mContext) && isInAppDrawer()) {
+            DeviceProfile grid = mActivity.getDeviceProfile();
+            int drawablePadding = grid.allAppsIconDrawablePaddingPx;
+
+            Paint.FontMetrics fm = mFolderName.getPaint().getFontMetrics();
+            int cellHeightPx = mFolderName.getIconSize() + drawablePadding +
+                    (int) Math.ceil(fm.bottom - fm.top);
+            int height = MeasureSpec.getSize(heightMeasureSpec);
+            setPadding(getPaddingLeft(), (height - cellHeightPx) / 2, getPaddingRight(),
+                    getPaddingBottom());
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     public void onItemsChanged(boolean animate) {
         updatePreviewItems(animate);
         invalidate();
@@ -841,6 +862,9 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void clearLeaveBehindIfExists() {
+        if (isInAppDrawer()) {
+            return;
+        }
         ((CellLayout.LayoutParams) getLayoutParams()).canReorder = true;
         if (mInfo.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
             CellLayout cl = (CellLayout) getParent().getParent();

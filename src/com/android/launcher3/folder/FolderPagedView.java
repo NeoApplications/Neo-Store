@@ -94,7 +94,6 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
     // If the views are attached to the folder or not. A folder should be bound when its
     // animating or is open.
     private boolean mViewsBound = false;
-
     public FolderPagedView(Context context, AttributeSet attrs) {
         super(context, attrs);
         InvariantDeviceProfile profile = LauncherAppState.getIDP(context);
@@ -202,7 +201,9 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
         if (item == null) {
             return null;
         }
-        final BubbleTextView textView = mViewCache.getView(
+        int layout = mFolder.isInAppDrawer() ? R.layout.all_apps_folder_application
+                : R.layout.folder_application;
+        BubbleTextView textView = mViewCache.getView(
                 R.layout.folder_application, getContext(), null);
         textView.applyFromWorkspaceItem(item);
         textView.setOnClickListener(ItemClickHandler.INSTANCE);
@@ -232,6 +233,13 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
     private CellLayout createAndAddNewPage() {
         DeviceProfile grid = Launcher.getLauncher(getContext()).getDeviceProfile();
         CellLayout page = mViewCache.getView(R.layout.folder_page, getContext(), this);
+        if (mFolder.isInAppDrawer()) {
+            // TODO: implement this
+            // page.setCellDimensions(grid.allAppsFolderCellWidthPx, grid.allAppsFolderCellHeightPx);
+            page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
+        } else {
+            page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
+        }
         page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);

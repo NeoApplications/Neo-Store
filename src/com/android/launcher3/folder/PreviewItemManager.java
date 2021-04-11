@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.graphics.PreloadIconDrawable;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
@@ -153,7 +154,8 @@ public class PreviewItemManager {
     }
 
     private PreviewItemDrawingParams getFinalIconParams(PreviewItemDrawingParams params) {
-        float iconSize = mIcon.mActivity.getDeviceProfile().iconSizePx;
+        DeviceProfile dp = mIcon.mActivity.getDeviceProfile();
+        float iconSize = mIcon.isInAppDrawer() ? dp.allAppsIconSizePx : dp.iconSizePx;
 
         final float scale = iconSize / mReferenceDrawable.getIntrinsicWidth();
         final float trans = (mIcon.mBackground.previewSize - iconSize) / 2;

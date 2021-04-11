@@ -464,7 +464,7 @@ public class DeviceProfile {
         }
         allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
         if (prefs.getDrawerLabelRows() > 1) {
-            allAppsCellHeightPx += 20;
+            allAppsCellHeightPx += 50;
         }
         if (isVerticalBarLayout()) {
             // Always hide the Workspace text with vertical bar layout.
@@ -582,6 +582,9 @@ public class DeviceProfile {
 
         folderCellWidthPx = folderChildIconSizePx + 2 * cellPaddingX;
         folderCellHeightPx = folderChildIconSizePx + 2 * cellPaddingY + textHeight;
+        if (prefs.getHomeLabelRows() > 1) {
+            folderCellHeightPx += 50;
+        }
         folderChildDrawablePaddingPx = Math.max(0,
                 (folderCellHeightPx - folderChildIconSizePx - textHeight) / 3);
     }

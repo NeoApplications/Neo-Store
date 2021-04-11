@@ -132,6 +132,7 @@
     <string name="pref_appcategorization_flowerpot_summary">Pick shortcuts automatically.</string>
     <string name="drawer_folders">Folders</string>
     <string name="drawer_tabs">Tabs</string>
+    <string name="add_new_tab">Add</string>
     <string name="selected_count">%1$d selected</string>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d App</item>
