@@ -385,4 +385,5 @@
     <string name="dash_mobile_network_title">Mobilnettverk</string>
     <string name="dash_device_settings_title">Enhetsinnstillinger</string>
     <string name="dash_all_apps_title">Åpne alle programmer</string>
+    <string name="add_new_tab">Legg til</string>
 </resources>
