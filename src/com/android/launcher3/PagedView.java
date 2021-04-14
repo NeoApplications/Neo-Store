@@ -16,14 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.compat.AccessibilityManagerCompat.isAccessibilityEnabled;
-import static com.android.launcher3.compat.AccessibilityManagerCompat.isObservedEventType;
-import static com.android.launcher3.config.FeatureFlags.QUICKSTEP_SPRINGS;
-import static com.android.launcher3.touch.OverScroll.OVERSCROLL_DAMP_FACTOR;
-import static com.android.launcher3.touch.PagedOrientationHandler.CANVAS_TRANSLATE;
-import static com.android.launcher3.touch.PagedOrientationHandler.VIEW_SCROLL_BY;
-import static com.android.launcher3.touch.PagedOrientationHandler.VIEW_SCROLL_TO;
-
 import android.animation.LayoutTransition;
 import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
@@ -63,6 +55,14 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 
 import java.util.ArrayList;
+
+import static com.android.launcher3.compat.AccessibilityManagerCompat.isAccessibilityEnabled;
+import static com.android.launcher3.compat.AccessibilityManagerCompat.isObservedEventType;
+import static com.android.launcher3.config.FeatureFlags.QUICKSTEP_SPRINGS;
+import static com.android.launcher3.touch.OverScroll.OVERSCROLL_DAMP_FACTOR;
+import static com.android.launcher3.touch.PagedOrientationHandler.CANVAS_TRANSLATE;
+import static com.android.launcher3.touch.PagedOrientationHandler.VIEW_SCROLL_BY;
+import static com.android.launcher3.touch.PagedOrientationHandler.VIEW_SCROLL_TO;
 
 /**
  * An abstraction of the original Workspace which supports browsing through a
@@ -1666,17 +1666,21 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             info.addAction(pagesFlipped ?
                     AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD
                     : AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD);
-            info.addAction(mIsRtl ?
-                    AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_LEFT
-                    : AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_RIGHT);
+            if (Utilities.ATLEAST_Q) {
+                info.addAction(mIsRtl ?
+                        AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_LEFT
+                        : AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_RIGHT);
+            }
         }
         if (getCurrentPage() >= offset) {
             info.addAction(pagesFlipped ?
                     AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD
                     : AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD);
-            info.addAction(mIsRtl ?
-                    AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_RIGHT
-                    : AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_LEFT);
+            if (Utilities.ATLEAST_Q) {
+                info.addAction(mIsRtl ?
+                        AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_RIGHT
+                        : AccessibilityNodeInfo.AccessibilityAction.ACTION_PAGE_LEFT);
+            }
         }
         // Accessibility-wise, PagedView doesn't support long click, so disabling it.
         // Besides disabling the accessibility long-click, this also prevents this view from getting
