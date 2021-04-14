@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static java.lang.Math.round;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -34,6 +32,8 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DefaultDisplay;
 import com.android.launcher3.util.WindowBounds;
 import com.saggitt.omega.OmegaPreferences;
+
+import static java.lang.Math.round;
 
 public class DeviceProfile {
 
@@ -464,7 +464,7 @@ public class DeviceProfile {
         }
         allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
         if (prefs.getDrawerLabelRows() > 1) {
-            allAppsCellHeightPx += 50;
+            allAppsCellHeightPx += 25;
         }
         if (isVerticalBarLayout()) {
             // Always hide the Workspace text with vertical bar layout.
@@ -583,7 +583,7 @@ public class DeviceProfile {
         folderCellWidthPx = folderChildIconSizePx + 2 * cellPaddingX;
         folderCellHeightPx = folderChildIconSizePx + 2 * cellPaddingY + textHeight;
         if (prefs.getHomeLabelRows() > 1) {
-            folderCellHeightPx += 50;
+            folderCellHeightPx += 25;
         }
         folderChildDrawablePaddingPx = Math.max(0,
                 (folderCellHeightPx - folderChildIconSizePx - textHeight) / 3);

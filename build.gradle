@@ -77,7 +77,7 @@ android {
     buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
-    def code = 149
+    def code = 150
 
     defaultConfig {
         minSdkVersion 26
@@ -204,7 +204,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.logginginterceptor}"
     implementation "me.xdrop:fuzzywuzzy:${versions.fuzzywuzzy}"
-    implementation 'com.github.otakuhqz:colorpickerx:1.2.1'
+    implementation 'com.github.otakuhqz:colorpickerx:1.4.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 
     // Recents lib dependency
