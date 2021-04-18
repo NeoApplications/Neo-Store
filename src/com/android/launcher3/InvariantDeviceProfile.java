@@ -16,13 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.Utilities.getDevicePrefs;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
-import static java.lang.Math.max;
-
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetHostView;
 import android.content.BroadcastReceiver;
@@ -63,6 +56,13 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static com.android.launcher3.Utilities.getDevicePrefs;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
+import static java.lang.Math.max;
 
 public class InvariantDeviceProfile {
 
@@ -468,11 +468,16 @@ public class InvariantDeviceProfile {
             Context context, DefaultDisplay.Info displayInfo, DisplayOption displayOption) {
         OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
 
-        GridOption closestProfile = displayOption.grid;
+        GridOption originalProfile = displayOption.grid;
+        GridOverrides overrides = new GridOverrides(originalProfile);
+
+        GridOption closestProfile = new GridOption(overrides);
+
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
         numColsDrawer = closestProfile.numColsDrawer;
         numHotseatIcons = closestProfile.numHotseatIcons;
+        numHotseatIconsOriginal = originalProfile.numHotseatIcons;
 
         numRowsOriginal = closestProfile.numRows;
         numColumnsOriginal = closestProfile.numColumns;
