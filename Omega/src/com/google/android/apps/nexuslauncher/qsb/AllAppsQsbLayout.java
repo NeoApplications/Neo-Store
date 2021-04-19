@@ -1,12 +1,5 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
-import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +39,13 @@ import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.WebSearchProvider;
 import com.saggitt.omega.search.providers.AppsSearchProvider;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
+import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 
 public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 
@@ -176,18 +176,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         qsbConfiguration.addListener(this);
     }
 
-    protected final int aA(int i) {
-        if (widgetMode) {
-            return i;
-        }
-        if (mActivity.getDeviceProfile().isVerticalBarLayout()) {
-            return (i - mAppsView.getActiveRecyclerView().getPaddingLeft()) - mAppsView
-                    .getActiveRecyclerView().getPaddingRight();
-        }
-        Rect padding = mActivity.getDeviceProfile().getHotseatLayoutPadding();
-        return (i - padding.left) - padding.right;
-    }
-
     public final void initialize(AllAppsContainerView allAppsContainerView) {
         mAppsView = allAppsContainerView;
         mAppsView.addElevationController(new RecyclerView.OnScrollListener() {
@@ -208,7 +196,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         az(mAllAppsBgColor);
         addOrUpdateSearchPaint(qsbConfiguration.micStrokeWidth());
         showHintAssitant = qsbConfiguration.hintIsForAssistant();
-        mUseTwoBubbles = useTwoBubbles();
         setHintText(qsbConfiguration.hintTextValue(), mHint);
         addOrUpdateSearchRipple();
     }
@@ -216,10 +203,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     public void onClick(View view) {
         super.onClick(view);
         startSearch("", mResult);
-    }
-
-    public final void l(String str) {
-        startSearch(str, 0);
     }
 
     @Override
