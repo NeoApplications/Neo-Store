@@ -210,4 +210,9 @@
     <string name="title__drawer_hide_apps">Aplicaciones ocultas</string>
     <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
     <string name="title_dock_two_row">Mostrar segunda fila</string>
+    <string name="title_desktop_keep_empty">Permitir páginas en blanco</string>
+    <string name="title_desktop_lock_desktop">Bloquear escritorio</string>
+    <string name="summary__general_notifications">Contador de notificaciones, color de notificaciones, gestos</string>
+    <string name="summary__general_drawer">Personaliza tu panel</string>
+    <string name="summary__general_dock">Iconos del Dock, barra de búsqueda</string>
 </resources>
