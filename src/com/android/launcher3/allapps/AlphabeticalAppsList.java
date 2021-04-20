@@ -459,6 +459,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     break;
             }
         }
+
     }
 
     private List<AppInfo> getFiltersAppInfos() {
