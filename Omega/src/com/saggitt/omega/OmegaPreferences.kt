@@ -99,7 +99,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
     val drawerTabs get() = appGroupsManager.drawerTabs
     val appGroupsManager by lazy { AppGroupsManager(this) }
-    val separateWorkApps by BooleanPref("pref_separateWorkApps", true, recreate)
+    val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
     val drawerBackgroundColor by IntPref("pref_drawer_background_color", R.color.white, recreate)
     val customBackground by BooleanPref("pref_enable_custom_background", false, doNothing)
     val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
@@ -108,7 +108,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     private val predictionGridSizeDelegate = ResettableLazy { GridSize(this, "numPredictions", LauncherAppState.getIDP(context), recreate) }
     val predictionGridSize by predictionGridSizeDelegate
     val saveScrollPosition by BooleanPref("pref_keepScrollState", false, doNothing)
-    val drawerLayoutStyle by IntPref("drawer_mode", 1)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)

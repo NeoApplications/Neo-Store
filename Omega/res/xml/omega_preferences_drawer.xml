@@ -94,6 +94,12 @@
         android:persistent="true"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:key="pref_separateWorkApps"
+        android:title="@string/title_separate_work_apps"
+        android:defaultValue="true"
+        android:persistent="true" />
+
     <androidx.preference.Preference
         android:fragment="com.saggitt.omega.groups.ui.AppCategorizationFragment"
         android:key="pref_categorization"

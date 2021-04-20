@@ -85,6 +85,7 @@
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
     <string name="title__drawer_all_apps">Show "All Apps" label</string>
+    <string name="title_separate_work_apps">Second Tab for Work Apps</string>
     <string name="title__drawer_paged_apps">Paged Apps view</string>
     <string name="title__drawer_hide_icon_labels">Hide app names</string>
     <string name="title__drawer_hide_apps">Hidden App Shortcuts</string>
