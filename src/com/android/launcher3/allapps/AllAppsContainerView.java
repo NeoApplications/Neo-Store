@@ -73,6 +73,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
 import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
 
 /**
@@ -100,7 +102,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     private FloatingHeaderView mHeader;
     protected SearchUiManager mSearchUiManager;
-
 
     private SpannableStringBuilder mSearchQueryBuilder = null;
     protected boolean mUsingTabs;
@@ -453,7 +454,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mUsingTabs = showTabs;
 
         if (mUsingTabs) {
-            //setupWorkToggle();
             mTabsController.setup(mViewPager);
             PersonalWorkSlidingTabStrip tabStrip = findViewById(R.id.tabs);
             tabStrip.inflateButtons(mTabsController.getTabs());
@@ -461,6 +461,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 tabStrip.setScroll(0, 1);
             }
             onTabChanged(currentTab);
+            if (mTabsController.getTabs().getHasWorkApps()) {
+                setupWorkToggle();
+            }
         } else {
             mTabsController.setup((View) findViewById(R.id.apps_list_view));
             AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
@@ -535,11 +538,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mTabsController.bindButtons(findViewById(R.id.tabs), mViewPager);
         }
         reset(true /* animate */, true);
-        /*if (mWorkModeSwitch != null && mAH[pos].mIsWork) {
+        if (mWorkModeSwitch != null && mAH[pos].mIsWork) {
             mWorkModeSwitch.setWorkTabVisible(pos == AdapterHolder.WORK
                     && mAllAppsStore.hasModelFlag(
                     FLAG_HAS_SHORTCUT_PERMISSION | FLAG_QUIET_MODE_CHANGE_PERMISSION));
-        }*/
+        }
 
     }
 
