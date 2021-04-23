@@ -23,7 +23,7 @@
     android:translationY="30dp">
 
     <ImageView
-        android:id="@id/g_icon"
+        android:id="@+id/g_icon"
         android:layout_width="@dimen/qsb_mic_width"
         android:layout_height="match_parent"
         android:layout_gravity="start|center"
@@ -44,12 +44,12 @@
 
     <FrameLayout
         android:id="@+id/mic_frame"
-        android:layout_width="48dp"
+        android:layout_width="56dp"
         android:layout_height="match_parent"
         android:layout_gravity="end|center">
 
         <ImageView
-            android:id="@id/mic_icon"
+            android:id="@+id/mic_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end|center"

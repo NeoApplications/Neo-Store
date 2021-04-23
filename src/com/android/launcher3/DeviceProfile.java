@@ -460,7 +460,7 @@ public class DeviceProfile {
             allAppsIconSizePx = iconSizePx;
             allAppsIconTextSizePx = iconTextSizePx;
             allAppsIconDrawablePaddingPx = iconDrawablePaddingPx;
-            allAppsCellHeightPx = getCellSize().y;
+            allAppsCellHeightPx = (int) (getCellSize().y * prefs.getDrawerPaddingScale());
         }
         allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
         if (prefs.getDrawerLabelRows() > 1) {

@@ -546,6 +546,8 @@ public class InvariantDeviceProfile {
 
         ComponentName cn = new ComponentName(context.getPackageName(), getClass().getName());
         defaultWidgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(context, cn, null);
+
+        numHotseatIcons = prefs.getSharedPrefs().getInt("pref_numHotseatIcons", numHotseatIcons);
     }
 
     private void onConfigChanged(Context context) {

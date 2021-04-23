@@ -386,6 +386,9 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                     colorPicker.setRoundColorButton(true)
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
+                    if (value == null) {
+                        value = accent
+                    }
                     colorPicker.setDefaultColorButton(value!!)
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {

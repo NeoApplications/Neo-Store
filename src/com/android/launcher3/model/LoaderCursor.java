@@ -420,13 +420,13 @@ public class LoaderCursor extends CursorWrapper {
     protected boolean checkItemPlacement(ItemInfo item) {
         int containerIndex = item.screenId;
         if (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
+            Log.d(TAG, "Loading App" + item.title);
             final GridOccupancy hotseatOccupancy =
                     occupied.get(LauncherSettings.Favorites.CONTAINER_HOTSEAT);
 
             int hotseatRows = Utilities.getOmegaPrefs(mContext).getDockRowsCount();
-            int hotseatSize = mIDP.numHotseatIcons;
-            int hotseatX = (int) (item.screenId % hotseatSize);
-            int hotseatY = (int) (item.screenId / hotseatSize);
+            int hotseatX = item.screenId % mIDP.numHotseatIcons;
+            int hotseatY = item.screenId / mIDP.numHotseatIcons;
 
             if (item.screenId >= mIDP.numHotseatIcons) {
                 Log.e(TAG, "Error loading shortcut " + item
@@ -447,7 +447,7 @@ public class LoaderCursor extends CursorWrapper {
                     return true;
                 }
             } else {
-                final GridOccupancy occupancy = new GridOccupancy(hotseatSize, hotseatRows);
+                final GridOccupancy occupancy = new GridOccupancy(mIDP.numHotseatIcons, hotseatRows);
                 occupancy.cells[hotseatX][hotseatY] = true;
                 occupied.put(LauncherSettings.Favorites.CONTAINER_HOTSEAT, occupancy);
                 return true;

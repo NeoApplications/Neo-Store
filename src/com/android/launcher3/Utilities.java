@@ -16,9 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -117,6 +114,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -947,7 +947,7 @@ public final class Utilities {
         int userDelimiterIndex = componentKeyStr.indexOf("#");
         if (userDelimiterIndex != -1) {
             String componentStr = componentKeyStr.substring(0, userDelimiterIndex);
-            Log.e("MakeComponents", componentKeyStr);
+            //Log.e("MakeComponents", componentKeyStr);
             //long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
             long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 1, componentKeyStr.length()));
             componentName = ComponentName.unflattenFromString(componentStr);

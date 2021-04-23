@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -33,6 +31,8 @@ import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 
 import java.util.ArrayList;
+
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 
 public class Hotseat extends CellLayout implements LogContainerProvider, Insettable {
 
@@ -71,10 +71,11 @@ public class Hotseat extends CellLayout implements LogContainerProvider, Insetta
         removeAllViewsInLayout();
         mHasVerticalHotseat = hasVerticalHotseat;
         InvariantDeviceProfile idp = mActivity.getDeviceProfile().inv;
+        int rows = Utilities.getOmegaPrefs(getContext()).getDockRowsCount();
         if (hasVerticalHotseat) {
-            setGridSize(1, idp.numHotseatIcons);
+            setGridSize(rows, idp.numHotseatIcons);
         } else {
-            setGridSize(idp.numHotseatIcons, 1);
+            setGridSize(idp.numHotseatIcons, rows);
         }
     }
 

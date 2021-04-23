@@ -26,9 +26,6 @@ import com.android.launcher3.Utilities;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-
 public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TEXT_ASSIST = "com.google.android.googlequicksearchbox.TEXT_ASSIST";
 
@@ -111,12 +108,9 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
                     null);
         } else {
             SearchProvider provider = controller.getSearchProvider();
-            provider.startSearch(new Function1<Intent, Unit>() {
-                @Override
-                public Unit invoke(Intent intent) {
-                    getContext().startActivity(intent, ActivityOptionsCompat.makeClipRevealAnimation(mQsbView, 0, 0, mQsbView.getWidth(), mQsbView.getWidth()).toBundle());
-                    return null;
-                }
+            provider.startSearch(intent -> {
+                getContext().startActivity(intent, ActivityOptionsCompat.makeClipRevealAnimation(mQsbView, 0, 0, mQsbView.getWidth(), mQsbView.getWidth()).toBundle());
+                return null;
             });
         }
     }

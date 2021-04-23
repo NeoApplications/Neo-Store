@@ -135,7 +135,7 @@ class OmegaApp : Application() {
         val isRecentsComponent = recentsComponent.packageName == packageName
                 && recentsComponent.className == RecentsActivity::class.java.name
         if (!isRecentsComponent) {
-            Log.d("OmegaApp", "config_recentsComponentName ($recentsComponent) is not Lawnchair, disabling recents")
+            Log.d("OmegaApp", "config_recentsComponentName ($recentsComponent) is not Omega, disabling recents")
             return false
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {

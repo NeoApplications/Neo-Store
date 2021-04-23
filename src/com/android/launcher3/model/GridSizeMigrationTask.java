@@ -1,12 +1,5 @@
 package com.android.launcher3.model;
 
-import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_HOTSEAT_COUNT;
-import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_WORKSPACE_SIZE;
-import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.Utilities.parsePoint;
-import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
-
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -45,6 +38,13 @@ import com.android.launcher3.widget.WidgetManagerHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+
+import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_HOTSEAT_COUNT;
+import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_WORKSPACE_SIZE;
+import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.Utilities.parsePoint;
+import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
 
 /**
  * This class takes care of shrinking the workspace (by maximum of one row and one column), as a
@@ -238,8 +238,7 @@ public class GridSizeMigrationTask {
             // Hotseat.
             if (srcHotseatCount != idp.numHotseatIcons
                     && new GridSizeMigrationTask(context, transaction.getDb(), validPackages,
-                    migrateForPreview, srcHotseatCount,
-                    idp.numHotseatIcons).migrateHotseat()) {
+                    migrateForPreview, srcHotseatCount, idp.numHotseatIcons).migrateHotseat()) {
                 dbChanged = true;
             }
 
