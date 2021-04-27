@@ -17,15 +17,8 @@
 
 package com.saggitt.omega.smartspace.weather
 
-import android.util.Log
-import com.google.android.apps.nexuslauncher.smartspace.ISmartspace
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceDataContainer
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
-import com.saggitt.omega.smartspace.SmartspaceDataWidget
-import com.saggitt.omega.util.makeBasicHandler
 
-class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
+/*class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {
 
     private val smartspaceController = SmartspaceController.get(controller.context)
@@ -88,4 +81,4 @@ class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         data?.let { initListeners(it) }
     }
 }
-
+*/

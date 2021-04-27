@@ -1,4 +1,4 @@
-include ':IconLoader', ':SystemUISharedLib', ':QuickstepCompat', ':QuickstepCompatVQ', ':QuickstepCompatVP'
+include ':IconLoader'//, ':SystemUISharedLib', ':QuickstepCompat', ':QuickstepCompatVQ', ':QuickstepCompatVP'
 project(':IconLoader').projectDir = new File(rootDir, 'iconloaderlib')
 
 include ':SharedLibWrapper'

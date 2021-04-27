@@ -31,6 +31,11 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.dash.provider.AllAppsShortcut
 import com.saggitt.omega.dash.provider.MobileNetwork
+import com.saggitt.omega.gestures.BlankGestureHandler
+import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
+import com.saggitt.omega.gestures.handlers.StartAppSearchGestureHandler
+import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackManager
@@ -293,6 +298,18 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             with(prefs.edit()) {
                 // Migration codes here
                 putString("pref_iconShape", "cylinder")
+                // Gestures
+                putString("pref_gesture_swipe_down",
+                        when (Integer.parseInt(prefs.getString("pref_pulldownAction", "1"))) {
+                            1 -> NotificationsOpenGestureHandler(context, null)
+                            2 -> StartGlobalSearchGestureHandler(context, null)
+                            3 -> StartAppSearchGestureHandler(context, null)
+                            else -> BlankGestureHandler(context, null)
+                        }.toString())
+                if (prefs.getBoolean("pref_homeOpensDrawer", false)) {
+                    putString("pref_gesture_press_home",
+                            OpenDrawerGestureHandler(context, null).toString())
+                }
 
                 putInt(VERSION_KEY, CURRENT_VERSION)
                 commit()

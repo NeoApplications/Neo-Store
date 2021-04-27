@@ -60,3 +60,6 @@
 -keep class com.android.quickstep.** {
   *;
 }
+
+# Silence warnings about classes that are available at runtime
+-dontwarn com.android.internal.logging.MetricsLogger

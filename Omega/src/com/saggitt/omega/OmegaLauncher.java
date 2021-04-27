@@ -18,10 +18,6 @@
 
 package com.saggitt.omega;
 
-import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
-
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
@@ -68,6 +64,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import kotlin.jvm.functions.Function0;
+
+import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
@@ -133,6 +133,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (mPrefs.getFirstRun()) {
             mPrefs.setFirstRun(false);
             mPrefs.setIconShape("cylinder");
+            mPrefs.getEditor().putString("pref_gesture_swipe_down", "1").apply();
         }
         Config config = new Config(this);
         config.setAppLanguage(mPrefs.getLanguage());

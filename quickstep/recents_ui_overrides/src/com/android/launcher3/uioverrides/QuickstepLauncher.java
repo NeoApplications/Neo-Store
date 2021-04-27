@@ -15,19 +15,6 @@
  */
 package com.android.launcher3.uioverrides;
 
-import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_FOCUSED;
-
-import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.LauncherState.OVERVIEW;
-import static com.android.launcher3.LauncherState.OVERVIEW_MODAL_TASK;
-import static com.android.launcher3.compat.AccessibilityManagerCompat.sendCustomAccessibilityEvent;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
-import static com.android.launcher3.testing.TestProtocol.HINT_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.QUICK_SWITCH_STATE_ORDINAL;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.quickstep.SysUINavigationMode.Mode.NO_BUTTON;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -77,6 +64,7 @@ import com.android.quickstep.SysUINavigationMode.Mode;
 import com.android.quickstep.SystemUiProxy;
 import com.android.quickstep.views.RecentsView;
 import com.android.quickstep.views.TaskView;
+import com.saggitt.omega.gestures.VerticalSwipeGestureController;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -84,6 +72,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Stream;
+
+import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_FOCUSED;
+import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OVERVIEW;
+import static com.android.launcher3.LauncherState.OVERVIEW_MODAL_TASK;
+import static com.android.launcher3.compat.AccessibilityManagerCompat.sendCustomAccessibilityEvent;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
+import static com.android.launcher3.testing.TestProtocol.HINT_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.QUICK_SWITCH_STATE_ORDINAL;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.quickstep.SysUINavigationMode.Mode.NO_BUTTON;
 
 public class QuickstepLauncher extends BaseQuickstepLauncher {
 
@@ -270,6 +270,7 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
         if (mode == NO_BUTTON) {
             list.add(new NoButtonQuickSwitchTouchController(this));
             list.add(new NavBarToHomeTouchController(this));
+            list.add(new VerticalSwipeGestureController(this));
             if (TestProtocol.sDebugTracing) {
                 Log.d(TestProtocol.PAUSE_NOT_DETECTED, "createTouchControllers.2");
             }
@@ -282,6 +283,8 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
                 list.add(new FlingAndHoldTouchController(this));
             }
         } else {
+
+            list.add(new VerticalSwipeGestureController(this));
             if (getDeviceProfile().isVerticalBarLayout()) {
                 list.add(new OverviewToAllAppsTouchController(this));
                 list.add(new LandscapeEdgeSwipeController(this));

@@ -18,14 +18,12 @@ package com.android.quickstep.logging;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.stats.launcher.nano.Launcher;
 import android.stats.launcher.nano.LauncherExtension;
 import android.stats.launcher.nano.LauncherTarget;
 import android.util.Log;
 import android.view.View;
 
-import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.logging.StatsLogUtils;
 import com.android.launcher3.model.data.ItemInfo;
@@ -34,17 +32,12 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ItemType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import com.android.launcher3.util.ComponentKey;
-import com.android.systemui.shared.system.StatsLogCompat;
-import com.google.protobuf.nano.MessageNano;
 
 import java.util.ArrayList;
 
 import static android.stats.launcher.nano.Launcher.ALLAPPS;
 import static android.stats.launcher.nano.Launcher.BACKGROUND;
-import static android.stats.launcher.nano.Launcher.DISMISS_TASK;
 import static android.stats.launcher.nano.Launcher.HOME;
-import static android.stats.launcher.nano.Launcher.LAUNCH_APP;
-import static android.stats.launcher.nano.Launcher.LAUNCH_TASK;
 import static android.stats.launcher.nano.Launcher.OVERVIEW;
 
 /**
@@ -73,9 +66,9 @@ public class StatsLogCompatManager extends StatsLogManager {
         if (ext.srcTarget[0] != null) {
             ext.srcTarget[0].item = LauncherTarget.APP_ICON;
         }
-        if (Build.VERSION.SDK_INT >= 31)
-            StatsLogCompat.write(LAUNCH_APP, BACKGROUND,
-                    MessageNano.toByteArray(ext), true);
+        //if (Build.VERSION.SDK_INT >= 31)
+        //StatsLogCompat.write(LAUNCH_APP, BACKGROUND,
+        //        MessageNano.toByteArray(ext), true);
     }
 
     @Override
@@ -84,8 +77,8 @@ public class StatsLogCompatManager extends StatsLogManager {
         ext.srcTarget = new LauncherTarget[SUPPORTED_TARGET_DEPTH];
         int srcState = OVERVIEW;
         fillInLauncherExtension(v, ext);
-        StatsLogCompat.write(LAUNCH_TASK, BACKGROUND /* dstState */,
-                MessageNano.toByteArray(ext), true);
+        //StatsLogCompat.write(LAUNCH_TASK, BACKGROUND /* dstState */,
+        //        MessageNano.toByteArray(ext), true);
     }
 
     @Override
@@ -94,8 +87,8 @@ public class StatsLogCompatManager extends StatsLogManager {
         ext.srcTarget = new LauncherTarget[SUPPORTED_TARGET_DEPTH];
         int srcState = OVERVIEW;
         fillInLauncherExtension(v, ext);
-        StatsLogCompat.write(DISMISS_TASK, BACKGROUND /* dstState */,
-                MessageNano.toByteArray(ext), true);
+        //StatsLogCompat.write(DISMISS_TASK, BACKGROUND /* dstState */,
+        //        MessageNano.toByteArray(ext), true);
     }
 
     @Override
@@ -104,8 +97,8 @@ public class StatsLogCompatManager extends StatsLogManager {
         ext.srcTarget = new LauncherTarget[1];
         fillInLauncherExtensionWithPageId(ext, pageId);
         int launcherAction = isSwipingToLeft ? Launcher.SWIPE_LEFT : Launcher.SWIPE_RIGHT;
-        if (Utilities.ATLEAST_R)
-            StatsLogCompat.write(launcherAction, 0, MessageNano.toByteArray(ext), true);
+        //if (Utilities.ATLEAST_R)
+        //    StatsLogCompat.write(launcherAction, 0, MessageNano.toByteArray(ext), true);
     }
 
     public static boolean fillInLauncherExtension(View v, LauncherExtension extension) {
