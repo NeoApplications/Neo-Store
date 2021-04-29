@@ -15,10 +15,6 @@
  */
 package com.android.launcher3.model;
 
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
-import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_AUTOINSTALL_ICON;
-import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_RESTORED_ICON;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +58,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
+import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_AUTOINSTALL_ICON;
+import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_RESTORED_ICON;
 
 /**
  * Handles updates due to changes in package manager (app installed/updated/removed)
@@ -146,6 +146,16 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
 
                     // Clear custom app icons
                     OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+
+                    //Set SystemIconPack if the package is applied
+                    ArrayList<String> iconPack = prefs.getIconPacks().getList();
+                    for (int y = 0; y < iconPack.size(); y++) {
+                        if (packages[i].equals(iconPack.get(y))) {
+                            prefs.getIconPacks().remove(iconPack.get(y));
+                        }
+                    }
+
+                    //Set system Icon if a customIcon is being used
                     Set<ComponentKey> toUpdateSet = prefs.getCustomAppIcon().toMap().keySet();
                     prefs.beginBlockingEdit();
                     prefs.getCustomAppIcon().clear();
