@@ -117,10 +117,6 @@ class OmegaApp : Application() {
             Log.d("OmegaApp", "API < P, disabling recents")
             return false
         }
-        if (!Utilities.HIDDEN_APIS_ALLOWED) {
-            Log.d("OmegaApp", "Hidden APIs not allowed, disabling recents")
-            return false
-        }
 
         val resId = resources.getIdentifier("config_recentsComponentName", "string", "android")
         if (resId == 0) {

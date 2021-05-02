@@ -83,12 +83,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     private OptionsPanel optionsView;
     private String hideStatusBarKey = "pref_hideStatusBar";
 
-    //private final NexusLauncher launcherClient;
     private OverlayCallbackImpl overlayCallback;
-
-    /*public OmegaLauncher(){
-        launcherClient = new NexusLauncher(this);
-    }*/
 
     protected LauncherOverlayManager getDefaultOverlay() {
         if (overlayCallback != null) {
@@ -97,7 +92,6 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
             loadOverlay();
             return overlayCallback;
         }
-
     }
 
     private void loadOverlay() {

@@ -15,11 +15,6 @@
  */
 package com.android.quickstep;
 
-import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.createAndStartNewLooper;
-import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
-
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ComponentCallbacks2;
@@ -40,6 +35,11 @@ import com.android.systemui.shared.system.TaskStackChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.createAndStartNewLooper;
+import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
 
 /**
  * Singleton class to load and manage recents model.
@@ -68,14 +68,16 @@ public class RecentsModel extends TaskStackChangeListener {
         mThumbnailCache = new TaskThumbnailCache(context, looper);
 
         if (Utilities.isRecentsEnabled()) {
-            try {
+            ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
+        }
+        /*
+        try {
                 ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
             } catch (NoSuchMethodError error) {
                 error.printStackTrace();
             }
-        }
-        //IconProvider.registerIconChangeListener(context,
-        //        this::onPackageIconChanged, MAIN_EXECUTOR.getHandler());
+        IconProvider.registerIconChangeListener(context,
+                this::onPackageIconChanged, MAIN_EXECUTOR.getHandler());*/
     }
 
     public TaskIconCache getIconCache() {

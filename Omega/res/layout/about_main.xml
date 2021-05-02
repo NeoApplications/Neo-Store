@@ -88,38 +88,6 @@
                 android:text="@string/about_copyright"
                 android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/source_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_github"
-                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
-                    android:text="@string/about_source"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/donate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_donate"
-                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
-                    android:text="@string/title__about_donate"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
-
             <include layout="@layout/all_apps_divider" />
 
             <TextView
@@ -160,6 +128,40 @@
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/profile_image" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <include layout="@layout/all_apps_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/source_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_github"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
+                    android:text="@string/about_source"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/donate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_donate"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
+                    android:text="@string/title__about_donate"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <!-- Contributors -->
             <TextView

@@ -16,10 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
-
 import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -44,6 +40,11 @@ import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.OmegaAppKt;
+
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
 public class LauncherAppState {
 
@@ -51,7 +52,13 @@ public class LauncherAppState {
 
     // We do not need any synchronization for this variable as its only written on UI thread.
     public static final MainThreadInitializedObject<LauncherAppState> INSTANCE =
-            new MainThreadInitializedObject<>(LauncherAppState::new);
+            new MainThreadInitializedObject<LauncherAppState>(LauncherAppState::new) {
+                @Override
+                protected void onPostInit(Context context) {
+                    super.onPostInit(context);
+                    OmegaAppKt.getOmegaApp(context).onLauncherAppStateCreated();
+                }
+            };
 
     private final Context mContext;
     private final LauncherModel mModel;

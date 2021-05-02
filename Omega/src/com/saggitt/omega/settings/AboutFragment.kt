@@ -136,6 +136,7 @@ class AboutFragment : Fragment() {
                     ColorStateList.valueOf(Color.BLACK)
                 }
                 setOnClickListener {
+                    //TODO: replace with Google Pay Dialog
                     aboutUtils.openWebBrowser(getString(R.string.app_donate_url))
                 }
             }
