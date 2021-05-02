@@ -20,9 +20,6 @@
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
 
-    <!-- Default folder name -->
-    <string name="folder_name"></string>
-
     <!-- PREFERENCES GENERAL -->
     <string name="title__general_about">About</string>
     <string name="title__general_desktop">Desktop</string>

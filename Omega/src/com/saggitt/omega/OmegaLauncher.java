@@ -127,7 +127,6 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
         if (mPrefs.getFirstRun()) {
             mPrefs.setFirstRun(false);
             mPrefs.setIconShape("cylinder");
-            mPrefs.getEditor().putString("pref_gesture_swipe_down", "1").apply();
         }
         Config config = new Config(this);
         config.setAppLanguage(mPrefs.getLanguage());
