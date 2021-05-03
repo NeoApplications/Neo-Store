@@ -215,4 +215,7 @@
     <string name="summary__general_notifications">Contador de notificaciones, color de notificaciones, gestos</string>
     <string name="summary__general_drawer">Personaliza tu panel</string>
     <string name="summary__general_dock">Iconos del Dock, barra de búsqueda</string>
+    <string name="title_theme_icon_packs">Paquete de Iconos</string>
+    <string name="add_new_tab">Agregar</string>
+    <string name="summary__drawer_hide_apps">Ocultar aplicación del Drawer</string>
 </resources>
