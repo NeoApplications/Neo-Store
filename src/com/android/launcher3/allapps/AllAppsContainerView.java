@@ -452,6 +452,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         createHolders();
         replaceRVContainer(showTabs);
         mUsingTabs = showTabs;
+        setupWorkToggle();
 
         if (mUsingTabs) {
             mTabsController.setup(mViewPager);
@@ -461,9 +462,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 tabStrip.setScroll(0, 1);
             }
             onTabChanged(currentTab);
-            if (mTabsController.getTabs().getHasWorkApps()) {
+            /*if (mTabsController.getTabs().getHasWorkApps()) {
                 setupWorkToggle();
-            }
+            }*/
         } else {
             mTabsController.setup((View) findViewById(R.id.apps_list_view));
             AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
@@ -490,7 +491,13 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     R.layout.work_mode_switch, this, false);
             this.addView(mWorkModeSwitch);
             mWorkModeSwitch.setInsets(mInsets);
-            mWorkModeSwitch.post(() -> mAH[AdapterHolder.WORK].applyPadding());
+            //mWorkModeSwitch.post(() -> mAH[AdapterHolder.WORK].applyPadding());
+            for (int i = 0; i < mAH.length; i++) {
+                if (mAH[i].mIsWork) {
+                    int x = i;
+                    mWorkModeSwitch.post(() -> mAH[x].applyPadding());
+                }
+            }
         }
     }
 
