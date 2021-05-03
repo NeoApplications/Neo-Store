@@ -140,20 +140,20 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
         }
 
         fun getGestureHandlers(context: Context, isSwipeUp: Boolean, hasBlank: Boolean) = mutableListOf(
-            PressBackGestureHandler(context, null),
-            SleepGestureHandler(context, null),
-            SleepGestureHandlerTimeout(context, null),
-            OpenDashGestureHandler(context, null),
-            OpenDrawerGestureHandler(context, null),
-            OpenWidgetsGestureHandler(context, null),
-            NotificationsOpenGestureHandler(context, null),
-            OpenOverlayGestureHandler(context, null),
-            OpenOverviewGestureHandler(context, null),
-            StartGlobalSearchGestureHandler(context, null),
-            StartAppSearchGestureHandler(context, null),
-            StartAppGestureHandler(context, null),
-            OpenSettingsGestureHandler(context, null),
-            OpenRecentsGestureHandler(context, null)
+                PressBackGestureHandler(context, null),
+                SleepGestureHandler(context, null),
+                SleepGestureHandlerTimeout(context, null),
+                OpenDashGestureHandler(context, null),
+                OpenDrawerGestureHandler(context, null),
+                OpenWidgetsGestureHandler(context, null),
+                NotificationsOpenGestureHandler(context, null),
+                OpenOverlayGestureHandler(context, null),
+                OpenOverviewGestureHandler(context, null),
+                StartGlobalSearchGestureHandler(context, null),
+                StartAppSearchGestureHandler(context, null),
+                StartAppGestureHandler(context, null),
+                OpenSettingsGestureHandler(context, null)
+                //OpenRecentsGestureHandler(context, null)
         ).apply {
             if (hasBlank) {
                 add(0, BlankGestureHandler(context, null))
