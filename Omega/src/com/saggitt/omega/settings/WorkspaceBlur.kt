@@ -50,14 +50,14 @@ class WorkspaceBlur(private val workspace: Workspace, private val screens: IntSp
     fun getOptionItem(id: Int): OptionsPopupView.OptionItem {
         return if (this[id]) {
             OptionsPopupView.OptionItem(
-                    R.string.blur_pref_title,
+                    R.string.title__theme_blur,
                     R.drawable.ic_check_white, StatsLogManager.LauncherRankingEvent.UNKNOWN) {
                 set(id, false)
                 true
             }
         } else {
             OptionsPopupView.OptionItem(
-                    R.string.blur_pref_title,
+                    R.string.title__theme_blur,
                     R.drawable.ic_remove_no_shadow, StatsLogManager.LauncherRankingEvent.UNKNOWN) {
                 set(id, true)
                 true

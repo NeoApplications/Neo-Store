@@ -27,8 +27,6 @@
     <string name="theme_auto_night_mode">أتبع سمة النظام</string>
     <string name="theme_auto">أتبع الخلفية</string>
     <string name="summary__theme_blur">ضبابة لخلفية الصفحة</string>
-    <string name="blur_radius_pref_title">شدة الضبابية</string>
-    <string name="blur_pref_title">ضبابية</string>
     <string name="title_theme_icon_packs">حزمة الايقونات</string>
     <string name="title__theme_icon_shape">غير شكل التطبيق</string>
     <string name="title__theme_blur_radius">شدة الضبابية</string>

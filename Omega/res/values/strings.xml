@@ -157,8 +157,6 @@
     <string name="title__theme_icon_shape">Change icon shape</string>
     <string name="title_theme_icon_packs">Icon Packs</string>
 
-    <string name="blur_pref_title">Blur</string>
-    <string name="blur_radius_pref_title">Blur Intensity</string>
     <string name="summary__theme_blur">Blur page backgrounds</string>
 
     <string name="theme_auto">Follow wallpaper</string>

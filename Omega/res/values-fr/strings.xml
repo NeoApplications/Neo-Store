@@ -381,8 +381,6 @@
     <string name="title_feed_provider">Fournisseur de flux</string>
     <string name="action_overlay">Ouvrir Google Feed</string>
     <string name="menu_icon_shape">Forme d\'icône personnalisée</string>
-    <string name="blur_radius_pref_title">Intensité du flou</string>
-    <string name="blur_pref_title">Flou</string>
     <string name="add_new_tab">Ajouter</string>
     <string name="title_separate_work_apps">Deuxième onglet pour les applications professionnelles</string>
     <string name="title_dock_two_row">Afficher la deuxième ligne</string>
