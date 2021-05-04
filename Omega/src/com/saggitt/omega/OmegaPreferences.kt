@@ -209,6 +209,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
 
     var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
+    val enableSmartspace by BooleanPref("enable_smartspace", false, refreshGrid)
     val smartspaceTime by BooleanPref("pref_smartspace_time", false, refreshGrid)
     val smartspaceDate by BooleanPref("pref_smartspace_date", true, refreshGrid)
     val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, refreshGrid)

@@ -74,6 +74,12 @@
         app:controllerClass=".MinusOneController"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:key="enable_smartspace"
+        android:title="@string/title_smartspace"
+        app:iconSpaceReserved="false" />
+
     <!--
     <ListPreference
         android:defaultValue="1"
