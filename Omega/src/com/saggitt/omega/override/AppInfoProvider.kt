@@ -53,7 +53,7 @@ class AppInfoProvider private constructor(context: Context) : CustomInfoProvider
     }
 
     override fun setTitle(info: AppInfo, title: String?, modelWriter: ModelWriter) {
-        setTitle(info, title, modelWriter)
+        setTitle(info.toComponentKey(), title)
     }
 
     fun setTitle(key: ComponentKey, title: String?) {
