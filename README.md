@@ -3,6 +3,8 @@ Libre software launcher. <br/>
 [![Build Status](https://img.shields.io/github/workflow/status/otakuhqz/Omega/Omega%20CI?event=push&logo=github&style=for-the-badge)](https://github.com/otakuhqz/Omega/actions?query=workflow%3A%22Omega+CI%22+event%3Apush)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
+[![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
+[![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
 
 ## Installation
 APKs are available on GitHub and in the Telegram channel. Some nightly builds
@@ -87,10 +89,6 @@ to discuss the development, issues and new features.<br/>
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
     alt="Buy Me A Coffee" width="150" >
 </a><br/>
-
-[![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
-
-[![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
 
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
