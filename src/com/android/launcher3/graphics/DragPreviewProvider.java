@@ -16,8 +16,6 @@
 
 package com.android.launcher3.graphics;
 
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -34,11 +32,14 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.DraggableView;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
 import java.nio.ByteBuffer;
+
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * A utility class to generate preview bitmap for dragging.
@@ -82,6 +83,28 @@ public class DragPreviewProvider {
                 destCanvas.translate(blurSizeOutline / 2 - mTempRect.left,
                         blurSizeOutline / 2 - mTempRect.top);
                 mView.draw(destCanvas);
+            }
+        } else {
+            final Rect clipRect = mTempRect;
+            mView.getDrawingRect(clipRect);
+
+            boolean textVisible = false;
+            if (mView instanceof FolderIcon) {
+                // For FolderIcons the text can bleed into the icon area, and so we need to
+                // hide the text completely (which can't be achieved by clipping).
+                if (((FolderIcon) mView).getTextVisible()) {
+                    ((FolderIcon) mView).setTextVisible(false);
+                    textVisible = true;
+                }
+            }
+            destCanvas.translate(-mView.getScrollX() + blurSizeOutline / 2,
+                    -mView.getScrollY() + blurSizeOutline / 2);
+            destCanvas.clipRect(clipRect);
+            mView.draw(destCanvas);
+
+            // Restore text visibility of FolderIcon if necessary
+            if (textVisible) {
+                ((FolderIcon) mView).setTextVisible(true);
             }
         }
         destCanvas.restoreToCount(saveCount);

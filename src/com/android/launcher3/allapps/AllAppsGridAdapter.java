@@ -323,6 +323,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 TextView searchView = (TextView) holder.itemView;
                 if (mMarketSearchIntent != null) {
                     searchView.setVisibility(View.VISIBLE);
+                    int accent = Utilities.getOmegaPrefs(searchView.getContext()).getAccentColor();
+                    searchView.setTextColor(accent);
                 } else {
                     searchView.setVisibility(View.GONE);
                 }

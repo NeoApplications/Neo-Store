@@ -41,9 +41,9 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
     }
 
     override fun getCustomTitle(info: FolderInfo): String? {
-        if (info.title == null) {
-            return "";
-        } else return info.title.toString();
+        return if (info.title == null) {
+            ""
+        } else info.title.toString()
     }
 
     override fun setTitle(info: FolderInfo, title: String?, modelWriter: ModelWriter) {

@@ -311,6 +311,10 @@
     <string name="units_reaumur">Réaumur</string>
     <string name="units_romer">Rømer</string>
 
+    <!-- Folder name format -->
+    <string name="folder_name_format">Folder: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+
+
     <string-array name="greetings_morning">
         <item>Good morning!</item>
         <item>Have a great day!</item>

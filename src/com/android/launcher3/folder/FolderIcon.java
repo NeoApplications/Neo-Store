@@ -77,12 +77,14 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.gestures.BlankGestureHandler;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.gestures.GestureHandler;
 import com.saggitt.omega.gestures.RunnableGestureHandler;
 import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.groups.DrawerFolderInfo;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,6 +213,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
         icon.setClipToPadding(false);
         icon.mFolderName = icon.findViewById(R.id.folder_icon_name);
+        icon.mFolderName.setText(folderInfo.title);
         icon.mFolderName.setCompoundDrawablePadding(0);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) icon.mFolderName.getLayoutParams();
         if (folderInfo instanceof DrawerFolderInfo) {
@@ -597,7 +600,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             mFolderName.clearIcon();
             mBackground.setStartOpacity(1f);
         }
-        mFolderName.setText(mInfo.getIconTitle(getFolder()));
+        //mFolderName.setText(mInfo.getIconTitle(getFolder()));
         requestLayout();
     }
 
@@ -719,15 +722,12 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void setTextVisible(boolean visible) {
-        if (visible) {
-            mFolderName.setVisibility(VISIBLE);
-        } else {
-            mFolderName.setVisibility(INVISIBLE);
-        }
+        mIsTextVisible = visible;
+        mFolderName.setTextVisibility(visible);
     }
 
     public boolean getTextVisible() {
-        return mFolderName.getVisibility() == VISIBLE;
+        return mIsTextVisible;
     }
 
     /**
@@ -837,6 +837,13 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         super.onTouchEvent(event);
         mLongPressHelper.onTouchEvent(event);
         // Keep receiving the rest of the events
+
+        Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+        if (launcher instanceof OmegaLauncher && mSwipeUpHandler != null) {
+            ((OmegaLauncher) launcher).getGestureController()
+                    .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());
+        }
+
         return true;
     }
 
@@ -990,6 +997,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     public void onTitleChanged(CharSequence title) {
         mFolderName.setText(mInfo.getIconTitle(getFolder()));
         applySwipeUpAction(mInfo);
+        setContentDescription(getContext().getString(R.string.folder_name_format, title));
     }
 
     private void applySwipeUpAction(FolderInfo info) {
