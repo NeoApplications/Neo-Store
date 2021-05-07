@@ -15,15 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static android.view.View.VISIBLE;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
-import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
-import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
-import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
-
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.appwidget.AppWidgetHostView;
@@ -105,6 +96,15 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static android.view.View.VISIBLE;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
+import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
+import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
+import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Utility class for generating the preview of Launcher for a given InvariantDeviceProfile.
@@ -615,7 +615,7 @@ public class LauncherPreviewRenderer {
             }
 
             // Add first page QSB
-            if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
+            if (FeatureFlags.showQSbOnFirstScreen(mContext)) {
                 View qsb = mHomeElementInflater.inflate(
                         R.layout.search_container_workspace, mWorkspace, false);
                 CellLayout.LayoutParams lp =

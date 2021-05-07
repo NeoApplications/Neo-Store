@@ -474,7 +474,7 @@ public class LoaderCursor extends CursorWrapper {
             if (item.screenId == Workspace.FIRST_SCREEN_ID) {
                 // Mark the first row as occupied (if the feature is enabled)
                 // in order to account for the QSB.
-                screen.markCells(0, 0, countX + 1, 1, FeatureFlags.QSB_ON_FIRST_SCREEN);
+                screen.markCells(0, 0, countX + 1, 1, FeatureFlags.showQSbOnFirstScreen(mContext));
             }
             occupied.put(item.screenId, screen);
         }

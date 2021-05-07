@@ -16,8 +16,6 @@
 
 package com.android.launcher3.provider;
 
-import static com.android.launcher3.Utilities.getDevicePrefs;
-
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
@@ -54,6 +52,8 @@ import com.android.launcher3.util.PackageManagerHelper;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static com.android.launcher3.Utilities.getDevicePrefs;
 
 /**
  * Utility class to import data from another Launcher which is based on Launcher3 schema.
@@ -104,11 +104,11 @@ public class ImportDataTask {
                 .getSerialNumberForUser(Process.myUserHandle()));
 
         boolean createEmptyRowOnFirstScreen;
-        if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
+        if (FeatureFlags.showQSbOnFirstScreen(mContext)) {
             try (Cursor c = mContext.getContentResolver().query(mOtherFavoritesUri, null,
                     // get items on the first row of the first screen (min screen id)
                     "profileId = ? AND container = -100 AND cellY = 0 AND screen = " +
-                    "(SELECT MIN(screen) FROM favorites WHERE container = -100)",
+                            "(SELECT MIN(screen) FROM favorites WHERE container = -100)",
                     new String[]{profileId},
                     null)) {
                 // First row of first screen is not empty

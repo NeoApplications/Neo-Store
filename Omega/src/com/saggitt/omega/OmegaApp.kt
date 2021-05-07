@@ -44,6 +44,7 @@ class OmegaApp : Application() {
     var accessibilityService: OmegaAccessibilityService? = null
 
     fun onLauncherAppStateCreated() {
+        sApplication = this
         registerActivityLifecycleCallbacks(activityHandler)
         BlurWallpaperProvider.getInstance(this)
         Flowerpot.Manager.getInstance(this)
@@ -140,6 +141,20 @@ class OmegaApp : Application() {
             return false
         }
         return true
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun getContext(): Context? {
+            return OmegaApp.getApplication()?.applicationContext
+        }
+
+        private var sApplication: Application? = null
+
+        fun getApplication(): Application? {
+            return sApplication
+        }
     }
 }
 

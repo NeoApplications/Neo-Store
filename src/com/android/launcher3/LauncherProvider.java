@@ -16,11 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
-import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
-import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
-import static com.android.launcher3.provider.LauncherDbUtils.tableExists;
-
 import android.annotation.TargetApi;
 import android.app.backup.BackupManager;
 import android.appwidget.AppWidgetHost;
@@ -70,7 +65,6 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSet;
 import com.android.launcher3.util.NoLocaleSQLiteHelper;
 import com.android.launcher3.util.PackageManagerHelper;
-import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Thunk;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -86,6 +80,11 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+
+import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
+import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
+import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
+import static com.android.launcher3.provider.LauncherDbUtils.tableExists;
 
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
@@ -851,7 +850,7 @@ public class LauncherProvider extends ContentProvider {
                     convertShortcutsToLauncherActivities(db);
                 case 26:
                     // QSB was moved to the grid. Clear the first row on screen 0.
-                    if (FeatureFlags.QSB_ON_FIRST_SCREEN &&
+                    if (FeatureFlags.showQSbOnFirstScreen(mContext) &&
                             !LauncherDbUtils.prepareScreenZeroToHostQsb(mContext, db)) {
                         break;
                     }
