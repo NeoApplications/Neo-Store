@@ -385,4 +385,5 @@
     <string name="dash_all_apps_title">Åpne alle programmer</string>
     <string name="add_new_tab">Legg til</string>
     <string name="title_separate_work_apps">Sekundær fane for arbeidsprogrammer</string>
+    <string name="title_smartspace">Vis smartområde</string>
 </resources>
