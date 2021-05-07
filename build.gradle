@@ -75,7 +75,6 @@ apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
 
     def name = "0.8.0"
     def code = 158
