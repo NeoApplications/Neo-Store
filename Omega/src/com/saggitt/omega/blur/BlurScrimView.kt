@@ -81,7 +81,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
     private var dockBackground = context.omegaPrefs.dockBackgroundColor
     private val defaultAllAppsBackground = Themes.getAttrColor(context, R.attr.allAppsNavBarScrimColor)
 
-    private val reInitUiRunnable = this::reInitUi
+    private val reInitUiRunnable = Runnable { reInitUi() }
     private var fullBlurProgress = 0f
 
     private var shouldDrawDebug = false
@@ -123,6 +123,8 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
         BlurWallpaperProvider.getInstance(context).addListener(this)
         blurDrawable?.startListening()
     }
+
+
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         when (key) {
