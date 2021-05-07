@@ -177,7 +177,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return mWorkModeSwitch;
     }
 
-
     @Override
     protected void setDampedScrollShift(float shift) {
         // Bound the shift amount to avoid content from drawing on top (Y-val) of the QSB.
@@ -452,7 +451,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         createHolders();
         replaceRVContainer(showTabs);
         mUsingTabs = showTabs;
-        setupWorkToggle();
+
+        if (mTabsController.getTabs().getHasWorkApps())
+            setupWorkToggle();
 
         if (mUsingTabs) {
             mTabsController.setup(mViewPager);
