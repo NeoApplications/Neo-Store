@@ -22,7 +22,7 @@ Download the current debug version by adding the following repo to the F-Droid A
 You can join the Telegram channel to get nightly builds. There is also a Telegram group
 to discuss the development, issues and new features.<br/>
 [![Telegram](https://img.shields.io/badge/Telegram-channel-blue.svg?style=for-the-badge)](https://t.me/omegalauncher)
-[![Telegram](https://img.shields.io/badge/Telegram-group-blue.svg?style=for-the-badge)](https://t.me/joinchat/RajJ6353J0XslUHt)
+[![Telegram](https://img.shields.io/badge/Telegram-group-blue.svg?style=for-the-badge)](https://t.me/omegalauncher_group)
 
 ##  Working Features
 -   [X] Five modes of sorting apps in the drawer.
@@ -59,25 +59,25 @@ to discuss the development, issues and new features.<br/>
 ##  Screenshots
 <table>
     <tr>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega1.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega1.jpg" width="256" />
         </td>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega2.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega2.jpg" width="256" />
         </td>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega3.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega3.jpg" width="256" />
         </td>
     </tr>
         <tr>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega4.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega4.jpg" width="256" />
         </td>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega5.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega5.jpg" width="256" />
         </td>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega6.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega6.jpg" width="256" />
         </td>
     </tr>
      <tr>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega7.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega7.jpg" width="256" />
         </td>
-        <td><img src="https://github.com/otakuhqz/omega/blob/master/snapshots/omega8.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega8.jpg" width="256" />
         </td>
         <td>
         </td>
