@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.preferences
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -73,11 +73,11 @@ class SelectableAppsActivity : SettingsActivity() {
 
             val receiver = requireArguments().getParcelable<ResultReceiver>(KEY_CALLBACK)!!
             if (changed) {
-                receiver.send(Activity.RESULT_OK, Bundle(1).apply {
+                receiver.send(AppCompatActivity.RESULT_OK, Bundle(1).apply {
                     putStringArrayList(KEY_SELECTION, ArrayList(selection))
                 })
             } else {
-                receiver.send(Activity.RESULT_CANCELED, null)
+                receiver.send(AppCompatActivity.RESULT_CANCELED, null)
             }
         }
 
@@ -110,7 +110,7 @@ class SelectableAppsActivity : SettingsActivity() {
                 putExtra(KEY_CALLBACK, object : ResultReceiver(Handler()) {
 
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultCode == Activity.RESULT_OK) {
+                        if (resultCode == AppCompatActivity.RESULT_OK) {
                             callback(resultData!!.getStringArrayList(KEY_SELECTION)!!.map {
                                 Utilities.makeComponentKey(context, it)
                             })

@@ -17,8 +17,6 @@
 
 package com.saggitt.omega.iconpack
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -35,6 +33,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
@@ -58,13 +58,16 @@ class EditIconActivity : SettingsBaseActivity() {
     private val iconPackManager by lazy { IconPackManager.getInstance(this) }
     private val component by lazy {
         if (intent.hasExtra(EXTRA_COMPONENT)) {
-            ComponentKey(intent.getParcelableExtra<ComponentName>(EXTRA_COMPONENT), intent.getParcelableExtra(EXTRA_USER))
+            ComponentKey(
+                intent.getParcelableExtra<ComponentName>(EXTRA_COMPONENT),
+                intent.getParcelableExtra(EXTRA_USER)
+            )
         } else null
     }
     private val isFolder by lazy { intent.getBooleanExtra(EXTRA_FOLDER, false) }
     private val iconPacks by lazy {
         listOf(IconPackInfo(iconPackManager.defaultPackProvider)) + iconPackManager.getPackProviders()
-                .map { IconPackInfo(it) }.sortedBy { it.title }
+            .map { IconPackInfo(it) }.sortedBy { it.title }
     }
     private val iconAdapter by lazy { IconAdapter() }
     private val icons = arrayListOf<AdapterItem>(LoadingItem())
@@ -110,7 +113,7 @@ class EditIconActivity : SettingsBaseActivity() {
                     it.ensureInitialLoadComplete()
 
                     val entry = it.getEntryForComponent(component!!)
-                            ?: it.getMaskEntryForComponent(component!!)
+                        ?: it.getMaskEntryForComponent(component!!)
                     if (entry != null) {
                         runOnUiThread {
                             val item = IconItem(entry, it is DefaultPack, it.displayName)
@@ -139,7 +142,8 @@ class EditIconActivity : SettingsBaseActivity() {
 
         if (component != null) {
             iconRecyclerView.adapter = iconAdapter
-            iconRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            iconRecyclerView.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         } else {
             divider.visibility = View.GONE
             iconRecyclerView.visibility = View.GONE
@@ -149,7 +153,7 @@ class EditIconActivity : SettingsBaseActivity() {
     fun onSelectIcon(entry: IconPack.Entry?) {
         val customEntry = entry?.toCustomEntry()
         val entryString = if (isFolder) customEntry?.toString() else customEntry?.toPackString()
-        setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
+        setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
         finish()
     }
 
@@ -167,11 +171,14 @@ class EditIconActivity : SettingsBaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == AppCompatActivity.RESULT_OK) {
             when (requestCode) {
                 CODE_PICK_ICON -> {
                     val entryString = data?.getStringExtra(EXTRA_ENTRY) ?: return
-                    setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
+                    setResult(
+                        AppCompatActivity.RESULT_OK,
+                        Intent().putExtra(EXTRA_ENTRY, entryString)
+                    )
                     finish()
                 }
                 PICKER_REQUEST_CODE -> {
@@ -197,23 +204,36 @@ class EditIconActivity : SettingsBaseActivity() {
             checkBox.isVisible = false
         }
         AlertDialog.Builder(this)
-                .setTitle(R.string.import_icon)
-                .setView(dialogContent)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    entry.adaptive = checkBox.isChecked
-                    contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entry.toCustomEntry().toString()))
-                    finish()
-                }
-                .show().applyAccent()
+            .setTitle(R.string.import_icon)
+            .setView(dialogContent)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                entry.adaptive = checkBox.isChecked
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                setResult(
+                    AppCompatActivity.RESULT_OK,
+                    Intent().putExtra(EXTRA_ENTRY, entry.toCustomEntry().toString())
+                )
+                finish()
+            }
+            .show()
+            .applyAccent()
     }
 
     inner class IconAdapter : RecyclerView.Adapter<IconAdapter.Holder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
             return when (viewType) {
-                0 -> Holder(LayoutInflater.from(parent.context).inflate(R.layout.icon_suggestion_item, parent, false))
-                else -> LoadingHolder(LayoutInflater.from(parent.context).inflate(R.layout.icon_loading, parent, false))
+                0 -> Holder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.icon_suggestion_item, parent, false)
+                )
+                else -> LoadingHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.icon_loading, parent, false)
+                )
             }
         }
 
@@ -230,7 +250,8 @@ class EditIconActivity : SettingsBaseActivity() {
             holder.bind(icons[position])
         }
 
-        open inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        open inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
 
             init {
                 itemView.setOnClickListener(this)
@@ -266,7 +287,9 @@ class EditIconActivity : SettingsBaseActivity() {
     inner class IconPackAdapter : RecyclerView.Adapter<IconPackAdapter.Holder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            return Holder(LayoutInflater.from(parent.context).inflate(R.layout.icon_pack_item, parent, false))
+            return Holder(
+                LayoutInflater.from(parent.context).inflate(R.layout.icon_pack_item, parent, false)
+            )
         }
 
         override fun getItemCount() = iconPacks.size + 1
@@ -279,7 +302,8 @@ class EditIconActivity : SettingsBaseActivity() {
             }
         }
 
-        inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
 
             private val icon = itemView.findViewById<ImageView>(android.R.id.icon)
             private val title = itemView.findViewById<TextView>(android.R.id.title)
@@ -292,7 +316,8 @@ class EditIconActivity : SettingsBaseActivity() {
             fun bind(info: IconPackInfo) {
                 icon.setImageDrawable(info.icon)
                 title.text = info.title
-                packageName.isVisible = omegaPrefs.showDebugInfo && !TextUtils.isEmpty(info.packageName)
+                packageName.isVisible =
+                    omegaPrefs.showDebugInfo && !TextUtils.isEmpty(info.packageName)
                 if (packageName.isVisible) {
                     packageName.text = info.packageName
                 }
@@ -335,12 +360,14 @@ class EditIconActivity : SettingsBaseActivity() {
 
     abstract class AdapterItem : Comparable<AdapterItem>
 
-    inner class IconItem(val entry: IconPack.Entry, val isDefault: Boolean, val title: String) : AdapterItem() {
+    inner class IconItem(val entry: IconPack.Entry, val isDefault: Boolean, val title: String) :
+        AdapterItem() {
 
         private val normalizedIconBitmap by lazy {
             LauncherIcons.obtain(this@EditIconActivity).createBadgedIconBitmap(
-                    entry.drawableForDensity(getIconDensity()), component?.user
-                    ?: Process.myUserHandle(), Build.VERSION.SDK_INT)
+                entry.drawableForDensity(getIconDensity()), component?.user
+                    ?: Process.myUserHandle(), Build.VERSION.SDK_INT
+            )
         }
         val iconDrawable by lazy { BitmapDrawable(resources, normalizedIconBitmap.icon) }
 
@@ -356,10 +383,12 @@ class EditIconActivity : SettingsBaseActivity() {
         private fun getIconDensity(requiredSize: Int = resources.getDimensionPixelSize(R.dimen.icon_preview_size)): Int {
             // Densities typically defined by an app.
             val densityBuckets =
-                    intArrayOf(DisplayMetrics.DENSITY_LOW, DisplayMetrics.DENSITY_MEDIUM,
-                            DisplayMetrics.DENSITY_TV, DisplayMetrics.DENSITY_HIGH,
-                            DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_XXHIGH,
-                            DisplayMetrics.DENSITY_XXXHIGH)
+                intArrayOf(
+                    DisplayMetrics.DENSITY_LOW, DisplayMetrics.DENSITY_MEDIUM,
+                    DisplayMetrics.DENSITY_TV, DisplayMetrics.DENSITY_HIGH,
+                    DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_XXHIGH,
+                    DisplayMetrics.DENSITY_XXXHIGH
+                )
 
             var density = DisplayMetrics.DENSITY_XXXHIGH
             for (i in densityBuckets.indices.reversed()) {
@@ -391,7 +420,12 @@ class EditIconActivity : SettingsBaseActivity() {
 
         const val PICKER_REQUEST_CODE = 999
 
-        fun newIntent(context: Context, title: String, isFolder: Boolean, componentKey: ComponentKey? = null): Intent {
+        fun newIntent(
+            context: Context,
+            title: String,
+            isFolder: Boolean,
+            componentKey: ComponentKey? = null
+        ): Intent {
             return Intent(context, EditIconActivity::class.java).apply {
                 putExtra(EXTRA_TITLE, title)
                 componentKey?.run {

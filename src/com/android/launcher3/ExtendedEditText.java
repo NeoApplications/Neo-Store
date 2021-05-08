@@ -22,7 +22,8 @@ import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.android.launcher3.util.UiThreadHelper;
 
@@ -31,7 +32,7 @@ import com.android.launcher3.util.UiThreadHelper;
  * The edit text that reports back when the back key has been pressed.
  * Note: AppCompatEditText doesn't fully support #displayCompletions and #onCommitCompletion
  */
-public class ExtendedEditText extends EditText {
+public class ExtendedEditText extends AppCompatEditText {
 
     private boolean mShowImeAfterFirstLayout;
     private boolean mForceDisableSuggestions = false;

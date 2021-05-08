@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,40 +14,42 @@
      limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="8dp"
         android:layout_gravity="center_vertical"
+        android:layout_margin="8dp"
         android:background="@drawable/round_rect_primary"
         android:elevation="2dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_qsb_search"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:text="@string/abandoned_search"
-            android:textColor="?android:attr/textColorSecondary"
             android:textAppearance="?android:textAppearanceMedium"
-            android:clickable="true"
-            android:background="?android:attr/selectableItemBackground" />
-        <ImageView
-            android:layout_width="48dp"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_qsb_setup"
-            android:clickable="true"
-            android:visibility="gone"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_setting"
-            android:tint="?android:attr/textColorSecondary"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:contentDescription="@string/gadget_setup_text"
             android:padding="8dp"
-            android:background="?android:attr/selectableItemBackground" />
-    </LinearLayout>
+            android:tint="?android:attr/textColorSecondary"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_setting" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

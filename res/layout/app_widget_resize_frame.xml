@@ -16,6 +16,7 @@
 
 <com.android.launcher3.AppWidgetResizeFrame
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_resize_shadow"
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="@dimen/widget_handle_margin"
-            android:src="@drawable/ic_widget_resize_handle"
+            app:srcCompat="@drawable/ic_widget_resize_handle"
             android:tint="?attr/workspaceTextColor" />
 
         <!-- Top -->
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="@dimen/widget_handle_margin"
-            android:src="@drawable/ic_widget_resize_handle"
+            app:srcCompat="@drawable/ic_widget_resize_handle"
             android:tint="?attr/workspaceTextColor" />
 
         <!-- Right -->
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="@dimen/widget_handle_margin"
-            android:src="@drawable/ic_widget_resize_handle"
+            app:srcCompat="@drawable/ic_widget_resize_handle"
             android:tint="?attr/workspaceTextColor" />
 
         <!-- Bottom -->
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="@dimen/widget_handle_margin"
-            android:src="@drawable/ic_widget_resize_handle"
+            app:srcCompat="@drawable/ic_widget_resize_handle"
             android:tint="?attr/workspaceTextColor" />
 
     </FrameLayout>

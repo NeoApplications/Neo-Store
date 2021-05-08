@@ -17,12 +17,12 @@
 
 package com.saggitt.omega.gestures.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +47,8 @@ class SelectGestureHandlerFragment : PreferenceDialogFragmentCompat() {
         super.onBindDialogView(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.adapter = HandlerListAdapter(activity as Context, isSwipeUp, currentClass, ::onSelectHandler)
+        recyclerView.adapter =
+            HandlerListAdapter(activity as Context, isSwipeUp, currentClass, ::onSelectHandler)
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
@@ -61,7 +62,7 @@ class SelectGestureHandlerFragment : PreferenceDialogFragmentCompat() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == this.requestCode && resultCode == Activity.RESULT_OK) {
+        if (requestCode == this.requestCode && resultCode == AppCompatActivity.RESULT_OK) {
             selectedHandler?.onConfigResult(data)
             saveChanges()
         }
@@ -69,7 +70,8 @@ class SelectGestureHandlerFragment : PreferenceDialogFragmentCompat() {
     }
 
     private fun saveChanges() {
-        Utilities.getOmegaPrefs(activity).sharedPrefs.edit().putString(key, selectedHandler.toString()).apply()
+        Utilities.getOmegaPrefs(activity).sharedPrefs.edit()
+            .putString(key, selectedHandler.toString()).apply()
         dismiss()
     }
 

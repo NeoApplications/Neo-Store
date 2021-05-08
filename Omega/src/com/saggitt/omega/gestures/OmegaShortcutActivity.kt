@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.gestures
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -56,7 +56,7 @@ class OmegaShortcutActivity : SettingsBaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             selectedHandler?.onConfigResult(data)
             saveChanges()
         }
@@ -81,7 +81,7 @@ class OmegaShortcutActivity : SettingsBaseActivity() {
             else
                 putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, selectedHandler?.iconResource)
         }
-        setResult(Activity.RESULT_OK, intent)
+        setResult(AppCompatActivity.RESULT_OK, intent)
         finish()
     }
 

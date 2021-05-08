@@ -19,6 +19,7 @@
 package com.saggitt.omega.util
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
@@ -163,7 +164,8 @@ fun runOnThread(handler: Handler, r: () -> Unit) {
 
 val Context.hasStoragePermission
     get() = PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
-            this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        this, android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
 inline fun <T> Iterable<T>.safeForEach(action: (T) -> Unit) {
     val tmp = ArrayList<T>()
@@ -180,24 +182,34 @@ var View.isVisible: Boolean
 fun Switch.applyColor(color: Int) {
     val colorForeground = Themes.getAttrColor(context, android.R.attr.colorForeground)
     val alphaDisabled = Themes.getAlpha(context, android.R.attr.disabledAlpha)
-    val switchThumbNormal = context.resources.getColor(androidx.preference.R.color.switch_thumb_normal_material_light)
-    val switchThumbDisabled = context.resources.getColor(androidx.preference.R.color.switch_thumb_disabled_material_light)
-    val thstateList = ColorStateList(arrayOf(
+    val switchThumbNormal =
+        context.resources.getColor(androidx.preference.R.color.switch_thumb_normal_material_light)
+    val switchThumbDisabled =
+        context.resources.getColor(androidx.preference.R.color.switch_thumb_disabled_material_light)
+    val thstateList = ColorStateList(
+        arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
             intArrayOf(android.R.attr.state_checked),
-            intArrayOf()),
-            intArrayOf(
-                    switchThumbDisabled,
-                    color,
-                    switchThumbNormal))
-    val trstateList = ColorStateList(arrayOf(
+            intArrayOf()
+        ),
+        intArrayOf(
+            switchThumbDisabled,
+            color,
+            switchThumbNormal
+        )
+    )
+    val trstateList = ColorStateList(
+        arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
             intArrayOf(android.R.attr.state_checked),
-            intArrayOf()),
-            intArrayOf(
-                    ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
-                    color,
-                    colorForeground))
+            intArrayOf()
+        ),
+        intArrayOf(
+            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
+            color,
+            colorForeground
+        )
+    )
     DrawableCompat.setTintList(thumbDrawable, thstateList)
     DrawableCompat.setTintList(trackDrawable, trstateList)
 }
@@ -207,7 +219,8 @@ inline fun PreferenceGroup.forEachIndexed(action: (i: Int, pref: Preference) -> 
     for (i in 0 until preferenceCount) action(i, this[i])
 }
 
-class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) : FloatPropertyCompat<Any>(name) {
+class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :
+    FloatPropertyCompat<Any>(name) {
 
     override fun getValue(`object`: Any) = property.get()
 
@@ -216,7 +229,8 @@ class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name:
     }
 }
 
-class KFloatProperty(private val property: KMutableProperty0<Float>, name: String) : Property<Any, Float>(Float::class.java, name) {
+class KFloatProperty(private val property: KMutableProperty0<Float>, name: String) :
+    Property<Any, Float>(Float::class.java, name) {
 
     override fun get(`object`: Any) = property.get()
 
@@ -255,7 +269,9 @@ fun Context.checkLocationAccess(): Boolean {
 }
 
 operator fun XmlPullParser.get(index: Int): String? = getAttributeValue(index)
-operator fun XmlPullParser.get(namespace: String?, key: String): String? = getAttributeValue(namespace, key)
+operator fun XmlPullParser.get(namespace: String?, key: String): String? =
+    getAttributeValue(namespace, key)
+
 operator fun XmlPullParser.get(key: String): String? = this[null, key]
 
 inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
@@ -285,27 +301,14 @@ fun Drawable.toBitmap(forceCreate: Boolean = true, fallbackSize: Int = 0): Bitma
 }
 
 fun AlertDialog.applyAccent() {
-    val color = context.getColorAccent()
-
-    getButton(AlertDialog.BUTTON_NEGATIVE)?.apply {
-        setTextColor(color)
-    }
-    getButton(AlertDialog.BUTTON_NEUTRAL)?.apply {
-        setTextColor(color)
-    }
-    getButton(AlertDialog.BUTTON_POSITIVE)?.apply {
-        setTextColor(color)
-    }
-}
-
-fun android.app.AlertDialog.applyAccent() {
     val color = Utilities.getOmegaPrefs(context).accentColor
     val buttons = listOf(
-            getButton(AlertDialog.BUTTON_NEGATIVE),
-            getButton(AlertDialog.BUTTON_NEUTRAL),
-            getButton(AlertDialog.BUTTON_POSITIVE))
+        getButton(DialogInterface.BUTTON_NEGATIVE),
+        getButton(DialogInterface.BUTTON_NEUTRAL),
+        getButton(DialogInterface.BUTTON_POSITIVE)
+    )
     buttons.forEach {
-        it.setTextColor(color)
+        it?.setTextColor(color)
     }
 }
 
@@ -317,8 +320,10 @@ fun CheckedTextView.applyAccent() {
 
 fun Button.applyColor(color: Int) {
     val rippleColor = ColorStateList.valueOf(ColorUtils.setAlphaComponent(color, 31))
-    (background as RippleDrawable).setColor(rippleColor)
-    DrawableCompat.setTint(background, color)
+    background?.let {
+        (it as RippleDrawable).setColor(rippleColor)
+        DrawableCompat.setTint(background, color)
+    }
     val tintList = ColorStateList.valueOf(color)
     if (this is RadioButton) {
         buttonTintList = tintList
@@ -340,26 +345,44 @@ fun BgDataModel.workspaceContains(packageName: String): Boolean {
 fun formatTime(dateTime: Date, context: Context? = null): String {
     return when (context) {
         null -> String.format("%d:%02d", dateTime.hours, dateTime.minutes)
-        else -> if (DateFormat.is24HourFormat(context)) String.format("%02d:%02d", dateTime.hours,
-                dateTime.minutes) else String.format(
-                "%d:%02d %s", if (dateTime.hours % 12 == 0) 12 else dateTime.hours % 12, dateTime.minutes,
-                if (dateTime.hours < 12) "am" else "pm")
+        else -> if (DateFormat.is24HourFormat(context)) String.format(
+            "%02d:%02d", dateTime.hours,
+            dateTime.minutes
+        ) else String.format(
+            "%d:%02d %s",
+            if (dateTime.hours % 12 == 0) 12 else dateTime.hours % 12,
+            dateTime.minutes,
+            if (dateTime.hours < 12) "am" else "pm"
+        )
     }
 }
 
 fun formatTime(calendar: Calendar, context: Context? = null): String {
     return when (context) {
-        null -> String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.HOUR_OF_DAY))
-        else -> if (DateFormat.is24HourFormat(context)) String.format("%02d:%02d", calendar.get(
-                Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)) else String.format("%02d:%02d %s",
-                if (calendar.get(
-                                Calendar.HOUR_OF_DAY) % 12 == 0) 12 else calendar.get(
-                        Calendar.HOUR_OF_DAY) % 12,
-                calendar.get(
-                        Calendar.MINUTE),
-                if (calendar.get(
-                                Calendar.HOUR_OF_DAY) < 12) "AM" else "PM")
+        null -> String.format(
+            "%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.HOUR_OF_DAY)
+        )
+        else -> if (DateFormat.is24HourFormat(context)) String.format(
+            "%02d:%02d", calendar.get(
+                Calendar.HOUR_OF_DAY
+            ), calendar.get(Calendar.MINUTE)
+        ) else String.format(
+            "%02d:%02d %s",
+            if (calendar.get(
+                    Calendar.HOUR_OF_DAY
+                ) % 12 == 0
+            ) 12 else calendar.get(
+                Calendar.HOUR_OF_DAY
+            ) % 12,
+            calendar.get(
+                Calendar.MINUTE
+            ),
+            if (calendar.get(
+                    Calendar.HOUR_OF_DAY
+                ) < 12
+            ) "AM" else "PM"
+        )
     }
 }
 
@@ -385,10 +408,10 @@ fun StatusBarNotification.loadSmallIcon(context: Context): Drawable? {
 
 @JvmOverloads
 fun makeBasicHandler(preferMyLooper: Boolean = false, callback: Handler.Callback? = null): Handler =
-        if (preferMyLooper)
-            Handler(Looper.myLooper() ?: Looper.getMainLooper(), callback)
-        else
-            Handler(Looper.getMainLooper(), callback)
+    if (preferMyLooper)
+        Handler(Looper.myLooper() ?: Looper.getMainLooper(), callback)
+    else
+        Handler(Looper.getMainLooper(), callback)
 
 fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
     try {
@@ -437,7 +460,10 @@ fun java.text.Collator.matches(query: String, target: String): Boolean {
             // the query string (even though the length is same). If the query becomes
             // larger after appending a unicode character, it was originally a prefix of
             // the target string and hence should match.
-            this.compare(query + MAX_UNICODE, target) > -1 || target.contains(query, ignoreCase = true)
+            this.compare(query + MAX_UNICODE, target) > -1 || target.contains(
+                query,
+                ignoreCase = true
+            )
         else -> false
     }
 }
@@ -492,8 +518,10 @@ val Context.locale: Locale
     }
 
 fun createRipplePill(context: Context, color: Int, radius: Float): Drawable {
-    return RippleDrawable(ContextCompat.getColorStateList(context, R.color.focused_background)!!,
-            createPill(color, radius), createPill(color, radius))
+    return RippleDrawable(
+        ContextCompat.getColorStateList(context, R.color.focused_background)!!,
+        createPill(color, radius), createPill(color, radius)
+    )
 }
 
 fun createPill(color: Int, radius: Float): Drawable {
@@ -521,7 +549,11 @@ fun Float.ceilToInt() = ceil(this).toInt()
 
 
 fun dpToPx(size: Float): Float {
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, Resources.getSystem().displayMetrics)
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        size,
+        Resources.getSystem().displayMetrics
+    )
 }
 
 fun pxToDp(size: Float): Float {
@@ -559,7 +591,8 @@ class ViewGroupChildList(private val viewGroup: ViewGroup) : List<View> {
     override fun subList(fromIndex: Int, toIndex: Int) = ArrayList(this).subList(fromIndex, toIndex)
 }
 
-class ViewGroupChildIterator(private val viewGroup: ViewGroup, private var current: Int) : ListIterator<View> {
+class ViewGroupChildIterator(private val viewGroup: ViewGroup, private var current: Int) :
+    ListIterator<View> {
 
     override fun hasNext() = current < viewGroup.childCount
 
@@ -575,7 +608,11 @@ class ViewGroupChildIterator(private val viewGroup: ViewGroup, private var curre
 }
 
 @Suppress("UNCHECKED_CAST")
-class JavaField<T>(private val targetObject: Any, fieldName: String, targetClass: Class<*> = targetObject::class.java) {
+class JavaField<T>(
+    private val targetObject: Any,
+    fieldName: String,
+    targetClass: Class<*> = targetObject::class.java
+) {
 
     private val field: Field = targetClass.getDeclaredField(fieldName).apply { isAccessible = true }
 
@@ -589,19 +626,23 @@ class JavaField<T>(private val targetObject: Any, fieldName: String, targetClass
 }
 
 fun ComponentKey.getLauncherActivityInfo(context: Context): LauncherActivityInfo? {
-    return context.getSystemService(LauncherApps::class.java).getActivityList(componentName.packageName, user)
-            .firstOrNull { it.componentName == componentName }
+    return context.getSystemService(LauncherApps::class.java)
+        .getActivityList(componentName.packageName, user)
+        .firstOrNull { it.componentName == componentName }
 }
 
 
-
 fun Context.createDisabledColor(color: Int): ColorStateList {
-    return ColorStateList(arrayOf(
+    return ColorStateList(
+        arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
-            intArrayOf()),
-            intArrayOf(
-                    getDisabled(getColorAttr(android.R.attr.colorForeground)),
-                    color))
+            intArrayOf()
+        ),
+        intArrayOf(
+            getDisabled(getColorAttr(android.R.attr.colorForeground)),
+            color
+        )
+    )
 }
 
 @ColorInt
@@ -621,8 +662,10 @@ fun Context.applyAlphaAttr(attr: Int, inputColor: Int): Int {
 fun applyAlpha(a: Float, inputColor: Int): Int {
     var alpha = a
     alpha *= Color.alpha(inputColor)
-    return Color.argb(alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
-            Color.blue(inputColor))
+    return Color.argb(
+        alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
+        Color.blue(inputColor)
+    )
 }
 
 fun JSONObject.asMap() = JSONMap(this)
@@ -645,12 +688,16 @@ fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
 }
 
 fun getTabRipple(context: Context, accent: Int): ColorStateList {
-    return ColorStateList(arrayOf(
+    return ColorStateList(
+        arrayOf(
             intArrayOf(android.R.attr.state_selected),
-            intArrayOf()),
-            intArrayOf(
-                    ColorUtils.setAlphaComponent(accent, 31),
-                    context.getColorAttr(android.R.attr.colorControlHighlight)))
+            intArrayOf()
+        ),
+        intArrayOf(
+            ColorUtils.setAlphaComponent(accent, 31),
+            context.getColorAttr(android.R.attr.colorControlHighlight)
+        )
+    )
 }
 
 val Long.Companion.random get() = Random.nextLong()

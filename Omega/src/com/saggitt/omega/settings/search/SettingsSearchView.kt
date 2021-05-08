@@ -23,7 +23,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TypefaceSpan
 import android.util.AttributeSet
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import com.android.launcher3.Utilities
 
 class SettingsSearchView(context: Context, attrs: AttributeSet?) : SearchView(context, attrs) {

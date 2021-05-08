@@ -17,13 +17,13 @@
 
 package com.saggitt.omega.gestures.handlers
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 
-class SleepTimeoutActivity : Activity() {
+class SleepTimeoutActivity : AppCompatActivity() {
 
     private val timeout by lazy { Settings.System.getInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 60000) }
     private val stayOnWhilePluggedIn by lazy { Settings.System.getInt(contentResolver, Settings.Global.STAY_ON_WHILE_PLUGGED_IN, 0) }

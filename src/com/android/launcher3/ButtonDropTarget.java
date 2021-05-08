@@ -16,10 +16,6 @@
 
 package com.android.launcher3;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-
-import static com.android.launcher3.LauncherState.NORMAL;
-
 import android.animation.AnimatorSet;
 import android.animation.FloatArrayEvaluator;
 import android.animation.ObjectAnimator;
@@ -41,6 +37,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragLayer;
@@ -51,10 +49,13 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.android.launcher3.LauncherState.NORMAL;
+
 /**
  * Implements a DropTarget.
  */
-public abstract class ButtonDropTarget extends TextView
+public abstract class ButtonDropTarget extends AppCompatTextView
         implements DropTarget, DragController.DragListener, OnClickListener {
 
     private static final Property<ButtonDropTarget, Integer> TEXT_COLOR =

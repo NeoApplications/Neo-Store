@@ -14,10 +14,11 @@
 -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -27,7 +28,7 @@
         android:paddingStart="24dp"
         android:paddingEnd="4dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/dismiss"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -50,9 +51,9 @@
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/accessibility_close"
             android:padding="10dp"
-            android:src="@drawable/ic_remove_no_shadow"
-            android:tint="@android:color/white" />
-    </LinearLayout>
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/ic_remove_no_shadow" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
         android:id="@+id/arrow"

@@ -36,10 +36,11 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
@@ -62,7 +63,11 @@ class AboutFragment : Fragment() {
 
     private val MODE_TOTAL = 3
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.about, container, false)
     }
 
@@ -74,8 +79,10 @@ class AboutFragment : Fragment() {
         val changelog = view.findViewById<WebView>(R.id.webview_changelog)
 
         val lists = arrayOf(aboutMain, license, changelog)
-        val titles = arrayOf(getString(R.string.title__general_about), getString(R.string.category__about_licenses),
-                getString(R.string.title__about_changelog))
+        val titles = arrayOf(
+            getString(R.string.title__general_about), getString(R.string.category__about_licenses),
+            getString(R.string.title__about_changelog)
+        )
 
         val viewPager = view.findViewById<ViewPager>(R.id.pager).apply {
             offscreenPageLimit = MODE_TOTAL - 1
@@ -93,27 +100,34 @@ class AboutFragment : Fragment() {
 
         lifecycleScope.launch {
             //Load view Items
-            val logo = view.findViewById<ImageView>(R.id.app_logo)
+            val logo = view.findViewById<AppCompatImageView>(R.id.app_logo)
             logo.setOnClickListener {
                 val anim = AnimationSet(true)
-                val rotate = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+                val rotate = RotateAnimation(
+                    0f,
+                    360f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
+                )
                 rotate.duration = 800
                 rotate.interpolator = DecelerateInterpolator()
                 anim.addAnimation(rotate)
                 logo.startAnimation(anim)
             }
 
-            val version = view.findViewById<TextView>(R.id.app_version)
+            val version = view.findViewById<AppCompatTextView>(R.id.app_version)
             version.text = getString(R.string.app_version) + ": " + aboutUtils.appVersionName
 
-            val build = view.findViewById<TextView>(R.id.app_build)
+            val build = view.findViewById<AppCompatTextView>(R.id.app_build)
             build.text = getString(R.string.app_build) + ": " + aboutUtils.appVersionCode
 
-            val buildInfo = view.findViewById<TextView>(R.id.build_information)
+            val buildInfo = view.findViewById<AppCompatTextView>(R.id.build_information)
             loadBuildInfo(aboutUtils, buildInfo)
 
             val accent = Utilities.getOmegaPrefs(context).accentColor
-            view.findViewById<Button>(R.id.source_code).apply {
+            view.findViewById<AppCompatButton>(R.id.source_code).apply {
                 applyColor(accent)
                 setTextColor(accent)
                 compoundDrawableTintList = if (isDark) {
@@ -127,7 +141,7 @@ class AboutFragment : Fragment() {
                 }
             }
 
-            view.findViewById<Button>(R.id.donate).apply {
+            view.findViewById<AppCompatButton>(R.id.donate).apply {
                 applyColor(accent)
                 setTextColor(accent)
                 compoundDrawableTintList = if (isDark) {
@@ -222,13 +236,16 @@ class AboutFragment : Fragment() {
         var tmp: String?
         val locale = Locale.getDefault()
 
-        buildInfoText = String.format(locale, "<b>Package:</b> %s <br><b>Version:</b> v%s (build %s)",
-                aboutUtils.packageName, aboutUtils.appVersionName, aboutUtils.appVersionCode)
+        buildInfoText = String.format(
+            locale, "<b>Package:</b> %s <br><b>Version:</b> v%s (build %s)",
+            aboutUtils.packageName, aboutUtils.appVersionName, aboutUtils.appVersionCode
+        )
         buildInfoText += if (aboutUtils.bcstr("FLAVOR", "").also { tmp = it }.isEmpty()) ""
         else {
             "<br><b>Flavor:</b> " + tmp!!.replace("flavor", "")
         }
-        buildInfoText += if (aboutUtils.bcstr("BUILD_TYPE", "").also { tmp = it }.isEmpty()) "" else " ($tmp)"
+        buildInfoText += if (aboutUtils.bcstr("BUILD_TYPE", "").also { tmp = it }
+                .isEmpty()) "" else " ($tmp)"
         buildInfoText += if (aboutUtils.bcstr("BUILD_DATE", "").also { tmp = it }
                 .isEmpty()) "" else "<br><b>Build date:</b> $tmp"
         buildInfoText += if (aboutUtils.appInstallationSource.also { tmp = it }
@@ -251,14 +268,16 @@ class AboutFragment : Fragment() {
             inputStream.read(buffer)
             inputStream.close()
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
-            webView.loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    // Tell the browser to BASE64-decode the string into your script !!!
-                    "style.innerHTML = window.atob('" + encoded + "');" +
-                    "parent.appendChild(style);" +
-                    "})()")
+            webView.loadUrl(
+                "javascript:(function() {" +
+                        "var parent = document.getElementsByTagName('head').item(0);" +
+                        "var style = document.createElement('style');" +
+                        "style.type = 'text/css';" +
+                        // Tell the browser to BASE64-decode the string into your script !!!
+                        "style.innerHTML = window.atob('" + encoded + "');" +
+                        "parent.appendChild(style);" +
+                        "})()"
+            )
 
             webView.settings.javaScriptEnabled = false
         } catch (e: Exception) {

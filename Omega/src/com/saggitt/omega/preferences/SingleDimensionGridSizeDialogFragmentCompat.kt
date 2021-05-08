@@ -27,7 +27,8 @@ import com.android.launcher3.R
 import com.saggitt.omega.util.applyAccent
 
 
-class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentCompat(), SeekBar.OnSeekBarChangeListener {
+class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentCompat(),
+    SeekBar.OnSeekBarChangeListener {
 
     private val gridSizePreference get() = preference as SingleDimensionGridSizePreference
 

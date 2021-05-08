@@ -15,14 +15,16 @@
  */
 package com.android.launcher3.util;
 
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Utility class for offloading some class from UI thread
@@ -41,7 +43,7 @@ public class UiThreadHelper {
         Message.obtain(HANDLER.get(context), MSG_HIDE_KEYBOARD, token).sendToTarget();
     }
 
-    public static void setOrientationAsync(Activity activity, int orientation) {
+    public static void setOrientationAsync(AppCompatActivity activity, int orientation) {
         Message.obtain(HANDLER.get(activity), MSG_SET_ORIENTATION, orientation, 0, activity)
                 .sendToTarget();
     }

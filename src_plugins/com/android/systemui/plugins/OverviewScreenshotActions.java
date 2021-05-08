@@ -16,9 +16,10 @@
 
 package com.android.systemui.plugins;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 
@@ -38,5 +39,5 @@ public interface OverviewScreenshotActions extends Plugin {
      * @param screenshot The screenshot we will do actions on.
      * @param activity   THe host activity.
      */
-    void setupActions(ViewGroup parent, Bitmap screenshot, Activity activity);
+    void setupActions(ViewGroup parent, Bitmap screenshot, AppCompatActivity activity);
 }

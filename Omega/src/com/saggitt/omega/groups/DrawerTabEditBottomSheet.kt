@@ -24,6 +24,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -48,12 +50,12 @@ class DrawerTabEditBottomSheet(context: Context, config: AppGroups.Group.Customi
             entry.createRow(context, container, accent)?.let { container.addView(it, 0) }
         }
 
-        findViewById<Button>(R.id.save).apply {
+        findViewById<AppCompatButton>(R.id.save).apply {
             applyColor(accent)
             setTextColor(accent)
             setOnClickListener(this@DrawerTabEditBottomSheet)
         }
-        findViewById<TextView>(R.id.cancel).apply {
+        findViewById<AppCompatButton>(R.id.cancel).apply {
             setOnClickListener(this@DrawerTabEditBottomSheet)
         }
     }

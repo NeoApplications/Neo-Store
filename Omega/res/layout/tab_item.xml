@@ -21,7 +21,7 @@
         android:duplicateParentState="true"
         android:focusable="false"
         android:gravity="center_vertical|end"
-        android:src="@drawable/deep_shortcuts_drag_handle"
+        app:srcCompat="@drawable/deep_shortcuts_drag_handle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

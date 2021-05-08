@@ -17,13 +17,13 @@
 
 package com.saggitt.omega.theme
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import com.android.launcher3.R
 import java.lang.ref.WeakReference
 
 class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideListener?) {
-    constructor(themeSet: ThemeSet, activity: Activity) : this(themeSet, ActivityListener(activity))
+    constructor(themeSet: ThemeSet, activity: AppCompatActivity) : this(themeSet, ActivityListener(activity))
     constructor(themeSet: ThemeSet, context: Context) : this(themeSet, ContextListener(context))
 
     val isAlive get() = listener?.isAlive == true
@@ -146,7 +146,7 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
         fun reloadTheme()
     }
 
-    class ActivityListener(activity: Activity) : ThemeOverrideListener {
+    class ActivityListener(activity: AppCompatActivity) : ThemeOverrideListener {
         private val activityRef = WeakReference(activity)
         override val isAlive = activityRef.get() != null
 

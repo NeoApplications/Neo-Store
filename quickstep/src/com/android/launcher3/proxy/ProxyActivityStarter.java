@@ -16,14 +16,15 @@
 
 package com.android.launcher3.proxy;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
 
-public class ProxyActivityStarter extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ProxyActivityStarter extends AppCompatActivity {
 
     private static final String TAG = "ProxyActivityStarter";
 

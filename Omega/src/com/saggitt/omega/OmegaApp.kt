@@ -62,8 +62,10 @@ class OmegaApp : Application() {
         return if (accessibilityService != null) {
             accessibilityService!!.performGlobalAction(action)
         } else {
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            startActivity(
+                Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
             false
         }
     }
@@ -132,7 +134,10 @@ class OmegaApp : Application() {
         val isRecentsComponent = recentsComponent.packageName == packageName
                 && recentsComponent.className == RecentsActivity::class.java.name
         if (!isRecentsComponent) {
-            Log.d("OmegaApp", "config_recentsComponentName ($recentsComponent) is not Omega, disabling recents")
+            Log.d(
+                "OmegaApp",
+                "config_recentsComponentName ($recentsComponent) is not Omega, disabling recents"
+            )
             return false
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {

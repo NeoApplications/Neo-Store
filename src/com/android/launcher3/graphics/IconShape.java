@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.FloatArrayEvaluator;
@@ -60,6 +58,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
 
 /**
  * Abstract representation of the shape of an icon shape
@@ -369,10 +369,10 @@ public abstract class IconShape {
             int type;
             while ((type = parser.next()) != XmlPullParser.END_TAG
                     && type != XmlPullParser.END_DOCUMENT
-                    && !"shapes".equals(parser.getName()));
+                    && !"shapes".equals(parser.getName())) ;
 
             final int depth = parser.getDepth();
-            int[] radiusAttr = new int[] {R.attr.folderIconRadius};
+            int[] radiusAttr = new int[]{R.attr.folderIconRadius};
             IntArray keysToIgnore = new IntArray(0);
 
             while (((type = parser.next()) != XmlPullParser.END_TAG ||

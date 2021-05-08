@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:background="?selectableItemBackground"
     android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/dialog_horizontal_padding"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingEnd="16dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
             android:textSize="18sp"
             tools:text="Dummy provider" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,20 +38,20 @@
             android:visibility="gone"
             tools:text="com.saggitt.omega.smartspace.DummyProvider"
             tools:visibility="visible" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/drag_handle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingStart="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingEnd="21dp"
-        android:src="@drawable/ic_drag_handle"
         android:background="@android:color/transparent"
         android:clickable="false"
         android:duplicateParentState="true"
         android:focusable="false"
         android:gravity="center_vertical|end"
+        android:paddingStart="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingEnd="21dp"
         android:visibility="gone"
+        app:srcCompat="@drawable/ic_drag_handle"
         tools:visibility="visible" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

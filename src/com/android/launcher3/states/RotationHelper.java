@@ -15,12 +15,6 @@
  */
 package com.android.launcher3.states;
 
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LOCKED;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-import static android.util.DisplayMetrics.DENSITY_DEVICE_STABLE;
-
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -30,9 +24,16 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.util.UiThreadHelper;
+
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LOCKED;
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+import static android.util.DisplayMetrics.DENSITY_DEVICE_STABLE;
 
 /**
  * Utility class to manage launcher rotation
@@ -44,7 +45,7 @@ public class RotationHelper implements OnSharedPreferenceChangeListener {
     public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
 
     private final ContentResolver mContentResolver;
-    private final Activity mActivity;
+    private final AppCompatActivity mActivity;
     private final SharedPreferences mSharedPrefs;
     private boolean mSystemAutoRotateEnabled;
 
@@ -67,7 +68,7 @@ public class RotationHelper implements OnSharedPreferenceChangeListener {
      */
     private int mStateHandlerRequest = REQUEST_NONE;
 
-    public RotationHelper(Activity activity) {
+    public RotationHelper(AppCompatActivity activity) {
         mActivity = activity;
 
         // On large devices we do not handle auto-rotate differently.

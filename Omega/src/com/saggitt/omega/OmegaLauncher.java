@@ -19,7 +19,6 @@
 package com.saggitt.omega;
 
 import android.animation.AnimatorSet;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.android.launcher3.LauncherAppState;
@@ -256,7 +256,7 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     }
 
     private void handleEditIconResult(int resultCode, Bundle data) {
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == AppCompatActivity.RESULT_OK) {
             if (currentEditInfo == null) {
                 return;
             }

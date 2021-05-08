@@ -15,7 +15,6 @@
  */
 package com.android.launcher3.touch;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageInstaller.SessionInfo;
@@ -28,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;

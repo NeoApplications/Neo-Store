@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.iconpack
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -28,7 +28,7 @@ import android.os.Message
 import android.os.Process
 import android.text.TextUtils
 import android.view.*
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.ActionMenuView
@@ -215,7 +215,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1000 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == 1000 && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             if (data.hasExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)) {
                 val icon =
                     data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
@@ -274,7 +274,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
 
     fun onSelectIcon(entry: IconPack.Entry) {
         val customEntry = entry.toCustomEntry()
-        setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
+        setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
         finish()
     }
 

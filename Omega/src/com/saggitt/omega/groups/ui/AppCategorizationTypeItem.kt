@@ -22,9 +22,9 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.graphics.ColorUtils
 import com.android.launcher3.R
 import com.saggitt.omega.OmegaPreferences
@@ -32,7 +32,7 @@ import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.util.*
 
 class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) :
-    LinearLayout(context, attrs),
+    LinearLayoutCompat(context, attrs),
     View.OnClickListener, OmegaPreferences.OnPreferenceChangeListener {
 
     private val prefs = context.omegaPrefs
@@ -74,13 +74,13 @@ class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) :
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        findViewById<ImageView>(R.id.checkMark).tintDrawable(context.getColorAccent())
+        findViewById<AppCompatImageView>(R.id.checkMark).tintDrawable(context.getColorAccent())
     }
 
     fun setup(type: AppGroupsManager.CategorizationType, titleRes: Int, summaryRes: Int) {
         this.type = type
-        findViewById<TextView>(R.id.title).setText(titleRes)
-        findViewById<TextView>(R.id.summary).setText(summaryRes)
+        findViewById<AppCompatTextView>(android.R.id.title).setText(titleRes)
+        findViewById<AppCompatTextView>(android.R.id.summary).setText(summaryRes)
     }
 
     override fun onClick(v: View) {
@@ -89,7 +89,7 @@ class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) :
 
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
-        findViewById<ImageView>(R.id.checkMark).isVisible = selected
+        findViewById<AppCompatImageView>(R.id.checkMark).isVisible = selected
     }
 
     override fun onAttachedToWindow() {

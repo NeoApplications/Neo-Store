@@ -15,9 +15,10 @@
  */
 package com.android.launcher3.graphics;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Extension of fragment, with support for preview mode.
@@ -26,14 +27,16 @@ public class FragmentWithPreview extends Fragment {
 
     private Context mPreviewContext;
 
+    @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onInit(savedInstanceState);
     }
 
-    public void onInit(Bundle savedInstanceState) { }
+    public void onInit(Bundle savedInstanceState) {
+    }
 
-
+    @Override
     public Context getContext() {
         return mPreviewContext != null ? mPreviewContext : getActivity();
     }

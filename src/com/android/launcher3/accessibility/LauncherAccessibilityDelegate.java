@@ -1,10 +1,5 @@
 package com.android.launcher3.accessibility;
 
-import static android.view.accessibility.AccessibilityNodeInfo.ACTION_LONG_CLICK;
-
-import static com.android.launcher3.LauncherState.NORMAL;
-
-import android.app.AlertDialog;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -18,6 +13,8 @@ import android.view.View;
 import android.view.View.AccessibilityDelegate;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityNodeInfo.AccessibilityAction;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.android.launcher3.AppWidgetResizeFrame;
 import com.android.launcher3.BubbleTextView;
@@ -48,6 +45,9 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
 import java.util.ArrayList;
+
+import static android.view.accessibility.AccessibilityNodeInfo.ACTION_LONG_CLICK;
+import static com.android.launcher3.LauncherState.NORMAL;
 
 public class LauncherAccessibilityDelegate extends AccessibilityDelegate implements DragListener {
 

@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static android.app.Activity.RESULT_CANCELED;
-
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -39,6 +37,8 @@ import com.android.launcher3.widget.custom.CustomWidgetManager;
 
 import java.util.ArrayList;
 import java.util.function.IntConsumer;
+
+import static androidx.appcompat.app.AppCompatActivity.RESULT_CANCELED;
 
 
 /**
