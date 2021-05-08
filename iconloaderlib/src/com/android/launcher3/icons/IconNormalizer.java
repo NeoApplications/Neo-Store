@@ -29,14 +29,13 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.android.launcher3.AdaptiveIconCompat;
 
 import java.nio.ByteBuffer;
 
@@ -137,7 +136,7 @@ public class IconNormalizer {
         Rect tmpBounds = new Rect(d.getBounds());
         d.setBounds(0, 0, size, size);
 
-        Path path = ((AdaptiveIconCompat) d).getIconMask();
+        Path path = ((AdaptiveIconDrawable) d).getIconMask();
         Region region = new Region();
         region.setPath(path, new Region(0, 0, size, size));
 
@@ -243,7 +242,7 @@ public class IconNormalizer {
      */
     public float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
                           @Nullable Path path, @Nullable boolean[] outMaskShape, int minVisibleAlpha) {
-        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconCompat) {
+        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconDrawable) {
             if (mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
                 mAdaptiveIconScale = normalizeAdaptiveIcon(d, mMaxSize, mAdaptiveIconBounds);
             }
