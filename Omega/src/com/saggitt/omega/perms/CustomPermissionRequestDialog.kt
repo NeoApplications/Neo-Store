@@ -18,12 +18,13 @@
 package com.saggitt.omega.perms
 
 import android.content.Context
-import android.view.View
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.android.launcher3.R
+import com.android.launcher3.databinding.PermRequestDialogBinding
 import com.saggitt.omega.omegaApp
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
@@ -31,9 +32,14 @@ import com.saggitt.omega.util.applyAccent
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.tintDrawable
-import kotlinx.android.synthetic.omega.perm_request_dialog.view.*
 
-class CustomPermissionRequestDialog private constructor(private val context: Context, private val string: Int, private val icon: Int, private val explanation: Int?) {
+class CustomPermissionRequestDialog private constructor(
+    private val context: Context,
+    private val string: Int,
+    private val icon: Int,
+    private val explanation: Int?
+) {
+
     private val key = Pair(string, icon)
     private val listeners = mutableSetOf<(Boolean) -> Unit>()
 
@@ -50,45 +56,57 @@ class CustomPermissionRequestDialog private constructor(private val context: Con
             return
         }
         SHOWING[key] = this
-        val themedContext = ThemedContextProvider(context.omegaApp.activityHandler.foregroundActivity
-                ?: context, null, ThemeOverride.Settings()).get()
+        val themedContext = ThemedContextProvider(
+            context.omegaApp.activityHandler.foregroundActivity
+                ?: context, null, ThemeOverride.Settings()
+        ).get()
         AlertDialog.Builder(themedContext, ThemeOverride.AlertDialog().getTheme(context))
-                .setView(DialogView(context, string, icon, explanation))
-                .setIcon(icon)
-                .setPositiveButton(context.getString(R.string.allow).toUpperCase(), { _, _ ->
-                    SHOWING.remove(key)
-                    listeners.forEach { it(true) }
-                })
-                .setNegativeButton(context.getString(R.string.deny).toUpperCase(), { _, _ ->
-                    SHOWING.remove(key)
-                    listeners.forEach { it(false) }
-                })
-                .setOnDismissListener {
-                    SHOWING.remove(key)
-                }
-                .create()
-                .apply {
-                    applyAccent()
-                    show()
-                }
+            .setView(DialogView(context, string, icon, explanation))
+            .setIcon(icon)
+            .setPositiveButton(context.getString(R.string.allow).toUpperCase(), { _, _ ->
+                SHOWING.remove(key)
+                listeners.forEach { it(true) }
+            })
+            .setNegativeButton(context.getString(R.string.deny).toUpperCase(), { _, _ ->
+                SHOWING.remove(key)
+                listeners.forEach { it(false) }
+            })
+            .setOnDismissListener {
+                SHOWING.remove(key)
+            }
+            .create()
+            .apply {
+                applyAccent()
+                show()
+            }
     }
 
     companion object {
-        fun create(context: Context, @StringRes string: Int, @DrawableRes icon: Int, explanation: Int?) = CustomPermissionRequestDialog(context, string, icon, explanation)
+        fun create(
+            context: Context,
+            @StringRes string: Int,
+            @DrawableRes icon: Int,
+            explanation: Int?
+        ) = CustomPermissionRequestDialog(context, string, icon, explanation)
 
         private val SHOWING = mutableMapOf<Pair<Int, Int>, CustomPermissionRequestDialog>()
     }
 
-    inner class DialogView(context: Context, @StringRes private val string: Int, @DrawableRes private val icn: Int, @StringRes private val explanation: Int?) : FrameLayout(context) {
+    inner class DialogView(
+        context: Context,
+        @StringRes private val string: Int,
+        @DrawableRes private val icn: Int,
+        @StringRes private val explanation: Int?
+    ) : FrameLayout(context) {
         override fun onAttachedToWindow() {
             super.onAttachedToWindow()
-            View.inflate(context, R.layout.perm_request_dialog, this)
-            message.setText(string)
-            icon.setImageResource(icn)
-            icon.tintDrawable(context.getColorAccent())
-            icon_info.isVisible = explanation != null
+            val binding = PermRequestDialogBinding.inflate(LayoutInflater.from(context))
+            binding.message.setText(string)
+            binding.icon.setImageResource(icn)
+            binding.icon.tintDrawable(context.getColorAccent())
+            binding.iconInfo.isVisible = explanation != null
             if (explanation != null) {
-                text_explanation.setText(explanation)
+                binding.textExplanation.setText(explanation)
             }
         }
     }

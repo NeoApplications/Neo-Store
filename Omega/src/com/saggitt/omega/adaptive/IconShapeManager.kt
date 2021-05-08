@@ -106,7 +106,7 @@ class IconShapeManager(private val context: Context) {
                 IconShape.Squircle,
                 IconShape.Sammy,
                 IconShape.Teardrop,
-                IconShape.Cylinder).minBy {
+                IconShape.Cylinder).minByOrNull {
             shapePath.reset()
             it.addShape(shapePath, 0f, 0f, size / 2f)
             shapeR.setPath(shapePath, clip)

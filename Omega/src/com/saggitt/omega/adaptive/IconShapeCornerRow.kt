@@ -23,16 +23,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.AdapterView
-import android.widget.LinearLayout
-import android.widget.SeekBar
-import android.widget.SimpleAdapter
+import android.widget.*
 import com.android.launcher3.R
-import kotlinx.android.synthetic.omega.icon_shape_corner_row.view.*
 
 class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
-        LinearLayout(context, attrs), SeekBar.OnSeekBarChangeListener,
-        AdapterView.OnItemSelectedListener {
+    LinearLayout(context, attrs), SeekBar.OnSeekBarChangeListener,
+    AdapterView.OnItemSelectedListener {
+    lateinit var spinner: Spinner
+    lateinit var seekbar: SeekBar
 
     private var listener: ((IconShape.Corner) -> Unit)? = null
     private var scale = 1f
@@ -54,6 +52,8 @@ class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        spinner = findViewById(R.id.spinner)
+        seekbar = findViewById(R.id.seekbar)
         spinner.adapter = CornerShapeAdapter(context)
         spinner.onItemSelectedListener = this
         updateSeekBar()
@@ -63,7 +63,7 @@ class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
     }
 
     fun init(titleRes: Int, corner: IconShape.Corner, listener: (IconShape.Corner) -> Unit) {
-        title.setText(titleRes)
+        findViewById<TextView>(R.id.title).setText(titleRes)
         this.scale = corner.scale.x
         this.shape = corner.shape.toString()
         this.listener = listener
@@ -72,7 +72,7 @@ class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
     @SuppressLint("SetTextI18n")
     private fun updateSeekBar() {
         seekbar.progress = (scale * 10).toInt()
-        txtValue.text = "${(scale * 100).toInt()}%"
+        findViewById<TextView>(R.id.txtValue).text = "${(scale * 100).toInt()}%"
     }
 
     private fun updateSpinner() {
@@ -107,27 +107,29 @@ class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
     }
 
     class CornerShapeAdapter(context: Context) :
-            SimpleAdapter(context, getEntries(context),
-                    android.R.layout.simple_list_item_1,
-                    arrayOf("text"),
-                    intArrayOf(android.R.id.text1)) {
+        SimpleAdapter(
+            context, getEntries(context),
+            android.R.layout.simple_list_item_1,
+            arrayOf("text"),
+            intArrayOf(android.R.id.text1)
+        ) {
 
         companion object {
 
             private fun getEntries(context: Context): List<Map<String, String>> {
                 return listOf(
-                        mapOf(
-                                "value" to "arc",
-                                "text" to context.getString(R.string.icon_shape_corner_round)
-                        ),
-                        mapOf(
-                                "value" to "squircle",
-                                "text" to context.getString(R.string.icon_shape_corner_squircle)
-                        ),
-                        mapOf(
-                                "value" to "cut",
-                                "text" to context.getString(R.string.icon_shape_corner_cut)
-                        )
+                    mapOf(
+                        "value" to "arc",
+                        "text" to context.getString(R.string.icon_shape_corner_round)
+                    ),
+                    mapOf(
+                        "value" to "squircle",
+                        "text" to context.getString(R.string.icon_shape_corner_squircle)
+                    ),
+                    mapOf(
+                        "value" to "cut",
+                        "text" to context.getString(R.string.icon_shape_corner_cut)
+                    )
                 )
             }
         }

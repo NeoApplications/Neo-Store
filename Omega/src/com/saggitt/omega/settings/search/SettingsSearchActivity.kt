@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
+import com.android.launcher3.databinding.ActivitySettingsSearchBinding
 import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
 import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.*
@@ -39,9 +40,9 @@ import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
-import kotlinx.android.synthetic.omega.activity_settings_search.*
 
 class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextListener {
+    lateinit var binding: ActivitySettingsSearchBinding
 
     private val searchIndex by lazy { SearchIndex(this) }
     private val searchAdapter by lazy { SearchAdapter(this) }
@@ -49,12 +50,13 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val binding = ActivitySettingsSearchBinding.inflate(layoutInflater)
 
         decorLayout.hideToolbar = true
 
-        setContentView(R.layout.activity_settings_search)
+        setContentView(binding.root)
 
-        val listResults = list_results
+        val listResults = binding.listResults
         listResults.shouldTranslateSelf = false
         listResults.adapter = searchAdapter
         listResults.layoutManager = LinearLayoutManager(this)
@@ -67,11 +69,11 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
             }
         })
 
-        setSupportActionBar(search_toolbar)
+        setSupportActionBar(binding.searchToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        search_view.setOnQueryTextListener(this)
-        search_view.requestFocus()
+        binding.searchView.setOnQueryTextListener(this)
+        binding.searchView.requestFocus()
 
         overridePendingTransition(R.anim.fade_in_short, R.anim.no_anim_short)
     }
@@ -94,7 +96,7 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
 
-        list_results.requestFocus()
+        binding.listResults.requestFocus()
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
@@ -123,11 +125,12 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
         else
             searchIndex.entries.filter { it.title.toLowerCase().contains(query.toLowerCase()) }
         val showNoResults = matches.isEmpty() && !query.isEmpty()
-        no_results_layout.animate().alpha(if (showNoResults) 1f else 0f).start()
+        binding.noResultsLayout.animate().alpha(if (showNoResults) 1f else 0f).start()
         searchAdapter.postSearchResults(matches)
     }
 
-    class SearchAdapter(private val activity: SettingsSearchActivity) : RecyclerView.Adapter<SearchAdapter.Holder>() {
+    class SearchAdapter(private val activity: SettingsSearchActivity) :
+        RecyclerView.Adapter<SearchAdapter.Holder>() {
 
         private val searchResults = ArrayList<SearchIndex.SettingsEntry>()
 
@@ -136,8 +139,11 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            return SettingsEntryHolder(LayoutInflater.from(parent.context).inflate(
-                    R.layout.search_intent_item, parent, false))
+            return SettingsEntryHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.search_intent_item, parent, false
+                )
+            )
         }
 
         override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -153,7 +159,8 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
         }
 
         fun postSearchResults(newResults: List<SearchIndex.SettingsEntry>) {
-            val diffResult = DiffUtil.calculateDiff(SearchResultDiffCallback(searchResults, newResults))
+            val diffResult =
+                DiffUtil.calculateDiff(SearchResultDiffCallback(searchResults, newResults))
             searchResults.clear()
             searchResults.addAll(newResults)
             diffResult.dispatchUpdatesTo(this)
@@ -166,7 +173,8 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
             protected val iconView = itemView.findViewById(android.R.id.icon) as ImageView
             protected val breadcrumbView = itemView.findViewById(R.id.breadcrumb) as TextView
             protected val sliceView = itemView.findViewById(R.id.slice_square) as LinearLayout
-            protected val horizontalSliceView = itemView.findViewById(R.id.slice_horizontal) as LinearLayout
+            protected val horizontalSliceView =
+                itemView.findViewById(R.id.slice_horizontal) as LinearLayout
 
             open fun onBind(activity: SettingsSearchActivity, entry: SearchIndex.SettingsEntry) {
                 titleView.text = entry.title
@@ -220,7 +228,10 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
 
         class SettingsEntryHolder(itemView: View) : Holder(itemView) {
 
-            override fun onBind(activity: SettingsSearchActivity, entry: SearchIndex.SettingsEntry) {
+            override fun onBind(
+                activity: SettingsSearchActivity,
+                entry: SearchIndex.SettingsEntry
+            ) {
                 super.onBind(activity, entry)
 
                 itemView.setOnClickListener {
@@ -239,8 +250,9 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
     }
 
     class SearchResultDiffCallback(
-            private val oldList: List<SearchIndex.SettingsEntry>,
-            private val newList: List<SearchIndex.SettingsEntry>) : DiffUtil.Callback() {
+        private val oldList: List<SearchIndex.SettingsEntry>,
+        private val newList: List<SearchIndex.SettingsEntry>
+    ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = oldList.size
 

@@ -30,16 +30,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
+import com.android.launcher3.databinding.FragmentAppCategorizationBinding
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFoldersAdapter
 import com.saggitt.omega.groups.DrawerTabsAdapter
 import com.saggitt.omega.groups.FlowerpotTabsAdapter
 import com.saggitt.omega.util.*
-import kotlinx.android.synthetic.omega.fragment_app_categorization.*
 
 @Keep
 class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChangeListener {
+    lateinit var binding: FragmentAppCategorizationBinding
 
     private val ourContext by lazy { activity as Context }
     private val prefs by lazy { ourContext.omegaPrefs }
@@ -64,8 +65,13 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     private val flowerpotTabsAdapter by lazy { FlowerpotTabsAdapter(ourContext) }
     private val drawerFoldersAdapter by lazy { DrawerFoldersAdapter(ourContext) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_app_categorization, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,7 +79,7 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(ourContext)
-        setupEnableToggle(enableToggle)
+        setupEnableToggle(binding.enableToggle.root)
         setupStyleSection()
     }
 
@@ -123,18 +129,22 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     }
 
     private fun setupStyleSection() {
-        val title = styleHeader.findViewById<TextView>(android.R.id.title)
+        val title = binding.styleHeader.root.findViewById<TextView>(android.R.id.title)
         title.setText(R.string.pref_appcategorization_style_text)
         title.setTextColor(ourContext.createDisabledColor(accent))
 
-        (folderTypeItem as AppCategorizationTypeItem)
-                .setup(AppGroupsManager.CategorizationType.Folders,
-                        R.string.pref_appcategorization_folders_title,
-                        R.string.pref_appcategorization_folders_summary)
+        (binding.folderTypeItem as AppCategorizationTypeItem)
+            .setup(
+                AppGroupsManager.CategorizationType.Folders,
+                R.string.pref_appcategorization_folders_title,
+                R.string.pref_appcategorization_folders_summary
+            )
 
-        (tabTypeItem as AppCategorizationTypeItem)
-                .setup(AppGroupsManager.CategorizationType.Tabs,
-                        R.string.pref_appcategorization_tabs_title,
-                        R.string.pref_appcategorization_tabs_summary)
+        (binding.tabTypeItem as AppCategorizationTypeItem)
+            .setup(
+                AppGroupsManager.CategorizationType.Tabs,
+                R.string.pref_appcategorization_tabs_title,
+                R.string.pref_appcategorization_tabs_summary
+            )
     }
 }

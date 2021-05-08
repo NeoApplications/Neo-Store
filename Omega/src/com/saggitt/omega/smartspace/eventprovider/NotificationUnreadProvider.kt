@@ -82,13 +82,15 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         if (!flowerpotLoaded) return null
 
         val sbn = manager.sbNotifications
-                .asSequence()
-                .filter { !it.isOngoing }
-                .filter { it.notification.priority >= PRIORITY_DEFAULT }
-                .filter { isCommunicationApp(it) }
-                .maxWith(compareBy(
-                        { it.notification.priority },
-                        { it.notification.`when` })) ?: return null
+            .asSequence()
+            .filter { !it.isOngoing }
+            .filter { it.notification.priority >= PRIORITY_DEFAULT }
+            .filter { isCommunicationApp(it) }
+            .maxWithOrNull(
+                compareBy(
+                    { it.notification.priority },
+                    { it.notification.`when` })
+            ) ?: return null
 
         if (zenModeEnabled) {
             return CardData(

@@ -21,12 +21,15 @@ package com.saggitt.omega.adaptive
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.android.launcher3.R
-import kotlinx.android.synthetic.omega.icon_shape_customize_view.view.*
+import com.android.launcher3.databinding.IconShapeCustomizeViewBinding
 
 class IconShapeCustomizeView(context: Context, attrs: AttributeSet?) :
-        LinearLayout(context, attrs) {
+    LinearLayout(context, attrs) {
+    val binding = IconShapeCustomizeViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val previousShape = IconShapeManager.getInstance(context).iconShape
     private var topLeft = previousShape.topLeft
@@ -66,15 +69,23 @@ class IconShapeCustomizeView(context: Context, attrs: AttributeSet?) :
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        shapePreview.setImageDrawable(previewDrawable)
-        (topLeftRow as IconShapeCornerRow)
-                .init(R.string.icon_shape_top_left, topLeft) { topLeft = it }
-        (topRightRow as IconShapeCornerRow)
-                .init(R.string.icon_shape_top_right, topRight) { topRight = it }
-        (bottomLeftRow as IconShapeCornerRow)
-                .init(R.string.icon_shape_bottom_left, bottomLeft) { bottomLeft = it }
-        (bottomRightRow as IconShapeCornerRow)
-                .init(R.string.icon_shape_bottom_right, bottomRight) { bottomRight = it }
+        findViewById<ImageView>(R.id.shapePreview).setImageDrawable(previewDrawable)
+        findViewById<IconShapeCornerRow>(R.id.topLeftRow).init(
+            R.string.icon_shape_top_left,
+            topLeft
+        ) { topLeft = it }
+        findViewById<IconShapeCornerRow>(R.id.topRightRow).init(
+            R.string.icon_shape_top_right,
+            topRight
+        ) { topRight = it }
+        findViewById<IconShapeCornerRow>(R.id.bottomLeftRow).init(
+            R.string.icon_shape_bottom_left,
+            bottomLeft
+        ) { bottomLeft = it }
+        findViewById<IconShapeCornerRow>(R.id.bottomRightRow).init(
+            R.string.icon_shape_bottom_right,
+            bottomRight
+        ) { bottomRight = it }
     }
 
     private fun rebuildShape() {
