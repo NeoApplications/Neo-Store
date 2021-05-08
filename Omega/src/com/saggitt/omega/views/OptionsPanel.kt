@@ -31,10 +31,9 @@ import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.util.forEachChild
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
-import kotlinx.android.synthetic.omega.options_view.view.*
 
 class OptionsPanel(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs),
-        Insettable, View.OnClickListener, OmegaPreferences.OnPreferenceChangeListener {
+    Insettable, View.OnClickListener, OmegaPreferences.OnPreferenceChangeListener {
 
     private val launcher = Launcher.getLauncher(context)
 
@@ -55,7 +54,7 @@ class OptionsPanel(context: Context, attrs: AttributeSet) : LinearLayout(context
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        widget_button.isVisible = !prefs.lockDesktop
+        findViewById<OptionsTextView>(R.id.widget_button).isVisible = !prefs.lockDesktop
     }
 
     override fun onClick(v: View) {

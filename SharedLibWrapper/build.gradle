@@ -13,3 +13,8 @@ dependencies {
     implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/quickstep/libs", include: 'sysui_shared.jar')
     compileOnly fileTree(dir: "$ANDROID_TOP/prebuilts/fullsdk-${org.gradle.internal.os.OperatingSystem.current().isMacOsX() ? "darwin" : "linux"}/platforms/android-30", include: 'android.jar')
 }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
