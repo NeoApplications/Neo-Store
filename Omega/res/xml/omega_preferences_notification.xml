@@ -41,7 +41,6 @@
 
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:defaultValue="@color/notification_background"
-        android:dependency="pref_notification_count"
         android:key="pref_notification_background"
         android:title="@string/title__notification_background"
         app:cpv_dialogTitle="@string/title__notification_background"
