@@ -22,15 +22,18 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.graphics.ColorUtils
+import com.android.launcher3.R
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.util.*
-import kotlinx.android.synthetic.omega.app_categorization_type_item.view.*
 
-class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
-        View.OnClickListener, OmegaPreferences.OnPreferenceChangeListener {
+class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) :
+    LinearLayout(context, attrs),
+    View.OnClickListener, OmegaPreferences.OnPreferenceChangeListener {
 
     private val prefs = context.omegaPrefs
     private val manager = prefs.appGroupsManager
@@ -40,34 +43,44 @@ class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) : Linear
         setOnClickListener(this)
 
         val tintSelected = context.getColorAccent()
-        val tintNormal = ColorUtils.setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
-        val tintList = ColorStateList(arrayOf(
+        val tintNormal = ColorUtils.setAlphaComponent(
+            context.getColorAttr(android.R.attr.colorControlHighlight),
+            255
+        )
+        val tintList = ColorStateList(
+            arrayOf(
                 intArrayOf(android.R.attr.state_selected),
-                intArrayOf()),
-                intArrayOf(
-                        tintSelected,
-                        tintNormal))
+                intArrayOf()
+            ),
+            intArrayOf(
+                tintSelected,
+                tintNormal
+            )
+        )
         background.setTintList(tintList)
 
-        val rippleTintList = ColorStateList(arrayOf(
+        val rippleTintList = ColorStateList(
+            arrayOf(
                 intArrayOf(android.R.attr.state_selected),
-                intArrayOf()),
-                intArrayOf(
-                        ColorUtils.setAlphaComponent(tintSelected, 31),
-                        ColorUtils.setAlphaComponent(tintNormal, 31)))
+                intArrayOf()
+            ),
+            intArrayOf(
+                ColorUtils.setAlphaComponent(tintSelected, 31),
+                ColorUtils.setAlphaComponent(tintNormal, 31)
+            )
+        )
         (background as RippleDrawable).setColor(rippleTintList)
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-
-        checkMark.tintDrawable(context.getColorAccent())
+        findViewById<ImageView>(R.id.checkMark).tintDrawable(context.getColorAccent())
     }
 
     fun setup(type: AppGroupsManager.CategorizationType, titleRes: Int, summaryRes: Int) {
         this.type = type
-        title.setText(titleRes)
-        summary.setText(summaryRes)
+        findViewById<TextView>(R.id.title).setText(titleRes)
+        findViewById<TextView>(R.id.summary).setText(summaryRes)
     }
 
     override fun onClick(v: View) {
@@ -76,7 +89,7 @@ class AppCategorizationTypeItem(context: Context, attrs: AttributeSet?) : Linear
 
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
-        checkMark.isVisible = selected
+        findViewById<ImageView>(R.id.checkMark).isVisible = selected
     }
 
     override fun onAttachedToWindow() {

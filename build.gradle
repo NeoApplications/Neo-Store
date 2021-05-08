@@ -70,7 +70,6 @@ final String FRAMEWORK_PREBUILTS_DIR = "prebuilts/"
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.protobuf'
 
 android {
@@ -181,6 +180,10 @@ android {
         disable 'ExtraTranslation'
         abortOnError false
         checkReleaseBuilds false
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     addFrameworkJar('framework.jar')

@@ -37,13 +37,14 @@ import com.saggitt.omega.preferences.SelectableAppsActivity
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.*
-import kotlinx.android.synthetic.main.arrow_toast.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsManager,
-                                              private val type: AppGroupsManager.CategorizationType) {
+abstract class AppGroups<T : AppGroups.Group>(
+    private val manager: AppGroupsManager,
+    private val type: AppGroupsManager.CategorizationType
+) {
 
     private val prefs = manager.prefs
     val context = prefs.context
@@ -94,13 +95,13 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         val arr = loadGroupsArray()
         val used = mutableSetOf<GroupCreator<T>>()
         (0 until arr.length())
-                .map { arr.getJSONObject(it) }
-                .mapNotNullTo(groups) { group ->
-                    val type = if (group.has(KEY_TYPE)) group.getString(KEY_TYPE) else TYPE_UNDEFINED
-                    val creator = getGroupCreator(type)
-                    used.add(creator)
-                    creator.createGroup(context)?.apply { loadCustomizations(context, group.asMap()) }
-                }
+            .map { arr.getJSONObject(it) }
+            .mapNotNullTo(groups) { group ->
+                val type = if (group.has(KEY_TYPE)) group.getString(KEY_TYPE) else TYPE_UNDEFINED
+                val creator = getGroupCreator(type)
+                used.add(creator)
+                creator.createGroup(context)?.apply { loadCustomizations(context, group.asMap()) }
+            }
         getDefaultCreators().asReversed().forEach { creator ->
             if (creator !in used) {
                 creator.createGroup(context)?.let { groups.add(0, it) }
@@ -247,7 +248,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
 
         open class StringCustomization(key: String, default: String) :
-                Customization<String, String>(key, default) {
+            Customization<String, String>(key, default) {
 
             override fun loadFromJson(context: Context, obj: String?) {
                 value = obj
@@ -265,7 +266,8 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         class CustomTitle(key: String, default: String) : StringCustomization(key, default) {
 
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-                val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_custom_title_row, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.drawer_tab_custom_title_row, parent, false)
                 view.findViewById<TextView>(R.id.name_label).setTextColor(accent)
 
                 val tabName = view.findViewById<TextView>(R.id.name)
@@ -276,11 +278,21 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
                         value = s?.toString()?.trim()?.asNonEmpty()
                     }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
 
                     }
 
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
 
                     }
 
@@ -298,7 +310,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
 
         open class BooleanCustomization(key: String, default: Boolean) :
-                Customization<Boolean, Boolean>(key, default) {
+            Customization<Boolean, Boolean>(key, default) {
 
             override fun loadFromJson(context: Context, obj: Boolean?) {
                 value = obj
@@ -313,7 +325,8 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             }
         }
 
-        open class LongCustomization(key: String, default: Long) : Customization<Long, Long>(key, default) {
+        open class LongCustomization(key: String, default: Long) :
+            Customization<Long, Long>(key, default) {
             override fun loadFromJson(context: Context, obj: Long?) {
                 value = obj
             }
@@ -328,11 +341,17 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
         }
 
-        class SwitchRow(private val icon: Int, private val label: Int, key: String, default: Boolean) :
-                BooleanCustomization(key, default) {
+        class SwitchRow(
+            private val icon: Int,
+            private val label: Int,
+            key: String,
+            default: Boolean
+        ) :
+            BooleanCustomization(key, default) {
 
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-                val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_switch_row, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.drawer_tab_switch_row, parent, false)
 
                 view.findViewById<ImageView>(R.id.icon).apply {
                     setImageResource(icon)
@@ -358,7 +377,8 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             }
         }
 
-        open class ColorCustomization(key: String, default: Int) : Customization<Int, String>(key, default) {
+        open class ColorCustomization(key: String, default: Int) :
+            Customization<Int, String>(key, default) {
             override fun loadFromJson(context: Context, obj: String?) {
                 value = obj?.let { AppGroupsUtils.getInstance(context).getTabColor(it) }
             }
@@ -374,11 +394,13 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
 
         class ColorRow(key: String, default: Int) : ColorCustomization(key, default) {
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-                val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_color_row, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.drawer_tab_color_row, parent, false)
 
                 updateColor(view)
 
-                val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
+                val themedContext =
+                    ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
                     val colorPicker = ColorSelectorPresets(themedContext)
@@ -416,7 +438,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
 
         abstract class SetCustomization<T : Any, S : Any>(key: String, default: MutableSet<T>) :
-                Customization<MutableSet<T>, JSONArray>(key, default) {
+            Customization<MutableSet<T>, JSONArray>(key, default) {
 
             @Suppress("UNCHECKED_CAST")
             override fun loadFromJson(context: Context, obj: JSONArray?) {
@@ -444,7 +466,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
 
         open class ComponentsCustomization(key: String, default: MutableSet<ComponentKey>) :
-                SetCustomization<ComponentKey, String>(key, default) {
+            SetCustomization<ComponentKey, String>(key, default) {
 
             override fun loadFromJson(context: Context, obj: JSONArray?) {
                 super.loadFromJson(context, obj)
@@ -469,10 +491,11 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
         }
 
         class AppsRow(key: String, default: MutableSet<ComponentKey>) :
-                ComponentsCustomization(key, default) {
+            ComponentsCustomization(key, default) {
 
             override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-                val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_apps_row, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.drawer_tab_apps_row, parent, false)
 
                 view.findViewById<ImageView>(R.id.manage_apps_icon).tintDrawable(accent)
                 updateCount(view)
@@ -492,7 +515,7 @@ abstract class AppGroups<T : AppGroups.Group>(private val manager: AppGroupsMana
             private fun updateCount(view: View) {
                 val count = value().size
                 view.findViewById<TextView>(R.id.apps_count).text =
-                        view.resources.getQuantityString(R.plurals.tab_apps_count, count, count)
+                    view.resources.getQuantityString(R.plurals.tab_apps_count, count, count)
             }
 
             override fun clone(): Customization<MutableSet<ComponentKey>, JSONArray> {
@@ -564,5 +587,6 @@ class AppGroupsUtils(context: Context) {
     }
 
     companion object : SingletonHolder<AppGroupsUtils, Context>(
-            ensureOnMainThread(useApplicationContext(::AppGroupsUtils)))
+        ensureOnMainThread(useApplicationContext(::AppGroupsUtils))
+    )
 }

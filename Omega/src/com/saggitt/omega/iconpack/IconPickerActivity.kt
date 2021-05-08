@@ -36,23 +36,27 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.databinding.ActivitySettingsSearchBinding
 import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
 import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
 import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.*
 import com.saggitt.omega.views.FadingImageView
-import kotlinx.android.synthetic.omega.activity_settings_search.*
 import java.text.Collator
 import java.util.*
 import java.util.concurrent.Semaphore
 
-class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, SearchView.OnQueryTextListener {
+class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
+    SearchView.OnQueryTextListener {
+    lateinit var binding: ActivitySettingsSearchBinding
+
     private val iconPackManager = IconPackManager.getInstance(this)
     private val iconGrid by lazy { findViewById<RecyclerView>(R.id.list_results) }
     private val iconPack by lazy {
         intent.getParcelableExtra<IconPackManager.PackProvider>(EXTRA_ICON_PACK)?.let {
             iconPackManager.getIconPack(
-                    it, false)
+                it, false
+            )
         }
     }
     private val items get() = searchItems ?: actualItems
@@ -67,7 +71,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
 
     private val pickerComponent by lazy {
         this.getSystemService(LauncherApps::class.java)
-                .getActivityList(iconPack?.packPackageName, Process.myUserHandle()).firstOrNull()?.componentName
+            .getActivityList(iconPack?.packPackageName, Process.myUserHandle())
+            .firstOrNull()?.componentName
     }
 
     private var searchItems: MutableList<AdapterItem>? = null
@@ -81,21 +86,21 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySettingsSearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         decorLayout.hideToolbar = true
 
-        setContentView(R.layout.activity_settings_search)
-
         getContentFrame().addOnLayoutChangeListener(this)
 
-        setSupportActionBar(search_toolbar)
+        setSupportActionBar(binding.searchToolbar)
         supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
 
-        search_view.queryHint = iconPack?.displayName
-        search_view.setOnQueryTextListener(this)
+        binding.searchView.queryHint = iconPack?.displayName
+        binding.searchView.setOnQueryTextListener(this)
 
         items.add(LoadingItem())
 
@@ -160,7 +165,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
     private fun processSearchQuery(query: String?) {
         val q = query?.trim()
         val filtered = if (!TextUtils.isEmpty(q)) {
-            actualItems.filter { it is IconItem && collator.matches(q!!, it.entry.displayName) }.toMutableList()
+            actualItems.filter { it is IconItem && collator.matches(q!!, it.entry.displayName) }
+                .toMutableList()
         } else null
         runOnUiThread {
             val hashCode = items.hashCode()
@@ -177,15 +183,15 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
             menu.removeItem(R.id.action_open_external)
         }
 
-        search_toolbar.childs.firstOrNull { it is ActionMenuView }?.let {
+        binding.searchToolbar.childs.firstOrNull { it is ActionMenuView }?.let {
             (it as ActionMenuView).overflowIcon?.setTint(Utilities.getOmegaPrefs(applicationContext).accentColor)
         }
         return true
     }
 
     override fun onBackPressed() {
-        if (!TextUtils.isEmpty(search_view.query)) {
-            search_view.setQuery(null, true)
+        if (!TextUtils.isEmpty(binding.searchView.query)) {
+            binding.searchView.setQuery(null, true)
         } else {
             super.onBackPressed()
         }
@@ -199,8 +205,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
             }
             R.id.action_open_external -> {
                 val intent = Intent("com.novalauncher.THEME")
-                        .addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
-                        .setComponent(pickerComponent)
+                    .addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+                    .setComponent(pickerComponent)
                 startActivityForResult(intent, 1000)
                 true
             }
@@ -211,7 +217,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK && data != null) {
             if (data.hasExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)) {
-                val icon = data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+                val icon =
+                    data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
                 val entry = icon?.let { (iconPack as IconPackImpl).createEntry(it) }
                 entry?.let { onSelectIcon(it) }
                 return
@@ -225,7 +232,17 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         canceled = true
     }
 
-    override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+    override fun onLayoutChange(
+        v: View?,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        oldLeft: Int,
+        oldTop: Int,
+        oldRight: Int,
+        oldBottom: Int
+    ) {
         getContentFrame().removeOnLayoutChangeListener(this)
         calculateDynamicGrid(iconGrid.width)
         iconGrid.adapter = adapter
@@ -244,10 +261,16 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int) = getItemSpan(position)
         }
-        iconGrid.setPadding(iconPadding - dynamicPadding, iconPadding, iconPadding - dynamicPadding, iconPadding)
+        iconGrid.setPadding(
+            iconPadding - dynamicPadding,
+            iconPadding,
+            iconPadding - dynamicPadding,
+            iconPadding
+        )
     }
 
-    private fun getItemSpan(position: Int) = if (adapter.isItem(position)) 1 else layoutManager.spanCount
+    private fun getItemSpan(position: Int) =
+        if (adapter.isItem(position)) 1 else layoutManager.spanCount
 
     fun onSelectIcon(entry: IconPack.Entry) {
         val customEntry = entry.toCustomEntry()
@@ -265,8 +288,20 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
             val layoutInflater = LayoutInflater.from(parent.context)
             return when (viewType) {
                 itemType -> IconHolder(layoutInflater.inflate(R.layout.icon_item, parent, false))
-                categoryType -> CategoryHolder(layoutInflater.inflate(R.layout.icon_category, parent, false))
-                else -> LoadingHolder(layoutInflater.inflate(R.layout.adapter_loading, parent, false))
+                categoryType -> CategoryHolder(
+                    layoutInflater.inflate(
+                        R.layout.icon_category,
+                        parent,
+                        false
+                    )
+                )
+                else -> LoadingHolder(
+                    layoutInflater.inflate(
+                        R.layout.adapter_loading,
+                        parent,
+                        false
+                    )
+                )
             }
         }
 
@@ -290,7 +325,8 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener, 
 
         fun isItem(position: Int) = getItemViewType(position) == itemType
 
-        inner class IconHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, IconItem.Callback {
+        inner class IconHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener, IconItem.Callback {
 
             private var iconLoader: IconItem? = null
                 set(value) {

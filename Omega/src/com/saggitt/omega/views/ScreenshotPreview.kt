@@ -20,16 +20,21 @@ package com.saggitt.omega.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.omega.backup_item.view.*
+import android.widget.ImageView
+import com.android.launcher3.R
 
 class ScreenshotPreview(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val preview = findViewById<ImageView>(R.id.preview)
         super.measureChild(preview, widthMeasureSpec, heightMeasureSpec)
         val measuredWidth = preview.measuredWidth
         val measuredHeight = preview.measuredHeight
-        super.measureChild(wallpaper, MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY))
+        super.measureChild(
+            findViewById(R.id.wallpaper),
+            MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+        )
         setMeasuredDimension(measuredWidth, measuredHeight)
     }
 }
