@@ -36,7 +36,7 @@
         -->
         <activity android:name="com.android.launcher3.uioverrides.QuickstepLauncher"
             android:clearTaskOnLaunch="true"
-            android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize"
             android:enabled="true" android:launchMode="singleTask" android:resizeableActivity="true"
             android:resumeWhilePausing="true" android:screenOrientation="unspecified"
             android:stateNotNeeded="true" android:taskAffinity=""

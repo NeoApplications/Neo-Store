@@ -15,6 +15,58 @@
  */
 package com.android.quickstep;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PointF;
+import android.os.Build;
+import android.os.SystemClock;
+import android.view.View;
+import android.view.View.OnApplyWindowInsetsListener;
+import android.view.ViewTreeObserver.OnDrawListener;
+import android.view.WindowInsets;
+import android.view.animation.Interpolator;
+
+import androidx.annotation.UiThread;
+
+import com.android.launcher3.AbstractFloatingView;
+import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.LauncherSettings;
+import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
+import com.android.launcher3.anim.AnimationSuccessListener;
+import com.android.launcher3.anim.Interpolators;
+import com.android.launcher3.logging.StatsLogManager;
+import com.android.launcher3.logging.UserEventDispatcher;
+import com.android.launcher3.model.data.WorkspaceItemInfo;
+import com.android.launcher3.statemanager.StatefulActivity;
+import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Direction;
+import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Touch;
+import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
+import com.android.launcher3.util.TraceHelper;
+import com.android.quickstep.BaseActivityInterface.AnimationFactory;
+import com.android.quickstep.GestureState.GestureEndTarget;
+import com.android.quickstep.inputconsumers.OverviewInputConsumer;
+import com.android.quickstep.util.ActiveGestureLog;
+import com.android.quickstep.util.AnimatorControllerWithResistance;
+import com.android.quickstep.util.RectFSpringAnim;
+import com.android.quickstep.util.ShelfPeekAnim;
+import com.android.quickstep.util.ShelfPeekAnim.ShelfAnimState;
+import com.android.quickstep.views.LiveTileOverlay;
+import com.android.quickstep.views.RecentsView;
+import com.android.quickstep.views.TaskView;
+import com.android.systemui.shared.recents.model.ThumbnailData;
+import com.android.systemui.shared.system.ActivityManagerWrapper;
+import com.android.systemui.shared.system.InputConsumerController;
+import com.android.systemui.shared.system.LatencyTrackerCompat;
+import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
+import com.android.systemui.shared.system.TaskInfoCompat;
+import com.android.systemui.shared.system.TaskStackChangeListener;
+
 import static com.android.launcher3.BaseActivity.INVISIBLE_BY_STATE_HANDLER;
 import static com.android.launcher3.BaseActivity.STATE_HANDLER_INVISIBILITY_FLAGS;
 import static com.android.launcher3.anim.Interpolators.DEACCEL;
@@ -42,55 +94,6 @@ import static com.android.quickstep.util.ShelfPeekAnim.ShelfAnimState.HIDE;
 import static com.android.quickstep.util.ShelfPeekAnim.ShelfAnimState.PEEK;
 import static com.android.quickstep.views.RecentsView.UPDATE_SYSUI_FLAGS_THRESHOLD;
 import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.ACTIVITY_TYPE_HOME;
-
-import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.PointF;
-import android.os.Build;
-import android.os.SystemClock;
-import android.view.View;
-import android.view.View.OnApplyWindowInsetsListener;
-import android.view.ViewTreeObserver.OnDrawListener;
-import android.view.WindowInsets;
-import android.view.animation.Interpolator;
-
-import androidx.annotation.UiThread;
-
-import com.android.launcher3.AbstractFloatingView;
-import com.android.launcher3.DeviceProfile;
-import com.android.launcher3.R;
-import com.android.launcher3.Utilities;
-import com.android.launcher3.anim.AnimationSuccessListener;
-import com.android.launcher3.anim.Interpolators;
-import com.android.launcher3.logging.StatsLogManager;
-import com.android.launcher3.logging.UserEventDispatcher;
-import com.android.launcher3.statemanager.StatefulActivity;
-import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Direction;
-import com.android.launcher3.userevent.nano.LauncherLogProto.Action.Touch;
-import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
-import com.android.launcher3.util.TraceHelper;
-import com.android.quickstep.BaseActivityInterface.AnimationFactory;
-import com.android.quickstep.GestureState.GestureEndTarget;
-import com.android.quickstep.inputconsumers.OverviewInputConsumer;
-import com.android.quickstep.util.ActiveGestureLog;
-import com.android.quickstep.util.AnimatorControllerWithResistance;
-import com.android.quickstep.util.RectFSpringAnim;
-import com.android.quickstep.util.ShelfPeekAnim;
-import com.android.quickstep.util.ShelfPeekAnim.ShelfAnimState;
-import com.android.quickstep.views.LiveTileOverlay;
-import com.android.quickstep.views.RecentsView;
-import com.android.quickstep.views.TaskView;
-import com.android.systemui.shared.recents.model.ThumbnailData;
-import com.android.systemui.shared.system.ActivityManagerWrapper;
-import com.android.systemui.shared.system.InputConsumerController;
-import com.android.systemui.shared.system.LatencyTrackerCompat;
-import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
-import com.android.systemui.shared.system.TaskInfoCompat;
-import com.android.systemui.shared.system.TaskStackChangeListener;
 
 /**
  * Handles the navigation gestures when Launcher is the default home activity.
@@ -717,6 +720,8 @@ public abstract class BaseSwipeUpHandlerV2<T extends StatefulActivity<?>, Q exte
     }
 
     private void onSettledOnEndTarget() {
+        // Fast-finish the attaching animation if it's still running.
+        maybeUpdateRecentsAttachedState(false);
         switch (mGestureState.getEndTarget()) {
             case HOME:
                 mStateCallback.setState(STATE_SCALED_CONTROLLER_HOME | STATE_CAPTURE_SCREENSHOT);
@@ -928,10 +933,23 @@ public abstract class BaseSwipeUpHandlerV2<T extends StatefulActivity<?>, Q exte
             default:
                 event = IGNORE;
         }
+        ComponentName componentName = mGestureState.getRunningTask().baseActivity;
         StatsLogManager.newInstance(mContext).logger()
                 .withSrcState(LAUNCHER_STATE_BACKGROUND)
                 .withDstState(StatsLogManager.containerTypeToAtomState(endTarget.containerType))
+                .withItemInfo(getItemInfo(componentName))
                 .log(event);
+    }
+
+    /**
+     * Builds proto for logging
+     */
+    public WorkspaceItemInfo getItemInfo(ComponentName componentName) {
+        WorkspaceItemInfo placeholderInfo = new WorkspaceItemInfo();
+        placeholderInfo.itemType = LauncherSettings.Favorites.ITEM_TYPE_TASK;
+        placeholderInfo.container = LauncherSettings.Favorites.CONTAINER_TASKFOREGROUND;
+        placeholderInfo.intent = new Intent().setComponent(componentName);
+        return placeholderInfo;
     }
 
     /**

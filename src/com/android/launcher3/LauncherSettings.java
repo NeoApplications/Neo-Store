@@ -156,6 +156,7 @@ public class LauncherSettings {
         public static final int CONTAINER_SHORTCUTS = -107;
         public static final int CONTAINER_SETTINGS = -108;
         public static final int CONTAINER_TASKSWITCHER = -109;
+        public static final int CONTAINER_TASKFOREGROUND = -110;
         /**
          * Type of the item is recents task.
          * TODO(hyunyoungs): move constants not related to Favorites DB to a better location.

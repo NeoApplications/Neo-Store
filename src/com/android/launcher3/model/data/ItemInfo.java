@@ -16,23 +16,6 @@
 
 package com.android.launcher3.model.data;
 
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT_PREDICTION;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_PREDICTION;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SEARCH_RESULTS;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SETTINGS;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SHORTCUTS;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_TASKSWITCHER;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_WIDGETS_TRAY;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
-import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_TASK;
-import static com.android.launcher3.logger.LauncherAtom.ContainerInfo.ContainerCase.CONTAINER_NOT_SET;
-
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -51,11 +34,30 @@ import com.android.launcher3.logger.LauncherAtom.PredictionContainer;
 import com.android.launcher3.logger.LauncherAtom.SearchResultContainer;
 import com.android.launcher3.logger.LauncherAtom.SettingsContainer;
 import com.android.launcher3.logger.LauncherAtom.ShortcutsContainer;
+import com.android.launcher3.logger.LauncherAtom.TaskForegroundContainer;
 import com.android.launcher3.logger.LauncherAtom.TaskSwitcherContainer;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.util.ContentWriter;
 
 import java.util.Optional;
+
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT_PREDICTION;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_PREDICTION;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SEARCH_RESULTS;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SETTINGS;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_SHORTCUTS;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_TASKFOREGROUND;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_TASKSWITCHER;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_WIDGETS_TRAY;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
+import static com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_TASK;
+import static com.android.launcher3.logger.LauncherAtom.ContainerInfo.ContainerCase.CONTAINER_NOT_SET;
 
 /**
  * Represents an item in the launcher.
@@ -390,7 +392,10 @@ public class ItemInfo {
                 return ContainerInfo.newBuilder()
                         .setTaskSwitcherContainer(TaskSwitcherContainer.getDefaultInstance())
                         .build();
-
+            case CONTAINER_TASKFOREGROUND:
+                return ContainerInfo.newBuilder()
+                        .setTaskForegroundContainer(TaskForegroundContainer.getDefaultInstance())
+                        .build();
         }
         return ContainerInfo.getDefaultInstance();
     }

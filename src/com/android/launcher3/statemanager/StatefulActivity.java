@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.statemanager;
 
-import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +27,8 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.statemanager.StateManager.AtomicAnimationFactory;
 import com.android.launcher3.statemanager.StateManager.StateHandler;
 import com.android.launcher3.views.BaseDragLayer;
+
+import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
 
 /**
  * Abstract activity with state management
@@ -122,7 +122,9 @@ public abstract class StatefulActivity<STATE_TYPE extends BaseState<STATE_TYPE>>
         final int origDragLayerChildCount = dragLayer.getChildCount();
         super.onStop();
 
-        getStateManager().moveToRestState();
+        if (!isChangingConfigurations()) {
+            getStateManager().moveToRestState();
+        }
 
         // Workaround for b/78520668, explicitly trim memory once UI is hidden
         onTrimMemory(TRIM_MEMORY_UI_HIDDEN);
