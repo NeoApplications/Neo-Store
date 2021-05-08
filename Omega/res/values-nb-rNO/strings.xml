@@ -386,4 +386,7 @@
     <string name="add_new_tab">Legg til</string>
     <string name="title_separate_work_apps">Sekundær fane for arbeidsprogrammer</string>
     <string name="title_smartspace">Vis smartområde</string>
+    <string name="folder_name_format">Mappe: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="cat_drawer_icons">Ikoner</string>
+    <string name="cat_drawer_grid">Rutenett</string>
 </resources>
