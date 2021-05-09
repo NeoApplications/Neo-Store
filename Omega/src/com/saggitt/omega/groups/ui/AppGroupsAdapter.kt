@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.saggitt.omega.groups.AppGroups
-import com.saggitt.omega.preferences.DrawerTabEditBottomSheet
+import com.saggitt.omega.groups.DrawerTabEditBottomSheet
 import com.saggitt.omega.util.*
 
 abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : AppGroups.Group>(val context: Context)

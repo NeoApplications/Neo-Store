@@ -36,7 +36,7 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.pageindicators.PageIndicator;
 import com.android.launcher3.util.Themes;
 import com.saggitt.omega.allapps.AllAppsTabs;
-import com.saggitt.omega.preferences.DrawerTabEditBottomSheet;
+import com.saggitt.omega.groups.DrawerTabEditBottomSheet;
 import com.saggitt.omega.views.ColoredButton;
 
 /**

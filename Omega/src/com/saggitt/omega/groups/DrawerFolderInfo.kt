@@ -21,7 +21,6 @@ import com.android.launcher3.Launcher
 import com.android.launcher3.allapps.AllAppsStore
 import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.FolderInfo
-import com.saggitt.omega.preferences.DrawerTabEditBottomSheet
 import com.saggitt.omega.util.omegaPrefs
 
 class DrawerFolderInfo(private val drawerFolder: DrawerFolders.Folder) : FolderInfo() {

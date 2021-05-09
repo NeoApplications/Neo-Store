@@ -15,23 +15,18 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.preferences
+package com.saggitt.omega.groups
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.groups.AppGroups
-import com.saggitt.omega.groups.DrawerFolders
-import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.settings.SettingsBottomSheet
 import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.omegaPrefs
