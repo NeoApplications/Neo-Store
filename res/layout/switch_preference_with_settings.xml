@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2018 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2018 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,21 +13,21 @@
      limitations under the License.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_setting"
-        android:tint="@android:color/black"
+        android:background="?android:selectableItemBackgroundBorderless"
         android:padding="12dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless" />
+        android:tint="@android:color/black"
+        app:srcCompat="@drawable/ic_setting" />
 
     <View
         android:id="@+id/divider"
@@ -38,9 +37,9 @@
         android:background="?android:attr/listDivider" />
 
     <!-- Note: seems we need focusable="false" and clickable="false" when moving to androidx -->
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@android:id/switch_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

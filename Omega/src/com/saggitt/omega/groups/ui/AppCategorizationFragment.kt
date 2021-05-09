@@ -24,11 +24,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
-import android.widget.TextView
 import androidx.annotation.Keep
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.databinding.FragmentAppCategorizationBinding
 import com.saggitt.omega.OmegaPreferences
@@ -47,7 +46,6 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     private val manager by lazy { prefs.appGroupsManager }
 
     private val accent by lazy { ourContext.getColorAccent() }
-    private lateinit var recyclerView: RecyclerView
     private var groupAdapter: AppGroupsAdapter<*, *>? = null
         set(value) {
             if (field != value) {
@@ -55,9 +53,9 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
                 field?.saveChanges()
                 field = value
 
-                recyclerView.adapter = value?.also {
+                binding.recyclerView.adapter = value?.also {
                     it.loadAppGroups()
-                    it.itemTouchHelper.attachToRecyclerView(recyclerView)
+                    it.itemTouchHelper.attachToRecyclerView(binding.recyclerView)
                 }
             }
         }
@@ -69,7 +67,7 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -77,8 +75,7 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(ourContext)
+        binding.recyclerView.layoutManager = LinearLayoutManager(ourContext)
         setupEnableToggle(binding.enableToggle.root)
         setupStyleSection()
     }
@@ -129,22 +126,20 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     }
 
     private fun setupStyleSection() {
-        val title = binding.styleHeader.root.findViewById<TextView>(android.R.id.title)
+        val title = binding.styleHeader.root.findViewById<AppCompatTextView>(android.R.id.title)
         title.setText(R.string.pref_appcategorization_style_text)
         title.setTextColor(ourContext.createDisabledColor(accent))
 
-        (binding.folderTypeItem as AppCategorizationTypeItem)
-            .setup(
-                AppGroupsManager.CategorizationType.Folders,
-                R.string.pref_appcategorization_folders_title,
-                R.string.pref_appcategorization_folders_summary
-            )
+        binding.folderTypeItem.root.setup(
+            AppGroupsManager.CategorizationType.Folders,
+            R.string.pref_appcategorization_folders_title,
+            R.string.pref_appcategorization_folders_summary
+        )
 
-        (binding.tabTypeItem as AppCategorizationTypeItem)
-            .setup(
-                AppGroupsManager.CategorizationType.Tabs,
-                R.string.pref_appcategorization_tabs_title,
-                R.string.pref_appcategorization_tabs_summary
-            )
+        binding.tabTypeItem.root.setup(
+            AppGroupsManager.CategorizationType.Tabs,
+            R.string.pref_appcategorization_tabs_title,
+            R.string.pref_appcategorization_tabs_summary
+        )
     }
 }

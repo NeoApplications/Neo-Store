@@ -21,11 +21,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
-import android.widget.Button
+import androidx.appcompat.widget.AppCompatButton
 import com.android.launcher3.Utilities
 import com.saggitt.omega.util.getTabRipple
 
-class ColoredButton(context: Context, attrs: AttributeSet) : Button(context, attrs) {
+class ColoredButton(context: Context, attrs: AttributeSet) : AppCompatButton(context, attrs) {
 
     var color: Int = 0
 

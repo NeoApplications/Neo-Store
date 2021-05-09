@@ -21,9 +21,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 
-class OptionsTextView(context: Context, attrs: AttributeSet?) : TextView(context, attrs) {
+class OptionsTextView(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs) {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {

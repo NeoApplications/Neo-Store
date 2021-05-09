@@ -13,6 +13,7 @@
      limitations under the License.
 -->
 <com.saggitt.omega.allapps.BlurQsbLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_container_all_apps"
     android:layout_width="match_parent"
     android:layout_height="@dimen/qsb_widget_height"
@@ -22,7 +23,7 @@
     android:contentDescription="@string/title__general_search"
     android:translationY="30dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/g_icon"
         android:layout_width="@dimen/qsb_mic_width"
         android:layout_height="match_parent"
@@ -30,9 +31,9 @@
         android:layout_marginTop="-6.0dip"
         android:layout_marginBottom="-6.0dip"
         android:scaleType="center"
-        android:src="@drawable/ic_qsb_logo" />
+        app:srcCompat="@drawable/ic_qsb_logo" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/g_icon_hotseat"
         android:layout_width="@dimen/qsb_mic_width"
         android:layout_height="match_parent"
@@ -40,7 +41,7 @@
         android:layout_marginTop="-6.0dip"
         android:layout_marginBottom="-6.0dip"
         android:scaleType="center"
-        android:src="@drawable/ic_qsb_logo" />
+        app:srcCompat="@drawable/ic_qsb_logo" />
 
     <FrameLayout
         android:id="@+id/mic_frame"
@@ -48,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end|center">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mic_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,8 +61,7 @@
             android:contentDescription="@string/label_voice_search"
             android:focusable="false"
             android:scaleType="center"
-            android:src="@drawable/ic_qsb_mic" />
-
+            app:srcCompat="@drawable/ic_qsb_mic" />
     </FrameLayout>
 
     <include layout="@layout/qsb_hint" />

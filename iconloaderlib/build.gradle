@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
-    implementation "androidx.core:core:${ANDROID_X_VERSION}"
-    implementation "androidx.palette:palette:${ANDROID_X_VERSION}"
+    // UI
+    implementation "androidx.core:core:$ANDROID_X_VERSION"
+    implementation "androidx.palette:palette:$ANDROID_X_VERSION"
+    implementation "androidx.appcompat:appcompat:$ANDROID_X_VERSION"
 }

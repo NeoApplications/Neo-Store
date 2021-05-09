@@ -30,7 +30,8 @@ import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.applyAccent
 
-class FlowerpotTabs(manager: AppGroupsManager) : DrawerTabs(manager, AppGroupsManager.CategorizationType.Flowerpot) {
+class FlowerpotTabs(manager: AppGroupsManager) :
+    DrawerTabs(manager, AppGroupsManager.CategorizationType.Flowerpot) {
 
     private val flowerpotManager = Flowerpot.Manager.getInstance(context)
 
@@ -62,9 +63,14 @@ class FlowerpotTabs(manager: AppGroupsManager) : DrawerTabs(manager, AppGroupsMa
         }
     }
 
-    class FlowerpotTab(private val context: Context) : Tab(context, TYPE_FLOWERPOT, context.getString(R.string.default_tab_name)) {
+    class FlowerpotTab(private val context: Context) :
+        Tab(context, TYPE_FLOWERPOT, context.getString(R.string.default_tab_name)) {
         // todo: make updating the title dynamically less hacky (aka make it actually work)
-        val potName: FlowerpotCustomization = FlowerpotCustomization(KEY_FLOWERPOT, DEFAULT, context, customizations.entries.first { it is CustomTitle } as CustomTitle)
+        val potName: FlowerpotCustomization = FlowerpotCustomization(
+            KEY_FLOWERPOT,
+            DEFAULT,
+            context,
+            customizations.entries.first { it is CustomTitle } as CustomTitle)
 
         private val pot
             get() = Flowerpot.Manager.getInstance(context).getPot(potName.value ?: DEFAULT, true)!!
@@ -94,43 +100,53 @@ class FlowerpotTabs(manager: AppGroupsManager) : DrawerTabs(manager, AppGroupsMa
         }
     }
 
-    class FlowerpotCustomization(key: String, default: String, private val context: Context, private val title: Group.CustomTitle) : Group.StringCustomization(key, default) {
+    class FlowerpotCustomization(
+        key: String,
+        default: String,
+        private val context: Context,
+        private val title: Group.CustomTitle
+    ) : Group.StringCustomization(key, default) {
         private val flowerpotManager = Flowerpot.Manager.getInstance(context)
         private val displayName
             get() = flowerpotManager.getPot(value ?: default)?.displayName
 
         override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-            val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_flowerpot_row, parent, false)
+            val view = LayoutInflater.from(context)
+                .inflate(R.layout.drawer_tab_flowerpot_row, parent, false)
             updateSummary(view)
 
             view.setOnClickListener {
                 // make a copy to ensure indexes don't change while the dialog is opened
                 val pots = flowerpotManager.getAllPots().toList()
                 val currentIndex = pots.indexOfFirst { it.name == value ?: default }
-                val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
+                val themedContext =
+                    ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
                 AlertDialog.Builder(themedContext, ThemeOverride.AlertDialog().getTheme(context))
-                        .setTitle(R.string.pref_appcategorization_flowerpot_title)
-                        .setSingleChoiceItems(pots.map { it.displayName }.toTypedArray(), currentIndex) { dialog, which ->
-                            if (currentIndex != which) {
-                                var updateTitle = false
-                                // Update the group title if it exactly matched the previous category name
-                                if (title.value == displayName) {
-                                    updateTitle = true
-                                }
-                                value = pots[which].name
-                                if (updateTitle) {
-                                    title.value = displayName
-                                }
-                                updateSummary(view)
+                    .setTitle(R.string.pref_appcategorization_flowerpot_title)
+                    .setSingleChoiceItems(
+                        pots.map { it.displayName }.toTypedArray(),
+                        currentIndex
+                    ) { dialog, which ->
+                        if (currentIndex != which) {
+                            var updateTitle = false
+                            // Update the group title if it exactly matched the previous category name
+                            if (title.value == displayName) {
+                                updateTitle = true
                             }
-                            dialog.dismiss()
+                            value = pots[which].name
+                            if (updateTitle) {
+                                title.value = displayName
+                            }
+                            updateSummary(view)
                         }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create()
-                        .apply {
-                            applyAccent()
-                            show()
-                        }
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create()
+                    .apply {
+                        applyAccent()
+                        show()
+                    }
             }
 
             return view

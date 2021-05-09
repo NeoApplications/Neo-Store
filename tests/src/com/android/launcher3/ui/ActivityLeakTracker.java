@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.InstrumentationRegistry;
 
 import com.android.launcher3.tapl.TestHelpers;
@@ -27,7 +28,7 @@ import com.android.launcher3.tapl.TestHelpers;
 import java.util.WeakHashMap;
 
 public class ActivityLeakTracker implements Application.ActivityLifecycleCallbacks {
-    private final WeakHashMap<Activity, Boolean> mActivities = new WeakHashMap<>();
+    private final WeakHashMap<AppCompatActivity, Boolean> mActivities = new WeakHashMap<>();
 
     private int mActivitiesCreated;
 
@@ -76,7 +77,7 @@ public class ActivityLeakTracker implements Application.ActivityLifecycleCallbac
         int liveActivities = 0;
         int destroyedActivities = 0;
 
-        for (Activity activity : mActivities.keySet()) {
+        for (AppCompatActivity activity : mActivities.keySet()) {
             if (activity.isDestroyed()) {
                 ++destroyedActivities;
             } else {

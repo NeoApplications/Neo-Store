@@ -1,6 +1,5 @@
 package com.google.android.libraries.gsa.launcherclient;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +19,8 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.libraries.launcherclient.ILauncherOverlay;
 import com.google.android.libraries.launcherclient.ILauncherOverlayCallback;
@@ -55,7 +56,7 @@ public class LauncherClient {
 
     public LayoutParams mLayoutParams;
     public OverlayCallback mOverlayCallback;
-    public final Activity mActivity;
+    public final AppCompatActivity mActivity;
 
     public boolean mDestroyed = false;
     private Bundle mLayoutBundle;
@@ -118,7 +119,7 @@ public class LauncherClient {
         }
     }
 
-    public LauncherClient(Activity activity, IScrollCallback scrollCallback, StaticInteger flags) {
+    public LauncherClient(AppCompatActivity activity, IScrollCallback scrollCallback, StaticInteger flags) {
         mActivity = activity;
         mScrollCallback = scrollCallback;
         mBaseService = new BaseClientService(activity, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);

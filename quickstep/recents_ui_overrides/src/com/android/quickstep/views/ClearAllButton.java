@@ -19,13 +19,14 @@ package com.android.quickstep.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.FloatProperty;
-import android.widget.Button;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.android.launcher3.touch.PagedOrientationHandler;
 import com.android.quickstep.views.RecentsView.PageCallbacks;
 import com.android.quickstep.views.RecentsView.ScrollState;
 
-public class ClearAllButton extends Button implements PageCallbacks {
+public class ClearAllButton extends AppCompatButton implements PageCallbacks {
 
     public static final FloatProperty<ClearAllButton> VISIBILITY_ALPHA =
             new FloatProperty<ClearAllButton>("visibilityAlpha") {

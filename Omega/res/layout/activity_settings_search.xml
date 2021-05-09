@@ -39,7 +39,7 @@
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/no_results_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -51,13 +51,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/empty_search_results" />
+                app:srcCompat="@drawable/empty_search_results" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -65,7 +65,7 @@
                 android:text="@string/search_no_results"
                 android:textSize="18sp" />
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </com.android.launcher3.InsettableFrameLayout>
 

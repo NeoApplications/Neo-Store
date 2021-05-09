@@ -16,9 +16,10 @@
 
 package com.android.systemui.plugins;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 
@@ -38,5 +39,5 @@ public interface RecentsExtraCard extends Plugin {
      * @param frameLayout PlaceholderView
      * @param activity    Recents activity to hold extra view
      */
-    void setupView(Context context, FrameLayout frameLayout, Activity activity);
+    void setupView(Context context, FrameLayout frameLayout, AppCompatActivity activity);
 }

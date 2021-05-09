@@ -17,6 +17,7 @@
   -->
 
 <com.saggitt.omega.icons.PreviewFrameView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/icon_preview"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dock_preview_height">
@@ -37,7 +38,7 @@
                 android:id="@+id/icon_photos"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_google_photos"
+                app:srcCompat="@drawable/ic_google_photos"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -60,7 +61,7 @@
                 android:id="@+id/icon_youtube"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_youtube_color"
+                app:srcCompat="@drawable/ic_youtube_color"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -83,7 +84,7 @@
                 android:id="@+id/icon_instagram"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_instagram_color"
+                app:srcCompat="@drawable/ic_instagram_color"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -106,7 +107,7 @@
                 android:id="@+id/icon_whatsapp"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_whatsapp_color"
+                app:srcCompat="@drawable/ic_whatsapp_color"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 

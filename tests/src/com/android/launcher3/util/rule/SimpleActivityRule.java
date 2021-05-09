@@ -20,6 +20,7 @@ import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.InstrumentationRegistry;
 
 import org.junit.rules.TestRule;
@@ -29,7 +30,7 @@ import org.junit.runners.model.Statement;
 /**
  * Test rule to get the current activity.
  */
-public class SimpleActivityRule<T extends Activity> implements TestRule {
+public class SimpleActivityRule<T extends AppCompatActivity> implements TestRule {
 
     private final Class<T> mClass;
     private T mActivity;
