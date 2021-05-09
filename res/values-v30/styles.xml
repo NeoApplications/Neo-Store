@@ -18,7 +18,7 @@
 
 <resources>
     <!-- Launcher theme -->
-    <style name="BaseLauncherTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+    <style name="BaseLauncherTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:colorEdgeEffect">#FF757575</item>
         <item name="android:windowActionBar">false</item>

@@ -27,40 +27,40 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/app_logo"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/app_name"
-                    android:src="@mipmap/ic_launcher" />
+                    app:srcCompat="@mipmap/ic_launcher" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/app_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/derived_app_name"
                         android:theme="@style/TitleAbout" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/app_version"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,17 +68,17 @@
                         android:text="@string/app_version"
                         android:theme="@style/SubTitleAbout" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/app_build"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/app_build"
                         android:theme="@style/SubTitleAbout" />
-                </LinearLayout>
-            </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -90,34 +90,34 @@
 
             <include layout="@layout/all_apps_divider" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:text="@string/title__about_project_team"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/developer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:focusable="true"
+                android:layout_gravity="center"
                 android:clickable="true"
-                android:id="@+id/developer"
-                android:layout_gravity="center">
+                android:focusable="true">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_person"
                     android:background="@drawable/shape_circle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_person" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
 
             <include layout="@layout/all_apps_divider" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -141,144 +141,144 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/source_code"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_github"
-                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:text="@string/about_source"
                     android:textSize="14sp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/donate"
+                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_donate"
-                    style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                     android:text="@string/title__about_donate"
                     android:textSize="14sp" />
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <!-- Contributors -->
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="left"
                 android:text="@string/about_team"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contributor1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
-                android:id="@+id/contributor1"
-                android:layout_marginTop="8dp">
+                android:focusable="true">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/profile_image1"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/shape_circle"
-                    android:src="@drawable/ic_person"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:srcCompat="@drawable/ic_person" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/username1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_below="@id/profile_image1"
+                    android:layout_marginStart="10dp"
                     android:gravity="center"
                     android:text="@string/contributor1"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/profile_image1" />
+                    app:layout_constraintLeft_toRightOf="@id/profile_image1"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_below="@id/username1"
+                    android:layout_marginStart="10dp"
                     android:gravity="center"
                     android:text="@string/contributor_role"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/username1"
-                    app:layout_constraintLeft_toRightOf="@id/profile_image1" />
+                    app:layout_constraintLeft_toRightOf="@id/profile_image1"
+                    app:layout_constraintTop_toBottomOf="@id/username1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contributor2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
-                android:id="@+id/contributor2"
-                android:layout_marginTop="16dp">
+                android:focusable="true">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/profile_image2"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/shape_circle"
-                    android:src="@drawable/ic_person"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:srcCompat="@drawable/ic_person" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/username2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_below="@id/profile_image2"
+                    android:layout_marginStart="10dp"
                     android:gravity="center"
                     android:text="@string/contributor2"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/profile_image2" />
+                    app:layout_constraintLeft_toRightOf="@id/profile_image2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/about2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_below="@id/username2"
+                    android:layout_marginStart="10dp"
                     android:gravity="center"
                     android:text="@string/contributor_role"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/username2"
-                    app:layout_constraintLeft_toRightOf="@id/profile_image2" />
+                    app:layout_constraintLeft_toRightOf="@id/profile_image2"
+                    app:layout_constraintTop_toBottomOf="@id/username2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="22dp"
                 android:gravity="left"
                 android:text="@string/about_build_information"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/build_information"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -286,7 +286,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/derived_app_name"
                 android:textSize="16sp" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
 </merge>

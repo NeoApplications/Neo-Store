@@ -24,9 +24,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.SwitchCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
@@ -353,16 +354,16 @@ abstract class AppGroups<T : AppGroups.Group>(
                 val view = LayoutInflater.from(context)
                     .inflate(R.layout.drawer_tab_switch_row, parent, false)
 
-                view.findViewById<ImageView>(R.id.icon).apply {
+                view.findViewById<AppCompatImageView>(R.id.icon).apply {
                     setImageResource(icon)
                     tintDrawable(accent)
                 }
 
-                view.findViewById<TextView>(R.id.title).setText(label)
+                view.findViewById<AppCompatTextView>(R.id.title).setText(label)
 
-                val switch = view.findViewById<Switch>(R.id.switch_widget)
+                val switch = view.findViewById<SwitchCompat>(R.id.switch_widget)
                 switch.isChecked = value()
-                switch.applyColor(accent)
+                // switch.applyColor(accent)
 
                 view.setOnClickListener {
                     value = !value()
@@ -429,7 +430,7 @@ abstract class AppGroups<T : AppGroups.Group>(
             }
 
             private fun updateColor(view: View) {
-                view.findViewById<ImageView>(R.id.color_ring_icon).tintDrawable(value())
+                view.findViewById<AppCompatImageView>(R.id.color_ring_icon).tintDrawable(value())
             }
 
             override fun clone(): Customization<Int, String> {
@@ -497,7 +498,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                 val view = LayoutInflater.from(context)
                     .inflate(R.layout.drawer_tab_apps_row, parent, false)
 
-                view.findViewById<ImageView>(R.id.manage_apps_icon).tintDrawable(accent)
+                view.findViewById<AppCompatImageView>(R.id.manage_apps_icon).tintDrawable(accent)
                 updateCount(view)
 
                 view.setOnClickListener {
@@ -514,7 +515,7 @@ abstract class AppGroups<T : AppGroups.Group>(
 
             private fun updateCount(view: View) {
                 val count = value().size
-                view.findViewById<TextView>(R.id.apps_count).text =
+                view.findViewById<AppCompatTextView>(R.id.apps_count).text =
                     view.resources.getQuantityString(R.plurals.tab_apps_count, count, count)
             }
 

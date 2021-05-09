@@ -25,6 +25,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -37,25 +40,33 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
     private val key by lazy { requireArguments().getString("key") }
     private val value by lazy { requireArguments().getString("value") }
 
-    private val searchProviders by lazy { SearchProviderController.getSearchProviders(requireActivity()) }
+    private val searchProviders by lazy {
+        SearchProviderController.getSearchProviders(
+            requireActivity()
+        )
+    }
     private lateinit var list: ListView
 
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
         list = view.findViewById(R.id.pack_list)
-        list.adapter = SearchProviderAdapter(requireContext(),
-                searchProviders,
-                requireContext().omegaPrefs.searchProvider) {
+        list.adapter = SearchProviderAdapter(
+            requireContext(),
+            searchProviders,
+            requireContext().omegaPrefs.searchProvider
+        ) {
             context?.omegaPrefs?.searchProvider = it.toString()
             dismiss()
         }
     }
 
-    inner class SearchProviderAdapter(context: Context,
-                                      private val providers: List<SearchProvider>,
-                                      private val currentProvider: String,
-                                      private val onSelect: (SearchProvider) -> Unit) :
-            ArrayAdapter<SearchProvider>(context, R.layout.list_item_icon, 0, providers) {
+    inner class SearchProviderAdapter(
+        context: Context,
+        private val providers: List<SearchProvider>,
+        private val currentProvider: String,
+        private val onSelect: (SearchProvider) -> Unit
+    ) :
+        ArrayAdapter<SearchProvider>(context, R.layout.list_item_icon, 0, providers) {
 
         private val color = Utilities.getOmegaPrefs(context).accentColor
         private val showDebug = context.omegaPrefs.showDebugInfo
@@ -64,15 +75,15 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return View.inflate(context, R.layout.list_item_icon, null).apply {
                 val provider = providers[position]
-                findViewById<ImageView>(R.id.icon).setImageDrawable(provider.getIcon())
-                findViewById<TextView>(R.id.title).text = provider.name
+                findViewById<AppCompatImageView>(R.id.icon).setImageDrawable(provider.getIcon())
+                findViewById<AppCompatTextView>(R.id.title).text = provider.name
                 if (showDebug) {
-                    findViewById<TextView>(R.id.summary).apply {
+                    findViewById<AppCompatTextView>(R.id.summary).apply {
                         text = provider.packageName
                         isVisible = true
                     }
                 }
-                findViewById<RadioButton>(R.id.select).apply {
+                findViewById<AppCompatRadioButton>(R.id.select).apply {
                     isChecked = providers[position]::class.java.name == currentProvider
                     setOnCheckedChangeListener { _, _ ->
                         onSelect(provider)
@@ -95,10 +106,11 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
     }
 
     companion object {
-        fun newInstance(preference: SearchProviderPreference) = SelectSearchProviderFragment().apply {
-            arguments = Bundle(1).apply {
-                putString("key", preference.key)
+        fun newInstance(preference: SearchProviderPreference) =
+            SelectSearchProviderFragment().apply {
+                arguments = Bundle(1).apply {
+                    putString("key", preference.key)
+                }
             }
-        }
     }
 }

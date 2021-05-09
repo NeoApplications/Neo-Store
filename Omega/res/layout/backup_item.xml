@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingEnd="8dp"
-                    android:src="@drawable/ic_file_restore"
+                    app:srcCompat="@drawable/ic_file_restore"
                     tools:ignore="RtlSymmetry" />
 
                 <LinearLayout

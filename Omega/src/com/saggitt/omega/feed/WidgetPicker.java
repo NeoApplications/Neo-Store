@@ -18,7 +18,6 @@
 
 package com.saggitt.omega.feed;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
@@ -32,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class WidgetPicker extends Activity implements WidgetPickerAdapter.OnClickListener {
+public class WidgetPicker extends AppCompatActivity implements WidgetPickerAdapter.OnClickListener {
 
     private static final int REQUEST_BIND_APPWIDGET = 111;
     private int mAppWidgetId;

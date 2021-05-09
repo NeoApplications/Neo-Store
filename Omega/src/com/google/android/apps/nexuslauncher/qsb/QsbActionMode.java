@@ -7,6 +7,8 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.core.view.MenuItemCompat;
+
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 
@@ -30,10 +32,10 @@ public class QsbActionMode implements ActionMode.Callback {
         actionMode.setTitleOptionalHint(true);
         actionMode.setTag(Launcher.AUTO_CANCEL_ACTION_MODE);
         if (clipboardText != null) {
-            menu.add(0, 16908322, 0, 17039371).setShowAsAction(1);
+            MenuItemCompat.setShowAsAction(menu.add(0, 16908322, 0, 17039371), 1);
         }
         if (settingsBroadcast != null || settingsIntent != null) {
-            menu.add(0, R.id.hotseat_qsb_menu_item, 0, R.string.customize).setShowAsAction(8);
+            MenuItemCompat.setShowAsAction(menu.add(0, R.id.hotseat_qsb_menu_item, 0, R.string.customize), 8);
         }
         return clipboardText != null || settingsBroadcast != null || settingsIntent != null;
     }

@@ -16,9 +16,10 @@
 
 package com.android.launcher3.hybridhotseat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.launcher3.BaseActivity;
 import com.android.launcher3.uioverrides.QuickstepLauncher;
@@ -27,7 +28,7 @@ import com.android.launcher3.util.ActivityTracker;
 /**
  * Proxy activity to return user to home screen and show halfsheet education
  */
-public class HotseatEduActivity extends Activity {
+public class HotseatEduActivity extends AppCompatActivity {
 
 
     @Override

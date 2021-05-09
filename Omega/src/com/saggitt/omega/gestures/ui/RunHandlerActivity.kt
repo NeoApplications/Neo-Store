@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.gestures.ui
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -30,7 +30,7 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.OmegaShortcutActivity
 
-class RunHandlerActivity : Activity() {
+class RunHandlerActivity : AppCompatActivity() {
     private val fallback by lazy { BlankGestureHandler(this, null) }
     private val launcher
         get() = (LauncherAppState.getInstance(this).launcher as? OmegaLauncher)

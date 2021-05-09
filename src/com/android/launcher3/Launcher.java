@@ -426,7 +426,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
                 savedInstanceState.remove(RUNTIME_STATE);
             }
         }
-        restoreState(savedInstanceState);
+        // restoreState(savedInstanceState); TODO use ViewModel instead
         mStateManager.reapplyState();
 
         // We only load the page synchronously if the user rotates (or triggers a
@@ -1311,7 +1311,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
      */
     @Thunk
     void completeAddAppWidget(int appWidgetId, ItemInfo itemInfo,
-            AppWidgetHostView hostView, LauncherAppWidgetProviderInfo appWidgetInfo) {
+                              AppWidgetHostView hostView, LauncherAppWidgetProviderInfo appWidgetInfo) {
 
         if (appWidgetInfo == null) {
             appWidgetInfo = mAppWidgetManager.getLauncherAppWidgetInfo(appWidgetId);
@@ -1349,8 +1349,10 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         mOverlayManager.onAttachedToWindow();
     }
 
+    @Nullable
+    @org.jetbrains.annotations.Nullable
     @Override
-    public Object onRetainNonConfigurationInstance() {
+    public Object onRetainCustomNonConfigurationInstance() { // TODO migrate to ViewModel as this is alsi deprecated now
         NonConfigInstance instance = new NonConfigInstance();
         instance.config = new Configuration(mOldConfig);
         return instance;
@@ -1596,7 +1598,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
      */
     @Override
     public void startSearch(String initialQuery, boolean selectInitialQuery,
-            Bundle appSearchData, boolean globalSearch) {
+                            Bundle appSearchData, boolean globalSearch) {
         if (appSearchData == null) {
             appSearchData = new Bundle();
             appSearchData.putString("source", "launcher-search");
@@ -2108,7 +2110,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Bind the items start-end from the list.
-     *
+     * <p>
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override
@@ -2518,7 +2520,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Update the state of a package, typically related to install state.
-     *
+     * <p>
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override

@@ -16,8 +16,6 @@
 
 package com.android.launcher3.config;
 
-import static com.android.launcher3.config.FeatureFlags.FLAGS_PREF_NAME;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Process;
@@ -27,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.core.view.MenuItemCompat;
 import androidx.preference.PreferenceDataStore;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -34,6 +33,8 @@ import androidx.preference.SwitchPreference;
 
 import com.android.launcher3.R;
 import com.android.launcher3.config.FeatureFlags.DebugFlag;
+
+import static com.android.launcher3.config.FeatureFlags.FLAGS_PREF_NAME;
 
 /**
  * Dev-build only UI allowing developers to toggle flag settings. See {@link FeatureFlags}.
@@ -118,8 +119,7 @@ public final class FlagTogglerPrefUi {
 
     public void onCreateOptionsMenu(Menu menu) {
         if (anyChanged()) {
-            menu.add(0, R.id.menu_apply_flags, 0, "Apply")
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            MenuItemCompat.setShowAsAction(menu.add(0, R.id.menu_apply_flags, 0, "Apply"), MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
     }
 

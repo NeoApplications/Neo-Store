@@ -17,28 +17,37 @@
 
 package com.saggitt.omega.gestures.ui
 
-import android.app.AlertDialog
 import android.content.Context
 import android.util.AttributeSet
+import androidx.preference.ListPreference
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
-import com.saggitt.omega.preferences.RecyclerViewPreference
 
-class LauncherGesturePreference(context: Context, attrs: AttributeSet?) : RecyclerViewPreference(context, attrs) {
+class LauncherGesturePreference(context: Context, attrs: AttributeSet?) :
+    ListPreference(context, attrs) {
 
-    var value: String? = null
-        set(value) {
-            field = value
-            notifyChanged()
-        }
     var defaultValue = BlankGestureHandler::class.java.name
     lateinit var onSelectHandler: (GestureHandler) -> Unit
     private val mContext = context
     private val blankGestureHandler = BlankGestureHandler(mContext, null)
-    private val handler get() = GestureController.createGestureHandler(mContext, value, blankGestureHandler)
+    val handlers = GestureController.getGestureHandlers(context, isSwipeUp = false, hasBlank = true)
+    private val handler
+        get() = GestureController.createGestureHandler(
+            mContext,
+            value,
+            blankGestureHandler
+        )
 
-    override fun getSummary() = handler.displayName
+    init {
+        entries = handlers.map { it.displayName }.toTypedArray()
+        entryValues = handlers.map { it.displayName }.toTypedArray()
+        setOnPreferenceChangeListener { _, newValue ->
+            onSelectHandler(handlers.find { it.displayName == newValue } ?: blankGestureHandler)
+            summary = handler.displayName
+            true
+        }
+    }
 
     override fun onSetInitialValue(restorePersistedValue: Boolean, defaultValue: Any?) {
         value = if (restorePersistedValue) {
@@ -46,20 +55,5 @@ class LauncherGesturePreference(context: Context, attrs: AttributeSet?) : Recycl
         } else {
             defaultValue as String? ?: ""
         }
-    }
-
-    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
-        super.onPrepareDialogBuilder(builder)
-
-        builder.setPositiveButton(null, null)
-    }
-
-    override fun onBindRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView) {
-        recyclerView.adapter = HandlerListAdapter(themedContext, false, getClassName(), onSelectHandler)
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(themedContext)
-    }
-
-    fun getClassName(): String {
-        return GestureController.getClassName(value ?: defaultValue)
     }
 }

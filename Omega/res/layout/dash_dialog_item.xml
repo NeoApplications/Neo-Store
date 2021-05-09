@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +9,7 @@
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@android:id/icon"
         android:layout_width="@dimen/icon_preview_size"
         android:layout_height="@dimen/icon_preview_size"
@@ -62,7 +63,7 @@
         android:gravity="center_vertical|end"
         android:paddingStart="?android:attr/listPreferredItemPaddingEnd"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:src="@drawable/deep_shortcuts_drag_handle"
         android:visibility="gone"
+        app:srcCompat="@drawable/deep_shortcuts_drag_handle"
         tools:visibility="visible" />
 </LinearLayout>

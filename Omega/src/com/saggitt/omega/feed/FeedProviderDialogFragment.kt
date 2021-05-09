@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -38,9 +39,11 @@ class FeedProviderDialogFragment : PreferenceDialogFragmentCompat() {
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
         list = view.findViewById(R.id.pack_list)
-        list.adapter = FeedProviderAdapter(requireContext(),
-                FeedProviderPreference.providers(requireContext()),
-                requireContext().omegaPrefs.feedProvider) {
+        list.adapter = FeedProviderAdapter(
+            requireContext(),
+            FeedProviderPreference.providers(requireContext()),
+            requireContext().omegaPrefs.feedProvider
+        ) {
             context?.omegaPrefs?.feedProvider = it
             dismiss()
         }
@@ -54,12 +57,15 @@ class FeedProviderDialogFragment : PreferenceDialogFragmentCompat() {
     override fun onDialogClosed(positiveResult: Boolean) {
     }
 
-    inner class FeedProviderAdapter(context: Context,
-                                    private val providers: List<FeedProviderPreference.ProviderInfo>,
-                                    private val selected: String,
-                                    private val onSelect: (String) -> Unit) :
-            ArrayAdapter<FeedProviderPreference.ProviderInfo>(
-                    context, R.layout.list_item_icon, 0, providers) {
+    inner class FeedProviderAdapter(
+        context: Context,
+        private val providers: List<FeedProviderPreference.ProviderInfo>,
+        private val selected: String,
+        private val onSelect: (String) -> Unit
+    ) :
+        ArrayAdapter<FeedProviderPreference.ProviderInfo>(
+            context, R.layout.list_item_icon, 0, providers
+        ) {
         private val color = Utilities.getOmegaPrefs(context).accentColor
         private val showDebug = context.omegaPrefs.showDebugInfo
 
@@ -75,7 +81,7 @@ class FeedProviderDialogFragment : PreferenceDialogFragmentCompat() {
                         isVisible = true
                     }
                 }
-                findViewById<RadioButton>(R.id.select).apply {
+                findViewById<AppCompatRadioButton>(R.id.select).apply {
                     isChecked = provider.packageName == selected
                     setOnCheckedChangeListener { _, _ ->
                         onSelect(provider.packageName)

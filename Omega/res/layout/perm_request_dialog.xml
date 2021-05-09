@@ -51,7 +51,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/icon_info"
-            android:src="@drawable/ic_info_no_shadow"
+            app:srcCompat="@drawable/ic_info_no_shadow"
             android:visibility="gone"
             app:tint="?android:textColorSecondary"
             android:layout_gravity="center"

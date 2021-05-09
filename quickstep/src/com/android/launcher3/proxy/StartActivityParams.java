@@ -16,7 +16,6 @@
 
 package com.android.launcher3.proxy;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
 import android.content.Context;
@@ -26,6 +25,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivityParams implements Parcelable {
 
@@ -43,7 +44,7 @@ public class StartActivityParams implements Parcelable {
     public int extraFlags;
     public Bundle options;
 
-    public StartActivityParams(Activity activity, int requestCode) {
+    public StartActivityParams(AppCompatActivity activity, int requestCode) {
         this(activity.createPendingResult(requestCode, new Intent(),
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT), requestCode);
     }

@@ -13,6 +13,7 @@
      limitations under the License.
 -->
 <com.android.launcher3.secondarydisplay.SecondaryDragLayer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drag_layer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +38,7 @@
         android:contentDescription="@string/all_apps_button_label"
         android:onClick="onAppsButtonClicked"
         android:padding="16dp"
-        android:src="@drawable/ic_apps" />
+        app:srcCompat="@drawable/ic_apps" />
 
     <com.android.launcher3.allapps.AllAppsContainerView
         android:id="@+id/apps_view"

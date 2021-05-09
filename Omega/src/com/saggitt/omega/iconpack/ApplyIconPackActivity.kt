@@ -17,14 +17,14 @@
 
 package com.saggitt.omega.iconpack
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.theme.ThemeOverride
 
-class ApplyIconPackActivity : Activity() {
+class ApplyIconPackActivity : AppCompatActivity() {
     private val prefs by lazy { Utilities.getOmegaPrefs(this) }
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.SettingsTransparent()
 

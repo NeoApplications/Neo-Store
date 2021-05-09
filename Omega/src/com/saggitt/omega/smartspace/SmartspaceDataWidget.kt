@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.smartspace
 
-import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetHostView
@@ -47,7 +46,8 @@ import com.saggitt.omega.omegaApp
 import com.saggitt.omega.util.*
 
 @Keep
-class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartspaceController.DataProvider(controller) {
+class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
+    OmegaSmartspaceController.DataProvider(controller) {
 
     private val prefs = Utilities.getOmegaPrefs(context)
     private val smartspaceWidgetHost = SmartspaceWidgetHost()
@@ -55,7 +55,8 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
     private val widgetIdPref = prefs::smartspaceWidgetId
     private val providerInfo = getSmartspaceWidgetProvider(context)
     private var isWidgetBound = false
-    private val pendingIntentTagId = context.resources.getIdentifier("pending_intent_tag", "id", "android")
+    private val pendingIntentTagId =
+        context.resources.getIdentifier("pending_intent_tag", "id", "android")
 
     init {
         bindWidget { }
@@ -64,8 +65,10 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
     protected fun createBindOptions(): Bundle {
         val idp = LauncherAppState.getIDP(context)
         val opts = Bundle()
-        val size = AppWidgetResizeFrame.getWidgetSizeRanges(context,
-                idp.numColumns, 1, null)
+        val size = AppWidgetResizeFrame.getWidgetSizeRanges(
+            context,
+            idp.numColumns, 1, null
+        )
         opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, size.left)
         opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, size.top)
         opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, size.right)
@@ -90,19 +93,24 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
 
             widgetId = smartspaceWidgetHost.allocateAppWidgetId()
             isWidgetBound = widgetManager.bindAppWidgetIdIfAllowed(
-                    widgetId, providerInfo.profile, providerInfo.provider, opts)
+                widgetId, providerInfo.profile, providerInfo.provider, opts
+            )
         }
 
         if (isWidgetBound) {
-            smartspaceView = smartspaceWidgetHost.createView(context, widgetId, providerInfo) as SmartspaceWidgetHostView
+            smartspaceView = smartspaceWidgetHost.createView(
+                context,
+                widgetId,
+                providerInfo
+            ) as SmartspaceWidgetHostView
             smartspaceWidgetHost.startListening()
             onSetupComplete()
         } else {
             val bindIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
-                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, providerInfo.provider)
+                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, providerInfo.provider)
             BlankActivity.startActivityForResult(context, bindIntent, 1028, 0) { resultCode, _ ->
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == AppCompatActivity.RESULT_OK) {
                     bindWidget(onSetupComplete)
                 } else {
                     smartspaceWidgetHost.deleteAppWidgetId(widgetId)
@@ -134,22 +142,35 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
         smartspaceWidgetHost.stopListening()
     }
 
-    private fun updateData(weatherIcon: Bitmap?, temperature: TextView?, cardIcon: Bitmap?, title: TextView?, subtitle: TextView?, subtitle2: TextView?) {
+    private fun updateData(
+        weatherIcon: Bitmap?,
+        temperature: TextView?,
+        cardIcon: Bitmap?,
+        title: TextView?,
+        subtitle: TextView?,
+        subtitle2: TextView?
+    ) {
         val weather = parseWeatherData(weatherIcon, temperature)
         val card = if (cardIcon != null && title != null && subtitle != null) {
             val pendingIntent = getPendingIntent(title.parent.parent.parent as? View)
-            val ttl = title.text.toString() + if (subtitle2 != null) subtitle.text.toString() else ""
+            val ttl =
+                title.text.toString() + if (subtitle2 != null) subtitle.text.toString() else ""
             val sub = subtitle2 ?: subtitle
-            OmegaSmartspaceController.CardData(cardIcon, ttl, title.ellipsize,
-                    sub.text.toString(), sub.ellipsize,
-                    pendingIntent = pendingIntent)
+            OmegaSmartspaceController.CardData(
+                cardIcon, ttl, title.ellipsize,
+                sub.text.toString(), sub.ellipsize,
+                pendingIntent = pendingIntent
+            )
         } else {
             null
         }
         updateData(weather, card)
     }
 
-    private fun parseWeatherData(weatherIcon: Bitmap?, temperatureText: TextView?): OmegaSmartspaceController.WeatherData? {
+    private fun parseWeatherData(
+        weatherIcon: Bitmap?,
+        temperatureText: TextView?
+    ): OmegaSmartspaceController.WeatherData? {
         val temperature = temperatureText?.text?.toString()
         return parseWeatherData(weatherIcon, temperature, getPendingIntent(temperatureText))
     }
@@ -160,7 +181,11 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
 
     inner class SmartspaceWidgetHost : AppWidgetHost(context, 1027) {
 
-        override fun onCreateView(context: Context, appWidgetId: Int, appWidget: AppWidgetProviderInfo?): AppWidgetHostView {
+        override fun onCreateView(
+            context: Context,
+            appWidgetId: Int,
+            appWidget: AppWidgetProviderInfo?
+        ): AppWidgetHostView {
             return SmartspaceWidgetHostView(context)
         }
     }
@@ -172,7 +197,8 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             super.updateAppWidget(remoteViews)
 
             val childs = getAllChilds()
-            val texts = (childs.filter { it is TextView } as List<TextView>).filter { !TextUtils.isEmpty(it.text) }
+            val texts =
+                (childs.filter { it is TextView } as List<TextView>).filter { !TextUtils.isEmpty(it.text) }
             val images = childs.filter { it is ImageView } as List<ImageView>
 
             var weatherIconView: ImageView? = null
@@ -196,7 +222,14 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
                     subtitle2 = texts[2]
                 }
             }
-            updateData(extractBitmap(weatherIconView), temperatureText, extractBitmap(cardIconView), title, subtitle, subtitle2)
+            updateData(
+                extractBitmap(weatherIconView),
+                temperatureText,
+                extractBitmap(cardIconView),
+                title,
+                subtitle,
+                subtitle2
+            )
         }
     }
 
@@ -207,13 +240,16 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
     companion object {
 
         private const val TAG = "SmartspaceDataWidget"
-        private const val smartspaceComponent = "com.google.android.apps.gsa.staticplugins.smartspace.widget.SmartspaceWidgetProvider"
+        private const val smartspaceComponent =
+            "com.google.android.apps.gsa.staticplugins.smartspace.widget.SmartspaceWidgetProvider"
 
-        private val smartspaceProviderComponent = ComponentName(Config.GOOGLE_QSB, smartspaceComponent)
+        private val smartspaceProviderComponent =
+            ComponentName(Config.GOOGLE_QSB, smartspaceComponent)
 
         fun getSmartspaceWidgetProvider(context: Context): AppWidgetProviderInfo {
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val providers = appWidgetManager.installedProviders.filter { it.provider == smartspaceProviderComponent }
+            val providers =
+                appWidgetManager.installedProviders.filter { it.provider == smartspaceProviderComponent }
             val provider = providers.firstOrNull()
             Log.d(TAG, "Provider " + provider)
             if (provider != null) {
@@ -221,15 +257,15 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             } else {
                 runOnMainThread {
                     val foreground = context.omegaApp.activityHandler.foregroundActivity
-                            ?: context
+                        ?: context
                     if (foreground is AppCompatActivity) {
                         AlertDialog.Builder(foreground)
-                                .setTitle(R.string.failed)
-                                .setMessage(R.string.smartspace_widget_provider_not_found)
-                                .setNegativeButton(android.R.string.cancel, null).create().apply {
-                                    show()
-                                    applyAccent()
-                                }
+                            .setTitle(R.string.failed)
+                            .setMessage(R.string.smartspace_widget_provider_not_found)
+                            .setNegativeButton(android.R.string.cancel, null).create().apply {
+                                show()
+                                applyAccent()
+                            }
 
                     }
                 }
@@ -237,16 +273,26 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) : OmegaSmartsp
             }
         }
 
-        fun parseWeatherData(weatherIcon: Bitmap?, temperature: String?, intent: PendingIntent? = null): OmegaSmartspaceController.WeatherData? {
+        fun parseWeatherData(
+            weatherIcon: Bitmap?,
+            temperature: String?,
+            intent: PendingIntent? = null
+        ): OmegaSmartspaceController.WeatherData? {
             return if (weatherIcon != null && temperature != null) {
                 try {
-                    val value = temperature.substring(0, temperature.indexOfFirst { (it < '0' || it > '9') && it != '-' }).toInt()
-                    OmegaSmartspaceController.WeatherData(weatherIcon, Temperature(value, when {
-                        temperature.contains("C") -> Temperature.Unit.Celsius
-                        temperature.contains("F") -> Temperature.Unit.Fahrenheit
-                        temperature.contains("K") -> Temperature.Unit.Kelvin
-                        else -> throw IllegalArgumentException("only supports C, F and K")
-                    }), pendingIntent = intent)
+                    val value = temperature.substring(
+                        0,
+                        temperature.indexOfFirst { (it < '0' || it > '9') && it != '-' }).toInt()
+                    OmegaSmartspaceController.WeatherData(
+                        weatherIcon, Temperature(
+                            value, when {
+                                temperature.contains("C") -> Temperature.Unit.Celsius
+                                temperature.contains("F") -> Temperature.Unit.Fahrenheit
+                                temperature.contains("K") -> Temperature.Unit.Kelvin
+                                else -> throw IllegalArgumentException("only supports C, F and K")
+                            }
+                        ), pendingIntent = intent
+                    )
                 } catch (e: NumberFormatException) {
                     null
                 } catch (e: IllegalArgumentException) {

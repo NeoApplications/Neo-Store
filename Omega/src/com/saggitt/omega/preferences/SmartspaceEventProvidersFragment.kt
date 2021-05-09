@@ -38,7 +38,8 @@ class SmartspaceEventProvidersFragment : PreferenceDialogFragmentCompat() {
         adapter = SmartspaceEventProvidersAdapter(view.context)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         (recyclerView.itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = false
         adapter.itemTouchHelper = ItemTouchHelper(adapter.TouchHelperCallback()).apply {

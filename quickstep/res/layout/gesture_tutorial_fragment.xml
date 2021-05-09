@@ -14,6 +14,7 @@
     limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground">
@@ -57,7 +58,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/gesture_tutorial_close_button_content_description"
         android:padding="18dp"
-        android:src="@drawable/gesture_tutorial_close_button"
+        app:srcCompat="@drawable/gesture_tutorial_close_button"
         android:tint="?android:attr/textColorPrimary" />
 
     <LinearLayout

@@ -29,13 +29,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.android.launcher3.AdaptiveIconCompat;
 
 import java.nio.ByteBuffer;
 
@@ -83,7 +84,9 @@ public class IconNormalizer {
     private final Path mShapePath;
     private final Matrix mMatrix;
 
-    /** package private **/
+    /**
+     * package private
+     **/
     IconNormalizer(Context context, int iconBitmapSize, boolean shapeDetection) {
         // Use twice the icon size as maximum size to avoid scaling down twice.
         mMaxSize = iconBitmapSize * 2;
@@ -132,11 +135,11 @@ public class IconNormalizer {
      * @param size Canvas size to use
      */
     @TargetApi(Build.VERSION_CODES.O)
-    public static float normalizeAdaptiveIcon(Drawable d, int size, @Nullable RectF outBounds) {
+    public static float normalizeAdaptiveIcon(AdaptiveIconCompat d, int size, @Nullable RectF outBounds) {
         Rect tmpBounds = new Rect(d.getBounds());
         d.setBounds(0, 0, size, size);
 
-        Path path = ((AdaptiveIconDrawable) d).getIconMask();
+        Path path = d.getIconMask();
         Region region = new Region();
         region.setPath(path, new Region(0, 0, size, size));
 
@@ -144,12 +147,11 @@ public class IconNormalizer {
         int hullArea = GraphicsUtils.getArea(region);
 
         if (outBounds != null) {
-            float sizeF = size;
             outBounds.set(
-                    hullBounds.left / sizeF,
-                    hullBounds.top / sizeF,
-                    1 - (hullBounds.right / sizeF),
-                    1 - (hullBounds.bottom / sizeF));
+                    hullBounds.left / (float) size,
+                    hullBounds.top / (float) size,
+                    1 - (hullBounds.right / (float) size),
+                    1 - (hullBounds.bottom / (float) size));
         }
         d.setBounds(tmpBounds);
         return getScale(hullArea, hullArea, size * size);
@@ -242,9 +244,9 @@ public class IconNormalizer {
      */
     public float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
                           @Nullable Path path, @Nullable boolean[] outMaskShape, int minVisibleAlpha) {
-        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconDrawable) {
+        if (BaseIconFactory.ATLEAST_OREO && d instanceof AdaptiveIconCompat) {
             if (mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
-                mAdaptiveIconScale = normalizeAdaptiveIcon(d, mMaxSize, mAdaptiveIconBounds);
+                mAdaptiveIconScale = normalizeAdaptiveIcon((AdaptiveIconCompat) d, mMaxSize, mAdaptiveIconBounds);
             }
             if (outBounds != null) {
                 outBounds.set(mAdaptiveIconBounds);
@@ -354,10 +356,11 @@ public class IconNormalizer {
     /**
      * Modifies {@param xCoordinates} to represent a convex border. Fills in all missing values
      * (except on either ends) with appropriate values.
+     *
      * @param xCoordinates map of x coordinate per y.
-     * @param direction 1 for left border and -1 for right border.
-     * @param topY the first Y position (inclusive) with a valid value.
-     * @param bottomY the last Y position (inclusive) with a valid value.
+     * @param direction    1 for left border and -1 for right border.
+     * @param topY         the first Y position (inclusive) with a valid value.
+     * @param bottomY      the last Y position (inclusive) with a valid value.
      */
     private static void convertToConvexArray(
             float[] xCoordinates, int direction, int topY, int bottomY) {
@@ -385,7 +388,7 @@ public class IconNormalizer {
                 // position which creates a convex angle.
                 if ((currentAngle - lastAngle) * direction < 0) {
                     while (start > first) {
-                        start --;
+                        start--;
                         currentAngle = (xCoordinates[i] - xCoordinates[start]) / (i - start);
                         if ((currentAngle - angles[start]) * direction >= 0) {
                             break;

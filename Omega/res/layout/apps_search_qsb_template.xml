@@ -13,6 +13,7 @@
      limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent">
 
@@ -55,13 +56,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:src="@drawable/ic_qsb_logo" />
+            app:srcCompat="@drawable/ic_qsb_logo" />
 
         <ImageView
             android:id="@+id/mic_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:src="@drawable/ic_qsb_mic" />
+            app:srcCompat="@drawable/ic_qsb_mic" />
     </FrameLayout>
 </FrameLayout>

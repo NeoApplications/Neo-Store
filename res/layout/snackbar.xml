@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2018 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2018 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -17,31 +16,33 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/label"
-        android:layout_height="@dimen/snackbar_content_height"
+        style="@style/TextTitle"
         android:layout_width="0dp"
+        android:layout_height="@dimen/snackbar_content_height"
         android:layout_weight="1"
+        android:ellipsize="end"
         android:gravity="center_vertical"
+        android:lines="1"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:lines="1"
-        android:ellipsize="end"
-        android:textSize="@dimen/snackbar_max_text_size"
         android:textColor="?android:attr/textColorPrimary"
-        style="@style/TextTitle"/>
-    <TextView
+        android:textSize="@dimen/snackbar_max_text_size" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/action"
-        android:layout_height="@dimen/snackbar_content_height"
+        style="@style/TextTitle"
         android:layout_width="wrap_content"
+        android:layout_height="@dimen/snackbar_content_height"
         android:layout_weight="0"
+        android:background="?android:attr/selectableItemBackground"
+        android:capitalize="sentences"
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:textStyle="bold"
-        android:textSize="@dimen/snackbar_max_text_size"
         android:textColor="?android:attr/colorAccent"
-        style="@style/TextTitle"
-        android:capitalize="sentences"/>
+        android:textSize="@dimen/snackbar_max_text_size"
+        android:textStyle="bold" />
 </merge>

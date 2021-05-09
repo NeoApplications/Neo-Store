@@ -18,7 +18,6 @@ package com.android.launcher3;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -75,6 +74,7 @@ import android.view.animation.Interpolator;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.os.BuildCompat;
@@ -844,7 +844,7 @@ public final class Utilities {
         return hasPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
-    public static void requestStoragePermission(Activity activity) {
+    public static void requestStoragePermission(AppCompatActivity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE_ACCESS);
     }
 
@@ -867,7 +867,7 @@ public final class Utilities {
     public static void openURLinBrowser(Context context, String url, Rect sourceBounds, Bundle options) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            if (!(context instanceof Activity)) {
+            if (!(context instanceof AppCompatActivity)) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             intent.setSourceBounds(sourceBounds);

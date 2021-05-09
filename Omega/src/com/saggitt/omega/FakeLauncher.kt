@@ -17,13 +17,13 @@
 
 package com.saggitt.omega
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 
-class FakeLauncher : Activity()
+class FakeLauncher : AppCompatActivity()
 
 fun changeDefaultHome(context: Context) {
     val pm = context.packageManager

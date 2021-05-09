@@ -25,7 +25,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -36,9 +36,9 @@
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_qsb_logo" />
+        app:srcCompat="@drawable/ic_qsb_logo" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -47,7 +47,7 @@
         android:paddingStart="8dp"
         android:paddingEnd="16dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:customFontType="preferenceTitle"
             tools:text="Icon pack" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,9 +68,9 @@
             android:visibility="gone"
             tools:text="com.example.iconpack"
             tools:visibility="visible" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <RadioButton
+    <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/select"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

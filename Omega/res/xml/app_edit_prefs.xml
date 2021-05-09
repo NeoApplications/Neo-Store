@@ -15,7 +15,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_app_hide"
         android:persistent="false"
@@ -30,7 +30,7 @@
         android:key="pref_swipe_up_gesture"
         android:title="@string/gesture_swipe_up" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:defaultValue="false"
         android:disableDependentsState="true"
         android:key="pref_cover_mode"

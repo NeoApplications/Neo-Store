@@ -16,7 +16,6 @@
 package com.android.launcher3.graphics;
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -38,6 +37,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextClock;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
@@ -158,7 +159,9 @@ public class LauncherPreviewRenderer {
 
     private final WorkspaceItemInfo mWorkspaceItemInfo;
 
-    /** Populate preview and render it. */
+    /**
+     * Populate preview and render it.
+     */
     public View getRenderedView() {
         MainThreadRenderer renderer = new MainThreadRenderer(mContext);
         renderer.populate();

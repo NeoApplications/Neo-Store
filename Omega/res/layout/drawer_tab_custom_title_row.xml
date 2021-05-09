@@ -15,14 +15,14 @@
   ~     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:textColor="?android:colorAccent"
         app:customFontType="preferenceTitle" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/name"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
@@ -47,4 +47,4 @@
         android:textAlignment="viewStart"
         app:customFontType="title"
         tools:text="Favorites" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

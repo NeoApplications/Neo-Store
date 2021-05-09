@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.gestures.handlers
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -95,7 +95,7 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) : G
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         searchProvider.startSearch {
             try {
-                if (context !is Activity) {
+                if (context !is AppCompatActivity) {
                     it.flags = it.flags or Intent.FLAG_ACTIVITY_NEW_TASK
                 }
                 context.startActivity(it)

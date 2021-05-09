@@ -15,7 +15,7 @@
  */
 package com.android.systemui.plugins;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 import com.android.systemui.plugins.shared.LauncherExterns;
@@ -29,6 +29,6 @@ public interface OverlayPlugin extends Plugin {
     String ACTION = "com.android.systemui.action.PLUGIN_LAUNCHER_OVERLAY";
     int VERSION = 1;
 
-    LauncherOverlayManager createOverlayManager(Activity activity, LauncherExterns externs);
+    LauncherOverlayManager createOverlayManager(AppCompatActivity activity, LauncherExterns externs);
 
 }
