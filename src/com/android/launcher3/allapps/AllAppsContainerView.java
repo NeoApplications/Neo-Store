@@ -207,7 +207,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 }
             }
             rebindAdapters(hasWorkApps);
-            if (hasWorkApps) {
+            if (hasWorkApps && mWorkModeSwitch != null) {
                 resetWorkProfile();
             }
             AllAppsTabs allAppsTabs = mTabsController.getTabs();
