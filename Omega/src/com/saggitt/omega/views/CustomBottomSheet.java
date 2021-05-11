@@ -244,6 +244,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                 screen.removePreference(mTabsPref);
             } else {
                 mTabsPref.setComponentKey(mKey);
+                mTabsPref.setActivity(getActivity());
                 mTabsPref.updateSummary();
             }
 
