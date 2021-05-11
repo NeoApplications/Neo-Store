@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -28,7 +29,6 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 import androidx.annotation.IntDef;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.launcher3.DeviceProfile.OnDeviceProfileChangeListener;
 import com.android.launcher3.logging.StatsLogManager;
@@ -49,7 +49,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 /**
  * Launcher BaseActivity
  */
-public abstract class BaseActivity extends AppCompatActivity implements ActivityContext {
+public abstract class BaseActivity extends Activity implements ActivityContext {
 
     public static final int ACTIVITY_STATE_STARTED = 1 << 0;
 
@@ -74,7 +74,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
             flag = true,
             value = {INVISIBLE_BY_STATE_HANDLER, INVISIBLE_BY_APP_TRANSITIONS,
                     INVISIBLE_BY_PENDING_FLAGS, PENDING_INVISIBLE_BY_WALLPAPER_ANIMATION})
-    public @interface InvisibilityFlags{}
+    public @interface InvisibilityFlags {
+    }
 
     private final ArrayList<OnDeviceProfileChangeListener> mDPChangeListeners = new ArrayList<>();
     private final ArrayList<MultiWindowModeChangedListener> mMultiWindowModeChangedListeners =

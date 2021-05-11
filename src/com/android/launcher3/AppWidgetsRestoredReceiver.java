@@ -50,7 +50,7 @@ public class AppWidgetsRestoredReceiver extends BroadcastReceiver {
      */
     @WorkerThread
     public static void restoreAppWidgetIds(Context context, int[] oldWidgetIds, int[] newWidgetIds) {
-        AppWidgetHost appWidgetHost = new LauncherAppWidgetHost(context);
+        AppWidgetHost appWidgetHost = new LauncherAppWidgetHost(context.getApplicationContext());
         if (WidgetsModel.GO_DISABLE_WIDGETS) {
             Log.e(TAG, "Skipping widget ID remap as widgets not supported");
             appWidgetHost.deleteHost();
@@ -67,7 +67,7 @@ public class AppWidgetsRestoredReceiver extends BroadcastReceiver {
             return;
         }
         final ContentResolver cr = context.getContentResolver();
-        final AppWidgetManager widgets = AppWidgetManager.getInstance(context);
+        final AppWidgetManager widgets = AppWidgetManager.getInstance(context.getApplicationContext());
 
         for (int i = 0; i < oldWidgetIds.length; i++) {
             Log.i(TAG, "Widget state restore id " + oldWidgetIds[i] + " => " + newWidgetIds[i]);
