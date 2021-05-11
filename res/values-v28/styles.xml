@@ -17,7 +17,7 @@
 */
 -->
 <resources>
-    <style name="TextHeadline" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" >
+    <style name="TextHeadline" parent="@android:style/TextAppearance.Material.DialogWindowTitle" >
         <item name="android:textFontWeight">400</item>
     </style>
 </resources>

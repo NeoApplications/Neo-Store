@@ -70,13 +70,13 @@
         <item name="background">@color/colorPrimary</item>
     </style>
 
-    <style name="TextAppearance.TileTitle" parent="@android:style/TextAppearance.Material.Subhead">
+    <style name="TextAppearance.TileTitle" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="customFontType">settingsTileTitle</item>
     </style>
 
-    <style name="TextAppearance.Small" parent="@android:style/TextAppearance.Material.Small" />
+    <style name="TextAppearance.Small" parent="@style/TextAppearance.AppCompat.Small" />
 
-    <style name="SettingsTheme" parent="@android:style/Theme.Material.Settings">
+    <style name="SettingsTheme" parent="@style/Theme.AppCompat">
         <item name="android:actionBarTheme">@style/SettingsTheme.ActionBar</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -114,7 +114,7 @@
     </style>
 
     <!-- Theme for the widget container. Overridden on API 26. -->
-    <style name="WidgetContainerTheme" parent="@android:style/Theme.Material.Settings">
+    <style name="WidgetContainerTheme" parent="@style/Theme.AppCompat">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondaryInverse</item>
         <item name="android:textColorPrimary">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">?android:attr/textColorSecondaryInverse</item>
@@ -256,7 +256,7 @@
         <item name="workspaceKeyShadowColor">#44000000</item>
     </style>
 
-    <style name="SleepTimeoutTheme" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
+    <style name="SleepTimeoutTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
@@ -315,7 +315,7 @@
         <item name="android:popupElevation">8dp</item>
     </style>
 
-    <style name="SettingsTheme.PreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+    <style name="SettingsTheme.PreferenceTheme" parent="@style/Preference.Material">
         <item name="preferenceFragmentCompatStyle">@style/SettingsTheme.PreferenceTheme.Fragment
         </item>
         <item name="preferenceCategoryStyle">@style/SettingsTheme.PreferenceTheme.Category</item>
