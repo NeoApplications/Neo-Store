@@ -1,7 +1,7 @@
 package com.saggitt.omega.backup
 
-import android.Manifest
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.*
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,9 +9,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.Settings;
+import android.provider.Settings
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -43,9 +45,9 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
                 startActivity(intent)
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_NETWORK_STATE
+                    READ_EXTERNAL_STORAGE,
+                    WRITE_EXTERNAL_STORAGE,
+                    ACCESS_NETWORK_STATE
                 ),
                         1337)
             }
@@ -63,12 +65,14 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
         Utilities.checkRestoreSuccess(this)
     }
 
-    fun isPermissionGranted(context: Context): Boolean {
+    private fun isPermissionGranted(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Environment.isExternalStorageManager()
         } else {
-            ContextCompat.checkSelfPermission(context,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                context,
+                WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
@@ -89,6 +93,7 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             permissionRequestReadExternalStorage -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
@@ -101,16 +106,47 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
     }
 
     override fun openBackup() {
-        startActivityForResult(Intent(this, NewBackupActivity::class.java), 1)
+        openBackupResult.launch(Intent(this, NewBackupActivity::class.java))
     }
+
+    private val openBackupResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val resultData = result.data
+                if (resultData!!.data != null) {
+                    adapter.addItem(OmegaBackup(this, resultData.data!!))
+                    saveChanges()
+                }
+            }
+        }
 
     override fun openRestore() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = OmegaBackup.MIME_TYPE
         intent.putExtra(Intent.EXTRA_MIME_TYPES, OmegaBackup.EXTRA_MIME_TYPES)
-        startActivityForResult(intent, 2)
+
+        openRestoreResult.launch(intent)
     }
+
+    private val openRestoreResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val resultData = result.data
+                if (resultData!!.data != null) {
+                    val takeFlags = intent.flags and
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    contentResolver.takePersistableUriPermission(resultData.data!!, takeFlags)
+                    val uri = resultData.data
+                    if (!Utilities.getOmegaPrefs(this).recentBackups.contains(uri!!)) {
+                        adapter.addItem(OmegaBackup(this, uri))
+                        saveChanges()
+                    }
+                    openRestore(0)
+                }
+            }
+        }
 
     override fun openRestore(position: Int) {
         startActivity(Intent(this, RestoreBackupActivity::class.java).apply {
@@ -178,29 +214,5 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
     override fun onDestroy() {
         super.onDestroy()
         adapter.onDestroy()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                adapter.addItem(OmegaBackup(this, resultData.data!!))
-                saveChanges()
-            }
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                val takeFlags = intent.flags and
-                        (Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                contentResolver.takePersistableUriPermission(resultData.data!!, takeFlags)
-                val uri = resultData.data
-                if (!Utilities.getOmegaPrefs(this).recentBackups.contains(uri!!)) {
-                    adapter.addItem(OmegaBackup(this, uri))
-                    saveChanges()
-                }
-                openRestore(0)
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, resultData)
-        }
     }
 }
