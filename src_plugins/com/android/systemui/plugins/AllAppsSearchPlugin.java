@@ -16,10 +16,9 @@
 
 package com.android.systemui.plugins;
 
+import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 
@@ -34,7 +33,7 @@ public interface AllAppsSearchPlugin extends Plugin {
     /**
      * Following are the order that these methods should be called.
      */
-    void setup(ViewGroup parent, AppCompatActivity activity, float allAppsContainerHeight);
+    void setup(ViewGroup parent, Activity activity, float allAppsContainerHeight);
 
     /**
      * When drag starts, pass window inset related fields and the progress to indicate

@@ -207,8 +207,8 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         }
         mWidgetCell.setPreview(PinItemDragListener.getPreview(mRequest));
 
-        mAppWidgetManager = new WidgetManagerHelper(this);
-        mAppWidgetHost = new LauncherAppWidgetHost(this);
+        mAppWidgetManager = new WidgetManagerHelper(getApplicationContext());
+        mAppWidgetHost = new LauncherAppWidgetHost(getApplicationContext());
 
         PendingAddWidgetInfo pendingInfo = new PendingAddWidgetInfo(widgetInfo);
         pendingInfo.spanX = Math.min(mIdp.numColumns, widgetInfo.spanX);

@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.states;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -23,8 +24,6 @@ import android.database.ContentObserver;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -45,7 +44,7 @@ public class RotationHelper implements OnSharedPreferenceChangeListener {
     public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
 
     private final ContentResolver mContentResolver;
-    private final AppCompatActivity mActivity;
+    private final Activity mActivity;
     private final SharedPreferences mSharedPrefs;
     private boolean mSystemAutoRotateEnabled;
 
@@ -68,7 +67,7 @@ public class RotationHelper implements OnSharedPreferenceChangeListener {
      */
     private int mStateHandlerRequest = REQUEST_NONE;
 
-    public RotationHelper(AppCompatActivity activity) {
+    public RotationHelper(Activity activity) {
         mActivity = activity;
 
         // On large devices we do not handle auto-rotate differently.

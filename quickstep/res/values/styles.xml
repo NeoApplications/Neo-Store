@@ -70,7 +70,7 @@
         <item name="android:colorControlHighlight">?attr/workspaceTextColor</item>
     </style>
 
-    <style name="OverviewActionButton" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+    <style name="OverviewActionButton" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textColor">@color/overview_button</item>
         <item name="android:drawableTint">@color/overview_button</item>
         <item name="android:tint">?attr/workspaceTextColor</item>

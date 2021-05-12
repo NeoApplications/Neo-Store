@@ -406,8 +406,8 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
         mOnboardingPrefs = createOnboardingPrefs(mSharedPrefs);
 
-        mAppWidgetManager = new WidgetManagerHelper(this);
-        mAppWidgetHost = new LauncherAppWidgetHost(this,
+        mAppWidgetManager = new WidgetManagerHelper(getApplicationContext());
+        mAppWidgetHost = new LauncherAppWidgetHost(getApplicationContext(),
                 appWidgetId -> getWorkspace().removeWidget(appWidgetId));
         mAppWidgetHost.startListening();
 
@@ -1352,7 +1352,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
-    public Object onRetainCustomNonConfigurationInstance() { // TODO migrate to ViewModel as this is alsi deprecated now
+    public Object onRetainNonConfigurationInstance() { // TODO migrate to ViewModel as this is also deprecated now
         NonConfigInstance instance = new NonConfigInstance();
         instance.config = new Configuration(mOldConfig);
         return instance;
