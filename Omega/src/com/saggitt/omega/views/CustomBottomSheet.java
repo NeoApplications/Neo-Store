@@ -18,6 +18,8 @@
 
 package com.saggitt.omega.views;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -30,10 +32,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
@@ -76,7 +76,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
 
     public CustomBottomSheet(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mFragmentManager = mLauncher.getSupportFragmentManager();
+        mFragmentManager = mLauncher.getFragmentManager();
     }
 
     public static void show(Launcher launcher, ItemInfo itemInfo) {
@@ -185,7 +185,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
     public void onWidgetsBound() {
     }
 
-    public static class PrefsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+    public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
         public final static int requestCode = "swipeUp".hashCode() & 65535;
         private final static String PREF_HIDE = "pref_app_hide";
         private final static String PREF_HIDE_FROM_PREDICTIONS = "pref_app_prediction_hide";
@@ -244,6 +244,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                 screen.removePreference(mTabsPref);
             } else {
                 mTabsPref.setComponentKey(mKey);
+                mTabsPref.setActivity(getActivity());
                 mTabsPref.updateSummary();
             }
 
@@ -378,7 +379,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             switch (preference.getKey()) {
                 case "componentName":
                 case "versionName":
-                    ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText(getString(R.string.debug_component_name), preference.getSummary());
                     clipboard.setPrimaryClip(clip);
                     Toast.makeText(getActivity(), R.string.debug_component_name_copied, Toast.LENGTH_SHORT).show();

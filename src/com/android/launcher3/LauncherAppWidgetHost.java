@@ -52,7 +52,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
     private static final int FLAG_RESUMED = 1 << 1;
     private static final int FLAG_LISTEN_IF_RESUMED = 1 << 2;
 
-    public static final int APPWIDGET_HOST_ID = 1024;
+    public static final int APPWIDGET_HOST_ID = 0x1024;
 
     private final ArrayList<ProviderChangedListener> mProviderChangeListeners = new ArrayList<>();
     private final SparseArray<LauncherAppWidgetHostView> mViews = new SparseArray<>();
@@ -117,7 +117,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
     }
 
     @Override
-    public void stopListening() {
+    public void stopListening() throws NullPointerException {
         if (WidgetsModel.GO_DISABLE_WIDGETS) {
             return;
         }
@@ -171,7 +171,10 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
             }
         } else {
             mFlags &= ~FLAG_LISTEN_IF_RESUMED;
-            stopListening();
+            try {
+                stopListening();
+            } catch (NullPointerException e) {
+            }
         }
     }
 

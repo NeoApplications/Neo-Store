@@ -22,8 +22,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
@@ -43,7 +41,7 @@ public class UiThreadHelper {
         Message.obtain(HANDLER.get(context), MSG_HIDE_KEYBOARD, token).sendToTarget();
     }
 
-    public static void setOrientationAsync(AppCompatActivity activity, int orientation) {
+    public static void setOrientationAsync(Activity activity, int orientation) {
         Message.obtain(HANDLER.get(activity), MSG_SET_ORIENTATION, orientation, 0, activity)
                 .sendToTarget();
     }

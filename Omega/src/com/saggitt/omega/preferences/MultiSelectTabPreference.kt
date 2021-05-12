@@ -17,31 +17,34 @@
 
 package com.saggitt.omega.preferences
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
-import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.util.omegaPrefs
 
 class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
-    MultiSelectListPreference(context, attrs) {
+    Preference(context, attrs) {
 
     lateinit var componentKey: ComponentKey
-    private val tabs =
+    lateinit var activity: Activity
+    private val tabs: List<DrawerTabs.CustomTab> =
         context.omegaPrefs.drawerTabs.getGroups().mapNotNull { it as? DrawerTabs.CustomTab }
     var edited = false
         private set
 
     init {
-        entries = tabs.map { it.getTitle() }.toTypedArray()
-        entryValues = tabs.map { it.getTitle() }.toTypedArray()
-        tabs.forEachIndexed { i, customTab ->
-            selectedItems[i] = customTab.contents.value().contains(componentKey)
+        setOnPreferenceClickListener {
+            MultiSelectTabDialog(context, componentKey, tabs) {
+                callChangeListener(tabs.hashCode())
+            }.show(activity.fragmentManager, "TABS_MULTISELECT_DIALOG")
+            true
         }
-        setPositiveButtonText(android.R.string.ok)
         setOnPreferenceChangeListener { _, _ ->
             updateSummary()
+            edited = true
             true
         }
     }
@@ -51,18 +54,4 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
             .filter { it.contents.value?.contains(componentKey) == true }
             .joinToString(", ") { it.getTitle() }
     }
-
-    /* TODO maybe integrate the old neutralButton at some point
-    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
-        super.onPrepareDialogBuilder(builder)
-
-        builder.setNeutralButton(R.string.tabs_manage) { _, _ ->
-            SettingsActivity.startFragment(
-                context,
-                AppCategorizationFragment::class.java.name,
-                R.string.title__drawer_categorization
-            )
-        }
-    }
-     */
 }
