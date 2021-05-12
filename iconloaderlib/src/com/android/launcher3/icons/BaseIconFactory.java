@@ -1,5 +1,9 @@
 package com.android.launcher3.icons;
 
+import static android.graphics.Paint.DITHER_FLAG;
+import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +14,6 @@ import android.graphics.Color;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,10 +28,6 @@ import androidx.annotation.Nullable;
 import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.icons.cache.IconPack;
 import com.android.launcher3.icons.cache.IconPackProvider;
-
-import static android.graphics.Paint.DITHER_FLAG;
-import static android.graphics.Paint.FILTER_BITMAP_FLAG;
-import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
 
 /**
  * This class will be moved to androidx library. There shouldn't be any dependency outside
@@ -130,23 +129,19 @@ public class BaseIconFactory implements AutoCloseable {
         return BitmapInfo.of(icon, extractColor(icon));
     }
 
-    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-                                             boolean shrinkNonAdaptiveIcons) {
+    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, boolean shrinkNonAdaptiveIcons) {
         return createBadgedIconBitmap(icon, user, shrinkNonAdaptiveIcons, false, null);
     }
 
-    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-                                             int iconAppTargetSdk) {
+    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk) {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, false);
     }
 
-    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-                                             int iconAppTargetSdk, boolean isInstantApp) {
+    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk, boolean isInstantApp) {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, isInstantApp, null);
     }
 
-    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user,
-                                             int iconAppTargetSdk, boolean isInstantApp, float[] scale) {
+    public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk, boolean isInstantApp, float[] scale) {
         boolean shrinkNonAdaptiveIcons = ATLEAST_P ||
                 (ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O);
         return createBadgedIconBitmap(icon, user, shrinkNonAdaptiveIcons, isInstantApp, scale);
@@ -237,7 +232,7 @@ public class BaseIconFactory implements AutoCloseable {
             En esta seccion se crea el Icono adaptivo.
         */
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
-            if (mWrapperIcon == null) {
+            if (mWrapperIcon == null || !((AdaptiveIconCompat) mWrapperIcon).isMaskValid()) {
                 mWrapperIcon = AdaptiveIconCompat.wrap(
                         mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper).mutate());
             }
@@ -245,8 +240,7 @@ public class BaseIconFactory implements AutoCloseable {
             dr.setBounds(0, 0, 1, 1);
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
-            //if (!outShape[0] && (icon instanceof NonAdaptiveIconDrawable)) {
-            if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
+            if (!outShape[0] && (icon instanceof NonAdaptiveIconDrawable)) {
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
