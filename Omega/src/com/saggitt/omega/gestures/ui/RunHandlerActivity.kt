@@ -17,10 +17,10 @@
 
 package com.saggitt.omega.gestures.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.util.ActivityTracker
@@ -42,19 +42,25 @@ class RunHandlerActivity : AppCompatActivity() {
         if (intent.action == OmegaShortcutActivity.START_ACTION) {
             val handlerString = intent.getStringExtra(OmegaShortcutActivity.EXTRA_HANDLER)
             if (handlerString != null) {
-                val handler = GestureController.createGestureHandler(this.applicationContext, handlerString, fallback)
+                val handler = GestureController.createGestureHandler(
+                    this.applicationContext,
+                    handlerString,
+                    fallback
+                )
                 if (handler.requiresForeground) {
                     val homeIntent =
-                            Intent(Intent.ACTION_MAIN)
-                                    .addCategory(Intent.CATEGORY_HOME)
-                                    .setPackage(packageName)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        Intent(Intent.ACTION_MAIN)
+                            .addCategory(Intent.CATEGORY_HOME)
+                            .setPackage(packageName)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     RunHandlerActivityTracker(handler).addToIntent(homeIntent)
                     startActivity(homeIntent)
                 } else {
                     triggerGesture(handler)
                 }
             }
+        } else if (intent.action == Intent.ACTION_ASSIST || intent.action == Intent.ACTION_SEARCH_LONG_PRESS) {
+            controller?.onLaunchAssistant()
         }
         finish()
     }
@@ -65,7 +71,8 @@ class RunHandlerActivity : AppCompatActivity() {
         Toast.makeText(this.applicationContext, R.string.failed, Toast.LENGTH_LONG).show()
     }
 
-    class RunHandlerActivityTracker(private val handler: GestureHandler) : ActivityTracker.SchedulerCallback<OmegaLauncher> {
+    class RunHandlerActivityTracker(private val handler: GestureHandler) :
+        ActivityTracker.SchedulerCallback<OmegaLauncher> {
         override fun init(activity: OmegaLauncher, alreadyOnHome: Boolean): Boolean {
             handler.onGestureTrigger(activity.gestureController)
             return true

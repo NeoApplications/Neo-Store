@@ -39,6 +39,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
     private val pressHomeGesture by lazy { PressHomeGesture(this) }
     private val pressBackGesture by lazy { PressBackGesture(this) }
     private val longPressGesture by lazy { LongPressGesture(this) }
+    private val assistantGesture by lazy { LaunchAssistantGesture(this) }
 
     val hasBackGesture
         get() = pressBackGesture.handler !is BlankGestureHandler
@@ -73,6 +74,10 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
         pressBackGesture.isEnabled && pressBackGesture.onEvent()
     }
 
+    fun onLaunchAssistant() {
+        assistantGesture.isEnabled && assistantGesture.onEvent()
+    }
+
     fun setSwipeUpOverride(handler: GestureHandler, downTime: Long) {
         if (swipeUpOverride?.second != downTime) {
             swipeUpOverride = Pair(handler, downTime)
@@ -90,19 +95,32 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
         return null
     }
 
-    fun createHandlerPref(key: String, defaultValue: GestureHandler = blankGestureHandler) = prefs.StringBasedPref(
-            key, defaultValue, prefs.doNothing, ::createGestureHandler, GestureHandler::toString, GestureHandler::onDestroy)
+    fun createHandlerPref(key: String, defaultValue: GestureHandler = blankGestureHandler) =
+        prefs.StringBasedPref(
+            key,
+            defaultValue,
+            prefs.doNothing,
+            ::createGestureHandler,
+            GestureHandler::toString,
+            GestureHandler::onDestroy
+        )
 
-    private fun createGestureHandler(jsonString: String) = createGestureHandler(launcher, jsonString, blankGestureHandler)
+    private fun createGestureHandler(jsonString: String) =
+        createGestureHandler(launcher, jsonString, blankGestureHandler)
 
     companion object {
 
         private const val TAG = "GestureController"
         private val LEGACY_SLEEP_HANDLERS = listOf(
-                "com.saggitt.omega.gestures.handlers.SleepGestureHandlerDeviceAdmin",
-                "com.saggitt.omega.gestures.handlers.SleepGestureHandlerAccessibility")
+            "com.saggitt.omega.gestures.handlers.SleepGestureHandlerDeviceAdmin",
+            "com.saggitt.omega.gestures.handlers.SleepGestureHandlerAccessibility"
+        )
 
-        fun createGestureHandler(context: Context, jsonString: String?, fallback: GestureHandler): GestureHandler {
+        fun createGestureHandler(
+            context: Context,
+            jsonString: String?,
+            fallback: GestureHandler
+        ): GestureHandler {
             if (!TextUtils.isEmpty(jsonString)) {
                 val config: JSONObject? = try {
                     JSONObject(jsonString)
@@ -113,10 +131,12 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
                 if (className in LEGACY_SLEEP_HANDLERS) {
                     className = SleepGestureHandler::class.java.name
                 }
-                val configValue = if (config?.has("config") == true) config.getJSONObject("config") else null
+                val configValue =
+                    if (config?.has("config") == true) config.getJSONObject("config") else null
                 try {
-                    val handler = Class.forName(className).getConstructor(Context::class.java, JSONObject::class.java)
-                            .newInstance(context, configValue) as GestureHandler
+                    val handler = Class.forName(className)
+                        .getConstructor(Context::class.java, JSONObject::class.java)
+                        .newInstance(context, configValue) as GestureHandler
                     if (handler.isAvailable) return handler
                 } catch (t: Throwable) {
                     Log.e(TAG, "can't create gesture handler", t)
@@ -139,7 +159,8 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
             }
         }
 
-        fun getGestureHandlers(context: Context, isSwipeUp: Boolean, hasBlank: Boolean) = mutableListOf(
+        fun getGestureHandlers(context: Context, isSwipeUp: Boolean, hasBlank: Boolean) =
+            mutableListOf(
                 PressBackGestureHandler(context, null),
                 SleepGestureHandler(context, null),
                 SleepGestureHandlerTimeout(context, null),
@@ -154,10 +175,10 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
                 StartAppGestureHandler(context, null),
                 OpenSettingsGestureHandler(context, null)
                 //OpenRecentsGestureHandler(context, null)
-        ).apply {
-            if (hasBlank) {
-                add(0, BlankGestureHandler(context, null))
-            }
-        }.filter { it.isAvailableForSwipeUp(isSwipeUp) }
+            ).apply {
+                if (hasBlank) {
+                    add(0, BlankGestureHandler(context, null))
+                }
+            }.filter { it.isAvailableForSwipeUp(isSwipeUp) }
     }
 }

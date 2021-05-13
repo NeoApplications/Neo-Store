@@ -191,6 +191,8 @@
             android:theme="@style/SettingsTheme_Light.Transparent">
             <intent-filter>
                 <action android:name="com.saggitt.omega.START_ACTION" />
+                <action android:name="android.intent.action.ASSIST"/>
+                <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
