@@ -23,9 +23,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
@@ -44,8 +41,6 @@ import com.saggitt.omega.adaptive.IconShapeCustomizeView;
 import com.saggitt.omega.theme.ThemeOverride;
 import com.saggitt.omega.theme.ThemedContextProvider;
 import com.saggitt.omega.util.OmegaUtilsKt;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -128,20 +123,6 @@ public class IconCustomizeFragment extends Fragment {
         dialog.setNegativeButton(android.R.string.cancel, null);
         dialog.create();
         dialog.show();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_icon_shape, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_custom_shape) {
-            showDialog();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /*
