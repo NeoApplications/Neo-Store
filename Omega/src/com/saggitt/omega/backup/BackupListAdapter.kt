@@ -31,7 +31,7 @@ class BackupListAdapter(val context: Context) : RecyclerView.Adapter<BackupListA
     fun addItem(backup: OmegaBackup) {
         backupList.add(0, backup)
         backupMetaLoaderList.add(0, OmegaBackup.MetaLoader(backup))
-        notifyDataSetChanged()
+        notifyItemChanged(0)
     }
 
     fun removeItem(position: Int) {
@@ -148,11 +148,11 @@ class BackupListAdapter(val context: Context) : RecyclerView.Adapter<BackupListA
         }
 
         override fun onClick(v: View) {
-            callbacks?.openRestore(adapterPosition - 1)
+            callbacks?.openRestore(bindingAdapterPosition - 1)
         }
 
         override fun onLongClick(v: View?): Boolean {
-            callbacks?.openEdit(adapterPosition - 1)
+            callbacks?.openEdit(bindingAdapterPosition - 1)
             return true
         }
     }
