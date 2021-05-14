@@ -2,6 +2,7 @@ package com.saggitt.omega.backup
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,8 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.launcher3.R
@@ -90,13 +93,29 @@ class NewBackupActivity : SettingsBaseActivity() {
                     intent.addCategory(Intent.CATEGORY_OPENABLE)
                     intent.type = OmegaBackup.MIME_TYPE
                     intent.putExtra(Intent.EXTRA_TITLE, fileName)
-                    startActivityForResult(intent, 1)
+
+                    startBackupResult.launch(intent)
                 }
             } else {
                 Snackbar.make(findViewById(R.id.content), error, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
+
+    private val startBackupResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val resultData = result.data
+                if (resultData!!.data != null) {
+                    val takeFlags = intent.flags and
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    contentResolver.takePersistableUriPermission(resultData.data!!, takeFlags)
+                    backupUri = resultData.data
+                    startBackup()
+                }
+            }
+        }
 
     private fun startBackup() {
         CreateBackupTask(this).execute()
@@ -112,24 +131,9 @@ class NewBackupActivity : SettingsBaseActivity() {
         }
     }
 
-    fun getTimestamp(): String {
+    private fun getTimestamp(): String {
         val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US)
         return simpleDateFormat.format(Date())
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                val takeFlags = intent.flags and
-                        (Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                contentResolver.takePersistableUriPermission(resultData.data!!, takeFlags)
-                backupUri = resultData.data
-                startBackup()
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, resultData)
-        }
     }
 
     override fun onBackPressed() {
@@ -153,7 +157,7 @@ class NewBackupActivity : SettingsBaseActivity() {
         override fun doInBackground(vararg params: Void?): Boolean {
             var contents = 0
             if (backupHomescreen.isChecked) {
-                contents = contents or OmegaBackup.INCLUDE_HOMESCREEN
+                contents = contents or OmegaBackup.INCLUDE_HOME_SCREEN
             }
             if (backupSettings.isChecked) {
                 contents = contents or OmegaBackup.INCLUDE_SETTINGS

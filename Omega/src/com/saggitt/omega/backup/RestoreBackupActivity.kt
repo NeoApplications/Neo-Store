@@ -1,22 +1,24 @@
 package com.saggitt.omega.backup
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.saggitt.omega.settings.SettingsBaseActivity
+import com.saggitt.omega.util.applyColor
 
 class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Callback {
 
@@ -33,6 +35,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         else
             OmegaBackup(this, intent.data!!)
     }
+
     private val backupMetaLoader by lazy { OmegaBackup.MetaLoader(backup) }
 
     private val config by lazy { findViewById<View>(R.id.config) }
@@ -71,7 +74,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
                 inProgress = true
                 showMessage(R.drawable.ic_check, R.string.restore_success)
                 Utilities.getOmegaPrefs(this).blockingEdit { restoreSuccess = false }
-                Handler().postDelayed({ finish() }, 2000)
+                Handler(Looper.getMainLooper()).postDelayed({ finish() }, 2000)
                 return
             }
             else -> {
@@ -83,11 +86,12 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         startButton.setOnClickListener {
             startRestore()
         }
+        startButton.applyColor(Utilities.getOmegaPrefs(this).accentColor)
 
         loadMeta()
     }
 
-    fun loadMeta() {
+    private fun loadMeta() {
         backupMetaLoader.callback = this
         backupMetaLoader.loadMeta()
 
@@ -106,7 +110,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
             backupName.setText(backup.meta?.name)
             backupTimestamp.setText(backup.meta?.timestamp)
             val contents = backup.meta!!.contents
-            val includeHomescreen = contents and OmegaBackup.INCLUDE_HOMESCREEN != 0
+            val includeHomescreen = contents and OmegaBackup.INCLUDE_HOME_SCREEN != 0
             backupHomescreen.isEnabled = includeHomescreen
             backupHomescreen.isChecked = includeHomescreen
             val includeSettings = contents and OmegaBackup.INCLUDE_SETTINGS != 0
@@ -133,7 +137,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
     private fun startRestore() {
         val error = validateOptions()
         if (error == 0) {
-            RestoreBackupTask(this).execute()
+            RestoreBackupTask().execute()
         } else {
             Snackbar.make(findViewById(R.id.content), error, Snackbar.LENGTH_SHORT).show()
         }
@@ -144,7 +148,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
     }
 
     @SuppressLint("StaticFieldLeak")
-    private inner class RestoreBackupTask(val context: Context) : AsyncTask<Void, Void, Int>() {
+    private inner class RestoreBackupTask() : AsyncTask<Void, Void, Int>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
@@ -161,7 +165,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         override fun doInBackground(vararg params: Void?): Int {
             var contents = 0
             if (backupHomescreen.isChecked) {
-                contents = contents or OmegaBackup.INCLUDE_HOMESCREEN
+                contents = contents or OmegaBackup.INCLUDE_HOME_SCREEN
             }
             if (backupSettings.isChecked) {
                 contents = contents or OmegaBackup.INCLUDE_SETTINGS
@@ -184,10 +188,12 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
                     }
                 }
 
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     if (fromExternal) {
-                        val intent = Intent(this@RestoreBackupActivity,
-                                RestoreBackupActivity::class.java).putExtra(EXTRA_SUCCESS, true)
+                        val intent = Intent(
+                            this@RestoreBackupActivity,
+                            RestoreBackupActivity::class.java
+                        ).putExtra(EXTRA_SUCCESS, true)
                         startActivity(intent)
                     }
                     Utilities.killLauncher()
@@ -208,7 +214,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         progressBar.visibility = View.GONE
         progressText.visibility = View.VISIBLE
         successIcon.visibility = View.VISIBLE
-        successIcon.setImageDrawable(getDrawable(icon))
+        successIcon.setImageDrawable(AppCompatResources.getDrawable(this, icon))
         progressText.setText(text)
     }
 
