@@ -172,7 +172,6 @@ class OmegaBackup(val context: Context, val uri: Uri) {
         var loaded = false
         private var loading = false
 
-        //var task: LoadMetaTask? = null
         private val uiScope = CoroutineScope(Dispatchers.Main)
 
         fun loadMeta(withPreview: Boolean = false) {
@@ -180,7 +179,6 @@ class OmegaBackup(val context: Context, val uri: Uri) {
             if (!loaded) {
                 loading = true
                 this.withPreview = withPreview
-                //LoadMetaTask().execute()
 
                 uiScope.launch {
                     loadMetaTask()
