@@ -87,7 +87,6 @@ android {
         versionName name
         versionCode code
 
-        buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", "${findAndroidLocales()}"
         buildConfigField "boolean", "FEATURE_SETTINGS_SEARCH", "true"
         buildConfigField "String", "BUILD_DATE", "\"${getBuildDate()}\""
 
@@ -272,25 +271,23 @@ protobuf {
     }
 }
 
-@SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
-// Returns used android languages as a buildConfig array: {'de', 'it', ..}"
-static String findAndroidLocales() {
-    Set<String> langs = new HashSet<>()
-    new File('.').eachFileRecurse(groovy.io.FileType.DIRECTORIES) {
-        final foldername = it.name
-        if (foldername.startsWith('values-')
-                && !it.canonicalPath.contains("build" + File.separator + "intermediates")
-                && !it.canonicalPath.contains("gradle" + File.separator + "daemon")) {
-            new File(it.toString()).eachFileRecurse(groovy.io.FileType.FILES) {
-                if (it.name.toLowerCase().endsWith(".xml")
-                        && it.getCanonicalFile().getText('UTF-8').contains("<string")) {
-                    langs.add(foldername.replace("values-", ""))
-                }
-            }
+// using a task as a preBuild dependency instead of a function that takes some time insures that it runs
+task detectAndroidLocals {
+    Set<String> langsList = new HashSet<>()
+
+    // in /res are (almost) all languages that hava a translated string is saved. this is safer and saves some time
+    fileTree("res").visit { FileVisitDetails details ->
+        if (details.file.path.endsWith("strings.xml")
+                && details.file.canonicalFile.getText('UTF-8').contains("<string")) {
+            def languageCode = details.file.parentFile.name.replace("values-", "")
+            languageCode = (languageCode == "values") ? "en" : languageCode;
+            langsList.add(languageCode)
         }
     }
-    return '{' + langs.collect { "\"${it}\"" }.join(",") + '}'
+    def langsListString = "{${langsList.collect { "\"${it}\"" }.join(",")}}";
+    android.defaultConfig.buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", langsListString
 }
+preBuild.dependsOn detectAndroidLocals
 
 @SuppressWarnings(["UnnecessaryQualifiedReference", "SpellCheckingInspection", "GroovyUnusedDeclaration"])
 // Returns the build date in a RFC3339 compatible format. TZ is always converted to UTC

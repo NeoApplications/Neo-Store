@@ -90,4 +90,11 @@
         app:gestureClass="com.saggitt.omega.gestures.gestures.VerticalSwipeGesture"
         app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.gestures.ui.GesturePreference
+        android:defaultValue="@string/action_open_dash"
+        android:key="pref_gesture_launch_assistant"
+        android:persistent="true"
+        android:title="@string/gesture_launch_assistant"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.LaunchAssistantGesture"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
