@@ -14,11 +14,12 @@ import com.android.launcher3.R
 import com.android.launcher3.qsb.QsbContainerView
 
 class SmartspaceQsb @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
+    context: Context?, attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : QsbContainerView(context, attrs, defStyleAttr) {
+
     class SmartSpaceFragment : QsbFragment() {
+
         override fun createHost(): QsbWidgetHost {
             return QsbWidgetHost(
                 context, SMART_SPACE_WIDGET_HOST_ID
@@ -42,7 +43,7 @@ class SmartspaceQsb @JvmOverloads constructor(
 
         override fun createBindOptions(): Bundle {
             val opts = super.createBindOptions()
-            opts.putString("attached-launcher-identifier", requireContext().packageName)
+            opts.putString("attached-launcher-identifier", context.packageName)
             opts.putBoolean("com.google.android.apps.gsa.widget.PREINSTALLED", true)
             return opts
         }

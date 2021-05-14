@@ -15,6 +15,7 @@
      limitations under the License.
 -->
 <com.saggitt.omega.smartspace.SmartspaceQsb xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/search_container_workspace"
     android:layout_width="match_parent"
     android:layout_height="0dp">
@@ -23,6 +24,7 @@
         android:name="com.saggitt.omega.smartspace.SmartspaceQsb$SmartSpaceFragment"
         android:layout_width="match_parent"
         android:tag="smart_space_view"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:ignore="FragmentTagUsage" />
 
 </com.saggitt.omega.smartspace.SmartspaceQsb>

@@ -15,7 +15,17 @@
  */
 package com.android.launcher3.graphics;
 
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static android.view.View.VISIBLE;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
+import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
+import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
+import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -37,8 +47,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextClock;
-
-import androidx.fragment.app.Fragment;
 
 import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.BubbleTextView;
@@ -97,15 +105,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static android.view.View.VISIBLE;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_LAUNCHER_PREVIEW_IN_GRID_PICKER;
-import static com.android.launcher3.model.ModelUtils.filterCurrentWorkspaceItems;
-import static com.android.launcher3.model.ModelUtils.getMissingHotseatRanks;
-import static com.android.launcher3.model.ModelUtils.sortWorkspaceItemsSpatially;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 /**
  * Utility class for generating the preview of Launcher for a given InvariantDeviceProfile.

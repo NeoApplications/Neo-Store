@@ -15,10 +15,9 @@
  */
 package com.android.launcher3.graphics;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * Extension of fragment, with support for preview mode.

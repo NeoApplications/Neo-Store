@@ -61,6 +61,7 @@ import com.android.launcher3.util.Executors.*
 import com.android.launcher3.util.PackageUserKey
 import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
 import org.json.JSONObject
@@ -316,6 +317,14 @@ fun CheckedTextView.applyAccent() {
     val tintList = ColorStateList.valueOf(context.getColorAccent())
     compoundDrawableTintList = tintList
     backgroundTintList = tintList
+}
+
+fun FloatingActionButton.applyColor(color: Int) {
+    val rippleColor = ColorStateList.valueOf(ColorUtils.setAlphaComponent(color, 31))
+    background?.let {
+        (it as RippleDrawable).setColor(rippleColor)
+        DrawableCompat.setTint(background, color)
+    }
 }
 
 fun Button.applyColor(color: Int) {
