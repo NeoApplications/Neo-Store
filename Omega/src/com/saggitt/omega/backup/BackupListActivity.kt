@@ -30,7 +30,13 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
 
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerView) }
     private val adapter by lazy { BackupListAdapter(this) }
-
+    private val perms by lazy {
+        arrayOf(
+            READ_EXTERNAL_STORAGE,
+            WRITE_EXTERNAL_STORAGE,
+            ACCESS_NETWORK_STATE
+        )
+    }
     private var currentPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,12 +50,7 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
                 intent.data = Uri.parse("package:" + this.opPackageName)
                 startActivity(intent)
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(
-                    READ_EXTERNAL_STORAGE,
-                    WRITE_EXTERNAL_STORAGE,
-                    ACCESS_NETWORK_STATE
-                ),
-                        1337)
+                ActivityCompat.requestPermissions(this, perms, 1337)
             }
 
         }

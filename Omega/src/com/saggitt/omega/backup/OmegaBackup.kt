@@ -300,6 +300,8 @@ class OmegaBackup(val context: Context, val uri: Uri) {
             if (contents or INCLUDE_HOME_SCREEN != 0) {
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2))
+                files.add(contextWrapper.getDatabasePath(LauncherFiles.WIDGET_PREVIEWS_DB))
+                files.add(contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB))
             }
             if (contents or INCLUDE_SETTINGS != 0) {
                 val dir = contextWrapper.cacheDir.parent
@@ -307,6 +309,12 @@ class OmegaBackup(val context: Context, val uri: Uri) {
                     File(
                         dir,
                         "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml"
+                    )
+                )
+                files.add(
+                    File(
+                        dir,
+                        "shared_prefs/" + LauncherFiles.DEVICE_PREFERENCES_KEY + ".xml"
                     )
                 )
             }
