@@ -183,8 +183,8 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
         val summary: TextView = itemView.findViewById(R.id.summary)
         private val dragHandle: View = itemView.findViewById(R.id.drag_handle)
         private val packItem
-            get() = adapterItems[adapterPosition] as? IconPackItem
-                    ?: throw IllegalArgumentException("item must be IconPackItem")
+            get() = adapterItems[bindingAdapterPosition] as? IconPackItem
+                ?: throw IllegalArgumentException("item must be IconPackItem")
 
         init {
             itemView.setOnClickListener(this)
@@ -202,15 +202,15 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
 
         override fun onClick(v: View) {
             val item = packItem
-            if (adapterPosition > dividerIndex) {
-                adapterItems.removeAt(adapterPosition)
+            if (bindingAdapterPosition > dividerIndex) {
+                adapterItems.removeAt(bindingAdapterPosition)
                 adapterItems.add(1, item)
-                notifyItemMoved(adapterPosition, 1)
+                notifyItemMoved(bindingAdapterPosition, 1)
                 dividerIndex++
             } else {
-                adapterItems.removeAt(adapterPosition)
+                adapterItems.removeAt(bindingAdapterPosition)
                 adapterItems.add(dividerIndex, item)
-                notifyItemMoved(adapterPosition, dividerIndex)
+                notifyItemMoved(bindingAdapterPosition, dividerIndex)
                 dividerIndex--
             }
             notifyItemChanged(dividerIndex)
@@ -270,17 +270,17 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
         }
 
         override fun canDropOver(recyclerView: RecyclerView, current: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return target.adapterPosition in 1..dividerIndex
+            return target.bindingAdapterPosition in 1..dividerIndex
         }
 
         override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-            val item = adapterItems[viewHolder.adapterPosition]
+            val item = adapterItems[viewHolder.bindingAdapterPosition]
             val dragFlags = if (item.isStatic) 0 else ItemTouchHelper.UP or ItemTouchHelper.DOWN
             return makeMovementFlags(dragFlags, 0)
         }
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return move(viewHolder.adapterPosition, target.adapterPosition)
+            return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

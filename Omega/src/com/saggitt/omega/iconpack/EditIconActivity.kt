@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.iconpack
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -59,7 +58,7 @@ class EditIconActivity : SettingsBaseActivity() {
     private val component by lazy {
         if (intent.hasExtra(EXTRA_COMPONENT)) {
             ComponentKey(
-                intent.getParcelableExtra<ComponentName>(EXTRA_COMPONENT),
+                intent.getParcelableExtra(EXTRA_COMPONENT),
                 intent.getParcelableExtra(EXTRA_USER)
             )
         } else null
@@ -268,7 +267,7 @@ class EditIconActivity : SettingsBaseActivity() {
             }
 
             override fun onClick(v: View) {
-                onSelectIcon((icons[adapterPosition] as IconItem).entry)
+                onSelectIcon((icons[bindingAdapterPosition] as IconItem).entry)
             }
         }
 
@@ -331,10 +330,10 @@ class EditIconActivity : SettingsBaseActivity() {
             }
 
             override fun onClick(v: View) {
-                if (adapterPosition == iconPacks.size) {
+                if (bindingAdapterPosition == iconPacks.size) {
                     onSelectExternal()
                 } else {
-                    onSelectIconPack(iconPacks[adapterPosition].provider)
+                    onSelectIconPack(iconPacks[bindingAdapterPosition].provider)
                 }
             }
         }

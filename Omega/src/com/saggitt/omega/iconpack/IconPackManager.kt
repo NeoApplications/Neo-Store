@@ -24,7 +24,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.content.pm.ShortcutInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -45,14 +44,13 @@ import com.saggitt.omega.util.asNonEmpty
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.runOnMainThread
 import java.util.*
-import kotlin.collections.HashMap
 
 class IconPackManager(private val context: Context) {
 
-    val prefs = context.omegaPrefs
+    val prefs = context.omegaPrefs!!
     private val appInfoProvider = AppInfoProvider.getInstance(context)
     val defaultPack = DefaultPack(context)
-    val uriPack = UriIconPack(context)
+    private val uriPack = UriIconPack(context)
     var dayOfMonth = 0
         set(value) {
             if (value != field) {
@@ -119,7 +117,13 @@ class IconPackManager(private val context: Context) {
             pack.getIcon(launcherActivityInfo, iconDpi,
                     flattenDrawable, null, iconProvider)?.let { return it }
         }
-        return defaultPack.getIcon(launcherActivityInfo, iconDpi, flattenDrawable, null, iconProvider)!!
+        return defaultPack.getIcon(
+            launcherActivityInfo,
+            iconDpi,
+            flattenDrawable,
+            null,
+            iconProvider
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -163,20 +167,9 @@ class IconPackManager(private val context: Context) {
         return packs
     }
 
-    fun getPackProviderInfos(): HashMap<String, IconPackInfo> {
-        val pm = context.packageManager
-        val packs = HashMap<String, IconPackInfo>()
-        Config.ICON_INTENTS.forEach { intent ->
-            pm.queryIntentActivities(Intent(intent), PackageManager.GET_META_DATA).forEach {
-                packs[it.activityInfo.packageName] = IconPackInfo.fromResolveInfo(it, pm)
-            }
-        }
-        return packs
-    }
-
     fun addListener(listener: () -> Unit) {
         listeners.add(listener)
-        if (!packList.appliedPacks.isEmpty()) {
+        if (packList.appliedPacks.isNotEmpty()) {
             listener.invoke()
         }
     }
@@ -192,7 +185,7 @@ class IconPackManager(private val context: Context) {
     data class CustomIconEntry(val packPackageName: String, val icon: String? = null, val arg: String? = null) {
 
         fun toPackString(): String {
-            return "$packPackageName"
+            return packPackageName
         }
 
         override fun toString(): String {
@@ -217,21 +210,19 @@ class IconPackManager(private val context: Context) {
                 return parseLegacy(string)
             }
 
-            private fun parseLegacy(string: String): CustomIconEntry? {
+            private fun parseLegacy(string: String): CustomIconEntry {
                 val parts = string.split("/")
                 val icon = TextUtils.join("/", parts.subList(1, parts.size))
                 if (parts[0] == "lawnchairUriPack" && !icon.isNullOrBlank()) {
                     val iconParts = icon.split("|")
-                    return CustomIconEntry(parts[0], iconParts[0].asNonEmpty(), iconParts[1].asNonEmpty())
+                    return CustomIconEntry(
+                        parts[0],
+                        iconParts[0].asNonEmpty(),
+                        iconParts[1].asNonEmpty()
+                    )
                 }
                 return CustomIconEntry(parts[0], icon.asNonEmpty())
             }
-        }
-    }
-
-    data class IconPackInfo(val packageName: String, val icon: Drawable, val label: CharSequence) {
-        companion object {
-            fun fromResolveInfo(info: ResolveInfo, pm: PackageManager) = IconPackInfo(info.activityInfo.packageName, info.loadIcon(pm), info.loadLabel(pm))
         }
     }
 
@@ -270,10 +261,6 @@ class IconPackManager(private val context: Context) {
         }
     }
 
-    interface OnPackChangeListener {
-        fun onPackChanged()
-    }
-
     companion object {
 
         const val TAG = "IconPackManager"
@@ -290,7 +277,7 @@ class IconPackManager(private val context: Context) {
         }
 
         internal fun isPackProvider(context: Context, packageName: String?): Boolean {
-            if (packageName != null && !packageName.isEmpty()) {
+            if (packageName != null && packageName.isNotEmpty()) {
                 return Config.ICON_INTENTS.firstOrNull {
                     context.packageManager.queryIntentActivities(
                         Intent(it).setPackage(packageName), PackageManager.GET_META_DATA

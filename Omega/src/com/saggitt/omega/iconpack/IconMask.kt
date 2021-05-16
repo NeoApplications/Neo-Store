@@ -28,6 +28,7 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.FixedScaleDrawable
 import com.saggitt.omega.util.toBitmap
+import kotlin.math.abs
 
 class IconMask {
     val hasMask by lazy { validBacks.isNotEmpty() || validMasks.isNotEmpty() || validUpons.isNotEmpty() }
@@ -89,7 +90,7 @@ class IconMask {
                 drawable.toBitmap().let {
                     paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER)
                     matrix.setScale(size.toFloat() / it!!.width, size.toFloat() / it.height)
-                    canvas.drawBitmap(it!!, matrix, paint)
+                    canvas.drawBitmap(it, matrix, paint)
                     matrix.reset()
                 }
                 paint.reset()
@@ -100,7 +101,7 @@ class IconMask {
         if (iconUpon != null && iconUpon.drawableId != 0) {
             iconUpon.drawable.toBitmap().let {
                 matrix.setScale(size.toFloat() / it!!.width, size.toFloat() / it.height)
-                canvas.drawBitmap(it!!, matrix, paint)
+                canvas.drawBitmap(it, matrix, paint)
                 matrix.reset()
             }
         }
@@ -123,6 +124,6 @@ class IconMask {
 
     private fun <T> getFromList(list: List<T>, key: Any?): T? {
         if (list.isEmpty()) return null
-        return list[Math.abs(key.hashCode()) % list.size]
+        return list[abs(key.hashCode()) % list.size]
     }
 }
