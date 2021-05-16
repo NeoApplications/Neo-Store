@@ -301,7 +301,7 @@ class OmegaBackup(val context: Context, val uri: Uri) {
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.WIDGET_PREVIEWS_DB))
-                files.add(contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB))
+                //files.add(contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB))
             }
             if (contents or INCLUDE_SETTINGS != 0) {
                 val dir = contextWrapper.cacheDir.parent
