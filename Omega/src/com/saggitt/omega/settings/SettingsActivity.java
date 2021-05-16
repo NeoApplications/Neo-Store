@@ -828,7 +828,7 @@ public class SettingsActivity extends SettingsBaseActivity
         public void onDisplayPreferenceDialog(Preference preference) {
             final DialogFragment f;
             if (preference instanceof GridSizePreference) {
-                f = GridSizeDialogFragmentCompat.newInstance(preference.getKey());
+                f = GridSizeDialogFragmentCompat.Companion.newInstance(preference.getKey());
             } else if (preference instanceof SingleDimensionGridSizePreference) {
                 f = SingleDimensionGridSizeDialogFragmentCompat.Companion.newInstance(preference.getKey());
             } else if (preference instanceof GesturePreference) {
