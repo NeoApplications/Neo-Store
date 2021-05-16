@@ -38,6 +38,7 @@ import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.uioverrides.states.AllAppsState;
 import com.android.launcher3.uioverrides.states.OverviewState;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
+import com.saggitt.omega.states.HomeState;
 import com.saggitt.omega.states.OptionsState;
 
 import java.util.Arrays;
@@ -107,8 +108,8 @@ public abstract class LauncherState implements BaseState<LauncherState> {
     /**
      * TODO: Create a separate class for NORMAL state.
      */
-    public static final LauncherState NORMAL = new LauncherState(NORMAL_STATE_ORDINAL,
-            ContainerType.WORKSPACE,
+    public static final LauncherState NORMAL = new HomeState(NORMAL_STATE_ORDINAL,
+            ContainerType.WORKSPACE, 0,
             FLAG_DISABLE_RESTORE | FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED | FLAG_HIDE_BACK_BUTTON |
                     FLAG_HAS_SYS_UI_SCRIM) {
         @Override

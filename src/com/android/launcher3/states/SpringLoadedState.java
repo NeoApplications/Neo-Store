@@ -20,22 +20,21 @@ import android.graphics.Rect;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
-import com.android.launcher3.LauncherState;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
+import com.saggitt.omega.states.HomeState;
 
 /**
  * Definition for spring loaded state used during drag and drop.
  */
-public class SpringLoadedState extends LauncherState {
-
+public class SpringLoadedState extends HomeState {
     private static final int STATE_FLAGS = FLAG_MULTI_PAGE
             | FLAG_WORKSPACE_INACCESSIBLE | FLAG_DISABLE_RESTORE
             | FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED | FLAG_WORKSPACE_HAS_BACKGROUNDS
             | FLAG_HIDE_BACK_BUTTON;
 
     public SpringLoadedState(int id) {
-        super(id, ContainerType.WORKSPACE, STATE_FLAGS);
+        super(id, ContainerType.OVERVIEW, 150, STATE_FLAGS);
     }
 
     @Override
@@ -88,5 +87,10 @@ public class SpringLoadedState extends LauncherState {
     @Override
     public float getWorkspaceScrimAlpha(Launcher launcher) {
         return 0.3f;
+    }
+
+    @Override
+    public float getWorkspaceBlurAlpha(Launcher launcher) {
+        return 1f;
     }
 }
