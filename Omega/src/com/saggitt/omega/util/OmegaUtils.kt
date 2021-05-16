@@ -62,7 +62,6 @@ import com.android.launcher3.util.PackageUserKey
 import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.saggitt.omega.iconpack.CustomIconUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import org.xmlpull.v1.XmlPullParser
@@ -493,7 +492,7 @@ fun reloadIcons(context: Context, packages: Collection<PackageUserKey>) {
 
         val shortcutManager = DeepShortcutManager.getInstance(context)
         packages.forEach {
-            CustomIconUtils.reloadIcon(shortcutManager, model, it.mUser, it.mPackageName)
+            Config.reloadIcon(shortcutManager, model, it.mUser, it.mPackageName)
         }
     }
 }

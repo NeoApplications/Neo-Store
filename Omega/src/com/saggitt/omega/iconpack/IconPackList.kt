@@ -28,6 +28,7 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
 import com.android.launcher3.util.LooperExecutor
 import com.saggitt.omega.util.ActionIntentFilter
+import com.saggitt.omega.util.Config
 
 class IconPackList(private val context: Context, private val manager: IconPackManager) {
 
@@ -103,9 +104,9 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
     fun getAvailablePacks(): MutableSet<PackInfo> {
         val pm = context.packageManager
         val packs = HashSet<PackInfo>()
-        CustomIconUtils.ICON_INTENTS.forEach { intent ->
+        Config.ICON_INTENTS.forEach { intent ->
             pm.queryIntentActivities(Intent(intent), 0)
-                    .mapTo(packs) { PackInfo.forPackage(context, it.activityInfo.packageName) }
+                .mapTo(packs) { PackInfo.forPackage(context, it.activityInfo.packageName) }
         }
         return packs
     }

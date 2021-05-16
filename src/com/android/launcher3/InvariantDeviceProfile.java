@@ -16,6 +16,13 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.Utilities.getDevicePrefs;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
+import static java.lang.Math.max;
+
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetHostView;
 import android.content.BroadcastReceiver;
@@ -56,13 +63,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.android.launcher3.Utilities.getDevicePrefs;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.config.FeatureFlags.APPLY_CONFIG_AT_RUNTIME;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
-import static java.lang.Math.max;
 
 public class InvariantDeviceProfile {
 
@@ -107,8 +107,6 @@ public class InvariantDeviceProfile {
      */
     public int numColsDrawer;
     public int numColsDrawerOriginal;
-    public int numPredictions;
-    public int numPredictionsOriginal;
 
     /**
      * Number of icons per row and column in the folder.
@@ -246,13 +244,14 @@ public class InvariantDeviceProfile {
     /**
      * Retrieve system defined or RRO overriden icon shape.
      */
-    public static String getIconShapePath(Context context) {/*
+    public static String getIconShapePath(Context context) {
+        /*
         if (CONFIG_ICON_MASK_RES_ID == 0) {
             Log.e(TAG, "Icon mask res identifier failed to retrieve.");
             return "";
         }
-        return context.getResources().getString(CONFIG_ICON_MASK_RES_ID);*/
-
+        return context.getResources().getString(CONFIG_ICON_MASK_RES_ID);
+        */
         return IconShapeManager.Companion.getInstance(context).getIconShape().getHashString();
     }
 
@@ -498,7 +497,7 @@ public class InvariantDeviceProfile {
         workspacePaddingBottomScale = closestProfile.workspacePaddingBottomScale;
 
         iconSize = displayOption.iconSize * prefs.getDesktopIconScale();
-        ;
+
         if (prefs.getDockIconScale() > 0) {
             hotseatIconSize = displayOption.iconSize * prefs.getDockIconScale();
         } else {
@@ -728,7 +727,7 @@ public class InvariantDeviceProfile {
         public float workspacePaddingTopScale;
         public float workspacePaddingBottomScale;
 
-        private GridOption originalGrid;
+        private final GridOption originalGrid;
 
         private GridOverrides(GridOption option) {
             numRows = option.numRows;

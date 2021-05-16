@@ -34,7 +34,6 @@ import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 
-
 class DynamicDrawable {
     companion object {
         const val TAG = "DynamicDrawable"

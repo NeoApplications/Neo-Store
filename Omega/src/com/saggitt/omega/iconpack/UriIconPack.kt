@@ -82,9 +82,11 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         return null
     }
 
-    override fun newIcon(icon: Bitmap, itemInfo: ItemInfo,
-                         customIconEntry: IconPackManager.CustomIconEntry?,
-                         drawableFactory: CustomDrawableFactory): FastBitmapDrawable? {
+    override fun newIcon(
+        icon: Bitmap, itemInfo: ItemInfo,
+        customIconEntry: IconPackManager.CustomIconEntry?,
+        drawableFactory: CustomDrawableFactory
+    ): FastBitmapDrawable {
         return FastBitmapDrawable(icon)
     }
 

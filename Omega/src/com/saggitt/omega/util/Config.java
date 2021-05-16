@@ -19,13 +19,18 @@
 package com.saggitt.omega.util;
 
 import android.content.Context;
+import android.content.pm.ShortcutInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
+import com.android.launcher3.LauncherModel;
 import com.android.launcher3.R;
+import com.android.launcher3.shortcuts.DeepShortcutManager;
 
+import java.util.List;
 import java.util.Locale;
 
 public class Config {
@@ -83,5 +88,27 @@ public class Config {
                     : new Locale(androidLC); // de
         }
         return Resources.getSystem().getConfiguration().locale;
+    }
+
+    public final static String[] ICON_INTENTS = new String[]{
+            "com.novalauncher.THEME",
+            "org.adw.launcher.THEMES",
+            "org.adw.launcher.icons.ACTION_PICK_ICON",
+            "com.anddoes.launcher.THEME",
+            "com.teslacoilsw.launcher.THEME",
+            "com.fede.launcher.THEME_ICONPACK",
+            "com.gau.go.launcherex.theme",
+            "com.dlto.atom.launcher.THEME",
+            "net.oneplus.launcher.icons.ACTION_PICK_ICON"
+    };
+
+    public static void reloadIcon(DeepShortcutManager shortcutManager, LauncherModel model, UserHandle user, String pkg) {
+        model.onAppIconChanged(pkg, user);
+        if (shortcutManager.wasLastCallSuccess()) {
+            List<ShortcutInfo> shortcuts = shortcutManager.queryForPinnedShortcuts(pkg, user);
+            if (!shortcuts.isEmpty()) {
+                model.updatePinnedShortcuts(pkg, shortcuts, user);
+            }
+        }
     }
 }

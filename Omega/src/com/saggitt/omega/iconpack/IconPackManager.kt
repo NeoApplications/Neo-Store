@@ -37,10 +37,10 @@ import com.android.launcher3.FastBitmapDrawable
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
-import com.saggitt.omega.iconpack.CustomIconUtils.ICON_INTENTS
 import com.saggitt.omega.icons.CustomIconProvider
 import com.saggitt.omega.override.AppInfoProvider
 import com.saggitt.omega.override.CustomInfoProvider
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.asNonEmpty
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.runOnMainThread
@@ -155,7 +155,7 @@ class IconPackManager(private val context: Context) {
     fun getPackProviders(): Set<PackProvider> {
         val pm = context.packageManager
         val packs = HashSet<PackProvider>()
-        ICON_INTENTS.forEach { intent ->
+        Config.ICON_INTENTS.forEach { intent ->
             pm.queryIntentActivities(Intent(intent), PackageManager.GET_META_DATA).forEach {
                 packs.add(PackProvider(privateObj, it.activityInfo.packageName))
             }
@@ -166,7 +166,7 @@ class IconPackManager(private val context: Context) {
     fun getPackProviderInfos(): HashMap<String, IconPackInfo> {
         val pm = context.packageManager
         val packs = HashMap<String, IconPackInfo>()
-        ICON_INTENTS.forEach { intent ->
+        Config.ICON_INTENTS.forEach { intent ->
             pm.queryIntentActivities(Intent(intent), PackageManager.GET_META_DATA).forEach {
                 packs[it.activityInfo.packageName] = IconPackInfo.fromResolveInfo(it, pm)
             }
@@ -291,9 +291,10 @@ class IconPackManager(private val context: Context) {
 
         internal fun isPackProvider(context: Context, packageName: String?): Boolean {
             if (packageName != null && !packageName.isEmpty()) {
-                return ICON_INTENTS.firstOrNull {
+                return Config.ICON_INTENTS.firstOrNull {
                     context.packageManager.queryIntentActivities(
-                            Intent(it).setPackage(packageName), PackageManager.GET_META_DATA).iterator().hasNext()
+                        Intent(it).setPackage(packageName), PackageManager.GET_META_DATA
+                    ).iterator().hasNext()
                 } != null
             }
             return false

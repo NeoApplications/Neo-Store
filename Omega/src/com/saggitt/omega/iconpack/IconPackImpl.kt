@@ -43,6 +43,7 @@ import com.android.launcher3.util.ComponentKey
 import com.google.android.apps.nexuslauncher.clock.CustomClock
 import com.saggitt.omega.adaptive.AdaptiveIconGenerator
 import com.saggitt.omega.icons.CustomIconProvider
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.get
 import com.saggitt.omega.util.toTitleCase
 import org.xmlpull.v1.XmlPullParser
@@ -81,7 +82,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
             packCalendars.keys.forEach {
                 val pkg = it.packageName
                 if (apps.getActivityList(pkg, user).isNotEmpty()) {
-                    CustomIconUtils.reloadIcon(shortcutManager, model, user, pkg)
+                    Config.reloadIcon(shortcutManager, model, user, pkg)
                 }
             }
         }
