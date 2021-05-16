@@ -413,6 +413,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                         value = accent
                     }
                     colorPicker.setDefaultColorButton(value!!)
+                    colorPicker.positiveButton.applyColor(Utilities.getOmegaPrefs(context).accentColor)
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
                         override fun onCancel() {
