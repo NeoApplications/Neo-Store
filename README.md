@@ -59,23 +59,23 @@ to discuss the development, issues and new features.<br/>
 ##  Screenshots
 <table>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega1.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/Omega/omega-11/snapshots/omega1.jpg" width="256" />
         </td>
         <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega2.jpg" width="256" />
         </td>
-        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega3.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/omega-11/snapshots/omega3.jpg" width="256" />
         </td>
     </tr>
         <tr>
         <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega4.jpg" width="256" />
         </td>
-        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega5.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/omega-11/snapshots/omega5.jpg" width="256" />
         </td>
         <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega6.jpg" width="256" />
         </td>
     </tr>
      <tr>
-        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega7.jpg" width="256" />
+        <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/omega-11/snapshots/omega7.jpg" width="256" />
         </td>
         <td><img src="https://raw.githubusercontent.com/otakuhqz/omega/master/snapshots/omega8.jpg" width="256" />
         </td>
