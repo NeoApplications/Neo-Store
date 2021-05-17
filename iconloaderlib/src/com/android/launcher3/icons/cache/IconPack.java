@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +22,7 @@ import androidx.annotation.ColorInt;
 import androidx.core.graphics.ColorUtils;
 import androidx.palette.graphics.Palette;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.icons.Utilities;
 
 import java.util.ArrayList;
@@ -139,14 +139,14 @@ public class IconPack {
 
     public static Drawable wrapAdaptiveIcon(Drawable d, Context context) {
         SharedPreferences sharedPrefs = Utilities.getPrefs(context);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !(d instanceof AdaptiveIconDrawable)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !(d instanceof AdaptiveIconCompat)
                 && sharedPrefs.getBoolean("prefs_wrapAdaptive", false)) {
             assert d != null;
             Bitmap b = drawableToBitmap(d);
             // Already running on UI_HELPER, no need to async this.
             Palette p = (new Palette.Builder(b)).generate();
             ColorDrawable backgroundColor = new ColorDrawable(makeBackgroundColor(p.getDominantColor(Color.WHITE), sharedPrefs));
-            d = new AdaptiveIconDrawable(backgroundColor, new BitmapDrawable(pad(b)));
+            d = new AdaptiveIconCompat(backgroundColor, new BitmapDrawable(pad(b)));
         }
         return d;
     }

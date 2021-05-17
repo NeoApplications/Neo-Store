@@ -22,7 +22,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.ShortcutInfo
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -58,10 +57,12 @@ class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun <T> T.assertNotAdaptiveIconDrawable(info: Any?): T {
-        if (Utilities.ATLEAST_OREO && this is AdaptiveIconDrawable) {
-            error("unwrapped AdaptiveIconDrawable for ${
-                if (info is LauncherActivityInfo) info.applicationInfo else info
-            }")
+        if (Utilities.ATLEAST_OREO && this is AdaptiveIconCompat) {
+            error(
+                "unwrapped AdaptiveIconDrawable for ${
+                    if (info is LauncherActivityInfo) info.applicationInfo else info
+                }"
+            )
         }
         return this
     }
