@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="title__general_about">Acerca de</string>
     <string name="title__general_desktop">Escritorio</string>
     <string name="title__general_dock">Dock</string>
@@ -218,4 +218,20 @@
     <string name="title_theme_icon_packs">Paquete de Iconos</string>
     <string name="add_new_tab">Agregar</string>
     <string name="summary__drawer_hide_apps">Ocultar aplicación del Drawer</string>
+    <string name="theme_dark_theme_mode_follow_daylight">Seguir la luz del día</string>
+    <string name="theme_based">Establecido por el tema</string>
+    <string name="summary__theme_blur">Desenfocar los fondos de página</string>
+    <string name="title__theme_blur_radius">Intensidad del desenfoque</string>
+    <string name="title__theme_blur">Desenfoque</string>
+    <string name="msg_missing_usage_access">Para mostrar sugerencias de aplicaciones, permite el acceso a datos de uso a <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="needs_usage_access">Se necesita acceso a datos de uso</string>
+    <string name="pref_appcategorization_flowerpot_summary">Elegir los atajos automáticamente.</string>
+    <string name="tab_type_custom_desc">Elegir los atajos manualmente.</string>
+    <string name="pref_appcategorization_tabs_summary">Deslizar para moverse entre grupos.</string>
+    <string name="pref_appcategorization_folders_summary">Pulsar para abrir la ventana emergente.</string>
+    <string name="pref_appcategorization_enable_summary">Elije la disposición del Drawer</string>
+    <string name="cat_drawer_icons">Iconos</string>
+    <string name="cat_drawer_grid">Cuadrícula</string>
+    <string name="summary_search_hidden_apps">Mostrar accesos directos ocultos en los resultados.</string>
+    <string name="title_all_apps_search">Barra de búsqueda en el Drawer</string>
 </resources>
