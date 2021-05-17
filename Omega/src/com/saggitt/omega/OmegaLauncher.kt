@@ -46,6 +46,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
+import com.google.android.libraries.gsa.launcherclient.LauncherClient
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.iconpack.EditIconActivity
 import com.saggitt.omega.iconpack.IconPackManager
@@ -67,8 +68,6 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private var paused = false
     private var sRestart = false
     var defaultOverlay: OverlayCallbackImpl? = null
-
-    var googleNow = defaultOverlay!!.mClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(
@@ -93,6 +92,8 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
+
+        defaultOverlay = OverlayCallbackImpl(this);
     }
 
     override fun onResume() {
@@ -256,8 +257,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     }
 
     override fun getDefaultOverlay(): LauncherOverlayManager? {
-        defaultOverlay = OverlayCallbackImpl(this)
-        return defaultOverlay!!
+        if (defaultOverlay == null) {
+            defaultOverlay = OverlayCallbackImpl(this)
+        }
+        return defaultOverlay
     }
 
     private val customLayoutInflater by lazy {
@@ -273,6 +276,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
 
     fun openQsb(): AnimatorSet? {
         return defaultOverlay!!.mQsbAnimationController.openQsb()
+    }
+
+    fun getGoogleNow(): LauncherClient {
+        return defaultOverlay!!.mClient;
     }
 
     fun registerSmartspaceView(smartspace: SmartspaceView?) {

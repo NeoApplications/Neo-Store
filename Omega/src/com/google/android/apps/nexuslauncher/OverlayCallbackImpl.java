@@ -18,7 +18,6 @@
 
 package com.google.android.apps.nexuslauncher;
 
-import static android.app.WallpaperManager.FLAG_SYSTEM;
 import static com.saggitt.omega.settings.SettingsActivity.ENABLE_MINUS_ONE_PREF;
 
 import android.app.Activity;
@@ -51,7 +50,8 @@ import com.saggitt.omega.smartspace.FeedBridge;
  * Launcher}.
  */
 public class OverlayCallbackImpl
-        implements LauncherOverlay, LauncherClientCallbacks, LauncherOverlayManager, ISerializableScrollCallback
+        implements LauncherOverlay, LauncherClientCallbacks, LauncherOverlayManager,
+        SharedPreferences.OnSharedPreferenceChangeListener, ISerializableScrollCallback
         , WallpaperColorInfo.OnChangeListener {
 
     final static String PREF_PERSIST_FLAGS = "pref_persistent_flags";
@@ -73,6 +73,7 @@ public class OverlayCallbackImpl
         mClient = new LauncherClient(launcher, this, new StaticInteger(
                 (prefs.getBoolean(ENABLE_MINUS_ONE_PREF,
                         FeedBridge.useBridge(launcher)) ? 1 : 0) | 2 | 4 | 8));
+        prefs.registerOnSharedPreferenceChangeListener(this);
 
         mQsbAnimationController = new QsbAnimationController(launcher);
         mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
@@ -186,12 +187,14 @@ public class OverlayCallbackImpl
     @Override
     public void onActivityDestroyed(Activity activity) {
         mClient.mDestroyed = true;
+        mLauncher.getSharedPrefs().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    public void onMinusOneChanged() {
-        boolean enable = Utilities.getOmegaPrefs(mLauncher.getApplicationContext()).getMinusOneEnable();
-        mLauncher.setLauncherOverlay(enable ? this : null);
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (ENABLE_MINUS_ONE_PREF.equals(key)) {
+            mClient.showOverlay(prefs.getBoolean(ENABLE_MINUS_ONE_PREF, FeedBridge.useBridge(mLauncher)));
+        }
     }
 
     @Override
@@ -242,10 +245,5 @@ public class OverlayCallbackImpl
             mFlags = flags;
             Utilities.getDevicePrefs(mLauncher).edit().putInt(PREF_PERSIST_FLAGS, flags).apply();
         }
-    }
-
-    public static boolean minusOneAvailable(Context context) {
-        return FeedBridge.useBridge(context)
-                || ((context.getApplicationInfo().flags & FLAG_SYSTEM) == FLAG_SYSTEM);
     }
 }
