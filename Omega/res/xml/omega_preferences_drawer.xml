@@ -123,7 +123,6 @@
             android:title="@string/title__drawer_categorization"
             app:iconSpaceReserved="false" />
 
-
         <com.saggitt.omega.preferences.AutoModeSeekbarPreference
             android:key="pref_allAppsOpacitySB"
             android:title="@string/title_opacity"

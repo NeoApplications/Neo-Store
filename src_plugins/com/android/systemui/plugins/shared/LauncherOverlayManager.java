@@ -41,6 +41,9 @@ public interface LauncherOverlayManager extends Application.ActivityLifecycleCal
     default void openOverlay() {
     }
 
+    default void onMinusOneChanged() {
+    }
+
     default void hideOverlay(boolean animate) {
         hideOverlay(animate ? 200 : 0);
     }

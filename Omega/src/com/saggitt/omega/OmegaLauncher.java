@@ -18,6 +18,10 @@
 
 package com.saggitt.omega;
 
+import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
+
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.Intent;
@@ -65,10 +69,6 @@ import java.util.Objects;
 
 import kotlin.jvm.functions.Function0;
 
-import static com.saggitt.omega.iconpack.IconPackManager.CustomIconEntry;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
-
 public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences.OnPreferenceChangeListener {
     public static boolean showFolderNotificationCount;
     public static Drawable currentEditIcon = null;
@@ -86,12 +86,10 @@ public class OmegaLauncher extends QuickstepLauncher implements OmegaPreferences
     private OverlayCallbackImpl overlayCallback;
 
     protected LauncherOverlayManager getDefaultOverlay() {
-        if (overlayCallback != null) {
-            return overlayCallback;
-        } else {
+        if (overlayCallback == null) {
             loadOverlay();
-            return overlayCallback;
         }
+        return overlayCallback;
     }
 
     private void loadOverlay() {

@@ -29,6 +29,7 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.saggitt.omega.dash.provider.AllAppsShortcut
 import com.saggitt.omega.dash.provider.MobileNetwork
 import com.saggitt.omega.gestures.BlankGestureHandler
@@ -78,6 +79,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val reloadIcons = { reloadIcons() }
     private val reloadIconPacks = { IconPackManager.getInstance(context).packList.reloadPacks() }
     val recreate = { recreate() }
+    val reloadMinus = { reloadMinus() }
     val omegaConfig = Config(context)
 
     private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
@@ -208,7 +210,13 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
 
+    /* --SMART SPACE-- */
     var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
+    var minusOneEnable by BooleanPref(
+        "pref_enable_minus_one",
+        OverlayCallbackImpl.minusOneAvailable(context),
+        reloadMinus
+    )
     val enableSmartspace by BooleanPref("enable_smartspace", false, refreshGrid)
     val smartspaceTime by BooleanPref("pref_smartspace_time", false, refreshGrid)
     val smartspaceDate by BooleanPref("pref_smartspace_date", true, refreshGrid)
@@ -354,6 +362,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     fun reloadDrawer() {
         onChangeCallback?.reloadDrawer()
     }
+
+    fun reloadMinus() {
+        OmegaLauncher.getLauncher(context).defaultOverlay!!.onMinusOneChanged()
+    }
+
 
     fun restart() {
         onChangeCallback?.restart()
