@@ -123,7 +123,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                     } else {
                         editItem = mItemInfo;
                     }
-                    CustomInfoProvider editProvider
+                    CustomInfoProvider<ItemInfo> editProvider
                             = CustomInfoProvider.Companion.forItem(getContext(), editItem);
                     if (editProvider != null) {
                         launcher.startEditIcon(editItem, editProvider);
@@ -186,10 +186,10 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
     }
 
     public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
-        public final static int requestCode = "swipeUp".hashCode() & 65535;
-        private final static String PREF_HIDE = "pref_app_hide";
-        private final static String PREF_HIDE_FROM_PREDICTIONS = "pref_app_prediction_hide";
-        private final static boolean HIDE_PREDICTION_OPTION = true;
+        public static final int REQUEST_CODE = "swipeUp".hashCode() & 65535;
+        private static final String PREF_HIDE = "pref_app_hide";
+        private static final String PREF_HIDE_FROM_PREDICTIONS = "pref_app_prediction_hide";
+        private static final boolean HIDE_PREDICTION_OPTION = true;
         private SwitchPreferenceCompat mPrefHidePredictions;
         private LauncherGesturePreference mSwipeUpPref;
         private MultiSelectTabPreference mTabsPref;
@@ -205,7 +205,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
         private Runnable unsetForceOpen;
         private Runnable reopen;
 
-        private CustomInfoProvider mProvider;
+        private CustomInfoProvider<ItemInfo> mProvider;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -297,15 +297,16 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             selectedHandler = handler;
             if (handler.getConfigIntent() != null) {
                 setForceOpen.run();
-                startActivityForResult(handler.getConfigIntent(), PrefsFragment.requestCode);
+                startActivityForResult(handler.getConfigIntent(), PrefsFragment.REQUEST_CODE);
             } else {
                 updatePref();
             }
         }
 
+        @Deprecated
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == PrefsFragment.requestCode) {
+            if (requestCode == PrefsFragment.REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
                     selectedHandler.onConfigResult(data);
                     updatePref();
@@ -333,7 +334,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             }
         }
 
-        @SuppressWarnings({"ConstantConditions", "unchecked"})
+        @SuppressWarnings({"ConstantConditions"})
         @Override
         public void onDetach() {
             super.onDetach();
@@ -341,7 +342,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
             if (mProvider != null && selectedHandler != null) {
                 String stringValue = selectedHandler.toString();
 
-                CustomInfoProvider provider = CustomInfoProvider.Companion.forItem(getActivity(), itemInfo);
+                CustomInfoProvider<ItemInfo> provider = CustomInfoProvider.Companion.forItem(getActivity(), itemInfo);
                 provider.setSwipeUpAction(itemInfo, stringValue);
             }
 

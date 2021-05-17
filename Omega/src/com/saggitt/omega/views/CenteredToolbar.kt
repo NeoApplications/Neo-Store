@@ -27,7 +27,7 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.util.isVisible
 
 class CenteredToolbar @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.toolbarStyle
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.toolbarStyle
 ) : Toolbar(context, attrs, defStyleAttr) {
 
     private var mTitleTextView: AppCompatTextView? = null
@@ -43,10 +43,8 @@ class CenteredToolbar @JvmOverloads constructor(
     }
 
     override fun setTitle(title: CharSequence) {
-        if (!TextUtils.isEmpty(title)) {
-            if (mTitleTextView == null) {
-                inflateTitle()
-            }
+        if (!TextUtils.isEmpty(title) && mTitleTextView == null) {
+            inflateTitle()
         }
         if (mTitleTextView != null) {
             mTitleTextView!!.text = title
@@ -59,10 +57,8 @@ class CenteredToolbar @JvmOverloads constructor(
     }
 
     override fun setSubtitle(subtitle: CharSequence) {
-        if (!TextUtils.isEmpty(subtitle)) {
-            if (mSubtitleTextView == null) {
-                inflateTitle()
-            }
+        if (!TextUtils.isEmpty(subtitle) && mSubtitleTextView == null) {
+            inflateTitle()
         }
         mSubtitleTextView?.isVisible = !TextUtils.isEmpty(subtitle)
         if (mSubtitleTextView != null) {

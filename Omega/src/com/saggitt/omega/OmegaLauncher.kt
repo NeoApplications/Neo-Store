@@ -52,6 +52,9 @@ import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Config.*
+import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
+import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
+import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_STORAGE_ACCESS
 import com.saggitt.omega.util.DbHelper
 import com.saggitt.omega.util.applyAccent
 import com.saggitt.omega.views.OmegaBackgroundView

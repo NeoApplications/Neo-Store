@@ -45,12 +45,12 @@ public abstract class ViewScrim<T extends View> {
     protected final T mView;
     protected float mProgress = 0;
 
-    public ViewScrim(T view) {
+    protected ViewScrim(T view) {
         mView = view;
     }
 
-    public static ViewScrim get(View view) {
-        return (ViewScrim) view.getTag(R.id.view_scrim);
+    public static ViewScrim<View> get(View view) {
+        return (ViewScrim<View>) view.getTag(R.id.view_scrim);
     }
 
     public void attach() {

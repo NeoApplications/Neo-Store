@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 
+// TODO if there's no plan to use it in the future it might be deleted as it's not used now
 public class ColorManipulation {
     private int[] mPixels;
     private Bitmap mBitmap;
@@ -55,10 +56,8 @@ public class ColorManipulation {
             ew = mBitmap;
             width = 64;
             height = 64;
-            bitmap = ew;
-        } else {
-            bitmap = ew;
         }
+        bitmap = ew;
         int pixelCount = height * width;
         resizeIfNecessary(pixelCount);
         bitmap.getPixels(mPixels, 0, width, 0, 0, width, height);

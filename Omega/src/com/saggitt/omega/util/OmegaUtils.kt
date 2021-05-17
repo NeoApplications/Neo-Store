@@ -56,7 +56,6 @@ import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.shortcuts.DeepShortcutManager
 import com.android.launcher3.util.ComponentKey
-import com.android.launcher3.util.Executors
 import com.android.launcher3.util.Executors.*
 import com.android.launcher3.util.PackageUserKey
 import com.android.launcher3.util.Themes
@@ -126,7 +125,7 @@ fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {
             creator(it)
         } else {
             try {
-                Executors.MAIN_EXECUTOR.submit(Callable { creator(it) }).get()
+                MAIN_EXECUTOR.submit(Callable { creator(it) }).get()
             } catch (e: InterruptedException) {
                 throw RuntimeException(e)
             } catch (e: ExecutionException) {
@@ -183,9 +182,15 @@ fun Switch.applyColor(color: Int) {
     val colorForeground = Themes.getAttrColor(context, android.R.attr.colorForeground)
     val alphaDisabled = Themes.getAlpha(context, android.R.attr.disabledAlpha)
     val switchThumbNormal =
-        context.resources.getColor(androidx.preference.R.color.switch_thumb_normal_material_light)
+        context.resources.getColor(
+            androidx.preference.R.color.switch_thumb_normal_material_light,
+            null
+        )
     val switchThumbDisabled =
-        context.resources.getColor(androidx.preference.R.color.switch_thumb_disabled_material_light)
+        context.resources.getColor(
+            androidx.preference.R.color.switch_thumb_disabled_material_light,
+            null
+        )
     val thstateList = ColorStateList(
         arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
@@ -338,7 +343,13 @@ fun Button.applyColor(color: Int) {
     }
 }
 
-fun String.toTitleCase(): String = splitToSequence(" ").map { it.capitalize() }.joinToString(" ")
+fun String.toTitleCase(): String = splitToSequence(" ").map {
+    it.replaceFirstChar { ch ->
+        if (ch.isLowerCase()) ch.titlecase(
+            Locale.getDefault()
+        ) else ch.toString()
+    }
+}.joinToString(" ")
 
 inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>().apply {
     while (true) {
@@ -348,21 +359,6 @@ inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>
 
 fun BgDataModel.workspaceContains(packageName: String): Boolean {
     return this.workspaceItems.any { it.targetComponent?.packageName == packageName }
-}
-
-fun formatTime(dateTime: Date, context: Context? = null): String {
-    return when (context) {
-        null -> String.format("%d:%02d", dateTime.hours, dateTime.minutes)
-        else -> if (DateFormat.is24HourFormat(context)) String.format(
-            "%02d:%02d", dateTime.hours,
-            dateTime.minutes
-        ) else String.format(
-            "%d:%02d %s",
-            if (dateTime.hours % 12 == 0) 12 else dateTime.hours % 12,
-            dateTime.minutes,
-            if (dateTime.hours < 12) "am" else "pm"
-        )
-    }
 }
 
 fun formatTime(calendar: Calendar, context: Context? = null): String {
@@ -455,7 +451,7 @@ fun Context.getBaseDraggingActivityOrNull(): BaseDraggingActivity? {
     }
 }
 
-private val MAX_UNICODE = '\uFFFF'
+private const val MAX_UNICODE = '\uFFFF'
 
 /**
  * Returns true if {@param target} is a search result for {@param query}
@@ -517,13 +513,7 @@ fun View.runOnAttached(runnable: Runnable) {
 }
 
 val Context.locale: Locale
-    get() {
-        return if (Utilities.ATLEAST_NOUGAT) {
-            this.resources.configuration.locales[0] ?: this.resources.configuration.locale
-        } else {
-            this.resources.configuration.locale
-        }
-    }
+    get() = this.resources.configuration.locales[0]
 
 fun createRipplePill(context: Context, color: Int, radius: Float): Drawable {
     return RippleDrawable(

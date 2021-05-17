@@ -28,14 +28,15 @@ import com.saggitt.omega.blur.BlurDrawable
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.util.InvertedMultiValueAlpha
 import com.saggitt.omega.util.runOnMainThread
+import kotlin.math.roundToInt
 
 class OmegaBackgroundView(context: Context, attrs: AttributeSet) : View(context, attrs),
-        Insettable, BlurWallpaperProvider.Listener {
+    Insettable, BlurWallpaperProvider.Listener {
 
     private val blurProvider by lazy { BlurWallpaperProvider.getInstance(context) }
     private var fullBlurDrawable: BlurDrawable? = null
     val blurAlphas = InvertedMultiValueAlpha({ alpha ->
-        blurAlpha = Math.round(255 * alpha)
+        blurAlpha = (255 * alpha).roundToInt()
         invalidate()
     }, 4)
     private var blurAlpha = 0

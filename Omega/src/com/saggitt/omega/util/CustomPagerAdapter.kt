@@ -35,7 +35,7 @@ class CustomPagerAdapter(private val mLists: Array<View>?, private val mTitles: 
         return mLists!![position]
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return if (position < 0 || position >= mTitles.size)
             ""
         else

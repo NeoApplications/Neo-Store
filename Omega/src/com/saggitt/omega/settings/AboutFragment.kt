@@ -94,7 +94,7 @@ class AboutFragment : Fragment() {
             setupWithViewPager(viewPager)
         }
 
-        val config = Config(context)
+        val config = Config(requireContext())
         val themedContext =
             ThemedContextProvider(requireContext(), null, ThemeOverride.Settings()).get()
         val isDark = ThemeManager.getInstance(themedContext).isDark

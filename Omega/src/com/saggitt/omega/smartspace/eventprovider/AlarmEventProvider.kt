@@ -55,9 +55,11 @@ class AlarmEventProvider(controller: OmegaSmartspaceController) :
             val alarmClock = alarmManager.nextAlarmClock!!
             val string: MutableList<OmegaSmartspaceController.Line> = ArrayList();
             string.add(OmegaSmartspaceController.Line(
-                    controller.context.getString(R.string.resuable_text_alarm)));
+                    controller.context.getString(R.string.resuable_text_alarm)))
+            val calendarTrigerTime = Calendar.getInstance()
+            calendarTrigerTime.timeInMillis = alarmClock.triggerTime
             string.add(OmegaSmartspaceController.Line(
-                    formatTime(Date(alarmClock.triggerTime), controller.context)))
+                    formatTime(calendarTrigerTime, controller.context)))
             updateData(null, OmegaSmartspaceController.CardData(
                     drawableToBitmap(controller.context.getDrawable(R.drawable.ic_alarm_on_black_24dp)),
                     string, true))

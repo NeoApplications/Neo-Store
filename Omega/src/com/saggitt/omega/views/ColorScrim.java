@@ -28,7 +28,7 @@ import com.android.launcher3.R;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 
-public class ColorScrim extends ViewScrim {
+public class ColorScrim extends ViewScrim<View> {
 
     private final int mColor;
     private final Interpolator mInterpolator;
