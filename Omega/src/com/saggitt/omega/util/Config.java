@@ -19,6 +19,7 @@
 package com.saggitt.omega.util;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
@@ -187,5 +188,15 @@ public class Config {
             return "Amazon Appstore";
         }
         return src;
+    }
+
+    public static IntentFilter newInstance(String s, String... array) {
+        IntentFilter intentFilter = new IntentFilter();
+        for (int length = array.length, i = 0; i < length; ++i) {
+            intentFilter.addAction(array[i]);
+        }
+        intentFilter.addDataScheme("package");
+        intentFilter.addDataSchemeSpecificPart(s, 0);
+        return intentFilter;
     }
 }

@@ -27,7 +27,6 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
 import com.android.launcher3.util.LooperExecutor
-import com.saggitt.omega.util.ActionIntentFilter
 import com.saggitt.omega.util.Config
 
 class IconPackList(private val context: Context, private val manager: IconPackManager) {
@@ -199,10 +198,14 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
         override fun register() {
             super.register()
 
-            context.registerReceiver(updateReceiver, ActionIntentFilter.newInstance(packageName,
+            context.registerReceiver(
+                updateReceiver, Config.newInstance(
+                    packageName,
                     Intent.ACTION_PACKAGE_CHANGED,
                     Intent.ACTION_PACKAGE_REPLACED,
-                    Intent.ACTION_PACKAGE_FULLY_REMOVED))
+                    Intent.ACTION_PACKAGE_FULLY_REMOVED
+                )
+            )
         }
 
         override fun unregister() {
