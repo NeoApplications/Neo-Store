@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.gestures.handlers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -28,6 +27,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
@@ -132,7 +132,7 @@ class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         if (controller.launcher.googleNow != null) {
-            controller.launcher.googleNow?.showOverlay(true)
+            controller.launcher.googleNow.showOverlay(true)
         } else {
             controller.launcher.startActivity(
                 Intent(Intent.ACTION_MAIN).setClassName(

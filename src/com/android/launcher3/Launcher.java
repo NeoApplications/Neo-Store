@@ -498,7 +498,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         return new OnboardingPrefs<>(this, sharedPrefs);
     }
 
-    public OnboardingPrefs<> getOnboardingPrefs() {
+    public OnboardingPrefs getOnboardingPrefs() {
         return mOnboardingPrefs;
     }
 
