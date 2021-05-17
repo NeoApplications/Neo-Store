@@ -19,6 +19,8 @@
 package com.saggitt.omega.util;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -26,6 +28,7 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
+import com.android.launcher3.BuildConfig;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.R;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
@@ -63,7 +66,6 @@ public class Config {
     }
 
     public String[] getDefaultIconPacks() {
-
         return mContext.getResources().getStringArray(R.array.config_default_icon_packs);
     }
 
@@ -76,9 +78,12 @@ public class Config {
     public void setAppLanguage(String androidLC) {
         Locale locale = getLocaleByAndroidCode(androidLC);
         Configuration config = mContext.getResources().getConfiguration();
-        config.locale = (locale != null && !androidLC.isEmpty())
-                ? locale : Resources.getSystem().getConfiguration().locale;
-        mContext.getResources().updateConfiguration(config, null);
+
+        Locale mLocale = (locale != null && !androidLC.isEmpty())
+                ? locale : Resources.getSystem().getConfiguration().getLocales().get(0);
+        config.setLocale(mLocale);
+
+        mContext.createConfigurationContext(config);
     }
 
     public Locale getLocaleByAndroidCode(String androidLC) {
@@ -87,7 +92,7 @@ public class Config {
                     ? new Locale(androidLC.substring(0, 2), androidLC.substring(4, 6)) // de-rAt
                     : new Locale(androidLC); // de
         }
-        return Resources.getSystem().getConfiguration().locale;
+        return Resources.getSystem().getConfiguration().getLocales().get(0);
     }
 
     public final static String[] ICON_INTENTS = new String[]{
@@ -110,5 +115,77 @@ public class Config {
                 model.updatePinnedShortcuts(pkg, shortcuts, user);
             }
         }
+    }
+
+    public String getAppVersionName() {
+        try {
+            PackageManager manager = mContext.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(BuildConfig.APPLICATION_ID, 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "?";
+        }
+    }
+
+    public int getAppVersionCode() {
+        try {
+            PackageManager manager = mContext.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(BuildConfig.APPLICATION_ID, 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public String getBuildConfigValue(String fieldName, String defaultValue) {
+        Object field = getBuildConfigValue(fieldName);
+        if (field instanceof String) {
+            return (String) field;
+        }
+        return defaultValue;
+    }
+
+    public Object getBuildConfigValue(String fieldName) {
+        String pkg = "com.android.launcher3.BuildConfig";
+        try {
+            Class<?> c = Class.forName(pkg);
+            return c.getField(fieldName).get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getInstallSource() {
+        String src = null;
+        try {
+            src = mContext.getPackageManager().getInstallerPackageName(mContext.getPackageName());
+        } catch (Exception ignored) {
+        }
+        if (TextUtils.isEmpty(src)) {
+            src = "Sideloaded";
+        }
+        switch (src) {
+            case "com.android.vending":
+            case "com.google.android.feedback": {
+                return "Google Play Store";
+            }
+            case "org.fdroid.fdroid.privileged":
+            case "org.fdroid.fdroid": {
+                return "F-Droid";
+            }
+            case "com.github.yeriomin.yalpstore": {
+                return "Yalp Store";
+            }
+            case "cm.aptoide.pt": {
+                return "Aptoide";
+            }
+        }
+        if (src.toLowerCase().contains(".amazon.")) {
+            return "Amazon Appstore";
+        }
+        return src;
     }
 }

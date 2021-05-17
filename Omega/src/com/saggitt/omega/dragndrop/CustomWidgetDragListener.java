@@ -16,6 +16,8 @@
 
 package com.saggitt.omega.dragndrop;
 
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+
 import android.graphics.Rect;
 import android.os.CancellationSignal;
 import android.view.View;
@@ -32,8 +34,6 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.PendingItemDragHelper;
 
 import java.util.ArrayList;
-
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 
 /**
  * {@link DragSource} for handling drop from a different window. This object is initialized
@@ -78,7 +78,6 @@ public class CustomWidgetDragListener extends BaseItemDragListener {
                                        ArrayList<Target> parents) {
         parents.add(newContainerTarget(LauncherLogProto.ContainerType.PINITEM));
     }
-
 
     @Override
     protected void postCleanup() {

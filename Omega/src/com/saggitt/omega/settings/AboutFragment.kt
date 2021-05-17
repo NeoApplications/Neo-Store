@@ -47,13 +47,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
+import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.google.android.material.tabs.TabLayout
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
-import com.saggitt.omega.util.AboutUtils
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.CustomPagerAdapter
 import com.saggitt.omega.util.applyColor
 import kotlinx.coroutines.launch
@@ -93,7 +94,7 @@ class AboutFragment : Fragment() {
             setupWithViewPager(viewPager)
         }
 
-        val aboutUtils = AboutUtils(context)
+        val config = Config(context)
         val themedContext =
             ThemedContextProvider(requireContext(), null, ThemeOverride.Settings()).get()
         val isDark = ThemeManager.getInstance(themedContext).isDark
@@ -118,13 +119,13 @@ class AboutFragment : Fragment() {
             }
 
             val version = view.findViewById<AppCompatTextView>(R.id.app_version)
-            version.text = getString(R.string.app_version) + ": " + aboutUtils.appVersionName
+            version.text = getString(R.string.app_version) + ": " + config.appVersionName
 
             val build = view.findViewById<AppCompatTextView>(R.id.app_build)
-            build.text = getString(R.string.app_build) + ": " + aboutUtils.appVersionCode
+            build.text = getString(R.string.app_build) + ": " + config.appVersionCode
 
             val buildInfo = view.findViewById<AppCompatTextView>(R.id.build_information)
-            loadBuildInfo(aboutUtils, buildInfo)
+            loadBuildInfo(config, buildInfo)
 
             val accent = Utilities.getOmegaPrefs(context).accentColor
             view.findViewById<AppCompatButton>(R.id.source_code).apply {
@@ -137,7 +138,7 @@ class AboutFragment : Fragment() {
                 }
 
                 setOnClickListener {
-                    aboutUtils.openWebBrowser(getString(R.string.about_source_url))
+                    Utilities.openURLinBrowser(context, getString(R.string.about_source_url))
                 }
             }
 
@@ -151,23 +152,23 @@ class AboutFragment : Fragment() {
                 }
                 setOnClickListener {
                     //TODO: replace with Google Pay Dialog
-                    aboutUtils.openWebBrowser(getString(R.string.app_donate_url))
+                    Utilities.openURLinBrowser(context, getString(R.string.app_donate_url))
                 }
             }
 
             val developer = view.findViewById<ConstraintLayout>(R.id.developer)
             developer.setOnClickListener {
-                aboutUtils.openWebBrowser("https://github.com/otakuhqz")
+                Utilities.openURLinBrowser(context, "https://github.com/otakuhqz")
             }
 
             val contrib1 = view.findViewById<ConstraintLayout>(R.id.contributor1)
             contrib1.setOnClickListener {
-                aboutUtils.openWebBrowser("https://github.com/machiav3lli")
+                Utilities.openURLinBrowser(context, "https://github.com/machiav3lli")
             }
 
             val contrib2 = view.findViewById<ConstraintLayout>(R.id.contributor2)
             contrib2.setOnClickListener {
-                aboutUtils.openWebBrowser("https://github.com/nonaybay")
+                Utilities.openURLinBrowser(context, "https://github.com/nonaybay")
             }
 
             val cssFile = if (isDark) {
@@ -231,24 +232,25 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun loadBuildInfo(aboutUtils: AboutUtils, buildInfo: TextView) {
+    private fun loadBuildInfo(config: Config, buildInfo: TextView) {
         var buildInfoText: String?
         var tmp: String?
         val locale = Locale.getDefault()
 
         buildInfoText = String.format(
             locale, "<b>Package:</b> %s <br><b>Version:</b> v%s (build %s)",
-            aboutUtils.packageName, aboutUtils.appVersionName, aboutUtils.appVersionCode
+            BuildConfig.APPLICATION_ID, config.appVersionName, config.appVersionCode
         )
-        buildInfoText += if (aboutUtils.bcstr("FLAVOR", "").also { tmp = it }.isEmpty()) ""
+        buildInfoText += if (config.getBuildConfigValue("FLAVOR", "").also { tmp = it }
+                .isEmpty()) ""
         else {
             "<br><b>Flavor:</b> " + tmp!!.replace("flavor", "")
         }
-        buildInfoText += if (aboutUtils.bcstr("BUILD_TYPE", "").also { tmp = it }
+        buildInfoText += if (config.getBuildConfigValue("BUILD_TYPE", "").also { tmp = it }
                 .isEmpty()) "" else " ($tmp)"
-        buildInfoText += if (aboutUtils.bcstr("BUILD_DATE", "").also { tmp = it }
+        buildInfoText += if (config.getBuildConfigValue("BUILD_DATE", "").also { tmp = it }
                 .isEmpty()) "" else "<br><b>Build date:</b> $tmp"
-        buildInfoText += if (aboutUtils.appInstallationSource.also { tmp = it }
+        buildInfoText += if (config.installSource.also { tmp = it }
                 .isEmpty()) "" else "<br><b>ISource:</b> $tmp"
         buildInfoText += "<br><b>Manufacturer :</b> " + Build.MANUFACTURER
         buildInfoText += "<br><b>Model :</b> " + Build.MODEL
@@ -256,7 +258,7 @@ class AboutFragment : Fragment() {
         buildInfo.text = Html.fromHtml(buildInfoText, Html.FROM_HTML_MODE_COMPACT)
         buildInfo.setOnClickListener {
             Toast.makeText(context, R.string.debug_component_name_copied, Toast.LENGTH_SHORT).show()
-            aboutUtils.setClipboard(buildInfo.text)
+            Utilities.setClipboard(context, buildInfo.text)
         }
     }
 

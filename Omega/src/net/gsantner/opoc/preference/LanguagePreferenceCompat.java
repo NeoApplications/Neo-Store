@@ -54,7 +54,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
 
-import com.saggitt.omega.util.AboutUtils;
+import com.saggitt.omega.util.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,7 +98,7 @@ public class LanguagePreferenceCompat extends ListPreference {
     public boolean callChangeListener(Object newValue) {
         if (newValue instanceof String) {
             // Does not apply to existing UI, use recreate()
-            new AboutUtils(getContext()).setAppLanguage((String) newValue);
+            new Config(getContext()).setAppLanguage((String) newValue);
         }
         return super.callChangeListener(newValue);
     }
@@ -112,7 +112,7 @@ public class LanguagePreferenceCompat extends ListPreference {
         setDefaultValue(SYSTEM_LANGUAGE_CODE);
 
         // Fetch readable details
-        AboutUtils contextUtils = new AboutUtils(context);
+        Config contextUtils = new Config(context);
         List<String> languages = new ArrayList<>();
         Object bcof = contextUtils.getBuildConfigValue("DETECTED_ANDROID_LOCALES");
         if (bcof instanceof String[]) {
@@ -164,7 +164,7 @@ public class LanguagePreferenceCompat extends ListPreference {
     // Add current language to summary
     @Override
     public CharSequence getSummary() {
-        Locale locale = new AboutUtils(getContext()).getLocaleByAndroidCode(getValue());
+        Locale locale = new Config(getContext()).getLocaleByAndroidCode(getValue());
         String prefix = TextUtils.isEmpty(super.getSummary())
                 ? "" : super.getSummary() + "\n\n";
         return prefix + summarizeLocale(locale, getValue());

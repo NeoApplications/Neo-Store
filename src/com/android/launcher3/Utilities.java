@@ -16,6 +16,9 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
+
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -26,6 +29,7 @@ import android.app.Person;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -115,9 +119,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
-import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -1109,6 +1110,16 @@ public final class Utilities {
             //return QuickStepContract.getWindowCornerRadius(context.getResources());
             return 2;
         }
+    }
+
+    public static boolean setClipboard(Context mContext, CharSequence text) {
+        android.content.ClipboardManager cm = ((android.content.ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE));
+        if (cm != null) {
+            ClipData clip = ClipData.newPlainText(mContext.getPackageName(), text);
+            cm.setPrimaryClip(clip);
+            return true;
+        }
+        return false;
     }
 
     /*FIN CUSTOM*/
