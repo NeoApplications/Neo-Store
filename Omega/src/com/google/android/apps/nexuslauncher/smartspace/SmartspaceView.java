@@ -159,9 +159,9 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         try {
             Launcher launcher = Launcher.getLauncher(getContext());
             if (launcher instanceof OmegaLauncher) {
-                ((OmegaLauncher) launcher).registerSmartspaceView(this);
+                ((OmegaLauncher) launcher).registerSmartspaceView();
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
 
         }
     }
