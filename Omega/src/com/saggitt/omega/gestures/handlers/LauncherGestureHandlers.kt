@@ -132,7 +132,7 @@ class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         if (controller.launcher.getGoogleNow() != null) {
-            controller.launcher.getGoogleNow().showOverlay(true)
+            controller.launcher.getGoogleNow()!!.showOverlay(true)
         } else {
             controller.launcher.startActivity(
                 Intent(Intent.ACTION_MAIN).setClassName(
