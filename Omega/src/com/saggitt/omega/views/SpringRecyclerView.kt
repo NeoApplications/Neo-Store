@@ -29,7 +29,7 @@ import com.saggitt.omega.util.getColorAttr
 import com.saggitt.omega.util.omegaPrefs
 
 open class SpringRecyclerView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
     private val springManager = SpringEdgeEffect.Manager(this)
@@ -69,7 +69,14 @@ open class SpringRecyclerView @JvmOverloads constructor(
      * Called by Android [android.view.View.onDrawScrollBars]
      */
     @Keep
-    protected fun onDrawHorizontalScrollBar(canvas: Canvas, scrollBar: Drawable, l: Int, t: Int, r: Int, b: Int) {
+    protected fun onDrawHorizontalScrollBar(
+        canvas: Canvas,
+        scrollBar: Drawable,
+        l: Int,
+        t: Int,
+        r: Int,
+        b: Int
+    ) {
         springManager.withSpringNegative(canvas, shouldTranslateSelf) {
             scrollBar.setColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP)
             scrollBar.setBounds(l, t, r, b)
@@ -82,7 +89,14 @@ open class SpringRecyclerView @JvmOverloads constructor(
      * Called by Android [android.view.View.onDrawScrollBars]
      */
     @Keep
-    protected fun onDrawVerticalScrollBar(canvas: Canvas, scrollBar: Drawable, l: Int, t: Int, r: Int, b: Int) {
+    protected fun onDrawVerticalScrollBar(
+        canvas: Canvas,
+        scrollBar: Drawable,
+        l: Int,
+        t: Int,
+        r: Int,
+        b: Int
+    ) {
         springManager.withSpringNegative(canvas, shouldTranslateSelf) {
             scrollBar.setColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP)
             scrollBar.setBounds(l, t, r, b)

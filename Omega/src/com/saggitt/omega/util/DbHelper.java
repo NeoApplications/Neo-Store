@@ -30,6 +30,7 @@ import com.saggitt.omega.model.AppCountInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO migrate to Room??
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_HOME = LauncherFiles.LAUNCHER_DB2;
     private static final String TABLE_APP_COUNT = "app_count";

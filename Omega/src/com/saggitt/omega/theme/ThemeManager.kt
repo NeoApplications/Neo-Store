@@ -29,7 +29,7 @@ import com.saggitt.omega.twilight.TwilightListener
 import com.saggitt.omega.twilight.TwilightManager
 import com.saggitt.omega.twilight.TwilightState
 import com.saggitt.omega.util.*
-import com.saggitt.omega.util.Config.REQUEST_PERMISSION_LOCATION_ACCESS
+import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
 
 class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
 
@@ -56,6 +56,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             return strings.getOrNull(index) ?: context.resources.getString(R.string.theme_auto)
         }
     private val twilightManager by lazy { TwilightManager.getInstance(context) }
+    // TODO ditch Handler class fully
     private val handler = Handler()
     private var listenToTwilight = false
         set(value) {
@@ -155,8 +156,10 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             return theme
         }
 
-        BlankActivity.requestPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                REQUEST_PERMISSION_LOCATION_ACCESS) { granted ->
+        BlankActivity.requestPermission(
+            context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            REQUEST_PERMISSION_LOCATION_ACCESS
+        ) { granted ->
             if (granted) {
                 listenToTwilight = true
             } else {
@@ -189,7 +192,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         fun onThemeChanged()
     }
 
-    companion object : SingletonHolder<ThemeManager, Context>(ensureOnMainThread(useApplicationContext(::ThemeManager))) {
+    companion object :
+        SingletonHolder<ThemeManager, Context>(ensureOnMainThread(useApplicationContext(::ThemeManager))) {
 
         const val THEME_FOLLOW_WALLPAPER = 1         // 000001 = 1
         const val THEME_DARK_TEXT = 1 shl 1          // 000010 = 2
@@ -199,7 +203,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         const val THEME_FOLLOW_DAYLIGHT = 1 shl 5    // 100000 = 32
         const val THEME_DARK_MAIN_COLOR = 1 shl 6    // 1000000 = 64
 
-        const val THEME_AUTO_MASK = THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE or THEME_FOLLOW_DAYLIGHT
+        const val THEME_AUTO_MASK =
+            THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE or THEME_FOLLOW_DAYLIGHT
         const val THEME_DARK_MASK = THEME_DARK or THEME_AUTO_MASK
 
         fun isDarkText(flags: Int) = (flags and THEME_DARK_TEXT) != 0

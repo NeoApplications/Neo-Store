@@ -18,8 +18,6 @@
 
 package com.saggitt.omega.views;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.graphics.Rect;
@@ -27,8 +25,6 @@ import android.util.AttributeSet;
 import android.util.IntProperty;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.Nullable;
 
 import com.android.launcher3.Insettable;
 import com.android.launcher3.Launcher;

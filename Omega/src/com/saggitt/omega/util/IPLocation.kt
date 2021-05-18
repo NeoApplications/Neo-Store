@@ -26,7 +26,10 @@ import okhttp3.Request
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
-class IPLocation(private val context: Context, private val cacheValidityMs: Long = TimeUnit.MINUTES.toMillis(30)) {
+class IPLocation(
+    private val context: Context,
+    private val cacheValidityMs: Long = TimeUnit.MINUTES.toMillis(30)
+) {
     private val permissionManager = CustomPermissionManager.getInstance(context)
     private val client = OkHttpClientBuilder().build(context)
 
@@ -52,7 +55,7 @@ class IPLocation(private val context: Context, private val cacheValidityMs: Long
                 try {
                     val response = client.newCall(getRequest(url)).execute()
                     if (response.isSuccessful && response.body != null) {
-                        val json = JSONObject(response.body?.string())
+                        val json = JSONObject(response.body?.string() ?: "{ }")
                         lat = json.getDouble("latitude")
                         lon = json.getDouble("longitude")
                         success = true
@@ -77,8 +80,10 @@ class IPLocation(private val context: Context, private val cacheValidityMs: Long
     data class Result(val success: Boolean, val lat: Double, val lon: Double)
 
     companion object {
-        private val URLS = arrayOf("https://freegeoip.app/json/",
-                "https://geoip-db.com/json/",
-                "https://api.iplocate.app/json/")
+        private val URLS = arrayOf(
+            "https://freegeoip.app/json/",
+            "https://geoip-db.com/json/",
+            "https://api.iplocate.app/json/"
+        )
     }
 }

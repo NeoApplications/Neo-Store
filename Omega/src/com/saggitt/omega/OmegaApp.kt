@@ -152,7 +152,7 @@ class OmegaApp : Application() {
     companion object {
         @JvmStatic
         fun getContext(): Context? {
-            return OmegaApp.getApplication()?.applicationContext
+            return getApplication()?.applicationContext
         }
 
         private var sApplication: Application? = null
