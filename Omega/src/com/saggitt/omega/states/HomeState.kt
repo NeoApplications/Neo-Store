@@ -20,16 +20,13 @@ package com.saggitt.omega.states
 import android.content.Context
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
-import com.android.launcher3.R
+import com.android.launcher3.R.dimen
 import com.android.launcher3.Utilities
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.omegaPrefs
 
-open class HomeState(id: Int,
-                     containerType: Int,
-                     private val transitionDuration: Int,
-                     flags: Int) :
-        LauncherState(id, containerType, flags) {
+open class HomeState(id: Int, containerType: Int, private val transitionDuration: Int, flags: Int) :
+    LauncherState(id, containerType, flags) {
 
     override fun getTransitionDuration(context: Context?): Int = transitionDuration
 
@@ -42,7 +39,8 @@ open class HomeState(id: Int,
 
     companion object {
 
-        private val shelfOffset = SingletonHolder<Int, Context> { it.resources.getDimensionPixelSize(R.dimen.vertical_drag_handle_width) }
+        private val shelfOffset =
+            SingletonHolder<Int, Context> { it.resources.getDimensionPixelSize(dimen.vertical_drag_handle_width) }
 
         fun getNormalProgress(launcher: Launcher): Float {
             return 1 - (getScrimHeight(launcher) / launcher.allAppsController.shiftRange)

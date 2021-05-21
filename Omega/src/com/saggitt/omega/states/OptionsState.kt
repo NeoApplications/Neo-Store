@@ -26,9 +26,10 @@ import com.saggitt.omega.OmegaLauncher
 import kotlin.math.max
 
 class OptionsState(id: Int) :
-        LauncherState(id, LauncherLogProto.ContainerType.OVERVIEW, STATE_FLAGS) {
+    LauncherState(id, LauncherLogProto.ContainerType.OVERVIEW, STATE_FLAGS) {
+
     override fun getTransitionDuration(context: Context?): Int =
-            LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY
+        LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY
 
     override fun getWorkspaceScaleAndTranslation(launcher: Launcher): ScaleAndTranslation {
         val grid = launcher.deviceProfile
@@ -45,8 +46,12 @@ class OptionsState(id: Int) :
             val desiredBottom = grid.heightPx - optionsView.height
             val actualBottom = ws.height * 0.5f + (ws.height * 0.5f * scale)
 
-            return ScaleAndTranslation(scale, 0f, max(desiredCenter - actualCenter,
-                    desiredBottom - actualBottom))
+            return ScaleAndTranslation(
+                scale, 0f, max(
+                    desiredCenter - actualCenter,
+                    desiredBottom - actualBottom
+                )
+            )
         }
 
         val insets = launcher.dragLayer.insets
@@ -67,17 +72,11 @@ class OptionsState(id: Int) :
         return ScaleAndTranslation(scale, 0f, (desiredCellTop - actualCellTop) / scale)
     }
 
-    override fun getWorkspaceScrimAlpha(launcher: Launcher?): Float {
-        return 0.6f
-    }
+    override fun getWorkspaceScrimAlpha(launcher: Launcher?): Float = 0.6f
 
-    override fun getWorkspaceBlurAlpha(launcher: Launcher?): Float {
-        return 1f
-    }
+    override fun getWorkspaceBlurAlpha(launcher: Launcher?): Float = 1f
 
-    override fun getVisibleElements(launcher: Launcher): Int {
-        return OPTIONS_VIEW
-    }
+    override fun getVisibleElements(launcher: Launcher): Int = OPTIONS_VIEW
 
     companion object {
         private val STATE_FLAGS: Int by lazy { FLAG_MULTI_PAGE or FLAG_DISABLE_RESTORE }

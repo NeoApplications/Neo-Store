@@ -50,9 +50,7 @@ class CustomPermissionRequestDialog private constructor(
 
     fun show() {
         if (SHOWING.containsKey(key)) {
-            SHOWING[key]?.let {
-                it.listeners.addAll(listeners)
-            }
+            SHOWING[key]?.listeners?.addAll(listeners)
             return
         }
         SHOWING[key] = this
@@ -63,14 +61,14 @@ class CustomPermissionRequestDialog private constructor(
         AlertDialog.Builder(themedContext, ThemeOverride.AlertDialog().getTheme(context))
             .setView(DialogView(context, string, icon, explanation))
             .setIcon(icon)
-            .setPositiveButton(context.getString(R.string.allow).toUpperCase(), { _, _ ->
+            .setPositiveButton(context.getString(R.string.allow).uppercase()) { _, _ ->
                 SHOWING.remove(key)
                 listeners.forEach { it(true) }
-            })
-            .setNegativeButton(context.getString(R.string.deny).toUpperCase(), { _, _ ->
+            }
+            .setNegativeButton(context.getString(R.string.deny).uppercase()) { _, _ ->
                 SHOWING.remove(key)
                 listeners.forEach { it(false) }
-            })
+            }
             .setOnDismissListener {
                 SHOWING.remove(key)
             }

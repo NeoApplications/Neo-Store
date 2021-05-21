@@ -56,7 +56,7 @@ class CustomPermissionManager private constructor(private val context: Context) 
                 .show()
     }
 
-    // todo: add ui to allow resetting permissions
+    // TODO: add ui to allow resetting permissions
     fun resetPermission(permission: String) {
         grantedPerms = grantedPerms - permission
         deniedPerms = deniedPerms - permission
