@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.search.SearchProvider
@@ -38,9 +39,15 @@ open class EdgeSearchProvider(context: Context) : SearchProvider(context) {
         get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
-        callback(Intent(Intent.ACTION_MAIN)
-                .setClassName(packageName, "com.microsoft.bingsearchsdk.api.ui.activities.RubyBingSearchActivity"))
+        callback(
+            Intent(Intent.ACTION_MAIN)
+                .setClassName(
+                    packageName,
+                    "com.microsoft.bingsearchsdk.api.ui.activities.RubyBingSearchActivity"
+                )
+        )
     }
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_edge)!!
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_edge, null)!!
 }

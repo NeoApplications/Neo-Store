@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.PackageManagerHelper
@@ -43,23 +44,33 @@ class SFinderSearchProvider(context: Context) : SearchProvider(context) {
         get() = PackageManagerHelper.isAppEnabled(context.packageManager, PACKAGE, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
-        callback(Intent(Intent.ACTION_MAIN)
-                .setClassName(PACKAGE, CLASS))
+        callback(
+            Intent(Intent.ACTION_MAIN)
+                .setClassName(PACKAGE, CLASS)
+        )
     }
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) {
-        callback(Intent(Intent.ACTION_MAIN)
+        callback(
+            Intent(Intent.ACTION_MAIN)
                 .setClassName(PACKAGE, CLASS)
-                .putExtra("launch_mode", "voice_input"))
+                .putExtra("launch_mode", "voice_input")
+        )
     }
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
-        setTint(Utilities.getOmegaPrefs(context).accentColor)
-    }
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_search, null)!!
+            .mutate()
+            .apply {
+                setTint(Utilities.getOmegaPrefs(context).accentColor)
+            }
 
-    override fun getVoiceIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_mic)!!.mutate().apply {
-        setTint(Utilities.getOmegaPrefs(context).accentColor)
-    }
+    override val voiceIcon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!
+            .mutate()
+            .apply {
+                setTint(Utilities.getOmegaPrefs(context).accentColor)
+            }
 
     companion object {
         const val PACKAGE = "com.samsung.android.app.galaxyfinder"

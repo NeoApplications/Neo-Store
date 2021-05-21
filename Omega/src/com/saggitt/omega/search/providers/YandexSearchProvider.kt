@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.search.SearchProvider
@@ -38,18 +39,22 @@ class YandexSearchProvider(context: Context) : SearchProvider(context) {
         get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent(Intent.ACTION_WEB_SEARCH).setPackage(packageName))
+        callback(Intent(Intent.ACTION_WEB_SEARCH).setPackage(packageName))
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent(Intent.ACTION_ASSIST).setPackage(packageName))
+        callback(Intent(Intent.ACTION_ASSIST).setPackage(packageName))
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) = startVoiceSearch(callback)
     override fun startFeed(callback: (intent: Intent) -> Unit) =
-            callback(Intent().setClassName(packageName, "$packageName.MainActivity"))
+        callback(Intent().setClassName(packageName, "$packageName.MainActivity"))
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_yandex)!!
 
-    override fun getVoiceIcon(): Drawable = context.getDrawable(R.drawable.ic_alisa_yandex)!!
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_yandex, null)!!
 
-    override fun getAssistantIcon(): Drawable = getVoiceIcon()
+    override val voiceIcon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_alisa_yandex, null)!!
+
+    override val assistantIcon: Drawable
+        get() = voiceIcon
 }

@@ -23,7 +23,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatRadioButton
@@ -75,7 +76,7 @@ class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return View.inflate(context, R.layout.list_item_icon, null).apply {
                 val provider = providers[position]
-                findViewById<AppCompatImageView>(R.id.icon).setImageDrawable(provider.getIcon())
+                findViewById<AppCompatImageView>(R.id.icon).setImageDrawable(provider.icon)
                 findViewById<AppCompatTextView>(R.id.title).text = provider.name
                 if (showDebug) {
                     findViewById<AppCompatTextView>(R.id.summary).apply {

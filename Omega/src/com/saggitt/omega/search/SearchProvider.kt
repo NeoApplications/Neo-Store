@@ -32,6 +32,15 @@ abstract class SearchProvider(protected val context: Context) {
     open val settingsIntent get() = Intent().setClass(context, SettingsSearchActivity::class.java)
 
     abstract val packageName: String
+    abstract val icon: Drawable
+    open val voiceIcon: Drawable?
+        get() = if (supportsVoiceSearch)
+            throw RuntimeException("Voice search supported but not implemented")
+        else null
+    open val assistantIcon: Drawable?
+        get() = if (supportsVoiceSearch)
+            throw RuntimeException("Assistant supported but not implemented")
+        else null
 
     /**
      * Whether the settings intent needs to be sent as broadcast
@@ -43,6 +52,7 @@ abstract class SearchProvider(protected val context: Context) {
     open fun startVoiceSearch(callback: (intent: Intent) -> Unit = {}) {
         if (supportsVoiceSearch) throw RuntimeException("Voice search supported but not implemented")
     }
+
     open fun startAssistant(callback: (intent: Intent) -> Unit = {}) {
         if (supportsAssistant) throw RuntimeException("Assistant supported but not implemented")
     }
@@ -51,32 +61,23 @@ abstract class SearchProvider(protected val context: Context) {
         if (supportsFeed) throw RuntimeException("Feed supported but not implemented")
     }
 
-    protected fun wrapInShadowDrawable(d: Drawable?): Drawable {
-        return ShadowDrawable.wrap(context, d, R.color.qsb_icon_shadow_color,
-                4f, R.color.qsb_dark_icon_tint).apply { applyTheme(context.theme) }
-    }
+    protected fun wrapInShadowDrawable(d: Drawable?): Drawable =
+        ShadowDrawable.wrap(
+            context, d, R.color.qsb_icon_shadow_color,
+            4f, R.color.qsb_dark_icon_tint
+        ).apply { applyTheme(context.theme) }
 
-    fun getIcon(colored: Boolean) = if (colored) getIcon() else getShadowIcon()
+    fun getIcon(colored: Boolean) =
+        if (colored) icon else wrapInShadowDrawable(icon)
 
-    abstract fun getIcon(): Drawable?
-    open fun getShadowIcon(): Drawable? {
-        return wrapInShadowDrawable(getIcon())
-    }
+    fun getVoiceIcon(colored: Boolean) =
+        if (colored) voiceIcon else voiceIcon?.let { wrapInShadowDrawable(it) }
 
-    fun getVoiceIcon(colored: Boolean) = if (colored) getVoiceIcon() else getShadowVoiceIcon()
+    fun getAssistantIcon(colored: Boolean) =
+        if (colored) assistantIcon else getShadowAssistantIcon()
 
-    open fun getVoiceIcon(): Drawable? = if (supportsVoiceSearch)
-        throw RuntimeException("Voice search supported but not implemented")
-    else null
-
-    open fun getShadowVoiceIcon() = getVoiceIcon()?.let { wrapInShadowDrawable(it) }
-
-    fun getAssistantIcon(colored: Boolean) = if (colored) getAssistantIcon() else getShadowAssistantIcon()
-
-    open fun getAssistantIcon(): Drawable? = if (supportsAssistant)
-        throw RuntimeException("Assistant supported but not implemented")
-    else null
-    open fun getShadowAssistantIcon() = getAssistantIcon()?.let { wrapInShadowDrawable(it) }
+    open fun getShadowAssistantIcon() =
+        assistantIcon?.let { wrapInShadowDrawable(it) }
 
     override fun toString(): String = this::class.java.name
 }

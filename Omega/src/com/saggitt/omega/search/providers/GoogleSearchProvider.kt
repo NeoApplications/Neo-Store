@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.OmegaLauncher
@@ -38,20 +39,20 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsFeed = true
     override val settingsIntent: Intent
         get() = Intent("com.google.android.apps.gsa.nowoverlayservice.PIXEL_DOODLE_QSB_SETTINGS")
-                .setPackage(Config.GOOGLE_QSB).addFlags(268435456)
+            .setPackage(Config.GOOGLE_QSB).addFlags(268435456)
     override val packageName: String
         get() = Config.GOOGLE_QSB
     override val isBroadcast: Boolean
         get() = true
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent().setClassName(Config.GOOGLE_QSB, "${Config.GOOGLE_QSB}.SearchActivity"))
+        callback(Intent().setClassName(Config.GOOGLE_QSB, "${Config.GOOGLE_QSB}.SearchActivity"))
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent("android.intent.action.VOICE_ASSIST").setPackage(Config.GOOGLE_QSB))
+        callback(Intent("android.intent.action.VOICE_ASSIST").setPackage(Config.GOOGLE_QSB))
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) =
-            callback(Intent(Intent.ACTION_VOICE_COMMAND).setPackage(Config.GOOGLE_QSB))
+        callback(Intent(Intent.ACTION_VOICE_COMMAND).setPackage(Config.GOOGLE_QSB))
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
         val launcher = OmegaLauncher.getLauncher(context)
@@ -67,9 +68,12 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
         }
     }
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_logo)!!
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qsb_logo, null)!!
 
-    override fun getVoiceIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_mic)!!
+    override val voiceIcon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qsb_mic, null)!!
 
-    override fun getAssistantIcon(): Drawable = context.getDrawable(R.drawable.ic_qsb_assist)!!
+    override val assistantIcon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qsb_assist, null)!!
 }

@@ -35,6 +35,7 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsVoiceSearch = false
     override val supportsAssistant = false
     override val supportsFeed = false
+
     /**
      * Suggestions API URL. %s will be replaced with the search query.
      */
@@ -50,11 +51,13 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
     open fun getSuggestions(query: String): List<String> {
         if (suggestionsUrl == null) return emptyList()
         try {
-            val response = client.newCall(Request.Builder().url(suggestionsUrl!!.format(query)).build()).execute()
+            val response =
+                client.newCall(Request.Builder().url(suggestionsUrl!!.format(query)).build())
+                    .execute()
             val result = JSONArray(response.body?.string())
-                    .getJSONArray(1)
-                    .toArrayList<String>()
-                    .take(MAX_SUGGESTIONS)
+                .getJSONArray(1)
+                .toArrayList<String>()
+                .take(MAX_SUGGESTIONS)
             response.close();
             return result;
         } catch (ex: Exception) {

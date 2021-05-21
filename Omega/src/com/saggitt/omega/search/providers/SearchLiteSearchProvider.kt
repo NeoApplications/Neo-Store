@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.PackageManagerHelper
@@ -41,9 +42,12 @@ class SearchLiteSearchProvider(context: Context) : SearchProvider(context) {
         get() = PackageManagerHelper.isAppEnabled(context.packageManager, packageName, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent(Intent.ACTION_SEARCH).setPackage(packageName))
+        callback(Intent(Intent.ACTION_SEARCH).setPackage(packageName))
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
-        setTint(Utilities.getOmegaPrefs(context).accentColor)
-    }
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_search, null)!!
+            .mutate()
+            .apply {
+                setTint(Utilities.getOmegaPrefs(context).accentColor)
+            }
 }

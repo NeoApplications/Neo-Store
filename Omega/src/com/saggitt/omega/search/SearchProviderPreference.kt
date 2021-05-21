@@ -26,12 +26,12 @@ import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.util.omegaPrefs
 
 class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
-        DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+    DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
     private val prefs = context.omegaPrefs
     private val mProviders = SearchProviderController.getSearchProviders(context)
     private val current
         get() = mProviders.firstOrNull { it::class.java.name == prefs.searchProvider }
-                ?: mProviders[0]
+            ?: mProviders[0]
 
     init {
         layoutResource = R.layout.preference_preview_icon
@@ -53,7 +53,7 @@ class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun updateSummaryAndIcon() {
-        icon = current.getIcon()
+        icon = current.icon
         summary = current.name
     }
 }

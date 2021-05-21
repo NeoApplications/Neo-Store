@@ -22,10 +22,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.search.SearchProvider
 
 @Keep
@@ -37,7 +39,8 @@ class AppsSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsFeed = false
     override val packageName: String
         get() = "AppsSearchProvider"
-    var prefs = Utilities.getOmegaPrefs(context)
+    var prefs: OmegaPreferences = Utilities.getOmegaPrefs(context)
+
     override fun startSearch(callback: (intent: Intent) -> Unit) {
         val launcher = LauncherAppState.getInstanceNoCreate().launcher
         launcher.stateManager.goToState(LauncherState.ALL_APPS, true) {
@@ -45,8 +48,10 @@ class AppsSearchProvider(context: Context) : SearchProvider(context) {
         }
     }
 
-    override fun getIcon(): Drawable = context.getDrawable(R.drawable.ic_search)!!.mutate().apply {
-        setTint(prefs.accentColor)
-    }
-
+    override val icon: Drawable
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_search, null)!!
+            .mutate()
+            .apply {
+                setTint(prefs.accentColor)
+            }
 }
