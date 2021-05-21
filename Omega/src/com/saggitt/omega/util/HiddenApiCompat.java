@@ -15,7 +15,6 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.saggitt.omega.util;
 
 import android.app.ActivityManager;
@@ -35,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+// TODO migrate to Kotlin functions is not possible for me for now
 @RequiresApi(Build.VERSION_CODES.P)
 public class HiddenApiCompat {
 
