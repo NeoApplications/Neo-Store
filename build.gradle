@@ -1,14 +1,6 @@
 import java.text.SimpleDateFormat
 
 buildscript {
-
-    ext {
-        versions = [
-                coroutines             : "1.5.0",
-                kotlin                 : "1.5.0"
-        ]
-    }
-
     repositories {
         mavenCentral()
         google()
@@ -17,7 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.16"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
     }
 }
 
@@ -54,7 +46,7 @@ android {
     compileSdkVersion 30
 
     def name = "0.8.0"
-    def code = 161
+    def code = 162
 
     defaultConfig {
         minSdkVersion 26
@@ -198,11 +190,10 @@ dependencies {
     implementation 'com.github.otakuhqz:colorpickerx:1.4.2'
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation "com.mikepenz:fastadapter:5.4.1"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0"
 
     // Recents lib dependency
     withQuickstepImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
@@ -252,16 +243,16 @@ protobuf {
 task detectAndroidLocals {
     Set<String> langsList = new HashSet<>()
 
-    // in /res are (almost) all languages that hava a translated string is saved. this is safer and saves some time
+    // in /res are (almost) all languages that have a translated string is saved. this is safer and saves some time
     fileTree("res").visit { FileVisitDetails details ->
         if (details.file.path.endsWith("strings.xml")
                 && details.file.canonicalFile.getText('UTF-8').contains("<string")) {
             def languageCode = details.file.parentFile.name.replace("values-", "")
-            languageCode = (languageCode == "values") ? "en" : languageCode;
+            languageCode = (languageCode == "values") ? "en" : languageCode
             langsList.add(languageCode)
         }
     }
-    def langsListString = "{${langsList.collect { "\"${it}\"" }.join(",")}}";
+    def langsListString = "{${langsList.collect { "\"${it}\"" }.join(",")}}"
     android.defaultConfig.buildConfigField "String[]", "DETECTED_ANDROID_LOCALES", langsListString
 }
 preBuild.dependsOn detectAndroidLocals
