@@ -379,5 +379,11 @@
             android:name="com.google.android.apps.nexuslauncher.search.AppSearchProvider"
             android:authorities="${applicationId}.appssearch"
             android:exported="true" />
+
+        <provider
+            android:name="com.saggitt.omega.util.FiveSecsProvider"
+            android:authorities="${applicationId}.fivesecsprovider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
     </application>
 </manifest>
