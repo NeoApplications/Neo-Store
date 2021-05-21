@@ -355,4 +355,7 @@
     <!-- Failed action error message: e.g. Failed: Pause -->
     <string name="remote_action_failed">Failed: <xliff:g id="what" example="Pause">%1$s</xliff:g></string>
     <string name="gesture_launch_assistant">Launch Assistant (through button or gesture)</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
+    <string name="web_search_direct">Search online directly \"%s\"</string>
 </resources>
