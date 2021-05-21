@@ -30,8 +30,8 @@ import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.omegaPrefs
 
 open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? = null) :
-        SwitchPreference(context, attrs),
-        ControlledPreference by ControlledPreference.Delegate(context, attrs) {
+    SwitchPreference(context, attrs),
+    ControlledPreference by ControlledPreference.Delegate(context, attrs) {
 
     protected var checkableView: View? = null
         private set
@@ -43,7 +43,8 @@ open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? =
     }
 
 
-    open class SwitchSlice(context: Context, attrs: AttributeSet) : SearchIndex.Slice(context, attrs) {
+    open class SwitchSlice(context: Context, attrs: AttributeSet) :
+        SearchIndex.Slice(context, attrs) {
 
         private val defaultValue: Boolean
 
@@ -58,11 +59,8 @@ open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? =
         }
     }
 
-    class SwitchSliceView(
-            context: Context,
-            private val key: String,
-            private val defaultValue: Boolean)
-        : Switch(context), OmegaPreferences.OnPreferenceChangeListener {
+    class SwitchSliceView(context: Context, private val key: String, private val defaultValue: Boolean) :
+        Switch(context), OmegaPreferences.OnPreferenceChangeListener {
 
         init {
             applyColor(context.omegaPrefs.accentColor)

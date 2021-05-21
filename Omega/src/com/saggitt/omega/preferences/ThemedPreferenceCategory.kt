@@ -20,21 +20,20 @@ package com.saggitt.omega.preferences
 import android.R.id
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.Switch
+import android.widget.TextView
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceViewHolder
-import androidx.preference.SwitchPreference
 import com.android.launcher3.Utilities
-import com.saggitt.omega.util.applyColor
 
-class StyledSwitchPreference : SwitchPreference {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+class ThemedPreferenceCategory @JvmOverloads constructor(
+    private val mContext: Context,
+    attrs: AttributeSet? = null, defStyle: Int = 0
+) : PreferenceCategory(mContext, attrs, defStyle) {
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val checkableView = holder.findViewById(id.switch_widget) as Switch
-        checkableView.applyColor(Utilities.getOmegaPrefs(context).accentColor)
+        val title = holder.findViewById(id.title) as TextView
+        title.textSize = 16f
+        title.setTextColor(Utilities.getOmegaPrefs(mContext).accentColor)
     }
 }

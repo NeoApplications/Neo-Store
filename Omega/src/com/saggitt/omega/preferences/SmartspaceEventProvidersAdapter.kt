@@ -36,8 +36,10 @@ import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
-class SmartspaceEventProvidersAdapter(private val context: Context)
-    : RecyclerView.Adapter<SmartspaceEventProvidersAdapter.Holder>() {
+// TODO remove use of android.os.Handler
+// TODO migrate to FastAdapater
+class SmartspaceEventProvidersAdapter(private val context: Context) :
+    RecyclerView.Adapter<SmartspaceEventProvidersAdapter.Holder>() {
 
     private val prefs = context.omegaPrefs
     private val allProviders = ArrayList<ProviderItem>()
@@ -64,9 +66,15 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
         return when (viewType) {
             TYPE_HEADER -> createHolder(parent, R.layout.event_provider_text_item, ::HeaderHolder)
             TYPE_ITEM -> createHolder(parent, R.layout.event_provider_dialog_item, ::ProviderHolder)
-            TYPE_DIVIDER -> createHolder(parent, R.layout.event_providers_divider_item, ::DividerHolder)
-            else -> throw IllegalArgumentException("type must be either TYPE_TEXT, " +
-                    "TYPE_PROVIDER or TYPE_DIVIDER")
+            TYPE_DIVIDER -> createHolder(
+                parent,
+                R.layout.event_providers_divider_item,
+                ::DividerHolder
+            )
+            else -> throw IllegalArgumentException(
+                "type must be either TYPE_TEXT, " +
+                        "TYPE_PROVIDER or TYPE_DIVIDER"
+            )
         }
     }
 
@@ -136,9 +144,8 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
         notifyItemMoved(from, to)
     }
 
-    private inline fun createHolder(parent: ViewGroup, resource: Int, creator: (View) -> Holder): Holder {
-        return creator(LayoutInflater.from(parent.context).inflate(resource, parent, false))
-    }
+    private inline fun createHolder(parent: ViewGroup, resource: Int, creator: (View) -> Holder):
+            Holder = creator(LayoutInflater.from(parent.context).inflate(resource, parent, false))
 
     abstract class Item {
 
@@ -186,14 +193,15 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
         }
     }
 
-    open inner class ProviderHolder(itemView: View) : Holder(itemView), View.OnClickListener, View.OnTouchListener {
+    open inner class ProviderHolder(itemView: View) : Holder(itemView), View.OnClickListener,
+        View.OnTouchListener {
 
         val title: TextView = itemView.findViewById(android.R.id.title)
         val summary: TextView = itemView.findViewById(android.R.id.summary)
         private val dragHandle: View = itemView.findViewById(R.id.drag_handle)
         private val packItem
-            get() = adapterItems[adapterPosition] as? ProviderItem
-                    ?: throw IllegalArgumentException("item must be ProviderItem")
+            get() = adapterItems[bindingAdapterPosition] as? ProviderItem
+                ?: throw IllegalArgumentException("item must be ProviderItem")
 
         init {
             itemView.setOnClickListener(this)
@@ -202,7 +210,7 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
 
         override fun bind(item: Item) {
             val packItem = item as? ProviderItem
-                    ?: throw IllegalArgumentException("item must be ProviderItem")
+                ?: throw IllegalArgumentException("item must be ProviderItem")
             title.text = packItem.info.displayName
             itemView.isClickable = !packItem.isStatic
             dragHandle.isVisible = !packItem.isStatic
@@ -210,15 +218,15 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
 
         override fun onClick(v: View) {
             val item = packItem
-            if (adapterPosition > dividerIndex) {
-                adapterItems.removeAt(adapterPosition)
+            if (bindingAdapterPosition > dividerIndex) {
+                adapterItems.removeAt(bindingAdapterPosition)
                 adapterItems.add(1, item)
-                notifyItemMoved(adapterPosition, 1)
+                notifyItemMoved(bindingAdapterPosition, 1)
                 dividerIndex++
             } else {
-                adapterItems.removeAt(adapterPosition)
+                adapterItems.removeAt(bindingAdapterPosition)
                 adapterItems.add(dividerIndex, item)
-                notifyItemMoved(adapterPosition, dividerIndex)
+                notifyItemMoved(bindingAdapterPosition, dividerIndex)
                 dividerIndex--
             }
             notifyItemChanged(dividerIndex)
@@ -258,18 +266,29 @@ class SmartspaceEventProvidersAdapter(private val context: Context)
             handler.post { notifyItemChanged(dividerIndex) }
         }
 
-        override fun canDropOver(recyclerView: RecyclerView, current: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return target.adapterPosition in 1..dividerIndex
+        override fun canDropOver(
+            recyclerView: RecyclerView,
+            current: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return target.bindingAdapterPosition in 1..dividerIndex
         }
 
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-            val item = adapterItems[viewHolder.adapterPosition]
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            val item = adapterItems[viewHolder.bindingAdapterPosition]
             val dragFlags = if (item.isStatic) 0 else ItemTouchHelper.UP or ItemTouchHelper.DOWN
             return makeMovementFlags(dragFlags, 0)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return move(viewHolder.adapterPosition, target.adapterPosition)
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

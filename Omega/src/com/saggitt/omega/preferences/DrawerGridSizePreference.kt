@@ -22,7 +22,7 @@ import android.util.AttributeSet
 import com.android.launcher3.Utilities
 
 class DrawerGridSizePreference(context: Context, attrs: AttributeSet?) :
-        SingleDimensionGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).drawerGridSize)
+    SingleDimensionGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).drawerGridSize)
 
 class PredictionGridSizePreference(context: Context, attrs: AttributeSet?) :
-        SingleDimensionGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).predictionGridSize)
+    SingleDimensionGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).predictionGridSize)

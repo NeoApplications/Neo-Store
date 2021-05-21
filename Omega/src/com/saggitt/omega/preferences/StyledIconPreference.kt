@@ -23,23 +23,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import com.android.launcher3.R
+import com.android.launcher3.R.dimen
 import com.saggitt.omega.util.forEachIndexed
 
 open class StyledIconPreference : Preference {
     var count = 1
     var index = 0
 
-    @JvmOverloads
     constructor (context: Context) : super(context)
 
-    @JvmOverloads
     constructor (context: Context, attrs: AttributeSet) : super(context, attrs)
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         holder.findViewById(androidx.appcompat.R.id.icon)?.let { it as? ImageView }?.apply {
-            val size = resources.getDimensionPixelSize(R.dimen.dashboard_tile_image_size)
+            val size = resources.getDimensionPixelSize(dimen.dashboard_tile_image_size)
             layoutParams = ViewGroup.LayoutParams(size, size)
         }
     }

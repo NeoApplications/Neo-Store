@@ -37,7 +37,7 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
 
     init {
         setOnPreferenceClickListener {
-            MultiSelectTabDialog(context, componentKey, tabs) {
+            MultiSelectTabDialog( componentKey, tabs) {
                 callChangeListener(tabs.hashCode())
             }.show(activity.fragmentManager, "TABS_MULTISELECT_DIALOG")
             true

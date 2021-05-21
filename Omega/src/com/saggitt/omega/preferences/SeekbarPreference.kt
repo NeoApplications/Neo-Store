@@ -30,11 +30,14 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import kotlin.math.roundToInt
 
 open class SeekbarPreference
-@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : Preference(context, attrs, defStyleAttr), SeekBar.OnSeekBarChangeListener, View.OnCreateContextMenuListener,
-        MenuItem.OnMenuItemClickListener {
+@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    Preference(context, attrs, defStyleAttr),
+    SeekBar.OnSeekBarChangeListener,
+    View.OnCreateContextMenuListener,
+    MenuItem.OnMenuItemClickListener {
 
     private var mSeekbar: SeekBar? = null
 
@@ -95,7 +98,7 @@ open class SeekbarPreference
 
         current = getPersistedFloat(defaultValue)
         val progress = ((current - min) / ((max - min) / steps))
-        mSeekbar!!.progress = Math.round(progress)
+        mSeekbar!!.progress = progress.roundToInt()
 
         if (allowResetToDefault) view.setOnCreateContextMenuListener(this)
         updateSummary()
@@ -110,14 +113,14 @@ open class SeekbarPreference
     protected open fun updateDisplayedValue() {
         mSeekbar?.setOnSeekBarChangeListener(null)
         val progress = ((current - min) / ((max - min) / steps))
-        mSeekbar!!.progress = Math.round(progress)
+        mSeekbar!!.progress = progress.roundToInt()
         updateSummary()
         mSeekbar?.setOnSeekBarChangeListener(this)
     }
 
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         current = min + (max - min) / steps * progress
-        current = Math.round(current * 100f) / 100f //round to .00 places
+        current = (current * 100f).roundToInt() / 100f //round to .00 places
         updateSummary()
 
         persistFloat(current)
@@ -132,7 +135,9 @@ open class SeekbarPreference
         }
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+    }
 
     override fun onStopTrackingTouch(seekBar: SeekBar) {
         persistFloat(current)
@@ -144,7 +149,11 @@ open class SeekbarPreference
         return super.persistFloat(value)
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         menu.setHeaderTitle(title)
         menu.add(0, 0, 0, R.string.reset_to_default)
         for (i in (0 until menu.size())) {

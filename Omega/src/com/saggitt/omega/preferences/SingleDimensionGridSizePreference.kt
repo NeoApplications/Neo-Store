@@ -20,10 +20,12 @@ package com.saggitt.omega.preferences
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
-import com.android.launcher3.R
+import com.android.launcher3.R.layout
 
-abstract class SingleDimensionGridSizePreference(context: Context, attrs: AttributeSet?, private val gridSize: GridSize) :
-        DialogPreference(context, attrs) {
+abstract class SingleDimensionGridSizePreference(
+    context: Context,
+    attrs: AttributeSet?, private val gridSize: GridSize
+) : DialogPreference(context, attrs) {
     val defaultSize by lazy { gridSize.numRowsOriginal }
 
     init {
@@ -44,5 +46,5 @@ abstract class SingleDimensionGridSizePreference(context: Context, attrs: Attrib
         summary = "$value"
     }
 
-    override fun getDialogLayoutResource() = R.layout.preference_grid_size
+    override fun getDialogLayoutResource() = layout.preference_grid_size
 }

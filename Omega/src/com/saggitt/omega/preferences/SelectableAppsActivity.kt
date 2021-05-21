@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.AppFilter
-import com.android.launcher3.R
+import com.android.launcher3.R.string
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.allapps.OmegaAppFilter
@@ -93,7 +93,7 @@ class SelectableAppsActivity : SettingsActivity() {
         }
 
         private fun updateTitle(size: Int) {
-            activity?.title = getString(R.string.selected_count, size)
+            activity?.title = getString(string.selected_count, size)
         }
     }
 

@@ -22,11 +22,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
-import com.android.launcher3.R
+import com.android.launcher3.R.styleable
 import com.saggitt.omega.settings.SettingsActivity
 
-open class SubPreference(context: Context, attrs: AttributeSet) : StyledIconPreference(context, attrs),
-        View.OnLongClickListener, ControlledPreference by ControlledPreference.Delegate(context, attrs) {
+open class SubPreference(context: Context, attrs: AttributeSet) :
+    StyledIconPreference(context, attrs),
+    View.OnLongClickListener,
+    ControlledPreference by ControlledPreference.Delegate(context, attrs) {
 
     private var mContent: Int = 0
     private var mLongClickContent: Int = 0
@@ -37,13 +39,12 @@ open class SubPreference(context: Context, attrs: AttributeSet) : StyledIconPref
         get() = if (mLongClick) mLongClickContent else mContent
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.SubPreference)
+        val a = context.obtainStyledAttributes(attrs, styleable.SubPreference)
         for (i in a.indexCount - 1 downTo 0) {
-            val attr = a.getIndex(i)
-            when (attr) {
-                R.styleable.SubPreference_content -> mContent = a.getResourceId(attr, 0)
-                R.styleable.SubPreference_longClickContent -> mLongClickContent = a.getResourceId(attr, 0)
-                R.styleable.SubPreference_hasPreview -> mHasPreview = a.getBoolean(attr, false)
+            when (val attr = a.getIndex(i)) {
+                styleable.SubPreference_content -> mContent = a.getResourceId(attr, 0)
+                styleable.SubPreference_longClickContent -> mLongClickContent = a.getResourceId(attr, 0)
+                styleable.SubPreference_hasPreview -> mHasPreview = a.getBoolean(attr, false)
             }
         }
         a.recycle()

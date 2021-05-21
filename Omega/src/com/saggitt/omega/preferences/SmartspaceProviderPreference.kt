@@ -30,8 +30,8 @@ import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
 import com.saggitt.omega.util.buildEntries
 
-class SmartspaceProviderPreference(context: Context, attrs: AttributeSet?)
-    : ListPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+class SmartspaceProviderPreference(context: Context, attrs: AttributeSet?) :
+    ListPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
 
     private val prefs = Utilities.getOmegaPrefs(context)
     private val forWeather by lazy { key == "pref_smartspace_widget_provider" }
@@ -45,11 +45,13 @@ class SmartspaceProviderPreference(context: Context, attrs: AttributeSet?)
     }
 
     override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any?) {
-        super.onSetInitialValue(true, defaultValue)
+        super.onSetInitialValue(defaultValue)
     }
 
     private fun getProviders(): List<String> {
-        return if (forWeather) getWeatherProviders() else SmartspaceEventProvidersAdapter.getEventProviders(context)
+        return if (forWeather) getWeatherProviders() else SmartspaceEventProvidersAdapter.getEventProviders(
+            context
+        )
     }
 
     private fun getWeatherProviders(): List<String> {
@@ -94,7 +96,8 @@ class SmartspaceProviderPreference(context: Context, attrs: AttributeSet?)
         return getPersistedValue()!!
     }
 
-    private fun getPersistedValue() = prefs.sharedPrefs.getString(key, SmartspaceDataWidget::class.java.name)
+    private fun getPersistedValue() =
+        prefs.sharedPrefs.getString(key, SmartspaceDataWidget::class.java.name)
 
     override fun persistString(value: String?): Boolean {
         prefs.sharedPrefs.edit().putString(key, value ?: BlankDataProvider::class.java.name).apply()

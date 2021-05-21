@@ -19,11 +19,10 @@ package com.saggitt.omega.preferences
 
 import android.app.Dialog
 import android.app.DialogFragment
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import com.android.launcher3.R
+import com.android.launcher3.R.string
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.groups.ui.AppCategorizationFragment
@@ -31,18 +30,14 @@ import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.util.addOrRemove
 
 class MultiSelectTabDialog(
-    context: Context,
     val componentKey: ComponentKey,
     val tabs: List<DrawerTabs.CustomTab>,
     private val updatePref: () -> Unit
-) :
-    DialogFragment() {
+) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val entries = tabs.map { it.getTitle() }.toTypedArray()
         val checkedEntries = tabs.map {
-            // entries = entries.plus(customTab.getTitle())
-            // entryValues = entries.plus(customTab.getTitle())
             it.contents.value().contains(componentKey)
         }.toBooleanArray()
 
@@ -61,10 +56,10 @@ class MultiSelectTabDialog(
                 }
                 updatePref.invoke()
             }
-            .setNeutralButton(R.string.tabs_manage) { _, _ ->
+            .setNeutralButton(string.tabs_manage) { _, _ ->
                 SettingsActivity.startFragment(
                     context, AppCategorizationFragment::class.java.name,
-                    R.string.title__drawer_categorization
+                    string.title__drawer_categorization
                 )
             }
             .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface?, _: Int -> dialog?.cancel() }

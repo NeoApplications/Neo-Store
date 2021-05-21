@@ -24,7 +24,8 @@ import android.util.AttributeSet
 import android.widget.TextView
 import androidx.preference.DialogPreference
 import androidx.preference.PreferenceViewHolder
-import com.android.launcher3.R
+import com.android.launcher3.R.layout
+import com.android.launcher3.R.string
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.omegaApp
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
@@ -32,9 +33,9 @@ import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.runOnMainThread
 
 class SmartspaceEventProvidersPreference(context: Context, attrs: AttributeSet?) :
-        DialogPreference(context, attrs),
-        ControlledPreference by ControlledPreference.Delegate(context, attrs),
-        OmegaPreferences.MutableListPrefChangeListener {
+    DialogPreference(context, attrs),
+    ControlledPreference by ControlledPreference.Delegate(context, attrs),
+    OmegaPreferences.MutableListPrefChangeListener {
 
     private val providersPref = context.omegaPrefs.eventProviders
 
@@ -49,11 +50,11 @@ class SmartspaceEventProvidersPreference(context: Context, attrs: AttributeSet?)
 
     private fun updateSummary() {
         val providerNames = providersPref.getAll()
-                .map { OmegaSmartspaceController.getDisplayName(context, it) }
+            .map { OmegaSmartspaceController.getDisplayName(context, it) }
         if (providerNames.isNotEmpty()) {
             summary = TextUtils.join(", ", providerNames)
         } else {
-            setSummary(R.string.weather_provider_disabled)
+            setSummary(string.weather_provider_disabled)
         }
     }
 
@@ -81,5 +82,5 @@ class SmartspaceEventProvidersPreference(context: Context, attrs: AttributeSet?)
         }
     }
 
-    override fun getDialogLayoutResource() = R.layout.dialog_preference_recyclerview
+    override fun getDialogLayoutResource() = layout.dialog_preference_recyclerview
 }

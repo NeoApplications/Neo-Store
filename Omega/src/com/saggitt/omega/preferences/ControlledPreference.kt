@@ -19,7 +19,7 @@ package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.util.AttributeSet
-import com.android.launcher3.R
+import com.android.launcher3.R.styleable
 
 interface ControlledPreference {
 
@@ -35,10 +35,10 @@ interface ControlledPreference {
 
         fun parseAttributes(attrs: AttributeSet?) {
             if (attrs == null) return
-            val a = context.obtainStyledAttributes(attrs, R.styleable.ControlledPreference)
+            val a = context.obtainStyledAttributes(attrs, styleable.ControlledPreference)
             for (i in a.indexCount - 1 downTo 0) {
                 val attr = a.getIndex(i)
-                if (attr == R.styleable.ControlledPreference_controllerClass) {
+                if (attr == styleable.ControlledPreference_controllerClass) {
                     setControllerClass(a.getString(attr))
                 }
             }

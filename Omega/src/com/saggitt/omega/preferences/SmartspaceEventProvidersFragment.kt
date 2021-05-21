@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.R
 import com.saggitt.omega.util.applyAccent
 
 class SmartspaceEventProvidersFragment : PreferenceDialogFragmentCompat() {
@@ -37,7 +36,7 @@ class SmartspaceEventProvidersFragment : PreferenceDialogFragmentCompat() {
         super.onBindDialogView(view)
         adapter = SmartspaceEventProvidersAdapter(view.context)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+        val recyclerView = view.findViewById<RecyclerView>(com.android.launcher3.R.id.list)
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter

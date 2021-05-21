@@ -21,11 +21,12 @@ import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.util.JavaField
 
 class GridSize2D(
-        prefs: OmegaPreferences,
-        rowsKey: String,
-        columnsKey: String,
-        targetObject: Any,
-        onChangeListener: () -> Unit) : GridSize(prefs, rowsKey, targetObject, onChangeListener) {
+    prefs: OmegaPreferences,
+    rowsKey: String,
+    columnsKey: String,
+    targetObject: Any,
+    onChangeListener: () -> Unit
+) : GridSize(prefs, rowsKey, targetObject, onChangeListener) {
 
     var numColumns by JavaField<Int>(targetObject, columnsKey)
     val numColumnsOriginal by JavaField<Int>(targetObject, "${columnsKey}Original")

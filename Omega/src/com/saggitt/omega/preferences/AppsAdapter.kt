@@ -39,11 +39,12 @@ import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import java.util.Comparator.comparing
 
+// TODO migrate to FastAdapater
 open class AppsAdapter(
-        private val context: Context,
-        private val callback: Callback? = null,
-        private val filter: AppFilter? = null)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val context: Context,
+    private val callback: Callback? = null,
+    private val filter: AppFilter? = null
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_LOADING = 0
     private val TYPE_ITEM = 1
@@ -80,8 +81,8 @@ open class AppsAdapter(
 
     protected open fun loadAppsList() {
         apps.addAll(getAppsList(context)
-                .map { App(context, it) }
-                .sortedWith(comparator))
+            .map { App(context, it) }
+            .sortedWith(comparator))
         MAIN_EXECUTOR.handler.postAtFrontOfQueue(::onAppsListLoaded)
     }
 
@@ -121,7 +122,8 @@ open class AppsAdapter(
         }
     }
 
-    inner class AppHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class AppHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
 
         private val label: TextView = itemView.findViewById(R.id.label)
         private val icon: ImageView = itemView.findViewById(R.id.icon)
@@ -140,7 +142,7 @@ open class AppsAdapter(
         }
 
         override fun onClick(v: View) {
-            onClickApp(adapterPosition, this)
+            onClickApp(bindingAdapterPosition, this)
         }
     }
 
@@ -152,6 +154,6 @@ open class AppsAdapter(
     }
 
     companion object {
-        val defaultComparator = comparing<App, String> { it.info.label.toString().toLowerCase() }
+        val defaultComparator = comparing<App, String> { it.info.label.toString().lowercase() }
     }
 }

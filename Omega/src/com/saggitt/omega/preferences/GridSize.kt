@@ -21,10 +21,11 @@ import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.util.JavaField
 
 open class GridSize(
-        prefs: OmegaPreferences,
-        rowsKey: String,
-        targetObject: Any,
-        private val onChangeListener: () -> Unit) {
+    prefs: OmegaPreferences,
+    rowsKey: String,
+    targetObject: Any,
+    private val onChangeListener: () -> Unit
+) {
 
     var numRows by JavaField<Int>(targetObject, rowsKey)
     val numRowsOriginal by JavaField<Int>(targetObject, "${rowsKey}Original")

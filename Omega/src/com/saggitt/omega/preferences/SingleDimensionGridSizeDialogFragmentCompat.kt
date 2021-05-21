@@ -23,7 +23,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceDialogFragmentCompat
-import com.android.launcher3.R
+import com.android.launcher3.R.string
 import com.saggitt.omega.util.applyAccent
 
 
@@ -51,14 +51,14 @@ class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentComp
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
 
-        numRowsPicker = view.findViewById(R.id.numRowsPicker)
-        numRowsLabel = view.findViewById(R.id.numRowsLabel)
+        numRowsPicker = view.findViewById(com.android.launcher3.R.id.numRowsPicker)
+        numRowsLabel = view.findViewById(com.android.launcher3.R.id.numRowsLabel)
 
         numRowsPicker.max = maxValue - minValue
         numRowsPicker.progress = numRows - minValue
         numRowsPicker.setOnSeekBarChangeListener(this)
 
-        numRowsLabel.text = "${numRowsPicker.progress + minValue}"
+        numRowsLabel.text = (numRowsPicker.progress + minValue).toString()
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {
@@ -70,9 +70,9 @@ class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentComp
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        builder.setNeutralButton(R.string.theme_default, { _, _ ->
+        builder.setNeutralButton(string.theme_default) { _, _ ->
             gridSizePreference.setSize(0)
-        })
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -82,7 +82,7 @@ class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentComp
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        numRowsLabel.text = "${progress + minValue}"
+        numRowsLabel.text = (progress + minValue).toString()
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {

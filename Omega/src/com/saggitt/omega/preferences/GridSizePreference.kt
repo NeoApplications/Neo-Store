@@ -20,7 +20,7 @@ package com.saggitt.omega.preferences
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
-import com.android.launcher3.R
+import com.android.launcher3.R.layout
 import com.android.launcher3.Utilities
 
 class GridSizePreference(context: Context, attrs: AttributeSet?) :
@@ -50,5 +50,5 @@ class GridSizePreference(context: Context, attrs: AttributeSet?) :
         summary = "${value.first}x${value.second}"
     }
 
-    override fun getDialogLayoutResource() = R.layout.pref_dialog_grid_size
+    override fun getDialogLayoutResource() = layout.pref_dialog_grid_size
 }
