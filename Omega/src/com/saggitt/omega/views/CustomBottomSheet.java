@@ -18,6 +18,8 @@
 
 package com.saggitt.omega.views;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ClipData;
@@ -59,10 +61,8 @@ import com.saggitt.omega.override.CustomInfoProvider;
 import com.saggitt.omega.predictions.CustomAppPredictor;
 import com.saggitt.omega.preferences.MultiSelectTabPreference;
 
-import static android.app.Activity.RESULT_OK;
-
 public class CustomBottomSheet extends WidgetsBottomSheet {
-    private FragmentManager mFragmentManager;
+    private final FragmentManager mFragmentManager;
     private EditText mEditTitle;
     private String mPreviousTitle;
     private ItemInfo mItemInfo;
@@ -256,7 +256,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                     return null;
                 });
             } else {
-                getPreferenceScreen().removePreference((Preference) mSwipeUpPref);
+                getPreferenceScreen().removePreference(mSwipeUpPref);
             }
 
             if (mPrefHidePredictions != null) {
@@ -264,7 +264,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                 mPrefHidePredictions.setOnPreferenceChangeListener(this);
             }
 
-            if (prefs.getShowDebugInfo() && mKey != null && mKey.componentName != null) {
+            if (prefs.getShowDebugInfo() && mKey != null) {
                 Preference componentPref = getPreferenceScreen().findPreference("componentName");
                 Preference versionPref = getPreferenceScreen().findPreference("versionName");
 
@@ -276,7 +276,7 @@ public class CustomBottomSheet extends WidgetsBottomSheet {
                 getPreferenceScreen().removePreference(getPreferenceScreen().findPreference("debug"));
             }
 
-            mPrefHidePredictions = (SwitchPreferenceCompat) getPreferenceScreen()
+            mPrefHidePredictions = getPreferenceScreen()
                     .findPreference(PREF_HIDE_FROM_PREDICTIONS);
             if ((!prefs.getShowPredictions() || HIDE_PREDICTION_OPTION)
                     && mPrefHidePredictions != null) {
