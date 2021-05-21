@@ -15,32 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.model
 
-package com.saggitt.omega.model;
-
-public class AppCountInfo {
-    private String packageName;
-    private int count;
-
-    public AppCountInfo(String name, int count) {
-        this.packageName = name;
-        this.count = count;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-}
-
+class AppCountInfo(var packageName: String, var count: Int)
