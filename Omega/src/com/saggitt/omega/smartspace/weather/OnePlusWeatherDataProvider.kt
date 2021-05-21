@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit
 
 @Keep
 class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.DataProvider(controller), OPWeatherProvider.IWeatherCallback {
+    OmegaSmartspaceController.DataProvider(controller), OPWeatherProvider.IWeatherCallback {
 
     private val provider by lazy { OPWeatherProvider(context) }
     private val locationAccess by lazy { context.checkLocationAccess() }
@@ -51,7 +51,7 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
     private val ipLocation = IPLocation(context)
 
     init {
-        if (!OnePlusWeatherDataProvider.isAvailable(context)) {
+        if (!isAvailable(context)) {
             throw RuntimeException("OP provider is not available")
         }
     }
@@ -71,7 +71,10 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
         if (locationAccess) {
             update(weatherData)
         } else {
-            CustomPermissionManager.getInstance(context).checkOrRequestPermission(CustomPermissionManager.PERMISSION_IPLOCATE, R.string.permission_iplocate_twilight_explanation) {
+            CustomPermissionManager.getInstance(context).checkOrRequestPermission(
+                CustomPermissionManager.PERMISSION_IPLOCATE,
+                R.string.permission_iplocate_twilight_explanation
+            ) {
                 // update regardless of the result
                 update(weatherData)
             }
@@ -81,9 +84,12 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
     private fun update(weatherData: OPWeatherProvider.WeatherData) {
         runOnUiWorkerThread {
             val weather = OmegaSmartspaceController.WeatherData(
-                    getConditionIcon(weatherData),
-                    Temperature(weatherData.temperature, getTemperatureUnit(weatherData)),
-                    forecastIntent = Intent().setClassName(OPWeatherProvider.WEATHER_PACKAGE_NAME, OPWeatherProvider.WEATHER_LAUNCH_ACTIVITY)
+                getConditionIcon(weatherData),
+                Temperature(weatherData.temperature, getTemperatureUnit(weatherData)),
+                forecastIntent = Intent().setClassName(
+                    OPWeatherProvider.WEATHER_PACKAGE_NAME,
+                    OPWeatherProvider.WEATHER_LAUNCH_ACTIVITY
+                )
             )
             runOnMainThread { updateData(weather, null) }
         }
@@ -91,14 +97,20 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
 
     private fun getConditionIcon(data: OPWeatherProvider.WeatherData): Bitmap {
         // let's never again forget that unix timestamps is seconds, not millis
-        val c = Calendar.getInstance().apply { timeInMillis = TimeUnit.SECONDS.toMillis(data.timestamp) }
+        val c = Calendar.getInstance()
+            .apply { timeInMillis = TimeUnit.SECONDS.toMillis(data.timestamp) }
         var isDay = c.get(HOUR_OF_DAY) in 6 until 20
         if (locationAccess) {
             locationManager?.getBestProvider(Criteria(), true)?.let { provider ->
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -109,13 +121,21 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
                     //return
                 }
                 locationManager?.getLastKnownLocation(provider)?.let { location ->
-                    isDay = TwilightManager.calculateTwilightState(location.latitude, location.longitude, c.timeInMillis)?.isNight != true
+                    isDay = TwilightManager.calculateTwilightState(
+                        location.latitude,
+                        location.longitude,
+                        c.timeInMillis
+                    ).isNight != true
                 }
             }
         } else {
             val res = ipLocation.get()
             if (res.success) {
-                isDay = TwilightManager.calculateTwilightState(res.lat, res.lon, c.timeInMillis)?.isNight != true
+                isDay = TwilightManager.calculateTwilightState(
+                    res.lat,
+                    res.lon,
+                    c.timeInMillis
+                ).isNight != true
             }
         }
 
@@ -138,7 +158,11 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
     companion object {
 
         fun isAvailable(context: Context): Boolean {
-            return PackageManagerHelper.isAppEnabled(context.packageManager, OPWeatherProvider.WEATHER_PACKAGE_NAME, 0)
+            return PackageManagerHelper.isAppEnabled(
+                context.packageManager,
+                OPWeatherProvider.WEATHER_PACKAGE_NAME,
+                0
+            )
         }
     }
 }

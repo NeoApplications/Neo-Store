@@ -62,7 +62,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
         bindWidget { }
     }
 
-    protected fun createBindOptions(): Bundle {
+    private fun createBindOptions(): Bundle {
         val idp = LauncherAppState.getIDP(context)
         val opts = Bundle()
         val size = AppWidgetResizeFrame.getWidgetSizeRanges(
@@ -198,8 +198,8 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
 
             val childs = getAllChilds()
             val texts =
-                (childs.filter { it is TextView } as List<TextView>).filter { !TextUtils.isEmpty(it.text) }
-            val images = childs.filter { it is ImageView } as List<ImageView>
+                childs.filterIsInstance<TextView>().filter { !TextUtils.isEmpty(it.text) }
+            val images = childs.filterIsInstance<ImageView>()
 
             var weatherIconView: ImageView? = null
             var cardIconView: ImageView? = null
@@ -251,7 +251,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
             val providers =
                 appWidgetManager.installedProviders.filter { it.provider == smartspaceProviderComponent }
             val provider = providers.firstOrNull()
-            Log.d(TAG, "Provider " + provider)
+            Log.d(TAG, "Provider $provider")
             if (provider != null) {
                 return provider
             } else {

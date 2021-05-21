@@ -21,76 +21,82 @@ package com.saggitt.omega.smartspace.weather.icons
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
 
 class DefaultIconProvider(private val context: Context) : WeatherIconManager.IconProvider {
     override fun getIcon(which: WeatherIconManager.Icon, night: Boolean): Bitmap {
-        return context.resources.getDrawable((if (night) NIGHT_MAP[which] else DAY_MAP[which])
-                ?: NA).toBitmap()!!
+        return ResourcesCompat.getDrawable(
+            context.resources, (if (night) NIGHT_MAP[which] else DAY_MAP[which])
+                ?: NA, null
+        )?.toBitmap()!!
     }
 
     companion object {
         private const val NA = R.drawable.weather_none_available
-        private val DAY_MAP = mapOf<WeatherIconManager.Icon, Int>(
-                WeatherIconManager.Icon.NA to R.drawable.weather_none_available,
-                WeatherIconManager.Icon.DUST to R.drawable.weather_50,
-                WeatherIconManager.Icon.SNOWSTORM to R.drawable.weather_13,
-                WeatherIconManager.Icon.HAIL to R.drawable.weather_10,
-                WeatherIconManager.Icon.CLEAR to R.drawable.weather_01,
-                WeatherIconManager.Icon.MOSTLY_CLEAR to R.drawable.weather_02,
-                WeatherIconManager.Icon.PARTLY_CLOUDY to R.drawable.weather_02,
-                WeatherIconManager.Icon.INTERMITTENT_CLOUDS to R.drawable.weather_03,
-                WeatherIconManager.Icon.HAZY to R.drawable.weather_50,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY to R.drawable.weather_04,
-                WeatherIconManager.Icon.SHOWERS to R.drawable.weather_10,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_SHOWERS to R.drawable.weather_10,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SHOWERS to R.drawable.weather_09,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.ICE to R.drawable.weather_13,
-                WeatherIconManager.Icon.RAIN_AND_SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.FREEZING_RAIN to R.drawable.weather_10,
-                WeatherIconManager.Icon.SLEET to R.drawable.weather_13,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.RAIN to R.drawable.weather_09,
-                WeatherIconManager.Icon.FOG to R.drawable.weather_50,
-                WeatherIconManager.Icon.OVERCAST to R.drawable.weather_04,
-                WeatherIconManager.Icon.CLOUDY to R.drawable.weather_04)
-        private val NIGHT_MAP = mapOf<WeatherIconManager.Icon, Int>(
-                WeatherIconManager.Icon.NA to R.drawable.weather_none_available,
-                WeatherIconManager.Icon.DUST to R.drawable.weather_50,
-                WeatherIconManager.Icon.SNOWSTORM to R.drawable.weather_13,
-                WeatherIconManager.Icon.HAIL to R.drawable.weather_10n,
-                WeatherIconManager.Icon.CLEAR to R.drawable.weather_01n,
-                WeatherIconManager.Icon.MOSTLY_CLEAR to R.drawable.weather_02n,
-                WeatherIconManager.Icon.PARTLY_CLOUDY to R.drawable.weather_02n,
-                WeatherIconManager.Icon.INTERMITTENT_CLOUDS to R.drawable.weather_03n,
-                WeatherIconManager.Icon.HAZY to R.drawable.weather_50,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY to R.drawable.weather_04n,
-                WeatherIconManager.Icon.SHOWERS to R.drawable.weather_10n,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_SHOWERS to R.drawable.weather_10n,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SHOWERS to R.drawable.weather_09,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.THUNDERSTORMS to R.drawable.weather_11,
-                WeatherIconManager.Icon.FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.ICE to R.drawable.weather_13,
-                WeatherIconManager.Icon.RAIN_AND_SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.FREEZING_RAIN to R.drawable.weather_10n,
-                WeatherIconManager.Icon.SLEET to R.drawable.weather_13,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SNOW to R.drawable.weather_13,
-                WeatherIconManager.Icon.PARTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.MOSTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
-                WeatherIconManager.Icon.RAIN to R.drawable.weather_09,
-                WeatherIconManager.Icon.FOG to R.drawable.weather_50,
-                WeatherIconManager.Icon.OVERCAST to R.drawable.weather_04n,
-                WeatherIconManager.Icon.CLOUDY to R.drawable.weather_04n)
+        private val DAY_MAP = mapOf(
+            WeatherIconManager.Icon.NA to R.drawable.weather_none_available,
+            WeatherIconManager.Icon.DUST to R.drawable.weather_50,
+            WeatherIconManager.Icon.SNOWSTORM to R.drawable.weather_13,
+            WeatherIconManager.Icon.HAIL to R.drawable.weather_10,
+            WeatherIconManager.Icon.CLEAR to R.drawable.weather_01,
+            WeatherIconManager.Icon.MOSTLY_CLEAR to R.drawable.weather_02,
+            WeatherIconManager.Icon.PARTLY_CLOUDY to R.drawable.weather_02,
+            WeatherIconManager.Icon.INTERMITTENT_CLOUDS to R.drawable.weather_03,
+            WeatherIconManager.Icon.HAZY to R.drawable.weather_50,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY to R.drawable.weather_04,
+            WeatherIconManager.Icon.SHOWERS to R.drawable.weather_10,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_SHOWERS to R.drawable.weather_10,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SHOWERS to R.drawable.weather_09,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.ICE to R.drawable.weather_13,
+            WeatherIconManager.Icon.RAIN_AND_SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.FREEZING_RAIN to R.drawable.weather_10,
+            WeatherIconManager.Icon.SLEET to R.drawable.weather_13,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.RAIN to R.drawable.weather_09,
+            WeatherIconManager.Icon.FOG to R.drawable.weather_50,
+            WeatherIconManager.Icon.OVERCAST to R.drawable.weather_04,
+            WeatherIconManager.Icon.CLOUDY to R.drawable.weather_04
+        )
+
+        private val NIGHT_MAP = mapOf(
+            WeatherIconManager.Icon.NA to R.drawable.weather_none_available,
+            WeatherIconManager.Icon.DUST to R.drawable.weather_50,
+            WeatherIconManager.Icon.SNOWSTORM to R.drawable.weather_13,
+            WeatherIconManager.Icon.HAIL to R.drawable.weather_10n,
+            WeatherIconManager.Icon.CLEAR to R.drawable.weather_01n,
+            WeatherIconManager.Icon.MOSTLY_CLEAR to R.drawable.weather_02n,
+            WeatherIconManager.Icon.PARTLY_CLOUDY to R.drawable.weather_02n,
+            WeatherIconManager.Icon.INTERMITTENT_CLOUDS to R.drawable.weather_03n,
+            WeatherIconManager.Icon.HAZY to R.drawable.weather_50,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY to R.drawable.weather_04n,
+            WeatherIconManager.Icon.SHOWERS to R.drawable.weather_10n,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_SHOWERS to R.drawable.weather_10n,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SHOWERS to R.drawable.weather_09,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.THUNDERSTORMS to R.drawable.weather_11,
+            WeatherIconManager.Icon.FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.ICE to R.drawable.weather_13,
+            WeatherIconManager.Icon.RAIN_AND_SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.FREEZING_RAIN to R.drawable.weather_10n,
+            WeatherIconManager.Icon.SLEET to R.drawable.weather_13,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_SNOW to R.drawable.weather_13,
+            WeatherIconManager.Icon.PARTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.MOSTLY_CLOUDY_W_FLURRIES to R.drawable.weather_13,
+            WeatherIconManager.Icon.RAIN to R.drawable.weather_09,
+            WeatherIconManager.Icon.FOG to R.drawable.weather_50,
+            WeatherIconManager.Icon.OVERCAST to R.drawable.weather_04n,
+            WeatherIconManager.Icon.CLOUDY to R.drawable.weather_04n
+        )
     }
 }

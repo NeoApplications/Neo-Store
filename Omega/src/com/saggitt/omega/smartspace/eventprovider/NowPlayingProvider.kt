@@ -17,13 +17,11 @@
 
 package com.saggitt.omega.smartspace.eventprovider
 
-import android.os.Handler
 import android.text.TextUtils
-import android.view.View
 import androidx.annotation.Keep
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
-import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line
@@ -31,10 +29,11 @@ import com.saggitt.omega.util.loadSmallIcon
 
 @Keep
 class NowPlayingProvider(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.NotificationBasedDataProvider(controller) {
+    OmegaSmartspaceController.NotificationBasedDataProvider(controller) {
 
     private val media = MediaListener(context, this::reload)
-    private val defaultIcon = context.getDrawable(R.drawable.ic_music_note)!!.toBitmap()
+    private val defaultIcon =
+        AppCompatResources.getDrawable(context, R.drawable.ic_music_note)!!.toBitmap()
 
     init {
         startListening()
@@ -48,7 +47,7 @@ class NowPlayingProvider(controller: OmegaSmartspaceController) :
 
     private fun getEventCard(): CardData? {
         val tracking = media.tracking ?: return null
-        val title = tracking.info.title ?: return null
+        val title = tracking.info?.title ?: return null
 
         val sbn = tracking.sbn
         val icon = sbn?.loadSmallIcon(context)?.toBitmap() ?: defaultIcon
@@ -56,8 +55,8 @@ class NowPlayingProvider(controller: OmegaSmartspaceController) :
         val mediaInfo = tracking.info
         val lines = mutableListOf<Line>()
         lines.add(Line(title))
-        if (!TextUtils.isEmpty(mediaInfo.artist)) {
-            lines.add(Line(mediaInfo.artist.toString()))
+        if (!TextUtils.isEmpty(mediaInfo?.artist)) {
+            lines.add(Line(mediaInfo?.artist.toString()))
         } else if (sbn != null) {
             lines.add(Line(getApp(sbn).toString()))
         } else {
@@ -67,7 +66,7 @@ class NowPlayingProvider(controller: OmegaSmartspaceController) :
         return if (intent != null) {
             CardData(icon, lines, intent, true)
         } else {
-            CardData(icon, lines, View.OnClickListener {
+            CardData(icon, lines, {
                 media.toggle(true)
             }, true)
         }

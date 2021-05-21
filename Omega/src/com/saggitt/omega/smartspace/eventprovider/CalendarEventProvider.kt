@@ -24,6 +24,7 @@ import android.net.Uri
 import android.provider.CalendarContract
 import android.text.TextUtils
 import android.text.format.DateFormat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
@@ -34,17 +35,18 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 
 @SuppressLint("MissingPermission")
-class CalendarEventProvider(controller: OmegaSmartspaceController)
-    : PeriodicDataProvider(controller) {
+class CalendarEventProvider(controller: OmegaSmartspaceController) :
+    PeriodicDataProvider(controller) {
 
     override val requiredPermissions = listOf(android.Manifest.permission.READ_CALENDAR)
     private val calendarProjection = arrayOf(
-            CalendarContract.Instances._ID,
-            CalendarContract.Instances.TITLE,
-            CalendarContract.Instances.DTSTART,
-            CalendarContract.Instances.DTEND,
-            CalendarContract.Instances.EVENT_LOCATION,
-            CalendarContract.Instances.CUSTOM_APP_PACKAGE)
+        CalendarContract.Instances._ID,
+        CalendarContract.Instances.TITLE,
+        CalendarContract.Instances.DTSTART,
+        CalendarContract.Instances.DTEND,
+        CalendarContract.Instances.EVENT_LOCATION,
+        CalendarContract.Instances.CUSTOM_APP_PACKAGE
+    )
 
     private val oneMinute = TimeUnit.MINUTES.toMillis(1)
 
@@ -62,9 +64,14 @@ class CalendarEventProvider(controller: OmegaSmartspaceController)
 
     private fun createEventCard(event: CalendarEvent?): CardData? {
         if (event == null) return null
-        val icon = context.getDrawable(R.drawable.ic_calendar)!!.toBitmap()
+        val icon = AppCompatResources.getDrawable(context, R.drawable.ic_calendar)!!.toBitmap()
         val lines = mutableListOf<Line>()
-        lines.add(Line("${event.title} ${formatTimeRelative(event.start)}", TextUtils.TruncateAt.MIDDLE))
+        lines.add(
+            Line(
+                "${event.title} ${formatTimeRelative(event.start)}",
+                TextUtils.TruncateAt.MIDDLE
+            )
+        )
         val timeText = "${formatTime(event.start)} – ${formatTime(event.end)}"
         if (event.location != null) {
             lines.add(Line("${event.location} $timeText"))
@@ -77,22 +84,24 @@ class CalendarEventProvider(controller: OmegaSmartspaceController)
     private fun getNextEvent(): CalendarEvent? {
         val currentTime = System.currentTimeMillis()
         context.contentResolver.query(
-                CalendarContract.Events.CONTENT_URI,
-                calendarProjection,
-                "${CalendarContract.Events.DTSTART} >= ? AND ${CalendarContract.Events.DTSTART} <= ?",
-                arrayOf("${currentTime - includeBehind}", "${currentTime + includeAhead}"),
-                "${CalendarContract.Events.DTSTART} ASC LIMIT 1")
-                ?.use { c ->
-                    while (c.moveToNext()) {
-                        return CalendarEvent(
-                                c.getLong(c.getColumnIndex(CalendarContract.Events._ID)),
-                                c.getString(c.getColumnIndex(CalendarContract.Events.TITLE)),
-                                c.getLong(c.getColumnIndex(CalendarContract.Events.DTSTART)),
-                                c.getLong(c.getColumnIndex(CalendarContract.Events.DTEND)),
-                                c.getString(c.getColumnIndex(CalendarContract.Events.EVENT_LOCATION)),
-                                c.getString(c.getColumnIndex(CalendarContract.Events.CUSTOM_APP_PACKAGE)))
-                    }
+            CalendarContract.Events.CONTENT_URI,
+            calendarProjection,
+            "${CalendarContract.Events.DTSTART} >= ? AND ${CalendarContract.Events.DTSTART} <= ?",
+            arrayOf("${currentTime - includeBehind}", "${currentTime + includeAhead}"),
+            "${CalendarContract.Events.DTSTART} ASC LIMIT 1"
+        )
+            ?.use { c ->
+                while (c.moveToNext()) {
+                    return CalendarEvent(
+                        c.getLong(c.getColumnIndex(CalendarContract.Events._ID)),
+                        c.getString(c.getColumnIndex(CalendarContract.Events.TITLE)),
+                        c.getLong(c.getColumnIndex(CalendarContract.Events.DTSTART)),
+                        c.getLong(c.getColumnIndex(CalendarContract.Events.DTEND)),
+                        c.getString(c.getColumnIndex(CalendarContract.Events.EVENT_LOCATION)),
+                        c.getString(c.getColumnIndex(CalendarContract.Events.CUSTOM_APP_PACKAGE))
+                    )
                 }
+            }
         return null
     }
 
@@ -113,7 +122,7 @@ class CalendarEventProvider(controller: OmegaSmartspaceController)
                 hoursString
             } else {
                 val minutesString =
-                        res.getQuantityString(R.plurals.smartspace_minutes, minutes, minutes)
+                    res.getQuantityString(R.plurals.smartspace_minutes, minutes, minutes)
                 res.getString(R.string.smartspace_hours_mins, hoursString, minutesString)
             }
         } else {
@@ -131,10 +140,11 @@ class CalendarEventProvider(controller: OmegaSmartspaceController)
     }
 
     data class CalendarEvent(
-            val id: Long,
-            val title: String,
-            val start: Long,
-            val end: Long,
-            val location: String?,
-            val appPackage: String?)
+        val id: Long,
+        val title: String,
+        val start: Long,
+        val end: Long,
+        val location: String?,
+        val appPackage: String?
+    )
 }

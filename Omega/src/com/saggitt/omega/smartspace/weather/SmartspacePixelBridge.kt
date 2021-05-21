@@ -17,7 +17,7 @@
 
 package com.saggitt.omega.smartspace.weather
 
-
+// TODO commented out, should be deleted?
 /*class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
         OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {
 
