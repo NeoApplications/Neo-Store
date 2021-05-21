@@ -27,6 +27,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -78,6 +79,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public static final int VIEW_TYPE_FOLDER = 1 << 6;
     // Web search suggestions
     public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
+    // Web search
+    public static final int VIEW_TYPE_DIRECT_SEARCH = 1 << 8;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -167,6 +170,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     private final AlphabeticalAppsList mApps;
     private final GridLayoutManager mGridLayoutMgr;
     private final GridSpanSizer mGridSizer;
+    protected String mQuery;
     // The text to show when there are no search results and no market search handler.
     protected String mEmptySearchMessage;
     private OnLongClickListener mOnIconLongClickListener = INSTANCE_ALL_APPS;
@@ -244,6 +248,9 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
             case VIEW_TYPE_SEARCH_SUGGESTION:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
 
+            case VIEW_TYPE_DIRECT_SEARCH:
+                return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
+
             default:
                 throw new RuntimeException("Unexpected view type");
         }
@@ -272,6 +279,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public void setLastSearchQuery(String query) {
         Resources res = mLauncher.getResources();
         mEmptySearchMessage = res.getString(R.string.all_apps_no_search_results, query);
+        mQuery = query;
         mMarketSearchIntent = PackageManagerHelper.getMarketSearchIntent(mLauncher, query);
     }
 
@@ -306,6 +314,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        ViewGroup container;
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_ICON:
                 AppInfo info = mApps.getAdapterItems().get(position).appInfo;
@@ -333,7 +342,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 // nothing to do
                 break;
             case VIEW_TYPE_FOLDER:
-                ViewGroup container = (ViewGroup) holder.itemView;
+                container = (ViewGroup) holder.itemView;
                 FolderIcon folderIcon = mApps.getAdapterItems().get(position)
                         .folderItem.getFolderIcon((Launcher) mLauncher, container);
 
@@ -351,16 +360,27 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     color = Themes.getAttrColor(holder.itemView.getContext(), R.color.textColorPrimary);
                 }*/
 
-                ViewGroup group = (ViewGroup) holder.itemView;
-                TextView textView = group.findViewById(R.id.suggestion);
+                container = (ViewGroup) holder.itemView;
+                TextView textView = container.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
                 textView.setText(suggestion);
                 //textView.setTextColor(color);
                 //((ImageView) group.findViewById(android.R.id.icon)).getDrawable().setTint(color);
-                group.setOnClickListener(v -> {
+                container.setOnClickListener(v -> {
                     SearchProvider provider = getSearchProvider();
                     if (provider instanceof WebSearchProvider) {
                         ((WebSearchProvider) provider).openResults(suggestion);
+                    }
+                });
+                break;
+            case VIEW_TYPE_DIRECT_SEARCH:
+                container = (ViewGroup) holder.itemView;
+                TextView directSearchView = (TextView) container.findViewById(R.id.suggestion);
+                directSearchView.setText(String.format(directSearchView.getContext().getString(R.string.web_search_direct), mQuery));
+                ((ImageView) container.findViewById(android.R.id.icon)).setImageDrawable(getSearchProvider().getIcon());
+                container.setOnClickListener(v -> {
+                    if (getSearchProvider() instanceof WebSearchProvider) {
+                        ((WebSearchProvider) getSearchProvider()).openResults(mQuery);
                     }
                 });
                 break;

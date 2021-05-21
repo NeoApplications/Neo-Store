@@ -403,6 +403,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             } else {
                 mAdapterItems.add(AdapterItem.asAllAppsDivider(position++));
             }
+            mAdapterItems.add(AdapterItem.asDirectSearch(position++));
             mAdapterItems.add(AdapterItem.asMarketSearch(position++));
         }
 
@@ -564,7 +565,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         // The type of this item
         public int viewType;
 
-        /** App-only properties */
+        /**
+         * App-only properties
+         */
         // The section name of this app.  Note that there can be multiple items with different
         // sectionNames in the same section
         public String sectionName = null;
@@ -633,6 +636,13 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_SEARCH_SUGGESTION;
             item.position = pos;
             item.suggestion = suggestion;
+            return item;
+        }
+
+        public static AdapterItem asDirectSearch(int pos) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = AllAppsGridAdapter.VIEW_TYPE_DIRECT_SEARCH;
+            item.position = pos;
             return item;
         }
     }
