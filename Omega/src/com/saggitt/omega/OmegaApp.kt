@@ -157,6 +157,7 @@ class OmegaApp : Application() {
 
         private var sApplication: Application? = null
 
+        @JvmStatic
         fun get(context: Context): OmegaApp {
             return context.applicationContext as OmegaApp
         }
