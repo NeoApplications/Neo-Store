@@ -32,7 +32,7 @@
     <dimen name="dynamic_grid_hotseat_bottom_padding">62dp</dimen>
     <!-- Extra bottom padding for non-tall devices. -->
     <dimen name="dynamic_grid_hotseat_bottom_non_tall_padding">0dp</dimen>
-    <dimen name="dynamic_grid_hotseat_extra_vertical_size">24dp</dimen>
+    <dimen name="dynamic_grid_hotseat_extra_vertical_size">12dp</dimen>
     <dimen name="dynamic_grid_hotseat_side_padding">0dp</dimen>
 
     <dimen name="noqsb_hotseat_top_padding">4dp</dimen>
