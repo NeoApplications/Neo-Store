@@ -19,7 +19,8 @@ import com.android.launcher3.views.BaseDragLayer.TouchCompleteListener
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.views.OptionsPopupView.OptionItem
 
-class SmartSpaceHostView(context: Context?) : QsbWidgetHostView(context), OnLongClickListener, TouchCompleteListener {
+class SmartSpaceHostView(context: Context?) : QsbWidgetHostView(context), OnLongClickListener,
+    TouchCompleteListener {
     private val mLauncher: Launcher = Launcher.getLauncher(context)
     private val mLongPressHelper: CheckLongPressHelper = CheckLongPressHelper(this, this)
 
@@ -39,9 +40,12 @@ class SmartSpaceHostView(context: Context?) : QsbWidgetHostView(context), OnLong
         centerPos.left = centerPos.right
         centerPos.top = 0f
         centerPos.bottom = pos.bottom.toFloat()
-        centerPos.bottom = findBottomRecur(this, pos.top, pos).toFloat().coerceAtMost(centerPos.bottom)
-        val item = OptionItem(R.string.smartspace_preferences,
-                R.drawable.ic_smartspace_preferences, NexusLauncherEnum.SMARTSPACE_TAP_OR_LONGPRESS, { v: View -> openSettings(v) })
+        centerPos.bottom =
+            findBottomRecur(this, pos.top, pos).toFloat().coerceAtMost(centerPos.bottom)
+        val item = OptionItem(
+            R.string.smartspace_preferences,
+            R.drawable.ic_smartspace_preferences, NexusLauncherEnum.SMARTSPACE_TAP_OR_LONGPRESS
+        ) { v: View -> openSettings(v) }
         OptionsPopupView.show(mLauncher, centerPos, listOf(item))
         return true
     }
@@ -94,17 +98,19 @@ class SmartSpaceHostView(context: Context?) : QsbWidgetHostView(context), OnLong
         private const val SETTINGS_INTENT_ACTION = "com.google.android.apps.gsa.smartspace.SETTINGS"
         fun hasSettings(context: Context): Boolean {
             val info = context.packageManager
-                    .resolveActivity(createSettingsIntent(), 0)
+                .resolveActivity(createSettingsIntent(), 0)
             return info != null
         }
 
         fun createSettingsIntent(): Intent {
             return Intent(SETTINGS_INTENT_ACTION)
-                    .setPackage(SmartspaceQsb.WIDGET_PACKAGE_NAME)
-                    .setFlags(Intent.FLAG_RECEIVER_FOREGROUND
+                .setPackage(SmartspaceQsb.WIDGET_PACKAGE_NAME)
+                .setFlags(
+                    Intent.FLAG_RECEIVER_FOREGROUND
                             or Intent.FLAG_ACTIVITY_NO_HISTORY
                             or Intent.FLAG_ACTIVITY_NEW_TASK
-                            or Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+                            or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                )
         }
     }
 

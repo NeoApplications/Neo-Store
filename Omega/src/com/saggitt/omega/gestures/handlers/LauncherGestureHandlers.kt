@@ -251,7 +251,8 @@ class StartAppGestureHandler(context: Context, config: JSONObject?) :
             type = data.getStringExtra("type")
             when (type) {
                 "app" -> {
-                    target = Utilities.makeComponentKey(context, data.getStringExtra("target"))
+                    target =
+                        Utilities.makeComponentKey(context, data.getStringExtra("target") ?: "")
                 }
                 "shortcut" -> {
                     intent = Intent.parseUri(data.getStringExtra("intent"), 0)

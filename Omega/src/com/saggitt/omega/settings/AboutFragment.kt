@@ -62,7 +62,7 @@ import java.util.*
 
 class AboutFragment : Fragment() {
 
-    private val MODE_TOTAL = 3
+    private val modeTotal = 3
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,7 +86,7 @@ class AboutFragment : Fragment() {
         )
 
         val viewPager = view.findViewById<ViewPager>(R.id.pager).apply {
-            offscreenPageLimit = MODE_TOTAL - 1
+            offscreenPageLimit = modeTotal - 1
             adapter = CustomPagerAdapter(lists as Array<View>, titles)
         }
 
@@ -158,17 +158,17 @@ class AboutFragment : Fragment() {
 
             val developer = view.findViewById<ConstraintLayout>(R.id.developer)
             developer.setOnClickListener {
-                Utilities.openURLinBrowser(context, "https://github.com/otakuhqz")
+                Utilities.openURLinBrowser(requireContext(), "https://github.com/otakuhqz")
             }
 
             val contrib1 = view.findViewById<ConstraintLayout>(R.id.contributor1)
             contrib1.setOnClickListener {
-                Utilities.openURLinBrowser(context, "https://github.com/machiav3lli")
+                Utilities.openURLinBrowser(requireContext(), "https://github.com/machiav3lli")
             }
 
             val contrib2 = view.findViewById<ConstraintLayout>(R.id.contributor2)
             contrib2.setOnClickListener {
-                Utilities.openURLinBrowser(context, "https://github.com/nonaybay")
+                Utilities.openURLinBrowser(requireContext(), "https://github.com/nonaybay")
             }
 
             val cssFile = if (isDark) {
@@ -258,7 +258,7 @@ class AboutFragment : Fragment() {
         buildInfo.text = Html.fromHtml(buildInfoText, Html.FROM_HTML_MODE_COMPACT)
         buildInfo.setOnClickListener {
             Toast.makeText(context, R.string.debug_component_name_copied, Toast.LENGTH_SHORT).show()
-            Utilities.setClipboard(context, buildInfo.text)
+            Utilities.setClipboard(requireContext(), buildInfo.text)
         }
     }
 

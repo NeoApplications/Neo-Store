@@ -36,6 +36,7 @@ import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
+// TODO remove use of Handler()
 class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.Holder>() {
     private val prefs = context.omegaPrefs
     private val allItems = ArrayList<ProviderItem>()
@@ -141,7 +142,11 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         notifyItemMoved(from, to)
     }
 
-    private inline fun createHolder(parent: ViewGroup, resource: Int, creator: (View) -> Holder): Holder {
+    private inline fun createHolder(
+        parent: ViewGroup,
+        resource: Int,
+        creator: (View) -> Holder
+    ): Holder {
         return creator(LayoutInflater.from(parent.context).inflate(resource, parent, false))
     }
 
@@ -166,9 +171,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
     }
 
     abstract class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        open fun bind(item: Item) {
-
-        }
+        open fun bind(item: Item) {}
     }
 
     class HeaderHolder(itemView: View) : Holder(itemView) {
@@ -196,7 +199,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         override fun bind(item: Item) {
             val mDashItem = item as? ProviderItem
                 ?: throw IllegalArgumentException("item must be DashProviderItem. Item is ${item.type}")
-            icon.setImageDrawable(mDashItem.info.getIcon())
+            icon.setImageDrawable(mDashItem.info.icon)
             title.text = mDashItem.info.name
             summary.text = mDashItem.info.description
             summary.visibility = View.VISIBLE
@@ -253,23 +256,32 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
             handler.post { notifyItemChanged(dividerIndex) }
         }
 
-        override fun canDropOver(recyclerView: RecyclerView, current: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return target.adapterPosition in 1..dividerIndex
+        override fun canDropOver(
+            recyclerView: RecyclerView,
+            current: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return target.bindingAdapterPosition in 1..dividerIndex
         }
 
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-            val item = adapterItems[viewHolder.adapterPosition]
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            val item = adapterItems[viewHolder.bindingAdapterPosition]
             val dragFlags = if (item.isStatic) 0 else ItemTouchHelper.UP or ItemTouchHelper.DOWN
             return makeMovementFlags(dragFlags, 0)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return move(viewHolder.adapterPosition, target.adapterPosition)
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-        }
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
     }
 
     companion object {

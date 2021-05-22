@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.gestures
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -56,7 +55,7 @@ class OmegaShortcutActivity : SettingsBaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             selectedHandler?.onConfigResult(data)
             saveChanges()
         }
@@ -69,10 +68,14 @@ class OmegaShortcutActivity : SettingsBaseActivity() {
             `package` = packageName
             putExtra(EXTRA_HANDLER, selectedHandler.toString())
         }
-
         val icon = if (selectedHandler?.icon != null)
-            launcherIcons.createScaledBitmapWithoutShadow(selectedHandler?.icon, Build.VERSION.SDK_INT)
+            launcherIcons.createScaledBitmapWithoutShadow(
+                selectedHandler?.icon,
+                Build.VERSION.SDK_INT
+            )
         else null
+
+        // TODO move to use ShortcutManager.createShortcutResultIntent()
         val intent = Intent().apply {
             putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
             putExtra(Intent.EXTRA_SHORTCUT_NAME, selectedHandler?.displayName)
@@ -81,7 +84,7 @@ class OmegaShortcutActivity : SettingsBaseActivity() {
             else
                 putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, selectedHandler?.iconResource)
         }
-        setResult(AppCompatActivity.RESULT_OK, intent)
+        setResult(RESULT_OK, intent)
         finish()
     }
 

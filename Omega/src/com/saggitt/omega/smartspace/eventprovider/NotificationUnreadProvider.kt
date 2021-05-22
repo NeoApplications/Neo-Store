@@ -20,6 +20,7 @@ package com.saggitt.omega.smartspace.eventprovider
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import androidx.annotation.Keep
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
@@ -34,10 +35,11 @@ import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line
 import com.saggitt.omega.util.loadSmallIcon
 import com.saggitt.omega.util.runOnMainThread
 import com.saggitt.omega.util.runOnUiWorkerThread
+
 @Keep
 class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.NotificationBasedDataProvider(controller),
-        NotificationsManager.OnChangeListener {
+    OmegaSmartspaceController.NotificationBasedDataProvider(controller),
+    NotificationsManager.OnChangeListener {
 
     private val manager = NotificationsManager
     private var flowerpotLoaded = false
@@ -61,7 +63,7 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         zenModeListener.startListening()
         runOnUiWorkerThread {
             flowerpotApps = Flowerpot.Manager.getInstance(controller.context)
-                    .getPot("COMMUNICATION", true)?.apps
+                .getPot("COMMUNICATION", true)?.apps
             flowerpotLoaded = true
             onNotificationsChanged()
         }
@@ -94,8 +96,9 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
 
         if (zenModeEnabled) {
             return CardData(
-                    context.getDrawable(R.drawable.ic_zen_mode)!!.toBitmap(),
-                    listOf(Line(context.getString(R.string.zen_mode_enabled))))
+                AppCompatResources.getDrawable(context, R.drawable.ic_zen_mode)!!.toBitmap(),
+                listOf(Line(context.getString(R.string.zen_mode_enabled)))
+            )
         }
 
         val context = controller.context
@@ -116,8 +119,9 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
             lines.add(appLine)
         }
         return CardData(
-                sbn.loadSmallIcon(context)?.toBitmap(), lines,
-                OmegaSmartspaceController.NotificationClickListener(sbn))
+            sbn.loadSmallIcon(context)?.toBitmap(), lines,
+            OmegaSmartspaceController.NotificationClickListener(sbn)
+        )
     }
 
     private fun splitTitle(title: String): Array<String> {

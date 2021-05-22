@@ -15,24 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.settings.controllers
 
-package com.saggitt.omega.settings.controllers;
+import android.content.Context
+import com.android.launcher3.Utilities
+import com.saggitt.omega.preferences.PreferenceController
 
-import android.content.Context;
-
-import com.android.launcher3.Utilities;
-import com.saggitt.omega.preferences.PreferenceController;
-
-import org.jetbrains.annotations.NotNull;
-
-public class IconShapeOverrideController extends PreferenceController {
-
-    public IconShapeOverrideController(@NotNull Context context) {
-        super(context);
-    }
-
-    @Override
-    public boolean isVisible() {
-        return Utilities.ATLEAST_OREO;
-    }
+class IconShapeOverrideController(context: Context) : PreferenceController(context) {
+    override val isVisible: Boolean
+        get() = Utilities.ATLEAST_OREO
 }

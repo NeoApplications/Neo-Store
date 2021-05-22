@@ -49,9 +49,9 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
 
         val circularListView = findViewById<View>(R.id.my_circular_list) as DashListView
         mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        adapter = DashItemAdapter(mInflater, items, context)
+        adapter = DashItemAdapter(mInflater!!, items, context)
         circularListView.setAdapter(adapter)
-        circularListView.setRadius(150f)
+        circularListView.altSetRadius(150f)
     }
 
     private fun checkAndAddProvider(s: String): DashProvider? {

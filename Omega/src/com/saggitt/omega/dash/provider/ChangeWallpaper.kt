@@ -18,12 +18,12 @@
 
 package com.saggitt.omega.dash.provider
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 
@@ -31,16 +31,14 @@ class ChangeWallpaper(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.wallpaper_pick)
     override val description = context.getString(R.string.wallpaper_pick_summary)
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_wallpaper).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_wallpaper).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
+    override fun runAction(context: Context) {
         try {
-            context!!.startActivity(
+            context.startActivity(
                 Intent.createChooser(
                     Intent(Intent.ACTION_SET_WALLPAPER),
                     context.getString(R.string.wallpaper_pick)

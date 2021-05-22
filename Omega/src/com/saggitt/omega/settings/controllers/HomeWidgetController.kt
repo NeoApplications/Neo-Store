@@ -15,27 +15,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.settings.controllers
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
-import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import android.content.pm.PackageManager
+import com.saggitt.omega.preferences.PreferenceController
+import com.saggitt.omega.util.Config
 
-class OpenDeviceSetting(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.dash_device_settings_title)
-    override val description = context.getString(R.string.dash_device_settings_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_build).apply {
-            this?.setTint(darkenColor(accentColor))
+class HomeWidgetController(private val mContext: Context) : PreferenceController(mContext) {
+    override val isVisible: Boolean
+        get() {
+            val pm = mContext.packageManager
+            return isPackageInstalled(Config.GOOGLE_QSB, pm)
         }
 
-    override fun runAction(context: Context) {
-        context.startActivity(Intent(Settings.ACTION_SETTINGS))
+    private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+        return try {
+            val ai = packageManager.getApplicationInfo(packageName, 0)
+            ai.enabled
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
     }
 }

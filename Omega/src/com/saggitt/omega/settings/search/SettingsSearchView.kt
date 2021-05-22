@@ -43,8 +43,10 @@ class SettingsSearchView(context: Context, attrs: AttributeSet?) : SearchView(co
         val typeface = customTypeface
         if (Utilities.ATLEAST_P && hint != null && typeface != null) {
             val styled = SpannableString(hint)
-            styled.setSpan(TypefaceSpan(typeface), 0, styled.length,
-                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+            styled.setSpan(
+                TypefaceSpan(typeface), 0, styled.length,
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+            )
             super.setQueryHint(styled)
         } else {
             super.setQueryHint(hint)

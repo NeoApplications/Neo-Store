@@ -15,27 +15,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.views
 
-package com.saggitt.omega.dash.provider
-
+import android.app.FragmentManager
 import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
+import android.util.AttributeSet
+import com.android.launcher3.Launcher
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
 
-class MobileNetwork(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.dash_mobile_network_title)
-    override val description = context.getString(R.string.dash_mobile_network_summary)
+// TODO: not used class, should be removed?
+class GBillingDialog @JvmOverloads constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int = 0) :
+    BaseBottomSheet(context, attrs, defStyleAttr) {
+    private val mFragmentManager: FragmentManager = mLauncher.fragmentManager
+    fun populateAndShow() {}
 
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_network).apply {
-            this?.setTint(darkenColor(accentColor))
+    companion object {
+        fun show(launcher: Launcher) {
+            val gbd = launcher.layoutInflater
+                .inflate(R.layout.billing_dialog, launcher.dragLayer, false) as GBillingDialog
+            gbd.populateAndShow()
         }
-
-    override fun runAction(context: Context) {
-        context.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
     }
 }

@@ -38,25 +38,27 @@ import com.android.systemui.shared.system.WindowManagerWrapper
 import com.android.systemui.shared.system.WindowManagerWrapper.NAV_BAR_POS_LEFT
 import com.android.systemui.shared.system.WindowManagerWrapper.NAV_BAR_POS_RIGHT
 import com.saggitt.omega.OmegaLauncher
-import java.lang.Math.atan2
-import java.lang.Math.hypot
+import kotlin.math.atan2
+import kotlin.math.hypot
 
 class GestureTouchConsumer(
-        private val context: Context,
-        private val leftRegion: RectF,
-        private val rightRegion: RectF,
-        private val activityControlHelper: BaseActivityInterface<*, *>,
-        delegate: InputConsumer, inputMonitor: InputMonitorCompat)
-    : DelegateInputConsumer(delegate, inputMonitor) {
+    private val context: Context,
+    private val leftRegion: RectF,
+    private val rightRegion: RectF,
+    private val activityControlHelper: BaseActivityInterface<*, *>,
+    delegate: InputConsumer, inputMonitor: InputMonitorCompat
+) : DelegateInputConsumer(delegate, inputMonitor) {
 
     private val launcher get() = activityControlHelper.createdActivity as? OmegaLauncher
     private val controller get() = launcher?.gestureController
     private var gestureHandler: GestureHandler? = null
 
     private val gestureDetector = GestureDetector(context, object :
-            GestureDetector.SimpleOnGestureListener() {
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float,
-                             velocityY: Float): Boolean {
+        GestureDetector.SimpleOnGestureListener() {
+        override fun onFling(
+            e1: MotionEvent, e2: MotionEvent, velocityX: Float,
+            velocityY: Float
+        ): Boolean {
             return this@GestureTouchConsumer.onFling(velocityX, velocityY)
         }
     })
@@ -71,7 +73,8 @@ class GestureTouchConsumer(
     private var timeFraction = 0f
     private var dragTime = 0L
     private var distance = 0f
-    private val distThreshold = context.resources.getDimension(R.dimen.gestures_assistant_drag_threshold)
+    private val distThreshold =
+        context.resources.getDimension(R.dimen.gestures_assistant_drag_threshold)
 
     private val squaredSlop = ViewConfiguration.get(context).scaledTouchSlop.let { it * it }
 
@@ -104,8 +107,9 @@ class GestureTouchConsumer(
                     if (ptrId == activePointerId) {
                         val newPointerIdx = if (ptrIdx == 0) 1 else 0
                         downPos.set(
-                                ev.getX(newPointerIdx) - (lastPos.x - downPos.x),
-                                ev.getY(newPointerIdx) - (lastPos.y - downPos.y))
+                            ev.getX(newPointerIdx) - (lastPos.x - downPos.x),
+                            ev.getY(newPointerIdx) - (lastPos.y - downPos.y)
+                        )
                         lastPos.set(ev.getX(newPointerIdx), ev.getY(newPointerIdx))
                         activePointerId = ev.getPointerId(newPointerIdx)
                     }
@@ -119,7 +123,11 @@ class GestureTouchConsumer(
                     if (pointerIndex != -1) {
                         lastPos.set(ev.getX(pointerIndex), ev.getY(pointerIndex))
                         if (!passedSlop) {
-                            if (squaredHypot(lastPos.x - downPos.x, lastPos.y - downPos.y) > squaredSlop) {
+                            if (squaredHypot(
+                                    lastPos.x - downPos.x,
+                                    lastPos.y - downPos.y
+                                ) > squaredSlop
+                            ) {
                                 passedSlop = true
                                 startDragPos.set(lastPos)
                                 dragTime = SystemClock.uptimeMillis()
@@ -132,8 +140,9 @@ class GestureTouchConsumer(
                             }
                         } else {
                             distance = hypot(
-                                    (lastPos.x - startDragPos.x).toDouble(),
-                                    (lastPos.y - startDragPos.y).toDouble()).toFloat()
+                                (lastPos.x - startDragPos.x).toDouble(),
+                                (lastPos.y - startDragPos.y).toDouble()
+                            ).toFloat()
                             if (distance >= distThreshold && !triggeredGesture) {
                                 triggerGesture()
                             }
@@ -157,8 +166,9 @@ class GestureTouchConsumer(
         val handler = gestureHandler ?: return
         if (!handler.requiresForeground) {
             launcher?.rootView?.performHapticFeedback(
-                    HapticFeedbackConstants.VIRTUAL_KEY,
-                    HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
+                HapticFeedbackConstants.VIRTUAL_KEY,
+                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+            )
             handler.onGestureTrigger(controller!!)
         }
     }
@@ -212,8 +222,14 @@ class NavSwipeUpGesture(controller: GestureController) : Gesture(controller) {
     override val isEnabled = true
 
     private val blankHandler = controller.blankGestureHandler
-    private val leftHandlerPref by controller.createHandlerPref("pref_gesture_nav_swipe_up_left", blankHandler)
-    private val rightHandlerPref by controller.createHandlerPref("pref_gesture_nav_swipe_up_right", blankHandler)
+    private val leftHandlerPref by controller.createHandlerPref(
+        "pref_gesture_nav_swipe_up_left",
+        blankHandler
+    )
+    private val rightHandlerPref by controller.createHandlerPref(
+        "pref_gesture_nav_swipe_up_right",
+        blankHandler
+    )
 
     val leftHandler get() = leftHandlerPref.takeUnless { it is BlankGestureHandler }
     val rightHandler get() = rightHandlerPref.takeUnless { it is BlankGestureHandler }

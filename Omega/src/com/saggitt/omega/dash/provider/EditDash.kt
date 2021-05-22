@@ -18,9 +18,9 @@
 
 package com.saggitt.omega.dash.provider
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 import com.saggitt.omega.settings.SettingsActivity
@@ -29,14 +29,12 @@ class EditDash(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.edit_dash)
     override val description = context.getString(R.string.edit_dash_summary)
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_edit_no_shadow).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_no_shadow).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
+    override fun runAction(context: Context) {
         val fragment = "com.saggitt.omega.dash.DashFragment"
         SettingsActivity.startFragment(context, fragment, R.string.edit_dash)
     }

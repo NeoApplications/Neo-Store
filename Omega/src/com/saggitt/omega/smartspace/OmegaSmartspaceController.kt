@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
@@ -42,9 +43,9 @@ import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.settings.SettingsActivity
-import com.saggitt.omega.settings.SettingsActivity.NOTIFICATION_BADGING
-import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.CONTENT_RES_ID
-import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.TITLE
+import com.saggitt.omega.settings.SettingsActivity.Companion.NOTIFICATION_BADGING
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.CONTENT_RES_ID
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.TITLE
 import com.saggitt.omega.smartspace.eventprovider.*
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
@@ -64,7 +65,8 @@ class OmegaSmartspaceController(val context: Context) {
     private val eventDataMap = mutableMapOf<DataProvider, CardData?>()
 
     private val stockProviderClasses = listOf(
-            OnboardingProvider::class.java)
+        OnboardingProvider::class.java
+    )
     private val stockProviders = mutableListOf<DataProvider>()
 
     var requiresSetup = false
@@ -81,7 +83,7 @@ class OmegaSmartspaceController(val context: Context) {
         }
 
         val provider = (listOf(weatherDataProvider) + eventDataProviders)
-                .firstOrNull { !it.listening && it.requiresSetup() }
+            .firstOrNull { !it.listening && it.requiresSetup() }
 
         if (provider != null) {
             provider.startSetup { success ->
@@ -95,8 +97,8 @@ class OmegaSmartspaceController(val context: Context) {
                     }
                     if (eventDataProviders.contains(provider)) {
                         eventProvidersPref.setAll(eventDataProviders
-                                .filter { it != provider }
-                                .map { it::class.java.name })
+                            .filter { it != provider }
+                            .map { it::class.java.name })
                     }
                     onProviderChanged()
                 }
@@ -126,8 +128,8 @@ class OmegaSmartspaceController(val context: Context) {
     fun forceUpdate() {
         val allProviders = stockProviders.asSequence() + eventDataProviders.asSequence()
         val eventData = allProviders
-                .mapNotNull { eventDataMap[it] }
-                .firstOrNull()
+            .mapNotNull { eventDataMap[it] }
+            .firstOrNull()
         updateData(weatherData, eventData)
     }
 
@@ -156,14 +158,15 @@ class OmegaSmartspaceController(val context: Context) {
         val weatherClass = weatherProviderPref.get()
         val eventClasses = eventProvidersPref.getAll()
         if (weatherClass == weatherDataProvider::class.java.name
-                && eventClasses == eventDataProviders.map { it::class.java.name }) {
+            && eventClasses == eventDataProviders.map { it::class.java.name }
+        ) {
             forceUpdate()
             return
         }
 
         val activeProviders = eventDataProviders + weatherDataProvider
         val providerCache = activeProviders
-                .associateByTo(mutableMapOf()) { it::class.java.name }
+            .associateByTo(mutableMapOf()) { it::class.java.name }
         val getProvider = { name: String ->
             providerCache.getOrPut(name) { createDataProvider(name) }
         }
@@ -173,9 +176,9 @@ class OmegaSmartspaceController(val context: Context) {
         weatherDataProvider.weatherUpdateListener = ::updateWeatherData
         eventDataProviders.clear()
         eventClasses
-                .map { getProvider(it) }
-                .filterTo(eventDataProviders) { it !is BlankDataProvider }
-                .forEach { it.cardUpdateListener = ::updateCardData }
+            .map { getProvider(it) }
+            .filterTo(eventDataProviders) { it !is BlankDataProvider }
+            .forEach { it.cardUpdateListener = ::updateCardData }
 
         val allProviders = providerCache.values.toSet()
         val newProviders = setOf(weatherDataProvider) + eventDataProviders
@@ -205,9 +208,9 @@ class OmegaSmartspaceController(val context: Context) {
     private fun initStockProviders() {
         val providers = mutableListOf<DataProvider>()
         stockProviderClasses
-                .map { createDataProvider(it.name) }
-                .filterTo(providers) { it !is BlankDataProvider }
-                .forEach { it.cardUpdateListener = ::updateCardData }
+            .map { createDataProvider(it.name) }
+            .filterTo(providers) { it !is BlankDataProvider }
+            .forEach { it.cardUpdateListener = ::updateCardData }
 
         stockProviders.addAll(providers)
         providers.forEach { it.forceUpdate() }
@@ -221,30 +224,40 @@ class OmegaSmartspaceController(val context: Context) {
     fun openWeather(v: View) {
         val data = weatherData ?: return
         val launcher = Launcher.getLauncher(v.context)
-        if (data.pendingIntent != null) {
-            val opts = launcher.getActivityLaunchOptionsAsBundle(v)
-            launcher.startIntentSender(
+        when {
+            data.pendingIntent != null -> {
+                val opts = launcher.getActivityLaunchOptionsAsBundle(v)
+                launcher.startIntentSender(
                     data.pendingIntent.intentSender, null,
                     Intent.FLAG_ACTIVITY_NEW_TASK,
-                    Intent.FLAG_ACTIVITY_NEW_TASK, 0, opts)
-        } else if (data.forecastIntent != null) {
-            launcher.startActivitySafely(v, data.forecastIntent, null, null)
-        } else if (PackageManagerHelper.isAppEnabled(launcher.packageManager, Config.GOOGLE_QSB, 0)) {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("dynact://velour/weather/ProxyActivity")
-            intent.component = ComponentName(Config.GOOGLE_QSB,
-                    "com.google.android.apps.gsa.velour.DynamicActivityTrampoline")
-            launcher.startActivitySafely(v, intent, null, null)
-        } else {
-            Utilities.openURLinBrowser(launcher, data.forecastUrl,
-                    launcher.getViewBounds(v), launcher.getActivityLaunchOptions(v).toBundle())
+                    Intent.FLAG_ACTIVITY_NEW_TASK, 0, opts
+                )
+            }
+            data.forecastIntent != null -> {
+                launcher.startActivitySafely(v, data.forecastIntent, null, null)
+            }
+            PackageManagerHelper.isAppEnabled(launcher.packageManager, Config.GOOGLE_QSB, 0) -> {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("dynact://velour/weather/ProxyActivity")
+                intent.component = ComponentName(
+                    Config.GOOGLE_QSB,
+                    "com.google.android.apps.gsa.velour.DynamicActivityTrampoline"
+                )
+                launcher.startActivitySafely(v, intent, null, null)
+            }
+            else -> {
+                Utilities.openURLinBrowser(
+                    launcher, data.forecastUrl,
+                    launcher.getViewBounds(v), launcher.getActivityLaunchOptions(v).toBundle()
+                )
+            }
         }
     }
 
     private fun createDataProvider(className: String): DataProvider {
         return try {
             (Class.forName(className).getConstructor(OmegaSmartspaceController::class.java)
-                    .newInstance(this) as DataProvider)
+                .newInstance(this) as DataProvider)
         } catch (t: Throwable) {
             Log.d("SmartspaceController", "couldn't create provider", t)
             BlankDataProvider(this)
@@ -262,7 +275,7 @@ class OmegaSmartspaceController(val context: Context) {
         private var currentCard: CardData? = null
 
         protected val context = controller.context
-        protected val resources = context.resources
+        protected val resources: Resources = context.resources
 
         protected open val requiredPermissions = emptyList<String>()
 
@@ -274,7 +287,11 @@ class OmegaSmartspaceController(val context: Context) {
                 return
             }
 
-            BlankActivity.requestPermissions(context, requiredPermissions.toTypedArray(), 1031) { _, _, results ->
+            BlankActivity.requestPermissions(
+                context,
+                requiredPermissions.toTypedArray(),
+                1031
+            ) { _, _, results ->
                 onFinish(results.all { it == PERMISSION_GRANTED })
             }
         }
@@ -306,7 +323,8 @@ class OmegaSmartspaceController(val context: Context) {
             val pm = controller.context.packageManager
             try {
                 return pm.getApplicationLabel(
-                        pm.getApplicationInfo(name, PackageManager.GET_META_DATA))
+                    pm.getApplicationInfo(name, PackageManager.GET_META_DATA)
+                )
             } catch (ignored: PackageManager.NameNotFoundException) {
             }
 
@@ -316,10 +334,12 @@ class OmegaSmartspaceController(val context: Context) {
         protected fun getApp(sbn: StatusBarNotification): CharSequence {
             val context = controller.context
             val subName = sbn.notification.extras.getString(EXTRA_SUBSTITUTE_APP_NAME)
-            if (subName != null) {
-                if (context.checkPackagePermission(sbn.packageName, PERM_SUBSTITUTE_APP_NAME)) {
-                    return subName
-                }
+            if (subName != null && context.checkPackagePermission(
+                    sbn.packageName,
+                    PERM_SUBSTITUTE_APP_NAME
+                )
+            ) {
+                return subName
             }
             return getApp(sbn.packageName)
         }
@@ -331,14 +351,17 @@ class OmegaSmartspaceController(val context: Context) {
 
         companion object {
 
-            private const val PERM_SUBSTITUTE_APP_NAME = "android.permission.SUBSTITUTE_NOTIFICATION_APP_NAME"
+            private const val PERM_SUBSTITUTE_APP_NAME =
+                "android.permission.SUBSTITUTE_NOTIFICATION_APP_NAME"
             private const val EXTRA_SUBSTITUTE_APP_NAME = "android.substName"
         }
     }
 
-    abstract class PeriodicDataProvider(controller: OmegaSmartspaceController) : DataProvider(controller) {
+    abstract class PeriodicDataProvider(controller: OmegaSmartspaceController) :
+        DataProvider(controller) {
 
-        private val handlerThread = HandlerThread(this::class.java.simpleName).apply { if (!isAlive) start() }
+        private val handlerThread =
+            HandlerThread(this::class.java.simpleName).apply { if (!isAlive) start() }
         private val handler = Handler(handlerThread.looper)
         private val update = ::periodicUpdate
 
@@ -387,7 +410,7 @@ class OmegaSmartspaceController(val context: Context) {
     }
 
     abstract class NotificationBasedDataProvider(controller: OmegaSmartspaceController) :
-            DataProvider(controller) {
+        DataProvider(controller) {
 
         override fun startSetup(onFinish: (Boolean) -> Unit) {
             if (checkNotificationAccess()) {
@@ -401,25 +424,30 @@ class OmegaSmartspaceController(val context: Context) {
             val msg: String
             if (Utilities.ATLEAST_OREO) {
                 intent = Intent(context, SettingsActivity::class.java)
-                        .putExtra(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, "pref_icon_badging")
-                        .putExtra(TITLE, context.getString(R.string.title__general_desktop))
-                        .putExtra(CONTENT_RES_ID, R.xml.omega_preferences_notification)
-                msg = context.getString(R.string.event_provider_missing_notification_dots,
-                        context.getString(providerName))
+                    .putExtra(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, "pref_icon_badging")
+                    .putExtra(TITLE, context.getString(R.string.title__general_desktop))
+                    .putExtra(CONTENT_RES_ID, R.xml.omega_preferences_notification)
+                msg = context.getString(
+                    R.string.event_provider_missing_notification_dots,
+                    context.getString(providerName)
+                )
             } else {
                 val cn = ComponentName(context, NotificationListener::class.java)
                 intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .putExtra(":settings:fragment_args_key", cn.flattenToString())
-                msg = context.getString(R.string.event_provider_missing_notification_access,
-                        context.getString(providerName),
-                        context.getString(R.string.derived_app_name))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(":settings:fragment_args_key", cn.flattenToString())
+                msg = context.getString(
+                    R.string.event_provider_missing_notification_access,
+                    context.getString(providerName),
+                    context.getString(R.string.derived_app_name)
+                )
             }
             BlankActivity.startActivityWithDialog(
-                    context, intent, 1030,
-                    context.getString(R.string.title_missing_notification_access),
-                    msg,
-                    context.getString(R.string.title_change_settings)) {
+                context, intent, 1030,
+                context.getString(R.string.title_missing_notification_access),
+                msg,
+                context.getString(R.string.title_change_settings)
+            ) {
                 onFinish(checkNotificationAccess())
             }
         }
@@ -427,50 +455,66 @@ class OmegaSmartspaceController(val context: Context) {
         private fun checkNotificationAccess(): Boolean {
             val context = controller.context
             val enabledListeners = Settings.Secure.getString(
-                    context.contentResolver, "enabled_notification_listeners")
+                context.contentResolver, "enabled_notification_listeners"
+            )
             val myListener = ComponentName(context, NotificationListener::class.java)
-            val listenerEnabled = enabledListeners?.let {
-                it.contains(myListener.flattenToString()) || it.contains(myListener.flattenToString())
-            } ?: false
-            val badgingEnabled = Settings.Secure.getInt(context.contentResolver, NOTIFICATION_BADGING, 1) == 1
+            val listenerEnabled = enabledListeners?.contains(myListener.flattenToString()) ?: false
+            val badgingEnabled =
+                Settings.Secure.getInt(context.contentResolver, NOTIFICATION_BADGING, 1) == 1
             return listenerEnabled && badgingEnabled
         }
 
         override fun requiresSetup() = !checkNotificationAccess()
     }
 
-    data class WeatherData(val icon: Bitmap,
-                           private val temperature: Temperature,
-                           val forecastUrl: String? = "https://www.google.com/search?q=weather",
-                           val forecastIntent: Intent? = null,
-                           val pendingIntent: PendingIntent? = null) {
+    data class WeatherData(
+        val icon: Bitmap,
+        private val temperature: Temperature,
+        val forecastUrl: String? = "https://www.google.com/search?q=weather",
+        val forecastIntent: Intent? = null,
+        val pendingIntent: PendingIntent? = null
+    ) {
 
         fun getTitle(unit: Temperature.Unit): String {
             return "${temperature.inUnit(unit)}${unit.suffix}"
         }
     }
 
-    data class CardData(val icon: Bitmap? = null,
-                        val lines: List<Line>,
-                        val onClickListener: View.OnClickListener? = null,
-                        val forceSingleLine: Boolean = false) {
+    data class CardData(
+        val icon: Bitmap? = null,
+        val lines: List<Line>,
+        val onClickListener: View.OnClickListener? = null,
+        val forceSingleLine: Boolean = false
+    ) {
 
-        constructor(icon: Bitmap? = null,
-                    lines: List<Line>,
-                    intent: PendingIntent? = null,
-                    forceSingleLine: Boolean = false) :
+        constructor(
+            icon: Bitmap? = null,
+            lines: List<Line>,
+            intent: PendingIntent? = null,
+            forceSingleLine: Boolean = false
+        ) :
                 this(icon, lines, intent?.let { PendingIntentClickListener(it) }, forceSingleLine)
 
-        constructor(icon: Bitmap? = null,
-                    lines: List<Line>,
-                    forceSingleLine: Boolean = false) :
+        constructor(
+            icon: Bitmap? = null,
+            lines: List<Line>,
+            forceSingleLine: Boolean = false
+        ) :
                 this(icon, lines, null as View.OnClickListener?, forceSingleLine)
 
-        constructor(icon: Bitmap?,
-                    title: CharSequence, titleEllipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.END,
-                    subtitle: CharSequence, subtitleEllipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.END,
-                    pendingIntent: PendingIntent? = null)
-                : this(icon, listOf(Line(title, titleEllipsize), Line(subtitle, subtitleEllipsize)), pendingIntent)
+        constructor(
+            icon: Bitmap?,
+            title: CharSequence,
+            titleEllipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.END,
+            subtitle: CharSequence,
+            subtitleEllipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.END,
+            pendingIntent: PendingIntent? = null
+        )
+                : this(
+            icon,
+            listOf(Line(title, titleEllipsize), Line(subtitle, subtitleEllipsize)),
+            pendingIntent
+        )
 
         val isDoubleLine = !forceSingleLine && lines.size >= 2
 
@@ -486,19 +530,22 @@ class OmegaSmartspaceController(val context: Context) {
             }
             if (forceSingleLine) {
                 title = TextUtils.join(" – ", lines.map { it.text })!!
-                titleEllipsize = if (lines.size == 1) lines.first().ellipsize else TextUtils.TruncateAt.END
+                titleEllipsize =
+                    if (lines.size == 1) lines.first().ellipsize else TextUtils.TruncateAt.END
                 subtitle = null
                 subtitleEllipsize = null
             } else {
                 title = lines.first().text
                 titleEllipsize = lines.first().ellipsize
                 subtitle = TextUtils.join(" – ", lines.subList(1, lines.size).map { it.text })!!
-                subtitleEllipsize = if (lines.size == 2) lines[1].ellipsize else TextUtils.TruncateAt.END
+                subtitleEllipsize =
+                    if (lines.size == 2) lines[1].ellipsize else TextUtils.TruncateAt.END
             }
         }
     }
 
-    open class PendingIntentClickListener(private val pendingIntent: PendingIntent?) : View.OnClickListener {
+    open class PendingIntentClickListener(private val pendingIntent: PendingIntent?) :
+        View.OnClickListener {
 
         override fun onClick(v: View) {
             if (pendingIntent == null) return
@@ -506,17 +553,18 @@ class OmegaSmartspaceController(val context: Context) {
             val opts = launcher.getActivityLaunchOptionsAsBundle(v)
             try {
                 launcher.startIntentSender(
-                        pendingIntent.intentSender, null,
-                        Intent.FLAG_ACTIVITY_NEW_TASK,
-                        Intent.FLAG_ACTIVITY_NEW_TASK, 0, opts)
+                    pendingIntent.intentSender, null,
+                    Intent.FLAG_ACTIVITY_NEW_TASK,
+                    Intent.FLAG_ACTIVITY_NEW_TASK, 0, opts
+                )
             } catch (e: ActivityNotFoundException) {
                 // ignored
             }
         }
     }
 
-    class NotificationClickListener(sbn: StatusBarNotification)
-        : PendingIntentClickListener(sbn.notification.contentIntent) {
+    class NotificationClickListener(sbn: StatusBarNotification) :
+        PendingIntentClickListener(sbn.notification.contentIntent) {
 
         private val key = sbn.key
         private val autoCancel = sbn.notification.flags.hasFlag(Notification.FLAG_AUTO_CANCEL)
@@ -530,8 +578,9 @@ class OmegaSmartspaceController(val context: Context) {
     }
 
     data class Line @JvmOverloads constructor(
-            val text: CharSequence,
-            val ellipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.MARQUEE) {
+        val text: CharSequence,
+        val ellipsize: TextUtils.TruncateAt? = TextUtils.TruncateAt.MARQUEE
+    ) {
 
         constructor(context: Context, textRes: Int) : this(context.getString(textRes))
     }
@@ -544,18 +593,25 @@ class OmegaSmartspaceController(val context: Context) {
     companion object {
 
         private val displayNames = mapOf(
-                Pair(BlankDataProvider::class.java.name, R.string.weather_provider_disabled),
-                Pair(SmartspaceDataWidget::class.java.name, R.string.google_app),
-                Pair(PEWeatherDataProvider::class.java.name, R.string.weather_provider_pe),
-                Pair(OnePlusWeatherDataProvider::class.java.name, R.string.weather_provider_oneplus_weather),
-                Pair(NowPlayingProvider::class.java.name, R.string.event_provider_now_playing),
-                Pair(NotificationUnreadProvider::class.java.name, R.string.event_provider_unread_notifications),
-                Pair(BatteryStatusProvider::class.java.name, R.string.battery_status),
-                Pair(AlarmEventProvider::class.java.name, R.string.name_provider_alarm_events),
-                Pair(PersonalityProvider::class.java.name, R.string.personality_provider),
-                Pair(OnboardingProvider::class.java.name, R.string.onbording),
-                Pair(CalendarEventProvider::class.java.name, R.string.smartspace_provider_calendar),
-                Pair(FakeDataProvider::class.java.name, R.string.weather_provider_testing))
+            Pair(BlankDataProvider::class.java.name, R.string.weather_provider_disabled),
+            Pair(SmartspaceDataWidget::class.java.name, R.string.google_app),
+            Pair(PEWeatherDataProvider::class.java.name, R.string.weather_provider_pe),
+            Pair(
+                OnePlusWeatherDataProvider::class.java.name,
+                R.string.weather_provider_oneplus_weather
+            ),
+            Pair(NowPlayingProvider::class.java.name, R.string.event_provider_now_playing),
+            Pair(
+                NotificationUnreadProvider::class.java.name,
+                R.string.event_provider_unread_notifications
+            ),
+            Pair(BatteryStatusProvider::class.java.name, R.string.battery_status),
+            Pair(AlarmEventProvider::class.java.name, R.string.name_provider_alarm_events),
+            Pair(PersonalityProvider::class.java.name, R.string.personality_provider),
+            Pair(OnboardingProvider::class.java.name, R.string.onbording),
+            Pair(CalendarEventProvider::class.java.name, R.string.smartspace_provider_calendar),
+            Pair(FakeDataProvider::class.java.name, R.string.weather_provider_testing)
+        )
 
         fun getDisplayName(providerName: String): Int {
             return displayNames[providerName] ?: error("No display name for provider $providerName")
@@ -568,7 +624,8 @@ class OmegaSmartspaceController(val context: Context) {
 }
 
 @Keep
-class BlankDataProvider(controller: OmegaSmartspaceController) : OmegaSmartspaceController.DataProvider(controller) {
+class BlankDataProvider(controller: OmegaSmartspaceController) :
+    OmegaSmartspaceController.DataProvider(controller) {
 
     override fun startListening() {
         super.startListening()

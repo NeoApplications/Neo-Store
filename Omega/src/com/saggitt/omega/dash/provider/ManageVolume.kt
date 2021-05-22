@@ -18,13 +18,13 @@
 
 package com.saggitt.omega.dash.provider
 
-import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.provider.Settings
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 import java.util.*
@@ -33,16 +33,14 @@ class ManageVolume(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.dash_volume_title)
     override val description = context.getString(R.string.dash_volume_summary)
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_volume).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_volume).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
+    override fun runAction(context: Context) {
         try {
-            val audioManager = context!!.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
             Objects.requireNonNull(audioManager).setStreamVolume(
                 AudioManager.STREAM_RING, audioManager.getStreamVolume(
                     AudioManager.STREAM_RING
@@ -50,7 +48,7 @@ class ManageVolume(context: Context) : DashProvider(context) {
             )
         } catch (e: Exception) {
             val mNotificationManager =
-                context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (!Objects.requireNonNull(mNotificationManager).isNotificationPolicyAccessGranted) {
                 val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
                 context.startActivity(intent)

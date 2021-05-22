@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.provider.Settings
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 
@@ -29,13 +30,12 @@ class ManageApps(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.dash_manage_apps_title)
     override val description = context.getString(R.string.dash_manage_apps_summary)
 
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_font).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_font).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
-        context!!.startActivity(Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS))
+    override fun runAction(context: Context) {
+        context.startActivity(Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS))
     }
 }

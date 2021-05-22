@@ -23,6 +23,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.Utilities
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.util.Temperature
@@ -82,7 +83,7 @@ class PEWeatherDataProvider(controller: OmegaSmartspaceController) :
         }
         val res = context.resources
         val resId = res.getIdentifier(resName, "drawable", "android")
-        return Utilities.drawableToBitmap(context.resources.getDrawable(resId))!!
+        return Utilities.drawableToBitmap(ResourcesCompat.getDrawable(res, resId, null))!!
     }
 
     companion object {

@@ -86,7 +86,7 @@ class SettingsBottomSheet(context: Context, attrs: AttributeSet) : LinearLayout(
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        translationShift = translationShift
+        this.translationShift = translationShift
     }
 
     fun show(view: View, animate: Boolean) {

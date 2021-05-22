@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.omegaPrefs
@@ -32,38 +33,44 @@ class WeatherIconManager(private val context: Context) {
     private val prefs = context.omegaPrefs
 
     private val defaultPack =
-            object : WeatherIconPack(context, context.getString(R.string.weather_icons_default), "",
-                    RecoloringMode.NEVER) {
-                override val provider = DefaultIconProvider(context)
-                override val icon = context.getDrawable(R.drawable.weather_04)!!
-            }
+        object : WeatherIconPack(
+            context, context.getString(R.string.weather_icons_default), "",
+            RecoloringMode.NEVER
+        ) {
+            override val provider = DefaultIconProvider(context)
+            override val icon = AppCompatResources.getDrawable(context, R.drawable.weather_04)!!
+        }
 
     fun getIconPacks(): List<WeatherIconPack> = mutableListOf<WeatherIconPack>(defaultPack).apply {
         pm.queryIntentActivities(
-                Intent(Intent.ACTION_MAIN).addCategory(
-                        INTENT_CATEGORY), PackageManager.GET_META_DATA).map {
+            Intent(Intent.ACTION_MAIN).addCategory(
+                INTENT_CATEGORY
+            ), PackageManager.GET_META_DATA
+        ).map {
             val recoloringMode =
-                    it.activityInfo.metaData?.getString(METADATA_KEY)?.let {
-                        RecoloringMode.fromName(it)
-                    } ?: RecoloringMode.NEVER
+                it.activityInfo.metaData?.getString(METADATA_KEY)?.let {
+                    RecoloringMode.fromName(it)
+                } ?: RecoloringMode.NEVER
             WeatherIconPack(
-                    context,
-                    it.loadLabel(pm).toString(),
-                    it.activityInfo.packageName,
-                    recoloringMode)
+                context,
+                it.loadLabel(pm).toString(),
+                it.activityInfo.packageName,
+                recoloringMode
+            )
         }.let { addAll(it) }
     }
 
     fun getIcon(which: Icon, night: Boolean) = getProvider().getIcon(which, night)
 
-    fun getPack(): WeatherIconPack = getIconPacks().firstOrNull { it.pkgName == prefs.weatherIconPack }
+    fun getPack(): WeatherIconPack =
+        getIconPacks().firstOrNull { it.pkgName == prefs.weatherIconPack }
             ?: defaultPack
 
     fun getProvider(): IconProvider = if (prefs.weatherIconPack == "")
         DefaultIconProvider(context)
     else
         getIconPacks().firstOrNull { it.pkgName == prefs.weatherIconPack }?.provider
-                ?: DefaultIconProvider(context)
+            ?: DefaultIconProvider(context)
 
 
     companion object : OmegaSingletonHolder<WeatherIconManager>(::WeatherIconManager) {
@@ -107,16 +114,10 @@ class WeatherIconManager(private val context: Context) {
         CLOUDY
     }
 
-    enum class RecoloringMode {
+    enum class RecoloringMode(val metaName: String) {
         ALWAYS("always"),
         IF_NEEDED("ifNeeded"),
         NEVER("never");
-
-        val metaName: String
-
-        constructor(name: String) {
-            metaName = name
-        }
 
         companion object {
             fun fromName(name: String) = when (name) {
@@ -126,12 +127,19 @@ class WeatherIconManager(private val context: Context) {
                 else -> throw RuntimeException()
             }
         }
-
     }
 
-    open class WeatherIconPack(val context: Context, val name: String, val pkgName: String,
-                               val recoloringMode: RecoloringMode) {
-        open val provider: IconProvider by lazy { WeatherIconPackProviderImpl(context, pkgName, this) }
+    open class WeatherIconPack(
+        val context: Context, val name: String, val pkgName: String,
+        val recoloringMode: RecoloringMode
+    ) {
+        open val provider: IconProvider by lazy {
+            WeatherIconPackProviderImpl(
+                context,
+                pkgName,
+                this
+            )
+        }
         open val icon by lazy { context.packageManager.getApplicationIcon(pkgName) }
     }
 

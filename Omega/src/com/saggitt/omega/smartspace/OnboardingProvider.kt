@@ -24,7 +24,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.allapps.DiscoveryBounce
 import com.android.launcher3.util.OnboardingPrefs.HOME_BOUNCE_SEEN
 import com.saggitt.omega.settings.SettingsActivity
 
