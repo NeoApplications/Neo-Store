@@ -33,19 +33,20 @@ class DashListView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttrs: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttrs), DashItemChangeListener {
-    var itemWith = 0f
-    var itemHeight = 0f
-    var layoutWidth = 0f
-    var layoutHeight = 0f
-    var layoutCenterX = 0f
-    var layoutCenterY = 0f
+    private var itemWith = 0f
+    private var itemHeight = 0f
+    private var layoutWidth = 0f
+    private var layoutHeight = 0f
+    private var layoutCenterX = 0f
+    private var layoutCenterY = 0f
     var radius = 0f
-    var itemViewList: ArrayList<View>? = null
-    var intervalAngle = Math.PI / 4
-        private set
+    private var itemViewList: ArrayList<View>? = null
+    private var intervalAngle = Math.PI / 4
     private var preIntervalAngle = Math.PI / 4
     private var dashAdapter: DashItemAdapter? = null
-    private fun init() {
+    private val moveAccumulator = 1
+
+    init {
         post {
             Log.d("CircularListView", "get layout width and height")
             layoutWidth = width.toFloat()
@@ -58,9 +59,7 @@ class DashListView @JvmOverloads constructor(
     }
 
     fun altSetRadius(r: Float) {
-        var r = r
-        r = if (r < 0) 0f else r
-        radius = r
+        radius = if (r < 0) 0f else r
         if (dashAdapter != null) dashAdapter!!.notifyItemChange()
     }
 
@@ -82,9 +81,9 @@ class DashListView @JvmOverloads constructor(
         preIntervalAngle = if (isLayoutEmpty) 0.0 else 2.0f * Math.PI / existChildCount.toDouble()
         intervalAngle = 2.0f * Math.PI / itemCount.toDouble()
 
-
         // add all item view into parent layout
-        for (i in 0 until dashAdapter!!.count) {
+
+        for (i in 0 until itemCount) {
             val item = dashAdapter!!.getItemAt(i)
 
             // add item if no parent
@@ -113,9 +112,9 @@ class DashListView @JvmOverloads constructor(
                     val params = item.layoutParams as LayoutParams
                     params.setMargins(
                         (layoutCenterX - itemWith / 2 + radius *
-                                cos(i * value + MoveAccumulator * Math.PI * 2)).toInt(),
+                                cos(i * value + moveAccumulator * Math.PI * 2)).toInt(),
                         (layoutCenterY - itemHeight / 2 + radius *
-                                sin(i * value + MoveAccumulator * Math.PI * 2)).toInt(),
+                                sin(i * value + moveAccumulator * Math.PI * 2)).toInt(),
                         0,
                         0
                     )
@@ -135,13 +134,5 @@ class DashListView @JvmOverloads constructor(
             }
         }
         itemViewList = dashAdapter!!.allViews.clone() as ArrayList<View>
-    }
-
-    companion object {
-        var MoveAccumulator = 0f
-    }
-
-    init {
-        init()
     }
 }
