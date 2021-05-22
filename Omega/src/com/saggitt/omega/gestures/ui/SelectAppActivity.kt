@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.gestures.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -51,7 +50,7 @@ class SelectAppActivity : SettingsBaseActivity(), AppsAdapterWithShortcuts.Callb
     }
 
     override fun onAppSelected(app: AppsAdapterWithShortcuts.AppItem) {
-        setResult(AppCompatActivity.RESULT_OK, Intent().apply {
+        setResult(RESULT_OK, Intent().apply {
             putExtra("type", "app")
             putExtra("appName", app.info.label)
             putExtra("target", app.key.toString())
@@ -60,7 +59,7 @@ class SelectAppActivity : SettingsBaseActivity(), AppsAdapterWithShortcuts.Callb
     }
 
     override fun onShortcutSelected(shortcut: AppsAdapterWithShortcuts.ShortcutItem) {
-        setResult(AppCompatActivity.RESULT_OK, Intent().apply {
+        setResult(RESULT_OK, Intent().apply {
             putExtra("type", "shortcut")
             putExtra("appName", shortcut.label)
             putExtra("intent", ShortcutKey.makeIntent(shortcut.info).toUri(0))

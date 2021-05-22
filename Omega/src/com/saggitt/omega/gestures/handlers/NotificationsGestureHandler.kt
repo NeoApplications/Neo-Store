@@ -46,6 +46,7 @@ class NotificationsOpenGestureHandler(context: Context, config: JSONObject?) : G
     }
 }
 
+// TODO not used class, should be removed?
 @Keep
 class NotificationsCloseGestureHandler(context: Context, config: JSONObject?) : GestureHandler(context, config) {
 

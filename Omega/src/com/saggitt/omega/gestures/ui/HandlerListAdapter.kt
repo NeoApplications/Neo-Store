@@ -53,7 +53,7 @@ class HandlerListAdapter(private val context: Context, isSwipeUp: Boolean,
         }
 
         override fun onClick(v: View) {
-            onSelectHandler(handlers[adapterPosition])
+            onSelectHandler(handlers[bindingAdapterPosition])
         }
     }
 }

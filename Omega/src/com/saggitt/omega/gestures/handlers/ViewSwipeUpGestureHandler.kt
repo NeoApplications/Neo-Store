@@ -17,14 +17,13 @@
 package com.saggitt.omega.gestures.handlers
 
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import com.android.launcher3.R
 import com.android.launcher3.touch.OverScroll
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
 
-class ViewSwipeUpGestureHandler(private val view: View, private val handler: GestureHandler)
-    : GestureHandler(view.context, null), VerticalSwipeGestureHandler {
+class ViewSwipeUpGestureHandler(private val view: View, private val handler: GestureHandler) :
+    GestureHandler(view.context, null), VerticalSwipeGestureHandler {
 
     private val negativeMax by lazy { view.resources.getDimensionPixelSize(R.dimen.swipe_up_negative_max) }
     private val positiveMax by lazy { view.resources.getDimensionPixelSize(R.dimen.swipe_up_positive_max) }
@@ -36,8 +35,10 @@ class ViewSwipeUpGestureHandler(private val view: View, private val handler: Ges
     }
 
     override fun onDrag(displacement: Float, velocity: Float) {
-        view.translationY = OverScroll.dampedScroll(displacement, if (displacement < 0)
-            negativeMax else positiveMax).toFloat()
+        view.translationY = OverScroll.dampedScroll(
+            displacement, if (displacement < 0)
+                negativeMax else positiveMax
+        ).toFloat()
     }
 
     override val displayName = ""

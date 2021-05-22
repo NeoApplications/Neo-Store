@@ -123,7 +123,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
         ): GestureHandler {
             if (!TextUtils.isEmpty(jsonString)) {
                 val config: JSONObject? = try {
-                    JSONObject(jsonString)
+                    JSONObject(jsonString ?: "{ }")
                 } catch (e: JSONException) {
                     null
                 }

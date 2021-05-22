@@ -27,6 +27,7 @@ import com.android.launcher3.states.StateAnimationConfig
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.gestures.GestureHandler
 
+// TODO not used, should be deleted?
 class GestureHandlerInitListener(private val handler: GestureHandler) : StateManager.StateHandler<LauncherState> {
 
     fun init(launcher: Launcher, alreadyOnHome: Boolean): Boolean {

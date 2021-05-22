@@ -86,12 +86,9 @@ class SelectGestureHandlerFragment : PreferenceDialogFragmentCompat() {
         (dialog as AlertDialog).applyAccent()
     }
 
-    override fun onDialogClosed(positiveResult: Boolean) {
-
-    }
+    override fun onDialogClosed(positiveResult: Boolean) {}
 
     companion object {
-
         fun newInstance(preference: GesturePreference) = SelectGestureHandlerFragment().apply {
             arguments = Bundle(3).apply {
                 putString("key", preference.key)

@@ -38,8 +38,7 @@ class GesturePreference(context: Context, attrs: AttributeSet?) : DialogPreferen
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GesturePreference)
-        val className = ta.getString(R.styleable.GesturePreference_gestureClass) ?: ""
-        when (className) {
+        when (ta.getString(R.styleable.GesturePreference_gestureClass) ?: "") {
             NavSwipeUpGesture::class.java.name -> isSwipeUp = true
         }
 
@@ -73,7 +72,7 @@ class GesturePreference(context: Context, attrs: AttributeSet?) : DialogPreferen
         }
     }
 
-    override fun onGetDefaultValue(a: TypedArray, index: Int): String? {
+    override fun onGetDefaultValue(a: TypedArray, index: Int): String {
         defaultValue = a.getString(index)!!
         return defaultValue
     }

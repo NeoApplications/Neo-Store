@@ -25,11 +25,11 @@ import com.android.launcher3.touch.SingleAxisSwipeDetector
 import com.android.launcher3.util.TouchController
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
-import java.lang.Math.abs
 import java.lang.reflect.InvocationTargetException
+import kotlin.math.abs
 
-
-class VerticalSwipeGestureController(private val launcher: Launcher) : TouchController, SingleAxisSwipeDetector.Listener {
+class VerticalSwipeGestureController(private val launcher: Launcher) : TouchController,
+    SingleAxisSwipeDetector.Listener {
 
     enum class GestureState {
         Locked,
@@ -44,7 +44,13 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
 
     private val controller by lazy { OmegaLauncher.getLauncher(launcher).gestureController }
     private val gesture by lazy { controller.verticalSwipeGesture }
-    private val detector by lazy { SingleAxisSwipeDetector(launcher, this, SingleAxisSwipeDetector.VERTICAL) }
+    private val detector by lazy {
+        SingleAxisSwipeDetector(
+            launcher,
+            this,
+            SingleAxisSwipeDetector.VERTICAL
+        )
+    }
     private var noIntercept = false
 
     private var swipeUpOverride: GestureHandler? = null
@@ -63,7 +69,8 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     override fun onControllerInterceptTouchEvent(ev: MotionEvent): Boolean {
         downTime = ev.downTime
         val isDown = ev.actionMasked == MotionEvent.ACTION_DOWN
-        val overrideAppeared = !hasSwipeUpOverride && controller.getSwipeUpOverride(ev.downTime) != null
+        val overrideAppeared =
+            !hasSwipeUpOverride && controller.getSwipeUpOverride(ev.downTime) != null
         if (isDown || overrideAppeared) {
             swipeUpOverride = if (isDown) {
                 downSent = false
@@ -145,10 +152,13 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
                 }
             } else {
                 if (velocity > triggerVelocity &&
-                        (state == GestureState.Free || state == GestureState.NotificationClosed)) {
-                    state = if (openNotificationsOrQuickSettings()) GestureState.NotificationOpened else GestureState.Locked
+                    (state == GestureState.Free || state == GestureState.NotificationClosed)
+                ) {
+                    state =
+                        if (openNotificationsOrQuickSettings()) GestureState.NotificationOpened else GestureState.Locked
                 } else if (velocity < -notificationsCloseVelocity && state == GestureState.NotificationOpened) {
-                    state = if (closeNotifications()) GestureState.NotificationClosed else GestureState.Locked
+                    state =
+                        if (closeNotifications()) GestureState.NotificationClosed else GestureState.Locked
                 }
             }
 
@@ -218,9 +228,9 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     @SuppressLint("WrongConstant", "PrivateApi")
     private fun openNotifications(): Boolean {
         return try {
-            Class.forName("android.app.StatusBarManager")
-                    .getMethod("expandNotificationsPanel")
-                    .invoke(launcher.getSystemService("statusbar"))
+            Class.forName(STATUS_BAR_MANAGER)
+                .getMethod("expandNotificationsPanel")
+                .invoke(launcher.getSystemService("statusbar"))
             true
         } catch (ex: ClassNotFoundException) {
             false
@@ -236,9 +246,9 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     @SuppressLint("WrongConstant", "PrivateApi")
     private fun openQuickSettings(): Boolean {
         return try {
-            Class.forName("android.app.StatusBarManager")
-                    .getMethod("expandSettingsPanel")
-                    .invoke(launcher.getSystemService("statusbar"))
+            Class.forName(STATUS_BAR_MANAGER)
+                .getMethod("expandSettingsPanel")
+                .invoke(launcher.getSystemService("statusbar"))
             true
         } catch (ex: ClassNotFoundException) {
             false
@@ -254,9 +264,9 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     @SuppressLint("WrongConstant", "PrivateApi")
     private fun closeNotifications(): Boolean {
         return try {
-            Class.forName("android.app.StatusBarManager")
-                    .getMethod("collapsePanels")
-                    .invoke(launcher.getSystemService("statusbar"))
+            Class.forName(STATUS_BAR_MANAGER)
+                .getMethod("collapsePanels")
+                .invoke(launcher.getSystemService("statusbar"))
             true
         } catch (ex: ClassNotFoundException) {
             false
@@ -271,7 +281,7 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     }
 
     companion object {
-
+        private const val STATUS_BAR_MANAGER = "android.app.StatusBarManager"
         private const val SCROLL_VELOCITY_DAMPENING_RC = 1000f / (2f * Math.PI.toFloat() * 10f)
     }
 }
