@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Send start notification
         uses: appleboy/telegram-action@v0.1.0
-      with:
-        to: ${{ secrets.TELEGRAM_CHAT_ID }}
-        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: New push to “Omega Launcher”. Building debug APK…
   build:
     runs-on: ubuntu-latest
