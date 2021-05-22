@@ -16,40 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.predictions
 
-package com.saggitt.omega.predictions;
+import android.content.Context
+import android.os.Bundle
+import com.android.launcher3.appprediction.PredictionUiStateManager
 
-import android.content.Context;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
-import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
-
-import java.util.List;
-
-public abstract class AppPredictorCompat {
-
-    public AppPredictorCompat(@NonNull Context context, @NonNull Client client, int count, Bundle extras) {
-
-    }
-
-    public abstract void notifyAppTargetEvent(@NonNull AppTargetEventCompat event);
-
-    public abstract void requestPredictionUpdate();
-
-    public abstract void destroy();
+abstract class AppPredictorCompat(
+    context: Context,
+    client: PredictionUiStateManager.Client,
+    count: Int,
+    extras: Bundle?
+) {
+    abstract fun notifyAppTargetEvent(event: AppTargetEventCompat)
+    abstract fun requestPredictionUpdate()
+    abstract fun destroy()
 
     /**
      * Callback for receiving prediction updates.
      */
-    public interface Callback {
-
+    interface Callback {
         /**
          * Called when a new set of predicted app targets are available.
          *
          * @param targets Sorted list of predicted targets.
          */
-        void onTargetsAvailable(@NonNull List<AppTargetCompat> targets);
+        fun onTargetsAvailable(targets: List<AppTargetCompat?>)
     }
 }

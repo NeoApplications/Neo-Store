@@ -34,17 +34,21 @@ import com.android.launcher3.appprediction.PredictionUiStateManager.Client.OVERV
 import com.android.launcher3.model.AppLaunchTracker.CONTAINER_ALL_APPS
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.predictions.AppTargetEventCompat.ACTION_LAUNCH
-import com.saggitt.omega.predictions.CustomAppPredictor.PLACE_HOLDERS
+import com.saggitt.omega.predictions.CustomAppPredictor.Companion.PLACE_HOLDERS
 import com.saggitt.omega.util.runOnMainThread
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+// TODO remove Handler()
 open class OmegaAppPredictor(
-        private val context: Context, count: Int,
-        extras: Bundle?) : AppPredictorCompat(context, HOME, count, extras) {
+    private val context: Context, count: Int,
+    extras: Bundle?
+) : AppPredictorCompat(context, HOME, count, extras) {
 
-    private val homeCallback = PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(HOME)
-    private val overviewCallback = PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(OVERVIEW)
+    private val homeCallback =
+        PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(HOME)
+    private val overviewCallback =
+        PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(OVERVIEW)
     private val maxPredictions = count
 
     private val handler = Handler()
@@ -75,12 +79,14 @@ open class OmegaAppPredictor(
      * Whether headphones have just been plugged in / connected (in the last two minutes)
      * TODO: Is two minutes appropriate or do we want to increase this?
      */
-    private val phonesJustConnected get() = phonesConnectedAt > 0 && SystemClock.uptimeMillis() in phonesConnectedAt until phonesConnectedAt + DURATION_RECENTLY
+    private val phonesJustConnected
+        get() = phonesConnectedAt > 0 && SystemClock.uptimeMillis() in phonesConnectedAt until phonesConnectedAt + DURATION_RECENTLY
 
     /**
      * Whether or not the current app launch is relevant for headphone suggestions or not
      */
-    private val relevantForPhones get() = phonesLaunches < 2 && phonesJustConnected
+    private val relevantForPhones
+        get() = phonesLaunches < 2 && phonesJustConnected
 
     /**
      * Number of launches recorded since headphones were connected
@@ -116,10 +122,11 @@ open class OmegaAppPredictor(
     init {
         // This object is currently a singleton, so just register and forget
         context.registerReceiver(
-                phonesStateChangeReceiver,
-                IntentFilter(Intent.ACTION_HEADSET_PLUG).apply {
-                    addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
-                }, null, handler)
+            phonesStateChangeReceiver,
+            IntentFilter(Intent.ACTION_HEADSET_PLUG).apply {
+                addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+            }, null, handler
+        )
     }
 
     override fun notifyAppTargetEvent(event: AppTargetEventCompat) {
@@ -154,29 +161,31 @@ open class OmegaAppPredictor(
         updatePredictions()
     }
 
-    override fun destroy() {
-    }
+    override fun destroy() {}
 
     private fun updatePredictions() {
         clearRemovedComponents()
 
         val user = Process.myUserHandle()
-        val appList = if (phonesJustConnected) phonesList.getRanked().take(MAX_HEADPHONE_SUGGESTIONS).toMutableList() else mutableListOf()
-        appList.addAll(appsList.getRanked().filterNot { appList.contains(it) }.take(maxPredictions - appList.size))
+        val appList =
+            if (phonesJustConnected) phonesList.getRanked().take(MAX_HEADPHONE_SUGGESTIONS)
+                .toMutableList() else mutableListOf()
+        appList.addAll(appsList.getRanked().filterNot { appList.contains(it) }
+            .take(maxPredictions - appList.size))
         val fullList = appList.map { makeComponentKey(context, it) }
-                .filterNot { isHiddenApp(context, it) }.toMutableList()
+            .filterNot { isHiddenApp(context, it) }.toMutableList()
         if (fullList.size < maxPredictions) {
             fullList.addAll(
-                    PLACE_HOLDERS.mapNotNull { packageManager.getLaunchIntentForPackage(it)?.component }
-                            .map { ComponentKey(it, user) }
+                PLACE_HOLDERS.mapNotNull { packageManager.getLaunchIntentForPackage(it)?.component }
+                    .map { ComponentKey(it, user) }
             )
         }
         val targets = fullList.take(maxPredictions).mapIndexed { rank, key ->
             val id = AppTargetIdCompat("app:${key.componentName}")
             AppTargetCompat.Builder(id, key.componentName.packageName, key.user)
-                    .setClassName(key.componentName.className)
-                    .setRank(rank)
-                    .build()
+                .setClassName(key.componentName.className)
+                .setRank(rank)
+                .build()
         }
         runOnMainThread {
             homeCallback.onTargetsAvailable(targets)
@@ -232,10 +241,16 @@ open class OmegaAppPredictor(
     /**
      * A ranked list with roll over to get/store currently relevant events and rank them by occurence
      */
-    inner class CountRankedArrayPreference(private val prefs: SharedPreferences, private val key: String, private val maxSize: Int = -1, private val delimiter: String = ";") {
+    inner class CountRankedArrayPreference(
+        private val prefs: SharedPreferences,
+        private val key: String,
+        private val maxSize: Int = -1,
+        private val delimiter: String = ";"
+    ) {
         private var list = load()
 
-        fun getRanked(): Set<String> = list.distinct().sortedBy { value -> list.count { it == value } }.reversed().toSet()
+        fun getRanked(): Set<String> =
+            list.distinct().sortedBy { value -> list.count { it == value } }.reversed().toSet()
 
         fun add(string: String) {
             list.add(0, string)

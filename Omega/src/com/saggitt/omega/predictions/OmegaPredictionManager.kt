@@ -89,9 +89,7 @@ class OmegaPredictionManager(private val context: Context) {
         private val overviewCallback =
             PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(OVERVIEW)
 
-        override fun notifyAppTargetEvent(event: AppTargetEventCompat) {
-
-        }
+        override fun notifyAppTargetEvent(event: AppTargetEventCompat) {}
 
         override fun requestPredictionUpdate() {
             runOnMainThread {
@@ -100,9 +98,7 @@ class OmegaPredictionManager(private val context: Context) {
             }
         }
 
-        override fun destroy() {
-
-        }
+        override fun destroy() {}
     }
 
     companion object :
