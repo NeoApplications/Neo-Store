@@ -28,8 +28,8 @@ abstract class DashProvider(protected val context: Context) {
     val accentColor = Utilities.getOmegaPrefs(context).accentColor
     abstract val name: String
     abstract val description: String
-    abstract fun getIcon(): Drawable?
-    abstract fun runAction(context: Context?)
+    abstract val icon: Drawable?
+    abstract fun runAction(context: Context)
 
     @ColorInt
     fun darkenColor(@ColorInt color: Int): Int {

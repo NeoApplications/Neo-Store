@@ -18,9 +18,9 @@
 
 package com.saggitt.omega.dash.provider
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
@@ -30,14 +30,12 @@ class AllAppsShortcut(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.dash_all_apps_title)
     override val description = context.getString(R.string.dash_all_apps_summary)
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_apps).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_apps).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
+    override fun runAction(context: Context) {
         if (!Launcher.getLauncher(context).isInState(LauncherState.ALL_APPS)) {
             Launcher.getLauncher(context).stateManager.goToState(LauncherState.ALL_APPS)
         }

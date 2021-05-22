@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.provider.Settings
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 
@@ -29,13 +30,12 @@ class MobileNetwork(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.dash_mobile_network_title)
     override val description = context.getString(R.string.dash_mobile_network_summary)
 
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_network).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_network).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
-        context!!.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+    override fun runAction(context: Context) {
+        context.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
     }
 }

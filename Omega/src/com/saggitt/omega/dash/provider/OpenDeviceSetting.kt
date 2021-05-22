@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.provider.Settings
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 
@@ -29,13 +30,12 @@ class OpenDeviceSetting(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.dash_device_settings_title)
     override val description = context.getString(R.string.dash_device_settings_summary)
 
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_build).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_build).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
-        context!!.startActivity(Intent(Settings.ACTION_SETTINGS))
+    override fun runAction(context: Context) {
+        context.startActivity(Intent(Settings.ACTION_SETTINGS))
     }
 }

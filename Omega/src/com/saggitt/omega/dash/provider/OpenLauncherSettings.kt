@@ -18,10 +18,10 @@
 
 package com.saggitt.omega.dash.provider
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
 
@@ -29,15 +29,13 @@ class OpenLauncherSettings(context: Context) : DashProvider(context) {
     override val name = context.getString(R.string.settings_button_text)
     override val description = context.getString(R.string.dash_launcher_settings_summary)
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getIcon(): Drawable? {
-        return context.getDrawable(R.drawable.ic_setting).apply {
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_setting).apply {
             this?.setTint(darkenColor(accentColor))
         }
-    }
 
-    override fun runAction(context: Context?) {
-        context!!.startActivity(
+    override fun runAction(context: Context) {
+        context.startActivity(
             Intent(Intent.ACTION_APPLICATION_PREFERENCES)
                 .setPackage(context.packageName)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
