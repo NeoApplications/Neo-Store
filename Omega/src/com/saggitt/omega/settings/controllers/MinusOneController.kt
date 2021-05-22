@@ -32,21 +32,21 @@ class MinusOneController(context: Context) : PreferenceController(context) {
 
     override val title get() = getDisplayGoogleTitle()
 
-    override val onChange = Preference.OnPreferenceChangeListener { pref, newValue ->
-        if (newValue == true && !FeedBridge.getInstance(context).isInstalled()) {
-           // pref.preferenceManager.showDialog(pref)
-            false
-        } else {
-            true
-        }
+    override val onChange = Preference.OnPreferenceChangeListener { _, newValue ->
+        !(newValue == true && !FeedBridge.getInstance(context).isInstalled())
     }
 
     @SuppressLint("StringFormatInvalid")
     private fun getDisplayGoogleTitle(): String {
         var charSequence: CharSequence? = null
         try {
-            val resourcesForApplication = context.packageManager.getResourcesForApplication("com.google.android.googlequicksearchbox")
-            val identifier = resourcesForApplication.getIdentifier("title_google_home_screen", "string", "com.google.android.googlequicksearchbox")
+            val resourcesForApplication =
+                context.packageManager.getResourcesForApplication("com.google.android.googlequicksearchbox")
+            val identifier = resourcesForApplication.getIdentifier(
+                "title_google_home_screen",
+                "string",
+                "com.google.android.googlequicksearchbox"
+            )
             if (identifier != 0) {
                 charSequence = resourcesForApplication.getString(identifier)
             }

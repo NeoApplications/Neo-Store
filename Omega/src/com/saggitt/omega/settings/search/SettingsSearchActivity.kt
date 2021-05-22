@@ -26,7 +26,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +37,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.databinding.ActivitySettingsSearchBinding
 import com.saggitt.omega.settings.SettingsActivity
-import com.saggitt.omega.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY
-import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.*
+import com.saggitt.omega.settings.SettingsActivity.Companion.EXTRA_FRAGMENT_ARG_KEY
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.CONTENT_RES_ID
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.HAS_PREVIEW
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.TITLE
 import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
@@ -124,8 +129,8 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
         val matches = if (query.isEmpty())
             emptyList()
         else
-            searchIndex.entries.filter { it.title.toLowerCase().contains(query.toLowerCase()) }
-        val showNoResults = matches.isEmpty() && !query.isEmpty()
+            searchIndex.entries.filter { it.title.contains(query, true) }
+        val showNoResults = matches.isEmpty() && query.isNotEmpty()
         binding.noResultsLayout.animate().alpha(if (showNoResults) 1f else 0f).start()
         searchAdapter.postSearchResults(matches)
     }
@@ -169,13 +174,12 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
 
         open class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            protected val titleView = itemView.findViewById(android.R.id.title) as TextView
-            protected val summaryView = itemView.findViewById(android.R.id.summary) as TextView
-            protected val iconView = itemView.findViewById(android.R.id.icon) as ImageView
-            protected val breadcrumbView = itemView.findViewById(R.id.breadcrumb) as TextView
-            protected val sliceView = itemView.findViewById(R.id.slice_square) as LinearLayout
-            protected val horizontalSliceView =
-                itemView.findViewById(R.id.slice_horizontal) as LinearLayout
+            protected val titleView: TextView = itemView.findViewById(android.R.id.title)
+            protected val summaryView: TextView = itemView.findViewById(android.R.id.summary)
+            protected val iconView: ImageView = itemView.findViewById(android.R.id.icon)
+            protected val breadcrumbView: TextView = itemView.findViewById(R.id.breadcrumb)
+            protected val sliceView: LinearLayout = itemView.findViewById(R.id.slice_square)
+            protected val horizontalSliceView: LinearLayout = itemView.findViewById(R.id.slice_horizontal)
 
             open fun onBind(activity: SettingsSearchActivity, entry: SearchIndex.SettingsEntry) {
                 titleView.text = entry.title

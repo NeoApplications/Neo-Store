@@ -68,7 +68,7 @@ class SettingsDragLayer(context: Context, attrs: AttributeSet?) : InsettableFram
     }
 
     override fun drawChild(canvas: Canvas, child: View, drawingTime: Long): Boolean {
-        ViewScrim.get(child)?.draw(canvas, width, height)
+        ViewScrim[child]?.draw(canvas, width, height)
         return super.drawChild(canvas, child, drawingTime)
     }
 

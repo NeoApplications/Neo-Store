@@ -117,10 +117,8 @@ class SearchIndex(private val context: Context) {
                                 ?: ta.getString(R.styleable.IndexablePreference_android_title)
                         val summary = controller?.summary
                                 ?: ta.getString(R.styleable.IndexablePreference_android_summary)
-                        if (parent != null && key != null && title != null) {
-                            if (addedKeys.add(key)) {
-                                entries.add(SettingsEntry(iconRes, key, title, summary, parent, getSlice(cls, attrs)))
-                            }
+                        if (parent != null && key != null && title != null && addedKeys.add(key)) {
+                            entries.add(SettingsEntry(iconRes, key, title, summary, parent, getSlice(cls, attrs)))
                         }
                     }
 

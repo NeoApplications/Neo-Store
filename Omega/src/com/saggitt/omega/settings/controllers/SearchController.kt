@@ -15,29 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.settings.controllers
 
-package com.saggitt.omega.settings.controllers;
+import android.content.Context
+import com.saggitt.omega.preferences.PreferenceController
+import com.saggitt.omega.search.SearchProvider
+import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.search.WebSearchProvider
 
-import android.content.Context;
-
-import com.saggitt.omega.preferences.PreferenceController;
-import com.saggitt.omega.search.SearchProvider;
-import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.WebSearchProvider;
-
-import org.jetbrains.annotations.NotNull;
-
-public class SearchController extends PreferenceController {
-    private final SearchProvider provider;
+class SearchController(context: Context) : PreferenceController(context) {
+    private val provider: SearchProvider =
+        SearchProviderController.getInstance(context).searchProvider
+    override val isEnabled: Boolean
+        get() = provider !is WebSearchProvider
 
     //TODO: implement a listener
-    public SearchController(@NotNull Context context) {
-        super(context);
-        provider = SearchProviderController.Companion.getInstance(context).getSearchProvider();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return !(provider instanceof WebSearchProvider);
-    }
 }
