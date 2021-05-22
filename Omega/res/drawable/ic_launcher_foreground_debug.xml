@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  This file is part of Omega Launcher
+  ~  Copyright (c) 2021   Saul Henriquez
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="230.541"
+    android:viewportHeight="230.541">
+    <path
+        android:fillColor="@color/ic_launcher_background"
+        android:pathData="m151.663,123.501c7.627,-14.02 8.078,-28.044 1.267,-39.489 -7.346,-12.346 -18.382,-20.035 -34.254,-19.857 5.499,1.057 8.344,5.545 8.213,8.356 0.36,3.331 -1.797,8.411 -8.133,9.763 9.299,-0.111 14.659,4.492 18.628,11.164 3.447,5.793 2.903,12.943 -1.617,21.251 -14.759,27.131 -11.559,35.677 -11.179,40.826 4.191,20.499 49.874,3.973 47.649,-5.76 -35.425,0.149 -35.337,0.214 -20.575,-26.253z"
+        android:strokeWidth="0.520585" />
+    <path
+        android:fillColor="@color/ic_launcher_background"
+        android:pathData="M80.364,123.502C72.858,109.482 72.415,95.458 79.117,84.013 86.346,71.667 97.206,63.977 112.826,64.156c-5.926,1.436 -7.545,6.541 -7.195,9.221 0.058,3.113 1.9,7.306 7.117,8.898 -9.151,-0.111 -14.426,4.492 -18.332,11.164 -3.392,5.793 -2.857,12.943 1.591,21.251 14.525,27.131 11.375,35.677 11.001,40.826 -4.125,20.499 -49.081,3.973 -46.892,-5.76 34.862,0.149 34.776,0.214 20.248,-26.253z"
+        android:strokeWidth="0.516431" />
+    <path
+        android:fillColor="@color/ic_launcher_background"
+        android:fillType="evenOdd"
+        android:pathData="M108.398,73.169a7.884,7.393 0,1 0,15.768 0a7.884,7.393 0,1 0,-15.768 0z"
+        android:strokeWidth="0.54274" />
+</vector>
