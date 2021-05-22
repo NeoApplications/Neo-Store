@@ -38,7 +38,7 @@ abstract class ViewScrim<T : View?> protected constructor(protected val mView: T
         }
     }
 
-    abstract fun draw(canvas: Canvas?, width: Int, height: Int)
+    abstract fun draw(canvas: Canvas, width: Int, height: Int)
     protected open fun onProgressChanged() {}
     fun invalidate() {
         val parent = mView!!.parent
@@ -59,8 +59,8 @@ abstract class ViewScrim<T : View?> protected constructor(protected val mView: T
                 }
             }
 
-        operator fun get(view: View): ViewScrim<View> {
-            return view.getTag(R.id.view_scrim) as ViewScrim<View>
+        operator fun get(view: View): ViewScrim<View>? {
+            return view.getTag(R.id.view_scrim) as ViewScrim<View>?
         }
     }
 }

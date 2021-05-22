@@ -80,7 +80,11 @@ class IconPackManager(private val context: Context) {
         packList.onDateChanged()
     }
 
-    private fun getIconPackInternal(name: String, put: Boolean = true, load: Boolean = false): IconPack? {
+    private fun getIconPackInternal(
+        name: String,
+        put: Boolean = true,
+        load: Boolean = false
+    ): IconPack? {
         if (name == defaultPack.packPackageName) return defaultPack
         if (name == uriPack.packPackageName) return uriPack
         return if (isPackProvider(context, name)) {
@@ -96,26 +100,37 @@ class IconPackManager(private val context: Context) {
         return getIconPackInternal(name, put, load)
     }
 
-    fun getIconPack(packProvider: PackProvider, put: Boolean = true, load: Boolean = false): IconPack {
+    fun getIconPack(
+        packProvider: PackProvider,
+        put: Boolean = true,
+        load: Boolean = false
+    ): IconPack {
         return getIconPackInternal(packProvider.name, put, load)!!
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getIcon(launcherActivityInfo: LauncherActivityInfo,
-                iconDpi: Int, flattenDrawable: Boolean, itemInfo: ItemInfo?,
-                iconProvider: CustomIconProvider?): Drawable {
-        val customEntry = CustomInfoProvider.forItem<ItemInfo>(context, itemInfo)?.getIcon(itemInfo!!)
+    fun getIcon(
+        launcherActivityInfo: LauncherActivityInfo,
+        iconDpi: Int, flattenDrawable: Boolean, itemInfo: ItemInfo?,
+        iconProvider: CustomIconProvider?
+    ): Drawable {
+        val customEntry =
+            CustomInfoProvider.forItem<ItemInfo>(context, itemInfo)?.getIcon(itemInfo!!)
                 ?: appInfoProvider.getCustomIconEntry(launcherActivityInfo)
         val customPack = customEntry?.run {
             getIconPackInternal(packPackageName)
         }
         if (customPack != null) {
-            customPack.getIcon(launcherActivityInfo, iconDpi,
-                    flattenDrawable, customEntry, iconProvider)?.let { icon -> return icon }
+            customPack.getIcon(
+                launcherActivityInfo, iconDpi,
+                flattenDrawable, customEntry, iconProvider
+            )?.let { icon -> return icon }
         }
         packList.iterator().forEach { pack ->
-            pack.getIcon(launcherActivityInfo, iconDpi,
-                    flattenDrawable, null, iconProvider)?.let { return it }
+            pack.getIcon(
+                launcherActivityInfo, iconDpi,
+                flattenDrawable, null, iconProvider
+            )?.let { return it }
         }
         return defaultPack.getIcon(
             launcherActivityInfo,
@@ -134,10 +149,14 @@ class IconPackManager(private val context: Context) {
         return defaultPack.getIcon(shortcutInfo, iconDpi)
     }
 
-    fun newIcon(icon: Bitmap, itemInfo: ItemInfo, drawableFactory: CustomDrawableFactory): FastBitmapDrawable {
+    fun newIcon(
+        icon: Bitmap,
+        itemInfo: ItemInfo,
+        drawableFactory: CustomDrawableFactory
+    ): FastBitmapDrawable {
         val key = itemInfo.targetComponent?.let { ComponentKey(it, itemInfo.user) }
         val customEntry = CustomInfoProvider.forItem<ItemInfo>(context, itemInfo)?.getIcon(itemInfo)
-                ?: key?.let { appInfoProvider.getCustomIconEntry(it) }
+            ?: key?.let { appInfoProvider.getCustomIconEntry(it) }
         val customPack = customEntry?.run { getIconPackInternal(packPackageName) }
         if (customPack != null) {
             customPack.newIcon(icon, itemInfo, customEntry, drawableFactory)?.let { return it }
@@ -182,7 +201,11 @@ class IconPackManager(private val context: Context) {
         runOnMainThread { listeners.forEach { it.invoke() } }
     }
 
-    data class CustomIconEntry(val packPackageName: String, val icon: String? = null, val arg: String? = null) {
+    data class CustomIconEntry(
+        val packPackageName: String,
+        val icon: String = "",
+        val arg: String? = null
+    ) {
 
         fun toPackString(): String {
             return packPackageName
@@ -205,7 +228,7 @@ class IconPackManager(private val context: Context) {
                     if (parts.size == 1) {
                         return CustomIconEntry(parts[0])
                     }
-                    return CustomIconEntry(parts[0], parts[1].asNonEmpty(), parts[2].asNonEmpty())
+                    return CustomIconEntry(parts[0], parts[1], parts[2].asNonEmpty())
                 }
                 return parseLegacy(string)
             }
@@ -217,11 +240,11 @@ class IconPackManager(private val context: Context) {
                     val iconParts = icon.split("|")
                     return CustomIconEntry(
                         parts[0],
-                        iconParts[0].asNonEmpty(),
+                        iconParts[0],
                         iconParts[1].asNonEmpty()
                     )
                 }
-                return CustomIconEntry(parts[0], icon.asNonEmpty())
+                return CustomIconEntry(parts[0], icon)
             }
         }
     }

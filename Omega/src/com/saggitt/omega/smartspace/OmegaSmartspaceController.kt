@@ -43,9 +43,9 @@ import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.settings.SettingsActivity
-import com.saggitt.omega.settings.SettingsActivity.NOTIFICATION_BADGING
-import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.CONTENT_RES_ID
-import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.TITLE
+import com.saggitt.omega.settings.SettingsActivity.Companion.NOTIFICATION_BADGING
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.CONTENT_RES_ID
+import com.saggitt.omega.settings.SettingsActivity.SubSettingsFragment.Companion.TITLE
 import com.saggitt.omega.smartspace.eventprovider.*
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider

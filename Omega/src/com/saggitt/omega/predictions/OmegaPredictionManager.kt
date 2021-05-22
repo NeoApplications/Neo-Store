@@ -43,7 +43,11 @@ class OmegaPredictionManager(private val context: Context) {
     }
     private val predictionsEnabled get() = context.omegaPrefs.showPredictions
 
-    fun createPredictor(client: PredictionUiStateManager.Client, count: Int, extras: Bundle?): AppPredictorCompat {
+    fun createPredictor(
+        client: PredictionUiStateManager.Client,
+        count: Int,
+        extras: Bundle?
+    ): AppPredictorCompat {
         return when {
             !predictionsEnabled -> noOpAppPredictor
             usePlatformPredictor() -> PlatformAppPredictor(context, client, count, extras)
@@ -59,7 +63,8 @@ class OmegaPredictionManager(private val context: Context) {
         Log.i("OmegaPredictionManager", "Platform predictor: ${predictorService.packageName}")
         if (predictorService.packageName in platformPredictorBlacklist) return false
         return PackageManagerHelper.isAppEnabled(
-                context.packageManager, predictorService.packageName, 0) && usageStatsGranted()
+            context.packageManager, predictorService.packageName, 0
+        ) && usageStatsGranted()
     }
 
     private fun getPredictorService(): ComponentName? {
@@ -73,13 +78,16 @@ class OmegaPredictionManager(private val context: Context) {
 
     private fun usageStatsGranted(): Boolean {
         return Utilities.isRecentsEnabled() || context.checkSelfPermission(
-                android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
+            android.Manifest.permission.PACKAGE_USAGE_STATS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     class NoOpAppPredictor(context: Context) : AppPredictorCompat(context, HOME, 0, null) {
 
-        private val homeCallback = PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(HOME)
-        private val overviewCallback = PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(OVERVIEW)
+        private val homeCallback =
+            PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(HOME)
+        private val overviewCallback =
+            PredictionUiStateManager.INSTANCE.get(context).appPredictorCallback(OVERVIEW)
 
         override fun notifyAppTargetEvent(event: AppTargetEventCompat) {
 
@@ -98,7 +106,7 @@ class OmegaPredictionManager(private val context: Context) {
     }
 
     companion object :
-            OmegaSingletonHolder<OmegaPredictionManager>(::OmegaPredictionManager) {
+        OmegaSingletonHolder<OmegaPredictionManager>(::OmegaPredictionManager) {
         private val platformPredictorBlacklist = listOf("com.oneplus.asti")
     }
 }
