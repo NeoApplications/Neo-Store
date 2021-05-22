@@ -288,11 +288,9 @@ class AdaptiveIconGenerator constructor(
         }
     }
 
-    fun getResult(): Drawable? {
-        if (!ranLoop) {
-            loop()
-        }
-        return result
+    fun getResult(): Drawable {
+        if (!ranLoop) loop()
+        return result!!
     }
 
     companion object {

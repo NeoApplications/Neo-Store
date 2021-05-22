@@ -282,8 +282,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         return defaultOverlay?.mClient
     }
 
-    fun registerSmartspaceView() {
-    }
+    fun registerSmartspaceView() {}
 
     companion object {
         var sRestart = false
