@@ -23,6 +23,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.ICON_PACK_EXECUTOR
@@ -98,7 +99,7 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
 
     fun iterator() = appliedPacks.iterator()
 
-    fun currentPack() = if (!appliedPacks.isEmpty()) appliedPacks[0] else default.iconPack
+    fun currentPack() = if (appliedPacks.isNotEmpty()) appliedPacks[0] else default.iconPack
 
     fun getAvailablePacks(): MutableSet<PackInfo> {
         val pm = context.packageManager
@@ -140,7 +141,7 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
 
     class DefaultPackInfo(context: Context) : PackInfo(context, "") {
 
-        override val displayIcon by lazy { context.getDrawable(R.mipmap.ic_launcher)!! }
+        override val displayIcon by lazy { AppCompatResources.getDrawable(context,R.mipmap.ic_launcher)!! }
         override val displayName by lazy { context.resources.getString(R.string.icon_pack_default) }
 
         override fun load() = IconPackManager.getInstance(context).defaultPack
@@ -168,12 +169,8 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
         val packageName get() = pack.packPackageName
         val iconPack get() = pack
 
-        open fun register() {
-        }
-
-        open fun unregister() {
-        }
-
+        open fun register() {}
+        open fun unregister() {}
         open fun reloadPack() {
             pack = IconPackImpl(context, packageName)
         }
@@ -222,14 +219,8 @@ class IconPackList(private val context: Context, private val manager: IconPackMa
     }
 
     inner class DefaultLoadedPack : LoadedPack(manager.defaultPack) {
-
-        override fun register() {
-        }
-
-        override fun unregister() {
-        }
-
-        override fun reloadPack() {
-        }
+        override fun register() {}
+        override fun unregister() {}
+        override fun reloadPack() {}
     }
 }

@@ -42,11 +42,8 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
 
     private val entryCache = mutableMapOf<Pair<String, Boolean>, UriEntry>()
 
-    override fun loadPack() {
-    }
-
-    override fun onDateChanged() {
-    }
+    override fun loadPack() {}
+    override fun onDateChanged() {}
 
     override fun getEntryForComponent(key: ComponentKey): Entry? {
         throw NotImplementedError()
@@ -55,8 +52,9 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
     private fun getUriEntry(entry: IconPackManager.CustomIconEntry?): UriEntry? {
         if (entry == null) return null
         if (TextUtils.isEmpty(entry.icon)) return null
-        val key = entry.icon!! to (entry.arg == "true")
-        val uriEntry = entryCache.getOrPut(key) { UriEntry.fromSpec(context, entry.icon, entry.arg) }
+        val key = entry.icon to (entry.arg == "true")
+        val uriEntry =
+            entryCache.getOrPut(key) { UriEntry.fromSpec(context, entry.icon, entry.arg) }
         if (!uriEntry.isAvailable) return null
         return uriEntry
     }
@@ -69,14 +67,16 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         throw NotImplementedError()
     }
 
-    override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
-                         flattenDrawable: Boolean, customIconEntry: IconPackManager.CustomIconEntry?,
-                         iconProvider: CustomIconProvider?): Drawable? {
+    override fun getIcon(
+        launcherActivityInfo: LauncherActivityInfo, iconDpi: Int,
+        flattenDrawable: Boolean, customIconEntry: IconPackManager.CustomIconEntry?,
+        iconProvider: CustomIconProvider?
+    ): Drawable? {
         val entry = getUriEntry(customIconEntry)
         val icon = entry?.drawable
         if (icon != null) {
             return if (Utilities.ATLEAST_OREO && entry.adaptive) {
-                AdaptiveIconGenerator(context, icon, null).result
+                AdaptiveIconGenerator(context, icon, null).getResult()
             } else icon
         }
         return null
@@ -113,7 +113,8 @@ class UriIconPack(context: Context) : IconPack(context, "omegaUriPack") {
         }
 
         private fun loadBitmap(): Bitmap {
-            val parcelFileDescriptor: ParcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")!!
+            val parcelFileDescriptor: ParcelFileDescriptor =
+                context.contentResolver.openFileDescriptor(uri, "r")!!
             val fileDescriptor: FileDescriptor = parcelFileDescriptor.fileDescriptor
             val image: Bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
             parcelFileDescriptor.close()

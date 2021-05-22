@@ -142,7 +142,7 @@ class IconPackManager(private val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
+    fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable {
         packList.iterator().forEach { pack ->
             pack.getIcon(shortcutInfo, iconDpi)?.let { return it }
         }
@@ -212,7 +212,7 @@ class IconPackManager(private val context: Context) {
         }
 
         override fun toString(): String {
-            return "$packPackageName|${icon ?: ""}|${arg ?: ""}"
+            return "$packPackageName|${icon}|${arg ?: ""}"
         }
 
         companion object {
@@ -255,7 +255,7 @@ class IconPackManager(private val context: Context) {
 
         init {
             if (obj !== privateObj) {
-                UnsupportedOperationException("Cannot create PackProvider outside of IconPackManager")
+                throw UnsupportedOperationException("Cannot create PackProvider outside of IconPackManager")
             }
         }
 

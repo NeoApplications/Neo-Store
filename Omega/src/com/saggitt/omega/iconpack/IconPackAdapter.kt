@@ -26,12 +26,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.util.isVisible
 
+// TODO remove Handler()
 class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.Holder>() {
 
     private val manager = IconPackManager.getInstance(context)
@@ -165,9 +167,7 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
     }
 
     abstract class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        open fun bind(item: Item) {
-
-        }
+        open fun bind(item: Item) {}
     }
 
     class HeaderHolder(itemView: View) : Holder(itemView) {
@@ -243,15 +243,13 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
 
         init {
             val context = itemView.context
-            icon.setImageDrawable(context.getDrawable(R.drawable.ic_add)?.apply {
+            icon.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_add)?.apply {
                 setTint(Utilities.getOmegaPrefs(context).accentColor)
             })
             title.setText(R.string.get_more_icon_packs)
         }
 
-        override fun bind(item: Item) {
-
-        }
+        override fun bind(item: Item) {}
 
         override fun onClick(v: View) {
             val intent = Intent.parseUri(v.context.getString(R.string.market_search_intent), 0)
@@ -283,9 +281,7 @@ class IconPackAdapter(context: Context) : RecyclerView.Adapter<IconPackAdapter.H
             return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-        }
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
     }
 
     companion object {
