@@ -38,7 +38,12 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
     init {
         val shapeItems = context.resources.getStringArray(R.array.icon_shape_values)
         for (shape in shapeItems) {
-            adapterItems.add(ShapeModel(shape, Utilities.getOmegaPrefs(mContext).iconShape == shape))
+            adapterItems.add(
+                ShapeModel(
+                    shape,
+                    Utilities.getOmegaPrefs(mContext).iconShape == shape
+                )
+            )
         }
         //adapterItems.add(ShapeModel("custom", false))
         adapterItems.removeAt(0)
@@ -56,7 +61,11 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
         return createHolder(parent, R.layout.item_icon_shape, ::Holder)
     }
 
-    private inline fun createHolder(parent: ViewGroup, resource: Int, creator: (View) -> Holder): Holder {
+    private inline fun createHolder(
+        parent: ViewGroup,
+        resource: Int,
+        creator: (View) -> Holder
+    ): Holder {
         return creator(LayoutInflater.from(parent.context).inflate(resource, parent, false))
     }
 
@@ -68,7 +77,7 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
         private val backgroundColor = Themes.getAttrColor(mContext, R.attr.iconShapeTint)
 
         fun bind(item: ShapeModel, itemPosition: Int) {
-            val drawable = item.getIcon(mContext, item.shapeName)
+            val drawable = item.getIcon(mContext, item.shapeName)!!
             drawable.setTint(backgroundColor)
             if (prefs.iconShape == item.shapeName) {
                 drawable.setTint(prefs.accentColor)
@@ -83,7 +92,7 @@ class IconShapeAdapter(context: Context) : RecyclerView.Adapter<IconShapeAdapter
 
             iconButton.background = drawable
             iconButton.setOnClickListener {
-                adapterItems.get(itemPosition).isSelected = true
+                adapterItems[itemPosition].isSelected = true
                 prefs.iconShape = item.shapeName
 
                 notifyDataSetChanged()

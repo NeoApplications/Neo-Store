@@ -20,6 +20,7 @@ package com.saggitt.omega.icons
 
 import android.content.Context
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.util.AttributeSet
 import androidx.preference.Preference
 import com.android.launcher3.R
@@ -32,7 +33,7 @@ class IconPreference(context: Context, attrs: AttributeSet? = null) : Preference
     private var iconShape = IconShapeManager.getInstance(context).iconShape
     private var iconShapeString = iconShape.toString()
     private val drawable = IconShapeDrawable(dpToPx(48f).toInt(), iconShape).apply {
-        setColorFilter(context.getColorAttr(android.R.attr.colorControlNormal), PorterDuff.Mode.SRC_IN)
+        colorFilter = PorterDuffColorFilter(context.getColorAttr(android.R.attr.colorControlNormal), PorterDuff.Mode.SRC_IN)
     }
 
     init {

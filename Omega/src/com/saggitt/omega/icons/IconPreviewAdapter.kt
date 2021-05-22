@@ -69,8 +69,8 @@ class IconPreviewAdapter(context: Context) : RecyclerView.Adapter<IconPreviewAda
         fun bind(item: PreviewIconModel, position: Int) {
             icon.setImageDrawable(item.getItemIcon(mContext))
             val drawable = item.getShape(mContext, prefs.iconShape, item.itemColor)
-            icon.setBackground(drawable)
-            name.setText(item.getItemName())
+            icon.background = drawable
+            name.setText(item.itemName)
         }
     }
 }
