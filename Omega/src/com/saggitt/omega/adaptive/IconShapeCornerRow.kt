@@ -93,18 +93,15 @@ class IconShapeCornerRow(context: Context, attrs: AttributeSet?) :
         scale = progress / 10f
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-    }
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-    }
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         shape = (parent.adapter.getItem(position) as Map<*, *>)["value"] as String
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     class CornerShapeAdapter(context: Context) :
         SimpleAdapter(
