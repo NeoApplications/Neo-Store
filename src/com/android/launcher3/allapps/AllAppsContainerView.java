@@ -15,6 +15,11 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
+import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -71,11 +76,6 @@ import com.saggitt.omega.util.OmegaUtilsKt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_HAS_SHORTCUT_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_CHANGE_PERMISSION;
-import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
 
 /**
  * The all apps view container.
@@ -490,6 +490,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         if (Utilities.ATLEAST_P) {
             mWorkModeSwitch = (WorkModeSwitch) mLauncher.getLayoutInflater().inflate(
                     R.layout.work_mode_switch, this, false);
+            mWorkModeSwitch.setVisibility(View.GONE);
             this.addView(mWorkModeSwitch);
             mWorkModeSwitch.setInsets(mInsets);
             //mWorkModeSwitch.post(() -> mAH[AdapterHolder.WORK].applyPadding());
