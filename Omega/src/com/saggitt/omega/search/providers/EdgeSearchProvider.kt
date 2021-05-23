@@ -43,7 +43,7 @@ open class EdgeSearchProvider(context: Context) : SearchProvider(context) {
             Intent(Intent.ACTION_MAIN)
                 .setClassName(
                     packageName,
-                    "com.microsoft.bingsearchsdk.api.ui.activities.RubyBingSearchActivity"
+                    "com.microsoft.ruby.Main"
                 )
         )
     }
