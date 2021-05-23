@@ -19,7 +19,6 @@ package com.saggitt.omega.allapps
 
 import android.content.ComponentName
 import android.content.Context
-import android.os.Process
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.ItemInfoMatcher
@@ -71,7 +70,10 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
         }
     }
 
-    private fun createMatcher(components: List<ComponentKey>, base: ItemInfoMatcher? = null): ItemInfoMatcher {
+    private fun createMatcher(
+        components: List<ComponentKey>,
+        base: ItemInfoMatcher? = null
+    ): ItemInfoMatcher {
         return object : ItemInfoMatcher {
             override fun matches(info: ItemInfo, cn: ComponentName?): Boolean {
                 if (base?.matches(info, cn) == false) return false
@@ -86,9 +88,11 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
 
     operator fun get(index: Int) = tabs[index]
 
-    inner class ProfileTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.ProfileTab)
-        : Tab(drawerTab.getTitle(), matcher, drawerTab.profile.isWork, drawerTab)
+    inner class ProfileTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.ProfileTab) :
+        Tab(drawerTab.getTitle(), matcher, drawerTab.profile.isWork, drawerTab)
 
-    open class Tab(val name: String, val matcher: ItemInfoMatcher?,
-                   val isWork: Boolean = false, val drawerTab: DrawerTabs.Tab)
+    open class Tab(
+        val name: String, val matcher: ItemInfoMatcher?,
+        val isWork: Boolean = false, val drawerTab: DrawerTabs.Tab
+    )
 }

@@ -47,20 +47,16 @@ import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.runOnMainThread
 
 class BlurQsbLayout @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : AllAppsQsbLayout(context, attrs, defStyleAttr), BlurWallpaperProvider.Listener,
-        OmegaPreferences.OnPreferenceChangeListener {
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : AllAppsQsbLayout(context, attrs, defStyleAttr), BlurWallpaperProvider.Listener,
+    OmegaPreferences.OnPreferenceChangeListener {
 
     private val blurDrawableCallback by lazy {
         object : Drawable.Callback {
-            override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-            }
-
+            override fun unscheduleDrawable(who: Drawable, what: Runnable) {}
+            override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {}
             override fun invalidateDrawable(who: Drawable) {
                 runOnMainThread { invalidate() }
-            }
-
-            override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
             }
         }
     }
@@ -146,8 +142,10 @@ class BlurQsbLayout @JvmOverloads constructor(
                 val isBubbleUi = (searchBox as? AbstractQsbLayout)?.useTwoBubbles() != false
                 val bubbleAdjustmentLeft = if (isBubbleUi && isRtl) mMicWidth + bubbleGap else 0
                 val bubbleAdjustmentRight = if (isBubbleUi && !isRtl) mMicWidth + bubbleGap else 0
-                tmpRectF.set(left + bubbleAdjustmentLeft, top,
-                        right - bubbleAdjustmentRight, bottom)
+                tmpRectF.set(
+                    left + bubbleAdjustmentLeft, top,
+                    right - bubbleAdjustmentRight, bottom
+                )
                 setBlurBounds(tmpRectF)
                 alpha = (searchBox.alpha * 255).toInt()
                 canvas.save()
@@ -156,9 +154,11 @@ class BlurQsbLayout @JvmOverloads constructor(
                 paint.color = getBgColor()
                 canvas.drawRoundRect(tmpRectF, blurRadius, blurRadius, paint)
                 if (isBubbleUi) {
-                    tmpRectF.set((if (!isRtl) right - mMicWidth + 8 else left).toFloat(),
-                            top, (if (isRtl) left + mMicWidth else right).toFloat(),
-                            bottom)
+                    tmpRectF.set(
+                        (if (!isRtl) right - mMicWidth + 8 else left).toFloat(),
+                        top, (if (isRtl) left + mMicWidth else right).toFloat(),
+                        bottom
+                    )
                     setBlurBounds(tmpRectF)
                     draw(canvas)
                     canvas.drawRoundRect(tmpRectF, blurRadius, blurRadius, paint)
@@ -196,8 +196,10 @@ class BlurQsbLayout @JvmOverloads constructor(
         invalidateBlur()
     }
 
-    override fun setContentVisibility(visibleElements: Int, setter: PropertySetter,
-                                      interpolator: Interpolator) {
+    override fun setContentVisibility(
+        visibleElements: Int, setter: PropertySetter,
+        interpolator: Interpolator
+    ) {
         super.setContentVisibility(visibleElements, setter, interpolator)
         val hotseatVisible = (visibleElements and HOTSEAT_ICONS) != 0
         setter.setFloat(this, HOTSEAT_BG_PROGRESS, if (hotseatVisible) 1f else 0f, interpolator)
@@ -206,13 +208,10 @@ class BlurQsbLayout @JvmOverloads constructor(
     companion object {
 
         val HOTSEAT_BG_PROGRESS = object :
-                FloatProperty<BlurQsbLayout>("hotseatProgress") {
+            FloatProperty<BlurQsbLayout>("hotseatProgress") {
+            override fun get(qsb: BlurQsbLayout): Float = qsb.hotseatBgProgress
             override fun setValue(qsb: BlurQsbLayout, v: Float) {
                 qsb.hotseatBgProgress = v
-            }
-
-            override fun get(qsb: BlurQsbLayout): Float? {
-                return qsb.hotseatBgProgress
             }
         }
     }

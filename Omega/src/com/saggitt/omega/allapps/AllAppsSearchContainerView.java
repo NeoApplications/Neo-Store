@@ -25,10 +25,10 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.LauncherAllAppsContainerView;
 import com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout;
 
+// TODO fix the Kotlin class crashing app on inflate error
 public class AllAppsSearchContainerView extends LauncherAllAppsContainerView {
     private boolean mClearQsb;
 
@@ -54,14 +54,8 @@ public class AllAppsSearchContainerView extends LauncherAllAppsContainerView {
             int top = (int) (qsb.getTop() + qsb.getTranslationY());
             int right = left + qsb.getWidth() + 1;
             int bottom = top + qsb.getHeight() + 1;
-            if (Utilities.ATLEAST_P && Utilities.HIDDEN_APIS_ALLOWED) {
-                canvas.saveUnclippedLayer(left, 0, right, bottom);
-            } else {
-                int flags = Utilities.ATLEAST_P ? Canvas.ALL_SAVE_FLAG : 0x04 /* HAS_ALPHA_LAYER_SAVE_FLAG */;
-                canvas.saveLayer(left, 0, right, bottom, null, flags);
-            }
+            canvas.saveLayer(left, 0, right, bottom, null);
         }
-
         super.dispatchDraw(canvas);
     }
 
