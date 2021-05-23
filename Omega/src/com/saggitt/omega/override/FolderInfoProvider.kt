@@ -40,7 +40,7 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
         return context.getString(R.string.folder_hint_text)
     }
 
-    override fun getCustomTitle(info: FolderInfo): String? {
+    override fun getCustomTitle(info: FolderInfo): String {
         return if (info.title == null) {
             ""
         } else info.title.toString()

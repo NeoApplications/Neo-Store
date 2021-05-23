@@ -226,7 +226,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                 preferenceScreen.removePreference(mSwipeUpPref as Preference?)
             }
             if (mPrefHidePredictions != null) {
-                mPrefHidePredictions!!.isChecked = CustomAppPredictor.isHiddenApp(context, mKey)
+                mPrefHidePredictions!!.isChecked = CustomAppPredictor.isHiddenApp(context, mKey!!)
                 mPrefHidePredictions!!.onPreferenceChangeListener = this
             }
             if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
@@ -325,7 +325,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                 PREF_HIDE -> CustomAppFilter.setComponentNameState(launcher, mKey, enabled)
                 PREF_HIDE_FROM_PREDICTIONS -> CustomAppPredictor.setComponentNameState(
                     launcher,
-                    mKey,
+                    mKey!!,
                     enabled
                 )
             }

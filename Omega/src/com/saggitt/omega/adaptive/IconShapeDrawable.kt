@@ -68,7 +68,7 @@ class IconShapeDrawable(private val size: Int, iconShape: IconShape) : Drawable(
     private fun rebuildPath() {
         path.reset()
         iconShape.addShape(path, 0f, 0f,
-                Math.min(bounds.width(), bounds.height()) / 2f)
+                bounds.width().coerceAtMost(bounds.height()) / 2f)
         invalidateSelf()
     }
 }

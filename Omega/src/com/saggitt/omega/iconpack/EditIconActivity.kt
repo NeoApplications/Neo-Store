@@ -33,7 +33,6 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
@@ -81,13 +80,13 @@ class EditIconActivity : SettingsBaseActivity() {
             val packs = iconPacks.map { it.getIconPack() }
             runOnUiThread(::bindViews)
             if (isFolder) {
-                packs.forEach {
-                    it.ensureInitialLoadComplete()
-                    it.getAllIcons({ list ->
+                packs.forEach {ip ->
+                    ip.ensureInitialLoadComplete()
+                    ip.getAllIcons({ list ->
                         // Max 3 icons per pack
                         list.mapNotNull { it as? IconPack.Entry }.take(3).forEach { entry ->
                             runOnUiThread {
-                                val item = IconItem(entry, it is DefaultPack, it.displayName)
+                                val item = IconItem(entry, ip is DefaultPack, ip.displayName)
                                 val index = icons.size - 1
                                 if (index >= 0) {
                                     icons.add(index, item)
@@ -152,7 +151,7 @@ class EditIconActivity : SettingsBaseActivity() {
     fun onSelectIcon(entry: IconPack.Entry?) {
         val customEntry = entry?.toCustomEntry()
         val entryString = if (isFolder) customEntry?.toString() else customEntry?.toPackString()
-        setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
+        setResult(RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
         finish()
     }
 
@@ -170,12 +169,12 @@ class EditIconActivity : SettingsBaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == AppCompatActivity.RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             when (requestCode) {
                 CODE_PICK_ICON -> {
                     val entryString = data?.getStringExtra(EXTRA_ENTRY) ?: return
                     setResult(
-                        AppCompatActivity.RESULT_OK,
+                        RESULT_OK,
                         Intent().putExtra(EXTRA_ENTRY, entryString)
                     )
                     finish()
@@ -212,7 +211,7 @@ class EditIconActivity : SettingsBaseActivity() {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 setResult(
-                    AppCompatActivity.RESULT_OK,
+                    RESULT_OK,
                     Intent().putExtra(EXTRA_ENTRY, entry.toCustomEntry().toString())
                 )
                 finish()
@@ -277,9 +276,7 @@ class EditIconActivity : SettingsBaseActivity() {
                 itemView.setOnClickListener(null)
             }
 
-            override fun bind(item: AdapterItem) {
-
-            }
+            override fun bind(item: AdapterItem) {}
         }
     }
 
@@ -351,7 +348,7 @@ class EditIconActivity : SettingsBaseActivity() {
 
         fun getIconPack(): IconPack {
             if (packRef?.get() == null) {
-                packRef = WeakReference(iconPackManager.getIconPack(provider, true, false))
+                packRef = WeakReference(iconPackManager.getIconPack(provider, put = true, load = false))
             }
             return packRef!!.get()!!
         }

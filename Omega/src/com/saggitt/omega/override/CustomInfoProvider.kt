@@ -43,9 +43,7 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
 
     open fun supportsSwipeUp(info: T) = false
 
-    open fun setSwipeUpAction(info: T, action: String?) {
-        TODO("not implemented")
-    }
+    open fun setSwipeUpAction(info: T, action: String?) {}
 
     open fun getSwipeUpAction(info: T): String? {
         TODO("not implemented")

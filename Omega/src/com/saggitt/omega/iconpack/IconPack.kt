@@ -108,7 +108,7 @@ abstract class IconPack(val context: Context, val packPackageName: String) {
     private fun categorize(entries: List<Entry>): List<PackEntry> {
         val packEntries = ArrayList<PackEntry>()
         var previousSection = ""
-        entries.sortedBy { it.displayName.toLowerCase(Locale.getDefault()) }.forEach {
+        entries.sortedBy { it.displayName.lowercase(Locale.getDefault()) }.forEach {
             val currentSection = indexCompat.computeSectionName(it.displayName)
             if (currentSection != previousSection) {
                 previousSection = currentSection

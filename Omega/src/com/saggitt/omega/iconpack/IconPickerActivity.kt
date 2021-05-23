@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.iconpack
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -28,10 +27,10 @@ import android.os.Message
 import android.os.Process
 import android.text.TextUtils
 import android.view.*
-import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
@@ -215,14 +214,12 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1000 && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            if (data.hasExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)) {
-                val icon =
-                    data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
-                val entry = icon?.let { (iconPack as IconPackImpl).createEntry(it) }
-                entry?.let { onSelectIcon(it) }
-                return
-            }
+        if (requestCode == 1000 && resultCode == RESULT_OK && data != null && data.hasExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)) {
+            val icon =
+                data.getParcelableExtra<Intent.ShortcutIconResource>(Intent.EXTRA_SHORTCUT_ICON_RESOURCE)
+            val entry = icon?.let { (iconPack as IconPackImpl).createEntry(it) }
+            entry?.let { onSelectIcon(it) }
+            return
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -274,7 +271,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
 
     fun onSelectIcon(entry: IconPack.Entry) {
         val customEntry = entry.toCustomEntry()
-        setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
+        setResult(RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
         finish()
     }
 
@@ -362,7 +359,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
             }
 
             override fun onClick(v: View) {
-                onSelectIcon((items[adapterPosition] as IconItem).entry)
+                onSelectIcon((items[bindingAdapterPosition] as IconItem).entry)
             }
         }
 

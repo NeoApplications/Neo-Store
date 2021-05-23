@@ -83,7 +83,6 @@ class DefaultPack(context: Context) : IconPack(context, "") {
     }
 
     override fun loadPack() {}
-
     override fun getEntryForComponent(key: ComponentKey) = appMap[key]
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -108,7 +107,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
             }
         }
         val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
-        return gen.result
+        return gen.getResult()
     }
 
     override fun getIcon(
@@ -142,18 +141,18 @@ class DefaultPack(context: Context) : IconPack(context, "") {
                 }
             }
             val gen = AdaptiveIconGenerator(context, originalIcon, roundIcon)
-            return gen.result
+            return gen.getResult()
         }
         return iconProvider.getDynamicIcon(info, iconDpi, flattenDrawable)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
+    override fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable {
         ensureInitialLoadComplete()
 
         val drawable = ShortcutCachingLogic.getIcon(context, shortcutInfo, iconDpi)
         val gen = AdaptiveIconGenerator(context, drawable, null)
-        return gen.result
+        return gen.getResult()
     }
 
     override fun newIcon(
@@ -233,7 +232,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
                     appIcon,
                     component.packageName
                 )
-                return resourcesForApplication.getDrawableForDensity(resId, iconDpi)
+                return resourcesForApplication.getDrawableForDensity(resId, iconDpi, null)
             }
         } catch (ex: PackageManager.NameNotFoundException) {
             ex.printStackTrace()
