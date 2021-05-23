@@ -96,19 +96,21 @@
             android:title="@string/title__drawer_sort"
             app:iconSpaceReserved="false" />
 
-        <com.saggitt.omega.preferences.StyledSwitchPreference
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
             android:defaultValue="false"
             android:key="pref_show_predictions"
             android:title="@string/title_app_suggestions"
+            app:controllerClass=".PredictionsController"
             app:iconSpaceReserved="false"
             app:searchTitle="@string/title_app_suggestions" />
 
-        <com.saggitt.omega.preferences.StyledSwitchPreference
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
             android:key="pref_showAllAppsLabel"
             android:title="@string/title__drawer_all_apps"
             android:defaultValue="false"
             android:dependency="pref_show_predictions"
             android:persistent="true"
+            app:controllerClass=".PredictionsController"
             app:iconSpaceReserved="false" />
 
         <com.saggitt.omega.preferences.StyledSwitchPreference
