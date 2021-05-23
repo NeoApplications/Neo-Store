@@ -159,6 +159,7 @@ class CustomBottomSheet @JvmOverloads constructor(
     }
 
     override fun onWidgetsBound() {}
+
     class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
         private var mPrefHidePredictions: SwitchPreferenceCompat? = null
@@ -174,7 +175,8 @@ class CustomBottomSheet @JvmOverloads constructor(
         private var unsetForceOpen: Runnable? = null
         private var reopen: Runnable? = null
         private var mProvider: CustomInfoProvider<ItemInfo>? = null
-        override fun onCreatePreferences(savedInstanceState: Bundle, rootKey: String) {
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.app_edit_prefs, rootKey)
         }
 
