@@ -46,7 +46,6 @@ abstract class AppGroups<T : AppGroups.Group>(
     private val manager: AppGroupsManager,
     private val type: AppGroupsManager.CategorizationType
 ) {
-
     private val prefs = manager.prefs
     val context = prefs.context
 
@@ -178,23 +177,24 @@ abstract class AppGroups<T : AppGroups.Group>(
         const val TYPE_UNDEFINED = "-1"
     }
 
-    open class Group(val type: String, context: Context, title: String) {
+    open class Group(val type: String, val context: Context, title: String) {
 
         private val defaultTitle = title
 
         val customizations = CustomizationMap()
-        val title = CustomTitle(KEY_TITLE, defaultTitle)
+        private val _title = CustomTitle(KEY_TITLE, defaultTitle)
+        open var title: String
+            get() =
+                _title.value ?: defaultTitle
+            set(value) {
+                _title.value = value
+            }
+
+        open val summary: String?
+            get() = null
 
         init {
-            addCustomization(this.title)
-        }
-
-        fun getTitle(): String {
-            return title.value ?: defaultTitle
-        }
-
-        open fun getSummary(context: Context): String? {
-            return null
+            addCustomization(_title)
         }
 
         fun addCustomization(customization: Customization<*, *>) {
@@ -285,7 +285,6 @@ abstract class AppGroups<T : AppGroups.Group>(
                         count: Int,
                         after: Int
                     ) {
-
                     }
 
                     override fun onTextChanged(
@@ -294,7 +293,6 @@ abstract class AppGroups<T : AppGroups.Group>(
                         before: Int,
                         count: Int
                     ) {
-
                     }
 
                 })
@@ -405,7 +403,7 @@ abstract class AppGroups<T : AppGroups.Group>(
 
                 view.setOnClickListener {
                     val colorPicker = ColorSelectorPresets(themedContext)
-                    colorPicker.setTitle(context.getString(R.string.tab_color));
+                    colorPicker.setTitle(context.getString(R.string.tab_color))
                     colorPicker.setRoundColorButton(true)
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
@@ -421,7 +419,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                         }
 
                         override fun onChooseColor(position: Int, color: Int) {
-                            value = color;
+                            value = color
                             updateColor(view)
                         }
                     })
@@ -444,14 +442,14 @@ abstract class AppGroups<T : AppGroups.Group>(
 
             @Suppress("UNCHECKED_CAST")
             override fun loadFromJson(context: Context, obj: JSONArray?) {
-                if (obj == null) {
-                    value = null
+                value = if (obj == null) {
+                    null
                 } else {
                     val set = HashSet<T>()
                     for (i in (0 until obj.length())) {
                         set.add(unflatten(context, obj.get(i) as S))
                     }
-                    value = set
+                    set
                 }
             }
 
@@ -582,7 +580,7 @@ class AppGroupsUtils(context: Context) {
     fun getTabColor(color: String): Int {
         Log.d("AppGroupsUtils", "Loading tab color for $color")
         return if (color != "null") {
-            color.toInt();
+            color.toInt()
         } else {
             defaultColor
         }

@@ -39,17 +39,30 @@ import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
 import org.json.JSONObject
 
-abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.CategorizationType)
-    : AppGroups<DrawerTabs.Tab>(manager, type) {
+abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.CategorizationType) :
+    AppGroups<DrawerTabs.Tab>(manager, type) {
 
     private val personalTabCreator = ProfileTabCreator(Profile(null))
     private val workTabCreator by lazy {
-        val workUser = UserCache.INSTANCE.get(context).userProfiles.firstOrNull { it != Process.myUserHandle() }
-        if (workUser != null) ProfileTabCreator(Profile(workUser)) else GroupCreator<Tab> { null }
+        val workUser =
+            UserCache.INSTANCE.get(context).userProfiles.firstOrNull { it != Process.myUserHandle() }
+        if (workUser != null) ProfileTabCreator(Profile(workUser)) else object : GroupCreator<Tab> {
+            override fun createGroup(context: Context): Tab? {
+                return null
+            }
+        }
     }
     private val allAppsTabCreator = ProfileTabCreator(Profile())
-    private val customTabCreator = GroupCreator<Tab> { context -> CustomTab(context) }
-    private val flowerpotTabCreator = GroupCreator<Tab> { context -> FlowerpotTab(context) }
+    private val customTabCreator = object : GroupCreator<Tab> {
+        override fun createGroup(context: Context): Tab {
+            return CustomTab(context)
+        }
+    }
+    private val flowerpotTabCreator = object : GroupCreator<Tab> {
+        override fun createGroup(context: Context): Tab {
+            return FlowerpotTab(context)
+        }
+    }
 
     init {
         loadGroups()
@@ -65,7 +78,11 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
     override fun getGroupCreator(type: String): GroupCreator<Tab> {
         if (type.startsWith(TYPE_PROFILE_PREFIX)) {
             val profile = Profile.fromString(context, type.substring(TYPE_PROFILE_PREFIX.length))
-                    ?: return GroupCreator { null }
+                ?: return object : GroupCreator<Tab> {
+                    override fun createGroup(context: Context): Tab? {
+                        return null
+                    }
+                }
             return ProfileTabCreator(profile)
         }
         return when (type) {
@@ -74,7 +91,11 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             TYPE_WORK -> workTabCreator
             TYPE_ALL_APPS -> allAppsTabCreator
             FlowerpotTabs.TYPE_FLOWERPOT -> flowerpotTabCreator
-            else -> GroupCreator { null }
+            else -> object : GroupCreator<Tab> {
+                override fun createGroup(context: Context): Tab? {
+                    return null
+                }
+            }
         }
     }
 
@@ -82,7 +103,8 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         changeCallback.launcher.allAppsController.appsView.reloadTabs()
     }
 
-    abstract class Tab(context: Context, type: String, title: String) : Group(type, context, title) {
+    abstract class Tab(context: Context, type: String, title: String) :
+        Group(type, context, title) {
 
         val color = ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColor)
 
@@ -91,9 +113,12 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         }
     }
 
-    class CustomTab(context: Context) : Tab(context, TYPE_CUSTOM, context.getString(R.string.default_tab_name)) {
-        val hideFromAllApps = SwitchRow(R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
-                KEY_HIDE_FROM_ALL_APPS, true)
+    class CustomTab(context: Context) :
+        Tab(context, TYPE_CUSTOM, context.getString(R.string.default_tab_name)) {
+        val hideFromAllApps = SwitchRow(
+            R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
+            KEY_HIDE_FROM_ALL_APPS, true
+        )
         val contents = AppsRow(KEY_ITEMS, mutableSetOf())
 
         init {
@@ -103,31 +128,35 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             customizations.setOrder(KEY_TITLE, KEY_HIDE_FROM_ALL_APPS, KEY_COLOR, KEY_ITEMS)
         }
 
-        override fun getSummary(context: Context): String? {
-            val size = getFilter(context).size
-            return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
-        }
+        override val summary: String
+            get() {
+                val size = filter.size
+                return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
+            }
 
-        fun getFilter(context: Context): Filter<*> = CustomFilter(context, contents.value())
+        val filter: Filter<*>
+            get() = CustomFilter(context, contents.value())
     }
 
-    open class ProfileTab(context: Context, val profile: Profile) : Tab(context, "$TYPE_PROFILE_PREFIX$profile}", getTitle(context, profile)) {
+    open class ProfileTab(context: Context, val profile: Profile) :
+        Tab(context, "$TYPE_PROFILE_PREFIX$profile}", getTitle(context, profile)) {
 
         init {
             addCustomization(HiddenAppsRow(profile))
             customizations.setOrder(KEY_TITLE, KEY_COLOR, KEY_HIDDEN)
         }
 
-        override fun getSummary(context: Context): String? {
-            val hidden = context.omegaPrefs.hiddenAppSet
+        override val summary: String?
+            get() {
+                val hidden = context.omegaPrefs.hiddenAppSet
                     .map { Utilities.makeComponentKey(context, it) }
                     .filter(getWorkFilter(profile))
-            val size = hidden.size
-            if (size == 0) {
-                return null
+                val size = hidden.size
+                if (size == 0) {
+                    return null
+                }
+                return context.resources.getQuantityString(R.plurals.hidden_apps_count, size, size)
             }
-            return context.resources.getQuantityString(R.plurals.hidden_apps_count, size, size)
-        }
 
         companion object {
 
@@ -140,12 +169,13 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
     }
 
     class HiddenAppsRow(private val profile: Profile) :
-            Group.Customization<Collection<ComponentKey>, Boolean>(KEY_HIDDEN, emptySet()) {
+        Group.Customization<Collection<ComponentKey>, Boolean>(KEY_HIDDEN, emptySet()) {
 
         private val predicate get() = getWorkFilter(profile)
 
         override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
-            val view = LayoutInflater.from(context).inflate(R.layout.drawer_tab_hidden_apps_row, parent, false)
+            val view = LayoutInflater.from(context)
+                .inflate(R.layout.drawer_tab_hidden_apps_row, parent, false)
 
             view.findViewById<ImageView>(R.id.manage_apps_icon).tintDrawable(accent)
             updateCount(view)
@@ -162,9 +192,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             return view
         }
 
-        override fun loadFromJson(context: Context, obj: Boolean?) {
-
-        }
+        override fun loadFromJson(context: Context, obj: Boolean?) {}
 
         override fun saveToJson(context: Context): Boolean? {
             val value = value ?: return null
@@ -176,20 +204,20 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         private fun updateCount(view: View) {
             val count = (value ?: filteredValue(view.context)).size
             view.findViewById<TextView>(R.id.apps_count).text =
-                    view.resources.getQuantityString(R.plurals.hidden_apps_count, count, count)
+                view.resources.getQuantityString(R.plurals.hidden_apps_count, count, count)
         }
 
         private fun filteredValue(context: Context): Collection<ComponentKey> {
             return context.omegaPrefs.hiddenAppSet
-                    .map { Utilities.makeComponentKey(context, it) }
-                    .filter(predicate)
+                .map { Utilities.makeComponentKey(context, it) }
+                .filter(predicate)
         }
 
         private fun setHiddenApps(context: Context, hidden: Collection<ComponentKey>) {
             val prefs = context.omegaPrefs
             val hiddenSet = ArrayList(prefs.hiddenAppSet
-                    .map { Utilities.makeComponentKey(context, it) }
-                    .filter { !predicate(it) })
+                .map { Utilities.makeComponentKey(context, it) }
+                .filter { !predicate(it) })
             hiddenSet.addAll(hidden)
             prefs.hiddenAppSet = hiddenSet.map(ComponentKey::toString).toSet()
         }
@@ -229,8 +257,9 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         constructor() : this(null, true)
 
         constructor(parcel: Parcel) : this(
-                parcel.readParcelable<UserHandle?>(UserHandle::class.java.classLoader),
-                parcel.readBoolean())
+            parcel.readParcelable<UserHandle?>(UserHandle::class.java.classLoader),
+            parcel.readBoolean()
+        )
 
         fun matches(user: UserHandle): Boolean {
             if (matchesAll) return true
@@ -280,7 +309,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
                 val obj = JSONObject(profile)
                 val user = if (obj.has(KEY_ID)) {
                     UserCache.INSTANCE.get(context)
-                            .getUserForSerialNumber(obj.getLong(KEY_ID)) ?: return null
+                        .getUserForSerialNumber(obj.getLong(KEY_ID)) ?: return null
                 } else null
                 val matchesAll = obj.getBoolean(KEY_MATCHES_ALL)
                 return Profile(user, matchesAll)
@@ -290,7 +319,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
     data class ProfileTabCreator(private val profile: Profile) : GroupCreator<Tab> {
 
-        override fun createGroup(context: Context): Tab? {
+        override fun createGroup(context: Context): Tab {
             return ProfileTab(context, profile)
         }
     }

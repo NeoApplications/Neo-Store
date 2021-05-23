@@ -79,16 +79,10 @@ class BlurHotseat @JvmOverloads constructor(
 
     private val blurDrawableCallback by lazy {
         object : Drawable.Callback {
-            override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-
-            }
-
+            override fun unscheduleDrawable(who: Drawable, what: Runnable) {}
+            override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {}
             override fun invalidateDrawable(who: Drawable) {
                 runOnMainThread { invalidate() }
-            }
-
-            override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
-
             }
         }
     }

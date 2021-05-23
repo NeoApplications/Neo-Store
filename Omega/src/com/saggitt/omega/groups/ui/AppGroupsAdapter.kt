@@ -33,8 +33,8 @@ import com.saggitt.omega.groups.AppGroups
 import com.saggitt.omega.groups.DrawerTabEditBottomSheet
 import com.saggitt.omega.util.*
 
-abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : AppGroups.Group>(val context: Context)
-    : RecyclerView.Adapter<AppGroupsAdapter.Holder>() {
+abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : AppGroups.Group>(val context: Context) :
+    RecyclerView.Adapter<AppGroupsAdapter.Holder>() {
 
     private var saved = true
 
@@ -50,23 +50,24 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     override fun getItemCount() = items.size
 
-    override fun getItemViewType(position: Int): Int {
-        val item = items[position]
-        return when (item) {
-            is HeaderItem -> TYPE_HEADER
-            is AddItem -> TYPE_ADD
-            is GroupItem -> TYPE_GROUP
-            else -> throw IllegalStateException("Unknown item class $item")
-        }
+    override fun getItemViewType(position: Int): Int = when (val item = items[position]) {
+        is HeaderItem -> TYPE_HEADER
+        is AddItem -> TYPE_ADD
+        is GroupItem -> TYPE_GROUP
+        else -> throw IllegalStateException("Unknown item class $item")
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return when (viewType) {
-            TYPE_HEADER -> HeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.app_groups_adapter_header, parent, false))
-            TYPE_ADD -> AddHolder(LayoutInflater.from(parent.context).inflate(R.layout.app_groups_adapter_add, parent, false))
-            TYPE_GROUP -> createGroupHolder(parent)
-            else -> throw IllegalStateException("Unknown view type $viewType")
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = when (viewType) {
+        TYPE_HEADER -> HeaderHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.app_groups_adapter_header, parent, false)
+        )
+        TYPE_ADD -> AddHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.app_groups_adapter_add, parent, false)
+        )
+        TYPE_GROUP -> createGroupHolder(parent)
+        else -> throw IllegalStateException("Unknown view type $viewType")
     }
 
     abstract fun createGroupHolder(parent: ViewGroup): VH
@@ -150,11 +151,13 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
         init {
             val context = itemView.context
-            val title = itemView.findViewById<View>(R.id.categoryHeader).findViewById<TextView>(android.R.id.title)
+            val title = itemView.findViewById<View>(R.id.categoryHeader)
+                .findViewById<TextView>(android.R.id.title)
             title.setText(headerText)
             title.setTextColor(context.createDisabledColor(accent))
 
-            val tipIcon = itemView.findViewById<View>(R.id.tipRow).findViewById<ImageView>(android.R.id.icon)
+            val tipIcon =
+                itemView.findViewById<View>(R.id.tipRow).findViewById<ImageView>(android.R.id.icon)
             tipIcon.tintDrawable(accent)
         }
     }
@@ -196,8 +199,8 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
         }
 
         open fun bind(info: AppGroups.Group) {
-            title.text = info.getTitle()
-            summary.text = formatSummary(info.getSummary(context))
+            title.text = info.title
+            summary.text = formatSummary(info.summary)
             summary.isVisible = !TextUtils.isEmpty(summary.text)
             deleted = false
         }
@@ -213,15 +216,15 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
         private fun startEdit() {
             if (deleted) return
-            val group = (items[adapterPosition] as GroupItem).group
+            val group = (items[bindingAdapterPosition] as GroupItem).group
             showEditDialog(group)
         }
 
         private fun delete() {
             if (deleted) return
             deleted = true
-            items.removeAt(adapterPosition)
-            notifyItemRemoved(adapterPosition)
+            items.removeAt(bindingAdapterPosition)
+            notifyItemRemoved(bindingAdapterPosition)
             saved = false
         }
     }
@@ -233,18 +236,23 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     inner class TouchHelperCallback : ItemTouchHelper.Callback() {
 
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
             if (viewHolder !is AppGroupsAdapter<*, *>.GroupHolder) return 0
             return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return move(viewHolder.adapterPosition, target.adapterPosition)
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-        }
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
     }
 
     companion object {

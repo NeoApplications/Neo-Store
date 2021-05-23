@@ -52,6 +52,6 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
     fun updateSummary() {
         summary = tabs
             .filter { it.contents.value?.contains(componentKey) == true }
-            .joinToString(", ") { it.getTitle() }
+            .joinToString(", ") { it.title }
     }
 }

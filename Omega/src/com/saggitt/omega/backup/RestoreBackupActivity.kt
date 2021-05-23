@@ -65,8 +65,7 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         when {
-            intent.hasExtra(EXTRA_URI) -> {
-            }
+            intent.hasExtra(EXTRA_URI) -> { }
             intent.data != null -> {
                 fromExternal = true
             }
@@ -147,8 +146,9 @@ class RestoreBackupActivity : SettingsBaseActivity(), OmegaBackup.MetaLoader.Cal
         if (!inProgress) super.onBackPressed()
     }
 
+    // TODO replace AsynTask
     @SuppressLint("StaticFieldLeak")
-    private inner class RestoreBackupTask() : AsyncTask<Void, Void, Int>() {
+    private inner class RestoreBackupTask : AsyncTask<Void, Void, Int>() {
 
         override fun onPreExecute() {
             super.onPreExecute()

@@ -31,7 +31,7 @@ class DrawerFolderInfo(private val drawerFolder: DrawerFolders.Folder) : FolderI
     override fun setTitle(title: CharSequence?, modelWriter: ModelWriter) {
         super.setTitle(title, modelWriter)
         changed = true
-        drawerFolder.title.value = title?.toString()
+        drawerFolder.title = title.toString()
     }
 
     override fun onIconChanged() {

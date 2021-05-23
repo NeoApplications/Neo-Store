@@ -48,7 +48,7 @@ class FlowerpotTabs(manager: AppGroupsManager) :
         }.toMutableList()
         existingGroups.addAll(pots.map {
             FlowerpotTab(context).apply {
-                title.value = it.displayName
+                title = it.displayName
                 potName.value = it.name
             }
         })
@@ -58,12 +58,16 @@ class FlowerpotTabs(manager: AppGroupsManager) :
 
     override fun getGroupCreator(type: String): GroupCreator<Tab> {
         return when (type) {
-            TYPE_FLOWERPOT -> GroupCreator { context -> FlowerpotTab(context) }
+            TYPE_FLOWERPOT -> object : GroupCreator<Tab> {
+                override fun createGroup(context: Context): Tab {
+                    return FlowerpotTab(context)
+                }
+            }
             else -> super.getGroupCreator(type)
         }
     }
 
-    class FlowerpotTab(private val context: Context) :
+    class FlowerpotTab(context: Context) :
         Tab(context, TYPE_FLOWERPOT, context.getString(R.string.default_tab_name)) {
         // todo: make updating the title dynamically less hacky (aka make it actually work)
         val potName: FlowerpotCustomization = FlowerpotCustomization(
@@ -80,10 +84,11 @@ class FlowerpotTabs(manager: AppGroupsManager) :
             customizations.setOrder(KEY_TITLE, KEY_FLOWERPOT, KEY_COLOR)
         }
 
-        override fun getSummary(context: Context): String? {
-            val size = getFilter(context).size
-            return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
-        }
+        override val summary: String
+            get() {
+                val size = getFilter(context).size
+                return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
+            }
 
         fun getMatches(): Set<ComponentKey> {
             pot.ensureLoaded()
@@ -157,7 +162,7 @@ class FlowerpotTabs(manager: AppGroupsManager) :
         }
 
         private fun updateSummary(view: View) {
-            view.findViewById<TextView>(R.id.current_category).setText(displayName)
+            view.findViewById<TextView>(R.id.current_category).text = displayName
         }
 
         override fun clone(): Group.Customization<String, String> {

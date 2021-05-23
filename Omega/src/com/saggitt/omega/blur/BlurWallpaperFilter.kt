@@ -29,7 +29,7 @@ class BlurWallpaperFilter(private val context: Context) : WallpaperFilter {
 
     override fun applyPrefs(prefs: OmegaPreferences) {
         blurRadius = prefs.blurRadius.toInt() / BlurWallpaperProvider.DOWNSAMPLE_FACTOR
-        blurRadius = Math.max(1, Math.min(blurRadius, 25))
+        blurRadius = blurRadius.coerceAtLeast(1).coerceAtMost(25)
     }
 
     override fun apply(wallpaper: Bitmap): WallpaperFilter.ApplyTask {

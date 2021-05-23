@@ -324,7 +324,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             val enabled = newValue as Boolean
             val launcher = Launcher.getLauncher(activity)
             when (preference.key) {
-                PREF_HIDE -> CustomAppFilter.setComponentNameState(launcher, mKey, enabled)
+                PREF_HIDE -> CustomAppFilter.setComponentNameState(launcher, mKey.toString(), enabled)
                 PREF_HIDE_FROM_PREDICTIONS -> CustomAppPredictor.setComponentNameState(
                     launcher,
                     mKey!!,
