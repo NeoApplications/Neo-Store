@@ -36,7 +36,7 @@ class MultiSelectTabDialog(
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val entries = tabs.map { it.getTitle() }.toTypedArray()
+        val entries = tabs.map { it.title }.toTypedArray()
         val checkedEntries = tabs.map {
             it.contents.value().contains(componentKey)
         }.toBooleanArray()

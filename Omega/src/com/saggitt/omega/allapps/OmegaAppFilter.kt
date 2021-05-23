@@ -31,17 +31,13 @@ open class OmegaAppFilter(context: Context) : AppFilter() {
     init {
         mHideList.add(ComponentName(context, OmegaLauncher::class.java.name))
         //Voice Search
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/.VoiceSearchActivity")!!);
-
+        mHideList.add(ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/.VoiceSearchActivity")!!)
         //Wallpapers
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.apps.wallpaper/.picker.CategoryPickerActivity")!!);
-
+        mHideList.add(ComponentName.unflattenFromString("com.google.android.apps.wallpaper/.picker.CategoryPickerActivity")!!)
         //Google Now Launcher
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.launcher/.StubApp")!!);
-
+        mHideList.add(ComponentName.unflattenFromString("com.google.android.launcher/.StubApp")!!)
         //Actions Services
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.as/com.google.android.apps.miphone.aiai.allapps.main.MainDummyActivity")!!);
-
+        mHideList.add(ComponentName.unflattenFromString("com.google.android.as/com.google.android.apps.miphone.aiai.allapps.main.MainDummyActivity")!!)
     }
 
     override fun shouldShowApp(componentName: ComponentName?, user: UserHandle?): Boolean {

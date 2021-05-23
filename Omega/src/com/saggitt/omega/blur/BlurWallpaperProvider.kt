@@ -165,8 +165,12 @@ class BlurWallpaperProvider(val context: Context) {
 
     private fun scaleToScreenSize(bitmap: Bitmap): Bitmap {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
-        display.getRealMetrics(mDisplayMetrics)
+        val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.display
+        } else {
+            wm.defaultDisplay
+        }
+        display?.getRealMetrics(mDisplayMetrics)
 
         val width = mDisplayMetrics.widthPixels
         val height = mDisplayMetrics.heightPixels
@@ -175,13 +179,13 @@ class BlurWallpaperProvider(val context: Context) {
         val widthFactor = width.toFloat() / bitmap.width
         val heightFactor = height.toFloat() / bitmap.height
 
-        val upscaleFactor = Math.max(widthFactor, heightFactor)
+        val upscaleFactor = widthFactor.coerceAtLeast(heightFactor)
         if (upscaleFactor <= 0) {
             return bitmap
         }
 
-        val scaledWidth = Math.max(width, (bitmap.width * upscaleFactor).ceilToInt())
-        val scaledHeight = Math.max(height, (bitmap.height * upscaleFactor).ceilToInt())
+        val scaledWidth = width.coerceAtLeast((bitmap.width * upscaleFactor).ceilToInt())
+        val scaledHeight = height.coerceAtLeast((bitmap.height * upscaleFactor).ceilToInt())
         return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, false)
     }
 
@@ -242,12 +246,12 @@ class BlurWallpaperProvider(val context: Context) {
 
     fun createDrawable(radius: Float): BlurDrawable {
         return ShaderBlurDrawable(this)
-                .apply { blurRadii = BlurDrawable.Radii(radius) }
+            .apply { blurRadii = BlurDrawable.Radii(radius) }
     }
 
     fun createDrawable(topRadius: Float, bottomRadius: Float): BlurDrawable {
         return ShaderBlurDrawable(this)
-                .apply { blurRadii = BlurDrawable.Radii(topRadius, bottomRadius) }
+            .apply { blurRadii = BlurDrawable.Radii(topRadius, bottomRadius) }
     }
 
     fun setWallpaperOffset(offset: Float) {
@@ -260,8 +264,10 @@ class BlurWallpaperProvider(val context: Context) {
         if (availw < 0)
             xPixels += (availw * (offset - .5f) + .5f).toInt()
 
-        mOffset = Utilities.boundToRange((-xPixels).toFloat(),
-                0f, (mWallpaperWidth - mDisplayMetrics.widthPixels).toFloat())
+        mOffset = Utilities.boundToRange(
+            (-xPixels).toFloat(),
+            0f, (mWallpaperWidth - mDisplayMetrics.widthPixels).toFloat()
+        )
 
         for (listener in ArrayList(mListeners)) {
             listener.onOffsetChanged(mOffset)
@@ -282,7 +288,8 @@ class BlurWallpaperProvider(val context: Context) {
         fun onEnabledChanged() {}
     }
 
-    companion object : SingletonHolder<BlurWallpaperProvider, Context>(ensureOnMainThread(useApplicationContext(::BlurWallpaperProvider))) {
+    companion object :
+        SingletonHolder<BlurWallpaperProvider, Context>(ensureOnMainThread(useApplicationContext(::BlurWallpaperProvider))) {
 
         const val BLUR_QSB = 1
         const val BLUR_FOLDER = 2

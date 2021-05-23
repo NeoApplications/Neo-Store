@@ -16,16 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.groups
 
-package com.saggitt.omega.groups;
+import android.content.Context
 
-import android.content.Context;
-
-import androidx.annotation.Nullable;
-
-public interface GroupCreator<T> {
-
-    @Nullable
-    T createGroup(Context context);
+interface GroupCreator<T> {
+    fun createGroup(context: Context): T?
 }
-

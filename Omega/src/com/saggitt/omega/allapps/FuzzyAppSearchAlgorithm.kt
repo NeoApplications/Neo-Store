@@ -33,10 +33,9 @@ import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.search.WebSearchProvider
 import com.saggitt.omega.util.omegaPrefs
 import me.xdrop.fuzzywuzzy.FuzzySearch
-import me.xdrop.fuzzywuzzy.ToStringFunction
 
 class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: List<AppInfo>) :
-        SearchAlgorithm {
+    SearchAlgorithm {
 
     private var resultHandler: Handler = Handler()
     private var baseFilter: AppFilter = OmegaAppFilter(context)
@@ -64,8 +63,10 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
         const val MIN_SCORE = 65
 
         @JvmStatic
-        fun getApps(context: Context, defaultApps: List<AppInfo>,
-                    filter: AppFilter): List<AppInfo> {
+        fun getApps(
+            context: Context, defaultApps: List<AppInfo>,
+            filter: AppFilter
+        ): List<AppInfo> {
             if (!context.omegaPrefs.searchHiddenApps) {
                 return defaultApps
             }
@@ -86,15 +87,18 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
         }
 
         @JvmStatic
-        fun query(context: Context, query: String, defaultApps: List<AppInfo>,
-                  filter: AppFilter): List<AppInfo> {
-            return FuzzySearch.extractAll(query, getApps(context, defaultApps, filter),
-                    ToStringFunction<AppInfo> { item ->
-                        item?.title.toString()
-                    }, WinklerWeightedRatio(), MIN_SCORE)
-                    .sortedBy { it.referent.title.toString() }
-                    .sortedByDescending { it.score }
-                    .map { it.referent }
+        fun query(
+            context: Context, query: String, defaultApps: List<AppInfo>,
+            filter: AppFilter
+        ): List<AppInfo> {
+            return FuzzySearch.extractAll(
+                query, getApps(context, defaultApps, filter),
+                { item -> item?.title.toString() },
+                WinklerWeightedRatio(), MIN_SCORE
+            )
+                .sortedBy { it.referent.title.toString() }
+                .sortedByDescending { it.score }
+                .map { it.referent }
         }
     }
 }

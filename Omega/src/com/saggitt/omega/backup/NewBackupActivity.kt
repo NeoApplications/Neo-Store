@@ -140,6 +140,7 @@ class NewBackupActivity : SettingsBaseActivity() {
         if (!inProgress) super.onBackPressed()
     }
 
+    // TODO replace AsyncTask
     @SuppressLint("StaticFieldLeak")
     private inner class CreateBackupTask(val context: Context) : AsyncTask<Void, Void, Boolean>() {
 

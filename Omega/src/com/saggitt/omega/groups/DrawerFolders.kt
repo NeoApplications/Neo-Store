@@ -27,7 +27,7 @@ import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.random
 
 class DrawerFolders(manager: AppGroupsManager) :
-        AppGroups<DrawerFolders.Folder>(manager, AppGroupsManager.CategorizationType.Folders) {
+    AppGroups<DrawerFolders.Folder>(manager, AppGroupsManager.CategorizationType.Folders) {
 
     init {
         loadGroups()
@@ -39,8 +39,16 @@ class DrawerFolders(manager: AppGroupsManager) :
 
     override fun getGroupCreator(type: String): GroupCreator<Folder> {
         return when (type) {
-            TYPE_CUSTOM -> GroupCreator { context -> CustomFolder(context) }
-            else -> GroupCreator { null }
+            TYPE_CUSTOM -> object : GroupCreator<Folder> {
+                override fun createGroup(context: Context): Folder? {
+                    return CustomFolder(context)
+                }
+            }
+            else -> object : GroupCreator<Folder> {
+                override fun createGroup(context: Context): Folder? {
+                    return null
+                }
+            }
         }
     }
 
@@ -49,7 +57,8 @@ class DrawerFolders(manager: AppGroupsManager) :
         changeCallback.reloadDrawer()
     }
 
-    fun getFolderInfos(apps: AlphabeticalAppsList, modelWriter: ModelWriter) = getFolderInfos(buildAppsMap(apps)::get, modelWriter)
+    fun getFolderInfos(apps: AlphabeticalAppsList, modelWriter: ModelWriter) =
+        getFolderInfos(buildAppsMap(apps)::get, modelWriter)
 
     private fun buildAppsMap(apps: AlphabeticalAppsList): Map<ComponentKey, AppInfo> {
         // Copy the list before accessing it to prevent concurrent list access
@@ -57,21 +66,22 @@ class DrawerFolders(manager: AppGroupsManager) :
     }
 
     private fun getFolderInfos(
-            getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter): List<DrawerFolderInfo> = getGroups()
-            .asSequence()
-            .filter { !it.isEmpty }
-            .map { it.toFolderInfo(getAppInfo, modelWriter) }
-            .toList()
+        getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter
+    ): List<DrawerFolderInfo> = getGroups()
+        .asSequence()
+        .filter { !it.isEmpty }
+        .map { it.toFolderInfo(getAppInfo, modelWriter) }
+        .toList()
 
     fun getHiddenComponents() = getGroups()
-            .asSequence()
-            .filterIsInstance<CustomFolder>()
-            .filter { it.hideFromAllApps.value() }
-            .mapNotNull { it.contents.value }
-            .flatMapTo(mutableSetOf()) { it.asSequence() }
+        .asSequence()
+        .filterIsInstance<CustomFolder>()
+        .filter { it.hideFromAllApps.value() }
+        .mapNotNull { it.contents.value }
+        .flatMapTo(mutableSetOf()) { it.asSequence() }
 
-    abstract class Folder(val context: Context, type: String, titleRes: Int) :
-            Group(type, context, context.getString(titleRes)) {
+    abstract class Folder(context: Context, type: String, titleRes: Int) :
+        Group(type, context, context.getString(titleRes)) {
         // Ensure icon customization sticks across group changes
         val id = LongCustomization(KEY_ID, Long.random + 9999L)
         open val isEmpty = true
@@ -81,19 +91,23 @@ class DrawerFolders(manager: AppGroupsManager) :
             addCustomization(id)
         }
 
-        open fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter) = DrawerFolderInfo(
-                this).apply {
-            setTitle(this@Folder.getTitle(), modelWriter)
-            id = this@Folder.id.value().toInt()
-            contents = ArrayList()
-        }
+        open fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter) =
+            DrawerFolderInfo(
+                this
+            ).apply {
+                setTitle(this@Folder.title, modelWriter)
+                id = this@Folder.id.value().toInt()
+                contents = ArrayList()
+            }
     }
 
     class CustomFolder(context: Context) :
-            Folder(context, TYPE_CUSTOM, R.string.default_folder_name) {
+        Folder(context, TYPE_CUSTOM, R.string.default_folder_name) {
 
-        val hideFromAllApps = SwitchRow(R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
-                KEY_HIDE_FROM_ALL_APPS, true)
+        val hideFromAllApps = SwitchRow(
+            R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
+            KEY_HIDE_FROM_ALL_APPS, true
+        )
         val contents = AppsRow(KEY_ITEMS, mutableSetOf())
         override val isEmpty get() = contents.value.isNullOrEmpty()
 
@@ -106,20 +120,24 @@ class DrawerFolders(manager: AppGroupsManager) :
             customizations.setOrder(KEY_TITLE, KEY_HIDE_FROM_ALL_APPS, KEY_ITEMS)
         }
 
-        override fun getSummary(context: Context): String? {
-            val size = getFilter(context).size
-            return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
-        }
+        override val summary: String
+            get() {
+                val size = getFilter(context).size
+                return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
+            }
 
         fun getFilter(context: Context): Filter<*> = CustomFilter(context, contents.value())
 
-        override fun toFolderInfo(getAppInfo: (ComponentKey) -> AppInfo?, modelWriter: ModelWriter) = super
-                .toFolderInfo(getAppInfo, modelWriter).apply {
-                    // ✨
-                    this@CustomFolder.contents.value?.mapNotNullTo(contents) { key ->
-                        getAppInfo(key)?.makeWorkspaceItem()
-                    }?.sortWith(comparator)
-                }
+        override fun toFolderInfo(
+            getAppInfo: (ComponentKey) -> AppInfo?,
+            modelWriter: ModelWriter
+        ) = super
+            .toFolderInfo(getAppInfo, modelWriter).apply {
+                // ✨
+                this@CustomFolder.contents.value?.mapNotNullTo(contents) { key ->
+                    getAppInfo(key)?.makeWorkspaceItem()
+                }?.sortWith(comparator)
+            }
     }
 
     companion object {

@@ -101,8 +101,6 @@ class BackupListActivity : SettingsBaseActivity(), BackupListAdapter.Callbacks {
                     adapter.setData(OmegaBackup.listLocalBackups(this))
                 }
             }
-            else -> {
-            }
         }
     }
 

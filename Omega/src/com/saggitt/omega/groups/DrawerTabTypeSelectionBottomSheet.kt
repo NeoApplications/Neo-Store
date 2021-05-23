@@ -15,7 +15,7 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.preferences
+package com.saggitt.omega.groups
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -31,11 +31,14 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.settings.SettingsBottomSheet
 import com.saggitt.omega.util.dpToPx
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.getColorAttr
 import com.saggitt.omega.util.tintDrawable
 
-class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<String, Array<Int>>, callback: (which: String) -> Unit) : FrameLayout(context) {
+class DrawerTabTypeSelectionBottomSheet(
+    context: Context,
+    selectionItems: Map<String, Array<Int>>,
+    callback: (which: String) -> Unit
+) : FrameLayout(context) {
     init {
         View.inflate(context, R.layout.drawer_tab_select_type_bottom_sheet, this)
 
@@ -45,19 +48,27 @@ class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<St
         findViewById<TextView>(android.R.id.title).setTextColor(accent)
 
         val tintNormal = ColorUtils
-                .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
-        val tintList = ColorStateList(arrayOf(
+            .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
+        val tintList = ColorStateList(
+            arrayOf(
                 intArrayOf(android.R.attr.state_selected),
-                intArrayOf()),
-                intArrayOf(
-                        accent,
-                        tintNormal))
-        val rippleTintList = ColorStateList(arrayOf(
+                intArrayOf()
+            ),
+            intArrayOf(
+                accent,
+                tintNormal
+            )
+        )
+        val rippleTintList = ColorStateList(
+            arrayOf(
                 intArrayOf(android.R.attr.state_selected),
-                intArrayOf()),
-                intArrayOf(
-                        ColorUtils.setAlphaComponent(accent, 31),
-                        ColorUtils.setAlphaComponent(tintNormal, 31)))
+                intArrayOf()
+            ),
+            intArrayOf(
+                ColorUtils.setAlphaComponent(accent, 31),
+                ColorUtils.setAlphaComponent(tintNormal, 31)
+            )
+        )
 
         for (item in selectionItems) {
             val view = View.inflate(context, R.layout.drawer_tab_type_item, null)
@@ -85,7 +96,11 @@ class DrawerTabTypeSelectionBottomSheet(context: Context, selectionItems: Map<St
     }
 
     companion object {
-        fun show(context: Context, selectionItems: Map<String, Array<Int>>, callback: (which: String) -> Unit) {
+        fun show(
+            context: Context,
+            selectionItems: Map<String, Array<Int>>,
+            callback: (which: String) -> Unit
+        ) {
             val sheet = SettingsBottomSheet.inflate(context)
             sheet.show(DrawerTabTypeSelectionBottomSheet(context, selectionItems) {
                 sheet.close(false)
