@@ -59,11 +59,11 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
                     if (it.hideFromAllApps.value()) {
                         addedApps.addAll(it.contents.value())
                     }
-                    Tab(it.getTitle(), it.getFilter(context).matcher, drawerTab = it)
+                    Tab(it.title, it.filter.matcher, drawerTab = it)
                 }
                 it is FlowerpotTabs.FlowerpotTab && it.getMatches().isNotEmpty() -> {
                     addedApps.addAll(it.getMatches())
-                    Tab(it.getTitle(), it.getFilter(context).matcher, drawerTab = it)
+                    Tab(it.title, it.getFilter(context).matcher, drawerTab = it)
                 }
                 else -> null
             }
@@ -89,7 +89,7 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
     operator fun get(index: Int) = tabs[index]
 
     inner class ProfileTab(matcher: ItemInfoMatcher?, drawerTab: DrawerTabs.ProfileTab) :
-        Tab(drawerTab.getTitle(), matcher, drawerTab.profile.isWork, drawerTab)
+        Tab(drawerTab.title, matcher, drawerTab.profile.isWork, drawerTab)
 
     open class Tab(
         val name: String, val matcher: ItemInfoMatcher?,
