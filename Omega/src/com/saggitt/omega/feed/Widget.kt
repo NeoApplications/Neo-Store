@@ -15,12 +15,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.feed
 
-package com.saggitt.omega.feed;
+import android.appwidget.AppWidgetProviderInfo
 
-import android.appwidget.AppWidgetProviderInfo;
-
-public class Widget {
-    public int id;
-    public AppWidgetProviderInfo info;
+class Widget {
+    var id = 0
+    var info: AppWidgetProviderInfo? = null
 }
