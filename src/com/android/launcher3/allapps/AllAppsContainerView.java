@@ -46,13 +46,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.DeviceProfile.OnDeviceProfileChangeListener;
 import com.android.launcher3.DragSource;
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.Insettable;
 import com.android.launcher3.InsettableFrameLayout;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
@@ -88,7 +88,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private static final float FLING_ANIMATION_THRESHOLD = 0.55f;
     private static final int ALPHA_CHANNEL_COUNT = 2;
 
-    protected final BaseDraggingActivity mLauncher;
+    protected final Launcher mLauncher;
     protected final Point mFastScrollerOffset = new Point();
     private final ItemInfoMatcher mPersonalMatcher = ItemInfoMatcher.ofUser(Process.myUserHandle());
     private final ItemInfoMatcher mWorkMatcher = ItemInfoMatcher.not(mPersonalMatcher);
@@ -124,7 +124,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     public AllAppsContainerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        mLauncher = BaseDraggingActivity.fromContext(context);
+        mLauncher = Launcher.getLauncher(context);
         mLauncher.addOnDeviceProfileChangeListener(this);
 
         mSearchQueryBuilder = new SpannableStringBuilder();
@@ -375,26 +375,26 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     @Override
     public void setInsets(Rect insets) {
-        mInsets.set(insets);
+        //mInsets.set(insets);
         DeviceProfile grid = mLauncher.getDeviceProfile();
         int leftRightPadding = grid.desiredWorkspaceLeftRightMarginPx
                 + grid.cellLayoutPaddingLeftRightPx;
 
-        for (AdapterHolder adapterHolder : mAH) {
+        mTabsController.setPadding(leftRightPadding, insets.bottom);
+        /*for (AdapterHolder adapterHolder : mAH) {
             adapterHolder.padding.bottom = insets.bottom;
             adapterHolder.padding.left = adapterHolder.padding.right = leftRightPadding;
             adapterHolder.applyPadding();
             adapterHolder.setupOverlay();
-        }
+        }*/
 
         ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
-        mlp.leftMargin = insets.left;
-        mlp.rightMargin = insets.right;
-        setLayoutParams(mlp);
-
         if (grid.isVerticalBarLayout()) {
+            mlp.leftMargin = insets.left;
+            mlp.rightMargin = insets.right;
             setPadding(grid.workspacePadding.left, 0, grid.workspacePadding.right, 0);
         } else {
+            mlp.leftMargin = mlp.rightMargin = 0;
             setPadding(0, 0, 0, 0);
         }
         if (!OmegaPreferences.Companion.getInstance(getContext()).getAllAppsSearch()) {
@@ -403,6 +403,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
         setLayoutParams(mlp);
         InsettableFrameLayout.dispatchInsets(this, insets);
+        mLauncher.getAllAppsController()
+                .setScrollRangeDelta(mSearchUiManager.getScrollRangeDelta(insets));
     }
 
     @Override
