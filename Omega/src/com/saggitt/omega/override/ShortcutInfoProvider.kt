@@ -50,7 +50,7 @@ class ShortcutInfoProvider private constructor(context: Context) : CustomInfoPro
     }
 
     override fun setTitle(info: WorkspaceItemInfo, title: String?, modelWriter: ModelWriter) {
-        info.setTitle(title, modelWriter)
+        info.setTitle(context, title)
     }
 
     override fun setIcon(info: WorkspaceItemInfo, entry: IconPackManager.CustomIconEntry?) {
@@ -58,8 +58,9 @@ class ShortcutInfoProvider private constructor(context: Context) : CustomInfoPro
         if (entry != null) {
             val launcherActivityInfo = getLauncherActivityInfo(info)
             val iconCache = LauncherAppState.getInstance(context).iconCache
-            val drawable = iconCache.getFullResIcon(launcherActivityInfo, false)
-            val bitmap = LauncherIcons.obtain(context).createBadgedIconBitmap(drawable, info.user, Build.VERSION_CODES.O_MR1)
+            val drawable = iconCache.getFullResIcon(launcherActivityInfo, info, false)
+            val bitmap = LauncherIcons.obtain(context)
+                .createBadgedIconBitmap(drawable, info.user, Build.VERSION_CODES.O_MR1)
             info.setIcon(context, bitmap.icon)
         } else {
             info.setIcon(context, null)

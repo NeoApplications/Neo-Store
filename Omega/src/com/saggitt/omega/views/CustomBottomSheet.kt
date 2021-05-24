@@ -62,18 +62,15 @@ class CustomBottomSheet @JvmOverloads constructor(
     private lateinit var mItemInfo: ItemInfo
     private var mInfoProvider: CustomInfoProvider<ItemInfo>? = null
     private var mForceOpen = false
+
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
         mItemInfo = itemInfo
-        mInfoProvider = forItem(
-            context, mItemInfo
-        )
+        mInfoProvider = forItem(context, mItemInfo)
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
-            itemInfo,
-            { setForceOpen() },
-            { unsetForceOpen() }) { reopen() }
+            itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
         var allowTitleEdit = true
         if (itemInfo is ItemInfoWithIcon || mInfoProvider!!.supportsIcon()) {
             val icon = findViewById<ImageView>(R.id.icon)
@@ -130,8 +127,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             if (newTitle != mPreviousTitle) {
                 if (newTitle == "") newTitle = null
                 mInfoProvider!!.setTitle(
-                    mItemInfo,
-                    newTitle,
+                    mItemInfo, newTitle,
                     mLauncher.model.getWriter(false, true)
                 )
             }
