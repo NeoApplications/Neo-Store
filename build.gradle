@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.16"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
     }
 }
 
@@ -203,7 +203,7 @@ dependencies {
     implementation "com.mikepenz:fastadapter:5.4.1"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
 
     // Recents lib dependency
     withQuickstepImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'sysui_shared.jar')
