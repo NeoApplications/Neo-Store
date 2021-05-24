@@ -20,7 +20,6 @@ package com.saggitt.omega.flowerpot
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
-import android.content.pm.ShortcutInfo
 import android.os.UserHandle
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
@@ -37,8 +36,7 @@ class FlowerpotApps(private val context: Context, private val pot: Flowerpot) : 
 
     init {
         filterApps()
-        context.getSystemService(
-                LauncherApps::class.java).registerCallback(this)
+        context.getSystemService(LauncherApps::class.java).registerCallback(this)
     }
 
     private fun filterApps() {

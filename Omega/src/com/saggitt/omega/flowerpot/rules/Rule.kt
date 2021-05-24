@@ -18,7 +18,7 @@
 package com.saggitt.omega.flowerpot.rules
 
 sealed class Rule {
-    class None : Rule()
+    object None : Rule()
     data class Version(val version: Int) : Rule()
     data class Package(val filter: String) : Rule()
     data class IntentAction(val action: String) : Rule()
@@ -26,6 +26,6 @@ sealed class Rule {
     data class CodeRule(val rule: String, val args: Array<String>) : Rule()
 
     companion object {
-        val NONE = None()
+        val NONE = None
     }
 }

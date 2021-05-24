@@ -21,7 +21,7 @@ import com.saggitt.omega.flowerpot.FlowerpotFormatException
 import com.saggitt.omega.flowerpot.rules.Rule
 
 object LineParser {
-    fun parse(line: String, version: Int?): Rule? {
+    fun parse(line: String, version: Int?): Rule {
         if (line.isBlank()) {
             // ignore blank lines
             return Rule.NONE
