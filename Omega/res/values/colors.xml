@@ -21,7 +21,7 @@
     <color name="ic_launcher_background">#0F111A</color>
     <color name="ic_launcher_foreground">#0988d1</color>
 
-    <color name="colorPrimary">#0788EF</color>
+    <color name="colorPrimary">#fff5f5f5</color>
     <color name="colorPrimaryDark">#03419F</color>
     <color name="colorAccent">#E80142</color>
     <color name="colorAccentDark">#ff8AB4f8</color>
