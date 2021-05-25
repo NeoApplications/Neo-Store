@@ -297,7 +297,9 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
             OpenDeviceSetting(context),
             MobileNetwork(context),
             ManageApps(context),
-            AllAppsShortcut(context)
+            AllAppsShortcut(context),
+            SleepDevice(context),
+            StartLauncher(context)
         )
     }
 }
