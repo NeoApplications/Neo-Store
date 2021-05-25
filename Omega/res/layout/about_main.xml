@@ -213,7 +213,7 @@
                     android:layout_below="@id/username1"
                     android:layout_marginStart="10dp"
                     android:gravity="center"
-                    android:text="@string/contributor_role"
+                    android:text="@string/author_role"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
                     app:layout_constraintLeft_toRightOf="@id/profile_image1"
