@@ -15,19 +15,28 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorAccent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="6dp"
-    android:layout_gravity="center"
-    android:orientation="horizontal">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorAccent" />
+            <stroke
+                android:width="1dp"
+                android:color="#078CF3" />
+            <corners
+                android:radius="20dp"/>
+        </shape>
+    </item>
 
-    <ImageView
-        android:id="@+id/bt_item"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:background="@drawable/ripple_dash_item_bg"
-        android:padding="15dp"
-        android:theme="@style/DashTheme.Item" />
-</LinearLayout>
+    <item android:id="@+id/ripple">
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="2dp"
+                android:color="@color/colorAccent" />
+            <corners
+                android:radius="20dp"/>
+        </shape>
+    </item>
+
+</ripple>
