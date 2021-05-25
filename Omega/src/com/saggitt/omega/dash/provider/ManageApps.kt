@@ -31,7 +31,7 @@ class ManageApps(context: Context) : DashProvider(context) {
     override val description = context.getString(R.string.dash_manage_apps_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_font).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_build).apply {
             this?.setTint(darkenColor(accentColor))
         }
 

@@ -30,7 +30,7 @@ class EditDash(context: Context) : DashProvider(context) {
     override val description = context.getString(R.string.edit_dash_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_no_shadow).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_dash).apply {
             this?.setTint(darkenColor(accentColor))
         }
 

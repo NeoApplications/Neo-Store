@@ -51,6 +51,6 @@
             android:padding="8dp"
             android:tint="?android:attr/textColorSecondary"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_setting" />
+            app:srcCompat="@drawable/ic_settings" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>
