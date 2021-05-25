@@ -25,15 +25,16 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.RelativeLayout
 import com.saggitt.omega.dash.DashItemAdapter.DashItemChangeListener
+import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 class DashListView @JvmOverloads constructor(
-    context: Context?,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyleAttrs: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttrs), DashItemChangeListener {
-    private var itemWith = 0f
+    private var itemWidth = 0f
     private var itemHeight = 0f
     private var layoutWidth = 0f
     private var layoutHeight = 0f
@@ -41,8 +42,8 @@ class DashListView @JvmOverloads constructor(
     private var layoutCenterY = 0f
     var radius = 0f
     private var itemViewList: ArrayList<View>? = null
-    private var intervalAngle = Math.PI / 4
-    private var preIntervalAngle = Math.PI / 4
+    private var intervalAngle = PI / 4
+    private var preIntervalAngle = PI / 4
     private var dashAdapter: DashItemAdapter? = null
     private val moveAccumulator = 1
 
@@ -78,8 +79,8 @@ class DashListView @JvmOverloads constructor(
         val itemCount = dashAdapter!!.count
         val existChildCount = childCount
         val isLayoutEmpty = existChildCount == 0
-        preIntervalAngle = if (isLayoutEmpty) 0.0 else 2.0f * Math.PI / existChildCount.toDouble()
-        intervalAngle = 2.0f * Math.PI / itemCount.toDouble()
+        preIntervalAngle = if (isLayoutEmpty) 0.0 else 2.0f * PI / existChildCount.toDouble()
+        intervalAngle = 2.0f * PI / itemCount.toDouble()
 
         // add all item view into parent layout
 
@@ -95,7 +96,7 @@ class DashListView @JvmOverloads constructor(
 
             // wait for view drawn to get width and height
             item.post {
-                itemWith = item.width.toFloat()
+                itemWidth = item.width.toFloat()
                 itemHeight = item.height.toFloat()
                 /*
                  * position items according to circle formula
@@ -111,10 +112,10 @@ class DashListView @JvmOverloads constructor(
                     val value = animation.animatedValue as Float
                     val params = item.layoutParams as LayoutParams
                     params.setMargins(
-                        (layoutCenterX - itemWith / 2 + radius *
-                                cos(i * value + moveAccumulator * Math.PI * 2)).toInt(),
+                        (layoutCenterX - itemWidth / 2 + radius *
+                                cos(i * value + moveAccumulator * PI * 2)).toInt(),
                         (layoutCenterY - itemHeight / 2 + radius *
-                                sin(i * value + moveAccumulator * Math.PI * 2)).toInt(),
+                                sin(i * value + moveAccumulator * PI * 2)).toInt(),
                         0,
                         0
                     )
