@@ -75,6 +75,7 @@ class DashItemAdapter(
                 ColorStateList.valueOf(Themes.getAttrColor(mContext, R.attr.dashIconBackground))
             itemView.backgroundTintList = backgroundColor
             itemView.setImageDrawable(dashItem.icon)
+            itemView.tooltipText = dashItem.name
             val iconColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(mContext).accentColor)
             itemView.imageTintList = iconColor
             itemView.setOnClickListener {
