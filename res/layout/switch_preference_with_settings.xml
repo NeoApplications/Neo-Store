@@ -27,7 +27,7 @@
         android:background="?android:selectableItemBackgroundBorderless"
         android:padding="12dp"
         android:tint="@android:color/black"
-        app:srcCompat="@drawable/ic_setting" />
+        app:srcCompat="@drawable/ic_settings" />
 
     <View
         android:id="@+id/divider"

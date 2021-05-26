@@ -19,23 +19,22 @@
 package com.saggitt.omega.dash.provider
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
-import com.saggitt.omega.settings.SettingsActivity
 
-class EditDash(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.edit_dash)
-    override val description = context.getString(R.string.edit_dash_summary)
+class StartLauncher(context: Context) : DashProvider(context) {
+    override val name = context.getString(R.string.launch_assistant)
+    override val description = context.getString(R.string.gesture_launch_assistant)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_dash).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_assistant).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
     override fun runAction(context: Context) {
-        val fragment = "com.saggitt.omega.dash.DashFragment"
-        SettingsActivity.startFragment(context, fragment, R.string.edit_dash)
+        context.startActivity(Intent(Intent.ACTION_ASSIST).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

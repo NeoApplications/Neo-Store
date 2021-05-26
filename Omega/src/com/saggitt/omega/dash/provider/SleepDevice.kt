@@ -23,19 +23,27 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashProvider
-import com.saggitt.omega.settings.SettingsActivity
+import com.saggitt.omega.gestures.handlers.SleepGestureHandler
+import com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin
+import com.saggitt.omega.gestures.handlers.SleepMethodPieAccessibility
 
-class EditDash(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.edit_dash)
-    override val description = context.getString(R.string.edit_dash_summary)
+class SleepDevice(context: Context) : DashProvider(context) {
+    override val name = context.getString(R.string.action_sleep)
+    override val description = context.getString(R.string.action_sleep)
+
+    private val method: SleepGestureHandler.SleepMethod? by lazy {
+        listOf(
+            SleepMethodPieAccessibility(context),
+            SleepMethodDeviceAdmin(context)
+        ).firstOrNull { it.supported }
+    }
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_dash).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_sleep).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
     override fun runAction(context: Context) {
-        val fragment = "com.saggitt.omega.dash.DashFragment"
-        SettingsActivity.startFragment(context, fragment, R.string.edit_dash)
+        method!!.sleep(null)
     }
 }

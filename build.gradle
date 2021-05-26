@@ -184,6 +184,7 @@ dependencies {
     implementation "androidx.core:core-ktx:1.5.0"
     implementation "androidx.appcompat:appcompat:1.3.0"
     implementation "androidx.recyclerview:recyclerview:1.2.0"
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "androidx.activity:activity-ktx:1.2.3"
     implementation "androidx.fragment:fragment-ktx:1.3.4"
@@ -201,6 +202,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
     implementation "com.mikepenz:fastadapter:5.4.1"
+    implementation "com.mikepenz:fastadapter-extensions-diff:5.4.1"
+    implementation "com.mikepenz:fastadapter-extensions-binding:5.4.1"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
