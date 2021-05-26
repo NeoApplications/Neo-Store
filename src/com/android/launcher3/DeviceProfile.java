@@ -16,6 +16,8 @@
 
 package com.android.launcher3;
 
+import static java.lang.Math.round;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -32,8 +34,6 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DefaultDisplay;
 import com.android.launcher3.util.WindowBounds;
 import com.saggitt.omega.OmegaPreferences;
-
-import static java.lang.Math.round;
 
 public class DeviceProfile {
 
@@ -153,7 +153,6 @@ public class DeviceProfile {
     public DotRenderer mDotRendererWorkSpace;
     public DotRenderer mDotRendererAllApps;
     public int allAppsFolderChildDrawablePaddingPx;
-    private int verticalDragHandleOverlapWorkspace;
     public Context mContext;
 
     DeviceProfile(Context context, InvariantDeviceProfile inv, DefaultDisplay.Info info,
@@ -295,7 +294,7 @@ public class DeviceProfile {
             if (extraSpace != 0) {
                 hotseatBarSizePx += extraSpace;
 
-                int dockTopSpace = workspacePageIndicatorHeight - verticalDragHandleOverlapWorkspace;
+                int dockTopSpace = workspacePageIndicatorHeight - mWorkspacePageIndicatorOverlapWorkspace;
                 int dockBottomSpace =
                         Math.max(hotseatBarBottomPaddingPx - previousDockBottomPadding, dockTopSpace);
                 int dockVerticalSpace = dockTopSpace + dockBottomSpace;
