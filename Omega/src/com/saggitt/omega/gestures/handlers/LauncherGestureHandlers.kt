@@ -305,7 +305,7 @@ class OpenSettingsGestureHandler(context: Context, config: JSONObject?) :
 
     override val displayName = context.getString(R.string.action_open_settings)
     override val iconResource: Intent.ShortcutIconResource by lazy {
-        Intent.ShortcutIconResource.fromContext(context, R.drawable.ic_setting)
+        Intent.ShortcutIconResource.fromContext(context, R.drawable.ic_settings)
     }
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
@@ -333,7 +333,7 @@ class OpenOverviewGestureHandler(context: Context, config: JSONObject?) :
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
             context,
-            R.drawable.ic_setting
+            R.drawable.ic_settings
         )
     }
     override val requiresForeground = true

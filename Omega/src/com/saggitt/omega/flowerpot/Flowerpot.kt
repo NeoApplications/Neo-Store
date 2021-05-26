@@ -32,7 +32,7 @@ import java.io.InputStream
 class Flowerpot(private val context: Context, val name: String, private val loader: Flowerpot.() -> Unit) {
 
     val displayName by lazy {
-        val id = context.resources.getIdentifier("category_${name.toLowerCase()}", "string", context.packageName)
+        val id = context.resources.getIdentifier("category_${name.lowercase()}", "string", context.packageName)
         if (id != 0)
             context.getString(id)
         else
@@ -75,7 +75,7 @@ class Flowerpot(private val context: Context, val name: String, private val load
         /**
          * The current Flowerpot format version
          */
-        const val VERSION_CURRENT = Version.AZALEA
+        private const val VERSION_CURRENT = Version.AZALEA
 
         /**
          * List of all currently supported versions
@@ -90,7 +90,7 @@ class Flowerpot(private val context: Context, val name: String, private val load
         const val ASSETS_PATH = "flowerpot"
 
         private fun beautifyName(name: String): String {
-            return name.replace('_', ' ').toLowerCase().toTitleCase()
+            return name.replace('_', ' ').lowercase().toTitleCase()
         }
 
     }

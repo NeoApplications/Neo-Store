@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:drawablePadding="4dp"
-        android:drawableTop="@drawable/ic_setting"
+        android:drawableTop="@drawable/ic_settings"
         android:drawableTint="?attr/workspaceTextColor"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_horizontal"

@@ -56,7 +56,7 @@ class SleepGestureHandler(context: Context, config: JSONObject?) : GestureHandle
 
     abstract class SleepMethod(protected val context: Context) {
         abstract val supported: Boolean
-        abstract fun sleep(controller: GestureController)
+        abstract fun sleep(controller: GestureController?)
     }
 }
 
@@ -64,7 +64,7 @@ class SleepMethodPieAccessibility(context: Context) : SleepGestureHandler.SleepM
     override val supported = Utilities.ATLEAST_P
 
     @TargetApi(Build.VERSION_CODES.P)
-    override fun sleep(controller: GestureController) {
+    override fun sleep(controller: GestureController?) {
         context.omegaApp.performGlobalAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
     }
 }
@@ -72,7 +72,7 @@ class SleepMethodPieAccessibility(context: Context) : SleepGestureHandler.SleepM
 class SleepMethodDeviceAdmin(context: Context) : SleepGestureHandler.SleepMethod(context) {
     override val supported = true
 
-    override fun sleep(controller: GestureController) {
+    override fun sleep(controller: GestureController?) {
         val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         if (devicePolicyManager.isAdminActive(ComponentName(context, SleepDeviceAdmin::class.java))) {
             devicePolicyManager.lockNow()

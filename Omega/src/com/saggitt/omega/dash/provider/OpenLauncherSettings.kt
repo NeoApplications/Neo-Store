@@ -30,7 +30,7 @@ class OpenLauncherSettings(context: Context) : DashProvider(context) {
     override val description = context.getString(R.string.dash_launcher_settings_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_setting).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_settings).apply {
             this?.setTint(darkenColor(accentColor))
         }
 

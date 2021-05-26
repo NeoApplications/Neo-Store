@@ -122,7 +122,7 @@ public class OptionsPopupView extends ArrowPopup
         }
         //options.add(new OptionItem(R.string.button_organize_screens, R.drawable.ic_pages, IGNORE,
         //        OptionsPopupView::startOrganizer));
-        options.add(new OptionItem(R.string.settings_button_text, R.drawable.ic_setting,
+        options.add(new OptionItem(R.string.settings_button_text, R.drawable.ic_settings,
                 LAUNCHER_SETTINGS_BUTTON_TAP_OR_LONGPRESS,
                 OptionsPopupView::startSettings));
 

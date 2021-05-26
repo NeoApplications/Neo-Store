@@ -19,20 +19,21 @@
 package com.saggitt.omega.dash
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil.set
 import com.saggitt.omega.views.CenterFloatingView
 
-/*
-* Esta clase despliega la vista circular desde la parte inferior de la pantalla.
-*/
 class DashBottomSheet(context: Context) : RelativeLayout(context) {
-    private var adapter: DashItemAdapter? = null
-    private var mInflater: LayoutInflater? = null
+    private val dashItemAdapter = ItemAdapter<DashItemX>()
+    private var dashFastAdapter: FastAdapter<DashItemX>? = null
     private val prefs = Utilities.getOmegaPrefs(context)
     private val allItems = ArrayList(DashEditAdapter.getDashProviders(context))
 
@@ -47,11 +48,13 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
             }
         }
 
-        val circularListView = findViewById<View>(R.id.my_circular_list) as DashListView
-        mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        adapter = DashItemAdapter(mInflater!!, items, context)
-        circularListView.setAdapter(adapter)
-        circularListView.altSetRadius(150f)
+        val circularListView = findViewById<View>(R.id.dash_recycler) as RecyclerView
+        dashFastAdapter = FastAdapter.with(dashItemAdapter)
+        dashFastAdapter?.setHasStableIds(true)
+        circularListView.adapter = dashFastAdapter
+        circularListView.layoutManager = GridLayoutManager(context,4)
+        val dashItems = items.map { DashItemX(context,it) }
+        set(dashItemAdapter,dashItems)
     }
 
     private fun checkAndAddProvider(s: String): DashProvider? {

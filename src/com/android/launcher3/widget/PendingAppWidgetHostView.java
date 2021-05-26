@@ -150,7 +150,7 @@ public class PendingAppWidgetHostView extends LauncherAppWidgetHostView
                 mSettingIconDrawable = null;
             } else if (isReadyForClickSetup()) {
                 mCenterDrawable = newIcon(getContext(), info);
-                mSettingIconDrawable = getResources().getDrawable(R.drawable.ic_setting).mutate();
+                mSettingIconDrawable = getResources().getDrawable(R.drawable.ic_settings).mutate();
                 updateSettingColor(info.bitmap.color);
             } else {
                 mCenterDrawable = newPendingIcon(getContext(), info);

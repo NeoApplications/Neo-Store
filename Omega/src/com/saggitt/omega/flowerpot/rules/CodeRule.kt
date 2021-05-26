@@ -17,14 +17,12 @@
 package com.saggitt.omega.flowerpot.rules
 
 import android.content.pm.ApplicationInfo
-import com.android.launcher3.Utilities
-import com.saggitt.omega.util.hasFlag
 
 sealed class CodeRule(vararg val args: String) {
     abstract fun matches(info: ApplicationInfo): Boolean
 
     class IsGame(vararg args: String) : CodeRule(*args) {
-        override fun matches(info: ApplicationInfo) = info.flags hasFlag ApplicationInfo.FLAG_IS_GAME
+        override fun matches(info: ApplicationInfo) = info.category == ApplicationInfo.CATEGORY_GAME
     }
 
     class Category(vararg args: String) : CodeRule(*args) {
@@ -48,7 +46,7 @@ sealed class CodeRule(vararg val args: String) {
             }
         }
 
-        override fun matches(info: ApplicationInfo) = Utilities.ATLEAST_OREO && info.category == category
+        override fun matches(info: ApplicationInfo) = info.category == category
     }
 
     companion object {

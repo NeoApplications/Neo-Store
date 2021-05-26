@@ -30,11 +30,11 @@ import com.saggitt.omega.util.getIcon
 import com.saggitt.omega.util.omegaPrefs
 
 class FeedProviderPreference(context: Context, attrs: AttributeSet? = null) :
-        DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+    DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
     private val prefs = context.omegaPrefs
     private val current
         get() = providers(context).firstOrNull { it.packageName == prefs.feedProvider }
-                ?: providers(context)[0]
+            ?: providers(context)[0]
 
     init {
         layoutResource = R.layout.preference_preview_icon
@@ -66,17 +66,20 @@ class FeedProviderPreference(context: Context, attrs: AttributeSet? = null) :
     companion object {
         const val KEY = "pref_feedProvider"
 
-        fun providers(context: Context) = listOf(ProviderInfo(
-                packageName = "",
-                name = context.getString(R.string.theme_default),
-                icon = context.getIcon())) +
-                FeedBridge.getAvailableProviders(context).map {
-                    ProviderInfo(it.loadLabel(context.packageManager).toString(), it.packageName, it.loadIcon(context.packageManager))
-                }
+        fun providers(context: Context) = listOf(
+            ProviderInfo(context.getString(R.string.theme_default), "", context.getIcon())
+        ) + FeedBridge.getAvailableProviders(context).map {
+            ProviderInfo(
+                it.loadLabel(context.packageManager).toString(),
+                it.packageName,
+                it.loadIcon(context.packageManager)
+            )
+        }
     }
 
     data class ProviderInfo(
-            val name: String,
-            val packageName: String,
-            val icon: Drawable?)
+        val name: String,
+        val packageName: String,
+        val icon: Drawable?
+    )
 }

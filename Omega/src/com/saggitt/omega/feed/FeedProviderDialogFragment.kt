@@ -22,7 +22,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.preference.PreferenceDialogFragmentCompat
@@ -54,8 +57,7 @@ class FeedProviderDialogFragment : PreferenceDialogFragmentCompat() {
         (dialog as AlertDialog).applyAccent()
     }
 
-    override fun onDialogClosed(positiveResult: Boolean) {
-    }
+    override fun onDialogClosed(positiveResult: Boolean) {}
 
     inner class FeedProviderAdapter(
         context: Context,
