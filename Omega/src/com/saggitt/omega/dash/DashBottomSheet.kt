@@ -32,8 +32,8 @@ import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil.set
 import com.saggitt.omega.views.CenterFloatingView
 
 class DashBottomSheet(context: Context) : RelativeLayout(context) {
-    private val dashItemAdapter = ItemAdapter<DashItemX>()
-    private var dashFastAdapter: FastAdapter<DashItemX>? = null
+    private val dashItemAdapter = ItemAdapter<DashItem>()
+    private var dashFastAdapter: FastAdapter<DashItem>? = null
     private val prefs = Utilities.getOmegaPrefs(context)
     private val allItems = ArrayList(DashEditAdapter.getDashProviders(context))
 
@@ -53,7 +53,7 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
         dashFastAdapter?.setHasStableIds(true)
         circularListView.adapter = dashFastAdapter
         circularListView.layoutManager = GridLayoutManager(context,4)
-        val dashItems = items.map { DashItemX(context,it) }
+        val dashItems = items.map { DashItem(context, it) }
         set(dashItemAdapter,dashItems)
     }
 

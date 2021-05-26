@@ -30,7 +30,7 @@ import com.android.launcher3.databinding.DashItemBinding
 import com.android.launcher3.util.Themes
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class DashItemX(val context: Context, val provider: DashProvider) :
+class DashItem(val context: Context, val provider: DashProvider) :
     AbstractBindingItem<DashItemBinding>() {
 
     override val type: Int
