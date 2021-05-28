@@ -8,6 +8,7 @@ import static com.android.launcher3.views.BaseDragLayer.LAYOUT_Y;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -161,7 +162,7 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
     }
 
     private void setupForWidget(LauncherAppWidgetHostView widgetView, CellLayout cellLayout,
-            DragLayer dragLayer) {
+                                DragLayer dragLayer) {
         mCellLayout = cellLayout;
         mWidgetView = widgetView;
         LauncherAppWidgetProviderInfo info = (LauncherAppWidgetProviderInfo)
@@ -278,6 +279,7 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
     /**
      *  Based on the current deltas, we determine if and how to resize the widget.
      */
+    @SuppressLint("StringFormatMatches")
     private void resizeWidgetIfNeeded(boolean onDismiss) {
         float xThreshold = mCellLayout.getCellWidth();
         float yThreshold = mCellLayout.getCellHeight();
@@ -586,7 +588,7 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
          * the start edge was moved.
          */
         public int applyDeltaAndBound(boolean moveStart, boolean moveEnd, int delta,
-                int minSize, int maxEnd, IntRange out) {
+                                      int minSize, int maxEnd, IntRange out) {
             applyDelta(moveStart, moveEnd, delta, out);
             if (out.start < 0) {
                 out.start = 0;
