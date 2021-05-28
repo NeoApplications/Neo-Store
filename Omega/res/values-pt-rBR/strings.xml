@@ -353,4 +353,5 @@
     <string name="customize">Personalizar</string>
     <string name="label_voice_search">Pesquisa por voz</string>
     <string name="automatic_short">Automático</string>
+    <string name="title_separate_work_apps">Segunda guia para aplicativos de trabalho</string>
 </resources>
