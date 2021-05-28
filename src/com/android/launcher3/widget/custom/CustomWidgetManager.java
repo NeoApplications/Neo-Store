@@ -67,8 +67,8 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         mPlugins = new SparseArray<>();
         mCustomWidgets = new ArrayList<>();
         mWidgetsIdMap = new SparseArray<>();
-        PluginManagerWrapper.INSTANCE.get(context)
-                .addPluginListener(this, CustomWidgetPlugin.class, true);
+        //PluginManagerWrapper.INSTANCE.get(context)
+        //        .addPluginListener(this, CustomWidgetPlugin.class, true);
     }
 
     private static CustomAppWidgetProviderInfo newInfo(int providerId, CustomWidgetPlugin plugin,
