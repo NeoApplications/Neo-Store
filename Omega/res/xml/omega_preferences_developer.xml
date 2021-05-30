@@ -39,6 +39,17 @@
 
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__incubating">
 
+        <ListPreference
+            android:defaultValue="0"
+            android:disableDependentsState="false"
+            android:entries="@array/entries_layout_mode"
+            android:entryValues="@array/values_zero_to_two"
+            android:key="pref_drawer_layout"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/title_drawer_layout"
+            app:iconSpaceReserved="false" />
+
         <Preference
             android:key="pref_widget_feed"
             android:title="Show Feed"

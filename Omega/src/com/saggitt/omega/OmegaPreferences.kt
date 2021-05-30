@@ -127,6 +127,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
     val predictionGridSize by predictionGridSizeDelegate
     val saveScrollPosition by BooleanPref("pref_keepScrollState", false, doNothing)
+    val drawerLayout by StringIntPref("pref_drawer_layout", 0, recreate)
 
     /* --DESKTOP-- */
     var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)

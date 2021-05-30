@@ -154,6 +154,11 @@ class Config(var mContext: Context) {
         const val SORT_MOST_USED = 3
         const val SORT_BY_COLOR = 4
 
+        //APP DRAWER LAYOUT MODE
+        const val DRAWER_VERTICAL = 0
+        const val DRAWER_VERTICAL_LIST = 2
+        const val DRAWER_PAGED = 3
+
         //PERMISION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667

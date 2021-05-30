@@ -15,6 +15,17 @@
  */
 package com.android.launcher3.touch;
 
+import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
+import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_FOLDER_OPEN;
+import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_ALL_APPS;
+import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_HOTSEAT;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_BY_PUBLISHER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_QUIET_USER;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
+import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
+
 import android.content.Intent;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageInstaller.SessionInfo;
@@ -52,19 +63,9 @@ import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.allapps.AllAppsIconRow;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.DbHelper;
-
-import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
-import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_FOLDER_OPEN;
-import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_ALL_APPS;
-import static com.android.launcher3.model.AppLaunchTracker.CONTAINER_HOTSEAT;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_BY_PUBLISHER;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_QUIET_USER;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
-import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
 
 /**
  * Class for handling clicks on workspace and all-apps items
@@ -91,6 +92,9 @@ public class ItemClickHandler {
 
         Launcher launcher = Launcher.getLauncher(v.getContext());
         if (!launcher.getWorkspace().isFinishedSwitchingState()) return;
+
+        if (v instanceof AllAppsIconRow)
+            v = ((AllAppsIconRow) v).icon;
 
         Object tag = v.getTag();
         if (tag instanceof WorkspaceItemInfo) {

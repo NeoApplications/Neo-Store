@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -47,13 +49,14 @@ import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.allapps.AllAppsIconRow;
+import com.saggitt.omega.allapps.IDrawerLayout;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.List;
-
-import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APPS;
 
 /**
  * The grid view adapter of all the apps.
@@ -178,6 +181,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     private int mAppsPerRow;
 
     private OnFocusChangeListener mIconFocusListener;
+    private IDrawerLayout drawerLayout;
 
     public AllAppsGridAdapter(BaseDraggingActivity launcher, LayoutInflater inflater,
                               AlphabeticalAppsList apps) {
@@ -192,7 +196,9 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
         mOnIconClickListener = launcher.getItemOnClickListener();
 
-        setAppsPerRow(mLauncher.getDeviceProfile().inv.numColsDrawer);
+        int mode = Utilities.getOmegaPrefs(launcher.getApplicationContext()).getDrawerLayout();
+        drawerLayout = Utilities.getLayoutMode(OmegaLauncher.getLauncher(launcher.getApplicationContext()), mode);
+        setAppsPerRow(drawerLayout.numColumns(1));
     }
 
     // The intent to send off to the market app, updated each time the search query changes.
@@ -214,15 +220,15 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_ICON:
-                BubbleTextView icon = (BubbleTextView) mLayoutInflater.inflate(
-                        R.layout.all_apps_icon, parent, false);
+                View icon = mLayoutInflater.inflate(drawerLayout.getIconLayout(), parent, false);
                 icon.setOnClickListener(mOnIconClickListener);
                 icon.setOnLongClickListener(mOnIconLongClickListener);
-                icon.setLongPressTimeoutFactor(1f);
+                //icon.setLongPressTimeoutFactor(1f);
                 icon.setOnFocusChangeListener(mIconFocusListener);
 
                 // Ensure the all apps icon height matches the workspace icons in portrait mode.
-                icon.getLayoutParams().height = mLauncher.getDeviceProfile().allAppsCellHeightPx;
+                //icon.getLayoutParams().height = mLauncher.getDeviceProfile().allAppsCellHeightPx;
+                icon.getLayoutParams().height = drawerLayout.iconHeight(1);
                 return new ViewHolder(icon);
             case VIEW_TYPE_EMPTY_SEARCH:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_empty_search,
@@ -246,8 +252,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 return new ViewHolder(layout);
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-                return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
-
             case VIEW_TYPE_DIRECT_SEARCH:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
 
@@ -318,9 +322,15 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_ICON:
                 AppInfo info = mApps.getAdapterItems().get(position).appInfo;
-                BubbleTextView icon = (BubbleTextView) holder.itemView;
-                icon.reset();
-                icon.applyFromApplicationInfo(info);
+                if (holder.itemView instanceof BubbleTextView) {
+                    BubbleTextView icon = (BubbleTextView) holder.itemView;
+                    icon.reset();
+                    icon.applyFromApplicationInfo(info);
+                } else if (holder.itemView instanceof AllAppsIconRow) {
+                    AllAppsIconRow row = (AllAppsIconRow) holder.itemView;
+                    row.applyFromApplicationInfo(info);
+                    row.setText(info.title);
+                }
                 break;
             case VIEW_TYPE_EMPTY_SEARCH:
                 TextView emptyViewText = (TextView) holder.itemView;

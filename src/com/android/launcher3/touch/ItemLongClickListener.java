@@ -17,7 +17,6 @@ package com.android.launcher3.touch;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-
 import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.LauncherState.OVERVIEW;
@@ -35,6 +34,7 @@ import com.android.launcher3.folder.Folder;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
+import com.saggitt.omega.allapps.AllAppsIconRow;
 
 /**
  * Class to handle long-clicks on workspace items and start drag as a result.
@@ -79,6 +79,7 @@ public class ItemLongClickListener {
 
     private static boolean onAllAppsItemLongClick(View v) {
         TestLogging.recordEvent(TestProtocol.SEQUENCE_MAIN, "onAllAppsItemLongClick");
+
         v.cancelLongPress();
         Launcher launcher = Launcher.getLauncher(v.getContext());
         if (!canStartDrag(launcher)) return false;
@@ -88,15 +89,16 @@ public class ItemLongClickListener {
 
         // Start the drag
         final DragController dragController = launcher.getDragController();
+        View finalV = v;
         dragController.addDragListener(new DragController.DragListener() {
             @Override
             public void onDragStart(DropTarget.DragObject dragObject, DragOptions options) {
-                v.setVisibility(INVISIBLE);
+                finalV.setVisibility(INVISIBLE);
             }
 
             @Override
             public void onDragEnd() {
-                v.setVisibility(VISIBLE);
+                finalV.setVisibility(VISIBLE);
                 dragController.removeDragListener(this);
             }
         });
@@ -104,6 +106,8 @@ public class ItemLongClickListener {
         DeviceProfile grid = launcher.getDeviceProfile();
         DragOptions options = new DragOptions();
         options.intrinsicIconScaleFactor = (float) grid.allAppsIconSizePx / grid.iconSizePx;
+        if (v instanceof AllAppsIconRow)
+            v = ((AllAppsIconRow) v).icon;
         launcher.getWorkspace().beginDragShared(v, launcher.getAppsView(), options);
         return false;
     }
