@@ -64,6 +64,10 @@ public class SysUINavigationMode {
                 updateMode();
             }
         }, getPackageFilter("android", ACTION_OVERLAY_CHANGED));
+
+        if (!Utilities.ATLEAST_Q) {
+            mMode = Mode.THREE_BUTTONS;
+        }
     }
 
     private static final String NAV_BAR_INTERACTION_MODE_RES_NAME =

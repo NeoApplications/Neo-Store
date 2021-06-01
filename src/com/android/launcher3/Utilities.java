@@ -102,7 +102,7 @@ import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
-import com.saggitt.omega.OmegaAppKt;
+import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.allapps.AllAppsVertical;
 import com.saggitt.omega.allapps.AllAppsVerticalList;
@@ -995,8 +995,7 @@ public final class Utilities {
     public static boolean isRecentsEnabled() {
         LauncherAppState las = LauncherAppState.getInstanceNoCreate();
         if (las != null) {
-            Context context = las.getContext();
-            return OmegaAppKt.getOmegaApp(context).getRecentsEnabled();
+            return OmegaApp.isRecentsEnabled();
         }
         return false;
     }

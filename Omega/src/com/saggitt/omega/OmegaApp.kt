@@ -40,11 +40,15 @@ class OmegaApp : Application() {
     val activityHandler = ActivityHandler()
     val smartspace by lazy { OmegaSmartspaceController(this) }
     var mismatchedQuickstepTarget = false
-    val recentsEnabled by lazy { checkRecentsComponent() }
+    private val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null
 
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
     fun onLauncherAppStateCreated() {
-        sApplication = this
         registerActivityLifecycleCallbacks(activityHandler)
         BlurWallpaperProvider.getInstance(this)
         Flowerpot.Manager.getInstance(this)
@@ -115,9 +119,9 @@ class OmegaApp : Application() {
     }
 
     @Keep
-    fun checkRecentsComponent(): Boolean {
-        if (!Utilities.ATLEAST_P) {
-            Log.d("OmegaApp", "API < P, disabling recents")
+    private fun checkRecentsComponent(): Boolean {
+        if (!Utilities.ATLEAST_R) {
+            Log.d("OmegaApp", "API < R, disabling recents")
             return false
         }
 
@@ -140,7 +144,7 @@ class OmegaApp : Application() {
             )
             return false
         }
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             Log.d("OmegaApp", "Quickstep target doesn't match, disabling recents")
             mismatchedQuickstepTarget = true
             return false
@@ -151,16 +155,12 @@ class OmegaApp : Application() {
 
     companion object {
         @JvmStatic
-        fun getContext(): Context? {
-            return sApplication?.applicationContext
-        }
-
-        private var sApplication: Application? = null
+        var instance: OmegaApp? = null
+            private set
 
         @JvmStatic
-        fun get(context: Context): OmegaApp {
-            return context.applicationContext as OmegaApp
-        }
+        val isRecentsEnabled: Boolean
+            get() = instance?.recentsEnabled == true
     }
 }
 

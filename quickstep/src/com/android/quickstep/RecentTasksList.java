@@ -16,6 +16,8 @@
 
 package com.android.quickstep;
 
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
+
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.os.Build;
@@ -29,13 +31,12 @@ import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.KeyguardManagerCompat;
 import com.android.systemui.shared.system.TaskStackChangeListener;
+import com.saggitt.omega.OmegaApp;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Manages the recent task list from the system, caching it as necessary.
@@ -62,6 +63,9 @@ public class RecentTasksList extends TaskStackChangeListener {
         mChangeId = 1;
         mActivityManagerWrapper = activityManagerWrapper;
         //mActivityManagerWrapper.registerTaskStackListener(this);
+        if (OmegaApp.isRecentsEnabled()) {
+            mActivityManagerWrapper.registerTaskStackListener(this);
+        }
     }
 
     /**

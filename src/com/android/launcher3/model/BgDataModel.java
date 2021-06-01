@@ -15,6 +15,9 @@
  */
 package com.android.launcher3.model;
 
+import static com.android.launcher3.model.WidgetsModel.GO_DISABLE_WIDGETS;
+import static com.android.launcher3.shortcuts.ShortcutRequest.PINNED;
+
 import android.content.Context;
 import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
@@ -55,9 +58,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
-import static com.android.launcher3.model.WidgetsModel.GO_DISABLE_WIDGETS;
-import static com.android.launcher3.shortcuts.ShortcutRequest.PINNED;
 
 /**
  * All the data stored in-memory and managed by the LauncherModel
@@ -142,7 +142,7 @@ public class BgDataModel {
                 screenSet.add(item.screenId);
             }
         }
-        if (FeatureFlags.showQSbOnFirstScreen(OmegaApp.getContext()) || screenSet.isEmpty()) {
+        if (FeatureFlags.showQSbOnFirstScreen(OmegaApp.getInstance()) || screenSet.isEmpty()) {
             screenSet.add(Workspace.FIRST_SCREEN_ID);
         }
         return screenSet.getArray();

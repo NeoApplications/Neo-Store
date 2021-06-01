@@ -16,6 +16,10 @@
 
 package com.android.launcher3.statehandlers;
 
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.states.StateAnimationConfig.ANIM_DEPTH;
+import static com.android.launcher3.states.StateAnimationConfig.SKIP_DEPTH_CONTROLLER;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -37,10 +41,6 @@ import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
 import com.android.systemui.shared.system.SurfaceControlCompat;
 import com.android.systemui.shared.system.TransactionCompat;
 import com.android.systemui.shared.system.WallpaperManagerCompat;
-
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.states.StateAnimationConfig.ANIM_DEPTH;
-import static com.android.launcher3.states.StateAnimationConfig.SKIP_DEPTH_CONTROLLER;
 
 /**
  * Controls blur and wallpaper zoom, for the Launcher surface only.
@@ -96,7 +96,7 @@ public class DepthController implements StateHandler<LauncherState>,
             mMaxBlurRadius = mLauncher.getResources().getInteger(R.integer.max_depth_blur_radius);
             mWallpaperManager = new WallpaperManagerCompat(mLauncher);
         }
-        if (mLauncher.getRootView() != null && mOnAttachListener == null) {
+        if (Utilities.ATLEAST_R && mLauncher.getRootView() != null && mOnAttachListener == null) {
             mOnAttachListener = new View.OnAttachStateChangeListener() {
                 @Override
                 public void onViewAttachedToWindow(View view) {
@@ -183,7 +183,7 @@ public class DepthController implements StateHandler<LauncherState>,
         // Round out the depth to dedupe frequent, non-perceptable updates
         int depthI = (int) (depth * 256);
         float depthF = depthI / 256f;
-        if (Float.compare(mDepth, depthF) == 0) {
+        if (!Utilities.ATLEAST_R || Float.compare(mDepth, depthF) == 0) {
             return;
         }
 

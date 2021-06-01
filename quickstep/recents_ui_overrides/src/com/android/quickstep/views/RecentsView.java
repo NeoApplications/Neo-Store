@@ -559,7 +559,7 @@ public abstract class RecentsView<T extends StatefulActivity> extends PagedView 
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().addCallback(this);
         mActivity.addMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        if (OmegaApp.get(getContext()).getRecentsEnabled()) {
+        if (OmegaApp.isRecentsEnabled()) {
             ActivityManagerWrapper.getInstance().registerTaskStackListener(mTaskStackListener);
             mSyncTransactionApplier = new SurfaceTransactionApplier(this);
         }
@@ -579,7 +579,7 @@ public abstract class RecentsView<T extends StatefulActivity> extends PagedView 
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().removeCallback(this);
         mActivity.removeMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        if (OmegaApp.get(getContext()).getRecentsEnabled()) {
+        if (OmegaApp.isRecentsEnabled()) {
             ActivityManagerWrapper.getInstance().unregisterTaskStackListener(mTaskStackListener);
             mSyncTransactionApplier = null;
         }
