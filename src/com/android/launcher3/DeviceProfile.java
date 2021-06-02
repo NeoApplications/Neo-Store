@@ -274,8 +274,8 @@ public class DeviceProfile {
             // ie. For a display with a large aspect ratio, we can keep the icons on the workspace
             // in portrait mode closer together by adding more height to the hotseat.
             // Note: This calculation was created after noticing a pattern in the design spec.
-            int extraSpace = getCellSize().y - iconSizePx - iconDrawablePaddingPx * 2
-                    - workspacePageIndicatorHeight;
+            int extraSpace = 0; //getCellSize().y - iconSizePx - iconDrawablePaddingPx * 2
+            //- workspacePageIndicatorHeight;
             hotseatBarSizePx += extraSpace;
             hotseatBarBottomPaddingPx += extraSpace;
 
