@@ -31,19 +31,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
-import com.saggitt.omega.dash.provider.*
+import com.saggitt.omega.dash.actionprovider.*
+import com.saggitt.omega.dash.controlprovider.*
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
 // TODO remove use of Handler()
+// TODO add an option to add apps/shortcuts
 class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.Holder>() {
     private val prefs = context.omegaPrefs
-    private val allItems = ArrayList<ProviderItem>()
+    private val allItems: MutableList<ProviderItem> =
+        (getDashActionProviders(context) + getDashControlProviders(context))
+            .map { ProviderItem(it) }
+            .toMutableList()
     private val handler = Handler()
     private var dividerIndex = 0
     private val adapterItems = ArrayList<Item>()
-    private val currentSpecs = ArrayList<String>()
+    private val activeProviders: MutableList<String> = prefs.dashProviders.getAll().toMutableList()
     private val otherItems = ArrayList<ProviderItem>()
 
     private val divider = DividerItem()
@@ -52,11 +57,6 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
     var itemTouchHelper: ItemTouchHelper? = null
 
     init {
-        allItems.addAll(getDashProviders(context)
-            .map { ProviderItem(it) })
-
-        currentSpecs.addAll(prefs.dashProviders.getAll())
-
         fillItems()
     }
 
@@ -107,7 +107,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
 
         adapterItems.clear()
         adapterItems.add(HeaderItem())
-        currentSpecs.forEach {
+        activeProviders.forEach {
             val item = getAndRemoveOther(it)
             if (item != null) {
                 adapterItems.add(item)
@@ -289,17 +289,26 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         const val TYPE_DASH_ITEM = 1
         const val TYPE_DIVIDER = 2
 
-        fun getDashProviders(context: Context) = listOf(
+        fun getDashActionProviders(context: Context) = listOf(
             EditDash(context),
             ChangeWallpaper(context),
-            OpenLauncherSettings(context),
+            OmegaSettings(context),
             ManageVolume(context),
-            OpenDeviceSetting(context),
-            MobileNetwork(context),
+            DeviceSettings(context),
             ManageApps(context),
             AllAppsShortcut(context),
             SleepDevice(context),
-            StartLauncher(context)
+            LaunchAssistant(context),
+            Torch(context)
+        )
+
+        fun getDashControlProviders(context: Context) = listOf(
+            Wifi(context),
+            MobileData(context),
+            Location(context),
+            Bluetooth(context),
+            AutoRotation(context),
+            Sync(context)
         )
     }
 }
