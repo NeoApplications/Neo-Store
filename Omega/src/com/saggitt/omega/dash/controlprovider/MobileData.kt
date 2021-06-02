@@ -16,25 +16,37 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.controlprovider
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.provider.Settings
+import android.telephony.TelephonyManager
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashControlProvider
 
-class StartLauncher(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.launch_assistant)
-    override val description = context.getString(R.string.gesture_launch_assistant)
+class MobileData(context: Context) : DashControlProvider(context) {
+    override val name = context.getString(R.string.dash_mobile_network_title)
+    override val description = context.getString(R.string.dash_mobile_network_summary)
+    var tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_assistant).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_mobile_network).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
-    override fun runAction(context: Context) {
-        context.startActivity(Intent(Intent.ACTION_ASSIST).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-    }
+    override var state: Boolean
+        get() {
+            return tm.dataState != TelephonyManager.DATA_DISCONNECTED
+        }
+        set(value) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                context.startActivity(Intent(Settings.ACTION_DATA_USAGE_SETTINGS))
+            } else {
+                context.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+            }
+        }
 }

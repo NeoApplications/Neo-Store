@@ -16,34 +16,28 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.controlprovider
 
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
-import com.saggitt.omega.gestures.handlers.SleepGestureHandler
-import com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin
-import com.saggitt.omega.gestures.handlers.SleepMethodPieAccessibility
+import com.saggitt.omega.dash.DashControlProvider
 
-class SleepDevice(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.action_sleep)
-    override val description = context.getString(R.string.action_sleep)
-
-    private val method: SleepGestureHandler.SleepMethod? by lazy {
-        listOf(
-            SleepMethodPieAccessibility(context),
-            SleepMethodDeviceAdmin(context)
-        ).firstOrNull { it.supported }
-    }
+class Sync(context: Context) : DashControlProvider(context) {
+    override val name = context.getString(R.string.dash_sync)
+    override val description = context.getString(R.string.dash_sync_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_sleep).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_sync).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
-    override fun runAction(context: Context) {
-        method!!.sleep(null)
-    }
+    override var state: Boolean
+        get() =
+            ContentResolver.getMasterSyncAutomatically()
+        set(value) {
+            ContentResolver.setMasterSyncAutomatically(value)
+        }
 }

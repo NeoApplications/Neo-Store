@@ -28,45 +28,47 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil.set
 import com.saggitt.omega.views.CenterFloatingView
 
 class DashBottomSheet(context: Context) : RelativeLayout(context) {
-    private val dashItemAdapter = ItemAdapter<DashItem>()
-    private var dashFastAdapter: FastAdapter<DashItem>? = null
+    private var controlFastAdapter: FastAdapter<DashControlItem>? = null
+    private var dashActionFastAdapter: FastAdapter<DashActionItem>? = null
+    private val controlItemAdapter = ItemAdapter<DashControlItem>()
+    private val dashItemAdapter = ItemAdapter<DashActionItem>()
     private val prefs = Utilities.getOmegaPrefs(context)
-    private val allItems = ArrayList(DashEditAdapter.getDashProviders(context))
+    private val allActionItems = DashEditAdapter.getDashActionProviders(context)
+    private val allControlItems = DashEditAdapter.getDashControlProviders(context)
 
     init {
         View.inflate(context, R.layout.dash_view, this)
-        val dashProviderPrefs = prefs.dashProviders.getAll()
-        val items: ArrayList<DashProvider> = ArrayList()
-        dashProviderPrefs.forEach {
-            val item = checkAndAddProvider(it)
-            if (item != null) {
-                items.add(item)
-            }
-        }
+        val activeDashProviders = prefs.dashProviders.getAll()
 
-        val circularListView = findViewById<View>(R.id.dash_recycler) as RecyclerView
-        dashFastAdapter = FastAdapter.with(dashItemAdapter)
-        dashFastAdapter?.setHasStableIds(true)
-        circularListView.adapter = dashFastAdapter
-        circularListView.layoutManager = GridLayoutManager(context,4)
-        val dashItems = items.map { DashItem(context, it) }
-        set(dashItemAdapter,dashItems)
-    }
+        controlFastAdapter = FastAdapter.with(controlItemAdapter)
+        controlFastAdapter?.setHasStableIds(true)
+        dashActionFastAdapter = FastAdapter.with(dashItemAdapter)
+        dashActionFastAdapter?.setHasStableIds(true)
 
-    private fun checkAndAddProvider(s: String): DashProvider? {
-        val iterator = allItems.iterator()
-        while (iterator.hasNext()) {
-            val item = iterator.next()
-            if (item.name == s) {
-                iterator.remove()
-                return item
+        val controlRecycler = findViewById<View>(R.id.dash_control_recycler) as RecyclerView
+        controlRecycler.layoutManager = GridLayoutManager(context, 2)
+        controlRecycler.adapter = controlFastAdapter
+        val dashRecycler = findViewById<View>(R.id.dash_recycler) as RecyclerView
+        dashRecycler.layoutManager = GridLayoutManager(context, 4)
+        dashRecycler.adapter = dashActionFastAdapter
+
+        val controlItems = activeDashProviders
+            .mapNotNull { name ->
+                allControlItems.find { it.name == name }?.let {
+                    DashControlItem(context, it)
+                }
             }
-        }
-        return null
+        controlItemAdapter.set(controlItems)
+        val dashItems = activeDashProviders
+            .mapNotNull { name ->
+                allActionItems.find { it.name == name }?.let {
+                    DashActionItem(context, it)
+                }
+            }
+        dashItemAdapter.set(dashItems)
     }
 
     companion object {

@@ -16,28 +16,31 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.hardware.camera2.CameraManager
 import androidx.appcompat.content.res.AppCompatResources
-import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherState
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
+import com.saggitt.omega.util.omegaPrefs
 
-class AllAppsShortcut(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.dash_all_apps_title)
-    override val description = context.getString(R.string.dash_all_apps_summary)
+class Torch(context: Context) : DashActionProvider(context) {
+    override val name = context.getString(R.string.action_torch)
+    override val description = context.getString(R.string.action_torch_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_apps).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_torch).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
     override fun runAction(context: Context) {
-        if (!Launcher.getLauncher(context).isInState(LauncherState.ALL_APPS)) {
-            Launcher.getLauncher(context).stateManager.goToState(LauncherState.ALL_APPS)
+        val camManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager?
+        val cameraId = camManager!!.cameraIdList[0]
+        context.omegaPrefs.torchState.let {
+            context.omegaPrefs.torchState = !it
+            camManager.setTorchMode(cameraId, !it)
         }
     }
 }

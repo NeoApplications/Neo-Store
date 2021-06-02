@@ -21,13 +21,23 @@
     android:layout_height="wrap_content"
     android:padding="6dp"
     android:layout_gravity="center"
+    android:background="@drawable/ripple_dash_item_bg"
+    android:layout_margin="6dp"
+    android:weightSum="2"
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_icon"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:background="@drawable/ripple_dash_item_bg"
         android:padding="15dp"
         android:theme="@style/DashTheme.Item" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_name"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="PLACE HOLDER"/>
 </LinearLayout>

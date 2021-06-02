@@ -16,33 +16,25 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash
+package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorInt
-import com.android.launcher3.Utilities
+import androidx.appcompat.content.res.AppCompatResources
+import com.android.launcher3.R
+import com.saggitt.omega.dash.DashActionProvider
 
-abstract class DashProvider(protected val context: Context) {
-    val accentColor = Utilities.getOmegaPrefs(context).accentColor
-    abstract val name: String
-    abstract val description: String
-    abstract val icon: Drawable?
+class LaunchAssistant(context: Context) : DashActionProvider(context) {
+    override val name = context.getString(R.string.launch_assistant)
+    override val description = context.getString(R.string.gesture_launch_assistant)
 
-    @ColorInt
-    fun darkenColor(@ColorInt color: Int): Int {
-        return Color.HSVToColor(FloatArray(3).apply {
-            Color.colorToHSV(color, this)
-            this[2] *= 0.8f
-        })
+    override val icon: Drawable?
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_assistant).apply {
+            this?.setTint(darkenColor(accentColor))
+        }
+
+    override fun runAction(context: Context) {
+        context.startActivity(Intent(Intent.ACTION_ASSIST).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
-}
-
-abstract class DashActionProvider(context: Context) : DashProvider(context) {
-    abstract fun runAction(context: Context)
-}
-
-abstract class DashControlProvider(context: Context) : DashProvider(context) {
-    abstract var state: Boolean
 }
