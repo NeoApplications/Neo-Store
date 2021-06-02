@@ -22,7 +22,7 @@
         <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
 
         <item name="dashIconTint">#0270CF</item>
-        <item name="dashIconBackground">#77FFFFFF</item>
+        <item name="dashIconBackground">#A0FFFFFF</item>
     </style>
 
     <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText" />
@@ -34,7 +34,7 @@
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
         <item name="dashIconTint">#0270CF</item>
-        <item name="dashIconBackground">#773C3C3C</item>
+        <item name="dashIconBackground">#A03C3C3C</item>
     </style>
 
     <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor" />
@@ -52,7 +52,7 @@
         <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
-        <item name="dashIconBackground">#77000000</item>
+        <item name="dashIconBackground">#A0000000</item>
     </style>
 
     <style name="AppTheme.Black.DarkText" parent="@style/AppTheme.Black">
