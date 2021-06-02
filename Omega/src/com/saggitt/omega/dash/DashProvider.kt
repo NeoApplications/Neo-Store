@@ -29,7 +29,6 @@ abstract class DashProvider(protected val context: Context) {
     abstract val name: String
     abstract val description: String
     abstract val icon: Drawable?
-    abstract fun runAction(context: Context)
 
     @ColorInt
     fun darkenColor(@ColorInt color: Int): Int {
@@ -38,4 +37,12 @@ abstract class DashProvider(protected val context: Context) {
             this[2] *= 0.8f
         })
     }
+}
+
+abstract class DashActionProvider(context: Context) : DashProvider(context) {
+    abstract fun runAction(context: Context)
+}
+
+abstract class DashControlProvider(context: Context) : DashProvider(context) {
+    abstract var state: Boolean
 }

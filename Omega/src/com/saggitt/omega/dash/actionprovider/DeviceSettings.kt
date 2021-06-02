@@ -16,36 +16,26 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.widget.Toast
+import android.provider.Settings
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
 
-class ChangeWallpaper(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.wallpaper_pick)
-    override val description = context.getString(R.string.wallpaper_pick_summary)
+class DeviceSettings(context: Context) : DashActionProvider(context) {
+    override val name = context.getString(R.string.dash_device_settings_title)
+    override val description = context.getString(R.string.dash_device_settings_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_wallpaper).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_device_settings).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
     override fun runAction(context: Context) {
-        try {
-            context.startActivity(
-                Intent.createChooser(
-                    Intent(Intent.ACTION_SET_WALLPAPER),
-                    context.getString(R.string.wallpaper_pick)
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
-        }
+        context.startActivity(Intent(Settings.ACTION_SETTINGS))
     }
 }

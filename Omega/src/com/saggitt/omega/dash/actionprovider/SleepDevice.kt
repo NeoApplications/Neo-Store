@@ -16,18 +16,18 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.gestures.handlers.SleepGestureHandler
 import com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin
 import com.saggitt.omega.gestures.handlers.SleepMethodPieAccessibility
 
-class SleepDevice(context: Context) : DashProvider(context) {
+class SleepDevice(context: Context) : DashActionProvider(context) {
     override val name = context.getString(R.string.action_sleep)
     override val description = context.getString(R.string.action_sleep)
 

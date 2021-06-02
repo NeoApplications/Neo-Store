@@ -16,16 +16,16 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.settings.SettingsActivity
 
-class EditDash(context: Context) : DashProvider(context) {
+class EditDash(context: Context) : DashActionProvider(context) {
     override val name = context.getString(R.string.edit_dash)
     override val description = context.getString(R.string.edit_dash_summary)
 

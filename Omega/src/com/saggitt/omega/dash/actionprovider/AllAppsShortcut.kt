@@ -16,25 +16,28 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
+import com.android.launcher3.Launcher
+import com.android.launcher3.LauncherState
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
 
-class StartLauncher(context: Context) : DashProvider(context) {
-    override val name = context.getString(R.string.launch_assistant)
-    override val description = context.getString(R.string.gesture_launch_assistant)
+class AllAppsShortcut(context: Context) : DashActionProvider(context) {
+    override val name = context.getString(R.string.dash_all_apps_title)
+    override val description = context.getString(R.string.dash_all_apps_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_assistant).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_apps).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
     override fun runAction(context: Context) {
-        context.startActivity(Intent(Intent.ACTION_ASSIST).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        if (!Launcher.getLauncher(context).isInState(LauncherState.ALL_APPS)) {
+            Launcher.getLauncher(context).stateManager.goToState(LauncherState.ALL_APPS)
+        }
     }
 }

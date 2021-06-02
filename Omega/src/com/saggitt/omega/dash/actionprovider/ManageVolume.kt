@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.dash.provider
+package com.saggitt.omega.dash.actionprovider
 
 import android.app.NotificationManager
 import android.content.Context
@@ -26,10 +26,10 @@ import android.media.AudioManager
 import android.provider.Settings
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
-import com.saggitt.omega.dash.DashProvider
+import com.saggitt.omega.dash.DashActionProvider
 import java.util.*
 
-class ManageVolume(context: Context) : DashProvider(context) {
+class ManageVolume(context: Context) : DashActionProvider(context) {
     override val name = context.getString(R.string.dash_volume_title)
     override val description = context.getString(R.string.dash_volume_summary)
 
