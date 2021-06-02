@@ -26,30 +26,33 @@ import com.android.launcher3.AbstractFloatingView
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.databinding.DashItemBinding
+import com.android.launcher3.databinding.DashControlItemBinding
 import com.android.launcher3.util.Themes
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class DashItem(val context: Context, val provider: DashProvider) :
-    AbstractBindingItem<DashItemBinding>() {
+class DashControlItem(val context: Context, val provider: DashControlProvider) :
+    AbstractBindingItem<DashControlItemBinding>() {
 
     override val type: Int
         get() = R.id.fastadapter_item
 
-    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): DashItemBinding {
-        return DashItemBinding.inflate(inflater, parent, false)
-    }
+    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?) =
+        DashControlItemBinding.inflate(inflater, parent, false)
 
-    override fun bindView(binding: DashItemBinding, payloads: List<Any>) {
+    override fun bindView(binding: DashControlItemBinding, payloads: List<Any>) {
         val backgroundColor =
             ColorStateList.valueOf(Themes.getAttrColor(context, R.attr.dashIconBackground))
-        binding.btItem.backgroundTintList = backgroundColor
-        binding.btItem.setImageDrawable(provider.icon)
-        binding.btItem.tooltipText = provider.name
-        val iconColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
-        binding.btItem.imageTintList = iconColor
-        binding.btItem.setOnClickListener {
-            provider.runAction(context)
+        val activeColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
+        binding.root.backgroundTintList =
+            if (provider.state) activeColor.withAlpha(144) else backgroundColor
+        binding.itemIcon.setImageDrawable(provider.icon)
+        binding.itemName.text = provider.name
+        binding.itemIcon.tooltipText = provider.description
+        binding.itemIcon.imageTintList =
+            if (provider.state) backgroundColor.withAlpha(255) else activeColor
+        binding.itemName.setTextColor(if (provider.state) backgroundColor.withAlpha(255) else activeColor)
+        binding.root.setOnClickListener {
+            provider.state = !provider.state
             AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(context))
         }
     }
