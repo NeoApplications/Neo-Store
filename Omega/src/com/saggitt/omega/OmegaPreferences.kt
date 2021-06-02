@@ -29,8 +29,6 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.dash.provider.AllAppsShortcut
-import com.saggitt.omega.dash.provider.MobileNetwork
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
@@ -283,10 +281,16 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         "pref_dash_providers",
         doNothing,
         listOf(
-            AllAppsShortcut::class.java.name,
-            MobileNetwork::class.java.name
+            context.getString(R.string.dash_wifi),
+            context.getString(R.string.dash_mobile_network_title),
+            context.getString(R.string.dash_device_settings_title),
+            context.getString(R.string.launch_assistant),
+            context.getString(R.string.dash_volume_title),
+            context.getString(R.string.edit_dash)
         )
     )
+
+    var torchState = false
 
     /* --FEED-- */
     var feedProvider by StringPref("pref_feedProvider", "", restart)
