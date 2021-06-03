@@ -23,8 +23,13 @@ import android.util.AttributeSet
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 
-// TODO: not used class, should be removed?
-class GBillingDialog @JvmOverloads constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int = 0) :
+// TODO: replace the Donations buttons with Google play dialog
+// this should be completed before the app is available in google play
+class GBillingDialog @JvmOverloads constructor(
+    context: Context?,
+    attrs: AttributeSet?,
+    defStyleAttr: Int = 0
+) :
     BaseBottomSheet(context, attrs, defStyleAttr) {
     private val mFragmentManager: FragmentManager = mLauncher.fragmentManager
     fun populateAndShow() {}
