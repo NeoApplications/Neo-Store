@@ -116,7 +116,6 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverla
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.allapps.AllAppsIconRow;
 import com.saggitt.omega.settings.WorkspaceBlur;
 import com.saggitt.omega.views.OmegaBackgroundView;
 
@@ -1550,12 +1549,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     }
 
     public void beginDragShared(View child, DragSource source, DragOptions options) {
-        Object dragObject;
-        if (child instanceof AllAppsIconRow) {
+        Object dragObject = child.getTag();
+        /*if (child instanceof AllAppsIconRow) {
             dragObject = ((AllAppsIconRow) child).getTag();
         } else {
             dragObject = child.getTag();
-        }
+        }*/
 
         if (!(dragObject instanceof ItemInfo)) {
             String msg = "Drag started with a view that has no tag set. This "

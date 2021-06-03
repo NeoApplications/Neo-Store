@@ -50,7 +50,6 @@ import com.android.launcher3.model.AppLaunchTracker;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.allapps.AllAppsIconRow;
 import com.saggitt.omega.allapps.IDrawerLayout;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
@@ -220,10 +219,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_ICON:
-                View icon = mLayoutInflater.inflate(drawerLayout.getIconLayout(), parent, false);
+                BubbleTextView icon = (BubbleTextView) mLayoutInflater.inflate(drawerLayout.getIconLayout(), parent, false);
                 icon.setOnClickListener(mOnIconClickListener);
                 icon.setOnLongClickListener(mOnIconLongClickListener);
-                //icon.setLongPressTimeoutFactor(1f);
+                icon.setLongPressTimeoutFactor(1f);
                 icon.setOnFocusChangeListener(mIconFocusListener);
 
                 // Ensure the all apps icon height matches the workspace icons in portrait mode.
@@ -326,11 +325,11 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     BubbleTextView icon = (BubbleTextView) holder.itemView;
                     icon.reset();
                     icon.applyFromApplicationInfo(info);
-                } else if (holder.itemView instanceof AllAppsIconRow) {
+                } /*else if (holder.itemView instanceof AllAppsIconRow) {
                     AllAppsIconRow row = (AllAppsIconRow) holder.itemView;
                     row.applyFromApplicationInfo(info);
                     row.setText(info.title);
-                }
+                }*/
                 break;
             case VIEW_TYPE_EMPTY_SEARCH:
                 TextView emptyViewText = (TextView) holder.itemView;

@@ -86,6 +86,7 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
     private static final int DISPLAY_ALL_APPS = 1;
     private static final int DISPLAY_FOLDER = 2;
     private static final int DISPLAY_DRAWER_FOLDER = 5;
+    private static final int DISPLAY_ALL_APPS_VERTICAL = 6;
 
     private static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
 
@@ -198,10 +199,6 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
             if (prefs.getCustomBackground()) {
                 setTextColor(prefs.getDrawerLabelColor());
             }
-        } else if (mDisplay == 6) {
-            setCompoundDrawablePadding(16);
-            defaultIconSize = grid.allAppsIconSizePx;
-
         } else if (mDisplay == DISPLAY_FOLDER) {
             mHideText = prefs.getHideAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.folderChildTextSizePx);
@@ -219,6 +216,14 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
             if (prefs.getCustomBackground()) {
                 setTextColor(prefs.getDrawerLabelColor());
             }
+        } else if (mDisplay == DISPLAY_ALL_APPS_VERTICAL) {
+            mHideText = false;
+            //setCompoundDrawablePadding(34);
+            defaultIconSize = grid.allAppsIconSizePx;
+            setLineCount(1);
+            if (prefs.getCustomBackground()) {
+                setTextColor(prefs.getDrawerLabelColor());
+            }
         } else {
             // widget_selection or shortcut_popup
             defaultIconSize = grid.iconSizePx;
@@ -226,8 +231,7 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
 
         mCenterVertically = a.getBoolean(R.styleable.BubbleTextView_centerVertically, false);
 
-        mIconSize = a.getDimensionPixelSize(R.styleable.BubbleTextView_iconSizeOverride,
-                defaultIconSize);
+        mIconSize = a.getDimensionPixelSize(R.styleable.BubbleTextView_iconSizeOverride, defaultIconSize);
         a.recycle();
 
         mLongPressHelper = new CheckLongPressHelper(this);
@@ -852,6 +856,7 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
         DeviceProfile grid = mActivity.getDeviceProfile();
         switch (display) {
             case DISPLAY_ALL_APPS:
+            case DISPLAY_ALL_APPS_VERTICAL:
                 return grid.allAppsIconSizePx;
             case DISPLAY_WORKSPACE:
             case DISPLAY_FOLDER:
