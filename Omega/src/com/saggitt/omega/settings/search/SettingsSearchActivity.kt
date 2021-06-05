@@ -56,7 +56,7 @@ class SettingsSearchActivity : SettingsBaseActivity(), SearchView.OnQueryTextLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivitySettingsSearchBinding.inflate(layoutInflater)
+        binding = ActivitySettingsSearchBinding.inflate(layoutInflater)
 
         decorLayout.hideToolbar = true
 
