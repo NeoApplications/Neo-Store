@@ -354,4 +354,10 @@
     <string name="label_voice_search">Pesquisa por voz</string>
     <string name="automatic_short">Automático</string>
     <string name="title_separate_work_apps">Segunda guia para aplicativos de trabalho</string>
+    <string name="cat_drawer_icons">Ícones</string>
+    <string name="cat_drawer_grid">Grid</string>
+    <string name="title_drawer_paged">Paginada</string>
+    <string name="title_drawer_vertical_list">Lista Vertical</string>
+    <string name="title_drawer_vertical">Vertical</string>
+    <string name="title_drawer_layout">Modo de Layout</string>
 </resources>
