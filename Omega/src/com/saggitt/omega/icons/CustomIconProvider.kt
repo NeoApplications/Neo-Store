@@ -34,7 +34,10 @@ class CustomIconProvider(context: Context) : DynamicIconProvider(context) {
     private val iconPackManager by lazy { IconPackManager.getInstance(context) }
 
     fun getIcon(shortcutInfo: ShortcutInfo, iconDpi: Int): Drawable? {
-        return iconPackManager.getIcon(shortcutInfo, iconDpi).assertNotAdaptiveIconDrawable(shortcutInfo)
+        return iconPackManager.getIcon(
+            shortcutInfo,
+            iconDpi
+        )//.assertNotAdaptiveIconDrawable(shortcutInfo)
     }
 
     override fun getIcon(launcherActivityInfo: LauncherActivityInfo, iconDpi: Int, flattenDrawable: Boolean): Drawable {
