@@ -17,7 +17,6 @@
     <string name="pref_category__others">אחרים</string>
     <string name="restore_failed">שחזור נכשל</string>
     <string name="search_no_results">אין תוצאות</string>
-    <string name="dialog_default">ברירת מחדל</string>
     <string name="pref_app_groups_edit_tip">לחץ לעריכה, גרור לסידור מחדש.</string>
     <string name="action_none">אל תעשה כלום</string>
     <string name="action_open_app_with_target">פתח את \"%s\"</string>
@@ -29,7 +28,6 @@
     <string name="action_open_notifications">פתח התראות</string>
     <string name="smartspace_provider_calendar">אירועי יומן</string>
     <string name="delete">מחיקה</string>
-    <string name="dialog_ok">אישור</string>
     <string name="drawer_folders">תיקיות</string>
     <string name="pref_appcategorization_tabs_title">לשוניות</string>
     <string name="hide_app_reset">איפוס</string>

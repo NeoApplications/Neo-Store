@@ -224,9 +224,6 @@
     <string name="import_as_adaptive">As adaptive icon</string>
     <string name="playstore_query_icon_pack">Icon pack</string>
 
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_default">Default</string>
     <string name="reset_custom_icons">Remove Custom Icons</string>
     <string name="reset_custom_icons_confirmation">Revert to default icons from this Icon Pack? This can’t be undone.</string>
 

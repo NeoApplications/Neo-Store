@@ -12,9 +12,6 @@
     <string name="title_smartspace_date">Montri Daton</string>
     <string name="title_smartspace_time">Montri Tempon</string>
     <string name="reset_custom_icons">Forigi Proprajn Piktogramojn</string>
-    <string name="dialog_default">Defaŭlte</string>
-    <string name="dialog_ok">Bone</string>
-    <string name="dialog_cancel">Rezigni</string>
     <string name="playstore_query_icon_pack">Piktogrampakaĵo</string>
     <string name="icon_pack_default">Operaciumaj piktogramoj</string>
     <string name="icon_pack_applied_toast">%s aplikita</string>

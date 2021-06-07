@@ -193,9 +193,6 @@
     <string name="color_presets">Предустановки</string>
     <string name="reset_custom_icons_confirmation">Вернуться к иконкам по умолчанию из этого пакета иконок\? Это нельзя отменить.</string>
     <string name="reset_custom_icons">Удалить пользовательские иконки</string>
-    <string name="dialog_default">По умолчанию</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Отмена</string>
     <string name="playstore_query_icon_pack">Пакеты иконок</string>
     <string name="import_as_adaptive">Как адаптивная иконка</string>
     <string name="import_icon">Импорт иконки</string>

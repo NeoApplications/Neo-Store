@@ -30,9 +30,6 @@
     <string name="color_presets">Voreinstellungen</string>
     <string name="reset_custom_icons_confirmation">Auf Standardsymbole von diesem Symbol -Paket zurücksetzen\? Das kann nicht rückgängig gemacht werden.</string>
     <string name="reset_custom_icons">Benutzerdefinierte Symbole entfernen</string>
-    <string name="dialog_default">Standard</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Abbrechen</string>
     <string name="playstore_query_icon_pack">Symbol Paket</string>
     <string name="import_as_adaptive">Als adaptives Symbol</string>
     <string name="import_icon">Symbol importieren</string>

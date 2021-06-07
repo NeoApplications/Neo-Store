@@ -191,9 +191,6 @@
     <string name="action_close_notifications">Lukk merknader</string>
     <string name="search_menu">Finn innstillinger</string>
     <string name="title__gesture_swipe_down">Dra nedover</string>
-    <string name="dialog_default">Forvalg</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Avbryt</string>
     <string name="icon_shape_corner_squircle">Kvirkel</string>
     <string name="icon_shape_teardrop">Dråpe</string>
     <string name="icon_shape_circle">Sirkel</string>

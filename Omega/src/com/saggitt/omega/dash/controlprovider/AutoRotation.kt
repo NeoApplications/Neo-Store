@@ -54,10 +54,10 @@ class AutoRotation(context: Context) : DashControlProvider(context) {
                 AlertDialog.Builder(context)
                     .setTitle(R.string.modify_system_settings)
                     .setMessage(R.string.modify_system_settings_message)
-                    .setPositiveButton(R.string.dialog_ok) { _: DialogInterface, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                         context.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS))
                     }
-                    .setNegativeButton(R.string.dialog_cancel) { di: DialogInterface, _: Int ->
+                    .setNegativeButton(android.R.string.cancel) { di: DialogInterface, _: Int ->
                         di.dismiss()
                     }
                     .show()

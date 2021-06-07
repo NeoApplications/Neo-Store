@@ -214,9 +214,6 @@
     <string name="color_presets">مُعد مسبقا</string>
     <string name="reset_custom_icons_confirmation">ألرجوع ألى ألايقونات الافتراضية من حزمة ألايقونات هذه؟ لايمكن التراجع عن هذا.</string>
     <string name="reset_custom_icons">قم بإزالة الرموز المخصصة</string>
-    <string name="dialog_default">افتراضي</string>
-    <string name="dialog_ok">موافق</string>
-    <string name="dialog_cancel">ألخِ</string>
     <string name="playstore_query_icon_pack">حزمة أيقونات</string>
     <string name="import_as_adaptive">كأيقونة تكيفية</string>
     <string name="import_icon">أستيراد ايقونات</string>

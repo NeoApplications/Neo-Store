@@ -140,9 +140,6 @@
     <string name="color_presets">Predefinições</string>
     <string name="reset_custom_icons_confirmation">Reverter para os ícones padrão deste pacote de ícones\? Isso não pode ser desfeito.</string>
     <string name="reset_custom_icons">Remover ícones personalizados</string>
-    <string name="dialog_default">Padrão</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Cancelar</string>
     <string name="playstore_query_icon_pack">Pacote de ícones</string>
     <string name="import_as_adaptive">Como ícone adaptável</string>
     <string name="import_icon">Importar ícone</string>

@@ -181,9 +181,6 @@
     <string name="title_smartspace_time">Mostrar hora</string>
     <string name="title_white_only_treatment">Reemplazar fondo blanco</string>
     <string name="reset_custom_icons">Remover iconos personalizados</string>
-    <string name="dialog_default">Predeterminado</string>
-    <string name="dialog_ok">Aceptar</string>
-    <string name="dialog_cancel">Cancelar</string>
     <string name="import_icon">Importar icono</string>
     <string name="icon_pack_applied_toast">%s aplicado</string>
     <string name="icon_shape_corner_round">Redondo</string>

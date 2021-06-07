@@ -212,9 +212,6 @@
     <string name="title__general_dock">Dock</string>
     <string name="title__general_desktop">Bureau</string>
     <string name="title__general_about">À propos</string>
-    <string name="dialog_default">Par défaut</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_cancel">Annuler</string>
     <string name="title__dock_icon_size">Taille d\'icône</string>
     <string name="title__desktop_icon_size">Taille d\'icône</string>
     <string name="action_app_search">Ouvrir la recherche d\'applications</string>
