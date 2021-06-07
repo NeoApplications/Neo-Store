@@ -30,7 +30,6 @@ to discuss the development, issues and new features.<br/>
 -   [X] Theme support.
 -   [X] Customize search engine.
 -   [X] Gesture support
-        - Partially supported.
 -   [X] Notification configuration.
 -   [X] Categorize apps in the drawer.
 -   [X] Icon Shape support.
@@ -43,9 +42,10 @@ to discuss the development, issues and new features.<br/>
 -   [X] Dock icon scaling.
 -   [X] Workspace icon scaling.
 -   [X] Desktop grid preference.
--   [X] App predictions (experimental).
+-   [X] App predictions (v8 - v9 only).
 -   [X] Icon pack support.
 -   [X] Back up and restore preferences.
+-   [X] Vertical Apps List.
 
 ##  New Features and TODOs
 -   [ ] Turn off "auto remove empty screen".
@@ -55,6 +55,7 @@ to discuss the development, issues and new features.<br/>
 -   [ ] Add auto tab mode for drawer.
 -   [ ] Support for more news feeds (like Microsoft Bing).
 -   [ ] Animations.
+-   [ ] Re-write the home widget .
 
 ##  Screenshots
 <table>
@@ -83,12 +84,6 @@ to discuss the development, issues and new features.<br/>
         </td>
     </tr>
 </table>
-
-## Donations <br/>
-<a href="https://www.buymeacoffee.com/2ulp4f5" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
-    alt="Buy Me A Coffee" width="150" >
-</a><br/>
 
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
