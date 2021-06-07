@@ -3,3 +3,4 @@ project(':IconLoader').projectDir = new File(rootDir, 'iconloaderlib')
 
 include ':SharedLibWrapper'
 project(':SharedLibWrapper').projectDir = new File(rootDir, 'SharedLibWrapper')
+include ':SystemUIShared'
