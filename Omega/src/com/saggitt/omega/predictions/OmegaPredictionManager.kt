@@ -31,6 +31,7 @@ import com.android.launcher3.appprediction.PredictionUiStateManager
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client.HOME
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client.OVERVIEW
 import com.android.launcher3.util.PackageManagerHelper
+import com.saggitt.omega.OmegaApp
 import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.runOnMainThread
@@ -77,7 +78,7 @@ class OmegaPredictionManager(private val context: Context) {
     }
 
     private fun usageStatsGranted(): Boolean {
-        return Utilities.isRecentsEnabled() || context.checkSelfPermission(
+        return OmegaApp.isRecentsEnabled || context.checkSelfPermission(
             android.Manifest.permission.PACKAGE_USAGE_STATS
         ) == PackageManager.PERMISSION_GRANTED
     }

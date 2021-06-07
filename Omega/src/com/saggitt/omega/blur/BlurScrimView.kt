@@ -31,6 +31,7 @@ import com.android.launcher3.anim.Interpolators.LINEAR
 import com.android.launcher3.util.Themes
 import com.android.quickstep.SysUINavigationMode
 import com.android.quickstep.views.ShelfScrimView
+import com.saggitt.omega.OmegaApp
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.omegaPrefs
@@ -164,7 +165,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
     private fun rebuildColors() {
         val recentsProgress = LauncherState.OVERVIEW.getScrimProgress(mLauncher)
 
-        val hasRecents = Utilities.isRecentsEnabled() && recentsProgress < 1f
+        val hasRecents = OmegaApp.isRecentsEnabled && recentsProgress < 1f
 
         val fullShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, mEndAlpha)
         val recentsShelfColor = ColorUtils.setAlphaComponent(allAppsBackground, getMidAlpha())

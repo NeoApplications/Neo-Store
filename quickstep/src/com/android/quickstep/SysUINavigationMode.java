@@ -31,6 +31,7 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager.LauncherEvent;
 import com.android.launcher3.touch.PagedOrientationHandler;
 import com.android.launcher3.util.MainThreadInitializedObject;
+import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.util.NavigationModeCompat;
 
 import java.io.PrintWriter;
@@ -93,7 +94,7 @@ public class SysUINavigationMode {
     }
 
     private void initializeMode() {
-        if (!Utilities.isRecentsEnabled()) {
+        if (!OmegaApp.isRecentsEnabled()) {
             mMode = Mode.THREE_BUTTONS;
         } else if (Utilities.ATLEAST_Q) {
             int modeInt = getSystemIntegerRes(mContext, NAV_BAR_INTERACTION_MODE_RES_NAME);

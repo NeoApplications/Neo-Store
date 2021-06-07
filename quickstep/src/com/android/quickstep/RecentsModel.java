@@ -15,6 +15,11 @@
  */
 package com.android.quickstep;
 
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.createAndStartNewLooper;
+import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
+
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ComponentCallbacks2;
@@ -24,22 +29,17 @@ import android.os.Looper;
 import android.os.Process;
 import android.os.UserHandle;
 
-import com.android.launcher3.Utilities;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.systemui.shared.recents.model.Task;
 import com.android.systemui.shared.recents.model.ThumbnailData;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.KeyguardManagerCompat;
 import com.android.systemui.shared.system.TaskStackChangeListener;
+import com.saggitt.omega.OmegaApp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.createAndStartNewLooper;
-import static com.android.quickstep.TaskUtils.checkCurrentOrManagedUserId;
 
 /**
  * Singleton class to load and manage recents model.
@@ -67,16 +67,14 @@ public class RecentsModel extends TaskStackChangeListener {
         mIconCache = new TaskIconCache(context, looper);
         mThumbnailCache = new TaskThumbnailCache(context, looper);
 
-        if (Utilities.isRecentsEnabled()) {
-            ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
-        }
-        /*
-        try {
+        if (OmegaApp.isRecentsEnabled()) {
+            try {
                 ActivityManagerWrapper.getInstance().registerTaskStackListener(this);
             } catch (NoSuchMethodError error) {
                 error.printStackTrace();
             }
-        IconProvider.registerIconChangeListener(context,
+        }
+        /*IconProvider.registerIconChangeListener(context,
                 this::onPackageIconChanged, MAIN_EXECUTOR.getHandler());*/
     }
 

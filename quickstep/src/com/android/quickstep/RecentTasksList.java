@@ -62,9 +62,12 @@ public class RecentTasksList extends TaskStackChangeListener {
         mKeyguardManager = keyguardManager;
         mChangeId = 1;
         mActivityManagerWrapper = activityManagerWrapper;
-        //mActivityManagerWrapper.registerTaskStackListener(this);
         if (OmegaApp.isRecentsEnabled()) {
-            mActivityManagerWrapper.registerTaskStackListener(this);
+            try {
+                mActivityManagerWrapper.registerTaskStackListener(this);
+            } catch (NoSuchMethodError error) {
+                error.printStackTrace();
+            }
         }
     }
 
