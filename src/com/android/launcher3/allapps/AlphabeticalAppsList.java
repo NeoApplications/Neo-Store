@@ -16,13 +16,15 @@
 package com.android.launcher3.allapps;
 
 
+import static com.saggitt.omega.util.Config.SORT_AZ;
+import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
+import static com.saggitt.omega.util.Config.SORT_LAST_INSTALLED;
+import static com.saggitt.omega.util.Config.SORT_MOST_USED;
+import static com.saggitt.omega.util.Config.SORT_ZA;
+
 import android.content.Context;
-import android.content.pm.LauncherActivityInfo;
-import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.UserHandle;
-import android.os.UserManager;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -31,7 +33,6 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
-import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
@@ -54,12 +55,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import static com.saggitt.omega.util.Config.SORT_AZ;
-import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
-import static com.saggitt.omega.util.Config.SORT_LAST_INSTALLED;
-import static com.saggitt.omega.util.Config.SORT_MOST_USED;
-import static com.saggitt.omega.util.Config.SORT_ZA;
 
 /**
  * The alphabetically sorted list of applications.
@@ -467,26 +462,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         if (mSearchResults == null) {
             return mApps;
         }
-
-        final LauncherApps launcherApps = mLauncher.getSystemService(LauncherApps.class);
-        final UserHandle user = android.os.Process.myUserHandle();
-        final IconCache iconCache = LauncherAppState.getInstance(mLauncher).getIconCache();
-        boolean quietMode = mLauncher.getSystemService(UserManager.class).isQuietModeEnabled(user);
         ArrayList<AppInfo> result = new ArrayList<>();
         for (ComponentKey key : mSearchResults) {
             AppInfo match = mAllAppsStore.getApp(key);
             if (match != null) {
                 result.add(match);
-            } else {
-                for (LauncherActivityInfo info : launcherApps
-                        .getActivityList(key.componentName.getPackageName(), user)) {
-                    if (info.getComponentName().equals(key.componentName)) {
-                        final AppInfo appInfo = new AppInfo(info, user, quietMode);
-                        iconCache.getTitleAndIcon(appInfo, false);
-                        result.add(appInfo);
-                        break;
-                    }
-                }
             }
         }
         return result;

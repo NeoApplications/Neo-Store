@@ -1,10 +1,11 @@
 package com.google.android.apps.nexuslauncher.search;
 
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 
 import com.android.launcher3.BuildConfig;
@@ -18,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchThread implements SearchAlgorithm, Handler.Callback {
-    private static HandlerThread handlerThread;
     private final Handler mHandler;
     private final Context mContext;
     private final Handler mUiHandler;
@@ -27,11 +27,7 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
     public SearchThread(Context context) {
         mContext = context;
         mUiHandler = new Handler(this);
-        if (handlerThread == null) {
-            handlerThread = new HandlerThread("search-thread", -2);
-            handlerThread.start();
-        }
-        mHandler = new Handler(SearchThread.handlerThread.getLooper(), this);
+        mHandler = new Handler(MODEL_EXECUTOR.getLooper(), this);
     }
 
     private void dj(SearchResult result) {
