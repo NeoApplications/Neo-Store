@@ -101,6 +101,19 @@ class OpenWidgetsGestureHandler(context: Context, config: JSONObject?) :
 }
 
 @Keep
+class OpenDashGestureHandler(context: Context, config: JSONObject?) :
+    GestureHandler(context, config) {
+
+    override val displayName = context.getString(R.string.action_open_dash)
+
+    override val requiresForeground = true
+
+    override fun onGestureTrigger(controller: GestureController, view: View?) {
+        DashBottomSheet.show(controller.launcher, false)
+    }
+}
+
+@Keep
 class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
     GestureHandler(context, config) {
 
@@ -312,16 +325,6 @@ class OpenSettingsGestureHandler(context: Context, config: JSONObject?) :
         controller.launcher.startActivity(Intent(Intent.ACTION_APPLICATION_PREFERENCES).apply {
             `package` = controller.launcher.packageName
         })
-    }
-}
-
-@Keep
-class OpenDashGestureHandler(context: Context, config: JSONObject?) :
-    GestureHandler(context, config) {
-
-    override val displayName = context.getString(R.string.action_open_dash)
-    override fun onGestureTrigger(controller: GestureController, view: View?) {
-        DashBottomSheet.show(controller.launcher, true)
     }
 }
 

@@ -46,7 +46,7 @@ android {
     compileSdkVersion 30
 
     def name = "0.8.0"
-    def code = 167
+    def code = 168
 
     defaultConfig {
         minSdkVersion 26

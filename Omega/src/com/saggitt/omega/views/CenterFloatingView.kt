@@ -25,20 +25,30 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.launcher3.Insettable
 import com.android.launcher3.Launcher
+import com.android.launcher3.R
 import com.android.launcher3.R.layout
 import com.android.launcher3.anim.Interpolators
+import com.android.launcher3.util.SystemUiController
+import com.android.launcher3.util.Themes
 import com.android.launcher3.views.AbstractSlideInView
 
 class CenterFloatingView @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet?,
     defStyleAttr: Int = 0
-) :
-    AbstractSlideInView(context, attrs, defStyleAttr), Insettable {
+) : AbstractSlideInView(context, attrs, defStyleAttr), Insettable {
     private val mInsets: Rect
     private val mColorScrim: ColorScrim
+
+    init {
+        setWillNotDraw(false)
+        mColorScrim = ColorScrim.createExtractedColorScrim(this)
+        mInsets = Rect()
+        mContent = this
+    }
+
     fun show(view: View?, animate: Boolean) {
-        (findViewById<View>(com.android.launcher3.R.id.sheet_contents) as ViewGroup).addView(view)
+        (findViewById<View>(R.id.sheet_contents) as ViewGroup).addView(view)
         mLauncher.dragLayer.addView(this)
         mIsOpen = false
         animateOpen(animate)
@@ -60,11 +70,20 @@ class CenterFloatingView @JvmOverloads constructor(
         return type and TYPE_SETTINGS_SHEET != 0
     }
 
+    private fun setupNavBarColor() {
+        val isSheetDark = Themes.getAttrBoolean(mLauncher, R.attr.isMainColorDark)
+        mLauncher.systemUiController.updateUiState(
+            SystemUiController.UI_STATE_WIDGET_BOTTOM_SHEET,
+            if (isSheetDark) SystemUiController.FLAG_DARK_NAV else SystemUiController.FLAG_LIGHT_NAV
+        )
+    }
+
     private fun animateOpen(animate: Boolean) {
         if (mIsOpen || mOpenCloseAnimator.isRunning) {
             return
         }
         mIsOpen = true
+        setupNavBarColor()
         mOpenCloseAnimator.setValues(
             PropertyValuesHolder.ofFloat(TRANSLATION_SHIFT, TRANSLATION_SHIFT_OPENED)
         )
@@ -72,7 +91,10 @@ class CenterFloatingView @JvmOverloads constructor(
         if (!animate) {
             mOpenCloseAnimator.duration = 0
         }
-        mOpenCloseAnimator.start()
+        post {
+            mOpenCloseAnimator.start()
+            mContent.animate().alpha(1f).duration = 150
+        }
     }
 
     override fun handleClose(animate: Boolean) {
@@ -91,12 +113,5 @@ class CenterFloatingView @JvmOverloads constructor(
                     false
                 ) as CenterFloatingView
         }
-    }
-
-    init {
-        setWillNotDraw(false)
-        mColorScrim = ColorScrim.createExtractedColorScrim(this)
-        mInsets = Rect()
-        mContent = this
     }
 }
