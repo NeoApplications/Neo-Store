@@ -45,8 +45,8 @@ apply plugin: 'com.google.protobuf'
 android {
     compileSdkVersion 30
 
-    def name = "0.8.0"
-    def code = 168
+    def name = "0.8.1"
+    def code = 170
 
     defaultConfig {
         minSdkVersion 26
