@@ -258,7 +258,7 @@
     <string name="onbording">Integrando</string>
     <string name="action_open_recents">Abrir recentes</string>
     <string name="event_provider_missing_notification_dots">Para usar <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, ative os Pontos de Notificação.</string>
-    <string name="event_provider_missing_notification_access">Para usar &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, ative as notificações de &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&lt;</string>
+    <string name="event_provider_missing_notification_access">Para usar &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, ative as notificações de &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&gt;</string>
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>
