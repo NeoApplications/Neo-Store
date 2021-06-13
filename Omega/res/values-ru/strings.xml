@@ -166,7 +166,7 @@
     <string name="allow">Разрешить</string>
     <string name="permission_iplocate_twilight_explanation">Разрешить доступ к вашему приблизительному местоположению\? Это позволяет более точно рассчитывать дневное освещение.</string>
     <string name="permission_iplocate">Приблизительное местоположение</string>
-    <string name="event_provider_missing_notification_access">Чтобы использовать &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt; «%1$s» &lt;/xliff:g&gt;, включите уведомления от &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt; «%2$s». &lt;/xliff:g&gt;</string>
+    <string name="event_provider_missing_notification_access">Чтобы использовать &lt;xliff:g example=My Provider id=providerName&gt;\"%1$s\"&lt;/xliff:g&gt;, включите уведомления от &lt;xliff:g example=My App id=name&gt;\"%2$s\".&lt;/xliff:g&gt;</string>
     <string name="battery_low">Низкий заряд батареи</string>
     <string name="battery_full">Заряжено</string>
     <string name="battery_charging">Зарядка</string>
@@ -313,8 +313,8 @@
     <string name="title__desktop_full_width_widgets">Виджеты на всю ширину</string>
     <string name="allow_rotation_blocked_desc">Текущая настройка экрана не допускает вращения</string>
     <string name="pref_category__others">Другое</string>
-    <string name="summary__general_about">Более подробная информация о Omega Launcher</string>
-    <string name="summary__general_advanced">Язык, резервное копирование, настройка поиска</string>
+    <string name="summary__general_about">Больше информации об Omega Launcher</string>
+    <string name="summary__general_advanced">Язык, резервное копирование, поиск</string>
     <string name="summary__general_smartspace">Дата, время, домашний виджет</string>
     <string name="summary__general_search">Провайдер поиска, стиль, иконки</string>
     <string name="summary__general_theme">Изменение цвета, пакета и формы иконок</string>
@@ -324,7 +324,55 @@
     <string name="title__general_smartspace">Домашний виджет</string>
     <string name="title__general_drawer">Выдвижная панель</string>
     <string name="title__general_dock">Панель быстрого доступа</string>
-    <string name="name_provider_alarm_events">Ближайшие будильники</string>
+    <string name="name_provider_alarm_events">Предстоящие будильники</string>
     <string name="resuable_text_alarm">Будильник</string>
     <string name="icon_shape_corner_cut">Обрезка</string>
+    <string name="dash_volume_summary">Открыть настройки режима \"Не беспокоить\"</string>
+    <string name="edit_dash">Настроить Dash</string>
+    <string name="action_open_dash">Открыть Dash</string>
+    <string name="action_open_overview">Показать всплывающее меню</string>
+    <string name="title_drawer_layout">Режим отображения</string>
+    <string name="dash_device_settings_summary">Открыть настройки устройства</string>
+    <string name="wallpaper_pick_summary">Выбрать приложение для установки обоев</string>
+    <string name="dash_all_apps_summary">Показать все приложения</string>
+    <string name="dash_mobile_network_summary">Открыть настройки мобильных сетей</string>
+    <string name="dash_manage_apps_summary">Управление приложениями системы Андроид</string>
+    <string name="dash_volume_title">Функция \"Не беспокоить\"</string>
+    <string name="cat_drawer_grid">Сетка экрана</string>
+    <string name="title_force_shapeless">Не применять шаблон к форме иконок</string>
+    <string name="title__drawer_icon_popup_menu">Ярлык всплывающего меню</string>
+    <string name="folder_cover_mode">Режим обложки</string>
+    <string name="backup_contents">Содержимое резервной копии</string>
+    <string name="action_sleep_timeout">Сон (используя тайм-аут)</string>
+    <string name="button_organize_screens">Упорядочить страницы</string>
+    <string name="uninstall_failed">Приложение не удалено</string>
+    <string name="dash_launcher_settings_summary">Настройки лаунчера</string>
+    <string name="edit_dash_summary">Включить или выключить ярлыки</string>
+    <string name="dash_manage_apps_title">Управление приложениями</string>
+    <string name="dash_mobile_network_title">Мобильная сеть</string>
+    <string name="dash_launch_app_title">Запустить приложение</string>
+    <string name="dash_device_settings_title">Настройки устройства</string>
+    <string name="dash_all_apps_title">Открыть все приложения</string>
+    <string name="change_default_home">Установить домашним экраном</string>
+    <string name="backup_timestamp">Создано</string>
+    <string name="new_backup">Создать</string>
+    <string name="summary__advanced_setting_search">Показать поиск настроек в панели действий</string>
+    <string name="action_sleep">Сон</string>
+    <string name="action_open_widgets">Виджеты</string>
+    <string name="folder_name_format">Папка: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="weather_provider_oneplus_weather">Погода OnePlus</string>
+    <string name="action_open_recents">Открыть недавние</string>
+    <string name="smartspace_provider_calendar">События календаря</string>
+    <string name="event_provider_missing_notification_dots">Чтобы использовать <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, включите точки уведомлений.</string>
+    <string name="smartspace_hours_mins">%1$s %2$s</string>
+    <string name="smartspace_in_time">в %1$s</string>
+    <string name="add_new_tab">Добавить</string>
+    <string name="cat_drawer_icons">Иконки</string>
+    <string name="title_drawer_paged">Постранично</string>
+    <string name="title_drawer_vertical_list">Вертикальный список</string>
+    <string name="title_drawer_vertical">Вертикально</string>
+    <string name="title__drawer_paged_apps">Постраничный вид приложений</string>
+    <string name="title_dock_two_row">Показать вторую строку</string>
+    <string name="title_desktop_keep_empty">Разрешить пустые страницы</string>
+    <string name="title_desktop_overlap_placement">Разрешить перекрытия</string>
 </resources>
