@@ -684,7 +684,11 @@ public abstract class QuickstepAppTransitionManagerImpl extends LauncherAppTrans
             return;
         }
         if (hasControlRemoteAppTransitionPermission()) {
-            new ActivityCompat(mLauncher).unregisterRemoteAnimations();
+            try {
+                new ActivityCompat(mLauncher).unregisterRemoteAnimations();
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
 
             // Also clear strong references to the runners registered with the remote animation
             // definition so we don't have to wait for the system gc
