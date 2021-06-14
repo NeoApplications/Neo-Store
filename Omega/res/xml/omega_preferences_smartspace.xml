@@ -29,6 +29,13 @@
         android:title="@string/smartspace_add_to_home"
         app:indexable="false"
         app:iconSpaceReserved="false" />
+-->
+
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:key="enable_smartspace"
+        android:title="@string/title_smartspace"
+        app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:defaultValue="true"
@@ -64,23 +71,15 @@
         android:key="pref_use_pill_qsb"
         android:title="@string/title_use_pill_qsb"
         app:iconSpaceReserved="false" />
--->
 
     <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
         android:defaultValue="true"
         android:key="pref_enable_minus_one"
-        android:summary="@string/pref_show_google_now_summary"
+        android:summary="@string/msg_minus_one_on_left"
         android:title="@string/title_show_google_app"
         app:controllerClass=".MinusOneController"
         app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.StyledSwitchPreference
-        android:defaultValue="false"
-        android:key="enable_smartspace"
-        android:title="@string/title_smartspace"
-        app:iconSpaceReserved="false" />
-
-    <!--
     <ListPreference
         android:defaultValue="1"
         android:dependency="pref_enable_minus_one"
@@ -117,5 +116,5 @@
             android:title="@string/title_smartspace_event_providers"
             app:iconSpaceReserved="false" />
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
--->
+
 </PreferenceScreen>

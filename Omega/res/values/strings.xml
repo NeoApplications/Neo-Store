@@ -252,7 +252,6 @@
     <string name="title_smartspace_widget_provider">Weather source</string>
     <string name="title_smartspace_weather_units">Temperature unit</string>
     <string name="title_smartspace_event_providers">Events sources</string>
-    <string name="pref_show_google_now_summary" translatable="false">@string/msg_minus_one_on_left</string>
 
     <string name="category__behavior_weather">Weather</string>
     <string name="google_app" translatable="false">Google app</string>
@@ -484,7 +483,7 @@
     <string name="title__about_donate">Donate</string>
     <string name="title__about_changelog">Changelog</string>
     <string name="title__about_project_team">Developer</string>
-    <string name="about_copyright" translatable="false">Copyright &#169; 2020&#8211;2021 by Saul Henriquez</string>
+    <string name="about_copyright" translatable="false">Copyright &#169; 2020&#8211;2021</string>
     <string name="about_team">Family Members</string>
     <string name="about_source">Source Code</string>
     <string name="about_source_url" translatable="false">https://github.com/otakuhqz/Omega</string>

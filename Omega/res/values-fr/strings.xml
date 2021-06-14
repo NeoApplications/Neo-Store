@@ -88,7 +88,6 @@
     <string name="icon_badging_desc_on">Activé</string>
     <string name="smartspace_preferences">Préférences</string>
     <string name="msg_minus_one_on_left">À gauche de l\'écran d\'accueil</string>
-    <string name="pref_show_google_now_summary">\@string/msg_minus_one_on_left</string>
     <string name="title_show_google_app">Afficher l\'application Google</string>
     <string name="icon_shape_override_progress">Application des modifications</string>
     <string name="get_more_icon_packs">En obtenir plus</string>
