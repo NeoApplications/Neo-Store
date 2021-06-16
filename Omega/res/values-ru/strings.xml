@@ -375,4 +375,5 @@
     <string name="title_dock_two_row">Показать вторую строку</string>
     <string name="title_desktop_keep_empty">Разрешить пустые страницы</string>
     <string name="title_desktop_overlap_placement">Разрешить перекрытия</string>
+    <string name="title_smartspace_feed_theme">Тема ленты</string>
 </resources>
