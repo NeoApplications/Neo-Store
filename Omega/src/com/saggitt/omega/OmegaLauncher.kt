@@ -45,6 +45,7 @@ import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.util.ComponentKey
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
 import com.google.android.libraries.gsa.launcherclient.LauncherClient
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.iconpack.EditIconActivity
@@ -282,7 +283,9 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         return defaultOverlay?.mClient
     }
 
-    fun registerSmartspaceView() {}
+    fun registerSmartspaceView(smartspace: SmartspaceView) {
+        defaultOverlay?.registerSmartspaceView(smartspace)
+    }
 
     companion object {
         var sRestart = false
