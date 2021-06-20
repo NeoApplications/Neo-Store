@@ -21,11 +21,13 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
+import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.model.data.ItemInfo;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
+import com.saggitt.omega.smartspace.SmartspacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 import org.jetbrains.annotations.Nullable;
@@ -176,6 +178,8 @@ public class QsbBlockerView extends FrameLayout implements Workspace.OnStateChan
 
     @Override
     public boolean onLongClick(View v) {
+        OmegaUtilsKt.openPopupMenu(mView, null,
+                new SmartspacePreferencesShortcut(StatsLogManager.LauncherRankingEvent.UNKNOWN));
         return false;
     }
 
