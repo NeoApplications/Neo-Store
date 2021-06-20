@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.android.launcher3.dynamicui;
+package com.android.launcher3.uioverrides;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.util.Pair;
@@ -26,9 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
-import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.uioverrides.WallpaperColorsCompat;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -39,158 +36,288 @@ import java.util.List;
  **/
 public class ColorExtractionAlgorithm {
 
-    public static final int MAIN_COLOR_LIGHT = 0xffb0b0b0;
-    public static final int SECONDARY_COLOR_LIGHT = 0xff9e9e9e;
-    public static final int MAIN_COLOR_DARK = 0xff212121;
-    public static final int SECONDARY_COLOR_DARK = 0xff000000;
-    @SuppressWarnings("WeakerAccess")
-    static final ColorRange[] BLACKLISTED_COLORS = new ColorRange[]{
+    public static ColorExtractionAlgorithm newInstance() {
+        return new ColorExtractionAlgorithm();
+    }
 
-            // Red
-            new ColorRange(
-                    new Range<>(0f, 20f) /* H */,
-                    new Range<>(0.7f, 1f) /* S */,
-                    new Range<>(0.21f, 0.79f)) /* L */,
-            new ColorRange(
-                    new Range<>(0f, 20f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.355f, 0.653f)),
-
-            // Red Orange
-            new ColorRange(
-                    new Range<>(20f, 40f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.28f, 0.643f)),
-            new ColorRange(
-                    new Range<>(20f, 40f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.414f, 0.561f)),
-            new ColorRange(
-                    new Range<>(20f, 40f),
-                    new Range<>(0f, 3f),
-                    new Range<>(0.343f, 0.584f)),
-
-            // Orange
-            new ColorRange(
-                    new Range<>(40f, 60f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.173f, 0.349f)),
-            new ColorRange(
-                    new Range<>(40f, 60f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.233f, 0.427f)),
-            new ColorRange(
-                    new Range<>(40f, 60f),
-                    new Range<>(0f, 0.3f),
-                    new Range<>(0.231f, 0.484f)),
-
-            // Yellow 60
-            new ColorRange(
-                    new Range<>(60f, 80f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.488f, 0.737f)),
-            new ColorRange(
-                    new Range<>(60f, 80f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.673f, 0.837f)),
-
-            // Yellow Green 80
-            new ColorRange(
-                    new Range<>(80f, 100f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.469f, 0.61f)),
-
-            // Yellow green 100
-            new ColorRange(
-                    new Range<>(100f, 120f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.388f, 0.612f)),
-            new ColorRange(
-                    new Range<>(100f, 120f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.424f, 0.541f)),
-
-            // Green
-            new ColorRange(
-                    new Range<>(120f, 140f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.375f, 0.52f)),
-            new ColorRange(
-                    new Range<>(120f, 140f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.435f, 0.524f)),
-
-            // Green Blue 140
-            new ColorRange(
-                    new Range<>(140f, 160f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.496f, 0.641f)),
-
-            // Seafoam
-            new ColorRange(
-                    new Range<>(160f, 180f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.496f, 0.567f)),
-
-            // Cyan
-            new ColorRange(
-                    new Range<>(180f, 200f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.52f, 0.729f)),
-
-            // Blue
-            new ColorRange(
-                    new Range<>(220f, 240f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.396f, 0.571f)),
-            new ColorRange(
-                    new Range<>(220f, 240f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.425f, 0.551f)),
-
-            // Blue Purple 240
-            new ColorRange(
-                    new Range<>(240f, 260f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.418f, 0.639f)),
-            new ColorRange(
-                    new Range<>(220f, 240f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.441f, 0.576f)),
-
-            // Blue Purple 260
-            new ColorRange(
-                    new Range<>(260f, 280f),
-                    new Range<>(0.3f, 1f), // Bigger range
-                    new Range<>(0.461f, 0.553f)),
-
-            // Fuchsia
-            new ColorRange(
-                    new Range<>(300f, 320f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.484f, 0.588f)),
-            new ColorRange(
-                    new Range<>(300f, 320f),
-                    new Range<>(0.3f, 0.7f),
-                    new Range<>(0.48f, 0.592f)),
-
-            // Pink
-            new ColorRange(
-                    new Range<>(320f, 340f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.466f, 0.629f)),
-
-            // Soft red
-            new ColorRange(
-                    new Range<>(340f, 360f),
-                    new Range<>(0.7f, 1f),
-                    new Range<>(0.437f, 0.596f))
-    };
     private static final String TAG = "Tonal";
+
     // Used for tonal palette fitting
     private static final float FIT_WEIGHT_H = 1.0f;
     private static final float FIT_WEIGHT_S = 1.0f;
     private static final float FIT_WEIGHT_L = 10.0f;
+
+    public static final int MAIN_COLOR_LIGHT = 0xffb0b0b0;
+    public static final int SECONDARY_COLOR_LIGHT = 0xff9e9e9e;
+    public static final int MAIN_COLOR_DARK = 0xff212121;
+    public static final int SECONDARY_COLOR_DARK = 0xff000000;
+
+    // Temporary variable to avoid allocations
+    private float[] mTmpHSL = new float[3];
+
+    public Pair<Integer, Integer> extractInto(WallpaperColorsCompat inWallpaperColors) {
+        if (inWallpaperColors == null) {
+            return applyFallback(inWallpaperColors);
+        }
+
+        final List<Integer> mainColors = getMainColors(inWallpaperColors);
+        final int mainColorsSize = mainColors.size();
+        final boolean supportsDarkText = (inWallpaperColors.getColorHints() &
+                WallpaperColorsCompat.HINT_SUPPORTS_DARK_TEXT) != 0;
+
+        if (mainColorsSize == 0) {
+            return applyFallback(inWallpaperColors);
+        }
+        // Tonal is not really a sort, it takes a color from the extracted
+        // palette and finds a best fit amongst a collection of pre-defined
+        // palettes. The best fit is tweaked to be closer to the source color
+        // and replaces the original palette
+
+        // Get the most preeminent, non-blacklisted color.
+        Integer bestColor = 0;
+        final float[] hsl = new float[3];
+        for (int i = 0; i < mainColorsSize; i++) {
+            final int colorValue = mainColors.get(i);
+            ColorUtils.RGBToHSL(Color.red(colorValue), Color.green(colorValue),
+                    Color.blue(colorValue), hsl);
+
+            // Stop when we find a color that meets our criteria
+            if (!isBlacklisted(hsl)) {
+                bestColor = colorValue;
+                break;
+            }
+        }
+
+        // Fail if not found
+        if (bestColor == null) {
+            return applyFallback(inWallpaperColors);
+        }
+
+        int colorValue = bestColor;
+        ColorUtils.RGBToHSL(Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue),
+                hsl);
+
+        // The Android HSL definition requires the hue to go from 0 to 360 but
+        // the Material Tonal Palette defines hues from 0 to 1.
+        hsl[0] /= 360f;
+
+        // Find the palette that contains the closest color
+        TonalPalette palette = findTonalPalette(hsl[0], hsl[1]);
+        if (palette == null) {
+            Log.w(TAG, "Could not find a tonal palette!");
+            return applyFallback(inWallpaperColors);
+        }
+
+        // Figure out what's the main color index in the optimal palette
+        int fitIndex = bestFit(palette, hsl[0], hsl[1], hsl[2]);
+        if (fitIndex == -1) {
+            Log.w(TAG, "Could not find best fit!");
+            return applyFallback(inWallpaperColors);
+        }
+
+        // Generate the 10 colors palette by offsetting each one of them
+        float[] h = fit(palette.h, hsl[0], fitIndex,
+                Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY);
+        float[] s = fit(palette.s, hsl[1], fitIndex, 0.0f, 1.0f);
+        float[] l = fit(palette.l, hsl[2], fitIndex, 0.0f, 1.0f);
+
+        int primaryIndex = fitIndex;
+        int mainColor = getColorInt(primaryIndex, h, s, l);
+
+        // We might want use the fallback in case the extracted color is brighter than our
+        // light fallback or darker than our dark fallback.
+        ColorUtils.colorToHSL(mainColor, mTmpHSL);
+        final float mainLuminosity = mTmpHSL[2];
+        ColorUtils.colorToHSL(MAIN_COLOR_LIGHT, mTmpHSL);
+        final float lightLuminosity = mTmpHSL[2];
+        if (mainLuminosity > lightLuminosity) {
+            return applyFallback(inWallpaperColors);
+        }
+        ColorUtils.colorToHSL(MAIN_COLOR_DARK, mTmpHSL);
+        final float darkLuminosity = mTmpHSL[2];
+        if (mainLuminosity < darkLuminosity) {
+            return applyFallback(inWallpaperColors);
+        }
+
+        // Dark colors:
+        // Stops at 4th color, only lighter if dark text is supported
+        if (supportsDarkText) {
+            primaryIndex = h.length - 1;
+        } else if (fitIndex < 2) {
+            primaryIndex = 0;
+        } else {
+            primaryIndex = Math.min(fitIndex, 3);
+        }
+        int secondaryIndex = primaryIndex + (primaryIndex >= 2 ? -2 : 2);
+        int secondaryColor = getColorInt(secondaryIndex, h, s, l);
+
+        return new Pair<>(mainColor, secondaryColor);
+    }
+
+    public static Pair<Integer, Integer> applyFallback(WallpaperColorsCompat inWallpaperColors) {
+        boolean light = inWallpaperColors != null
+                && (inWallpaperColors.getColorHints()
+                & WallpaperColorsCompat.HINT_SUPPORTS_DARK_TEXT) != 0;
+        int innerColor = light ? MAIN_COLOR_LIGHT : MAIN_COLOR_DARK;
+        int outerColor = light ? SECONDARY_COLOR_LIGHT : SECONDARY_COLOR_DARK;
+        return new Pair<>(innerColor, outerColor);
+    }
+
+    private int getColorInt(int fitIndex, float[] h, float[] s, float[] l) {
+        mTmpHSL[0] = fract(h[fitIndex]) * 360.0f;
+        mTmpHSL[1] = s[fitIndex];
+        mTmpHSL[2] = l[fitIndex];
+        return ColorUtils.HSLToColor(mTmpHSL);
+    }
+
+    /**
+     * Checks if a given color exists in the blacklist
+     *
+     * @param hsl float array with 3 components (H 0..360, S 0..1 and L 0..1)
+     * @return true if color should be avoided
+     */
+    private boolean isBlacklisted(float[] hsl) {
+        for (ColorRange badRange : BLACKLISTED_COLORS) {
+            if (badRange.containsColor(hsl[0], hsl[1], hsl[2])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Offsets all colors by a delta, clamping values that go beyond what's
+     * supported on the color space.
+     *
+     * @param data  what you want to fit
+     * @param v     how big should be the offset
+     * @param index which index to calculate the delta against
+     * @param min   minimum accepted value (clamp)
+     * @param max   maximum accepted value (clamp)
+     * @return new shifted palette
+     */
+    private static float[] fit(float[] data, float v, int index, float min, float max) {
+        float[] fitData = new float[data.length];
+        float delta = v - data[index];
+
+        for (int i = 0; i < data.length; i++) {
+            fitData[i] = Utilities.boundToRange(data[i] + delta, min, max);
+        }
+
+        return fitData;
+    }
+
+    /**
+     * Finds the closest color in a palette, given another HSL color
+     *
+     * @param palette where to search
+     * @param h       hue
+     * @param s       saturation
+     * @param l       lightness
+     * @return closest index or -1 if palette is empty.
+     */
+    private static int bestFit(@NonNull TonalPalette palette, float h, float s, float l) {
+        int minErrorIndex = -1;
+        float minError = Float.POSITIVE_INFINITY;
+
+        for (int i = 0; i < palette.h.length; i++) {
+            float error =
+                    FIT_WEIGHT_H * Math.abs(h - palette.h[i])
+                            + FIT_WEIGHT_S * Math.abs(s - palette.s[i])
+                            + FIT_WEIGHT_L * Math.abs(l - palette.l[i]);
+            if (error < minError) {
+                minError = error;
+                minErrorIndex = i;
+            }
+        }
+
+        return minErrorIndex;
+    }
+
+    @Nullable
+    private static TonalPalette findTonalPalette(float h, float s) {
+        // Fallback to a grey palette if the color is too desaturated.
+        // This avoids hue shifts.
+        if (s < 0.05f) {
+            return GREY_PALETTE;
+        }
+
+        TonalPalette best = null;
+        float error = Float.POSITIVE_INFINITY;
+
+        for (int i = 0; i < TONAL_PALETTES.length; i++) {
+            final TonalPalette candidate = TONAL_PALETTES[i];
+
+            if (h >= candidate.minHue && h <= candidate.maxHue) {
+                best = candidate;
+                break;
+            }
+
+            if (candidate.maxHue > 1.0f && h >= 0.0f && h <= fract(candidate.maxHue)) {
+                best = candidate;
+                break;
+            }
+
+            if (candidate.minHue < 0.0f && h >= fract(candidate.minHue) && h <= 1.0f) {
+                best = candidate;
+                break;
+            }
+
+            if (h <= candidate.minHue && candidate.minHue - h < error) {
+                best = candidate;
+                error = candidate.minHue - h;
+            } else if (h >= candidate.maxHue && h - candidate.maxHue < error) {
+                best = candidate;
+                error = h - candidate.maxHue;
+            } else if (candidate.maxHue > 1.0f && h >= fract(candidate.maxHue)
+                    && h - fract(candidate.maxHue) < error) {
+                best = candidate;
+                error = h - fract(candidate.maxHue);
+            } else if (candidate.minHue < 0.0f && h <= fract(candidate.minHue)
+                    && fract(candidate.minHue) - h < error) {
+                best = candidate;
+                error = fract(candidate.minHue) - h;
+            }
+        }
+
+        return best;
+    }
+
+    private static float fract(float v) {
+        return v - (float) Math.floor(v);
+    }
+
+    static class TonalPalette {
+        final float[] h;
+        final float[] s;
+        final float[] l;
+        final float minHue;
+        final float maxHue;
+
+        TonalPalette(float[] h, float[] s, float[] l) {
+            if (h.length != s.length || s.length != l.length) {
+                throw new IllegalArgumentException("All arrays should have the same size. h: "
+                        + Arrays.toString(h) + " s: " + Arrays.toString(s) + " l: "
+                        + Arrays.toString(l));
+            }
+
+            this.h = h;
+            this.s = s;
+            this.l = l;
+
+            float minHue = Float.POSITIVE_INFINITY;
+            float maxHue = Float.NEGATIVE_INFINITY;
+
+            for (float v : h) {
+                minHue = Math.min(v, minHue);
+                maxHue = Math.max(v, maxHue);
+            }
+
+            this.minHue = minHue;
+            this.maxHue = maxHue;
+        }
+    }
+
     // Data definition of Material Design tonal palettes
     // When the sort type is set to TONAL, these palettes are used to find
     // a best fit. Each palette is defined as 22 HSL colors
@@ -461,6 +588,7 @@ public class ColorExtractionAlgorithm {
                             0.9411764705882353f}
             )
     };
+
     private static final TonalPalette GREY_PALETTE = new TonalPalette(
             new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f},
             new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f},
@@ -468,290 +596,150 @@ public class ColorExtractionAlgorithm {
                     0.4980392156862745f, 0.6196078431372549f, 0.7176470588235294f,
                     0.8196078431372549f, 0.9176470588235294f, 0.9490196078431372f}
     );
-    // Temporary variable to avoid allocations
-    private float[] mTmpHSL = new float[3];
 
-    public static ColorExtractionAlgorithm newInstance(Context context) {
-        return Utilities.getOverrideObject(ColorExtractionAlgorithm.class,
-                context.getApplicationContext(), R.string.color_extraction_impl_class);
-    }
+    @SuppressWarnings("WeakerAccess")
+    static final ColorRange[] BLACKLISTED_COLORS = new ColorRange[]{
 
-    public static Pair<Integer, Integer> applyFallback(WallpaperColorsCompat inWallpaperColors) {
-        boolean light = inWallpaperColors != null
-                && (inWallpaperColors.getColorHints()
-                & WallpaperColorsCompat.HINT_SUPPORTS_DARK_TEXT) != 0;
-        int innerColor = light ? MAIN_COLOR_LIGHT : MAIN_COLOR_DARK;
-        int outerColor = light ? SECONDARY_COLOR_LIGHT : SECONDARY_COLOR_DARK;
-        return new Pair<>(innerColor, outerColor);
-    }
+            // Red
+            new ColorRange(
+                    new Range<>(0f, 20f) /* H */,
+                    new Range<>(0.7f, 1f) /* S */,
+                    new Range<>(0.21f, 0.79f)) /* L */,
+            new ColorRange(
+                    new Range<>(0f, 20f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.355f, 0.653f)),
 
-    /**
-     * Offsets all colors by a delta, clamping values that go beyond what's
-     * supported on the color space.
-     *
-     * @param data  what you want to fit
-     * @param v     how big should be the offset
-     * @param index which index to calculate the delta against
-     * @param min   minimum accepted value (clamp)
-     * @param max   maximum accepted value (clamp)
-     * @return new shifted palette
-     */
-    private static float[] fit(float[] data, float v, int index, float min, float max) {
-        float[] fitData = new float[data.length];
-        float delta = v - data[index];
+            // Red Orange
+            new ColorRange(
+                    new Range<>(20f, 40f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.28f, 0.643f)),
+            new ColorRange(
+                    new Range<>(20f, 40f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.414f, 0.561f)),
+            new ColorRange(
+                    new Range<>(20f, 40f),
+                    new Range<>(0f, 3f),
+                    new Range<>(0.343f, 0.584f)),
 
-        for (int i = 0; i < data.length; i++) {
-            fitData[i] = Utilities.boundToRange(data[i] + delta, min, max);
-        }
+            // Orange
+            new ColorRange(
+                    new Range<>(40f, 60f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.173f, 0.349f)),
+            new ColorRange(
+                    new Range<>(40f, 60f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.233f, 0.427f)),
+            new ColorRange(
+                    new Range<>(40f, 60f),
+                    new Range<>(0f, 0.3f),
+                    new Range<>(0.231f, 0.484f)),
 
-        return fitData;
-    }
+            // Yellow 60
+            new ColorRange(
+                    new Range<>(60f, 80f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.488f, 0.737f)),
+            new ColorRange(
+                    new Range<>(60f, 80f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.673f, 0.837f)),
 
-    /**
-     * Finds the closest color in a palette, given another HSL color
-     *
-     * @param palette where to search
-     * @param h       hue
-     * @param s       saturation
-     * @param l       lightness
-     * @return closest index or -1 if palette is empty.
-     */
-    private static int bestFit(@NonNull TonalPalette palette, float h, float s, float l) {
-        int minErrorIndex = -1;
-        float minError = Float.POSITIVE_INFINITY;
+            // Yellow Green 80
+            new ColorRange(
+                    new Range<>(80f, 100f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.469f, 0.61f)),
 
-        for (int i = 0; i < palette.h.length; i++) {
-            float error =
-                    FIT_WEIGHT_H * Math.abs(h - palette.h[i])
-                            + FIT_WEIGHT_S * Math.abs(s - palette.s[i])
-                            + FIT_WEIGHT_L * Math.abs(l - palette.l[i]);
-            if (error < minError) {
-                minError = error;
-                minErrorIndex = i;
-            }
-        }
+            // Yellow green 100
+            new ColorRange(
+                    new Range<>(100f, 120f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.388f, 0.612f)),
+            new ColorRange(
+                    new Range<>(100f, 120f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.424f, 0.541f)),
 
-        return minErrorIndex;
-    }
+            // Green
+            new ColorRange(
+                    new Range<>(120f, 140f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.375f, 0.52f)),
+            new ColorRange(
+                    new Range<>(120f, 140f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.435f, 0.524f)),
 
-    @Nullable
-    private static TonalPalette findTonalPalette(float h, float s) {
-        // Fallback to a grey palette if the color is too desaturated.
-        // This avoids hue shifts.
-        if (s < 0.05f) {
-            return GREY_PALETTE;
-        }
+            // Green Blue 140
+            new ColorRange(
+                    new Range<>(140f, 160f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.496f, 0.641f)),
 
-        TonalPalette best = null;
-        float error = Float.POSITIVE_INFINITY;
+            // Seafoam
+            new ColorRange(
+                    new Range<>(160f, 180f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.496f, 0.567f)),
 
-        for (int i = 0; i < TONAL_PALETTES.length; i++) {
-            final TonalPalette candidate = TONAL_PALETTES[i];
+            // Cyan
+            new ColorRange(
+                    new Range<>(180f, 200f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.52f, 0.729f)),
 
-            if (h >= candidate.minHue && h <= candidate.maxHue) {
-                best = candidate;
-                break;
-            }
+            // Blue
+            new ColorRange(
+                    new Range<>(220f, 240f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.396f, 0.571f)),
+            new ColorRange(
+                    new Range<>(220f, 240f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.425f, 0.551f)),
 
-            if (candidate.maxHue > 1.0f && h >= 0.0f && h <= fract(candidate.maxHue)) {
-                best = candidate;
-                break;
-            }
+            // Blue Purple 240
+            new ColorRange(
+                    new Range<>(240f, 260f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.418f, 0.639f)),
+            new ColorRange(
+                    new Range<>(220f, 240f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.441f, 0.576f)),
 
-            if (candidate.minHue < 0.0f && h >= fract(candidate.minHue) && h <= 1.0f) {
-                best = candidate;
-                break;
-            }
+            // Blue Purple 260
+            new ColorRange(
+                    new Range<>(260f, 280f),
+                    new Range<>(0.3f, 1f), // Bigger range
+                    new Range<>(0.461f, 0.553f)),
 
-            if (h <= candidate.minHue && candidate.minHue - h < error) {
-                best = candidate;
-                error = candidate.minHue - h;
-            } else if (h >= candidate.maxHue && h - candidate.maxHue < error) {
-                best = candidate;
-                error = h - candidate.maxHue;
-            } else if (candidate.maxHue > 1.0f && h >= fract(candidate.maxHue)
-                    && h - fract(candidate.maxHue) < error) {
-                best = candidate;
-                error = h - fract(candidate.maxHue);
-            } else if (candidate.minHue < 0.0f && h <= fract(candidate.minHue)
-                    && fract(candidate.minHue) - h < error) {
-                best = candidate;
-                error = fract(candidate.minHue) - h;
-            }
-        }
+            // Fuchsia
+            new ColorRange(
+                    new Range<>(300f, 320f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.484f, 0.588f)),
+            new ColorRange(
+                    new Range<>(300f, 320f),
+                    new Range<>(0.3f, 0.7f),
+                    new Range<>(0.48f, 0.592f)),
 
-        return best;
-    }
+            // Pink
+            new ColorRange(
+                    new Range<>(320f, 340f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.466f, 0.629f)),
 
-    private static float fract(float v) {
-        return v - (float) Math.floor(v);
-    }
-
-    private static List<Integer> getMainColors(WallpaperColorsCompat wallpaperColors) {
-        LinkedList<Integer> colors = new LinkedList<>();
-        if (wallpaperColors.getPrimaryColor() != 0) {
-            colors.add(wallpaperColors.getPrimaryColor());
-        }
-        if (wallpaperColors.getSecondaryColor() != 0) {
-            colors.add(wallpaperColors.getSecondaryColor());
-        }
-        if (wallpaperColors.getTertiaryColor() != 0) {
-            colors.add(wallpaperColors.getTertiaryColor());
-        }
-        return colors;
-    }
-
-    public Pair<Integer, Integer> extractInto(WallpaperColorsCompat inWallpaperColors) {
-        if (inWallpaperColors == null) {
-            return applyFallback(inWallpaperColors);
-        }
-
-        final List<Integer> mainColors = getMainColors(inWallpaperColors);
-        final int mainColorsSize = mainColors.size();
-        final boolean supportsDarkText = (inWallpaperColors.getColorHints() &
-                WallpaperColorsCompat.HINT_SUPPORTS_DARK_TEXT) != 0;
-
-        if (mainColorsSize == 0) {
-            return applyFallback(inWallpaperColors);
-        }
-        // Tonal is not really a sort, it takes a color from the extracted
-        // palette and finds a best fit amongst a collection of pre-defined
-        // palettes. The best fit is tweaked to be closer to the source color
-        // and replaces the original palette
-
-        // Get the most preeminent, non-blacklisted color.
-        Integer bestColor = 0;
-        final float[] hsl = new float[3];
-        for (int i = 0; i < mainColorsSize; i++) {
-            final int colorValue = mainColors.get(i);
-            ColorUtils.RGBToHSL(Color.red(colorValue), Color.green(colorValue),
-                    Color.blue(colorValue), hsl);
-
-            // Stop when we find a color that meets our criteria
-            if (!isBlacklisted(hsl)) {
-                bestColor = colorValue;
-                break;
-            }
-        }
-
-        // Fail if not found
-        if (bestColor == null) {
-            return applyFallback(inWallpaperColors);
-        }
-
-        int colorValue = bestColor;
-        ColorUtils.RGBToHSL(Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue),
-                hsl);
-
-        // The Android HSL definition requires the hue to go from 0 to 360 but
-        // the Material Tonal Palette defines hues from 0 to 1.
-        hsl[0] /= 360f;
-
-        // Find the palette that contains the closest color
-        TonalPalette palette = findTonalPalette(hsl[0], hsl[1]);
-        if (palette == null) {
-            Log.w(TAG, "Could not find a tonal palette!");
-            return applyFallback(inWallpaperColors);
-        }
-
-        // Figure out what's the main color index in the optimal palette
-        int fitIndex = bestFit(palette, hsl[0], hsl[1], hsl[2]);
-        if (fitIndex == -1) {
-            Log.w(TAG, "Could not find best fit!");
-            return applyFallback(inWallpaperColors);
-        }
-
-        // Generate the 10 colors palette by offsetting each one of them
-        float[] h = fit(palette.h, hsl[0], fitIndex,
-                Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY);
-        float[] s = fit(palette.s, hsl[1], fitIndex, 0.0f, 1.0f);
-        float[] l = fit(palette.l, hsl[2], fitIndex, 0.0f, 1.0f);
-
-        int primaryIndex = fitIndex;
-        int mainColor = getColorInt(primaryIndex, h, s, l);
-
-        // We might want use the fallback in case the extracted color is brighter than our
-        // light fallback or darker than our dark fallback.
-        ColorUtils.colorToHSL(mainColor, mTmpHSL);
-        final float mainLuminosity = mTmpHSL[2];
-        ColorUtils.colorToHSL(MAIN_COLOR_LIGHT, mTmpHSL);
-        final float lightLuminosity = mTmpHSL[2];
-        if (mainLuminosity > lightLuminosity) {
-            return applyFallback(inWallpaperColors);
-        }
-        ColorUtils.colorToHSL(MAIN_COLOR_DARK, mTmpHSL);
-        final float darkLuminosity = mTmpHSL[2];
-        if (mainLuminosity < darkLuminosity) {
-            return applyFallback(inWallpaperColors);
-        }
-
-        // Dark colors:
-        // Stops at 4th color, only lighter if dark text is supported
-        if (supportsDarkText) {
-            primaryIndex = h.length - 1;
-        } else if (fitIndex < 2) {
-            primaryIndex = 0;
-        } else {
-            primaryIndex = Math.min(fitIndex, 3);
-        }
-        int secondaryIndex = primaryIndex + (primaryIndex >= 2 ? -2 : 2);
-        int secondaryColor = getColorInt(secondaryIndex, h, s, l);
-
-        return new Pair<>(mainColor, secondaryColor);
-    }
-
-    private int getColorInt(int fitIndex, float[] h, float[] s, float[] l) {
-        mTmpHSL[0] = fract(h[fitIndex]) * 360.0f;
-        mTmpHSL[1] = s[fitIndex];
-        mTmpHSL[2] = l[fitIndex];
-        return ColorUtils.HSLToColor(mTmpHSL);
-    }
-
-    /**
-     * Checks if a given color exists in the blacklist
-     *
-     * @param hsl float array with 3 components (H 0..360, S 0..1 and L 0..1)
-     * @return true if color should be avoided
-     */
-    private boolean isBlacklisted(float[] hsl) {
-        for (ColorRange badRange : BLACKLISTED_COLORS) {
-            if (badRange.containsColor(hsl[0], hsl[1], hsl[2])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static class TonalPalette {
-        final float[] h;
-        final float[] s;
-        final float[] l;
-        final float minHue;
-        final float maxHue;
-
-        TonalPalette(float[] h, float[] s, float[] l) {
-            if (h.length != s.length || s.length != l.length) {
-                throw new IllegalArgumentException("All arrays should have the same size. h: "
-                        + Arrays.toString(h) + " s: " + Arrays.toString(s) + " l: "
-                        + Arrays.toString(l));
-            }
-
-            this.h = h;
-            this.s = s;
-            this.l = l;
-
-            float minHue = Float.POSITIVE_INFINITY;
-            float maxHue = Float.NEGATIVE_INFINITY;
-
-            for (float v : h) {
-                minHue = Math.min(v, minHue);
-                maxHue = Math.max(v, maxHue);
-            }
-
-            this.minHue = minHue;
-            this.maxHue = maxHue;
-        }
-    }
+            // Soft red
+            new ColorRange(
+                    new Range<>(340f, 360f),
+                    new Range<>(0.7f, 1f),
+                    new Range<>(0.437f, 0.596f))
+    };
 
     /**
      * Representation of an HSL color range.
@@ -777,7 +765,10 @@ public class ColorExtractionAlgorithm {
                 return false;
             } else if (!mSaturation.contains(s)) {
                 return false;
-            } else return mLightness.contains(l);
+            } else if (!mLightness.contains(l)) {
+                return false;
+            }
+            return true;
         }
 
         float[] getCenter() {
@@ -792,5 +783,19 @@ public class ColorExtractionAlgorithm {
         public String toString() {
             return String.format("H: %s, S: %s, L %s", mHue, mSaturation, mLightness);
         }
+    }
+
+    private static List<Integer> getMainColors(WallpaperColorsCompat wallpaperColors) {
+        LinkedList<Integer> colors = new LinkedList<>();
+        if (wallpaperColors.getPrimaryColor() != 0) {
+            colors.add(wallpaperColors.getPrimaryColor());
+        }
+        if (wallpaperColors.getSecondaryColor() != 0) {
+            colors.add(wallpaperColors.getSecondaryColor());
+        }
+        if (wallpaperColors.getTertiaryColor() != 0) {
+            colors.add(wallpaperColors.getTertiaryColor());
+        }
+        return colors;
     }
 }
