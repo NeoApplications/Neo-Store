@@ -338,17 +338,6 @@
         <item>Don’t stay up too late!</item>
     </string-array>
 
-    <!-- Pixel 1 -->
-    <dimen name="qsb_overlap_margin">0dp</dimen>
-    <dimen name="qsb_button_height">56dp</dimen>
-    <dimen name="qsb_button_elevation">3dp</dimen>
-    <dimen name="qsb_touch_extension">20dp</dimen>
-    <dimen name="qsb_shadow_blur_radius">1dp</dimen>
-    <dimen name="qsb_key_shadow_offset">1dp</dimen>
-    <dimen name="qsb_connector_gradient_end_padding">20dp</dimen>
-    <dimen name="qsb_min_width_with_mic">124dp</dimen>
-    <dimen name="qsb_min_width_portrait">96dp</dimen>
-
     <!-- PREFERENCES NOTIFICATION -->
     <string name="icon_badging_desc_on">On</string>
     <string name="icon_badging_desc_off">Off</string>
