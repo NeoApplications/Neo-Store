@@ -395,7 +395,7 @@
     <string name="cat_search_bar">Search Bar</string>
     <string name="search_no_results">No Results</string>
     <string name="search_breadcrumb_connector" translatable="false">
-        <xliff:g name="first_item">%1$s</xliff:g> >
+        <xliff:g name="first_item">%1$s</xliff:g>
         <xliff:g name="second_item">%2$s</xliff:g>
     </string>
     <string name="search_provider_yandex" translatable="false">Yandex</string>
@@ -418,7 +418,6 @@
     <string name="web_search_qwant" translatable="false">Qwant (web)</string>
     <string name="web_search_ecosia" translatable="false">Ecosia (web)</string>
     <string name="web_search_yandex" translatable="false">Yandex (web)</string>
-    <string name="web_search_naver" translatable="false">Naver (web)</string>
     <string name="web_search_baidu" translatable="false">Baidu (web)</string>
     <string name="web_search_yahoo" translatable="false">Yahoo (web)</string>
     <string name="error_no_browser">No activity found to handle URLs</string>

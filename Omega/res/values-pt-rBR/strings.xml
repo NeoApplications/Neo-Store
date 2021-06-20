@@ -257,8 +257,8 @@
     <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
     <string name="onbording">Integrando</string>
     <string name="action_open_recents">Abrir recentes</string>
-    <string name="event_provider_missing_notification_dots">Para usar &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;, ative os Pontos de Notificação</string>
-    <string name="event_provider_missing_notification_access">To use &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;, enable notifications from &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”.&lt;/xliff:g&gt;</string>
+    <string name="event_provider_missing_notification_dots">Para usar <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, ative os Pontos de Notificação.</string>
+    <string name="event_provider_missing_notification_access">Para usar &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, ative as notificações de &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&gt;</string>
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>
@@ -295,15 +295,15 @@
     <string name="title_all_apps_keep_scroll_state">Lembrar da posição</string>
     <string name="title_desktop_text_size">Tamanho do texto</string>
     <string name="reset_to_default">Redefinir aos padrões</string>
-    <string name="off">Off</string>
-    <string name="on">On</string>
+    <string name="off">Desligado</string>
+    <string name="on">Ligado</string>
     <string name="enabled_icon_packs">Habilitado</string>
     <string name="drag_to_enable_packs">Arraste para cima para habilitar</string>
     <string name="drag_to_disable_packs">Arraste para baixo para desabilitar</string>
     <string name="wallpaper_pick">Escolher papel de parede</string>
     <string name="edit_dash">Editar Dash</string>
     <string name="content_storage_permission_required">Para aplicar o fundo de tela, conceda permissão aos arquivos.</string>
-    <string name="title_storage_permission_required">É necessário acesso ao armazenamento</string>
+    <string name="title_storage_permission_required">Acesso ao Armazenamento Necessário</string>
     <string name="category__about_licenses">Licença</string>
     <string name="about_source">Código fonte</string>
     <string name="about_team">Membros da familia</string>
@@ -312,7 +312,7 @@
     <string name="title__about_donate">Doar</string>
     <string name="about_build_information">Informação da build</string>
     <string name="change_default_home">Selecionar como aplicativo de Tela Inicial Padrão</string>
-    <string name="summary__dev_restart">Pode ser útil se algumas configurações não estiverem propriamente aplicadas.</string>
+    <string name="summary__dev_restart">Pode ser útil se algumas configurações não estiverem propriamente aplicadas</string>
     <string name="title__restart_launcher">Reiniciar</string>
     <string name="title__dev_show_debug_info">Mostrar informações de depuração</string>
     <string name="title__dev_show_Dev">Mostrar nas configurações</string>
@@ -320,11 +320,11 @@
     <string name="failed">Algo deu errado.</string>
     <string name="search_menu">Procurar configurações</string>
     <string name="developer_options_enabled">Opções de desenvolvedor habilitadas</string>
-    <string name="local_backups">Em armazenamento</string>
+    <string name="local_backups">No Armazenamento</string>
     <string name="read_external_storage_required">Para criar um backup, permita acesso aos arquivos.</string>
     <string name="backup_location_device_storage">Pasta do Omega</string>
     <string name="backup_location">Localização</string>
-    <string name="backup_share_text">Arquivo de backup do Omega</string>
+    <string name="backup_share_text">Arquivo de backup do omega</string>
     <string name="backup_share_title">Compartilhar arquivo de backup</string>
     <string name="restore_read_meta_fail">Arquivo de Backup inválido</string>
     <string name="restore_failed">Restauração falhou</string>
@@ -336,7 +336,7 @@
     <string name="backup_timestamp">Criado em</string>
     <string name="summary__advanced_setting_search">Mostrar pesquisa de configurações na barra de ação</string>
     <string name="search_provider_appsearch">Pesquisa de apps</string>
-    <string name="title__search_bar_radius">Raio do canto</string>
+    <string name="title__search_bar_radius">Raio do Canto</string>
     <string name="title_search_provider">Mecanismo de pesquisa</string>
     <string name="title__search_bubble_searchbar">Mostrar duas bolhas</string>
     <string name="action_open_widgets">Abrir Gaveta de Widgets</string>
@@ -352,9 +352,43 @@
     <string name="automatic_short">Automático</string>
     <string name="title_separate_work_apps">Segunda guia para aplicativos de trabalho</string>
     <string name="cat_drawer_icons">Ícones</string>
-    <string name="cat_drawer_grid">Grid</string>
+    <string name="cat_drawer_grid">Grade</string>
     <string name="title_drawer_paged">Paginada</string>
     <string name="title_drawer_vertical_list">Lista Vertical</string>
     <string name="title_drawer_vertical">Vertical</string>
     <string name="title_drawer_layout">Modo de Layout</string>
+    <string name="button_organize_screens">Organizar Páginas</string>
+    <string name="uninstall_failed">Desinstalação do app falhou</string>
+    <string name="debug_component_name_copied">Copiado para a Área de Transferência.</string>
+    <string name="debug_component_name">Nome do Componente</string>
+    <string name="dismiss_drop_target_label">Não exibir</string>
+    <string name="tabs_manage">Gerenciar</string>
+    <string name="show_in_tabs">Abas</string>
+    <string name="default_tab_name">Nova Aba</string>
+    <string name="custom">Personalizado</string>
+    <string name="apps_label">Apps</string>
+    <string name="name">Nome</string>
+    <string name="none">Nenhum</string>
+    <string name="select_tab_type">Nova Aba</string>
+    <string name="delete">Excluir</string>
+    <string name="tab_manage_apps">Gerenciar apps</string>
+    <string name="dash_device_settings_summary">Abrir as Configurações do Dispositivo</string>
+    <string name="dash_volume_summary">Mostrar o seletor de dispositivo de áudio</string>
+    <string name="dash_launcher_settings_summary">Mostrar as configurações do lançador</string>
+    <string name="wallpaper_pick_summary">Abrir seletor de Papel de Parede</string>
+    <string name="edit_dash_summary">Ativar ou desativar atalhos</string>
+    <string name="dash_all_apps_summary">Exibir botão Todos Apps</string>
+    <string name="dash_mobile_network_summary">Exibir as configurações de rede móvel</string>
+    <string name="dash_manage_apps_summary">Abrir o Gerenciador de Apps Android</string>
+    <string name="dash_manage_apps_title">Gerenciar Apps</string>
+    <string name="dash_mobile_network_title">Rede Móvel</string>
+    <string name="dash_launch_app_title">Abrir App</string>
+    <string name="folder_name_format">Pasta: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="title_smartspace">Exibir Smartspace</string>
+    <string name="dash_volume_title">Diálogo de Volume</string>
+    <string name="dash_device_settings_title">Configurações do Dispositivo</string>
+    <string name="dash_all_apps_title">Abrir Todos os Apps</string>
+    <string name="title_feed_provider">Provedor do Feed</string>
+    <string name="action_overlay">Abrir Google Feed</string>
+    <string name="add_new_tab">Adicionar</string>
 </resources>
