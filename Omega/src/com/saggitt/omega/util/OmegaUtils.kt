@@ -141,7 +141,6 @@ fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
 }
 
 val mainHandler by lazy { makeBasicHandler() }
-val workerHandler by lazy { MODEL_EXECUTOR.handler }
 val uiWorkerHandler by lazy { UI_HELPER_EXECUTOR.handler }
 val iconPackUiHandler by lazy { ICON_PACK_EXECUTOR.handler }
 
@@ -439,14 +438,6 @@ fun Context.getLauncherOrNull(): Launcher? {
     return try {
         Launcher.getLauncher(this)
     } catch (e: IllegalArgumentException) {
-        null
-    }
-}
-
-fun Context.getBaseDraggingActivityOrNull(): BaseDraggingActivity? {
-    return try {
-        BaseDraggingActivity.fromContext(this)
-    } catch (e: ClassCastException) {
         null
     }
 }
