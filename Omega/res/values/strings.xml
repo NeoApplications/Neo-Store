@@ -43,7 +43,7 @@
     <string name="pref_category__interfaces">Interfaces</string>
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>
-    <string name="pref_category__incubating">Incubating</string>
+    <string name="pref_category__incubating" translatable="false">Incubating</string>
 
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
