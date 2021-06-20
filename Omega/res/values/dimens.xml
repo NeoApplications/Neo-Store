@@ -36,7 +36,7 @@
     <dimen name="shelf_surface_radius">16dp</dimen>
 
     <!-- The default blur strength -->
-    <item name="config_default_blur_strength" format="float" type="dimen">75</item>
+    <dimen name="config_default_blur_strength">75</dimen>
     <dimen name="large_title_height">16dp</dimen>
 
     <dimen name="large_title_horizontal_padding">70dp</dimen>
