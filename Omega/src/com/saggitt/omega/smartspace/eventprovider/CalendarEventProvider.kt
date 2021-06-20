@@ -50,7 +50,7 @@ class CalendarEventProvider(controller: OmegaSmartspaceController) :
 
     private val oneMinute = TimeUnit.MINUTES.toMillis(1)
 
-    private val includeBehind = oneMinute * 5
+    private val includeBehind = oneMinute * 15
     private val includeAhead = oneMinute * 30
 
     override val timeout = oneMinute
