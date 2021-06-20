@@ -156,7 +156,7 @@
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_testing">Отладка</string>
     <string name="weather_provider_disabled">Отключено</string>
-    <string name="weather_icons_default">По-умолчанию</string>
+    <string name="weather_icons_default">По умолчанию</string>
     <string name="onboarding_swipe_up">Проведите пальцем вверх, чтобы открыть выдвижную панель.</string>
     <string name="onbording_settings_summary">Коснитесь и удерживайте на рабочем столе.</string>
     <string name="onbording_settings_title">Настройка %s</string>
