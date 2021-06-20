@@ -17,9 +17,16 @@
 
 package com.saggitt.omega.smartspace.weather
 
-// TODO commented out, should be deleted?
-/*class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {
+import android.util.Log
+import com.google.android.apps.nexuslauncher.smartspace.ISmartspace
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceDataContainer
+import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.SmartspaceDataWidget
+import com.saggitt.omega.util.makeBasicHandler
+
+class SmartspacePixelBridge(controller: OmegaSmartspaceController) :
+    OmegaSmartspaceController.DataProvider(controller), ISmartspace, Runnable {
 
     private val smartspaceController = SmartspaceController.get(controller.context)
     private val handler = makeBasicHandler(true)
@@ -81,4 +88,3 @@ package com.saggitt.omega.smartspace.weather
         data?.let { initListeners(it) }
     }
 }
-*/
