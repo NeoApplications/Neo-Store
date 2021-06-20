@@ -30,26 +30,20 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
         mHandler = new Handler(MODEL_EXECUTOR.getLooper(), this);
     }
 
-    private void dj(SearchResult result) {
+    private void queryResult(SearchResult result) {
         Uri uri = new Uri.Builder()
                 .scheme("content")
                 .authority(BuildConfig.APPLICATION_ID + ".appssearch")
                 .appendPath(result.mQuery)
                 .build();
 
-        Cursor cursor = null;
-        try {
-            cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+        try (Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null)) {
             int suggestIntentData = cursor.getColumnIndex("suggest_intent_data");
             while (cursor.moveToNext()) {
                 result.mApps.add(AppSearchProvider.uriToComponent(Uri.parse(cursor.getString(suggestIntentData)), mContext));
             }
         } catch (NullPointerException ignored) {
 
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
 
         result.mSuggestions.addAll(getSuggestions(result.mQuery));
@@ -85,7 +79,7 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
                 return false;
             }
             case 100: {
-                dj((SearchResult) message.obj);
+                queryResult((SearchResult) message.obj);
                 break;
             }
             case 200: {
