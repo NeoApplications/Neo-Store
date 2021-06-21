@@ -17,7 +17,6 @@
 package com.android.quickstep;
 
 import static android.view.Surface.ROTATION_0;
-
 import static com.android.quickstep.views.OverviewActionsView.DISABLED_NO_THUMBNAIL;
 import static com.android.quickstep.views.OverviewActionsView.DISABLED_ROTATED;
 
@@ -166,10 +165,10 @@ public class TaskOverlayFactory implements ResourceBasedOverride {
         public void initOverlay(Task task, ThumbnailData thumbnail, Matrix matrix,
                                 boolean rotated) {
             getActionsView().updateDisabledFlags(DISABLED_NO_THUMBNAIL, thumbnail == null);
+            final boolean isAllowedByPolicy = mThumbnailView.isRealSnapshot();
 
             if (thumbnail != null) {
                 getActionsView().updateDisabledFlags(DISABLED_ROTATED, rotated);
-                final boolean isAllowedByPolicy = thumbnail.isRealSnapshot;
 
                 getActionsView().setCallbacks(new OverlayUICallbacks() {
                     @Override

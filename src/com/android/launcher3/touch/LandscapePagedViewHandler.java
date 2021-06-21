@@ -16,6 +16,11 @@
 
 package com.android.launcher3.touch;
 
+import static androidx.appcompat.widget.ListPopupWindow.WRAP_CONTENT;
+import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_X;
+import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_Y;
+import static com.android.launcher3.touch.SingleAxisSwipeDetector.HORIZONTAL;
+
 import android.content.res.Resources;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -33,20 +38,15 @@ import com.android.launcher3.PagedView;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.util.OverScroller;
 
-import static androidx.appcompat.widget.ListPopupWindow.WRAP_CONTENT;
-import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_X;
-import static com.android.launcher3.LauncherAnimUtils.VIEW_TRANSLATE_Y;
-import static com.android.launcher3.touch.SingleAxisSwipeDetector.HORIZONTAL;
-
 public class LandscapePagedViewHandler implements PagedOrientationHandler {
 
     @Override
-    public int getPrimaryValue(int x, int y) {
+    public <T> T getPrimaryValue(T x, T y) {
         return y;
     }
 
     @Override
-    public int getSecondaryValue(int x, int y) {
+    public <T> T getSecondaryValue(T x, T y) {
         return x;
     }
 

@@ -16,6 +16,26 @@
 
 package com.android.quickstep.views;
 
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.CENTER_HORIZONTAL;
+import static android.view.Gravity.CENTER_VERTICAL;
+import static android.view.Gravity.END;
+import static android.view.Gravity.START;
+import static android.view.Gravity.TOP;
+import static android.view.Surface.ROTATION_180;
+import static android.view.Surface.ROTATION_270;
+import static android.view.Surface.ROTATION_90;
+import static android.widget.Toast.LENGTH_SHORT;
+import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
+import static com.android.launcher3.Utilities.comp;
+import static com.android.launcher3.Utilities.getDescendantCoordRelativeToAncestor;
+import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.Interpolators.TOUCH_RESPONSE_INTERPOLATOR;
+import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS;
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_LAUNCH_TAP;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -82,26 +102,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static android.view.Gravity.BOTTOM;
-import static android.view.Gravity.CENTER_HORIZONTAL;
-import static android.view.Gravity.CENTER_VERTICAL;
-import static android.view.Gravity.END;
-import static android.view.Gravity.START;
-import static android.view.Gravity.TOP;
-import static android.view.Surface.ROTATION_180;
-import static android.view.Surface.ROTATION_270;
-import static android.view.Surface.ROTATION_90;
-import static android.widget.Toast.LENGTH_SHORT;
-import static com.android.launcher3.QuickstepAppTransitionManagerImpl.RECENTS_LAUNCH_DURATION;
-import static com.android.launcher3.Utilities.comp;
-import static com.android.launcher3.Utilities.getDescendantCoordRelativeToAncestor;
-import static com.android.launcher3.anim.Interpolators.FAST_OUT_SLOW_IN;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.Interpolators.TOUCH_RESPONSE_INTERPOLATOR;
-import static com.android.launcher3.config.FeatureFlags.ENABLE_QUICKSTEP_LIVE_TILE;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_ICON_TAP_OR_LONGPRESS;
-import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_TASK_LAUNCH_TAP;
-
 /**
  * A task in the Recents view.
  */
@@ -147,6 +147,59 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
                 }
             };
 
+    private static final FloatProperty<TaskView> FILL_DISMISS_GAP_TRANSLATION_X =
+            new FloatProperty<TaskView>("fillDismissGapTranslationX") {
+                @Override
+                public void setValue(TaskView taskView, float v) {
+                    taskView.setFillDismissGapTranslationX(v);
+                }
+
+                @Override
+                public Float get(TaskView taskView) {
+                    return taskView.mFillDismissGapTranslationX;
+                }
+            };
+
+    private static final FloatProperty<TaskView> FILL_DISMISS_GAP_TRANSLATION_Y =
+            new FloatProperty<TaskView>("fillDismissGapTranslationY") {
+                @Override
+                public void setValue(TaskView taskView, float v) {
+                    taskView.setFillDismissGapTranslationY(v);
+                }
+
+                @Override
+                public Float get(TaskView taskView) {
+                    return taskView.mFillDismissGapTranslationY;
+                }
+            };
+
+    private static final FloatProperty<TaskView> TASK_OFFSET_TRANSLATION_X =
+            new FloatProperty<TaskView>("taskOffsetTranslationX") {
+                @Override
+                public void setValue(TaskView taskView, float v) {
+                    taskView.setTaskOffsetTranslationX(v);
+                }
+
+                @Override
+                public Float get(TaskView taskView) {
+                    return taskView.mTaskOffsetTranslationX;
+                }
+            };
+
+    private static final FloatProperty<TaskView> TASK_OFFSET_TRANSLATION_Y =
+            new FloatProperty<TaskView>("taskOffsetTranslationY") {
+                @Override
+                public void setValue(TaskView taskView, float v) {
+                    taskView.setTaskOffsetTranslationY(v);
+                }
+
+                @Override
+                public Float get(TaskView taskView) {
+                    return taskView.mTaskOffsetTranslationY;
+                }
+            };
+
+
     private final OnAttachStateChangeListener mTaskMenuStateListener =
             new OnAttachStateChangeListener() {
                 @Override
@@ -173,6 +226,13 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
     private float mFullscreenProgress;
     private final FullscreenDrawParams mCurrentFullscreenParams;
     private final BaseDraggingActivity mActivity;
+
+    // Various causes of changing primary translation, which we aggregate to setTranslationX/Y().
+    // TODO: We should do this for secondary translation properties as well.
+    private float mFillDismissGapTranslationX;
+    private float mFillDismissGapTranslationY;
+    private float mTaskOffsetTranslationX;
+    private float mTaskOffsetTranslationY;
 
     private ObjectAnimator mIconAndDimAnimator;
     private float mIconScaleAnimStartProgress = 0;
@@ -619,6 +679,8 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     protected void resetViewTransforms() {
         setCurveScale(1);
+        mFillDismissGapTranslationX = mTaskOffsetTranslationX = 0f;
+        mFillDismissGapTranslationY = mTaskOffsetTranslationY = 0f;
         setTranslationX(0f);
         setTranslationY(0f);
         setTranslationZ(0);
@@ -833,6 +895,44 @@ public class TaskView extends FrameLayout implements PageCallbacks, Reusable {
 
     public float getCurveScale() {
         return mCurveScale;
+    }
+
+    private void setFillDismissGapTranslationX(float x) {
+        mFillDismissGapTranslationX = x;
+        applyTranslationX();
+    }
+
+    private void setFillDismissGapTranslationY(float y) {
+        mFillDismissGapTranslationY = y;
+        applyTranslationY();
+    }
+
+    private void setTaskOffsetTranslationX(float x) {
+        mTaskOffsetTranslationX = x;
+        applyTranslationX();
+    }
+
+    private void setTaskOffsetTranslationY(float y) {
+        mTaskOffsetTranslationY = y;
+        applyTranslationY();
+    }
+
+    private void applyTranslationX() {
+        setTranslationX(mFillDismissGapTranslationX + mTaskOffsetTranslationX);
+    }
+
+    private void applyTranslationY() {
+        setTranslationY(mFillDismissGapTranslationY + mTaskOffsetTranslationY);
+    }
+
+    public FloatProperty<TaskView> getPrimaryFillDismissGapTranslationProperty() {
+        return getPagedOrientationHandler().getPrimaryValue(
+                FILL_DISMISS_GAP_TRANSLATION_X, FILL_DISMISS_GAP_TRANSLATION_Y);
+    }
+
+    public FloatProperty<TaskView> getPrimaryTaskOffsetTranslationProperty() {
+        return getPagedOrientationHandler().getPrimaryValue(
+                TASK_OFFSET_TRANSLATION_X, TASK_OFFSET_TRANSLATION_Y);
     }
 
     @Override
