@@ -31,8 +31,8 @@ class SearxWebSearchProvider(context: Context) :
     override val packageName: String
         get() = "https://searx.info/search?q=%s&categories=general&language=${context.locale.language}"
 
-    override val suggestionsUrl: String?
-        get() = null
+    override val suggestionsUrl: String
+        get() = "https://searx.info/autocompleter?q=%s"
 
     override val name: String
         get() = context.getString(R.string.web_search_searx)
