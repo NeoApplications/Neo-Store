@@ -148,7 +148,7 @@
     <string name="permission_iplocate_twilight_explanation">允许访问您的粗略位置？ 这可以实现更准确的日光计算。</string>
     <string name="permission_iplocate">粗略位置</string>
     <string name="event_provider_missing_notification_dots">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>,请启用通知圆点。</string>
-    <string name="event_provider_missing_notification_access">要使用 &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, turn on notifications from &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&gt;</string>
+    <string name="event_provider_missing_notification_access">要使用 &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;，启用系统通知。请转到 &lt;xliff:g example=我的应用 id=name&gt;“%2$s”.&lt;/xliff:g&lt;</string>
     <string name="battery_low">电量低</string>
     <string name="battery_full">已充满</string>
     <string name="battery_charging">充电中</string>
@@ -174,7 +174,7 @@
     <string name="title_smartspace_date">显示日期</string>
     <string name="title_smartspace_time">显示时间</string>
     <string name="title_smartspace">显示智能空间</string>
-    <string name="title_use_pill_qsb"></string>
+    <string name="title_use_pill_qsb"/>
     <string name="title_show_google_app">显示 Google 应用</string>
     <string name="title_white_only_treatment">替换白色背景</string>
     <string name="title_legacy_colored_backgrounds">彩色背景</string>
@@ -233,7 +233,7 @@
     <string name="title__theme_blur_radius">模糊程度</string>
     <string name="title__theme_blur">模糊</string>
     <string name="title__theme_accent_color">强调色</string>
-    <string name="msg_missing_usage_access">要显示应用建议，请打开 &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt; 的使用权限</string>
+    <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g id="name" example="My App">%1$s</xliff:g> 使用情况权限</string>
     <string name="needs_usage_access">需用使用权限</string>
     <string name="hide_app_reset">重置</string>
     <string name="hide_app_selected">  隐藏</string>
