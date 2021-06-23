@@ -1581,7 +1581,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         mOverlayManager.onActivityDestroyed(this);
         mAppTransitionManager.unregisterRemoteAnimations();
         mUserChangedCallbackCloseable.close();
-        mAllAppsController.onActivityDestroyed();
+        //mAllAppsController.onActivityDestroyed();
     }
 
     @Override
