@@ -31,7 +31,7 @@ class BaiduWebSearchProvider(context: Context) :
         get() = "https://www.baidu.com/s?wd=%s"
 
     override val suggestionsUrl: String
-        get() = "http://suggestion.baidu.com/su?action=opensearch&ie=UTF-8&wd=%s"
+        get() = "https://m.baidu.com/su?action=opensearch&ie=UTF-8&wd=%s"
 
     override val name: String
         get() = context.resources.getString(R.string.web_search_baidu)
