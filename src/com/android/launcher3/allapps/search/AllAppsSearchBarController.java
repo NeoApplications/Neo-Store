@@ -113,6 +113,11 @@ public class AllAppsSearchBarController
         if (query.isEmpty()) {
             return false;
         }
+
+        if (mCb.onSubmitSearch()) {
+            return true;
+        }
+
         return mLauncher.startActivitySafely(v,
                 PackageManagerHelper.getMarketSearchIntent(mLauncher, query), null,
                 AppLaunchTracker.CONTAINER_SEARCH);

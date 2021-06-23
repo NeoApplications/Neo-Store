@@ -81,8 +81,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public static final int VIEW_TYPE_FOLDER = 1 << 6;
     // Web search suggestions
     public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
-    // Web search
-    public static final int VIEW_TYPE_DIRECT_SEARCH = 1 << 8;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -180,7 +178,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     private int mAppsPerRow;
 
     private OnFocusChangeListener mIconFocusListener;
-    private IDrawerLayout drawerLayout;
+    private final IDrawerLayout drawerLayout;
 
     public AllAppsGridAdapter(BaseDraggingActivity launcher, LayoutInflater inflater,
                               AlphabeticalAppsList apps) {
@@ -226,7 +224,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 icon.setOnFocusChangeListener(mIconFocusListener);
 
                 // Ensure the all apps icon height matches the workspace icons in portrait mode.
-                //icon.getLayoutParams().height = mLauncher.getDeviceProfile().allAppsCellHeightPx;
                 icon.getLayoutParams().height = drawerLayout.iconHeight(1);
                 return new ViewHolder(icon);
             case VIEW_TYPE_EMPTY_SEARCH:
@@ -251,7 +248,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 return new ViewHolder(layout);
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-            case VIEW_TYPE_DIRECT_SEARCH:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
 
             default:
@@ -321,15 +317,9 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_ICON:
                 AppInfo info = mApps.getAdapterItems().get(position).appInfo;
-                if (holder.itemView instanceof BubbleTextView) {
-                    BubbleTextView icon = (BubbleTextView) holder.itemView;
-                    icon.reset();
-                    icon.applyFromApplicationInfo(info);
-                } /*else if (holder.itemView instanceof AllAppsIconRow) {
-                    AllAppsIconRow row = (AllAppsIconRow) holder.itemView;
-                    row.applyFromApplicationInfo(info);
-                    row.setText(info.title);
-                }*/
+                BubbleTextView icon = (BubbleTextView) holder.itemView;
+                icon.reset();
+                icon.applyFromApplicationInfo(info);
                 break;
             case VIEW_TYPE_EMPTY_SEARCH:
                 TextView emptyViewText = (TextView) holder.itemView;
@@ -362,34 +352,15 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 break;
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
-                /*int color = 0;
-                if (Utilities.getOmegaPrefs(holder.itemView.getContext()).getCustomBackground()) {
-                    color = Utilities.getOmegaPrefs(holder.itemView.getContext()).getDrawerLabelColor();
-                } else {
-                    color = Themes.getAttrColor(holder.itemView.getContext(), R.color.textColorPrimary);
-                }*/
-
                 container = (ViewGroup) holder.itemView;
                 TextView textView = container.findViewById(R.id.suggestion);
                 String suggestion = mApps.getAdapterItems().get(position).suggestion;
                 textView.setText(suggestion);
-                //textView.setTextColor(color);
-                //((ImageView) group.findViewById(android.R.id.icon)).getDrawable().setTint(color);
+                ((ImageView) container.findViewById(android.R.id.icon)).setImageDrawable(getSearchProvider().getIcon());
                 container.setOnClickListener(v -> {
                     SearchProvider provider = getSearchProvider();
                     if (provider instanceof WebSearchProvider) {
                         ((WebSearchProvider) provider).openResults(suggestion);
-                    }
-                });
-                break;
-            case VIEW_TYPE_DIRECT_SEARCH:
-                container = (ViewGroup) holder.itemView;
-                TextView directSearchView = (TextView) container.findViewById(R.id.suggestion);
-                directSearchView.setText(String.format(directSearchView.getContext().getString(R.string.web_search_direct), mQuery));
-                ((ImageView) container.findViewById(android.R.id.icon)).setImageDrawable(getSearchProvider().getIcon());
-                container.setOnClickListener(v -> {
-                    if (getSearchProvider() instanceof WebSearchProvider) {
-                        ((WebSearchProvider) getSearchProvider()).openResults(mQuery);
                     }
                 });
                 break;
@@ -411,10 +382,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public int getItemViewType(int position) {
         AlphabeticalAppsList.AdapterItem item = mApps.getAdapterItems().get(position);
         return item.viewType;
-    }
-
-    public int getDrawerTextColor() {
-        return Utilities.getOmegaPrefs(mLauncher.getApplicationContext()).getDrawerLabelColor();
     }
 
     private SearchProvider getSearchProvider() {

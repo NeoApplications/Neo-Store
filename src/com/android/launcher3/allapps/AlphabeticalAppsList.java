@@ -132,26 +132,22 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
     private void sortApps(int sortType) {
         switch (sortType) {
-            //SORT BY NAME AZ
             case SORT_AZ:
                 mApps.sort(mAppNameComparator);
                 break;
 
-            //SORT BY NAME ZA
             case SORT_ZA:
                 mApps.sort((p2, p1) -> Collator
                         .getInstance()
                         .compare(p1.title, p2.title));
                 break;
 
-            //SORT BY LAST INSTALLED
             case SORT_LAST_INSTALLED:
                 PackageManager pm = mLauncher.getApplicationContext().getPackageManager();
                 InstallTimeComparator installTimeComparator = new InstallTimeComparator(pm);
                 mApps.sort(installTimeComparator);
                 break;
 
-            //SORT BY MOST USED DESC
             case SORT_MOST_USED:
                 DbHelper db = new DbHelper(mLauncher.getApplicationContext());
                 List<AppCountInfo> appsCounter = db.getAppsCount();
@@ -166,7 +162,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             default:
                 mApps.sort(mAppNameComparator);
                 break;
-
         }
     }
 
@@ -209,7 +204,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * Returns whether there are no filtered results.
      */
     public boolean hasNoFilteredResults() {
-        return (mSearchResults != null) && mFilteredApps.isEmpty() && (mSearchSuggestions != null) && mSearchSuggestions.isEmpty();
+        return (mSearchResults != null)
+                && mFilteredApps.isEmpty()
+                && (mSearchSuggestions != null)
+                && mSearchSuggestions.isEmpty();
     }
 
     public List<AppInfo> getFilteredApps() {
@@ -393,12 +391,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
         if (hasFilter()) {
             // Append the search market item
-            if (hasNoFilteredResults()) {
+            if (hasNoFilteredResults() && !hasSuggestions()) {
                 mAdapterItems.add(AdapterItem.asEmptySearch(position++));
             } else {
                 mAdapterItems.add(AdapterItem.asAllAppsDivider(position++));
             }
-            mAdapterItems.add(AdapterItem.asDirectSearch(position++));
             mAdapterItems.add(AdapterItem.asMarketSearch(position++));
         }
 
@@ -616,13 +613,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_SEARCH_SUGGESTION;
             item.position = pos;
             item.suggestion = suggestion;
-            return item;
-        }
-
-        public static AdapterItem asDirectSearch(int pos) {
-            AdapterItem item = new AdapterItem();
-            item.viewType = AllAppsGridAdapter.VIEW_TYPE_DIRECT_SEARCH;
-            item.position = pos;
             return item;
         }
     }

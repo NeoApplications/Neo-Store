@@ -195,7 +195,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public void clearSearchResult() {
-        if (mApps.setOrderedFilter(null)) {
+        if (mApps.setOrderedFilter(null) || mApps.setSearchSuggestions(null)) {
             notifyResultChanged();
         }
 

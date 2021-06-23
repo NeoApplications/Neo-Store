@@ -43,8 +43,6 @@ import java.util.List;
  * The default search implementation.
  */
 public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
-
-    public final static String SEARCH_HIDDEN_APPS = "pref_search_hidden_apps";
     private final Context mContext;
     private final List<AppInfo> mApps;
     protected final Handler mResultHandler;
@@ -64,8 +62,39 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
         }
     }
 
+    @Override
+    public void doSearch(final String query,
+                         final AllAppsSearchBarController.Callbacks callback) {
+        final ArrayList<ComponentKey> result = getTitleMatchResult(query);
+        final List<String> suggestions = getSuggestions(query);
+        mResultHandler.post(() -> callback.onSearchResult(query, result, suggestions));
+    }
+
+    private ArrayList<ComponentKey> getTitleMatchResult(String query) {
+        // Do an intersection of the words in the query and each title, and filter out all the
+        // apps that don't match all of the words in the query.
+        final String queryTextLower = query.toLowerCase();
+        final ArrayList<ComponentKey> result = new ArrayList<>();
+        StringMatcher matcher = StringMatcher.getInstance();
+        for (AppInfo info : getApps(mContext, mApps, mBaseFilter)) {
+            if (matches(info, queryTextLower, matcher)) {
+                result.add(info.toComponentKey());
+            }
+        }
+        return result;
+    }
+
+    private List<String> getSuggestions(String query) {
+        SearchProvider provider = SearchProviderController.Companion
+                .getInstance(mContext).getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            return ((WebSearchProvider) provider).getSuggestions(query);
+        } else
+            return Collections.emptyList();
+    }
+
     public static List<AppInfo> getApps(Context context, List<AppInfo> defaultApps, AppFilter filter) {
-        if (!Utilities.getPrefs(context).getBoolean(SEARCH_HIDDEN_APPS, false)) {
+        if (!Utilities.getOmegaPrefs(context).getSearchHiddenApps()) {
             return defaultApps;
         }
         final List<AppInfo> apps = new ArrayList<>();
@@ -85,43 +114,6 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
             }
         }
         return apps;
-    }
-
-    @Override
-    public void doSearch(final String query,
-                         final AllAppsSearchBarController.Callbacks callback) {
-        final ArrayList<ComponentKey> result = getTitleMatchResult(query);
-        final List<String> suggestions = getSuggestions(query);
-        mResultHandler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                callback.onSearchResult(query, result, suggestions);
-            }
-        });
-    }
-
-    private ArrayList<ComponentKey> getTitleMatchResult(String query) {
-        // Do an intersection of the words in the query and each title, and filter out all the
-        // apps that don't match all of the words in the query.
-        final String queryTextLower = query.toLowerCase();
-        final ArrayList<ComponentKey> result = new ArrayList<>();
-        StringMatcher matcher = StringMatcher.getInstance();
-        for (AppInfo info : mApps) {
-            if (matches(info, queryTextLower, matcher)) {
-                result.add(info.toComponentKey());
-            }
-        }
-        return result;
-    }
-
-    private List<String> getSuggestions(String query) {
-        SearchProvider provider = SearchProviderController.Companion
-                .getInstance(mContext).getSearchProvider();
-        if (provider instanceof WebSearchProvider) {
-            return ((WebSearchProvider) provider).getSuggestions(query);
-        }
-        return Collections.emptyList();
     }
 
     public static boolean matches(AppInfo info, String query, StringMatcher matcher) {

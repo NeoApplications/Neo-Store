@@ -16,6 +16,8 @@
 
 package com.android.launcher3.model;
 
+import static android.graphics.BitmapFactory.decodeByteArray;
+
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -58,8 +60,6 @@ import com.saggitt.omega.OmegaPreferences;
 
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
-
-import static android.graphics.BitmapFactory.decodeByteArray;
 
 /**
  * Extension of {@link Cursor} with utility methods for workspace loading.
@@ -428,7 +428,7 @@ public class LoaderCursor extends CursorWrapper {
             int hotseatX = item.screenId % mIDP.numHotseatIcons;
             int hotseatY = item.screenId / mIDP.numHotseatIcons;
 
-            if (item.screenId >= mIDP.numHotseatIcons) {
+            if (item.screenId >= mIDP.numHotseatIcons * hotseatRows) {
                 Log.e(TAG, "Error loading shortcut " + item
                         + " into hotseat position " + item.screenId
                         + ", position out of bounds: (0 to " + (mIDP.numHotseatIcons - 1)
