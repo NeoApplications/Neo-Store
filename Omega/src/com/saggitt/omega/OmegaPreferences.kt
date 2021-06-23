@@ -26,7 +26,6 @@ import android.os.Looper
 import android.text.TextUtils
 import com.android.launcher3.*
 import com.android.launcher3.Utilities.makeComponentKey
-import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.gestures.BlankGestureHandler
@@ -214,9 +213,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     /* --NOTIFICATION-- */
     val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)
     val notificationBackground by IntPref(
-        "pref_notification_background",
-        R.color.notification_background,
-        recreate
+        "pref_notification_background", R.color.notification_background, recreate
     )
 
     /* --ADVANCED-- */
@@ -243,7 +240,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
-    val searchHiddenApps by BooleanPref(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, false)
+    val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
 
     /* --SMART SPACE-- */
     var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)

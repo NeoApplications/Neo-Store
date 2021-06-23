@@ -28,10 +28,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
+import com.saggitt.omega.smartspace.FeedBridge
 import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.smartspace.SmartspaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.*
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
+import com.saggitt.omega.smartspace.weather.SmartspacePixelBridge
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
@@ -306,8 +308,8 @@ class SmartspaceEventProvidersAdapter(private val context: Context) :
             val list = ArrayList<String>()
             list.add(CalendarEventProvider::class.java.name)
             list.add(SmartspaceDataWidget::class.java.name)
-            //if (FeedBridge.getInstance(context).resolveBridge()?.supportsSmartspace == true)
-            //list.add(SmartspacePixelBridge::class.java.name)
+            if (FeedBridge.getInstance(context).resolveBridge()?.supportsSmartspace == true)
+                list.add(SmartspacePixelBridge::class.java.name)
             list.add(NowPlayingProvider::class.java.name)
             list.add(NotificationUnreadProvider::class.java.name)
             list.add(BatteryStatusProvider::class.java.name)

@@ -61,6 +61,7 @@ import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.WorkspaceLayoutManager;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.config.FeatureFlags;
@@ -618,8 +619,17 @@ public class LauncherPreviewRenderer {
 
             // Add first page QSB
             if (FeatureFlags.showQSbOnFirstScreen(mContext)) {
+
+                int layout = 0;
+
+                if (Utilities.getOmegaPrefs(mContext).getUsePillQsb()) {
+                    layout = R.layout.qsb_container_preview;
+                } else {
+                    layout = R.layout.search_container_workspace;
+                }
+
                 View qsb = mHomeElementInflater.inflate(
-                        R.layout.search_container_workspace, mWorkspace, false);
+                        layout, mWorkspace, false);
                 CellLayout.LayoutParams lp =
                         new CellLayout.LayoutParams(0, 0, mWorkspace.getCountX(), 1);
                 lp.canReorder = false;

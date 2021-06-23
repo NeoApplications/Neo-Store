@@ -14,6 +14,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Process;
@@ -37,6 +38,7 @@ import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.ShadowGenerator;
+import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView;
@@ -47,6 +49,8 @@ import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
+import com.saggitt.omega.smartspace.SmartspacePreferencesShortcut;
+import com.saggitt.omega.util.OmegaUtilsKt;
 import com.saggitt.omega.views.SmartspacePreview;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAnimator.AnimatorUpdateListener,
-        View.OnClickListener, Runnable, OmegaSmartspaceController.Listener {
+        View.OnClickListener, View.OnLongClickListener, Runnable, OmegaSmartspaceController.Listener {
     private TextView mSubtitleWeatherText;
     private final TextPaint dB;
     private TextView mTitleText;
@@ -159,7 +163,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         try {
             Launcher launcher = Launcher.getLauncher(getContext());
             if (launcher instanceof OmegaLauncher) {
-                ((OmegaLauncher) launcher).registerSmartspaceView();
+                ((OmegaLauncher) launcher).registerSmartspaceView(this);
             }
         } catch (IllegalArgumentException ignored) {
 
@@ -233,6 +237,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
             cs();
         }
         setOnClickListener(this);
+        setOnLongClickListener(co());
         mWeatherAvailable = weather != null;
         if (mDoubleLine) {
             loadDoubleLine(weather, card);
@@ -317,6 +322,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         if (mWeatherAvailable) {
             container.setVisibility(View.VISIBLE);
             container.setOnClickListener(mWeatherClickListener);
+            container.setOnLongClickListener(co());
             title.setText(weather.getTitle(
                     Utilities.getOmegaPrefs(getContext()).getWeatherUnit()));
             icon.setImageBitmap(addShadowToBitmap(weather.getIcon()));
@@ -364,6 +370,10 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         final SmartspaceCard dp = dq.dP;
         return dp.cC(TextUtils.ellipsize(dp.cB(b), dB, getWidth() - getPaddingLeft()
                 - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) - dB.measureText(dp.cA(b)), TextUtils.TruncateAt.END).toString());
+    }
+
+    private OnLongClickListener co() {
+        return this;
     }
 
     private void cs() {
@@ -445,40 +455,45 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         }
     }
 
+    public boolean onLongClick(final View view) {
+        TextView textView;
+        if (mClockView == null || mClockView.getVisibility() != View.VISIBLE) {
+            textView = mTitleText;
+        } else {
+            textView = mClockView;
+        }
+        if (view == null) {
+            return false;
+        }
+        Rect rect = new Rect();
+        float tmp = 0f;
+        Launcher launcher = Launcher.getLauncher(getContext());
+        launcher.getDragLayer().getDescendantRectRelativeToSelf(view, rect);
+        if (textView != null) {
+            Paint.FontMetrics fontMetrics = textView.getPaint().getFontMetrics();
+            tmp = (((float) view.getHeight()) - (fontMetrics.bottom - fontMetrics.top)) / 2.0f;
+        }
+        RectF rectF = new RectF();
+        float exactCenterX = rect.exactCenterX();
+        rectF.right = exactCenterX;
+        rectF.left = exactCenterX;
+        rectF.top = 0.0f;
+        rectF.bottom = ((float) rect.bottom) - tmp;
+        OmegaUtilsKt.openPopupMenu(this, rectF,
+                new SmartspacePreferencesShortcut(StatsLogManager.LauncherRankingEvent.UNKNOWN));
+        return true;
+    }
+
     public void onPause() {
         mHandler.removeCallbacks(this);
     }
 
     @Override
     public void run() {
-
     }
 
     @Override
     public void setPadding(final int n, final int n2, final int n3, final int n4) {
         super.setPadding(0, 0, 0, 0);
-    }
-
-    final class h implements OnClickListener {
-        final SmartspaceView dZ;
-
-        h(final SmartspaceView dz) {
-            dZ = dz;
-        }
-
-        public void onClick(final View view) {
-            final Uri content_URI = CalendarContract.CONTENT_URI;
-            final Uri.Builder appendPath = content_URI.buildUpon().appendPath("time");
-            ContentUris.appendId(appendPath, System.currentTimeMillis());
-            final Intent addFlags = new Intent(Intent.ACTION_VIEW).setData(appendPath.build())
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            try {
-                final Context context = dZ.getContext();
-                Launcher.getLauncher(context).startActivitySafely(view, addFlags, null, null);
-            } catch (ActivityNotFoundException ex) {
-                (dZ.getContext()).getSystemService(LauncherApps.class).startAppDetailsActivity(
-                        new ComponentName(GOOGLE_CALENDAR, ""), Process.myUserHandle(), null, null);
-            }
-        }
     }
 }

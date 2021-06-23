@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -35,12 +36,19 @@ import com.android.launcher3.util.Themes;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
 import com.google.android.apps.nexuslauncher.qsb.QsbAnimationController;
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController;
+import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.libraries.gsa.launcherclient.ISerializableScrollCallback;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientCallbacks;
+import com.google.android.libraries.gsa.launcherclient.LauncherClientService;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
 import com.saggitt.omega.settings.SettingsActivity;
 import com.saggitt.omega.smartspace.FeedBridge;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 /**
  * Implements {@link LauncherOverlay} and passes all the corresponding events to {@link
@@ -65,6 +73,7 @@ public class OverlayCallbackImpl
     private int mFlags;
     public QsbAnimationController mQsbAnimationController;
     private final Bundle mUiInformation = new Bundle();
+    private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     public OverlayCallbackImpl(Launcher launcher) {
         SharedPreferences prefs = Utilities.getPrefs(launcher);
@@ -74,10 +83,14 @@ public class OverlayCallbackImpl
                 (prefs.getBoolean(ENABLE_MINUS_ONE_PREF,
                         FeedBridge.useBridge(launcher)) ? 1 : 0) | 2 | 4 | 8));
         prefs.registerOnSharedPreferenceChangeListener(this);
+        SmartspaceController.get(mLauncher).cW();
 
         mQsbAnimationController = new QsbAnimationController(launcher);
         mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
         applyFeedTheme(false);
+        WallpaperColorInfo instance = WallpaperColorInfo.getInstance(mLauncher);
+        instance.addOnChangeListener(this);
+        onExtractedColorsChanged(instance);
     }
 
     @Override
@@ -152,6 +165,14 @@ public class OverlayCallbackImpl
 
     @Override
     public boolean startSearch(byte[] config, Bundle extras) {
+        View gIcon = mLauncher.findViewById(R.id.g_icon);
+        while (gIcon != null && !gIcon.isClickable()) {
+            if (gIcon.getParent() instanceof View) {
+                gIcon = (View) gIcon.getParent();
+            } else {
+                gIcon = null;
+            }
+        }
         return false;
     }
 
@@ -173,6 +194,13 @@ public class OverlayCallbackImpl
     @Override
     public void onActivityPaused(Activity activity) {
         mClient.onPause();
+        for (SmartspaceView smartspace : mSmartspaceViews) {
+            smartspace.onPause();
+        }
+    }
+
+    public void registerSmartspaceView(SmartspaceView smartspace) {
+        mSmartspaceViews.add(smartspace);
     }
 
     @Override
@@ -186,14 +214,44 @@ public class OverlayCallbackImpl
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        mClient.mDestroyed = true;
-        mLauncher.getSharedPrefs().unregisterOnSharedPreferenceChangeListener(this);
+        LauncherClient launcherClient = mClient;
+        if (!launcherClient.mDestroyed) {
+            launcherClient.mActivity.unregisterReceiver(launcherClient.googleInstallListener);
+        }
+        launcherClient.mDestroyed = true;
+        launcherClient.mBaseService.disconnect();
+        if (launcherClient.mOverlayCallback != null) {
+            launcherClient.mOverlayCallback.mClient = null;
+            launcherClient.mOverlayCallback.mWindowManager = null;
+            launcherClient.mOverlayCallback.mWindow = null;
+            launcherClient.mOverlayCallback = null;
+        }
+
+        LauncherClientService service = launcherClient.mLauncherService;
+        LauncherClient client = service.getClient();
+        if (client != null && client.equals(launcherClient)) {
+            service.mClient = null;
+            if (!launcherClient.mActivity.isChangingConfigurations()) {
+                service.disconnect();
+                if (LauncherClientService.sInstance == service) {
+                    LauncherClientService.sInstance = null;
+                }
+            }
+        }
+
+        Utilities.getPrefs(mLauncher).unregisterOnSharedPreferenceChangeListener(this);
+        WallpaperColorInfo.getInstance(mLauncher).removeOnChangeListener(this);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (ENABLE_MINUS_ONE_PREF.equals(key)) {
-            mClient.showOverlay(prefs.getBoolean(ENABLE_MINUS_ONE_PREF, FeedBridge.useBridge(mLauncher)));
+        switch (key) {
+            case SettingsActivity.ENABLE_MINUS_ONE_PREF:
+                mClient.showOverlay(prefs.getBoolean(ENABLE_MINUS_ONE_PREF, FeedBridge.useBridge(mLauncher)));
+                break;
+            case SettingsActivity.FEED_THEME_PREF:
+                applyFeedTheme(true);
+                break;
         }
     }
 
