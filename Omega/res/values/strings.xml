@@ -403,6 +403,7 @@
     <string name="web_search_ddg" translatable="false">DuckDuckGo (web)</string>
     <string name="web_search_startpage" translatable="false">Startpage.com (web)</string>
     <string name="web_search_bing" translatable="false">Bing (web)</string>
+    <string name="web_search_brave" translatable="false">Brave (web)</string>
     <string name="web_search_qwant" translatable="false">Qwant (web)</string>
     <string name="web_search_ecosia" translatable="false">Ecosia (web)</string>
     <string name="web_search_yandex" translatable="false">Yandex (web)</string>

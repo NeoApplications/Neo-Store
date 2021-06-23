@@ -85,7 +85,8 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
             case 200: {
                 if (!mInterruptActiveRequests) {
                     SearchResult searchResult = (SearchResult) message.obj;
-                    searchResult.mCallbacks.onSearchResult(searchResult.mQuery, searchResult.mApps, searchResult.mSuggestions);
+                    searchResult.mCallbacks.onSearchResult(searchResult.mQuery,
+                            searchResult.mApps, searchResult.mSuggestions);
                 }
                 break;
             }

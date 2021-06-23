@@ -128,6 +128,7 @@ class SearchProviderController(private val context: Context) {
 
             /*Web Providers*/
             BaiduWebSearchProvider(context),
+            BraveWebSearchProvider(context),
             BingWebSearchProvider(context),
             DDGWebSearchProvider(context),
             EcosiaWebSearchProvider(context),
