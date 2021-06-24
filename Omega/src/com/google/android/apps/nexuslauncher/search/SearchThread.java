@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.android.launcher3.BuildConfig;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.search.AllAppsSearchBarController;
 import com.android.launcher3.allapps.search.SearchAlgorithm;
 import com.saggitt.omega.search.SearchProvider;
@@ -65,6 +66,9 @@ public class SearchThread implements SearchAlgorithm, Handler.Callback {
     }
 
     private List<String> getSuggestions(String query) {
+        if (!Utilities.getOmegaPrefs(mContext).getAllAppsGlobalSearch()) {
+            return Collections.emptyList();
+        }
         SearchProvider provider = SearchProviderController.Companion
                 .getInstance(mContext).getSearchProvider();
         if (provider instanceof WebSearchProvider) {

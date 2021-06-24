@@ -24,6 +24,7 @@ import com.saggitt.omega.search.providers.*
 import com.saggitt.omega.search.webproviders.*
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.useApplicationContext
@@ -66,25 +67,35 @@ class SearchProviderController(private val context: Context) {
         get() {
             val curr = prefs.searchProvider
             if (cache == null || cached != curr) {
-                cache = try {
-                    val constructor =
-                        Class.forName(prefs.searchProvider).getConstructor(Context::class.java)
-                    val themedContext = ContextThemeWrapper(context, themeRes)
-                    val prov = constructor.newInstance(themedContext) as SearchProvider
-                    if (prov.isAvailable) {
-                        prov
-                    } else {
-                        null
-                    }
-                } catch (ignored: Exception) {
-                    null
+                cache = createProvider(prefs.searchProvider) {
+
+                    val config = Config(context)
+                    createProvider(config.defaultSearchProvider) { AppsSearchProvider(context) }
                 }
-                if (cache == null) cache = GoogleSearchProvider(context)
                 cached = cache!!::class.java.name
+                if (prefs.searchProvider != cached) {
+                    prefs.searchProvider = cached
+                }
                 notifyProviderChanged()
             }
             return cache!!
         }
+
+    private fun createProvider(
+        providerName: String,
+        fallback: () -> SearchProvider
+    ): SearchProvider {
+        try {
+            val constructor = Class.forName(providerName).getConstructor(Context::class.java)
+            val themedContext = ContextThemeWrapper(context, themeRes)
+            val prov = constructor.newInstance(themedContext) as SearchProvider
+            if (prov.isAvailable) {
+                return prov
+            }
+        } catch (ignored: Exception) {
+        }
+        return fallback()
+    }
 
     inner class ThemeListener : ThemeOverride.ThemeOverrideListener {
 

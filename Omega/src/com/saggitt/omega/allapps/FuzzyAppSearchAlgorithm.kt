@@ -56,9 +56,7 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
 
     private fun getSuggestions(query: String): List<String> {
         val provider = SearchProviderController.getInstance(context).searchProvider
-        return if (provider is WebSearchProvider) {
-            provider.getSuggestions(query)
-        } else emptyList()
+        return (provider as? WebSearchProvider)?.getSuggestions(query) ?: emptyList()
     }
 
     companion object {
