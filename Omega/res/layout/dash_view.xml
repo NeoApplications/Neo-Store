@@ -24,11 +24,57 @@
     android:layout_gravity="center">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal"
+        android:layout_gravity="center"
         android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/musicTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:background="@drawable/ripple_dash_item_bg"
+            android:backgroundTint="?dashIconBackground"
+            android:padding="6dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/musicPrev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_accent_bg"
+                android:paddingVertical="12dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintEnd_toStartOf="@id/musicPlay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/musicPlay"
+                app:srcCompat="@drawable/ic_music_previous" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/musicPlay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_accent_bg"
+                android:paddingVertical="12dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/musicNext"
+                app:layout_constraintStart_toEndOf="@id/musicPrev"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_music_play" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/musicNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_accent_bg"
+                android:paddingVertical="12dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/musicPlay"
+                app:layout_constraintTop_toTopOf="@id/musicPlay"
+                app:srcCompat="@drawable/ic_music_next" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dash_control_recycler"
