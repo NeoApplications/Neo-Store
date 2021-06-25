@@ -296,9 +296,9 @@ public class AllAppsTransitionController implements StateHandler<LauncherState>,
         mAppsView.removeView(mPluginContent);
     }
 
-    public void onActivityDestroyed() {
+    /*public void onActivityDestroyed() {
         PluginManagerWrapper.INSTANCE.get(mLauncher).removePluginListener(this);
-    }
+    }*/
 
     /**
      * Used for the plugin to signal when drag starts happens

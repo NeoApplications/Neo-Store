@@ -19,8 +19,11 @@
 package com.saggitt.omega.dash
 
 import android.content.Context
+import android.media.AudioManager
+import android.view.KeyEvent
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.Launcher
@@ -38,6 +41,7 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
     private val prefs = Utilities.getOmegaPrefs(context)
     private val allActionItems = DashEditAdapter.getDashActionProviders(context)
     private val allControlItems = DashEditAdapter.getDashControlProviders(context)
+    private val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     init {
         View.inflate(context, R.layout.dash_view, this)
@@ -48,13 +52,14 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
         dashActionFastAdapter = FastAdapter.with(dashItemAdapter)
         dashActionFastAdapter?.setHasStableIds(true)
 
-        val controlRecycler = findViewById<View>(R.id.dash_control_recycler) as RecyclerView
-        controlRecycler.layoutManager = GridLayoutManager(context, 2)
-        controlRecycler.adapter = controlFastAdapter
-        val dashRecycler = findViewById<View>(R.id.dash_recycler) as RecyclerView
-        dashRecycler.layoutManager = GridLayoutManager(context, 4)
-        dashRecycler.adapter = dashActionFastAdapter
-
+        findViewById<RecyclerView>(R.id.dash_control_recycler).apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = controlFastAdapter
+        }
+        findViewById<RecyclerView>(R.id.dash_recycler).apply {
+            layoutManager = GridLayoutManager(context, 4)
+            adapter = dashActionFastAdapter
+        }
         val controlItems = activeDashProviders
             .mapNotNull { name ->
                 allControlItems.find { it.name == name }?.let {
@@ -69,6 +74,74 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
                 }
             }
         dashItemAdapter.set(dashItems)
+        val musicPlay = findViewById<AppCompatImageView>(R.id.musicPlay).apply {
+            setImageResource(if (musicManager.isMusicActive) R.drawable.ic_music_pause else R.drawable.ic_music_play)
+            setOnClickListener {
+                if (musicManager.isMusicActive) {
+                    musicManager.dispatchMediaKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MEDIA_PAUSE
+                        )
+                    )
+                    musicManager.dispatchMediaKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MEDIA_PAUSE
+                        )
+                    )
+                    setImageResource(R.drawable.ic_music_play)
+                } else {
+                    musicManager.dispatchMediaKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_MEDIA_PLAY
+                        )
+                    )
+                    musicManager.dispatchMediaKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_UP,
+                            KeyEvent.KEYCODE_MEDIA_PLAY
+                        )
+                    )
+                    setImageResource(R.drawable.ic_music_pause)
+                }
+            }
+        }
+        findViewById<AppCompatImageView>(R.id.musicPrev).apply {
+            setOnClickListener {
+                musicManager.dispatchMediaKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_MEDIA_PREVIOUS
+                    )
+                )
+                musicManager.dispatchMediaKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_MEDIA_PREVIOUS
+                    )
+                )
+                musicPlay.setImageResource(R.drawable.ic_music_pause)
+            }
+        }
+        findViewById<AppCompatImageView>(R.id.musicNext).apply {
+            setOnClickListener {
+                musicManager.dispatchMediaKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_MEDIA_NEXT
+                    )
+                )
+                musicManager.dispatchMediaKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_MEDIA_NEXT
+                    )
+                )
+                musicPlay.setImageResource(R.drawable.ic_music_pause)
+            }
+        }
     }
 
     companion object {
