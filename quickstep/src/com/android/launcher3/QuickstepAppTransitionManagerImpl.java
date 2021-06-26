@@ -686,7 +686,7 @@ public abstract class QuickstepAppTransitionManagerImpl extends LauncherAppTrans
         }
         if (hasControlRemoteAppTransitionPermission()) {
 
-            if (!Utilities.isEmui())
+            if (!Utilities.isMIUI())
                 new ActivityCompat(mLauncher).unregisterRemoteAnimations();
 
             // Also clear strong references to the runners registered with the remote animation
