@@ -638,16 +638,14 @@ public final class Utilities {
      *               eg {@link LauncherActivityInfo} or {@link ShortcutInfo}.
      */
     public static Drawable getFullDrawable(Launcher launcher, ItemInfo info, int width, int height,
-                                           Object[] outObj) {
+                                           boolean flattenDrawable, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);
         if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             LauncherActivityInfo activityInfo = launcher.getSystemService(LauncherApps.class)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
-            /*return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
-                    activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);*/
             return (activityInfo != null) ? appState.getIconCache()
-                    .getFullResIcon(activityInfo, info, false) : null;
+                    .getFullResIcon(activityInfo, info, flattenDrawable) : null;
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =
@@ -670,7 +668,7 @@ public final class Utilities {
             FolderInfo folderInfo = (FolderInfo) info;
             if (folderInfo.isCoverMode()) {
                 return getFullDrawable(launcher, folderInfo.getCoverInfo(),
-                        width, height, outObj);
+                        width, height, flattenDrawable, outObj);
             }
             FolderAdaptiveIcon icon = FolderAdaptiveIcon.createFolderAdaptiveIcon(
                     launcher, info.id, new Point(width, height));
@@ -1033,6 +1031,11 @@ public final class Utilities {
 
     public static Boolean isEmui() {
         return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui", ""));
+    }
+
+    /*Xiaomi ROM*/
+    public static Boolean isMIUI() {
+        return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.code", ""));
     }
 
     public static Boolean isOnePlusStock() {
