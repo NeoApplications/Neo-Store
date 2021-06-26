@@ -346,7 +346,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     public void performCreateAnimation(final WorkspaceItemInfo destInfo, final View destView,
                                        final WorkspaceItemInfo srcInfo, final DragObject d, Rect dstRect,
                                        float scaleRelativeToDragLayer) {
-        final DragView srcView = d.dragView;
         prepareCreateAnimation(destView);
         addItem(destInfo);
         // This will animate the first item from it's position as an icon into its
@@ -601,7 +600,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             mFolderName.clearIcon();
             mBackground.setStartOpacity(1f);
         }
-        //mFolderName.setText(mInfo.getIconTitle(getFolder()));
+        mFolderName.setText(mInfo.getIconTitle(getFolder()));
         requestLayout();
     }
 

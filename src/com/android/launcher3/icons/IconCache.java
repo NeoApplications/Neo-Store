@@ -333,7 +333,7 @@ public class IconCache extends BaseIconCache {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Drawable getFullResIcon(LauncherActivityInfo info, boolean flattenDrawable) {
-        return mIconProvider.getIcon(info, mIconDpi, false);
+        return mIconProvider.getIcon(info, mIconDpi, flattenDrawable);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

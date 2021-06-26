@@ -266,10 +266,9 @@ public class FloatingIconView extends FrameLayout implements
     @SuppressWarnings("WrongThread")
     private static void getIconResult(Launcher l, View originalView, ItemInfo info, RectF pos,
             IconLoadResult iconLoadResult) {
-        Drawable drawable = null;
+        Drawable drawable;
         Drawable badge = null;
         boolean supportsAdaptiveIcons = ADAPTIVE_ICON_WINDOW_ANIM.get()
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 && !info.isDisabled(); // Use original icon for disabled icons.
         Drawable btvIcon = originalView instanceof BubbleTextView
                 ? ((BubbleTextView) originalView).getIcon() : null;
@@ -282,10 +281,12 @@ public class FloatingIconView extends FrameLayout implements
                 drawable = originalView.getBackground();
             }
         } else {
-            int width = (int) pos.width();
-            int height = (int) pos.height();
+            boolean isFolderIcon = originalView instanceof FolderIcon;
+            int width = isFolderIcon ? originalView.getWidth() : (int) pos.width();
+            ;
+            int height = isFolderIcon ? originalView.getHeight() : (int) pos.height();
             if (supportsAdaptiveIcons) {
-                drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
+                drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
                 if (drawable instanceof AdaptiveIconCompat) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
@@ -298,12 +299,11 @@ public class FloatingIconView extends FrameLayout implements
                     // Similar to DragView, we simply use the BubbleTextView icon here.
                     drawable = btvIcon;
                 } else {
-                    drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
+                    drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
                 }
             }
         }
-
-        drawable = drawable == null ? null : drawable.getConstantState().newDrawable();
+        if (drawable != null) drawable = drawable.getConstantState().newDrawable();
         int iconOffset = getOffsetForIconBounds(l, drawable, pos);
         synchronized (iconLoadResult) {
             iconLoadResult.drawable = drawable;
@@ -332,8 +332,7 @@ public class FloatingIconView extends FrameLayout implements
     @WorkerThread
     @SuppressWarnings("WrongThread")
     private static int getOffsetForIconBounds(Launcher l, Drawable drawable, RectF position) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                || !(drawable instanceof AdaptiveIconCompat)
+        if (!(drawable instanceof AdaptiveIconCompat)
                 || (drawable instanceof FolderAdaptiveIcon)) {
             return 0;
         }

@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 @TargetApi(26)
 public class CustomClock {
     private final Context mContext;
-    private final Set<AutoUpdateClock> mUpdaters = Collections.newSetFromMap(new WeakHashMap<AutoUpdateClock, Boolean>());
+    private final Set<AutoUpdateClock> mUpdaters = Collections.newSetFromMap(new WeakHashMap<>());
 
     public CustomClock(Context context) {
         mContext = context;

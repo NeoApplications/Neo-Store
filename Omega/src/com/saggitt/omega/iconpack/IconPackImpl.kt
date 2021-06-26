@@ -309,19 +309,14 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
             }
         }
 
-        val isCustomPack = false
+        val isCustomPack =
+            customIconEntry?.packPackageName == packPackageName && customIconEntry.icon == null
         if ((prefs.iconPackMasking || isCustomPack) && packMask.hasMask) {
             val baseIcon = defaultPack.getIcon(
                 launcherActivityInfo, iconDpi, flattenDrawable,
                 customIconEntry, iconProvider
             )
-            val icon = baseIcon.let {
-                packMask.getIcon(
-                    context,
-                    baseIcon,
-                    launcherActivityInfo.componentName
-                )
-            }
+            val icon = packMask.getIcon(context, baseIcon, launcherActivityInfo.componentName)
             if (prefs.adaptifyIconPacks) {
                 val gen = AdaptiveIconGenerator(context, icon, null)
                 return gen.getResult()

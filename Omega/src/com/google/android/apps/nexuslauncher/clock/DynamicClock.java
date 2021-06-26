@@ -64,11 +64,8 @@ public class DynamicClock extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static Drawable getClock(Context context, int iconDpi) {
         ClockLayers clone = getClockLayers(context, iconDpi, false).clone();
-        if (clone != null) {
-            clone.updateAngles();
-            return clone.mDrawable;
-        }
-        return null;
+        clone.updateAngles();
+        return clone.mDrawable;
     }
 
     public static ClockLayers getClockLayers(Context context, int iconDpi, boolean normalizeIcon) {
@@ -128,8 +125,7 @@ public class DynamicClock extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updateMainThread() {
         MAIN_EXECUTOR.execute(() -> updateWrapper(getClockLayers(mContext,
-                LauncherAppState.getIDP(mContext).fillResIconDpi,
-                true)));
+                LauncherAppState.getIDP(mContext).fillResIconDpi, true)));
     }
 
     private void updateWrapper(ClockLayers wrapper) {

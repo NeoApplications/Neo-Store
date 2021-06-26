@@ -1558,12 +1558,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
     public void beginDragShared(View child, DragSource source, DragOptions options) {
         Object dragObject = child.getTag();
-        /*if (child instanceof AllAppsIconRow) {
-            dragObject = ((AllAppsIconRow) child).getTag();
-        } else {
-            dragObject = child.getTag();
-        }*/
-
         if (!(dragObject instanceof ItemInfo)) {
             String msg = "Drag started with a view that has no tag set. This "
                     + "will cause a crash (issue 11627249) down the line. "

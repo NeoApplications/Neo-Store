@@ -133,7 +133,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         getLegacyIcon(component, iconDpi, prefs.forceShapeless)?.let {
             originalIcon = it.apply { mutate() }
         }
-        if (iconProvider == null || (DynamicIconProvider.GOOGLE_CALENDAR != packageName && DynamicClock.DESK_CLOCK != component)) {
+        if (iconProvider == null
+            || (DynamicIconProvider.GOOGLE_CALENDAR != packageName
+                    && DynamicClock.DESK_CLOCK != component)
+        ) {
             var roundIcon: Drawable? = null
             if (!prefs.forceShapeless) {
                 getRoundIcon(component, iconDpi)?.let {

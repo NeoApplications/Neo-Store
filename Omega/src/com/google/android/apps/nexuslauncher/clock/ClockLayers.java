@@ -3,7 +3,6 @@ package com.google.android.apps.nexuslauncher.clock;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
@@ -11,6 +10,7 @@ import android.os.Process;
 
 import androidx.annotation.RequiresApi;
 
+import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
 
@@ -64,8 +64,8 @@ public class ClockLayers {
         LauncherIcons launcherIcons = LauncherIcons.obtain(context);
         float[] tmp = new float[1];
         Drawable icon = getBackground().getConstantState().newDrawable();
-        if (mDrawable instanceof AdaptiveIconDrawable) {
-            icon = new AdaptiveIconDrawable(icon, null);
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            icon = new AdaptiveIconCompat(icon, null);
         }
         iconBitmap = launcherIcons.createBadgedIconBitmap(icon, Process.myUserHandle(), 26, false, tmp).icon;
         scale = tmp[0];
@@ -103,8 +103,8 @@ public class ClockLayers {
         if (mDrawable instanceof LayerDrawable) {
             return (LayerDrawable) mDrawable;
         }
-        if (mDrawable instanceof AdaptiveIconDrawable) {
-            AdaptiveIconDrawable adaptiveIconDrawable = (AdaptiveIconDrawable) mDrawable;
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            AdaptiveIconCompat adaptiveIconDrawable = (AdaptiveIconCompat) mDrawable;
             if (adaptiveIconDrawable.getForeground() instanceof LayerDrawable) {
                 return (LayerDrawable) adaptiveIconDrawable.getForeground();
             }
@@ -114,8 +114,8 @@ public class ClockLayers {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     Drawable getBackground() {
-        if (mDrawable instanceof AdaptiveIconDrawable) {
-            return ((AdaptiveIconDrawable) mDrawable).getBackground();
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            return ((AdaptiveIconCompat) mDrawable).getBackground();
         } else {
             return mDrawable;
         }
@@ -123,15 +123,15 @@ public class ClockLayers {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void clipToMask(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconDrawable) {
-            canvas.clipPath(((AdaptiveIconDrawable) mDrawable).getIconMask());
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            canvas.clipPath(((AdaptiveIconCompat) mDrawable).getIconMask());
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void drawForeground(Canvas canvas) {
-        if (mDrawable instanceof AdaptiveIconDrawable) {
-            ((AdaptiveIconDrawable) mDrawable).getForeground().draw(canvas);
+        if (mDrawable instanceof AdaptiveIconCompat) {
+            ((AdaptiveIconCompat) mDrawable).getForeground().draw(canvas);
         } else {
             mDrawable.draw(canvas);
         }

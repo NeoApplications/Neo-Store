@@ -18,7 +18,6 @@ package com.android.launcher3.model.data;
 
 import static android.text.TextUtils.isEmpty;
 import static androidx.core.util.Preconditions.checkNotNull;
-import static com.android.launcher3.FastBitmapDrawable.newIcon;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
@@ -51,6 +50,7 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.FolderNameInfos;
+import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.logger.LauncherAtom.Attribute;
@@ -270,7 +270,7 @@ public class FolderInfo extends ItemInfo {
             return icn;
         }
         if (isCoverMode()) {
-            return newIcon(context, getCoverInfo());
+            return DrawableFactory.INSTANCE.get(context).newIcon(context, getCoverInfo());
         }
         return getFolderIcon(launcher);
     }

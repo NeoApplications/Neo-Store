@@ -143,10 +143,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         val component: ComponentKey? = when (itemInfo) {
             is AppInfo -> itemInfo.toComponentKey()
             is WorkspaceItemInfo -> itemInfo.targetComponent?.let {
-                ComponentKey(
-                    it,
-                    itemInfo.user
-                )
+                ComponentKey(it, itemInfo.user)
             }
             is FolderInfo -> itemInfo.toComponentKey()
             else -> null
@@ -168,9 +165,13 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         val flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_CLEAR_TASK
         BlankActivity.startActivityForResult(
-            this, intent, CODE_EDIT_ICON,
+            this,
+            intent,
+            CODE_EDIT_ICON,
             flags
-        ) { resultCode, data -> handleEditIconResult(resultCode, data) }
+        ) { resultCode, data ->
+            handleEditIconResult(resultCode, data)
+        }
     }
 
     private fun handleEditIconResult(resultCode: Int, data: Bundle?) {
