@@ -33,10 +33,10 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
     private val prefs = context.omegaPrefs
 
     override fun getTitle(info: FolderInfo): String {
-        if (info.title == null || info.title == "") {
-            return getDefaultTitle(info)
-        } else
-            return info.title.toString()
+        return if (info.title == null || info.title == "")
+            getDefaultTitle(info)
+        else
+            info.title.toString()
     }
 
     override fun getDefaultTitle(info: FolderInfo): String {
