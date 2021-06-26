@@ -210,7 +210,7 @@ public class AdaptiveIconCompat extends Drawable implements Drawable.Callback {
         try {
             return (Path) methodGetAdaptiveIconMaskPath.invoke(null);
         } catch (Exception e) {
-            Log.d(TAG, "Can't load icon mask", e);
+            Log.d(TAG, "Can't load icon mask - " + e.getMessage());
         }
         return new AdaptiveIconDrawable(null, null).getIconMask();
     }

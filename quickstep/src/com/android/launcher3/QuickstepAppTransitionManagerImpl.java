@@ -89,6 +89,7 @@ import com.android.systemui.shared.system.RemoteAnimationRunnerCompat;
 import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
 import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat.SurfaceParams;
 import com.android.systemui.shared.system.WindowManagerWrapper;
+import com.saggitt.omega.adaptive.IconShapeManager;
 
 /**
  * {@link LauncherAppTransitionManager} with Quickstep-specific app transitions for launching from
@@ -523,7 +524,7 @@ public abstract class QuickstepAppTransitionManagerImpl extends LauncherAppTrans
         }
 
         final float initialWindowRadius = supportsRoundedCornersOnWindows(mLauncher.getResources())
-                ? startCrop / 2f : 0f;
+                ? startCrop * IconShapeManager.getWindowTransitionRadius(mLauncher) / 2f : 0f;
         final float windowRadius = mDeviceProfile.isMultiWindowMode
                 ? 0 : getWindowCornerRadius(mLauncher.getResources());
         appAnimator.addUpdateListener(new MultiValueUpdateListener() {
@@ -684,11 +685,9 @@ public abstract class QuickstepAppTransitionManagerImpl extends LauncherAppTrans
             return;
         }
         if (hasControlRemoteAppTransitionPermission()) {
-            try {
+
+            if (!Utilities.isEmui())
                 new ActivityCompat(mLauncher).unregisterRemoteAnimations();
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
 
             // Also clear strong references to the runners registered with the remote animation
             // definition so we don't have to wait for the system gc
