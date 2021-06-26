@@ -27,8 +27,8 @@ import java.util.*
 class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) {
 
     override fun shouldShowApp(componentName: ComponentName?, user: UserHandle?): Boolean {
-        return (super.shouldShowApp(componentName, user)
-                && (user == null || !isHiddenApp(mContext, ComponentKey(componentName, user))))
+        return super.shouldShowApp(componentName, user)
+                && (user == null || !isHiddenApp(mContext, ComponentKey(componentName, user)))
     }
 
     companion object {

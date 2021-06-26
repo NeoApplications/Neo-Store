@@ -32,8 +32,6 @@ open class OmegaAppFilter(context: Context) : AppFilter() {
         mHideList.add(ComponentName(context, OmegaLauncher::class.java.name))
         //Voice Search
         mHideList.add(ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/.VoiceSearchActivity")!!)
-        //Wallpapers
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.apps.wallpaper/.picker.CategoryPickerActivity")!!)
         //Google Now Launcher
         mHideList.add(ComponentName.unflattenFromString("com.google.android.launcher/.StubApp")!!)
         //Actions Services
