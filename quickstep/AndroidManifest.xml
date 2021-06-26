@@ -89,7 +89,7 @@
         </provider>
         -->
         <service
-            android:name="com.android.launcher3.uioverrides.dynamicui.WallpaperManagerCompatVL$ColorExtractionService"
+            android:name="com.android.launcher3.uioverrides.WallpaperManagerCompatVL$ColorExtractionService"
             tools:node="remove" />
 
         <activity
