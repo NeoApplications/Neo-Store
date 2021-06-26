@@ -19,19 +19,15 @@
 
 package com.saggitt.omega.allapps
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.pm.LauncherApps
 import android.os.Handler
 import com.android.launcher3.AppFilter
-import com.android.launcher3.LauncherAppState
 import com.android.launcher3.allapps.search.AllAppsSearchBarController
+import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.allapps.search.SearchAlgorithm
 import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.pm.UserCache
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.search.WebSearchProvider
-import com.saggitt.omega.util.omegaPrefs
 import me.xdrop.fuzzywuzzy.FuzzySearch
 
 class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: List<AppInfo>) :
@@ -62,6 +58,7 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
     companion object {
         const val MIN_SCORE = 65
 
+        /*
         @JvmStatic
         fun getApps(
             context: Context, defaultApps: List<AppInfo>,
@@ -85,14 +82,14 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
                 }
             }
         }
-
+        */
         @JvmStatic
         fun query(
             context: Context, query: String, defaultApps: List<AppInfo>,
             filter: AppFilter
         ): List<AppInfo> {
             return FuzzySearch.extractAll(
-                query, getApps(context, defaultApps, filter),
+                query, DefaultAppSearchAlgorithm.getApps(context, defaultApps, filter),
                 { item -> item?.title.toString() },
                 WinklerWeightedRatio(), MIN_SCORE
             )
