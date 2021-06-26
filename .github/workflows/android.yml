@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'push'
     steps:
       - name: Send start notification
-        uses: appleboy/telegram-action@v0.1.0
+        uses: appleboy/telegram-action@v0.1.1
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
           path: artifacts/debug-apk
       - uses: technote-space/workflow-conclusion-action@v2.1.5
       - name: Send notification
-        uses: appleboy/telegram-action@v0.1.0
+        uses: appleboy/telegram-action@v0.1.1
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
