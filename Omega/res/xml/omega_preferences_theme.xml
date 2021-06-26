@@ -29,7 +29,6 @@
         android:key="pref_icons"
         android:defaultValue="@string/icon_shape_system_default"
         android:title="Customize Icons"
-        app:controllerClass=".IconShapeOverrideController"
         app:iconSpaceReserved="false" />
 
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
