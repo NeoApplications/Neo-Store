@@ -40,14 +40,13 @@ import com.android.launcher3.model.data.*
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageManagerHelper
 import com.android.launcher3.widget.WidgetsBottomSheet
-import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.ui.LauncherGesturePreference
 import com.saggitt.omega.override.CustomInfoProvider
-import com.saggitt.omega.override.CustomInfoProvider.Companion.forItem
 import com.saggitt.omega.predictions.CustomAppPredictor
 import com.saggitt.omega.preferences.MultiSelectTabPreference
 
@@ -66,7 +65,7 @@ class CustomBottomSheet @JvmOverloads constructor(
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
         mItemInfo = itemInfo
-        mInfoProvider = forItem(context, mItemInfo)
+        mInfoProvider = CustomInfoProvider.forItem(context, mItemInfo)
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
@@ -87,7 +86,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                 }
             }
             if (mInfoProvider != null) {
-                val launcher = getLauncher(context)
+                val launcher = OmegaLauncher.getLauncher(context)
                 icon.setOnClickListener {
                     val editItem: ItemInfo? =
                         if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
@@ -95,9 +94,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                         } else {
                             mItemInfo
                         }
-                    val editProvider = forItem<ItemInfo>(
-                        context, editItem
-                    )
+                    val editProvider = CustomInfoProvider.forItem<ItemInfo>(context, editItem)
                     if (editProvider != null) {
                         launcher.startEditIcon(editItem!!, editProvider)
                     }
@@ -186,7 +183,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             this.setForceOpen = setForceOpen
             this.unsetForceOpen = unsetForceOpen
             this.reopen = reopen
-            mProvider = forItem(
+            mProvider = CustomInfoProvider.forItem(
                 activity, info
             )
             val context: Context = activity
@@ -297,7 +294,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             super.onDetach()
             if (mProvider != null && selectedHandler != null) {
                 val stringValue = selectedHandler.toString()
-                val provider = forItem<ItemInfo>(
+                val provider = CustomInfoProvider.forItem<ItemInfo>(
                     activity, itemInfo
                 )
                 provider!!.setSwipeUpAction(itemInfo, stringValue)
