@@ -15,6 +15,9 @@
  */
 package com.android.launcher3.appprediction;
 
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
+
 import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
@@ -33,7 +36,6 @@ import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.appprediction.PredictionUiStateManager.Client;
 import com.android.launcher3.model.AppLaunchTracker;
-import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.systemui.plugins.AppLaunchEventsPlugin;
 import com.android.systemui.plugins.PluginListener;
 import com.saggitt.omega.OmegaPreferences;
@@ -47,9 +49,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_GRID;
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * Subclass of app tracker which publishes the data to the prediction engine and gets back results.
@@ -84,8 +83,8 @@ public class PredictionAppTracker extends AppLaunchTracker
         mMessageHandler.sendEmptyMessage(MSG_INIT);
 
         mAppLaunchEventsPluginsList = new ArrayList<>();
-        PluginManagerWrapper.INSTANCE.get(context)
-                .addPluginListener(this, AppLaunchEventsPlugin.class, true);
+        //PluginManagerWrapper.INSTANCE.get(context)
+        //        .addPluginListener(this, AppLaunchEventsPlugin.class, true);
     }
 
     @Override

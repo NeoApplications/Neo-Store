@@ -96,11 +96,10 @@
             android:title="@string/title__drawer_sort"
             app:iconSpaceReserved="false" />
 
-        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+        <com.saggitt.omega.preferences.StyledSwitchPreference
             android:defaultValue="false"
             android:key="pref_show_predictions"
             android:title="@string/title_app_suggestions"
-            app:controllerClass=".PredictionsController"
             app:iconSpaceReserved="false"
             app:searchTitle="@string/title_app_suggestions" />
 
