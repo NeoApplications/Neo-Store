@@ -63,3 +63,7 @@
 
 # Silence warnings about classes that are available at runtime
 -dontwarn com.android.internal.logging.MetricsLogger
+
+-keep class com.saggitt.omega.smartspace.OnboardingProvider {
+  public <init>(...);
+}

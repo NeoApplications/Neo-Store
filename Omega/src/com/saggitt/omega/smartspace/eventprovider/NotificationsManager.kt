@@ -18,23 +18,19 @@
 package com.saggitt.omega.smartspace.eventprovider
 
 import android.service.notification.StatusBarNotification
-import com.android.launcher3.notification.NotificationKeyData
 import com.android.launcher3.notification.NotificationListener
-import com.android.launcher3.util.PackageUserKey
 import com.saggitt.omega.util.runOnMainThread
 import com.saggitt.omega.util.runOnUiWorkerThread
 
-object NotificationsManager : NotificationListener.NotificationsChangedListener {
+object NotificationsManager : NotificationListener.StatusBarNotificationsChangedListener {
 
-    private val notificationsMap = mutableMapOf<String?, NotificationKeyData?>()
+    private val notificationsMap = mutableMapOf<String, StatusBarNotification>()
     private val listeners = mutableListOf<OnChangeListener>()
-
-    var sbNotifications = emptyList<StatusBarNotification>()
-    var notifications = emptyList<NotificationKeyData?>()
+    var notifications = emptyList<StatusBarNotification>()
         private set
 
     init {
-        NotificationListener.setNotificationsChangedListener(this)
+        NotificationListener.setStatusBarNotificationsChangedListener(this)
     }
 
     fun addListener(listener: OnChangeListener) {
@@ -49,44 +45,34 @@ object NotificationsManager : NotificationListener.NotificationsChangedListener 
         val notifications = notificationsMap.values.toList()
         this.notifications = notifications
         listeners.forEach(OnChangeListener::onNotificationsChanged)
-        this.sbNotifications =
-                NotificationListener.getInstanceIfConnected()?.activeNotifications?.toList()
-                        ?: emptyList()
     }
 
     interface OnChangeListener {
         fun onNotificationsChanged()
     }
 
-    override fun onNotificationRemoved(removedPackageUserKey: PackageUserKey?,
-                                       notificationKey: NotificationKeyData?) {
-        notificationsMap.remove(removedPackageUserKey?.mPackageName)
+    override fun onNotificationPosted(sbn: StatusBarNotification) {
+        notificationsMap[sbn.key] = sbn
         onChange()
     }
 
-    override fun onNotificationFullRefresh(
-            activeNotifications: MutableList<StatusBarNotification>?) {
+    override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        notificationsMap.remove(sbn.key)
+        onChange()
+    }
+
+    override fun onNotificationFullRefresh() {
         runOnUiWorkerThread {
-            val tmpMap: MutableMap<String, NotificationKeyData> =
-                    emptyMap<String, NotificationKeyData>().toMutableMap()
-            if (activeNotifications != null) {
-                for (notification: StatusBarNotification in activeNotifications) {
-                    tmpMap[PackageUserKey.fromNotification(notification).mPackageName] =
-                            NotificationKeyData.fromNotification(notification)
-                }
-                runOnMainThread {
-                    notificationsMap.clear()
+            val tmpMap = NotificationListener.getInstanceIfConnected()
+                ?.activeNotifications?.associateBy { it.key }
+            runOnMainThread {
+                notificationsMap.clear()
+                if (tmpMap != null) {
                     notificationsMap.putAll(tmpMap)
-                    onChange()
                 }
+                onChange()
             }
         }
-    }
-
-    override fun onNotificationPosted(postedPackageUserKey: PackageUserKey?,
-                                      notificationKey: NotificationKeyData?) {
-        notificationsMap[postedPackageUserKey?.mPackageName] = notificationKey
-        onChange()
     }
 }
 

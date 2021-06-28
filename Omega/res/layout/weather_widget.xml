@@ -43,6 +43,6 @@
         android:includeFontPadding="false"
         android:textAllCaps="true"
         android:textColor="#ffffffff"
-        android:textSize="12.0sp"
+        android:textSize="14.0sp"
         style="@style/WeatherWidget.Text" />
 </LinearLayout>

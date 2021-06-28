@@ -82,8 +82,7 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
 
     private fun getEventCard(): CardData? {
         if (!flowerpotLoaded) return null
-
-        val sbn = manager.sbNotifications
+        val sbn = manager.notifications
             .asSequence()
             .filter { !it.isOngoing }
             .filter { it.notification.priority >= PRIORITY_DEFAULT }

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class QsbBlockerView extends FrameLayout implements Workspace.OnStateChangeListener, OmegaSmartspaceController.Listener,
         OnClickListener, OnLongClickListener {
-    public static final Property<QsbBlockerView, Integer> QSB_BLOCKER_VIEW_ALPHA = new QsbBlockerViewAlpha(Integer.TYPE, "bgAlpha");
     private final OmegaSmartspaceController mController;
     private int mState = 0;
     private View mView;
@@ -181,25 +179,5 @@ public class QsbBlockerView extends FrameLayout implements Workspace.OnStateChan
         OmegaUtilsKt.openPopupMenu(mView, null,
                 new SmartspacePreferencesShortcut(StatsLogManager.LauncherRankingEvent.UNKNOWN));
         return false;
-    }
-
-    static class QsbBlockerViewAlpha extends Property<QsbBlockerView, Integer> {
-
-        public QsbBlockerViewAlpha(Class<Integer> type, String name) {
-            super(type, name);
-        }
-
-        @Override
-        public void set(QsbBlockerView qsbBlockerView, Integer num) {
-            qsbBlockerView.mBgPaint.setAlpha(num);
-            qsbBlockerView.setWillNotDraw(num == 0);
-            qsbBlockerView.invalidate();
-        }
-
-        @Override
-        public Integer get(QsbBlockerView obj) {
-            return obj.mBgPaint.getAlpha();
-        }
-
     }
 }

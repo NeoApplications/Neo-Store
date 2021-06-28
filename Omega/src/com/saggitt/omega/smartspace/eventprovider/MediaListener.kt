@@ -110,7 +110,7 @@ class MediaListener internal constructor(
     private val controllers: List<MediaNotificationController>
         get() {
             val controllers: MutableList<MediaNotificationController> = ArrayList()
-            for (notif in mNotificationsManager.sbNotifications) {
+            for (notif in mNotificationsManager.notifications) {
                 val extras = notif.notification.extras
                 val notifToken =
                     extras.getParcelable<MediaSession.Token>(Notification.EXTRA_MEDIA_SESSION)
