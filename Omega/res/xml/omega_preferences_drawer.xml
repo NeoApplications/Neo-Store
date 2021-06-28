@@ -62,7 +62,7 @@
         <com.saggitt.omega.preferences.CustomDialogPreference
             android:key="pref_iconPopupMenu"
             android:title="@string/title__drawer_icon_popup_menu"
-            app:content="@xml/omega_drawer_icon_popup_menu_preferences"
+            app:content="@xml/drawer_icon_popup"
             app:iconSpaceReserved="false" />
 
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
