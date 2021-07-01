@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  Copyright (c) 2020 Omega Launcher
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,7 @@
   ~  See the License for the specific language governing permissions and
   ~  limitations under the License.
   ~
-  -->
-<resources>
+  --><resources>
     <string name="tab_bottom_sheet_save">Guardare</string>
     <string name="pref_appcategorization_folders_title">Cartellas</string>
     <string name="default_folder_name">Nuova cartella</string>
@@ -24,4 +24,24 @@
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
     <string name="keep_scroll_state_pref_title">Ricorda posizione di scorrimento</string>
+    <string name="title__desktop_grid_size">Dimensione griglia</string>
+    <string name="title__desktop_icon_size">Grandezza dell\'icona</string>
+    <string name="title__desktop_full_width_widgets">Widget a tutta larghezza</string>
+    <string name="allow_rotation_blocked_desc">Le impostazioni correnti del display non permettono la rotazione.</string>
+    <string name="pref_category__interfaces">Interfaccia</string>
+    <string name="pref_category__others">Altro</string>
+    <string name="pref_category__inputs">Gesti e ricerca</string>
+    <string name="summary__general_about">Ulteriori informazioni su Omega Launcher</string>
+    <string name="summary__general_advanced">Lingua, back up, impostazioni di ricerca</string>
+    <string name="summary__general_notifications">Conteggio dei badge, colore dei badge, gesti</string>
+    <string name="summary__general_smartspace">Data, ora, widget nella home</string>
+    <string name="summary__general_search">Provider di ricerca, stile, icone</string>
+    <string name="summary__general_theme">Cambia colori, pacchetto di icone, forma delle icone</string>
+    <string name="summary__general_drawer">Personalizza la lista delle applicazioni</string>
+    <string name="summary__general_dock">Applicazioni più importanti, barra di ricerca</string>
+    <string name="summary__general_desktop">Personalizza il tuo desktop</string>
+    <string name="title__general_smartspace">Widget nella home</string>
+    <string name="title__general_drawer">Lista delle applicazioni</string>
+    <string name="title__general_dock">Barra delle applicazioni</string>
+    <string name="title__general_desktop">Desktop</string>
 </resources>
