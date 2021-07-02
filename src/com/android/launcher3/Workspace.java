@@ -116,7 +116,7 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverla
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.settings.WorkspaceBlur;
+import com.saggitt.omega.blur.WorkspaceBlur;
 import com.saggitt.omega.views.OmegaBackgroundView;
 
 import java.util.ArrayList;
