@@ -18,30 +18,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="@style/LauncherTheme">
-        <item name="omegaColorSearchBar">?popupColorPrimary</item>
-        <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
-
+        <item name="alertDialogTheme">@style/SettingsTheme_Light.Dialog</item>
         <item name="dashIconTint">#0270CF</item>
         <item name="dashIconBackground">#A0FFFFFF</item>
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
     </style>
 
-    <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText" />
+    <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText">
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
+    </style>
 
     <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
-        <item name="omegaColorSearchBar">?popupColorPrimary</item>
-        <item name="omegaColorAllAppsOverlay">@android:color/transparent</item>
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
+        <item name="alertDialogTheme">@style/SettingsTheme_Dark.Dialog</item>
+
         <item name="dashIconTint">#0270CF</item>
         <item name="dashIconBackground">#A03C3C3C</item>
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
+        <item name="workspaceStatusBarScrim">@drawable/workspace_bg_dark</item>
+        <item name="android:alertDialogTheme">@style/SettingsTheme_Dark.Dialog</item>
     </style>
 
-    <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor" />
+    <style name="AppTheme.Dark.DarkMainColor" parent="LauncherTheme.Dark.DarkMainColor">
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
+    </style>
 
-    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" />
+    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText">
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
+    </style>
 
-    <style name="AppTheme.Black" parent="@style/LauncherTheme.Dark">
+    <style name="AppTheme.Black" parent="@style/AppTheme.Dark">
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsScrimColor">#EA000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>

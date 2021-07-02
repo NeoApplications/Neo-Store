@@ -17,7 +17,7 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.settings
+package com.saggitt.omega.blur
 
 import com.android.launcher3.CellLayout
 import com.android.launcher3.R

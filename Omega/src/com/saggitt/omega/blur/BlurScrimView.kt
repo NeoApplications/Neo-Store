@@ -71,7 +71,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet) : ShelfScrimView(cont
     private var allAppsBackground = context.omegaPrefs.drawerBackgroundColor
     private var dockBackground = context.omegaPrefs.dockBackgroundColor
     private val defaultAllAppsBackground =
-        Themes.getAttrColor(context, R.attr.allAppsNavBarScrimColor)
+        Themes.getAttrColor(context, R.attr.allAppsScrimColor)
 
     private val reInitUiRunnable = Runnable { reInitUi() }
     private var fullBlurProgress = 0f
