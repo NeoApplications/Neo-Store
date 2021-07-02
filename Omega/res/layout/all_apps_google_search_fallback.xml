@@ -27,6 +27,6 @@
     android:maxLines="1"
     android:scrollHorizontally="true"
     android:singleLine="true"
-    android:textColor="@color/qsb_drawer_text_color_normal"
+    android:textColor="?workspaceTextColor"
     android:textColorHint="@drawable/all_apps_search_hint"
     android:textSize="16sp" />
