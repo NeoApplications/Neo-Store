@@ -65,6 +65,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.gestures.BlankGestureHandler;
 import com.saggitt.omega.gestures.GestureController;
@@ -422,6 +423,12 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
                 && shouldIgnoreTouchDown(event.getX(), event.getY())) {
             return false;
         }
+        Launcher launcher = OmegaLauncher.getLauncher(getContext());
+        if (launcher instanceof OmegaLauncher && mSwipeUpHandler != null) {
+            ((OmegaLauncher) launcher).getGestureController()
+                    .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());
+        }
+
         if (isLongClickable()) {
             super.onTouchEvent(event);
             mLongPressHelper.onTouchEvent(event);

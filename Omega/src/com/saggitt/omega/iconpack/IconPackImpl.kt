@@ -309,8 +309,7 @@ class IconPackImpl(context: Context, packPackageName: String) : IconPack(context
             }
         }
 
-        val isCustomPack =
-            customIconEntry?.packPackageName == packPackageName && customIconEntry.icon == null
+        val isCustomPack = customIconEntry?.packPackageName == packPackageName
         if ((prefs.iconPackMasking || isCustomPack) && packMask.hasMask) {
             val baseIcon = defaultPack.getIcon(
                 launcherActivityInfo, iconDpi, flattenDrawable,

@@ -203,8 +203,7 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
         }
         int layout = mFolder.isInAppDrawer() ? R.layout.all_apps_folder_application
                 : R.layout.folder_application;
-        BubbleTextView textView = mViewCache.getView(
-                R.layout.folder_application, getContext(), null);
+        BubbleTextView textView = mViewCache.getView(layout, getContext(), null);
         textView.applyFromWorkspaceItem(item);
         textView.setOnClickListener(ItemClickHandler.INSTANCE);
         textView.setOnLongClickListener(mFolder);

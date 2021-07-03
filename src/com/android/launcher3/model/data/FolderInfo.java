@@ -29,6 +29,7 @@ import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolder
 import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_FOLDER_LABEL_STATE_UNSPECIFIED;
 import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_SUGGESTED;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -352,7 +353,8 @@ public class FolderInfo extends ItemInfo {
     private Drawable getIconInternal(Launcher launcher) {
         CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
         IconPackManager.CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
-        if (entry != null && entry.getIcon() != null) {
+        if (entry != null) {
+            entry.getIcon();
             if (!entry.getIcon().equals(cachedIcon)) {
                 IconPack pack = IconPackManager.Companion.getInstance(launcher)
                         .getIconPack(entry.getPackPackageName(), false, true);
@@ -443,6 +445,7 @@ public class FolderInfo extends ItemInfo {
      * Returns index of the accepted suggestion.
      */
     public OptionalInt getAcceptedSuggestionIndex() {
+        @SuppressLint("RestrictedApi")
         String newLabel = checkNotNull(title,
                 "Expected valid folder label, but found null").toString();
         if (suggestedFolderNames == null || !suggestedFolderNames.hasSuggestions()) {

@@ -17,8 +17,8 @@
 
 package com.saggitt.omega.theme
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.android.launcher3.R
 import java.lang.ref.WeakReference
 
@@ -48,12 +48,17 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
 
     class Launcher : ThemeSet {
 
+        /*Light Theme*/
         override val lightTheme = R.style.AppTheme
         override val darkTextTheme = R.style.AppTheme_DarkText
         override val darkMainColorTheme = R.style.AppTheme_DarkMainColor
+
+        /*Dark Theme*/
         override val darkTheme = R.style.AppTheme_Dark
         override val darkDarkTextTheme = R.style.AppTheme_Dark_DarkText
         override val darkDarkMainColorTheme = R.style.AppTheme_Dark_DarkMainColor
+
+        /*Black Theme*/
         override val blackTheme = R.style.AppTheme_Black
         override val blackDarkTextTheme = R.style.AppTheme_Black_DarkText
     }
@@ -75,26 +80,6 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
         override val darkDarkTextTheme = R.style.SettingsTheme_Dark_Transparent
         override val blackTheme = R.style.SettingsTheme_Black_Transparent
         override val blackDarkTextTheme = R.style.SettingsTheme_Black_Transparent
-    }
-
-    class LauncherDialog : ThemeSet {
-
-        override val lightTheme = android.R.style.Theme_Material_Light
-        override val darkTextTheme = android.R.style.Theme_Material_Light
-        override val darkTheme = android.R.style.Theme_Material
-        override val darkDarkTextTheme = android.R.style.Theme_Material
-        override val blackTheme = android.R.style.Theme_Material
-        override val blackDarkTextTheme = android.R.style.Theme_Material
-    }
-
-    class DeviceDefault : ThemeSet {
-
-        override val lightTheme = android.R.style.Theme_DeviceDefault_Light
-        override val darkTextTheme = android.R.style.Theme_DeviceDefault_Light
-        override val darkTheme = android.R.style.Theme_DeviceDefault
-        override val darkDarkTextTheme = android.R.style.Theme_DeviceDefault
-        override val blackTheme = android.R.style.Theme_DeviceDefault
-        override val blackDarkTextTheme = android.R.style.Theme_DeviceDefault
     }
 
     class AlertDialog : ThemeSet {

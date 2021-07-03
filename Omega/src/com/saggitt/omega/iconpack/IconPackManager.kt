@@ -122,8 +122,7 @@ class IconPackManager(private val context: Context) {
         }
         if (customPack != null) {
             customPack.getIcon(
-                launcherActivityInfo, iconDpi,
-                flattenDrawable, customEntry, iconProvider
+                launcherActivityInfo, iconDpi, flattenDrawable, customEntry, iconProvider
             )?.let { icon -> return icon }
         }
         packList.iterator().forEach { pack ->
@@ -236,7 +235,7 @@ class IconPackManager(private val context: Context) {
             private fun parseLegacy(string: String): CustomIconEntry {
                 val parts = string.split("/")
                 val icon = TextUtils.join("/", parts.subList(1, parts.size))
-                if (parts[0] == "lawnchairUriPack" && !icon.isNullOrBlank()) {
+                if (parts[0] == "omegaUriPack" && !icon.isNullOrBlank()) {
                     val iconParts = icon.split("|")
                     return CustomIconEntry(
                         parts[0],

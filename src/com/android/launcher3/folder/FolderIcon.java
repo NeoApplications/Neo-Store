@@ -126,11 +126,11 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     ClippedFolderIconLayoutRule mPreviewLayoutRule;
     private PreviewItemManager mPreviewItemManager;
     private PreviewItemDrawingParams mTmpParams = new PreviewItemDrawingParams(0, 0, 0, 0);
-    private List<WorkspaceItemInfo> mCurrentPreviewItems = new ArrayList<>();
+    private final List<WorkspaceItemInfo> mCurrentPreviewItems = new ArrayList<>();
 
     boolean mAnimating = false;
 
-    private Alarm mOpenAlarm = new Alarm();
+    private final Alarm mOpenAlarm = new Alarm();
 
     private boolean mForceHideDot;
     @ViewDebug.ExportedProperty(category = "launcher", deepExport = true)
@@ -144,7 +144,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     Folder mFolder;
     @Thunk
     BubbleTextView mFolderName;
-    private Rect mTouchArea = new Rect();
+    private final Rect mTouchArea = new Rect();
     private float mScaleForReorderBounce = 1f;
 
     private GestureHandler mSwipeUpHandler;
@@ -573,8 +573,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             }
 
-            isCustomIcon = true;
-
             if (mInfo.isCoverMode()) {
                 ItemInfoWithIcon coverInfo = mInfo.getCoverInfo();
                 mFolderName.setTag(coverInfo);
@@ -588,6 +586,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             }
             mBackground.setStartOpacity(0f);
         } else {
+            isCustomIcon = false;
             if (isInAppDrawer()) {
                 lp.topMargin = grid.allAppsIconSizePx + grid.allAppsIconDrawablePaddingPx;
             } else {
@@ -595,8 +594,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             }
             mFolderName.setCompoundDrawablePadding(0);
             mFolderName.applyDotState(mInfo, false);
-
-            isCustomIcon = false;
             mFolderName.clearIcon();
             mBackground.setStartOpacity(1f);
         }
@@ -847,7 +844,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             ((OmegaLauncher) launcher).getGestureController()
                     .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());
         }
-
         return true;
     }
 
