@@ -75,7 +75,9 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
         return new Widgets(launcher, itemInfo);
     };
+
     public static final Factory<BaseDraggingActivity> APP_INFO = AppInfo::new;
+
     public static final Factory<BaseDraggingActivity> INSTALL = (activity, itemInfo) -> {
         boolean supportsWebUI = (itemInfo instanceof WorkspaceItemInfo)
                 && ((WorkspaceItemInfo) itemInfo).hasStatusFlag(
@@ -92,6 +94,7 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
         return new Install(activity, itemInfo);
     };
+
     public static final Factory<Launcher> APP_EDIT = (launcher, itemInfo) -> {
         OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
         AppEdit appEdit = null;
@@ -126,11 +129,10 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
         return appRemove;
     };
+
     public static final Factory<Launcher> APP_UNINSTALL = (launcher, itemInfo) -> {
         OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
         AppUninstall appUninstall = null;
-
-        ;
 
         if (prefs.getDrawerPopupUninstall() || Launcher.getLauncher(launcher).isInState(ALL_APPS)) {
             if (itemInfo instanceof ItemInfoWithIcon
