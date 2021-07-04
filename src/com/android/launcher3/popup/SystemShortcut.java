@@ -315,6 +315,8 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
                         return info.getComponentName();
                     }
                 }
+            } else {
+                return item.getTargetComponent();
             }
             return null;
         }
