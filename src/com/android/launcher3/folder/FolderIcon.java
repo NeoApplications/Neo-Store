@@ -572,7 +572,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             } else {
                 mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             }
-
+            isCustomIcon = true;
             if (mInfo.isCoverMode()) {
                 ItemInfoWithIcon coverInfo = mInfo.getCoverInfo();
                 mFolderName.setTag(coverInfo);
