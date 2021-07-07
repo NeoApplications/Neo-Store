@@ -272,8 +272,8 @@
     <string name="battery_charging">Charging</string>
     <string name="battery_full">Charged</string>
     <string name="battery_low">Battery Low</string>
-    <string name="event_provider_missing_notification_access">To use &lt;xliff:g example="My Provider" id="providerName"&gt;“%1$s”&lt;/xliff:g&gt;, enable notifications from &lt;xliff:g example="My App" id="name"&gt;“%2$s”.&lt;/xliff:g&lt;</string>
-    <string name="event_provider_missing_notification_dots">To use &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;, enable Notification Dots.</string>
+    <string name="event_provider_missing_notification_access">To use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">To use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
 
     <string name="permission_iplocate">Approximate Location</string>
     <string name="permission_iplocate_twilight_explanation">Allow access to your approximate location? This enables more accurate daylight calculation.</string>

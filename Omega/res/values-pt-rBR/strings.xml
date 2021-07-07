@@ -165,7 +165,7 @@
     <string name="icon_shape_override_label">Alterar a forma do ícone</string>
     <string name="menu_icon_shape">Formato de ícone personalizado</string>
     <string name="title_theme_icon_packs">Pacotes de ícones</string>
-    <string name="msg_missing_usage_access">Para mostrar sugestões de aplicativos, ative o acesso de uso para &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="msg_missing_usage_access">Para mostrar sugestões de aplicativos, ative o acesso de uso para <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <string name="needs_usage_access">É necessário acesso ao uso</string>
     <string name="title_text_color">Cor do Texto</string>
     <string name="title_app_suggestions">Aplicativos</string>
@@ -258,7 +258,7 @@
     <string name="onbording">Integrando</string>
     <string name="action_open_recents">Abrir recentes</string>
     <string name="event_provider_missing_notification_dots">Para usar <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, ative os Pontos de Notificação.</string>
-    <string name="event_provider_missing_notification_access">Para usar &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, ative as notificações de &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&gt;</string>
+    <string name="event_provider_missing_notification_access">Para usar <xliff:g example="My Provider" id="providerName">"%1$s”</xliff:g>, ative as notificações de <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>

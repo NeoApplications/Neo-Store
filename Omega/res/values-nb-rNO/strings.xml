@@ -303,8 +303,8 @@
     <string name="title_smartspace_time_above">Vis stor klokke</string>
     <string name="title_smartspace_time_24_h">Bruk 24-timersformat</string>
     <string name="title_smartspace_date">Vis dato</string>
-    <string name="event_provider_missing_notification_dots">For å bruke &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;«%1$s»&lt;/xliff:g&gt; må du skru på merknadsdotter.<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
-    <string name="event_provider_missing_notification_access">Skru på merknader fra &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”.&lt;/xliff:g&gt; for å bruke &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;,<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">For å bruke <xliff:g example="My Provider" id="providerName">"%1$s"</xliff:g> må du skru på merknadsdotter.<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
+    <string name="event_provider_missing_notification_access">Skru på merknader fra <xliff:g example="My App" id="name">“%2$s”.</xliff:g> for å bruke <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>,<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
     <string name="zen_mode_enabled">«Ikke forstyrr» er påslått</string>
     <string name="title_theme_icon_packs">Ikonpakker</string>
     <string name="title_text_color">Tekstfarge</string>
@@ -333,7 +333,7 @@
     <string name="title_adaptify_pack">Opprett tilpasningsdyktige ikoner for ikonpakke</string>
     <string name="import_as_adaptive">Som tilpasningsdyktig ikon</string>
     <string name="menu_icon_shape">Egendefinert ikonform</string>
-    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <string name="title_all_apps_google_search">Globalt søk</string>
     <string name="pref_category__incubating">Inkubasjon</string>
     <string name="summary__general_notifications">Skilt-telling, skiltfarge, håndvendinger</string>

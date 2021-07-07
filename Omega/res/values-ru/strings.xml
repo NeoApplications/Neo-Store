@@ -166,7 +166,7 @@
     <string name="allow">Разрешить</string>
     <string name="permission_iplocate_twilight_explanation">Разрешить доступ к вашему приблизительному местоположению\? Это позволяет более точно рассчитывать дневное освещение.</string>
     <string name="permission_iplocate">Приблизительное местоположение</string>
-    <string name="event_provider_missing_notification_access">Чтобы использовать &lt;xliff:g example=My Provider id=providerName&gt;\"%1$s\"&lt;/xliff:g&gt;, включите уведомления от &lt;xliff:g example=My App id=name&gt;\"%2$s\".&lt;/xliff:g&gt;</string>
+    <string name="event_provider_missing_notification_access">Чтобы использовать <xliff:g example="My Provider" id="providerName">"%1$s"</xliff:g>, включите уведомления от <xliff:g example="My App" id="name">"%2$s".</xliff:g></string>
     <string name="battery_low">Низкий заряд батареи</string>
     <string name="battery_full">Заряжено</string>
     <string name="battery_charging">Зарядка</string>
@@ -241,7 +241,7 @@
     <string name="title__theme_blur_radius">Интенсивность размытия</string>
     <string name="title__theme_blur">Размытие</string>
     <string name="title__theme_accent_color">Цвет акцента</string>
-    <string name="msg_missing_usage_access">Чтобы показать предложения приложений, включите доступ к использованию для &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt; %1$s &lt;/xliff:g&gt;</string>
+    <string name="msg_missing_usage_access">Чтобы показать предложения приложений, включите доступ к использованию для <xliff:g id="name" example="My App"> %1$s </xliff:g></string>
     <string name="needs_usage_access">Требуется доступ к использованию</string>
     <string name="hide_app_selected">  скрыты</string>
     <plurals name="hidden_apps_count">
