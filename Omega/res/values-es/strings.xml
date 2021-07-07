@@ -149,7 +149,7 @@
     <string name="action_open_app">Abrir aplicación</string>
     <string name="pref_category__notifications">Notificaciones</string>
     <string name="units_kelvin">Kelvin</string>
-    <string name="units_imperial"/>
+    <string name="units_imperial">Fahrenheit</string>
     <string name="units_metric">Centígrados</string>
     <string name="battery_status">Estado de la batería</string>
     <string name="event_provider_unread_notifications">Notificaciones</string>
@@ -231,4 +231,23 @@
     <string name="cat_drawer_grid">Cuadrícula</string>
     <string name="summary_search_hidden_apps">Mostrar accesos directos ocultos en los resultados.</string>
     <string name="title_all_apps_search">Barra de búsqueda en el Drawer</string>
+    <string name="event_provider_missing_notification_access">Para usarlo &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, habilite las notificaciones from &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&lt;</string>
+    <string name="zen_mode_enabled">No molestar está habilitado.</string>
+    <string name="name_provider_alarm_events">Próximas alarmas</string>
+    <string name="smartspace_in_time">En %1$s</string>
+    <string name="title_legacy_treatment">Crear iconos adaptivos</string>
+    <string name="title_legacy_colored_backgrounds">Fondo de colores</string>
+    <string name="title_adaptify_pack">Crear iconos adaptivos para el paquete de iconos</string>
+    <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no se puede deshacer.</string>
+    <string name="playstore_query_icon_pack">Paquete de Iconos</string>
+    <string name="import_as_adaptive">Como Icono adaptivo</string>
+    <string name="open_image_picker">Abrir selector de imagen</string>
+    <string name="icon_pack_external_picker">Abrir selector externo</string>
+    <string name="icon_shape_corner_cut">Cortar</string>
+    <string name="icon_shape_override_progress">Aplicando cambios de forma de Icono</string>
+    <string name="menu_icon_shape">Icono Personalizado</string>
+    <string name="title_drawer_paged">Paginado</string>
+    <string name="title_drawer_vertical_list">Lista Vertical</string>
+    <string name="title_drawer_vertical">Vertical</string>
+    <string name="summary__full_width_widgets">Permitir que los widgets abarquen todo el ancho sin padin</string>
 </resources>
