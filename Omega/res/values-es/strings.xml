@@ -256,4 +256,8 @@
     <string name="title_separate_work_apps">Segunda pestaña para Aplicaciones de Trabajo</string>
     <string name="title_desktop_icon_popup_menu">Elementos del menú emergente</string>
     <string name="title__general_smartspace">Widget de Inicio</string>
+    <string name="action_sleep">Dormir</string>
+    <string name="action_open_settings">Abrir configuración del Launcher</string>
+    <string name="folder_name_format">Carpeta: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="permission_iplocate_twilight_explanation">¿Permitir acceso a la ubicación aproximada\? Ésto permite un calculo de día noche mas certero.</string>
 </resources>
