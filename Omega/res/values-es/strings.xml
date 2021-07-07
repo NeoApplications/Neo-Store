@@ -250,4 +250,10 @@
     <string name="title_drawer_vertical_list">Lista Vertical</string>
     <string name="title_drawer_vertical">Vertical</string>
     <string name="summary__full_width_widgets">Permitir que los widgets abarquen todo el ancho sin padin</string>
+    <string name="title__drawer_icon_popup_menu">Burbuja de acceso directo</string>
+    <string name="title__drawer_icon_size">Tamaño de icono para todas las aplicaciones</string>
+    <string name="title__drawer_paged_apps">Vista de aplicaciones por páginas</string>
+    <string name="title_separate_work_apps">Segunda pestaña para Aplicaciones de Trabajo</string>
+    <string name="title_desktop_icon_popup_menu">Elementos del menú emergente</string>
+    <string name="title__general_smartspace">Widget de Inicio</string>
 </resources>
