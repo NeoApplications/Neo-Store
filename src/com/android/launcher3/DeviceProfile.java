@@ -269,7 +269,7 @@ public class DeviceProfile {
         updateAvailableDimensions(res);
 
         // Now that we have all of the variables calculated, we can tune certain sizes.
-        if (!isVerticalBarLayout() && isPhone && isTallDevice) {
+        /*if (!isVerticalBarLayout() && isPhone && isTallDevice) {
             // We increase the hotseat size when there is extra space.
             // ie. For a display with a large aspect ratio, we can keep the icons on the workspace
             // in portrait mode closer together by adding more height to the hotseat.
@@ -281,7 +281,7 @@ public class DeviceProfile {
 
             // Recalculate the available dimensions using the new hotseat size.
             updateAvailableDimensions(res);
-        }
+        }*/
         float targetDockScale = prefs.getDockScale();
 
         int previousDockSize = hotseatBarSizePx;
