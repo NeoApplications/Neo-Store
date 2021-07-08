@@ -80,7 +80,7 @@
     <string name="title__theme_blur_radius">Unschärfe Intensität</string>
     <string name="title__theme_blur">Unschärfe</string>
     <string name="title__theme_accent_color">Akzentfarbe</string>
-    <string name="msg_missing_usage_access">Um App-Vorschläge anzuzeigen, erteilen Sie den Nutzungszugriff für &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" id=\"name\" example=\"My App\"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="msg_missing_usage_access">Um App-Vorschläge anzuzeigen, erteilen Sie den Nutzungszugriff für <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <string name="needs_usage_access">Nutzungzugriff erforderlich</string>
     <string name="hide_app_reset">Zurücksetzen</string>
     <string name="hide_app_selected">  versteckt</string>
@@ -197,7 +197,7 @@
     <string name="weather_provider_oneplus_weather">OnePlus Wetter</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="onbording">Onboarding</string>
-    <string name="event_provider_missing_notification_access">Um &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt; verwenden zu dürfen, musst du die Benachrichtigungen von &lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My App\" id=\"name\"&gt;“%2$s”&lt;/xliff:g&gt; aktivieren.</string>
+    <string name="event_provider_missing_notification_access">Um <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g> verwenden zu dürfen, musst du die Benachrichtigungen von <xliff:g example="My App" id="name">“%2$s”</xliff:g> aktivieren.</string>
     <string name="action_open_drawer">App-Übersicht öffnen</string>
     <string name="action_none">Nichts tun</string>
     <string name="pref_category__gestures">Gesten</string>
@@ -224,7 +224,7 @@
     <string name="allow">Erlauben</string>
     <string name="permission_iplocate_twilight_explanation">Erlaube Zugriff auf deinen ungefähren Standort\? Dies erlaubt eine genauere Tageslicht Berechnung.</string>
     <string name="permission_iplocate">Ungefährer Standort</string>
-    <string name="event_provider_missing_notification_dots">&lt;xliff:g xmlns:xliff=\"urn:oasis:names:tc:xliff:document:1.2\" example=\"My Provider\" id=\"providerName\"&gt;“%1$s”&lt;/xliff:g&gt;, aktiviere Benachrichtigungs Punkte.</string>
+    <string name="event_provider_missing_notification_dots"><xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, aktiviere Benachrichtigungs Punkte.</string>
     <string name="battery_low">Batterie niedrig</string>
     <string name="battery_full">Aufgeladen</string>
     <string name="battery_charging">Lädt auf</string>

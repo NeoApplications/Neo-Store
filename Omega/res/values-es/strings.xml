@@ -231,7 +231,7 @@
     <string name="cat_drawer_grid">Cuadrícula</string>
     <string name="summary_search_hidden_apps">Mostrar accesos directos ocultos en los resultados.</string>
     <string name="title_all_apps_search">Barra de búsqueda en el Drawer</string>
-    <string name="event_provider_missing_notification_access">Para usarlo &lt;xliff:g example=My Provider id=providerName&gt;“%1$s”&lt;/xliff:g&gt;, habilite las notificaciones from &lt;xliff:g example=My App id=name&gt;“%2$s”.&lt;/xliff:g&lt;</string>
+    <string name="event_provider_missing_notification_access">Para usarlo <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, habilite las notificaciones from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
     <string name="zen_mode_enabled">No molestar está habilitado.</string>
     <string name="name_provider_alarm_events">Próximas alarmas</string>
     <string name="smartspace_in_time">En %1$s</string>
