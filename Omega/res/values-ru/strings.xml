@@ -166,7 +166,7 @@
     <string name="allow">Разрешить</string>
     <string name="permission_iplocate_twilight_explanation">Разрешить доступ к вашему приблизительному местоположению\? Это позволяет более точно рассчитывать дневное освещение.</string>
     <string name="permission_iplocate">Приблизительное местоположение</string>
-    <string name="event_provider_missing_notification_access">Чтобы использовать <xliff:g example="My Provider" id="providerName">"%1$s"</xliff:g>, включите уведомления от <xliff:g example="My App" id="name">"%2$s".</xliff:g></string>
+    <string name="event_provider_missing_notification_access">Чтобы использовать <xliff:g example="My Provider" id="providerName">%1$s</xliff:g>, включите уведомления от <xliff:g example="My App" id="name">%2$s.</xliff:g></string>
     <string name="battery_low">Низкий заряд батареи</string>
     <string name="battery_full">Заряжено</string>
     <string name="battery_charging">Зарядка</string>
