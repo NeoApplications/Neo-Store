@@ -195,6 +195,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/SettingsTheme_Light.Button</item>
         <item name="android:buttonStyle">@style/SettingsTheme_Light.Button</item>
+        <item name="dialogCornerRadius">8dp</item>
     </style>
 
     <style name="SettingsTheme_Dark.ActionBar" parent="SettingsTheme_Dark">
@@ -302,6 +303,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/SettingsTheme_Light.Button</item>
         <item name="android:buttonStyle">@style/SettingsTheme_Light.Button</item>
+        <item name="dialogCornerRadius">8dp</item>
     </style>
 
     <style name="SettingsTheme.BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
