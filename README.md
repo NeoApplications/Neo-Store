@@ -3,8 +3,6 @@ Libre software launcher. <br/>
 [![Build Status](https://img.shields.io/github/workflow/status/otakuhqz/Omega/Omega%20CI?event=push&logo=github&style=for-the-badge)](https://github.com/otakuhqz/Omega/actions?query=workflow%3A%22Omega+CI%22+event%3Apush)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/otakuhqz/Omega.svg?style=for-the-badge)](https://github.com/otakuhqz/Omega/releases)
-[![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
-[![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
 
 ## Installation
 APKs are available on GitHub and in the Telegram channel. Some nightly builds
@@ -88,6 +86,15 @@ to discuss the development, issues and new features.<br/>
 ## Contributions
 If you know Java or Kotlin you can work on additional features!
 I will happily work on features you would like to have, just open an issue.
+
+## Support Development
+[![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
+
+Please note we don't support ETH deposits via smart contracts.
+[![0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)
+
+[![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
+[![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
 
 ## Credits
 The LawnchairLauncher team for the great work on Lawnchair.<br>
