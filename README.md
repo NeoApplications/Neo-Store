@@ -84,8 +84,10 @@ to discuss the development, issues and new features.<br/>
 </table>
 
 ## Contributions
-If you know Java or Kotlin you can work on additional features!
-I will happily work on features you would like to have, just open an issue.
+If you have knowledge in Java or Kotlin you can work on additional features! or bugs and open
+pull requests!. Make sure the code is formatted before make a pull request.
+
+You can also contribute to this project by opening issues for bugs or new features.
 
 ## Support Development
 [![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
