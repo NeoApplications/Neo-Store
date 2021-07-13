@@ -90,7 +90,7 @@
     <dimen name="qsb_min_width_with_mic">124dp</dimen>
     <dimen name="qsb_min_width_portrait">96dp</dimen>
 
-    <dimen name="smartspace_title_size">24dp</dimen>
+    <dimen name="smartspace_title_size">24sp</dimen>
     <dimen name="smartspace_clock_above_size">40dp</dimen>
     <dimen name="smartspace_title_min_size">14dp</dimen>
     <dimen name="smartspace_horizontal_padding">56dp</dimen>
