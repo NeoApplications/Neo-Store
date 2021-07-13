@@ -99,11 +99,11 @@
                 android:visibility="gone"
                 tools:visiblity="visible">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/title_weather_icon"
                     android:layout_width="@dimen/smartspace_title_weather_icon_size"
                     android:layout_height="@dimen/smartspace_title_weather_icon_size"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_gravity="center"
                     android:scaleType="fitXY"
                     tools:src="@drawable/weather_01" />
@@ -134,12 +134,12 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/subtitle_icon"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_weight="0.0"
-                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
                 android:layout_gravity="center_vertical" />
 
             <com.google.android.apps.nexuslauncher.graphics.DoubleShadowTextView
