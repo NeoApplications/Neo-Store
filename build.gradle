@@ -46,7 +46,7 @@ android {
     compileSdkVersion 30
 
     def name = "0.8.1"
-    def code = 177
+    def code = 178
 
     defaultConfig {
         minSdkVersion 26
@@ -198,7 +198,7 @@ dependencies {
     implementation "com.github.LawnchairLauncher:hoko-lite:0e21db9ae5"
     implementation "com.luckycatlabs:SunriseSunsetCalculator:1.2"
     implementation "me.xdrop:fuzzywuzzy:1.3.1"
-    implementation 'com.github.otakuhqz:colorpickerx:1.4.2'
+    implementation 'com.github.otakuhqz.colorpickerx:colorpickerx:1.4.4'
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
     implementation "com.mikepenz:fastadapter:5.4.1"

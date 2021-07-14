@@ -190,6 +190,7 @@ import com.android.systemui.plugins.shared.LauncherExterns;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 
 import java.io.FileDescriptor;
@@ -1858,8 +1859,17 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         AbstractFloatingView topView = AbstractFloatingView.getTopOpenView(this);
         if (topView != null && topView.onBackPressed()) {
             // Handled by the floating view.
-        } else {
+        } else if (!isInState(NORMAL)) {
+            UserEventDispatcher ued = getUserEventDispatcher();
+            LauncherState lastState = mStateManager.getLastState();
+            ued.logActionCommand(Action.Command.BACK, mStateManager.getState().containerType,
+                    lastState.containerType);
+            mStateManager.goToState(lastState);
             mStateManager.getState().onBackPressed(this);
+        } else {
+            if (this instanceof OmegaLauncher) {
+                ((OmegaLauncher) this).getGestureController().onPressBack();
+            }
         }
     }
 
