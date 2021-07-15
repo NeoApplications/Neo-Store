@@ -142,7 +142,6 @@
     <string name="backup_delete">Ocultar</string>
     <string name="summary__advanced_language">Cambiar el idioma de esta aplicación</string>
     <string name="omega_actions">Acciones</string>
-    <string name="gesture_swipe_up">Deslizar hacia arriba</string>
     <string name="action_close_notifications">Cerrar notificaciones</string>
     <string name="action_open_notifications">Abrir notificaciones</string>
     <string name="action_open_app_with_target">Abrir “%s”</string>
@@ -260,4 +259,13 @@
     <string name="action_open_settings">Abrir configuración del Launcher</string>
     <string name="folder_name_format">Carpeta: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
     <string name="permission_iplocate_twilight_explanation">¿Permitir acceso a la ubicación aproximada\? Ésto permite un calculo de día noche mas certero.</string>
+
+    <string name="gesture_press_home">Botón Inicio</string>
+    <string name="gesture_press_back">Botón Atrás</string>
+    <string name="gesture_double_tap">Doble toque</string>
+    <string name="gesture_long_press">Mantener pulsado</string>
+    <string name="gesture_swipe_down">Deslizar hacia abajo</string>
+    <string name="gesture_swipe_up">Deslizar hacia arriba</string>
+    <string name="gesture_dock_swipe_up">Deslizar hacia arriba sobre el dock</string>
+
 </resources>

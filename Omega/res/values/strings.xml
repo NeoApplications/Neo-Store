@@ -369,6 +369,7 @@
     <string name="gesture_long_press">Touch &amp; Hold</string>
     <string name="gesture_swipe_up">Swipe Up</string>
     <string name="gesture_dock_swipe_up">Swipe Up From Dock</string>
+    <string name="gesture_press_home">Home Button Tap</string>
     <string name="gesture_press_back">Back button</string>
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use Double Tap to Sleep, grant the Admin permission.</string>

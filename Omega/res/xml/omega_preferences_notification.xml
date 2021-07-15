@@ -68,6 +68,13 @@
 
     <com.saggitt.omega.gestures.ui.GesturePreference
         android:defaultValue="@string/action_do_nothing_class"
+        android:key="pref_gesture_press_home"
+        android:persistent="true"
+        android:title="@string/gesture_press_home"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.PressHomeGesture" />
+
+    <com.saggitt.omega.gestures.ui.GesturePreference
+        android:defaultValue="@string/action_do_nothing_class"
         android:key="pref_gesture_press_back"
         android:persistent="true"
         android:title="@string/gesture_press_back"
