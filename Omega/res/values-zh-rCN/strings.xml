@@ -387,4 +387,6 @@
     <string name="weather_icons_default">默认</string>
     <string name="onboarding_swipe_up">上划以打开抽屉。</string>
     <string name="personality_provider">您好</string>
+    <string name="gesture_press_back">返回键</string>
+    <string name="gesture_press_home">轻按主页按钮</string>
 </resources>
