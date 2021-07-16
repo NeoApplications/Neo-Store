@@ -90,10 +90,10 @@ pull requests!. Make sure the code is formatted before make a pull request.
 You can also contribute to this project by opening issues for bugs or new features.
 
 ## Support Development
-[![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
+[![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
 
 Please note we don't support ETH deposits via smart contracts.
-[![0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)
+[![0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)
 
 [![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
 [![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
