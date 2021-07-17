@@ -16,7 +16,6 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.android.launcher3.AppFilter;
 import com.android.launcher3.BuildConfig;
@@ -29,8 +28,8 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.LooperExecutor;
-import com.saggitt.omega.allapps.FuzzyAppSearchAlgorithm;
 import com.saggitt.omega.allapps.OmegaAppFilter;
+import com.saggitt.omega.search.FuzzyAppSearchAlgorithm;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -53,21 +52,18 @@ public class AppSearchProvider extends ContentProvider {
     private AppFilter mBaseFilter;
 
     public AppSearchProvider() {
-        mPipeDataWriter = new PipeDataWriter<Future>() {
-            @Override
-            public void writeDataToPipe(@NonNull ParcelFileDescriptor output, @NonNull Uri uri, @NonNull String mimeType, @Nullable Bundle opts, @Nullable Future args) {
-                ParcelFileDescriptor.AutoCloseOutputStream outStream = null;
+        mPipeDataWriter = (output, uri, mimeType, opts, args) -> {
+            ParcelFileDescriptor.AutoCloseOutputStream outStream = null;
+            try {
+                outStream = new ParcelFileDescriptor.AutoCloseOutputStream(output);
+                ((Bitmap) args.get()).compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            } catch (Throwable e) {
+                Log.w("AppSearchProvider", "fail to write to pipe", e);
+            }
+            if (outStream != null) {
                 try {
-                    outStream = new ParcelFileDescriptor.AutoCloseOutputStream(output);
-                    ((Bitmap) args.get()).compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                } catch (Throwable e) {
-                    Log.w("AppSearchProvider", "fail to write to pipe", e);
-                }
-                if (outStream != null) {
-                    try {
-                        outStream.close();
-                    } catch (Throwable ignored) {
-                    }
+                    outStream.close();
+                } catch (Throwable ignored) {
                 }
             }
         };
@@ -109,12 +105,10 @@ public class AppSearchProvider extends ContentProvider {
         if ("loadIcon".equals(s)) try {
             final Uri parse = Uri.parse(s2);
             final ComponentKey dl = uriToComponent(parse, this.getContext());
-            final Callable<Bitmap> g = new Callable<Bitmap>() {
-                public Bitmap call() {
-                    final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
-                    mApp.getIconCache().getTitleAndIcon(d, false);
-                    return d.bitmap.icon;
-                }
+            final Callable<Bitmap> g = () -> {
+                final AppItemInfoWithIcon d = new AppItemInfoWithIcon(dl);
+                mApp.getIconCache().getTitleAndIcon(d, false);
+                return d.bitmap.icon;
             };
             final Bundle bundle2 = new Bundle();
             bundle2.putParcelable("suggest_icon_1", mLooper.submit(g).get());

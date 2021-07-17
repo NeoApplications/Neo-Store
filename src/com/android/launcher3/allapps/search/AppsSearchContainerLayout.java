@@ -45,7 +45,7 @@ import com.android.launcher3.allapps.AlphabeticalAppsList;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.util.ComponentKey;
-import com.saggitt.omega.allapps.FuzzyAppSearchAlgorithm;
+import com.saggitt.omega.search.FuzzyAppSearchAlgorithm;
 
 import java.util.ArrayList;
 import java.util.List;

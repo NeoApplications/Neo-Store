@@ -17,24 +17,32 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.allapps
+package com.saggitt.omega.search
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.LauncherApps
 import android.os.Handler
+import android.os.UserHandle
+import android.util.Log
 import com.android.launcher3.AppFilter
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.search.AllAppsSearchBarController
-import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.allapps.search.SearchAlgorithm
 import com.android.launcher3.model.data.AppInfo
-import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.search.WebSearchProvider
+import com.android.launcher3.pm.UserCache
+import com.android.launcher3.util.ComponentKey
+import com.saggitt.omega.allapps.CustomAppFilter
+import com.saggitt.omega.allapps.WinklerWeightedRatio
+import com.saggitt.omega.util.omegaPrefs
 import me.xdrop.fuzzywuzzy.FuzzySearch
 
 class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: List<AppInfo>) :
     SearchAlgorithm {
 
     private var resultHandler: Handler = Handler()
-    private var baseFilter: AppFilter = OmegaAppFilter(context)
+    private var baseFilter: AppFilter = CustomAppFilter(context)
 
     override fun doSearch(query: String, callback: AllAppsSearchBarController.Callbacks) {
         val res = query(context, query, apps, baseFilter).map { it.toComponentKey() }
@@ -58,44 +66,70 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
     companion object {
         const val MIN_SCORE = 65
 
-        /*
         @JvmStatic
         fun getApps(
-            context: Context, defaultApps: List<AppInfo>,
-            filter: AppFilter
+            context: Context, defaultApps: List<AppInfo>, mFilter: AppFilter
         ): List<AppInfo> {
-            if (!context.omegaPrefs.searchHiddenApps) {
+            val prefs = context.omegaPrefs;
+            if (!prefs.searchHiddenApps) {
                 return defaultApps
             }
             val iconCache = LauncherAppState.getInstance(context).iconCache
             val launcherApps = context.getSystemService(LauncherApps::class.java)
-            return UserCache.INSTANCE.get(context).userProfiles.flatMap { user ->
-                val duplicatePreventionCache = mutableListOf<ComponentName>()
-                launcherApps.getActivityList(null, user).filter { info ->
-                    filter.shouldShowApp(info.componentName, user) &&
-                            !duplicatePreventionCache.contains(info.componentName)
-                }.map { info ->
-                    duplicatePreventionCache.add(info.componentName)
-                    AppInfo(context, info, user).apply {
-                        iconCache.getTitleAndIcon(this, false)
+
+            val allApps: List<AppInfo> =
+                UserCache.INSTANCE.get(context).userProfiles.flatMap { user ->
+                    val duplicatePreventionCache = mutableListOf<ComponentName>()
+                    launcherApps.getActivityList(null, user).filter { info ->
+                        mFilter.shouldShowApp(info.componentName, user)
+                        !duplicatePreventionCache.contains(info.componentName)
+                    }.map { info ->
+                        duplicatePreventionCache.add(info.componentName)
+                        AppInfo(context, info, user).apply {
+                            iconCache.getTitleAndIcon(this, false)
+                        }
                     }
                 }
-            }
+            return allApps;
         }
-        */
+
+        private fun shouldShowApp(
+            context: Context,
+            component: ComponentName,
+            user: UserHandle,
+            appFilter: AppFilter
+        ): Boolean {
+            var result: Boolean
+            result = appFilter.shouldShowApp(component, user);
+            if (Utilities.getOmegaPrefs(context).searchHiddenApps) {
+                val mKey = ComponentKey(component, user)
+                result = !CustomAppFilter.isHiddenApp(context, mKey)
+            }
+            return result
+        }
+
         @JvmStatic
         fun query(
-            context: Context, query: String, defaultApps: List<AppInfo>,
+            context: Context,
+            query: String,
+            defaultApps: List<AppInfo>,
             filter: AppFilter
         ): List<AppInfo> {
-            return FuzzySearch.extractAll(
-                query, DefaultAppSearchAlgorithm.getApps(context, defaultApps, filter),
-                { item -> item?.title.toString() },
-                WinklerWeightedRatio(), MIN_SCORE
+            val result: List<AppInfo> = FuzzySearch.extractAll(
+                query, getApps(context, defaultApps, filter),
+                { item ->
+                    item?.title.toString()
+                }, WinklerWeightedRatio(), MIN_SCORE
             )
                 .sortedBy { it.referent.title.toString() }
                 .sortedByDescending { it.score }
                 .map { it.referent }
+
+            for (appInfo in result) {
+                Log.d("FuzzySearch", "Showing apps " + result.size)
+            }
+
+            return result
         }
     }
 }
