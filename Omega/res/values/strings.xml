@@ -120,6 +120,7 @@
     <string name="title_drawer_vertical">Vertical</string>
     <string name="title_drawer_vertical_list">Vertical List</string>
     <string name="title_drawer_paged">Paged</string>
+    <string name="dialog_message_change_sort">Change apps order to Alphabetical?</string>
 
     <string name="cat_drawer_grid">Grid</string>
     <string name="cat_drawer_icons">Icons</string>

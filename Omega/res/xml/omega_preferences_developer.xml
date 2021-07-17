@@ -39,7 +39,7 @@
 
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/pref_category__incubating">
 
-        <ListPreference
+        <com.saggitt.omega.allapps.AllAppsLayoutPreference
             android:defaultValue="0"
             android:disableDependentsState="false"
             android:entries="@array/entries_layout_mode"
