@@ -139,7 +139,7 @@ public class IconNormalizer {
         Rect tmpBounds = new Rect(d.getBounds());
         d.setBounds(0, 0, size, size);
 
-        Path path = d.getIconMask();
+        Path path = ((AdaptiveIconCompat) d).getIconMask();
         Region region = new Region();
         region.setPath(path, new Region(0, 0, size, size));
 
