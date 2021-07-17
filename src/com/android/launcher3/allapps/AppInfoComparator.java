@@ -22,6 +22,7 @@ import android.os.UserHandle;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.util.LabelComparator;
+import com.saggitt.omega.override.AppInfoProvider;
 
 import java.util.Comparator;
 
@@ -33,17 +34,19 @@ public class AppInfoComparator implements Comparator<AppInfo> {
     private final UserCache mUserManager;
     private final UserHandle mMyUser;
     private final LabelComparator mLabelComparator;
+    private final AppInfoProvider mInfoProvider;
 
     public AppInfoComparator(Context context) {
         mUserManager = UserCache.INSTANCE.get(context);
         mMyUser = Process.myUserHandle();
         mLabelComparator = new LabelComparator();
+        mInfoProvider = AppInfoProvider.Companion.getInstance(context);
     }
 
     @Override
     public int compare(AppInfo a, AppInfo b) {
         // Order by the title in the current locale
-        int result = mLabelComparator.compare(a.title.toString(), b.title.toString());
+        int result = mLabelComparator.compare(mInfoProvider.getTitle(a), mInfoProvider.getTitle(b));
         if (result != 0) {
             return result;
         }
