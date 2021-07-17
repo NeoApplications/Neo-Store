@@ -704,6 +704,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         if (hasExtraEmptyScreen() || mScreenOrder.size() == 0) return;
+
         if (OmegaPreferences.Companion
                 .getInstance(mLauncher).getKeepEmptyScreens()) {
             return;
