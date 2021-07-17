@@ -67,3 +67,19 @@
 -keep class com.saggitt.omega.smartspace.OnboardingProvider {
   public <init>(...);
 }
+
+-keep class com.saggitt.omega.iconpack.CustomIconProvider { *; }
+
+-keep class com.saggitt.omega.iconpack.CustomDrawableFactory { *; }
+
+-keep class com.android.launcher3.InvariantDeviceProfile {
+  float iconSizeOriginal;
+  float allAppsIconSizeOriginal;
+  float landscapeIconSizeOriginal;
+  float landscapeAllAppsIconSizeOriginal;
+  int numHotseatIconsOriginal;
+  int numRowsOriginal;
+  int numColumnsOriginal;
+  int numColsDrawerOriginal;
+  int numPredictionsOriginal;
+}
