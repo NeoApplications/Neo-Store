@@ -16,7 +16,6 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.FastBitmapDrawable.newIcon;
 import static com.android.launcher3.graphics.PreloadIconDrawable.newPendingIcon;
 import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
@@ -49,6 +48,7 @@ import com.android.launcher3.accessibility.LauncherAccessibilityDelegate;
 import com.android.launcher3.dot.DotInfo;
 import com.android.launcher3.dragndrop.DraggableView;
 import com.android.launcher3.folder.FolderIcon;
+import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.graphics.IconPalette;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.graphics.PreloadIconDrawable;
@@ -342,9 +342,16 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
     }
 
     private void applyIconAndLabel(ItemInfoWithIcon info) {
-        FastBitmapDrawable iconDrawable = newIcon(getContext(), info);
+        FastBitmapDrawable iconDrawable = DrawableFactory.INSTANCE.get(getContext())
+                .newIcon(getContext(), info);
+        ;
         OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
-        mDotParams.color = prefs.getNotificationBackground();
+        if (prefs.getNotificationCustomColor()) {
+            mDotParams.color = prefs.getNotificationBackground();
+        } else {
+            mDotParams.color = IconPalette.getMutedColor(info.bitmap.color, 0.54f);
+        }
+
         setIcon(iconDrawable);
         if (!isTextHidden())
             setText(getTitle(info));
@@ -356,7 +363,8 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
     }
 
     public void applyIcon(ItemInfoWithIcon info) {
-        FastBitmapDrawable iconDrawable = newIcon(getContext(), info);
+        FastBitmapDrawable iconDrawable = DrawableFactory.INSTANCE.get(getContext())
+                .newIcon(getContext(), info);
         mDotParams.color = IconPalette.getMutedColor(info.bitmap.color, 0.54f);
 
         setIcon(iconDrawable);
@@ -513,7 +521,9 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
                 mDotParams.count = mDotInfo.getNotificationCount();
                 mDotParams.notificationKeys = mDotInfo.getNotificationKeys().size();
                 mDotParams.showCount = prefs.getNotificationCount();
-                mDotParams.color = prefs.getNotificationBackground();
+                if (prefs.getNotificationCustomColor()) {
+                    mDotParams.color = prefs.getNotificationBackground();
+                }
                 if (prefs.getNotificationCount()) {
                     mDotParams.showCount = true;
                 }

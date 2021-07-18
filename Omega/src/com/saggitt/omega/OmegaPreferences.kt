@@ -212,6 +212,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --NOTIFICATION-- */
     val notificationCount: Boolean by BooleanPref("pref_notification_count", true, restart)
+    val notificationCustomColor: Boolean by BooleanPref("pref_custom_background", false, restart)
     val notificationBackground by IntPref(
         "pref_notification_background", R.color.notification_background, recreate
     )

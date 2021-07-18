@@ -84,6 +84,7 @@ import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.gestures.BlankGestureHandler;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.gestures.GestureHandler;
@@ -95,7 +96,6 @@ import com.saggitt.omega.util.OmegaUtilsKt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-
 
 /**
  * An icon that can appear on in the workspace representing an {@link Folder}.
@@ -529,7 +529,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         mFolder.logFolderLabelState(fromState, ToState.TO_SUGGESTION0);
     }
 
-
     public void onDrop(DragObject d, boolean itemReturnedOnFailedDrop) {
         WorkspaceItemInfo item;
         if (d.dragInfo instanceof AppInfo) {
@@ -578,6 +577,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 mFolderName.setTag(coverInfo);
                 mFolderName.applyIcon(coverInfo);
                 applyCoverDotState(coverInfo, false);
+                mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             } else {
                 BitmapInfo info = BitmapInfo.fromBitmap(
                         Utilities.drawableToBitmap(mInfo.getIcon(getContext())));
@@ -600,7 +600,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         mFolderName.setText(mInfo.getIconTitle(getFolder()));
         requestLayout();
     }
-
 
     public ClippedFolderIconLayoutRule getLayoutRule() {
         return mPreviewLayoutRule;
@@ -703,6 +702,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public void drawDot(Canvas canvas) {
         if (!mForceHideDot && ((mDotInfo != null && mDotInfo.hasDot()) || mDotScale > 0)) {
+            OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
             Rect iconBounds = mDotParams.iconBounds;
             BubbleTextView.getIconBounds(this, iconBounds, mActivity.getDeviceProfile().iconSizePx);
             float iconScale = (float) mBackground.previewSize / iconBounds.width();
@@ -710,9 +710,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             // If we are animating to the accepting state, animate the dot out.
             mDotParams.scale = Math.max(0, mDotScale - mBackground.getScaleProgress());
-            mDotParams.color = Utilities.getOmegaPrefs(getContext()).getNotificationBackground();
+            if (prefs.getNotificationCustomColor()) {
+                mDotParams.color = prefs.getNotificationBackground();
+            } else {
+                mDotParams.color = mBackground.getDotColor();
+            }
+
             mDotParams.count = mDotInfo.getNotificationCount();
-            if (Utilities.getOmegaPrefs(getContext()).getNotificationCount())
+            if (prefs.getNotificationCount())
                 mDotParams.showCount = true;
             mDotRenderer.draw(canvas, mDotParams);
         }
