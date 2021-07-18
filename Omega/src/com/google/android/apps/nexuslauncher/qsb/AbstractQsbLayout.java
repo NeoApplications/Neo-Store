@@ -1,5 +1,7 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
+import static java.lang.Math.round;
+
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -62,8 +64,6 @@ import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
 import org.jetbrains.annotations.NotNull;
-
-import static java.lang.Math.round;
 
 public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedPreferenceChangeListener,
         OnClickListener, OnLongClickListener, Insettable, SearchProviderController.OnProviderChangeListener, WallpaperColorInfo.OnChangeListener {
@@ -507,13 +507,11 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     protected final void setHintText(String str, TextView textView) {
-        String str2;
         if (TextUtils.isEmpty(str) || !dE()) {
-            str2 = str;
+            Dg = str;
         } else {
-            str2 = TextUtils.ellipsize(str, qsbTextHint, (float) qsbHintLenght, TruncateAt.END).toString();
+            Dg = TextUtils.ellipsize(str, qsbTextHint, (float) qsbHintLenght, TruncateAt.END).toString();
         }
-        Dg = str2;
         textView.setText(Dg);
         int i = 17;
         if (dE()) {

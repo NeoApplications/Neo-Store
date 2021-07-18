@@ -1,5 +1,12 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
+import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
+import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
+import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
+import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,19 +47,12 @@ import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.WebSearchProvider;
 import com.saggitt.omega.search.providers.AppsSearchProvider;
 
-import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
-import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
-import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
-import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
-import static com.android.launcher3.anim.Interpolators.LINEAR;
-import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
-
 public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManager, QsbChangeListener, OnIDPChangeListener {
 
-    private final QsbConfiguration qsbConfiguration;
-    private final boolean mLowPerformanceMode;
-    private final int mTopAdjusting;
-    private final int mVerticalOffset;
+    private QsbConfiguration qsbConfiguration;
+    private boolean mLowPerformanceMode;
+    private int mTopAdjusting;
+    private int mVerticalOffset;
     boolean mDoNotRemoveFallback;
     private int mShadowAlpha;
     private Bitmap Dv;
@@ -62,27 +62,33 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     private AllAppsContainerView mAppsView;
     private OmegaPreferences prefs;
     private boolean widgetMode;
-    private int textColor;
+    private int mTextColor;
 
     public AllAppsQsbLayout(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public AllAppsQsbLayout(Context context, AttributeSet attributeSet) {
-        this(context, attributeSet, 0);
+        super(context, attributeSet);
+        init();
     }
 
     public AllAppsQsbLayout(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
+        init();
+    }
+
+    private void init() {
         mShadowAlpha = 0;
         setOnClickListener(this);
-        qsbConfiguration = QsbConfiguration.getInstance(context);
+        qsbConfiguration = QsbConfiguration.getInstance(mContext);
         mTopAdjusting = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
         mVerticalOffset = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
         setClipToPadding(false);
         prefs = OmegaPreferences.Companion.getInstanceNoCreate();
         mLowPerformanceMode = prefs.getLowPerformanceMode();
-        textColor = Themes.getAttrColor(context, R.color.textColorPrimary);
+        mTextColor = Themes.getAttrColor(mContext, R.attr.folderTextColor);
     }
 
     protected void onFinishInflate() {
@@ -218,7 +224,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             startHotseatSearch();
         }
     }
-
     private void startDrawerSearch(String str, int i) {
         SearchProviderController controller = SearchProviderController.Companion
                 .getInstance(mContext);
@@ -335,6 +340,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
             mFallback.mSearchBarController.initialize(new SearchThread(mFallback.getContext()), mFallback,
                     Launcher.getLauncher(mFallback.getContext()), mFallback);
             addView(this.mFallback);
+            mFallback.setTextColor(mTextColor);
         }
     }
 
@@ -360,8 +366,8 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
         View view = (View) getParent();
         if (!widgetMode) {
             setTranslationX((float) ((view.getPaddingLeft() + (
-                    (((view.getWidth() - view.getPaddingLeft()) - view.getPaddingRight()) - (right
-                            - left))
+                    (((view.getWidth() - view.getPaddingLeft()) - view.getPaddingRight())
+                            - (right - left))
                             / 2)) - left));
         }
         int containerTopMargin = 0;

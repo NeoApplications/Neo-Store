@@ -14,7 +14,7 @@ import com.android.launcher3.statemanager.StateManager.StateListener;
 
 public class QsbAnimationController implements WindowStateListener, StateListener {
     private final Launcher mLauncher;
-    public boolean mGoogleHasFocus;
+    public boolean mQsbHasFocus;
     AnimatorSet mAnimatorSet;
     private boolean mSearchRequested;
 
@@ -34,15 +34,15 @@ public class QsbAnimationController implements WindowStateListener, StateListene
 
     public AnimatorSet openQsb() {
         mSearchRequested = false;
-        playAnimation(mGoogleHasFocus = true, true);
+        playAnimation(mQsbHasFocus = true, true);
         return mAnimatorSet;
     }
 
-    public final void z(boolean z) {
+    public final void prepareAnimation(boolean hasFocus) {
         mSearchRequested = false;
-        if (mGoogleHasFocus) {
-            mGoogleHasFocus = false;
-            playAnimation(false, z);
+        if (mQsbHasFocus) {
+            mQsbHasFocus = false;
+            playAnimation(false, hasFocus);
         }
     }
 
@@ -50,7 +50,7 @@ public class QsbAnimationController implements WindowStateListener, StateListene
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus || !mSearchRequested) {
             if (hasFocus) {
-                z(true);
+                prepareAnimation(true);
             }
             return;
         }
@@ -59,10 +59,10 @@ public class QsbAnimationController implements WindowStateListener, StateListene
 
     @Override
     public void onWindowVisibilityChanged(int visibility) {
-        z(false);
+        prepareAnimation(false);
     }
 
-    private void playAnimation(boolean z, boolean z2) {
+    private void playAnimation(boolean checkHotseat, boolean hasFocus) {
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
             mAnimatorSet = null;
@@ -82,7 +82,7 @@ public class QsbAnimationController implements WindowStateListener, StateListene
                 }
             }
         });
-        if (z) {
+        if (checkHotseat) {
             mAnimatorSet.play(ObjectAnimator.ofFloat(view, View.ALPHA, 0f));
             Animator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, (float) ((-mLauncher.getHotseat().getHeight()) / 2));
             animator.setInterpolator(Interpolators.ACCEL);
@@ -96,7 +96,7 @@ public class QsbAnimationController implements WindowStateListener, StateListene
             mAnimatorSet.setDuration(200);
         }
         mAnimatorSet.start();
-        if (!z2) {
+        if (!hasFocus) {
             mAnimatorSet.end();
         }
     }
@@ -113,7 +113,7 @@ public class QsbAnimationController implements WindowStateListener, StateListene
     }
 
     private void a(LauncherState launcherState) {
-        if (mGoogleHasFocus && launcherState != LauncherState.ALL_APPS && !mLauncher.hasWindowFocus()) {
+        if (mQsbHasFocus && launcherState != LauncherState.ALL_APPS && !mLauncher.hasWindowFocus()) {
             playAnimation(true, false);
         }
     }
