@@ -376,4 +376,7 @@
     <string name="title_desktop_keep_empty">Разрешить пустые страницы</string>
     <string name="title_desktop_overlap_placement">Разрешить перекрытия</string>
     <string name="title_smartspace_feed_theme">Тема ленты</string>
+    <string name="gesture_press_back">Нажатие кнопки Назад</string>
+    <string name="gesture_press_home">Нажатие кнопки Домой</string>
+    <string name="dialog_message_change_sort">Установить сортировку приложений по алфавиту\?</string>
 </resources>
