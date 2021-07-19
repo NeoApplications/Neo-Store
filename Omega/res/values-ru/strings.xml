@@ -379,4 +379,5 @@
     <string name="gesture_press_back">Нажатие кнопки Назад</string>
     <string name="gesture_press_home">Нажатие кнопки Домой</string>
     <string name="dialog_message_change_sort">Установить сортировку приложений по алфавиту\?</string>
+    <string name="home_widget">At a Glance</string>
 </resources>
