@@ -147,7 +147,7 @@
     <string name="allow">允许</string>
     <string name="permission_iplocate_twilight_explanation">允许访问您的粗略位置？ 这可以实现更准确的日光计算。</string>
     <string name="permission_iplocate">粗略位置</string>
-    <string name="event_provider_missing_notification_dots">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>,请启用通知圆点</string>
+    <string name="event_provider_missing_notification_dots">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, 请启用通知圆点。</string>
     <string name="event_provider_missing_notification_access">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>，启用系统通知。请转到 <xliff:g example="我的应用" id="name">“%2$s”</xliff:g></string>
     <string name="battery_low">电量低</string>
     <string name="battery_full">已充满</string>
@@ -389,4 +389,5 @@
     <string name="personality_provider">您好</string>
     <string name="gesture_press_back">返回键</string>
     <string name="gesture_press_home">轻按主页按钮</string>
+    <string name="dialog_message_change_sort">将应用顺序更改为按字母顺序？</string>
 </resources>
