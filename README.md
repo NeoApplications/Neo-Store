@@ -51,7 +51,6 @@ to discuss the development, issues and new features.<br/>
 -   [ ] Reorder empty screens.
 -   [ ] Horizontal drawer.
 -   [ ] Add auto tab mode for drawer.
--   [ ] Support for more news feeds (like Microsoft Bing).
 -   [ ] Animations.
 -   [ ] Re-write the home widget .
 
@@ -92,7 +91,7 @@ You can also contribute to this project by opening issues for bugs or new featur
 ## Support Development
 [![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
 
-Please note we don't support ETH deposits via smart contracts.
+Please note that ETH deposits via smart contracts are not supported. <br>
 [![0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)
 
 [![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
