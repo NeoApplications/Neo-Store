@@ -391,4 +391,8 @@
     <string name="title_feed_provider">Provedor do Feed</string>
     <string name="action_overlay">Abrir Google Feed</string>
     <string name="add_new_tab">Adicionar</string>
+    <string name="gesture_press_back">Botão voltar</string>
+    <string name="gesture_press_home">Toque no botão Iniciar</string>
+    <string name="notification_custom_color">Use uma cor personalizada</string>
+    <string name="dialog_message_change_sort">Alterar a ordem dos aplicativos para alfabética\?</string>
 </resources>
