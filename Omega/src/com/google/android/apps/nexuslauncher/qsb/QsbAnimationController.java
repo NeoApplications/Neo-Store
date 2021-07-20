@@ -12,7 +12,7 @@ import com.android.launcher3.LauncherState;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.statemanager.StateManager.StateListener;
 
-public class QsbAnimationController implements WindowStateListener, StateListener {
+public class QsbAnimationController implements WindowStateListener, StateListener<LauncherState> {
     private final Launcher mLauncher;
     public boolean mQsbHasFocus;
     AnimatorSet mAnimatorSet;
@@ -24,7 +24,7 @@ public class QsbAnimationController implements WindowStateListener, StateListene
         mLauncher.getRootView().setWindowStateListener(this);
     }
 
-    public final void dZ() {
+    public final void playQsbAnimation() {
         if (mLauncher.hasWindowFocus()) {
             mSearchRequested = true;
         } else {
@@ -34,7 +34,8 @@ public class QsbAnimationController implements WindowStateListener, StateListene
 
     public AnimatorSet openQsb() {
         mSearchRequested = false;
-        playAnimation(mQsbHasFocus = true, true);
+        mQsbHasFocus = true;
+        playAnimation(true, true);
         return mAnimatorSet;
     }
 
@@ -87,32 +88,24 @@ public class QsbAnimationController implements WindowStateListener, StateListene
             Animator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, (float) ((-mLauncher.getHotseat().getHeight()) / 2));
             animator.setInterpolator(Interpolators.ACCEL);
             mAnimatorSet.play(animator);
-            mAnimatorSet.setDuration(200);
         } else {
             mAnimatorSet.play(ObjectAnimator.ofFloat(view, View.ALPHA, 1f));
             Animator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f);
             animator.setInterpolator(Interpolators.DEACCEL);
             mAnimatorSet.play(animator);
-            mAnimatorSet.setDuration(200);
         }
+        mAnimatorSet.setDuration(200);
         mAnimatorSet.start();
         if (!hasFocus) {
             mAnimatorSet.end();
         }
     }
 
-    public void onStateTransitionStart(LauncherState launcherState) {
-    }
-
     public void onStateTransitionComplete(LauncherState launcherState) {
-        a(launcherState);
+        reattachFocus(launcherState);
     }
 
-    public void onStateSetImmediately(LauncherState launcherState) {
-        a(launcherState);
-    }
-
-    private void a(LauncherState launcherState) {
+    private void reattachFocus(LauncherState launcherState) {
         if (mQsbHasFocus && launcherState != LauncherState.ALL_APPS && !mLauncher.hasWindowFocus()) {
             playAnimation(true, false);
         }
