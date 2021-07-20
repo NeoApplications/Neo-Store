@@ -73,7 +73,7 @@ public class OverlayCallbackImpl
     private int mFlags;
     public QsbAnimationController mQsbAnimationController;
     private final Bundle mUiInformation = new Bundle();
-    private Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<SmartspaceView> mSmartspaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     public OverlayCallbackImpl(Launcher launcher) {
         SharedPreferences prefs = Utilities.getPrefs(launcher);
@@ -119,7 +119,7 @@ public class OverlayCallbackImpl
         String prefValue = Utilities.getPrefs(mLauncher).getString(SettingsActivity.FEED_THEME_PREF, null);
         int feedTheme;
         try {
-            feedTheme = Integer.valueOf(prefValue == null ? "1" : prefValue);
+            feedTheme = Integer.parseInt(prefValue == null ? "1" : prefValue);
         } catch (Exception e) {
             feedTheme = 1;
         }
