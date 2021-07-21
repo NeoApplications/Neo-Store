@@ -1392,6 +1392,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
             v.setVisibility(INVISIBLE);
         }
     }
+
     public void showItem(WorkspaceItemInfo info) {
         View v = getViewForInfo(info);
         if (v != null) {
@@ -1435,6 +1436,10 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         }
     }
 
+    @Override
+    public void onTitleChanged(CharSequence title) {
+    }
+
     private View getViewForInfo(final WorkspaceItemInfo item) {
         return mContent.iterateOverItems((info, view) -> info == item);
     }
@@ -1442,6 +1447,11 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     @Override
     public void onItemsChanged(boolean animate) {
         updateTextViewFocus();
+    }
+
+    @Override
+    public void onIconChanged() {
+        FolderListener.super.onIconChanged();
     }
 
     /**

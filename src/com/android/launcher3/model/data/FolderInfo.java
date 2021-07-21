@@ -606,8 +606,9 @@ public class FolderInfo extends ItemInfo {
 
     public interface FolderListener {
         public void onAdd(WorkspaceItemInfo item, int rank);
-
         public void onRemove(WorkspaceItemInfo item);
+
+        public void onTitleChanged(CharSequence title);
 
         public void onItemsChanged(boolean animate);
 
