@@ -67,7 +67,7 @@ class GridSizeDialogFragmentCompat : PreferenceDialogFragmentCompat() {
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        builder.setNeutralButton(R.string.theme_default) { _, _ ->
+        builder.setNeutralButton(R.string.title_default) { _, _ ->
             val idp = LauncherAppState.getIDP(context)
             gridSizePreference.setSize(idp.numRowsOriginal, idp.numColumnsOriginal)
         }

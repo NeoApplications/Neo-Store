@@ -239,7 +239,6 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
         } else {
             page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
         }
-        page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);
         page.setGridSize(mGridCountX, mGridCountY);

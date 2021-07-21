@@ -52,7 +52,7 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
             app:customFontType="preferenceTitle"
-            tools:text="@string/tab_type_custom" />
+            tools:text="@string/custom" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@android:id/summary"

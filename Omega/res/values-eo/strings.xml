@@ -12,7 +12,6 @@
     <string name="title_smartspace_date">Montri Daton</string>
     <string name="title_smartspace_time">Montri Tempon</string>
     <string name="reset_custom_icons">Forigi Proprajn Piktogramojn</string>
-    <string name="playstore_query_icon_pack">Piktogrampakaĵo</string>
     <string name="icon_pack_default">Operaciumaj piktogramoj</string>
     <string name="icon_pack_applied_toast">%s aplikita</string>
     <string name="icon_shape_corner_squircle">Kvadrata cirkla</string>
@@ -23,7 +22,7 @@
     <string name="icon_shape_override_label">Ŝanĝi piktogramoformon</string>
     <string name="menu_icon_shape">Propran Piktogramoformon</string>
     <string name="icon_pack">Piktogrampakaĵo</string>
-    <string name="theme_default">Defaŭlte</string>
+    <string name="title_default">Defaŭlte</string>
     <string name="theme_use_dark_text">Uzi malhelan tekston</string>
     <string name="theme_use_black">Uzi klaran nigron</string>
     <string name="theme_dark_theme_mode">Malhela etoso</string>
@@ -39,20 +38,18 @@
     <string name="hide_app_selected">  kaŝita</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Kaŝita</item>
-        <item quantity="other"/>
+        <item quantity="other" />
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Aplikaĵo</item>
         <item quantity="other">%1$d Aplikaĵoj</item>
     </plurals>
     <string name="selected_count">%1$d elektita</string>
-    <string name="drawer_tabs">Langetoj</string>
-    <string name="drawer_folders">Dosierujoj</string>
     <string name="tab_type_smart">Aŭtomate</string>
     <string name="tab_type_custom">Propra</string>
     <string name="default_folder_name">Nova dosierujo</string>
-    <string name="pref_appcategorization_tabs_title">Langetoj</string>
-    <string name="pref_appcategorization_folders_title">Dosierujoj</string>
+    <string name="app_categorization_tabs">Langetoj</string>
+    <string name="app_categorization_folders">Dosierujoj</string>
     <string name="pref_app_groups_create">Krei</string>
     <string name="pref_appcategorization_style_text">Stilo</string>
     <string name="pref_appcategorization_flowerpot_title">Kategorio de Aplikaĵo</string>

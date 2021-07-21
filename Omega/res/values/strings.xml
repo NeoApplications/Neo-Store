@@ -43,7 +43,7 @@
     <string name="pref_category__interfaces">Interfaces</string>
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>
-    <string name="pref_category__incubating" translatable="false">Incubating</string>
+    <string name="pref_category__incubating">Incubating</string>
 
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
@@ -78,9 +78,8 @@
 
     <string name="title_opacity">Opacity</string>
     <string name="hotseat_show_page_indicator">Show Page Indicator</string>
-    <string name="pref_value_disabled">"Disabled"</string>
+    <string name="title_disabled">"Disabled"</string>
     <string name="dock_search_value" translatable="false">%1$s %2$s</string>
-
     <string name="num_hotseat_icons_pref_title">Icon Count</string>
 
     <!-- PREFERENCES DRAWER -->
@@ -96,7 +95,6 @@
     <string name="title__drawer_columns">Number of columns</string>
     <string name="title_drawer_enable_background">Use custom background color</string>
     <string name="title_drawer_row_height">Row height</string>
-    <string name="title_drawer_text_size">Text Size</string>
     <string name="title__sort_mode">App Sort</string>
     <string name="title__sort_alphabetical_az">Alphabetical AZ</string>
     <string name="title__sort_alphabetical_za">Alphabetical ZA</string>
@@ -113,7 +111,6 @@
     <string name="title_disable_suggestions_prompt">Disable App Suggestions</string>
     <string name="msg_disable_suggestions_prompt">"Usage data will be deleted."</string>
     <string name="label_turn_off_suggestions">Disable</string>
-    <string name="title_app_suggestions">Apps</string>
     <string name="title_text_color">Text Color</string>
 
     <string name="title_drawer_layout">Layout Mode</string>
@@ -129,19 +126,14 @@
     <string name="pref_appcategorization_enable_title">Categorize Apps</string>
     <string name="pref_appcategorization_enable_summary">Choose the drawer layout mode</string>
     <string name="pref_appcategorization_style_text">Style</string>
-    <string name="pref_app_groups_create">Create</string>
-    <string name="pref_appcategorization_folders_title">Folders</string>
+    <string name="app_categorization_folders">Folders</string>
     <string name="pref_appcategorization_folders_summary">Tap to open pop-up.</string>
-    <string name="pref_appcategorization_tabs_title">Tabs</string>
+    <string name="app_categorization_tabs">Tabs</string>
     <string name="pref_appcategorization_tabs_summary">Swipe between groups.</string>
     <string name="pref_app_groups_edit_tip">Tap to edit, drag to reorder.</string>
-    <string name="default_folder_name">New folder</string>
-    <string name="tab_type_custom">Custom</string>
     <string name="tab_type_custom_desc">Pick shortcuts manually.</string>
     <string name="tab_type_smart">Automatic</string>
     <string name="pref_appcategorization_flowerpot_summary">Pick shortcuts automatically.</string>
-    <string name="drawer_folders">Folders</string>
-    <string name="drawer_tabs">Tabs</string>
     <string name="add_new_tab">Add</string>
     <string name="selected_count">%1$d selected</string>
     <plurals name="tab_apps_count">
@@ -178,14 +170,12 @@
     <string name="theme_dark_text">Light with dark text</string>
     <string name="theme_dark_dark_text">Dark with dark text</string>
     <string name="theme_dark_theme_mode">Dark theme</string>
-    <string name="theme_dark_theme_mode_on">On</string>
-    <string name="theme_dark_theme_mode_off">Off</string>
     <string name="theme_dark_theme_mode_follow_wallpaper" translatable="false">@string/theme_auto</string>
     <string name="theme_dark_theme_mode_follow_system" translatable="false">@string/theme_auto_night_mode</string>
     <string name="theme_dark_theme_mode_follow_daylight">Follow daylight</string>
     <string name="theme_use_black">Use pure black</string>
     <string name="theme_use_dark_text">Use dark text</string>
-    <string name="theme_default">Default</string>
+    <string name="title_default">Default</string>
 
     <string name="icon_pack">Icon pack</string>
     <string name="get_more_icon_packs">Get more</string>
@@ -223,7 +213,6 @@
     <string name="open_image_picker">Open image picker</string>
     <string name="import_icon">Import icon</string>
     <string name="import_as_adaptive">As adaptive icon</string>
-    <string name="playstore_query_icon_pack">Icon pack</string>
 
     <string name="reset_custom_icons">Remove Custom Icons</string>
     <string name="reset_custom_icons_confirmation">Revert to default icons from this Icon Pack? This can’t be undone.</string>
@@ -290,8 +279,6 @@
     <string name="onbording_settings_summary">Touch &amp; hold on the Desktop.</string>
     <string name="onboarding_swipe_up">Swipe up to open the Drawer.</string>
 
-    <string name="weather_icons_default">Default</string>
-    <string name="weather_provider_disabled">Disabled</string>
     <string name="weather_provider_testing">Debug</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_oneplus_weather">OnePlus Weather</string>
@@ -339,8 +326,8 @@
     </string-array>
 
     <!-- PREFERENCES NOTIFICATION -->
-    <string name="icon_badging_desc_on">On</string>
-    <string name="icon_badging_desc_off">Off</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
     <string name="title__notification_count">Show Notification Count</string>
     <string name="notification_custom_color">Use custom color</string>
     <string name="title__folder_badge_count">Show folder badge Count</string>
@@ -427,9 +414,8 @@
     <string name="backup_delete_failed">Something went wrong</string>
     <string name="backup_share">Share</string>
     <string name="backup_pref_summary">Save home screen, restore backups</string>
-    <string name="new_backup">Create</string>
+    <string name="title_create">Create</string>
     <string name="restore_backup">Restore</string>
-    <string name="backup_name">Name</string>
     <string name="backup_homescreen">Homescreen</string>
     <string name="backup_contents">Backup contents</string>
     <string name="backup_settings">Settings</string>
@@ -511,8 +497,6 @@
     <string name="drag_to_disable_packs">Drag down to disable</string>
     <string name="drag_to_enable_packs">Drag up to enable</string>
     <string name="enabled_icon_packs">Enabled</string>
-    <string name="on">On</string>
-    <string name="off">Off</string>
 
     <!-- SEEKBAR PREFERENCE -->
     <string name="reset_to_default">Reset to default</string>
@@ -528,13 +512,11 @@
     <string name="tab_color">Tab color</string>
     <string name="tab_manage_apps">Manage apps</string>
     <string name="delete">Delete</string>
-    <string name="select_tab_type">New Tab</string>
     <string name="none">None</string>
     <string name="name">Name</string>
     <string name="apps_label">Apps</string>
     <string name="custom">Custom</string>
     <string name="default_tab_name">New tab</string>
-    <string name="show_in_tabs">Tabs</string>
     <string name="tabs_manage">Manage</string>
     <string name="dismiss_drop_target_label">"Don\’t show"</string>
 

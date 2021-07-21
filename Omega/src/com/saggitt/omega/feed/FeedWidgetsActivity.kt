@@ -21,52 +21,47 @@ import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.Launcher
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.feed.AddedWidgetsAdapter.OnActionClickListener
 import com.saggitt.omega.settings.SettingsBaseActivity
 import java.util.*
 
-// TODO replace startActivityForResult()
 class FeedWidgetsActivity : SettingsBaseActivity(), OnActionClickListener {
     private var mAppWidgetManager: AppWidgetManager? = null
     private var mAppWidgetHost: AppWidgetHost? = null
-    private var mLauncher: Launcher? = null
+    private val mLauncher
+        get() = (LauncherAppState.getInstance(this).launcher as? OmegaLauncher)
     private var mAddedWidgetsAdapter: AddedWidgetsAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.widget_feed)
-        mLauncher = Launcher.getLauncher(applicationContext)
         mLauncher?.let {
             mAppWidgetManager = AppWidgetManager.getInstance(it.applicationContext)
             mAppWidgetHost = it.appWidgetHost
         }
-        val addedWidgets = findViewById<RecyclerView>(R.id.added_widgets_recycler_view)
+        /*val addedWidgets = findViewById<RecyclerView>(R.id.added_widgets_recycler_view)
         addedWidgets.layoutManager = LinearLayoutManager(applicationContext)
         addedWidgets.setHasFixedSize(false)
         addedWidgets.isNestedScrollingEnabled = false
         addedWidgets.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        )
+        )*/
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
         mAddedWidgetsAdapter = AddedWidgetsAdapter(this, metrics.densityDpi)
-        addedWidgets.adapter = mAddedWidgetsAdapter
+        //addedWidgets.adapter = mAddedWidgetsAdapter
         refreshRecyclerView()
-        findViewById<View>(R.id.add_widget_button).setOnClickListener { selectWidget() }
+        findViewById<View>(R.id.add_widget_button).setOnClickListener { openWidgetDialog() }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private fun refreshRecyclerView() {
         val widgets: MutableList<Widget> = ArrayList()
         val widgetIds = mAppWidgetHost!!.appWidgetIds
@@ -83,7 +78,7 @@ class FeedWidgetsActivity : SettingsBaseActivity(), OnActionClickListener {
         mAddedWidgetsAdapter!!.setAppWidgetProviderInfos(widgets)
     }
 
-    fun selectWidget() {
+    private fun openWidgetDialog() {
         val appWidgetId = mAppWidgetHost!!.allocateAppWidgetId()
         val pickIntent = Intent(this, WidgetPicker::class.java)
         pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -130,7 +125,6 @@ class FeedWidgetsActivity : SettingsBaseActivity(), OnActionClickListener {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     fun createWidget(data: Intent?) {
         val extras = data!!.extras
         val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)

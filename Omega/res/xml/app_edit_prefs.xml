@@ -23,7 +23,7 @@
 
     <com.saggitt.omega.preferences.MultiSelectTabPreference
         android:key="pref_show_in_tabs"
-        android:title="@string/show_in_tabs" />
+        android:title="@string/app_categorization_tabs" />
 
     <com.saggitt.omega.gestures.ui.LauncherGesturePreference
         android:dependency="pref_cover_mode"

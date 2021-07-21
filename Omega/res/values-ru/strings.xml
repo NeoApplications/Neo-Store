@@ -2,13 +2,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="icon_shape_cylinder">Цилиндр</string>
     <string name="hide_app_reset">Сброс</string>
-    <string name="drawer_tabs">Вкладки</string>
-    <string name="drawer_folders">Папки</string>
     <string name="tab_type_smart">Автоматически</string>
     <string name="default_folder_name">Новая папка</string>
-    <string name="pref_appcategorization_tabs_title">Вкладки</string>
-    <string name="pref_appcategorization_folders_title">Папки</string>
-    <string name="pref_app_groups_create">Создать</string>
+    <string name="app_categorization_tabs">Вкладки</string>
+    <string name="app_categorization_folders">Папки</string>
     <string name="pref_appcategorization_style_text">Стиль</string>
     <string name="pref_appcategorization_enable_title">Категоризация приложений</string>
     <string name="pref_appcategorization_flowerpot_title">Категория приложений</string>
@@ -18,7 +15,7 @@
     <string name="title__sort_mode">Сортировка приложений</string>
     <string name="title__drawer_categorization">Категории</string>
     <string name="title__drawer_sort">Сортировка приложений</string>
-    <string name="pref_value_disabled">Отключено</string>
+    <string name="title_disabled">Отключено</string>
     <string name="title__dock_colored_icons">Цветные иконки</string>
     <string name="pref_category__inputs">Жесты и поиск</string>
     <string name="pref_category__interfaces">Интерфейсы</string>
@@ -38,12 +35,10 @@
     <string name="debug_component_name">Название компонента</string>
     <string name="dismiss_drop_target_label">Не показывать</string>
     <string name="tabs_manage">Управление</string>
-    <string name="show_in_tabs">Вкладки</string>
     <string name="default_tab_name">Новая вкладка</string>
     <string name="custom">Пользовательский</string>
     <string name="apps_label">Приложения</string>
     <string name="name">Имя</string>
-    <string name="select_tab_type">Новая вкладка</string>
     <string name="delete">Удалить</string>
     <string name="tab_manage_apps">Управление приложениями</string>
     <string name="tab_color">Цвет вкладки</string>
@@ -98,7 +93,6 @@
     <string name="backup_wallpaper">Обои</string>
     <string name="backup_settings">Настройки</string>
     <string name="backup_homescreen">Рабочий стол</string>
-    <string name="backup_name">Имя</string>
     <string name="restore_backup">Восстановить</string>
     <string name="backup_pref_summary">Сохранить домашний экран, восстановить резервную копию</string>
     <string name="backup_share">Поделиться</string>
@@ -140,8 +134,6 @@
     <string name="title__gesture_swipe_down">Проведите вниз</string>
     <string name="title__notification_background">Цвет фона уведомлений</string>
     <string name="title__notification_count">Показать количество уведомлений</string>
-    <string name="icon_badging_desc_off">ВЫКЛ</string>
-    <string name="icon_badging_desc_on">ВКЛ</string>
     <string name="units_kelvin">Кельвина</string>
     <string name="units_imperial">Фаренгейта</string>
     <string name="units_metric">Цельсия</string>
@@ -155,8 +147,6 @@
     <string name="event_provider_now_playing">Сейчас играет</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_testing">Отладка</string>
-    <string name="weather_provider_disabled">Отключено</string>
-    <string name="weather_icons_default">По умолчанию</string>
     <string name="onboarding_swipe_up">Проведите пальцем вверх, чтобы открыть выдвижную панель.</string>
     <string name="onbording_settings_summary">Коснитесь и удерживайте на рабочем столе.</string>
     <string name="onbording_settings_title">Настройка %s</string>
@@ -193,7 +183,6 @@
     <string name="color_presets">Предустановки</string>
     <string name="reset_custom_icons_confirmation">Вернуться к иконкам по умолчанию из этого пакета иконок\? Это нельзя отменить.</string>
     <string name="reset_custom_icons">Удалить пользовательские иконки</string>
-    <string name="playstore_query_icon_pack">Пакеты иконок</string>
     <string name="import_as_adaptive">Как адаптивная иконка</string>
     <string name="import_icon">Импорт иконки</string>
     <string name="open_image_picker">Открыть средство выбора изображений</string>
@@ -218,12 +207,10 @@
     <string name="menu_icon_shape">Индивидуальная форма иконки</string>
     <string name="get_more_icon_packs">Получить больше</string>
     <string name="icon_pack">Пакеты иконок</string>
-    <string name="theme_default">По умолчанию</string>
+    <string name="title_default">По умолчанию</string>
     <string name="theme_use_dark_text">Использование темного текста</string>
     <string name="theme_use_black">Использовать чистый черный</string>
     <string name="theme_dark_theme_mode_follow_daylight">В соответствии с дневным светом</string>
-    <string name="theme_dark_theme_mode_off">ВЫКЛ</string>
-    <string name="theme_dark_theme_mode_on">ВКЛ</string>
     <string name="theme_dark_theme_mode">Темная тема</string>
     <string name="theme_dark_dark_text">Темный с темным текстом</string>
     <string name="theme_dark_text">Светлый с темным текстом</string>
@@ -259,13 +246,11 @@
     <string name="selected_count">%1$d выбрано</string>
     <string name="pref_appcategorization_flowerpot_summary">Выберите ярлыки автоматически.</string>
     <string name="tab_type_custom_desc">Выберите ярлыки вручную.</string>
-    <string name="tab_type_custom">Пользовательский</string>
     <string name="pref_app_groups_edit_tip">Нажмите, чтобы отредактировать, перетащите, чтобы изменить порядок.</string>
     <string name="pref_appcategorization_tabs_summary">Перелистывание между группами.</string>
     <string name="pref_appcategorization_folders_summary">Нажмите, чтобы открыть всплывающее окно.</string>
     <string name="pref_appcategorization_enable_summary">Выберите режим компоновки выдвижной панели</string>
     <string name="title_text_color">Цвет текста</string>
-    <string name="title_app_suggestions">Приложения</string>
     <string name="msg_disable_suggestions_prompt">Данные об использовании будут удалены.</string>
     <string name="title_disable_suggestions_prompt">Отключить предложения приложений</string>
     <string name="summary__drawer_hide_apps">Скрыть приложение из выдвижной панели</string>
@@ -278,7 +263,6 @@
     <string name="title__sort_last_installed">Последняя установка</string>
     <string name="title__sort_alphabetical_za">По алфавиту ZA</string>
     <string name="title__sort_alphabetical_az">По алфавиту AZ</string>
-    <string name="title_drawer_text_size">Размер текста</string>
     <string name="title_drawer_row_height">Высота строки</string>
     <string name="title_drawer_enable_background">Использовать собственный цвет фона</string>
     <string name="title__drawer_columns">Количество колонок</string>
@@ -355,7 +339,7 @@
     <string name="dash_all_apps_title">Открыть все приложения</string>
     <string name="change_default_home">Установить домашним экраном</string>
     <string name="backup_timestamp">Создано</string>
-    <string name="new_backup">Создать</string>
+    <string name="title_create">Создать</string>
     <string name="summary__advanced_setting_search">Показать поиск настроек в панели действий</string>
     <string name="action_sleep">Сон</string>
     <string name="action_open_widgets">Виджеты</string>

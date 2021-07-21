@@ -52,6 +52,7 @@ import com.saggitt.omega.backup.BackupListActivity
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.feed.FeedProviderDialogFragment
 import com.saggitt.omega.feed.FeedProviderPreference
+import com.saggitt.omega.feed.FeedWidgetsActivity
 import com.saggitt.omega.gestures.ui.GesturePreference
 import com.saggitt.omega.gestures.ui.SelectGestureHandlerFragment
 import com.saggitt.omega.preferences.*
@@ -574,7 +575,15 @@ open class SettingsActivity : SettingsBaseActivity(),
                 }
             } else if (content == R.xml.omega_preferences_developer) {
                 findPreference<Preference>("kill")?.onPreferenceClickListener = this
-                findPreference<Preference>("pref_widget_feed")?.onPreferenceClickListener = this
+                findPreference<Preference>("pref_widget_feed")?.setOnPreferenceClickListener {
+                    val intent = Intent()
+                    intent.setClassName(
+                        BuildConfig.APPLICATION_ID,
+                        FeedWidgetsActivity::class.java.name
+                    )
+                    requireActivity().startActivity(intent)
+                    false
+                }
             }
         }
 
@@ -642,10 +651,11 @@ open class SettingsActivity : SettingsBaseActivity(),
 
         override fun onPreferenceClick(preference: Preference): Boolean {
             if (preference.key == "kill") Utilities.killLauncher()
-            //else if (preference.getKey().equals("pref_widget_feed")) {
-            //Intent intent = new Intent(getContext(), FeedWidgetsActivity.class);
-            //startActivity(intent);
-            //}
+            /*else if (preference.key.equals("pref_widget_feed")) {
+                val intent = Intent(context, FeedWidgetsActivity::class.java)
+                    startActivity(intent);
+                }
+             */
             return false
         }
 
@@ -804,7 +814,7 @@ open class SettingsActivity : SettingsBaseActivity(),
         private var serviceEnabled = true
         override fun onSettingChanged(enabled: Boolean) {
             var summary =
-                if (enabled) R.string.icon_badging_desc_on else R.string.icon_badging_desc_off
+                if (enabled) R.string.on else R.string.off
             if (enabled) {
                 // Check if the listener is enabled or not.
                 val enabledListeners =

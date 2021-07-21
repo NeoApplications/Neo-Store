@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
-        android:text="@string/select_tab_type"
+        android:text="@string/default_tab_name"
         android:textColor="?android:colorAccent" />
 
 </LinearLayout>

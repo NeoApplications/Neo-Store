@@ -61,7 +61,7 @@ class IconShapeManager(private val context: Context) {
         }
     }
 
-    fun getLegacyValue(): String {
+    private fun getLegacyValue(): String {
         val devValue = Utilities.getDevicePrefs(context).getString(KEY_LEGACY_PREFERENCE, "")
         if (!TextUtils.isEmpty(devValue)) {
             // Migrate to general preferences to back up shape overrides

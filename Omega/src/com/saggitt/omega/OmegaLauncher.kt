@@ -52,7 +52,6 @@ import com.saggitt.omega.iconpack.EditIconActivity
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.Config.*
 import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
 import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
 import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_STORAGE_ACCESS
@@ -273,7 +272,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     }
 
     fun playQsbAnimation() {
-        defaultOverlay!!.mQsbAnimationController.dZ()
+        defaultOverlay!!.mQsbAnimationController.playQsbAnimation()
     }
 
     fun openQsb(): AnimatorSet? {

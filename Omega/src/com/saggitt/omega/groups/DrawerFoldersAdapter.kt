@@ -27,7 +27,7 @@ import com.saggitt.omega.groups.ui.AppGroupsAdapter
 class DrawerFoldersAdapter(context: Context) : AppGroupsAdapter<DrawerFoldersAdapter.FolderHolder, DrawerFolders.Folder>(context) {
 
     override val groupsModel = manager.drawerFolders
-    override val headerText = R.string.drawer_folders
+    override val headerText = R.string.app_categorization_folders
 
     override fun createGroup(callback: (folder: DrawerFolders.Folder, Boolean) -> Unit) {
         callback(DrawerFolders.CustomFolder(context), true)

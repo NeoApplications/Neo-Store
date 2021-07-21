@@ -67,7 +67,7 @@ class FeedProviderPreference(context: Context, attrs: AttributeSet? = null) :
         const val KEY = "pref_feedProvider"
 
         fun providers(context: Context) = listOf(
-            ProviderInfo(context.getString(R.string.theme_default), "", context.getIcon())
+            ProviderInfo(context.getString(R.string.title_default), "", context.getIcon())
         ) + FeedBridge.getAvailableProviders(context).map {
             ProviderInfo(
                 it.loadLabel(context.packageManager).toString(),

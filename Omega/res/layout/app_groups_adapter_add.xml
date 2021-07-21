@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:text="@string/pref_app_groups_create"
+            android:text="@string/title_create"
             android:textAppearance="?android:attr/textAppearanceListItem" />
 
     </RelativeLayout>

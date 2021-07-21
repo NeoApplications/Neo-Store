@@ -36,7 +36,6 @@ import com.android.launcher3.R
 import java.text.Collator
 import java.util.*
 
-// TODO replace startActivityForResult()
 class WidgetPicker : AppCompatActivity(), WidgetPickerAdapter.OnClickListener {
     private var mAppWidgetId = 0
     private var mAppWidgetManager: AppWidgetManager? = null

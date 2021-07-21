@@ -13,8 +13,6 @@
     <string name="title__general_drawer">الساحب</string>
     <string name="title__general_dock">دخول الى الرصيف</string>
     <string name="title__general_desktop">سطح المكتب</string>
-    <string name="theme_dark_theme_mode_off">أطفئ</string>
-    <string name="theme_dark_theme_mode_on">شغل</string>
     <string name="theme_dark_theme_mode">سمة داكنة</string>
     <string name="theme_dark_dark_text">داكن مع نص داكن</string>
     <string name="theme_dark">داكن</string>
@@ -54,25 +52,20 @@
     </plurals>
     <string name="selected_count">%1$dأختير</string>
     <string name="add_new_tab">أضف</string>
-    <string name="drawer_tabs">التبويبات</string>
-    <string name="drawer_folders">مجلدات</string>
     <string name="pref_appcategorization_flowerpot_summary">أختر الأختصارات تلفائيا.</string>
     <string name="tab_type_smart">تلقائيا</string>
     <string name="tab_type_custom_desc">أختر الأختصارات يدويا.</string>
-    <string name="tab_type_custom">مخصص</string>
     <string name="default_folder_name">مجلد جديد</string>
     <string name="pref_app_groups_edit_tip">أضغط للتعديل, جر لأعادة الترتيب.</string>
     <string name="pref_appcategorization_tabs_summary">انتقل بين المجموعات.</string>
-    <string name="pref_appcategorization_tabs_title">التبويبات</string>
+    <string name="app_categorization_tabs">التبويبات</string>
     <string name="pref_appcategorization_folders_summary">أضغط لفتح الانبثاق.</string>
-    <string name="pref_appcategorization_folders_title">مجلدات</string>
-    <string name="pref_app_groups_create">أنشئ</string>
+    <string name="app_categorization_folders">مجلدات</string>
     <string name="pref_appcategorization_style_text">أسلوب</string>
     <string name="pref_appcategorization_enable_summary">أختر وضع نسق الدرج</string>
     <string name="pref_appcategorization_enable_title">صنف التطبيقات</string>
     <string name="pref_appcategorization_flowerpot_title">تصنيف التطبيقات</string>
     <string name="title_text_color">لون النص</string>
-    <string name="title_app_suggestions">التطبيقات</string>
     <string name="label_turn_off_suggestions">تعطيل</string>
     <string name="msg_disable_suggestions_prompt">بيانات الأستخدام سيتم حذفها.</string>
     <string name="title_disable_suggestions_prompt">تعطيل أقتراحات التطبيقات</string>
@@ -89,7 +82,6 @@
     <string name="title__sort_alphabetical_za">أبجديا ب-أ</string>
     <string name="title__sort_alphabetical_az">أبجديا أ-ب</string>
     <string name="title__sort_mode">فرز التطبيقات</string>
-    <string name="title_drawer_text_size">حجم النص</string>
     <string name="title_drawer_row_height">طول الاعمدة</string>
     <string name="title_drawer_enable_background">أستخدم لون خلفية مخصصة</string>
     <string name="title__drawer_columns">رقم الاعمدة</string>
@@ -103,7 +95,7 @@
     <string name="title__drawer_all_apps">أظهر كل أسماء التطبيقات</string>
     <string name="title__drawer_sort">فرز التطبيقات</string>
     <string name="num_hotseat_icons_pref_title">تعداد الايقونات</string>
-    <string name="pref_value_disabled">معطل</string>
+    <string name="title_disabled">معطل</string>
     <string name="hotseat_show_page_indicator">أظهر مؤشر الصفحة</string>
     <string name="title_opacity">الشفافية</string>
     <string name="dock_colored_google">لون الايقونات</string>
@@ -144,8 +136,6 @@
     <string name="title__general_smartspace">أدوات الشاشة الرئيسية</string>
     <string name="title__folder_badge_count">إظهار عدد الشارات للمجلد</string>
     <string name="title__notification_count">اظهر عدد الإشعارات</string>
-    <string name="icon_badging_desc_off">مطفئ</string>
-    <string name="icon_badging_desc_on">مشغل</string>
     <string name="units_romer">رومر</string>
     <string name="units_reaumur">ريومور</string>
     <string name="units_delisle">ديليسل</string>
@@ -165,8 +155,6 @@
     <string name="weather_provider_oneplus_weather">طقس ون بلس</string>
     <string name="weather_provider_pe">بيكسل أكسبيرينس</string>
     <string name="weather_provider_testing">تصحيح</string>
-    <string name="weather_provider_disabled">معطل</string>
-    <string name="weather_icons_default">افتراضي</string>
     <string name="onboarding_swipe_up">اسحب لأعلى لفتح الدرج.</string>
     <string name="onbording_settings_summary">المس مع الاستمرار على سطح المكتب.</string>
     <string name="onbording_settings_title">أعد %s</string>
@@ -214,7 +202,6 @@
     <string name="color_presets">مُعد مسبقا</string>
     <string name="reset_custom_icons_confirmation">ألرجوع ألى ألايقونات الافتراضية من حزمة ألايقونات هذه؟ لايمكن التراجع عن هذا.</string>
     <string name="reset_custom_icons">قم بإزالة الرموز المخصصة</string>
-    <string name="playstore_query_icon_pack">حزمة أيقونات</string>
     <string name="import_as_adaptive">كأيقونة تكيفية</string>
     <string name="import_icon">أستيراد ايقونات</string>
     <string name="open_image_picker">أفتح منتقي صور</string>
@@ -240,7 +227,7 @@
     <string name="menu_icon_shape">شكل مخصص للأيقونة</string>
     <string name="get_more_icon_packs">أحصل على المزيد</string>
     <string name="icon_pack">حزمة ايقونات</string>
-    <string name="theme_default">أفتراضي</string>
+    <string name="title_default">أفتراضي</string>
     <string name="theme_use_dark_text">أسنعمل نص اسود</string>
     <string name="theme_use_black">أستعمل أسود نقي</string>
     <string name="theme_dark_theme_mode_follow_daylight">أتبع ضوء النهار</string>
@@ -256,13 +243,11 @@
     <string name="debug_component_name">اسم المكون</string>
     <string name="dismiss_drop_target_label">لا تظهر</string>
     <string name="tabs_manage">إدارة</string>
-    <string name="show_in_tabs">التبويبات</string>
     <string name="default_tab_name">تبويب جديد</string>
     <string name="custom">مخصص</string>
     <string name="apps_label">التطبيقات</string>
     <string name="name">اسم</string>
     <string name="none">لاشيء</string>
-    <string name="select_tab_type">تبويب جديد</string>
     <string name="delete">احذف</string>
     <string name="tab_manage_apps">إدارة التطبيقات</string>
     <string name="tab_color">لون علامة التبويب</string>
@@ -337,9 +322,8 @@
     <string name="backup_settings">إعدادات</string>
     <string name="backup_contents">محتوى النسخ الاحتياطية</string>
     <string name="backup_homescreen">الشاشة الرئيسية</string>
-    <string name="backup_name">إسم</string>
     <string name="restore_backup">إستعادة</string>
-    <string name="new_backup">أنشئ</string>
+    <string name="title_create">أنشئ</string>
     <string name="backup_pref_summary">حفظ الشاشة الرئيسية &lt;استعادة النسخ الاحتياطية</string>
     <string name="backup_share">شارِك</string>
     <string name="backup_delete_failed">حدث خطأ ما</string>

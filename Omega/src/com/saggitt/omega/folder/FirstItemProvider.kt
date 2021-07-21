@@ -37,4 +37,5 @@ class FirstItemProvider(private val info: FolderInfo) : FolderInfo.FolderListene
 
     override fun onAdd(item: WorkspaceItemInfo?, rank: Int) = Unit
     override fun onRemove(item: WorkspaceItemInfo?) = Unit
+    override fun onTitleChanged(title: CharSequence?) = Unit
 }

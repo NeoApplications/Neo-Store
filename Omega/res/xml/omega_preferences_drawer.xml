@@ -50,7 +50,7 @@
 
         <com.saggitt.omega.preferences.SeekbarPreference
             android:key="pref_allAppsIconTextScale"
-            android:title="@string/title_drawer_text_size"
+            android:title="@string/title_desktop_text_size"
             android:dependency="pref_hideAllAppsAppLabels"
             app:minValue="0.3"
             app:maxValue="1.8"
@@ -99,9 +99,9 @@
         <com.saggitt.omega.preferences.StyledSwitchPreference
             android:defaultValue="false"
             android:key="pref_show_predictions"
-            android:title="@string/title_app_suggestions"
+            android:title="@string/apps_label"
             app:iconSpaceReserved="false"
-            app:searchTitle="@string/title_app_suggestions" />
+            app:searchTitle="@string/apps_label" />
 
         <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
             android:key="pref_showAllAppsLabel"

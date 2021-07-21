@@ -29,7 +29,7 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.icons.ColorExtractor
 import com.android.launcher3.icons.FixedScaleDrawable
 import com.android.launcher3.icons.LauncherIcons
-import com.saggitt.omega.icons.CustomIconProvider.Companion.getAdaptiveIconDrawableWrapper
+import com.saggitt.omega.icons.CustomIconProvider
 import kotlin.math.roundToInt
 
 // TODO: Make this thing async somehow (maybe using some drawable wrappers?)
@@ -283,7 +283,7 @@ class AdaptiveIconGenerator constructor(
 
     private fun initTmpIfNeeded() {
         if (tmp == null) {
-            tmp = getAdaptiveIconDrawableWrapper(context)
+            tmp = CustomIconProvider.getAdaptiveIconDrawableWrapper(context)
             tmp!!.setBounds(0, 0, 1, 1)
         }
     }

@@ -18,42 +18,49 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.saggitt.omega.search.SearchProviderPreference
-        android:title="@string/title_search_provider"
-        android:key="pref_globalSearchProvider"
-        android:defaultValue="@string/config_default_search_provider" />
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/title__general_search">
 
-    <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
-        android:defaultValue="false"
-        android:key="opa_enabled"
-        android:persistent="true"
-        android:title="@string/title__search_show_assistant"
-        app:controllerClass=".SearchController"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.search.SearchProviderPreference
+            android:title="@string/title_search_provider"
+            android:key="pref_globalSearchProvider"
+            android:defaultValue="@string/config_default_search_provider" />
 
-    <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
-        android:defaultValue="true"
-        android:dependency="opa_enabled"
-        android:key="opa_assistant"
-        android:persistent="true"
-        android:summary="@string/summary__search_show_as_assistant_summary"
-        android:title="@string/title__search_action_assistant"
-        app:controllerClass=".SearchController"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="opa_enabled"
+            android:persistent="true"
+            android:title="@string/title__search_show_assistant"
+            app:controllerClass=".SearchController"
+            app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
-        android:defaultValue="false"
-        android:key="pref_bubbleSearchStyle"
-        android:title="@string/title__search_bubble_searchbar"
-        app:controllerClass=".SearchController"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+            android:defaultValue="true"
+            android:dependency="opa_enabled"
+            android:key="opa_assistant"
+            android:persistent="true"
+            android:summary="@string/summary__search_show_as_assistant_summary"
+            android:title="@string/title__search_action_assistant"
+            app:controllerClass=".SearchController"
+            app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.AutoModeSeekbarPreference
-        android:key="pref_searchbar_radius"
-        android:title="@string/title__search_bar_radius"
-        app:defaultSeekbarValue="-1.0"
-        app:maxValue="24"
-        app:minValue="0.0"
-        app:steps="24"
-        app:summaryFormat="%.0fdp" />
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_bubbleSearchStyle"
+            android:title="@string/title__search_bubble_searchbar"
+            app:controllerClass=".SearchController"
+            app:iconSpaceReserved="false" />
+
+        <com.saggitt.omega.preferences.AutoModeSeekbarPreference
+            android:key="pref_searchbar_radius"
+            android:title="@string/title__search_bar_radius"
+            app:defaultSeekbarValue="-1.0"
+            app:maxValue="24"
+            app:minValue="0.0"
+            app:steps="24"
+            app:summaryFormat="%.0fdp" />
+
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
+    <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/app_categorization_folders">
+
+    </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>

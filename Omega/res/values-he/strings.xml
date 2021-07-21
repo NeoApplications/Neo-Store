@@ -9,7 +9,6 @@
     <string name="backup_name">שם</string>
     <string name="backup_location">מיקום</string>
     <string name="default_tab_name">לשונית חדשה</string>
-    <string name="drawer_tabs">לשוניות</string>
     <string name="loading">טוען…</string>
     <string name="permission_iplocate">מיקום משוער</string>
     <string name="pref_category__notifications">התראות</string>
@@ -28,11 +27,10 @@
     <string name="action_open_notifications">פתח התראות</string>
     <string name="smartspace_provider_calendar">אירועי יומן</string>
     <string name="delete">מחיקה</string>
-    <string name="drawer_folders">תיקיות</string>
-    <string name="pref_appcategorization_tabs_title">לשוניות</string>
+    <string name="app_categorization_tabs">לשוניות</string>
     <string name="hide_app_reset">איפוס</string>
     <string name="default_folder_name">תיקיה חדשה</string>
-    <string name="pref_appcategorization_folders_title">תיקיות</string>
+    <string name="app_categorization_folders">תיקיות</string>
     <string name="title_app_suggestions">אפליקציות</string>
     <string name="title_all_apps_keep_scroll_state">זכור מיקום</string>
     <string name="title__sort_last_installed">הותקן אחרון</string>

@@ -22,8 +22,7 @@
     <string name="title__sort_by_color">Por Color</string>
     <string name="label_turn_off_suggestions">Deshabilitar</string>
     <string name="pref_appcategorization_style_text">Estilo</string>
-    <string name="pref_appcategorization_folders_title">Carpetas</string>
-    <string name="pref_app_groups_create">Crear</string>
+    <string name="app_categorization_folders">Carpetas</string>
     <string name="pref_category__gestures">Gestos</string>
     <string name="action_none">No hacer nada</string>
     <string name="title__search_action_assistant">Abrir Asistente</string>
@@ -35,7 +34,7 @@
     <string name="tab_bottom_sheet_save">Guardar</string>
     <string name="name">Nombre</string>
     <string name="apps_label">Aplicaciones</string>
-    <string name="search_provider_appsearch" translatable="false">Buscar aplicaciones</string>
+    <string name="search_provider_appsearch">Buscar aplicaciones</string>
     <string name="theme_black">Negro</string>
     <string name="theme_black_dark_text">Negro con texto oscuro</string>
     <string name="customize">Personalizar</string>
@@ -44,7 +43,6 @@
     <string name="delete">Borrar</string>
     <string name="developer_options_title">Opciones de Desarrollador</string>
     <string name="dismiss_drop_target_label">No mostrar</string>
-    <string name="drawer_folders">Carpetas</string>
     <string name="default_folder_name">Nueva carpeta</string>
     <string name="cat_search_bar">Barra de busqueda</string>
     <string name="summary__general_desktop">Personaliza tu escritorio</string>
@@ -70,8 +68,6 @@
     <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
     <string name="title__notification_count">Mostrar cuenta de notificaciones</string>
-    <string name="icon_badging_desc_off">Desactivado</string>
-    <string name="icon_badging_desc_on">Activado</string>
     <string name="smartspace_preferences">Preferencias</string>
     <string name="msg_minus_one_on_left">A la izquierda de la pantalla principal</string>
     <string name="title_smartspace_feed_theme">Tema del Feed</string>
@@ -79,10 +75,8 @@
     <string name="icon_shape_override_label_location">en la pantalla de inicio</string>
     <string name="get_more_icon_packs">Obtener mas</string>
     <string name="icon_pack">Pack de Iconos</string>
-    <string name="theme_default">Predeterminado</string>
+    <string name="title_default">Predeterminado</string>
     <string name="theme_use_dark_text">Usar texto oscuro</string>
-    <string name="theme_dark_theme_mode_off">Apagado</string>
-    <string name="theme_dark_theme_mode_on">Encendido</string>
     <string name="theme_dark_dark_text">Oscuro con texto oscuro</string>
     <string name="theme_dark_text">Claro con texto oscuro</string>
     <string name="theme_with_dark_text">Texto oscuro</string>
@@ -99,22 +93,20 @@
     </plurals>
     <string name="selected_count">%1$d seleccionada</string>
     <string name="tab_type_smart">Automático</string>
-    <string name="tab_type_custom">Personalizada</string>
-    <string name="pref_appcategorization_tabs_title">Tabs</string>
+    <string name="app_categorization_tabs">Tabs</string>
     <string name="pref_appcategorization_enable_title">Categorizar aplicaciones</string>
-    <string name="pref_appcategorization_flowerpot_title">Categoria de Aplicación</string>
+    <string name="pref_appcategorization_flowerpot_title">Categoría de Aplicación</string>
     <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
     <string name="title_disable_suggestions_prompt">Deshabilitar sugerencias</string>
     <string name="summary_all_apps_google_search">Buscar resultados web y aplicaciones</string>
     <string name="title_all_apps_google_search">Búsqueda global</string>
     <string name="title__drawer_all_apps">Mostrar la etiqueta All Apps</string>
-    <string name="pref_value_disabled">Deshabilitado</string>
+    <string name="title_disabled">Deshabilitado</string>
     <string name="title__dock_hotseat_icons">Cantidad de Iconos</string>
     <string name="title__dock_colored_icons">Iconos a colores</string>
     <string name="grid_size_height">Alto</string>
     <string name="theme_auto_night_mode">Seguir tema del sistema</string>
     <string name="theme_auto">Seguir wallpaper</string>
-    <string name="title_app_suggestions">Aplicaciones</string>
     <string name="hotseat_show_page_indicator">Mostrar indicador de página</string>
     <string name="title_opacity">Opacidad</string>
     <string name="title__dock_show_arrow">Mostrar flecha</string>
@@ -131,7 +123,6 @@
     <string name="theme_use_black">Usar negro puro</string>
     <string name="title_text_color">Color del Texto</string>
     <string name="title_all_apps_keep_scroll_state">Recordar posición</string>
-    <string name="title_drawer_text_size">Tamaño del Texto</string>
     <string name="title_drawer_row_height">Alto de la fila</string>
     <string name="title_drawer_enable_background">Usar color de fondo personalizado</string>
     <string name="dock_colored_google">Colores de Iconos</string>
@@ -153,8 +144,6 @@
     <string name="battery_status">Estado de la batería</string>
     <string name="event_provider_unread_notifications">Notificaciones</string>
     <string name="event_provider_now_playing">Reproduciendo ahora</string>
-    <string name="weather_provider_disabled">Deshabilitado</string>
-    <string name="weather_icons_default">Predeterminado</string>
     <string name="onbording_settings_title">Configurar %s</string>
     <string name="action_press_back">Boton Regresar</string>
     <string name="action_open_recents">Abrir recientes</string>
@@ -201,7 +190,6 @@
     <string name="icon_shape_squircle">Squircle</string>
     <string name="icon_shape_override_label">Cambiar la forma de los iconos</string>
     <string name="title__theme_icon_shape">Cambiar la forma de los iconos</string>
-    <string name="drawer_tabs">Pestañas</string>
     <string name="title_search_hidden_apps">Buscar en aplicaciones ocultas</string>
     <string name="title__drawer_hide_apps">Aplicaciones ocultas</string>
     <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
@@ -238,7 +226,6 @@
     <string name="title_legacy_colored_backgrounds">Fondo de colores</string>
     <string name="title_adaptify_pack">Crear iconos adaptivos para el paquete de iconos</string>
     <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no se puede deshacer.</string>
-    <string name="playstore_query_icon_pack">Paquete de Iconos</string>
     <string name="import_as_adaptive">Como Icono adaptivo</string>
     <string name="open_image_picker">Abrir selector de imagen</string>
     <string name="icon_pack_external_picker">Abrir selector externo</string>

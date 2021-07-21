@@ -54,7 +54,7 @@ class SmartspaceEventProvidersPreference(context: Context, attrs: AttributeSet?)
         if (providerNames.isNotEmpty()) {
             summary = TextUtils.join(", ", providerNames)
         } else {
-            setSummary(string.weather_provider_disabled)
+            setSummary(string.title_disabled)
         }
     }
 

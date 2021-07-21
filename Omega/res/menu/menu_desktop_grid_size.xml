@@ -19,6 +19,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_reset_grid_size"
-        android:title="@string/theme_default"
+        android:title="@string/title_default"
         app:showAsAction="never" />
 </menu>

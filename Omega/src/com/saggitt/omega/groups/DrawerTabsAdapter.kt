@@ -31,7 +31,7 @@ open class DrawerTabsAdapter(context: Context) :
     AppGroupsAdapter<DrawerTabsAdapter.TabHolder, DrawerTabs.Tab>(context) {
 
     override val groupsModel: DrawerTabs = manager.drawerTabs
-    override val headerText = R.string.drawer_tabs
+    override val headerText = R.string.app_categorization_tabs
 
     private val hasWorkApps = context.omegaPrefs.separateWorkApps &&
             UserCache.INSTANCE.get(context).userProfiles.size > 1
@@ -45,7 +45,7 @@ open class DrawerTabsAdapter(context: Context) :
                     R.drawable.ic_category
                 ),
                 DrawerTabs.TYPE_CUSTOM to arrayOf(
-                    R.string.tab_type_custom,
+                    R.string.custom,
                     R.string.tab_type_custom_desc,
                     R.drawable.ic_list
                 )

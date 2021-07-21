@@ -34,7 +34,7 @@ class WeatherIconManager(private val context: Context) {
 
     private val defaultPack =
         object : WeatherIconPack(
-            context, context.getString(R.string.weather_icons_default), "",
+            context, context.getString(R.string.title_default), "",
             RecoloringMode.NEVER
         ) {
             override val provider = DefaultIconProvider(context)

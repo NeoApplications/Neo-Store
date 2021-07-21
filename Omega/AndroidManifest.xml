@@ -277,7 +277,7 @@
             android:theme="@style/SettingsTheme_Light" />
         <activity
             android:name="com.saggitt.omega.backup.NewBackupActivity"
-            android:label="@string/new_backup"
+            android:label="@string/title_create"
             android:parentActivityName="com.saggitt.omega.backup.BackupListActivity"
             android:requestLegacyExternalStorage="true"
             android:theme="@style/SettingsTheme_Light" />
@@ -321,7 +321,7 @@
         <activity
             android:name="com.saggitt.omega.feed.FeedWidgetsActivity"
             android:label="@string/feed_widget"
-            android:theme="@style/DashTheme" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.saggitt.omega.feed.WidgetPicker"
             android:autoRemoveFromRecents="true"

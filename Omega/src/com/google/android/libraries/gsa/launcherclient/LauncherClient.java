@@ -359,7 +359,9 @@ public class LauncherClient {
 
     public final void redraw(Bundle layoutBundle) {
         mLayoutBundle = layoutBundle;
-        redraw();
+        if (mLayoutParams != null && apiVersion >= 7) {
+            exchangeConfig();
+        }
     }
 
     public final void redraw() {

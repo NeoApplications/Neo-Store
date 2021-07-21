@@ -30,7 +30,7 @@
     <string name="title__drawer_hide_apps">隐藏应用快捷方式</string>
     <string name="title__drawer_hide_icon_labels">隐藏应用名</string>
     <string name="title__drawer_sort">应用排序</string>
-    <string name="pref_value_disabled">禁止</string>
+    <string name="title_disabled">禁止</string>
     <string name="hotseat_show_page_indicator">显示页面指示器</string>
     <string name="title_opacity">不透明度</string>
     <string name="title__dock_show_arrow">显示箭头</string>
@@ -106,9 +106,8 @@
     <string name="backup_settings">设置</string>
     <string name="backup_contents">备份内容</string>
     <string name="backup_homescreen">主屏幕</string>
-    <string name="backup_name">名称</string>
     <string name="restore_backup">恢复</string>
-    <string name="new_backup">创建</string>
+    <string name="title_create">创建</string>
     <string name="backup_pref_summary">保存主屏幕，恢复备份</string>
     <string name="backup_share">分享</string>
     <string name="backup_delete_failed">出问题了</string>
@@ -184,7 +183,6 @@
     <string name="color_presets">预设</string>
     <string name="reset_custom_icons_confirmation">从此图标集恢复为默认图标？这是无法撤消的。</string>
     <string name="reset_custom_icons">移除定制图标</string>
-    <string name="playstore_query_icon_pack">图标集</string>
     <string name="import_as_adaptive">作为自适应图标</string>
     <string name="import_icon">导入图标</string>
     <string name="open_image_picker">打开图片选择器</string>
@@ -210,12 +208,10 @@
     <string name="menu_icon_shape">定制图标形状</string>
     <string name="get_more_icon_packs">获取更多</string>
     <string name="icon_pack">图标集</string>
-    <string name="theme_default">默认</string>
+    <string name="title_default">默认</string>
     <string name="theme_use_dark_text">使用暗色文字</string>
     <string name="theme_use_black">使用纯黑色</string>
     <string name="theme_dark_theme_mode_follow_daylight">基于日光</string>
-    <string name="theme_dark_theme_mode_off">关闭</string>
-    <string name="theme_dark_theme_mode_on">开启</string>
     <string name="theme_dark_theme_mode">暗色主题</string>
     <string name="theme_dark_dark_text">暗色与暗色文字</string>
     <string name="theme_dark_text">亮色与暗色文字</string>
@@ -245,19 +241,15 @@
     </plurals>
     <string name="selected_count">已选择 %1$d</string>
     <string name="add_new_tab">添加</string>
-    <string name="drawer_tabs">标签</string>
-    <string name="drawer_folders">文件夹</string>
     <string name="pref_appcategorization_flowerpot_summary">自动选择快捷方式。</string>
     <string name="tab_type_smart">自动的</string>
     <string name="tab_type_custom_desc">手动选择快捷方式。</string>
-    <string name="tab_type_custom">定制</string>
     <string name="default_folder_name">新文件夹</string>
     <string name="pref_app_groups_edit_tip">点击以编辑，拖拽以排序。</string>
     <string name="pref_appcategorization_tabs_summary">在组之间滑动。</string>
-    <string name="pref_appcategorization_tabs_title">标签</string>
+    <string name="app_categorization_tabs">标签</string>
     <string name="pref_appcategorization_folders_summary">点击打开弹出窗口。</string>
-    <string name="pref_appcategorization_folders_title">文件夹</string>
-    <string name="pref_app_groups_create">创建</string>
+    <string name="app_categorization_folders">文件夹</string>
     <string name="pref_appcategorization_style_text">风格</string>
     <string name="pref_appcategorization_enable_summary">选择抽屉布局模式</string>
     <string name="pref_appcategorization_enable_title">分类应用</string>
@@ -269,7 +261,6 @@
     <string name="title_drawer_vertical">垂直的</string>
     <string name="title_drawer_layout">布局模式</string>
     <string name="title_text_color">字体颜色</string>
-    <string name="title_app_suggestions">应用</string>
     <string name="label_turn_off_suggestions">禁用</string>
     <string name="msg_disable_suggestions_prompt">使用数据将被删除。</string>
     <string name="title_disable_suggestions_prompt">禁用应用建议</string>
@@ -286,7 +277,6 @@
     <string name="title__sort_alphabetical_za">按字母顺序 Z-A</string>
     <string name="title__sort_alphabetical_az">按字母顺序 A-Z</string>
     <string name="title__sort_mode">应用排序</string>
-    <string name="title_drawer_text_size">字体大小</string>
     <string name="title__drawer_paged_apps">分页应用视图</string>
     <string name="gesture_dock_swipe_up">从快捷启动栏向上轻扫</string>
     <string name="num_hotseat_icons_pref_title">图标数量</string>
@@ -318,13 +308,11 @@
     <string name="debug_component_name">组件名称</string>
     <string name="dismiss_drop_target_label">不要显示</string>
     <string name="tabs_manage">管理</string>
-    <string name="show_in_tabs">标签</string>
     <string name="default_tab_name">新标签</string>
     <string name="custom">定制</string>
     <string name="apps_label">应用</string>
     <string name="name">名称</string>
     <string name="none">无</string>
-    <string name="select_tab_type">新标签</string>
     <string name="delete">删除</string>
     <string name="tab_manage_apps">管理应用</string>
     <string name="tab_color">标签颜色</string>
@@ -375,16 +363,12 @@
     <string name="dt2s_admin_warning">双击睡眠将会被禁用。</string>
     <string name="dt2s_admin_hint">要使用双击睡眠，请授予管理员权限。</string>
     <string name="title__folder_badge_count">显示文件夹角标数量</string>
-    <string name="icon_badging_desc_off">关</string>
-    <string name="icon_badging_desc_on">开</string>
     <string name="folder_name_format">文件夹：<xliff:g example="Games" id="name">%1$s</xliff:g></string>
     <string name="battery_status">电池状态</string>
     <string name="event_provider_now_playing">正在播放</string>
     <string name="weather_provider_oneplus_weather">一加天气</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_testing">调试</string>
-    <string name="weather_provider_disabled">已禁用</string>
-    <string name="weather_icons_default">默认</string>
     <string name="onboarding_swipe_up">上划以打开抽屉。</string>
     <string name="personality_provider">您好</string>
     <string name="gesture_press_back">返回键</string>

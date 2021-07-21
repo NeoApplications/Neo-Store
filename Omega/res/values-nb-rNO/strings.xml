@@ -31,7 +31,7 @@
     <string name="title__drawer_paged_apps">Sideinndelt programoversikt</string>
     <string name="title__drawer_all_apps">Vis alle programetiketter</string>
     <string name="title__drawer_sort">Programsortering</string>
-    <string name="pref_appcategorization_folders_title">Mapper</string>
+    <string name="app_categorization_folders">Mapper</string>
     <string name="pref_app_groups_create">Opprett</string>
     <string name="pref_appcategorization_style_text">Stil</string>
     <string name="pref_appcategorization_enable_summary">Velg visning for skuff</string>
@@ -58,7 +58,7 @@
     <string name="default_folder_name">Ny mappe</string>
     <string name="pref_app_groups_edit_tip">Trykk for å redigere, dra for å omorganisere.</string>
     <string name="pref_appcategorization_tabs_summary">Dra mellom grupper.</string>
-    <string name="pref_appcategorization_tabs_title">Faner</string>
+    <string name="app_categorization_tabs">Faner</string>
     <string name="pref_appcategorization_folders_summary">Fane for åpning av oppsprettsvindu.</string>
     <string name="pref_appcategorization_flowerpot_summary">Velg snarveier automatisk.</string>
     <string name="tab_type_smart">Automatisk</string>
@@ -143,7 +143,7 @@
     <string name="icon_shape_override_progress">Bruker ikonformsendringer</string>
     <string name="get_more_icon_packs">Hent flere</string>
     <string name="icon_pack">Ikonpakke</string>
-    <string name="theme_default">Forvalg</string>
+    <string name="title_default">Forvalg</string>
     <string name="theme_use_dark_text">Bruk mørk tekst</string>
     <string name="theme_use_black">Bruk helsort</string>
     <string name="theme_dark_theme_mode_follow_daylight">Følg dagslys</string>
@@ -170,7 +170,6 @@
         <item quantity="one">%1$d program</item>
         <item quantity="other">%1$d programmer</item>
     </plurals>
-    <string name="playstore_query_icon_pack">Ikonpakke</string>
     <string name="icon_pack_external_picker">Åpne ekstern bildevelger</string>
     <string name="import_icon">Importer ikon</string>
     <string name="open_image_picker">Åpne bildevelger</string>
@@ -202,8 +201,6 @@
     <string name="hide_app_reset">Tilbakestill</string>
     <string name="hide_app_selected">  skjult</string>
     <string name="selected_count">%1$d valgt</string>
-    <string name="drawer_tabs">Faner</string>
-    <string name="drawer_folders">Mapper</string>
     <string name="title__dock_hotseat_icons">Ikonantall</string>
     <string name="title__dock_icon_size">Ikonstørrelse</string>
     <string name="grid_size_width">Bredde</string>
@@ -284,8 +281,6 @@
     <string name="restore_backup">Gjenopprett</string>
     <string name="backup_name">Navn</string>
     <string name="battery_status">Batteristatus</string>
-    <string name="weather_provider_disabled">Avskrudd</string>
-    <string name="weather_icons_default">Forvalg</string>
     <string name="onbording_settings_title">Sett opp %s</string>
     <string name="smartspace_provider_calendar">Kalenderhendelser</string>
     <string name="deny">Nekt</string>

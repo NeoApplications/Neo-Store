@@ -132,13 +132,13 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
 
         binding.folderTypeItem.root.setup(
             AppGroupsManager.CategorizationType.Folders,
-            R.string.pref_appcategorization_folders_title,
+            R.string.app_categorization_folders,
             R.string.pref_appcategorization_folders_summary
         )
 
         binding.tabTypeItem.root.setup(
             AppGroupsManager.CategorizationType.Tabs,
-            R.string.pref_appcategorization_tabs_title,
+            R.string.app_categorization_tabs,
             R.string.pref_appcategorization_tabs_summary
         )
     }

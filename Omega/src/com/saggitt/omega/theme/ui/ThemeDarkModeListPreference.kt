@@ -37,11 +37,20 @@ class ThemeDarkModeListPreference(context: Context, attrs: AttributeSet?) : List
 
     init {
         buildEntries {
-            addEntry(R.string.theme_dark_theme_mode_follow_wallpaper, ThemeManager.THEME_FOLLOW_WALLPAPER)
-            addEntry(R.string.theme_dark_theme_mode_follow_system, ThemeManager.THEME_FOLLOW_NIGHT_MODE)
-            addEntry(R.string.theme_dark_theme_mode_follow_daylight, ThemeManager.THEME_FOLLOW_DAYLIGHT)
-            addEntry(R.string.theme_dark_theme_mode_on, ThemeManager.THEME_DARK)
-            addEntry(R.string.theme_dark_theme_mode_off, 0)
+            addEntry(
+                R.string.theme_dark_theme_mode_follow_wallpaper,
+                ThemeManager.THEME_FOLLOW_WALLPAPER
+            )
+            addEntry(
+                R.string.theme_dark_theme_mode_follow_system,
+                ThemeManager.THEME_FOLLOW_NIGHT_MODE
+            )
+            addEntry(
+                R.string.theme_dark_theme_mode_follow_daylight,
+                ThemeManager.THEME_FOLLOW_DAYLIGHT
+            )
+            addEntry(R.string.on, ThemeManager.THEME_DARK)
+            addEntry(R.string.off, 0)
         }
     }
 

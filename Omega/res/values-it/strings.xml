@@ -16,7 +16,7 @@
   ~
   --><resources>
     <string name="tab_bottom_sheet_save">Guardare</string>
-    <string name="pref_appcategorization_folders_title">Cartellas</string>
+    <string name="app_categorization_folders">Cartellas</string>
     <string name="default_folder_name">Nuova cartella</string>
     <string name="title__general_notifications">Gesti e notifiche</string>
     <string name="title__general_advanced">Impostazioni avanzate</string>

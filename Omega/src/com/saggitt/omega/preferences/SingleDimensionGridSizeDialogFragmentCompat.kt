@@ -70,7 +70,7 @@ class SingleDimensionGridSizeDialogFragmentCompat : PreferenceDialogFragmentComp
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        builder.setNeutralButton(string.theme_default) { _, _ ->
+        builder.setNeutralButton(string.title_default) { _, _ ->
             gridSizePreference.setSize(0)
         }
     }
