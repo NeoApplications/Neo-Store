@@ -283,7 +283,7 @@ public class FloatingIconView extends FrameLayout implements
         } else {
             boolean isFolderIcon = originalView instanceof FolderIcon;
             int width = isFolderIcon ? originalView.getWidth() : (int) pos.width();
-            ;
+
             int height = isFolderIcon ? originalView.getHeight() : (int) pos.height();
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
