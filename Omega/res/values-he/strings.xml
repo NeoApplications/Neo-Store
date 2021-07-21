@@ -6,7 +6,6 @@
     <string name="battery_status">מצב בטריה</string>
     <string name="battery_low">בטריה חלשה</string>
     <string name="backup_share">שיתוף</string>
-    <string name="backup_name">שם</string>
     <string name="backup_location">מיקום</string>
     <string name="default_tab_name">לשונית חדשה</string>
     <string name="loading">טוען…</string>

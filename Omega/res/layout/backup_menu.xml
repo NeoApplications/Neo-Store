@@ -26,7 +26,7 @@
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:text="@string/new_backup"
+            android:text="@string/title_create"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </androidx.cardview.widget.CardView>
 

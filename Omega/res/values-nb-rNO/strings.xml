@@ -265,7 +265,6 @@
     <string name="backup_creating">Oppretter sikkerhetskopi</string>
     <string name="backup_settings">Innstillinger</string>
     <string name="backup_homescreen">Hjemmeskjerm</string>
-    <string name="new_backup">Opprett</string>
     <string name="backup_share">Del</string>
     <string name="backup_delete_failed">Noe gikk galt</string>
     <string name="backup_delete">Skjul</string>
@@ -279,7 +278,6 @@
     <string name="weather_provider_testing">Avlusing</string>
     <string name="summary__general_smartspace">Dato, tid, hjemmeksjermsminiprogram</string>
     <string name="restore_backup">Gjenopprett</string>
-    <string name="backup_name">Navn</string>
     <string name="battery_status">Batteristatus</string>
     <string name="onbording_settings_title">Sett opp %s</string>
     <string name="smartspace_provider_calendar">Kalenderhendelser</string>
@@ -356,7 +354,6 @@
     <string name="title_desktop_overlap_placement">Tillat overlapping</string>
     <string name="title_dock_two_row">Vis rad to</string>
     <string name="button_organize_screens">Sorter sider</string>
-    <string name="feed_provider">Informasjonskanalstilbyder</string>
     <string name="title_desktop_keep_empty">Tillat tomme sider</string>
     <string name="title_feed_provider">Informasjonskanalstilbyder</string>
     <string name="uninstall_failed">Klarte ikke å avinstallere program</string>

@@ -271,9 +271,7 @@
     <string name="backup_settings">Configurações</string>
     <string name="backup_contents">Conteúdo de backup</string>
     <string name="backup_homescreen">Tela inicial</string>
-    <string name="backup_name">Nome</string>
     <string name="restore_backup">Restaurar</string>
-    <string name="new_backup">Criar</string>
     <string name="backup_pref_summary">Salvar tela inicial, restaurar backups</string>
     <string name="backup_share">Compartilhar</string>
     <string name="backup_delete_failed">Algo deu errado</string>
