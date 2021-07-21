@@ -81,10 +81,7 @@ public class ClockLayers {
         int second = (mCurrentTime.get(Calendar.SECOND) + (60 - mDefaultSecond)) % 60;
         int millis = second * 1000 + mCurrentTime.get(Calendar.MILLISECOND);
 
-        boolean hasChanged = false;
-        if (mHourIndex != -1 && mLayerDrawable.getDrawable(mHourIndex).setLevel(hour * 60 + mCurrentTime.get(Calendar.MINUTE))) {
-            hasChanged = true;
-        }
+        boolean hasChanged = mHourIndex != -1 && mLayerDrawable.getDrawable(mHourIndex).setLevel(hour * 60 + mCurrentTime.get(Calendar.MINUTE));
         if (mMinuteIndex != -1 && mLayerDrawable.getDrawable(mMinuteIndex).setLevel(minute + mCurrentTime.get(Calendar.HOUR) * 60)) {
             hasChanged = true;
         }
