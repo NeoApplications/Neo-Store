@@ -263,7 +263,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
 
     private void startGoogleSearch() {
         final ConfigBuilder f = new ConfigBuilder(this, false);
-        if (!forceFallbackSearch() && getLauncher().getGoogleNow()
+        if (getLauncher().getGoogleNow()
                 .startSearch(f.build(), f.getExtras())) {
             SharedPreferences devicePrefs = Utilities.getDevicePrefs(getContext());
             devicePrefs.edit().putInt("key_hotseat_qsb_tap_count",
