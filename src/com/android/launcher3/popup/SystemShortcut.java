@@ -257,7 +257,7 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
     }
 
-    public static class AppEdit extends SystemShortcut {
+    public static class AppEdit extends SystemShortcut<Launcher> {
         public AppEdit(Launcher target, ItemInfo itemInfo) {
             super(R.drawable.ic_edit_no_shadow, R.string.action_preferences, target, itemInfo);
         }
@@ -268,23 +268,25 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         }
     }
 
-    public static class AppRemove extends SystemShortcut {
+    public static class AppRemove extends SystemShortcut<Launcher> {
         Launcher mLauncher;
+        ItemInfo myItemInfo;
 
         public AppRemove(Launcher target, ItemInfo itemInfo) {
             super(R.drawable.ic_remove_no_shadow, R.string.remove_drop_target_label, target, itemInfo);
             mLauncher = target;
+            myItemInfo = itemInfo;
         }
 
         public void onClick(View v) {
-            AbstractFloatingView.closeAllOpenViews(mTarget);
-            mLauncher.removeItem(null, mItemInfo, true);
-            mLauncher.getModel().forceReload();
+            dismissTaskMenuView(mTarget);
+            mLauncher.removeItem(v, myItemInfo, true);
             mLauncher.getWorkspace().stripEmptyScreens();
+            mLauncher.getModel().forceReload();
         }
     }
 
-    public static class AppUninstall extends SystemShortcut {
+    public static class AppUninstall extends SystemShortcut<Launcher> {
         Launcher mLauncher;
 
         public AppUninstall(Launcher target, ItemInfo itemInfo) {
