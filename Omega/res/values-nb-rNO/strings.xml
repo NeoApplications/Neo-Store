@@ -385,4 +385,5 @@
     <string name="title_drawer_vertical_list">Loddrett liste</string>
     <string name="title_drawer_vertical">Loddrett</string>
     <string name="title_drawer_layout">Visningsmodus</string>
+    <string name="notification_custom_color">Bruk egendefinert farge</string>
 </resources>

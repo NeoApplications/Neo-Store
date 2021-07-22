@@ -1,2 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="color_presets">নির্ধারিত</string>
+    <string name="icon_shape_corner_cut">কাটো</string>
+    <string name="icon_shape_cylinder">সিলিন্ডাকার</string>
+    <string name="icon_shape_corner_round">গোলাকার</string>
+    <string name="icon_shape_corner_squircle">চৌকো-গোলাকার</string>
+    <string name="icon_shape_squircle">গোলাকার কোণের বর্গক্ষেত্র</string>
+    <string name="icon_shape_teardrop">বৃষ্টির ফোটা</string>
+    <string name="icon_shape_circle">বৃত্ত</string>
+    <string name="icon_shape_square">বর্গ</string>
+    <string name="theme_default">সহজাত</string>
+    <string name="theme_dark_theme_mode_off">বন্ধ</string>
+    <string name="theme_dark_theme_mode_on">চালু</string>
+    <string name="theme_dark">অন্ধকার</string>
+    <string name="theme_black">কালো</string>
+    <string name="theme_light">আলোকিত</string>
+    <string name="title__theme_blur">ঝাপসা</string>
+    <string name="hide_app_reset">পুনঃশুরু(রিসেট)</string>
+    <string name="hide_app_selected">  লুকায়িত</string>
+    <string name="add_new_tab">যোগ</string>
+    <string name="drawer_tabs">ট্যাব</string>
+    <string name="drawer_folders">ফোল্ডার</string>
+    <string name="tab_type_smart">স্বয়ংক্রিয়</string>
+    <string name="tab_type_custom">নিজস্ব</string>
+    <string name="pref_appcategorization_tabs_title">ট্যাব</string>
+    <string name="pref_appcategorization_folders_title">ফোল্ডার</string>
+    <string name="pref_app_groups_create">বানাও</string>
+    <string name="pref_appcategorization_style_text">ধরণ</string>
+    <string name="cat_drawer_icons">আইকন</string>
+    <string name="cat_drawer_grid">ছক</string>
+    <string name="title_drawer_paged">পৃষ্ঠার মতো</string>
+    <string name="title_drawer_vertical">খাড়া</string>
+    <string name="title_app_suggestions">অ্যাপ</string>
+    <string name="label_turn_off_suggestions">নিষ্ক্রিয়</string>
+    <string name="title__drawer_categorization">বিভাগ</string>
+    <string name="pref_value_disabled">নিষ্ক্রিয়</string>
+    <string name="title_opacity">স্বচ্ছতা</string>
+    <string name="grid_size_width">প্রস্থ</string>
+    <string name="grid_size_height">উচ্চতা</string>
+    <string name="pref_category__others">অন্যান্য</string>
+    <string name="title__general_search">অনুসন্ধান</string>
+    <string name="title__general_theme">রঙ</string>
+    <string name="title__general_drawer">ড্রয়ার</string>
+    <string name="pref_category__interfaces">ইন্টারফেস</string>
+    <string name="title__general_dock">ডক</string>
+    <string name="title__general_about">সম্পর্কে</string>
+</resources>
