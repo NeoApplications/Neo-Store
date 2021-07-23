@@ -1,22 +1,24 @@
 /*
- *     This file is part of Lawnchair Launcher.
+ *  This file is part of Omega Launcher
+ *  Copyright (c) 2021   Saul Henriquez
  *
- *     Lawnchair Launcher is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *     Lawnchair Launcher is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.saggitt.omega.iconpack
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -32,6 +34,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -155,40 +159,45 @@ class EditIconActivity : SettingsBaseActivity() {
         finish()
     }
 
-    fun onSelectIconPack(provider: IconPackManager.PackProvider) {
-        startActivityForResult(IconPickerActivity.newIntent(this, provider), CODE_PICK_ICON)
-    }
-
     fun onSelectExternal() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "image/*"
         }
 
-        startActivityForResult(intent, PICKER_REQUEST_CODE)
+        startIconRequest.launch(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                CODE_PICK_ICON -> {
-                    val entryString = data?.getStringExtra(EXTRA_ENTRY) ?: return
+    fun onSelectIconPack(provider: IconPackManager.PackProvider) {
+        startIconResult.launch(IconPickerActivity.newIntent(this, provider))
+    }
+
+    private val startIconResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val resultData = result.data
+                if (resultData!!.data != null) {
+                    val entryString = resultData.getStringExtra(EXTRA_ENTRY)
                     setResult(
                         RESULT_OK,
                         Intent().putExtra(EXTRA_ENTRY, entryString)
                     )
                     finish()
                 }
-                PICKER_REQUEST_CODE -> {
-                    data?.data?.also { uri ->
+            }
+        }
+
+    private val startIconRequest =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val resultData = result.data
+                if (resultData!!.data != null) {
+                    resultData.data?.also { uri ->
                         onSelectUri(uri)
                     }
                 }
             }
         }
-
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     private fun onSelectUri(uri: Uri) {
         val entry = UriIconPack.UriEntry(this, uri, false)
@@ -406,15 +415,11 @@ class EditIconActivity : SettingsBaseActivity() {
     }
 
     companion object {
-
-        const val CODE_PICK_ICON = 0
         const val EXTRA_ENTRY = "entry"
         const val EXTRA_TITLE = "title"
         const val EXTRA_COMPONENT = "component"
         const val EXTRA_USER = "user"
         const val EXTRA_FOLDER = "is_folder"
-
-        const val PICKER_REQUEST_CODE = 999
 
         fun newIntent(
             context: Context,

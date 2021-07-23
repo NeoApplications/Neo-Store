@@ -165,7 +165,7 @@ class DefaultPack(context: Context) : IconPack(context, "") {
     ): FastBitmapDrawable {
         ensureInitialLoadComplete()
 
-        if (Utilities.ATLEAST_OREO && itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+        if (itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             val component = if (customIconEntry?.icon != null) {
                 try {
                     Utilities.makeComponentKey(context, customIconEntry.icon).componentName
