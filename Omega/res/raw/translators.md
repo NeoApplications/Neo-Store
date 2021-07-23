@@ -7,7 +7,7 @@ Spanish
 albertoglinares@gmail.com
 
 Allan Nordhøy
-Norwegian Bokmål
+Norwegian (Bokmål)
 epost@anotheragency.no
 
 Oymate

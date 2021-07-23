@@ -36,11 +36,11 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
@@ -57,8 +57,10 @@ import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.CustomPagerAdapter
 import com.saggitt.omega.util.applyColor
+import com.saggitt.omega.views.LoadTranslators
 import kotlinx.coroutines.launch
 import java.util.*
+
 
 class AboutFragment : Fragment() {
 
@@ -169,6 +171,36 @@ class AboutFragment : Fragment() {
             val contrib2 = view.findViewById<ConstraintLayout>(R.id.contributor2)
             contrib2.setOnClickListener {
                 Utilities.openURLinBrowser(requireContext(), "https://github.com/nonaybay")
+            }
+
+            val hiddenView = view.findViewById<LinearLayout>(R.id.hidden_view)
+            val translators: List<String> =
+                (Utilities.readTextfileFromRawRes(R.raw.translators, context, "", "")
+                    .trim() + "\n\n").split("\n")
+
+            view.findViewById<ComposeView>(R.id.translators_view).setContent {
+                LoadTranslators(translators)
+            }
+
+            val arrow = view.findViewById<ImageButton>(R.id.arrow_button)
+            arrow.setOnClickListener {
+                if (hiddenView.visibility == View.VISIBLE) {
+                    hiddenView.visibility = View.GONE
+                    arrow.setImageResource(R.drawable.ic_baseline_expand_more_24)
+                } else {
+                    hiddenView.visibility = View.VISIBLE
+                    arrow.setImageResource(R.drawable.ic_baseline_expand_less_24)
+                }
+            }
+            val container = view.findViewById<RelativeLayout>(R.id.translators_container)
+            container.setOnClickListener {
+                if (hiddenView.visibility == View.VISIBLE) {
+                    hiddenView.visibility = View.GONE
+                    arrow.setImageResource(R.drawable.ic_baseline_expand_more_24)
+                } else {
+                    hiddenView.visibility = View.VISIBLE
+                    arrow.setImageResource(R.drawable.ic_baseline_expand_less_24)
+                }
             }
 
             val cssFile = if (isDark) {

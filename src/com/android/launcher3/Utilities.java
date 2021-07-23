@@ -79,6 +79,7 @@ import android.view.animation.Interpolator;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -112,6 +113,9 @@ import com.saggitt.omega.backup.RestoreBackupActivity;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.HiddenApiCompat;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1156,6 +1160,34 @@ public final class Utilities {
             return true;
         }
         return false;
+    }
+
+    public static String readTextfileFromRawRes(@RawRes int rawResId, Context context, String linePrefix, String linePostfix) {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        String line;
+
+        linePrefix = linePrefix == null ? "" : linePrefix;
+        linePostfix = linePostfix == null ? "" : linePostfix;
+
+        try {
+            br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(rawResId)));
+            while ((line = br.readLine()) != null) {
+                sb.append(linePrefix);
+                sb.append(line);
+                sb.append(linePostfix);
+                sb.append("\n");
+            }
+        } catch (Exception ignored) {
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        return sb.toString();
     }
 
     /*FIN CUSTOM*/

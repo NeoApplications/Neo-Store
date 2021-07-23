@@ -463,6 +463,7 @@
     <string name="title__about_project_team">Developer</string>
     <string name="about_copyright" translatable="false">Copyright &#169; 2020&#8211;2021</string>
     <string name="about_team">Family Members</string>
+    <string name="about_translators">Translators</string>
     <string name="about_source">Source Code</string>
     <string name="about_source_url" translatable="false">https://github.com/otakuhqz/Omega</string>
     <string name="category__about_licenses">License</string>
