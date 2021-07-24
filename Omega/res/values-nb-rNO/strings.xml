@@ -386,4 +386,7 @@
     <string name="title_drawer_vertical">Loddrett</string>
     <string name="title_drawer_layout">Visningsmodus</string>
     <string name="notification_custom_color">Bruk egendefinert farge</string>
+    <string name="title_disabled">Avskrudd</string>
+    <string name="about_translators">Oversettere</string>
+    <string name="title_create">Opprett</string>
 </resources>
