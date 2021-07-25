@@ -375,4 +375,5 @@
     <string name="gesture_press_home">轻按主页按钮</string>
     <string name="dialog_message_change_sort">将应用顺序更改为按字母顺序？</string>
     <string name="notification_custom_color">使用自定义颜色</string>
+    <string name="about_translators">译员</string>
 </resources>
