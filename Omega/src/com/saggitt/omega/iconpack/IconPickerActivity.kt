@@ -17,6 +17,7 @@
 
 package com.saggitt.omega.iconpack
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -42,7 +43,6 @@ import com.saggitt.omega.settings.SettingsBaseActivity
 import com.saggitt.omega.util.*
 import com.saggitt.omega.views.FadingImageView
 import java.text.Collator
-import java.util.*
 import java.util.concurrent.Semaphore
 
 class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
@@ -271,7 +271,7 @@ class IconPickerActivity : SettingsBaseActivity(), View.OnLayoutChangeListener,
 
     fun onSelectIcon(entry: IconPack.Entry) {
         val customEntry = entry.toCustomEntry()
-        setResult(RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
+        setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_ENTRY, customEntry.toString()))
         finish()
     }
 

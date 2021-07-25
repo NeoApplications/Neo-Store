@@ -152,6 +152,7 @@ class EditIconActivity : SettingsBaseActivity() {
         }
     }
 
+    /*Selecciona un icon de los que se han cargado*/
     fun onSelectIcon(entry: IconPack.Entry?) {
         val customEntry = entry?.toCustomEntry()
         val entryString = if (isFolder) customEntry?.toString() else customEntry?.toPackString()
@@ -159,35 +160,35 @@ class EditIconActivity : SettingsBaseActivity() {
         finish()
     }
 
+    /*Abre el seleccionador de imagenes*/
     fun onSelectExternal() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "image/*"
         }
 
-        startIconRequest.launch(intent)
+        startExternalIconRequest.launch(intent)
     }
 
+    /*Abre el seleccionador de iconPack */
     fun onSelectIconPack(provider: IconPackManager.PackProvider) {
-        startIconResult.launch(IconPickerActivity.newIntent(this, provider))
+        openIconPack.launch(IconPickerActivity.newIntent(this, provider))
     }
 
-    private val startIconResult =
+    private val openIconPack =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val resultData = result.data
-                if (resultData!!.data != null) {
-                    val entryString = resultData.getStringExtra(EXTRA_ENTRY)
-                    setResult(
-                        RESULT_OK,
-                        Intent().putExtra(EXTRA_ENTRY, entryString)
-                    )
-                    finish()
-                }
+                val entryString = resultData!!.getStringExtra(EXTRA_ENTRY)
+                setResult(
+                    RESULT_OK,
+                    Intent().putExtra(EXTRA_ENTRY, entryString)
+                )
+                finish()
             }
         }
 
-    private val startIconRequest =
+    private val startExternalIconRequest =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val resultData = result.data
