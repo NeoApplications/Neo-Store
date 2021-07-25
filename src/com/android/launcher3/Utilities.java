@@ -106,6 +106,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.allapps.AllAppsPaged;
 import com.saggitt.omega.allapps.AllAppsVertical;
 import com.saggitt.omega.allapps.AllAppsVerticalList;
 import com.saggitt.omega.allapps.IDrawerLayout;
@@ -116,7 +117,6 @@ import com.saggitt.omega.util.HiddenApiCompat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -739,40 +739,17 @@ public final class Utilities {
     public static IDrawerLayout getLayoutMode(Launcher launcher, int mode) {
         IDrawerLayout layoutMode;
         switch (mode) {
-            case Config.DRAWER_VERTICAL:
-                layoutMode = new AllAppsVertical(launcher);
-                break;
             case Config.DRAWER_VERTICAL_LIST:
                 layoutMode = new AllAppsVerticalList(launcher);
                 break;
             case Config.DRAWER_PAGED:
-                //TODO add paged view option
-                layoutMode = new AllAppsVertical(launcher);
+                layoutMode = new AllAppsPaged(launcher);
                 break;
             default:
-                layoutMode = new AllAppsVerticalList(launcher);
+                layoutMode = new AllAppsVertical(launcher);
                 break;
         }
         return layoutMode;
-    }
-
-    public static <T> T getOverrideObject(Class<T> clazz, Context context, int resId) {
-        String className = context.getString(resId);
-        if (!TextUtils.isEmpty(className)) {
-            try {
-                Class<?> cls = Class.forName(className);
-                return (T) cls.getDeclaredConstructor(Context.class).newInstance(context);
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                    | ClassCastException | NoSuchMethodException | InvocationTargetException e) {
-                Log.e(TAG, "Bad overriden class", e);
-            }
-        }
-
-        try {
-            return clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     // These values are same as that in {@link AsyncTask}.
