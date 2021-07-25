@@ -516,6 +516,7 @@
     <string name="none">None</string>
     <string name="name">Name</string>
     <string name="apps_label">Apps</string>
+    <string name="apps_suggestions">Apps Suggestions</string>
     <string name="custom">Custom</string>
     <string name="default_tab_name">New tab</string>
     <string name="tabs_manage">Manage</string>
