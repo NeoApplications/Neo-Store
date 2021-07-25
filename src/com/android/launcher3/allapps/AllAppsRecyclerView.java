@@ -217,10 +217,10 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
      * Maps the touch (from 0..1) to the adapter position that should be visible.
      */
     @Override
-    public String scrollToPositionAtProgress(float touchFraction) {
+    public PositionThumbInfo scrollToPositionAtProgress(float touchFraction) {
         int rowCount = mApps.getNumAppRows();
         if (rowCount == 0) {
-            return "";
+            return new PositionThumbInfo("", 0);
         }
 
         // Find the fastscroll section that maps to this touch fraction
@@ -236,7 +236,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView implements LogContaine
         }
 
         mFastScrollHelper.smoothScrollToSection(lastInfo);
-        return lastInfo.sectionName;
+        return new PositionThumbInfo(lastInfo.sectionName, lastInfo.color);
     }
 
     @Override

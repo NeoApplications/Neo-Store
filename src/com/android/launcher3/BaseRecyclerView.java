@@ -20,7 +20,6 @@ import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_CONTENT_
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.compat.AccessibilityManagerCompat;
-import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.RecyclerViewFastScroller;
 
@@ -166,7 +164,7 @@ public abstract class BaseRecyclerView extends RecyclerView  {
      * Maps the touch (from 0..1) to the adapter position that should be visible.
      * <p>Override in each subclass of this base class.
      */
-    public abstract String scrollToPositionAtProgress(float touchFraction);
+    public abstract PositionThumbInfo scrollToPositionAtProgress(float touchFraction);
 
     /**
      * Updates the bounds for the scrollbar.
@@ -202,6 +200,16 @@ public abstract class BaseRecyclerView extends RecyclerView  {
         if (changing) {
             ActivityContext.lookupContext(getContext()).getDragLayer()
                     .sendAccessibilityEvent(TYPE_WINDOW_CONTENT_CHANGED);
+        }
+    }
+
+    public class PositionThumbInfo {
+        public String name;
+        public int color;
+
+        public PositionThumbInfo(String name, int color) {
+            this.name = name;
+            this.color = color;
         }
     }
 }

@@ -179,6 +179,7 @@ public class WallpaperOffsetInterpolator extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         mWallpaperIsLiveWallpaper =
                 WallpaperManager.getInstance(mWorkspace.getContext()).getWallpaperInfo() != null;
+        BlurWallpaperProvider.Companion.getInstance(context).updateAsync();
         updateOffset();
     }
 
@@ -200,10 +201,12 @@ public class WallpaperOffsetInterpolator extends BroadcastReceiver {
 
         private float mFinalOffset;
         private float mOffsetX;
+        private Context mContext;
 
         public OffsetHandler(Context context) {
             super(UI_HELPER_EXECUTOR.getLooper());
             mInterpolator = Interpolators.DEACCEL_1_5;
+            mContext = context;
             mWM = WallpaperManager.getInstance(context);
         }
 
@@ -270,6 +273,8 @@ public class WallpaperOffsetInterpolator extends BroadcastReceiver {
         private void setOffsetSafely(IBinder token) {
             try {
                 mWM.setWallpaperOffsets(token, mCurrentOffset, 0.5f);
+                BlurWallpaperProvider.Companion.getInstance(mContext)
+                        .setWallpaperOffset(mCurrentOffset);
             } catch (IllegalArgumentException e) {
                 Log.e(TAG, "Error updating wallpaper offset: " + e);
             }
