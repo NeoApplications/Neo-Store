@@ -61,6 +61,7 @@ class CustomBottomSheet @JvmOverloads constructor(
     private lateinit var mItemInfo: ItemInfo
     private var mInfoProvider: CustomInfoProvider<ItemInfo>? = null
     private var mForceOpen = false
+    private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
@@ -127,6 +128,8 @@ class CustomBottomSheet @JvmOverloads constructor(
                     mItemInfo, newTitle,
                     mLauncher.model.getWriter(false, true)
                 )
+                if (mItemInfo is ItemInfoWithIcon)
+                    prefs.reloadApps
             }
         }
         super.onDetachedFromWindow()
@@ -155,7 +158,6 @@ class CustomBottomSheet @JvmOverloads constructor(
 
     class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
-        private var mPrefHidePredictions: SwitchPreferenceCompat? = null
         private var mSwipeUpPref: LauncherGesturePreference? = null
         private var mTabsPref: MultiSelectTabPreference? = null
         private var mPrefCoverMode: SwitchPreferenceCompat? = null
@@ -220,10 +222,6 @@ class CustomBottomSheet @JvmOverloads constructor(
             } else {
                 preferenceScreen.removePreference(mSwipeUpPref as Preference?)
             }
-            if (mPrefHidePredictions != null) {
-                mPrefHidePredictions!!.isChecked = CustomAppPredictor.isHiddenApp(context, mKey!!)
-                mPrefHidePredictions!!.onPreferenceChangeListener = this
-            }
             if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
                 val componentPref = preferenceScreen.findPreference<Preference>("componentName")
                 val versionPref = preferenceScreen.findPreference<Preference>("versionName")
@@ -234,13 +232,6 @@ class CustomBottomSheet @JvmOverloads constructor(
                     PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
             } else {
                 preferenceScreen.removePreference(preferenceScreen.findPreference("debug"))
-            }
-            mPrefHidePredictions = preferenceScreen
-                .findPreference<Preference>(PREF_HIDE_FROM_PREDICTIONS) as SwitchPreferenceCompat?
-            if ((!prefs.showPredictions || HIDE_PREDICTION_OPTION)
-                && mPrefHidePredictions != null
-            ) {
-                preferenceScreen.removePreference(mPrefHidePredictions)
             }
             if (itemInfo is FolderInfo) {
                 mPrefCoverMode!!.isChecked = (itemInfo as FolderInfo).isCoverMode
@@ -351,7 +342,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             val REQUEST_CODE = "swipeUp".hashCode() and 65535
             private const val PREF_HIDE = "pref_app_hide"
             private const val PREF_HIDE_FROM_PREDICTIONS = "pref_app_prediction_hide"
-            private const val HIDE_PREDICTION_OPTION = true
+            private const val HIDE_PREDICTION_OPTION = false
         }
     }
 

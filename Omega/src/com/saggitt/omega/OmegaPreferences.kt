@@ -79,7 +79,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val sharedPrefs = migratePrefs()
 
     /* --APP DRAWER-- */
-    var sortMode by StringIntPref("pref_key__sort_mode", 0, recreate)
+    var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
     var showPredictions by BooleanPref("pref_show_predictions", false, doNothing)
     val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", false)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
