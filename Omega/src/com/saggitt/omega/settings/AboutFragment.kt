@@ -51,6 +51,7 @@ import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.google.android.material.tabs.TabLayout
+import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
@@ -60,7 +61,6 @@ import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.views.LoadTranslators
 import kotlinx.coroutines.launch
 import java.util.*
-
 
 class AboutFragment : Fragment() {
 
@@ -179,7 +179,9 @@ class AboutFragment : Fragment() {
                     .trim() + "\n\n").split("\n")
 
             view.findViewById<ComposeView>(R.id.translators_view).setContent {
-                LoadTranslators(translators)
+                OmegaAppTheme(isDark) {
+                    LoadTranslators(translators)
+                }
             }
 
             val arrow = view.findViewById<ImageButton>(R.id.arrow_button)
