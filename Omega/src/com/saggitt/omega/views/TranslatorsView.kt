@@ -57,7 +57,7 @@ fun LoadTranslators(translators: List<String>) {
                     ) {
                         Text(
                             text = translators[i] + " <" + translators[i + 2] + ">",
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.body2
                         )
                     }
                 }
@@ -73,7 +73,7 @@ fun LoadTranslators(translators: List<String>) {
                     ) {
                         Text(
                             text = translators[i] + " <" + translators[i + 2] + ">",
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.body2
                         )
                     }
                 }
