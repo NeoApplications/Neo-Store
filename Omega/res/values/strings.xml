@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Saul Henriquez
   ~
@@ -14,8 +15,7 @@
   ~
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  --><resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="derived_app_name" translatable="false">Omega Launcher</string>
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
@@ -39,12 +39,10 @@
     <string name="summary__general_notifications">Badge count, badge color, gestures</string>
     <string name="summary__general_advanced">Language, back up, setting search</string>
     <string name="summary__general_about">More information about Omega Launcher</string>
-
     <string name="pref_category__interfaces">Interfaces</string>
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>
     <string name="pref_category__incubating">Incubating</string>
-
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
     <string name="title__desktop_full_width_widgets">Full width widgets</string>
@@ -61,7 +59,6 @@
     <string name="summary__full_width_widgets">Allow widgets to span over the whole width without padding</string>
     <string name="grid_size_height">Height</string>
     <string name="grid_size_width">Width</string>
-
     <!-- PREFERENCES DOCK -->
     <string name="title__dock_icon_size">Icon size</string>
     <string name="title__dock_scale">Dock scale</string>
@@ -75,13 +72,11 @@
     <string name="title__dock_hotseat_icons">Icon Count</string>
     <string name="title__dock_show_arrow">Show Arrow</string>
     <string name="dock_colored_google">Color Icons</string>
-
     <string name="title_opacity">Opacity</string>
     <string name="hotseat_show_page_indicator">Show Page Indicator</string>
     <string name="title_disabled">"Disabled"</string>
     <string name="dock_search_value" translatable="false">%1$s %2$s</string>
     <string name="num_hotseat_icons_pref_title">Icon Count</string>
-
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
     <string name="title__drawer_all_apps">Show "All Apps" label</string>
@@ -112,16 +107,13 @@
     <string name="msg_disable_suggestions_prompt">"Usage data will be deleted."</string>
     <string name="label_turn_off_suggestions">Disable</string>
     <string name="title_text_color">Text Color</string>
-
     <string name="title_drawer_layout">Layout Mode</string>
     <string name="title_drawer_vertical">Vertical</string>
     <string name="title_drawer_vertical_list">Vertical List</string>
     <string name="title_drawer_paged">Paged</string>
     <string name="dialog_message_change_sort">Change apps order to Alphabetical?</string>
-
     <string name="cat_drawer_grid">Grid</string>
     <string name="cat_drawer_icons">Icons</string>
-
     <string name="pref_appcategorization_flowerpot_title">App Category</string>
     <string name="pref_appcategorization_enable_title">Categorize Apps</string>
     <string name="pref_appcategorization_enable_summary">Choose the drawer layout mode</string>
@@ -143,22 +135,18 @@
     <plurals name="hidden_apps_count">
         <item quantity="other">%1$d Hidden</item>
     </plurals>
-    <string name="hide_app_selected">&#160; hidden</string>
+    <string name="hide_app_selected">  hidden</string>
     <string name="hide_app_reset">Reset</string>
     <string name="action_preferences" translatable="false">@string/customize</string>
-
     <string name="needs_usage_access">Usage access needed</string>
     <string name="msg_missing_usage_access">To show App Suggestions, turn on usage access for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
-
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>
     <string name="title__theme_blur_radius">Blur Intensity</string>
     <string name="title__theme_icon_shape">Change icon shape</string>
     <string name="title_theme_icon_packs">Icon Packs</string>
-
     <string name="summary__theme_blur">Blur page backgrounds</string>
-
     <string name="theme_auto">Follow wallpaper</string>
     <string name="theme_auto_night_mode">Follow system theme</string>
     <string name="theme_based">Set by Theme</string>
@@ -176,11 +164,9 @@
     <string name="theme_use_black">Use pure black</string>
     <string name="theme_use_dark_text">Use dark text</string>
     <string name="title_default">Default</string>
-
     <string name="icon_pack">Icon pack</string>
     <string name="get_more_icon_packs">Get more</string>
     <string name="menu_icon_shape">Custom Icon Shape</string>
-
     <string name="icon_shape_override_progress">"Applying icon shape changes"</string>
     <!-- Developer setting to change the shape of icons on home screen. [CHAR LIMIT=50] -->
     <string name="icon_shape_override_label">Change icon shape</string>
@@ -206,30 +192,24 @@
     <string name="icon_shape_corner_round">Round</string>
     <string name="icon_shape_corner_squircle">Squircle</string>
     <string name="icon_shape_corner_cut">Cut</string>
-
     <string name="icon_pack_applied_toast">%s applied</string>
     <string name="icon_pack_default">System icons</string>
     <string name="icon_pack_external_picker">Open external picker</string>
     <string name="open_image_picker">Open image picker</string>
     <string name="import_icon">Import icon</string>
     <string name="import_as_adaptive">As adaptive icon</string>
-
     <string name="reset_custom_icons">Remove Custom Icons</string>
     <string name="reset_custom_icons_confirmation">Revert to default icons from this Icon Pack? This can’t be undone.</string>
-
     <string name="color_presets">Presets</string>
-
     <string name="title_adaptify_pack">Create adaptive icons for icon pack</string>
     <string name="title_force_shapeless">Force shapeless icons</string>
     <string name="title_legacy_colored_backgrounds">Coloured backgrounds</string>
     <string name="title_legacy_treatment">Create Adaptive Icons</string>
     <string name="title_white_only_treatment">Replace White Backgrounds</string>
-
     <string name="preview_app_google_photos" translatable="false">Google Photos</string>
     <string name="preview_app_instagram" translatable="false">Instagram</string>
     <string name="preview_app_youtube" translatable="false">Youtube</string>
     <string name="preview_app_whatsapp" translatable="false">WhatsApp</string>
-
     <!-- PREFERENCES SMARTSPACE -->
     <string name="title_show_google_app">Show Google app</string>
     <string name="title_smartspace_feed_theme">Feed Theme</string>
@@ -242,10 +222,10 @@
     <string name="title_smartspace_widget_provider">Weather source</string>
     <string name="title_smartspace_weather_units">Temperature unit</string>
     <string name="title_smartspace_event_providers">Events sources</string>
-
     <string name="category__behavior_weather">Weather</string>
     <string name="google_app" translatable="false">Google app</string>
-    <string name="msg_minus_one_on_left">To the left of the main Home screen</string> <!-- SmartSpace -->
+    <string name="msg_minus_one_on_left">To the left of the main Home screen</string>
+    <!-- SmartSpace -->
     <string name="smartspace_preferences">Preferences</string>
     <string name="smartspace_add_to_home">Add to Desktop</string>
     <string name="smartspace_setup_text">Tap to Set Up</string>
@@ -253,7 +233,6 @@
     <string name="smartspace_in_time">in %1$s</string>
     <string name="smartspace_hours_mins">%1$s %2$s</string>
     <string name="smartspace_provider_bridge">Rootless Pixel Bridge</string>
-
     <string name="resuable_text_alarm">Alarm</string>
     <string name="name_provider_alarm_events">Upcoming alarms</string>
     <string name="smartspace_widget_provider_not_found">Get the Google App.</string>
@@ -264,7 +243,6 @@
     <string name="battery_low">Battery Low</string>
     <string name="event_provider_missing_notification_access">To use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
     <string name="event_provider_missing_notification_dots">To use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
-
     <string name="permission_iplocate">Approximate Location</string>
     <string name="permission_iplocate_twilight_explanation">Allow access to your approximate location? This enables more accurate daylight calculation.</string>
     <string name="allow">Allow</string>
@@ -273,26 +251,22 @@
     <string name="action_press_back">Back button</string>
     <string name="action_open_recents">Open recents</string>
     <string name="personality_provider">Greetings</string>
-
     <string name="onbording">Onboarding</string>
     <string name="onbording_settings_title">Set Up %s</string>
     <string name="onbording_settings_summary">Touch &amp; hold on the Desktop.</string>
     <string name="onboarding_swipe_up">Swipe up to open the Drawer.</string>
-
     <string name="weather_provider_testing">Debug</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_oneplus_weather">OnePlus Weather</string>
     <string name="event_provider_now_playing">Now Playing</string>
     <string name="event_provider_unread_notifications">Notifications</string>
     <string name="battery_status">Battery Status</string>
-
     <string name="week_day_format" translatable="false">%1$s, %2$s</string>
     <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
     <string name="icu_abbrev_wday_month_day_no_year">EEEEMMMd</string>
     <string name="icu_abbrev_time">HH:mm</string>
     <string name="icu_abbrev_time_12h">hh:mm aa</string>
     <string name="icu_abbrev_date"> dd MMMM</string>
-
     <string name="units_metric">Celsius</string>
     <string name="units_imperial">Fahrenheit</string>
     <string name="units_kelvin">Kelvin</string>
@@ -301,30 +275,25 @@
     <string name="units_delisle">Delisle</string>
     <string name="units_reaumur">Réaumur</string>
     <string name="units_romer">Rømer</string>
-
     <!-- Folder name format -->
     <string name="folder_name_format">Folder: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
-
     <string-array name="greetings_morning">
         <item>Good morning!</item>
         <item>Have a great day!</item>
         <item>It’s a beautiful day outside!</item>
     </string-array>
-
     <string-array name="greetings_evening">
         <item>What’s up?</item>
         <item>Good evening!</item>
         <item>How did your day go?</item>
         <item>How was your day?</item>
     </string-array>
-
     <string-array name="greetings_night">
         <item>Sleep well!</item>
         <item>See you tomorrow!</item>
         <item>Good night!</item>
         <item>Don’t stay up too late!</item>
     </string-array>
-
     <!-- PREFERENCES NOTIFICATION -->
     <string name="on">On</string>
     <string name="off">Off</string>
@@ -333,10 +302,8 @@
     <string name="title__folder_badge_count">Show folder badge Count</string>
     <string name="title__notification_background">Notification Background Color</string>
     <string name="title__gesture_swipe_down">Swipe down</string>
-
     <string name="pref_category__notifications">Notifications</string>
     <string name="pref_category__gestures">Gestures</string>
-
     <string name="action_none">Do Nothing</string>
     <string name="action_open_drawer">Open app drawer</string>
     <string name="action_open_drawer_or_recents">Open recents/app drawer</string>
@@ -363,7 +330,6 @@
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use Double Tap to Sleep, grant the Admin permission.</string>
     <string name="dt2s_admin_warning">Double Tap to Sleep will be disabled.</string>
-
     <!-- SEARCH -->
     <string name="title__search_bubble_searchbar">Show Two Bubbles</string>
     <string name="title__search_action_assistant">Open Assistant</string>
@@ -401,13 +367,11 @@
     <string name="web_search_baidu" translatable="false">Baidu (web)</string>
     <string name="web_search_yahoo" translatable="false">Yahoo (web)</string>
     <string name="error_no_browser">No activity found to handle URLs</string>
-
     <!-- ADVANCED -->
     <string name="summary__advanced_setting_search">Display setting search in the action bar</string>
     <string name="summary__advanced_language">Change language of this app</string>
     <string name="title__advanced_setting_search">Show settings search</string>
     <string name="title__advanced_language">Language</string>
-
     <!-- PREFERENCES BACKUP -->
     <string name="backups">Backups</string>
     <string name="backup_delete">Hide</string>
@@ -440,7 +404,6 @@
     <string name="backup_location_device_storage">Omega Folder</string>
     <string name="read_external_storage_required">To create a Backup, grant the Storage permission.</string>
     <string name="local_backups">In Storage</string>
-
     <!-- DEVELOPER -->
     <string name="developer_options_enabled">Developer options enabled</string>
     <string name="search_menu">Find settings</string>
@@ -452,16 +415,14 @@
     <string name="title__restart_launcher">Restart</string>
     <string name="summary__dev_restart">Can be helpful if some settings are not properly applied</string>
     <string name="change_default_home">Set as Home App</string>
-
     <string name="feed_add_widget">Add Widget</string>
     <string name="feed_widget">Widgets</string>
-
     <!-- ABOUT -->
     <string name="about_build_information">Build information</string>
     <string name="title__about_donate">Donate</string>
     <string name="title__about_changelog">Changelog</string>
     <string name="title__about_project_team">Developer</string>
-    <string name="about_copyright" translatable="false">Copyright &#169; 2020&#8211;2021</string>
+    <string name="about_copyright" translatable="false">Copyright © 2020–2021</string>
     <string name="about_team">Family Members</string>
     <string name="about_translators">Translators</string>
     <string name="about_source">Source Code</string>
@@ -473,10 +434,8 @@
     <string name="contributor1" translatable="false">Antonios Hazim</string>
     <string name="contributor2" translatable="false">Rafael Venancio</string>
     <string name="contributor_role" translatable="false">Contributor</string>
-
     <string name="title_storage_permission_required">Storage Access Needed</string>
     <string name="content_storage_permission_required">To set a wallpaper, grant the Storage permission.</string>
-
     <!-- DASH -->
     <string name="edit_dash">Edit Dash</string>
     <string name="wallpaper_pick">Pick Wallpaper</string>
@@ -494,19 +453,15 @@
     <string name="dash_launcher_settings_summary">Display the launcher settings</string>
     <string name="dash_volume_summary">Display the device audio selector</string>
     <string name="dash_device_settings_summary">Open the Device Settings</string>
-
     <string name="drag_to_disable_packs">Drag down to disable</string>
     <string name="drag_to_enable_packs">Drag up to enable</string>
     <string name="enabled_icon_packs">Enabled</string>
-
     <!-- SEEKBAR PREFERENCE -->
     <string name="reset_to_default">Reset to default</string>
     <string name="automatic_short">Auto</string>
-
     <!-- QSB -->
     <string name="label_voice_search">Voice search</string>
     <string name="customize">Customize</string>
-
     <!-- TABS -->
     <string name="tab_bottom_sheet_save">Save</string>
     <string name="tab_hide_from_main">Hide from main tab</string>
@@ -516,22 +471,18 @@
     <string name="none">None</string>
     <string name="name">Name</string>
     <string name="apps_label">Apps</string>
-    <string name="apps_suggestions">Apps Suggestions</string>
+    <string name="apps_suggestions">App Suggestions</string>
     <string name="custom">Custom</string>
     <string name="default_tab_name">New tab</string>
     <string name="tabs_manage">Manage</string>
     <string name="dismiss_drop_target_label">"Don\’t show"</string>
-
     <string name="debug_component_name">Component Name</string>
     <string name="debug_component_name_copied">Copied to clipboard.</string>
     <string name="hide_app">Hide Shortcut</string>
     <string name="folder_cover_mode">Use Cover Mode</string>
     <string name="folder_cover_mode_desc">Tap to open first app, swipe up to view all.</string>
-
     <string name="loading">Loading…</string>
     <string name="uninstall_failed">The app uninstall failed</string>
-
     <!-- WIDGET FEED -->
-
     <string name="button_organize_screens">Arrange Pages</string>
 </resources>
