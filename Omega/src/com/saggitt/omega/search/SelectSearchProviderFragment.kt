@@ -38,9 +38,6 @@ import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
 class SelectSearchProviderFragment : PreferenceDialogFragmentCompat() {
-    private val key by lazy { requireArguments().getString("key") }
-    private val value by lazy { requireArguments().getString("value") }
-
     private val searchProviders by lazy {
         SearchProviderController.getSearchProviders(
             requireActivity()
