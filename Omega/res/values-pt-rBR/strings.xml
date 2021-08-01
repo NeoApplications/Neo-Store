@@ -41,7 +41,7 @@
     <string name="tab_type_smart">Automático</string>
     <string name="tab_type_custom_desc">Selecionar os apps manualmente.</string>
     <string name="tab_type_custom">Personalizado</string>
-    <string name="default_folder_name">Nova pasta</string>
+    <string name="default_folder_name">Nova Pasta</string>
     <string name="pref_app_groups_edit_tip">Toque para editar, arraste para reorganizar.</string>
     <string name="pref_appcategorization_tabs_summary">Deslizar entre os grupos.</string>
     <string name="app_categorization_tabs">Abas</string>
@@ -388,4 +388,7 @@
     <string name="gesture_press_home">Toque no botão Iniciar</string>
     <string name="notification_custom_color">Use uma cor personalizada</string>
     <string name="dialog_message_change_sort">Alterar a ordem dos aplicativos para alfabética\?</string>
+    <string name="apps_suggestions">Sugestões de aplicativos</string>
+    <string name="about_translators">Tradutores</string>
+    <string name="title_create">Criar</string>
 </resources>
