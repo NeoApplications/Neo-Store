@@ -243,6 +243,10 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
         return info == null ? null : (WorkspaceItemInfo) info.getItemInfo().first;
     }
 
+    public static WorkspaceItemInfo fromActivityInfo(LauncherActivityInfo info, Context context) {
+        return (WorkspaceItemInfo) (new PendingInstallShortcutInfo(info, context).getItemInfo().first);
+    }
+
     public static void queueShortcut(ShortcutInfo info, Context context) {
         queuePendingShortcutInfo(new PendingInstallShortcutInfo(info, context), context);
     }
