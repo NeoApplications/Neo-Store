@@ -90,7 +90,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     )
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
     val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.textColorPrimary, reloadApps)
-    var allAppsGlobalSearch by BooleanPref("pref_allAppsGoogleSearch", true, doNothing)
+    var allAppsGlobalSearch by BooleanPref("pref_allAppsGlobalSearch", true, doNothing)
     val allAppsSearch by BooleanPref("pref_allAppsSearch", true, recreate)
     val allAppsTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
     val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
@@ -233,7 +233,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --SEARCH-- */
     var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f)
-    val dockColoredGoogle by BooleanPref("pref_dockColoredGoogle", true, doNothing)
     var searchProvider by StringPref(
         "pref_globalSearchProvider",
         omegaConfig.defaultSearchProvider

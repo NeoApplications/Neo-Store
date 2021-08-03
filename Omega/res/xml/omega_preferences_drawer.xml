@@ -186,7 +186,7 @@
             android:defaultValue="true"
             android:dependency="pref_allAppsSearch"
             android:disableDependentsState="true"
-            android:key="pref_allAppsGoogleSearch"
+            android:key="pref_allAppsGlobalSearch"
             android:summary="@string/summary_all_apps_google_search"
             android:title="@string/title_all_apps_google_search"
             app:iconSpaceReserved="false" />

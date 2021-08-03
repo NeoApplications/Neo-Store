@@ -1,9 +1,16 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
+import android.os.Bundle;
 
+import com.android.launcher3.util.ComponentKey;
+import com.google.android.apps.nexuslauncher.search.AppSearchProvider;
 import com.saggitt.omega.OmegaLauncher;
 
 import java.lang.ref.WeakReference;
@@ -17,7 +24,7 @@ public class LongClickReceiver extends BroadcastReceiver {
     }
 
     public void onReceive(final Context context, final Intent intent) {
-        /*final NexusLauncherActivity launcher = LongClickReceiver.bR.get();
+        final OmegaLauncher launcher = LongClickReceiver.bR.get();
         if (launcher != null) {
             final ComponentKey dl = AppSearchProvider.uriToComponent(intent.getData(), context);
             final LauncherActivityInfo resolveActivity = context
@@ -37,6 +44,6 @@ public class LongClickReceiver extends BroadcastReceiver {
             final Bundle bundle = new Bundle();
             bundle.putParcelable("clip_data", clipData);
             this.setResult(-1, null, bundle);
-        }*/
+        }
     }
 }
