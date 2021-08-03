@@ -25,7 +25,6 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsRecyclerView;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
 import com.android.launcher3.icons.BitmapRenderer;
-import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.search.nano.SearchProto.AppIndex;
@@ -43,7 +42,6 @@ public class ConfigBuilder {
     private final Bundle mBundle;
     private final AbstractQsbLayout mQsbLayout;
     private final boolean mIsAllApps;
-    private final UserCache userCache;
     private boolean co;
     private BubbleTextView mBubbleTextView;
 
@@ -53,7 +51,6 @@ public class ConfigBuilder {
         mQsbLayout = qsbLayout;
         mActivity = qsbLayout.getLauncher();
         mIsAllApps = isAllApps;
-        userCache = UserCache.INSTANCE.get(mActivity);
     }
 
     public static Intent getSearchIntent(Rect sourceBounds, View gIcon, View micIcon) {
