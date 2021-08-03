@@ -74,7 +74,7 @@ open class SettingsActivity : SettingsBaseActivity(),
     PreferenceFragment.OnPreferenceDisplayDialogCallback,
     FragmentManager.OnBackStackChangedListener, View.OnClickListener {
     private var isSubSettings = false
-    protected var forceSubSettings = false
+    private var forceSubSettings = false
     private var hasPreview = false
     override fun onCreate(savedInstanceState: Bundle?) {
         var savedInstanceState: Bundle? = savedInstanceState
@@ -293,7 +293,7 @@ open class SettingsActivity : SettingsBaseActivity(),
             }
         }
 
-        fun highlightPreferenceIfNeeded() {
+        private fun highlightPreferenceIfNeeded() {
             if (!isAdded) {
                 return
             }
@@ -377,7 +377,7 @@ open class SettingsActivity : SettingsBaseActivity(),
             return if (position >= 0) PreferenceHighlighter(list, position) else null
         }
 
-        fun dispatchOnResume(group: PreferenceGroup) {
+        private fun dispatchOnResume(group: PreferenceGroup) {
             val count = group.preferenceCount
             for (i in 0 until count) {
                 val preference = group.getPreference(i)
@@ -398,7 +398,7 @@ open class SettingsActivity : SettingsBaseActivity(),
             unregisterObserverIfNeeded()
         }
 
-        fun registerObserverIfNeeded() {
+        private fun registerObserverIfNeeded() {
             if (!mIsDataSetObserverRegistered) {
                 mCurrentRootAdapter?.unregisterAdapterDataObserver(mDataSetObserver)
                 mCurrentRootAdapter = listView.adapter
@@ -454,7 +454,8 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.omega_preferences,rootKey)
+            setPreferencesFromResource(R.xml.omega_preferences, rootKey)
+            onPreferencesAdded(preferenceScreen);
         }
 
         override fun onResume() {
@@ -588,7 +589,8 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(content,rootKey)
+            setPreferencesFromResource(content, rootKey)
+            onPreferencesAdded(preferenceScreen)
         }
 
         private val content: Int
