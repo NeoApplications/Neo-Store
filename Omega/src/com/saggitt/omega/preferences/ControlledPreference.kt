@@ -33,7 +33,7 @@ interface ControlledPreference {
             parseAttributes(attrs)
         }
 
-        fun parseAttributes(attrs: AttributeSet?) {
+        private fun parseAttributes(attrs: AttributeSet?) {
             if (attrs == null) return
             val a = context.obtainStyledAttributes(attrs, styleable.ControlledPreference)
             for (i in a.indexCount - 1 downTo 0) {
