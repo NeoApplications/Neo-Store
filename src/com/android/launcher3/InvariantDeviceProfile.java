@@ -481,7 +481,6 @@ public class InvariantDeviceProfile {
         numRowsOriginal = originalProfile.numRows;
         numColumnsOriginal = originalProfile.numColumns;
         numColsDrawerOriginal = originalProfile.numColsDrawer;
-        numHotseatIconsOriginal = originalProfile.numHotseatIcons;
 
         dbFile = closestProfile.dbFile;
         defaultLayoutId = closestProfile.defaultLayoutId;
