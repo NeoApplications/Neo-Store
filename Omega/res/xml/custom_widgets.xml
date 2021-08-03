@@ -35,19 +35,4 @@
         launcher:customizeScreen="@xml/omega_preferences_smartspace"
         launcher:customizeHasPreview="true" />
 
-    <widget
-        android:label="@string/cat_search_bar"
-        android:initialLayout="@layout/search_widget"
-        android:icon="@mipmap/ic_launcher"
-        android:previewImage="@drawable/qsb_widget"
-        android:resizeMode="horizontal|vertical"
-        launcher:numRows="1"
-        launcher:numColumns="5"
-        launcher:numMinRows="1"
-        launcher:numMinColumns="3"
-        launcher:providerId="2"
-        launcher:noPadding="true"
-        launcher:customizeTitle="@string/cat_search_bar"
-        launcher:customizeScreen="@xml/omega_preferences_search"
-        launcher:customizeHasPreview="false" />
 </widgets>
