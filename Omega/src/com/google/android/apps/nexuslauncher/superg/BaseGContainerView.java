@@ -1,6 +1,5 @@
 package com.google.android.apps.nexuslauncher.superg;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -29,13 +28,11 @@ import com.saggitt.omega.search.SearchProviderController;
 public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TEXT_ASSIST = "com.google.android.googlequicksearchbox.TEXT_ASSIST";
 
-    private final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator(); //mArgbEvaluator
     private ObjectAnimator mObjectAnimator;
     protected View mQsbView;
-    private float mQsbButtonElevation;
     protected QsbConnector mConnectorView;
     private final Interpolator mADInterpolator = new AccelerateDecelerateInterpolator();
-    private ObjectAnimator mElevationAnimator; //bJ
+    private final ObjectAnimator mElevationAnimator;
     protected boolean qsbHidden;
     private int mQsbViewId = 0;
     private boolean mWindowHasFocus;
@@ -45,8 +42,8 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
     public BaseGContainerView(Context paramContext, AttributeSet paramAttributeSet, int paramInt) {
         super(paramContext, paramAttributeSet, paramInt);
         Utilities.getPrefs(paramContext).registerOnSharedPreferenceChangeListener(this);
+        mElevationAnimator = new ObjectAnimator();
     }
-
     public void applyOpaPreference() {
         int qsbViewId = getQsbView(false);
         if (qsbViewId != mQsbViewId) {
@@ -55,7 +52,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
                 removeView(mQsbView);
             }
             mQsbView = LayoutInflater.from(getContext()).inflate(mQsbViewId, this, false);
-            mQsbButtonElevation = (float) getResources().getDimensionPixelSize(R.dimen.qsb_button_elevation);
+            float mQsbButtonElevation = (float) getResources().getDimensionPixelSize(R.dimen.qsb_button_elevation);
             addView(mQsbView);
             mObjectAnimator = ObjectAnimator.ofFloat(mQsbView, "elevation", 0f, mQsbButtonElevation).setDuration(200L);
             mObjectAnimator.setInterpolator(mADInterpolator);
@@ -80,7 +77,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         applyVisibility();
     }
 
-    private void applyMinusOnePreference() { //bh
+    private void applyMinusOnePreference() {
         if (mConnectorView != null) {
             removeView(mConnectorView);
             mConnectorView = null;
@@ -90,13 +87,13 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
     public void onClick(View paramView) {
         SearchProviderController controller = SearchProviderController.Companion.getInstance(getContext());
         if (controller.isGoogle()) {
-            getContext().sendOrderedBroadcast(getPillAnimationIntent("com.google.nexuslauncher.FAST_TEXT_SEARCH"),
+            getContext().sendOrderedBroadcast(getPillAnimationIntent(),
                     null,
                     new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
                             if (getResultCode() == 0) {
-                                startQsbActivity(BaseGContainerView.TEXT_ASSIST);
+                                startQsbActivity();
                             } else {
                                 loadWindowFocus();
                             }
@@ -115,7 +112,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         }
     }
 
-    private Intent getPillAnimationIntent(String action) {
+    private Intent getPillAnimationIntent() {
         int[] qsbLocation = new int[2];
         mQsbView.getLocationOnScreen(qsbLocation);
 
@@ -124,7 +121,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
                 qsbLocation[0] + mQsbView.getWidth(),
                 qsbLocation[1] + mQsbView.getHeight());
 
-        Intent intent = new Intent(action);
+        Intent intent = new Intent("com.google.nexuslauncher.FAST_TEXT_SEARCH");
         setGoogleAnimationStart(rect, intent);
         intent.setSourceBounds(rect);
         return intent.putExtra("source_round_left", true)
@@ -170,7 +167,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         changeVisibility(false);
     }
 
-    private void hideQsbImmediately() { //bb
+    private void hideQsbImmediately() {
         mWindowHasFocus = false;
         qsbHidden = true;
         if (mQsbView != null) {
@@ -207,10 +204,11 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         }
     }
 
-    private void startQsbActivity(String action) {
+    private void startQsbActivity() {
         Context context = getContext();
         try {
-            context.startActivity(new Intent(action).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(new Intent(BaseGContainerView.TEXT_ASSIST)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setPackage("com.google.android.googlequicksearchbox"));
         } catch (ActivityNotFoundException ignored) {
             try {
@@ -222,13 +220,11 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
     }
 
     private void applyVisibility() {
-        int visibility = View.VISIBLE;
-
         if (mQsbView != null) {
-            mQsbView.setVisibility(visibility);
+            mQsbView.setVisibility(View.VISIBLE);
         }
         if (mConnectorView != null) {
-            mConnectorView.setVisibility(visibility);
+            mConnectorView.setVisibility(View.VISIBLE);
         }
     }
 
