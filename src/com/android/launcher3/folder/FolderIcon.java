@@ -226,7 +226,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         }
 
         icon.setTag(folderInfo);
-        icon.setOnClickListener(ItemClickHandler.INSTANCE);
+        //icon.setOnClickListener(ItemClickHandler.INSTANCE);
         icon.mInfo = folderInfo;
         icon.mActivity = activity;
         icon.mDotRenderer = grid.mDotRendererWorkSpace;
@@ -577,7 +577,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 mFolderName.setTag(coverInfo);
                 mFolderName.applyIcon(coverInfo);
                 applyCoverDotState(coverInfo, false);
-                mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             } else {
                 BitmapInfo info = BitmapInfo.fromBitmap(
                         Utilities.drawableToBitmap(mInfo.getIcon(getContext())));
@@ -592,7 +591,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
             } else {
                 lp.topMargin = grid.iconSizePx + grid.iconDrawablePaddingPx;
             }
-            mFolderName.setCompoundDrawablePadding(0);
             mFolderName.applyDotState(mInfo, false);
             mFolderName.clearIcon();
             mBackground.setStartOpacity(1f);
