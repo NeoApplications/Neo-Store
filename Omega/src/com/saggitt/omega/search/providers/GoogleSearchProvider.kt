@@ -19,6 +19,7 @@ package com.saggitt.omega.search.providers
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
 import androidx.core.content.res.ResourcesCompat
@@ -39,7 +40,7 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsFeed = true
     override val settingsIntent: Intent
         get() = Intent("com.google.android.apps.gsa.nowoverlayservice.PIXEL_DOODLE_QSB_SETTINGS")
-            .setPackage(Config.GOOGLE_QSB).addFlags(268435456)
+            .setPackage(Config.GOOGLE_QSB).addFlags(FLAG_ACTIVITY_NEW_TASK)
     override val packageName: String
         get() = Config.GOOGLE_QSB
     override val isBroadcast: Boolean
