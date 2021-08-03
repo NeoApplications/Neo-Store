@@ -2,7 +2,6 @@ package com.google.android.apps.nexuslauncher.qsb;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
 
 import java.util.ArrayList;
 
@@ -19,22 +18,6 @@ public class QsbConfiguration {
             INSTANCE = new QsbConfiguration(context.getApplicationContext());
         }
         return INSTANCE;
-    }
-
-    private void notifyListeners() {
-        for (QsbChangeListener listener : mListeners) {
-            listener.onChange();
-        }
-    }
-
-    public final int getBackgroundColor() {
-        // pixel_2017_qsb_background_color
-        return 0x99FAFAFA;
-    }
-
-    public final int micOpacity() {
-        // pixel_2018_qsb_mic_opacity
-        return Color.alpha(getBackgroundColor());
     }
 
     public final float micStrokeWidth() {
