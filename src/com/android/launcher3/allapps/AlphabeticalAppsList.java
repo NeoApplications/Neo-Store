@@ -15,7 +15,7 @@
  */
 package com.android.launcher3.allapps;
 
-
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 import static com.saggitt.omega.util.Config.SORT_AZ;
 import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
 import static com.saggitt.omega.util.Config.SORT_LAST_INSTALLED;
@@ -23,8 +23,11 @@ import static com.saggitt.omega.util.Config.SORT_MOST_USED;
 import static com.saggitt.omega.util.Config.SORT_ZA;
 
 import android.content.Context;
+import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.UserHandle;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -33,6 +36,7 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
+import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
@@ -46,6 +50,7 @@ import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
 import com.saggitt.omega.util.DbHelper;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -113,7 +118,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private int mNumAppRowsInAdapter;
     private ItemInfoMatcher mItemFilter;
     private final OmegaPreferences prefs;
-
     private List<String> mSearchSuggestions;
 
     /**
@@ -306,8 +310,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.
      */
     private void updateAdapterItems() {
-        refillAdapterItems();
-        refreshRecyclerView();
+        MODEL_EXECUTOR.getHandler().postAtFrontOfQueue(() -> {
+            refillAdapterItems();
+            OmegaUtilsKt.getMainHandler().postAtFrontOfQueue(this::refreshRecyclerView);
+        });
     }
 
     private void refreshRecyclerView() {
@@ -367,7 +373,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 continue;
             }
 
-            String sectionName = info.sectionName;
+            String sectionName = getAndUpdateCachedSectionName(info);
 
             // Create a new section if the section names do not match
             if (!sectionName.equals(lastSectionName)) {
@@ -464,6 +470,21 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             AppInfo match = mAllAppsStore.getApp(key);
             if (match != null) {
                 result.add(match);
+            } else {
+                final IconCache iconCache = LauncherAppState.getInstance(mLauncher).getIconCache();
+                final UserHandle user = android.os.Process.myUserHandle();
+                final LauncherApps launcherApps = mLauncher.getApplicationContext().getSystemService(LauncherApps.class);
+                List<LauncherActivityInfo> apps = launcherApps.getActivityList(
+                        key.componentName.getPackageName(), key.user);
+
+                for (LauncherActivityInfo info : apps) {
+                    if (info.getComponentName().equals(key.componentName)) {
+                        final AppInfo appInfo = new AppInfo(info, user, false);
+                        iconCache.getTitleAndIcon(appInfo, false);
+                        result.add(appInfo);
+                        break;
+                    }
+                }
             }
         }
         return result;

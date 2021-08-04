@@ -23,16 +23,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherApps
 import android.os.Handler
-import android.os.UserHandle
-import android.util.Log
 import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
-import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.search.AllAppsSearchBarController
 import com.android.launcher3.allapps.search.SearchAlgorithm
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
-import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.allapps.WinklerWeightedRatio
 import com.saggitt.omega.util.omegaPrefs
@@ -41,7 +38,7 @@ import me.xdrop.fuzzywuzzy.FuzzySearch
 class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: List<AppInfo>) :
     SearchAlgorithm {
 
-    private var resultHandler: Handler = Handler()
+    private var resultHandler: Handler = MAIN_EXECUTOR.handler
     private var baseFilter: AppFilter = CustomAppFilter(context)
 
     override fun doSearch(query: String, callback: AllAppsSearchBarController.Callbacks) {
@@ -64,48 +61,31 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
     }
 
     companion object {
-        const val MIN_SCORE = 65
+        private const val MIN_SCORE = 65
 
         @JvmStatic
         fun getApps(
             context: Context, defaultApps: List<AppInfo>, mFilter: AppFilter
         ): List<AppInfo> {
-            val prefs = context.omegaPrefs;
+            val prefs = context.omegaPrefs
             if (!prefs.searchHiddenApps) {
                 return defaultApps
             }
             val iconCache = LauncherAppState.getInstance(context).iconCache
             val launcherApps = context.getSystemService(LauncherApps::class.java)
 
-            val allApps: List<AppInfo> =
-                UserCache.INSTANCE.get(context).userProfiles.flatMap { user ->
-                    val duplicatePreventionCache = mutableListOf<ComponentName>()
-                    launcherApps.getActivityList(null, user).filter { info ->
-                        mFilter.shouldShowApp(info.componentName, user)
-                        !duplicatePreventionCache.contains(info.componentName)
-                    }.map { info ->
-                        duplicatePreventionCache.add(info.componentName)
-                        AppInfo(context, info, user).apply {
-                            iconCache.getTitleAndIcon(this, false)
-                        }
+            return UserCache.INSTANCE.get(context).userProfiles.flatMap { user ->
+                val duplicatePreventionCache = mutableListOf<ComponentName>()
+                launcherApps.getActivityList(null, user).filter { info ->
+                    mFilter.shouldShowApp(info.componentName, user)
+                    !duplicatePreventionCache.contains(info.componentName)
+                }.map { info ->
+                    duplicatePreventionCache.add(info.componentName)
+                    AppInfo(context, info, user).apply {
+                        iconCache.getTitleAndIcon(this, false)
                     }
                 }
-            return allApps;
-        }
-
-        private fun shouldShowApp(
-            context: Context,
-            component: ComponentName,
-            user: UserHandle,
-            appFilter: AppFilter
-        ): Boolean {
-            var result: Boolean
-            result = appFilter.shouldShowApp(component, user);
-            if (Utilities.getOmegaPrefs(context).searchHiddenApps) {
-                val mKey = ComponentKey(component, user)
-                result = !CustomAppFilter.isHiddenApp(context, mKey)
             }
-            return result
         }
 
         @JvmStatic
@@ -115,7 +95,7 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
             defaultApps: List<AppInfo>,
             filter: AppFilter
         ): List<AppInfo> {
-            val result: List<AppInfo> = FuzzySearch.extractAll(
+            return FuzzySearch.extractAll(
                 query, getApps(context, defaultApps, filter),
                 { item ->
                     item?.title.toString()
@@ -124,12 +104,6 @@ class FuzzyAppSearchAlgorithm(private val context: Context, private val apps: Li
                 .sortedBy { it.referent.title.toString() }
                 .sortedByDescending { it.score }
                 .map { it.referent }
-
-            for (appInfo in result) {
-                Log.d("FuzzySearch", "Showing apps " + result.size)
-            }
-
-            return result
         }
     }
 }
