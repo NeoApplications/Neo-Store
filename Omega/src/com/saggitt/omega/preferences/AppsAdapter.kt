@@ -37,6 +37,7 @@ import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
+import java.util.*
 import java.util.Comparator.comparing
 
 // TODO migrate to FastAdapater
@@ -154,6 +155,7 @@ open class AppsAdapter(
     }
 
     companion object {
-        val defaultComparator = comparing<App, String> { it.info.label.toString().lowercase() }
+        val defaultComparator =
+            comparing<App, String> { it.info.label.toString().lowercase(Locale.getDefault()) }!!
     }
 }
