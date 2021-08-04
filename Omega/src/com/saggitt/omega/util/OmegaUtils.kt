@@ -51,7 +51,10 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
-import com.android.launcher3.*
+import com.android.launcher3.Launcher
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.shortcuts.DeepShortcutManager
@@ -68,8 +71,6 @@ import java.lang.reflect.Field
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -141,8 +142,8 @@ fun <T> useApplicationContext(creator: (Context) -> T): (Context) -> T {
 }
 
 val mainHandler by lazy { makeBasicHandler() }
-val uiWorkerHandler by lazy { UI_HELPER_EXECUTOR.handler }
-val iconPackUiHandler by lazy { ICON_PACK_EXECUTOR.handler }
+val uiWorkerHandler: Handler by lazy { UI_HELPER_EXECUTOR.handler }
+val iconPackUiHandler: Handler by lazy { ICON_PACK_EXECUTOR.handler }
 
 fun runOnUiWorkerThread(r: () -> Unit) {
     runOnThread(uiWorkerHandler, r)
@@ -249,7 +250,7 @@ fun Int.hasFlags(vararg flags: Int): Boolean {
     return flags.all { hasFlag(it) }
 }
 
-inline infix fun Int.hasFlag(flag: Int) = (this and flag) != 0
+infix fun Int.hasFlag(flag: Int) = (this and flag) != 0
 
 fun Int.removeFlag(flag: Int): Int {
     return this and flag.inv()
