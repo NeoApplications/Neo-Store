@@ -40,4 +40,6 @@
     <string name="title__general_smartspace">Ana Sayfa Widget\'ı</string>
     <string name="summary__general_smartspace">Tarih, saat, ana sayfa widget\'ı</string>
     <string name="summary__general_dock">Hotseat simgeleri, arama çubuğu</string>
+    <string name="pref_category__incubating">Kuluçka</string>
+    <string name="default_folder_name">Yeni Klasör</string>
 </resources>
