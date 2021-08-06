@@ -244,11 +244,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /* --SMART SPACE-- */
     var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
-    val enableSmartspace by BooleanPref("enable_smartspace", false, refreshGrid)
-    val smartspaceTime by BooleanPref("pref_smartspace_time", false, refreshGrid)
-    val smartspaceDate by BooleanPref("pref_smartspace_date", true, refreshGrid)
-    val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, refreshGrid)
-    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", false, refreshGrid)
+    val enableSmartspace by BooleanPref("enable_smartspace", false, recreate)
+    val smartspaceTime by BooleanPref("pref_smartspace_time", false, recreate)
+    val smartspaceDate by BooleanPref("pref_smartspace_date", true, recreate)
+    val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, recreate)
+    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", false, recreate)
     val weatherUnit by StringBasedPref(
         "pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
         Temperature.Companion::unitFromString, Temperature.Companion::unitToString
