@@ -739,6 +739,9 @@ public final class Utilities {
     public static IDrawerLayout getLayoutMode(Launcher launcher, int mode) {
         IDrawerLayout layoutMode;
         switch (mode) {
+            case Config.DRAWER_VERTICAL:
+                layoutMode = new AllAppsVertical(launcher);
+                break;
             case Config.DRAWER_VERTICAL_LIST:
                 layoutMode = new AllAppsVerticalList(launcher);
                 break;
