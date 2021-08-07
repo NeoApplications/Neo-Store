@@ -16,6 +16,8 @@
 
 package com.android.launcher3.graphics;
 
+import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -38,8 +40,6 @@ import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
 import java.nio.ByteBuffer;
-
-import static com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR;
 
 /**
  * A utility class to generate preview bitmap for dragging.
@@ -66,7 +66,15 @@ public class DragPreviewProvider {
         mView = view;
         blurSizeOutline =
                 context.getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
-        previewPadding = blurSizeOutline;
+        //previewPadding = blurSizeOutline;
+
+        if (mView instanceof BubbleTextView) {
+            Drawable d = ((BubbleTextView) mView).getIcon();
+            Rect bounds = getDrawableBounds(d);
+            previewPadding = blurSizeOutline - bounds.left - bounds.top;
+        } else {
+            previewPadding = blurSizeOutline;
+        }
     }
 
     /**

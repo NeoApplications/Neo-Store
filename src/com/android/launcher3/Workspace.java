@@ -1593,12 +1593,13 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         // Clear the pressed state if necessary
         child.clearFocus();
         child.setPressed(false);
+        mOutlineProvider = previewProvider;
         if (child instanceof BubbleTextView) {
             BubbleTextView icon = (BubbleTextView) child;
             icon.clearPressedBackground();
+        } else if (child instanceof FolderIcon) {
+            ((FolderIcon) child).clearPressedBackground();
         }
-
-        mOutlineProvider = previewProvider;
 
         if (draggableView == null && child instanceof DraggableView) {
             draggableView = (DraggableView) child;
@@ -1620,7 +1621,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             dragVisualizeOffset = new Point(-halfPadding, halfPadding);
         }
 
-
         if (child.getParent() instanceof ShortcutAndWidgetContainer) {
             mDragSourceInternal = (ShortcutAndWidgetContainer) child.getParent();
         }
@@ -1632,8 +1632,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 dragOptions.preDragCondition = popupContainer.createPreDragCondition();
                 mLauncher.getUserEventDispatcher().resetElapsedContainerMillis("dragging started");
             }
-        } else if (child instanceof FolderIcon) {
-            ((FolderIcon) child).clearPressedBackground();
         }
         if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
             child.setVisibility(View.VISIBLE);

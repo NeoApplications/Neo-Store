@@ -197,7 +197,9 @@ public class FolderAnimationManager {
             anim.addListener(colorResetListener);
             play(a, anim);
         }
-
+        if (mFolder.mInfo.useIconMode(mContext)) {
+            play(a, getAnimator(mFolder, View.ALPHA, 0f, 1f));
+        }
         play(a, getAnimator(mFolder, View.TRANSLATION_X, xDistance, 0f));
         play(a, getAnimator(mFolder, View.TRANSLATION_Y, yDistance, 0f));
         play(a, getAnimator(mFolder.mContent, SCALE_PROPERTY, initialScale, finalScale));
