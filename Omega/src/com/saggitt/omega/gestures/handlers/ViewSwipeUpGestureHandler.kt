@@ -17,6 +17,7 @@
 package com.saggitt.omega.gestures.handlers
 
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import com.android.launcher3.R
 import com.android.launcher3.touch.OverScroll
 import com.saggitt.omega.gestures.GestureController
@@ -30,7 +31,7 @@ class ViewSwipeUpGestureHandler(private val view: View, private val handler: Ges
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         controller.launcher.prepareDummyView(this.view) {
-            handler.onGestureTrigger(controller, controller.launcher.dummyView)
+            handler.onGestureTrigger(controller, it)
         }
     }
 
@@ -39,6 +40,11 @@ class ViewSwipeUpGestureHandler(private val view: View, private val handler: Ges
             displacement, if (displacement < 0)
                 negativeMax else positiveMax
         ).toFloat()
+    }
+
+    override fun onDragEnd(velocity: Float, fling: Boolean) {
+        view.animate().translationY(0f).setDuration(100).setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     override val displayName = ""

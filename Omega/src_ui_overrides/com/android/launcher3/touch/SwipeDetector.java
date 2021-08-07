@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.touch;
 
+import static android.view.MotionEvent.INVALID_POINTER_ID;
+
 import android.content.Context;
 import android.graphics.PointF;
 import android.util.Log;
@@ -22,8 +24,6 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
-
-import static android.view.MotionEvent.INVALID_POINTER_ID;
 
 /**
  * One dimensional scroll/drag/swipe gesture detector.
@@ -240,7 +240,7 @@ public class SwipeDetector {
                     setState(ScrollState.DRAGGING);
                 }
                 if (mState == ScrollState.DRAGGING) {
-                    reportDragging();
+                    reportDragging(ev);
                 }
                 mLastPos.set(ev.getX(pointerIndex), ev.getY(pointerIndex));
                 break;
@@ -290,7 +290,7 @@ public class SwipeDetector {
         return mSubtractDisplacement < 0;
     }
 
-    private boolean reportDragging() {
+    private boolean reportDragging(MotionEvent event) {
         if (mDisplacement != mLastDisplacement) {
             if (DBG) {
                 Log.d(TAG, String.format("onDrag disp=%.1f, velocity=%.1f",
@@ -298,7 +298,7 @@ public class SwipeDetector {
             }
 
             mLastDisplacement = mDisplacement;
-            return mListener.onDrag(mDisplacement - mSubtractDisplacement, mVelocity);
+            return mListener.onDrag(mDisplacement - mSubtractDisplacement, event);
         }
         return true;
     }
@@ -339,7 +339,11 @@ public class SwipeDetector {
     public interface Listener {
         void onDragStart(boolean start);
 
-        boolean onDrag(float displacement, float velocity);
+        default boolean onDrag(float displacement, MotionEvent event) {
+            return onDrag(displacement);
+        }
+
+        boolean onDrag(float displacement);
 
         void onDragEnd(float velocity, boolean fling);
     }

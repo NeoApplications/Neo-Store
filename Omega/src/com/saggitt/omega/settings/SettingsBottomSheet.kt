@@ -33,7 +33,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.graphics.ColorUtils
 import com.android.launcher3.Insettable
-import com.android.launcher3.LauncherAnimUtils
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.anim.Interpolators
@@ -141,7 +140,7 @@ class SettingsBottomSheet(context: Context, attrs: AttributeSet) : LinearLayout(
 
     override fun onDragStart(start: Boolean) {}
 
-    override fun onDrag(displacement: Float, velocity: Float): Boolean {
+    override fun onDrag(displacement: Float): Boolean {
         val range = content.height.toFloat()
         val bounded = Utilities.boundToRange(displacement, 0f, range)
         translationShift = bounded / range
