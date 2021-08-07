@@ -94,7 +94,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     private boolean mShowAssistant;
     private float mRadius = -1.0f;
     protected SearchProvider searchProvider;
-    private OmegaPreferences prefs;
+    protected OmegaPreferences prefs;
 
     public AbstractQsbLayout(Context context) {
         super(context);
@@ -430,7 +430,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     protected final Bitmap createShadowBitmap(float shadowBlur, float keyShadowDistance, int color, boolean withShadow) {
         int height = getHeightWithoutPadding();
-        int width = height + 20;
         Builder builder = new Builder(color);
         builder.shadowBlur = shadowBlur;
         builder.keyShadowDistance = keyShadowDistance;
@@ -442,13 +441,13 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         if (mRadius < 0) {
             TypedValue edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius);
             if (edgeRadius != null) {
-                pill = builder.createPill(width, height,
+                pill = builder.createPill(height, height,
                         edgeRadius.getDimension(getResources().getDisplayMetrics()));
             } else {
-                pill = builder.createPill(width, height);
+                pill = builder.createPill(height, height);
             }
         } else {
-            pill = builder.createPill(width, height, mRadius);
+            pill = builder.createPill(height, height, mRadius);
         }
         if (Utilities.ATLEAST_P) {
             return pill.copy(Bitmap.Config.HARDWARE, false);
@@ -456,7 +455,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         return pill;
     }
 
-    protected final int getHeightWithoutPadding() {
+    protected int getHeightWithoutPadding() {
         return (getHeight() - getPaddingTop()) - getPaddingBottom();
     }
 

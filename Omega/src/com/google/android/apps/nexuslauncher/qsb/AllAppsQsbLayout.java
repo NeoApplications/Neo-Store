@@ -32,7 +32,6 @@ import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.anim.PropertySetter;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.search.SearchThread;
-import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.WebSearchProvider;
@@ -52,7 +51,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
     private FallbackAppsSearchView mFallback;
     private TextView hintTextView;
     private AllAppsContainerView mAppsView;
-    private OmegaPreferences prefs;
     private int mTextColor;
 
     public AllAppsQsbLayout(Context context) {
@@ -77,7 +75,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
         mTopAdjusting = getResources().getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting);
         mVerticalOffset = getResources().getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset);
         setClipToPadding(false);
-        prefs = OmegaPreferences.Companion.getInstanceNoCreate();
         mLowPerformanceMode = prefs.getLowPerformanceMode();
         mTextColor = Themes.getAttrColor(mContext, R.attr.folderTextColor);
     }

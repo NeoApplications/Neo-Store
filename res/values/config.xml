@@ -112,6 +112,7 @@
 
     <!-- QSB IDs. DO not change -->
     <item type="id" name="search_container_workspace" />
+    <item type="id" name="search_container_hotseat" />
     <item type="id" name="search_container_all_apps" />
 
     <!-- Recents -->

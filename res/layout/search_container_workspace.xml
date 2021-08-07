@@ -18,7 +18,7 @@
     android:id="@id/search_container_workspace"
     android:background="?android:selectableItemBackground"
     android:clickable="true"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="0dp"
     android:animateLayoutChanges="true">
 
