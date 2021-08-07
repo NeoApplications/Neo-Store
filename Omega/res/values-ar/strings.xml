@@ -270,7 +270,6 @@
     <string name="dash_all_apps_summary">أظهر كل ازرار التطبيق</string>
     <string name="dash_mobile_network_summary">أظهر إعدادات شبكات الجوال</string>
     <string name="dash_manage_apps_summary">افتح مدير تطبيقات اندرويد</string>
-    <string name="dash_manage_apps_title">إدارة التطبيقات</string>
     <string name="dash_mobile_network_title">شبكة الجوال</string>
     <string name="dash_launch_app_title">أفتح تطبيق</string>
     <string name="dash_volume_title">مربع حوار مستوى الصوت</string>

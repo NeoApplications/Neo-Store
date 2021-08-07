@@ -46,17 +46,14 @@
     </plurals>
     <string name="selected_count">%1$d elektita</string>
     <string name="tab_type_smart">Aŭtomate</string>
-    <string name="tab_type_custom">Propra</string>
     <string name="default_folder_name">Nova dosierujo</string>
     <string name="app_categorization_tabs">Langetoj</string>
     <string name="app_categorization_folders">Dosierujoj</string>
-    <string name="pref_app_groups_create">Krei</string>
     <string name="pref_appcategorization_style_text">Stilo</string>
     <string name="pref_appcategorization_flowerpot_title">Kategorio de Aplikaĵo</string>
     <string name="title_text_color">Tekstokoloro</string>
     <string name="title_app_suggestions">Aplikaĵoj</string>
     <string name="title__sort_by_color">Per Koloro</string>
-    <string name="title_drawer_text_size">Tekstogrando</string>
     <string name="title_drawer_enable_background">Uzi propran koloron de fono</string>
     <string name="title__drawer_categorization">Kategorioj</string>
     <string name="title__drawer_hide_icon_labels">Kaŝi nomojn de aplikaĵoj</string>
@@ -83,7 +80,6 @@
     <string name="title__sort_mode">Aplikaĵa Ordo</string>
     <string name="title_drawer_row_height">Viva alto</string>
     <string name="title__drawer_columns">Nombro da kolumnoj</string>
-    <string name="pref_value_disabled">Malŝaltita</string>
     <string name="title__dock_show_arrow">Montri Sagon</string>
     <string name="title__dock_hotseat_icons">Nombro da piktogramoj</string>
     <string name="title__dock_search_bar">Montri Serĉilon</string>

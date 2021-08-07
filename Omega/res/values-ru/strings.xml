@@ -332,7 +332,6 @@
     <string name="uninstall_failed">Приложение не удалено</string>
     <string name="dash_launcher_settings_summary">Настройки лаунчера</string>
     <string name="edit_dash_summary">Включить или выключить ярлыки</string>
-    <string name="dash_manage_apps_title">Управление приложениями</string>
     <string name="dash_mobile_network_title">Мобильная сеть</string>
     <string name="dash_launch_app_title">Запустить приложение</string>
     <string name="dash_device_settings_title">Настройки устройства</string>

@@ -333,7 +333,6 @@
     <string name="dash_all_apps_summary">显示所有应用按钮</string>
     <string name="dash_mobile_network_summary">显示移动网络设置</string>
     <string name="dash_manage_apps_summary">打开 Android 应用管理器</string>
-    <string name="dash_manage_apps_title">管理应用</string>
     <string name="dash_mobile_network_title">移动网络</string>
     <string name="dash_launch_app_title">启动应用</string>
     <string name="dash_volume_title">音量对话框</string>
@@ -376,5 +375,4 @@
     <string name="dialog_message_change_sort">将应用顺序更改为按字母顺序？</string>
     <string name="notification_custom_color">使用自定义颜色</string>
     <string name="about_translators">译员</string>
-    <string name="apps_suggestions">应用建议</string>
 </resources>

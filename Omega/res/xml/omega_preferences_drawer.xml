@@ -99,9 +99,9 @@
         <com.saggitt.omega.preferences.StyledSwitchPreference
             android:defaultValue="false"
             android:key="pref_show_predictions"
-            android:title="@string/apps_suggestions"
+            android:title="@string/title_app_suggestions"
             app:iconSpaceReserved="false"
-            app:searchTitle="@string/apps_suggestions" />
+            app:searchTitle="@string/title_app_suggestions" />
 
         <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
             android:key="pref_showAllAppsLabel"

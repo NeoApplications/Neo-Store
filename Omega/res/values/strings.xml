@@ -444,7 +444,6 @@
     <string name="dash_volume_title">Volume Dialog</string>
     <string name="dash_launch_app_title">Launch App</string>
     <string name="dash_mobile_network_title">Mobile Network</string>
-    <string name="dash_manage_apps_title">Manage Apps</string>
     <string name="dash_manage_apps_summary">Open the Android App Manager</string>
     <string name="dash_mobile_network_summary">Show the mobile networks settings</string>
     <string name="dash_all_apps_summary">Show the all App button</string>
@@ -471,7 +470,6 @@
     <string name="none">None</string>
     <string name="name">Name</string>
     <string name="apps_label">Apps</string>
-    <string name="apps_suggestions">App Suggestions</string>
     <string name="custom">Custom</string>
     <string name="default_tab_name">New tab</string>
     <string name="tabs_manage">Manage</string>

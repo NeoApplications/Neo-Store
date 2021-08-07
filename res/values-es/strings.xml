@@ -17,8 +17,7 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
     <string name="work_folder_name" msgid="3753320833950115786">"Trabajo"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"La aplicación no está instalada."</string>
@@ -145,4 +144,8 @@
     <string name="work_apps_paused_content_description" msgid="7553586952985486433">"El perfil de trabajo está en pausa. Las aplicaciones de trabajo no pueden enviarte notificaciones, consumir tu batería ni acceder a tu ubicación"</string>
     <string name="work_switch_tip" msgid="808075064383839144">"Pausa apps y notificaciones de trabajo"</string>
     <string name="remote_action_failed" msgid="1383965239183576790">"Se ha producido un error: <xliff:g id="WHAT">%1$s</xliff:g>"</string>
+    <string name="action_torch">Lámpara</string>
+    <string name="dash_sync">Sincronizar</string>
+    <string name="modify_system_settings">Modificar las configuraciones del sistema</string>
+    <string name="dash_location">Ubicación</string>
 </resources>

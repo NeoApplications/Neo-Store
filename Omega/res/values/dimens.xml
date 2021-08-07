@@ -28,6 +28,7 @@
 
     <dimen name="dynamic_grid_drawer_additional_padding">30dp</dimen>
     <dimen name="all_apps_search_vertical_offset">30dp</dimen>
+    <dimen name="search_widget_top_shift">24dp</dimen>
 
     <!-- Dashboard tile image margin start / end -->
     <dimen name="margin_normal">16dp</dimen>
@@ -68,7 +69,7 @@
     <dimen name="hotseat_navbar_padding">24dp</dimen>
     <dimen name="qsb_margin_top_adjusting">20dp</dimen>
     <dimen name="qsb_mic_width">56dp</dimen>
-    <dimen name="qsb_shadow_margin">6dp</dimen>
+    <dimen name="qsb_shadow_margin">4dp</dimen>
     <dimen name="qsb_widget_height">56dp</dimen>
     <dimen name="qsb_widget_padding">8dp</dimen>
     <dimen name="qsb_doodle_tap_target_logo_width">106dp</dimen>

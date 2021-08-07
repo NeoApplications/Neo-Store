@@ -23,7 +23,6 @@
     <string name="title__general_search">Cerca</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
-    <string name="keep_scroll_state_pref_title">Ricorda posizione di scorrimento</string>
     <string name="title__desktop_grid_size">Dimensione griglia</string>
     <string name="title__desktop_icon_size">Grandezza dell\'icona</string>
     <string name="title__desktop_full_width_widgets">Widget a tutta larghezza</string>

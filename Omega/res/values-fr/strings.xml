@@ -354,7 +354,6 @@
     <string name="dash_all_apps_summary">Afficher le bouton Toutes les applications</string>
     <string name="dash_mobile_network_summary">Afficher les paramètres des réseaux mobiles</string>
     <string name="dash_manage_apps_summary">Ouvrez le gestionnaire d\'applications Android</string>
-    <string name="dash_manage_apps_title">Gérer les applications</string>
     <string name="dash_mobile_network_title">Réseau mobile</string>
     <string name="dash_launch_app_title">Démarrer l\'application</string>
     <string name="dash_volume_title">Dialogue de volume</string>

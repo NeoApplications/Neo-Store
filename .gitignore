@@ -19,3 +19,4 @@ local.properties
 build/
 .DS_Store
 *.hprof
+/.settings/org.eclipse.buildship.core.prefs

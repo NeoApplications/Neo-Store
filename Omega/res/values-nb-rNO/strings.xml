@@ -25,14 +25,12 @@
     <string name="summary__general_about">Mer info om Omega-oppstarteren</string>
     <string name="summary__general_advanced">Språk, sikkerhetskopi, innstillingssøk</string>
     <string name="title__dock_colored_icons">Fargede ikoner</string>
-    <string name="pref_value_disabled">Avskrudd</string>
     <string name="title__dock_search_bar">Vis søkefelt</string>
     <string name="title__drawer_hide_icon_labels">Skjul programnavn</string>
     <string name="title__drawer_paged_apps">Sideinndelt programoversikt</string>
     <string name="title__drawer_all_apps">Vis alle programetiketter</string>
     <string name="title__drawer_sort">Programsortering</string>
     <string name="app_categorization_folders">Mapper</string>
-    <string name="pref_app_groups_create">Opprett</string>
     <string name="pref_appcategorization_style_text">Stil</string>
     <string name="pref_appcategorization_enable_summary">Velg visning for skuff</string>
     <string name="pref_appcategorization_enable_title">Kategoriser programmer</string>
@@ -54,7 +52,6 @@
     <string name="title__drawer_categorization">Kategorier</string>
     <string name="title__drawer_hide_apps">Skjulte programsnarveier</string>
     <string name="title__drawer_icon_size">Ikonstørrelse for alle programmer</string>
-    <string name="tab_type_custom">Tilpasset</string>
     <string name="default_folder_name">Ny mappe</string>
     <string name="pref_app_groups_edit_tip">Trykk for å redigere, dra for å omorganisere.</string>
     <string name="pref_appcategorization_tabs_summary">Dra mellom grupper.</string>
@@ -73,13 +70,11 @@
     <string name="debug_component_name">Komponentnavn</string>
     <string name="dismiss_drop_target_label">Ikke vis</string>
     <string name="tabs_manage">Håndter</string>
-    <string name="show_in_tabs">Faner</string>
     <string name="default_tab_name">Ny fane</string>
     <string name="custom">Tilpasset</string>
     <string name="apps_label">Programmer</string>
     <string name="name">Navn</string>
     <string name="none">Ingen</string>
-    <string name="select_tab_type">Ny fane</string>
     <string name="delete">Slett</string>
     <string name="tab_manage_apps">Håndter programmer</string>
     <string name="tab_color">Fanefarge</string>
@@ -135,8 +130,6 @@
     <string name="pref_category__notifications">Merknader</string>
     <string name="title__notification_background">Merknadsbakgrunnsfarge</string>
     <string name="title__notification_count">Vis merkandsantall</string>
-    <string name="icon_badging_desc_off">Av</string>
-    <string name="icon_badging_desc_on">På</string>
     <string name="smartspace_preferences">Innstillinger</string>
     <string name="msg_minus_one_on_left">Til venstre for hovedhjemmeskjermen</string>
     <string name="title_show_google_app">Vis Google-program</string>
@@ -147,8 +140,6 @@
     <string name="theme_use_dark_text">Bruk mørk tekst</string>
     <string name="theme_use_black">Bruk helsort</string>
     <string name="theme_dark_theme_mode_follow_daylight">Følg dagslys</string>
-    <string name="theme_dark_theme_mode_off">Av</string>
-    <string name="theme_dark_theme_mode_on">På</string>
     <string name="theme_dark_theme_mode">Mørk drakt</string>
     <string name="theme_black_dark_text">Svart med mørk tekst</string>
     <string name="theme_black">Svart</string>
@@ -348,7 +339,6 @@
     <string name="title_legacy_treatment">Opprett tilpasningsdyktige ikoner</string>
     <string name="about_source">Kildekode</string>
     <string name="about_team">Familiemedlemmer</string>
-    <string name="title_drawer_text_size">Tekststørrelse</string>
     <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
     <string name="title_desktop_text_size">Tekststørrelse</string>
     <string name="title_desktop_overlap_placement">Tillat overlapping</string>
@@ -368,7 +358,6 @@
     <string name="dash_launcher_settings_summary">Vis oppstarterinnstillingene</string>
     <string name="dash_device_settings_summary">Åpne enhetsinnstillingene</string>
     <string name="dash_manage_apps_summary">Åpne Android-programhåndtering</string>
-    <string name="dash_manage_apps_title">Håndter programmer</string>
     <string name="dash_mobile_network_title">Mobilnettverk</string>
     <string name="dash_device_settings_title">Enhetsinnstillinger</string>
     <string name="dash_all_apps_title">Åpne alle programmer</string>
@@ -389,5 +378,4 @@
     <string name="title_disabled">Avskrudd</string>
     <string name="about_translators">Oversettere</string>
     <string name="title_create">Opprett</string>
-    <string name="apps_suggestions">Programforslag</string>
 </resources>
