@@ -237,4 +237,13 @@
     <string name="title_dock_two_row">İkinci Satırı Göster</string>
     <string name="title__dock_icon_size">Simge boyutu</string>
     <string name="summary__full_width_widgets">Widget\'ların kenar dolgusu olmadan tam genişliğe yayılmasına izin verin</string>
+    <string name="backup_share">Paylaş</string>
+    <string name="backup_delete_failed">Bir şeyler ters gitti</string>
+    <string name="backup_delete">Gizle</string>
+    <string name="backups">Yedeklemeler</string>
+    <string name="title__advanced_language">Dil</string>
+    <string name="summary__advanced_language">Bu uygulamanın dilini değiştir</string>
+    <string name="smartspace_preferences">Tercihler</string>
+    <string name="smartspace_setup_text">Ayarlamak için dokunun</string>
+    <string name="smartspace_add_to_home">Masaüstüne ekle</string>
 </resources>
