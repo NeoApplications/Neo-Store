@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 import static com.saggitt.omega.util.Config.SORT_AZ;
 import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
@@ -50,7 +51,6 @@ import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.model.AppCountInfo;
 import com.saggitt.omega.util.DbHelper;
-import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -309,11 +309,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * Updates the set of filtered apps with the current filter.  At this point, we expect
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.
      */
+    boolean isLoaded;
     private void updateAdapterItems() {
-        MODEL_EXECUTOR.getHandler().postAtFrontOfQueue(() -> {
-            refillAdapterItems();
-            OmegaUtilsKt.getMainHandler().postAtFrontOfQueue(this::refreshRecyclerView);
-        });
+        MODEL_EXECUTOR.getHandler().postAtFrontOfQueue(this::refillAdapterItems);
+        if (isLoaded)
+            MAIN_EXECUTOR.getHandler().postAtFrontOfQueue(this::refreshRecyclerView);
     }
 
     private void refreshRecyclerView() {
@@ -328,6 +328,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         int position = 0;
         int appIndex = 0;
         int folderIndex = 0;
+        isLoaded = false;
 
         // Prepare to update the list of sections, filtered apps, etc.
         mFilteredApps.clear();
@@ -459,6 +460,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             }
         }
 
+        isLoaded = true;
     }
 
     private List<AppInfo> getFiltersAppInfos() {
@@ -487,6 +489,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 }
             }
         }
+
         return result;
     }
 
