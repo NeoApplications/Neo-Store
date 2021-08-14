@@ -103,7 +103,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
     val drawerBackgroundColor by IntPref("pref_drawer_background_color", R.color.white, recreate)
-    val customBackground by BooleanPref("pref_enable_custom_background", false, doNothing)
+    val customBackground by BooleanPref("pref_enable_custom_background", false, recreate)
     val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
     private val drawerGridSizeDelegate = ResettableLazy {
         GridSize(
@@ -241,6 +241,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
+
+    /* --QUICK STEP-- */
+    val recentsBlurredBackground by BooleanPref("pref_recents_blur_background", true) {
+        onChangeCallback?.launcher?.background?.onEnabledChanged()
+    }
 
     /* --SMART SPACE-- */
     var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)

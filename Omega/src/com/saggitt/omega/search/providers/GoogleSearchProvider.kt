@@ -50,10 +50,15 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
         callback(Intent().setClassName(Config.GOOGLE_QSB, "${Config.GOOGLE_QSB}.SearchActivity"))
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-        callback(Intent("android.intent.action.VOICE_ASSIST").setPackage(Config.GOOGLE_QSB))
+        callback(
+            Intent("android.intent.action.VOICE_ASSIST").addFlags(268468224)
+                .setPackage(Config.GOOGLE_QSB)
+        )
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) =
-        callback(Intent(Intent.ACTION_VOICE_COMMAND).setPackage(Config.GOOGLE_QSB))
+        callback(
+            Intent(Intent.ACTION_VOICE_COMMAND).addFlags(268468224).setPackage(Config.GOOGLE_QSB)
+        )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
         val launcher = OmegaLauncher.getLauncher(context)

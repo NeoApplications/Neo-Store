@@ -1,9 +1,14 @@
 package com.google.android.apps.nexuslauncher.qsb;
 
 import static com.android.launcher3.InvariantDeviceProfile.CHANGE_FLAG_ICON_PARAMS;
+import static com.android.launcher3.LauncherState.ALL_APPS_CONTENT;
 import static com.android.launcher3.LauncherState.ALL_APPS_HEADER;
+import static com.android.launcher3.LauncherState.HOTSEAT_SEARCH_BOX;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,9 +23,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.BaseRecyclerView;
+import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.InvariantDeviceProfile.OnIDPChangeListener;
 import com.android.launcher3.Launcher;
@@ -30,6 +37,7 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.anim.PropertySetter;
+import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.search.SearchThread;
 import com.saggitt.omega.search.SearchProvider;
@@ -86,7 +94,12 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
 
     @Override
     public float getScrollRangeDelta(Rect insets) {
-        return 0f;
+        DeviceProfile deviceProfile = mActivity.getDeviceProfile();
+        int i = (deviceProfile.hotseatBarSizePx - deviceProfile.hotseatCellHeightPx) - getLayoutParams().height;
+        int bottom = insets.bottom;
+        return (float) (((getLayoutParams().height
+                + Math.max(-mVerticalOffset, insets.top - mTopAdjusting))
+                + mVerticalOffset) + (bottom + ((int) (((float) (i - bottom)) * 0.45f))));
     }
 
     public void setInsets(Rect rect) {
@@ -116,7 +129,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
     @Override
     public void onIdpChanged(int changeFlags, InvariantDeviceProfile profile) {
         if ((changeFlags & CHANGE_FLAG_ICON_PARAMS) != 0) {
-            mAllAppsShadowBitmap = mBubbleShadowBitmap = mClearBitmap = null;
+            mAllAppsShadowBitmap = mHotseatShadowBitmap = mBubbleShadowBitmap = mClearBitmap = null;
             addOrUpdateSearchRipple();
         }
     }
@@ -131,30 +144,11 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
     }
 
     @Override
-    public boolean useTwoBubbles() {
-        return mMicFrame != null
-                && mMicFrame.getVisibility() == View.VISIBLE
-                && prefs.getDualBubbleSearch()
-                && prefs.getAllAppsGlobalSearch();
-    }
-
-    @Override
     protected Drawable getIcon(boolean colored) {
         if (prefs.getAllAppsGlobalSearch()) {
             return super.getIcon(colored);
         } else {
             return new AppsSearchProvider(getContext()).getIcon(colored);
-        }
-    }
-
-    @Override
-    protected Drawable getMicIcon(boolean colored) {
-        if (prefs.getAllAppsGlobalSearch()) {
-            mMicIconView.setVisibility(View.VISIBLE);
-            return super.getMicIcon(colored);
-        } else {
-            mMicIconView.setVisibility(View.GONE);
-            return null;
         }
     }
 
@@ -194,7 +188,11 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
 
     @Override
     public final void startSearch(String str, int result) {
-        startDrawerSearch(str, result);
+        if (mHotseatProgress < 0.5) {
+            startDrawerSearch(str, result);
+        } else {
+            startHotseatSearch();
+        }
     }
 
     private void startDrawerSearch(String str, int result) {
@@ -218,6 +216,59 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
             });
         }
         mResult = result;
+    }
+
+    private void startHotseatSearch() {
+        SearchProviderController controller = SearchProviderController.Companion
+                .getInstance(getContext());
+        if (controller.isGoogle()) {
+            startGoogleSearch();
+        } else {
+            controller.getSearchProvider().startSearch(intent -> {
+                getLauncher().openQsb();
+                getContext().startActivity(intent, ActivityOptionsCompat
+                        .makeClipRevealAnimation(this, 0, 0, getWidth(), getHeight()).toBundle());
+                return null;
+            });
+        }
+    }
+
+    private void startGoogleSearch() {
+        final ConfigBuilder config = new ConfigBuilder(this, false);
+        if (!forceFallbackSearch() && getLauncher().getGoogleNow()
+                .startSearch(config.build(), config.getExtras())) {
+            SharedPreferences devicePrefs = Utilities.getDevicePrefs(getContext());
+            devicePrefs.edit().putInt("key_hotseat_qsb_tap_count",
+                    devicePrefs.getInt("key_hotseat_qsb_tap_count", 0) + 1).apply();
+            getLauncher().playQsbAnimation();
+        } else {
+            getContext().sendOrderedBroadcast(getSearchIntent(), null,
+                    new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (getResultCode() == 0) {
+                                fallbackSearch(
+                                        "com.google.android.googlequicksearchbox.TEXT_ASSIST");
+                            } else {
+                                getLauncher().playQsbAnimation();
+                            }
+                        }
+                    }, null, 0, null, null);
+        }
+    }
+
+    private boolean forceFallbackSearch() {
+        return !PackageManagerHelper.isAppEnabled(getContext().getPackageManager(),
+                "com.google.android.apps.nexuslauncher", 0);
+    }
+
+    private Intent getSearchIntent() {
+        int[] array = new int[2];
+        getLocationInWindow(array);
+        Rect rect = new Rect(0, 0, getWidth(), getHeight());
+        rect.offset(array[0], array[1]);
+        rect.inset(getPaddingLeft(), getPaddingTop());
+        return ConfigBuilder.getSearchIntent(rect, findViewById(R.id.g_icon), mMicIconView);
     }
 
     private boolean shouldUseFallbackSearch() {
@@ -365,11 +416,34 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
 
     @Override
     public void setContentVisibility(int visibleElements, PropertySetter setter, Interpolator interpolator) {
+        boolean hotseatQsbEnabled = prefs.getDockSearchBar();
         boolean drawerQsbEnabled = prefs.getAllAppsSearch();
+        boolean hotseatQsbVisible = (visibleElements & HOTSEAT_SEARCH_BOX) != 0;
         boolean drawerQsbVisible = (visibleElements & ALL_APPS_HEADER) != 0;
-        boolean qsbVisible = drawerQsbEnabled && drawerQsbVisible;
+        boolean qsbVisible = (hotseatQsbEnabled && hotseatQsbVisible) || (drawerQsbEnabled && drawerQsbVisible);
 
+        float hotseatProgress, micProgress;
+        if (!hotseatQsbEnabled) {
+            hotseatProgress = 0;
+        } else if (!drawerQsbEnabled) {
+            hotseatProgress = 1;
+        } else {
+            hotseatProgress = (visibleElements & ALL_APPS_CONTENT) != 0 ? 0 : 1;
+        }
+        if (prefs.getAllAppsGlobalSearch()) {
+            micProgress = 1f;
+        } else {
+            micProgress = hotseatProgress;
+        }
+
+        setter.setFloat(this, HOTSEAT_PROGRESS, hotseatProgress, LINEAR);
         setter.setViewAlpha(this, qsbVisible ? 1 : 0, interpolator);
+        setter.setViewAlpha(mLogoIconView, 1 - hotseatProgress, interpolator);
+        setter.setViewAlpha(mHotseatLogoIconView, hotseatProgress, interpolator);
+        setter.setViewAlpha(mMicIconView, micProgress, interpolator);
+        if (mMicIconView != null) {
+            mMicIconView.setVisibility(micProgress > 0 ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     @Override

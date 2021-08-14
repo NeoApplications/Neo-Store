@@ -19,6 +19,7 @@ package com.android.launcher3.anim;
 import android.animation.TimeInterpolator;
 import android.util.FloatProperty;
 import android.util.IntProperty;
+import android.util.Property;
 import android.view.View;
 
 /**
@@ -47,6 +48,11 @@ public interface PropertySetter {
     default <T> void setFloat(T target, FloatProperty<T> property, float value,
                               TimeInterpolator interpolator) {
         property.setValue(target, value);
+    }
+
+    default <T> void setFloat(T target, Property<T, Float> property, float value,
+                              TimeInterpolator interpolator) {
+        property.set(target, value);
     }
 
     /**

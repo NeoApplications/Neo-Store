@@ -12,7 +12,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.allapps.BlurQsbLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_container_all_apps"
     android:layout_width="match_parent"
@@ -32,6 +32,16 @@
         android:layout_marginBottom="-6.0dip"
         android:scaleType="center"
         app:srcCompat="@drawable/ic_qsb_logo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/g_icon_hotseat"
+        android:layout_width="@dimen/qsb_mic_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|center"
+        android:layout_marginTop="-6.0dip"
+        android:layout_marginBottom="-6.0dip"
+        android:src="@drawable/ic_super_g_color"
+        android:scaleType="center" />
 
     <FrameLayout
         android:id="@+id/mic_frame"
@@ -55,4 +65,4 @@
     </FrameLayout>
 
     <include layout="@layout/qsb_hint" />
-</com.google.android.apps.nexuslauncher.qsb.AllAppsQsbLayout>
+</com.saggitt.omega.allapps.BlurQsbLayout>

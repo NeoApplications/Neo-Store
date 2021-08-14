@@ -1047,6 +1047,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         updatePageAlphaValues();
         enableHwLayersOnVisiblePages();
+        updateBlurAlpha();
     }
 
     public void showPageIndicatorAtCurrentScroll() {
@@ -1358,6 +1359,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
         super.onLayout(changed, left, top, right, bottom);
         updatePageAlphaValues();
+        updateBlurAlpha();
     }
 
     @Override

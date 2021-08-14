@@ -13,7 +13,7 @@ import androidx.core.graphics.ColorUtils;
 import com.android.launcher3.R;
 
 public class QsbConnector extends View {
-    private static final Property sAlphaProperty = new Property<QsbConnector, Integer>(Integer.class, "overlayAlpha") {
+    private static final Property<QsbConnector, Integer> sAlphaProperty = new Property<QsbConnector, Integer>(Integer.class, "overlayAlpha") {
         @Override
         public Integer get(QsbConnector qsbConnector) {
             return qsbConnector.mForegroundAlpha;

@@ -38,6 +38,7 @@ import static com.android.launcher3.states.StateAnimationConfig.ANIM_HOTSEAT_TRA
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_FADE;
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_SCALE;
 import static com.android.launcher3.states.StateAnimationConfig.ANIM_WORKSPACE_TRANSLATE;
+import static com.saggitt.omega.views.OmegaBackgroundView.ALPHA_INDEX_STATE;
 
 import android.animation.ValueAnimator;
 import android.view.View;
@@ -54,6 +55,8 @@ import com.android.launcher3.states.StateAnimationConfig;
 import com.android.launcher3.util.DynamicResource;
 import com.android.systemui.plugins.ResourceProvider;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.util.InvertedMultiValueAlpha;
+import com.saggitt.omega.views.OmegaBackgroundView;
 import com.saggitt.omega.views.OptionsPanel;
 
 /**
@@ -214,6 +217,10 @@ public class WorkspaceStateTransitionAnimation {
                 LINEAR);
         propertySetter.setFloat(scrim, SYSUI_PROGRESS,
                 state.hasFlag(FLAG_HAS_SYS_UI_SCRIM) ? 1 : 0, LINEAR);
+
+        OmegaBackgroundView background = OmegaLauncher.getLauncher(mLauncher).getBackground();
+        propertySetter.setFloat(background.getBlurAlphas().getProperty(ALPHA_INDEX_STATE),
+                InvertedMultiValueAlpha.VALUE, state.getWorkspaceBlurAlpha(mLauncher), LINEAR);
     }
 
     public void applyChildState(LauncherState state, CellLayout cl, int childIndex) {

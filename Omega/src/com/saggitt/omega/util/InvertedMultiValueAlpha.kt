@@ -64,6 +64,7 @@ class InvertedMultiValueAlpha(private val mConsumer: Consumer<Float>, size: Int)
     }
 
     companion object {
+        @JvmField
         val VALUE: Property<InvertedAlphaProperty, Float> =
             object : Property<InvertedAlphaProperty, Float>(java.lang.Float.TYPE, "value") {
                 override fun get(alphaProperty: InvertedAlphaProperty): Float {

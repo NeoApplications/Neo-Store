@@ -2,6 +2,7 @@ package com.google.android.apps.nexuslauncher.qsb;
 
 import static java.lang.Math.round;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.FloatProperty;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -62,7 +64,8 @@ import com.saggitt.omega.search.SearchProviderController;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedPreferenceChangeListener,
-        OnClickListener, OnLongClickListener, Insettable, SearchProviderController.OnProviderChangeListener, WallpaperColorInfo.OnChangeListener {
+        OnClickListener, OnLongClickListener, Insettable, SearchProviderController.OnProviderChangeListener,
+        WallpaperColorInfo.OnChangeListener {
     private static final Rect mSrcRect = new Rect();
     protected Paint mMicStrokePaint;
     protected NinePatchDrawHelper mShadowHelper;
@@ -81,8 +84,10 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     public float micStrokeWidth;
     protected Bitmap mBubbleShadowBitmap;
     protected int mAllAppsBgColor;
+    protected int mHotseatBgColor;
     protected int mBubbleBgColor;
     protected ImageView mLogoIconView;
+    protected ImageView mHotseatLogoIconView;
     protected FrameLayout mMicFrame;
     protected ImageView mMicIconView;
     protected String hintTextValue;
@@ -90,11 +95,28 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     protected int mResult;
     protected boolean mUseTwoBubbles;
     protected Bitmap mAllAppsShadowBitmap;
+    protected Bitmap mHotseatShadowBitmap;
     protected Bitmap mClearBitmap;
     private boolean mShowAssistant;
     private float mRadius = -1.0f;
     protected SearchProvider searchProvider;
     protected OmegaPreferences prefs;
+
+    protected float mHotseatProgress = 1f;
+    public static FloatProperty<AbstractQsbLayout> HOTSEAT_PROGRESS = new FloatProperty<AbstractQsbLayout>("hotseatProgress") {
+        @Override
+        public void setValue(AbstractQsbLayout qsb, float v) {
+            if (qsb.mHotseatProgress != v) {
+                qsb.mHotseatProgress = v;
+                qsb.invalidate();
+            }
+        }
+
+        @Override
+        public Float get(AbstractQsbLayout qsb) {
+            return qsb.mHotseatProgress;
+        }
+    };
 
     public AbstractQsbLayout(Context context) {
         super(context);
@@ -114,7 +136,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     private void init(Context context) {
         qsbTextHint = new TextPaint();
         mMicStrokePaint = new Paint(1);
-        mMicStrokePaint.setColor(Color.GREEN);
+        mMicStrokePaint.setColor(Color.WHITE);
         mShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper = new NinePatchDrawHelper();
         mClearShadowHelper.paint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
@@ -137,16 +159,21 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     /*
      * Obtener el radio redondeado desde las preferencias o desde el icono
      * */
-    public float getCornerRadius() {
-        float radius = round(prefs.getSearchBarRadius());
+    protected float getCornerRadius() {
+        return getCornerRadius(getContext(),
+                ResourceUtils.pxFromDp(100, getResources().getDisplayMetrics()));
+    }
+
+    public static float getCornerRadius(Context context, float defaultRadius) {
+        float radius = round(Utilities.getOmegaPrefs(context).getSearchBarRadius());
         if (radius > 0f) {
             return radius;
         }
         TypedValue edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius);
         if (edgeRadius != null) {
-            return edgeRadius.getDimension(mContext.getResources().getDisplayMetrics());
+            return edgeRadius.getDimension(context.getResources().getDisplayMetrics());
         } else {
-            return ResourceUtils.pxFromDp(100, getResources().getDisplayMetrics());
+            return defaultRadius;
         }
     }
 
@@ -208,6 +235,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     protected final void loadIcons() {
         mLogoIconView = findViewById(R.id.g_icon);
         mLogoIconView.setOnClickListener(this);
+        mHotseatLogoIconView = findViewById(R.id.g_icon_hotseat);
         mMicFrame = findViewById(R.id.mic_frame);
         mMicIconView = findViewById(R.id.mic_icon);
         mMicIconView.setOnClickListener(this);
@@ -236,6 +264,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             mColor = color;
             mAllAppsShadowBitmap = null;
             setAllAppsBgColor(color);
+            setHotseatBgColor(color);
             invalidate();
         }
     }
@@ -248,7 +277,15 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         }
     }
 
-    public final void setBubbleBgColor(int color) {
+    public final void setHotseatBgColor(int color) {
+        if (mHotseatBgColor != color) {
+            mHotseatBgColor = color;
+            mHotseatShadowBitmap = null;
+            invalidate();
+        }
+    }
+
+    public void setBubbleBgColor(int color) {
         mBubbleBgColor = color;
         if (mBubbleBgColor != mAllAppsBgColor || mBubbleShadowBitmap != mAllAppsShadowBitmap) {
             mBubbleShadowBitmap = null;
@@ -256,8 +293,8 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         }
     }
 
-    public final void addOrUpdateSearchPaint(float f) {
-        micStrokeWidth = TypedValue.applyDimension(1, f, getResources().getDisplayMetrics());
+    public final void addOrUpdateSearchPaint(float width) {
+        micStrokeWidth = TypedValue.applyDimension(1, width, getResources().getDisplayMetrics());
         mMicStrokePaint.setStrokeWidth(micStrokeWidth);
         mMicStrokePaint.setStyle(Style.STROKE);
         mMicStrokePaint.setColor(0xFFBDC1C6);
@@ -309,6 +346,17 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         }
     }
 
+    final void ensureHotseatShadowBitmap() {
+        ensureAllAppsShadowBitmap();
+        if (mHotseatShadowBitmap == null) {
+            if (mHotseatBgColor == mAllAppsBgColor) {
+                mHotseatShadowBitmap = mAllAppsShadowBitmap;
+            } else {
+                mHotseatShadowBitmap = createShadowBitmap(mHotseatBgColor, true);
+            }
+        }
+    }
+
     protected void clearMainPillBg(Canvas canvas) {
     }
 
@@ -316,7 +364,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     public void draw(Canvas canvas) {
-        ensureAllAppsShadowBitmap();
+        ensureHotseatShadowBitmap();
         clearMainPillBg(canvas);
         drawQsb(canvas);
         super.draw(canvas);
@@ -361,11 +409,10 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             float f = ((float) (paddingBottom - paddingTop2)) * 0.5f;
             float i3 = micStrokeWidth / 2.0f;
             if (mUseTwoBubbles) {
+                canvas.drawRoundRect(i + i3, paddingTop2 + i3, paddingLeft3 - i3, (paddingBottom - i3) + 1, f, f, mMicStrokePaint);
+            } else {
                 i2 = i3;
                 canvas.drawRoundRect(i + i2, paddingTop2 + i2, paddingLeft3 - i2, (paddingBottom - i2) + 1, f, f, mMicStrokePaint);
-
-            } else {
-                canvas.drawRoundRect(i + i3, paddingTop2 + i3, paddingLeft3 - i3, (paddingBottom - i3) + 1, f, f, mMicStrokePaint);
             }
         }
     }
@@ -398,8 +445,17 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     private void drawMainPill(Canvas canvas) {
-        drawShadow(mAllAppsShadowBitmap, canvas);
-        mShadowHelper.paint.setAlpha(255);
+        if (mAllAppsBgColor == mHotseatBgColor || mHotseatProgress == 0f) {
+            drawShadow(mAllAppsShadowBitmap, canvas);
+        } else if (mHotseatProgress == 1f) {
+            drawShadow(mHotseatShadowBitmap, canvas);
+        } else {
+            mShadowHelper.paint.setAlpha(Math.round(255 * (1 - mHotseatProgress)));
+            drawShadow(mAllAppsShadowBitmap, canvas);
+            mShadowHelper.paint.setAlpha(Math.round(255 * mHotseatProgress));
+            drawShadow(mHotseatShadowBitmap, canvas);
+            mShadowHelper.paint.setAlpha(255);
+        }
     }
 
     protected final void drawShadow(Bitmap bitmap, Canvas canvas) {
@@ -520,12 +576,12 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         if (view == mMicIconView) {
             if (mShowAssistant && provider.getSupportsAssistant()) {
                 provider.startAssistant(intent -> {
-                    getContext().startActivity(intent);
+                    mContext.startActivity(intent);
                     return null;
                 });
             } else if (provider.getSupportsVoiceSearch()) {
                 provider.startVoiceSearch(intent -> {
-                    getContext().startActivity(intent);
+                    mContext.startActivity(intent);
                     return null;
                 });
             }
@@ -553,6 +609,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
     private void clearBitmaps() {
         mAllAppsShadowBitmap = null;
+        mHotseatShadowBitmap = null;
         mClearBitmap = null;
     }
 
@@ -568,6 +625,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             boolean showMic = sharedPreferences.getBoolean("opa_enabled", true) && providerSupported;
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true);
             mLogoIconView.setImageDrawable(getIcon(true));
+            mHotseatLogoIconView.setImageDrawable(getHotseatIcon(true));
             mMicFrame.setVisibility(showMic ? View.VISIBLE : View.GONE);
             mMicIconView.setVisibility(View.VISIBLE);
             mMicIconView.setImageDrawable(getMicIcon(true));
@@ -583,16 +641,29 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         return searchProvider.getIcon(colored);
     }
 
+    protected Drawable getHotseatIcon(boolean colored) {
+        if (prefs.getAllAppsGlobalSearch())
+            return getIcon(colored);
+        else
+            return searchProvider.getIcon(colored);
+    }
+
     protected Drawable getMicIcon(boolean colored) {
-        if (searchProvider.getSupportsAssistant() && mShowAssistant) {
-            return searchProvider.getAssistantIcon(colored);
-        } else if (searchProvider.getSupportsVoiceSearch()) {
-            return searchProvider.getVoiceIcon(colored);
+        if (prefs.getAllAppsGlobalSearch() || mHotseatProgress > 0.5f) {
+            if (searchProvider.getSupportsAssistant() && mShowAssistant) {
+                return searchProvider.getAssistantIcon(colored);
+            } else if (searchProvider.getSupportsVoiceSearch()) {
+                return searchProvider.getVoiceIcon(colored);
+            } else {
+                mMicIconView.setVisibility(GONE);
+                return new ColorDrawable(Color.TRANSPARENT);
+            }
         } else {
             mMicIconView.setVisibility(GONE);
             return new ColorDrawable(Color.TRANSPARENT);
         }
     }
+
 
     public boolean onLongClick(View view) {
         if (view != this) {
@@ -629,6 +700,15 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         return null;
     }
 
+    protected void fallbackSearch(String action) {
+        try {
+            getContext().startActivity(new Intent(action)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setPackage(com.saggitt.omega.util.Config.GOOGLE_QSB));
+        } catch (ActivityNotFoundException ignored) {
+        }
+    }
+
     protected Intent createSettingsBroadcast() {
         return null;
     }
@@ -638,7 +718,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
     }
 
     public boolean useTwoBubbles() {
-        return mMicFrame != null && mMicFrame.getVisibility() == View.VISIBLE &&
+        return mMicFrame != null && mMicIconView.getVisibility() == View.VISIBLE &&
                 prefs.getDualBubbleSearch();
     }
 

@@ -38,6 +38,7 @@ import com.android.launcher3.states.StateAnimationConfig;
 import com.android.launcher3.views.ScrimView;
 import com.android.systemui.plugins.AllAppsSearchPlugin;
 import com.android.systemui.plugins.PluginListener;
+import com.saggitt.omega.allapps.BlurQsbLayout;
 import com.saggitt.omega.blur.BlurScrimView;
 
 /**
@@ -230,7 +231,7 @@ public class AllAppsTransitionController implements StateHandler<LauncherState>,
         //PluginManagerWrapper.INSTANCE.get(mLauncher)
         //        .addPluginListener(this, AllAppsSearchPlugin.class, false);
 
-        //((BlurQsbLayout) mAppsView.getSearchView()).setScrimView((BlurScrimView) mScrimView);
+        ((BlurQsbLayout) mAppsView.getSearchView()).setScrimView((BlurScrimView) mScrimView);
     }
 
     /**
@@ -273,9 +274,9 @@ public class AllAppsTransitionController implements StateHandler<LauncherState>,
             ((BlurScrimView) mScrimView).setOverlayScroll(scroll);
         }
         View searchView = mAppsView.getSearchView();
-        /*if (searchView instanceof BlurQsbLayout) {
+        if (searchView instanceof BlurQsbLayout) {
             ((BlurQsbLayout) searchView).setOverlayScroll(scroll);
-        }*/
+        }
     }
 
     @Override
