@@ -46,6 +46,7 @@ import com.android.launcher3.settings.PreferenceHighlighter
 import com.android.launcher3.states.RotationHelper
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.ContentWriter
+import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.backup.BackupListActivity
@@ -584,6 +585,13 @@ open class SettingsActivity : SettingsBaseActivity(),
                     )
                     requireActivity().startActivity(intent)
                     false
+                }
+                findPreference<Preference>("pref_desktop_mode_settings")?.setOnPreferenceClickListener {
+                    Taskbar.openSettings(
+                        requireContext(),
+                        ThemeOverride.Settings().getTheme(requireContext())
+                    )
+                    true
                 }
             }
         }

@@ -212,6 +212,7 @@ dependencies {
     implementation "com.mikepenz:fastadapter:5.4.1"
     implementation "com.mikepenz:fastadapter-extensions-diff:5.4.1"
     implementation "com.mikepenz:fastadapter-extensions-binding:5.4.1"
+    implementation "com.github.farmerbb:libtaskbar:2.1.1"
 
     //Compose
     implementation "androidx.compose.ui:ui:1.0.1"
