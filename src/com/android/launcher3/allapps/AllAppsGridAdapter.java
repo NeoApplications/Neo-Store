@@ -301,13 +301,16 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
         @Override
         public int getSpanSize(int position) {
-            if (isIconViewType(mApps.getAdapterItems().get(position).viewType)
-                    || mApps.getAdapterItems().size() <= position) {
-                return 1;
-            } else {
-                // Section breaks span the full width
-                return mAppsPerRow;
+            if (mApps.getAdapterItems().size() >= position) {
+                if (isIconViewType(mApps.getAdapterItems().get(position).viewType)
+                        || mApps.getAdapterItems().size() <= position) {
+                    return 1;
+                } else {
+                    // Section breaks span the full width
+                    return mAppsPerRow;
+                }
             }
+            return mAppsPerRow;
         }
     }
 
