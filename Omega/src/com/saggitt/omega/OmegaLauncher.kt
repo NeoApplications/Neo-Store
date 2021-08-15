@@ -44,6 +44,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.util.ComponentKey
 import com.android.systemui.plugins.shared.LauncherOverlayManager
+import com.farmerbb.taskbar.lib.Taskbar
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
 import com.google.android.libraries.gsa.launcherclient.LauncherClient
@@ -255,6 +256,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
         }
+        Taskbar.setEnabled(this,prefs.desktopModeEnabled)
     }
 
     override fun getDefaultOverlay(): LauncherOverlayManager? {
