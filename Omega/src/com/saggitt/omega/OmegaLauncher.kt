@@ -23,6 +23,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -41,8 +43,10 @@ import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.model.data.WorkspaceItemInfo
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.farmerbb.taskbar.lib.Taskbar
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
@@ -52,6 +56,7 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.iconpack.EditIconActivity
 import com.saggitt.omega.iconpack.IconPackManager
 import com.saggitt.omega.override.CustomInfoProvider
+import com.saggitt.omega.preferences.AppsAdapter
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
 import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
@@ -72,6 +77,9 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private var sRestart = false
     private var defaultOverlay: OverlayCallbackImpl? = null
 
+    val hiddenApps = ArrayList<AppInfo>()
+    val comparator = AppsAdapter.defaultComparator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(
                 this
@@ -83,6 +91,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         super.onCreate(savedInstanceState)
 
         val mPrefs = Utilities.getOmegaPrefs(this)
+
+        //Load hidden apps to use with hidden apps preference
+        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(mPrefs.hiddenAppSet) }
+
         mPrefs.registerCallback(prefCallback)
         mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
         if (mPrefs.firstRun) {
@@ -95,6 +107,25 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
+    }
+
+    private fun loadHiddenApps(hiddenAppsSet: Set<String>) {
+
+        val apps = ArrayList<LauncherActivityInfo>()
+        val iconCache = LauncherAppState.getInstance(this).iconCache
+        val profiles = UserCache.INSTANCE.get(this).userProfiles
+        val launcherApps: LauncherApps = applicationContext.getSystemService(
+            LauncherApps::class.java
+        )
+        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
+        for (info in apps) {
+            val key = ComponentKey(info.componentName, info.user);
+            if (hiddenAppsSet.contains(key.toString())) {
+                val appInfo = AppInfo(info, info.user, false)
+                iconCache.getTitleAndIcon(appInfo, false)
+                hiddenApps.add(appInfo)
+            }
+        }
     }
 
     override fun onResume() {

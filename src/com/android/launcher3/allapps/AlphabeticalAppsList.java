@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
-import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 import static com.saggitt.omega.util.Config.SORT_AZ;
 import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
 import static com.saggitt.omega.util.Config.SORT_LAST_INSTALLED;
@@ -24,11 +22,8 @@ import static com.saggitt.omega.util.Config.SORT_MOST_USED;
 import static com.saggitt.omega.util.Config.SORT_ZA;
 
 import android.content.Context;
-import android.content.pm.LauncherActivityInfo;
-import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.UserHandle;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -37,12 +32,12 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
-import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.InstallTimeComparator;
@@ -309,11 +304,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * Updates the set of filtered apps with the current filter.  At this point, we expect
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.
      */
-    boolean isLoaded;
     private void updateAdapterItems() {
-        MODEL_EXECUTOR.getHandler().postAtFrontOfQueue(this::refillAdapterItems);
-        if (isLoaded)
-            MAIN_EXECUTOR.getHandler().postAtFrontOfQueue(this::refreshRecyclerView);
+        refillAdapterItems();
+        refreshRecyclerView();
     }
 
     private void refreshRecyclerView() {
@@ -328,7 +321,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         int position = 0;
         int appIndex = 0;
         int folderIndex = 0;
-        isLoaded = false;
 
         // Prepare to update the list of sections, filtered apps, etc.
         mFilteredApps.clear();
@@ -459,8 +451,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     break;
             }
         }
-
-        isLoaded = true;
     }
 
     private List<AppInfo> getFiltersAppInfos() {
@@ -473,18 +463,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             if (match != null) {
                 result.add(match);
             } else {
-                final IconCache iconCache = LauncherAppState.getInstance(mLauncher).getIconCache();
-                final UserHandle user = android.os.Process.myUserHandle();
-                final LauncherApps launcherApps = mLauncher.getApplicationContext().getSystemService(LauncherApps.class);
-                List<LauncherActivityInfo> apps = launcherApps.getActivityList(
-                        key.componentName.getPackageName(), key.user);
-
-                for (LauncherActivityInfo info : apps) {
-                    if (info.getComponentName().equals(key.componentName)) {
-                        final AppInfo appInfo = new AppInfo(info, user, false);
-                        iconCache.getTitleAndIcon(appInfo, false);
-                        result.add(appInfo);
-                        break;
+                //Add hidden apps to search results when the preference is enabled
+                ArrayList<AppInfo> apps = OmegaLauncher.getLauncher(mLauncher.getApplicationContext()).getHiddenApps();
+                for (AppInfo info : apps) {
+                    if (info.componentName.getPackageName().equals(key.componentName.getPackageName())) {
+                        result.add(info);
                     }
                 }
             }
