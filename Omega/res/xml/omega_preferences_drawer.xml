@@ -79,9 +79,9 @@
             android:persistent="true"
             android:title="@string/title_drawer_row_height"
             app:defaultSeekbarValue="1.0"
-            app:maxValue="1.5"
             app:minValue="0.5"
-            app:steps="150"
+            app:maxValue="1.5"
+            app:steps="100"
             app:summaryFormat="%.0f%%"
             app:summaryMultiplier="100" />
 
@@ -127,11 +127,13 @@
         <com.saggitt.omega.preferences.AutoModeSeekbarPreference
             android:key="pref_allAppsOpacitySB"
             android:title="@string/title_opacity"
+            android:persistent="true"
+            app:defaultSeekbarValue="1.0"
             app:minValue="0"
             app:maxValue="1"
+            app:steps="100"
             app:summaryFormat="%.0f%%"
-            app:summaryMultiplier="100"
-            android:persistent="true" />
+            app:summaryMultiplier="100" />
 
         <com.saggitt.omega.preferences.StyledSwitchPreference
             android:defaultValue="true"

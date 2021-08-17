@@ -15,30 +15,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.util.AttributeSet
 import com.android.launcher3.R
 
-class AutoModeSeekbarPreference @JvmOverloads constructor(
-    private val mContext: Context,
-    attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) :
-    SeekbarPreference(mContext, attrs, defStyleAttr) {
-
+class AutoModeSeekbarPreference(context: Context, attrs: AttributeSet?) :
+    SeekbarPreference(context, attrs) {
     private var low = min
-    public override fun updateSummary() {
-        if (current < low) {
-            mValueText!!.text = mContext.getString(R.string.automatic_short)
-        } else {
-            super.updateSummary()
-        }
-    }
 
     init {
         min -= (max - min) / steps
         steps += 1
         defaultValue = min
     }
+
+    public override fun updateSummary() {
+        if (current < low) {
+            mValueText!!.text = context.getString(R.string.automatic_short)
+        } else {
+            super.updateSummary()
+        }
+    }
+
+
 }

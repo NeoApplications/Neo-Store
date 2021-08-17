@@ -92,8 +92,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.textColorPrimary, reloadApps)
     var allAppsGlobalSearch by BooleanPref("pref_allAppsGlobalSearch", true, doNothing)
     val allAppsSearch by BooleanPref("pref_allAppsSearch", true, recreate)
-    val allAppsTextScale by FloatPref("pref_allAppsIconTextScale", 1f, recreate)
-    val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, recreate)
+    val allAppsTextScale by FloatPref("pref_allAppsIconTextScale", 1f)
+    val drawerPaddingScale by FloatPref("pref_allAppsPaddingScale", 1.0f, restart)
     private val drawerMultilineLabel by BooleanPref("pref_iconLabelsInTwoLines", false, recreate)
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
     val hideAllAppsAppLabels by BooleanPref("pref_hideAllAppsAppLabels", false, recreate)
@@ -104,7 +104,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
     val drawerBackgroundColor by IntPref("pref_drawer_background_color", R.color.white, recreate)
     val customBackground by BooleanPref("pref_enable_custom_background", false, recreate)
-    val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, recreate)
+    val allAppsOpacity by AlphaPref("pref_allAppsOpacitySB", -1, restart)
     private val drawerGridSizeDelegate = ResettableLazy {
         GridSize(
             this,

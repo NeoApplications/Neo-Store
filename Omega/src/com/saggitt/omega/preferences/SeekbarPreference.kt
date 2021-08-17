@@ -1,18 +1,19 @@
 /*
- *     This file is part of Lawnchair Launcher.
+ *  This file is part of Omega Launcher
+ *  Copyright (c) 2021   Saul Henriquez
  *
- *     Lawnchair Launcher is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *     Lawnchair Launcher is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.saggitt.omega.preferences
@@ -25,6 +26,7 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -32,12 +34,10 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import kotlin.math.roundToInt
 
-open class SeekbarPreference
-@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    Preference(context, attrs, defStyleAttr),
-    SeekBar.OnSeekBarChangeListener,
-    View.OnCreateContextMenuListener,
-    MenuItem.OnMenuItemClickListener {
+
+open class SeekbarPreference(context: Context, attrs: AttributeSet?) :
+    Preference(context, attrs),
+    View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
     private var mSeekbar: SeekBar? = null
 
@@ -45,31 +45,27 @@ open class SeekbarPreference
     var mValueText: TextView? = null
 
     @JvmField
-    var min: Float = 0.toFloat()
+    var min: Float = 0f
 
     @JvmField
-    var max: Float = 0.toFloat()
+    var max: Float = 0f
 
     @JvmField
-    var current: Float = 0.toFloat()
+    var current: Float = 0f
 
     @JvmField
-    var defaultValue: Float = 0.toFloat()
+    var defaultValue: Float = 0f
     private var multiplier: Int = 0
     private var format: String? = null
 
     @JvmField
     var steps: Int = 100
-    private var lastPersist = Float.NaN
 
     open val allowResetToDefault = true
+    var mTrackingTouch = false
 
     init {
         layoutResource = R.layout.preference_seekbar
-        init(context, attrs!!)
-    }
-
-    private fun init(context: Context, attrs: AttributeSet) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SeekbarPreference)
         min = ta.getFloat(R.styleable.SeekbarPreference_minValue, 0f)
         max = ta.getFloat(R.styleable.SeekbarPreference_maxValue, 100f)
@@ -90,7 +86,7 @@ open class SeekbarPreference
         mValueText = view.findViewById(R.id.txtValue)
         mSeekbar!!.max = steps
 
-        mSeekbar!!.setOnSeekBarChangeListener(this)
+        mSeekbar!!.setOnSeekBarChangeListener(mSeekBarChangeListener)
         val stateList = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
         mSeekbar!!.thumbTintList = stateList
         mSeekbar!!.progressTintList = stateList
@@ -115,15 +111,7 @@ open class SeekbarPreference
         val progress = ((current - min) / ((max - min) / steps))
         mSeekbar!!.progress = progress.roundToInt()
         updateSummary()
-        mSeekbar?.setOnSeekBarChangeListener(this)
-    }
-
-    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-        current = min + (max - min) / steps * progress
-        current = (current * 100f).roundToInt() / 100f //round to .00 places
-        updateSummary()
-
-        persistFloat(current)
+        mSeekbar?.setOnSeekBarChangeListener(mSeekBarChangeListener)
     }
 
     @SuppressLint("SetTextI18n")
@@ -131,22 +119,25 @@ open class SeekbarPreference
         if (format != "%.2f") {
             mValueText!!.text = String.format(format!!, current * multiplier)
         } else {
-            mValueText!!.text = (current * multiplier).toInt().toString() + "dp"
+            mValueText!!.text = "${(current * multiplier).toInt()} dp"
         }
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar) {
+    private val mSeekBarChangeListener = object : OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            current = min + (max - min) / steps * progress
+            current = (current * 100f).roundToInt() / 100f
+            updateSummary()
+        }
 
-    }
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+            mTrackingTouch = true
+        }
 
-    override fun onStopTrackingTouch(seekBar: SeekBar) {
-        persistFloat(current)
-    }
-
-    override fun persistFloat(value: Float): Boolean {
-        if (value == lastPersist) return true
-        lastPersist = value
-        return super.persistFloat(value)
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+            mTrackingTouch = false
+            persistFloat(current)
+        }
     }
 
     override fun onCreateContextMenu(

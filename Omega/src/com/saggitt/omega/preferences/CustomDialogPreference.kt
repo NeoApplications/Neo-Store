@@ -22,23 +22,11 @@ import android.util.AttributeSet
 import androidx.preference.DialogPreference
 import com.android.launcher3.R
 
-open class CustomDialogPreference : DialogPreference {
+open class CustomDialogPreference(context: Context, attrs: AttributeSet?) :
+    DialogPreference(context, attrs) {
     var content = 0
 
-    constructor(context: Context) : super(context) {
-        init(context, null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context, attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        init(context, attrs)
-    }
-
-    private fun init(context: Context, attrs: AttributeSet?) {
+    init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceDialogPreference)
         content = a.getResourceId(R.styleable.PreferenceDialogPreference_content, 0)
         a.recycle()
