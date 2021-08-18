@@ -661,11 +661,6 @@ open class SettingsActivity : SettingsBaseActivity(),
 
         override fun onPreferenceClick(preference: Preference): Boolean {
             if (preference.key == "kill") Utilities.killLauncher()
-            /*else if (preference.key.equals("pref_widget_feed")) {
-                val intent = Intent(context, FeedWidgetsActivity::class.java)
-                    startActivity(intent);
-                }
-             */
             return false
         }
 

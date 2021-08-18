@@ -78,17 +78,10 @@
             android:defaultValue="true" />
 
         <com.saggitt.omega.preferences.StyledSwitchPreference
-            android:defaultValue="true"
-            android:key="pref_swipe_up_to_switch_apps_enabled"
-            android:persistent="true"
-            android:title="Swipe up to Switch Apps" />
-
-        <com.saggitt.omega.preferences.StyledSwitchPreference
             android:defaultValue="false"
             android:key="pref_fullGestureMode"
             android:persistent="true"
-            android:title="Full gesture mode"
-            android:dependency="pref_swipe_up_to_switch_apps_enabled" />
+            android:title="Full gesture mode" />
 
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 
