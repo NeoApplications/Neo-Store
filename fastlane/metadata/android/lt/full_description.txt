@@ -1,0 +1,3 @@
+<p>Jūsų galinga libre paleidimo programėlė su daugybe išmaniųjų funkcijų.</p>
+<br>
+<p>Būsena: Beta versija</p>
