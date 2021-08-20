@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_desktop_text_size">Teksto dydis</string>
+    <string name="title_desktop_hide_statusbar">Slėpti būsenos juostą</string>
+    <string name="title_desktop_icon_popup_menu">Iššokančio meniu elementai</string>
+    <string name="title__multiline_labels">Kelių eilučių programų pavadinimai</string>
+    <string name="title_desktop_keep_empty">Leisti tuščius puslapius</string>
+    <string name="title_desktop_lock_desktop">Užrakinti darbalaukį</string>
+    <string name="title_desktop_overlap_placement">Leisti persidengimus</string>
+    <string name="title__desktop_hide_icon_labels">Slėpti piktogramų etiketes pagrindiniame ekrane</string>
+    <string name="summary__general_smartspace">Data, laikas, pagrindinio ekrano valdiklis</string>
+    <string name="title__general_smartspace">Pagrindinio ekrano valdiklis</string>
+    <string name="title__desktop_grid_size">Tinklelio dydis</string>
+    <string name="title__desktop_icon_size">Piktogramos dydis</string>
+    <string name="title__desktop_full_width_widgets">Viso pločio valdikliai</string>
+    <string name="allow_rotation_blocked_desc">Dabartinis ekrano nustatymas neleidžia pasukimo</string>
+    <string name="pref_category__incubating">Inkubacija</string>
+    <string name="pref_category__others">Kita</string>
+    <string name="pref_category__inputs">Gestai ir paieška</string>
+    <string name="pref_category__interfaces">Sąsajos</string>
+    <string name="summary__general_about">Daugiau informacijos apie Omega Launcher</string>
+    <string name="summary__general_advanced">Kalba, atsarginė kopija, paieškos nustatymas</string>
+    <string name="summary__general_notifications">Ženklelių skaičius, ženklelio spalva, gestai</string>
+    <string name="summary__general_search">Paieškos teikėjas, stilius, piktogramos</string>
+    <string name="summary__general_theme">Keiskite spalvas, piktogramų paketą, piktogramos formą</string>
+    <string name="title__general_notifications">Gestai ir pranešimai</string>
+    <string name="title__general_advanced">Išplėstiniai nustatymai</string>
+    <string name="title__general_search">Paieška</string>
+    <string name="title__general_theme">Tema</string>
+    <string name="title__general_dock">Greitos prieigos įrankių juosta</string>
+    <string name="title__general_desktop">Darbalaukis</string>
+    <string name="title__general_about">Apie</string>
+    <string name="default_folder_name">Naujas aplankas</string>
+</resources>
