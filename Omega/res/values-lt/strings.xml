@@ -90,4 +90,15 @@
     <string name="title__dock_icon_size">Piktogramos dydis</string>
     <string name="grid_size_width">Plotis</string>
     <string name="grid_size_height">Aukštis</string>
+    <string name="action_none">Nieko nedaryti</string>
+    <string name="pref_category__gestures">Gestai</string>
+    <string name="pref_category__notifications">Pranešimai</string>
+    <string name="allow">Leisti</string>
+    <string name="category__behavior_weather">Orai</string>
+    <string name="title_smartspace_weather_units">Temperatūros vienetas</string>
+    <string name="title_smartspace_widget_provider">Orų šaltinis</string>
+    <string name="title_smartspace_time_above">Rodyti didelį laikrodį</string>
+    <string name="title_smartspace_time_24_h">Naudoti 24 valandų formatą</string>
+    <string name="title_smartspace_date">Rodyti datą</string>
+    <string name="title_smartspace_time">Rodyti laiką</string>
 </resources>
