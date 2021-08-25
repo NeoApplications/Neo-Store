@@ -211,7 +211,7 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
             mHideText = prefs.getHideAllAppsAppLabels();
             setTextSize(TypedValue.COMPLEX_UNIT_PX, isTextHidden() ? 0 : grid.allAppsFolderChildTextSizePx);
             setCompoundDrawablePadding(grid.allAppsFolderChildDrawablePaddingPx);
-            defaultIconSize = grid.allAppsFolderChildIconSizePx;
+            defaultIconSize = grid.folderChildIconSizePx;
             int lines = prefs.getDrawerLabelRows();
             setLineCount(lines);
             if (prefs.getCustomBackground()) {
@@ -219,7 +219,6 @@ public class BubbleTextView extends AppCompatTextView implements ItemInfoUpdateR
             }
         } else if (mDisplay == DISPLAY_ALL_APPS_VERTICAL) {
             mHideText = false;
-            //setCompoundDrawablePadding(34);
             defaultIconSize = grid.allAppsIconSizePx;
             setLineCount(1);
             if (prefs.getCustomBackground()) {

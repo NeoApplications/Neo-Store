@@ -159,11 +159,10 @@
 
     <style name="SettingsTheme_Light" parent="@style/SettingsTheme.Base">
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
-
         <item name="iconShapeTint">@color/transparentish</item>
     </style>
 
-    <style name="SettingsTheme_Dark" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="SettingsTheme_Dark" parent="@style/SettingsTheme.Base">
         <item name="android:windowBackground">@color/settings_background_dark</item>
         <item name="colorPrimary">?android:windowBackground</item>
         <item name="colorPrimaryDark">?android:windowBackground</item>
@@ -217,7 +216,7 @@
 
     <style name="SettingsTheme_Black" parent="@style/SettingsTheme_Dark">
         <item name="android:windowBackground">@android:color/black</item>
-        <item name="settingsBackground">@android:color/black</item>
+        <item name="settingsBackground">@color/settings_background_black</item>
         <item name="settingsSearchBackground">@color/settings_background_black_2dp</item>
         <item name="settingsPopupBackground">@color/settings_background_black_8dp</item>
         <item name="actionBarTheme">@style/SettingsTheme_Black.ActionBar</item>
@@ -315,6 +314,7 @@
         <item name="android:colorPrimaryDark">@android:color/white</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="bottomSheetStyle">@style/SettingsTheme.BottomSheet</item>
+        <item name="dialogCornerRadius">8dp</item>
     </style>
 
     <style name="SettingsTheme.PopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
