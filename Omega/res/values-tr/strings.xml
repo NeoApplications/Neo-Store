@@ -188,7 +188,7 @@
     <string name="hide_app_selected">  gizli</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Gizli</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Uygulama</item>
@@ -246,4 +246,18 @@
     <string name="smartspace_preferences">Tercihler</string>
     <string name="smartspace_setup_text">Ayarlamak için dokunun</string>
     <string name="smartspace_add_to_home">Masaüstüne ekle</string>
+    <string name="cat_drawer_grid">Izgara</string>
+    <string name="title_drawer_layout">Sayfa Düzeni Modu</string>
+    <string name="title_opacity">Opaklık</string>
+    <string name="dock_colored_google">Renk Simgeleri</string>
+    <string name="title__drawer_sort">Uygulamaların Sıralaması</string>
+    <string name="title__sort_mode">Uygulama Sıralaması</string>
+    <string name="title__drawer_icon_popup_menu">Kısayol Balonu</string>
+    <string name="title__drawer_icon_size">Tüm Uygulamaların Simge Boyutu</string>
+    <string name="title__drawer_hide_apps">Gizli Uygulama Kısayolları</string>
+    <string name="title__drawer_paged_apps">Disk Belleği Uygulamaları görünümü</string>
+    <string name="title_separate_work_apps">İş Uygulamaları için İkinci Sekme</string>
+    <string name="title__drawer_all_apps">Tüm Uygulamaları Göster etiketi</string>
+    <string name="title__dock_hide">Dock\'u Gizle</string>
+    <string name="title__dock_scale">Dock ölçeği</string>
 </resources>
