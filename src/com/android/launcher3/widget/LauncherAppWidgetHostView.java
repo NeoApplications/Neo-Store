@@ -71,8 +71,6 @@ public class LauncherAppWidgetHostView extends NavigableAppWidgetHostView
     private boolean mIsAutoAdvanceRegistered;
     private Runnable mAutoAdvanceRunnable;
 
-
-
     public LauncherAppWidgetHostView(Context context) {
         super(context);
         mLauncher = Launcher.getLauncher(context);
@@ -110,7 +108,6 @@ public class LauncherAppWidgetHostView extends NavigableAppWidgetHostView
             }
         }
     }
-
 
     @Override
     protected View getErrorView() {

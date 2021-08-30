@@ -19,7 +19,7 @@ package com.saggitt.omega.feed
 
 import android.appwidget.AppWidgetProviderInfo
 
-class Widget {
-    var id = 0
+data class Widget(
+    var id: Int,
     var info: AppWidgetProviderInfo? = null
-}
+)

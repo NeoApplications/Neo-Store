@@ -74,13 +74,14 @@ public class LauncherAppWidgetProviderInfo extends AppWidgetProviderInfo
         Rect widgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(
                 context, provider, null);
         spanX = Math.max(1, (int) Math.ceil(
-                        (minWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
+                (minWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
         spanY = Math.max(1, (int) Math.ceil(
                 (minHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
 
         minSpanX = Math.max(1, (int) Math.ceil(
                 (minResizeWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
-        minSpanY = Math.max(1, (int) Math.ceil(
+        //TODO: make sure widgets does not fail when resizing
+        minSpanY = Math.min(1, (int) Math.ceil(
                 (minResizeHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
     }
 

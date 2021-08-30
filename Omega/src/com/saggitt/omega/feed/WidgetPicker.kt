@@ -41,6 +41,7 @@ class WidgetPicker : AppCompatActivity(), WidgetPickerAdapter.OnClickListener {
     private var mAppWidgetManager: AppWidgetManager? = null
     private var mPackageManager: PackageManager? = null
     private var mBaseIntent: Intent? = null
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         mPackageManager = packageManager
         mAppWidgetManager = AppWidgetManager.getInstance(this)

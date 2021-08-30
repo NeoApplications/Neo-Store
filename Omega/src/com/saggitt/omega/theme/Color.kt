@@ -21,7 +21,10 @@ package com.saggitt.omega.theme
 import androidx.compose.ui.graphics.Color
 
 val graySurface = Color(0xFF202124)
-val purple200 = Color(0xFFBB86FC)
-val purple500 = Color(0xFF6200EE)
-val purple700 = Color(0xFF3700B3)
+val purple200 = Color(0xFFCE93D8)
+val purple500 = Color(0xFF9C27B0)
+val purple700 = Color(0xFF7B1FA2)
+val blue500 = Color(0xFF6200EE)
+val blue700 = Color(0xFF3700B3)
+val white200 = Color(0xFFF3F3F3)
 val teal200 = Color(0xFF03DAC5)

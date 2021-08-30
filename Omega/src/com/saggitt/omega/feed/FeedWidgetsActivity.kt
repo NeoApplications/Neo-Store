@@ -19,142 +19,52 @@ package com.saggitt.omega.feed
 
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
-import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.DisplayMetrics
-import android.view.View
-import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
 import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
 import com.saggitt.omega.OmegaLauncher
-import com.saggitt.omega.feed.AddedWidgetsAdapter.OnActionClickListener
-import com.saggitt.omega.settings.SettingsBaseActivity
-import java.util.*
+import com.saggitt.omega.theme.OmegaAppTheme
+import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.theme.ThemedContextProvider
 
-class FeedWidgetsActivity : SettingsBaseActivity(), OnActionClickListener {
+class FeedWidgetsActivity : ComponentActivity() {
+    val themedContext = ThemedContextProvider(this, null, ThemeOverride.Settings()).get()
+    val isDark = ThemeManager.getInstance(themedContext).isDark
     private var mAppWidgetManager: AppWidgetManager? = null
     private var mAppWidgetHost: AppWidgetHost? = null
     private val mLauncher
         get() = (LauncherAppState.getInstance(this).launcher as? OmegaLauncher)
-    private var mAddedWidgetsAdapter: AddedWidgetsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.widget_feed)
+
         mLauncher?.let {
             mAppWidgetManager = AppWidgetManager.getInstance(it.applicationContext)
             mAppWidgetHost = it.appWidgetHost
         }
-        /*val addedWidgets = findViewById<RecyclerView>(R.id.added_widgets_recycler_view)
-        addedWidgets.layoutManager = LinearLayoutManager(applicationContext)
-        addedWidgets.setHasFixedSize(false)
-        addedWidgets.isNestedScrollingEnabled = false
-        addedWidgets.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        )*/
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        mAddedWidgetsAdapter = AddedWidgetsAdapter(this, metrics.densityDpi)
-        //addedWidgets.adapter = mAddedWidgetsAdapter
-        refreshRecyclerView()
-        findViewById<View>(R.id.add_widget_button).setOnClickListener { openWidgetDialog() }
-    }
 
-    private fun refreshRecyclerView() {
-        val widgets: MutableList<Widget> = ArrayList()
-        val widgetIds = mAppWidgetHost!!.appWidgetIds
-        Arrays.sort(widgetIds)
-        for (id in widgetIds) {
-            val appWidgetInfo = mAppWidgetManager!!.getAppWidgetInfo(id)
-            if (appWidgetInfo != null) {
-                val widget = Widget()
-                widget.id = id
-                widget.info = appWidgetInfo
-                widgets.add(widget)
+        mLauncher?.let {
+            mAppWidgetManager = AppWidgetManager.getInstance(it.applicationContext)
+            mAppWidgetHost = it.appWidgetHost
+        }
+        setContent {
+            OmegaAppTheme(isDark) {
+                WidgetFeed(this)
             }
         }
-        mAddedWidgetsAdapter!!.setAppWidgetProviderInfos(widgets)
     }
+}
 
-    private fun openWidgetDialog() {
-        val appWidgetId = mAppWidgetHost!!.allocateAppWidgetId()
-        val pickIntent = Intent(this, WidgetPicker::class.java)
-        pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        addEmptyData(pickIntent)
-        startActivityForResult(pickIntent, REQUEST_PICK_APPWIDGET)
-    }
-
-    fun addEmptyData(pickIntent: Intent) {
-        val customInfo: ArrayList<Parcelable> = arrayListOf()
-        pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, customInfo)
-        val customExtras: ArrayList<Parcelable> = arrayListOf()
-        pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, customExtras)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_PICK_APPWIDGET) {
-                configureWidget(data)
-            } else if (requestCode == REQUEST_CREATE_APPWIDGET) {
-                createWidget(data)
-            }
-        } else if (resultCode == RESULT_CANCELED && data != null) {
-            val appWidgetId = data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-            if (appWidgetId != -1) {
-                removeWidget(appWidgetId)
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
+@Composable
+fun WidgetFeed(context: Context) {
+    Scaffold(
+        content = {
+            WidgetHomeContent(context)
         }
-    }
-
-    private fun configureWidget(data: Intent?) {
-        val extras = data!!.extras
-        val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-        val appWidgetInfo = mAppWidgetManager!!.getAppWidgetInfo(appWidgetId)
-        if (appWidgetInfo?.configure != null) {
-            /*Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-            intent.setComponent(appWidgetInfo.configure);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            startActivityForResult(intent, REQUEST_CREATE_APPWIDGET);*/
-            startAppWidgetConfigureActivitySafely(appWidgetId)
-        } else {
-            createWidget(data)
-        }
-    }
-
-    fun createWidget(data: Intent?) {
-        val extras = data!!.extras
-        val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-        val appWidgetInfo = mAppWidgetManager!!.getAppWidgetInfo(appWidgetId)
-        val hostView = mAppWidgetHost!!.createView(
-            applicationContext, appWidgetId,
-            appWidgetInfo
-        ) as RoundedWidgetView
-        hostView.setAppWidget(appWidgetId, appWidgetInfo)
-        //WidgetManager.getInstance().enqueueAddWidget(hostView);
-        refreshRecyclerView()
-    }
-
-    fun startAppWidgetConfigureActivitySafely(appWidgetId: Int) {
-        try {
-            mAppWidgetHost!!.startAppWidgetConfigureActivityForResult(
-                this, appWidgetId, 0,
-                REQUEST_CREATE_APPWIDGET, null
-            )
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun removeWidget(id: Int) {
-        mAppWidgetHost!!.deleteAppWidgetId(id)
-    }
-
-    companion object {
-        private const val REQUEST_PICK_APPWIDGET = 455
-        private const val REQUEST_CREATE_APPWIDGET = 189
-    }
+    )
 }

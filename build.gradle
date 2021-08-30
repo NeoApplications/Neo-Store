@@ -46,7 +46,7 @@ android {
     compileSdkVersion 30
 
     def name = "0.8.2"
-    def code = 282
+    def code = 283
 
     defaultConfig {
         minSdkVersion 26
@@ -216,6 +216,7 @@ dependencies {
 
     //Compose
     implementation "androidx.compose.ui:ui:1.0.1"
+    implementation "androidx.compose.ui:ui-tooling:1.0.1"
     implementation 'androidx.compose.ui:ui-tooling-preview:1.0.1'
     implementation "androidx.compose.compiler:compiler:1.0.1"
     implementation "androidx.compose.material:material:1.0.1"
