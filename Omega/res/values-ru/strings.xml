@@ -364,4 +364,8 @@
     <string name="dialog_message_change_sort">Установить сортировку приложений по алфавиту\?</string>
     <string name="home_widget">At a Glance</string>
     <string name="about_translators">Переводчики</string>
+    <string name="notification_custom_color">Применить свой цвет</string>
+    <string name="folder_custom_background">Применить свой цвет фона для папок</string>
+    <string name="folder_background">Цвет фона папок</string>
+    <string name="folder_radius">Радиус для углов папок</string>
 </resources>
