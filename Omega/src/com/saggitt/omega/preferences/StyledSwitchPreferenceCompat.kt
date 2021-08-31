@@ -42,7 +42,6 @@ open class StyledSwitchPreferenceCompat(context: Context, attrs: AttributeSet? =
         (checkableView as Switch).applyColor(Utilities.getOmegaPrefs(context).accentColor)
     }
 
-
     open class SwitchSlice(context: Context, attrs: AttributeSet) :
         SearchIndex.Slice(context, attrs) {
 

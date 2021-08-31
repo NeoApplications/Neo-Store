@@ -24,7 +24,10 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Looper
 import android.text.TextUtils
-import com.android.launcher3.*
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.LauncherFiles
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
@@ -242,6 +245,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
 
+    val customFolderBackground by BooleanPref("pref_custom_folder_background", false)
+    val folderBackground by IntPref(
+        "pref_folder_background", R.color.qsb_drawer_text_color_normal
+    )
+
     /* --QUICK STEP-- */
     val recentsBlurredBackground by BooleanPref("pref_recents_blur_background", true) {
         onChangeCallback?.launcher?.background?.onEnabledChanged()
@@ -297,11 +305,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     /* --FEED-- */
     var feedProvider by StringPref("pref_feedProvider", "", restart)
     val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", true, restart)
-    var feedProviderPackage by StringPref(
-        "pref_feed_provider_package",
-        BuildConfig.APPLICATION_ID,
-        restart
-    )
 
     /* --DEV-- */
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
@@ -311,8 +314,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val enablePhysics get() = !lowPerformanceMode
     val debugOkHttp by BooleanPref("pref_debugOkhttp", onChange = restart)
     var restoreSuccess by BooleanPref("pref_restoreSuccess", false)
-
-    val folderBgColored by BooleanPref("pref_folderBgColorGen", false)
 
     val customAppName =
         object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {

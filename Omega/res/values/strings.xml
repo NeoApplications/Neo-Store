@@ -330,6 +330,7 @@
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use Double Tap to Sleep, grant the Admin permission.</string>
     <string name="dt2s_admin_warning">Double Tap to Sleep will be disabled.</string>
+
     <!-- SEARCH -->
     <string name="title__search_bubble_searchbar">Show Two Bubbles</string>
     <string name="title__search_action_assistant">Open Assistant</string>
@@ -367,6 +368,10 @@
     <string name="web_search_baidu" translatable="false">Baidu (web)</string>
     <string name="web_search_yahoo" translatable="false">Yahoo (web)</string>
     <string name="error_no_browser">No activity found to handle URLs</string>
+
+    <string name="folder_custom_background">Use custom folder background</string>
+    <string name="folder_background">Folder background color</string>
+
     <!-- ADVANCED -->
     <string name="summary__advanced_setting_search">Display setting search in the action bar</string>
     <string name="summary__advanced_language">Change language of this app</string>

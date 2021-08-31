@@ -61,6 +61,22 @@
 
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
     <com.saggitt.omega.preferences.ThemedPreferenceCategory android:title="@string/app_categorization_folders">
+        <com.saggitt.omega.preferences.StyledSwitchPreference
+            android:defaultValue="true"
+            android:key="pref_custom_folder_background"
+            android:persistent="true"
+            android:title="@string/folder_custom_background"
+            app:iconSpaceReserved="false" />
+
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@color/qsb_drawer_text_color_normal"
+            android:key="pref_folder_background"
+            android:title="@string/folder_background"
+            android:dependency="pref_custom_folder_background"
+            app:cpv_dialogTitle="@string/folder_background"
+            app:cpv_showAlphaSlider="true"
+            app:cpv_previewSize="large"
+            app:iconSpaceReserved="false" />
 
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>

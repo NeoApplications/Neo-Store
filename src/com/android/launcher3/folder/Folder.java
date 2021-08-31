@@ -35,6 +35,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.text.InputType;
 import android.text.Selection;
@@ -89,6 +90,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pageindicators.PageIndicatorDots;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.util.Executors;
+import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
@@ -232,6 +234,13 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // reliable behavior when clicking the text field (since it will always gain focus on click).
         setFocusableInTouchMode(true);
 
+        int bgColor = 0;
+        if (Utilities.getOmegaPrefs(context).getCustomFolderBackground()) {
+            bgColor = Utilities.getOmegaPrefs(context).getFolderBackground();
+        } else {
+            bgColor = Themes.getAttrColor(context, R.attr.folderFillColor);
+        }
+        getBackground().setColorFilter(bgColor, PorterDuff.Mode.SRC_OVER);
     }
 
     @Override
@@ -417,8 +426,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // the folder itself.
         requestFocus();
         super.onAttachedToWindow();
-        if (mFolderIcon != null && mFolderIcon.isCustomIcon &&
-                Utilities.getOmegaPrefs(getContext()).getFolderBgColored()) {
+        if (mFolderIcon != null && mFolderIcon.isCustomIcon) {
             setBackgroundTintList(ColorStateList.valueOf(mFolderIcon.getFolderName().getDotColor()));
         }
     }
