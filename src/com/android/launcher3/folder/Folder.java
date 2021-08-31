@@ -311,7 +311,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         if (edgeRadius != null) {
             return edgeRadius.getDimension(mLauncher.getApplicationContext().getResources().getDisplayMetrics());
         } else {
-            return ResourceUtils.pxFromDp(100, getResources().getDisplayMetrics());
+            return ResourceUtils.pxFromDp(8, getResources().getDisplayMetrics());
         }
     }
 
