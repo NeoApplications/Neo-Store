@@ -378,4 +378,6 @@
     <string name="folder_radius">文件夹圆角半径</string>
     <string name="folder_background">文件夹背景色</string>
     <string name="folder_custom_background">使用自定义文件夹背景</string>
+    <string name="dash_media_player_description">显示或隐藏音频播放器控件</string>
+    <string name="dash_media_player">音频播放器</string>
 </resources>
