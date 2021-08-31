@@ -39,7 +39,6 @@ class DashFragment : RecyclerViewFragment() {
 
     override fun onPause() {
         super.onPause()
-
         OmegaPreferences.getInstance(requireContext()).dashProviders.setAll(adapter.saveSpecs())
     }
 }

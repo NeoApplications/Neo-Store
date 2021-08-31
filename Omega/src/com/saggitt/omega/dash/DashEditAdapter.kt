@@ -20,7 +20,6 @@ package com.saggitt.omega.dash
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -31,13 +30,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
+import com.android.launcher3.util.Executors
 import com.saggitt.omega.dash.actionprovider.*
 import com.saggitt.omega.dash.controlprovider.*
 import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
-// TODO remove use of Handler()
 // TODO add an option to add apps/shortcuts
 class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.Holder>() {
     private val prefs = context.omegaPrefs
@@ -45,7 +44,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         (getDashActionProviders(context) + getDashControlProviders(context))
             .map { ProviderItem(it) }
             .toMutableList()
-    private val handler = Handler()
+    private val handler = Executors.MAIN_EXECUTOR.handler
     private var dividerIndex = 0
     private val adapterItems = ArrayList<Item>()
     private val activeProviders: MutableList<String> = prefs.dashProviders.getAll().toMutableList()
@@ -299,7 +298,8 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
             AllAppsShortcut(context),
             SleepDevice(context),
             LaunchAssistant(context),
-            Torch(context)
+            Torch(context),
+            AudioPlayer(context)
         )
 
         fun getDashControlProviders(context: Context) = listOf(

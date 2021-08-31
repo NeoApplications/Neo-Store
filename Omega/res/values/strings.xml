@@ -453,6 +453,8 @@
     <string name="dash_manage_apps_summary">Open the Android App Manager</string>
     <string name="dash_mobile_network_summary">Show the mobile networks settings</string>
     <string name="dash_all_apps_summary">Show the all App button</string>
+    <string name="dash_media_player">Audio Player</string>
+    <string name="dash_media_player_description">Show or hide the Audio Player controls</string>
     <string name="edit_dash_summary">Enable or disable shortcuts</string>
     <string name="wallpaper_pick_summary">Open the Wallpaper chooser</string>
     <string name="dash_launcher_settings_summary">Display the launcher settings</string>
@@ -461,6 +463,7 @@
     <string name="drag_to_disable_packs">Drag down to disable</string>
     <string name="drag_to_enable_packs">Drag up to enable</string>
     <string name="enabled_icon_packs">Enabled</string>
+
     <!-- SEEKBAR PREFERENCE -->
     <string name="reset_to_default">Reset to default</string>
     <string name="automatic_short">Auto</string>
