@@ -401,19 +401,13 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             mShadowHelper.draw(bitmap2, canvas, (float) paddingLeft, (float) paddingTop, (float) (paddingLeft2 + i));
         }
         if (micStrokeWidth > 0.0f && mMicFrame.getVisibility() == View.VISIBLE) {
-            float i2;
             i = mIsRtl ? getPaddingLeft() : (getWidth() - getPaddingRight()) - getMicWidth();
-            int paddingTop2 = getPaddingTop();
-            int paddingLeft3 = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
+            int paddingTop = getPaddingTop();
+            int paddingLeft = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
             int paddingBottom = LauncherAppState.getInstance(getContext()).getInvariantDeviceProfile().iconBitmapSize - getPaddingBottom();
-            float f = ((float) (paddingBottom - paddingTop2)) * 0.5f;
+            float f = ((float) (paddingBottom - paddingTop)) * 0.5f;
             float i3 = micStrokeWidth / 2.0f;
-            if (mUseTwoBubbles) {
-                canvas.drawRoundRect(i + i3, paddingTop2 + i3, paddingLeft3 - i3, (paddingBottom - i3) + 1, f, f, mMicStrokePaint);
-            } else {
-                i2 = i3;
-                canvas.drawRoundRect(i + i2, paddingTop2 + i2, paddingLeft3 - i2, (paddingBottom - i2) + 1, f, f, mMicStrokePaint);
-            }
+            canvas.drawRoundRect(i + i3, paddingTop + i3, paddingLeft - i3, (paddingBottom - i3) + 1, f, f, mMicStrokePaint);
         }
     }
 
@@ -562,7 +556,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setCornerRadius(getCornerRadius());
-        shape.setColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        shape.setColor(ContextCompat.getColor(getContext(), R.color.white));
 
         ColorStateList rippleColor = ContextCompat.getColorStateList(getContext(), R.color.focused_background);
         RippleDrawable ripple = new RippleDrawable(rippleColor, null, shape);
@@ -663,7 +657,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             return new ColorDrawable(Color.TRANSPARENT);
         }
     }
-
 
     public boolean onLongClick(View view) {
         if (view != this) {
