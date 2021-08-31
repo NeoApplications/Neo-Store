@@ -74,7 +74,7 @@
             android:title="@string/folder_background"
             android:dependency="pref_custom_folder_background"
             app:cpv_dialogTitle="@string/folder_background"
-            app:cpv_showAlphaSlider="true"
+            app:cpv_showAlphaSlider="false"
             app:cpv_previewSize="large"
             app:iconSpaceReserved="false" />
 
