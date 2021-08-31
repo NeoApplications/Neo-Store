@@ -25,6 +25,7 @@ import static com.android.launcher3.config.FeatureFlags.ALWAYS_USE_HARDWARE_OPTI
 import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_FOLDER_LABEL_UPDATED;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ITEM_DROP_COMPLETED;
+import static java.lang.Math.round;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,12 +38,14 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -67,6 +70,7 @@ import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.OnAlarmListener;
 import com.android.launcher3.PagedView;
 import com.android.launcher3.R;
+import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
@@ -78,6 +82,7 @@ import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragController.DragListener;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.dragndrop.DragOptions;
+import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.logging.StatsLogManager;
@@ -94,6 +99,7 @@ import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.OmegaPreferences;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.views.CustomBottomSheet;
 
@@ -216,7 +222,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     private CharSequence mFromTitle;
     private FromState mFromLabelState;
     private StatsLogManager mStatsLogManager;
-
+    private OmegaPreferences prefs;
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -234,13 +240,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // reliable behavior when clicking the text field (since it will always gain focus on click).
         setFocusableInTouchMode(true);
 
-        int bgColor = 0;
-        if (Utilities.getOmegaPrefs(context).getCustomFolderBackground()) {
-            bgColor = Utilities.getOmegaPrefs(context).getFolderBackground();
-        } else {
-            bgColor = Themes.getAttrColor(context, R.attr.folderFillColor);
-        }
-        getBackground().setColorFilter(bgColor, PorterDuff.Mode.SRC_OVER);
+        prefs = Utilities.getOmegaPrefs(context);
     }
 
     @Override
@@ -269,9 +269,26 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         mFooter.measure(measureSpec, measureSpec);
         mFooterHeight = mFooter.getMeasuredHeight();
 
+        customizeFolder();
+    }
+
+    private void customizeFolder() {
+        int bgColor;
+        if (prefs.getCustomFolderBackground()) {
+            bgColor = prefs.getFolderBackground();
+        } else {
+            bgColor = Themes.getAttrColor(mLauncher.getApplicationContext(), R.attr.folderFillColor);
+        }
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.RECTANGLE);
+        bg.setColorFilter(bgColor, PorterDuff.Mode.SRC_OVER);
+        bg.setCornerRadius(getCornerRadius());
+        setBackground(bg);
+
         ImageView settingsButton = findViewById(R.id.settings_button);
-        settingsButton.setColorFilter(Utilities.getOmegaPrefs(mLauncher).getAccentColor(), android.graphics.PorterDuff.Mode.SRC_IN);
-        if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
+        settingsButton.setColorFilter(prefs.getAccentColor(), PorterDuff.Mode.SRC_IN);
+        if (prefs.getLockDesktop()) {
             settingsButton.setVisibility(View.GONE);
         } else {
             settingsButton.setOnClickListener(v -> {
@@ -282,6 +299,19 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
                     CustomBottomSheet.show(mLauncher, mInfo);
                 }
             });
+        }
+    }
+
+    public float getCornerRadius() {
+        float radius = round(prefs.getFolderRadius());
+        if (radius > 0f) {
+            return radius;
+        }
+        TypedValue edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius);
+        if (edgeRadius != null) {
+            return edgeRadius.getDimension(mLauncher.getApplicationContext().getResources().getDisplayMetrics());
+        } else {
+            return ResourceUtils.pxFromDp(100, getResources().getDisplayMetrics());
         }
     }
 

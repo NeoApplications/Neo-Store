@@ -78,5 +78,14 @@
             app:cpv_previewSize="large"
             app:iconSpaceReserved="false" />
 
+        <com.saggitt.omega.preferences.AutoModeSeekbarPreference
+            android:key="pref_folder_radius"
+            android:title="@string/folder_radius"
+            app:defaultSeekbarValue="-1.0"
+            app:maxValue="24"
+            app:minValue="0.0"
+            app:steps="24"
+            app:summaryFormat="%.0fdp" />
+
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 </PreferenceScreen>

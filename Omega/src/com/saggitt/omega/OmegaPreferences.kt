@@ -249,6 +249,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val folderBackground by IntPref(
         "pref_folder_background", R.color.qsb_drawer_text_color_normal
     )
+    var folderRadius by DimensionPref("pref_folder_radius", -1f)
 
     /* --QUICK STEP-- */
     val recentsBlurredBackground by BooleanPref("pref_recents_blur_background", true) {
