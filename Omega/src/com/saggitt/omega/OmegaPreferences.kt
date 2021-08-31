@@ -245,11 +245,13 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dualBubbleSearch by BooleanPref("pref_bubbleSearchStyle", false, recreate)
     val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
 
-    val customFolderBackground by BooleanPref("pref_custom_folder_background", false)
+    val customFolderBackground by BooleanPref("pref_custom_folder_background", false, recreate)
     val folderBackground by IntPref(
-        "pref_folder_background", R.color.qsb_drawer_text_color_normal
+        "pref_folder_background",
+        omegaConfig.defaultFolderBackground(),
+        recreate
     )
-    var folderRadius by DimensionPref("pref_folder_radius", -1f)
+    var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
 
     /* --QUICK STEP-- */
     val recentsBlurredBackground by BooleanPref("pref_recents_blur_background", true) {

@@ -30,6 +30,7 @@ import com.android.launcher3.BuildConfig
 import com.android.launcher3.LauncherModel
 import com.android.launcher3.R
 import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.util.Themes
 import java.util.*
 
 class Config(var mContext: Context) {
@@ -47,6 +48,10 @@ class Config(var mContext: Context) {
             mContext.resources.getValue(R.dimen.config_default_blur_strength, typedValue, true)
             return typedValue.float
         }
+
+    fun defaultFolderBackground(): Int {
+        return Themes.getAttrColor(mContext, R.attr.folderFillColor)
+    }
 
     fun setAppLanguage(androidLC: String) {
         val locale = getLocaleByAndroidCode(androidLC)
