@@ -32,6 +32,7 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.saggitt.omega.util.tintDrawable
 import com.saggitt.omega.views.CenterFloatingView
 
 class DashBottomSheet(context: Context) : RelativeLayout(context) {
@@ -115,7 +116,9 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
                     )
                     setImageResource(R.drawable.ic_music_pause)
                 }
+                tintDrawable(prefs.accentColor)
             }
+            tintDrawable(prefs.accentColor)
         }
         findViewById<AppCompatImageView>(R.id.musicPrev).apply {
             setOnClickListener {
@@ -132,7 +135,9 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
                     )
                 )
                 musicPlay.setImageResource(R.drawable.ic_music_pause)
+                musicPlay.tintDrawable(prefs.accentColor)
             }
+            tintDrawable(prefs.accentColor)
         }
         findViewById<AppCompatImageView>(R.id.musicNext).apply {
             setOnClickListener {
@@ -149,7 +154,9 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
                     )
                 )
                 musicPlay.setImageResource(R.drawable.ic_music_pause)
+                musicPlay.tintDrawable(prefs.accentColor)
             }
+            tintDrawable(prefs.accentColor)
         }
 
         val musicTab = findViewById<ConstraintLayout>(R.id.musicTab)
