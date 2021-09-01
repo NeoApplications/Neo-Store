@@ -351,7 +351,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
         offsetTopAndBottom(mVerticalOffset - containerTopMargin);
     }
 
-    @Override
+    /*@Override
     protected void drawQsb(@NonNull Canvas canvas) {
         if (mShadowAlpha > 0) {
             if (shadowBitmap == null) {
@@ -365,7 +365,7 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements
             mShadowHelper.paint.setAlpha(255);
         }
         super.drawQsb(canvas);
-    }
+    }*/
 
     final void setShadowAlpha(int alpha) {
         alpha = Utilities.boundToRange(alpha, 0, 255);

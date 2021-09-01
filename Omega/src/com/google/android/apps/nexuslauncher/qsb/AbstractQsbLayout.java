@@ -400,7 +400,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
             clearPillBg(canvas, paddingLeft, paddingTop, paddingLeft2 + i);
             mShadowHelper.draw(bitmap2, canvas, (float) paddingLeft, (float) paddingTop, (float) (paddingLeft2 + i));
         }
-        if (micStrokeWidth > 0.0f && mMicFrame.getVisibility() == View.VISIBLE) {
+        if (micStrokeWidth > 0f && mMicFrame.getVisibility() == View.VISIBLE) {
             i = mIsRtl ? getPaddingLeft() : (getWidth() - getPaddingRight()) - getMicWidth();
             int paddingTop = getPaddingTop();
             int paddingLeft = mIsRtl ? getPaddingLeft() + getMicWidth() : getWidth() - getPaddingRight();
@@ -426,7 +426,6 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
 
         RippleDrawable newRipple = (RippleDrawable) oldRipple.getConstantState().newDrawable().mutate();
         newRipple.setLayerInset(0, 0, mShadowMargin, 0, mShadowMargin);
-
         mMicIconView.setBackground(newRipple);
         mMicFrame.getLayoutParams().width = getMicWidth();
         mMicFrame.setPadding(16, 0, 0, 0);
@@ -491,13 +490,13 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         if (mRadius < 0) {
             TypedValue edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius);
             if (edgeRadius != null) {
-                pill = builder.createPill(height, height,
+                pill = builder.createPill(height + 20, height,
                         edgeRadius.getDimension(getResources().getDisplayMetrics()));
             } else {
-                pill = builder.createPill(height, height);
+                pill = builder.createPill(height + 20, height);
             }
         } else {
-            pill = builder.createPill(height, height, mRadius);
+            pill = builder.createPill(height + 20, height, mRadius);
         }
         if (Utilities.ATLEAST_P) {
             return pill.copy(Bitmap.Config.HARDWARE, false);
@@ -556,8 +555,7 @@ public abstract class AbstractQsbLayout extends FrameLayout implements OnSharedP
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setCornerRadius(getCornerRadius());
-        shape.setColor(ContextCompat.getColor(getContext(), R.color.white));
-
+        shape.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         ColorStateList rippleColor = ContextCompat.getColorStateList(getContext(), R.color.focused_background);
         RippleDrawable ripple = new RippleDrawable(rippleColor, null, shape);
         return new InsetDrawable(ripple, getResources().getDimensionPixelSize(R.dimen.qsb_shadow_margin));
