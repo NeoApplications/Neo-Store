@@ -382,4 +382,6 @@
     <string name="folder_radius">Aplanko kampo spindulys</string>
     <string name="folder_background">Aplanko fono spalva</string>
     <string name="folder_custom_background">Naudoti pasirinktinį aplanko foną</string>
+    <string name="dash_media_player_description">Rodyti arba slėpti garso grotuvo valdiklius</string>
+    <string name="dash_media_player">Garso grotuvas</string>
 </resources>
