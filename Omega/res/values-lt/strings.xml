@@ -357,8 +357,8 @@
     <string name="hide_app_selected">  paslėpta</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d paslėpta</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="few"/>
+        <item quantity="other"/>
     </plurals>
     <string name="selected_count">%1$d pasirinkta</string>
     <plurals name="tab_apps_count">
@@ -379,4 +379,9 @@
     <string name="action_open_dash">Atidaryti skydelį</string>
     <string name="icu_abbrev_wday_month_day_no_year">EEEEMMMd</string>
     <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
+    <string name="folder_radius">Aplanko kampo spindulys</string>
+    <string name="folder_background">Aplanko fono spalva</string>
+    <string name="folder_custom_background">Naudoti pasirinktinį aplanko foną</string>
+    <string name="dash_media_player_description">Rodyti arba slėpti garso grotuvo valdiklius</string>
+    <string name="dash_media_player">Garso grotuvas</string>
 </resources>
