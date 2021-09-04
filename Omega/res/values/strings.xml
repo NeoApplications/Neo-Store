@@ -372,6 +372,9 @@
     <string name="folder_custom_background">Use custom folder background</string>
     <string name="folder_background">Folder background color</string>
     <string name="folder_radius">Folder corner radius</string>
+    <!-- FONT -->
+    <string name="fonts_global_font">Global Font</string>
+    <string name="fonts_change_global_font">Change</string>
 
     <!-- ADVANCED -->
     <string name="summary__advanced_setting_search">Display setting search in the action bar</string>

@@ -168,7 +168,10 @@ class DefaultPack(context: Context) : IconPack(context, "") {
         if (itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             val component = if (customIconEntry?.icon != null) {
                 try {
-                    Utilities.makeComponentKey(context, customIconEntry.icon).componentName
+                    Utilities.makeComponentKey(
+                        context,
+                        customIconEntry.packPackageName
+                    ).componentName
                 } catch (e: NullPointerException) {
                     Log.e("DefaultPack", e.message, e)
                     itemInfo.targetComponent

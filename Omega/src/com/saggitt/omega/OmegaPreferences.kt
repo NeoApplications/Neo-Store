@@ -234,6 +234,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var enableBlur by BooleanPref("pref_enableBlur", omegaConfig.defaultEnableBlur(), updateBlur)
     val blurRadius by FloatPref("pref_blurRadius", omegaConfig.defaultBlurStrength, updateBlur)
 
+    /* --FONT-- */
+    var globalFont by BooleanPref("pref_font_global", true, recreate)
+
     /* --SEARCH-- */
     var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f)
     var searchProvider by StringPref(

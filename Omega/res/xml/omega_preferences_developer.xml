@@ -83,6 +83,11 @@
             android:persistent="true"
             android:title="Full gesture mode" />
 
+        <com.saggitt.omega.font.GlobalFontPreference
+            android:key="pref_font_global"
+            android:icon="@drawable/ic_font"
+            android:title="@string/fonts_global_font" />
+
     </com.saggitt.omega.preferences.ThemedPreferenceCategory>
 
 </PreferenceScreen>
