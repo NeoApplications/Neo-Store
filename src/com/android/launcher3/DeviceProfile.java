@@ -259,12 +259,23 @@ public class DeviceProfile {
                 res.getDimensionPixelSize(hotseatSidePaddingRes);
         // Add a bit of space between nav bar and hotseat in vertical bar layout.
         hotseatBarSidePaddingStartPx = isVerticalBarLayout() ? workspacePageIndicatorHeight : 0;
-        hotseatBarSizePx = ResourceUtils.pxFromDp(inv.iconSize, mInfo.metrics)
-                + (isVerticalBarLayout()
-                ? (hotseatBarSidePaddingStartPx + hotseatBarSidePaddingEndPx)
-                : (res.getDimensionPixelSize(hotseatExtraVerticalSizeRes)
-                + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
 
+        if (prefs.getTwoRowDock()) {
+            hotseatBarSizePx = (ResourceUtils.pxFromDp(inv.iconSize, mInfo.metrics) * 2)
+                    + (isVerticalBarLayout()
+                    ? (hotseatBarSidePaddingStartPx + hotseatBarSidePaddingEndPx)
+                    : (res.getDimensionPixelSize(hotseatExtraVerticalSizeRes)
+                    + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
+
+            hotseatBarSizePx += 25;
+        } else {
+            hotseatBarSizePx = ResourceUtils.pxFromDp(inv.iconSize, mInfo.metrics)
+                    + (isVerticalBarLayout()
+                    ? (hotseatBarSidePaddingStartPx + hotseatBarSidePaddingEndPx)
+                    : (res.getDimensionPixelSize(hotseatExtraVerticalSizeRes)
+                    + hotseatBarTopPaddingPx + hotseatBarBottomPaddingPx));
+
+        }
         // Calculate all of the remaining variables.
         updateAvailableDimensions(res);
 
