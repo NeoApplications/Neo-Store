@@ -20,7 +20,8 @@
     <style name="AppTheme" parent="@style/LauncherTheme">
         <item name="alertDialogTheme">@style/SettingsTheme_Light.Dialog</item>
         <item name="dashIconTint">#0270CF</item>
-        <item name="dashIconBackground">#A0FFFFFF</item>
+        <item name="dashIconBackground">#B0DFDFDF</item>
+        <item name="dashSheetBackground">#FFFFFF</item>
         <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
     </style>
 
@@ -36,7 +37,8 @@
         <item name="alertDialogTheme">@style/SettingsTheme_Dark.Dialog</item>
 
         <item name="dashIconTint">#0270CF</item>
-        <item name="dashIconBackground">#A03C3C3C</item>
+        <item name="dashIconBackground">#A05C5C5C</item>
+        <item name="dashSheetBackground">#3C3C3C</item>
         <item name="android:dialogCornerRadius" tools:ignore="NewApi">8dp</item>
         <item name="workspaceStatusBarScrim">@drawable/workspace_bg_dark</item>
         <item name="android:alertDialogTheme">@style/SettingsTheme_Dark.Dialog</item>
@@ -61,7 +63,8 @@
         <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
-        <item name="dashIconBackground">#A0000000</item>
+        <item name="dashIconBackground">#A0202020</item>
+        <item name="dashSheetBackground">#000000</item>
     </style>
 
     <style name="AppTheme.Black.DarkText" parent="@style/AppTheme.Black">

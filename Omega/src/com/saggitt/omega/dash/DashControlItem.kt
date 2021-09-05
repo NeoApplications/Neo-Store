@@ -48,9 +48,8 @@ class DashControlItem(val context: Context, val provider: DashControlProvider) :
         binding.itemIcon.setImageDrawable(provider.icon)
         binding.itemName.text = provider.name
         binding.itemIcon.tooltipText = provider.description
-        binding.itemIcon.imageTintList =
-            if (provider.state) backgroundColor.withAlpha(255) else activeColor
-        binding.itemName.setTextColor(if (provider.state) backgroundColor.withAlpha(255) else activeColor)
+        binding.itemIcon.imageTintList = activeColor
+        binding.itemName.setTextColor(activeColor)
         binding.root.setOnClickListener {
             provider.state = !provider.state
             AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(context))

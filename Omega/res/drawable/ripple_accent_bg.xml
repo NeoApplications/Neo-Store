@@ -16,7 +16,7 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/colorAccent">
+    android:color="?colorPrimaryDark">
 
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
