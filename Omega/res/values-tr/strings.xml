@@ -260,4 +260,6 @@
     <string name="title__drawer_all_apps">Tüm Uygulamaları Göster etiketi</string>
     <string name="title__dock_hide">Dock\'u Gizle</string>
     <string name="title__dock_scale">Dock ölçeği</string>
+    <string name="title__theme_blur_radius">Bulanıklık Yoğunluğu</string>
+    <string name="title__theme_blur">Bulanık</string>
 </resources>
