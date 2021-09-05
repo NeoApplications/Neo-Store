@@ -231,7 +231,7 @@ dependencies {
 
     // Test
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'org.mockito:mockito-core:3.11.2'
+    androidTestImplementation 'org.mockito:mockito-core:3.12.4'
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

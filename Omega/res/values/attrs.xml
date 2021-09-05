@@ -106,6 +106,7 @@
     <attr name="iconShapeTint" format="color" />
     <attr name="dashIconTint" format="color" />
     <attr name="dashIconBackground" format="color" />
+    <attr name="dashSheetBackground" format="color" />
 
     <!-- Pixel -->
     <attr name="gIcon" format="reference" />
