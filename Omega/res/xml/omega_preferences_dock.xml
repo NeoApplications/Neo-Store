@@ -117,11 +117,11 @@
         android:dependency="pref_hideDockLabels"
         android:persistent="true"
         app:iconSpaceReserved="false" />
+-->
 
     <com.saggitt.omega.preferences.StyledSwitchPreference
         android:key="pref_twoRowDock"
         android:title="@string/title_dock_two_row"
         android:defaultValue="false"
         android:persistent="true" />
--->
 </PreferenceScreen>
