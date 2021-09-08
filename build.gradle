@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.0-alpha08'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha11'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.16"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
     }
@@ -46,7 +46,7 @@ android {
     compileSdkVersion 30
 
     def name = "0.8.2"
-    def code = 284
+    def code = 285
 
     defaultConfig {
         minSdkVersion 26
