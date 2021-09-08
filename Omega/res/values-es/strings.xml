@@ -10,15 +10,15 @@
     <string name="pref_category__others">Otras</string>
     <string name="title__dock_hide">Ocultar Dock</string>
     <string name="title__dock_hide_labels">Ocultar Nombres</string>
-    <string name="title__dock_search_bar">Mostrar barra de busqueda</string>
+    <string name="title__dock_search_bar">Mostrar barra de búsqueda</string>
     <string name="title__drawer_sort">Ordenar Aplicaciones</string>
     <string name="title__dock_scale">Tamaño del Dock</string>
-    <string name="title__drawer_categorization">Categorias</string>
+    <string name="title__drawer_categorization">Categorías</string>
     <string name="title__sort_mode">Ordenar Aplicaciones</string>
-    <string name="title__sort_alphabetical_az">Alfabetico AZ</string>
-    <string name="title__sort_alphabetical_za">Alfabetico ZA</string>
+    <string name="title__sort_alphabetical_az">Alfabético AZ</string>
+    <string name="title__sort_alphabetical_za">Alfabético ZA</string>
     <string name="title__sort_last_installed">Fecha de Instalacion</string>
-    <string name="title__sort_most_used">Mas usados</string>
+    <string name="title__sort_most_used">Más usados</string>
     <string name="title__sort_by_color">Por Color</string>
     <string name="label_turn_off_suggestions">Deshabilitar</string>
     <string name="pref_appcategorization_style_text">Estilo</string>
@@ -47,7 +47,7 @@
     <string name="cat_search_bar">Barra de busqueda</string>
     <string name="summary__general_desktop">Personaliza tu escritorio</string>
     <string name="title__general_notifications">Gestos y Notificaciones</string>
-    <string name="summary__general_search">Proveedores de búsqueda, estilos, íconos</string>
+    <string name="summary__general_search">Proveedores de búsqueda, estilos, iconos</string>
     <string name="title__search_show_assistant">Mostrar el botón de búsqueda por voz</string>
     <string name="pref_app_groups_edit_tip">Toca para editar, arrastra para reordenar.</string>
     <string name="title_show_google_app">Mostrar Google App</string>
@@ -56,7 +56,7 @@
     <string name="failed">Algo salió mal.</string>
     <string name="search_menu">Buscar preferencias</string>
     <string name="title__gesture_swipe_down">Deslizar hacia abajo</string>
-    <string name="title__drawer_hide_icon_labels">Ocultar el nombre de la aplicacion</string>
+    <string name="title__drawer_hide_icon_labels">Ocultar el nombre de la aplicación</string>
     <string name="title__dock_icon_size">Tamaño de Icono</string>
     <string name="grid_size_width">Ancho</string>
     <string name="title__desktop_icon_size">Tamaño de icono</string>
@@ -64,7 +64,7 @@
     <string name="pref_category__inputs">Gestos y Búsqueda</string>
     <string name="pref_category__interfaces">Vistas</string>
     <string name="summary__general_about">Mas información sobre Omega Launcher</string>
-    <string name="summary__general_advanced">Idioma, respaldo, busqueda de preferencias</string>
+    <string name="summary__general_advanced">Idioma, respaldo, búsqueda de preferencias</string>
     <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
     <string name="title__notification_count">Mostrar cuenta de notificaciones</string>
@@ -73,7 +73,7 @@
     <string name="title_smartspace_feed_theme">Tema del Feed</string>
     <string name="color_presets">Predeterminados</string>
     <string name="icon_shape_override_label_location">en la pantalla de inicio</string>
-    <string name="get_more_icon_packs">Obtener mas</string>
+    <string name="get_more_icon_packs">Obtener más</string>
     <string name="icon_pack">Pack de Iconos</string>
     <string name="title_default">Predeterminado</string>
     <string name="theme_use_dark_text">Usar texto oscuro</string>
@@ -190,8 +190,8 @@
     <string name="icon_shape_squircle">Squircle</string>
     <string name="icon_shape_override_label">Cambiar la forma de los iconos</string>
     <string name="title__theme_icon_shape">Cambiar la forma de los iconos</string>
-    <string name="title_search_hidden_apps">Buscar en aplicaciones ocultas</string>
-    <string name="title__drawer_hide_apps">Aplicaciones ocultas</string>
+    <string name="title_search_hidden_apps">Encuentra accesos directos ocultos</string>
+    <string name="title__drawer_hide_apps">Atajos de Aplicaciones ocultas</string>
     <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
     <string name="title_dock_two_row">Mostrar segunda fila</string>
     <string name="title_desktop_keep_empty">Permitir páginas en blanco</string>
@@ -224,9 +224,9 @@
     <string name="smartspace_in_time">En %1$s</string>
     <string name="title_legacy_treatment">Crear iconos adaptivos</string>
     <string name="title_legacy_colored_backgrounds">Fondo de colores</string>
-    <string name="title_adaptify_pack">Crear iconos adaptivos para el paquete de iconos</string>
+    <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
     <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no se puede deshacer.</string>
-    <string name="import_as_adaptive">Como Icono adaptivo</string>
+    <string name="import_as_adaptive">Como Icono adaptativo</string>
     <string name="open_image_picker">Abrir selector de imagen</string>
     <string name="icon_pack_external_picker">Abrir selector externo</string>
     <string name="icon_shape_corner_cut">Cortar</string>
@@ -302,4 +302,6 @@
     <string name="default_tab_name">Nueba pestaña</string>
     <string name="tabs_manage">Administrar</string>
     <string name="tab_manage_apps">Administrar aplicaciones</string>
+    <string name="title_force_shapeless">Forzar iconos sin forma</string>
+    <string name="title_drawer_layout">Modo de diseño</string>
 </resources>
