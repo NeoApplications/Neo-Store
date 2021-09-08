@@ -49,8 +49,8 @@ class ThemeDarkModeListPreference(context: Context, attrs: AttributeSet?) : List
                 R.string.theme_dark_theme_mode_follow_daylight,
                 ThemeManager.THEME_FOLLOW_DAYLIGHT
             )
-            addEntry(R.string.on, ThemeManager.THEME_DARK)
-            addEntry(R.string.off, 0)
+            addEntry(R.string.theme_dark, ThemeManager.THEME_DARK)
+            addEntry(R.string.theme_light, 0)
         }
     }
 

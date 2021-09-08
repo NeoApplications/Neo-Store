@@ -257,8 +257,6 @@
     <string name="label_voice_search">البحث الصوتي</string>
     <string name="automatic_short">تلقائي</string>
     <string name="reset_to_default">إعادة التعيين إلى الوضع الافتراضي</string>
-    <string name="off">مطفئ</string>
-    <string name="on">مشغل</string>
     <string name="enabled_icon_packs">ممكن</string>
     <string name="drag_to_enable_packs">اسحب لأعلى للتمكين</string>
     <string name="drag_to_disable_packs">اسحب لأسفل لتعطيل</string>

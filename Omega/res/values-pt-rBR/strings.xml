@@ -281,8 +281,6 @@
     <string name="title_all_apps_keep_scroll_state">Lembrar da posição</string>
     <string name="title_desktop_text_size">Tamanho do texto</string>
     <string name="reset_to_default">Redefinir aos padrões</string>
-    <string name="off">Desligado</string>
-    <string name="on">Ligado</string>
     <string name="enabled_icon_packs">Habilitado</string>
     <string name="drag_to_enable_packs">Arraste para cima para habilitar</string>
     <string name="drag_to_disable_packs">Arraste para baixo para desabilitar</string>

@@ -43,4 +43,5 @@
     <string name="title__general_drawer">Lista delle applicazioni</string>
     <string name="title__general_dock">Barra delle applicazioni</string>
     <string name="title__general_desktop">Desktop</string>
+    <string name="trust_apps_no_lock_error">Imposta una schermata di blocco sicura per limitare l\'accesso alle app</string>
 </resources>

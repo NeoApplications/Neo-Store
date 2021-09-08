@@ -140,6 +140,8 @@
     <string name="action_preferences" translatable="false">@string/customize</string>
     <string name="needs_usage_access">Usage access needed</string>
     <string name="msg_missing_usage_access">To show App Suggestions, turn on usage access for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="trust_apps_no_lock_error">Please set up a secure lock screen to restrict app access</string>
+    <string name="trust_apps_manager_name">Hidden &amp; Protected apps</string>
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>
@@ -295,8 +297,6 @@
         <item>Don’t stay up too late!</item>
     </string-array>
     <!-- PREFERENCES NOTIFICATION -->
-    <string name="on">On</string>
-    <string name="off">Off</string>
     <string name="title__notification_count">Show Notification Count</string>
     <string name="notification_custom_color">Use custom color</string>
     <string name="title__folder_badge_count">Show folder badge Count</string>

@@ -91,6 +91,7 @@
         <item quantity="one">%1$d Aplicación</item>
         <item quantity="other">%1$d Aplicaciones</item>
     </plurals>
+    <string name="trust_apps_no_lock_error">Por favor, configura una pantalla de bloqueo segura para restringir el acceso a la aplicación</string>
     <string name="selected_count">%1$d seleccionada</string>
     <string name="tab_type_smart">Automático</string>
     <string name="app_categorization_tabs">Tabs</string>

@@ -320,8 +320,6 @@
     <string name="tab_bottom_sheet_save">保存</string>
     <string name="automatic_short">自动</string>
     <string name="reset_to_default">重置为默认</string>
-    <string name="off">关</string>
-    <string name="on">开</string>
     <string name="enabled_icon_packs">已启用</string>
     <string name="drag_to_enable_packs">向上拖动以启用</string>
     <string name="drag_to_disable_packs">向下拖动以禁用</string>

@@ -250,8 +250,6 @@
     <string name="title__folder_badge_count">Rodyti aplanko ženklelių skaičių</string>
     <string name="notification_custom_color">Naudoti pasirinktinę spalvą</string>
     <string name="title__notification_count">Rodyti pranešimų skaičių</string>
-    <string name="off">Išjungta</string>
-    <string name="on">Įjungta</string>
     <string name="folder_name_format">Aplankas: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
     <string name="units_romer">Rømer</string>
     <string name="units_reaumur">Réaumur</string>
