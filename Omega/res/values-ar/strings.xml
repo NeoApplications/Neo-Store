@@ -43,12 +43,12 @@
         <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
-        <item quantity="zero">صفر</item>
-        <item quantity="one">واحد</item>
-        <item quantity="two">أثنان</item>
-        <item quantity="few">قليل</item>
-        <item quantity="many">كثير</item>
-        <item quantity="other">أخرى</item>
+        <item quantity="zero">%1$dصفر</item>
+        <item quantity="one">%1$dواحد</item>
+        <item quantity="two">%1$dأثنان</item>
+        <item quantity="few">%1$dقليل</item>
+        <item quantity="many">%1$dكثير</item>
+        <item quantity="other">%1$dأخرى</item>
     </plurals>
     <string name="selected_count">%1$dأختير</string>
     <string name="add_new_tab">أضف</string>
@@ -373,4 +373,21 @@
     <string name="action_open_drawer">افتح درج التطبيقات</string>
     <string name="action_none">لاتفعل أي شيء</string>
     <string name="pref_category__gestures">أيماءات</string>
+    <string name="dash_media_player_description">إظهار عناصر تحكم مشغل الصوت أو إخفاؤها</string>
+    <string name="dash_media_player">مشغل الصوت</string>
+    <string name="about_translators">المترجمون</string>
+    <string name="folder_radius">حواف قطر زاوية المجلد</string>
+    <string name="folder_background">لون خلفية المجلد</string>
+    <string name="folder_custom_background">استخدام خلفية مجلد مخصصة</string>
+    <string name="gesture_press_back">زر العودة</string>
+    <string name="gesture_press_home">الضغطة على زر الصفحة الرئيسية</string>
+    <string name="notification_custom_color">استخدام لون مخصص</string>
+    <string name="folder_name_format">المجلد: <xliff:g example="Games" id="name"> %1$s </xliff:g></string>
+    <string name="cat_drawer_icons">الأيقونات</string>
+    <string name="cat_drawer_grid">شبكة</string>
+    <string name="dialog_message_change_sort">تغيير ترتيب التطبيقات إلى أبجدي؟</string>
+    <string name="title_drawer_paged">صفحات</string>
+    <string name="title_drawer_vertical_list">قائمة عمودية</string>
+    <string name="title_drawer_vertical">عمودي</string>
+    <string name="title_drawer_layout">وضع التخطيط</string>
 </resources>
