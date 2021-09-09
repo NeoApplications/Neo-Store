@@ -5,7 +5,7 @@
     <com.saggitt.omega.theme.ui.ThemeDarkModeListPreference
         android:key="pref_dark_theme_mode"
         android:summary="%s"
-        android:title="@string/theme_dark_theme_mode"
+        android:title="@string/title__general_theme"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.theme.ui.ThemeBlackSwitchPreference
