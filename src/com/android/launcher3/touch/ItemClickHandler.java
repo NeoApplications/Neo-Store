@@ -312,12 +312,20 @@ public class ItemClickHandler {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
         }
+        boolean isProtected = false;
         if (item instanceof AppInfo) {
             Log.i(TAG, "Clicking App " + item.title);
             DbHelper db = new DbHelper(launcher.getApplicationContext());
             db.updateAppCount(((AppInfo) item).componentName.getPackageName());
+            isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
+                    ((AppInfo) item).toComponentKey());
             db.close();
         }
-        launcher.startActivitySafely(v, intent, item, sourceContainer);
+
+        if (isProtected && Utilities.ATLEAST_R) {
+            launcher.startActivitySafelyAuth(v, intent, item, sourceContainer);
+        } else {
+            launcher.startActivitySafely(v, intent, item, sourceContainer);
+        }
     }
 }

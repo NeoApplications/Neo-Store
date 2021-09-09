@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -92,7 +91,7 @@ open class AppsAdapter(
         notifyDataSetChanged()
     }
 
-    open fun onBindApp(app: App, holder: AppHolder) {
+    open fun onBindApp(app: App, holder: AppHolder, position: Int) {
     }
 
     open fun onClickApp(position: Int, holder: AppHolder) {
@@ -128,7 +127,10 @@ open class AppsAdapter(
 
         private val label: TextView = itemView.findViewById(R.id.label)
         private val icon: ImageView = itemView.findViewById(R.id.icon)
-        val checkBox: CheckBox = itemView.findViewById(R.id.check)
+
+        //val checkBox: CheckBox = itemView.findViewById(R.id.check)
+        val mHiddenView: ImageView = itemView.findViewById(R.id.item_hidden_app_switch)
+        val mProtectedView: ImageView = itemView.findViewById(R.id.item_protected_app_switch)
 
         init {
             itemView.setOnClickListener(this)
@@ -139,7 +141,7 @@ open class AppsAdapter(
             label.text = app.info.label
             icon.setImageDrawable(app.iconDrawable)
 
-            onBindApp(app, this)
+            onBindApp(app, this, position)
         }
 
         override fun onClick(v: View) {

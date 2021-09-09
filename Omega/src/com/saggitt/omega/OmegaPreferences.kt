@@ -85,12 +85,15 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
     var showPredictions by BooleanPref("pref_show_predictions", false, doNothing)
     val showAllAppsLabel by BooleanPref("pref_showAllAppsLabel", false)
+    var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
         "pref_hidden_prediction_set",
         setOf(),
         doNothing
     )
+    var enableProtectedApps by BooleanPref("pref_protected_apps", false)
+
     var allAppsIconScale by FloatPref("allAppsIconSize", 1f, reloadApps)
     val drawerLabelColor by IntPref("pref_drawer_label_color", R.color.textColorPrimary, reloadApps)
     var allAppsGlobalSearch by BooleanPref("pref_allAppsGlobalSearch", true, doNothing)

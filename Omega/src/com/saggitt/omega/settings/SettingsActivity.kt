@@ -49,6 +49,7 @@ import com.android.launcher3.util.ContentWriter
 import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.OmegaPreferences
 import com.saggitt.omega.OmegaPreferencesChangeCallback
+import com.saggitt.omega.allapps.HiddenAppsActivity
 import com.saggitt.omega.backup.BackupListActivity
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.feed.FeedProviderDialogFragment
@@ -63,12 +64,14 @@ import com.saggitt.omega.settings.search.SettingsSearchActivity
 import com.saggitt.omega.smartspace.FeedBridge
 import com.saggitt.omega.smartspace.OnboardingProvider
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.util.applyAccent
 import com.saggitt.omega.util.reloadIconsFromComponents
 import com.saggitt.omega.views.SpringRecyclerView
 import com.saggitt.omega.views.ThemedListPreferenceDialogFragment
 import java.util.*
+
 
 open class SettingsActivity : SettingsBaseActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
@@ -409,7 +412,7 @@ open class SettingsActivity : SettingsBaseActivity(),
             }
         }
 
-        fun unregisterObserverIfNeeded() {
+        private fun unregisterObserverIfNeeded() {
             if (mIsDataSetObserverRegistered) {
                 if (mCurrentRootAdapter != null) {
                     mCurrentRootAdapter?.unregisterAdapterDataObserver(mDataSetObserver)
@@ -541,6 +544,28 @@ open class SettingsActivity : SettingsBaseActivity(),
                 }
             } else if (content == R.xml.omega_preferences_drawer) {
                 findPreference<Preference>(SHOW_PREDICTIONS_PREF)?.onPreferenceChangeListener = this
+                findPreference<Preference>(DISABLE_PROTECTED_APPS)?.onPreferenceChangeListener =
+                    this
+                findPreference<Preference>("pref_trust_apps")?.setOnPreferenceClickListener {
+                    if (
+                        Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
+                        Utilities.ATLEAST_R
+                    ) {
+                        Config.showLockScreen(
+                            requireContext(),
+                            getString(R.string.trust_apps_manager_name)
+                        ) {
+                            val intent = Intent(requireActivity(), HiddenAppsActivity::class.java)
+                            requireActivity().startActivity(intent)
+                        }
+                    } else {
+                        val intent = Intent(requireActivity(), HiddenAppsActivity::class.java)
+                        requireActivity().startActivity(intent)
+                    }
+
+                    false
+                }
+
             } else if (content == R.xml.omega_preferences_notification) {
                 if (resources.getBoolean(R.bool.notification_dots_enabled)) {
                     val iconBadgingPref: NotificationDotsPreference = findPreference<Preference>(
@@ -641,8 +666,19 @@ open class SettingsActivity : SettingsBaseActivity(),
                         confirmationFragment.show(it, preference.key)
                     }
                 }
+
+                DISABLE_PROTECTED_APPS -> {
+                    if (newValue as Boolean) {
+                        return true
+                    }
+                    fragmentManager?.let {
+                        val confirmationFragment = DisableProtectedAppsFragment()
+                        confirmationFragment.setTargetFragment(this, 0)
+                        confirmationFragment.show(it, preference.key)
+                    }
+                }
+
                 ENABLE_MINUS_ONE_PREF -> {
-                    Log.d("SettingsActivity", "Enable Google App")
                     if (FeedBridge.getInstance(requireActivity()).isInstalled()) {
                         return true
                     }
@@ -808,6 +844,36 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
     }
 
+    class DisableProtectedAppsFragment : DialogFragment(), DialogInterface.OnClickListener {
+
+        override fun onClick(dialogInterface: DialogInterface, n: Int) {
+            if (targetFragment is PreferenceFragmentCompat) {
+                val mContext = requireContext();
+                Config.showLockScreen(mContext, getString(R.string.trust_apps_manager_name)) {
+                    val preference: Preference? = (targetFragment as PreferenceFragmentCompat?)
+                        ?.findPreference(DISABLE_PROTECTED_APPS)
+                    if (preference is TwoStatePreference) {
+                        Utilities.getOmegaPrefs(mContext).enableProtectedApps = false
+                        preference.isChecked = false
+                    }
+                }
+            }
+        }
+
+        override fun onCreateDialog(bundle: Bundle?): Dialog {
+            return AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.disable_protected_apps)
+                .setMessage(R.string.disable_protected_apps_message)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.label_turn_off_suggestions, this).create()
+        }
+
+        override fun onStart() {
+            super.onStart()
+            (dialog as AlertDialog?)?.applyAccent()
+        }
+    }
+
     /**
      * Content observer which listens for system badging setting changes, and updates the launcher
      * badging setting subtext accordingly.
@@ -907,6 +973,7 @@ open class SettingsActivity : SettingsBaseActivity(),
          */
         private const val NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners"
         const val SHOW_PREDICTIONS_PREF = "pref_show_predictions"
+        const val DISABLE_PROTECTED_APPS = "pref_protected_apps"
         const val ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one"
         const val FEED_THEME_PREF = "pref_feed_theme"
         const val SMARTSPACE_PREF = "pref_smartspace"

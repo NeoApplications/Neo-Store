@@ -177,8 +177,13 @@
 
         <activity
             android:autoRemoveFromRecents="true"
-            android:label="@string/derived_app_name"
             android:name="com.saggitt.omega.font.FontSelectionActivity"
+            android:theme="@style/SettingsTheme_Light"
+            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity" />
+
+        <activity
+            android:autoRemoveFromRecents="true"
+            android:name="com.saggitt.omega.allapps.HiddenAppsActivity"
             android:theme="@style/SettingsTheme_Light"
             android:parentActivityName="com.saggitt.omega.settings.SettingsActivity" />
 

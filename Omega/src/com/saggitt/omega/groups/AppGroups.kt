@@ -501,12 +501,26 @@ abstract class AppGroups<T : AppGroups.Group>(
                 updateCount(view)
 
                 view.setOnClickListener {
-                    SelectableAppsActivity.start(context, value(), { newSelections ->
-                        if (newSelections != null) {
-                            value = HashSet(newSelections)
-                            updateCount(view)
+                    if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).enableProtectedApps) {
+                        Config.showLockScreen(
+                            context,
+                            context.getString(R.string.trust_apps_manager_name)
+                        ) {
+                            SelectableAppsActivity.start(context, value(), { newSelections ->
+                                if (newSelections != null) {
+                                    value = HashSet(newSelections)
+                                    updateCount(view)
+                                }
+                            }, DrawerTabs.Profile())
                         }
-                    }, DrawerTabs.Profile())
+                    } else {
+                        SelectableAppsActivity.start(context, value(), { newSelections ->
+                            if (newSelections != null) {
+                                value = HashSet(newSelections)
+                                updateCount(view)
+                            }
+                        }, DrawerTabs.Profile())
+                    }
                 }
 
                 return view

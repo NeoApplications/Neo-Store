@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.preferences
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -54,18 +53,25 @@ class SelectableAppsActivity : SettingsActivity() {
     class SelectionFragment : RecyclerViewFragment(), SelectableAppsAdapter.Callback {
 
         private var selection: Set<String> = emptySet()
+        private var protectedApps: Set<String> = emptySet()
         private var changed = false
 
         override fun onRecyclerViewCreated(recyclerView: RecyclerView) {
             val arguments = requireArguments()
             val profile = arguments.getParcelable<DrawerTabs.Profile>(KEY_FILTER_IS_WORK)!!
             selection = HashSet(arguments.getStringArrayList(KEY_SELECTION))
+            protectedApps = Utilities.getOmegaPrefs(context).protectedAppsSet
 
             val context = recyclerView.context
             recyclerView.setHasFixedSize(true)
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = SelectableAppsAdapter.ofProperty(requireActivity(),
-                    ::selection, this, createAppFilter(context, DrawerTabs.getWorkFilter(profile)))
+            recyclerView.adapter = SelectableAppsAdapter.ofProperty(
+                requireActivity(),
+                ::selection,
+                ::protectedApps,
+                this,
+                createAppFilter(context, DrawerTabs.getWorkFilter(profile))
+            )
         }
 
         override fun onDestroy() {
@@ -73,11 +79,11 @@ class SelectableAppsActivity : SettingsActivity() {
 
             val receiver = requireArguments().getParcelable<ResultReceiver>(KEY_CALLBACK)!!
             if (changed) {
-                receiver.send(AppCompatActivity.RESULT_OK, Bundle(1).apply {
+                receiver.send(RESULT_OK, Bundle(1).apply {
                     putStringArrayList(KEY_SELECTION, ArrayList(selection))
                 })
             } else {
-                receiver.send(AppCompatActivity.RESULT_CANCELED, null)
+                receiver.send(RESULT_CANCELED, null)
             }
         }
 
@@ -110,7 +116,7 @@ class SelectableAppsActivity : SettingsActivity() {
                 putExtra(KEY_CALLBACK, object : ResultReceiver(Handler()) {
 
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultCode == AppCompatActivity.RESULT_OK) {
+                        if (resultCode == RESULT_OK) {
                             callback(resultData!!.getStringArrayList(KEY_SELECTION)!!.map {
                                 Utilities.makeComponentKey(context, it)
                             })

@@ -35,6 +35,7 @@ import com.android.launcher3.util.ItemInfoMatcher
 import com.saggitt.omega.OmegaPreferencesChangeCallback
 import com.saggitt.omega.groups.FlowerpotTabs.FlowerpotTab
 import com.saggitt.omega.preferences.SelectableAppsActivity
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
 import org.json.JSONObject
@@ -181,12 +182,31 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             updateCount(view)
 
             view.setOnClickListener {
-                SelectableAppsActivity.start(context, filteredValue(context), { newSelections ->
-                    if (newSelections != null) {
-                        value = HashSet(newSelections)
-                        updateCount(view)
+                if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).enableProtectedApps) {
+                    Config.showLockScreen(
+                        context,
+                        context.getString(R.string.trust_apps_manager_name)
+                    ) {
+                        SelectableAppsActivity.start(
+                            context,
+                            filteredValue(context),
+                            { newSelections ->
+                                if (newSelections != null) {
+                                    value = HashSet(newSelections)
+                                    updateCount(view)
+                                }
+                            },
+                            profile
+                        )
                     }
-                }, profile)
+                } else {
+                    SelectableAppsActivity.start(context, filteredValue(context), { newSelections ->
+                        if (newSelections != null) {
+                            value = HashSet(newSelections)
+                            updateCount(view)
+                        }
+                    }, profile)
+                }
             }
 
             return view

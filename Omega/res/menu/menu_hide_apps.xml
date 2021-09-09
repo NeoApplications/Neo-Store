@@ -3,4 +3,7 @@
     <item
         android:id="@+id/action_reset"
         android:title="@string/hide_app_reset" />
+    <item
+        android:id="@+id/action_reset_protected"
+        android:title="@string/protected_app_reset" />
 </menu>

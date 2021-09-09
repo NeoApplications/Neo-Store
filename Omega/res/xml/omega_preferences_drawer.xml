@@ -162,9 +162,15 @@
             app:cpv_previewSize="large"
             app:iconSpaceReserved="false" />
 
+        <com.saggitt.omega.preferences.StyledSwitchPreferenceCompat
+            android:key="pref_protected_apps"
+            android:title="@string/enable_protected_apps"
+            android:defaultValue="false"
+            android:persistent="true"
+            app:controllerClass=".ProtectedAppsController" />
+
         <androidx.preference.Preference
-            android:fragment="com.saggitt.omega.preferences.HiddenAppsFragment"
-            android:key="pref_hiddenApps"
+            android:key="pref_trust_apps"
             android:summary="@string/summary__drawer_hide_apps"
             android:title="@string/title__drawer_hide_apps"
             app:iconSpaceReserved="false" />

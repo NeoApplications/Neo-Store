@@ -96,6 +96,7 @@ import android.widget.Toast;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 
@@ -192,6 +193,7 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverla
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.OmegaPreferences;
+import com.saggitt.omega.util.Config;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -1983,6 +1985,14 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
             addOnResumeCallback(btv);
         }
         return success;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void startActivitySafelyAuth(View v, Intent intent, ItemInfo item,
+                                        String sourceContainer) {
+        Config.Companion.showLockScreen(this, getString(R.string.trust_apps_manager_name), () -> {
+            startActivitySafely(v, intent, item, sourceContainer);
+        });
     }
 
     public void addOnResumeCallback(OnResumeCallback callback) {

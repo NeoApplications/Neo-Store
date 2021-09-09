@@ -19,8 +19,10 @@ package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.View
 import com.android.launcher3.AppFilter
+import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
@@ -35,7 +37,8 @@ abstract class SelectableAppsAdapter(
     filter: AppFilter? = null
 ) : AppsAdapter(context, null, filter) {
 
-    private val selections = HashSet<ComponentKey>()
+    private val hiddenApps = HashSet<ComponentKey>()
+    private val protectedApps = HashSet<ComponentKey>()
     private val accentTintList =
         ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
 
@@ -48,61 +51,106 @@ abstract class SelectableAppsAdapter(
     }
 
     override fun onAppsListLoaded() {
-        val tmp = HashSet(selections)
-        selections.clear()
+        val tmp = HashSet(hiddenApps)
+        hiddenApps.clear()
         apps.forEach {
             if (it.key in tmp) {
-                selections.add(it.key)
+                hiddenApps.add(it.key)
             }
         }
         super.onAppsListLoaded()
-        callback?.onSelectionsChanged(selections.size)
+        callback?.onSelectionsChanged(hiddenApps.size)
     }
 
-    override fun onBindApp(app: App, holder: AppHolder) {
-        super.onBindApp(app, holder)
-        holder.checkBox.apply {
+    override fun onBindApp(app: App, holder: AppHolder, position: Int) {
+        super.onBindApp(app, holder, position)
+        holder.mHiddenView.apply {
             visibility = View.VISIBLE
-            isChecked = isSelected(app.key)
-            buttonTintList = accentTintList
+            setImageResource(if (isSelected(app.key)) R.drawable.ic_hidden_locked else R.drawable.ic_hidden_unlocked)
+            drawable.setTintList(accentTintList)
+            setOnClickListener {
+                toggleSelection(position)
+                setImageResource(if (isSelected(app.key)) R.drawable.ic_hidden_locked else R.drawable.ic_hidden_unlocked)
+            }
+        }
+
+        holder.mProtectedView.apply {
+            visibility = View.VISIBLE
+            var icon = R.drawable.ic_protected_unlocked
+            if (isProtected(app.key)) {
+                icon = R.drawable.ic_protected_locked
+                setImageResource(icon)
+                drawable.setTintList(ColorStateList.valueOf(Color.RED))
+            } else {
+                setImageResource(icon)
+                drawable.setTintList(accentTintList)
+            }
+
+            setOnClickListener {
+                toggleAppProtected(position)
+                setImageResource(if (isProtected(app.key)) R.drawable.ic_protected_locked else R.drawable.ic_protected_unlocked)
+            }
         }
     }
 
     override fun onClickApp(position: Int, holder: AppHolder) {
         super.onClickApp(position, holder)
         toggleSelection(position)
-        holder.checkBox.isChecked = isSelected(apps[position].key)
+        holder.mHiddenView.setImageResource(if (isSelected(apps[position].key)) R.drawable.ic_hidden_locked else R.drawable.ic_hidden_unlocked)
+        holder.mProtectedView.setImageResource(if (isSelected(apps[position].key)) R.drawable.ic_protected_locked else R.drawable.ic_protected_unlocked)
     }
 
-    private fun isSelected(component: ComponentKey) = selections.contains(component)
+    private fun isSelected(component: ComponentKey) = hiddenApps.contains(component)
+    private fun isProtected(component: ComponentKey) = protectedApps.contains(component)
+
+    private fun toggleAppProtected(position: Int) {
+        val app = apps[position]
+        val componentKey = app.key
+        if (protectedApps.contains(componentKey)) {
+            protectedApps.remove(componentKey)
+        } else {
+            protectedApps.add(componentKey)
+        }
+        setProtectedApps(protectedApps)
+    }
 
     private fun toggleSelection(position: Int) {
         val app = apps[position]
         val componentKey = app.key
-        if (selections.contains(componentKey)) {
-            selections.remove(componentKey)
+        if (hiddenApps.contains(componentKey)) {
+            hiddenApps.remove(componentKey)
         } else {
-            selections.add(componentKey)
+            hiddenApps.add(componentKey)
         }
-        setSelections(selections)
-        callback?.onSelectionsChanged(selections.size)
+        setSelections(hiddenApps)
+        callback?.onSelectionsChanged(hiddenApps.size)
     }
 
     fun clearSelection() {
-        selections.clear()
-        setSelections(selections)
+        hiddenApps.clear()
+        setSelections(hiddenApps)
+        callback?.onSelectionsChanged(0)
+        notifyDataSetChanged()
+    }
+
+    fun clearProtectedApps() {
+        protectedApps.clear()
+        setSelections(protectedApps)
         callback?.onSelectionsChanged(0)
         notifyDataSetChanged()
     }
 
     override fun loadAppsList() {
-        selections.addAll(getInitialSelections())
+        hiddenApps.addAll(getInitialSelections())
+        protectedApps.addAll(getInitialProtected())
         super.loadAppsList()
     }
 
     abstract fun getInitialSelections(): Set<ComponentKey>
+    abstract fun getInitialProtected(): Set<ComponentKey>
 
     abstract fun setSelections(selections: Set<ComponentKey>)
+    abstract fun setProtectedApps(selections: Set<ComponentKey>)
 
     interface Callback {
         fun onSelectionsChanged(newSize: Int)
@@ -111,7 +159,9 @@ abstract class SelectableAppsAdapter(
     companion object {
 
         fun ofProperty(
-            context: Context, property: KMutableProperty0<Set<String>>,
+            context: Context,
+            property: KMutableProperty0<Set<String>>,
+            protectedApps: KMutableProperty0<Set<String>>,
             callback: Callback? = null, filter: AppFilter? = null
         ) = object : SelectableAppsAdapter(context, callback, filter) {
 
@@ -120,6 +170,13 @@ abstract class SelectableAppsAdapter(
 
             override fun setSelections(selections: Set<ComponentKey>) {
                 property.set(HashSet(selections.map { it.toString() }))
+            }
+
+            override fun getInitialProtected() =
+                HashSet(protectedApps.get().map { makeComponentKey(context, it) })
+
+            override fun setProtectedApps(selections: Set<ComponentKey>) {
+                protectedApps.set(HashSet(selections.map { it.toString() }))
             }
         }
     }

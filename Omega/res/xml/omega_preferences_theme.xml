@@ -43,7 +43,7 @@
     <com.saggitt.omega.theme.ui.ThemePreference
         android:key="pref_launcherTheme"
         android:title="@string/title__general_theme"
-        app:content="@xml/omega_preferences_theme_dialog"
+        app:content="@xml/theme_dialog"
         app:iconSpaceReserved="false" />
 
     <Preference

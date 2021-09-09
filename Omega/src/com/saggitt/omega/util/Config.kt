@@ -17,19 +17,28 @@
  */
 package com.saggitt.omega.util
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.res.Resources
+import android.hardware.biometrics.BiometricManager.Authenticators
+import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
+import android.os.CancellationSignal
 import android.os.UserHandle
 import android.text.TextUtils
 import android.util.TypedValue
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.LauncherModel
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.shortcuts.DeepShortcutManager
+import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
 import java.util.*
 
@@ -127,7 +136,7 @@ class Config(var mContext: Context) {
             }
 
             return when {
-                src.isEmpty() || src == "null" -> {
+                src.isEmpty() || src == "Function0" || src == "null" -> {
                     "Sideloaded"
                 }
                 "com.android.vending" == src || "com.google.android.feedback" == src -> {
@@ -208,6 +217,73 @@ class Config(var mContext: Context) {
             intentFilter.addDataScheme("package")
             intentFilter.addDataSchemeSpecificPart(s, 0)
             return intentFilter
+        }
+
+        /**
+         * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
+         * user of the device.
+         *
+         * @param context The {@code Context} used to get {@code KeyguardManager} service
+         * @param title the {@code String} which will be shown as the pompt title
+         * @param successRunnable The {@code Runnable} which will be executed if the user does not setup
+         *                        device security or if lock screen is unlocked
+         */
+        @RequiresApi(Build.VERSION_CODES.R)
+        fun showLockScreen(context: Context, title: String, successRunnable: Runnable) {
+            if (hasSecureKeyguard(context)) {
+
+                val authenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
+                    override fun onAuthenticationSucceeded(
+                        result: BiometricPrompt.AuthenticationResult
+                    ) {
+                        successRunnable.run()
+                    }
+
+                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                        //Do nothing
+                    }
+                }
+
+                val bp = BiometricPrompt.Builder(context)
+                    .setTitle(title)
+                    .setAllowedAuthenticators(
+                        Authenticators.BIOMETRIC_STRONG or
+                                Authenticators.DEVICE_CREDENTIAL
+                    )
+                    .build()
+
+                val handler = MAIN_EXECUTOR.handler
+                bp.authenticate(
+                    CancellationSignal(), { runnable: Runnable ->
+                        handler.post(runnable)
+                    },
+                    authenticationCallback
+                )
+            } else {
+                // Notify the user a secure keyguard is required for protected apps,
+                // but allow to set hidden apps
+                Toast.makeText(context, R.string.trust_apps_no_lock_error, Toast.LENGTH_LONG)
+                    .show()
+                successRunnable.run()
+            }
+        }
+
+        private fun hasSecureKeyguard(context: Context): Boolean {
+            val keyguardManager = context.getSystemService(
+                KeyguardManager::class.java
+            )
+            return keyguardManager != null && keyguardManager.isKeyguardSecure
+        }
+
+        fun isAppProtected(context: Context, componentKey: ComponentKey): Boolean {
+            var result = false
+            val protectedApps = ArrayList(Utilities.getOmegaPrefs(context).protectedAppsSet
+                .map { Utilities.makeComponentKey(context, it) })
+
+            if (protectedApps.contains(componentKey)) {
+                result = true
+            }
+            return result
         }
     }
 }
