@@ -318,7 +318,8 @@ public class ItemClickHandler {
             DbHelper db = new DbHelper(launcher.getApplicationContext());
             db.updateAppCount(((AppInfo) item).componentName.getPackageName());
             isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
-                    ((AppInfo) item).toComponentKey());
+                    ((AppInfo) item).toComponentKey()) &&
+                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
             db.close();
         }
 
