@@ -16,6 +16,8 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -31,8 +33,6 @@ import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 
 import java.util.ArrayList;
-
-import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 
 public class Hotseat extends CellLayout implements LogContainerProvider, Insettable {
 
@@ -57,14 +57,19 @@ public class Hotseat extends CellLayout implements LogContainerProvider, Insetta
      * Returns orientation specific cell X given invariant order in the hotseat
      */
     public int getCellXFromOrder(int rank) {
-        return mHasVerticalHotseat ? 0 : rank;
+        //return mHasVerticalHotseat ? 0 : rank;
+        int size = mHasVerticalHotseat ? getCountY() : getCountX();
+        return mHasVerticalHotseat ? rank / size : rank % size;
     }
 
     /**
      * Returns orientation specific cell Y given invariant order in the hotseat
      */
     public int getCellYFromOrder(int rank) {
-        return mHasVerticalHotseat ? (getCountY() - (rank + 1)) : 0;
+        //return mHasVerticalHotseat ? (getCountY() - (rank + 1)) : 0;
+
+        int size = mHasVerticalHotseat ? getCountY() : getCountX();
+        return mHasVerticalHotseat ? (getCountY() - ((rank % size) + 1)) : rank / size;
     }
 
     public void resetLayout(boolean hasVerticalHotseat) {
