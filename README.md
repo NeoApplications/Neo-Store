@@ -32,7 +32,7 @@ to discuss the development, issues and new features.<br/>
 -   [X] Categorize apps in the drawer.
 -   [X] Icon Shape support.
 -   [X] Quick action shortcuts (dash).
--   [X] Hide apps.
+-   [X] Hide and Protect apps using security PIN or biometric.
 -   [X] Dock search.
 -   [X] Drawer grid preference.
 -   [X] Customize app icons.
@@ -52,7 +52,6 @@ to discuss the development, issues and new features.<br/>
 -   [ ] Horizontal drawer.
 -   [ ] Add auto tab mode for drawer.
 -   [ ] Animations.
--   [ ] Re-write the home widget .
 
 ##  Screenshots
 <table>
@@ -89,10 +88,10 @@ pull requests!. Make sure the code is formatted before make a pull request.
 You can also contribute to this project by opening issues for bugs or new features.
 
 ## Support Development
-[![397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-397U9cwF8LH7F27cDnwFazaQ16LFNiiuU5-blue?style=for-the-badge&logo=bitcoin)
+[![bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52](https://img.shields.io/badge/Bitcoin-bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52-blue?&logo=bitcoin)](https://img.shields.io/badge/Bitcoin-bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52-blue?style=for-the-badge&logo=bitcoin)
 
 Please note that ETH deposits via smart contracts are not supported. <br>
-[![0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0xffb2a33d7a4dbd694efe859f55e30c5b3fd1b5c5-blue?style=for-the-badge&logo=Ethereum)
+[![0x91b58c92F5a0333E38904226320FFb8FD8e41167](https://img.shields.io/badge/Ethereum-0x91b58c92F5a0333E38904226320FFb8FD8e41167-blue?&logo=Ethereum)](https://img.shields.io/badge/Ethereum-0x91b58c92F5a0333E38904226320FFb8FD8e41167-blue?style=for-the-badge&logo=Ethereum)
 
 [![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
 [![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
