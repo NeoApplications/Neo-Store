@@ -105,7 +105,7 @@
     <string name="title__general_smartspace">Widget da Tela Inicial</string>
     <string name="title__general_search">Pesquisa</string>
     <string name="title__general_theme">Tema</string>
-    <string name="title__general_dock">Dock</string>
+    <string name="title__general_dock">Doca</string>
     <string name="title__general_desktop">Área de Trabalho</string>
     <string name="title__general_about">Sobre</string>
     <string name="resuable_text_alarm">Alarme</string>
@@ -378,4 +378,9 @@
     <string name="dialog_message_change_sort">Alterar a ordem dos aplicativos para alfabética\?</string>
     <string name="about_translators">Tradutores</string>
     <string name="title_create">Criar</string>
+    <string name="dash_media_player_description">Mostrar ou ocultar os controles do Reprodutor de Áudio</string>
+    <string name="dash_media_player">Reprodutor de Áudio</string>
+    <string name="folder_radius">Raio do canto da pasta</string>
+    <string name="folder_background">Cor de fundo da pasta</string>
+    <string name="folder_custom_background">Usar fundo de pasta personalizado</string>
 </resources>
