@@ -170,8 +170,8 @@ class Config(var mContext: Context) {
 
         //APP DRAWER LAYOUT MODE
         const val DRAWER_VERTICAL = 0
-        const val DRAWER_VERTICAL_LIST = 2
-        const val DRAWER_PAGED = 3
+        const val DRAWER_VERTICAL_LIST = 1
+        const val DRAWER_PAGED = 2
 
         //PERMISION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
