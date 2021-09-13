@@ -231,7 +231,7 @@
     <string name="title__theme_accent_color">强调色</string>
     <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g id="name" example="My App">%1$s</xliff:g> 使用情况权限</string>
     <string name="needs_usage_access">需用使用权限</string>
-    <string name="hide_app_reset">重置</string>
+    <string name="hide_app_reset">重置隐藏应用</string>
     <string name="hide_app_selected">  隐藏</string>
     <plurals name="hidden_apps_count">
         <item quantity="other">已隐藏 %1$d 个</item>
@@ -378,4 +378,12 @@
     <string name="folder_custom_background">使用自定义文件夹背景</string>
     <string name="dash_media_player_description">显示或隐藏音频播放器控件</string>
     <string name="dash_media_player">音频播放器</string>
+    <string name="fonts_change_global_font">更改</string>
+    <string name="fonts_global_font">全局字体</string>
+    <string name="disable_protected_apps_message">需要验证才能禁用受保护应用</string>
+    <string name="disable_protected_apps">禁用受保护应用</string>
+    <string name="enable_protected_apps">启用受保护应用</string>
+    <string name="trust_apps_manager_name">隐藏和受保护应用</string>
+    <string name="trust_apps_no_lock_error">请设置安全锁屏来限制应用访问</string>
+    <string name="protected_app_reset">重置受保护应用</string>
 </resources>
