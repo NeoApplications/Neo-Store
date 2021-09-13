@@ -32,7 +32,7 @@
     <string name="title__theme_accent_color">اللون المميز</string>
     <string name="msg_missing_usage_access">لأظهار أقتراحات التطبيقات, شغل الوصول للأستخدام ل <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <string name="needs_usage_access">يحتاج ألوصول للأستخدام</string>
-    <string name="hide_app_reset">اعادة تعيين</string>
+    <string name="hide_app_reset">إعادة تعيين التطبيقات المخفية</string>
     <string name="hide_app_selected">  مخفي</string>
     <plurals name="hidden_apps_count">
         <item quantity="zero">%1$d مخفي</item>
@@ -388,4 +388,12 @@
     <string name="title_drawer_vertical_list">قائمة عمودية</string>
     <string name="title_drawer_vertical">عمودي</string>
     <string name="title_drawer_layout">وضع التخطيط</string>
+    <string name="fonts_change_global_font">تغيير</string>
+    <string name="fonts_global_font">الخط العام</string>
+    <string name="disable_protected_apps_message">يتطلب تعطيل التطبيقات المحمية المصادقة</string>
+    <string name="disable_protected_apps">تعطيل التطبيقات المحمية</string>
+    <string name="enable_protected_apps">تمكين التطبيقات المحمية</string>
+    <string name="trust_apps_manager_name">التطبيقات المخفية والمحمية</string>
+    <string name="trust_apps_no_lock_error">يرجى إعداد شاشة قفل آمنة لتقييد وصول التطبيق</string>
+    <string name="protected_app_reset">إعادة تعيين التطبيقات المحمية</string>
 </resources>
