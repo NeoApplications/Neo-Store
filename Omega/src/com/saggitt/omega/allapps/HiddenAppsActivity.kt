@@ -25,12 +25,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.preferences.SelectableAppsAdapter
+import com.saggitt.omega.preferences.ProtectedAppsAdapter
 import com.saggitt.omega.settings.SettingsBaseActivity
 
 class HiddenAppsActivity : SettingsBaseActivity(),
-    SelectableAppsAdapter.Callback {
-    private lateinit var adapter: SelectableAppsAdapter
+    ProtectedAppsAdapter.Callback {
+    private lateinit var adapter: ProtectedAppsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class HiddenAppsActivity : SettingsBaseActivity(),
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val hiddenApps = Utilities.getOmegaPrefs(this)::hiddenAppSet
         val protectedApps = Utilities.getOmegaPrefs(this)::protectedAppsSet
-        adapter = SelectableAppsAdapter.ofProperty(
+        adapter = ProtectedAppsAdapter.ofProperty(
             this,
             hiddenApps, protectedApps, this, OmegaAppFilter(this)
         )

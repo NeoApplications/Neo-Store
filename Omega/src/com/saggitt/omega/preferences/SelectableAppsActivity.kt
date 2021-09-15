@@ -68,7 +68,6 @@ class SelectableAppsActivity : SettingsActivity() {
             recyclerView.adapter = SelectableAppsAdapter.ofProperty(
                 requireActivity(),
                 ::selection,
-                ::protectedApps,
                 this,
                 createAppFilter(context, DrawerTabs.getWorkFilter(profile))
             )
