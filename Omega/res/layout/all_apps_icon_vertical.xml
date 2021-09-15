@@ -15,18 +15,35 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<com.android.launcher3.BubbleTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.allapps.AllAppsIconRowView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
-    style="@style/BaseIcon"
-    android:id="@+id/icon"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:stateListAnimator="@animator/all_apps_fastscroll_icon_anim"
-    launcher:iconDisplay="all_apps_vertical"
-    launcher:centerVertically="false"
-    launcher:layoutHorizontal="true"
-    android:gravity="start|center_vertical"
-    android:drawablePadding="20dp"
-    android:paddingStart="16dp"
-    android:paddingRight="@dimen/dynamic_grid_cell_padding_x" />
+    android:background="?android:attr/selectableItemBackground"
+    android:focusable="true"
+    android:gravity="start|center"
+    android:paddingLeft="@dimen/all_apps_vertical_row_padding"
+    android:paddingRight="@dimen/all_apps_vertical_row_padding">
+
+    <com.android.launcher3.BubbleTextView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/icon"
+        style="@style/BaseIcon"
+        android:gravity="start|center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:stateListAnimator="@animator/all_apps_fastscroll_icon_anim"
+        launcher:iconDisplay="all_apps_vertical"
+        launcher:layoutHorizontal="true" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18.0sp" />
+
+</com.saggitt.omega.allapps.AllAppsIconRowView>

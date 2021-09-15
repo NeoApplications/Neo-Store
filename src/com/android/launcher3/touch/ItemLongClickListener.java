@@ -34,6 +34,7 @@ import com.android.launcher3.folder.Folder;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
+import com.saggitt.omega.allapps.AllAppsIconRowView;
 
 /**
  * Class to handle long-clicks on workspace items and start drag as a result.
@@ -105,6 +106,10 @@ public class ItemLongClickListener {
         DragOptions options = new DragOptions();
         options.intrinsicIconScaleFactor = (float) grid.allAppsIconSizePx / grid.iconSizePx;
 
+        if (v instanceof AllAppsIconRowView) {
+            ((AllAppsIconRowView) v).beginDrag(launcher.getAppsView(), options);
+            return false;
+        }
         launcher.getWorkspace().beginDragShared(v, launcher.getAppsView(), options);
         return false;
     }

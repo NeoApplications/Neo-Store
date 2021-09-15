@@ -16,13 +16,34 @@
 
 package com.android.launcher3;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.graphics.drawable.Drawable;
 import android.util.FloatProperty;
 import android.util.IntProperty;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
+import java.util.WeakHashMap;
+
 public class LauncherAnimUtils {
+    static WeakHashMap<Animator, Object> sAnimators = new WeakHashMap<>();
+    static Animator.AnimatorListener sEndAnimListener = new Animator.AnimatorListener() {
+        public void onAnimationStart(Animator animation) {
+            sAnimators.put(animation, null);
+        }
+
+        public void onAnimationRepeat(Animator animation) {
+        }
+
+        public void onAnimationEnd(Animator animation) {
+            sAnimators.remove(animation);
+        }
+
+        public void onAnimationCancel(Animator animation) {
+            sAnimators.remove(animation);
+        }
+    };
     /**
      * Durations for various state animations. These are not defined in resources to allow
      * easier access from static classes and enums
@@ -58,6 +79,17 @@ public class LauncherAnimUtils {
                     view.setScaleY(scale);
                 }
             };
+
+    public static void cancelOnDestroyActivity(Animator a) {
+        a.addListener(sEndAnimListener);
+    }
+
+    public static ValueAnimator ofFloat(float... values) {
+        ValueAnimator anim = new ValueAnimator();
+        anim.setFloatValues(values);
+        cancelOnDestroyActivity(anim);
+        return anim;
+    }
 
     /**
      * Increase the duration if we prevented the fling, as we are going against a high velocity.

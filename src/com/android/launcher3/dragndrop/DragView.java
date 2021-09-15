@@ -47,6 +47,7 @@ import com.android.launcher3.AdaptiveIconCompat;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.FirstFrameAnimatorHelper;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherAnimUtils;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
@@ -102,6 +103,7 @@ public class DragView extends View implements StateListener<LauncherState> {
     private int mLastTouchY;
     private int mAnimatedShiftX;
     private int mAnimatedShiftY;
+    private boolean mAnimationStarted;
 
     // Below variable only needed IF FeatureFlags.LAUNCHER3_SPRING_ICONS is {@code true}
     private Drawable mBgSpringDrawable, mFgSpringDrawable;
@@ -482,6 +484,7 @@ public class DragView extends View implements StateListener<LauncherState> {
         // Post the animation to skip other expensive work happening on the first frame
         post(new Runnable() {
             public void run() {
+                mAnimationStarted = true;
                 mAnim.start();
             }
         });
@@ -518,19 +521,40 @@ public class DragView extends View implements StateListener<LauncherState> {
                 DragLayer.ANIMATION_END_DISAPPEAR, onCompleteRunnable, duration);
     }
 
-    public void animateShift(final int shiftX, final int shiftY) {
+    public void shift(final int shiftX, final int shiftY) {
+        mAnimatedShiftX = shiftX;
+        mAnimatedShiftY = shiftY;
+        applyTranslation();
+    }
+
+    public void animateShift(int shiftX, int shiftY) {
+        animateShift(shiftX, shiftY, false);
+    }
+
+    public void animateShift(int shiftX, int shiftY, final boolean inverse) {
+        final int baseShiftX = mAnimatedShiftX;
+        final int baseShiftY = mAnimatedShiftY;
+        final int targetShiftX = shiftX - baseShiftX;
+        final int targetShiftY = shiftY - baseShiftY;
         if (mAnim.isStarted()) {
             return;
         }
         mAnimatedShiftX = shiftX;
         mAnimatedShiftY = shiftY;
         applyTranslation();
+        if (!mAnim.isRunning()) {
+            if (mAnimationStarted) {
+                mAnim = LauncherAnimUtils.ofFloat(0f, 1f);
+                mAnim.setDuration(VIEW_ZOOM_DURATION);
+            }
+            mAnim.start();
+        }
         mAnim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = 1 - animation.getAnimatedFraction();
-                mAnimatedShiftX = (int) (fraction * shiftX);
-                mAnimatedShiftY = (int) (fraction * shiftY);
+                float fraction = inverse ? animation.getAnimatedFraction() : (1 - animation.getAnimatedFraction());
+                mAnimatedShiftX = baseShiftX + (int) (fraction * targetShiftX);
+                mAnimatedShiftY = baseShiftY + (int) (fraction * targetShiftY);
                 applyTranslation();
             }
         });

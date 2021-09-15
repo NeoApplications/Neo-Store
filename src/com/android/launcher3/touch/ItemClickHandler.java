@@ -63,6 +63,7 @@ import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.allapps.AllAppsIconRowView;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.DbHelper;
 import com.saggitt.omega.util.OmegaUtilsKt;
@@ -93,8 +94,8 @@ public class ItemClickHandler {
         Launcher launcher = Launcher.getLauncher(v.getContext());
         if (!launcher.getWorkspace().isFinishedSwitchingState()) return;
 
-        //if (v instanceof AllAppsIconRow)
-        //    v = ((AllAppsIconRow) v).icon;
+        if (v instanceof AllAppsIconRowView)
+            v = ((AllAppsIconRowView) v).icon;
 
         Object tag = v.getTag();
         if (tag instanceof WorkspaceItemInfo) {
