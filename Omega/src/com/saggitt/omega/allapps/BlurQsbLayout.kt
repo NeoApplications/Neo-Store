@@ -171,7 +171,9 @@ class BlurQsbLayout @JvmOverloads constructor(
 
     private fun getBgColor(): Int {
         val hotseatBgColor = hotseat.bgColor
-        val hotseatBgAlpha = hotseat.bgAlpha * hotseatBgProgress
+        var hotseatBgAlpha = hotseat.bgAlpha * hotseatBgProgress
+        if (hotseatBgAlpha > 1f)
+            hotseatBgAlpha = 1f
         val hotseatBg = ColorUtils.setAlphaComponent(hotseatBgColor, (hotseatBgAlpha * 255).toInt())
         return ColorUtils.compositeColors(scrimView?.getShelfColor() ?: return hotseatBg, hotseatBg)
     }

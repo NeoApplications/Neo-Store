@@ -64,7 +64,7 @@ class BlurHotseat @JvmOverloads constructor(
     private val shadowHelper = NinePatchDrawHelper()
     private var shadowBitmap = generateShadowBitmap()
 
-    private var noAlphaBgColor = context.omegaPrefs.dockBackgroundColor
+    private var noAlphaBgColor = prefs.dockBackgroundColor
         set(value) {
             field = value
             setBgColor()

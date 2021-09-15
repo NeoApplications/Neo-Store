@@ -172,7 +172,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var dockOpacity by AlphaPref("pref_hotseatCustomOpacity", -1, recreate)
     val dockBackgroundColor by IntPref(
         "pref_dock_background_color",
-        R.color.transparentish,
+        0x101010,
         recreate
     )
     private val dockGridSizeDelegate = ResettableLazy {
