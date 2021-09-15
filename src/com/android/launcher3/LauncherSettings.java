@@ -149,6 +149,7 @@ public class LauncherSettings {
         public static final int CONTAINER_DESKTOP = -100;
         public static final int CONTAINER_HOTSEAT = -101;
         public static final int CONTAINER_PREDICTION = -102;
+        public static final int CONTAINER_ALL_APPS_FOLDER = -1;
         public static final int CONTAINER_ALL_APPS = -104;
         public static final int CONTAINER_WIDGETS_TRAY = -105;
         // Represents search results view.

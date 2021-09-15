@@ -19,6 +19,7 @@ package com.android.launcher3.model.data;
 import static android.text.TextUtils.isEmpty;
 import static androidx.core.util.Preconditions.checkNotNull;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS;
+import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS_FOLDER;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.EMPTY_LABEL;
@@ -565,6 +566,7 @@ public class FolderInfo extends ItemInfo {
     private Target.Builder newParentContainerTarget() {
         Target.Builder builder = Target.newBuilder().setType(Target.Type.CONTAINER);
         switch (container) {
+            case CONTAINER_ALL_APPS_FOLDER:
             case CONTAINER_ALL_APPS:
                 return builder.setContainerType(LauncherLogProto.ContainerType.FOLDER);
             case CONTAINER_HOTSEAT:
