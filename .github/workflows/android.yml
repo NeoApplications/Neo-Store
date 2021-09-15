@@ -38,7 +38,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Omega-debug.apk
-          path: build/outputs/apk/aospWithQuickstepOmega/debug/OmegaLauncher-debug.apk
+          path: build/outputs/apk/aospWithQuickstepOmega/debug/Omega-aosp-withQuickstep-omega-debug.apk
 
   send-end-notification:
     runs-on: ubuntu-latest
