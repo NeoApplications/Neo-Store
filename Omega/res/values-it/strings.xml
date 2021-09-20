@@ -44,4 +44,8 @@
     <string name="title__general_dock">Barra delle applicazioni</string>
     <string name="title__general_desktop">Desktop</string>
     <string name="trust_apps_no_lock_error">Imposta una schermata di blocco sicura per limitare l\'accesso alle app</string>
+    <string name="title_desktop_lock_desktop">Blocca Desktop</string>
+    <string name="title_desktop_overlap_placement">Permetti sovrapposizioni</string>
+    <string name="title__desktop_hide_icon_labels">Nascondi etichette nella home</string>
+    <string name="pref_category__incubating">Incubazione</string>
 </resources>
