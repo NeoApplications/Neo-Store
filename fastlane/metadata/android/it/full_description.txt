@@ -1,3 +1,3 @@
-<p>Un potente launcher libero con un sacco di funzioni inteligenti.</p>
+<p>Un launcher libero e innovativo e con un sacco di funzioni ottimizzate.</p>
 <br>
 <p>Stato: Beta</p>
