@@ -351,7 +351,7 @@
     <string name="title__theme_accent_color">Akcento spalva</string>
     <string name="msg_missing_usage_access">Jei norite rodyti programėlių pasiūlymus, įjunkite naudojimo prieigą <xliff:g id="name" example="My App"> %1$s </xliff:g></string>
     <string name="needs_usage_access">Reikalinga naudojimo prieiga</string>
-    <string name="hide_app_reset">Atstatyti</string>
+    <string name="hide_app_reset">Atstatyti paslėptas programėles</string>
     <string name="hide_app_selected">  paslėpta</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d paslėpta</item>
@@ -382,4 +382,12 @@
     <string name="folder_custom_background">Naudoti pasirinktinį aplanko foną</string>
     <string name="dash_media_player_description">Rodyti arba slėpti garso grotuvo valdiklius</string>
     <string name="dash_media_player">Garso grotuvas</string>
+    <string name="fonts_change_global_font">Keisti</string>
+    <string name="fonts_global_font">Visuotinis šriftas</string>
+    <string name="disable_protected_apps_message">Norint išjungti apsaugotas programėles, reikalinga autentikacija</string>
+    <string name="disable_protected_apps">Išjungti apsaugotas programėles</string>
+    <string name="enable_protected_apps">Įgalinti apsaugotas programėles</string>
+    <string name="trust_apps_manager_name">Paslėptos ir apsaugotos programėlės</string>
+    <string name="trust_apps_no_lock_error">Nustatykite saugų užrakinimo ekraną, kad apribotumėte prieigą prie programėlės</string>
+    <string name="protected_app_reset">Atstatyti apsaugotas programėles</string>
 </resources>
