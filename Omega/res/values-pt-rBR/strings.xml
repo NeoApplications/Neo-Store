@@ -24,7 +24,7 @@
     <string name="title__theme_blur_radius">Intensidade do Fosco (blur)</string>
     <string name="title__theme_blur">Fosco (blur)</string>
     <string name="title__theme_accent_color">Cor de destaque</string>
-    <string name="hide_app_reset">Resetar</string>
+    <string name="hide_app_reset">Redefinir aplicativos ocultos</string>
     <string name="hide_app_selected">  oculto</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Oculto</item>
@@ -383,4 +383,12 @@
     <string name="folder_radius">Raio do canto da pasta</string>
     <string name="folder_background">Cor de fundo da pasta</string>
     <string name="folder_custom_background">Usar fundo de pasta personalizado</string>
+    <string name="fonts_change_global_font">Mudar</string>
+    <string name="trust_apps_manager_name">Aplicativos Ocultos e Protegidos</string>
+    <string name="fonts_global_font">Fonte Global</string>
+    <string name="disable_protected_apps_message">Desabilitar Aplicativos protegidos exigem autenticação</string>
+    <string name="disable_protected_apps">Desabilitar aplicativos protegidos</string>
+    <string name="enable_protected_apps">Habilitar aplicativos protegidos</string>
+    <string name="trust_apps_no_lock_error">Por favor, configure uma tela de bloqueio segura para restringir o acesso ao aplicativo</string>
+    <string name="protected_app_reset">Redefinir aplicativos protegidos</string>
 </resources>
