@@ -96,6 +96,12 @@ Please note that ETH deposits via smart contracts are not supported. <br>
 [![Donate](https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/paypalme/saulhenriquez)
 [![Donate](https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon)](https://www.patreon.com/omegalauncher)
 
+## FAQ
+### Google Feed not working
+Make sure the Google App is installed.
+If the app is installed, make sure the feed is enabled by clicking Settings> Home Widget > Show Google App.
+If the app is installed and enabled, try restarting the Launcher and if still does not work, restart the phone.
+
 ## Credits
 The LawnchairLauncher team for the great work on Lawnchair.<br>
 [Antonios Hazim](https://github.com/machiav3lli) for creating the logo and his great contributions in the project.<br>
