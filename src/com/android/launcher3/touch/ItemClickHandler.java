@@ -297,6 +297,8 @@ public class ItemClickHandler {
         if (intent == null) {
             throw new IllegalArgumentException("Input must have a valid intent");
         }
+
+        boolean isProtected = false;
         if (item instanceof WorkspaceItemInfo) {
             WorkspaceItemInfo si = (WorkspaceItemInfo) item;
             if (si.hasStatusFlag(WorkspaceItemInfo.FLAG_SUPPORTS_WEB_UI)
@@ -307,13 +309,15 @@ public class ItemClickHandler {
                 // web ui. This only works though if the package isn't set
                 intent = new Intent(intent);
                 intent.setPackage(null);
+                isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
+                        ((AppInfo) item).toComponentKey()) &&
+                        Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
             }
         }
         if (v != null && launcher.getAppTransitionManager().supportsAdaptiveIconAnimation()) {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
         }
-        boolean isProtected = false;
         if (item instanceof AppInfo) {
             Log.i(TAG, "Clicking App " + item.title);
             DbHelper db = new DbHelper(launcher.getApplicationContext());
