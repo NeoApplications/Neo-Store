@@ -2,17 +2,26 @@ package com.android.launcher3;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.UserHandle;
 
-import com.android.launcher3.util.ResourceBasedOverride;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class AppFilter implements ResourceBasedOverride {
+/**
+ * Utility class to filter out components from various lists
+ */
+public class AppFilter {
 
-    public static AppFilter newInstance(Context context) {
-        return Overrides.getObject(AppFilter.class, context, R.string.app_filter_class);
+    private final Set<ComponentName> mFilteredComponents;
+
+    public AppFilter(Context context) {
+        mFilteredComponents = Arrays.stream(
+                context.getResources().getStringArray(R.array.filtered_components))
+                .map(ComponentName::unflattenFromString)
+                .collect(Collectors.toSet());
     }
 
-    public boolean shouldShowApp(ComponentName app, UserHandle user) {
-        return true;
+    public boolean shouldShowApp(ComponentName app) {
+        return !mFilteredComponents.contains(app);
     }
 }

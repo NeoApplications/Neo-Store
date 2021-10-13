@@ -13,21 +13,20 @@
      limitations under the License.
 -->
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_setting"
+        android:forceDarkAllowed="true"
         android:padding="12dp"
-        android:tint="@android:color/black"
-        app:srcCompat="@drawable/ic_settings" />
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
 
     <View
         android:id="@+id/divider"
@@ -37,9 +36,9 @@
         android:background="?android:attr/listDivider" />
 
     <!-- Note: seems we need focusable="false" and clickable="false" when moving to androidx -->
-    <androidx.appcompat.widget.SwitchCompat
+    <Switch
         android:id="@android:id/switch_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

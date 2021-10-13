@@ -21,11 +21,10 @@ import static com.android.launcher3.model.data.AppInfo.EMPTY_ARRAY;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
+import android.content.Intent;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.os.LocaleList;
-import android.os.Process;
 import android.os.UserHandle;
 import android.util.Log;
 
@@ -37,7 +36,6 @@ import com.android.launcher3.compat.AlphabeticIndexCompat;
 import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.model.BgDataModel.Callbacks;
 import com.android.launcher3.model.data.AppInfo;
-import com.android.launcher3.model.data.PromiseAppInfo;
 import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.util.FlagOp;
 import com.android.launcher3.util.ItemInfoMatcher;
@@ -102,19 +100,6 @@ public class AllAppsList {
     }
 
     /**
-     * Returns whether <em>apps</em> contains <em>component</em>.
-     */
-    private static boolean findActivity(List<LauncherActivityInfo> apps,
-                                        ComponentName component) {
-        for (LauncherActivityInfo info : apps) {
-            if (info.getComponentName().equals(component)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Helper to checking {@link Callbacks#FLAG_HAS_SHORTCUT_PERMISSION}
      */
     public boolean hasShortcutHostPermission() {
@@ -134,44 +119,73 @@ public class AllAppsList {
     }
 
     /**
-     * Add the supplied ApplicationInfo objects to the list, and enqueue it into the
-     * list to broadcast when notify() is called.
-     * <p>
-     * If the app is already in the list, doesn't add it.
-     */
-    public void add(AppInfo info, LauncherActivityInfo activityInfo) {
-        if (!mAppFilter.shouldShowApp(info.componentName, info.user)) {
-            return;
-        }
-        if (findAppInfo(info.componentName, info.user) != null) {
-            return;
-        }
-        mIconCache.getTitleAndIcon(info, activityInfo, true /* useLowResIcon */);
-        info.sectionName = mIndex.computeSectionName(info.title);
-
-        data.add(info);
-        mDataChanged = true;
-    }
-
-    /**
      * Returns the model flags
      */
     public int getFlags() {
         return mFlags;
     }
 
+
+    /**
+     * Add the supplied ApplicationInfo objects to the list, and enqueue it into the
+     * list to broadcast when notify() is called.
+     * <p>
+     * If the app is already in the list, doesn't add it.
+     */
+    public void add(AppInfo info, LauncherActivityInfo activityInfo) {
+        if (!mAppFilter.shouldShowApp(info.componentName)) {
+            return;
+        }
+        if (findAppInfo(info.componentName, info.user) != null) {
+            return;
+        }
+        mIconCache.getTitleAndIcon(info, activityInfo, false /* useLowResIcon */);
+        info.sectionName = mIndex.computeSectionName(info.title);
+
+        data.add(info);
+        mDataChanged = true;
+    }
+
     public void addPromiseApp(Context context, PackageInstallInfo installInfo) {
-        ApplicationInfo applicationInfo = new PackageManagerHelper(context)
-                .getApplicationInfo(installInfo.packageName, installInfo.user, 0);
         // only if not yet installed
-        if (applicationInfo == null) {
-            PromiseAppInfo info = new PromiseAppInfo(installInfo);
+        if (!new PackageManagerHelper(context)
+                .isAppInstalled(installInfo.packageName, installInfo.user)) {
+            AppInfo info = new AppInfo(installInfo);
             mIconCache.getTitleAndIcon(info, info.usingLowResIcon());
             info.sectionName = mIndex.computeSectionName(info.title);
 
             data.add(info);
             mDataChanged = true;
         }
+    }
+
+    /**
+     * Updates the given PackageInstallInfo's associated AppInfo's installation info.
+     */
+    public List<AppInfo> updatePromiseInstallInfo(PackageInstallInfo installInfo) {
+        List<AppInfo> updatedAppInfos = new ArrayList<>();
+        UserHandle user = installInfo.user;
+        for (int i = data.size() - 1; i >= 0; i--) {
+            final AppInfo appInfo = data.get(i);
+            final ComponentName tgtComp = appInfo.getTargetComponent();
+            if (tgtComp != null && tgtComp.getPackageName().equals(installInfo.packageName)
+                    && appInfo.user.equals(user)) {
+                if (installInfo.state == PackageInstallInfo.STATUS_INSTALLED_DOWNLOADING
+                        || installInfo.state == PackageInstallInfo.STATUS_INSTALLING) {
+                    if (appInfo.isAppStartable()
+                            && installInfo.state == PackageInstallInfo.STATUS_INSTALLING) {
+                        continue;
+                    }
+                    appInfo.setProgressLevel(installInfo);
+
+                    updatedAppInfos.add(appInfo);
+                } else if (installInfo.state == PackageInstallInfo.STATUS_FAILED
+                        && !appInfo.isAppStartable()) {
+                    removeApp(i);
+                }
+            }
+        }
+        return updatedAppInfos;
     }
 
     private void removeApp(int index) {
@@ -189,24 +203,19 @@ public class AllAppsList {
         mIndex = new AlphabeticIndexCompat(LocaleList.getDefault());
     }
 
-    public PromiseAppInfo updatePromiseInstallInfo(PackageInstallInfo installInfo) {
-        UserHandle user = Process.myUserHandle();
-        for (int i = 0; i < data.size(); i++) {
-            final AppInfo appInfo = data.get(i);
-            final ComponentName tgtComp = appInfo.getTargetComponent();
-            if (tgtComp != null && tgtComp.getPackageName().equals(installInfo.packageName)
-                    && appInfo.user.equals(user)
-                    && appInfo instanceof PromiseAppInfo) {
-                final PromiseAppInfo promiseAppInfo = (PromiseAppInfo) appInfo;
-                if (installInfo.state == PackageInstallInfo.STATUS_INSTALLING) {
-                    promiseAppInfo.level = installInfo.progress;
-                    return promiseAppInfo;
-                } else if (installInfo.state == PackageInstallInfo.STATUS_FAILED) {
-                    removeApp(i);
-                }
-            }
+    /**
+     * Add the icons for the supplied apk called packageName.
+     */
+    public List<LauncherActivityInfo> addPackage(
+            Context context, String packageName, UserHandle user) {
+        List<LauncherActivityInfo> activities = context.getSystemService(LauncherApps.class)
+                .getActivityList(packageName, user);
+
+        for (LauncherActivityInfo info : activities) {
+            add(new AppInfo(context, info, user), info);
         }
-        return null;
+
+        return activities;
     }
 
     /**
@@ -247,19 +256,10 @@ public class AllAppsList {
     }
 
     /**
-     * Add the icons for the supplied apk called packageName.
-     */
-    public void addPackage(Context context, String packageName, UserHandle user) {
-        for (LauncherActivityInfo info : context.getSystemService(LauncherApps.class)
-                .getActivityList(packageName, user)) {
-            add(new AppInfo(context, info, user), info);
-        }
-    }
-
-    /**
      * Add and remove icons for this package which has been updated.
      */
-    public void updatePackage(Context context, String packageName, UserHandle user) {
+    public List<LauncherActivityInfo> updatePackage(
+            Context context, String packageName, UserHandle user) {
         final List<LauncherActivityInfo> matches = context.getSystemService(LauncherApps.class)
                 .getActivityList(packageName, user);
         if (matches.size() > 0) {
@@ -283,8 +283,14 @@ public class AllAppsList {
                 if (applicationInfo == null) {
                     add(new AppInfo(context, info, user), info);
                 } else {
-                    mIconCache.getTitleAndIcon(applicationInfo, info, true /* useLowResIcon */);
+                    Intent launchIntent = AppInfo.makeLaunchIntent(info);
+
+                    mIconCache.getTitleAndIcon(applicationInfo, info, false /* useLowResIcon */);
                     applicationInfo.sectionName = mIndex.computeSectionName(applicationInfo.title);
+                    applicationInfo.setProgressLevel(
+                            PackageManagerHelper.getLoadingProgress(info),
+                            PackageInstallInfo.STATUS_INSTALLED_DOWNLOADING);
+                    applicationInfo.intent = launchIntent;
 
                     mDataChanged = true;
                 }
@@ -300,25 +306,21 @@ public class AllAppsList {
                 }
             }
         }
+
+        return matches;
     }
 
     /**
-     * Add and remove icons for this package, depending on visibility.
+     * Returns whether <em>apps</em> contains <em>component</em>.
      */
-    public void reloadPackages(Context context, UserHandle user) {
-        for (final LauncherActivityInfo info : context.getSystemService(LauncherApps.class).getActivityList(null, user)) {
-            AppInfo applicationInfo = findAppInfo(info.getComponentName(), user);
-            if (applicationInfo == null) {
-                add(new AppInfo(context, info, user), info);
+    private static boolean findActivity(List<LauncherActivityInfo> apps,
+                                        ComponentName component) {
+        for (LauncherActivityInfo info : apps) {
+            if (info.getComponentName().equals(component)) {
+                return true;
             }
         }
-
-        for (int i = data.size() - 1; i >= 0; i--) {
-            final AppInfo applicationInfo = data.get(i);
-            if (user.equals(applicationInfo.user) && !mAppFilter.shouldShowApp(applicationInfo.componentName, applicationInfo.user)) {
-                removeApp(i);
-            }
-        }
+        return false;
     }
 
     /**
@@ -326,9 +328,10 @@ public class AllAppsList {
      *
      * @return the corresponding AppInfo or null
      */
-    private @Nullable AppInfo findAppInfo(@NonNull ComponentName componentName,
-                                          @NonNull UserHandle user) {
-        for (AppInfo info: data) {
+    public @Nullable
+    AppInfo findAppInfo(@NonNull ComponentName componentName,
+                        @NonNull UserHandle user) {
+        for (AppInfo info : data) {
             if (componentName.equals(info.componentName) && user.equals(info.user)) {
                 return info;
             }

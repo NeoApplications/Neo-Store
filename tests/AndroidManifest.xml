@@ -19,8 +19,8 @@
     package="com.android.launcher3.tests">
 
     <uses-sdk
-        android:minSdkVersion="25"
         android:targetSdkVersion="29"
+        android:minSdkVersion="25"
         tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <application android:debuggable="true">
@@ -31,6 +31,5 @@
         android:functionalTest="false"
         android:handleProfiling="false"
         android:name="androidx.test.runner.AndroidJUnitRunner"
-        android:targetPackage="com.android.launcher3" >
-    </instrumentation>
+        android:targetPackage="com.android.launcher3"></instrumentation>
 </manifest>

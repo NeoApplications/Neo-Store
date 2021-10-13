@@ -21,6 +21,9 @@ import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import com.android.launcher3.tracing.InputConsumerProto;
+import com.android.launcher3.tracing.TouchInteractionServiceProto;
+
 @TargetApi(Build.VERSION_CODES.O)
 public interface InputConsumer {
 
@@ -35,7 +38,7 @@ public interface InputConsumer {
     int TYPE_RESET_GESTURE = 1 << 8;
     int TYPE_OVERSCROLL = 1 << 9;
     int TYPE_SYSUI_OVERLAY = 1 << 10;
-    int TYPE_CUSTOM_GESTURES = 1 << 11;
+    int TYPE_ONE_HANDED = 1 << 11;
 
     String[] NAMES = new String[]{
             "TYPE_NO_OP",                    // 0
@@ -48,8 +51,8 @@ public interface InputConsumer {
             "TYPE_OVERVIEW_WITHOUT_FOCUS",  // 7
             "TYPE_RESET_GESTURE",           // 8
             "TYPE_OVERSCROLL",              // 9
-            "TYPE_SYSUI_OVERLAY",        // 10
-            "TYPE_CUSTOM_GESTURES"          // 11
+            "TYPE_SYSUI_OVERLAY",           // 10
+            "TYPE_ONE_HANDED",              // 11
     };
 
     InputConsumer NO_OP = () -> TYPE_NO_OP;
@@ -119,5 +122,24 @@ public interface InputConsumer {
             }
         }
         return name.toString();
+    }
+
+    /**
+     * Used for winscope tracing, see launcher_trace.proto
+     *
+     * @param serviceProto The parent of this proto message.
+     * @see com.android.systemui.shared.tracing.ProtoTraceable#writeToProto
+     */
+    default void writeToProto(TouchInteractionServiceProto.Builder serviceProto) {
+        InputConsumerProto.Builder inputConsumerProto = InputConsumerProto.newBuilder();
+        inputConsumerProto.setName(getName());
+        writeToProtoInternal(inputConsumerProto);
+        serviceProto.setInputConsumer(inputConsumerProto);
+    }
+
+    /**
+     * @see #writeToProto - allows subclasses to write additional info to the proto.
+     */
+    default void writeToProtoInternal(InputConsumerProto.Builder inputConsumerProto) {
     }
 }

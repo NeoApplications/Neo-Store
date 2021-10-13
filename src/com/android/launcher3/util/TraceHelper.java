@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 /**
  * A wrapper around {@link Trace} to allow better testing.
- * <p>
+ *
  * To enable any tracing log, execute the following command:
  * $ adb shell setprop log.tag.LAUNCHER_TRACE VERBOSE
  * $ adb shell setprop log.tag.TAGNAME VERBOSE
@@ -45,19 +45,6 @@ public class TraceHelper {
      * Static instance of Trace helper, overridden in tests.
      */
     public static TraceHelper INSTANCE = new TraceHelper();
-
-    /**
-     * Temporarily ignore blocking binder calls for the duration of this {@link Supplier}.
-     */
-    @MainThread
-    public static <T> T allowIpcs(String rpcName, Supplier<T> supplier) {
-        Object traceToken = INSTANCE.beginSection(rpcName, FLAG_IGNORE_BINDERS);
-        try {
-            return supplier.get();
-        } finally {
-            INSTANCE.endSection(traceToken);
-        }
-    }
 
     /**
      * @return a token to pass into {@link #endSection(Object)}.
@@ -86,5 +73,18 @@ public class TraceHelper {
     }
 
     public void endFlagsOverride(Object token) {
+    }
+
+    /**
+     * Temporarily ignore blocking binder calls for the duration of this {@link Supplier}.
+     */
+    @MainThread
+    public static <T> T allowIpcs(String rpcName, Supplier<T> supplier) {
+        Object traceToken = INSTANCE.beginSection(rpcName, FLAG_IGNORE_BINDERS);
+        try {
+            return supplier.get();
+        } finally {
+            INSTANCE.endSection(traceToken);
+        }
     }
 }

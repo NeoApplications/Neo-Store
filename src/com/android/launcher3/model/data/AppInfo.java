@@ -28,10 +28,13 @@ import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageManagerHelper;
 
@@ -62,6 +65,11 @@ public class AppInfo extends ItemInfoWithIcon {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPLICATION;
     }
 
+    @Override
+    public Intent getIntent() {
+        return intent;
+    }
+
     /**
      * Must not hold the Context.
      */
@@ -86,8 +94,6 @@ public class AppInfo extends ItemInfoWithIcon {
         componentName = info.componentName;
         title = Utilities.trim(info.title);
         intent = new Intent(info.intent);
-        user = info.user;
-        runtimeStatusFlags = info.runtimeStatusFlags;
     }
 
     @VisibleForTesting
@@ -97,6 +103,44 @@ public class AppInfo extends ItemInfoWithIcon {
         this.title = title;
         this.user = user;
         this.intent = intent;
+    }
+
+    public AppInfo(@NonNull PackageInstallInfo installInfo) {
+        componentName = installInfo.componentName;
+        intent = new Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_LAUNCHER)
+                .setComponent(componentName)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        setProgressLevel(installInfo);
+        user = installInfo.user;
+    }
+
+    @Override
+    protected String dumpProperties() {
+        return super.dumpProperties() + " componentName=" + componentName;
+    }
+
+    public WorkspaceItemInfo makeWorkspaceItem() {
+        WorkspaceItemInfo workspaceItemInfo = new WorkspaceItemInfo(this);
+
+        if ((runtimeStatusFlags & FLAG_INSTALL_SESSION_ACTIVE) != 0) {
+            // We need to update the component name when the apk is installed
+            workspaceItemInfo.status |= WorkspaceItemInfo.FLAG_AUTOINSTALL_ICON;
+            // Since the user is manually placing it on homescreen, it should not be auto-removed
+            // later
+            workspaceItemInfo.status |= WorkspaceItemInfo.FLAG_RESTORE_STARTED;
+            workspaceItemInfo.status |= FLAG_INSTALL_SESSION_ACTIVE;
+        }
+        if ((runtimeStatusFlags & FLAG_INCREMENTAL_DOWNLOAD_ACTIVE) != 0) {
+            workspaceItemInfo.runtimeStatusFlags |= FLAG_INCREMENTAL_DOWNLOAD_ACTIVE;
+        }
+
+        return workspaceItemInfo;
+    }
+
+    public ComponentKey toComponentKey() {
+        return new ComponentKey(componentName, user);
     }
 
     public static Intent makeLaunchIntent(LauncherActivityInfo info) {
@@ -111,6 +155,12 @@ public class AppInfo extends ItemInfoWithIcon {
                         | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
     }
 
+    @Nullable
+    @Override
+    public ComponentName getTargetComponent() {
+        return componentName;
+    }
+
     public static void updateRuntimeFlagsForActivityTarget(
             ItemInfoWithIcon info, LauncherActivityInfo lai) {
         ApplicationInfo appInfo = lai.getApplicationInfo();
@@ -120,30 +170,16 @@ public class AppInfo extends ItemInfoWithIcon {
         info.runtimeStatusFlags |= (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0
                 ? FLAG_SYSTEM_NO : FLAG_SYSTEM_YES;
 
-        if (Utilities.ATLEAST_OREO
-                && appInfo.targetSdkVersion >= Build.VERSION_CODES.O
+        if (appInfo.targetSdkVersion >= Build.VERSION_CODES.O
                 && Process.myUserHandle().equals(lai.getUser())) {
             // The icon for a non-primary user is badged, hence it's not exactly an adaptive icon.
             info.runtimeStatusFlags |= FLAG_ADAPTIVE_ICON;
         }
-    }
 
-    @Override
-    public Intent getIntent() {
-        return intent;
-    }
-
-    @Override
-    protected String dumpProperties() {
-        return super.dumpProperties() + " componentName=" + componentName;
-    }
-
-    public WorkspaceItemInfo makeWorkspaceItem() {
-        return new WorkspaceItemInfo(this);
-    }
-
-    public ComponentKey toComponentKey() {
-        return new ComponentKey(componentName, user);
+        // Sets the progress level, installation and incremental download flags.
+        info.setProgressLevel(
+                PackageManagerHelper.getLoadingProgress(lai),
+                PackageInstallInfo.STATUS_INSTALLED_DOWNLOADING);
     }
 
     @Override

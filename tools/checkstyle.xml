@@ -3,12 +3,12 @@
     "http://www.puppycrawl.com/dtds/configuration_1_3.dtd" [<!ENTITY defaultCopyrightCheck SYSTEM "../../../../prebuilts/checkstyle/default-copyright-check.xml"><!ENTITY defaultJavadocChecks SYSTEM "../../../../prebuilts/checkstyle/default-javadoc-checks.xml"><!ENTITY defaultTreewalkerChecks SYSTEM "../../../../prebuilts/checkstyle/default-treewalker-checks.xml"><!ENTITY defaultModuleChecks SYSTEM "../../../../prebuilts/checkstyle/default-module-checks.xml">]>
 
 <module name="Checker">
-  &defaultModuleChecks; &defaultCopyrightCheck;
-  <module name="TreeWalker">
-    &defaultJavadocChecks; &defaultTreewalkerChecks;
-  </module>
+    &defaultModuleChecks; &defaultCopyrightCheck;
+    <module name="TreeWalker">
+        &defaultJavadocChecks; &defaultTreewalkerChecks;
+    </module>
 
-  <module name="SuppressionFilter">
-    <property name="file" value="tools/checkstyle_suppression.xml" />
-  </module>
+    <module name="SuppressionFilter">
+        <property name="file" value="tools/checkstyle_suppression.xml" />
+    </module>
 </module>

@@ -15,6 +15,10 @@
  */
 package com.android.launcher3.tapl;
 
+import static com.android.launcher3.testing.TestProtocol.SEQUENCE_MAIN;
+import static com.android.launcher3.testing.TestProtocol.SEQUENCE_PILFER;
+import static com.android.launcher3.testing.TestProtocol.SEQUENCE_TIS;
+
 import android.os.SystemClock;
 
 import com.android.launcher3.testing.TestProtocol;
@@ -39,11 +43,137 @@ public class LogEventChecker {
         mLauncher = launcher;
     }
 
-    // Workaround for b/154157191
-    private static boolean ignoreMistatch(boolean successfulGesture, String sequence) {
-        // b/156287114
-        return false;
-//        return TestProtocol.SEQUENCE_TIS.equals(sequence) && successfulGesture;
+    boolean start() {
+        mExpectedEvents.clear();
+        return mLauncher.getTestInfo(TestProtocol.REQUEST_START_EVENT_LOGGING) != null;
+    }
+
+    void expectPattern(String sequence, Pattern pattern) {
+        mExpectedEvents.add(sequence, pattern);
+    }
+
+    // Waits for the expected number of events and returns them.
+    private ListMap<String> finishSync(long waitForExpectedCountMs) {
+        final long startTime = SystemClock.uptimeMillis();
+        // Event strings with '/' separating the sequence and the event.
+        ArrayList<String> rawEvents;
+
+        while (true) {
+            rawEvents = mLauncher.getTestInfo(TestProtocol.REQUEST_GET_TEST_EVENTS)
+                    .getStringArrayList(TestProtocol.TEST_INFO_RESPONSE_FIELD);
+            if (rawEvents == null) return null;
+
+            final int expectedCount = mExpectedEvents.entrySet()
+                    .stream().mapToInt(e -> e.getValue().size()).sum();
+            if (rawEvents.size() >= expectedCount
+                    || SystemClock.uptimeMillis() > startTime + waitForExpectedCountMs) {
+                break;
+            }
+            SystemClock.sleep(100);
+        }
+
+        finishNoWait();
+
+        // Parse raw events into a map.
+        final ListMap<String> eventSequences = new ListMap<>();
+        for (String rawEvent : rawEvents) {
+            final String[] split = rawEvent.split("/");
+            eventSequences.add(split[0], split[1]);
+        }
+        return eventSequences;
+    }
+
+    void finishNoWait() {
+        mLauncher.getTestInfo(TestProtocol.REQUEST_STOP_EVENT_LOGGING);
+    }
+
+    String verify(long waitForExpectedCountMs, boolean successfulGesture) {
+        final ListMap<String> actualEvents = finishSync(waitForExpectedCountMs);
+        if (actualEvents == null) return "null event sequences because launcher likely died";
+
+        final String lowLevelDiags = lowLevelMismatchDiagnostics(actualEvents);
+        // If we have a sequence mismatch for a successful gesture, we want to provide all low-level
+        // details.
+        if (successfulGesture) {
+            return lowLevelDiags;
+        }
+
+        final String sequenceMismatchInEnglish = highLevelMismatchDiagnostics(actualEvents);
+
+        if (sequenceMismatchInEnglish != null) {
+            LauncherInstrumentation.log(lowLevelDiags);
+            return "Hint: " + sequenceMismatchInEnglish;
+        } else {
+            return lowLevelDiags;
+        }
+    }
+
+    private String lowLevelMismatchDiagnostics(ListMap<String> actualEvents) {
+        final StringBuilder sb = new StringBuilder();
+        boolean hasMismatches = false;
+        for (Map.Entry<String, List<Pattern>> expectedEvents : mExpectedEvents.entrySet()) {
+            String sequence = expectedEvents.getKey();
+
+            List<String> actual = new ArrayList<>(actualEvents.getNonNull(sequence));
+            final int mismatchPosition = getMismatchPosition(expectedEvents.getValue(), actual);
+            hasMismatches = hasMismatches || mismatchPosition != -1;
+            formatSequenceWithMismatch(
+                    sb,
+                    sequence,
+                    expectedEvents.getValue(),
+                    actual,
+                    mismatchPosition);
+        }
+        // Check for unexpected event sequences in the actual data.
+        for (String actualNamedSequence : actualEvents.keySet()) {
+            if (!mExpectedEvents.containsKey(actualNamedSequence)) {
+                hasMismatches = true;
+                formatSequenceWithMismatch(
+                        sb,
+                        actualNamedSequence,
+                        new ArrayList<>(),
+                        actualEvents.get(actualNamedSequence),
+                        0);
+            }
+        }
+
+        return hasMismatches ? "Mismatching events: " + sb.toString() : null;
+    }
+
+    private String highLevelMismatchDiagnostics(ListMap<String> actualEvents) {
+        if (!mExpectedEvents.getNonNull(SEQUENCE_TIS).isEmpty()
+                && actualEvents.getNonNull(SEQUENCE_TIS).isEmpty()) {
+            return "TouchInteractionService didn't receive any of the touch events sent by the "
+                    + "test";
+        }
+        if (getMismatchPosition(mExpectedEvents.getNonNull(SEQUENCE_TIS),
+                actualEvents.getNonNull(SEQUENCE_TIS)) != -1) {
+            // If TIS has a mismatch that we can't convert to high-level diags, don't convert
+            // other sequences either.
+            return null;
+        }
+
+        if (mExpectedEvents.getNonNull(SEQUENCE_PILFER).size() == 1
+                && actualEvents.getNonNull(SEQUENCE_PILFER).isEmpty()) {
+            return "Launcher didn't detect the navigation gesture sent by the test";
+        }
+        if (mExpectedEvents.getNonNull(SEQUENCE_PILFER).isEmpty()
+                && actualEvents.getNonNull(SEQUENCE_PILFER).size() == 1) {
+            return "Launcher detected a navigation gesture, but the test didn't send one";
+        }
+        if (getMismatchPosition(mExpectedEvents.getNonNull(SEQUENCE_PILFER),
+                actualEvents.getNonNull(SEQUENCE_PILFER)) != -1) {
+            // If Pilfer has a mismatch that we can't convert to high-level diags, don't analyze
+            // other sequences.
+            return null;
+        }
+
+        if (!mExpectedEvents.getNonNull(SEQUENCE_MAIN).isEmpty()
+                && actualEvents.getNonNull(SEQUENCE_MAIN).isEmpty()) {
+            return "None of the touch or keyboard events sent by the test was received by "
+                    + "Launcher's main thread";
+        }
+        return null;
     }
 
     // If the list of actual events matches the list of expected events, returns -1, otherwise
@@ -82,84 +212,6 @@ public class LogEventChecker {
             sb.append(events.get(i).toString());
         }
         if (position == events.size()) sb.append("\n  | ---> (end)");
-    }
-
-    boolean start() {
-        mExpectedEvents.clear();
-        return mLauncher.getTestInfo(TestProtocol.REQUEST_START_EVENT_LOGGING) != null;
-    }
-
-    void expectPattern(String sequence, Pattern pattern) {
-        mExpectedEvents.add(sequence, pattern);
-    }
-
-    // Waits for the expected number of events and returns them.
-    private ListMap<String> finishSync(long waitForExpectedCountMs) {
-        final long startTime = SystemClock.uptimeMillis();
-        // Event strings with '/' separating the sequence and the event.
-        ArrayList<String> rawEvents;
-
-        while (true) {
-            rawEvents = mLauncher.getTestInfo(TestProtocol.REQUEST_GET_TEST_EVENTS)
-                    .getStringArrayList(TestProtocol.TEST_INFO_RESPONSE_FIELD);
-            final int expectedCount = mExpectedEvents.entrySet()
-                    .stream().mapToInt(e -> e.getValue().size()).sum();
-            if (rawEvents.size() >= expectedCount
-                    || SystemClock.uptimeMillis() > startTime + waitForExpectedCountMs) {
-                break;
-            }
-            SystemClock.sleep(100);
-        }
-
-        finishNoWait();
-
-        // Parse raw events into a map.
-        final ListMap<String> eventSequences = new ListMap<>();
-        for (String rawEvent : rawEvents) {
-            final String[] split = rawEvent.split("/");
-            eventSequences.add(split[0], split[1]);
-        }
-        return eventSequences;
-    }
-
-    void finishNoWait() {
-        mLauncher.getTestInfo(TestProtocol.REQUEST_STOP_EVENT_LOGGING);
-    }
-
-    String verify(long waitForExpectedCountMs, boolean successfulGesture) {
-        final ListMap<String> actualEvents = finishSync(waitForExpectedCountMs);
-
-        final StringBuilder sb = new StringBuilder();
-        boolean hasMismatches = false;
-        for (Map.Entry<String, List<Pattern>> expectedEvents : mExpectedEvents.entrySet()) {
-            String sequence = expectedEvents.getKey();
-
-            List<String> actual = new ArrayList<>(actualEvents.getNonNull(sequence));
-            final int mismatchPosition = getMismatchPosition(expectedEvents.getValue(), actual);
-            hasMismatches = hasMismatches
-                    || mismatchPosition != -1 && !ignoreMistatch(successfulGesture, sequence);
-            formatSequenceWithMismatch(
-                    sb,
-                    sequence,
-                    expectedEvents.getValue(),
-                    actual,
-                    mismatchPosition);
-        }
-        // Check for unexpected event sequences in the actual data.
-        for (String actualNamedSequence : actualEvents.keySet()) {
-            if (!mExpectedEvents.containsKey(actualNamedSequence)) {
-                hasMismatches = hasMismatches
-                        || !ignoreMistatch(successfulGesture, actualNamedSequence);
-                formatSequenceWithMismatch(
-                        sb,
-                        actualNamedSequence,
-                        new ArrayList<>(),
-                        actualEvents.get(actualNamedSequence),
-                        0);
-            }
-        }
-
-        return hasMismatches ? "mismatching events: " + sb.toString() : null;
     }
 
     private static class ListMap<T> extends HashMap<String, List<T>> {

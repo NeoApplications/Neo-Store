@@ -22,14 +22,12 @@ import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherAppWidgetHost;
 import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherProvider;
 import com.android.launcher3.LauncherSettings;
@@ -37,7 +35,6 @@ import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.LauncherSettings.Settings;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
-import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.model.data.FolderInfo;
 import com.android.launcher3.model.data.ItemInfo;
@@ -45,7 +42,7 @@ import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.util.ItemInfoMatcher;
-import com.saggitt.omega.iconpack.IconPackManager;
+import com.android.launcher3.widget.LauncherAppWidgetHost;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +51,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Class for handling model updates.
@@ -92,16 +90,11 @@ public class ModelWriter {
         // We store hotseat items in canonical form which is this orientation invariant position
         // in the hotseat
         if (container == Favorites.CONTAINER_HOTSEAT) {
-            item.screenId = getOrderInHotseat(cellX, cellY, LauncherAppState.getIDP(mContext).numHotseatIcons);
+            item.screenId = mHasVerticalHotseat
+                    ? LauncherAppState.getIDP(mContext).numDatabaseHotseatIcons - cellY - 1 : cellX;
         } else {
             item.screenId = screenId;
         }
-    }
-
-    private int getOrderInHotseat(int x, int y, int size) {
-        int xOrder = mHasVerticalHotseat ? (size - y - 1) : x;
-        int yOrder = mHasVerticalHotseat ? x : y;
-        return xOrder + yOrder * size;
     }
 
     /**
@@ -204,7 +197,7 @@ public class ModelWriter {
         item.spanX = spanX;
         item.spanY = spanY;
 
-        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, () ->
+        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, () ->
                 new ContentWriter(mContext)
                         .put(Favorites.CONTAINER, item.container)
                         .put(Favorites.CELLX, item.cellX)
@@ -213,29 +206,6 @@ public class ModelWriter {
                         .put(Favorites.SPANX, item.spanX)
                         .put(Favorites.SPANY, item.spanY)
                         .put(Favorites.SCREEN, item.screenId)));
-    }
-
-    private void executeUpdateItem(ItemInfo item, Supplier<ContentWriter> writer) {
-        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, writer));
-    }
-
-    public static void modifyItemInDatabase(Context context, final ItemInfo item, String alias,
-                                            String swipeUpAction,
-                                            IconPackManager.CustomIconEntry iconEntry, Bitmap icon,
-                                            boolean updateIcon, boolean reload) {
-        LauncherAppState.getInstance(context).getLauncher().getModelWriter().executeUpdateItem(item, () -> {
-            final ContentWriter writer = new ContentWriter(context);
-            writer.put(Favorites.TITLE_ALIAS, alias);
-            writer.put(Favorites.SWIPE_UP_ACTION, swipeUpAction);
-            if (updateIcon) {
-                writer.put(Favorites.CUSTOM_ICON, icon != null ? GraphicsUtils.flattenBitmap(icon) : null);
-                writer.put(Favorites.CUSTOM_ICON_ENTRY, iconEntry != null ? iconEntry.toString() : null);
-            }
-            return writer;
-        });
-        if (reload) {
-            LauncherAppState.getInstance(context).getModel().forceReload();
-        }
     }
 
     /**
@@ -290,7 +260,9 @@ public class ModelWriter {
      * Removes all the items from the database matching {@param matcher}.
      */
     public void deleteItemsFromDatabase(ItemInfoMatcher matcher) {
-        deleteItemsFromDatabase(matcher.filterItemInfos(mBgDataModel.itemsIdMap));
+        deleteItemsFromDatabase(StreamSupport.stream(mBgDataModel.itemsIdMap.spliterator(), false)
+                .filter(matcher::matchesInfo)
+                .collect(Collectors.toList()));
     }
 
     /**

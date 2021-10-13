@@ -19,10 +19,8 @@ package com.android.launcher3.tapl;
 import static com.android.launcher3.testing.TestProtocol.ALL_APPS_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.SPRING_LOADED_STATE_ORDINAL;
-
 import static junit.framework.TestCase.assertTrue;
 
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.SystemClock;
@@ -61,64 +59,43 @@ public final class Workspace extends Home {
         mHotseat = launcher.waitForLauncherObject("hotseat");
     }
 
-    private static boolean supportsRoundedCornersOnWindows(Resources resources) {
-        return ResourceUtils.getBoolByName(
-                "config_supportsRoundedCornersOnWindows", resources, false);
-    }
+    /**
+     * Swipes up to All Apps.
+     *
+     * @return the App Apps object.
+     */
+    @NonNull
+    public AllApps switchToAllApps() {
+        try (LauncherInstrumentation.Closable e = mLauncher.eventsCheck();
+             LauncherInstrumentation.Closable c =
+                     mLauncher.addContextLayer("want to switch from workspace to all apps")) {
+            verifyActiveContainer();
+            final int deviceHeight = mLauncher.getDevice().getDisplayHeight();
+            final int bottomGestureMargin = ResourceUtils.getNavbarSize(
+                    ResourceUtils.NAVBAR_BOTTOM_GESTURE_SIZE, mLauncher.getResources());
+            final int windowCornerRadius = (int) Math.ceil(mLauncher.getWindowCornerRadius());
+            final int startY = deviceHeight - Math.max(bottomGestureMargin, windowCornerRadius) - 1;
+            final int swipeHeight = mLauncher.getTestInfo(
+                    TestProtocol.REQUEST_HOME_TO_ALL_APPS_SWIPE_HEIGHT).
+                    getInt(TestProtocol.TEST_INFO_RESPONSE_FIELD);
+            LauncherInstrumentation.log(
+                    "switchToAllApps: deviceHeight = " + deviceHeight + ", startY = " + startY
+                            + ", swipeHeight = " + swipeHeight + ", slop = "
+                            + mLauncher.getTouchSlop());
 
-    private static float getWindowCornerRadius(Resources resources) {
-        if (!supportsRoundedCornersOnWindows(resources)) {
-            return 0f;
+            mLauncher.swipeToState(
+                    0,
+                    startY,
+                    0,
+                    startY - swipeHeight - mLauncher.getTouchSlop(),
+                    12,
+                    ALL_APPS_STATE_ORDINAL, LauncherInstrumentation.GestureScope.INSIDE);
+
+            try (LauncherInstrumentation.Closable c1 = mLauncher.addContextLayer(
+                    "swiped to all apps")) {
+                return new AllApps(mLauncher);
+            }
         }
-
-        // Radius that should be used in case top or bottom aren't defined.
-        float defaultRadius = ResourceUtils.getDimenByName("rounded_corner_radius", resources, 0);
-
-        float topRadius = ResourceUtils.getDimenByName("rounded_corner_radius_top", resources, 0);
-        if (topRadius == 0f) {
-            topRadius = defaultRadius;
-        }
-        float bottomRadius = ResourceUtils.getDimenByName(
-                "rounded_corner_radius_bottom", resources, 0);
-        if (bottomRadius == 0f) {
-            bottomRadius = defaultRadius;
-        }
-
-        // Always use the smallest radius to make sure the rounded corners will
-        // completely cover the display.
-        return Math.min(topRadius, bottomRadius);
-    }
-
-    static void dragIconToWorkspace(
-            LauncherInstrumentation launcher, Launchable launchable, Point dest,
-            String longPressIndicator, boolean startsActivity, boolean isWidgetShortcut,
-            Runnable expectLongClickEvents) {
-        LauncherInstrumentation.log("dragIconToWorkspace: begin");
-        final Point launchableCenter = launchable.getObject().getVisibleCenter();
-        final long downTime = SystemClock.uptimeMillis();
-        launcher.runToState(
-                () -> {
-                    launcher.sendPointer(downTime, downTime, MotionEvent.ACTION_DOWN,
-                            launchableCenter, LauncherInstrumentation.GestureScope.INSIDE);
-                    LauncherInstrumentation.log("dragIconToWorkspace: sent down");
-                    expectLongClickEvents.run();
-                    launcher.waitForLauncherObject(longPressIndicator);
-                    LauncherInstrumentation.log("dragIconToWorkspace: indicator");
-                    launcher.movePointer(launchableCenter, dest, 10, downTime, true,
-                            LauncherInstrumentation.GestureScope.INSIDE);
-                },
-                SPRING_LOADED_STATE_ORDINAL);
-        LauncherInstrumentation.log("dragIconToWorkspace: moved pointer");
-        launcher.runToState(
-                () -> launcher.sendPointer(
-                        downTime, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, dest,
-                        LauncherInstrumentation.GestureScope.INSIDE),
-                NORMAL_STATE_ORDINAL);
-        if (startsActivity || isWidgetShortcut) {
-            launcher.expectEvent(TestProtocol.SEQUENCE_MAIN, LauncherInstrumentation.EVENT_START);
-        }
-        LauncherInstrumentation.log("dragIconToWorkspace: end");
-        launcher.waitUntilLauncherObjectGone("drop_target_bar");
     }
 
     /**
@@ -157,55 +134,6 @@ public final class Workspace extends Home {
     }
 
     /**
-     * Swipes up to All Apps.
-     *
-     * @return the App Apps object.
-     */
-    @NonNull
-    public AllApps switchToAllApps() {
-        try (LauncherInstrumentation.Closable e = mLauncher.eventsCheck();
-             LauncherInstrumentation.Closable c =
-                     mLauncher.addContextLayer("want to switch from workspace to all apps")) {
-            verifyActiveContainer();
-            final int deviceHeight = mLauncher.getDevice().getDisplayHeight();
-            final int bottomGestureMargin = ResourceUtils.getNavbarSize(
-                    ResourceUtils.NAVBAR_BOTTOM_GESTURE_SIZE, mLauncher.getResources());
-            final int windowCornerRadius = (int) Math.ceil(getWindowCornerRadius(
-                    mLauncher.getResources()));
-            final int startY = deviceHeight - Math.max(bottomGestureMargin, windowCornerRadius) - 1;
-            final int swipeHeight = mLauncher.getTestInfo(
-                    TestProtocol.REQUEST_HOME_TO_ALL_APPS_SWIPE_HEIGHT).
-                    getInt(TestProtocol.TEST_INFO_RESPONSE_FIELD);
-            LauncherInstrumentation.log(
-                    "switchToAllApps: swipeHeight = " + swipeHeight + ", slop = "
-                            + mLauncher.getTouchSlop());
-
-            mLauncher.swipeToState(
-                    0,
-                    startY,
-                    0,
-                    startY - swipeHeight - mLauncher.getTouchSlop(),
-                    12,
-                    ALL_APPS_STATE_ORDINAL, LauncherInstrumentation.GestureScope.INSIDE);
-
-            try (LauncherInstrumentation.Closable c1 = mLauncher.addContextLayer(
-                    "swiped to all apps")) {
-                return new AllApps(mLauncher);
-            }
-        }
-    }
-
-    private boolean isWorkspaceScrollable(UiObject2 workspace) {
-        return workspace.getChildCount() > 1;
-    }
-
-    @NonNull
-    public AppIcon getHotseatAppIcon(String appName) {
-        return new AppIcon(mLauncher, mLauncher.waitForObjectInContainer(
-                mHotseat, AppIcon.getAppIconSelector(appName, mLauncher)));
-    }
-
-    /**
      * Ensures that workspace is scrollable. If it's not, drags an icon icons from hotseat to the
      * second screen.
      */
@@ -220,7 +148,7 @@ public final class Workspace extends Home {
                             getHotseatAppIcon("Chrome"),
                             new Point(mLauncher.getDevice().getDisplayWidth(),
                                     mLauncher.getVisibleBounds(workspace).centerY()),
-                            "deep_shortcuts_container",
+                            "popup_container",
                             false,
                             false,
                             () -> mLauncher.expectEvent(
@@ -231,6 +159,50 @@ public final class Workspace extends Home {
             assertTrue("Home screen workspace didn't become scrollable",
                     isWorkspaceScrollable(workspace));
         }
+    }
+
+    private boolean isWorkspaceScrollable(UiObject2 workspace) {
+        return workspace.getChildCount() > 1;
+    }
+
+    @NonNull
+    public AppIcon getHotseatAppIcon(String appName) {
+        return new AppIcon(mLauncher, mLauncher.waitForObjectInContainer(
+                mHotseat, AppIcon.getAppIconSelector(appName, mLauncher)));
+    }
+
+    static void dragIconToWorkspace(
+            LauncherInstrumentation launcher, Launchable launchable, Point dest,
+            String longPressIndicator, boolean startsActivity, boolean isWidgetShortcut,
+            Runnable expectLongClickEvents) {
+        LauncherInstrumentation.log("dragIconToWorkspace: begin");
+        final Point launchableCenter = launchable.getObject().getVisibleCenter();
+        final long downTime = SystemClock.uptimeMillis();
+        launcher.runToState(
+                () -> {
+                    launcher.sendPointer(downTime, downTime, MotionEvent.ACTION_DOWN,
+                            launchableCenter, LauncherInstrumentation.GestureScope.INSIDE);
+                    LauncherInstrumentation.log("dragIconToWorkspace: sent down");
+                    expectLongClickEvents.run();
+                    launcher.waitForLauncherObject(longPressIndicator);
+                    LauncherInstrumentation.log("dragIconToWorkspace: indicator");
+                    launcher.movePointer(launchableCenter, dest, 10, downTime, true,
+                            LauncherInstrumentation.GestureScope.INSIDE);
+                },
+                SPRING_LOADED_STATE_ORDINAL,
+                "long-pressing and moving");
+        LauncherInstrumentation.log("dragIconToWorkspace: moved pointer");
+        launcher.runToState(
+                () -> launcher.sendPointer(
+                        downTime, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, dest,
+                        LauncherInstrumentation.GestureScope.INSIDE),
+                NORMAL_STATE_ORDINAL,
+                "sending UP event");
+        if (startsActivity || isWidgetShortcut) {
+            launcher.expectEvent(TestProtocol.SEQUENCE_MAIN, LauncherInstrumentation.EVENT_START);
+        }
+        LauncherInstrumentation.log("dragIconToWorkspace: end");
+        launcher.waitUntilLauncherObjectGone("drop_target_bar");
     }
 
     /**

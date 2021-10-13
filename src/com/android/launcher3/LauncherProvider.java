@@ -16,6 +16,11 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
+import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
+import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
+import static com.android.launcher3.provider.LauncherDbUtils.tableExists;
+
 import android.annotation.TargetApi;
 import android.app.backup.BackupManager;
 import android.appwidget.AppWidgetHost;
@@ -66,6 +71,7 @@ import com.android.launcher3.util.IntSet;
 import com.android.launcher3.util.NoLocaleSQLiteHelper;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Thunk;
+import com.android.launcher3.widget.LauncherAppWidgetHost;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -81,25 +87,21 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import static com.android.launcher3.config.FeatureFlags.MULTI_DB_GRID_MIRATION_ALGO;
-import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
-import static com.android.launcher3.provider.LauncherDbUtils.dropTable;
-import static com.android.launcher3.provider.LauncherDbUtils.tableExists;
-
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
     private static final boolean LOGD = false;
 
     private static final String DOWNGRADE_SCHEMA_FILE = "downgrade_schema.json";
+    private static final long RESTORE_BACKUP_TABLE_DELAY = TimeUnit.SECONDS.toMillis(30);
+
     /**
      * Represents the schema of the database. Changes in scheme need not be backwards compatible.
      * When increasing the scheme version, ensure that downgrade_schema.json is updated
      */
-    public static final int SCHEMA_VERSION = 32;
-    public static final String KEY_LAYOUT_PROVIDER_AUTHORITY = "KEY_LAYOUT_PROVIDER_AUTHORITY";
+    public static final int SCHEMA_VERSION = 29;
 
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".settings";
-    private static final long RESTORE_BACKUP_TABLE_DELAY = TimeUnit.SECONDS.toMillis(30);
+    public static final String KEY_LAYOUT_PROVIDER_AUTHORITY = "KEY_LAYOUT_PROVIDER_AUTHORITY";
 
     static final String EMPTY_DATABASE_CREATED = "EMPTY_DATABASE_CREATED";
 
@@ -120,17 +122,16 @@ public class LauncherProvider extends ContentProvider {
         appState.getModel().dumpState("", fd, writer, args);
     }
 
-    @Thunk
-    static int dbInsertAndCheck(DatabaseHelper helper,
-                                SQLiteDatabase db, String table, String nullColumnHack, ContentValues values) {
-        if (values == null) {
-            throw new RuntimeException("Error: attempting to insert null values");
+    @Override
+    public boolean onCreate() {
+        if (FeatureFlags.IS_STUDIO_BUILD) {
+            Log.d(TAG, "Launcher process started");
         }
-        if (!values.containsKey(LauncherSettings.Favorites._ID)) {
-            throw new RuntimeException("Error: attempting to add item without specifying an id");
-        }
-        helper.checkId(values);
-        return (int) db.insert(table, nullColumnHack, values);
+
+        // The content provider exists for the entire duration of the launcher main process and
+        // is the first component to get created.
+        MainProcessInitializer.initialize(getContext().getApplicationContext());
+        return true;
     }
 
     @Override
@@ -141,28 +142,6 @@ public class LauncherProvider extends ContentProvider {
         } else {
             return "vnd.android.cursor.item/" + args.table;
         }
-    }
-
-    public static Uri getLayoutUri(String authority, Context ctx) {
-        InvariantDeviceProfile grid = LauncherAppState.getIDP(ctx);
-        return new Uri.Builder().scheme("content").authority(authority).path("launcher_layout")
-                .appendQueryParameter("version", "1")
-                .appendQueryParameter("gridWidth", Integer.toString(grid.numColumns))
-                .appendQueryParameter("gridHeight", Integer.toString(grid.numRows))
-                .appendQueryParameter("hotseatSize", Integer.toString(grid.numHotseatIcons))
-                .build();
-    }
-
-    @Override
-    public boolean onCreate() {
-        /*if (FeatureFlags.IS_STUDIO_BUILD) {
-            Log.d(TAG, "Launcher process started");
-        }*/
-
-        // The content provider exists for the entire duration of the launcher main process and
-        // is the first component to get created.
-        MainProcessInitializer.initialize(getContext().getApplicationContext());
-        return true;
     }
 
     /**
@@ -199,15 +178,6 @@ public class LauncherProvider extends ContentProvider {
         return true;
     }
 
-    private void reloadLauncherIfExternal() {
-        if (Binder.getCallingPid() != Process.myPid()) {
-            LauncherAppState app = LauncherAppState.getInstanceNoCreate();
-            if (app != null) {
-                app.getModel().forceReload();
-            }
-        }
-    }
-
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
@@ -219,9 +189,57 @@ public class LauncherProvider extends ContentProvider {
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Cursor result = qb.query(db, projection, args.where, args.args, null, null, sortOrder);
+        final Bundle extra = new Bundle();
+        extra.putString(LauncherSettings.Settings.EXTRA_DB_NAME, mOpenHelper.getDatabaseName());
+        result.setExtras(extra);
         result.setNotificationUri(getContext().getContentResolver(), uri);
 
         return result;
+    }
+
+    @Thunk
+    static int dbInsertAndCheck(DatabaseHelper helper,
+                                SQLiteDatabase db, String table, String nullColumnHack, ContentValues values) {
+        if (values == null) {
+            throw new RuntimeException("Error: attempting to insert null values");
+        }
+        if (!values.containsKey(LauncherSettings.Favorites._ID)) {
+            throw new RuntimeException("Error: attempting to add item without specifying an id");
+        }
+        helper.checkId(values);
+        return (int) db.insert(table, nullColumnHack, values);
+    }
+
+    private void reloadLauncherIfExternal() {
+        if (Binder.getCallingPid() != Process.myPid()) {
+            LauncherAppState app = LauncherAppState.getInstanceNoCreate();
+            if (app != null) {
+                app.getModel().forceReload();
+            }
+        }
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues initialValues) {
+        createDbIfNotExists();
+        SqlArguments args = new SqlArguments(uri);
+
+        // In very limited cases, we support system|signature permission apps to modify the db.
+        if (Binder.getCallingPid() != Process.myPid()) {
+            if (!initializeExternalAdd(initialValues)) {
+                return null;
+            }
+        }
+
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        addModifiedTime(initialValues);
+        final int rowId = dbInsertAndCheck(mOpenHelper, db, args.table, null, initialValues);
+        if (rowId < 0) return null;
+        onAddOrDeleteOp(db);
+
+        uri = ContentUris.withAppendedId(uri, rowId);
+        reloadLauncherIfExternal();
+        return uri;
     }
 
     private boolean initializeExternalAdd(ContentValues values) {
@@ -259,29 +277,6 @@ public class LauncherProvider extends ContentProvider {
         }
 
         return true;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
-        createDbIfNotExists();
-        SqlArguments args = new SqlArguments(uri);
-
-        // In very limited cases, we support system|signature permission apps to modify the db.
-        if (Binder.getCallingPid() != Process.myPid()) {
-            if (!initializeExternalAdd(initialValues)) {
-                return null;
-            }
-        }
-
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        addModifiedTime(initialValues);
-        final int rowId = dbInsertAndCheck(mOpenHelper, db, args.table, null, initialValues);
-        if (rowId < 0) return null;
-        onAddOrDeleteOp(db);
-
-        uri = ContentUris.withAppendedId(uri, rowId);
-        reloadLauncherIfExternal();
-        return uri;
     }
 
     @Override
@@ -334,18 +329,6 @@ public class LauncherProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        createDbIfNotExists();
-        SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
-
-        addModifiedTime(values);
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count = db.update(args.table, values, args.where, args.args);
-        reloadLauncherIfExternal();
-        return count;
-    }
-
-    @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         createDbIfNotExists();
         SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
@@ -361,6 +344,18 @@ public class LauncherProvider extends ContentProvider {
             onAddOrDeleteOp(db);
             reloadLauncherIfExternal();
         }
+        return count;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        createDbIfNotExists();
+        SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
+
+        addModifiedTime(values);
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int count = db.update(args.table, values, args.where, args.args);
+        reloadLauncherIfExternal();
         return count;
     }
 
@@ -490,14 +485,8 @@ public class LauncherProvider extends ContentProvider {
         mOpenHelper.onAddOrDeleteOp(db);
     }
 
-    @Thunk
-    static void addModifiedTime(ContentValues values) {
-        values.put(LauncherSettings.Favorites.MODIFIED, System.currentTimeMillis());
-    }
-
     /**
      * Deletes any empty folder from the DB.
-     *
      * @return Ids of deleted folders.
      */
     private IntArray deleteEmptyFolders() {
@@ -522,6 +511,11 @@ public class LauncherProvider extends ContentProvider {
             Log.e(TAG, ex.getMessage(), ex);
             return new IntArray();
         }
+    }
+
+    @Thunk
+    static void addModifiedTime(ContentValues values) {
+        values.put(LauncherSettings.Favorites.MODIFIED, System.currentTimeMillis());
     }
 
     private void clearFlagEmptyDbCreated() {
@@ -615,9 +609,19 @@ public class LauncherProvider extends ContentProvider {
                     ctx.getPackageManager().getResourcesForApplication(pi.applicationInfo),
                     () -> parser, AutoInstallsLayout.TAG_WORKSPACE);
         } catch (Exception e) {
-            Log.e(TAG, "Error getting layout stream from: " + authority , e);
+            Log.e(TAG, "Error getting layout stream from: " + authority, e);
             return null;
         }
+    }
+
+    public static Uri getLayoutUri(String authority, Context ctx) {
+        InvariantDeviceProfile grid = LauncherAppState.getIDP(ctx);
+        return new Uri.Builder().scheme("content").authority(authority).path("launcher_layout")
+                .appendQueryParameter("version", "1")
+                .appendQueryParameter("gridWidth", Integer.toString(grid.numColumns))
+                .appendQueryParameter("gridHeight", Integer.toString(grid.numRows))
+                .appendQueryParameter("hotseatSize", Integer.toString(grid.numDatabaseHotseatIcons))
+                .build();
     }
 
     private DefaultLayoutParser getDefaultLayoutParser(AppWidgetHost widgetHost) {
@@ -644,15 +648,6 @@ public class LauncherProvider extends ContentProvider {
         private int mMaxScreenId = -1;
         private boolean mBackupTableExists;
         private boolean mHotseatRestoreTableExists;
-
-        /**
-         * Constructor used in tests and for restore.
-         */
-        public DatabaseHelper(Context context, String dbName, boolean forMigration) {
-            super(context, dbName, SCHEMA_VERSION);
-            mContext = context;
-            mForMigration = forMigration;
-        }
 
         static DatabaseHelper createDatabaseHelper(Context context, boolean forMigration) {
             return createDatabaseHelper(context, null, forMigration);
@@ -682,6 +677,15 @@ public class LauncherProvider extends ContentProvider {
 
             databaseHelper.initIds();
             return databaseHelper;
+        }
+
+        /**
+         * Constructor used in tests and for restore.
+         */
+        public DatabaseHelper(Context context, String dbName, boolean forMigration) {
+            super(context, dbName, SCHEMA_VERSION);
+            mContext = context;
+            mForMigration = forMigration;
         }
 
         protected void initIds() {
@@ -850,18 +854,11 @@ public class LauncherProvider extends ContentProvider {
                     convertShortcutsToLauncherActivities(db);
                 case 26:
                     // QSB was moved to the grid. Clear the first row on screen 0.
-                    if (FeatureFlags.showQSbOnFirstScreen(mContext) &&
+                    if (FeatureFlags.QSB_ON_FIRST_SCREEN &&
                             !LauncherDbUtils.prepareScreenZeroToHostQsb(mContext, db)) {
                         break;
                     }
-                case 27:
-                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.TITLE_ALIAS + " TEXT;");
-                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.CUSTOM_ICON + " BLOB;");
-                case 29:
-                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.CUSTOM_ICON_ENTRY + " TEXT;");
-                case 30:
-                    db.execSQL("ALTER TABLE " + Favorites.TABLE_NAME + " ADD COLUMN " + Favorites.SWIPE_UP_ACTION + " TEXT;");
-                case 31: {
+                case 27: {
                     // Update the favorites table so that the screen ids are ordered based on
                     // workspace page rank.
                     IntArray finalScreens = LauncherDbUtils.queryIntArray(db, "workspaceScreens",
@@ -884,9 +881,18 @@ public class LauncherProvider extends ContentProvider {
                     }
                     dropTable(db, "workspaceScreens");
                 }
-                case 32:
+                case 28: {
+                    boolean columnAdded = addIntegerColumn(
+                            db, Favorites.APPWIDGET_SOURCE, Favorites.CONTAINER_UNKNOWN);
+                    if (!columnAdded) {
+                        // Old version remains, which means we wipe old data
+                        break;
+                    }
+                }
+                case 29: {
                     // DB Upgraded successfully
                     return;
+                }
             }
 
             // DB was not upgraded
@@ -922,7 +928,6 @@ public class LauncherProvider extends ContentProvider {
          * Removes widgets which are registered to the Launcher's host, but are not present
          * in our model.
          */
-        @TargetApi(Build.VERSION_CODES.O)
         public void removeGhostWidgets(SQLiteDatabase db) {
             // Get all existing widget ids.
             final AppWidgetHost host = newLauncherWidgetHost();
@@ -1048,7 +1053,7 @@ public class LauncherProvider extends ContentProvider {
         }
 
         public AppWidgetHost newLauncherWidgetHost() {
-            return new LauncherAppWidgetHost(mContext.getApplicationContext());
+            return new LauncherAppWidgetHost(mContext);
         }
 
         @Override
@@ -1106,11 +1111,20 @@ public class LauncherProvider extends ContentProvider {
      * @return the max _id in the provided table.
      */
     @Thunk static int getMaxId(SQLiteDatabase db, String query, Object... args) {
-        int max = (int) DatabaseUtils.longForQuery(db,
-                String.format(Locale.ENGLISH, query, args),
-                null);
-        if (max < 0) {
-            throw new RuntimeException("Error: could not query max id");
+        int max = 0;
+        try (SQLiteStatement prog = db.compileStatement(
+                String.format(Locale.ENGLISH, query, args))) {
+            max = (int) DatabaseUtils.longForQuery(prog, null);
+            if (max < 0) {
+                throw new RuntimeException("Error: could not query max id");
+            }
+        } catch (IllegalArgumentException exception) {
+            String message = exception.getMessage();
+            if (message.contains("re-open") && message.contains("already-closed")) {
+                // Don't crash trying to end a transaction an an already closed DB. See b/173162852.
+            } else {
+                throw exception;
+            }
         }
         return max;
     }

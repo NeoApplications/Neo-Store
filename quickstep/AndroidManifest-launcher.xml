@@ -18,29 +18,30 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.launcher3">
-    <uses-sdk android:minSdkVersion="25" android:targetSdkVersion="29" />
+    <uses-sdk android:targetSdkVersion="29" android:minSdkVersion="25" />
     <!--
     Manifest entries specific to Launcher3. This is merged with AndroidManifest-common.xml.
     Refer comments around specific entries on how to extend individual components.
     -->
 
     <application android:backupAgent="com.android.launcher3.LauncherBackupAgent"
-        android:fullBackupContent="@xml/backupscheme" android:fullBackupOnly="true"
+        android:fullBackupOnly="true" android:fullBackupContent="@xml/backupscheme"
         android:hardwareAccelerated="true" android:icon="@drawable/ic_launcher_home"
-        android:label="@string/derived_app_name" android:largeHeap="@bool/config_largeHeap"
-        android:restoreAnyVersion="true" android:supportsRtl="true" android:theme="@style/AppTheme">
+        android:label="@string/derived_app_name" android:theme="@style/AppTheme"
+        android:largeHeap="@bool/config_largeHeap" android:restoreAnyVersion="true"
+        android:supportsRtl="true">
 
         <!--
         Main launcher activity. When extending only change the name, and keep all the
         attributes and intent filters the same
         -->
         <activity android:name="com.android.launcher3.uioverrides.QuickstepLauncher"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize"
-            android:enabled="true" android:launchMode="singleTask" android:resizeableActivity="true"
-            android:resumeWhilePausing="true" android:screenOrientation="unspecified"
-            android:stateNotNeeded="true" android:taskAffinity=""
-            android:windowSoftInputMode="adjustPan">
+            android:launchMode="singleTask" android:clearTaskOnLaunch="true"
+            android:stateNotNeeded="true" android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="unspecified"
+            android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density"
+            android:resizeableActivity="true" android:resumeWhilePausing="true"
+            android:taskAffinity="" android:exported="true" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />

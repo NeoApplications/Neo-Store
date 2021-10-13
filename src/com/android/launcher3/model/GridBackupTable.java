@@ -59,9 +59,7 @@ public class GridBackupTable {
      * put into use.
      */
     private static final int STATE_RAW = 1;
-    /**
-     * STATE_SANITIZED indicates the backup has already been sanitized, thus can be used as-is.
-     */
+    /** STATE_SANITIZED indicates the backup has already been sanitized, thus can be used as-is. */
     private static final int STATE_SANITIZED = 2;
 
     private final Context mContext;
@@ -75,6 +73,10 @@ public class GridBackupTable {
     private int mRestoredGridX;
     private int mRestoredGridY;
 
+    @IntDef({STATE_NOT_FOUND, STATE_RAW, STATE_SANITIZED})
+    private @interface BackupState {
+    }
+
     public GridBackupTable(Context context, SQLiteDatabase db, int hotseatSize, int gridX,
                            int gridY) {
         mContext = context;
@@ -83,24 +85,6 @@ public class GridBackupTable {
         mOldHotseatSize = hotseatSize;
         mOldGridX = gridX;
         mOldGridY = gridY;
-    }
-
-    /**
-     * Copy valid grid entries from one table to another.
-     */
-    private static void copyTable(SQLiteDatabase db, String from, String to, long userSerial) {
-        dropTable(db, to);
-        Favorites.addTableToDb(db, userSerial, false, to);
-        db.execSQL("INSERT INTO " + to + " SELECT * FROM " + from + " where _id > " + ID_PROPERTY);
-    }
-
-    private static boolean validateDBVersion(int expected, int actual) {
-        if (expected != actual) {
-            Log.e(TAG, String.format("Launcher.db version mismatch, expecting %d but %d was found",
-                    expected, actual));
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -130,11 +114,6 @@ public class GridBackupTable {
         return restoreIfBackupExists(Favorites.PREVIEW_TABLE_NAME);
     }
 
-    public int getRestoreHotseatAndGridSize(Point outGridSize) {
-        outGridSize.set(mRestoredGridX, mRestoredGridY);
-        return mRestoredHotseatSize;
-    }
-
     private boolean restoreIfBackupExists(String toTableName) {
         if (loadDBProperties() != STATE_SANITIZED) {
             return false;
@@ -144,6 +123,11 @@ public class GridBackupTable {
         copyTable(mDb, BACKUP_TABLE_NAME, toTableName, userSerial);
         Log.d(TAG, "Backup table found");
         return true;
+    }
+
+    public int getRestoreHotseatAndGridSize(Point outGridSize) {
+        outGridSize.set(mRestoredGridX, mRestoredGridY);
+        return mRestoredHotseatSize;
     }
 
     /**
@@ -157,6 +141,7 @@ public class GridBackupTable {
     }
 
     /**
+     *
      * Restores the contents of a custom table to Favorites.TABLE_NAME
      */
 
@@ -170,6 +155,15 @@ public class GridBackupTable {
         if (dropAfterUse) {
             dropTable(mDb, tableName);
         }
+    }
+
+    /**
+     * Copy valid grid entries from one table to another.
+     */
+    private static void copyTable(SQLiteDatabase db, String from, String to, long userSerial) {
+        dropTable(db, to);
+        Favorites.addTableToDb(db, userSerial, false, to);
+        db.execSQL("INSERT INTO " + to + " SELECT * FROM " + from + " where _id > " + ID_PROPERTY);
     }
 
     private void encodeDBProperties(int options) {
@@ -236,7 +230,12 @@ public class GridBackupTable {
         encodeDBProperties(options);
     }
 
-    @IntDef({STATE_NOT_FOUND, STATE_RAW, STATE_SANITIZED})
-    private @interface BackupState {
+    private static boolean validateDBVersion(int expected, int actual) {
+        if (expected != actual) {
+            Log.e(TAG, String.format("Launcher.db version mismatch, expecting %d but %d was found",
+                    expected, actual));
+            return false;
+        }
+        return true;
     }
 }

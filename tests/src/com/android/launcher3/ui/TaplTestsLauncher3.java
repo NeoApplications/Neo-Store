@@ -17,7 +17,6 @@
 package com.android.launcher3.ui;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -36,11 +35,13 @@ import com.android.launcher3.tapl.AppIconMenu;
 import com.android.launcher3.tapl.AppIconMenuItem;
 import com.android.launcher3.tapl.Widgets;
 import com.android.launcher3.tapl.Workspace;
+import com.android.launcher3.util.rule.ScreenRecordRule.ScreenRecord;
 import com.android.launcher3.views.OptionsPopupView;
-import com.android.launcher3.widget.WidgetsFullSheet;
-import com.android.launcher3.widget.WidgetsRecyclerView;
+import com.android.launcher3.widget.picker.WidgetsFullSheet;
+import com.android.launcher3.widget.picker.WidgetsRecyclerView;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -91,6 +92,7 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
     }
 
     @Test
+    @ScreenRecord //b/187080582
     public void testDevicePressMenu() throws Exception {
         mDevice.pressMenu();
         mDevice.waitForIdle();
@@ -98,6 +100,26 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
                 launcher -> assertTrue("Launcher internal state didn't switch to Showing Menu",
                         OptionsPopupView.getOptionsPopup(launcher) != null));
         // Check that pressHome works when the menu is shown.
+        mLauncher.pressHome();
+    }
+
+    @Ignore
+    public void testOpenHomeSettingsFromWorkspace() {
+        mDevice.pressMenu();
+        mDevice.waitForIdle();
+        mLauncher.getOptionsPopupMenu().getMenuItem("Home settings")
+                .launch(mDevice.getLauncherPackageName());
+    }
+
+    @Test
+    public void testPressHomeOnAllAppsContextMenu() throws Exception {
+        final AllApps allApps = mLauncher.getWorkspace().switchToAllApps();
+        allApps.freeze();
+        try {
+            allApps.getAppIcon("TestActivity7").openMenu();
+        } finally {
+            allApps.unfreeze();
+        }
         mLauncher.pressHome();
     }
 
@@ -148,26 +170,6 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
         } finally {
             allApps.unfreeze();
         }
-    }
-
-    @Test
-    public void testOpenHomeSettingsFromWorkspace() {
-        mDevice.pressMenu();
-        mDevice.waitForIdle();
-        mLauncher.getOptionsPopupMenu().getMenuItem("Home settings")
-                .launch(mDevice.getLauncherPackageName());
-    }
-
-    @Test
-    public void testPressHomeOnAllAppsContextMenu() throws Exception {
-        final AllApps allApps = mLauncher.getWorkspace().switchToAllApps();
-        allApps.freeze();
-        try {
-            allApps.getAppIcon("TestActivity7").openMenu();
-        } finally {
-            allApps.unfreeze();
-        }
-        mLauncher.pressHome();
     }
 
     @Test
@@ -292,13 +294,15 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
         try {
             final AppIconMenu menu = allApps.
                     getAppIcon(APP_NAME).
-                    openMenu();
+                    openDeepShortcutMenu();
 
             executeOnLauncher(
                     launcher -> assertTrue("Launcher internal state didn't switch to Showing Menu",
                             isOptionsPopupVisible(launcher)));
 
-            menu.getMenuItem(1).launch(getAppPackageName());
+            final AppIconMenuItem menuItem = menu.getMenuItem(1);
+            assertEquals("Wrong menu item", "Shortcut 2", menuItem.getText());
+            menuItem.launch(getAppPackageName());
         } finally {
             allApps.unfreeze();
         }
@@ -331,19 +335,31 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
         // 1. Open all apps and wait for load complete.
         // 2. Find the app and long press it to show shortcuts.
         // 3. Press icon center until shortcuts appear
-        final AllApps allApps = mLauncher.
-                getWorkspace().
-                switchToAllApps();
+        final AllApps allApps = mLauncher
+                .getWorkspace()
+                .switchToAllApps();
         allApps.freeze();
         try {
-            final AppIconMenuItem menuItem = allApps.
-                    getAppIcon(APP_NAME).
-                    openMenu().
-                    getMenuItem(0);
-            final String shortcutName = menuItem.getText();
+            final AppIconMenu menu = allApps
+                    .getAppIcon(APP_NAME)
+                    .openDeepShortcutMenu();
+            final AppIconMenuItem menuItem0 = menu.getMenuItem(0);
+            final AppIconMenuItem menuItem2 = menu.getMenuItem(2);
+
+            final AppIconMenuItem menuItem;
+
+            final String expectedShortcutName = "Shortcut 3";
+            if (menuItem0.getText().equals(expectedShortcutName)) {
+                menuItem = menuItem0;
+            } else {
+                final String shortcutName2 = menuItem2.getText();
+                assertEquals("Wrong menu item", expectedShortcutName, shortcutName2);
+                menuItem = menuItem2;
+            }
 
             menuItem.dragToWorkspace(false, false);
-            mLauncher.getWorkspace().getWorkspaceAppIcon(shortcutName).launch(getAppPackageName());
+            mLauncher.getWorkspace().getWorkspaceAppIcon(expectedShortcutName)
+                    .launch(getAppPackageName());
         } finally {
             allApps.unfreeze();
         }

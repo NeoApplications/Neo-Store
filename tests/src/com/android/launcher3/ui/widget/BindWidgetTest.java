@@ -16,9 +16,7 @@
 package com.android.launcher3.ui.widget;
 
 import static androidx.test.InstrumentationRegistry.getTargetContext;
-
 import static com.android.launcher3.common.WidgetUtils.createWidgetInfo;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -37,7 +35,6 @@ import android.widget.RemoteViews;
 import androidx.test.filters.LargeTest;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.launcher3.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.R;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
@@ -47,6 +44,7 @@ import com.android.launcher3.tapl.Workspace;
 import com.android.launcher3.ui.AbstractLauncherUiTest;
 import com.android.launcher3.ui.TestViewHelpers;
 import com.android.launcher3.util.rule.ShellCommandRule;
+import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
 
 import org.junit.After;
@@ -192,7 +190,7 @@ public class BindWidgetTest extends AbstractLauncherUiTest {
                         WidgetManagerHelper.WIDGET_OPTION_RESTORE_COMPLETED));
         executeOnLauncher(l -> l.getAppWidgetHost().startListening());
         verifyWidgetPresent(info);
-        assertNull(mLauncher.getWorkspace().tryGetPendingWidget(DEFAULT_UI_TIMEOUT));
+        assertNull(mLauncher.getWorkspace().tryGetPendingWidget(100));
     }
 
     @Test

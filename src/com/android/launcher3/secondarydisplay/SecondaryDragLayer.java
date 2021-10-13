@@ -15,6 +15,10 @@
  */
 package com.android.launcher3.secondarydisplay;
 
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
+import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -24,7 +28,6 @@ import android.widget.GridView;
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.DeviceProfile;
-import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.R;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.model.data.ItemInfo;
@@ -35,10 +38,6 @@ import com.android.launcher3.views.BaseDragLayer;
 
 import java.util.Arrays;
 import java.util.Collections;
-
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static com.android.launcher3.popup.SystemShortcut.APP_INFO;
 
 /**
  * DragLayer for Secondary launcher
@@ -108,8 +107,6 @@ public class SecondaryDragLayer extends BaseDragLayer<SecondaryDisplayLauncher> 
         setMeasuredDimension(width, height);
 
         DeviceProfile grid = mActivity.getDeviceProfile();
-        InvariantDeviceProfile idp = grid.inv;
-
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
@@ -117,10 +114,10 @@ public class SecondaryDragLayer extends BaseDragLayer<SecondaryDisplayLauncher> 
                 int padding = 2 * (grid.desiredWorkspaceLeftRightMarginPx
                         + grid.cellLayoutPaddingLeftRightPx);
 
-                int maxWidth = grid.allAppsCellWidthPx * idp.numColsDrawer + padding;
+                int maxWidth = grid.allAppsCellWidthPx * grid.numShownAllAppsColumns + padding;
                 int appsWidth = Math.min(width, maxWidth);
 
-                int maxHeight = grid.allAppsCellHeightPx * idp.numColsDrawer + padding;
+                int maxHeight = grid.allAppsCellHeightPx * grid.numShownAllAppsColumns + padding;
                 int appsHeight = Math.min(height, maxHeight);
 
                 mAppsView.measure(
@@ -137,6 +134,32 @@ public class SecondaryDragLayer extends BaseDragLayer<SecondaryDisplayLauncher> 
             } else {
                 measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
             }
+        }
+    }
+
+    private class CloseAllAppsTouchController implements TouchController {
+
+        @Override
+        public boolean onControllerTouchEvent(MotionEvent ev) {
+            return false;
+        }
+
+        @Override
+        public boolean onControllerInterceptTouchEvent(MotionEvent ev) {
+            if (!mActivity.isAppDrawerShown()) {
+                return false;
+            }
+
+            if (AbstractFloatingView.getTopOpenView(mActivity) != null) {
+                return false;
+            }
+
+            if (ev.getAction() == MotionEvent.ACTION_DOWN
+                    && !isEventOverView(mActivity.getAppsView(), ev)) {
+                mActivity.showAppDrawer(false);
+                return true;
+            }
+            return false;
         }
     }
 
@@ -164,31 +187,5 @@ public class SecondaryDragLayer extends BaseDragLayer<SecondaryDisplayLauncher> 
                         APP_INFO.getShortcut(mActivity, item)));
         v.getParent().requestDisallowInterceptTouchEvent(true);
         return true;
-    }
-
-    private class CloseAllAppsTouchController implements TouchController {
-
-        @Override
-        public boolean onControllerTouchEvent(MotionEvent ev) {
-            return false;
-        }
-
-        @Override
-        public boolean onControllerInterceptTouchEvent(MotionEvent ev) {
-            if (!mActivity.isAppDrawerShown()) {
-                return false;
-            }
-
-            if (AbstractFloatingView.getTopOpenView(mActivity) != null) {
-                return false;
-            }
-
-            if (ev.getAction() == MotionEvent.ACTION_DOWN
-                    && !isEventOverView(mActivity.getAppsView(), ev)) {
-                mActivity.showAppDrawer(false);
-                return true;
-            }
-            return false;
-        }
     }
 }

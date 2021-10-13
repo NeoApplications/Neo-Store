@@ -48,25 +48,6 @@ public class CheckLongPressHelper {
     }
 
     /**
-     * Identifies if the provided {@link MotionEvent} is a stylus with the primary stylus button
-     * pressed.
-     *
-     * @param event The event to check.
-     * @return Whether a stylus button press occurred.
-     */
-    private static boolean isStylusButtonPressed(MotionEvent event) {
-        return event.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS
-                && event.isButtonPressed(MotionEvent.BUTTON_SECONDARY);
-    }
-
-    /**
-     * Overrides the default long press timeout.
-     */
-    public void setLongPressTimeoutFactor(float longPressTimeoutFactor) {
-        mLongPressTimeoutFactor = longPressTimeoutFactor;
-    }
-
-    /**
      * Handles the touch event on a view
      *
      * @see View#onTouchEvent(MotionEvent)
@@ -99,7 +80,14 @@ public class CheckLongPressHelper {
         }
     }
 
-    public void postCheckForLongPress() {
+    /**
+     * Overrides the default long press timeout.
+     */
+    public void setLongPressTimeoutFactor(float longPressTimeoutFactor) {
+        mLongPressTimeoutFactor = longPressTimeoutFactor;
+    }
+
+    private void postCheckForLongPress() {
         mHasPerformedLongPress = false;
 
         if (mPendingCheckForLongPress == null) {
@@ -148,5 +136,18 @@ public class CheckLongPressHelper {
             mView.removeCallbacks(mPendingCheckForLongPress);
             mPendingCheckForLongPress = null;
         }
+    }
+
+
+    /**
+     * Identifies if the provided {@link MotionEvent} is a stylus with the primary stylus button
+     * pressed.
+     *
+     * @param event The event to check.
+     * @return Whether a stylus button press occurred.
+     */
+    private static boolean isStylusButtonPressed(MotionEvent event) {
+        return event.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS
+                && event.isButtonPressed(MotionEvent.BUTTON_SECONDARY);
     }
 }

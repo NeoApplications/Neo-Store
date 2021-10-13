@@ -76,18 +76,18 @@ public interface DropTarget {
 
         public DragViewStateAnnouncer stateAnnouncer;
 
-        /**
-         * Used for matching DROP event with its corresponding DRAG event on the server side.
-         */
-        public final InstanceId logInstanceId =
-                new InstanceIdSequence(1 << 20 /*InstanceId.INSTANCE_ID_MAX*/)
-                        .newInstanceId();
         public FolderNameProvider folderNameProvider;
+
         /**
          * The source view (ie. icon, widget etc.) that is being dragged and which the
          * DragView represents. May be an actual View class or a virtual stand-in
          */
         public DraggableView originalView = null;
+
+        /**
+         * Used for matching DROP event with its corresponding DRAG event on the server side.
+         */
+        public final InstanceId logInstanceId = new InstanceIdSequence().newInstanceId();
 
         public DragObject(Context context) {
             if (FeatureFlags.FOLDER_NAME_SUGGEST.get()) {
@@ -118,18 +118,6 @@ public interface DropTarget {
             res[1] = top + dragRegion.height() / 2;
 
             return res;
-        }
-
-
-        /**
-         * This is used to determine if an object is dropped at a different location than it was
-         * dragged from
-         */
-        public boolean isMoved() {
-            return dragInfo.cellX != originalDragInfo.cellX
-                    || dragInfo.cellY != originalDragInfo.cellY
-                    || dragInfo.screenId != originalDragInfo.screenId
-                    || dragInfo.container != originalDragInfo.container;
         }
     }
 

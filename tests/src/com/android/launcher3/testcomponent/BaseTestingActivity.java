@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.testcomponent;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +28,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
  * Base activity with utility methods to help automate testing.
  */
-public class BaseTestingActivity extends AppCompatActivity implements View.OnClickListener {
+public class BaseTestingActivity extends Activity implements View.OnClickListener {
 
     public static final String SUFFIX_COMMAND = "-command";
     public static final String EXTRA_METHOD = "method";

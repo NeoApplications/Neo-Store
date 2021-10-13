@@ -26,7 +26,6 @@ public class FragmentWithPreview extends Fragment {
 
     private Context mPreviewContext;
 
-    @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onInit(savedInstanceState);
@@ -35,7 +34,7 @@ public class FragmentWithPreview extends Fragment {
     public void onInit(Bundle savedInstanceState) {
     }
 
-    @Override
+
     public Context getContext() {
         return mPreviewContext != null ? mPreviewContext : getActivity();
     }

@@ -17,6 +17,8 @@
 package com.android.launcher3;
 
 import static android.view.MotionEvent.ACTION_DOWN;
+import static com.android.launcher3.CellLayout.FOLDER;
+import static com.android.launcher3.CellLayout.WORKSPACE;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -26,19 +28,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.launcher3.CellLayout.ContainerType;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
-import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.settings.SettingsActivity;
 
-import org.jetbrains.annotations.NotNull;
-
-public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPreferences.OnPreferenceChangeListener {
+public class ShortcutAndWidgetContainer extends ViewGroup implements FolderIcon.FolderIconParent {
     static final String TAG = "ShortcutAndWidgetContainer";
 
     // These are temporary variables to prevent having to allocate a new object just to
     // return an (x, y) value from helper functions. Do NOT use them to maintain other state.
     private final int[] mTmpCellXY = new int[2];
+
+    private final Rect mTempRect = new Rect();
 
     @ContainerType
     private final int mContainerType;
@@ -46,55 +47,38 @@ public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPrefer
 
     private int mCellWidth;
     private int mCellHeight;
+    private int mBorderSpacing;
 
     private int mCountX;
+    private int mCountY;
 
-    private ActivityContext mActivity;
+    private final ActivityContext mActivity;
     private boolean mInvertIfRtl = false;
-
-    private OmegaPreferences mPrefs;
 
     public ShortcutAndWidgetContainer(Context context, @ContainerType int containerType) {
         super(context);
         mActivity = ActivityContext.lookupContext(context);
         mWallpaperManager = WallpaperManager.getInstance(context);
         mContainerType = containerType;
-        mPrefs = Utilities.getOmegaPrefs(context);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        mPrefs.addOnPreferenceChangeListener(SettingsActivity.ALLOW_OVERLAP_PREF, this);
-    }
-
-    @Override
-    public void onValueChanged(@NotNull String key, @NotNull OmegaPreferences prefs, boolean force) {
-        setClipChildren(!prefs.getAllowOverlap());
-        setClipToPadding(!prefs.getAllowOverlap());
-        setClipToOutline(!prefs.getAllowOverlap());
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mPrefs.removeOnPreferenceChangeListener(SettingsActivity.ALLOW_OVERLAP_PREF, this);
-    }
-
-    public void setCellDimensions(int cellWidth, int cellHeight, int countX, int countY) {
+    public void setCellDimensions(int cellWidth, int cellHeight, int countX, int countY,
+                                  int borderSpacing) {
         mCellWidth = cellWidth;
         mCellHeight = cellHeight;
         mCountX = countX;
+        mCountY = countY;
+        mBorderSpacing = borderSpacing;
     }
 
-    public View getChildAt(int x, int y) {
+    public View getChildAt(int cellX, int cellY) {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
 
-            if ((lp.cellX <= x) && (x < lp.cellX + lp.cellHSpan) &&
-                    (lp.cellY <= y) && (y < lp.cellY + lp.cellVSpan)) {
+            if ((lp.cellX <= cellX) && (cellX < lp.cellX + lp.cellHSpan)
+                    && (lp.cellY <= cellY) && (cellY < lp.cellY + lp.cellVSpan)) {
                 return child;
             }
         }
@@ -106,7 +90,7 @@ public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPrefer
         int count = getChildCount();
 
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSpecSize =  MeasureSpec.getSize(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(widthSpecSize, heightSpecSize);
 
         for (int i = 0; i < count; i++) {
@@ -121,10 +105,12 @@ public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPrefer
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
         if (child instanceof LauncherAppWidgetHostView) {
             DeviceProfile profile = mActivity.getDeviceProfile();
-            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX,
-                    profile.appWidgetScale.x, profile.appWidgetScale.y);
+            ((LauncherAppWidgetHostView) child).getWidgetInset(profile, mTempRect);
+            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX, mCountY,
+                    profile.appWidgetScale.x, profile.appWidgetScale.y, mBorderSpacing, mTempRect);
         } else {
-            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX);
+            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX, mCountY,
+                    mBorderSpacing, null);
         }
     }
 
@@ -135,25 +121,34 @@ public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPrefer
 
     public int getCellContentHeight() {
         return Math.min(getMeasuredHeight(),
-                mActivity.getDeviceProfile().getCellHeight(mContainerType));
+                mActivity.getDeviceProfile().getCellContentHeight(mContainerType));
     }
 
     public void measureChild(View child) {
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
-        final DeviceProfile profile = mActivity.getDeviceProfile();
+        final DeviceProfile dp = mActivity.getDeviceProfile();
 
         if (child instanceof LauncherAppWidgetHostView) {
-            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX,
-                    profile.appWidgetScale.x, profile.appWidgetScale.y);
-            // Widgets have their own padding
+            ((LauncherAppWidgetHostView) child).getWidgetInset(dp, mTempRect);
+            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX, mCountY,
+                    dp.appWidgetScale.x, dp.appWidgetScale.y, mBorderSpacing, mTempRect);
         } else {
-            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX);
+            lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX, mCountY,
+                    mBorderSpacing, null);
             // Center the icon/folder
             int cHeight = getCellContentHeight();
-            int cellPaddingY = (int) Math.max(0, ((lp.height - cHeight) / 2f));
-            int cellPaddingX = mContainerType == CellLayout.WORKSPACE
-                    ? profile.workspaceCellPaddingXPx
-                    : (int) (profile.edgeMarginPx / 2f);
+            int cellPaddingY = dp.isScalableGrid && mContainerType == WORKSPACE
+                    ? dp.cellYPaddingPx
+                    : (int) Math.max(0, ((lp.height - cHeight) / 2f));
+
+            // No need to add padding when cell layout border spacing is present.
+            boolean noPaddingX = (dp.cellLayoutBorderSpacingPx > 0 && mContainerType == WORKSPACE)
+                    || (dp.folderCellLayoutBorderSpacingPx > 0 && mContainerType == FOLDER);
+            int cellPaddingX = noPaddingX
+                    ? 0
+                    : mContainerType == WORKSPACE
+                    ? dp.workspaceCellPaddingXPx
+                    : (int) (dp.edgeMarginPx / 2f);
             child.setPadding(cellPaddingX, cellPaddingY, cellPaddingX, 0);
         }
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY);
@@ -245,6 +240,26 @@ public class ShortcutAndWidgetContainer extends ViewGroup implements OmegaPrefer
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             child.cancelLongPress();
+        }
+    }
+
+    @Override
+    public void drawFolderLeaveBehindForIcon(FolderIcon child) {
+        CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+        // While the folder is open, the position of the icon cannot change.
+        lp.canReorder = false;
+        if (mContainerType == CellLayout.HOTSEAT) {
+            CellLayout cl = (CellLayout) getParent();
+            cl.setFolderLeaveBehindCell(lp.cellX, lp.cellY);
+        }
+    }
+
+    @Override
+    public void clearFolderLeaveBehind(FolderIcon child) {
+        ((CellLayout.LayoutParams) child.getLayoutParams()).canReorder = true;
+        if (mContainerType == CellLayout.HOTSEAT) {
+            CellLayout cl = (CellLayout) getParent();
+            cl.clearFolderLeaveBehind();
         }
     }
 }

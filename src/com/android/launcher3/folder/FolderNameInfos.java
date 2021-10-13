@@ -37,9 +37,10 @@ public class FolderNameInfos {
     public static final int ERROR_LABEL_LOOKUP_FAILED = 1 << 7;
     public static final int ERROR_ALL_LABEL_LOOKUP_FAILED = 1 << 8;
     public static final int ERROR_NO_PACKAGES = 1 << 9;
+
+    private int mStatus;
     private final CharSequence[] mLabels;
     private final Float[] mScores;
-    private int mStatus;
 
     public FolderNameInfos() {
         mStatus = 0;

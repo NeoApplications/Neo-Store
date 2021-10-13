@@ -1,5 +1,12 @@
 package com.android.launcher3.model;
 
+import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_HOTSEAT_COUNT;
+import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_WORKSPACE_SIZE;
+import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
+import static com.android.launcher3.Utilities.getPointString;
+import static com.android.launcher3.Utilities.parsePoint;
+import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
+
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,7 +25,6 @@ import androidx.annotation.VisibleForTesting;
 
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.LauncherSettings.Settings;
@@ -33,18 +39,12 @@ import com.android.launcher3.provider.LauncherDbUtils.SQLiteTransaction;
 import com.android.launcher3.util.GridOccupancy;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSparseArrayMap;
+import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-
-import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_HOTSEAT_COUNT;
-import static com.android.launcher3.InvariantDeviceProfile.KEY_MIGRATION_SRC_WORKSPACE_SIZE;
-import static com.android.launcher3.LauncherSettings.Settings.EXTRA_VALUE;
-import static com.android.launcher3.Utilities.getPointString;
-import static com.android.launcher3.Utilities.parsePoint;
-import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
 
 /**
  * This class takes care of shrinking the workspace (by maximum of one row and one column), as a
@@ -53,7 +53,7 @@ import static com.android.launcher3.provider.LauncherDbUtils.copyTable;
 public class GridSizeMigrationTask {
 
     private static final String TAG = "GridSizeMigrationTask";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     // These are carefully selected weights for various item types (Math.random?), to allow for
     // the least absurd migration experience.
@@ -118,11 +118,28 @@ public class GridSizeMigrationTask {
         mShouldRemoveX = mShouldRemoveY = false;
     }
 
-    @VisibleForTesting
-    public static IntArray getWorkspaceScreenIds(SQLiteDatabase db, String tableName) {
-        return LauncherDbUtils.queryIntArray(db, tableName, Favorites.SCREEN,
-                Favorites.CONTAINER + " = " + Favorites.CONTAINER_DESKTOP,
-                Favorites.SCREEN, Favorites.SCREEN);
+    /**
+     * Applied all the pending DB operations
+     *
+     * @return true if any DB operation was commited.
+     */
+    private boolean applyOperations() throws Exception {
+        // Update items
+        int updateCount = mUpdateOperations.size();
+        for (int i = 0; i < updateCount; i++) {
+            mDb.update(mTableName, mUpdateOperations.valueAt(i),
+                    "_id=" + mUpdateOperations.keyAt(i), null);
+        }
+
+        if (!mEntryToRemove.isEmpty()) {
+            if (DEBUG) {
+                Log.d(TAG, "Removing items: " + mEntryToRemove.toConcatString());
+            }
+            mDb.delete(mTableName, Utilities.createDbSelectionQuery(Favorites._ID, mEntryToRemove),
+                    null);
+        }
+
+        return updateCount > 0 || !mEntryToRemove.isEmpty();
     }
 
     /**
@@ -171,194 +188,11 @@ public class GridSizeMigrationTask {
         return applyOperations();
     }
 
-    /**
-     * Check given a new IDP, if migration is necessary.
-     */
-    public static boolean needsToMigrate(Context context, InvariantDeviceProfile idp) {
-        SharedPreferences prefs = Utilities.getPrefs(context);
-        String gridSizeString = getPointString(idp.numColumns, idp.numRows);
-
-        return !gridSizeString.equals(prefs.getString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, ""))
-                || idp.numHotseatIcons != prefs.getInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, -1);
-    }
-
-    /**
-     * See {@link #migrateGridIfNeeded(Context, InvariantDeviceProfile)}
-     */
-    public static boolean migrateGridIfNeeded(Context context) {
-        if (context instanceof LauncherPreviewRenderer.PreviewContext) {
-            return true;
-        }
-        return migrateGridIfNeeded(context, null);
-    }
-
-    /**
-     * Run the migration algorithm if needed. For preview, we provide the intended idp because it
-     * has not been changed. If idp is null, we read it from the context, for actual grid migration.
-     *
-     * @return false if the migration failed.
-     */
-    public static boolean migrateGridIfNeeded(Context context, InvariantDeviceProfile idp) {
-        boolean migrateForPreview = idp != null;
-        if (!migrateForPreview) {
-            idp = LauncherAppState.getIDP(context);
-        }
-
-        if (!needsToMigrate(context, idp)) {
-            return true;
-        }
-
-        SharedPreferences prefs = Utilities.getPrefs(context);
-        String gridSizeString = getPointString(idp.numColumns, idp.numRows);
-        long migrationStartTime = SystemClock.elapsedRealtime();
-        try (SQLiteTransaction transaction = (SQLiteTransaction) Settings.call(
-                context.getContentResolver(), Settings.METHOD_NEW_TRANSACTION)
-                .getBinder(Settings.EXTRA_VALUE)) {
-
-            int srcHotseatCount = prefs.getInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT,
-                    idp.numHotseatIcons);
-            Point sourceSize = parsePoint(prefs.getString(
-                    KEY_MIGRATION_SRC_WORKSPACE_SIZE, gridSizeString));
-
-            boolean dbChanged = false;
-            if (migrateForPreview) {
-                copyTable(transaction.getDb(), Favorites.TABLE_NAME, transaction.getDb(),
-                        Favorites.PREVIEW_TABLE_NAME, context);
-            }
-
-            GridBackupTable backupTable = new GridBackupTable(context, transaction.getDb(),
-                    srcHotseatCount, sourceSize.x, sourceSize.y);
-            if (migrateForPreview ? backupTable.restoreToPreviewIfBackupExists()
-                    : backupTable.backupOrRestoreAsNeeded()) {
-                dbChanged = true;
-                srcHotseatCount = backupTable.getRestoreHotseatAndGridSize(sourceSize);
-            }
-
-            HashSet<String> validPackages = getValidPackages(context);
-            // Hotseat.
-            if (srcHotseatCount != idp.numHotseatIcons
-                    && new GridSizeMigrationTask(context, transaction.getDb(), validPackages,
-                    migrateForPreview, srcHotseatCount, idp.numHotseatIcons).migrateHotseat()) {
-                dbChanged = true;
-            }
-
-            // Grid size
-            Point targetSize = new Point(idp.numColumns, idp.numRows);
-            if (new MultiStepMigrationTask(validPackages, context, transaction.getDb(),
-                    migrateForPreview).migrate(sourceSize, targetSize)) {
-                dbChanged = true;
-            }
-
-            if (dbChanged) {
-                // Make sure we haven't removed everything.
-                final Cursor c = context.getContentResolver().query(
-                        migrateForPreview ? Favorites.PREVIEW_CONTENT_URI : Favorites.CONTENT_URI,
-                        null, null, null, null);
-                boolean hasData = c.moveToNext();
-                c.close();
-                if (!hasData) {
-                    throw new Exception("Removed every thing during grid resize");
-                }
-            }
-
-            transaction.commit();
-            if (!migrateForPreview) {
-                Settings.call(context.getContentResolver(), Settings.METHOD_REFRESH_BACKUP_TABLE);
-            }
-            return true;
-        } catch (Exception e) {
-            Log.e(TAG, "Error during preview grid migration", e);
-
-            return false;
-        } finally {
-            Log.v(TAG, "Preview workspace migration completed in "
-                    + (SystemClock.elapsedRealtime() - migrationStartTime));
-
-            if (!migrateForPreview) {
-                // Save current configuration, so that the migration does not run again.
-                prefs.edit()
-                        .putString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, gridSizeString)
-                        .putInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, idp.numHotseatIcons)
-                        .apply();
-            }
-        }
-    }
-
-    /**
-     * Updates an item in the DB.
-     */
-    protected void update(DbEntry item) {
-        ContentValues values = new ContentValues();
-        item.addToContentValues(values);
-        mUpdateOperations.put(item.id, values);
-    }
-
-    protected static HashSet<String> getValidPackages(Context context) {
-        // Initialize list of valid packages. This contain all the packages which are already on
-        // the device and packages which are being installed. Any item which doesn't belong to
-        // this set is removed.
-        // Since the loader removes such items anyway, removing these items here doesn't cause
-        // any extra data loss and gives us more free space on the grid for better migration.
-        HashSet<String> validPackages = new HashSet<>();
-        for (PackageInfo info : context.getPackageManager()
-                .getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES)) {
-            validPackages.add(info.packageName);
-        }
-        InstallSessionHelper.INSTANCE.get(context)
-                .getActiveSessions().keySet()
-                .forEach(packageUserKey -> validPackages.add(packageUserKey.mPackageName));
-        return validPackages;
-    }
-
-    /**
-     * Removes any broken item from the hotseat.
-     *
-     * @return a map with occupied hotseat position set to non-null value.
-     */
-    public static IntSparseArrayMap<Object> removeBrokenHotseatItems(Context context)
-            throws Exception {
-        try (SQLiteTransaction transaction = (SQLiteTransaction) Settings.call(
-                context.getContentResolver(), Settings.METHOD_NEW_TRANSACTION)
-                .getBinder(Settings.EXTRA_VALUE)) {
-            GridSizeMigrationTask task = new GridSizeMigrationTask(
-                    context, transaction.getDb(), getValidPackages(context),
-                    false /* usePreviewTable */, Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-            // Load all the valid entries
-            ArrayList<DbEntry> items = task.loadHotseatEntries();
-            // Delete any entry marked for deletion by above load.
-            task.applyOperations();
-            IntSparseArrayMap<Object> positions = new IntSparseArrayMap<>();
-            for (DbEntry item : items) {
-                positions.put(item.screenId, item);
-            }
-            transaction.commit();
-            return positions;
-        }
-    }
-
-    /**
-     * Applied all the pending DB operations
-     *
-     * @return true if any DB operation was commited.
-     */
-    private boolean applyOperations() throws Exception {
-        // Update items
-        int updateCount = mUpdateOperations.size();
-        for (int i = 0; i < updateCount; i++) {
-            mDb.update(mTableName, mUpdateOperations.valueAt(i),
-                    "_id=" + mUpdateOperations.keyAt(i), null);
-        }
-
-        if (!mEntryToRemove.isEmpty()) {
-            if (DEBUG) {
-                Log.d(TAG, "Removing items: " + mEntryToRemove.toConcatString());
-            }
-            mDb.delete(mTableName, Utilities.createDbSelectionQuery(Favorites._ID, mEntryToRemove),
-                    null);
-        }
-
-        return updateCount > 0 || !mEntryToRemove.isEmpty();
+    @VisibleForTesting
+    static IntArray getWorkspaceScreenIds(SQLiteDatabase db, String tableName) {
+        return LauncherDbUtils.queryIntArray(db, tableName, Favorites.SCREEN,
+                Favorites.CONTAINER + " = " + Favorites.CONTAINER_DESKTOP,
+                Favorites.SCREEN, Favorites.SCREEN);
     }
 
     /**
@@ -415,27 +249,6 @@ public class GridSizeMigrationTask {
     }
 
     /**
-     * @return the number of valid items in the folder.
-     */
-    private int getFolderItemsCount(int folderId) {
-        Cursor c = queryWorkspace(
-                new String[]{Favorites._ID, Favorites.INTENT},
-                Favorites.CONTAINER + " = " + folderId);
-
-        int total = 0;
-        while (c.moveToNext()) {
-            try {
-                verifyIntent(c.getString(1));
-                total++;
-            } catch (Exception e) {
-                mEntryToRemove.add(c.getInt(0));
-            }
-        }
-        c.close();
-        return total;
-    }
-
-    /**
      * Migrate a particular screen id.
      * Strategy:
      *  1) For all possible combinations of row and column, pick the one which causes the least
@@ -447,7 +260,7 @@ public class GridSizeMigrationTask {
      */
     protected void migrateScreen(int screenId) {
         // If we are migrating the first screen, do not touch the first row.
-        int startY = (FeatureFlags.showQSbOnFirstScreen(mContext) && screenId == Workspace.FIRST_SCREEN_ID)
+        int startY = (FeatureFlags.QSB_ON_FIRST_SCREEN && screenId == Workspace.FIRST_SCREEN_ID)
                 ? 1 : 0;
 
         ArrayList<DbEntry> items = loadWorkspaceEntries(screenId);
@@ -545,91 +358,12 @@ public class GridSizeMigrationTask {
     }
 
     /**
-     * Verifies if the intent should be restored.
+     * Updates an item in the DB.
      */
-    private void verifyIntent(String intentStr) throws Exception {
-        Intent intent = Intent.parseUri(intentStr, 0);
-        if (intent.getComponent() != null) {
-            verifyPackage(intent.getComponent().getPackageName());
-        } else if (intent.getPackage() != null) {
-            // Only verify package if the component was null.
-            verifyPackage(intent.getPackage());
-        }
-    }
-
-    /**
-     * Verifies if the package should be restored
-     */
-    private void verifyPackage(String packageName) throws Exception {
-        if (!mValidPackages.contains(packageName)) {
-            throw new Exception("Package not available");
-        }
-    }
-
-    protected static class DbEntry extends ItemInfo implements Comparable<DbEntry> {
-
-        public float weight;
-
-        public DbEntry() {
-        }
-
-        public DbEntry copy() {
-            DbEntry entry = new DbEntry();
-            entry.copyFrom(this);
-            entry.weight = weight;
-            entry.minSpanX = minSpanX;
-            entry.minSpanY = minSpanY;
-            return entry;
-        }
-
-        /**
-         * Comparator such that larger widgets come first,  followed by all 1x1 items
-         * based on their weights.
-         */
-        @Override
-        public int compareTo(DbEntry another) {
-            if (itemType == Favorites.ITEM_TYPE_APPWIDGET) {
-                if (another.itemType == Favorites.ITEM_TYPE_APPWIDGET) {
-                    return another.spanY * another.spanX - spanX * spanY;
-                } else {
-                    return -1;
-                }
-            } else if (another.itemType == Favorites.ITEM_TYPE_APPWIDGET) {
-                return 1;
-            } else {
-                // Place higher weight before lower weight.
-                return Float.compare(another.weight, weight);
-            }
-        }
-
-        public boolean columnsSame(DbEntry org) {
-            return org.cellX == cellX && org.cellY == cellY && org.spanX == spanX &&
-                    org.spanY == spanY && org.screenId == screenId;
-        }
-
-        public void addToContentValues(ContentValues values) {
-            values.put(Favorites.SCREEN, screenId);
-            values.put(Favorites.CELLX, cellX);
-            values.put(Favorites.CELLY, cellY);
-            values.put(Favorites.SPANX, spanX);
-            values.put(Favorites.SPANY, spanY);
-        }
-    }
-
-    private static ArrayList<DbEntry> deepCopy(ArrayList<DbEntry> src) {
-        ArrayList<DbEntry> dup = new ArrayList<>(src.size());
-        for (DbEntry e : src) {
-            dup.add(e.copy());
-        }
-        return dup;
-    }
-
-    public static void markForMigration(
-            Context context, int gridX, int gridY, int hotseatSize) {
-        Utilities.getPrefs(context).edit()
-                .putString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, getPointString(gridX, gridY))
-                .putInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, hotseatSize)
-                .apply();
+    protected void update(DbEntry item) {
+        ContentValues values = new ContentValues();
+        item.addToContentValues(values);
+        mUpdateOperations.put(item.id, values);
     }
 
     /**
@@ -671,228 +405,6 @@ public class GridSizeMigrationTask {
         outLoss[0] = placement.lowestWeightLoss;
         outLoss[1] = placement.lowestMoveCost;
         return finalItems;
-    }
-
-    private ArrayList<DbEntry> loadHotseatEntries() {
-        Cursor c = queryWorkspace(
-                new String[]{
-                        Favorites._ID,                  // 0
-                        Favorites.ITEM_TYPE,            // 1
-                        Favorites.INTENT,               // 2
-                        Favorites.SCREEN},              // 3
-                Favorites.CONTAINER + " = " + Favorites.CONTAINER_HOTSEAT);
-
-        final int indexId = c.getColumnIndexOrThrow(Favorites._ID);
-        final int indexItemType = c.getColumnIndexOrThrow(Favorites.ITEM_TYPE);
-        final int indexIntent = c.getColumnIndexOrThrow(Favorites.INTENT);
-        final int indexScreen = c.getColumnIndexOrThrow(Favorites.SCREEN);
-
-        ArrayList<DbEntry> entries = new ArrayList<>();
-        while (c.moveToNext()) {
-            DbEntry entry = new DbEntry();
-            entry.id = c.getInt(indexId);
-            entry.itemType = c.getInt(indexItemType);
-            entry.screenId = c.getInt(indexScreen);
-
-            if (entry.screenId >= mSrcHotseatSize) {
-                mEntryToRemove.add(entry.id);
-                continue;
-            }
-
-            try {
-                // calculate weight
-                switch (entry.itemType) {
-                    case Favorites.ITEM_TYPE_SHORTCUT:
-                    case Favorites.ITEM_TYPE_DEEP_SHORTCUT:
-                    case Favorites.ITEM_TYPE_APPLICATION: {
-                        verifyIntent(c.getString(indexIntent));
-                        entry.weight = entry.itemType == Favorites.ITEM_TYPE_APPLICATION ?
-                                WT_APPLICATION : WT_SHORTCUT;
-                        break;
-                    }
-                    case Favorites.ITEM_TYPE_FOLDER: {
-                        int total = getFolderItemsCount(entry.id);
-                        if (total == 0) {
-                            throw new Exception("Folder is empty");
-                        }
-                        entry.weight = WT_FOLDER_FACTOR * total;
-                        break;
-                    }
-                    default:
-                        throw new Exception("Invalid item type");
-                }
-            } catch (Exception e) {
-                if (DEBUG) {
-                    Log.d(TAG, "Removing item " + entry.id, e);
-                }
-                mEntryToRemove.add(entry.id);
-                continue;
-            }
-            entries.add(entry);
-        }
-        c.close();
-        return entries;
-    }
-
-    /**
-     * Loads entries for a particular screen id.
-     */
-    protected ArrayList<DbEntry> loadWorkspaceEntries(int screen) {
-        Cursor c = queryWorkspace(
-                new String[]{
-                        Favorites._ID,                  // 0
-                        Favorites.ITEM_TYPE,            // 1
-                        Favorites.CELLX,                // 2
-                        Favorites.CELLY,                // 3
-                        Favorites.SPANX,                // 4
-                        Favorites.SPANY,                // 5
-                        Favorites.INTENT,               // 6
-                        Favorites.APPWIDGET_PROVIDER,   // 7
-                        Favorites.APPWIDGET_ID},        // 8
-                Favorites.CONTAINER + " = " + Favorites.CONTAINER_DESKTOP
-                        + " AND " + Favorites.SCREEN + " = " + screen);
-
-        final int indexId = c.getColumnIndexOrThrow(Favorites._ID);
-        final int indexItemType = c.getColumnIndexOrThrow(Favorites.ITEM_TYPE);
-        final int indexCellX = c.getColumnIndexOrThrow(Favorites.CELLX);
-        final int indexCellY = c.getColumnIndexOrThrow(Favorites.CELLY);
-        final int indexSpanX = c.getColumnIndexOrThrow(Favorites.SPANX);
-        final int indexSpanY = c.getColumnIndexOrThrow(Favorites.SPANY);
-        final int indexIntent = c.getColumnIndexOrThrow(Favorites.INTENT);
-        final int indexAppWidgetProvider = c.getColumnIndexOrThrow(Favorites.APPWIDGET_PROVIDER);
-        final int indexAppWidgetId = c.getColumnIndexOrThrow(Favorites.APPWIDGET_ID);
-
-        ArrayList<DbEntry> entries = new ArrayList<>();
-        WidgetManagerHelper widgetManagerHelper = new WidgetManagerHelper(mContext);
-        while (c.moveToNext()) {
-            DbEntry entry = new DbEntry();
-            entry.id = c.getInt(indexId);
-            entry.itemType = c.getInt(indexItemType);
-            entry.cellX = c.getInt(indexCellX);
-            entry.cellY = c.getInt(indexCellY);
-            entry.spanX = c.getInt(indexSpanX);
-            entry.spanY = c.getInt(indexSpanY);
-            entry.screenId = screen;
-
-            try {
-                // calculate weight
-                switch (entry.itemType) {
-                    case Favorites.ITEM_TYPE_SHORTCUT:
-                    case Favorites.ITEM_TYPE_DEEP_SHORTCUT:
-                    case Favorites.ITEM_TYPE_APPLICATION: {
-                        verifyIntent(c.getString(indexIntent));
-                        entry.weight = entry.itemType == Favorites.ITEM_TYPE_APPLICATION ?
-                                WT_APPLICATION : WT_SHORTCUT;
-                        break;
-                    }
-                    case Favorites.ITEM_TYPE_APPWIDGET: {
-                        String provider = c.getString(indexAppWidgetProvider);
-                        ComponentName cn = ComponentName.unflattenFromString(provider);
-                        verifyPackage(cn.getPackageName());
-                        entry.weight = Math.max(WT_WIDGET_MIN, WT_WIDGET_FACTOR
-                                * entry.spanX * entry.spanY);
-
-                        int widgetId = c.getInt(indexAppWidgetId);
-                        LauncherAppWidgetProviderInfo pInfo =
-                                widgetManagerHelper.getLauncherAppWidgetInfo(widgetId);
-                        Point spans = null;
-                        if (pInfo != null) {
-                            spans = pInfo.getMinSpans();
-                        }
-                        if (spans != null) {
-                            entry.minSpanX = spans.x > 0 ? spans.x : entry.spanX;
-                            entry.minSpanY = spans.y > 0 ? spans.y : entry.spanY;
-                        } else {
-                            // Assume that the widget be resized down to 2x2
-                            entry.minSpanX = entry.minSpanY = 2;
-                        }
-
-                        if (entry.minSpanX > mTrgX || entry.minSpanY > mTrgY) {
-                            throw new Exception("Widget can't be resized down to fit the grid");
-                        }
-                        break;
-                    }
-                    case Favorites.ITEM_TYPE_FOLDER: {
-                        int total = getFolderItemsCount(entry.id);
-                        if (total == 0) {
-                            throw new Exception("Folder is empty");
-                        }
-                        entry.weight = WT_FOLDER_FACTOR * total;
-                        break;
-                    }
-                    default:
-                        throw new Exception("Invalid item type");
-                }
-            } catch (Exception e) {
-                if (DEBUG) {
-                    Log.d(TAG, "Removing item " + entry.id, e);
-                }
-                mEntryToRemove.add(entry.id);
-                continue;
-            }
-            entries.add(entry);
-        }
-        c.close();
-        return entries;
-    }
-
-    protected Cursor queryWorkspace(String[] columns, String where) {
-        return mDb.query(mTableName, columns, where, null, null, null, null);
-    }
-
-    /**
-     * Task to run grid migration in multiple steps when the size difference is more than 1.
-     */
-    protected static class MultiStepMigrationTask {
-        private final HashSet<String> mValidPackages;
-        private final Context mContext;
-        private final SQLiteDatabase mDb;
-        private final boolean mUsePreviewTable;
-
-        public MultiStepMigrationTask(HashSet<String> validPackages, Context context,
-                                      SQLiteDatabase db, boolean usePreviewTable) {
-            mValidPackages = validPackages;
-            mContext = context;
-            mDb = db;
-            mUsePreviewTable = usePreviewTable;
-        }
-
-        public boolean migrate(Point sourceSize, Point targetSize) throws Exception {
-            boolean dbChanged = false;
-            if (!targetSize.equals(sourceSize)) {
-                if (sourceSize.x < targetSize.x) {
-                    // Source is smaller that target, just expand the grid without actual migration.
-                    sourceSize.x = targetSize.x;
-                }
-                if (sourceSize.y < targetSize.y) {
-                    // Source is smaller that target, just expand the grid without actual migration.
-                    sourceSize.y = targetSize.y;
-                }
-
-                // Migrate the workspace grid, such that the points differ by max 1 in x and y
-                // each on every step.
-                while (!targetSize.equals(sourceSize)) {
-                    // Get the next size, such that the points differ by max 1 in x and y each
-                    Point nextSize = new Point(sourceSize);
-                    if (targetSize.x < nextSize.x) {
-                        nextSize.x--;
-                    }
-                    if (targetSize.y < nextSize.y) {
-                        nextSize.y--;
-                    }
-                    if (runStepTask(sourceSize, nextSize)) {
-                        dbChanged = true;
-                    }
-                    sourceSize.set(nextSize.x, nextSize.y);
-                }
-            }
-            return dbChanged;
-        }
-
-        protected boolean runStepTask(Point sourceSize, Point nextSize) throws Exception {
-            return new GridSizeMigrationTask(mContext, mDb, mValidPackages, mUsePreviewTable,
-                    sourceSize, nextSize).migrateWorkspace();
-        }
     }
 
     private class OptimalPlacementSolution {
@@ -1093,6 +605,496 @@ public class GridSizeMigrationTask {
                     find(itemsToPlace.size(), weightLoss + me.weight, moveCost, itemsPlaced);
                 }
             }
+        }
+    }
+
+    private ArrayList<DbEntry> loadHotseatEntries() {
+        Cursor c = queryWorkspace(
+                new String[]{
+                        Favorites._ID,                  // 0
+                        Favorites.ITEM_TYPE,            // 1
+                        Favorites.INTENT,               // 2
+                        Favorites.SCREEN},              // 3
+                Favorites.CONTAINER + " = " + Favorites.CONTAINER_HOTSEAT);
+
+        final int indexId = c.getColumnIndexOrThrow(Favorites._ID);
+        final int indexItemType = c.getColumnIndexOrThrow(Favorites.ITEM_TYPE);
+        final int indexIntent = c.getColumnIndexOrThrow(Favorites.INTENT);
+        final int indexScreen = c.getColumnIndexOrThrow(Favorites.SCREEN);
+
+        ArrayList<DbEntry> entries = new ArrayList<>();
+        while (c.moveToNext()) {
+            DbEntry entry = new DbEntry();
+            entry.id = c.getInt(indexId);
+            entry.itemType = c.getInt(indexItemType);
+            entry.screenId = c.getInt(indexScreen);
+
+            if (entry.screenId >= mSrcHotseatSize) {
+                mEntryToRemove.add(entry.id);
+                continue;
+            }
+
+            try {
+                // calculate weight
+                switch (entry.itemType) {
+                    case Favorites.ITEM_TYPE_SHORTCUT:
+                    case Favorites.ITEM_TYPE_DEEP_SHORTCUT:
+                    case Favorites.ITEM_TYPE_APPLICATION: {
+                        verifyIntent(c.getString(indexIntent));
+                        entry.weight = entry.itemType == Favorites.ITEM_TYPE_APPLICATION ?
+                                WT_APPLICATION : WT_SHORTCUT;
+                        break;
+                    }
+                    case Favorites.ITEM_TYPE_FOLDER: {
+                        int total = getFolderItemsCount(entry.id);
+                        if (total == 0) {
+                            throw new Exception("Folder is empty");
+                        }
+                        entry.weight = WT_FOLDER_FACTOR * total;
+                        break;
+                    }
+                    default:
+                        throw new Exception("Invalid item type");
+                }
+            } catch (Exception e) {
+                if (DEBUG) {
+                    Log.d(TAG, "Removing item " + entry.id, e);
+                }
+                mEntryToRemove.add(entry.id);
+                continue;
+            }
+            entries.add(entry);
+        }
+        c.close();
+        return entries;
+    }
+
+
+    /**
+     * Loads entries for a particular screen id.
+     */
+    protected ArrayList<DbEntry> loadWorkspaceEntries(int screen) {
+        Cursor c = queryWorkspace(
+                new String[]{
+                        Favorites._ID,                  // 0
+                        Favorites.ITEM_TYPE,            // 1
+                        Favorites.CELLX,                // 2
+                        Favorites.CELLY,                // 3
+                        Favorites.SPANX,                // 4
+                        Favorites.SPANY,                // 5
+                        Favorites.INTENT,               // 6
+                        Favorites.APPWIDGET_PROVIDER,   // 7
+                        Favorites.APPWIDGET_ID},        // 8
+                Favorites.CONTAINER + " = " + Favorites.CONTAINER_DESKTOP
+                        + " AND " + Favorites.SCREEN + " = " + screen);
+
+        final int indexId = c.getColumnIndexOrThrow(Favorites._ID);
+        final int indexItemType = c.getColumnIndexOrThrow(Favorites.ITEM_TYPE);
+        final int indexCellX = c.getColumnIndexOrThrow(Favorites.CELLX);
+        final int indexCellY = c.getColumnIndexOrThrow(Favorites.CELLY);
+        final int indexSpanX = c.getColumnIndexOrThrow(Favorites.SPANX);
+        final int indexSpanY = c.getColumnIndexOrThrow(Favorites.SPANY);
+        final int indexIntent = c.getColumnIndexOrThrow(Favorites.INTENT);
+        final int indexAppWidgetProvider = c.getColumnIndexOrThrow(Favorites.APPWIDGET_PROVIDER);
+        final int indexAppWidgetId = c.getColumnIndexOrThrow(Favorites.APPWIDGET_ID);
+
+        ArrayList<DbEntry> entries = new ArrayList<>();
+        WidgetManagerHelper widgetManagerHelper = new WidgetManagerHelper(mContext);
+        while (c.moveToNext()) {
+            DbEntry entry = new DbEntry();
+            entry.id = c.getInt(indexId);
+            entry.itemType = c.getInt(indexItemType);
+            entry.cellX = c.getInt(indexCellX);
+            entry.cellY = c.getInt(indexCellY);
+            entry.spanX = c.getInt(indexSpanX);
+            entry.spanY = c.getInt(indexSpanY);
+            entry.screenId = screen;
+
+            try {
+                // calculate weight
+                switch (entry.itemType) {
+                    case Favorites.ITEM_TYPE_SHORTCUT:
+                    case Favorites.ITEM_TYPE_DEEP_SHORTCUT:
+                    case Favorites.ITEM_TYPE_APPLICATION: {
+                        verifyIntent(c.getString(indexIntent));
+                        entry.weight = entry.itemType == Favorites.ITEM_TYPE_APPLICATION ?
+                                WT_APPLICATION : WT_SHORTCUT;
+                        break;
+                    }
+                    case Favorites.ITEM_TYPE_APPWIDGET: {
+                        String provider = c.getString(indexAppWidgetProvider);
+                        ComponentName cn = ComponentName.unflattenFromString(provider);
+                        verifyPackage(cn.getPackageName());
+                        entry.weight = Math.max(WT_WIDGET_MIN, WT_WIDGET_FACTOR
+                                * entry.spanX * entry.spanY);
+
+                        int widgetId = c.getInt(indexAppWidgetId);
+                        LauncherAppWidgetProviderInfo pInfo =
+                                widgetManagerHelper.getLauncherAppWidgetInfo(widgetId);
+                        Point spans = null;
+                        if (pInfo != null) {
+                            spans = pInfo.getMinSpans();
+                        }
+                        if (spans != null) {
+                            entry.minSpanX = spans.x > 0 ? spans.x : entry.spanX;
+                            entry.minSpanY = spans.y > 0 ? spans.y : entry.spanY;
+                        } else {
+                            // Assume that the widget be resized down to 2x2
+                            entry.minSpanX = entry.minSpanY = 2;
+                        }
+
+                        if (entry.minSpanX > mTrgX || entry.minSpanY > mTrgY) {
+                            throw new Exception("Widget can't be resized down to fit the grid");
+                        }
+                        break;
+                    }
+                    case Favorites.ITEM_TYPE_FOLDER: {
+                        int total = getFolderItemsCount(entry.id);
+                        if (total == 0) {
+                            throw new Exception("Folder is empty");
+                        }
+                        entry.weight = WT_FOLDER_FACTOR * total;
+                        break;
+                    }
+                    default:
+                        throw new Exception("Invalid item type");
+                }
+            } catch (Exception e) {
+                if (DEBUG) {
+                    Log.d(TAG, "Removing item " + entry.id, e);
+                }
+                mEntryToRemove.add(entry.id);
+                continue;
+            }
+            entries.add(entry);
+        }
+        c.close();
+        return entries;
+    }
+
+    /**
+     * @return the number of valid items in the folder.
+     */
+    private int getFolderItemsCount(int folderId) {
+        Cursor c = queryWorkspace(
+                new String[]{Favorites._ID, Favorites.INTENT},
+                Favorites.CONTAINER + " = " + folderId);
+
+        int total = 0;
+        while (c.moveToNext()) {
+            try {
+                verifyIntent(c.getString(1));
+                total++;
+            } catch (Exception e) {
+                mEntryToRemove.add(c.getInt(0));
+            }
+        }
+        c.close();
+        return total;
+    }
+
+    protected Cursor queryWorkspace(String[] columns, String where) {
+        return mDb.query(mTableName, columns, where, null, null, null, null);
+    }
+
+    /**
+     * Verifies if the intent should be restored.
+     */
+    private void verifyIntent(String intentStr) throws Exception {
+        Intent intent = Intent.parseUri(intentStr, 0);
+        if (intent.getComponent() != null) {
+            verifyPackage(intent.getComponent().getPackageName());
+        } else if (intent.getPackage() != null) {
+            // Only verify package if the component was null.
+            verifyPackage(intent.getPackage());
+        }
+    }
+
+    /**
+     * Verifies if the package should be restored
+     */
+    private void verifyPackage(String packageName) throws Exception {
+        if (!mValidPackages.contains(packageName)) {
+            throw new Exception("Package not available");
+        }
+    }
+
+    protected static class DbEntry extends ItemInfo implements Comparable<DbEntry> {
+
+        public float weight;
+
+        public DbEntry() {
+        }
+
+        public DbEntry copy() {
+            DbEntry entry = new DbEntry();
+            entry.copyFrom(this);
+            entry.weight = weight;
+            entry.minSpanX = minSpanX;
+            entry.minSpanY = minSpanY;
+            return entry;
+        }
+
+        /**
+         * Comparator such that larger widgets come first,  followed by all 1x1 items
+         * based on their weights.
+         */
+        @Override
+        public int compareTo(DbEntry another) {
+            if (itemType == Favorites.ITEM_TYPE_APPWIDGET) {
+                if (another.itemType == Favorites.ITEM_TYPE_APPWIDGET) {
+                    return another.spanY * another.spanX - spanX * spanY;
+                } else {
+                    return -1;
+                }
+            } else if (another.itemType == Favorites.ITEM_TYPE_APPWIDGET) {
+                return 1;
+            } else {
+                // Place higher weight before lower weight.
+                return Float.compare(another.weight, weight);
+            }
+        }
+
+        public boolean columnsSame(DbEntry org) {
+            return org.cellX == cellX && org.cellY == cellY && org.spanX == spanX &&
+                    org.spanY == spanY && org.screenId == screenId;
+        }
+
+        public void addToContentValues(ContentValues values) {
+            values.put(Favorites.SCREEN, screenId);
+            values.put(Favorites.CELLX, cellX);
+            values.put(Favorites.CELLY, cellY);
+            values.put(Favorites.SPANX, spanX);
+            values.put(Favorites.SPANY, spanY);
+        }
+    }
+
+    private static ArrayList<DbEntry> deepCopy(ArrayList<DbEntry> src) {
+        ArrayList<DbEntry> dup = new ArrayList<>(src.size());
+        for (DbEntry e : src) {
+            dup.add(e.copy());
+        }
+        return dup;
+    }
+
+    public static void markForMigration(
+            Context context, int gridX, int gridY, int hotseatSize) {
+        Utilities.getPrefs(context).edit()
+                .putString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, getPointString(gridX, gridY))
+                .putInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, hotseatSize)
+                .apply();
+    }
+
+    /**
+     * Check given a new IDP, if migration is necessary.
+     */
+    public static boolean needsToMigrate(Context context, InvariantDeviceProfile idp) {
+        SharedPreferences prefs = Utilities.getPrefs(context);
+        String gridSizeString = getPointString(idp.numColumns, idp.numRows);
+
+        return !gridSizeString.equals(prefs.getString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, ""))
+                || idp.numDatabaseHotseatIcons != prefs.getInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, -1);
+    }
+
+    /**
+     * See {@link #migrateGridIfNeeded(Context, InvariantDeviceProfile)}
+     */
+    public static boolean migrateGridIfNeeded(Context context) {
+        if (context instanceof LauncherPreviewRenderer.PreviewContext) {
+            return true;
+        }
+        return migrateGridIfNeeded(context, null);
+    }
+
+    /**
+     * Run the migration algorithm if needed. For preview, we provide the intended idp because it
+     * has not been changed. If idp is null, we read it from the context, for actual grid migration.
+     *
+     * @return false if the migration failed.
+     */
+    public static boolean migrateGridIfNeeded(Context context, InvariantDeviceProfile idp) {
+        boolean migrateForPreview = idp != null;
+        if (!migrateForPreview) {
+            idp = LauncherAppState.getIDP(context);
+        }
+
+        if (!needsToMigrate(context, idp)) {
+            return true;
+        }
+
+        SharedPreferences prefs = Utilities.getPrefs(context);
+        String gridSizeString = getPointString(idp.numColumns, idp.numRows);
+        long migrationStartTime = SystemClock.elapsedRealtime();
+        try (SQLiteTransaction transaction = (SQLiteTransaction) Settings.call(
+                context.getContentResolver(), Settings.METHOD_NEW_TRANSACTION)
+                .getBinder(Settings.EXTRA_VALUE)) {
+
+            int srcHotseatCount = prefs.getInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT,
+                    idp.numDatabaseHotseatIcons);
+            Point sourceSize = parsePoint(prefs.getString(
+                    KEY_MIGRATION_SRC_WORKSPACE_SIZE, gridSizeString));
+
+            boolean dbChanged = false;
+            if (migrateForPreview) {
+                copyTable(transaction.getDb(), Favorites.TABLE_NAME, transaction.getDb(),
+                        Favorites.PREVIEW_TABLE_NAME, context);
+            }
+
+            GridBackupTable backupTable = new GridBackupTable(context, transaction.getDb(),
+                    srcHotseatCount, sourceSize.x, sourceSize.y);
+            if (migrateForPreview ? backupTable.restoreToPreviewIfBackupExists()
+                    : backupTable.backupOrRestoreAsNeeded()) {
+                dbChanged = true;
+                srcHotseatCount = backupTable.getRestoreHotseatAndGridSize(sourceSize);
+            }
+
+            HashSet<String> validPackages = getValidPackages(context);
+            // Hotseat.
+            if (srcHotseatCount != idp.numDatabaseHotseatIcons
+                    && new GridSizeMigrationTask(context, transaction.getDb(), validPackages,
+                    migrateForPreview, srcHotseatCount,
+                    idp.numDatabaseHotseatIcons).migrateHotseat()) {
+                dbChanged = true;
+            }
+
+            // Grid size
+            Point targetSize = new Point(idp.numColumns, idp.numRows);
+            if (new MultiStepMigrationTask(validPackages, context, transaction.getDb(),
+                    migrateForPreview).migrate(sourceSize, targetSize)) {
+                dbChanged = true;
+            }
+
+            if (dbChanged) {
+                // Make sure we haven't removed everything.
+                final Cursor c = context.getContentResolver().query(
+                        migrateForPreview ? Favorites.PREVIEW_CONTENT_URI : Favorites.CONTENT_URI,
+                        null, null, null, null);
+                boolean hasData = c.moveToNext();
+                c.close();
+                if (!hasData) {
+                    throw new Exception("Removed every thing during grid resize");
+                }
+            }
+
+            transaction.commit();
+            if (!migrateForPreview) {
+                Settings.call(context.getContentResolver(), Settings.METHOD_REFRESH_BACKUP_TABLE);
+            }
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error during preview grid migration", e);
+
+            return false;
+        } finally {
+            Log.v(TAG, "Preview workspace migration completed in "
+                    + (SystemClock.elapsedRealtime() - migrationStartTime));
+
+            if (!migrateForPreview) {
+                // Save current configuration, so that the migration does not run again.
+                prefs.edit()
+                        .putString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, gridSizeString)
+                        .putInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, idp.numDatabaseHotseatIcons)
+                        .apply();
+            }
+        }
+    }
+
+    protected static HashSet<String> getValidPackages(Context context) {
+        // Initialize list of valid packages. This contain all the packages which are already on
+        // the device and packages which are being installed. Any item which doesn't belong to
+        // this set is removed.
+        // Since the loader removes such items anyway, removing these items here doesn't cause
+        // any extra data loss and gives us more free space on the grid for better migration.
+        HashSet<String> validPackages = new HashSet<>();
+        for (PackageInfo info : context.getPackageManager()
+                .getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES)) {
+            validPackages.add(info.packageName);
+        }
+        InstallSessionHelper.INSTANCE.get(context)
+                .getActiveSessions().keySet()
+                .forEach(packageUserKey -> validPackages.add(packageUserKey.mPackageName));
+        return validPackages;
+    }
+
+    /**
+     * Removes any broken item from the hotseat.
+     *
+     * @return a map with occupied hotseat position set to non-null value.
+     */
+    public static IntSparseArrayMap<Object> removeBrokenHotseatItems(Context context)
+            throws Exception {
+        try (SQLiteTransaction transaction = (SQLiteTransaction) Settings.call(
+                context.getContentResolver(), Settings.METHOD_NEW_TRANSACTION)
+                .getBinder(Settings.EXTRA_VALUE)) {
+            GridSizeMigrationTask task = new GridSizeMigrationTask(
+                    context, transaction.getDb(), getValidPackages(context),
+                    false /* usePreviewTable */, Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+            // Load all the valid entries
+            ArrayList<DbEntry> items = task.loadHotseatEntries();
+            // Delete any entry marked for deletion by above load.
+            task.applyOperations();
+            IntSparseArrayMap<Object> positions = new IntSparseArrayMap<>();
+            for (DbEntry item : items) {
+                positions.put(item.screenId, item);
+            }
+            transaction.commit();
+            return positions;
+        }
+    }
+
+    /**
+     * Task to run grid migration in multiple steps when the size difference is more than 1.
+     */
+    protected static class MultiStepMigrationTask {
+        private final HashSet<String> mValidPackages;
+        private final Context mContext;
+        private final SQLiteDatabase mDb;
+        private final boolean mUsePreviewTable;
+
+        public MultiStepMigrationTask(HashSet<String> validPackages, Context context,
+                                      SQLiteDatabase db, boolean usePreviewTable) {
+            mValidPackages = validPackages;
+            mContext = context;
+            mDb = db;
+            mUsePreviewTable = usePreviewTable;
+        }
+
+        public boolean migrate(Point sourceSize, Point targetSize) throws Exception {
+            boolean dbChanged = false;
+            if (!targetSize.equals(sourceSize)) {
+                if (sourceSize.x < targetSize.x) {
+                    // Source is smaller that target, just expand the grid without actual migration.
+                    sourceSize.x = targetSize.x;
+                }
+                if (sourceSize.y < targetSize.y) {
+                    // Source is smaller that target, just expand the grid without actual migration.
+                    sourceSize.y = targetSize.y;
+                }
+
+                // Migrate the workspace grid, such that the points differ by max 1 in x and y
+                // each on every step.
+                while (!targetSize.equals(sourceSize)) {
+                    // Get the next size, such that the points differ by max 1 in x and y each
+                    Point nextSize = new Point(sourceSize);
+                    if (targetSize.x < nextSize.x) {
+                        nextSize.x--;
+                    }
+                    if (targetSize.y < nextSize.y) {
+                        nextSize.y--;
+                    }
+                    if (runStepTask(sourceSize, nextSize)) {
+                        dbChanged = true;
+                    }
+                    sourceSize.set(nextSize.x, nextSize.y);
+                }
+            }
+            return dbChanged;
+        }
+
+        protected boolean runStepTask(Point sourceSize, Point nextSize) throws Exception {
+            return new GridSizeMigrationTask(mContext, mDb, mValidPackages, mUsePreviewTable,
+                    sourceSize, nextSize).migrateWorkspace();
         }
     }
 }

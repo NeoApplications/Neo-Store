@@ -18,60 +18,29 @@ package com.android.launcher3.model.data;
 
 import static android.text.TextUtils.isEmpty;
 import static androidx.core.util.Preconditions.checkNotNull;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_ALL_APPS_FOLDER;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_DESKTOP;
-import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_HOTSEAT;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.EMPTY_LABEL;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.MANUAL_LABEL;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.SUGGESTED_LABEL;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_CUSTOM;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_EMPTY;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_FOLDER_LABEL_STATE_UNSPECIFIED;
-import static com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState.FROM_SUGGESTED;
 
-import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Process;
-import android.text.TextUtils;
-import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
-import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
-import com.android.launcher3.folder.Folder;
-import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.FolderNameInfos;
-import com.android.launcher3.graphics.DrawableFactory;
-import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.logger.LauncherAtom.Attribute;
+import com.android.launcher3.logger.LauncherAtom.FolderIcon;
 import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.model.ModelWriter;
-import com.android.launcher3.userevent.LauncherLogProto;
-import com.android.launcher3.userevent.LauncherLogProto.Target;
-import com.android.launcher3.userevent.LauncherLogProto.Target.FromFolderLabelState;
-import com.android.launcher3.userevent.LauncherLogProto.Target.ToFolderLabelState;
-import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ContentWriter;
-import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.folder.FirstItemProvider;
-import com.saggitt.omega.iconpack.IconPack;
-import com.saggitt.omega.iconpack.IconPackManager;
-import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
@@ -100,84 +69,46 @@ public class FolderInfo extends ItemInfo {
 
     public static final int FLAG_MANUAL_FOLDER_NAME = 0x00000008;
 
-    public static final int FLAG_COVER_MODE = 0x00000016;
+    /**
+     * Different states of folder label.
+     */
+    public enum LabelState {
+        // Folder's label is not yet assigned( i.e., title == null). Eligible for auto-labeling.
+        UNLABELED(Attribute.UNLABELED),
+
+        // Folder's label is empty(i.e., title == ""). Not eligible for auto-labeling.
+        EMPTY(EMPTY_LABEL),
+
+        // Folder's label is one of the non-empty suggested values.
+        SUGGESTED(SUGGESTED_LABEL),
+
+        // Folder's label is non-empty, manually entered by the user
+        // and different from any of suggested values.
+        MANUAL(MANUAL_LABEL);
+
+        private final LauncherAtom.Attribute mLogAttribute;
+
+        LabelState(Attribute logAttribute) {
+            this.mLogAttribute = logAttribute;
+        }
+    }
+
     public static final String EXTRA_FOLDER_SUGGESTIONS = "suggest";
 
     public int options;
+
     public FolderNameInfos suggestedFolderNames;
+
     /**
      * The apps and shortcuts
      */
     public ArrayList<WorkspaceItemInfo> contents = new ArrayList<>();
-    public String swipeUpAction;
+
     private ArrayList<FolderListener> mListeners = new ArrayList<>();
-    private FirstItemProvider firstItemProvider = new FirstItemProvider(this);
-    private Drawable cached;
-    private String cachedIcon;
 
     public FolderInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_FOLDER;
         user = Process.myUserHandle();
-    }
-
-    /**
-     * @deprecated This method is used only for validation purpose and soon will be removed.
-     */
-    @Deprecated
-    private static FromFolderLabelState convertFolderLabelState(FromState fromState) {
-        switch (fromState) {
-            case FROM_EMPTY:
-                return FROM_EMPTY;
-            case FROM_SUGGESTED:
-                return FROM_SUGGESTED;
-            case FROM_CUSTOM:
-                return FROM_CUSTOM;
-            default:
-                return FROM_FOLDER_LABEL_STATE_UNSPECIFIED;
-        }
-    }
-
-    /**
-     * @deprecated This method is used only for validation purpose and soon will be removed.
-     */
-    @Deprecated
-    private static ToFolderLabelState convertFolderLabelState(ToState toState) {
-        switch (toState) {
-            case UNCHANGED:
-                return ToFolderLabelState.UNCHANGED;
-            case TO_SUGGESTION0:
-                return ToFolderLabelState.TO_SUGGESTION0_WITH_VALID_PRIMARY;
-            case TO_SUGGESTION1_WITH_VALID_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION1_WITH_VALID_PRIMARY;
-            case TO_SUGGESTION1_WITH_EMPTY_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION1_WITH_EMPTY_PRIMARY;
-            case TO_SUGGESTION2_WITH_VALID_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION2_WITH_VALID_PRIMARY;
-            case TO_SUGGESTION2_WITH_EMPTY_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION2_WITH_EMPTY_PRIMARY;
-            case TO_SUGGESTION3_WITH_VALID_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION3_WITH_VALID_PRIMARY;
-            case TO_SUGGESTION3_WITH_EMPTY_PRIMARY:
-                return ToFolderLabelState.TO_SUGGESTION3_WITH_EMPTY_PRIMARY;
-            case TO_EMPTY_WITH_VALID_PRIMARY:
-                return ToFolderLabelState.TO_EMPTY_WITH_VALID_PRIMARY;
-            case TO_EMPTY_WITH_VALID_SUGGESTIONS_AND_EMPTY_PRIMARY:
-                return ToFolderLabelState.TO_EMPTY_WITH_VALID_SUGGESTIONS_AND_EMPTY_PRIMARY;
-            case TO_EMPTY_WITH_EMPTY_SUGGESTIONS:
-                return ToFolderLabelState.TO_EMPTY_WITH_EMPTY_SUGGESTIONS;
-            case TO_EMPTY_WITH_SUGGESTIONS_DISABLED:
-                return ToFolderLabelState.TO_EMPTY_WITH_SUGGESTIONS_DISABLED;
-            case TO_CUSTOM_WITH_VALID_PRIMARY:
-                return ToFolderLabelState.TO_CUSTOM_WITH_VALID_PRIMARY;
-            case TO_CUSTOM_WITH_VALID_SUGGESTIONS_AND_EMPTY_PRIMARY:
-                return ToFolderLabelState.TO_CUSTOM_WITH_VALID_SUGGESTIONS_AND_EMPTY_PRIMARY;
-            case TO_CUSTOM_WITH_EMPTY_SUGGESTIONS:
-                return ToFolderLabelState.TO_CUSTOM_WITH_EMPTY_SUGGESTIONS;
-            case TO_CUSTOM_WITH_SUGGESTIONS_DISABLED:
-                return ToFolderLabelState.TO_CUSTOM_WITH_SUGGESTIONS_DISABLED;
-            default:
-                return ToFolderLabelState.TO_FOLDER_LABEL_STATE_UNSPECIFIED;
-        }
     }
 
     /**
@@ -207,9 +138,16 @@ public class FolderInfo extends ItemInfo {
      * @param item
      */
     public void remove(WorkspaceItemInfo item, boolean animate) {
-        contents.remove(item);
+        removeAll(Collections.singletonList(item), animate);
+    }
+
+    /**
+     * Remove all matching app or shortcut. Does not change the DB.
+     */
+    public void removeAll(List<WorkspaceItemInfo> items, boolean animate) {
+        contents.removeAll(items);
         for (int i = 0; i < mListeners.size(); i++) {
-            mListeners.get(i).onRemove(item);
+            mListeners.get(i).onRemove(items);
         }
         itemsChanged(animate);
     }
@@ -235,6 +173,14 @@ public class FolderInfo extends ItemInfo {
         }
     }
 
+    public interface FolderListener {
+        void onAdd(WorkspaceItemInfo item, int rank);
+
+        void onRemove(List<WorkspaceItemInfo> item);
+
+        void onItemsChanged(boolean animate);
+    }
+
     public boolean hasOption(int optionFlag) {
         return (options & optionFlag) != 0;
     }
@@ -256,121 +202,6 @@ public class FolderInfo extends ItemInfo {
         }
     }
 
-    public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
-        swipeUpAction = action;
-        ModelWriter.modifyItemInDatabase(context, this, null, swipeUpAction, null, null, false, true);
-    }
-
-    public ComponentKey toComponentKey() {
-        return new ComponentKey(new ComponentName("com.saggitt.omega.folder", String.valueOf(id)), Process.myUserHandle());
-    }
-
-    public Drawable getIcon(Context context) {
-        Launcher launcher = Launcher.getLauncher(context);
-        Drawable icn = getIconInternal(launcher);
-        if (icn != null) {
-            return icn;
-        }
-        if (isCoverMode()) {
-            return DrawableFactory.INSTANCE.get(context).newIcon(context, getCoverInfo());
-        }
-        return getFolderIcon(launcher);
-    }
-
-    public Drawable getDefaultIcon(Launcher launcher) {
-        if (isCoverMode()) {
-            return new FastBitmapDrawable(getCoverInfo().bitmap);
-        } else {
-            return getFolderIcon(launcher);
-        }
-    }
-
-    public Drawable getFolderIcon(Launcher launcher) {
-        int iconSize = launcher.getDeviceProfile().iconSizePx;
-        FrameLayout dummy = new FrameLayout(launcher, null);
-        FolderIcon icon = FolderIcon.inflateIcon(R.layout.folder_icon, launcher, dummy, this);
-        icon.isCustomIcon = false;
-        icon.getFolderBackground().setStartOpacity(1f);
-        Bitmap b = BitmapRenderer.createHardwareBitmap(iconSize, iconSize, out -> {
-            out.translate(iconSize / 2f, 0);
-            // TODO: make folder icons more visible in front of the bottom sheet
-            // out.drawColor(Color.RED);
-            icon.draw(out);
-        });
-        icon.unbind();
-        return new BitmapDrawable(launcher.getResources(), b);
-    }
-
-    public boolean useIconMode(Context context) {
-        return isCoverMode() || hasCustomIcon(context);
-    }
-
-    public boolean usingCustomIcon(Context context) {
-        if (isCoverMode()) return false;
-        Launcher launcher = OmegaLauncher.getLauncher(context);
-        return getIconInternal(launcher) != null;
-    }
-
-    private boolean hasCustomIcon(Context context) {
-        Launcher launcher = OmegaLauncher.getLauncher(context);
-        return getIconInternal(launcher) != null;
-    }
-
-    public boolean isCoverMode() {
-        return hasOption(FLAG_COVER_MODE);
-    }
-
-    public void setCoverMode(boolean enable, ModelWriter modelWriter) {
-        setOption(FLAG_COVER_MODE, enable, modelWriter);
-    }
-
-    public WorkspaceItemInfo getCoverInfo() {
-        return firstItemProvider.getFirstItem();
-    }
-
-    public CharSequence getIconTitle(Folder folder) {
-        if (!TextUtils.equals(folder.getDefaultFolderName(), title)) {
-            return title;
-        } else if (isCoverMode()) {
-            WorkspaceItemInfo info = getCoverInfo();
-            if (info.customTitle != null) {
-                return info.customTitle;
-            }
-            return info.title;
-        } else {
-            return folder.getDefaultFolderName();
-        }
-    }
-
-    /**
-     * DO NOT USE OUTSIDE CUSTOMINFOPROVIDER
-     */
-    public void onIconChanged() {
-        for (FolderListener listener : mListeners) {
-            listener.onIconChanged();
-        }
-    }
-
-    private Drawable getIconInternal(Launcher launcher) {
-        CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
-        IconPackManager.CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
-        if (entry != null) {
-            entry.getIcon();
-            if (!entry.getIcon().equals(cachedIcon)) {
-                IconPack pack = IconPackManager.Companion.getInstance(launcher)
-                        .getIconPack(entry.getPackPackageName(), false, true);
-                if (pack != null) {
-                    cached = pack.getIcon(entry, launcher.getDeviceProfile().inv.fillResIconDpi);
-                    cachedIcon = entry.getIcon();
-                }
-            }
-            if (cached != null) {
-                return cached.mutate();
-            }
-        }
-        return null;
-    }
-
     @Override
     protected String dumpProperties() {
         return String.format("%s; labelState=%s", super.dumpProperties(), getLabelState());
@@ -378,8 +209,13 @@ public class FolderInfo extends ItemInfo {
 
     @Override
     public LauncherAtom.ItemInfo buildProto(FolderInfo fInfo) {
+        FolderIcon.Builder folderIcon = FolderIcon.newBuilder()
+                .setCardinality(contents.size());
+        if (LabelState.SUGGESTED.equals(getLabelState())) {
+            folderIcon.setLabelInfo(title.toString());
+        }
         return getDefaultItemInfoBuilder()
-                .setFolderIcon(LauncherAtom.FolderIcon.newBuilder().setCardinality(contents.size()))
+                .setFolderIcon(folderIcon)
                 .setRank(rank)
                 .setAttribute(getLabelState().mLogAttribute)
                 .setContainerInfo(getContainerInfo())
@@ -446,7 +282,6 @@ public class FolderInfo extends ItemInfo {
      * Returns index of the accepted suggestion.
      */
     public OptionalInt getAcceptedSuggestionIndex() {
-        @SuppressLint("RestrictedApi")
         String newLabel = checkNotNull(title,
                 "Expected valid folder label, but found null").toString();
         if (suggestedFolderNames == null || !suggestedFolderNames.hasSuggestions()) {
@@ -528,94 +363,5 @@ public class FolderInfo extends ItemInfo {
                 // fall through
         }
         return LauncherAtom.ToState.TO_STATE_UNSPECIFIED;
-    }
-
-    /**
-     * Returns {@link LauncherLogProto.LauncherEvent} to log current folder label info.
-     *
-     * @deprecated This method is used only for validation purpose and soon will be removed.
-     */
-    @Deprecated
-    public LauncherLogProto.LauncherEvent getFolderLabelStateLauncherEvent(FromState fromState,
-                                                                           ToState toState) {
-        return LauncherLogProto.LauncherEvent.newBuilder()
-                .setAction(LauncherLogProto.Action
-                        .newBuilder()
-                        .setType(LauncherLogProto.Action.Type.SOFT_KEYBOARD))
-                .addSrcTarget(Target
-                        .newBuilder()
-                        .setType(Target.Type.ITEM)
-                        .setItemType(LauncherLogProto.ItemType.EDITTEXT)
-                        .setFromFolderLabelState(convertFolderLabelState(fromState))
-                        .setToFolderLabelState(convertFolderLabelState(toState)))
-                .addSrcTarget(Target.newBuilder()
-                        .setType(Target.Type.CONTAINER)
-                        .setContainerType(LauncherLogProto.ContainerType.FOLDER)
-                        .setPageIndex(screenId)
-                        .setGridX(cellX)
-                        .setGridY(cellY)
-                        .setCardinality(contents.size()))
-                .addSrcTarget(newParentContainerTarget())
-                .build();
-    }
-
-    /**
-     * @deprecated This method is used only for validation purpose and soon will be removed.
-     */
-    @Deprecated
-    private Target.Builder newParentContainerTarget() {
-        Target.Builder builder = Target.newBuilder().setType(Target.Type.CONTAINER);
-        switch (container) {
-            case CONTAINER_ALL_APPS_FOLDER:
-            case CONTAINER_ALL_APPS:
-                return builder.setContainerType(LauncherLogProto.ContainerType.FOLDER);
-            case CONTAINER_HOTSEAT:
-                return builder.setContainerType(LauncherLogProto.ContainerType.HOTSEAT);
-            case CONTAINER_DESKTOP:
-                return builder.setContainerType(LauncherLogProto.ContainerType.WORKSPACE);
-            default:
-                throw new AssertionError(String
-                        .format("Expected container to be either %s or %s but found %s.",
-                                CONTAINER_HOTSEAT,
-                                CONTAINER_DESKTOP,
-                                container));
-        }
-    }
-
-    /**
-     * Different states of folder label.
-     */
-    public enum LabelState {
-        // Folder's label is not yet assigned( i.e., title == null). Eligible for auto-labeling.
-        UNLABELED(Attribute.UNLABELED),
-
-        // Folder's label is empty(i.e., title == ""). Not eligible for auto-labeling.
-        EMPTY(EMPTY_LABEL),
-
-        // Folder's label is one of the non-empty suggested values.
-        SUGGESTED(SUGGESTED_LABEL),
-
-        // Folder's label is non-empty, manually entered by the user
-        // and different from any of suggested values.
-        MANUAL(MANUAL_LABEL);
-
-        private final LauncherAtom.Attribute mLogAttribute;
-
-        LabelState(Attribute logAttribute) {
-            this.mLogAttribute = logAttribute;
-        }
-    }
-
-    public interface FolderListener {
-        public void onAdd(WorkspaceItemInfo item, int rank);
-        public void onRemove(WorkspaceItemInfo item);
-
-        public void onTitleChanged(CharSequence title);
-
-        public void onItemsChanged(boolean animate);
-
-        public default void onIconChanged() {
-            // do nothing
-        }
     }
 }

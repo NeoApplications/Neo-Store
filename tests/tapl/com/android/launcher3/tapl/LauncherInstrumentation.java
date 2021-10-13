@@ -20,7 +20,6 @@ import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 import static android.content.pm.PackageManager.DONT_KILL_APP;
 import static android.content.pm.PackageManager.MATCH_ALL;
 import static android.content.pm.PackageManager.MATCH_DISABLED_COMPONENTS;
-
 import static com.android.launcher3.tapl.TestHelpers.getOverviewPackageName;
 import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
 
@@ -39,6 +38,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.SystemClock;
@@ -52,6 +52,7 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.BySelector;
@@ -64,6 +65,7 @@ import androidx.test.uiautomator.Until;
 
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.testing.TestProtocol;
+import com.android.systemui.shared.system.ContextUtils;
 import com.android.systemui.shared.system.QuickStepContract;
 
 import org.junit.Assert;
@@ -93,15 +95,18 @@ public final class LauncherInstrumentation {
     private static final String TAG = "Tapl";
     private static final int ZERO_BUTTON_STEPS_FROM_BACKGROUND_TO_HOME = 20;
     private static final int GESTURE_STEP_MS = 16;
-    private static long START_TIME = System.currentTimeMillis();
 
-    static final Pattern EVENT_START = Pattern.compile("start:");
-    static final Pattern EVENT_TOUCH_DOWN_TIS = getTouchEventPatternTIS("ACTION_DOWN");
-    static final Pattern EVENT_TOUCH_UP_TIS = getTouchEventPatternTIS("ACTION_UP");
     private static final Pattern EVENT_TOUCH_DOWN = getTouchEventPattern("ACTION_DOWN");
     private static final Pattern EVENT_TOUCH_UP = getTouchEventPattern("ACTION_UP");
     private static final Pattern EVENT_TOUCH_CANCEL = getTouchEventPattern("ACTION_CANCEL");
     private static final Pattern EVENT_PILFER_POINTERS = Pattern.compile("pilferPointers");
+    static final Pattern EVENT_START = Pattern.compile("start:");
+
+    static final Pattern EVENT_TOUCH_DOWN_TIS = getTouchEventPatternTIS("ACTION_DOWN");
+    static final Pattern EVENT_TOUCH_UP_TIS = getTouchEventPatternTIS("ACTION_UP");
+    private final String mLauncherPackage;
+    private Boolean mIsLauncher3;
+    private long mTestStartTime = -1;
 
     // Types for launcher containers that the user is interacting with. "Background" is a
     // pseudo-container corresponding to inactive launcher covered by another app.
@@ -111,7 +116,11 @@ public final class LauncherInstrumentation {
 
     public enum NavigationModel {ZERO_BUTTON, TWO_BUTTON, THREE_BUTTON}
 
-    private static final String CONTEXT_MENU_RES_ID = "deep_shortcuts_container";
+    // Where the gesture happens: outside of Launcher, inside or from inside to outside and
+    // whether the gesture recognition triggers pilfer.
+    public enum GestureScope {
+        OUTSIDE_WITHOUT_PILFER, OUTSIDE_WITH_PILFER, INSIDE, INSIDE_TO_OUTSIDE
+    }
 
     ;
 
@@ -138,16 +147,18 @@ public final class LauncherInstrumentation {
         }
     }
 
-    private static final String ANDROID_PACKAGE = "android";
+    public interface Closable extends AutoCloseable {
+        void close();
+    }
 
     private static final String WORKSPACE_RES_ID = "workspace";
     private static final String APPS_RES_ID = "apps_view";
     private static final String OVERVIEW_RES_ID = "overview_panel";
-    private static final String WIDGETS_RES_ID = "widgets_list_view";
-    private LogEventChecker mEventChecker;
-    public static final int WAIT_TIME_MS = 10000;
+    private static final String WIDGETS_RES_ID = "primary_widgets_list_view";
+    private static final String CONTEXT_MENU_RES_ID = "popup_container";
+    public static final int WAIT_TIME_MS = 60000;
     private static final String SYSTEMUI_PACKAGE = "com.android.systemui";
-    private boolean mCheckEventsForSuccessfulGestures = false;
+    private static final String ANDROID_PACKAGE = "android";
 
     private static WeakReference<VisibleContainer> sActiveContainer = new WeakReference<>(null);
 
@@ -159,7 +170,33 @@ public final class LauncherInstrumentation {
     private Function<Long, String> mSystemHealthSupplier;
 
     private Consumer<ContainerType> mOnSettledStateAction;
+
+    private LogEventChecker mEventChecker;
+
+    private boolean mCheckEventsForSuccessfulGestures = false;
     private Runnable mOnLauncherCrashed;
+
+    private static Pattern getTouchEventPattern(String prefix, String action) {
+        // The pattern includes checks that we don't get a multi-touch events or other surprises.
+        return Pattern.compile(
+                prefix + ": MotionEvent.*?action=" + action + ".*?id\\[0\\]=0"
+                        + ".*?toolType\\[0\\]=TOOL_TYPE_FINGER.*?buttonState=0.*?pointerCount=1");
+    }
+
+    private static Pattern getTouchEventPattern(String action) {
+        return getTouchEventPattern("Touch event", action);
+    }
+
+    private static Pattern getTouchEventPatternTIS(String action) {
+        return getTouchEventPattern("TouchInteractionService.onInputEvent", action);
+    }
+
+    /**
+     * Constructs the root of TAPL hierarchy. You get all other objects from it.
+     */
+    public LauncherInstrumentation() {
+        this(InstrumentationRegistry.getInstrumentation());
+    }
 
     /**
      * Constructs the root of TAPL hierarchy. You get all other objects from it.
@@ -182,11 +219,11 @@ public final class LauncherInstrumentation {
         // Launcher package. As during inproc tests the tested launcher may not be selected as the
         // current launcher, choosing target package for inproc. For out-of-proc, use the installed
         // launcher package.
-        final String authorityPackage = testPackage.equals(targetPackage) ?
-                getLauncherPackageName() :
-                targetPackage;
+        mLauncherPackage = testPackage.equals(targetPackage)
+                ? getLauncherPackageName()
+                : targetPackage;
 
-        String testProviderAuthority = authorityPackage + ".TestInfo";
+        String testProviderAuthority = mLauncherPackage + ".TestInfo";
         mTestProviderUri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_CONTENT)
                 .authority(testProviderAuthority)
@@ -203,58 +240,17 @@ public final class LauncherInstrumentation {
 
         if (pm.getComponentEnabledSetting(cn) != COMPONENT_ENABLED_STATE_ENABLED) {
             if (TestHelpers.isInLauncherProcess()) {
-                getContext().getPackageManager().setComponentEnabledSetting(
-                        cn, COMPONENT_ENABLED_STATE_ENABLED, DONT_KILL_APP);
+                pm.setComponentEnabledSetting(cn, COMPONENT_ENABLED_STATE_ENABLED, DONT_KILL_APP);
             } else {
                 try {
-                    mDevice.executeShellCommand("pm enable " + cn.flattenToString());
+                    final int userId = ContextUtils.getUserId(getContext());
+                    mDevice.executeShellCommand(
+                            "pm enable --user " + userId + " " + cn.flattenToString());
                 } catch (IOException e) {
                     fail(e.toString());
                 }
             }
         }
-    }
-
-    private static Pattern getTouchEventPattern(String prefix, String action) {
-        // The pattern includes sanity checks that we don't get a multi-touch events or other
-        // surprises.
-        return Pattern.compile(
-                prefix + ": MotionEvent.*?action=" + action + ".*?id\\[0\\]=0"
-                        + ".*?toolType\\[0\\]=TOOL_TYPE_FINGER.*?buttonState=0.*?pointerCount=1");
-    }
-
-    private static Pattern getTouchEventPattern(String action) {
-        return getTouchEventPattern("Touch event", action);
-    }
-
-    private static Pattern getTouchEventPatternTIS(String action) {
-        return getTouchEventPattern("TouchInteractionService.onInputEvent", action);
-    }
-
-    private static String getApplicationPackageSafe(UiObject2 object) {
-        try {
-            return object.getApplicationPackage();
-        } catch (StaleObjectException e) {
-            // We are looking at all object in the system; external ones can suddenly go away.
-            return null;
-        }
-    }
-
-    /**
-     * Constructs the root of TAPL hierarchy. You get all other objects from it.
-     */
-    public LauncherInstrumentation() {
-        this(InstrumentationRegistry.getInstrumentation());
-    }
-
-    private static String eventListToString(List<Integer> actualEvents) {
-        if (actualEvents.isEmpty()) return "no events";
-
-        return "["
-                + actualEvents.stream()
-                .map(state -> TestProtocol.stateOrdinalToString(state))
-                .collect(Collectors.joining(", "))
-                + "]";
     }
 
     public void enableCheckEventsForSuccessfulGestures() {
@@ -273,6 +269,9 @@ public final class LauncherInstrumentation {
         try (ContentProviderClient client = getContext().getContentResolver()
                 .acquireContentProviderClient(mTestProviderUri)) {
             return client.call(request, null, null);
+        } catch (DeadObjectException e) {
+            fail("Launcher crashed");
+            return null;
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -368,9 +367,11 @@ public final class LauncherInstrumentation {
 
             if (hasSystemUiObject("keyguard_status_view")) return "Phone is locked";
 
-            if (!mDevice.hasObject(By.textStartsWith(""))) return "Screen is empty";
+            if (!mDevice.wait(Until.hasObject(getAnyObjectSelector()), WAIT_TIME_MS)) {
+                return "Screen is empty";
+            }
 
-            final String navigationModeError = getNavigationModeMismatchError();
+            final String navigationModeError = getNavigationModeMismatchError(true);
             if (navigationModeError != null) return navigationModeError;
         } catch (Throwable e) {
             Log.w(TAG, "getSystemAnomalyMessage failed", e);
@@ -389,12 +390,21 @@ public final class LauncherInstrumentation {
     }
 
     private String getVisiblePackages() {
-        return mDevice.findObjects(By.textStartsWith(""))
+        return mDevice.findObjects(getAnyObjectSelector())
                 .stream()
                 .map(LauncherInstrumentation::getApplicationPackageSafe)
                 .distinct()
                 .filter(pkg -> pkg != null && !"com.android.systemui".equals(pkg))
                 .collect(Collectors.joining(", "));
+    }
+
+    private static String getApplicationPackageSafe(UiObject2 object) {
+        try {
+            return object.getApplicationPackage();
+        } catch (StaleObjectException e) {
+            // We are looking at all object in the system; external ones can suddenly go away.
+            return null;
+        }
     }
 
     private String getVisibleStateMessage() {
@@ -406,6 +416,22 @@ public final class LauncherInstrumentation {
         return "Background (" + getVisiblePackages() + ")";
     }
 
+    public void setSystemHealthSupplier(Function<Long, String> supplier) {
+        this.mSystemHealthSupplier = supplier;
+    }
+
+    public void setOnSettledStateAction(Consumer<ContainerType> onSettledStateAction) {
+        mOnSettledStateAction = onSettledStateAction;
+    }
+
+    public void onTestStart() {
+        mTestStartTime = System.currentTimeMillis();
+    }
+
+    public void onTestFinish() {
+        mTestStartTime = -1;
+    }
+
     private String formatSystemHealthMessage(String message) {
         final String testPackage = getContext().getPackageName();
 
@@ -414,25 +440,18 @@ public final class LauncherInstrumentation {
         mInstrumentation.getUiAutomation().grantRuntimePermission(
                 testPackage, "android.permission.PACKAGE_USAGE_STATS");
 
-        final String systemHealth = mSystemHealthSupplier != null
-                ? mSystemHealthSupplier.apply(START_TIME)
-                : TestHelpers.getSystemHealthMessage(getContext(), START_TIME);
+        if (mTestStartTime > 0) {
+            final String systemHealth = mSystemHealthSupplier != null
+                    ? mSystemHealthSupplier.apply(mTestStartTime)
+                    : TestHelpers.getSystemHealthMessage(getContext(), mTestStartTime);
 
-        if (systemHealth != null) {
-            return message
-                    + ",\nperhaps linked to system health problems:\n<<<<<<<<<<<<<<<<<<\n"
-                    + systemHealth + "\n>>>>>>>>>>>>>>>>>>";
+            if (systemHealth != null) {
+                return message
+                        + ";\nPerhaps linked to system health problems:\n<<<<<<<<<<<<<<<<<<\n"
+                        + systemHealth + "\n>>>>>>>>>>>>>>>>>>";
+            }
         }
-
         return message;
-    }
-
-    public void setSystemHealthSupplier(Function<Long, String> supplier) {
-        this.mSystemHealthSupplier = supplier;
-    }
-
-    public void setOnSettledStateAction(Consumer<ContainerType> onSettledStateAction) {
-        mOnSettledStateAction = onSettledStateAction;
     }
 
     private String formatErrorWithEvents(String message, boolean checkEvents) {
@@ -442,14 +461,14 @@ public final class LauncherInstrumentation {
             if (checkEvents) {
                 final String eventMismatch = eventChecker.verify(0, false);
                 if (eventMismatch != null) {
-                    message = message + ", having produced " + eventMismatch;
+                    message = message + ";\n" + eventMismatch;
                 }
             } else {
                 eventChecker.finishNoWait();
             }
         }
 
-        dumpDiagnostics();
+        dumpDiagnostics(message);
 
         log("Hierarchy dump for: " + message);
         dumpViewHierarchy();
@@ -457,10 +476,11 @@ public final class LauncherInstrumentation {
         return message;
     }
 
-    private void dumpDiagnostics() {
-        Log.e("b/156287114", "Input:");
+    private void dumpDiagnostics(String message) {
+        log("Diagnostics for failure: " + message);
+        log("Input:");
         logShellCommand("dumpsys input");
-        Log.e("b/156287114", "TIS:");
+        log("TIS:");
         logShellCommand("dumpsys activity service TouchInteractionService");
     }
 
@@ -468,46 +488,24 @@ public final class LauncherInstrumentation {
         try {
             for (String line : mDevice.executeShellCommand(command).split("\\n")) {
                 SystemClock.sleep(10);
-                Log.d("b/156287114", line);
+                log(line);
             }
         } catch (IOException e) {
-            Log.d("b/156287114", "Failed to execute " + command);
+            log("Failed to execute " + command);
         }
     }
 
-    private void fail(String message) {
+    void fail(String message) {
         checkForAnomaly();
         Assert.fail(formatSystemHealthMessage(formatErrorWithEvents(
-                "http://go/tapl : " + getContextDescription() + message
-                        + " (visible state: " + getVisibleStateMessage() + ")", true)));
-    }
-
-    private UiObject2 verifyContainerType(ContainerType containerType) {
-        waitForLauncherInitialized();
-
-        assertEquals("Unexpected display rotation",
-                mExpectedRotation, mDevice.getDisplayRotation());
-
-        // b/148422894
-        String error = null;
-        for (int i = 0; i != 600; ++i) {
-            error = getNavigationModeMismatchError();
-            if (error == null) break;
-            sleep(100);
-        }
-        assertTrue(error, error == null);
-
-        log("verifyContainerType: " + containerType);
-
-        final UiObject2 container = verifyVisibleObjects(containerType);
-
-        if (mOnSettledStateAction != null) mOnSettledStateAction.accept(containerType);
-
-        return container;
+                "http://go/tapl test failure:\nContext: " + getContextDescription()
+                        + " - visible state is " + getVisibleStateMessage()
+                        + ";\nDetails: " + message, true)));
     }
 
     private String getContextDescription() {
-        return mDiagnosticContext.isEmpty() ? "" : String.join(", ", mDiagnosticContext) + "; ";
+        return mDiagnosticContext.isEmpty()
+                ? "(no context)" : String.join(", ", mDiagnosticContext);
     }
 
     void assertTrue(String message, boolean condition) {
@@ -552,19 +550,48 @@ public final class LauncherInstrumentation {
         mExpectedRotation = expectedRotation;
     }
 
-    public String getNavigationModeMismatchError() {
+    public String getNavigationModeMismatchError(boolean waitForCorrectState) {
+        final int waitTime = waitForCorrectState ? WAIT_TIME_MS : 0;
         final NavigationModel navigationModel = getNavigationModel();
-        final boolean hasRecentsButton = hasSystemUiObject("recent_apps");
-        final boolean hasHomeButton = hasSystemUiObject("home");
-        if ((navigationModel == NavigationModel.THREE_BUTTON) != hasRecentsButton) {
-            return "Presence of recents button doesn't match the interaction mode, mode="
-                    + navigationModel.name() + ", hasRecents=" + hasRecentsButton;
+
+        if (navigationModel == NavigationModel.THREE_BUTTON) {
+            if (!mDevice.wait(Until.hasObject(By.res(SYSTEMUI_PACKAGE, "recent_apps")), waitTime)) {
+                return "Recents button not present in 3-button mode";
+            }
+        } else {
+            if (!mDevice.wait(Until.gone(By.res(SYSTEMUI_PACKAGE, "recent_apps")), waitTime)) {
+                return "Recents button is present in non-3-button mode";
+            }
         }
-        if ((navigationModel != NavigationModel.ZERO_BUTTON) != hasHomeButton) {
-            return "Presence of home button doesn't match the interaction mode, mode="
-                    + navigationModel.name() + ", hasHome=" + hasHomeButton;
+
+        if (navigationModel == NavigationModel.ZERO_BUTTON) {
+            if (!mDevice.wait(Until.gone(By.res(SYSTEMUI_PACKAGE, "home")), waitTime)) {
+                return "Home button is present in gestural mode";
+            }
+        } else {
+            if (!mDevice.wait(Until.hasObject(By.res(SYSTEMUI_PACKAGE, "home")), waitTime)) {
+                return "Home button not present in non-gestural mode";
+            }
         }
         return null;
+    }
+
+    private UiObject2 verifyContainerType(ContainerType containerType) {
+        waitForLauncherInitialized();
+
+        assertEquals("Unexpected display rotation",
+                mExpectedRotation, mDevice.getDisplayRotation());
+
+        final String error = getNavigationModeMismatchError(true);
+        assertTrue(error, error == null);
+
+        log("verifyContainerType: " + containerType);
+
+        final UiObject2 container = verifyVisibleObjects(containerType);
+
+        if (mOnSettledStateAction != null) mOnSettledStateAction.accept(containerType);
+
+        return container;
     }
 
     private UiObject2 verifyVisibleObjects(ContainerType containerType) {
@@ -572,11 +599,7 @@ public final class LauncherInstrumentation {
                 "but the current state is not " + containerType.name())) {
             switch (containerType) {
                 case WORKSPACE: {
-                    if (mDevice.isNaturalOrientation()) {
-                        waitForLauncherObject(APPS_RES_ID);
-                    } else {
-                        waitUntilLauncherObjectGone(APPS_RES_ID);
-                    }
+                    waitUntilLauncherObjectGone(APPS_RES_ID);
                     waitUntilLauncherObjectGone(OVERVIEW_RES_ID);
                     waitUntilLauncherObjectGone(WIDGETS_RES_ID);
                     return waitForLauncherObject(WORKSPACE_RES_ID);
@@ -594,11 +617,7 @@ public final class LauncherInstrumentation {
                     return waitForLauncherObject(APPS_RES_ID);
                 }
                 case OVERVIEW: {
-                    if (hasAllAppsInOverview()) {
-                        waitForLauncherObject(APPS_RES_ID);
-                    } else {
-                        waitUntilLauncherObjectGone(APPS_RES_ID);
-                    }
+                    waitUntilLauncherObjectGone(APPS_RES_ID);
                     waitUntilLauncherObjectGone(WORKSPACE_RES_ID);
                     waitUntilLauncherObjectGone(WIDGETS_RES_ID);
 
@@ -630,22 +649,35 @@ public final class LauncherInstrumentation {
             }
             SystemClock.sleep(100);
         }
+        checkForAnomaly();
         fail("Launcher didn't initialize");
     }
 
+    Parcelable executeAndWaitForLauncherEvent(Runnable command,
+                                              UiAutomation.AccessibilityEventFilter eventFilter, Supplier<String> message,
+                                              String actionName) {
+        return executeAndWaitForEvent(
+                command,
+                e -> mLauncherPackage.equals(e.getPackageName()) && eventFilter.accept(e),
+                message, actionName);
+    }
+
     Parcelable executeAndWaitForEvent(Runnable command,
-                                      UiAutomation.AccessibilityEventFilter eventFilter, Supplier<String> message) {
-        try {
-            final AccessibilityEvent event =
-                    mInstrumentation.getUiAutomation().executeAndWaitForEvent(
-                            command, eventFilter, WAIT_TIME_MS);
-            assertNotNull("executeAndWaitForEvent returned null (this can't happen)", event);
-            final Parcelable parcelableData = event.getParcelableData();
-            event.recycle();
-            return parcelableData;
-        } catch (TimeoutException e) {
-            fail(message.get());
-            return null;
+                                      UiAutomation.AccessibilityEventFilter eventFilter, Supplier<String> message,
+                                      String actionName) {
+        try (LauncherInstrumentation.Closable c = addContextLayer(actionName)) {
+            try {
+                final AccessibilityEvent event =
+                        mInstrumentation.getUiAutomation().executeAndWaitForEvent(
+                                command, eventFilter, WAIT_TIME_MS);
+                assertNotNull("executeAndWaitForEvent returned null (this can't happen)", event);
+                final Parcelable parcelableData = event.getParcelableData();
+                event.recycle();
+                return parcelableData;
+            } catch (TimeoutException e) {
+                fail(message.get());
+                return null;
+            }
         }
     }
 
@@ -678,6 +710,10 @@ public final class LauncherInstrumentation {
                     try (LauncherInstrumentation.Closable c = addContextLayer(
                             "Swiped up from context menu to home")) {
                         waitUntilLauncherObjectGone(CONTEXT_MENU_RES_ID);
+                        // Swiping up can temporarily bring Nexus Launcher if the current
+                        // Launcher is a Launcher3 one. Wait for the current launcher to reappear.
+                        SystemClock.sleep(5000); // b/187080582
+                        waitForLauncherObject(getAnyObjectSelector());
                     }
                 }
                 if (hasLauncherObject(WORKSPACE_RES_ID)) {
@@ -687,33 +723,30 @@ public final class LauncherInstrumentation {
                     dumpViewHierarchy();
                     action = "swiping up to home";
 
-                    try (LauncherInstrumentation.Closable c = addContextLayer(action)) {
-                        swipeToState(
-                                displaySize.x / 2, displaySize.y - 1,
-                                displaySize.x / 2, 0,
-                                ZERO_BUTTON_STEPS_FROM_BACKGROUND_TO_HOME, NORMAL_STATE_ORDINAL,
-                                launcherWasVisible
-                                        ? GestureScope.INSIDE_TO_OUTSIDE
-                                        : GestureScope.OUTSIDE_WITH_PILFER);
-                    }
+                    swipeToState(
+                            displaySize.x / 2, displaySize.y - 1,
+                            displaySize.x / 2, 0,
+                            ZERO_BUTTON_STEPS_FROM_BACKGROUND_TO_HOME, NORMAL_STATE_ORDINAL,
+                            launcherWasVisible
+                                    ? GestureScope.INSIDE_TO_OUTSIDE
+                                    : GestureScope.OUTSIDE_WITH_PILFER);
                 }
             } else {
                 log("Hierarchy before clicking home:");
                 dumpViewHierarchy();
                 action = "clicking home button";
-                try (LauncherInstrumentation.Closable c = addContextLayer(action)) {
-                    if (!isLauncher3() && getNavigationModel() == NavigationModel.TWO_BUTTON) {
-                        expectEvent(TestProtocol.SEQUENCE_TIS, EVENT_TOUCH_DOWN_TIS);
-                        expectEvent(TestProtocol.SEQUENCE_TIS, EVENT_TOUCH_UP_TIS);
-                    }
-
-                    runToState(
-                            waitForSystemUiObject("home")::click,
-                            NORMAL_STATE_ORDINAL,
-                            !hasLauncherObject(WORKSPACE_RES_ID)
-                                    && (hasLauncherObject(APPS_RES_ID)
-                                    || hasLauncherObject(OVERVIEW_RES_ID)));
+                if (!isLauncher3() && getNavigationModel() == NavigationModel.TWO_BUTTON) {
+                    expectEvent(TestProtocol.SEQUENCE_TIS, EVENT_TOUCH_DOWN_TIS);
+                    expectEvent(TestProtocol.SEQUENCE_TIS, EVENT_TOUCH_UP_TIS);
                 }
+
+                runToState(
+                        waitForSystemUiObject("home")::click,
+                        NORMAL_STATE_ORDINAL,
+                        !hasLauncherObject(WORKSPACE_RES_ID)
+                                && (hasLauncherObject(APPS_RES_ID)
+                                || hasLauncherObject(OVERVIEW_RES_ID)),
+                        action);
             }
             try (LauncherInstrumentation.Closable c = addContextLayer(
                     "performed action to switch to Home - " + action)) {
@@ -722,23 +755,13 @@ public final class LauncherInstrumentation {
         }
     }
 
-    boolean isLauncherVisible() {
-        mDevice.waitForIdle();
-        return hasLauncherObject(By.textStartsWith(""));
+    private static BySelector getAnyObjectSelector() {
+        return By.textStartsWith("");
     }
 
-    /**
-     * Gets the Options Popup Menu object if the current state is showing the popup menu. Fails if
-     * the launcher is not in that state.
-     *
-     * @return Options Popup Menu object.
-     */
-    @NonNull
-    public OptionsPopupMenu getOptionsPopupMenu() {
-        try (LauncherInstrumentation.Closable c = addContextLayer(
-                "want to get context menu object")) {
-            return new OptionsPopupMenu(this);
-        }
+    boolean isLauncherVisible() {
+        mDevice.waitForIdle();
+        return hasLauncherObject(getAnyObjectSelector());
     }
 
     /**
@@ -828,6 +851,20 @@ public final class LauncherInstrumentation {
         }
     }
 
+    /**
+     * Gets the Options Popup Menu object if the current state is showing the popup menu. Fails if
+     * the launcher is not in that state.
+     *
+     * @return Options Popup Menu object.
+     */
+    @NonNull
+    public OptionsPopupMenu getOptionsPopupMenu() {
+        try (LauncherInstrumentation.Closable c = addContextLayer(
+                "want to get context menu object")) {
+            return new OptionsPopupMenu(this);
+        }
+    }
+
     void waitUntilLauncherObjectGone(String resId) {
         waitUntilGoneBySelector(getLauncherObjectSelector(resId));
     }
@@ -842,16 +879,6 @@ public final class LauncherInstrumentation {
                         WAIT_TIME_MS));
     }
 
-    @NonNull
-    List<UiObject2> getObjectsInContainer(UiObject2 container, String resName) {
-        try {
-            return container.findObjects(getLauncherObjectSelector(resName));
-        } catch (StaleObjectException e) {
-            fail("The container disappeared from screen");
-            return null;
-        }
-    }
-
     private boolean hasSystemUiObject(String resId) {
         return mDevice.hasObject(By.res(SYSTEMUI_PACKAGE, resId));
     }
@@ -862,6 +889,26 @@ public final class LauncherInstrumentation {
                 Until.findObject(By.res(SYSTEMUI_PACKAGE, resId)), WAIT_TIME_MS);
         assertNotNull("Can't find a systemui object with id: " + resId, object);
         return object;
+    }
+
+    @Nullable
+    UiObject2 findObjectInContainer(UiObject2 container, BySelector selector) {
+        try {
+            return container.findObject(selector);
+        } catch (StaleObjectException e) {
+            fail("The container disappeared from screen");
+            return null;
+        }
+    }
+
+    @NonNull
+    List<UiObject2> getObjectsInContainer(UiObject2 container, String resName) {
+        try {
+            return container.findObjects(getLauncherObjectSelector(resName));
+        } catch (StaleObjectException e) {
+            fail("The container disappeared from screen");
+            return null;
+        }
     }
 
     @NonNull
@@ -876,6 +923,16 @@ public final class LauncherInstrumentation {
         } catch (StaleObjectException e) {
             fail("The container disappeared from screen");
             return null;
+        }
+    }
+
+    void waitForObjectEnabled(UiObject2 object, String waitReason) {
+        try {
+            assertTrue("Timed out waiting for object to be enabled for " + waitReason + " "
+                            + object.getResourceName(),
+                    object.wait(Until.enabled(true), WAIT_TIME_MS));
+        } catch (StaleObjectException e) {
+            fail("The object disappeared from screen");
         }
     }
 
@@ -894,12 +951,12 @@ public final class LauncherInstrumentation {
         }
     }
 
-    boolean hasLauncherObject(BySelector selector) {
-        return mDevice.hasObject(makeLauncherSelector(selector));
-    }
-
     private boolean hasLauncherObject(String resId) {
         return mDevice.hasObject(getLauncherObjectSelector(resId));
+    }
+
+    boolean hasLauncherObject(BySelector selector) {
+        return mDevice.hasObject(makeLauncherSelector(selector));
     }
 
     private BySelector makeLauncherSelector(BySelector selector) {
@@ -907,13 +964,13 @@ public final class LauncherInstrumentation {
     }
 
     @NonNull
-    UiObject2 waitForLauncherObject(BySelector selector) {
-        return waitForObjectBySelector(makeLauncherSelector(selector));
+    UiObject2 waitForLauncherObject(String resName) {
+        return waitForObjectBySelector(getLauncherObjectSelector(resName));
     }
 
     @NonNull
-    UiObject2 waitForLauncherObject(String resName) {
-        return waitForObjectBySelector(getLauncherObjectSelector(resName));
+    UiObject2 waitForLauncherObject(BySelector selector) {
+        return waitForObjectBySelector(makeLauncherSelector(selector));
     }
 
     @NonNull
@@ -928,7 +985,7 @@ public final class LauncherInstrumentation {
 
     @NonNull
     UiObject2 waitForAndroidObject(String resId) {
-        final UiObject2 object = mDevice.wait(
+        final UiObject2 object = TestHelpers.wait(
                 Until.findObject(By.res(ANDROID_PACKAGE, resId)), WAIT_TIME_MS);
         assertNotNull("Can't find a android object with id: " + resId, object);
         return object;
@@ -940,10 +997,6 @@ public final class LauncherInstrumentation {
         return object;
     }
 
-    BySelector getOverviewObjectSelector(String resName) {
-        return By.res(getOverviewPackageName(), resName);
-    }
-
     private UiObject2 tryWaitForObjectBySelector(BySelector selector, long timeout) {
         return mDevice.wait(Until.findObject(selector), timeout);
     }
@@ -952,12 +1005,8 @@ public final class LauncherInstrumentation {
         return By.res(getLauncherPackageName(), resName);
     }
 
-    void runToState(Runnable command, int expectedState, boolean requireEvent) {
-        if (requireEvent) {
-            runToState(command, expectedState);
-        } else {
-            command.run();
-        }
+    BySelector getOverviewObjectSelector(String resName) {
+        return By.res(getOverviewPackageName(), resName);
     }
 
     String getLauncherPackageName() {
@@ -973,14 +1022,33 @@ public final class LauncherInstrumentation {
         return mDevice;
     }
 
-    void runToState(Runnable command, int expectedState) {
+    private static String eventListToString(List<Integer> actualEvents) {
+        if (actualEvents.isEmpty()) return "no events";
+
+        return "["
+                + actualEvents.stream()
+                .map(state -> TestProtocol.stateOrdinalToString(state))
+                .collect(Collectors.joining(", "))
+                + "]";
+    }
+
+    void runToState(Runnable command, int expectedState, boolean requireEvent, String actionName) {
+        if (requireEvent) {
+            runToState(command, expectedState, actionName);
+        } else {
+            command.run();
+        }
+    }
+
+    void runToState(Runnable command, int expectedState, String actionName) {
         final List<Integer> actualEvents = new ArrayList<>();
-        executeAndWaitForEvent(
+        executeAndWaitForLauncherEvent(
                 command,
                 event -> isSwitchToStateEvent(event, expectedState, actualEvents),
                 () -> "Failed to receive an event for the state change: expected ["
                         + TestProtocol.stateOrdinalToString(expectedState)
-                        + "], actual: " + eventListToString(actualEvents));
+                        + "], actual: " + eventListToString(actualEvents),
+                actionName);
     }
 
     private boolean isSwitchToStateEvent(
@@ -997,15 +1065,26 @@ public final class LauncherInstrumentation {
                       GestureScope gestureScope) {
         runToState(
                 () -> linearGesture(startX, startY, endX, endY, steps, false, gestureScope),
-                expectedState);
+                expectedState,
+                "swiping");
+    }
+
+    private int getBottomGestureSize() {
+        return ResourceUtils.getNavbarSize(
+                ResourceUtils.NAVBAR_BOTTOM_GESTURE_SIZE, getResources()) + 1;
     }
 
     int getBottomGestureMarginInContainer(UiObject2 container) {
-        final int bottomGestureStartOnScreen = getRealDisplaySize().y - getBottomGestureSize();
+        final int bottomGestureStartOnScreen = getBottomGestureStartOnScreen();
         return getVisibleBounds(container).bottom - bottomGestureStartOnScreen;
     }
 
+    int getBottomGestureStartOnScreen() {
+        return getRealDisplaySize().y - getBottomGestureSize();
+    }
+
     void clickLauncherObject(UiObject2 object) {
+        waitForObjectEnabled(object, "clickLauncherObject");
         expectEvent(TestProtocol.SEQUENCE_MAIN, LauncherInstrumentation.EVENT_TOUCH_DOWN);
         expectEvent(TestProtocol.SEQUENCE_MAIN, LauncherInstrumentation.EVENT_TOUCH_UP);
         if (!isLauncher3() && getNavigationModel() != NavigationModel.THREE_BUTTON) {
@@ -1013,11 +1092,6 @@ public final class LauncherInstrumentation {
             expectEvent(TestProtocol.SEQUENCE_TIS, LauncherInstrumentation.EVENT_TOUCH_UP_TIS);
         }
         object.click();
-    }
-
-    int getBottomGestureSize() {
-        return ResourceUtils.getNavbarSize(
-                ResourceUtils.NAVBAR_BOTTOM_GESTURE_SIZE, getResources()) + 1;
     }
 
     void scrollToLastVisibleRow(
@@ -1032,6 +1106,11 @@ public final class LauncherInstrumentation {
         final int itemRowNewTopOnScreen = containerRect.top + topPaddingInContainer;
         final int distance = itemRowCurrentTopOnScreen - itemRowNewTopOnScreen + getTouchSlop();
 
+        scrollDownByDistance(container, distance);
+    }
+
+    void scrollDownByDistance(UiObject2 container, int distance) {
+        final Rect containerRect = getVisibleBounds(container);
         final int bottomGestureMarginInContainer = getBottomGestureMarginInContainer(container);
         scroll(
                 container,
@@ -1090,12 +1169,13 @@ public final class LauncherInstrumentation {
                 return;
         }
 
-        executeAndWaitForEvent(
+        executeAndWaitForLauncherEvent(
                 () -> linearGesture(
                         startX, startY, endX, endY, steps, slowDown, GestureScope.INSIDE),
                 event -> TestProtocol.SCROLL_FINISHED_MESSAGE.equals(event.getClassName()),
                 () -> "Didn't receive a scroll end message: " + startX + ", " + startY
-                        + ", " + endX + ", " + endY);
+                        + ", " + endX + ", " + endY,
+                "scrolling");
     }
 
     // Inject a swipe gesture. Inject exactly 'steps' motion points, incrementing event time by a
@@ -1121,6 +1201,36 @@ public final class LauncherInstrumentation {
                     end, gestureScope);
         }
         return endTime;
+    }
+
+    void waitForIdle() {
+        mDevice.waitForIdle();
+    }
+
+    int getTouchSlop() {
+        return ViewConfiguration.get(getContext()).getScaledTouchSlop();
+    }
+
+    public Resources getResources() {
+        return getContext().getResources();
+    }
+
+    private static MotionEvent getMotionEvent(long downTime, long eventTime, int action,
+                                              float x, float y) {
+        MotionEvent.PointerProperties properties = new MotionEvent.PointerProperties();
+        properties.id = 0;
+        properties.toolType = Configurator.getInstance().getToolType();
+
+        MotionEvent.PointerCoords coords = new MotionEvent.PointerCoords();
+        coords.pressure = 1;
+        coords.size = 1;
+        coords.x = x;
+        coords.y = y;
+
+        return MotionEvent.obtain(downTime, eventTime, action, 1,
+                new MotionEvent.PointerProperties[]{properties},
+                new MotionEvent.PointerCoords[]{coords},
+                0, 0, 1.0f, 1.0f, 0, 0, InputDevice.SOURCE_TOUCHSCREEN, 0);
     }
 
     public void sendPointer(long downTime, long currentTime, int action, Point point,
@@ -1156,8 +1266,15 @@ public final class LauncherInstrumentation {
         }
 
         final MotionEvent event = getMotionEvent(downTime, currentTime, action, point.x, point.y);
+        // b/190748682
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_UP:
+                log("b/190748682: injecting " + event);
+                break;
+        }
         assertTrue("injectInputEvent failed",
-                mInstrumentation.getUiAutomation().injectInputEvent(event, true));
+                mInstrumentation.getUiAutomation().injectInputEvent(event, true, false));
         event.recycle();
     }
 
@@ -1181,34 +1298,8 @@ public final class LauncherInstrumentation {
         return currentTime;
     }
 
-    void waitForIdle() {
-        mDevice.waitForIdle();
-    }
-
-    int getTouchSlop() {
-        return ViewConfiguration.get(getContext()).getScaledTouchSlop();
-    }
-
-    public Resources getResources() {
-        return getContext().getResources();
-    }
-
-    private static MotionEvent getMotionEvent(long downTime, long eventTime, int action,
-            float x, float y) {
-        MotionEvent.PointerProperties properties = new MotionEvent.PointerProperties();
-        properties.id = 0;
-        properties.toolType = Configurator.getInstance().getToolType();
-
-        MotionEvent.PointerCoords coords = new MotionEvent.PointerCoords();
-        coords.pressure = 1;
-        coords.size = 1;
-        coords.x = x;
-        coords.y = y;
-
-        return MotionEvent.obtain(downTime, eventTime, action, 1,
-                new MotionEvent.PointerProperties[]{properties},
-                new MotionEvent.PointerCoords[]{coords},
-                0, 0, 1.0f, 1.0f, 0, 0, InputDevice.SOURCE_TOUCHSCREEN, 0);
+    public static int getCurrentInteractionMode(Context context) {
+        return getSystemIntegerRes(context, "config_navBarInteractionMode");
     }
 
     @NonNull
@@ -1222,32 +1313,6 @@ public final class LauncherInstrumentation {
         sendPointer(downTime, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, targetCenter,
                 GestureScope.INSIDE);
         return result;
-    }
-
-    public boolean hasAllAppsInOverview() {
-        // Vertical bar layouts don't contain all apps
-        if (!mDevice.isNaturalOrientation()) {
-            return false;
-        }
-        // Portrait two button (quickstep) always has all apps.
-        if (getNavigationModel() == NavigationModel.TWO_BUTTON) {
-            return true;
-        }
-        // Overview actions hide all apps
-        if (overviewActionsEnabled()) {
-            return false;
-        }
-        // ...otherwise there should be all apps
-        return true;
-    }
-
-    public static int getCurrentInteractionMode(Context context) {
-        return getSystemIntegerRes(context, "config_navBarInteractionMode");
-    }
-
-    private boolean overviewActionsEnabled() {
-        return getTestInfo(TestProtocol.REQUEST_OVERVIEW_ACTIONS_ENABLED).getBoolean(
-                TestProtocol.TEST_INFO_RESPONSE_FIELD);
     }
 
     private static int getSystemIntegerRes(Context context, String resName) {
@@ -1305,8 +1370,23 @@ public final class LauncherInstrumentation {
                 TestProtocol.TEST_INFO_RESPONSE_FIELD);
     }
 
+    boolean overviewContentPushEnabled() {
+        return getTestInfo(TestProtocol.REQUEST_OVERVIEW_CONTENT_PUSH_ENABLED).getBoolean(
+                TestProtocol.TEST_INFO_RESPONSE_FIELD);
+    }
+
     private void disableSensorRotation() {
         getTestInfo(TestProtocol.REQUEST_MOCK_SENSOR_ROTATION);
+    }
+
+    public void disableDebugTracing() {
+        getTestInfo(TestProtocol.REQUEST_DISABLE_DEBUG_TRACING);
+    }
+
+    public void forceGc() {
+        // GC the system & sysui first before gc'ing launcher
+        logShellCommand("cmd statusbar run-gc");
+        getTestInfo(TestProtocol.REQUEST_FORCE_GC);
     }
 
     public Integer getPid() {
@@ -1318,15 +1398,6 @@ public final class LauncherInstrumentation {
         getTestInfo(TestProtocol.REQUEST_VIEW_LEAK);
     }
 
-    public void disableDebugTracing() {
-        getTestInfo(TestProtocol.REQUEST_DISABLE_DEBUG_TRACING);
-    }
-
-    public int getTotalPssKb() {
-        return getTestInfo(TestProtocol.REQUEST_TOTAL_PSS_KB).
-                getInt(TestProtocol.TEST_INFO_RESPONSE_FIELD);
-    }
-
     public ArrayList<ComponentName> getRecentTasks() {
         ArrayList<ComponentName> tasks = new ArrayList<>();
         ArrayList<String> components = getTestInfo(TestProtocol.REQUEST_RECENT_TASKS_LIST)
@@ -1335,14 +1406,6 @@ public final class LauncherInstrumentation {
             tasks.add(ComponentName.unflattenFromString(s));
         }
         return tasks;
-    }
-
-    public void produceJavaLeak() {
-        getTestInfo(TestProtocol.REQUEST_JAVA_LEAK);
-    }
-
-    public void produceNativeLeak() {
-        getTestInfo(TestProtocol.REQUEST_NATIVE_LEAK);
     }
 
     public void clearLauncherData() {
@@ -1370,7 +1433,7 @@ public final class LauncherInstrumentation {
                 if (mCheckEventsForSuccessfulGestures) {
                     final String message = eventChecker.verify(WAIT_TIME_MS, true);
                     if (message != null) {
-                        dumpDiagnostics();
+                        dumpDiagnostics(message);
                         checkForAnomaly();
                         Assert.fail(formatSystemHealthMessage(
                                 "http://go/tapl : successful gesture produced " + message));
@@ -1383,7 +1446,10 @@ public final class LauncherInstrumentation {
     }
 
     boolean isLauncher3() {
-        return "com.android.launcher3".equals(getLauncherPackageName());
+        if (mIsLauncher3 == null) {
+            mIsLauncher3 = "com.android.launcher3".equals(getLauncherPackageName());
+        }
+        return mIsLauncher3;
     }
 
     void expectEvent(String sequence, Pattern expected) {
@@ -1397,19 +1463,41 @@ public final class LauncherInstrumentation {
     Rect getVisibleBounds(UiObject2 object) {
         try {
             return object.getVisibleBounds();
+        } catch (StaleObjectException e) {
+            fail("Object " + object + " disappeared from screen");
+            return null;
         } catch (Throwable t) {
             fail(t.toString());
             return null;
         }
     }
 
-    // Where the gesture happens: outside of Launcher, inside or from inside to outside and
-    // whether the gesture recognition triggers pilfer.
-    public enum GestureScope {
-        OUTSIDE_WITHOUT_PILFER, OUTSIDE_WITH_PILFER, INSIDE, INSIDE_TO_OUTSIDE
+    float getWindowCornerRadius() {
+        final Resources resources = getResources();
+        if (!supportsRoundedCornersOnWindows(resources)) {
+            return 0f;
+        }
+
+        // Radius that should be used in case top or bottom aren't defined.
+        float defaultRadius = ResourceUtils.getDimenByName("rounded_corner_radius", resources, 0);
+
+        float topRadius = ResourceUtils.getDimenByName("rounded_corner_radius_top", resources, 0);
+        if (topRadius == 0f) {
+            topRadius = defaultRadius;
+        }
+        float bottomRadius = ResourceUtils.getDimenByName(
+                "rounded_corner_radius_bottom", resources, 0);
+        if (bottomRadius == 0f) {
+            bottomRadius = defaultRadius;
+        }
+
+        // Always use the smallest radius to make sure the rounded corners will
+        // completely cover the display.
+        return Math.min(topRadius, bottomRadius);
     }
 
-    public interface Closable extends AutoCloseable {
-        void close();
+    private static boolean supportsRoundedCornersOnWindows(Resources resources) {
+        return ResourceUtils.getBoolByName(
+                "config_supportsRoundedCornersOnWindows", resources, false);
     }
 }

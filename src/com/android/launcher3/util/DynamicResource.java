@@ -22,6 +22,7 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.FractionRes;
 import androidx.annotation.IntegerRes;
 
+import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.systemui.plugins.PluginListener;
 import com.android.systemui.plugins.ResourceProvider;
 
@@ -43,17 +44,8 @@ public class DynamicResource implements ResourceProvider, PluginListener<Resourc
 
     private DynamicResource(Context context) {
         mContext = context;
-        //PluginManagerWrapper.INSTANCE.get(context).addPluginListener(this,
-        //        ResourceProvider.class, false /* allowedMultiple */);
-    }
-
-    /**
-     * Returns the currently active or default provider
-     */
-    public static ResourceProvider provider(Context context) {
-        DynamicResource dr = DynamicResource.INSTANCE.get(context);
-        ResourceProvider plugin = dr.mPlugin;
-        return plugin == null ? dr : plugin;
+        PluginManagerWrapper.INSTANCE.get(context).addPluginListener(this,
+                ResourceProvider.class, false /* allowedMultiple */);
     }
 
     @Override
@@ -89,5 +81,14 @@ public class DynamicResource implements ResourceProvider, PluginListener<Resourc
     @Override
     public void onPluginDisconnected(ResourceProvider plugin) {
         mPlugin = null;
+    }
+
+    /**
+     * Returns the currently active or default provider
+     */
+    public static ResourceProvider provider(Context context) {
+        DynamicResource dr = DynamicResource.INSTANCE.get(context);
+        ResourceProvider plugin = dr.mPlugin;
+        return plugin == null ? dr : plugin;
     }
 }

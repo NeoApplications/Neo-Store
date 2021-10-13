@@ -21,25 +21,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.IconCache;
-import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.uioverrides.ApiWrapper;
 import com.android.launcher3.util.ContentWriter;
-import com.saggitt.omega.iconpack.IconPackManager;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -60,26 +52,20 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
      * The icon was added as an auto-install app, and is not ready to be used. This flag can't
      * be present along with {@link #FLAG_RESTORED_ICON}, and is set during default layout
      * parsing.
-     * <p>
+     *
      * OR this icon was added due to it being an active install session created by the user.
      */
     public static final int FLAG_AUTOINSTALL_ICON = 1 << 1;
 
     /**
-     * The icon is being installed. If {@link #FLAG_RESTORED_ICON} or {@link #FLAG_AUTOINSTALL_ICON}
-     * is set, then the icon is either being installed or is in a broken state.
-     */
-    public static final int FLAG_INSTALL_SESSION_ACTIVE = 1 << 2;
-
-    /**
      * Indicates that the widget restore has started.
      */
-    public static final int FLAG_RESTORE_STARTED = 1 << 3;
+    public static final int FLAG_RESTORE_STARTED = 1 << 2;
 
     /**
      * Web UI supported.
      */
-    public static final int FLAG_SUPPORTS_WEB_UI = 1 << 4;
+    public static final int FLAG_SUPPORTS_WEB_UI = 1 << 3;
 
     /**
      * The intent used to start the application.
@@ -99,20 +85,14 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     public CharSequence disabledMessage;
 
     public int status;
-    public CharSequence customTitle;
-    public Bitmap customIcon;
-    public IconPackManager.CustomIconEntry customIconEntry;
-    public String swipeUpAction;
+
     /**
      * A set of person's Id associated with the WorkspaceItemInfo, this is only used if the item
      * represents a deep shortcut.
      */
     @NonNull
     private String[] personKeys = Utilities.EMPTY_STRING_ARRAY;
-    /**
-     * The installation progress [0-100] of the package that this shortcut represents.
-     */
-    private int mInstallProgress;
+
 
     public WorkspaceItemInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT;
@@ -124,7 +104,6 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         intent = new Intent(info.intent);
         iconResource = info.iconResource;
         status = info.status;
-        mInstallProgress = info.mInstallProgress;
         personKeys = info.personKeys.clone();
     }
 
@@ -180,15 +159,6 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         return isPromise() && !hasStatusFlag(FLAG_SUPPORTS_WEB_UI);
     }
 
-    public int getInstallProgress() {
-        return mInstallProgress;
-    }
-
-    public void setInstallProgress(int progress) {
-        mInstallProgress = progress;
-        status |= FLAG_INSTALL_SESSION_ACTIVE;
-    }
-
     public void updateFromDeepShortcutInfo(ShortcutInfo shortcutInfo, Context context) {
         // {@link ShortcutInfo#getActivity} can change during an update. Recreate the intent
         intent = ShortcutKey.makeIntent(shortcutInfo);
@@ -206,9 +176,9 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         }
         disabledMessage = shortcutInfo.getDisabledMessage();
 
-        /*Person[] persons = ApiWrapper.getPersons(shortcutInfo);
+        Person[] persons = ApiWrapper.getPersons(shortcutInfo);
         personKeys = persons.length == 0 ? Utilities.EMPTY_STRING_ARRAY
-                : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);*/
+                : Arrays.stream(persons).map(Person::getKey).sorted().toArray(String[]::new);
     }
 
     /**
@@ -230,7 +200,7 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         if (cn == null && (itemType == Favorites.ITEM_TYPE_SHORTCUT || hasStatusFlag(
                 FLAG_SUPPORTS_WEB_UI | FLAG_AUTOINSTALL_ICON | FLAG_RESTORED_ICON))) {
             // Legacy shortcuts and promise icons with web UI may not have a componentName but just
-            // a packageName. In that case create a dummy componentName instead of adding additional
+            // a packageName. In that case create a empty componentName instead of adding additional
             // check everywhere.
             String pkg = intent.getPackage();
             return pkg == null ? null : new ComponentName(pkg, IconCache.EMPTY_CLASS_NAME);
@@ -241,42 +211,5 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     @Override
     public ItemInfoWithIcon clone() {
         return new WorkspaceItemInfo(this);
-    }
-
-    private void updateDatabase(Context context, boolean updateIcon, boolean reload) {
-        if (updateIcon)
-            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
-                    , customIconEntry, customIcon, true, reload);
-        else
-            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
-                    , null, null, false, reload);
-    }
-
-    public void onLoadCustomizations(String titleAlias, String swipeUpAction,
-                                     IconPackManager.CustomIconEntry customIcon, Bitmap icon) {
-        customTitle = titleAlias;
-        customIconEntry = customIcon;
-        this.customIcon = icon;
-        this.swipeUpAction = swipeUpAction;
-    }
-
-    public void setTitle(@NotNull Context context, @Nullable String title) {
-        customTitle = title;
-        updateDatabase(context, false, true);
-    }
-
-    public void setIconEntry(@NotNull Context context, @Nullable IconPackManager.CustomIconEntry iconEntry) {
-        customIconEntry = iconEntry;
-        updateDatabase(context, true, false);
-    }
-
-    public void setIcon(@NotNull Context context, @Nullable Bitmap icon) {
-        customIcon = icon;
-        updateDatabase(context, true, true);
-    }
-
-    public void setSwipeUpAction(@NotNull Context context, @Nullable String action) {
-        swipeUpAction = action;
-        updateDatabase(context, false, true);
     }
 }

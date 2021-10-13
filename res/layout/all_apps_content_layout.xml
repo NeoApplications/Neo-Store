@@ -18,8 +18,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@id/search_container_all_apps"
-    android:layout_marginTop="@dimen/all_apps_header_top_padding"
     android:clipToPadding="false"
     android:descendantFocusability="afterDescendants"
     android:focusable="true"
+    android:layout_marginTop="@dimen/all_apps_header_top_padding"
     android:orientation="vertical"></LinearLayout>

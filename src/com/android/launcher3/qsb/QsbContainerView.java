@@ -16,7 +16,12 @@
 
 package com.android.launcher3.qsb;
 
+import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_BIND;
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_PROVIDER;
+
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
@@ -25,7 +30,6 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.AttributeSet;
@@ -36,24 +40,19 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import com.android.launcher3.AppWidgetResizeFrame;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.graphics.FragmentWithPreview;
-
-import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_BIND;
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_PROVIDER;
+import com.android.launcher3.widget.util.WidgetSizes;
 
 /**
  * A frame layout which contains a QSB. This internally uses fragment to bind the view, which
  * allows it to contain the logic for {@link Fragment#startActivityForResult(Intent, int)}.
- * <p>
+ *
  * Note: WidgetManagerHelper can be disabled using FeatureFlags. In QSB, we should use
  * AppWidgetManager directly, so that it keeps working in that case.
  */
@@ -63,7 +62,6 @@ public class QsbContainerView extends FrameLayout {
 
     /**
      * Returns the package name for user configured search provider or from searchManager
-     *
      * @param context
      * @return String
      */
@@ -83,7 +81,6 @@ public class QsbContainerView extends FrameLayout {
 
     /**
      * returns it's AppWidgetProviderInfo using package name from getSearchWidgetPackageName
-     *
      * @param context
      * @return AppWidgetProviderInfo
      */
@@ -160,7 +157,7 @@ public class QsbContainerView extends FrameLayout {
 
         protected String mKeyWidgetId = "qsb_widget_id";
         private QsbWidgetHost mQsbWidgetHost;
-        private AppWidgetProviderInfo mWidgetInfo;
+        protected AppWidgetProviderInfo mWidgetInfo;
         private QsbWidgetHostView mQsb;
 
         // We need to store the orientation here, due to a bug (b/64916689) that results in widgets
@@ -289,41 +286,30 @@ public class QsbContainerView extends FrameLayout {
         }
 
         public boolean isQsbEnabled() {
-            return FeatureFlags.showQSbOnFirstScreen(getContext());
+            return FeatureFlags.QSB_ON_FIRST_SCREEN;
         }
 
         protected Bundle createBindOptions() {
             InvariantDeviceProfile idp = LauncherAppState.getIDP(getContext());
-
-            Bundle opts = new Bundle();
-            Rect size = AppWidgetResizeFrame.getWidgetSizeRanges(getContext(),
-                    idp.numColumns, 1, null);
-            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, size.left);
-            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, size.top);
-            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, size.right);
-            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, size.bottom);
-            return opts;
+            return WidgetSizes.getWidgetSizeOptions(getContext(), mWidgetInfo.provider,
+                    idp.numColumns, 1);
         }
 
         protected View getDefaultView(ViewGroup container, boolean showSetupIcon) {
             // Return a default widget with setup icon.
             View v = QsbWidgetHostView.getDefaultView(container);
             if (showSetupIcon) {
-                requestQsbCreate();
                 View setupButton = v.findViewById(R.id.btn_qsb_setup);
                 setupButton.setVisibility(View.VISIBLE);
-                setupButton.setOnClickListener((v2) -> requestQsbCreate());
+                setupButton.setOnClickListener((v2) -> startActivityForResult(
+                        new Intent(ACTION_APPWIDGET_BIND)
+                                .putExtra(EXTRA_APPWIDGET_ID, mQsbWidgetHost.allocateAppWidgetId())
+                                .putExtra(EXTRA_APPWIDGET_PROVIDER, mWidgetInfo.provider),
+                        REQUEST_BIND_QSB));
             }
             return v;
         }
 
-        void requestQsbCreate() {
-            startActivityForResult(
-                    new Intent(ACTION_APPWIDGET_BIND)
-                            .putExtra(EXTRA_APPWIDGET_ID, mQsbWidgetHost.allocateAppWidgetId())
-                            .putExtra(EXTRA_APPWIDGET_PROVIDER, mWidgetInfo.provider),
-                    REQUEST_BIND_QSB);
-        }
 
         /**
          * Returns a widget with category {@link AppWidgetProviderInfo#WIDGET_CATEGORY_SEARCHBOX}

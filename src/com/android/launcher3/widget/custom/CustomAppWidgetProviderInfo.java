@@ -22,8 +22,9 @@ import android.content.pm.PackageManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.android.launcher3.LauncherAppWidgetProviderInfo;
+import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 
 /**
  * Custom app widget provider info that can be used as a widget, but provide extra functionality
@@ -33,46 +34,11 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
         implements Parcelable {
 
     public final int providerId;
-    public static final Parcelable.Creator<CustomAppWidgetProviderInfo> CREATOR
-            = new Parcelable.Creator<CustomAppWidgetProviderInfo>() {
 
-        @Override
-        public CustomAppWidgetProviderInfo createFromParcel(Parcel parcel) {
-            return new CustomAppWidgetProviderInfo(parcel, true, 0, false);
-        }
-
-        @Override
-        public CustomAppWidgetProviderInfo[] newArray(int size) {
-            return new CustomAppWidgetProviderInfo[size];
-        }
-    };
-    public boolean noPadding;
-    public int customizeTitle;
-    public int customizeScreen;
-    public boolean customizeHasPreview;
-
-    @Override
-    public void initSpans(Context context) {
-    }
-
-    @Override
-    public String getLabel(PackageManager packageManager) {
-        return Utilities.trim(label);
-    }
-
-    @Override
-    public String toString() {
-        return "WidgetProviderInfo(" + provider + ")";
-    }
-
-    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf, int providerId, boolean noPadding) {
+    protected CustomAppWidgetProviderInfo(Parcel parcel, boolean readSelf, int providerId) {
         super(parcel);
         if (readSelf) {
             this.providerId = parcel.readInt();
-            this.noPadding = parcel.readByte() != 0;
-            this.customizeTitle = parcel.readInt();
-            this.customizeScreen = parcel.readInt();
-            this.customizeHasPreview = parcel.readByte() != 0;
 
             provider = new ComponentName(parcel.readString(), CLS_CUSTOM_WIDGET_PREFIX + providerId);
 
@@ -88,18 +54,27 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
             minSpanY = parcel.readInt();
         } else {
             this.providerId = providerId;
-            this.noPadding = noPadding;
         }
+    }
+
+    @Override
+    public void initSpans(Context context, InvariantDeviceProfile idp) {
+    }
+
+    @Override
+    public String getLabel(PackageManager packageManager) {
+        return Utilities.trim(label);
+    }
+
+    @Override
+    public String toString() {
+        return "WidgetProviderInfo(" + provider + ")";
     }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
         out.writeInt(providerId);
-        out.writeByte((byte) (noPadding ? 1 : 0));
-        out.writeInt(customizeTitle);
-        out.writeInt(customizeScreen);
-        out.writeByte((byte) (customizeHasPreview ? 1 : 0));
         out.writeString(provider.getPackageName());
 
         out.writeString(label);
@@ -113,4 +88,18 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
         out.writeInt(minSpanX);
         out.writeInt(minSpanY);
     }
+
+    public static final Parcelable.Creator<CustomAppWidgetProviderInfo> CREATOR
+            = new Parcelable.Creator<CustomAppWidgetProviderInfo>() {
+
+        @Override
+        public CustomAppWidgetProviderInfo createFromParcel(Parcel parcel) {
+            return new CustomAppWidgetProviderInfo(parcel, true, 0);
+        }
+
+        @Override
+        public CustomAppWidgetProviderInfo[] newArray(int size) {
+            return new CustomAppWidgetProviderInfo[size];
+        }
+    };
 }

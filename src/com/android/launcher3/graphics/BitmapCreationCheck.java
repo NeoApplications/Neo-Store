@@ -37,8 +37,9 @@ import com.android.launcher3.icons.GraphicsUtils;
  */
 public class BitmapCreationCheck {
 
-    public static final boolean ENABLED = false;
     private static final String TAG = "BitmapCreationCheck";
+
+    public static final boolean ENABLED = false;
 
     /**
      * Starts tracking bitmap creations during {@link View#draw(Canvas)} calls
@@ -94,12 +95,6 @@ public class BitmapCreationCheck {
         public void onViewDetachedFromWindow(View view) {
         }
 
-        private void onBitmapCreated() {
-            if (mCurrentThreadDrawing.get()) {
-                Log.e(TAG, "Bitmap created during draw pass", new Exception());
-            }
-        }
-
         private class MyViewDrawListener implements OnDrawListener, Runnable {
 
             private final Handler mHandler;
@@ -117,6 +112,12 @@ public class BitmapCreationCheck {
             @Override
             public void run() {
                 mCurrentThreadDrawing.set(false);
+            }
+        }
+
+        private void onBitmapCreated() {
+            if (mCurrentThreadDrawing.get()) {
+                Log.e(TAG, "Bitmap created during draw pass", new Exception());
             }
         }
     }

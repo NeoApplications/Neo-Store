@@ -31,16 +31,16 @@ import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.ShortcutUtil;
-import com.android.launcher3.widget.WidgetListRowEntry;
+import com.android.launcher3.widget.model.WidgetsListBaseEntry;
+import com.android.launcher3.widget.model.WidgetsListContentEntry;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -63,37 +63,20 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
      * Maps packages to their DotInfo's .
      */
     private Map<PackageUserKey, DotInfo> mPackageUserToDotInfos = new HashMap<>();
+
     /**
-     * Maps packages to their Widgets
+     * All installed widgets.
      */
-    private ArrayList<WidgetListRowEntry> mAllWidgets = new ArrayList<>();
+    private List<WidgetsListBaseEntry> mAllWidgets = List.of();
+    /**
+     * Widgets that can be recommended to the users.
+     */
+    private List<ItemInfo> mRecommendedWidgets = List.of();
 
     private PopupDataChangeListener mChangeListener = PopupDataChangeListener.INSTANCE;
 
     public PopupDataProvider(Consumer<Predicate<PackageUserKey>> notificationDotsChangeListener) {
         mNotificationDotsChangeListener = notificationDotsChangeListener;
-    }
-
-    /**
-     * Returns a list of notifications that are relevant to given ItemInfo.
-     */
-    public static @NonNull
-    List<NotificationKeyData> getNotificationsForItem(
-            @NonNull ItemInfo info, @NonNull List<NotificationKeyData> notifications) {
-        String shortcutId = ShortcutUtil.getShortcutIdIfPinnedShortcut(info);
-        if (shortcutId == null) {
-            return notifications;
-        }
-        String[] personKeys = ShortcutUtil.getPersonKeysIfPinnedShortcut(info);
-        return notifications.stream().filter((NotificationKeyData notification) -> {
-            if (notification.shortcutId != null) {
-                return notification.shortcutId.equals(shortcutId);
-            }
-            if (notification.personKeysFromNotification.length != 0) {
-                return Arrays.equals(notification.personKeysFromNotification, personKeys);
-            }
-            return false;
-        }).collect(Collectors.toList());
     }
 
     private void updateNotificationDots(Predicate<PackageUserKey> updatedDots) {
@@ -111,6 +94,19 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         }
         if (dotInfo.addOrUpdateNotificationKey(notificationKey)) {
             updateNotificationDots(postedPackageUserKey::equals);
+        }
+    }
+
+    @Override
+    public void onNotificationRemoved(PackageUserKey removedPackageUserKey,
+                                      NotificationKeyData notificationKey) {
+        DotInfo oldDotInfo = mPackageUserToDotInfos.get(removedPackageUserKey);
+        if (oldDotInfo != null && oldDotInfo.removeNotificationKey(notificationKey)) {
+            if (oldDotInfo.getNotificationKeys().size() == 0) {
+                mPackageUserToDotInfos.remove(removedPackageUserKey);
+            }
+            updateNotificationDots(removedPackageUserKey::equals);
+            trimNotifications(mPackageUserToDotInfos);
         }
     }
 
@@ -189,17 +185,11 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         return dotInfo;
     }
 
-    @Override
-    public void onNotificationRemoved(PackageUserKey removedPackageUserKey,
-                                      NotificationKeyData notificationKey) {
-        DotInfo oldDotInfo = mPackageUserToDotInfos.get(removedPackageUserKey);
-        if (oldDotInfo != null && oldDotInfo.removeNotificationKey(notificationKey)) {
-            if (oldDotInfo.getNotificationKeys().size() == 0) {
-                mPackageUserToDotInfos.remove(removedPackageUserKey);
-            }
-            updateNotificationDots(removedPackageUserKey::equals);
-            trimNotifications(mPackageUserToDotInfos);
-        }
+    public @NonNull
+    List<NotificationKeyData> getNotificationKeysForItem(ItemInfo info) {
+        DotInfo dotInfo = getDotInfoForItem(info);
+        return dotInfo == null ? Collections.EMPTY_LIST
+                : getNotificationsForItem(info, dotInfo.getNotificationKeys());
     }
 
     public void cancelNotification(String notificationKey) {
@@ -210,7 +200,16 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         notificationListener.cancelNotificationFromLauncher(notificationKey);
     }
 
-    public void setAllWidgets(ArrayList<WidgetListRowEntry> allWidgets) {
+    /**
+     * Sets a list of recommended widgets ordered by their order of appearance in the widgets
+     * recommendation UI.
+     */
+    public void setRecommendedWidgets(List<ItemInfo> recommendedWidgets) {
+        mRecommendedWidgets = recommendedWidgets;
+        mChangeListener.onRecommendedWidgetsBound();
+    }
+
+    public void setAllWidgets(List<WidgetsListBaseEntry> allWidgets) {
         mAllWidgets = allWidgets;
         mChangeListener.onWidgetsBound();
     }
@@ -219,32 +218,57 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         mChangeListener = listener == null ? PopupDataChangeListener.INSTANCE : listener;
     }
 
-    public ArrayList<WidgetListRowEntry> getAllWidgets() {
+    public List<WidgetsListBaseEntry> getAllWidgets() {
         return mAllWidgets;
     }
 
-    public List<WidgetItem> getWidgetsForPackageUser(PackageUserKey packageUserKey) {
-        for (WidgetListRowEntry entry : mAllWidgets) {
-            if (entry.pkgItem.packageName.equals(packageUserKey.mPackageName)) {
-                ArrayList<WidgetItem> widgets = new ArrayList<>(entry.widgets);
-                // Remove widgets not associated with the correct user.
-                Iterator<WidgetItem> iterator = widgets.iterator();
-                while (iterator.hasNext()) {
-                    if (!iterator.next().user.equals(packageUserKey.mUser)) {
-                        iterator.remove();
-                    }
-                }
-                return widgets.isEmpty() ? null : widgets;
-            }
-        }
-        return null;
+    /**
+     * Returns a list of recommended widgets.
+     */
+    public List<WidgetItem> getRecommendedWidgets() {
+        HashMap<ComponentKey, WidgetItem> allWidgetItems = new HashMap<>();
+        mAllWidgets.stream()
+                .filter(entry -> entry instanceof WidgetsListContentEntry)
+                .forEach(entry -> ((WidgetsListContentEntry) entry).mWidgets
+                        .forEach(widget -> allWidgetItems.put(
+                                new ComponentKey(widget.componentName, widget.user), widget)));
+        return mRecommendedWidgets.stream()
+                .map(recommendedWidget -> allWidgetItems.get(
+                        new ComponentKey(recommendedWidget.getTargetComponent(),
+                                recommendedWidget.user)))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
-    public @NonNull
-    List<NotificationKeyData> getNotificationKeysForItem(ItemInfo info) {
-        DotInfo dotInfo = getDotInfoForItem(info);
-        return dotInfo == null ? Collections.EMPTY_LIST
-                : getNotificationsForItem(info, dotInfo.getNotificationKeys());
+    public List<WidgetItem> getWidgetsForPackageUser(PackageUserKey packageUserKey) {
+        return mAllWidgets.stream()
+                .filter(row -> row instanceof WidgetsListContentEntry
+                        && row.mPkgItem.packageName.equals(packageUserKey.mPackageName))
+                .flatMap(row -> ((WidgetsListContentEntry) row).mWidgets.stream())
+                .filter(widget -> packageUserKey.mUser.equals(widget.user))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of notifications that are relevant to given ItemInfo.
+     */
+    public static @NonNull
+    List<NotificationKeyData> getNotificationsForItem(
+            @NonNull ItemInfo info, @NonNull List<NotificationKeyData> notifications) {
+        String shortcutId = ShortcutUtil.getShortcutIdIfPinnedShortcut(info);
+        if (shortcutId == null) {
+            return notifications;
+        }
+        String[] personKeys = ShortcutUtil.getPersonKeysIfPinnedShortcut(info);
+        return notifications.stream().filter((NotificationKeyData notification) -> {
+            if (notification.shortcutId != null) {
+                return notification.shortcutId.equals(shortcutId);
+            }
+            if (notification.personKeysFromNotification.length != 0) {
+                return Arrays.equals(notification.personKeysFromNotification, personKeys);
+            }
+            return false;
+        }).collect(Collectors.toList());
     }
 
     public void dump(String prefix, PrintWriter writer) {
@@ -260,8 +284,16 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         default void onNotificationDotsUpdated(Predicate<PackageUserKey> updatedDots) {
         }
 
-        default void trimNotifications(Map<PackageUserKey, DotInfo> updatedDots) { }
+        default void trimNotifications(Map<PackageUserKey, DotInfo> updatedDots) {
+        }
 
-        default void onWidgetsBound() { }
+        default void onWidgetsBound() {
+        }
+
+        /**
+         * A callback to get notified when recommended widgets are bound.
+         */
+        default void onRecommendedWidgetsBound() {
+        }
     }
 }

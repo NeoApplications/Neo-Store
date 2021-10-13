@@ -16,8 +16,6 @@
 
 package com.android.launcher3;
 
-import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -25,10 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.compat.AccessibilityManagerCompat;
-import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.RecyclerViewFastScroller;
 
 
@@ -164,7 +162,7 @@ public abstract class BaseRecyclerView extends RecyclerView  {
      * Maps the touch (from 0..1) to the adapter position that should be visible.
      * <p>Override in each subclass of this base class.
      */
-    public abstract PositionThumbInfo scrollToPositionAtProgress(float touchFraction);
+    public abstract String scrollToPositionAtProgress(float touchFraction);
 
     /**
      * Updates the bounds for the scrollbar.
@@ -193,23 +191,20 @@ public abstract class BaseRecyclerView extends RecyclerView  {
         if (isLayoutSuppressed()) info.setScrollable(false);
     }
 
-    @Override
-    public void setLayoutFrozen(boolean frozen) {
-        final boolean changing = frozen != isLayoutSuppressed();
-        super.setLayoutFrozen(frozen);
-        if (changing) {
-            ActivityContext.lookupContext(getContext()).getDragLayer()
-                    .sendAccessibilityEvent(TYPE_WINDOW_CONTENT_CHANGED);
+    /**
+     * Scrolls this recycler view to the top.
+     */
+    public void scrollToTop() {
+        if (mScrollbar != null) {
+            mScrollbar.reattachThumbToScroll();
         }
-    }
-
-    public class PositionThumbInfo {
-        public String name;
-        public int color;
-
-        public PositionThumbInfo(String name, int color) {
-            this.name = name;
-            this.color = color;
+        if (getLayoutManager() instanceof LinearLayoutManager) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
+            if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                // We are at the top, so don't scrollToPosition (would cause unnecessary relayout).
+                return;
+            }
         }
+        scrollToPosition(0);
     }
 }

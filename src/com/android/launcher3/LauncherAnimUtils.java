@@ -17,41 +17,25 @@
 package com.android.launcher3;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.FloatProperty;
 import android.util.IntProperty;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-import java.util.WeakHashMap;
-
 public class LauncherAnimUtils {
-    static WeakHashMap<Animator, Object> sAnimators = new WeakHashMap<>();
-    static Animator.AnimatorListener sEndAnimListener = new Animator.AnimatorListener() {
-        public void onAnimationStart(Animator animation) {
-            sAnimators.put(animation, null);
-        }
-
-        public void onAnimationRepeat(Animator animation) {
-        }
-
-        public void onAnimationEnd(Animator animation) {
-            sAnimators.remove(animation);
-        }
-
-        public void onAnimationCancel(Animator animation) {
-            sAnimators.remove(animation);
-        }
-    };
     /**
      * Durations for various state animations. These are not defined in resources to allow
      * easier access from static classes and enums
      */
     public static final int SPRING_LOADED_EXIT_DELAY = 500;
 
-    // The progress of an animation to all apps must be at least this far along to snap to all apps.
-    public static final float MIN_PROGRESS_TO_ALL_APPS = 0.5f;
+    // Progress after which the transition is assumed to be a success
+    public static final float SUCCESS_TRANSITION_PROGRESS = 0.5f;
 
     public static final IntProperty<Drawable> DRAWABLE_ALPHA =
             new IntProperty<Drawable>("drawableAlpha") {
@@ -79,17 +63,6 @@ public class LauncherAnimUtils {
                     view.setScaleY(scale);
                 }
             };
-
-    public static void cancelOnDestroyActivity(Animator a) {
-        a.addListener(sEndAnimListener);
-    }
-
-    public static ValueAnimator ofFloat(float... values) {
-        ValueAnimator anim = new ValueAnimator();
-        anim.setFloatValues(values);
-        cancelOnDestroyActivity(anim);
-        return anim;
-    }
 
     /**
      * Increase the duration if we prevented the fling, as we are going against a high velocity.
@@ -127,15 +100,15 @@ public class LauncherAnimUtils {
     public static final FloatProperty<View> VIEW_TRANSLATE_X =
             View.TRANSLATION_X instanceof FloatProperty ? (FloatProperty) View.TRANSLATION_X
                     : new FloatProperty<View>("translateX") {
-                        @Override
-                        public void setValue(View view, float v) {
-                            view.setTranslationX(v);
-                        }
+                @Override
+                public void setValue(View view, float v) {
+                    view.setTranslationX(v);
+                }
 
-                        @Override
-                        public Float get(View view) {
-                            return view.getTranslationX();
-                        }
+                @Override
+                public Float get(View view) {
+                    return view.getTranslationX();
+                }
             };
 
     public static final FloatProperty<View> VIEW_TRANSLATE_Y =
@@ -165,4 +138,39 @@ public class LauncherAnimUtils {
                     return view.getAlpha();
                 }
             };
+
+    public static final IntProperty<View> VIEW_BACKGROUND_COLOR =
+            new IntProperty<View>("backgroundColor") {
+                @Override
+                public void setValue(View view, int color) {
+                    view.setBackgroundColor(color);
+                }
+
+                @Override
+                public Integer get(View view) {
+                    if (!(view.getBackground() instanceof ColorDrawable)) {
+                        return Color.TRANSPARENT;
+                    }
+                    return ((ColorDrawable) view.getBackground()).getColor();
+                }
+            };
+
+    /**
+     * Utility method to create an {@link AnimatorListener} which executes a callback on animation
+     * cancel.
+     */
+    public static AnimatorListener newCancelListener(Runnable callback) {
+        return new AnimatorListenerAdapter() {
+
+            boolean mDispatched = false;
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                if (!mDispatched) {
+                    mDispatched = true;
+                    callback.run();
+                }
+            }
+        };
+    }
 }

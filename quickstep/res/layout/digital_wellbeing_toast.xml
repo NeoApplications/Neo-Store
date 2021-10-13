@@ -14,14 +14,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TextTitle"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="@drawable/bg_wellbeing_toast"
-    android:fontFamily="sans-serif"
     android:forceHasOverlappingRendering="false"
     android:gravity="center"
     android:importantForAccessibility="noHideDescendants"
-    android:textColor="@android:color/white"
-    android:textSize="14sp"/>
+    android:textColor="?attr/textColorOnAccent"
+    android:textSize="14sp" />

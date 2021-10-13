@@ -16,18 +16,21 @@
 package com.android.launcher3;
 
 import static com.android.launcher3.anim.Interpolators.ACCEL_2;
+import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_HOME;
+import static com.android.launcher3.logging.StatsLogManager.LAUNCHER_STATE_OVERVIEW;
 import static com.android.launcher3.testing.TestProtocol.ALL_APPS_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.BACKGROUND_APP_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.HINT_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.HINT_STATE_TWO_BUTTON_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.OPTIONS_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.OVERVIEW_MODAL_TASK_STATE_ORDINAL;
-import static com.android.launcher3.testing.TestProtocol.OVERVIEW_PEEK_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OVERVIEW_SPLIT_SELECT_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.QUICK_SWITCH_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.SPRING_LOADED_STATE_ORDINAL;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.statemanager.BaseState;
@@ -37,9 +40,6 @@ import com.android.launcher3.states.SpringLoadedState;
 import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.uioverrides.states.AllAppsState;
 import com.android.launcher3.uioverrides.states.OverviewState;
-import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
-import com.saggitt.omega.states.HomeState;
-import com.saggitt.omega.states.OptionsState;
 
 import java.util.Arrays;
 
@@ -54,19 +54,13 @@ public abstract class LauncherState implements BaseState<LauncherState> {
      */
     public static final int NONE = 0;
     public static final int HOTSEAT_ICONS = 1 << 0;
-    public static final int HOTSEAT_SEARCH_BOX = 1 << 1;
-    public static final int ALL_APPS_HEADER = 1 << 2;
-    public static final int ALL_APPS_HEADER_EXTRA = 1 << 3; // e.g. app predictions
-    public static final int ALL_APPS_CONTENT = 1 << 4;
-    public static final int VERTICAL_SWIPE_INDICATOR = 1 << 5;
-    public static final int OVERVIEW_BUTTONS = 1 << 6;
-    public static final int OPTIONS_VIEW = 1 << 7;
-
-    /**
-     * Mask of all the items that are contained in the apps view.
-     */
-    public static final int APPS_VIEW_ITEM_MASK =
-            HOTSEAT_SEARCH_BOX | ALL_APPS_HEADER | ALL_APPS_HEADER_EXTRA | ALL_APPS_CONTENT;
+    public static final int ALL_APPS_CONTENT = 1 << 1;
+    public static final int VERTICAL_SWIPE_INDICATOR = 1 << 2;
+    public static final int OVERVIEW_ACTIONS = 1 << 3;
+    public static final int TASKBAR = 1 << 4;
+    public static final int CLEAR_ALL_BUTTON = 1 << 5;
+    public static final int WORKSPACE_PAGE_INDICATOR = 1 << 6;
+    public static final int SPLIT_PLACHOLDER_VIEW = 1 << 7;
 
     // Flag indicating workspace has multiple pages visible.
     public static final int FLAG_MULTI_PAGE = BaseState.getFlag(0);
@@ -101,15 +95,10 @@ public abstract class LauncherState implements BaseState<LauncherState> {
     private static final LauncherState[] sAllStates = new LauncherState[10];
 
     /**
-     * Various Launcher states arranged in the increasing order of UI layers
-     */
-    public static final LauncherState SPRING_LOADED = new SpringLoadedState(SPRING_LOADED_STATE_ORDINAL);
-
-    /**
      * TODO: Create a separate class for NORMAL state.
      */
-    public static final LauncherState NORMAL = new HomeState(NORMAL_STATE_ORDINAL,
-            ContainerType.WORKSPACE, 0,
+    public static final LauncherState NORMAL = new LauncherState(NORMAL_STATE_ORDINAL,
+            LAUNCHER_STATE_HOME,
             FLAG_DISABLE_RESTORE | FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED | FLAG_HIDE_BACK_BUTTON |
                     FLAG_HAS_SYS_UI_SCRIM) {
         @Override
@@ -118,30 +107,43 @@ public abstract class LauncherState implements BaseState<LauncherState> {
             return 0;
         }
     };
-    public static final LauncherState OVERVIEW_PEEK = OverviewState.newPeekState(OVERVIEW_PEEK_STATE_ORDINAL);
-    public static final LauncherState HINT_STATE = new HintState(HINT_STATE_ORDINAL);
+
+    /**
+     * Various Launcher states arranged in the increasing order of UI layers
+     */
+    public static final LauncherState SPRING_LOADED = new SpringLoadedState(
+            SPRING_LOADED_STATE_ORDINAL);
     public static final LauncherState ALL_APPS = new AllAppsState(ALL_APPS_STATE_ORDINAL);
-    public static final LauncherState OVERVIEW_MODAL_TASK = OverviewState.newModalTaskState(OVERVIEW_MODAL_TASK_STATE_ORDINAL);
+    public static final LauncherState HINT_STATE = new HintState(HINT_STATE_ORDINAL);
+    public static final LauncherState HINT_STATE_TWO_BUTTON = new HintState(
+            HINT_STATE_TWO_BUTTON_ORDINAL, LAUNCHER_STATE_OVERVIEW);
+
     public static final LauncherState OVERVIEW = new OverviewState(OVERVIEW_STATE_ORDINAL);
-    public static final LauncherState QUICK_SWITCH = OverviewState.newSwitchState(QUICK_SWITCH_STATE_ORDINAL);
-    public static final LauncherState BACKGROUND_APP = OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
-    public static final LauncherState OPTIONS = new OptionsState(OPTIONS_STATE_ORDINAL);
+    public static final LauncherState OVERVIEW_MODAL_TASK = OverviewState.newModalTaskState(
+            OVERVIEW_MODAL_TASK_STATE_ORDINAL);
+    public static final LauncherState QUICK_SWITCH =
+            OverviewState.newSwitchState(QUICK_SWITCH_STATE_ORDINAL);
+    public static final LauncherState BACKGROUND_APP =
+            OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
+    public static final LauncherState OVERVIEW_SPLIT_SELECT =
+            OverviewState.newSplitSelectState(OVERVIEW_SPLIT_SELECT_ORDINAL);
 
     public final int ordinal;
 
     /**
-     * Used for containerType in {@link com.android.launcher3.logging.UserEventDispatcher}
+     * Used for {@link com.android.launcher3.logging.StatsLogManager}
      */
-    public final int containerType;
+    public final int statsLogOrdinal;
 
     /**
      * True if the state has overview panel visible.
      */
     public final boolean overviewUi;
+
     private final int mFlags;
 
-    public LauncherState(int id, int containerType, int flags) {
-        this.containerType = containerType;
+    public LauncherState(int id, int statsLogOrdinal, int flags) {
+        this.statsLogOrdinal = statsLogOrdinal;
         this.mFlags = flags;
         this.overviewUi = (flags & FLAG_OVERVIEW_UI) != 0;
         this.ordinal = id;
@@ -179,8 +181,12 @@ public abstract class LauncherState implements BaseState<LauncherState> {
         return launcher.getNormalOverviewScaleAndOffset();
     }
 
-    public ScaleAndTranslation getQsbScaleAndTranslation(Launcher launcher) {
-        return new ScaleAndTranslation(NO_SCALE, NO_OFFSET, NO_OFFSET);
+    public float getTaskbarScale(Launcher launcher) {
+        return launcher.getNormalTaskbarScale();
+    }
+
+    public float getTaskbarTranslationY(Launcher launcher) {
+        return -launcher.getHotseat().getTaskbarOffsetY();
     }
 
     public float getOverviewFullscreenProgress() {
@@ -188,10 +194,16 @@ public abstract class LauncherState implements BaseState<LauncherState> {
     }
 
     public int getVisibleElements(Launcher launcher) {
-        if (launcher.getDeviceProfile().isVerticalBarLayout()) {
-            return HOTSEAT_ICONS | VERTICAL_SWIPE_INDICATOR;
-        }
-        return HOTSEAT_ICONS | HOTSEAT_SEARCH_BOX | VERTICAL_SWIPE_INDICATOR;
+        return HOTSEAT_ICONS | WORKSPACE_PAGE_INDICATOR | VERTICAL_SWIPE_INDICATOR | TASKBAR;
+    }
+
+    /**
+     * A shorthand for checking getVisibleElements() & elements == elements.
+     *
+     * @return Whether all of the given elements are visible.
+     */
+    public boolean areElementsVisible(Launcher launcher, int elements) {
+        return (getVisibleElements(launcher) & elements) == elements;
     }
 
     /**
@@ -203,16 +215,16 @@ public abstract class LauncherState implements BaseState<LauncherState> {
         return 1f;
     }
 
-    public float getScrimProgress(Launcher launcher) {
-        return getVerticalProgress(launcher);
-    }
-
-    public float getWorkspaceScrimAlpha(Launcher launcher) {
+    public float getWorkspaceBackgroundAlpha(Launcher launcher) {
         return 0;
     }
 
-    public float getOverviewScrimAlpha(Launcher launcher) {
-        return 0;
+    /**
+     * What color should the workspace scrim be in when at rest in this state.
+     * Return {@link Color#TRANSPARENT} for no scrim.
+     */
+    public int getWorkspaceScrimColor(Launcher launcher) {
+        return Color.TRANSPARENT;
     }
 
     /**
@@ -220,6 +232,14 @@ public abstract class LauncherState implements BaseState<LauncherState> {
      * 1 modalness means the current task is show on its own.
      */
     public float getOverviewModalness() {
+        return 0;
+    }
+
+    /**
+     * For this state, how much additional translation there should be for each of the
+     * child TaskViews. Note that the translation can be its primary or secondary dimension.
+     */
+    public float getSplitSelectTranslation(Launcher launcher) {
         return 0;
     }
 
@@ -248,10 +268,6 @@ public abstract class LauncherState implements BaseState<LauncherState> {
 
     protected float getDepthUnchecked(Context context) {
         return 0f;
-    }
-
-    public float getWorkspaceBlurAlpha(Launcher launcher) {
-        return 0;
     }
 
     public String getDescription(Launcher launcher) {

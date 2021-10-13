@@ -111,55 +111,28 @@ public class EdgeBackGesturePanel extends View {
      */
     private static final Interpolator RUBBER_BAND_INTERPOLATOR_APPEAR =
             new PathInterpolator(1.0f / RUBBER_BAND_AMOUNT_APPEAR, 1.0f, 1.0f, 1.0f);
-    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_ANGLE =
-            new FloatPropertyCompat<EdgeBackGesturePanel>("currentAngle") {
-                @Override
-                public void setValue(EdgeBackGesturePanel object, float value) {
-                    object.setCurrentAngle(value);
-                }
 
-                @Override
-                public float getValue(EdgeBackGesturePanel object) {
-                    return object.getCurrentAngle();
-                }
-            };
-    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_TRANSLATION =
-            new FloatPropertyCompat<EdgeBackGesturePanel>("currentTranslation") {
-                @Override
-                public void setValue(EdgeBackGesturePanel object, float value) {
-                    object.setCurrentTranslation(value);
-                }
+    private BackCallback mBackCallback;
 
-                @Override
-                public float getValue(EdgeBackGesturePanel object) {
-                    return object.getCurrentTranslation();
-                }
-            };
-    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_VERTICAL_TRANSLATION =
-            new FloatPropertyCompat<EdgeBackGesturePanel>("verticalTranslation") {
-
-                @Override
-                public void setValue(EdgeBackGesturePanel object, float value) {
-                    object.setVerticalTranslation(value);
-                }
-
-                @Override
-                public float getValue(EdgeBackGesturePanel object) {
-                    return object.getVerticalTranslation();
-                }
-            };
     /**
      * The paint the arrow is drawn with
      */
     private final Paint mPaint = new Paint();
+
     private final float mDensity;
     private final float mBaseTranslation;
     private final float mArrowLength;
     private final float mArrowThickness;
+
     /**
      * The minimum delta needed in movement for the arrow to change direction / stop triggering back
      */
     private final float mMinDeltaForSwitch;
+    // The closest to y = 0 that the arrow will be displayed.
+    private int mMinArrowPosition;
+    // The amount the arrow is shifted to avoid the finger.
+    private int mFingerOffset;
+
     private final float mSwipeThreshold;
     private final Path mArrowPath = new Path();
     private final Point mDisplaySize = new Point();
@@ -172,28 +145,15 @@ public class EdgeBackGesturePanel extends View {
     private final ValueAnimator mArrowDisappearAnimation;
     private final SpringForce mRegularTranslationSpring;
     private final SpringForce mTriggerBackSpring;
-    private final DynamicAnimation.OnAnimationEndListener mSetGoneEndListener =
-            new DynamicAnimation.OnAnimationEndListener() {
-                @Override
-                public void onAnimationEnd(
-                        DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                    animation.removeEndListener(this);
-                    if (!canceled) {
-                        setVisibility(GONE);
-                    }
-                }
-            };
-    private BackCallback mBackCallback;
-    // The closest to y = 0 that the arrow will be displayed.
-    private int mMinArrowPosition;
-    // The amount the arrow is shifted to avoid the finger.
-    private int mFingerOffset;
+
     private VelocityTracker mVelocityTracker;
     private int mArrowPaddingEnd;
+
     /**
      * True if the panel is currently on the left of the screen
      */
     private boolean mIsLeftPanel;
+
     private float mStartX;
     private float mStartY;
     private float mCurrentAngle;
@@ -205,6 +165,7 @@ public class EdgeBackGesturePanel extends View {
      * Where the arrow will be in the resting position.
      */
     private float mDesiredTranslation;
+
     private boolean mDragSlopPassed;
     private boolean mArrowsPointLeft;
     private float mMaxTranslation;
@@ -218,6 +179,58 @@ public class EdgeBackGesturePanel extends View {
     private float mDisappearAmount;
     private long mVibrationTime;
     private int mScreenSize;
+
+    private final DynamicAnimation.OnAnimationEndListener mSetGoneEndListener =
+            new DynamicAnimation.OnAnimationEndListener() {
+                @Override
+                public void onAnimationEnd(
+                        DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                    animation.removeEndListener(this);
+                    if (!canceled) {
+                        setVisibility(GONE);
+                    }
+                }
+            };
+
+    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_ANGLE =
+            new FloatPropertyCompat<EdgeBackGesturePanel>("currentAngle") {
+                @Override
+                public void setValue(EdgeBackGesturePanel object, float value) {
+                    object.setCurrentAngle(value);
+                }
+
+                @Override
+                public float getValue(EdgeBackGesturePanel object) {
+                    return object.getCurrentAngle();
+                }
+            };
+
+    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_TRANSLATION =
+            new FloatPropertyCompat<EdgeBackGesturePanel>("currentTranslation") {
+                @Override
+                public void setValue(EdgeBackGesturePanel object, float value) {
+                    object.setCurrentTranslation(value);
+                }
+
+                @Override
+                public float getValue(EdgeBackGesturePanel object) {
+                    return object.getCurrentTranslation();
+                }
+            };
+
+    private static final FloatPropertyCompat<EdgeBackGesturePanel> CURRENT_VERTICAL_TRANSLATION =
+            new FloatPropertyCompat<EdgeBackGesturePanel>("verticalTranslation") {
+
+                @Override
+                public void setValue(EdgeBackGesturePanel object, float value) {
+                    object.setVerticalTranslation(value);
+                }
+
+                @Override
+                public float getValue(EdgeBackGesturePanel object) {
+                    return object.getVerticalTranslation();
+                }
+            };
 
     public EdgeBackGesturePanel(Context context, ViewGroup parent, LayoutParams layoutParams) {
         super(context);
@@ -283,10 +296,6 @@ public class EdgeBackGesturePanel extends View {
         setVisibility(GONE);
     }
 
-    private static float lerp(float start, float stop, float amount) {
-        return start + (stop - start) * amount;
-    }
-
     void onDestroy() {
         ViewGroup parent = (ViewGroup) getParent();
         if (parent != null) {
@@ -299,13 +308,13 @@ public class EdgeBackGesturePanel extends View {
         return false;
     }
 
-    boolean getIsLeftPanel() {
-        return mIsLeftPanel;
-    }
-
     @SuppressLint("RtlHardcoded")
     void setIsLeftPanel(boolean isLeftPanel) {
         mIsLeftPanel = isLeftPanel;
+    }
+
+    boolean getIsLeftPanel() {
+        return mIsLeftPanel;
     }
 
     void setDisplaySize(Point displaySize) {
@@ -321,18 +330,8 @@ public class EdgeBackGesturePanel extends View {
         return mCurrentAngle;
     }
 
-    private void setCurrentAngle(float currentAngle) {
-        mCurrentAngle = currentAngle;
-        invalidate();
-    }
-
     private float getCurrentTranslation() {
         return mCurrentTranslation;
-    }
-
-    private void setCurrentTranslation(float currentTranslation) {
-        mCurrentTranslation = currentTranslation;
-        invalidate();
     }
 
     void onMotionEvent(MotionEvent event) {
@@ -436,6 +435,10 @@ public class EdgeBackGesturePanel extends View {
         mArrowPath.lineTo(0, 0);
         mArrowPath.lineTo(x, -y);
         return mArrowPath;
+    }
+
+    private static float lerp(float start, float stop, float amount) {
+        return start + (stop - start) * amount;
     }
 
     private void triggerBack() {
@@ -627,13 +630,13 @@ public class EdgeBackGesturePanel extends View {
         }
     }
 
-    private float getVerticalTranslation() {
-        return mVerticalTranslation;
-    }
-
     private void setVerticalTranslation(float verticalTranslation) {
         mVerticalTranslation = verticalTranslation;
         invalidate();
+    }
+
+    private float getVerticalTranslation() {
+        return mVerticalTranslation;
     }
 
     private void setDesiredTranslation(float desiredTranslation, boolean animated) {
@@ -645,6 +648,11 @@ public class EdgeBackGesturePanel extends View {
                 mTranslationAnimation.animateToFinalPosition(desiredTranslation);
             }
         }
+    }
+
+    private void setCurrentTranslation(float currentTranslation) {
+        mCurrentTranslation = currentTranslation;
+        invalidate();
     }
 
     private void setTriggerBack(boolean triggerBack, boolean animated) {
@@ -669,6 +677,11 @@ public class EdgeBackGesturePanel extends View {
             }
             mDesiredAngle = newAngle;
         }
+    }
+
+    private void setCurrentAngle(float currentAngle) {
+        mCurrentAngle = currentAngle;
+        invalidate();
     }
 
     private float dp(float dp) {

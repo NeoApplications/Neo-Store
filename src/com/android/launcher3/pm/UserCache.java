@@ -44,12 +44,13 @@ public class UserCache {
     private final Context mContext;
     private final UserManager mUserManager;
     private final ArrayList<Runnable> mUserChangeListeners = new ArrayList<>();
+    private final SimpleBroadcastReceiver mUserChangeReceiver =
+            new SimpleBroadcastReceiver(this::onUsersChanged);
+
     private LongSparseArray<UserHandle> mUsers;
     // Create a separate reverse map as LongSparseArray.indexOfValue checks if objects are same
     // and not {@link Object#equals}
     private ArrayMap<UserHandle, Long> mUserToSerialMap;
-    private final SimpleBroadcastReceiver mUserChangeReceiver =
-            new SimpleBroadcastReceiver(this::onUsersChanged);
 
     private UserCache(Context context) {
         mContext = context;
@@ -59,6 +60,9 @@ public class UserCache {
     private void onUsersChanged(Intent intent) {
         enableAndResetCache();
         mUserChangeListeners.forEach(Runnable::run);
+        if (TestProtocol.sDebugTracing) {
+            Log.d(TestProtocol.WORK_PROFILE_REMOVED, "profile changed", new Exception());
+        }
     }
 
     /**
@@ -102,9 +106,6 @@ public class UserCache {
 
                 mUsers = null;
                 mUserToSerialMap = null;
-            }
-            if (TestProtocol.sDebugTracing) {
-                Log.d(TestProtocol.WORK_PROFILE_REMOVED, "Work profile removed", new Exception());
             }
         }
     }

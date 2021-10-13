@@ -22,7 +22,6 @@ import android.view.View;
  */
 public interface IconLabelDotView {
     void setIconVisible(boolean visible);
-
     void setForceHideDot(boolean hide);
 
     /**

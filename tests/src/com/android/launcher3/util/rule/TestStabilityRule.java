@@ -53,12 +53,36 @@ public class TestStabilityRule implements TestRule {
                     + ")$");
 
     public static final int LOCAL = 0x1;
-    public static final int UNBUNDLED_PRESUBMIT = 0x2;
-    public static final int UNBUNDLED_POSTSUBMIT = 0x4;
     public static final int PLATFORM_PRESUBMIT = 0x8;
     public static final int PLATFORM_POSTSUBMIT = 0x10;
 
     private static int sRunFlavor;
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    public @interface Stability {
+        int flavors();
+    }
+
+    @Override
+    public Statement apply(Statement base, Description description) {
+        final Stability stability = description.getAnnotation(Stability.class);
+        if (stability != null) {
+            return new Statement() {
+                @Override
+                public void evaluate() throws Throwable {
+                    if ((stability.flavors() & getRunFlavor()) != 0) {
+                        Log.d(TAG, "Running " + description.getDisplayName());
+                        base.evaluate();
+                    } else {
+                        Log.d(TAG, "Skipping " + description.getDisplayName());
+                    }
+                }
+            };
+        } else {
+            return base;
+        }
+    }
 
     public static int getRunFlavor() {
         if (sRunFlavor != 0) return sRunFlavor;
@@ -110,14 +134,6 @@ public class TestStabilityRule implements TestRule {
                         platformBuildMatcher.group("postsubmit") != null)) {
             Log.d(TAG, "LOCAL RUN");
             sRunFlavor = LOCAL;
-        } else if (launcherBuildMatcher.group("presubmit") != null
-                && platformBuildMatcher.group("postsubmit") != null) {
-            Log.d(TAG, "UNBUNDLED PRESUBMIT");
-            sRunFlavor = UNBUNDLED_PRESUBMIT;
-        } else if (launcherBuildMatcher.group("postsubmit") != null
-                && platformBuildMatcher.group("postsubmit") != null) {
-            Log.d(TAG, "UNBUNDLED POSTSUBMIT");
-            sRunFlavor = UNBUNDLED_POSTSUBMIT;
         } else if (launcherBuildMatcher.group("platform") != null
                 && platformBuildMatcher.group("presubmit") != null) {
             Log.d(TAG, "PLATFORM PRESUBMIT");
@@ -132,31 +148,5 @@ public class TestStabilityRule implements TestRule {
         }
 
         return sRunFlavor;
-    }
-
-    @Override
-    public Statement apply(Statement base, Description description) {
-        final Stability stability = description.getAnnotation(Stability.class);
-        if (stability != null) {
-            return new Statement() {
-                @Override
-                public void evaluate() throws Throwable {
-                    if ((stability.flavors() & getRunFlavor()) != 0) {
-                        Log.d(TAG, "Running " + description.getDisplayName());
-                        base.evaluate();
-                    } else {
-                        Log.d(TAG, "Skipping " + description.getDisplayName());
-                    }
-                }
-            };
-        } else {
-            return base;
-        }
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    public @interface Stability {
-        int flavors();
     }
 }

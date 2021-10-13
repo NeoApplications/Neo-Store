@@ -31,7 +31,6 @@ public interface AllAppsRow extends Plugin {
 
     /**
      * Setup the row and return the parent view.
-     *
      * @param parent The ViewGroup to which launcher will add this row.
      */
     View setup(ViewGroup parent);

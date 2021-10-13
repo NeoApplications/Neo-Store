@@ -40,7 +40,7 @@ import com.android.launcher3.GestureNavContract;
 import com.android.launcher3.Insettable;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.android.launcher3.util.DefaultDisplay;
+import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.Executors;
 
 /**
@@ -87,6 +87,25 @@ public class FloatingSurfaceView extends AbstractFloatingView implements
         addView(mSurfaceView);
     }
 
+    @Override
+    protected void handleClose(boolean animate) {
+        setCurrentIconVisible(true);
+        mLauncher.getViewCache().recycleView(R.layout.floating_surface_view, this);
+        mContract = null;
+        mIcon = null;
+        mIsOpen = false;
+
+        // Remove after some time, to avoid flickering
+        Executors.MAIN_EXECUTOR.getHandler().postDelayed(mRemoveViewRunnable,
+                DisplayController.INSTANCE.get(mLauncher).getInfo().singleFrameMs);
+    }
+
+    private void removeViewFromParent() {
+        mPicture.beginRecording(1, 1);
+        mPicture.endRecording();
+        mLauncher.getDragLayer().removeView(this);
+    }
+
     /**
      * Shows the surfaceView for the provided contract
      */
@@ -100,29 +119,6 @@ public class FloatingSurfaceView extends AbstractFloatingView implements
         Executors.MAIN_EXECUTOR.getHandler().removeCallbacks(view.mRemoveViewRunnable);
         view.removeViewFromParent();
         launcher.getDragLayer().addView(view);
-    }
-
-    @Override
-    protected void handleClose(boolean animate) {
-        setCurrentIconVisible(true);
-        mLauncher.getViewCache().recycleView(R.layout.floating_surface_view, this);
-        mContract = null;
-        mIcon = null;
-        mIsOpen = false;
-
-        // Remove after some time, to avoid flickering
-        Executors.MAIN_EXECUTOR.getHandler().postDelayed(mRemoveViewRunnable,
-                DefaultDisplay.INSTANCE.get(mLauncher).getInfo().singleFrameMs);
-    }
-
-    private void removeViewFromParent() {
-        mPicture.beginRecording(1, 1);
-        mPicture.endRecording();
-        mLauncher.getDragLayer().removeView(this);
-    }
-
-    @Override
-    public void logActionCommand(int command) {
     }
 
     @Override
@@ -163,7 +159,7 @@ public class FloatingSurfaceView extends AbstractFloatingView implements
         if (mContract == null) {
             return;
         }
-        View icon = mLauncher.getWorkspace().getFirstMatchForAppClose(
+        View icon = mLauncher.getWorkspace().getFirstMatchForAppClose(-1,
                 mContract.componentName.getPackageName(), mContract.user);
 
         boolean iconChanged = mIcon != icon;

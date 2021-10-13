@@ -43,23 +43,6 @@ public class ShortcutCachingLogic implements CachingLogic<ShortcutInfo> {
 
     private static final String TAG = "ShortcutCachingLogic";
 
-    /**
-     * Similar to {@link LauncherApps#getShortcutIconDrawable(ShortcutInfo, int)} with additional
-     * Launcher specific checks
-     */
-    public static Drawable getIcon(Context context, ShortcutInfo shortcutInfo, int density) {
-        if (GO_DISABLE_WIDGETS) {
-            return null;
-        }
-        try {
-            return context.getSystemService(LauncherApps.class)
-                    .getShortcutIconDrawable(shortcutInfo, density);
-        } catch (SecurityException | IllegalStateException e) {
-            Log.e(TAG, "Failed to get shortcut icon", e);
-            return null;
-        }
-    }
-
     @Override
     public ComponentName getComponent(ShortcutInfo info) {
         return ShortcutKey.fromInfo(info).componentName;
@@ -104,5 +87,22 @@ public class ShortcutCachingLogic implements CachingLogic<ShortcutInfo> {
     @Override
     public boolean addToMemCache() {
         return false;
+    }
+
+    /**
+     * Similar to {@link LauncherApps#getShortcutIconDrawable(ShortcutInfo, int)} with additional
+     * Launcher specific checks
+     */
+    public static Drawable getIcon(Context context, ShortcutInfo shortcutInfo, int density) {
+        if (GO_DISABLE_WIDGETS) {
+            return null;
+        }
+        try {
+            return context.getSystemService(LauncherApps.class)
+                    .getShortcutIconDrawable(shortcutInfo, density);
+        } catch (SecurityException | IllegalStateException e) {
+            Log.e(TAG, "Failed to get shortcut icon", e);
+            return null;
+        }
     }
 }

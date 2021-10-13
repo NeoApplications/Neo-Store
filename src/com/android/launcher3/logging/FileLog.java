@@ -10,7 +10,6 @@ import android.util.Pair;
 
 import androidx.annotation.VisibleForTesting;
 
-import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -38,11 +37,12 @@ public final class FileLog {
     private static final DateFormat DATE_FORMAT =
             DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
-    public static final int LOG_DAYS = FeatureFlags.ENABLE_HYBRID_HOTSEAT.get() ? 10 : 4;
+    private static final long MAX_LOG_FILE_SIZE = 8 << 20;  // 4 mb
 
     private static Handler sHandler = null;
     private static File sLogsDirectory = null;
-    private static final long MAX_LOG_FILE_SIZE = 8 << 20;  // 4 mb
+
+    public static final int LOG_DAYS = 4;
 
     public static void setDir(File logsDir) {
         if (ENABLED) {
@@ -105,7 +105,6 @@ public final class FileLog {
 
     /**
      * Blocks until all the pending logs are written to the disk
-     *
      * @param out if not null, all the persisted logs are copied to the writer.
      */
     public static boolean flushAll(PrintWriter out) throws InterruptedException {
@@ -118,42 +117,6 @@ public final class FileLog {
 
         latch.await(2, TimeUnit.SECONDS);
         return latch.getCount() == 0;
-    }
-
-    /**
-     * Gets files used for FileLog
-     */
-    public static File[] getLogFiles() {
-        try {
-            flushAll(null);
-        } catch (InterruptedException e) {
-        }
-        File[] files = new File[LOG_DAYS];
-        for (int i = 0; i < LOG_DAYS; i++) {
-            files[i] = new File(sLogsDirectory, FILE_NAME_PREFIX + i);
-        }
-        return files;
-    }
-
-    private static void dumpFile(PrintWriter out, String fileName) {
-        File logFile = new File(sLogsDirectory, fileName);
-        if (logFile.exists()) {
-
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new FileReader(logFile));
-                out.println();
-                out.println("--- logfile: " + fileName + " ---");
-                String line;
-                while ((line = in.readLine()) != null) {
-                    out.println(line);
-                }
-            } catch (Exception e) {
-                // ignore
-            } finally {
-                IOUtils.closeSilently(in);
-            }
-        }
     }
 
     /**
@@ -244,5 +207,41 @@ public final class FileLog {
             }
             return true;
         }
+    }
+
+    private static void dumpFile(PrintWriter out, String fileName) {
+        File logFile = new File(sLogsDirectory, fileName);
+        if (logFile.exists()) {
+
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(new FileReader(logFile));
+                out.println();
+                out.println("--- logfile: " + fileName + " ---");
+                String line;
+                while ((line = in.readLine()) != null) {
+                    out.println(line);
+                }
+            } catch (Exception e) {
+                // ignore
+            } finally {
+                IOUtils.closeSilently(in);
+            }
+        }
+    }
+
+    /**
+     * Gets files used for FileLog
+     */
+    public static File[] getLogFiles() {
+        try {
+            flushAll(null);
+        } catch (InterruptedException e) {
+        }
+        File[] files = new File[LOG_DAYS];
+        for (int i = 0; i < LOG_DAYS; i++) {
+            files[i] = new File(sLogsDirectory, FILE_NAME_PREFIX + i);
+        }
+        return files;
     }
 }

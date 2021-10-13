@@ -15,27 +15,33 @@
  */
 package com.android.quickstep;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.UserManager;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.MainProcessInitializer;
-import com.android.launcher3.Utilities;
+import com.android.launcher3.util.Executors;
+import com.android.quickstep.logging.SettingsChangeLogger;
+import com.android.systemui.shared.system.InteractionJankMonitorWrapper;
 import com.android.systemui.shared.system.ThreadedRendererCompat;
 
 @SuppressWarnings("unused")
+@TargetApi(Build.VERSION_CODES.R)
 public class QuickstepProcessInitializer extends MainProcessInitializer {
 
     private static final String TAG = "QuickstepProcessInitializer";
+    private static final int SETUP_DELAY_MILLIS = 5000;
 
-    public QuickstepProcessInitializer(Context context) { }
+    public QuickstepProcessInitializer(Context context) {
+        // Fake call to create an instance of InteractionJankMonitor to avoid binder calls during
+        // its initialization during transitions.
+        InteractionJankMonitorWrapper.cancel(-1);
+    }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void init(Context context) {
         // Workaround for b/120550382, an external app can cause the launcher process to start for
@@ -54,12 +60,11 @@ public class QuickstepProcessInitializer extends MainProcessInitializer {
         super.init(context);
 
         // Elevate GPU priority for Quickstep and Remote animations.
-        try {
-            ThreadedRendererCompat.setContextPriority(ThreadedRendererCompat.EGL_CONTEXT_PRIORITY_HIGH_IMG);
-        } catch (Throwable t) {
-            if (Utilities.ATLEAST_P && Utilities.HIDDEN_APIS_ALLOWED) {
-                Log.e("QuickstepProcessInit", "Hidden APIs allowed but can't invoke setContextPriority", t);
-            }
-        }
+        ThreadedRendererCompat.setContextPriority(
+                ThreadedRendererCompat.EGL_CONTEXT_PRIORITY_HIGH_IMG);
+
+        // Initialize settings logger after a default timeout
+        Executors.MAIN_EXECUTOR.getHandler()
+                .postDelayed(() -> new SettingsChangeLogger(context), SETUP_DELAY_MILLIS);
     }
 }

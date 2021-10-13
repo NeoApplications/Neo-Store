@@ -17,7 +17,6 @@ package com.android.launcher3.touch;
 
 import android.content.Context;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
@@ -25,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.launcher3.Utilities;
-import com.android.launcher3.testing.TestProtocol;
 
 /**
  * One dimensional scroll/drag/swipe gesture detector (either HORIZONTAL or VERTICAL).
@@ -60,6 +58,11 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
             return direction.x;
         }
 
+        @NonNull
+        @Override
+        public String toString() {
+            return "VERTICAL";
+        }
     };
 
     public static final Direction HORIZONTAL = new Direction() {
@@ -86,6 +89,11 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
             return direction.y;
         }
 
+        @NonNull
+        @Override
+        public String toString() {
+            return "HORIZONTAL";
+        }
     };
 
     private final Direction mDir;
@@ -94,31 +102,36 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
 
     private int mScrollDirections;
 
+    private float mTouchSlopMultiplier = 1f;
+
     public SingleAxisSwipeDetector(@NonNull Context context, @NonNull Listener l,
-            @NonNull Direction dir) {
+                                   @NonNull Direction dir) {
         this(ViewConfiguration.get(context), l, dir, Utilities.isRtl(context.getResources()));
     }
 
     @VisibleForTesting
     protected SingleAxisSwipeDetector(@NonNull ViewConfiguration config, @NonNull Listener l,
-            @NonNull Direction dir, boolean isRtl) {
+                                      @NonNull Direction dir, boolean isRtl) {
         super(config, isRtl);
         mListener = l;
         mDir = dir;
-        if (TestProtocol.sDebugTracing) {
-            Log.d(TestProtocol.PAUSE_NOT_DETECTED, "SingleAxisSwipeDetector.ctor "
-                    + l.getClass().getSimpleName()
-                    + " @ " + android.util.Log.getStackTraceString(new Throwable()));
-        }
+    }
+
+    /**
+     * Provides feasibility to adjust touch slop when visible window size changed. When visible
+     * bounds translate become smaller, multiply a larger multiplier could ensure the UX
+     * more consistent.
+     *
+     * @param touchSlopMultiplier the value to multiply original touch slop.
+     * @see #shouldScrollStart(PointF)
+     */
+    public void setTouchSlopMultiplier(float touchSlopMultiplier) {
+        mTouchSlopMultiplier = touchSlopMultiplier;
     }
 
     public void setDetectableScrollConditions(int scrollDirectionFlags, boolean ignoreSlop) {
         mScrollDirections = scrollDirectionFlags;
         mIgnoreSlopWhenSettling = ignoreSlop;
-    }
-
-    public int getScrollDirections() {
-        return mScrollDirections;
     }
 
     /**
@@ -134,7 +147,7 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
     @Override
     protected boolean shouldScrollStart(PointF displacement) {
         // Reject cases where the angle or slop condition is not met.
-        float minDisplacement = Math.max(mTouchSlop,
+        float minDisplacement = Math.max(mTouchSlop * mTouchSlopMultiplier,
                 Math.abs(mDir.extractOrthogonalDirection(displacement)));
         if (Math.abs(mDir.extractDirection(displacement)) < minDisplacement) {
             return false;
@@ -161,10 +174,6 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
 
     @Override
     protected void reportDraggingInternal(PointF displacement, MotionEvent event) {
-        if (TestProtocol.sDebugTracing) {
-            Log.d(TestProtocol.PAUSE_NOT_DETECTED, "SingleAxisSwipeDetector "
-                    + mListener.getClass().getSimpleName());
-        }
         mListener.onDrag(mDir.extractDirection(displacement),
                 mDir.extractOrthogonalDirection(displacement), event);
     }
@@ -181,10 +190,9 @@ public class SingleAxisSwipeDetector extends BaseSwipeDetector {
     public interface Listener {
         /**
          * TODO(b/150256055) consolidate all the different onDrag() methods into one
-         *
-         * @param start             whether this was the original drag start, as opposed to a recatch.
+         * @param start whether this was the original drag start, as opposed to a recatch.
          * @param startDisplacement the initial touch displacement for the primary direction as
-         *                          given by by {@link Direction#extractDirection(PointF)}
+         *        given by by {@link Direction#extractDirection(PointF)}
          */
         void onDragStart(boolean start, float startDisplacement);
 

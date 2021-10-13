@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.statemanager;
 
+import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
+
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,7 @@ import com.android.launcher3.statemanager.StateManager.AtomicAnimationFactory;
 import com.android.launcher3.statemanager.StateManager.StateHandler;
 import com.android.launcher3.views.BaseDragLayer;
 
-import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
+import java.util.List;
 
 /**
  * Abstract activity with state management
@@ -39,14 +41,15 @@ public abstract class StatefulActivity<STATE_TYPE extends BaseState<STATE_TYPE>>
         extends BaseDraggingActivity {
 
     public final Handler mHandler = new Handler();
-    private boolean mDeferredResumePending;
     private final Runnable mHandleDeferredResume = this::handleDeferredResume;
+    private boolean mDeferredResumePending;
+
     private LauncherRootView mRootView;
 
     /**
      * Create handlers to control the property changes for this activity
      */
-    protected abstract StateHandler<STATE_TYPE>[] createStateHandlers();
+    protected abstract void collectStateHandlers(List<StateHandler> out);
 
     /**
      * Returns true if the activity is in the provided state
@@ -152,8 +155,8 @@ public abstract class StatefulActivity<STATE_TYPE extends BaseState<STATE_TYPE>>
 
     private void handleDeferredResume() {
         if (hasBeenResumed() && !getStateManager().getState().hasFlag(FLAG_NON_INTERACTIVE)) {
-            onDeferredResumed();
             addActivityFlags(ACTIVITY_STATE_DEFERRED_RESUMED);
+            onDeferredResumed();
 
             mDeferredResumePending = false;
         } else {

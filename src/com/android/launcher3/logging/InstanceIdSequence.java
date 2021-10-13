@@ -28,7 +28,7 @@ import java.util.Random;
  * Generates random InstanceIds in range [1, instanceIdMax] for passing to
  * UiEventLogger.logWithInstanceId(). Holds a SecureRandom, which self-seeds on first use; try to
  * give it a long lifetime. Safe for concurrent use.
- * <p>
+ *
  * Copy of frameworks/base/core/java/com/android/internal/logging/InstanceIdSequence.java
  */
 public class InstanceIdSequence {
@@ -37,7 +37,6 @@ public class InstanceIdSequence {
 
     /**
      * Constructs a sequence with identifiers [1, instanceIdMax].  Capped at INSTANCE_ID_MAX.
-     *
      * @param instanceIdMax Limiting value of identifiers. Normally positive: otherwise you get
      *                      an all-1 sequence.
      */
@@ -54,7 +53,6 @@ public class InstanceIdSequence {
 
     /**
      * Gets the next instance from the sequence.  Safe for concurrent use.
-     *
      * @return new InstanceId
      */
     public InstanceId newInstanceId() {
@@ -63,7 +61,6 @@ public class InstanceIdSequence {
 
     /**
      * Factory function for instance IDs, used for testing.
-     *
      * @param id
      * @return new InstanceId(id)
      */

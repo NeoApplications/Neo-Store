@@ -36,23 +36,6 @@ public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
         return obtain(context, IconShape.getShape().enableShapeDetection());
     }
 
-    protected LauncherIcons(Context context, int fillResIconDpi, int iconBitmapSize, int poolId,
-                            boolean shapeDetection) {
-        super(context, fillResIconDpi, iconBitmapSize, shapeDetection);
-        mPoolId = poolId;
-    }
-
-    public static void clearPool() {
-        synchronized (sPoolSync) {
-            sPool = null;
-            sPoolId++;
-        }
-    }
-
-    private final int mPoolId;
-
-    private LauncherIcons next;
-
     /**
      * Return a new Message instance from the global pool. Allows us to
      * avoid allocating new objects in many cases.
@@ -77,6 +60,23 @@ public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
         InvariantDeviceProfile idp = InvariantDeviceProfile.INSTANCE.get(context);
         return new LauncherIcons(context, idp.fillResIconDpi, idp.iconBitmapSize, poolId,
                 shapeDetection);
+    }
+
+    public static void clearPool() {
+        synchronized (sPoolSync) {
+            sPool = null;
+            sPoolId++;
+        }
+    }
+
+    private final int mPoolId;
+
+    private LauncherIcons next;
+
+    protected LauncherIcons(Context context, int fillResIconDpi, int iconBitmapSize, int poolId,
+                            boolean shapeDetection) {
+        super(context, fillResIconDpi, iconBitmapSize, shapeDetection);
+        mPoolId = poolId;
     }
 
     /**

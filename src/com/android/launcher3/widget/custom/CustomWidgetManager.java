@@ -16,7 +16,7 @@
 
 package com.android.launcher3.widget.custom;
 
-import static com.android.launcher3.LauncherAppWidgetProviderInfo.CLS_CUSTOM_WIDGET_PREFIX;
+import static com.android.launcher3.widget.LauncherAppWidgetProviderInfo.CLS_CUSTOM_WIDGET_PREFIX;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -29,12 +29,12 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
+import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.systemui.plugins.CustomWidgetPlugin;
 import com.android.systemui.plugins.PluginListener;
 
@@ -67,25 +67,12 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         mPlugins = new SparseArray<>();
         mCustomWidgets = new ArrayList<>();
         mWidgetsIdMap = new SparseArray<>();
-        //PluginManagerWrapper.INSTANCE.get(context)
-        //        .addPluginListener(this, CustomWidgetPlugin.class, true);
+        PluginManagerWrapper.INSTANCE.get(context)
+                .addPluginListener(this, CustomWidgetPlugin.class, true);
     }
 
-    private static CustomAppWidgetProviderInfo newInfo(int providerId, CustomWidgetPlugin plugin,
-                                                       Parcel parcel, Context context) {
-        CustomAppWidgetProviderInfo info = new CustomAppWidgetProviderInfo(
-                parcel, false, providerId, false);
-        info.provider = new ComponentName(
-                context.getPackageName(), CLS_CUSTOM_WIDGET_PREFIX + providerId);
-
-        info.label = plugin.getLabel();
-        info.resizeMode = plugin.getResizeMode();
-
-        info.spanX = plugin.getSpanX();
-        info.spanY = plugin.getSpanY();
-        info.minSpanX = plugin.getMinSpanX();
-        info.minSpanY = plugin.getMinSpanY();
-        return info;
+    public void onDestroy() {
+        PluginManagerWrapper.INSTANCE.get(mContext).removePluginListener(this);
     }
 
     @Override
@@ -121,10 +108,6 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         mWidgetRefreshCallback = cb;
     }
 
-    public void onDestroy() {
-        PluginManagerWrapper.INSTANCE.get(mContext).removePluginListener(this);
-    }
-
     /**
      * Callback method to inform a plugin it's corresponding widget has been created.
      */
@@ -133,6 +116,14 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         CustomWidgetPlugin plugin = mPlugins.get(info.providerId);
         if (plugin == null) return;
         plugin.onViewCreated(view);
+    }
+
+    /**
+     * Returns the stream of custom widgets.
+     */
+    @NonNull
+    public Stream<CustomAppWidgetProviderInfo> stream() {
+        return mCustomWidgets.stream();
     }
 
     /**
@@ -159,12 +150,21 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         return null;
     }
 
-    /**
-     * Returns the stream of custom widgets.
-     */
-    @NonNull
-    public Stream<CustomAppWidgetProviderInfo> stream() {
-        return mCustomWidgets.stream();
+    private static CustomAppWidgetProviderInfo newInfo(int providerId, CustomWidgetPlugin plugin,
+                                                       Parcel parcel, Context context) {
+        CustomAppWidgetProviderInfo info = new CustomAppWidgetProviderInfo(
+                parcel, false, providerId);
+        info.provider = new ComponentName(
+                context.getPackageName(), CLS_CUSTOM_WIDGET_PREFIX + providerId);
+
+        info.label = plugin.getLabel();
+        info.resizeMode = plugin.getResizeMode();
+
+        info.spanX = plugin.getSpanX();
+        info.spanY = plugin.getSpanY();
+        info.minSpanX = plugin.getMinSpanX();
+        info.minSpanY = plugin.getMinSpanY();
+        return info;
     }
 
     private int findProviderId(CustomWidgetPlugin plugin) {

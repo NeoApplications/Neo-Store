@@ -33,6 +33,7 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.R;
 import com.android.launcher3.util.ResourceBasedOverride;
+import com.android.launcher3.widget.picker.WidgetsFullSheet;
 
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
@@ -58,35 +59,6 @@ public class TestInformationHandler implements ResourceBasedOverride {
         mDeviceProfile = InvariantDeviceProfile.INSTANCE.
                 get(context).getDeviceProfile(context);
         mLauncherAppState = LauncherAppState.getInstanceNoCreate();
-    }
-
-    /**
-     * Returns the result by getting a Launcher property on UI thread
-     */
-    public static <T> Bundle getLauncherUIProperty(
-            BundleSetter<T> bundleSetter, Function<Launcher, T> provider) {
-        return getUIProperty(bundleSetter, provider, Launcher.ACTIVITY_TRACKER::getCreatedActivity);
-    }
-
-    /**
-     * Returns the result by getting a generic property on UI thread
-     */
-    private static <S, T> Bundle getUIProperty(
-            BundleSetter<T> bundleSetter, Function<S, T> provider, Supplier<S> targetSupplier) {
-        try {
-            return MAIN_EXECUTOR.submit(() -> {
-                S target = targetSupplier.get();
-                if (target == null) {
-                    return null;
-                }
-                T value = provider.apply(target);
-                Bundle response = new Bundle();
-                bundleSetter.set(response, TestProtocol.TEST_INFO_RESPONSE_FIELD, value);
-                return response;
-            }).get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public Bundle call(String method) {
@@ -121,6 +93,11 @@ public class TestInformationHandler implements ResourceBasedOverride {
                         l -> l.getAppsView().getActiveRecyclerView().getCurrentScrollY());
             }
 
+            case TestProtocol.REQUEST_WIDGETS_SCROLL_Y: {
+                return getLauncherUIProperty(Bundle::putInt,
+                        l -> WidgetsFullSheet.getWidgetsView(l).getCurrentScrollY());
+            }
+
             case TestProtocol.REQUEST_WINDOW_INSETS: {
                 return getUIProperty(Bundle::putParcelable, a -> {
                     WindowInsets insets = a.getWindow()
@@ -152,6 +129,35 @@ public class TestInformationHandler implements ResourceBasedOverride {
 
     protected Activity getCurrentActivity() {
         return Launcher.ACTIVITY_TRACKER.getCreatedActivity();
+    }
+
+    /**
+     * Returns the result by getting a Launcher property on UI thread
+     */
+    public static <T> Bundle getLauncherUIProperty(
+            BundleSetter<T> bundleSetter, Function<Launcher, T> provider) {
+        return getUIProperty(bundleSetter, provider, Launcher.ACTIVITY_TRACKER::getCreatedActivity);
+    }
+
+    /**
+     * Returns the result by getting a generic property on UI thread
+     */
+    private static <S, T> Bundle getUIProperty(
+            BundleSetter<T> bundleSetter, Function<S, T> provider, Supplier<S> targetSupplier) {
+        try {
+            return MAIN_EXECUTOR.submit(() -> {
+                S target = targetSupplier.get();
+                if (target == null) {
+                    return null;
+                }
+                T value = provider.apply(target);
+                Bundle response = new Bundle();
+                bundleSetter.set(response, TestProtocol.TEST_INFO_RESPONSE_FIELD, value);
+                return response;
+            }).get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

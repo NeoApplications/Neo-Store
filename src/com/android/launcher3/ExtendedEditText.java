@@ -15,6 +15,8 @@
  */
 package com.android.launcher3;
 
+import static com.android.launcher3.util.UiThreadHelper.hideKeyboardAsync;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -22,31 +24,26 @@ import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
-import com.android.launcher3.util.UiThreadHelper;
+import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.views.ActivityContext;
 
 
 /**
  * The edit text that reports back when the back key has been pressed.
  * Note: AppCompatEditText doesn't fully support #displayCompletions and #onCommitCompletion
  */
-public class ExtendedEditText extends AppCompatEditText {
+public class ExtendedEditText extends EditText {
 
     private boolean mShowImeAfterFirstLayout;
     private boolean mForceDisableSuggestions = false;
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (mShowImeAfterFirstLayout) {
-            // soft input only shows one frame after the layout of the EditText happens,
-            post(() -> {
-                showSoftInput();
-                mShowImeAfterFirstLayout = false;
-            });
-        }
+    /**
+     * Implemented by listeners of the back key.
+     */
+    public interface OnBackKeyListener {
+        boolean onBackKey();
     }
 
     private OnBackKeyListener mBackKeyListener;
@@ -73,6 +70,9 @@ public class ExtendedEditText extends AppCompatEditText {
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         // If this is a back key, propagate the key back to the listener
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            if (TextUtils.isEmpty(getText())) {
+                hideKeyboard();
+            }
             if (mBackKeyListener != null) {
                 return mBackKeyListener.onBackKey();
             }
@@ -87,10 +87,20 @@ public class ExtendedEditText extends AppCompatEditText {
         return false;
     }
 
-    private boolean showSoftInput() {
-        return requestFocus() &&
-                getContext().getSystemService(InputMethodManager.class)
-                        .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mShowImeAfterFirstLayout) {
+            // soft input only shows one frame after the layout of the EditText happens,
+            post(() -> {
+                showSoftInput();
+                mShowImeAfterFirstLayout = false;
+            });
+        }
+    }
+
+    // inherited class can override to change the appearance of the edit text.
+    public void show() {
     }
 
     public void showKeyboard() {
@@ -98,14 +108,13 @@ public class ExtendedEditText extends AppCompatEditText {
     }
 
     public void hideKeyboard() {
-        UiThreadHelper.hideKeyboardAsync(getContext(), getWindowToken());
+        hideKeyboardAsync(ActivityContext.lookupContext(getContext()), getWindowToken());
     }
 
-    /**
-     * Implemented by listeners of the back key.
-     */
-    public interface OnBackKeyListener {
-        boolean onBackKey();
+    private boolean showSoftInput() {
+        return requestFocus() &&
+                getContext().getSystemService(InputMethodManager.class)
+                        .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void dispatchBackKey() {
@@ -131,6 +140,9 @@ public class ExtendedEditText extends AppCompatEditText {
     public void reset() {
         if (!TextUtils.isEmpty(getText())) {
             setText("");
+        }
+        if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
+            return;
         }
         if (isFocused()) {
             View nextFocus = focusSearch(View.FOCUS_DOWN);

@@ -22,12 +22,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.aardwolf">
     <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="29" />
+        android:targetSdkVersion="29"
+        android:minSdkVersion="21" />
     <application android:label="Aardwolf">
         <activity
             android:name="Activity1"
             android:icon="@mipmap/ic_launcher1"
+            android:exported="true"
             android:label="Aardwolf">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

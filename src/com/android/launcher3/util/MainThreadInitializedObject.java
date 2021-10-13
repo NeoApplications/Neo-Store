@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.util;
 
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+
 import android.content.Context;
 import android.os.Looper;
 
@@ -24,8 +26,6 @@ import com.android.launcher3.graphics.LauncherPreviewRenderer.PreviewContext;
 import com.android.launcher3.util.ResourceBasedOverride.Overrides;
 
 import java.util.concurrent.ExecutionException;
-
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 /**
  * Utility class for defining singletons which are initiated on main thread.
@@ -48,8 +48,6 @@ public class MainThreadInitializedObject<T> {
             if (Looper.myLooper() == Looper.getMainLooper()) {
                 mValue = TraceHelper.allowIpcs("main.thread.object",
                         () -> mProvider.get(context.getApplicationContext()));
-
-                onPostInit(context);
             } else {
                 try {
                     return MAIN_EXECUTOR.submit(() -> get(context)).get();
@@ -59,9 +57,6 @@ public class MainThreadInitializedObject<T> {
             }
         }
         return mValue;
-    }
-
-    protected void onPostInit(Context context) {
     }
 
     public T getNoCreate() {

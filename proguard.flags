@@ -61,25 +61,48 @@
   *;
 }
 
+# Don't touch the restrictionbypass code
+-keep class org.chickenhook.restrictionbypass.** { *; }
+
+# Silence warnings from Compose tooling
+-dontwarn org.jetbrains.kotlin.**
+-dontwarn androidx.compose.animation.tooling.ComposeAnimation
+-dontwarn sun.misc.Unsafe
+
 # Silence warnings about classes that are available at runtime
+-dontwarn android.provider.DeviceConfig
+-dontwarn com.android.internal.colorextraction.ColorExtractor$GradientColors
 -dontwarn com.android.internal.logging.MetricsLogger
+-dontwarn com.android.internal.os.SomeArgs
+-dontwarn android.content.pm.ParceledListSlice
+-dontwarn com.android.internal.policy.ScreenDecorationsUtils
+-dontwarn android.util.StatsEvent
+-dontwarn android.service.wallpaper.IWallpaperEngine
+-dontwarn android.content.pm.UserInfo
+-dontwarn com.android.internal.app.IVoiceInteractionManagerService$Stub
+-dontwarn com.android.internal.app.IVoiceInteractionManagerService
+-dontwarn com.android.internal.annotations.VisibleForTesting
+-dontwarn android.provider.DeviceConfig$OnPropertiesChangedListener
+-dontwarn android.util.StatsEvent$Builder
+-dontwarn com.android.internal.colorextraction.types.Tonal
+-dontwarn android.content.pm.LauncherApps$AppUsageLimit
+-dontwarn android.provider.SearchIndexablesContract
+-dontwarn android.provider.SearchIndexablesProvider
+-dontwarn android.content.pm.IPackageManager
 
--keep class com.saggitt.omega.smartspace.OnboardingProvider {
-  public <init>(...);
-}
-
--keep class com.saggitt.omega.iconpack.CustomIconProvider { *; }
-
--keep class com.saggitt.omega.iconpack.CustomDrawableFactory { *; }
-
--keep class com.android.launcher3.InvariantDeviceProfile {
-  float iconSizeOriginal;
-  float allAppsIconSizeOriginal;
-  float landscapeIconSizeOriginal;
-  float landscapeAllAppsIconSizeOriginal;
-  int numHotseatIconsOriginal;
-  int numRowsOriginal;
-  int numColumnsOriginal;
-  int numColsDrawerOriginal;
-  int numPredictionsOriginal;
-}
+# Preserve Protobuf generated code
+-keep class com.android.launcher3.tracing.nano.LauncherTraceFileProto$* { *; }
+-keep class com.android.launcher3.logger.nano.LauncherAtom$* { *; }
+-keep class com.android.launcher3.tracing.nano.LauncherTraceEntryProto$* { *; }
+-keep class com.android.launcher3.tracing.nano.TouchInteractionServiceProto$* { *; }
+-keep class com.android.launcher3.userevent.nano.LauncherLogProto$* { *; }
+-keep class com.android.launcher3.tracing.nano.LauncherTraceProto$* { *; }
+-keep class com.android.launcher3.userevent.nano.LauncherLogExtensions$* { *; }
+-keep class com.android.launcher3.tracing.LauncherTraceFileProto$* { *; }
+-keep class com.android.launcher3.logger.LauncherAtom$* { *; }
+-keep class com.android.launcher3.tracing.LauncherTraceEntryProto$* { *; }
+-keep class com.android.launcher3.tracing.TouchInteractionServiceProto$* { *; }
+-keep class com.android.launcher3.userevent.LauncherLogProto$* { *; }
+-keep class com.android.launcher3.tracing.LauncherTraceProto$* { *; }
+-keep class com.android.launcher3.userevent.LauncherLogExtensions$* { *; }
+-keepattributes InnerClasses

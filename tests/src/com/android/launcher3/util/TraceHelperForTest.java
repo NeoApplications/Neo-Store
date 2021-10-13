@@ -28,9 +28,6 @@ public class TraceHelperForTest extends TraceHelper {
     private RaceConditionReproducer mRaceConditionReproducer;
     private IntConsumer mFlagsChangeListener;
 
-    private TraceHelperForTest() {
-    }
-
     public static void setRaceConditionReproducer(RaceConditionReproducer reproducer) {
         TraceHelper.INSTANCE = INSTANCE_FOR_TEST;
         INSTANCE_FOR_TEST.mRaceConditionReproducer = reproducer;
@@ -44,6 +41,9 @@ public class TraceHelperForTest extends TraceHelper {
     public static void setFlagsChangeListener(IntConsumer listener) {
         TraceHelper.INSTANCE = INSTANCE_FOR_TEST;
         INSTANCE_FOR_TEST.mFlagsChangeListener = listener;
+    }
+
+    private TraceHelperForTest() {
     }
 
     @Override

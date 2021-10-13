@@ -24,7 +24,6 @@ import java.util.function.Predicate;
 
 /**
  * A simple LRU cache for task key entries
- *
  * @param <V> The type of the value
  */
 public class TaskKeyLruCache<V> {

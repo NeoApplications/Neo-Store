@@ -4,6 +4,6 @@
 <suppressions>
 
     <!-- Robolectric uses magic method names like `__constructor__` -->
-    <suppress checks="MethodName|JavadocType|JavadocMethod" files="/robolectric_tests" />
+    <suppress files="/robolectric_tests" checks="MethodName|JavadocType|JavadocMethod" />
 
 </suppressions>

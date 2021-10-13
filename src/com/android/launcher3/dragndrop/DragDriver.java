@@ -32,32 +32,14 @@ public abstract class DragDriver {
 
     public interface EventListener {
         void onDriverDragMove(float x, float y);
-
         void onDriverDragExitWindow();
-
         void onDriverDragEnd(float x, float y);
-
         void onDriverDragCancel();
     }
 
     public DragDriver(EventListener eventListener, Consumer<MotionEvent> sec) {
         mEventListener = eventListener;
         mSecondaryEventConsumer = sec;
-    }
-
-    /**
-     * Created a driver for handing the actual events
-     */
-    public static DragDriver create(DragController dragController, DragOptions options,
-                                    Consumer<MotionEvent> sec) {
-        if (options.simulatedDndStartPoint != null) {
-            if (options.isAccessibleDrag) {
-                return null;
-            }
-            return new SystemDragDriver(dragController, sec);
-        } else {
-            return new InternalDragDriver(dragController, sec);
-        }
     }
 
     /**
@@ -79,6 +61,21 @@ public abstract class DragDriver {
      */
     public boolean onDragEvent(DragEvent event) {
         return false;
+    }
+
+    /**
+     * Created a driver for handing the actual events
+     */
+    public static DragDriver create(DragController dragController, DragOptions options,
+                                    Consumer<MotionEvent> sec) {
+        if (options.simulatedDndStartPoint != null) {
+            if (options.isAccessibleDrag) {
+                return null;
+            }
+            return new SystemDragDriver(dragController, sec);
+        } else {
+            return new InternalDragDriver(dragController, sec);
+        }
     }
 
     /**

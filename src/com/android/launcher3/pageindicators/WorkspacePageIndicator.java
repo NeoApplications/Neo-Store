@@ -24,8 +24,7 @@ import com.android.launcher3.Insettable;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.saggitt.omega.OmegaPreferences;
-import com.saggitt.omega.theme.ThemeManager;
+import com.android.launcher3.util.Themes;
 
 /**
  * A PageIndicator that briefly shows a fraction of a line when moving between pages
@@ -60,7 +59,7 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
     private int mCurrentScroll;
     private int mTotalScroll;
     private Paint mLinePaint;
-    private int mLineHeight;
+    private final int mLineHeight;
 
     private static final Property<WorkspacePageIndicator, Integer> PAINT_ALPHA
             = new Property<WorkspacePageIndicator, Integer>(Integer.class, "paint_alpha") {
@@ -106,7 +105,6 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
 
     private Runnable mHideLineRunnable = () -> animateLineToAlpha(0);
 
-    private boolean mUseBottomLine;
     public WorkspacePageIndicator(Context context) {
         this(context, null);
     }
@@ -123,22 +121,11 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         mLinePaint.setAlpha(0);
 
         mLauncher = Launcher.getLauncher(context);
-        updateLineHeight();
-        //mLineHeight = res.getDimensionPixelSize(R.dimen.workspace_page_indicator_line_height);
+        mLineHeight = res.getDimensionPixelSize(R.dimen.workspace_page_indicator_line_height);
 
-        boolean darkText = ThemeManager.Companion.getInstance(context).getSupportsDarkText();
+        boolean darkText = Themes.getAttrBoolean(mLauncher, R.attr.isWorkspaceDarkText);
         mActiveAlpha = darkText ? BLACK_ALPHA : WHITE_ALPHA;
         mLinePaint.setColor(darkText ? Color.BLACK : Color.WHITE);
-
-
-        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-        mUseBottomLine = !prefs.getDockGradientStyle() || prefs.getDockShowArrow();
-    }
-
-    public void updateLineHeight() {
-        boolean show = Utilities.getOmegaPrefs(getContext()).getDockShowPageIndicator();
-        mLineHeight = !show ? 0 : getResources()
-                .getDimensionPixelSize(R.dimen.dynamic_grid_page_indicator_line_height);
     }
 
     @Override
@@ -154,11 +141,6 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         int lineLeft = (int) (progress * (availableWidth - lineWidth));
         int lineRight = lineLeft + lineWidth;
 
-        if (mUseBottomLine) {
-            canvas.drawRoundRect(lineLeft, getHeight() - mLineHeight / 2, lineRight,
-                    getHeight() + mLineHeight / 2, mLineHeight, mLineHeight, mLinePaint);
-            return;
-        }
         canvas.drawRoundRect(lineLeft, getHeight() / 2 - mLineHeight / 2, lineRight,
                 getHeight() / 2 + mLineHeight / 2, mLineHeight, mLineHeight, mLinePaint);
     }
@@ -286,7 +268,9 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         } else {
             lp.leftMargin = lp.rightMargin = 0;
             lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-            lp.bottomMargin = grid.hotseatBarSizePx + insets.bottom;
+            lp.bottomMargin = grid.isTaskbarPresent
+                    ? grid.workspacePadding.bottom + grid.taskbarSize
+                    : grid.hotseatBarSizePx + insets.bottom;
         }
         setLayoutParams(lp);
     }

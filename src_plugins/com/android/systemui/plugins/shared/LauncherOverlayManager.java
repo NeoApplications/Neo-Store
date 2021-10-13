@@ -41,9 +41,6 @@ public interface LauncherOverlayManager extends Application.ActivityLifecycleCal
     default void openOverlay() {
     }
 
-    default void onMinusOneChanged() {
-    }
-
     default void hideOverlay(boolean animate) {
         hideOverlay(animate ? 200 : 0);
     }
@@ -103,7 +100,6 @@ public interface LauncherOverlayManager extends Application.ActivityLifecycleCal
 
         /**
          * Called when the launcher is ready to use the overlay
-         *
          * @param callbacks A set of callbacks provided by Launcher in relation to the overlay
          */
         void setOverlayCallbacks(LauncherOverlayCallbacks callbacks);

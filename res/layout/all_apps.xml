@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -16,7 +15,7 @@
 <!-- The top and bottom paddings are defined in this container, but since we want
      the list view to span the full width (for touch interception purposes), we
      will bake the left/right padding into that view's background itself. -->
-<com.saggitt.omega.allapps.AllAppsSearchContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.allapps.LauncherAllAppsContainerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/apps_view"
     android:theme="?attr/allAppsTheme"
     android:layout_width="match_parent"
@@ -30,11 +29,22 @@
         layout="@layout/all_apps_rv_layout"
         android:visibility="gone" />
 
-    <include layout="@layout/all_apps_floating_header" />
+    <com.android.launcher3.allapps.FloatingHeaderView
+        android:id="@+id/all_apps_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_container_all_apps"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/all_apps_header_top_padding"
+        android:paddingBottom="@dimen/all_apps_header_bottom_padding"
+        android:orientation="vertical">
 
-    <include
-        android:id="@id/search_container_all_apps"
-        layout="@layout/search_container_all_apps_google" />
+        <include layout="@layout/floating_header_content" />
+
+        <include layout="@layout/all_apps_personal_work_tabs" />
+    </com.android.launcher3.allapps.FloatingHeaderView>
+
+    <include layout="@layout/search_container_all_apps" />
 
     <include layout="@layout/all_apps_fast_scroller" />
-</com.saggitt.omega.allapps.AllAppsSearchContainerView>
+</com.android.launcher3.allapps.LauncherAllAppsContainerView>

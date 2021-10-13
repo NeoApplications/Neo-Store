@@ -35,12 +35,12 @@ public interface Reorderable {
 
     void getReorderPreviewOffset(PointF offset);
 
-    float getReorderBounceScale();
-
     /**
      * Set the scale related to reorder hint and "bounce" animations
      */
     void setReorderBounceScale(float scale);
+
+    float getReorderBounceScale();
 
     /**
      * Get the com.android.view related to this object

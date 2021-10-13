@@ -40,9 +40,6 @@ public class DejankBinderTracker implements Binder.ProxyTransactListener {
 
     private static final Object sLock = new Object();
     private static final HashSet<String> sWhitelistedFrameworkClasses = new HashSet<>();
-    private static boolean sTemporarilyIgnoreTracking = false;
-    // Used by the client to limit binder tracking to specific regions
-    private static boolean sTrackingAllowed = false;
 
     static {
         // Common IPCs that are ok to block the main thread.
@@ -50,12 +47,13 @@ public class DejankBinderTracker implements Binder.ProxyTransactListener {
         sWhitelistedFrameworkClasses.add("android.os.IPowerManager");
     }
 
+    private static boolean sTemporarilyIgnoreTracking = false;
+
+    // Used by the client to limit binder tracking to specific regions
+    private static boolean sTrackingAllowed = false;
+
     private BiConsumer<String, Integer> mUnexpectedTransactionCallback;
     private boolean mIsTracking = false;
-
-    public DejankBinderTracker(BiConsumer<String, Integer> unexpectedTransactionCallback) {
-        mUnexpectedTransactionCallback = unexpectedTransactionCallback;
-    }
 
     /**
      * Temporarily ignore blocking binder calls for the duration of this {@link Runnable}.
@@ -94,8 +92,8 @@ public class DejankBinderTracker implements Binder.ProxyTransactListener {
         sTrackingAllowed = false;
     }
 
-    public static boolean isMainThread() {
-        return Thread.currentThread() == Looper.getMainLooper().getThread();
+    public DejankBinderTracker(BiConsumer<String, Integer> unexpectedTransactionCallback) {
+        mUnexpectedTransactionCallback = unexpectedTransactionCallback;
     }
 
     @MainThread
@@ -155,5 +153,9 @@ public class DejankBinderTracker implements Binder.ProxyTransactListener {
     @Override
     public void onTransactEnded(Object session) {
         // Do nothing
+    }
+
+    public static boolean isMainThread() {
+        return Thread.currentThread() == Looper.getMainLooper().getThread();
     }
 }

@@ -38,12 +38,14 @@ import java.util.List;
  */
 public class ShortcutRequest {
 
+    private static final String TAG = "ShortcutRequest";
+
     public static final int ALL = ShortcutQuery.FLAG_MATCH_DYNAMIC
             | ShortcutQuery.FLAG_MATCH_MANIFEST | ShortcutQuery.FLAG_MATCH_PINNED;
     public static final int PUBLISHED = ShortcutQuery.FLAG_MATCH_DYNAMIC
             | ShortcutQuery.FLAG_MATCH_MANIFEST;
     public static final int PINNED = ShortcutQuery.FLAG_MATCH_PINNED;
-    private static final String TAG = "ShortcutRequest";
+
     private final ShortcutQuery mQuery = GO_DISABLE_WIDGETS ? null : new ShortcutQuery();
 
     private final Context mContext;

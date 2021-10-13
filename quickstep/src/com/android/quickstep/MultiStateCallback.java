@@ -34,8 +34,9 @@ import java.util.function.Consumer;
  */
 public class MultiStateCallback {
 
-    public static final boolean DEBUG_STATES = true;
     private static final String TAG = "MultiStateCallback";
+    public static final boolean DEBUG_STATES = false;
+
     private final SparseArray<LinkedList<Runnable>> mCallbacks = new SparseArray<>();
     private final SparseArray<ArrayList<Consumer<Boolean>>> mStateChangeListeners =
             new SparseArray<>();
@@ -58,6 +59,32 @@ public class MultiStateCallback {
         } else {
             postAsyncCallback(MAIN_EXECUTOR.getHandler(), () -> setState(stateFlag));
         }
+    }
+
+    /**
+     * Adds the provided state flags to the global state and executes any callbacks as a result.
+     */
+    public void setState(int stateFlag) {
+        if (DEBUG_STATES) {
+            Log.d(TAG, "[" + System.identityHashCode(this) + "] Adding "
+                    + convertToFlagNames(stateFlag) + " to " + convertToFlagNames(mState));
+        }
+
+        final int oldState = mState;
+        mState = mState | stateFlag;
+
+        int count = mCallbacks.size();
+        for (int i = 0; i < count; i++) {
+            int state = mCallbacks.keyAt(i);
+
+            if ((mState & state) == state) {
+                LinkedList<Runnable> callbacks = mCallbacks.valueAt(i);
+                while (!callbacks.isEmpty()) {
+                    callbacks.pollFirst().run();
+                }
+            }
+        }
+        notifyStateChangeListeners(oldState);
     }
 
     /**
@@ -131,32 +158,6 @@ public class MultiStateCallback {
 
     public int getState() {
         return mState;
-    }
-
-    /**
-     * Adds the provided state flags to the global state and executes any callbacks as a result.
-     */
-    public void setState(int stateFlag) {
-        if (DEBUG_STATES) {
-            Log.d(TAG, "[" + System.identityHashCode(this) + "] Adding "
-                    + convertToFlagNames(stateFlag) + " to " + convertToFlagNames(mState));
-        }
-
-        final int oldState = mState;
-        mState = mState | stateFlag;
-
-        int count = mCallbacks.size();
-        for (int i = 0; i < count; i++) {
-            int state = mCallbacks.keyAt(i);
-
-            if ((mState & state) == state) {
-                LinkedList<Runnable> callbacks = mCallbacks.valueAt(i);
-                while (!callbacks.isEmpty()) {
-                    callbacks.pollFirst().run();
-                }
-            }
-        }
-        notifyStateChangeListeners(oldState);
     }
 
     public boolean hasStates(int stateMask) {

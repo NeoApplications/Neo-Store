@@ -17,37 +17,33 @@
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/bg_popup_item_width"
     android:layout_height="@dimen/bg_popup_item_height"
+    android:elevation="@dimen/deep_shortcuts_elevation"
+    android:background="@drawable/middle_item_primary"
     android:theme="@style/PopupItem">
 
     <com.android.launcher3.BubbleTextView
-        android:id="@+id/bubble_text"
         style="@style/BaseIconUnBounded"
-        android:background="?android:selectableItemBackground"
-        android:focusable="false"
+        android:id="@+id/bubble_text"
+        android:background="?android:attr/selectableItemBackground"
         android:gravity="start|center_vertical"
-        android:maxLines="2"
+        android:textAlignment="viewStart"
         android:paddingStart="@dimen/deep_shortcuts_text_padding_start"
         android:paddingEnd="@dimen/popup_padding_end"
-        android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
+        android:minLines="1"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorPrimary"
         launcher:iconDisplay="shortcut_popup"
-        launcher:layoutHorizontal="true" />
+        launcher:layoutHorizontal="true"
+        android:focusable="false" />
 
     <View
         android:id="@+id/icon"
         android:layout_width="@dimen/system_shortcut_icon_size"
         android:layout_height="@dimen/system_shortcut_icon_size"
-        android:layout_gravity="start|center_vertical"
         android:layout_marginStart="@dimen/system_shortcut_margin_start"
-        android:backgroundTint="?android:attr/textColorTertiary" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="@dimen/deep_shortcuts_divider_width"
-        android:layout_height="@dimen/popup_item_divider_height"
-        android:layout_gravity="end|bottom"
-        android:background="?attr/popupColorTertiary"
-        android:visibility="gone" />
+        android:layout_gravity="start|center_vertical"
+        android:backgroundTint="?android:attr/textColorPrimary" />
 
 </com.android.launcher3.shortcuts.DeepShortcutView>

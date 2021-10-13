@@ -37,11 +37,13 @@ import androidx.annotation.Nullable;
  */
 public class GestureNavContract {
 
+    private static final String TAG = "GestureNavContract";
+
     public static final String EXTRA_GESTURE_CONTRACT = "gesture_nav_contract_v1";
     public static final String EXTRA_ICON_POSITION = "gesture_nav_contract_icon_position";
     public static final String EXTRA_ICON_SURFACE = "gesture_nav_contract_surface_control";
     public static final String EXTRA_REMOTE_CALLBACK = "android.intent.extra.REMOTE_CALLBACK";
-    private static final String TAG = "GestureNavContract";
+
     public final ComponentName componentName;
     public final UserHandle user;
 
@@ -51,6 +53,26 @@ public class GestureNavContract {
         this.componentName = componentName;
         this.user = user;
         this.mCallback = callback;
+    }
+
+    /**
+     * Sends the position information to the receiver
+     */
+    @TargetApi(Build.VERSION_CODES.R)
+    public void sendEndPosition(RectF position, @Nullable SurfaceControl surfaceControl) {
+        Bundle result = new Bundle();
+        result.putParcelable(EXTRA_ICON_POSITION, position);
+        result.putParcelable(EXTRA_ICON_SURFACE, surfaceControl);
+
+        Message callback = Message.obtain();
+        callback.copyFrom(mCallback);
+        callback.setData(result);
+
+        try {
+            callback.replyTo.send(callback);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error sending icon position", e);
+        }
     }
 
     /**
@@ -75,25 +97,5 @@ public class GestureNavContract {
             return new GestureNavContract(componentName, userHandle, callback);
         }
         return null;
-    }
-
-    /**
-     * Sends the position information to the receiver
-     */
-    @TargetApi(Build.VERSION_CODES.R)
-    public void sendEndPosition(RectF position, @Nullable SurfaceControl surfaceControl) {
-        Bundle result = new Bundle();
-        result.putParcelable(EXTRA_ICON_POSITION, position);
-        result.putParcelable(EXTRA_ICON_SURFACE, surfaceControl);
-
-        Message callback = Message.obtain();
-        callback.copyFrom(mCallback);
-        callback.setData(result);
-
-        try {
-            callback.replyTo.send(callback);
-        } catch (RemoteException e) {
-            Log.e(TAG, "Error sending icon position", e);
-        }
     }
 }

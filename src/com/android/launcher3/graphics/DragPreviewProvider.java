@@ -29,13 +29,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.DraggableView;
-import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.icons.BitmapRenderer;
+import com.android.launcher3.icons.FastBitmapDrawable;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
@@ -66,15 +68,7 @@ public class DragPreviewProvider {
         mView = view;
         blurSizeOutline =
                 context.getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
-        //previewPadding = blurSizeOutline;
-
-        if (mView instanceof BubbleTextView) {
-            Drawable d = ((BubbleTextView) mView).getIcon();
-            Rect bounds = getDrawableBounds(d);
-            previewPadding = blurSizeOutline - bounds.left - bounds.top;
-        } else {
-            previewPadding = blurSizeOutline;
-        }
+        previewPadding = blurSizeOutline;
     }
 
     /**
@@ -92,42 +86,23 @@ public class DragPreviewProvider {
                         blurSizeOutline / 2 - mTempRect.top);
                 mView.draw(destCanvas);
             }
-        } else {
-            final Rect clipRect = mTempRect;
-            mView.getDrawingRect(clipRect);
-
-            boolean textVisible = false;
-            if (mView instanceof FolderIcon) {
-                // For FolderIcons the text can bleed into the icon area, and so we need to
-                // hide the text completely (which can't be achieved by clipping).
-                if (((FolderIcon) mView).getTextVisible()) {
-                    ((FolderIcon) mView).setTextVisible(false);
-                    textVisible = true;
-                }
-            }
-            destCanvas.translate(-mView.getScrollX() + blurSizeOutline / 2,
-                    -mView.getScrollY() + blurSizeOutline / 2);
-            destCanvas.clipRect(clipRect);
-            mView.draw(destCanvas);
-
-            // Restore text visibility of FolderIcon if necessary
-            if (textVisible) {
-                ((FolderIcon) mView).setTextVisible(true);
-            }
         }
         destCanvas.restoreToCount(saveCount);
     }
 
     /**
-     * Returns a new bitmap to show when the {@link #mView} is being dragged around.
-     * Responsibility for the bitmap is transferred to the caller.
+     * Returns a new drawable to show when the {@link #mView} is being dragged around.
+     * Responsibility for the drawable is transferred to the caller.
      */
-    public Bitmap createDragBitmap() {
+    public Drawable createDrawable() {
+        if (mView instanceof LauncherAppWidgetHostView) {
+            return null;
+        }
+
         int width = 0;
         int height = 0;
         // Assume scaleX == scaleY, which is always the case for workspace items.
         float scale = mView.getScaleX();
-
         if (mView instanceof DraggableView) {
             ((DraggableView) mView).getSourceVisualDragBounds(mTempRect);
             width = mTempRect.width();
@@ -136,14 +111,22 @@ public class DragPreviewProvider {
             width = mView.getWidth();
             height = mView.getHeight();
         }
-        if (mView instanceof BubbleTextView) {
-            Drawable d = ((BubbleTextView) mView).getIcon();
-            Rect bounds = getDrawableBounds(d);
-            width = bounds.width();
-            height = bounds.height();
+
+        return new FastBitmapDrawable(
+                BitmapRenderer.createHardwareBitmap(width + blurSizeOutline,
+                        height + blurSizeOutline, (c) -> drawDragView(c, scale)));
+    }
+
+    /**
+     * Returns the content view if the content should be rendered directly in
+     * {@link com.android.launcher3.dragndrop.DragView}. Otherwise, returns null.
+     */
+    @Nullable
+    public View getContentView() {
+        if (mView instanceof LauncherAppWidgetHostView) {
+            return mView;
         }
-        return BitmapRenderer.createHardwareBitmap(width + blurSizeOutline,
-                height + blurSizeOutline, (c) -> drawDragView(c, scale));
+        return null;
     }
 
     public final void generateDragOutline(Bitmap preview) {
@@ -166,7 +149,7 @@ public class DragPreviewProvider {
         return bounds;
     }
 
-    public float getScaleAndPosition(Bitmap preview, int[] outPos) {
+    public float getScaleAndPosition(Drawable preview, int[] outPos) {
         float scale = Launcher.getLauncher(mView.getContext())
                 .getDragLayer().getLocationInDragLayer(mView, outPos);
         if (mView instanceof LauncherAppWidgetHostView) {
@@ -176,9 +159,27 @@ public class DragPreviewProvider {
         }
 
         outPos[0] = Math.round(outPos[0] -
-                (preview.getWidth() - scale * mView.getWidth() * mView.getScaleX()) / 2);
-        outPos[1] = Math.round(outPos[1] - (1 - scale) * preview.getHeight() / 2
+                (preview.getIntrinsicWidth() - scale * mView.getWidth() * mView.getScaleX()) / 2);
+        outPos[1] = Math.round(outPos[1] - (1 - scale) * preview.getIntrinsicHeight() / 2
                 - previewPadding / 2);
+        return scale;
+    }
+
+    /**
+     * Returns the scale and position of a given view for drag-n-drop.
+     */
+    public float getScaleAndPosition(View view, int[] outPos) {
+        float scale = Launcher.getLauncher(mView.getContext())
+                .getDragLayer().getLocationInDragLayer(mView, outPos);
+        if (mView instanceof LauncherAppWidgetHostView) {
+            // App widgets are technically scaled, but are drawn at their expected size -- so the
+            // app widget scale should not affect the scale of the preview.
+            scale /= ((LauncherAppWidgetHostView) mView).getScaleToFit();
+        }
+
+        outPos[0] = Math.round(outPos[0]
+                - (view.getWidth() - scale * mView.getWidth() * mView.getScaleX()) / 2);
+        outPos[1] = Math.round(outPos[1] - (1 - scale) * view.getHeight() / 2 - previewPadding / 2);
         return scale;
     }
 

@@ -19,11 +19,10 @@ package com.android.quickstep;
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
-
+import static com.android.launcher3.Utilities.createHomeIntent;
 import static com.android.launcher3.config.FeatureFlags.SEPARATE_RECENTS_ACTIVITY;
 import static com.android.launcher3.util.PackageManagerHelper.getPackageFilter;
 import static com.android.systemui.shared.system.PackageManagerWrapper.ACTION_PREFERRED_ACTIVITY_CHANGED;
-import static com.android.systemui.shared.system.QuickStepContract.SYSUI_STATE_ASSIST_GESTURE_CONSTRAINED;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -35,6 +34,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.util.SparseIntArray;
 
+import com.android.launcher3.tracing.OverviewComponentObserverProto;
+import com.android.launcher3.tracing.TouchInteractionServiceProto;
 import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.systemui.shared.system.PackageManagerWrapper;
 
@@ -48,34 +49,33 @@ import java.util.function.Consumer;
  * and provide callers the relevant classes.
  */
 public final class OverviewComponentObserver {
-    private final RecentsAnimationDeviceState mDeviceState;
-    private Consumer<Boolean> mOverviewChangeListener = b -> {
-    };
+    private final BroadcastReceiver mUserPreferenceChangeReceiver =
+            new SimpleBroadcastReceiver(this::updateOverviewTargets);
+    private final BroadcastReceiver mOtherHomeAppUpdateReceiver =
+            new SimpleBroadcastReceiver(this::updateOverviewTargets);
 
     private final Context mContext;
-    private BaseActivityInterface mActivityInterface;
+    private final RecentsAnimationDeviceState mDeviceState;
     private final Intent mCurrentHomeIntent;
     private final Intent mMyHomeIntent;
     private final Intent mFallbackIntent;
     private final SparseIntArray mConfigChangesMap = new SparseIntArray();
-    private boolean mIsHomeDisabled;
+
+    private Consumer<Boolean> mOverviewChangeListener = b -> {
+    };
 
     private String mUpdateRegisteredPackage;
-    private final BroadcastReceiver mOtherHomeAppUpdateReceiver =
-            new SimpleBroadcastReceiver(this::updateOverviewTargets);
+    private BaseActivityInterface mActivityInterface;
     private Intent mOverviewIntent;
     private boolean mIsHomeAndOverviewSame;
     private boolean mIsDefaultHome;
-    private final BroadcastReceiver mUserPreferenceChangeReceiver =
-            new SimpleBroadcastReceiver(this::updateOverviewTargets);
+    private boolean mIsHomeDisabled;
 
 
     public OverviewComponentObserver(Context context, RecentsAnimationDeviceState deviceState) {
         mContext = context;
         mDeviceState = deviceState;
-        mCurrentHomeIntent = new Intent(Intent.ACTION_MAIN)
-                .addCategory(Intent.CATEGORY_HOME)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mCurrentHomeIntent = createHomeIntent();
         mMyHomeIntent = new Intent(mCurrentHomeIntent).setPackage(mContext.getPackageName());
         ResolveInfo info = context.getPackageManager().resolveActivity(mMyHomeIntent, 0);
         ComponentName myHomeComponent =
@@ -111,14 +111,15 @@ public final class OverviewComponentObserver {
         if (mDeviceState.isHomeDisabled() != mIsHomeDisabled) {
             updateOverviewTargets();
         }
+
+        // Notify ALL_APPS touch controller when one handed mode state activated or deactivated
+        if (mDeviceState.isOneHandedModeEnabled()) {
+            mActivityInterface.onOneHandedModeStateChanged(mDeviceState.isOneHandedModeActive());
+        }
     }
 
     private void updateOverviewTargets(Intent unused) {
         updateOverviewTargets();
-    }
-
-    public boolean assistantGestureIsConstrained() {
-        return (mDeviceState.getSystemUiStateFlags() & SYSUI_STATE_ASSIST_GESTURE_CONSTRAINED) != 0;
     }
 
     /**
@@ -261,5 +262,19 @@ public final class OverviewComponentObserver {
         pw.println("  homeAndOverviewSame=" + mIsHomeAndOverviewSame);
         pw.println("  overviewIntent=" + mOverviewIntent);
         pw.println("  homeIntent=" + mCurrentHomeIntent);
+    }
+
+    /**
+     * Used for winscope tracing, see launcher_trace.proto
+     *
+     * @param serviceProto The parent of this proto message.
+     * @see com.android.systemui.shared.tracing.ProtoTraceable#writeToProto
+     */
+    public void writeToProto(TouchInteractionServiceProto.Builder serviceProto) {
+        OverviewComponentObserverProto.Builder overviewComponentObserver =
+                OverviewComponentObserverProto.newBuilder();
+        overviewComponentObserver.setOverviewActivityStarted(mActivityInterface.isStarted());
+        overviewComponentObserver.setOverviewActivityResumed(mActivityInterface.isResumed());
+        serviceProto.setOverviewComponentObvserver(overviewComponentObserver);
     }
 }

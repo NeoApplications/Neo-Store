@@ -89,7 +89,7 @@ public class AutoInstallsLayout {
 
         // Try with grid size and hotseat count
         String layoutName = String.format(Locale.ENGLISH, FORMATTED_LAYOUT_RES_WITH_HOSTEAT,
-                grid.numColumns, grid.numRows, grid.numHotseatIcons);
+                grid.numColumns, grid.numRows, grid.numDatabaseHotseatIcons);
         int layoutId = targetRes.getIdentifier(layoutName, "xml", pkg);
 
         // Try with only grid size
@@ -658,11 +658,11 @@ public class AutoInstallsLayout {
         }
     }
 
-    protected static void beginDocument(XmlPullParser parser, String firstElementName)
+    public static void beginDocument(XmlPullParser parser, String firstElementName)
             throws XmlPullParserException, IOException {
         int type;
         while ((type = parser.next()) != XmlPullParser.START_TAG
-                && type != XmlPullParser.END_DOCUMENT);
+                && type != XmlPullParser.END_DOCUMENT) ;
 
         if (type != XmlPullParser.START_TAG) {
             throw new XmlPullParserException("No start tag found");

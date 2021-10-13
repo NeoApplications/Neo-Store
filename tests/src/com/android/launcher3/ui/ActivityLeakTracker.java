@@ -20,15 +20,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.InstrumentationRegistry;
 
 import com.android.launcher3.tapl.TestHelpers;
 
 import java.util.WeakHashMap;
+import java.util.stream.Collectors;
 
 public class ActivityLeakTracker implements Application.ActivityLifecycleCallbacks {
-    private final WeakHashMap<AppCompatActivity, Boolean> mActivities = new WeakHashMap<>();
+    private final WeakHashMap<Activity, Boolean> mActivities = new WeakHashMap<>();
 
     private int mActivitiesCreated;
 
@@ -74,20 +74,17 @@ public class ActivityLeakTracker implements Application.ActivityLifecycleCallbac
     }
 
     public boolean noLeakedActivities() {
-        int liveActivities = 0;
-        int destroyedActivities = 0;
-
-        for (AppCompatActivity activity : mActivities.keySet()) {
+        for (Activity activity : mActivities.keySet()) {
             if (activity.isDestroyed()) {
-                ++destroyedActivities;
-            } else {
-                ++liveActivities;
+                return false;
             }
         }
 
-        if (liveActivities > 2) return false;
+        return mActivities.size() <= 2;
+    }
 
-        // It's OK to have 1 leaked activity if no active activities exist.
-        return liveActivities == 0 ? destroyedActivities <= 1 : destroyedActivities == 0;
+    public String getActivitiesList() {
+        return mActivities.keySet().stream().map(a -> a.getClass().getSimpleName())
+                .collect(Collectors.joining(","));
     }
 }

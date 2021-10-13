@@ -20,8 +20,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.systemui.plugins.annotations.ProvidesInterface;
 
 /**

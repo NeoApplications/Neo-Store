@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.allapps.search;
 
+import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_FOCUSED_ITEM_SELECTED_WITH_IME;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,13 +29,12 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.ExtendedEditText;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.model.AppLaunchTracker;
-import com.android.launcher3.util.ComponentKey;
-import com.android.launcher3.util.PackageManagerHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
+import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.search.SearchAlgorithm;
+import com.android.launcher3.search.SearchCallback;
 
 /**
  * An interface to a search box that AllApps can command.
@@ -43,11 +44,11 @@ public class AllAppsSearchBarController
         OnFocusChangeListener {
 
     protected BaseDraggingActivity mLauncher;
-    protected Callbacks mCb;
+    protected SearchCallback<AdapterItem> mCallback;
     protected ExtendedEditText mInput;
     protected String mQuery;
 
-    protected SearchAlgorithm mSearchAlgorithm;
+    protected SearchAlgorithm<AdapterItem> mSearchAlgorithm;
 
     public void setVisibility(int visibility) {
         mInput.setVisibility(visibility);
@@ -57,9 +58,9 @@ public class AllAppsSearchBarController
      * Sets the references to the apps model and the search result callback.
      */
     public final void initialize(
-            SearchAlgorithm searchAlgorithm, ExtendedEditText input,
-            BaseDraggingActivity launcher, Callbacks cb) {
-        mCb = cb;
+            SearchAlgorithm<AdapterItem> searchAlgorithm, ExtendedEditText input,
+            BaseDraggingActivity launcher, SearchCallback<AdapterItem> callback) {
+        mCallback = callback;
         mLauncher = launcher;
 
         mInput = input;
@@ -71,7 +72,7 @@ public class AllAppsSearchBarController
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         // Do nothing
     }
 
@@ -85,10 +86,10 @@ public class AllAppsSearchBarController
         mQuery = s.toString();
         if (mQuery.isEmpty()) {
             mSearchAlgorithm.cancel(true);
-            mCb.clearSearchResult();
+            mCallback.clearSearchResult();
         } else {
             mSearchAlgorithm.cancel(false);
-            mSearchAlgorithm.doSearch(mQuery, mCb);
+            mSearchAlgorithm.doSearch(mQuery, mCallback);
         }
     }
 
@@ -98,29 +99,19 @@ public class AllAppsSearchBarController
         }
         // If play store continues auto updating an app, we want to show partial result.
         mSearchAlgorithm.cancel(false);
-        mSearchAlgorithm.doSearch(mQuery, mCb);
+        mSearchAlgorithm.doSearch(mQuery, mCallback);
     }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        // Skip if it's not the right action
-        if (actionId != EditorInfo.IME_ACTION_SEARCH) {
-            return false;
-        }
 
-        // Skip if the query is empty
-        String query = v.getText().toString();
-        if (query.isEmpty()) {
-            return false;
+        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
+            mLauncher.getStatsLogManager().logger()
+                    .log(LAUNCHER_ALLAPPS_FOCUSED_ITEM_SELECTED_WITH_IME);
+            // selectFocusedView should return SearchTargetEvent that is passed onto onClick
+            return Launcher.getLauncher(mLauncher).getAppsView().launchHighlightedItem();
         }
-
-        if (mCb.onSubmitSearch()) {
-            return true;
-        }
-
-        return mLauncher.startActivitySafely(v,
-                PackageManagerHelper.getMarketSearchIntent(mLauncher, query), null,
-                AppLaunchTracker.CONTAINER_SEARCH);
+        return false;
     }
 
     @Override
@@ -136,7 +127,7 @@ public class AllAppsSearchBarController
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
-        if (!hasFocus) {
+        if (!hasFocus && !FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
             mInput.hideKeyboard();
         }
     }
@@ -145,7 +136,7 @@ public class AllAppsSearchBarController
      * Resets the search bar state.
      */
     public void reset() {
-        mCb.clearSearchResult();
+        mCallback.clearSearchResult();
         mInput.reset();
         mQuery = null;
     }
@@ -163,30 +154,4 @@ public class AllAppsSearchBarController
     public boolean isSearchFieldFocused() {
         return mInput.isFocused();
     }
-
-    /**
-     * Callback for getting search results.
-     */
-    public interface Callbacks {
-
-        /**
-         * Called when the search is complete.
-         *
-         * @param apps sorted list of matching components or null if in case of failure.
-         */
-        void onSearchResult(String query, ArrayList<ComponentKey> apps, List<String> suggestions);
-
-        /**
-         * Called when the search results should be cleared.
-         */
-        void clearSearchResult();
-
-        /**
-         * Called when the user presses enter/search on their keyboard
-         *
-         * @return whether the event was handled
-         */
-        boolean onSubmitSearch();
-    }
-
 }

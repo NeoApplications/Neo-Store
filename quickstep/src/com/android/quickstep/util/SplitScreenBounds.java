@@ -20,10 +20,7 @@ import static android.view.Surface.ROTATION_180;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Insets;
-import android.graphics.Rect;
 import android.os.Build;
-import android.view.WindowInsets.Type;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 
@@ -32,7 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
 import com.android.launcher3.R;
-import com.android.launcher3.util.DefaultDisplay;
+import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.WindowBounds;
 
 import java.util.ArrayList;
@@ -52,29 +49,6 @@ public class SplitScreenBounds {
     private SplitScreenBounds() {
     }
 
-    /**
-     * Creates window bounds as 50% of device size
-     */
-    private static WindowBounds createDefaultWindowBounds(Context context) {
-        WindowMetrics wm = context.getSystemService(WindowManager.class).getMaximumWindowMetrics();
-        Insets insets = wm.getWindowInsets().getInsets(Type.systemBars());
-
-        WindowBounds bounds = new WindowBounds(wm.getBounds(),
-                new Rect(insets.left, insets.top, insets.right, insets.bottom));
-        int rotation = DefaultDisplay.INSTANCE.get(context).getInfo().rotation;
-        int halfDividerSize = context.getResources()
-                .getDimensionPixelSize(R.dimen.multi_window_task_divider_size) / 2;
-
-        if (rotation == ROTATION_0 || rotation == ROTATION_180) {
-            bounds.bounds.top = bounds.insets.top + bounds.availableSize.y / 2 + halfDividerSize;
-            bounds.insets.top = 0;
-        } else {
-            bounds.bounds.left = bounds.insets.left + bounds.availableSize.x / 2 + halfDividerSize;
-            bounds.insets.left = 0;
-        }
-        return new WindowBounds(bounds.bounds, bounds.insets);
-    }
-
     @UiThread
     public void setSecondaryWindowBounds(@NonNull WindowBounds bounds) {
         if (!bounds.equals(mBounds)) {
@@ -91,6 +65,27 @@ public class SplitScreenBounds {
             mBounds = createDefaultWindowBounds(context);
         }
         return mBounds;
+    }
+
+    /**
+     * Creates window bounds as 50% of device size
+     */
+    private static WindowBounds createDefaultWindowBounds(Context context) {
+        WindowMetrics wm = context.getSystemService(WindowManager.class).getMaximumWindowMetrics();
+        WindowBounds bounds = WindowBounds.fromWindowMetrics(wm);
+
+        int rotation = DisplayController.INSTANCE.get(context).getInfo().rotation;
+        int halfDividerSize = context.getResources()
+                .getDimensionPixelSize(R.dimen.multi_window_task_divider_size) / 2;
+
+        if (rotation == ROTATION_0 || rotation == ROTATION_180) {
+            bounds.bounds.top = bounds.insets.top + bounds.availableSize.y / 2 + halfDividerSize;
+            bounds.insets.top = 0;
+        } else {
+            bounds.bounds.left = bounds.insets.left + bounds.availableSize.x / 2 + halfDividerSize;
+            bounds.insets.left = 0;
+        }
+        return new WindowBounds(bounds.bounds, bounds.insets);
     }
 
     public void addOnChangeListener(OnChangeListener listener) {
