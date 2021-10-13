@@ -6,17 +6,17 @@ on:
     branches: [ A-12 ]
 
 jobs:
-  send-start-notification:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    if: github.event_name == 'push'
-    steps:
-      - name: Send start notification
-        uses: appleboy/telegram-action@v0.1.1
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: New push to “Omega Launcher”. Building debug APK…
+#  send-start-notification:
+  #    runs-on: ubuntu-latest
+  #    continue-on-error: true
+  #    if: github.event_name == 'push'
+  #    steps:
+  #      - name: Send start notification
+  #        uses: appleboy/telegram-action@v0.1.1
+  #        with:
+  #          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+  #          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  #          message: New push to “Omega Launcher”. Building debug APK…
   build:
     runs-on: ubuntu-latest
     steps:
