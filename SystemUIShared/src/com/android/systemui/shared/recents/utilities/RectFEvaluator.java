@@ -38,7 +38,7 @@ public class RectFEvaluator implements TypeEvaluator<RectF> {
      * @param startValue The start Rect
      * @param endValue   The end Rect
      * @return A linear interpolation between the start and end values, given the
-     * <code>fraction</code> parameter.
+     *         <code>fraction</code> parameter.
      */
     @Override
     public RectF evaluate(float fraction, RectF startValue, RectF endValue) {

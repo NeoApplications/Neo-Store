@@ -49,7 +49,7 @@ public class FrameProtoTracer<P, S extends P, T extends P, R>
     private final TraceBuffer<P, S, T> mBuffer;
     private final File mTraceFile;
     private final ProtoTraceParams<P, S, T, R> mParams;
-    private final Choreographer mChoreographer;
+    private Choreographer mChoreographer;
     private final Queue<T> mPool = new LinkedList<>();
     private final ArrayList<ProtoTraceable<R>> mTraceables = new ArrayList<>();
     private final ArrayList<ProtoTraceable<R>> mTmpTraceables = new ArrayList<>();
@@ -78,15 +78,10 @@ public class FrameProtoTracer<P, S extends P, T extends P, R>
 
     public interface ProtoTraceParams<P, S, T, R> {
         File getTraceFile();
-
         S getEncapsulatingTraceProto();
-
         T updateBufferProto(T reuseObj, ArrayList<ProtoTraceable<R>> traceables);
-
         byte[] serializeEncapsulatingProto(S encapsulatingProto, Queue<T> buffer);
-
         byte[] getProtoBytes(P proto);
-
         int getProtoSize(P proto);
     }
 
@@ -99,7 +94,6 @@ public class FrameProtoTracer<P, S extends P, T extends P, R>
             }
         });
         mTraceFile = params.getTraceFile();
-        mChoreographer = Choreographer.getMainThreadInstance();
     }
 
     public void start() {
@@ -145,6 +139,9 @@ public class FrameProtoTracer<P, S extends P, T extends P, R>
         }
 
         // Schedule an update on the next frame
+        if (mChoreographer == null) {
+            mChoreographer = Choreographer.getMainThreadInstance();
+        }
         mChoreographer.postFrameCallback(this);
         mFrameScheduled = true;
     }

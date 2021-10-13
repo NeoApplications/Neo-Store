@@ -30,7 +30,6 @@ public interface PluginManager {
     String[] getWhitelistedPlugins();
 
     <T extends Plugin> T getOneShotPlugin(Class<T> cls);
-
     <T extends Plugin> T getOneShotPlugin(String action, Class<?> cls);
 
     <T extends Plugin> void addPluginListener(PluginListener<T> listener, Class<?> cls);

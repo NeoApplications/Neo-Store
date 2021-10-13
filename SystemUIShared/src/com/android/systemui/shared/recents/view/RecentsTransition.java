@@ -103,7 +103,7 @@ public class RecentsTransition {
 
     /**
      * @return a hardware {@link Bitmap} after being drawn with the {@param consumer}. Result can be
-     * null if we were unable to allocate a hardware bitmap.
+     *         null if we were unable to allocate a hardware bitmap.
      */
     public static Bitmap createHardwareBitmap(int width, int height, Consumer<Canvas> consumer) {
         final Picture picture = new Picture();

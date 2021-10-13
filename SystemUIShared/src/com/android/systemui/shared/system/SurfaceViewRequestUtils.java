@@ -30,9 +30,7 @@ public class SurfaceViewRequestUtils {
     private static final String KEY_SURFACE_CONTROL = "surface_control";
     private static final String KEY_DISPLAY_ID = "display_id";
 
-    /**
-     * Creates a SurfaceView based bundle that stores the input host token and surface control.
-     */
+    /** Creates a SurfaceView based bundle that stores the input host token and surface control. */
     public static Bundle createSurfaceBundle(SurfaceView surfaceView) {
         Bundle bundle = new Bundle();
         bundle.putBinder(KEY_HOST_TOKEN, surfaceView.getHostToken());
@@ -64,6 +62,5 @@ public class SurfaceViewRequestUtils {
         return bundle.getInt(KEY_DISPLAY_ID);
     }
 
-    private SurfaceViewRequestUtils() {
-    }
+    private SurfaceViewRequestUtils() {}
 }

@@ -16,15 +16,17 @@
 
 package com.android.systemui.shared.system;
 
-import static android.app.ActivityTaskManager.SPLIT_SCREEN_CREATE_MODE_BOTTOM_OR_RIGHT;
-import static android.app.ActivityTaskManager.SPLIT_SCREEN_CREATE_MODE_TOP_OR_LEFT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 import static android.app.WindowConfiguration.WINDOWING_MODE_SPLIT_SCREEN_PRIMARY;
 import static android.app.WindowConfiguration.WINDOWING_MODE_SPLIT_SCREEN_SECONDARY;
 
 import android.app.ActivityOptions;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
+
+import com.android.systemui.shared.QuickstepCompat;
+import com.android.systemui.shared.recents.model.Task;
 
 /**
  * Wrapper around internal ActivityOptions creation.
@@ -46,9 +48,6 @@ public abstract class ActivityOptionsCompat {
         options.setLaunchWindowingMode(isPrimary
                 ? WINDOWING_MODE_SPLIT_SCREEN_PRIMARY
                 : WINDOWING_MODE_SPLIT_SCREEN_SECONDARY);
-        options.setSplitScreenCreateMode(dockTopLeft
-                ? SPLIT_SCREEN_CREATE_MODE_TOP_OR_LEFT
-                : SPLIT_SCREEN_CREATE_MODE_BOTTOM_OR_RIGHT);
         return options;
     }
 
@@ -63,12 +62,41 @@ public abstract class ActivityOptionsCompat {
 
     public static ActivityOptions makeRemoteAnimation(
             RemoteAnimationAdapterCompat remoteAnimationAdapter) {
-        return ActivityOptions.makeRemoteAnimation(remoteAnimationAdapter.getWrapped());
+        if (QuickstepCompat.ATLEAST_S) {
+            return ActivityOptions.makeRemoteAnimation(remoteAnimationAdapter.getWrapped(),
+                    remoteAnimationAdapter.getRemoteTransition().getTransition());
+        } else {
+            return ActivityOptions.makeRemoteAnimation(remoteAnimationAdapter.getWrapped());
+        }
     }
 
+    /**
+     * Constructs an ActivityOptions object that will delegate its transition handling to a
+     * `remoteTransition`.
+     */
+    public static ActivityOptions makeRemoteTransition(RemoteTransitionCompat remoteTransition) {
+        return ActivityOptions.makeRemoteTransition(remoteTransition.getTransition());
+    }
+
+    /**
+     * Returns ActivityOptions for overriding task transition animation.
+     */
     public static ActivityOptions makeCustomAnimation(Context context, int enterResId,
                                                       int exitResId, final Runnable callback, final Handler callbackHandler) {
-        return ActivityOptions.makeCustomAnimation(context, enterResId, exitResId, callbackHandler,
+        if (!QuickstepCompat.ATLEAST_S) {
+            return ActivityOptions.makeCustomAnimation(context, enterResId, exitResId,
+                    callbackHandler,
+                    new ActivityOptions.OnAnimationStartedListener() {
+                        @Override
+                        public void onAnimationStarted() {
+                            if (callback != null) {
+                                callbackHandler.post(callback);
+                            }
+                        }
+                    }, null /* finishedListener */);
+        }
+        return ActivityOptions.makeCustomTaskAnimation(context, enterResId, exitResId,
+                callbackHandler,
                 new ActivityOptions.OnAnimationStartedListener() {
                     @Override
                     public void onAnimationStarted() {
@@ -85,5 +113,26 @@ public abstract class ActivityOptionsCompat {
     public static ActivityOptions setFreezeRecentTasksList(ActivityOptions opts) {
         opts.setFreezeRecentTasksReordering();
         return opts;
+    }
+
+    /**
+     * Sets the launch event time from launcher.
+     */
+    public static ActivityOptions setLauncherSourceInfo(ActivityOptions opts, long uptimeMillis) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            opts.setSourceInfo(ActivityOptions.SourceInfo.TYPE_LAUNCHER, uptimeMillis);
+        }
+        return opts;
+    }
+
+    /**
+     * Sets Task specific information to the activity options
+     */
+    public static void addTaskInfo(ActivityOptions opts, Task.TaskKey taskKey) {
+        if (taskKey.windowingMode == WINDOWING_MODE_SPLIT_SCREEN_PRIMARY) {
+            // We show non-visible docked tasks in Recents, but we always want to launch
+            // them in the fullscreen stack.
+            opts.setLaunchWindowingMode(WINDOWING_MODE_SPLIT_SCREEN_SECONDARY);
+        }
     }
 }

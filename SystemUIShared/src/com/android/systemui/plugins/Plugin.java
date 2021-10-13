@@ -23,7 +23,7 @@ import com.android.systemui.plugins.annotations.Requires;
  * code is dynamically loaded into the SysUI process which can allow
  * for multiple prototypes to be created and run on a single android
  * build.
- * <p>
+ *
  * PluginLifecycle:
  * <pre class="prettyprint">
  *
@@ -47,15 +47,15 @@ import com.android.systemui.plugins.annotations.Requires;
  * to load the new code/resources.
  *
  * </pre>
- * <p>
+ *
  * Creating plugin hooks:
- * <p>
+ *
  * To create a plugin hook, first create an interface in
  * frameworks/base/packages/SystemUI/plugin that extends Plugin.
  * Include in it any hooks you want to be able to call into from
  * sysui and create callback interfaces for anything you need to
  * pass through into the plugin.
- * <p>
+ *
  * Then to attach to any plugins simply add a plugin listener and
  * onPluginConnected will get called whenever new plugins are installed,
  * updated, or enabled.  Like this example from SystemUIApplication:
@@ -80,13 +80,13 @@ import com.android.systemui.plugins.annotations.Requires;
  * aren't accidentally loaded.  Since the plugin library is provided by
  * SystemUI, default implementations can be added for new methods to avoid
  * version changes when possible.
- * <p>
+ *
  * Implementing a Plugin:
- * <p>
+ *
  * See the ExamplePlugin for an example Android.mk on how to compile
  * a plugin.  Note that SystemUILib is not static for plugins, its classes
  * are provided by SystemUI.
- * <p>
+ *
  * Plugin security is based around a signature permission, so plugins must
  * hold the following permission in their manifest.
  *
@@ -95,7 +95,7 @@ import com.android.systemui.plugins.annotations.Requires;
  * <uses-permission android:name="com.android.systemui.permission.PLUGIN" />
  * }
  * </pre>
- * <p>
+ *
  * A plugin is found through a querying for services, so to let SysUI know
  * about it, create a service with a name that points at your implementation
  * of the plugin interface with the action accompanying it:

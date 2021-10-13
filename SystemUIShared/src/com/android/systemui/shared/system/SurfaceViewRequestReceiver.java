@@ -54,7 +54,6 @@ public class SurfaceViewRequestReceiver {
 
     /**
      * Called whenever a surface view request is received.
-     *
      * @param view     the view rendering content, on the receiver end of the surface request.
      * @param viewSize when {@param viewSize} is not specified, we will use the surface control size
      *                 to attach the view to the window.

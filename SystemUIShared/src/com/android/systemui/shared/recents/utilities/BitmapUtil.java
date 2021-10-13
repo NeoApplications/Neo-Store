@@ -44,7 +44,7 @@ public final class BitmapUtil {
      *
      * @param bitmap to convert to bundle
      * @return a Bundle representing the bitmap, should only be parsed by
-     * {@link #bundleToHardwareBitmap(Bundle)}
+     *         {@link #bundleToHardwareBitmap(Bundle)}
      */
     public static Bundle hardwareBitmapToBundle(Bitmap bitmap) {
         if (bitmap.getConfig() != Bitmap.Config.HARDWARE) {
@@ -82,6 +82,7 @@ public final class BitmapUtil {
         HardwareBuffer buffer = bundle.getParcelable(KEY_BUFFER);
         ParcelableColorSpace colorSpace = bundle.getParcelable(KEY_COLOR_SPACE);
 
-        return Bitmap.wrapHardwareBuffer(Objects.requireNonNull(buffer), colorSpace);
+        return Bitmap.wrapHardwareBuffer(Objects.requireNonNull(buffer),
+                colorSpace.getColorSpace());
     }
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 4.1.0" client="cli" variant="all" version="4.1.0">
+
+    <issue id="NewApi"
+        message="Call requires API level 24 (current min is 21): `android.os.LocaleList#getEmptyLocaleList`"
+        errorLine1="    protected LocaleList mLocaleList = LocaleList.getEmptyLocaleList();"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/cache/BaseIconCache.java"
+            line="93" column="51" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 24 (current min is 21): `android.content.res.Configuration#getLocales`"
+        errorLine1="        mLocaleList = mContext.getResources().getConfiguration().getLocales();"
+        errorLine2="                                                                 ~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/cache/BaseIconCache.java"
+            line="241" column="66" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 24 (current min is 21): `android.os.LocaleList#toLanguageTags`"
+        errorLine1="        mSystemState = mLocaleList.toLanguageTags() + &quot;,&quot; + Build.VERSION.SDK_INT;"
+        errorLine2="                                   ~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/cache/BaseIconCache.java"
+            line="242" column="36" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 24 (current min is 21): `android.os.UserHandle#getUserHandleForUid`"
+        errorLine1="                    UserHandle.getUserHandleForUid(Integer.parseInt(str.substring(sep + 1))));"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/util/ComponentKey.java"
+            line="79" column="32" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Class requires API level 23 (current min is 21): `android.graphics.drawable.DrawableWrapper`"
+        errorLine1="public class FixedScaleDrawable extends DrawableWrapper {"
+        errorLine2="                                        ~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/FixedScaleDrawable.java"
+            line="15" column="41" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 23 (current min is 21): `new android.graphics.drawable.DrawableWrapper`"
+        errorLine1="        super(new ColorDrawable());" errorLine2="        ~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/FixedScaleDrawable.java"
+            line="22" column="9" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 26 (current min is 21): `new android.graphics.drawable.AdaptiveIconDrawable`"
+        errorLine1="        AdaptiveIconDrawable drawable = new AdaptiveIconDrawable("
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/GraphicsUtils.java"
+            line="97" column="41" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 26 (current min is 21): `android.graphics.drawable.AdaptiveIconDrawable#getIconMask`"
+        errorLine1="        return new Path(drawable.getIconMask());"
+        errorLine2="                                 ~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/GraphicsUtils.java"
+            line="100" column="34" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Method reference requires API level 22 (current min is 21): `ActivityInfo::loadUnbadgedIcon`"
+        errorLine1="            ActivityInfo::loadUnbadgedIcon;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/IconProvider.java"
+            line="64" column="13" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 24 (current min is 21): `android.os.UserHandle#getUserHandleForUid`"
+        errorLine1="                UserHandle.getUserHandleForUid(info.applicationInfo.uid),"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/IconProvider.java"
+            line="126" column="28" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 23 (current min is 21): `android.content.Context#getSystemService`"
+        errorLine1="                        : context.getSystemService(UserManager.class).getUserProfiles()) {"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/IconProvider.java"
+            line="252" column="35" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Class requires API level 23 (current min is 21): `android.graphics.drawable.DrawableWrapper`"
+        errorLine1="public class RoundDrawableWrapper extends DrawableWrapper {"
+        errorLine2="                                          ~~~~~~~~~~~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/RoundDrawableWrapper.java"
+            line="29" column="43" />
+    </issue>
+
+    <issue id="NewApi"
+        message="Call requires API level 23 (current min is 21): `new android.graphics.drawable.DrawableWrapper`"
+        errorLine1="        super(dr);" errorLine2="        ~~~~~">
+        <location
+            file="frameworks/libs/systemui/iconloaderlib/src/com/android/launcher3/icons/RoundDrawableWrapper.java"
+            line="36" column="9" />
+    </issue>
+
+</issues>

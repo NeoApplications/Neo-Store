@@ -30,9 +30,7 @@ public final class UniversalSmartspaceUtils {
 
     private static final String SYSUI_PACKAGE = "com.android.systemui";
 
-    /**
-     * Creates an intent to request that sysui draws the Smartspace to the SurfaceView.
-     */
+    /** Creates an intent to request that sysui draws the Smartspace to the SurfaceView. */
     public static Intent createRequestSmartspaceIntent(SurfaceView surfaceView) {
         Intent intent = new Intent(ACTION_REQUEST_SMARTSPACE_VIEW);
 
@@ -44,6 +42,5 @@ public final class UniversalSmartspaceUtils {
                         | Intent.FLAG_RECEIVER_FOREGROUND);
     }
 
-    private UniversalSmartspaceUtils() {
-    }
+    private UniversalSmartspaceUtils() {}
 }
