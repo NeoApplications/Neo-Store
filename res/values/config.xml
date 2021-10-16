@@ -16,7 +16,7 @@
     <string name="delete_package_intent" translatable="false">#Intent;action=android.intent.action.DELETE;launchFlags=0x10800000;end</string>
 
     <!-- String representing the fragment class for settings activity.-->
-    <string name="settings_fragment_name" translatable="false">com.android.launcher3.settings.SettingsActivity$LauncherSettingsFragment</string>
+    <string name="settings_fragment_name" translatable="false">com.saggitt.omega.settings.SettingsActivity$LauncherSettingsFragment</string>
 
     <!-- DragController -->
     <item type="id" name="drag_event_parity" />

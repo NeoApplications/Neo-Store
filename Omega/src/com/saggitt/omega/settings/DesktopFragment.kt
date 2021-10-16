@@ -15,20 +15,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.saggitt.omega
+package com.saggitt.omega.settings
 
-import com.android.launcher3.Utilities
-import com.android.launcher3.uioverrides.QuickstepLauncher
+import android.os.Bundle
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
 
-class OmegaLauncher : QuickstepLauncher() {
-    private var paused = false
-    private var sRestart = false
+class DesktopFragment : PreferenceFragmentCompat() {
 
-    fun scheduleRestart() {
-        if (paused) {
-            sRestart = true
-        } else {
-            Utilities.restartLauncher(this)
+    private var mPreferenceScreen: PreferenceScreen? = null
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        mPreferenceScreen = preferenceManager.createPreferenceScreen(context)
+        preferenceScreen = mPreferenceScreen
+
+        if (activity != null) {
+            requireActivity().title = "Developer Options"
         }
     }
 }

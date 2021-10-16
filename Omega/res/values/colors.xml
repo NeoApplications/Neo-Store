@@ -16,45 +16,9 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <color name="white">#FFFFFF</color>
+    <color name="system_neutral1_900">#ff1b1b1b</color>
     <color name="ic_allapps_background">#FAFAFA</color>
     <color name="ic_launcher_background">#0F111A</color>
     <color name="ic_launcher_foreground">#0988d1</color>
-
-    <color name="colorPrimary">#fff5f5f5</color>
-    <color name="colorPrimaryDark">#03419F</color>
-    <color name="colorAccent">#E80142</color>
-    <color name="colorAccentDark">#ff8AB4f8</color>
-    <color name="textColorPrimary">#ffffffff</color>
-    <color name="textColorSecondary">#ffffffff</color>
-    <color name="textColorPrimaryInverse">#de000000</color>
-    <color name="textColorSecondaryInverse">#8a000000</color>
-
-    <color name="lollipopStatusBar">#61000000</color>
-    <color name="all_apps_navbar_color">#28000000</color>
-
-    <color name="notification_background">#EB0854</color>
-    <color name="transparentish">#B0101010</color>
-
-    <color name="qsb_icon_shadow_color">#20000000</color>
-    <color name="qsb_dark_icon_tint">#ff757575</color>
-
-    <color name="qsb_drawer_text_color_normal">#ff212121</color>
-
-    <color name="settings_background_dark">#ff303030</color>
-    <color name="settings_background_dark_2dp">#ff252628</color>
-    <color name="settings_background_dark_8dp">#ff303133</color>
-    <color name="settings_background_black">#ff000000</color>
-    <color name="settings_background_black_2dp">#ff121212</color>
-    <color name="settings_background_black_8dp">#ff1e1e1e</color>
-
-    <color name="search_ripple">#0D888888</color>
-
-    <!-- Pixel 1 -->
-    <color name="qsb_connector">#fff2f2f2</color>
-    <color name="qsb_background">#ffffffff</color>
-    <color name="qsb_connector_gradient_end_color">#66ffffff</color>
-
-    <color name="dismiss_target_hover_tint">#ffea4335</color>
 </resources>
 

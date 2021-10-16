@@ -67,6 +67,7 @@ public class LauncherAppState {
     private final DatabaseWidgetPreviewLoader mWidgetCache;
     private final InvariantDeviceProfile mInvariantDeviceProfile;
     private final RunnableList mOnTerminateCallback = new RunnableList();
+    private Launcher mLauncher;
 
     public static LauncherAppState getInstance(final Context context) {
         return INSTANCE.get(context);
@@ -167,6 +168,14 @@ public class LauncherAppState {
         mContext.getSystemService(LauncherApps.class).unregisterCallback(mModel);
         CustomWidgetManager.INSTANCE.get(mContext).setWidgetRefreshCallback(null);
         mOnTerminateCallback.executeAllAndDestroy();
+    }
+
+    public void setLauncher(Launcher launcher) {
+        mLauncher = launcher;
+    }
+
+    public Launcher getLauncher() {
+        return mLauncher;
     }
 
     public IconProvider getIconProvider() {

@@ -17,6 +17,8 @@
   -->
 
 <resources>
+    <attr name="colorAccentPrimary" format="color" />
+    <attr name="textColorOnAccent" format="color" />
     <declare-styleable name="SubPreference">
         <attr name="content" format="reference" />
         <attr name="longClickContent" format="reference" />

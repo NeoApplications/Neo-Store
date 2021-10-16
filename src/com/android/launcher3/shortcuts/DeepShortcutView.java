@@ -38,7 +38,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.popup.PopupContainerWithArrow;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.BubbleTextHolder;
-import com.saggitt.omega.utils.OmegaUtilsKt;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 /**
  * A {@link android.widget.FrameLayout} that contains an icon and a {@link BubbleTextView} for text.
