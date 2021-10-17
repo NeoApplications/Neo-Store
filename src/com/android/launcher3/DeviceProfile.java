@@ -378,6 +378,7 @@ public class DeviceProfile {
         } else if (!isVerticalBarLayout() && isPhone && isTallDevice) {
             // We increase the hotseat size when there is extra space.
 
+            /*
             if (Float.compare(aspectRatio, TALLER_DEVICE_ASPECT_RATIO_THRESHOLD) >= 0
                     && extraSpace >= Utilities.dpToPx(TALL_DEVICE_EXTRA_SPACE_THRESHOLD_DP)) {
                 // For taller devices, we will take a piece of the extra space from each row,
@@ -401,6 +402,7 @@ public class DeviceProfile {
                 hotseatBarSizeExtraSpacePx = getCellSize().y - iconSizePx
                         - iconDrawablePaddingPx * 2 - workspacePageIndicatorHeight;
             }
+            */
 
             updateHotseatIconSize(iconSizePx);
 
