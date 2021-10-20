@@ -55,8 +55,8 @@ open class SettingsActivity : SettingsBaseActivity(),
     private var isSubSettings = false
     private var forceSubSettings = false
     private var hasPreview = false
-    override fun onCreate(_savedInstanceState: Bundle?) {
-        var savedInstanceState: Bundle? = _savedInstanceState
+    override fun onCreate(savedInstanceState: Bundle?) {
+        var savedInstanceState: Bundle? = savedInstanceState
         savedInstanceState = getRelaunchInstanceState(savedInstanceState)
         val fragmentName = intent.getStringExtra(EXTRA_FRAGMENT)
         val content = intent.getIntExtra(SubSettingsFragment.CONTENT_RES_ID, 0)
@@ -109,13 +109,6 @@ open class SettingsActivity : SettingsBaseActivity(),
         return Utilities.getOmegaPrefs(applicationContext).settingsSearch && !isSubSettings
     }
 
-    /*override val themeSet: ThemeOverride.ThemeSet
-        get() = if (hasPreview) {
-            ThemeOverride.SettingsTransparent()
-        } else {
-            super.themeSet
-        }
-*/
     override fun onClick(v: View) {
         if (v.id == R.id.search_action_bar) {
             startActivity(Intent(this, SettingsSearchActivity::class.java))
@@ -441,7 +434,7 @@ open class SettingsActivity : SettingsBaseActivity(),
         override fun onResume() {
             super.onResume()
             requireActivity().setTitle(R.string.settings_button_text)
-            activity?.titleColor = R.color.colorAccent
+            activity?.titleColor = Utilities.getOmegaPrefs(activity).accentColor
             val dev = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
             if (dev != mShowDevOptions) {
                 activity?.recreate()
@@ -493,7 +486,6 @@ open class SettingsActivity : SettingsBaseActivity(),
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             preferenceManager.sharedPreferencesName = LauncherFiles.SHARED_PREFERENCES_KEY
-            val resolver: ContentResolver = requireContext().contentResolver
             if (content == R.xml.omega_preferences_desktop) {
                 if (!Utilities.ATLEAST_OREO) {
                     preferenceScreen.removePreference(
@@ -539,31 +531,7 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
 
         override fun onDisplayPreferenceDialog(preference: Preference) {
-            /*val f: DialogFragment
-            fragmentManager?.let {
-                f = if (preference is GridSizePreference) {
-                    GridSizeDialogFragmentCompat.newInstance(preference.key)
-                } else if (preference is SingleDimensionGridSizePreference) {
-                    SingleDimensionGridSizeDialogFragmentCompat.newInstance(preference.key)
-                } else if (preference is GesturePreference) {
-                    SelectGestureHandlerFragment.newInstance(preference)
-                } else if (preference is ListPreference) {
-                    ThemedListPreferenceDialogFragment.newInstance(preference.getKey())
-                } else if (preference is SmartspaceEventProvidersPreference) {
-                    SmartspaceEventProvidersFragment.newInstance(preference.key)
-                } else if (preference is CustomDialogPreference) {
-                    PreferenceScreenDialogFragment.newInstance(preference)
-                } else if (preference is SearchProviderPreference) {
-                    SelectSearchProviderFragment.newInstance(preference)
-                } else if (preference is FeedProviderPreference) {
-                    FeedProviderDialogFragment.newInstance()
-                } else {
-                    super.onDisplayPreferenceDialog(preference)
-                    return
-                }
-                f.setTargetFragment(this, 0)
-                f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
-            }*/
+
         }
 
         override val recyclerViewLayoutRes: Int
@@ -603,30 +571,14 @@ open class SettingsActivity : SettingsBaseActivity(),
     }
 
     companion object {
-        const val NOTIFICATION_BADGING = "notification_badging"
-        private const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
-
-        /**
-         * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
-         */
-        private const val NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners"
-        const val SHOW_PREDICTIONS_PREF = "pref_show_predictions"
-        const val DISABLE_PROTECTED_APPS = "pref_protected_apps"
         const val ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one"
-        const val FEED_THEME_PREF = "pref_feed_theme"
-        const val SMARTSPACE_PREF = "pref_smartspace"
-        const val ALLOW_OVERLAP_PREF = "pref_allowOverlap"
         const val EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key"
         const val EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args"
-        const val GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options"
         private const val DELAY_HIGHLIGHT_DURATION_MILLIS = 600
         const val EXTRA_TITLE = "title"
         const val EXTRA_FRAGMENT = "fragment"
         const val EXTRA_FRAGMENT_ARGS = "fragmentArgs"
         var defaultHome: String? = ""
-        fun startFragment(context: Context, fragment: String?, title: Int) {
-            startFragment(context, fragment, null, context.getString(title))
-        }
 
         @JvmOverloads
         fun startFragment(
