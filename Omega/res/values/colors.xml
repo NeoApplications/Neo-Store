@@ -16,6 +16,9 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+    <color name="colorPrimary">#fff5f5f5</color>
+    <color name="colorAccent">#E80142</color>
+
     <color name="system_neutral1_900">#ff1b1b1b</color>
     <color name="ic_allapps_background">#FAFAFA</color>
     <color name="ic_launcher_background">#0F111A</color>

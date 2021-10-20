@@ -17,6 +17,8 @@
  */
 package com.saggitt.omega
 
+import android.content.Context
+import android.view.LayoutInflater
 import com.android.launcher3.Utilities
 import com.android.launcher3.uioverrides.QuickstepLauncher
 
@@ -30,5 +32,14 @@ class OmegaLauncher : QuickstepLauncher() {
         } else {
             Utilities.restartLauncher(this)
         }
+    }
+
+    fun shouldRecreate() = !sRestart
+
+    private val customLayoutInflater by lazy {
+        OmegaLayoutInflater(
+            super.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater,
+            this
+        )
     }
 }

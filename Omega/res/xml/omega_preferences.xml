@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Saul Henriquez
   ~
@@ -16,14 +17,19 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.preference.PreferenceCategory android:title="@string/pref_category__interfaces">
-        <androidx.preference.Preference
-            android:icon="@drawable/ic_desktop"
-            android:title="@string/title__general_desktop"
-            android:summary="@string/summary__general_desktop"
-            android:fragment="com.saggitt.omega.settings.DesktopFragment"/>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="Settings">
+    <PreferenceCategory
+        android:title="@string/pref_category__interfaces">
 
-    </androidx.preference.PreferenceCategory>
- </androidx.preference.PreferenceScreen>
+        <com.saggitt.omega.preferences.SubPreference
+            android:icon="@drawable/ic_desktop"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_desktop"
+            android:title="@string/title__general_desktop"
+            app:content="@xml/omega_preferences_desktop" />
+
+    </PreferenceCategory>
+ </PreferenceScreen>

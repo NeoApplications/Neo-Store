@@ -78,7 +78,7 @@
         <activity
             android:name="com.saggitt.omega.settings.SettingsActivity"
             android:label="@string/settings_button_text"
-            android:theme="@style/HomeSettingsTheme"
+            android:theme="@style/SettingsTheme"
             android:exported="true"
             android:autoRemoveFromRecents="true">
             <intent-filter android:priority="-1">
@@ -86,7 +86,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.saggitt.omega.settings.search.SettingsSearchActivity"
+            android:autoRemoveFromRecents="true"
+            android:label="@string/derived_app_name"
+            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
+            android:theme="@style/SettingsTheme" />
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"
             android:label="@string/derived_app_name"

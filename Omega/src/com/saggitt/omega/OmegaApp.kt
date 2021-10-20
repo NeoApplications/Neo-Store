@@ -17,11 +17,13 @@
  */
 package com.saggitt.omega
 
+import android.app.Activity
 import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import com.android.launcher3.Utilities
@@ -32,6 +34,8 @@ class OmegaApp : Application() {
     var mismatchedQuickstepTarget = false
     private val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null
+
+    val activityHandler = ActivityHandler()
 
     fun performGlobalAction(action: Int): Boolean {
         return if (accessibilityService != null) {
@@ -77,6 +81,46 @@ class OmegaApp : Application() {
         }
         return true
     }
+
+    class ActivityHandler : Application.ActivityLifecycleCallbacks {
+
+        val activities = HashSet<Activity>()
+        var foregroundActivity: Activity? = null
+
+        fun finishAll(recreateLauncher: Boolean = true) {
+            HashSet(activities).forEach { if (recreateLauncher && it is OmegaLauncher) it.recreate() else it.finish() }
+        }
+
+        override fun onActivityPaused(activity: Activity) {
+        }
+
+        override fun onActivityResumed(activity: Activity) {
+            foregroundActivity = activity
+        }
+
+        override fun onActivityStarted(activity: Activity) {
+
+        }
+
+        override fun onActivityDestroyed(activity: Activity) {
+            if (activity == foregroundActivity)
+                foregroundActivity = null
+            activities.remove(activity)
+        }
+
+        override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
+
+        }
+
+        override fun onActivityStopped(activity: Activity) {
+
+        }
+
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+            activities.add(activity)
+        }
+    }
+
     companion object {
         @JvmStatic
         var instance: OmegaApp? = null
@@ -87,4 +131,5 @@ class OmegaApp : Application() {
             get() = instance?.recentsEnabled == true
     }
 }
+
 val Context.omegaApp get() = applicationContext as OmegaApp

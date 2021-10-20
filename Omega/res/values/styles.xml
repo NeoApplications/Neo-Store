@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  This file is part of Omega Launcher
+  ~  Copyright (c) 2021   Saul Henriquez
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="SettingsTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorEdgeEffect">?colorAccent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="settingsBackground">@android:color/white</item>
+        <item name="settingsSearchBackground">?settingsBackground</item>
+        <item name="useLightSystemBars">false</item>
+    </style>
+    <style name="SettingsTheme.Light" parent="SettingsTheme">
+
+    </style>
+    <style name="SettingsTheme.Dark" parent="SettingsTheme">
+
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Settings.SearchBar" parent="@android:style/TextAppearance.Material.Widget.Toolbar.Subtitle">
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">@dimen/search_bar_text_size</item>
+    </style>
+
+    <style name="TextAppearance.TileTitle" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="customFontType">settingsTileTitle</item>
+    </style>
+
+    <style name="TextAppearance.Small" parent="@style/TextAppearance.AppCompat.Small" />
+
+    <style name="SettingsTheme.PreferenceTheme.Preference.Title" parent="@style/TextAppearance.AppCompat.Subhead" />
+
+</resources>

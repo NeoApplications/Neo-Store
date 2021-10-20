@@ -15,22 +15,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.saggitt.omega.settings
 
-import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceScreen
+package com.saggitt.omega.preferences
 
-class DesktopFragment : PreferenceFragmentCompat() {
+import com.saggitt.omega.OmegaLauncher
+import com.saggitt.omega.blur.BlurWallpaperProvider
 
-    private var mPreferenceScreen: PreferenceScreen? = null
+class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
+    fun recreate() {
+        if (launcher.shouldRecreate()) launcher.recreate()
+    }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        mPreferenceScreen = preferenceManager.createPreferenceScreen(context)
-        preferenceScreen = mPreferenceScreen
+    fun restart() {
+        launcher.scheduleRestart()
+    }
 
-        if (activity != null) {
-            requireActivity().title = "Developer Options"
-        }
+    fun updateBlur() {
+        BlurWallpaperProvider.getInstance(launcher).updateAsync()
     }
 }

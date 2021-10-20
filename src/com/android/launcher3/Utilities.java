@@ -39,6 +39,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
@@ -47,6 +48,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -55,6 +57,7 @@ import android.os.Build;
 import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.os.TransactionTooLargeException;
 import android.provider.Settings;
 import android.text.Spannable;
@@ -70,6 +73,8 @@ import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.os.BuildCompat;
 
@@ -89,11 +94,17 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.HiddenApiCompat;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,6 +130,7 @@ public final class Utilities {
     public static final Person[] EMPTY_PERSON_ARRAY = new Person[0];
 
     public static final boolean ATLEAST_OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    public static final boolean ATLEAST_OREO_MR1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1;
     public static final boolean ATLEAST_P = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
 
     public static final boolean ATLEAST_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
@@ -141,6 +153,7 @@ public final class Utilities {
             Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
                     Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
 
+    public static boolean HIDDEN_APIS_ALLOWED = !ATLEAST_P || HiddenApiCompat.checkIfAllowed();
     /**
      * Returns true if theme is dark.
      */
@@ -848,6 +861,20 @@ public final class Utilities {
         view.setLayoutParams(lp);
     }
 
+    public static int pxFromDp(float size, DisplayMetrics metrics) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                size, metrics));
+    }
+
+    public static boolean isPowerSaverPreventingAnimation(Context context) {
+        if (ATLEAST_P) {
+            // Battery saver mode no longer prevents animations.
+            return false;
+        }
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        return powerManager.isPowerSaveMode();
+    }
+
     public static void restartLauncher(Context context) {
         PackageManager pm = context.getPackageManager();
 
@@ -886,6 +913,64 @@ public final class Utilities {
         } else {
             return flags & ~flag;
         }
+    }
+
+    public static boolean hasPermission(Context context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean hasStoragePermission(Context context) {
+        return hasPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    public static OmegaPreferences getOmegaPrefs(Context context) {
+        return OmegaPreferences.Companion.getInstance(context);
+    }
+
+    // These values are same as that in {@link AsyncTask}.
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
+    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+    private static final int KEEP_ALIVE = 1;
+    /**
+     * An {@link Executor} to be used with async task with no limit on the queue size.
+     */
+    public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
+            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
+            TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+
+    @Nullable
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        return Utilities.drawableToBitmap(drawable, true);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable, boolean forceCreate) {
+        return drawableToBitmap(drawable, forceCreate, 0);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable, boolean forceCreate, int fallbackSize) {
+        if (!forceCreate && drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        if (width <= 0 || height <= 0) {
+            if (fallbackSize > 0) {
+                width = height = fallbackSize;
+            } else {
+                return null;
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private static class FixedSizeEmptyDrawable extends ColorDrawable {

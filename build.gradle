@@ -46,7 +46,7 @@ android {
     buildToolsVersion BUILD_TOOLS_VERSION
 
     def name = "0.9.0"
-    def code = 300
+    def code = 301
 
     defaultConfig {
         minSdkVersion 26
@@ -200,23 +200,23 @@ dependencies {
     implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'sysui_statslog.jar')
 
     //UI
+    implementation "androidx.activity:activity-ktx:1.3.1"
+    implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.constraintlayout:constraintlayout:2.1.1"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
     implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "com.google.android.material:material:1.4.0"
 
     // Libs
-    implementation "androidx.core:core-ktx:1.6.0"
-    implementation "androidx.appcompat:appcompat:1.3.1"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation "androidx.preference:preference-ktx:1.1.1"
-    implementation "androidx.activity:activity-ktx:1.3.1"
-    implementation "androidx.fragment:fragment-ktx:1.3.6"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
-    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
-    implementation "com.google.android.material:material:1.4.0"
     implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
+    implementation "com.github.LawnchairLauncher:hoko-lite:0e21db9ae5"
+    implementation "com.luckycatlabs:SunriseSunsetCalculator:1.2"
+    implementation "com.mikepenz:fastadapter:5.4.1"
+    implementation "com.mikepenz:fastadapter-extensions-diff:5.4.1"
+    implementation "com.mikepenz:fastadapter-extensions-binding:5.4.1"
 
     //Compose
     implementation "androidx.compose.ui:ui:1.0.3"
