@@ -25,7 +25,7 @@
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="settingsBackground">@android:color/white</item>
         <item name="settingsSearchBackground">?settingsBackground</item>
-        <item name="useLightSystemBars">false</item>
+        <item name="useLightSystemBars">true</item>
     </style>
     <style name="SettingsTheme.Light" parent="SettingsTheme">
 
