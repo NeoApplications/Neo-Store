@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutionException
 
 class OmegaPreferences(context: Context) : BasePreferences(context) {
     //HOME SCREEN PREFERENCES
-    var autoAddInstalled by BooleanPref("pref_add_icon_to_home", true, doNothing)
 
     //THEME
     var launcherTheme by StringIntPref(
