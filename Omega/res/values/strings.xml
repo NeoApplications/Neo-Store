@@ -26,7 +26,7 @@
     <string name="title__general_dock">Dock</string>
     <string name="title__general_drawer">Drawer</string>
     <string name="title__general_theme">Theme</string>
-    <string name="title__general_search">Search</string>
+    <string name="title__general_search">Search and Folders</string>
     <string name="title__general_smartspace">Home Widget</string>
     <string name="title__general_advanced">Advanced Settings</string>
     <string name="title__general_notifications">Gestures and Notifications</string>

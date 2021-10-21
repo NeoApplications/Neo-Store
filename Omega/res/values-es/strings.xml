@@ -5,7 +5,7 @@
     <string name="title__general_dock">Dock</string>
     <string name="title__general_drawer">Aplicaciones</string>
     <string name="title__general_theme">Temas</string>
-    <string name="title__general_search">Búsqueda</string>
+    <string name="title__general_search">Búsqueda y Carpetas</string>
     <string name="title__general_advanced">Avanzados</string>
     <string name="pref_category__others">Otras</string>
     <string name="title__dock_hide">Ocultar Dock</string>
