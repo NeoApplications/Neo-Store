@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
+  ~  Copyright (c) 2021   Omega Launcher Team
   ~
   ~  This program is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as
@@ -16,6 +16,15 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen>
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@color/colorAccent"
+        android:key="pref_key__accent_color"
+        android:title="@string/title__theme_accent_color"
+        app:cpv_dialogTitle="@string/title__theme_accent_color"
+        app:cpv_dialogType="custom"
+        app:cpv_previewSize="large"
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

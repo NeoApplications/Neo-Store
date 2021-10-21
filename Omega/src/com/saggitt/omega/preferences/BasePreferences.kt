@@ -22,7 +22,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.launcher3.LauncherFiles
-import com.saggitt.omega.util.Config
 import java.io.File
 import kotlin.reflect.KProperty
 
@@ -59,6 +58,10 @@ open class BasePreferences(context: Context) : SharedPreferences.OnSharedPrefere
         val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
         if (version != CURRENT_VERSION) {
             with(prefs.edit()) {
+
+                // Default accent color
+                putInt("pref_key__accent_color", 0XE80142)
+
                 putInt(VERSION_KEY, CURRENT_VERSION)
                 commit()
             }
