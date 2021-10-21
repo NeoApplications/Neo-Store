@@ -18,9 +18,11 @@
 
 package com.saggitt.omega.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
@@ -29,15 +31,19 @@ import android.util.Property
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.android.launcher3.util.Themes
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
@@ -168,6 +174,48 @@ inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
 
 inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
     forEachChildReversedIndexed { view, _ -> action(view) }
+}
+
+@SuppressLint("PrivateResource")
+fun Switch.applyColor(color: Int) {
+    val colorForeground = Themes.getAttrColor(context, android.R.attr.colorForeground)
+    val alphaDisabled = Themes.getAlpha(context, android.R.attr.disabledAlpha)
+    val switchThumbNormal =
+        context.resources.getColor(
+            androidx.preference.R.color.switch_thumb_normal_material_light,
+            null
+        )
+    val switchThumbDisabled =
+        context.resources.getColor(
+            androidx.preference.R.color.switch_thumb_disabled_material_light,
+            null
+        )
+    val thstateList = ColorStateList(
+        arrayOf(
+            intArrayOf(-android.R.attr.state_enabled),
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf()
+        ),
+        intArrayOf(
+            switchThumbDisabled,
+            color,
+            switchThumbNormal
+        )
+    )
+    val trstateList = ColorStateList(
+        arrayOf(
+            intArrayOf(-android.R.attr.state_enabled),
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf()
+        ),
+        intArrayOf(
+            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
+            color,
+            colorForeground
+        )
+    )
+    DrawableCompat.setTintList(thumbDrawable, thstateList)
+    DrawableCompat.setTintList(trackDrawable, trstateList)
 }
 
 operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)
