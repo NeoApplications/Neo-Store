@@ -142,6 +142,23 @@ public class Themes {
     }
 
     /**
+     * Returns the alpha corresponding to the theme attribute {@param attr}, in the range [0, 255].
+     */
+    public static int getAlpha(Context context, int attr) {
+        return (int) (255 * getFloat(context, attr, 0) + 0.5f);
+    }
+
+    /**
+     * Returns the alpha corresponding to the theme attribute {@param attr}
+     */
+    public static float getFloat(Context context, int attr, float defValue) {
+        TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+        float value = ta.getFloat(0, defValue);
+        ta.recycle();
+        return value;
+    }
+
+    /**
      * Scales a color matrix such that, when applied to color R G B A, it produces R' G' B' A' where
      * R' = r * R
      * G' = g * G

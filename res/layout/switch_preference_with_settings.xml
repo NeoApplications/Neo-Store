@@ -36,7 +36,7 @@
         android:background="?android:attr/listDivider" />
 
     <!-- Note: seems we need focusable="false" and clickable="false" when moving to androidx -->
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@android:id/switch_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -18,17 +18,18 @@
 package com.saggitt.omega.settings
 
 import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
+import android.app.Dialog
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import androidx.annotation.XmlRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
@@ -39,6 +40,8 @@ import androidx.preference.*
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.*
 import com.android.launcher3.R
+import com.android.launcher3.notification.NotificationListener
+import com.android.launcher3.settings.NotificationDotsPreference
 import com.android.launcher3.settings.PreferenceHighlighter
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.preferences.ControlledPreference
@@ -46,6 +49,7 @@ import com.saggitt.omega.preferences.PreferenceController
 import com.saggitt.omega.preferences.ResumablePreference
 import com.saggitt.omega.preferences.SubPreference
 import com.saggitt.omega.settings.search.SettingsSearchActivity
+import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.views.SpringRecyclerView
 
 open class SettingsActivity : SettingsBaseActivity(),
@@ -483,6 +487,8 @@ open class SettingsActivity : SettingsBaseActivity(),
 
     open class SubSettingsFragment : BaseFragment(), Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
+        private var mIconBadgingObserver: IconBadgingObserver? = null
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             preferenceManager.sharedPreferencesName = LauncherFiles.SHARED_PREFERENCES_KEY
@@ -492,6 +498,18 @@ open class SettingsActivity : SettingsBaseActivity(),
                         findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY)
                     )
                 }
+            } else if (content == R.xml.omega_preferences_notification) {
+                val iconBadgingPref: NotificationDotsPreference = findPreference<Preference>(
+                    NOTIFICATION_DOTS_PREFERENCE_KEY
+                ) as NotificationDotsPreference
+                // Listen to system notification badge settings while this UI is active.
+                mIconBadgingObserver = IconBadgingObserver(
+                    iconBadgingPref, requireContext().contentResolver, fragmentManager
+                )
+                mIconBadgingObserver?.register(
+                    NOTIFICATION_BADGING,
+                    NOTIFICATION_ENABLED_LISTENERS
+                )
             }
         }
 
@@ -571,6 +589,13 @@ open class SettingsActivity : SettingsBaseActivity(),
     }
 
     companion object {
+        const val NOTIFICATION_BADGING = "notification_badging"
+        private const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
+
+        /**
+         * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
+         */
+        private const val NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners"
         const val ENABLE_MINUS_ONE_PREF = "pref_enable_minus_one"
         const val EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key"
         const val EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args"
@@ -603,6 +628,81 @@ open class SettingsActivity : SettingsBaseActivity(),
                 intent.putExtra(EXTRA_TITLE, title)
             }
             return intent
+        }
+    }
+
+    class NotificationAccessConfirmation : DialogFragment(), DialogInterface.OnClickListener {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val context: Context? = activity
+            val msg = context!!.getString(
+                R.string.msg_missing_notification_access,
+                context.getString(R.string.derived_app_name)
+            )
+            return AlertDialog.Builder(context)
+                .setTitle(R.string.title_missing_notification_access)
+                .setMessage(msg)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.title_change_settings, this)
+                .create()
+        }
+
+        override fun onClick(dialogInterface: DialogInterface, i: Int) {
+            val cn = ComponentName(requireActivity(), NotificationListener::class.java)
+            val intent: Intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(":settings:fragment_args_key", cn.flattenToString())
+            requireActivity().startActivity(intent)
+        }
+    }
+
+    /**
+     * Content observer which listens for system badging setting changes, and updates the launcher
+     * badging setting subtext accordingly.
+     */
+    private class IconBadgingObserver(
+        val badgingPref: NotificationDotsPreference, val resolver: ContentResolver,
+        val fragmentManager: FragmentManager?
+    ) : SettingsObserver.Secure(resolver), Preference.OnPreferenceClickListener {
+        private var serviceEnabled = true
+        override fun onSettingChanged(enabled: Boolean) {
+            var summary =
+                if (enabled) R.string.notification_dots_desc_on else R.string.notification_dots_desc_off
+            if (enabled) {
+                // Check if the listener is enabled or not.
+                val enabledListeners =
+                    Settings.Secure.getString(resolver, NOTIFICATION_ENABLED_LISTENERS)
+                val myListener =
+                    ComponentName(badgingPref.context, NotificationListener::class.java)
+                serviceEnabled = enabledListeners != null &&
+                        (enabledListeners.contains(myListener.flattenToString()) ||
+                                enabledListeners.contains(myListener.flattenToShortString()))
+                if (!serviceEnabled) {
+                    summary = R.string.title_missing_notification_access
+                }
+            }
+            badgingPref.setWidgetFrameVisible(!serviceEnabled)
+            badgingPref.onPreferenceClickListener =
+                if (serviceEnabled && Utilities.ATLEAST_OREO) null else this
+            badgingPref.setSummary(summary)
+        }
+
+        override fun onPreferenceClick(preference: Preference): Boolean {
+            if (!Utilities.ATLEAST_OREO && serviceEnabled) {
+                val cn = ComponentName(
+                    preference.context,
+                    NotificationListener::class.java
+                )
+                val intent: Intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(":settings:fragment_args_key", cn.flattenToString())
+                preference.context.startActivity(intent)
+            } else {
+                fragmentManager?.let {
+                    NotificationAccessConfirmation()
+                        .show(it, "notification_access")
+                }
+            }
+            return true
         }
     }
 }
