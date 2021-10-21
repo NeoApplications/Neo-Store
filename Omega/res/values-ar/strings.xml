@@ -3,15 +3,15 @@
     <string name="title__general_about">حول</string>
     <string name="title__general_notifications">الإيماءات والإشعارات</string>
     <string name="title__general_theme">السمة</string>
-    <string name="title__general_search">ابحث</string>
+    <string name="title__general_search">البحث والمجلدات</string>
     <string name="summary__general_notifications">عدد الشارات ، لون الشارة ، الإيماءات</string>
     <string name="summary__general_search">مزود البحث النمط ، الرموز</string>
     <string name="summary__general_theme">تغيير الألوان ، حزمة الرموز ، شكل الرمز</string>
     <string name="summary__general_dock">رمز وشريط البحث</string>
     <string name="summary__general_desktop">تخصيص سطح المكتب الخاص بك</string>
     <string name="title__general_advanced">إعدادات متقدمة</string>
-    <string name="title__general_drawer">الساحب</string>
-    <string name="title__general_dock">دخول الى الرصيف</string>
+    <string name="title__general_drawer">الدرج</string>
+    <string name="title__general_dock">الشريط</string>
     <string name="title__general_desktop">سطح المكتب</string>
     <string name="theme_dark_theme_mode">سمة داكنة</string>
     <string name="theme_dark_dark_text">داكن مع نص داكن</string>
@@ -128,7 +128,7 @@
     <string name="pref_category__incubating">الأحتضان</string>
     <string name="pref_category__others">أخرى</string>
     <string name="pref_category__inputs">الأيماءات والبحث</string>
-    <string name="pref_category__interfaces">واجه المستخدم</string>
+    <string name="pref_category__interfaces">واجهة المستخدم</string>
     <string name="summary__general_about">لمزيد من المعلومات عن لانشر أوميغا</string>
     <string name="summary__general_advanced">اللغة, النسخ الأحتياطي, بحث الأعدادات</string>
     <string name="summary__general_smartspace">الزمن, الوقت, أدوات سطح المكتب</string>
