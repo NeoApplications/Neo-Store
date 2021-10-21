@@ -26,12 +26,27 @@
         <item name="settingsBackground">@android:color/white</item>
         <item name="settingsSearchBackground">?settingsBackground</item>
         <item name="useLightSystemBars">true</item>
+        <item name="alertDialogTheme">@style/SettingsTheme.Dialog</item>
     </style>
+
     <style name="SettingsTheme.Light" parent="SettingsTheme">
 
     </style>
+
     <style name="SettingsTheme.Dark" parent="SettingsTheme">
 
+    </style>
+
+    <style name="SettingsTheme.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_material_background</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/SettingsTheme.Button</item>
+        <item name="android:buttonStyle">@style/SettingsTheme.Button</item>
+        <item name="dialogCornerRadius">16dp</item>
+    </style>
+
+    <style name="SettingsTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
