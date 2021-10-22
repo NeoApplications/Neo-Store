@@ -139,7 +139,7 @@
 
     <!-- A derivative project can extend these themes to customize the application theme without
          affecting the base theme -->
-    <style name="AppTheme" parent="@style/LauncherTheme" />
+    <!--<style name="AppTheme" parent="@style/LauncherTheme" />
 
     <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor" />
 
@@ -149,7 +149,7 @@
 
     <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor" />
 
-    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" />
+    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" /> -->
 
     <style name="HomeSettingsTheme" parent="@android:style/Theme.DeviceDefault.Settings">
         <item name="android:navigationBarColor">?android:colorPrimaryDark</item>

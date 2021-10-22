@@ -22,12 +22,14 @@ import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
+import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
     val TAG = "OmegaApp"
@@ -82,7 +84,12 @@ class OmegaApp : Application() {
         return true
     }
 
-    class ActivityHandler : Application.ActivityLifecycleCallbacks {
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        ThemeManager.getInstance(this).updateNightMode(newConfig)
+    }
+
+    class ActivityHandler : ActivityLifecycleCallbacks {
 
         val activities = HashSet<Activity>()
         var foregroundActivity: Activity? = null

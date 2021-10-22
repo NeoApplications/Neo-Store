@@ -241,6 +241,10 @@ fun Context.checkLocationAccess(): Boolean {
 
 fun Float.ceilToInt() = ceil(this).toInt()
 
+val Int.luminance get() = ColorUtils.calculateLuminance(this)
+
+val Int.isDark get() = luminance < 0.5f
+
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :
     FloatPropertyCompat<Any>(name) {
 

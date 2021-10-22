@@ -18,6 +18,36 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppTheme" parent="@style/LauncherTheme">
+        <item name="alertDialogTheme">@style/AlertDialogLight</item>
+    </style>
+
+    <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText" />
+
+    <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor" />
+
+    <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark" />
+
+    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" />
+
+    <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor" />
+
+    <style name="AppTheme.Black" parent="AppTheme.Dark">
+
+        <item name="android:colorPrimary">#000000</item>
+        <item name="allAppsScrimColor">#EA000000</item>
+        <item name="allAppsNavBarScrimColor">#80000000</item>
+        <item name="popupColorPrimary">?android:attr/colorPrimary</item>
+        <item name="popupColorSecondary">#000000</item>
+        <item name="popupColorTertiary">#212121</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
+        <item name="isMainColorDark">true</item>
+        <item name="folderFillColor">#DD000000</item>
+        <item name="folderIconBorderColor">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.Black.DarkText" parent="@style/AppTheme.Black" />
+
     <style name="SettingsTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorEdgeEffect">?colorAccent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -26,23 +56,24 @@
         <item name="settingsBackground">@android:color/white</item>
         <item name="settingsSearchBackground">?settingsBackground</item>
         <item name="useLightSystemBars">true</item>
-        <item name="alertDialogTheme">@style/SettingsTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/AlertDialogLight</item>
     </style>
 
     <style name="SettingsTheme.Light" parent="SettingsTheme">
 
     </style>
 
-    <style name="SettingsTheme.Dark" parent="SettingsTheme">
+    <style name="SettingsTheme.Dark" parent="SettingsTheme"></style>
 
-    </style>
+    <style name="SettingsTheme.Black" parent="SettingsTheme"></style>
 
-    <style name="SettingsTheme.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialogLight" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_material_background</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/SettingsTheme.Button</item>
         <item name="android:buttonStyle">@style/SettingsTheme.Button</item>
         <item name="dialogCornerRadius">16dp</item>
+        <item name="android:dialogCornerRadius" tools:ignore="NewApi">16dp</item>
     </style>
 
     <style name="SettingsTheme.Button" parent="Widget.AppCompat.Button">
@@ -68,4 +99,8 @@
 
     <style name="SettingsTheme.PreferenceTheme.Preference.Title" parent="@style/TextAppearance.AppCompat.Subhead" />
 
+    <style name="WidgetContainerTheme.Black" parent="AppTheme.Black">
+        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="bottomSheetNavBarColor">#00000000</item>
+    </style>
 </resources>

@@ -24,7 +24,7 @@ import com.android.launcher3.Insettable;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.util.Themes;
+import com.saggitt.omega.theme.ThemeManager;
 
 /**
  * A PageIndicator that briefly shows a fraction of a line when moving between pages
@@ -123,7 +123,7 @@ public class WorkspacePageIndicator extends View implements Insettable, PageIndi
         mLauncher = Launcher.getLauncher(context);
         mLineHeight = res.getDimensionPixelSize(R.dimen.workspace_page_indicator_line_height);
 
-        boolean darkText = Themes.getAttrBoolean(mLauncher, R.attr.isWorkspaceDarkText);
+        boolean darkText = ThemeManager.Companion.getInstance(context).getSupportsDarkText();
         mActiveAlpha = darkText ? BLACK_ALPHA : WHITE_ALPHA;
         mLinePaint.setColor(darkText ? Color.BLACK : Color.WHITE);
     }

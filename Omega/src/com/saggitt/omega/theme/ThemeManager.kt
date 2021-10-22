@@ -1,28 +1,29 @@
 /*
- *     This file is part of Lawnchair Launcher.
+ *  This file is part of Omega Launcher
+ *  Copyright (c) 2021   Saul Henriquez
  *
- *     Lawnchair Launcher is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *     Lawnchair Launcher is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.saggitt.omega.theme
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Handler
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.uioverrides.WallpaperColorInfo
+import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.omegaApp
 import com.saggitt.omega.twilight.TwilightListener
@@ -48,16 +49,15 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
 
     val isDark get() = themeFlags and THEME_DARK != 0
     val supportsDarkText get() = themeFlags and THEME_DARK_TEXT != 0
-    /*val displayName: String
+    val displayName: String
         get() {
             val values = context.resources.getIntArray(R.array.themeValues)
             val strings = context.resources.getStringArray(R.array.themes)
             val index = values.indexOf(themeFlags)
             return strings.getOrNull(index) ?: context.resources.getString(R.string.theme_auto)
-        }*/
+        }
     private val twilightManager by lazy { TwilightManager.getInstance(context) }
-    // TODO ditch Handler class fully
-    private val handler = Handler()
+    private val handler = MAIN_EXECUTOR.handler
     private var listenToTwilight = false
         set(value) {
             if (field != value) {

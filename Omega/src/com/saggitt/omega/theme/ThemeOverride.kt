@@ -1,18 +1,19 @@
 /*
- *     This file is part of Lawnchair Launcher.
+ *  This file is part of Omega Launcher
+ *  Copyright (c) 2021   Saul Henriquez
  *
- *     Lawnchair Launcher is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- *     Lawnchair Launcher is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.saggitt.omega.theme
@@ -49,29 +50,37 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
 
         /*Light Theme*/
         override val lightTheme = R.style.AppTheme
-        override val darkTextTheme = R.style.AppTheme_DarkText
-        override val darkMainColorTheme = R.style.AppTheme_DarkMainColor
+        override val lightDarkTextTheme = R.style.AppTheme_DarkText
+        override val lightDarkMainColorTheme = R.style.AppTheme_DarkMainColor
 
         /*Dark Theme*/
         override val darkTheme = R.style.AppTheme_Dark
         override val darkDarkTextTheme = R.style.AppTheme_Dark_DarkText
         override val darkDarkMainColorTheme = R.style.AppTheme_Dark_DarkMainColor
+
+        /*Black Theme*/
+        override val blackTheme = R.style.AppTheme_Black
+        override val blackDarkTextTheme = R.style.AppTheme_Black_DarkText
     }
 
     class Settings : ThemeSet {
         override val lightTheme = R.style.SettingsTheme_Light
-        override val darkTextTheme = R.style.SettingsTheme_Light
+        override val lightDarkTextTheme = R.style.SettingsTheme_Light
         override val darkTheme = R.style.SettingsTheme_Dark
         override val darkDarkTextTheme = R.style.SettingsTheme_Dark
+        override val blackTheme = R.style.SettingsTheme_Black
+        override val blackDarkTextTheme = R.style.SettingsTheme_Black
     }
-    interface ThemeSet {
 
+    interface ThemeSet {
         val lightTheme: Int
-        val darkTextTheme: Int
-        val darkMainColorTheme get() = lightTheme
+        val lightDarkTextTheme: Int
+        val lightDarkMainColorTheme get() = lightTheme
         val darkTheme: Int
         val darkDarkTextTheme: Int
         val darkDarkMainColorTheme get() = darkTheme
+        val blackTheme: Int
+        val blackDarkTextTheme: Int
 
         fun getTheme(context: Context): Int {
             return getTheme(ThemeManager.getInstance(context).getCurrentFlags())
@@ -81,12 +90,15 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
             val isDark = ThemeManager.isDark(themeFlags)
             val isDarkText = ThemeManager.isDarkText(themeFlags)
             val isDarkMainColor = ThemeManager.isDarkMainColor(themeFlags)
+            val isBlack = ThemeManager.isBlack(themeFlags)
             return when {
                 isDark && isDarkMainColor -> darkDarkMainColorTheme
                 isDark && isDarkText -> darkDarkTextTheme
                 isDark -> darkTheme
-                isDarkMainColor -> darkMainColorTheme
-                isDarkText -> darkTextTheme
+                isDarkMainColor -> lightDarkMainColorTheme
+                isDarkText -> lightDarkTextTheme
+                isBlack -> blackTheme
+                isBlack && isDarkText -> blackDarkTextTheme
                 else -> lightTheme
             }
         }
@@ -122,5 +134,4 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
             // Unsupported
         }
     }
-
 }
