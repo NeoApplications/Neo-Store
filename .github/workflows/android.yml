@@ -37,10 +37,20 @@ jobs:
         run: chmod +x gradlew
       - name: Compile with Gradle
         run: ./gradlew assembleAospWithQuickstepOmega
+
+      - name: Save name of our Artifact
+        id: set-result-artifact
+        run: |
+          ARTIFACT_PATHNAME_APK=$(ls build/outputs/intermediates/apk/aospWithQuickstepOmega/debug/*.apk | head -n 1)
+          ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
+          echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
+          echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
+          echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV
+
       - uses: actions/upload-artifact@v2
         with:
-          name: OmegaLauncher.apk
-          path: build/outputs/intermediates/apk/aospWithQuickstepOmega/debug/OmegaLauncher_v${{ github.event.inputs.versionName }}_build_${{ github.event.inputs.versionCode }}.apk
+          name: ${{ env.ARTIFACT_NAME_APK }}
+          path: ${{ env.ARTIFACT_PATHNAME_APK }}
 
 #  send-end-notification:
 #    runs-on: ubuntu-latest
