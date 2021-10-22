@@ -63,7 +63,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "OmegaLauncher ${variant.versionName}.apk"
+            outputFileName = "OmegaLauncher_v${variant.versionName}_build_${variant.versionCode}.apk"
         }
     }
     buildTypes {
