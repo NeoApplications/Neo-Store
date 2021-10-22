@@ -39,8 +39,8 @@ jobs:
         run: ./gradlew assembleAospWithQuickstepOmega
       - uses: actions/upload-artifact@v2
         with:
-          name: Omega-debug.apk
-          path: build/outputs/apk/aospWithQuickstepOmega/debug/Omega-aosp-withQuickstep-omega-debug.apk
+          name: OmegaLauncher.apk
+          path: build/outputs/intermediates/apk/aospWithQuickstepOmega/debug/Omega-aosp-withQuickstep-omega-debug.apk
 
 #  send-end-notification:
 #    runs-on: ubuntu-latest
