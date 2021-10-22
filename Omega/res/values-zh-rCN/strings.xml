@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="pref_category__others">其它</string>
     <string name="pref_category__inputs">手势与搜索</string>
-    <string name="pref_category__interfaces">交互界面</string>
+    <string name="pref_category__interfaces">用户界面</string>
     <string name="summary__general_about">有关 Omega Launcher 的更多信息</string>
     <string name="summary__general_advanced">语言设置，备份，设置项搜索</string>
     <string name="summary__general_notifications">角标数量，角标颜色，手势</string>
@@ -15,7 +15,7 @@
     <string name="title__general_notifications">手势与提醒</string>
     <string name="title__general_advanced">高级设置</string>
     <string name="title__general_smartspace">桌面组件</string>
-    <string name="title__general_search">搜索</string>
+    <string name="title__general_search">搜索和文件夹</string>
     <string name="title__general_theme">主题</string>
     <string name="title__general_drawer">抽屉</string>
     <string name="title__general_dock">快捷启动栏</string>
