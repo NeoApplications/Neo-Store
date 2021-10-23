@@ -32,7 +32,8 @@
         android:restoreAnyVersion="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="${appIcon}"
+        android:roundIcon="${appIconRound}"
         tools:replace="android:label">
 
         <activity
