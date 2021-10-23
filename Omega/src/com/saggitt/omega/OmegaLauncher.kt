@@ -18,13 +18,34 @@
 package com.saggitt.omega
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import com.android.launcher3.Utilities
 import com.android.launcher3.uioverrides.QuickstepLauncher
+import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 
 class OmegaLauncher : QuickstepLauncher() {
     private var paused = false
     private var sRestart = false
+    private val prefCallback = OmegaPreferencesChangeCallback(this)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val mPrefs = Utilities.getOmegaPrefs(this)
+        mPrefs.registerCallback(prefCallback)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Utilities.getOmegaPrefs(this).unregisterCallback()
+
+        if (sRestart) {
+            sRestart = false
+            OmegaPreferences.destroyInstance()
+        }
+    }
 
     fun scheduleRestart() {
         if (paused) {

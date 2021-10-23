@@ -33,7 +33,6 @@
     <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor" />
 
     <style name="AppTheme.Black" parent="AppTheme.Dark">
-
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsScrimColor">#EA000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
@@ -78,6 +77,18 @@
 
     <style name="SettingsTheme.Button" parent="Widget.AppCompat.Button">
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="alertDialogTheme">@style/AlertDialogLight</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">

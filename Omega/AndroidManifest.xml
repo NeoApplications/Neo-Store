@@ -89,12 +89,16 @@
         <activity
             android:name="com.saggitt.omega.settings.search.SettingsSearchActivity"
             android:autoRemoveFromRecents="true"
-            android:label="@string/derived_app_name"
             android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
             android:theme="@style/SettingsTheme" />
+        <activity
+            android:name="com.saggitt.omega.BlankActivity"
+            android:theme="@style/Theme.Transparent" />
+
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"
             android:label="@string/derived_app_name"
+            android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

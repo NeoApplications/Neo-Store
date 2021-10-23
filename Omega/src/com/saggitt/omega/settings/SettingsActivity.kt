@@ -15,6 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.saggitt.omega.settings
 
 import android.annotation.SuppressLint
@@ -49,6 +50,8 @@ import com.saggitt.omega.preferences.PreferenceController
 import com.saggitt.omega.preferences.ResumablePreference
 import com.saggitt.omega.preferences.SubPreference
 import com.saggitt.omega.settings.search.SettingsSearchActivity
+import com.saggitt.omega.theme.ui.ThemeListDialogFragment
+import com.saggitt.omega.theme.ui.ThemePreference
 import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.views.SpringRecyclerView
 
@@ -549,7 +552,17 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
 
         override fun onDisplayPreferenceDialog(preference: Preference) {
-
+            val f: DialogFragment
+            fragmentManager?.let {
+                f = if (preference is ThemePreference) {
+                    ThemeListDialogFragment.newInstance(preference)
+                } else {
+                    super.onDisplayPreferenceDialog(preference)
+                    return
+                }
+                f.setTargetFragment(this, 0)
+                f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
+            }
         }
 
         override val recyclerViewLayoutRes: Int
@@ -631,6 +644,23 @@ open class SettingsActivity : SettingsBaseActivity(),
         }
     }
 
+    class DialogSettingsFragment : SubSettingsFragment() {
+        override fun setActivityTitle() {}
+        override val recyclerViewLayoutRes: Int
+            get() = R.layout.preference_dialog_recyclerview
+
+        companion object {
+            fun newInstance(title: String?, @XmlRes content: Int): DialogSettingsFragment {
+                val fragment = DialogSettingsFragment()
+                val b = Bundle(2)
+                b.putString(TITLE, title)
+                b.putInt(CONTENT_RES_ID, content)
+                fragment.arguments = b
+                return fragment
+            }
+        }
+    }
+
     class NotificationAccessConfirmation : DialogFragment(), DialogInterface.OnClickListener {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val context: Context? = activity
@@ -664,10 +694,10 @@ open class SettingsActivity : SettingsBaseActivity(),
         val fragmentManager: FragmentManager?
     ) : SettingsObserver.Secure(resolver), Preference.OnPreferenceClickListener {
         private var serviceEnabled = true
-        override fun onSettingChanged(enabled: Boolean) {
+        override fun onSettingChanged(keySettingEnabled: Boolean) {
             var summary =
-                if (enabled) R.string.notification_dots_desc_on else R.string.notification_dots_desc_off
-            if (enabled) {
+                if (keySettingEnabled) R.string.notification_dots_desc_on else R.string.notification_dots_desc_off
+            if (keySettingEnabled) {
                 // Check if the listener is enabled or not.
                 val enabledListeners =
                     Settings.Secure.getString(resolver, NOTIFICATION_ENABLED_LISTENERS)

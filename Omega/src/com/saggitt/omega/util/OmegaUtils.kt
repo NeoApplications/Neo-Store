@@ -144,6 +144,13 @@ fun Context.getColorAttr(attr: Int): Int {
     return colorAccent
 }
 
+fun Context.getThemeAttr(attr: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val theme = ta.getResourceId(0, 0)
+    ta.recycle()
+    return theme
+}
+
 fun Context.getDimenAttr(attr: Int): Int {
     val ta = obtainStyledAttributes(intArrayOf(attr))
     val size = ta.getDimensionPixelSize(0, 0)
@@ -224,6 +231,7 @@ inline fun PreferenceGroup.forEachIndexed(action: (i: Int, pref: Preference) -> 
 }
 
 val Configuration.usingNightMode get() = uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+
 fun Int.hasFlags(vararg flags: Int): Boolean {
     return flags.all { hasFlag(it) }
 }
@@ -233,6 +241,19 @@ infix fun Int.hasFlag(flag: Int) = (this and flag) != 0
 fun Int.removeFlag(flag: Int): Int {
     return this and flag.inv()
 }
+
+fun Int.addFlag(flag: Int): Int {
+    return this or flag
+}
+
+fun Int.setFlag(flag: Int, value: Boolean): Int {
+    return if (value) {
+        addFlag(flag)
+    } else {
+        removeFlag(flag)
+    }
+}
+
 
 fun Context.checkLocationAccess(): Boolean {
     return Utilities.hasPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ||

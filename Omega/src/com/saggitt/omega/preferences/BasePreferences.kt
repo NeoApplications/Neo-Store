@@ -25,17 +25,12 @@ import com.android.launcher3.LauncherFiles
 import java.io.File
 import kotlin.reflect.KProperty
 
-open class BasePreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener{
-    val mContext = context;
-
+open class BasePreferences(context: Context) {
+    val mContext = context
     val doNothing = { }
-    val recreate = { recreate() }
-    val restart = { restart() }
-    val updateBlur = { updateBlur() }
-
-    private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
-    private val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
-    private var onChangeCallback: OmegaPreferencesChangeCallback? = null
+    val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
+    val onChangeListeners: MutableMap<String, MutableSet<OmegaPreferences.OnPreferenceChangeListener>> =
+        HashMap()
     val sharedPrefs = createPreferences()
 
     private fun createPreferences(): SharedPreferences {
@@ -67,27 +62,6 @@ open class BasePreferences(context: Context) : SharedPreferences.OnSharedPrefere
             }
         }
     }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        onChangeMap[key]?.invoke()
-        onChangeListeners[key]?.forEach {
-            if (key != null) {
-                it.onValueChanged(key, this, false)
-            }
-        }
-    }
-
-    fun registerCallback(callback: OmegaPreferencesChangeCallback) {
-        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
-        onChangeCallback = callback
-    }
-
-    fun unregisterCallback() {
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
-        onChangeCallback = null
-    }
-
-    fun getOnChangeCallback() = onChangeCallback
 
     /*Base Preferences*/
     open inner class BooleanPref(
@@ -137,10 +111,6 @@ open class BasePreferences(context: Context) : SharedPreferences.OnSharedPrefere
         override fun onSetValue(value: Float) {
             edit { putFloat(getKey(), value) }
         }
-    }
-
-    interface OnPreferenceChangeListener {
-        fun onValueChanged(key: String, prefs: BasePreferences, force: Boolean)
     }
 
     abstract inner class PrefDelegate<T : Any>(
@@ -246,17 +216,6 @@ open class BasePreferences(context: Context) : SharedPreferences.OnSharedPrefere
         beginBulkEdit()
         body(this)
         endBulkEdit()
-    }
-
-    fun recreate() {
-        onChangeCallback?.recreate()
-    }
-
-    fun restart() {
-        onChangeCallback?.restart()
-    }
-    private fun updateBlur() {
-        onChangeCallback?.updateBlur()
     }
 
     companion object {
