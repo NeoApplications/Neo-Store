@@ -396,4 +396,20 @@
     <string name="trust_apps_manager_name">التطبيقات المخفية والمحمية</string>
     <string name="trust_apps_no_lock_error">يرجى إعداد شاشة قفل آمنة لتقييد وصول التطبيق</string>
     <string name="protected_app_reset">إعادة تعيين التطبيقات المحمية</string>
+    <string name="dash_wifi">وايفاي</string>
+    <string name="dash_wifi_summary">حالة اتصال الوايفاي</string>
+    <string name="dash_torch_summary">تشغيل/إيقاف تشغيل ضوء الفلاش.</string>
+    <string name="dash_auto_rotation">دوران تلقائي</string>
+    <string name="launch_assistant">مساعد التشغيل</string>
+    <string name="dash_bluetooth">بلوتوث</string>
+    <string name="dash_bluetooth_summary">تشغيل البلوتوث أو إيقاف تشغيله</string>
+    <string name="dash_location">الموقع</string>
+    <string name="dash_location_summary">تغيير إعدادات الموقع</string>
+    <string name="dash_torch">الكشاف</string>
+    <string name="dash_auto_rotation_summary">تشغيل/إيقاف تشغيل التدوير التلقائي.</string>
+    <string name="dash_sync">مزامنة</string>
+    <string name="dash_sync_summary">تشغيل/إيقاف تشغيل المزامنة.</string>
+    <string name="modify_system_settings">تعديل إعدادات النظام</string>
+    <string name="gesture_launch_assistant">تشغيل المساعد (من خلال زر أو إيماءة)</string>
+    <string name="modify_system_settings_message">يجب أن تسمح لOmega بتعديل إعدادات النظام حتى يعمل هذا</string>
 </resources>
