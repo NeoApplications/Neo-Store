@@ -83,6 +83,16 @@
             android:exported="true"
             android:autoRemoveFromRecents="true">
             <intent-filter android:priority="-1">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.saggitt.omega.preferences.views.PreferencesActivity"
+            android:label="@string/settings_button_text"
+            android:theme="@style/SettingsTheme.Dark"
+            android:exported="true"
+            android:autoRemoveFromRecents="true">
+            <intent-filter android:priority="-1">
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
