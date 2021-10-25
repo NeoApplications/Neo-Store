@@ -22,18 +22,18 @@ import android.util.AttributeSet
 import androidx.annotation.Keep
 import androidx.preference.ListPreference
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.addFlag
 import com.saggitt.omega.util.buildEntries
-import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.removeFlag
 
 @Keep
 class ThemeListPreference(context: Context, attrs: AttributeSet?) : ListPreference(context, attrs),
     OmegaPreferences.OnPreferenceChangeListener {
 
-    private val prefs = context.omegaPrefs
+    private val prefs = Utilities.getOmegaPrefs(context)
 
     init {
         buildEntries {

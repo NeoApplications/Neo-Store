@@ -25,10 +25,10 @@ import androidx.annotation.Keep
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreference
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.hasFlag
-import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.setFlag
 
 @Keep
@@ -36,7 +36,7 @@ open class ThemeFlagSwitchPreference(context: Context, attrs: AttributeSet) :
     SwitchPreference(context, attrs),
     OmegaPreferences.OnPreferenceChangeListener {
 
-    protected val prefs = context.omegaPrefs
+    protected val prefs = Utilities.getOmegaPrefs(context)!!
     private var switchFlag = 0
     private var checkableView: View? = null
 

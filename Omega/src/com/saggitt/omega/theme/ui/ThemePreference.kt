@@ -22,19 +22,19 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.annotation.Keep
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.saggitt.omega.preferences.CustomDialogPreference
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.hasFlags
-import com.saggitt.omega.util.omegaPrefs
 
 @Keep
 class ThemePreference(context: Context, attrs: AttributeSet?) :
     CustomDialogPreference(context, attrs),
     OmegaPreferences.OnPreferenceChangeListener {
 
-    private val prefs = context.omegaPrefs
+    private val prefs = Utilities.getOmegaPrefs(context)
 
     override fun onAttached() {
         super.onAttached()
