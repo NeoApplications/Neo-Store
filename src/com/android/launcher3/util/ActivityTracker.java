@@ -98,5 +98,17 @@ public final class ActivityTracker<T extends BaseActivity> {
          * @return Whether to continue receiving callbacks (i.e. if the activity is recreated).
          */
         boolean init(T activity, boolean alreadyOnHome);
+
+        /**
+         * Adds this callback as an extra on the intent, so we can retrieve it in handleIntent() and
+         * call {@link #init}. The intent should be used to start the activity after calling this
+         * method in order for us to get handleIntent().
+         */
+        default Intent addToIntent(Intent intent) {
+            Bundle extras = new Bundle();
+            extras.putBinder(EXTRA_SCHEDULER_CALLBACK, ObjectWrapper.wrap(this));
+            intent.putExtras(extras);
+            return intent;
+        }
     }
 }

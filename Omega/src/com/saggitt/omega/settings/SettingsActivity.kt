@@ -628,6 +628,10 @@ open class SettingsActivity : SettingsBaseActivity(),
             context.startActivity(createFragmentIntent(context, fragment, args, title))
         }
 
+        fun startFragment(context: Context, fragment: String?, title: Int) {
+            startFragment(context, fragment, null, context.getString(title))
+        }
+
         private fun createFragmentIntent(
             context: Context,
             fragment: String?,

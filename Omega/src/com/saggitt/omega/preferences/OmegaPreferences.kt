@@ -37,6 +37,20 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     val updateBlur = { updateBlur() }
 
     //HOME SCREEN PREFERENCES
+    val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
+    var dashProviders = StringListPref(
+        "pref_dash_providers",
+        listOf(
+            context.getString(R.string.dash_wifi),
+            context.getString(R.string.dash_mobile_network_title),
+            context.getString(R.string.dash_device_settings_title),
+            context.getString(R.string.launch_assistant),
+            context.getString(R.string.dash_volume_title),
+            context.getString(R.string.edit_dash)
+        )
+    )
+
+    var torchState = false
 
     //THEME
     var launcherTheme by StringIntPref(

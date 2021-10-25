@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.launcher3.LauncherFiles
+import org.json.JSONArray
 import java.io.File
 import kotlin.reflect.KProperty
 
@@ -110,6 +111,138 @@ open class BasePreferences(context: Context) {
 
         override fun onSetValue(value: Float) {
             edit { putFloat(getKey(), value) }
+        }
+    }
+
+    open inner class StringBasedPref<T : Any>(
+        key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+        private val fromString: (String) -> T,
+        private val toString: (T) -> String,
+        private val dispose: (T) -> Unit
+    ) :
+        PrefDelegate<T>(key, defaultValue, onChange) {
+        override fun onGetValue(): T = sharedPrefs.getString(getKey(), null)?.run(fromString)
+            ?: defaultValue
+
+        override fun onSetValue(value: T) {
+            edit { putString(getKey(), toString(value)) }
+        }
+
+        override fun disposeOldValue(oldValue: T) {
+            dispose(oldValue)
+        }
+    }
+
+    open inner class StringListPref(
+        prefKey: String,
+        default: List<String> = emptyList(),
+        onChange: () -> Unit = doNothing
+    ) : MutableListPref<String>(prefKey, default, onChange) {
+
+        override fun unflattenValue(value: String) = value
+        override fun flattenValue(value: String) = value
+    }
+
+    abstract inner class MutableListPref<T>(
+        private val prefs: SharedPreferences, private val prefKey: String,
+        default: List<T> = emptyList(),
+        onChange: () -> Unit = doNothing
+    ) : PrefDelegate<List<T>>(prefKey, default, onChange) {
+
+        constructor(
+            prefKey: String,
+            default: List<T> = emptyList(),
+            onChange: () -> Unit = doNothing
+        ) : this(sharedPrefs, prefKey, default, onChange)
+
+        private val valueList = arrayListOf<T>()
+
+        init {
+            val arr: JSONArray = try {
+                JSONArray(prefs.getString(prefKey, getJsonString(default)))
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+                JSONArray()
+            }
+            (0 until arr.length()).mapTo(valueList) { unflattenValue(arr.getString(it)) }
+            if (onChange != doNothing) {
+                onChangeMap[prefKey] = onChange
+            }
+        }
+
+        fun toList() = ArrayList<T>(valueList)
+
+        open fun flattenValue(value: T) = value.toString()
+
+        abstract fun unflattenValue(value: String): T
+
+        operator fun get(position: Int): T {
+            return valueList[position]
+        }
+
+        operator fun set(position: Int, value: T) {
+            valueList[position] = value
+            saveChanges()
+        }
+
+        fun getAll(): List<T> = valueList
+
+        fun setAll(value: List<T>) {
+            valueList.clear()
+            valueList.addAll(value)
+            saveChanges()
+        }
+
+        fun add(value: T) {
+            valueList.add(value)
+            saveChanges()
+        }
+
+        fun add(position: Int, value: T) {
+            valueList.add(position, value)
+            saveChanges()
+        }
+
+        fun remove(value: T) {
+            valueList.remove(value)
+            saveChanges()
+        }
+
+        fun removeAt(position: Int) {
+            valueList.removeAt(position)
+            saveChanges()
+        }
+
+        fun contains(value: T): Boolean {
+            return valueList.contains(value)
+        }
+
+        fun replaceWith(newList: List<T>) {
+            valueList.clear()
+            valueList.addAll(newList)
+            saveChanges()
+        }
+
+        fun getList() = valueList
+
+        private fun saveChanges() {
+            @SuppressLint("CommitPrefEdits") val editor = prefs.edit()
+            editor.putString(prefKey, getJsonString(valueList))
+            if (!bulkEditing) commitOrApply(editor, blockingEditing)
+        }
+
+        private fun getJsonString(list: List<T>): String {
+            val arr = JSONArray()
+            list.forEach { arr.put(flattenValue(it)) }
+            return arr.toString()
+        }
+
+        override fun onGetValue(): List<T> {
+            return getAll()
+        }
+
+        override fun onSetValue(value: List<T>) {
+            setAll(value)
         }
     }
 

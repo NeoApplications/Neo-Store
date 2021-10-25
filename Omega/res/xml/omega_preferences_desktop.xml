@@ -17,6 +17,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:launcher="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/pref_category__interfaces">
 
@@ -27,24 +28,31 @@
       LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_DISABLED(614)
     -->
     <com.saggitt.omega.preferences.StyledSwitchPreference
-        android:key="pref_add_icon_to_home"
-        android:title="@string/auto_add_shortcuts_label"
-        android:summary="@string/auto_add_shortcuts_description"
         android:defaultValue="true"
+        android:key="pref_add_icon_to_home"
         android:persistent="true"
-        launcher:logIdOn="613"
-        launcher:logIdOff="614" />
+        android:summary="@string/auto_add_shortcuts_description"
+        android:title="@string/auto_add_shortcuts_label"
+        launcher:logIdOff="614"
+        launcher:logIdOn="613" />
 
     <!--
       LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
       LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)
     -->
     <com.saggitt.omega.preferences.StyledSwitchPreference
-        android:key="pref_allowRotation"
-        android:title="@string/allow_rotation_title"
-        android:summary="@string/allow_rotation_desc"
         android:defaultValue="false"
+        android:key="pref_allowRotation"
         android:persistent="true"
-        launcher:logIdOn="615"
-        launcher:logIdOff="616" />
+        android:summary="@string/allow_rotation_desc"
+        android:title="@string/allow_rotation_title"
+        launcher:logIdOff="616"
+        launcher:logIdOn="615" />
+
+    <androidx.preference.Preference
+        android:fragment="com.saggitt.omega.dash.DashFragment"
+        android:key="pref_dash_providers"
+        android:summary="@string/edit_dash_summary"
+        android:title="@string/edit_dash"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
