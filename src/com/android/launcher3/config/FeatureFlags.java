@@ -65,7 +65,7 @@ public final class FeatureFlags {
      */
     // When enabled the promise icon is visible in all apps while installation an app.
     public static final BooleanFlag PROMISE_APPS_IN_ALL_APPS = getDebugFlag(
-            "PROMISE_APPS_IN_ALL_APPS", false, "Add promise icon in all-apps");
+            "PROMISE_APPS_IN_ALL_APPS", true, "Add promise icon in all-apps");
 
     // When enabled a promise icon is added to the home screen when install session is active.
     public static final BooleanFlag PROMISE_APPS_NEW_INSTALLS = getDebugFlag(
@@ -349,8 +349,9 @@ public final class FeatureFlags {
     }
 
     private static BooleanFlag getDebugFlag(String key, boolean defaultValue, String description) {
-        return Utilities.IS_DEBUG_DEVICE
+        return new BooleanFlag(key, defaultValue);
+        /*return Utilities.IS_DEBUG_DEVICE
                 ? new DebugFlag(key, defaultValue, description)
-                : new BooleanFlag(key, defaultValue);
+                : new BooleanFlag(key, defaultValue);*/
     }
 }
