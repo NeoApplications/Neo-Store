@@ -18,4 +18,15 @@
 <resources>
     <!-- String representing the fragment class for settings activity.-->
     <string name="settings_fragment_name" translatable="false">com.saggitt.omega.settings.SettingsActivity$LauncherSettingsFragment</string>
+
+    <!-- Out of 100, the percent to shrink the workspace during options mode. -->
+    <integer name="config_workspaceOptionsShrinkPercentage">70</integer>
+
+
+    <!-- Gesture actions -->
+    <string name="action_do_nothing_class" translatable="false">{\"class\":\"com.saggitt.omega.gestures.BlankGestureHandler\"}</string>
+    <string name="action_open_notifications_class" translatable="false">{\"class\":\"com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler\"}</string>
+    <string name="action_open_drawer_class" translatable="false">{\"class\":\"com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler\"}</string>
+    <string name="action_open_overview_class" translatable="false">{\"class\":\"com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler\"}</string>
+    <string name="action_open_dash_class" translatable="false">{\"class\":\"com.saggitt.omega.gestures.handlers.OpenDashGestureHandler\"}</string>
 </resources>

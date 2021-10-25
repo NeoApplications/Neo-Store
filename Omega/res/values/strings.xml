@@ -471,6 +471,20 @@
     <string name="drag_to_disable_packs">Drag down to disable</string>
     <string name="drag_to_enable_packs">Drag up to enable</string>
     <string name="enabled_icon_packs">Enabled</string>
+    <string name="dash_wifi">Wifi</string>
+    <string name="dash_wifi_summary">Wifi state and connection</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="dash_bluetooth_summary">Turn bluetooth on or off</string>
+    <string name="dash_location">Location</string>
+    <string name="dash_location_summary">Change location settings</string>
+    <string name="dash_torch">Torch</string>
+    <string name="dash_torch_summary">Turn the flash light on/off.</string>
+    <string name="dash_auto_rotation">Auto Rotation</string>
+    <string name="dash_auto_rotation_summary">Turn on/off the auto rotation.</string>
+    <string name="dash_sync">Sync</string>
+    <string name="dash_sync_summary">Turn sync on/off.</string>
+    <string name="launch_assistant">Launch Assistant</string>
+    <string name="gesture_launch_assistant">Launch Assistant (through button or gesture)</string>
 
     <!-- SEEKBAR PREFERENCE -->
     <string name="reset_to_default">Reset to default</string>
@@ -500,4 +514,6 @@
     <string name="uninstall_failed">The app uninstall failed</string>
     <!-- WIDGET FEED -->
     <string name="button_organize_screens">Arrange Pages</string>
+    <string name="modify_system_settings">Modify system settings</string>
+    <string name="modify_system_settings_message">You have to allow Omega to modify system settings for this to work</string>
 </resources>
