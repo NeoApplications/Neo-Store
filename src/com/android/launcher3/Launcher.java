@@ -60,6 +60,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -277,6 +278,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     private static final int THEME_CROSS_FADE_ANIMATION_DURATION = 375;
 
+    private QuickstepTransitionManager mTransitionManager;
     private Configuration mOldConfig;
 
     @Thunk
@@ -1983,6 +1985,12 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
+    public ActivityOptions getActivityLaunchOptions(View v) {
+        return mTransitionManager.getActivityLaunchOptions(v).options;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
     protected boolean onErrorStartingShortcut(Intent intent, ItemInfo info) {
         // Due to legacy reasons, direct call shortcuts require Launchers to have the
         // corresponding permission. Show the appropriate permission prompt if that
@@ -2578,7 +2586,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Callback saying that there aren't any more items to bind.
-     *
+     * <p>
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void finishBindingItems(int pageBoundFirst) {
@@ -2677,7 +2685,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Update the state of a package, typically related to install state.
-     *
+     * <p>
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override

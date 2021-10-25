@@ -58,7 +58,9 @@ import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.os.Process;
 import android.os.TransactionTooLargeException;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -88,8 +90,10 @@ import com.android.launcher3.icons.ShortcutCachingLogic;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.pm.ShortcutConfigActivityInfo;
+import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.shortcuts.ShortcutRequest;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
@@ -154,6 +158,7 @@ public final class Utilities {
                     Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
 
     public static boolean HIDDEN_APIS_ALLOWED = !ATLEAST_P || HiddenApiCompat.checkIfAllowed();
+
     /**
      * Returns true if theme is dark.
      */
@@ -926,6 +931,39 @@ public final class Utilities {
 
     public static OmegaPreferences getOmegaPrefs(Context context) {
         return OmegaPreferences.Companion.getInstance(context);
+    }
+
+    /**
+     * Creates a new component key from an encoded component key string in the form of
+     * [flattenedComponentString#userId].  If the userId is not present, then it defaults
+     * to the current user.
+     */
+    public static ComponentKey makeComponentKey(Context context, String componentKeyStr) {
+        ComponentName componentName;
+        UserHandle user;
+        int userDelimiterIndex = componentKeyStr.indexOf("#");
+        if (userDelimiterIndex != -1) {
+            String componentStr = componentKeyStr.substring(0, userDelimiterIndex);
+            //Log.e("MakeComponents", componentKeyStr);
+            //long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
+            long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 1, componentKeyStr.length()));
+            componentName = ComponentName.unflattenFromString(componentStr);
+            user = Utilities.notNullOrDefault(UserCache.INSTANCE.get(context)
+                    .getUserForSerialNumber(componentUser), Process.myUserHandle());
+        } else {
+            // No user provided, default to the current user
+            componentName = ComponentName.unflattenFromString(componentKeyStr);
+            user = Process.myUserHandle();
+        }
+        try {
+            return new ComponentKey(componentName, user);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Trying to create invalid component key: " + componentKeyStr);
+        }
+    }
+
+    public static <T> T notNullOrDefault(T value, T defValue) {
+        return (value == null) ? defValue : value;
     }
 
     // These values are same as that in {@link AsyncTask}.

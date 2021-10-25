@@ -210,6 +210,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "com.google.android.material:material:1.4.0"
     implementation "com.jaredrummler:colorpicker:1.1.0"
+    implementation "androidx.preference:preference-ktx:1.1.1"
 
     // Libs
     implementation 'com.github.ChickenHook:RestrictionBypass:2.2'

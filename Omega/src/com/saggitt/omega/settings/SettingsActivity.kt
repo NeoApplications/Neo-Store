@@ -553,7 +553,7 @@ open class SettingsActivity : SettingsBaseActivity(),
 
         override fun onDisplayPreferenceDialog(preference: Preference) {
             val f: DialogFragment
-            fragmentManager?.let {
+            parentFragmentManager.let {
                 f = if (preference is ThemePreference) {
                     ThemeListDialogFragment.newInstance(preference)
                 } else {

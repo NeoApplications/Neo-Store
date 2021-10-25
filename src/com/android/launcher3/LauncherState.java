@@ -23,6 +23,7 @@ import static com.android.launcher3.testing.TestProtocol.BACKGROUND_APP_STATE_OR
 import static com.android.launcher3.testing.TestProtocol.HINT_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.HINT_STATE_TWO_BUTTON_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.NORMAL_STATE_ORDINAL;
+import static com.android.launcher3.testing.TestProtocol.OPTIONS_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.OVERVIEW_MODAL_TASK_STATE_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.OVERVIEW_SPLIT_SELECT_ORDINAL;
 import static com.android.launcher3.testing.TestProtocol.OVERVIEW_STATE_ORDINAL;
@@ -40,6 +41,7 @@ import com.android.launcher3.states.SpringLoadedState;
 import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.uioverrides.states.AllAppsState;
 import com.android.launcher3.uioverrides.states.OverviewState;
+import com.saggitt.omega.OptionsState;
 
 import java.util.Arrays;
 
@@ -61,6 +63,7 @@ public abstract class LauncherState implements BaseState<LauncherState> {
     public static final int CLEAR_ALL_BUTTON = 1 << 5;
     public static final int WORKSPACE_PAGE_INDICATOR = 1 << 6;
     public static final int SPLIT_PLACHOLDER_VIEW = 1 << 7;
+    public static final int OPTIONS_VIEW = 1 << 8;
 
     // Flag indicating workspace has multiple pages visible.
     public static final int FLAG_MULTI_PAGE = BaseState.getFlag(0);
@@ -92,7 +95,7 @@ public abstract class LauncherState implements BaseState<LauncherState> {
                 }
             };
 
-    private static final LauncherState[] sAllStates = new LauncherState[10];
+    private static final LauncherState[] sAllStates = new LauncherState[11];
 
     /**
      * TODO: Create a separate class for NORMAL state.
@@ -127,6 +130,7 @@ public abstract class LauncherState implements BaseState<LauncherState> {
             OverviewState.newBackgroundState(BACKGROUND_APP_STATE_ORDINAL);
     public static final LauncherState OVERVIEW_SPLIT_SELECT =
             OverviewState.newSplitSelectState(OVERVIEW_SPLIT_SELECT_ORDINAL);
+    public static final LauncherState OPTIONS = new OptionsState(OPTIONS_STATE_ORDINAL);
 
     public final int ordinal;
 

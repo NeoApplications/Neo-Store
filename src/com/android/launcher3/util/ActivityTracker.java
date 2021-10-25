@@ -15,6 +15,9 @@
  */
 package com.android.launcher3.util;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.BaseActivity;
@@ -26,7 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Helper class to statically track activity creation
  * @param <T> The activity type to track
  */
-public final class ActivityTracker<T extends BaseActivity> {
+public final class  ActivityTracker<T extends BaseActivity> {
+    private static final String EXTRA_SCHEDULER_CALLBACK = "launcher.scheduler_callback";
 
     private WeakReference<T> mCurrentActivity = new WeakReference<>(null);
     private CopyOnWriteArrayList<SchedulerCallback<T>> mCallbacks = new CopyOnWriteArrayList<>();

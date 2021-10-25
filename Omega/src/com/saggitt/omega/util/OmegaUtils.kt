@@ -24,6 +24,7 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
@@ -157,6 +158,8 @@ fun Context.getDimenAttr(attr: Int): Int {
     ta.recycle()
     return size
 }
+
+fun Context.getIcon(): Drawable = packageManager.getApplicationIcon(applicationInfo)
 
 fun ImageView.tintDrawable(color: Int) {
     val drawable = drawable.mutate()
