@@ -18,12 +18,8 @@ package com.android.launcher3;
 
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_APP_LAUNCH_TAP;
 import static com.android.launcher3.util.DisplayController.CHANGE_ROTATION;
-import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
 import android.app.ActivityOptions;
-import android.app.WallpaperColors;
-import android.app.WallpaperManager;
-import android.app.WallpaperManager.OnColorsChangedListener;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -58,6 +54,7 @@ import com.android.launcher3.logging.InstanceIdSequence;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.touch.ItemClickHandler;
+import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.ActivityOptionsWrapper;
 import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.DisplayController.DisplayInfoChangeListener;
@@ -67,13 +64,13 @@ import com.android.launcher3.util.RunnableList;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.util.WindowBounds;
+import com.saggitt.omega.theme.ThemeOverride;
 
 /**
  * Extension of BaseActivity allowing support for drag-n-drop
  */
-@SuppressWarnings("NewApi")
 public abstract class BaseDraggingActivity extends BaseActivity
-        implements OnColorsChangedListener, DisplayInfoChangeListener {
+        implements WallpaperColorInfo.OnChangeListener, DisplayInfoChangeListener {
 
     private static final String TAG = "BaseDraggingActivity";
 
@@ -98,29 +95,25 @@ public abstract class BaseDraggingActivity extends BaseActivity
         DisplayController.INSTANCE.get(this).addChangeListener(this);
 
         // Update theme
-        if (Utilities.ATLEAST_P) {
-            getSystemService(WallpaperManager.class)
-                    .addOnColorsChangedListener(this, MAIN_EXECUTOR.getHandler());
-        }
+        WallpaperColorInfo.getInstance(this).addOnChangeListener(this);
         int themeRes = Themes.getActivityThemeRes(this);
         if (themeRes != mThemeRes) {
             mThemeRes = themeRes;
             setTheme(themeRes);
         }
+
+        // Register theme override
+        ThemeOverride themeOverride = new ThemeOverride(getLauncherThemeSet(), this);
+        themeOverride.applyTheme(this);
+    }
+
+    @NonNull
+    protected ThemeOverride.ThemeSet getLauncherThemeSet() {
+        return new ThemeOverride.Launcher();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mOnResumeCallbacks.executeAllAndClear();
-    }
-
-    public void addOnResumeCallback(Runnable callback) {
-        mOnResumeCallbacks.add(callback);
-    }
-
-    @Override
-    public void onColorsChanged(WallpaperColors wallpaperColors, int which) {
+    public void onExtractedColorsChanged(WallpaperColorInfo wallpaperColorInfo) {
         updateTheme();
     }
 
@@ -134,6 +127,16 @@ public abstract class BaseDraggingActivity extends BaseActivity
         if (mThemeRes != Themes.getActivityThemeRes(this)) {
             recreate();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mOnResumeCallbacks.executeAllAndClear();
+    }
+
+    public void addOnResumeCallback(Runnable callback) {
+        mOnResumeCallbacks.add(callback);
     }
 
     @Override
@@ -284,9 +287,7 @@ public abstract class BaseDraggingActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Utilities.ATLEAST_P) {
-            getSystemService(WallpaperManager.class).removeOnColorsChangedListener(this);
-        }
+        WallpaperColorInfo.getInstance(this).removeOnChangeListener(this);
         DisplayController.INSTANCE.get(this).removeChangeListener(this);
     }
 

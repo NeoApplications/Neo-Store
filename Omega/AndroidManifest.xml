@@ -106,6 +106,12 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.android.launcher3.uioverrides.WallpaperManagerCompat$ColorExtractionService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":wallpaper_chooser" />
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

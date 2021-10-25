@@ -24,7 +24,12 @@ import com.android.launcher3.R
 import java.lang.ref.WeakReference
 
 class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideListener?) {
-    constructor(themeSet: ThemeSet, activity: AppCompatActivity) : this(themeSet, ActivityListener(activity))
+    constructor(themeSet: ThemeSet, activity: AppCompatActivity) : this(
+        themeSet,
+        ActivityListener(activity)
+    )
+
+    constructor(themeSet: ThemeSet, context: Context) : this(themeSet, ContextListener(context))
 
     val isAlive get() = listener?.isAlive == true
 
