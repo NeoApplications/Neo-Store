@@ -41,6 +41,8 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         }
     }
 
+    // TODO should any of those sub classes get larger, then it should be moved to own class
+
     class PrefsMainFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_main, rootKey)
