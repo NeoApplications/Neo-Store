@@ -44,6 +44,7 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.android.systemui.shared.system.QuickStepContract
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
@@ -265,6 +266,23 @@ fun Float.ceilToInt() = ceil(this).toInt()
 val Int.luminance get() = ColorUtils.calculateLuminance(this)
 
 val Int.isDark get() = luminance < 0.5f
+
+
+fun getWindowCornerRadius(context: Context): Float {
+    val prefs = Utilities.getOmegaPrefs(context)
+    if (prefs.overrideWindowCornerRadius) {
+        return prefs.windowCornerRadius
+    }
+    return QuickStepContract.getWindowCornerRadius(context.resources)
+}
+
+fun supportsRoundedCornersOnWindows(context: Context): Boolean {
+    val pref = Utilities.getOmegaPrefs(context)
+    if (!Utilities.ATLEAST_R || pref.overrideWindowCornerRadius) {
+        return true
+    }
+    return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)
+}
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :
     FloatPropertyCompat<Any>(name) {

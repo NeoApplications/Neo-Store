@@ -95,7 +95,6 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.util.HiddenApiCompat;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -152,8 +151,6 @@ public final class Utilities {
     public static final boolean IS_DEBUG_DEVICE =
             Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
                     Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
-
-    public static boolean HIDDEN_APIS_ALLOWED = !ATLEAST_P || HiddenApiCompat.checkIfAllowed();
     /**
      * Returns true if theme is dark.
      */

@@ -125,6 +125,7 @@ import com.android.launcher3.statemanager.StatefulActivity;
 import com.android.launcher3.touch.OverScroll;
 import com.android.launcher3.touch.PagedOrientationHandler;
 import com.android.launcher3.util.DynamicResource;
+import com.android.launcher3.util.EdgeEffectCompat;
 import com.android.launcher3.util.IntSet;
 import com.android.launcher3.util.MultiValueAlpha;
 import com.android.launcher3.util.ResourceBasedOverride.Overrides;
@@ -649,8 +650,8 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
 
     @Override
     protected void initEdgeEffect() {
-        mEdgeGlowLeft = new TranslateEdgeEffect(getContext());
-        mEdgeGlowRight = new TranslateEdgeEffect(getContext());
+        mEdgeGlowLeft = EdgeEffectCompat.create(getContext(), this);
+        mEdgeGlowRight = EdgeEffectCompat.create(getContext(), this);
     }
 
     @Override

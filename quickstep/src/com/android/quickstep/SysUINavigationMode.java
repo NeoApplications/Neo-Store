@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.android.launcher3.ResourceUtils;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager.LauncherEvent;
 import com.android.launcher3.util.MainThreadInitializedObject;
 
@@ -92,6 +93,9 @@ public class SysUINavigationMode {
                 updateGesturalHeight();
             }
         }, getPackageFilter(TARGET_OVERLAY_PACKAGE, ACTION_OVERLAY_CHANGED));
+        if (!Utilities.ATLEAST_Q) {
+            mMode = Mode.THREE_BUTTONS;
+        }
     }
 
     /**

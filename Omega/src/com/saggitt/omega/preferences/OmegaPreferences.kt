@@ -46,6 +46,8 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
     val blurRadius by FloatPref("pref_blurRadius", 75f, updateBlur)
+    var overrideWindowCornerRadius by BooleanPref("pref_override_corner_radius", false, doNothing)
+    val windowCornerRadius by FloatPref("pref_global_corner_radius", 8f, updateBlur)
 
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)

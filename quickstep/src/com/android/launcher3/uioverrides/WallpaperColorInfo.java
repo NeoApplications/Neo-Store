@@ -11,7 +11,7 @@ public abstract class WallpaperColorInfo {
     public static WallpaperColorInfo getInstance(Context context) {
         synchronized (sInstanceLock) {
             if (sInstance == null) {
-                if (Utilities.ATLEAST_Q && !Utilities.HIDDEN_APIS_ALLOWED) {
+                if (Utilities.ATLEAST_Q) {
                     sInstance = new WallpaperColorInfoVL(context.getApplicationContext());
                 } else if (Utilities.ATLEAST_P) {
                     sInstance = new WallpaperColorInfoVP(context.getApplicationContext());

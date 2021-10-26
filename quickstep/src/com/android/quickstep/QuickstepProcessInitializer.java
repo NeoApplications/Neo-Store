@@ -24,7 +24,6 @@ import android.util.Log;
 
 import com.android.launcher3.BuildConfig;
 import com.android.launcher3.MainProcessInitializer;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Executors;
 import com.android.quickstep.logging.SettingsChangeLogger;
 import com.android.systemui.shared.system.InteractionJankMonitorWrapper;
@@ -64,9 +63,7 @@ public class QuickstepProcessInitializer extends MainProcessInitializer {
         try {
             ThreadedRendererCompat.setContextPriority(ThreadedRendererCompat.EGL_CONTEXT_PRIORITY_HIGH_IMG);
         } catch (Throwable t) {
-            if (Utilities.ATLEAST_P && Utilities.HIDDEN_APIS_ALLOWED) {
-                Log.e("QuickstepProcessInit", "Hidden APIs allowed but can't invoke setContextPriority", t);
-            }
+            Log.e("QuickstepProcessInit", "Hidden APIs allowed but can't invoke setContextPriority", t);
         }
 
         // Initialize settings logger after a default timeout
