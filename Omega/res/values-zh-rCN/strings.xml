@@ -386,4 +386,20 @@
     <string name="trust_apps_manager_name">隐藏和受保护应用</string>
     <string name="trust_apps_no_lock_error">请设置安全锁屏来限制应用访问</string>
     <string name="protected_app_reset">重置受保护应用</string>
+    <string name="gesture_launch_assistant">启动助手（通过按钮或手势）</string>
+    <string name="modify_system_settings">修改系统设置</string>
+    <string name="dash_auto_rotation">自动旋转</string>
+    <string name="dash_sync">同步</string>
+    <string name="launch_assistant">启动助手</string>
+    <string name="dash_location">位置</string>
+    <string name="dash_bluetooth_summary">打开或关闭蓝牙</string>
+    <string name="dash_location_summary">更改位置设置</string>
+    <string name="dash_torch_summary">打开/关闭闪光灯。</string>
+    <string name="dash_auto_rotation_summary">打开/关闭自动旋转。</string>
+    <string name="dash_torch">闪光灯</string>
+    <string name="dash_wifi">无线网络</string>
+    <string name="dash_sync_summary">打开/关闭同步。</string>
+    <string name="modify_system_settings_message">您必须允许 Omega 修改系统设置才能使其正常工作</string>
+    <string name="dash_wifi_summary">Wifi 状态和连接</string>
+    <string name="dash_bluetooth">蓝牙</string>
 </resources>
