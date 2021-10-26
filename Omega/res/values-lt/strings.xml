@@ -390,4 +390,20 @@
     <string name="trust_apps_manager_name">Paslėptos ir apsaugotos programėlės</string>
     <string name="trust_apps_no_lock_error">Nustatykite saugų užrakinimo ekraną, kad apribotumėte prieigą prie programėlės</string>
     <string name="protected_app_reset">Atstatyti apsaugotas programėles</string>
+    <string name="dash_wifi">Wi-Fi</string>
+    <string name="dash_wifi_summary">Wi-Fi būsena ir ryšys</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="dash_bluetooth_summary">Įjunkite arba išjunkite Bluetooth</string>
+    <string name="dash_location">Vieta</string>
+    <string name="dash_location_summary">Pakeisti vietos nustatymus</string>
+    <string name="dash_torch">Žibintuvėlis</string>
+    <string name="gesture_launch_assistant">Paleiskite asistentą (mygtuku arba gestu)</string>
+    <string name="dash_torch_summary">Įjunkite / išjunkite žibintuvėlį.</string>
+    <string name="dash_auto_rotation">Automatinis pasukimas</string>
+    <string name="dash_sync_summary">Įjunkite / išjunkite sinchronizavimą.</string>
+    <string name="dash_auto_rotation_summary">Įjunkite / išjunkite automatinį pasukimą.</string>
+    <string name="dash_sync">Sinchronizavimas</string>
+    <string name="launch_assistant">Paleidimo asistentas</string>
+    <string name="modify_system_settings">Sistemos nustatymų keitimas</string>
+    <string name="modify_system_settings_message">Kad tai veiktų, turite leisti „Omega“ keisti sistemos nustatymus</string>
 </resources>
