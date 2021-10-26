@@ -32,6 +32,7 @@ import static com.android.systemui.shared.system.RemoteAnimationTargetCompat.MOD
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -194,6 +195,46 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
     public void returnToHomescreen() {
         super.returnToHomescreen();
         // TODO(b/137318995) This should go home, but doing so removes freeform windows
+    }
+
+    @Override
+    public ActivityOptions getActivityLaunchOptions(final View v) {
+        if (!(v instanceof TaskView)) {
+            return null;
+        }
+
+        final TaskView taskView = (TaskView) v;
+        RunnableList onEndCallback = new RunnableList();
+
+        mActivityLaunchAnimationRunner = new RemoteAnimationFactory() {
+            @Override
+            public void onCreateAnimation(int transit, RemoteAnimationTargetCompat[] appTargets,
+                                          RemoteAnimationTargetCompat[] wallpaperTargets,
+                                          RemoteAnimationTargetCompat[] nonAppTargets, AnimationResult result) {
+                AnimatorSet anim = composeRecentsLaunchAnimator(taskView, appTargets,
+                        wallpaperTargets, nonAppTargets);
+                anim.addListener(resetStateListener());
+                result.setAnimation(anim, RecentsActivity.this, onEndCallback::executeAllAndDestroy,
+                        true /* skipFirstFrame */);
+            }
+
+            @Override
+            public void onAnimationCancelled() {
+                onEndCallback.executeAllAndDestroy();
+            }
+        };
+
+        final LauncherAnimationRunner wrapper = new LauncherAnimationRunner(
+                mUiHandler, mActivityLaunchAnimationRunner, true /* startAtFrontOfQueue */);
+        RemoteAnimationAdapterCompat adapterCompat = new RemoteAnimationAdapterCompat(
+                wrapper, RECENTS_LAUNCH_DURATION,
+                RECENTS_LAUNCH_DURATION - STATUS_BAR_TRANSITION_DURATION
+                        - STATUS_BAR_TRANSITION_PRE_DELAY);
+        final ActivityOptionsWrapper activityOptions = new ActivityOptionsWrapper(
+                ActivityOptionsCompat.makeRemoteAnimation(adapterCompat),
+                onEndCallback);
+        activityOptions.options.setSplashscreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
+        return activityOptions.options;
     }
 
     @Override

@@ -39,6 +39,7 @@ public interface InputConsumer {
     int TYPE_OVERSCROLL = 1 << 9;
     int TYPE_SYSUI_OVERLAY = 1 << 10;
     int TYPE_ONE_HANDED = 1 << 11;
+    int TYPE_CUSTOM_GESTURES = 1 << 12;
 
     String[] NAMES = new String[]{
             "TYPE_NO_OP",                    // 0

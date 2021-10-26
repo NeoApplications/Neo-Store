@@ -43,7 +43,7 @@ public interface SearchUiManager {
     default void preDispatchKeyEvent(KeyEvent keyEvent) {
     }
 
-    ;
+    void startSearch();
 
     /**
      * @return the edit text object

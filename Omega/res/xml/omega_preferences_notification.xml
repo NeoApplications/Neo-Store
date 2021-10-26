@@ -15,11 +15,77 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.android.launcher3.settings.NotificationDotsPreference
         android:key="pref_icon_badging"
         android:persistent="false"
         android:title="@string/notification_dots_title"
-        android:widgetLayout="@layout/notification_pref_warning" />
+        android:widgetLayout="@layout/notification_pref_warning"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_dash_class"
+        android:key="pref_gesture_double_tap"
+        android:persistent="true"
+        android:title="@string/gesture_double_tap"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.DoubleTapGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_overview_class"
+        android:key="pref_gesture_long_press"
+        android:persistent="true"
+        android:title="@string/gesture_long_press"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.LongPressGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_do_nothing_class"
+        android:key="pref_gesture_press_home"
+        android:persistent="true"
+        android:title="@string/gesture_press_home"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.PressHomeGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_do_nothing_class"
+        android:key="pref_gesture_press_back"
+        android:persistent="true"
+        android:title="@string/gesture_press_back"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.PressBackGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_notifications_class"
+        android:key="pref_gesture_swipe_down"
+        android:persistent="true"
+        android:title="@string/title__gesture_swipe_down"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.VerticalSwipeGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_drawer_class"
+        android:key="pref_gesture_swipe_up"
+        android:persistent="true"
+        android:title="@string/gesture_swipe_up"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.VerticalSwipeGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_drawer_class"
+        android:key="pref_gesture_dock_swipe_up"
+        android:persistent="true"
+        android:title="@string/gesture_dock_swipe_up"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.VerticalSwipeGesture"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.GesturePreference
+        android:defaultValue="@string/action_open_dash_class"
+        android:key="pref_gesture_launch_assistant"
+        android:persistent="true"
+        android:title="@string/gesture_launch_assistant"
+        app:gestureClass="com.saggitt.omega.gestures.gestures.LaunchAssistantGesture"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

@@ -15,6 +15,9 @@
  */
 package com.android.launcher3.util;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.BaseActivity;
@@ -26,7 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Helper class to statically track activity creation
  * @param <T> The activity type to track
  */
-public final class ActivityTracker<T extends BaseActivity> {
+public final class  ActivityTracker<T extends BaseActivity> {
+    private static final String EXTRA_SCHEDULER_CALLBACK = "launcher.scheduler_callback";
 
     private WeakReference<T> mCurrentActivity = new WeakReference<>(null);
     private CopyOnWriteArrayList<SchedulerCallback<T>> mCallbacks = new CopyOnWriteArrayList<>();
@@ -98,5 +102,17 @@ public final class ActivityTracker<T extends BaseActivity> {
          * @return Whether to continue receiving callbacks (i.e. if the activity is recreated).
          */
         boolean init(T activity, boolean alreadyOnHome);
+
+        /**
+         * Adds this callback as an extra on the intent, so we can retrieve it in handleIntent() and
+         * call {@link #init}. The intent should be used to start the activity after calling this
+         * method in order for us to get handleIntent().
+         */
+        default Intent addToIntent(Intent intent) {
+            Bundle extras = new Bundle();
+            extras.putBinder(EXTRA_SCHEDULER_CALLBACK, ObjectWrapper.wrap(this));
+            intent.putExtras(extras);
+            return intent;
+        }
     }
 }

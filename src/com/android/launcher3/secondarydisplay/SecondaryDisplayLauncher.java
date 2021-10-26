@@ -17,6 +17,7 @@ package com.android.launcher3.secondarydisplay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -164,6 +165,11 @@ public class SecondaryDisplayLauncher extends BaseDraggingActivity
     @Override
     public View getRootView() {
         return mDragLayer;
+    }
+
+    @Override
+    public ActivityOptions getActivityLaunchOptions(View v) {
+        return null;
     }
 
     @Override

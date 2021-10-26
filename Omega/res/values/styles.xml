@@ -168,6 +168,14 @@
 
     <style name="SettingsTheme.PreferenceTheme.Preference.Title" parent="@style/TextAppearance.AppCompat.Subhead" />
 
+    <style name="DashTheme" parent="@style/AppTheme.Dark">
+        <item name="background">@android:color/transparent</item>
+    </style>
+
+    <style name="DashTheme.Item" parent="DashTheme">
+        <item name="cpv_borderColor">@color/colorAccent</item>
+    </style>
+
     <style name="WidgetContainerTheme.Black" parent="AppTheme.Black">
         <item name="android:colorPrimaryDark">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>

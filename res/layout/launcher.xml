@@ -32,6 +32,11 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/home_screen" />
 
+        <View
+            android:id="@+id/dummy_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
         <!-- The workspace contains 5 screens of cells -->
         <!-- DO NOT CHANGE THE ID -->
         <com.android.launcher3.Workspace
@@ -46,6 +51,10 @@
         <include
             android:id="@+id/hotseat"
             layout="@layout/hotseat" />
+
+        <include
+            android:id="@+id/options_view"
+            layout="@layout/longpress_options_menu" />
 
         <!-- Keep these behind the workspace so that they are not visible when
          we go into AllApps -->

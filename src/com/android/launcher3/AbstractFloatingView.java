@@ -63,7 +63,8 @@ public abstract class AbstractFloatingView extends LinearLayout implements Touch
             TYPE_OPTIONS_POPUP,
             TYPE_ICON_SURFACE,
             TYPE_PIN_WIDGET_FROM_EXTERNAL_POPUP,
-            TYPE_WIDGETS_EDUCATION_DIALOG
+            TYPE_WIDGETS_EDUCATION_DIALOG,
+            TYPE_SETTINGS_SHEET
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface FloatingViewType {
@@ -88,13 +89,15 @@ public abstract class AbstractFloatingView extends LinearLayout implements Touch
 
     public static final int TYPE_PIN_WIDGET_FROM_EXTERNAL_POPUP = 1 << 14;
     public static final int TYPE_WIDGETS_EDUCATION_DIALOG = 1 << 15;
+    // Custom popups
+    public static final int TYPE_SETTINGS_SHEET = 1 << 16;
 
     public static final int TYPE_ALL = TYPE_FOLDER | TYPE_ACTION_POPUP
             | TYPE_WIDGETS_BOTTOM_SHEET | TYPE_WIDGET_RESIZE_FRAME | TYPE_WIDGETS_FULL_SHEET
             | TYPE_ON_BOARD_POPUP | TYPE_DISCOVERY_BOUNCE | TYPE_TASK_MENU
             | TYPE_OPTIONS_POPUP | TYPE_SNACKBAR | TYPE_LISTENER | TYPE_ALL_APPS_EDU
             | TYPE_ICON_SURFACE | TYPE_DRAG_DROP_POPUP | TYPE_PIN_WIDGET_FROM_EXTERNAL_POPUP
-            | TYPE_WIDGETS_EDUCATION_DIALOG;
+            | TYPE_WIDGETS_EDUCATION_DIALOG | TYPE_SETTINGS_SHEET;
 
     // Type of popups which should be kept open during launcher rebind
     public static final int TYPE_REBIND_SAFE = TYPE_WIDGETS_FULL_SHEET

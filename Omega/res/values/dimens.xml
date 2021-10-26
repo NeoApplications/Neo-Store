@@ -27,12 +27,24 @@
     <dimen name="dashboard_tile_image_margin_start">16dp</dimen>
     <dimen name="dashboard_tile_image_margin_end">20dp</dimen>
 
+    <!-- All Apps -->
+    <dimen name="all_apps_caret_stroke_width">2dp</dimen>
+    <dimen name="all_apps_caret_shadow_spread">1dp</dimen>
+    <dimen name="all_apps_caret_size">13dp</dimen>
+
     <!-- Setting Search -->
     <dimen name="large_title_height">16dp</dimen>
     <dimen name="search_bar_height">48dp</dimen>
     <dimen name="search_bar_margin">16dp</dimen>
     <dimen name="search_bar_text_size">16dp</dimen>
 
+    <dimen name="dialog_horizontal_padding">24dp</dimen>
     <dimen name="large_title_horizontal_padding">70dp</dimen>
     <dimen name="large_title_vertical_padding">24dp</dimen>
+    <dimen name="icon_preview_size">48dp</dimen>
+    <dimen name="swipe_up_negative_max">400dp</dimen>
+    <dimen name="swipe_up_positive_max">100dp</dimen>
+    <dimen name="select_dialog_padding_start_material">20dp</dimen>
+    <dimen name="select_dialog_padding_material">24dp</dimen>
+    <dimen name="select_dialog_drawable_padding_start_material">20dp</dimen>
 </resources>

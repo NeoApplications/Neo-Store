@@ -420,4 +420,34 @@
 
     <!-- Failed action error message: e.g. Failed: Pause -->
     <string name="remote_action_failed">Failed: <xliff:g id="what" example="Pause">%1$s</xliff:g></string>
+
+    <string name="title__gesture_swipe_down">Swipe down</string>
+    <string name="pref_category__notifications">Notifications</string>
+    <string name="pref_category__gestures">Gestures</string>
+    <string name="action_none">Do Nothing</string>
+    <string name="action_open_drawer">Open app drawer</string>
+    <string name="action_open_drawer_or_recents">Open recents/app drawer</string>
+    <string name="action_open_settings">Open Launcher Settings</string>
+    <string name="action_open_overview">Show Desktop Bubble</string>
+    <string name="action_open_dash">Open Dash</string>
+    <string name="action_open_app">Open App</string>
+    <string name="action_open_app_with_target">Open “%s”</string>
+    <string name="action_open_app_select_app">Pick app</string>
+    <string name="action_app_search">Open app search</string>
+    <string name="action_open_widgets">Open Widget Drawer</string>
+    <string name="action_open_notifications">Open notifications</string>
+    <string name="action_overlay">Open Google Feed</string>
+    <string name="action_close_notifications">Close notifications</string>
+    <string name="action_global_search">Launch Global Search</string>
+    <string name="action_sleep">Sleep</string>
+    <string name="action_sleep_timeout">Sleep Using Screen Timeout</string>
+    <string name="gesture_double_tap">Double tap</string>
+    <string name="gesture_long_press">Touch &amp; Hold</string>
+    <string name="gesture_swipe_up">Swipe Up</string>
+    <string name="gesture_dock_swipe_up">Swipe Up From Dock</string>
+    <string name="gesture_press_home">Home Button Tap</string>
+    <string name="gesture_press_back">Back button</string>
+    <string name="omega_actions">Actions</string>
+    <string name="dt2s_admin_hint">To use Double Tap to Sleep, grant the Admin permission.</string>
+    <string name="dt2s_admin_warning">Double Tap to Sleep will be disabled.</string>
 </resources>

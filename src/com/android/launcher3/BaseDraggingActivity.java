@@ -174,6 +174,13 @@ public abstract class BaseDraggingActivity extends BaseActivity
         return new Rect(pos[0], pos[1], pos[0] + v.getWidth(), pos[1] + v.getHeight());
     }
 
+    public final Bundle getActivityLaunchOptionsAsBundle(View v) {
+        ActivityOptions activityOptions = getActivityLaunchOptions(v);
+        return activityOptions == null ? null : activityOptions.toBundle();
+    }
+
+    public abstract ActivityOptions getActivityLaunchOptions(View v);
+
     @NonNull
     public ActivityOptionsWrapper getActivityLaunchOptions(View v, @Nullable ItemInfo item) {
         int left = 0, top = 0;
