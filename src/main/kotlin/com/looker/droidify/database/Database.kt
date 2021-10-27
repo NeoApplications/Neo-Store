@@ -34,6 +34,7 @@ object Database {
 
     private lateinit var db: SQLiteDatabase
 
+    // not needed with Room
     private interface Table {
         val memory: Boolean
         val innerName: String
@@ -61,6 +62,7 @@ object Database {
     }
 
     private object Schema {
+        // implemented
         object Repository : Table {
             const val ROW_ID = "_id"
             const val ROW_ENABLED = "enabled"
@@ -77,6 +79,7 @@ object Database {
       """
         }
 
+        // implemented
         object Product : Table {
             const val ROW_REPOSITORY_ID = "repository_id"
             const val ROW_PACKAGE_NAME = "package_name"
@@ -111,6 +114,7 @@ object Database {
             override val createIndex = ROW_PACKAGE_NAME
         }
 
+        // implemented
         object Category : Table {
             const val ROW_REPOSITORY_ID = "repository_id"
             const val ROW_PACKAGE_NAME = "package_name"
@@ -127,6 +131,7 @@ object Database {
             override val createIndex = "$ROW_PACKAGE_NAME, $ROW_NAME"
         }
 
+        // implemented
         object Installed : Table {
             const val ROW_PACKAGE_NAME = "package_name"
             const val ROW_VERSION = "version"
@@ -143,6 +148,7 @@ object Database {
       """
         }
 
+        // implemented
         object Lock : Table {
             const val ROW_PACKAGE_NAME = "package_name"
             const val ROW_VERSION_CODE = "version_code"
@@ -155,12 +161,14 @@ object Database {
       """
         }
 
+        // TODO find a class to include them as constants
         object Synthetic {
             const val ROW_CAN_UPDATE = "can_update"
             const val ROW_MATCH_RANK = "match_rank"
         }
     }
 
+    // not needed remove after migration
     private class Helper(context: Context) : SQLiteOpenHelper(context, "droidify", null, 1) {
         var created = false
             private set
@@ -198,6 +206,7 @@ object Database {
         }
     }
 
+    // not needed remove after migration
     private fun handleTables(db: SQLiteDatabase, recreate: Boolean, vararg tables: Table): Boolean {
         val shouldRecreate = recreate || tables.any {
             val sql = db.query(
@@ -220,6 +229,7 @@ object Database {
         }
     }
 
+    // not needed remove after migration
     private fun handleIndexes(db: SQLiteDatabase, vararg tables: Table) {
         val shouldVacuum = tables.map {
             val sqls = db.query(
@@ -248,6 +258,7 @@ object Database {
         }
     }
 
+    // TODO not needed, remove after migration
     private fun dropOldTables(db: SQLiteDatabase, vararg neededTables: Table) {
         val tables = db.query(
             "sqlite_master", columns = arrayOf("name"),
@@ -274,6 +285,8 @@ object Database {
 
     private val observers = mutableMapOf<Subject, MutableSet<() -> Unit>>()
 
+
+    // TODO not needed remove after migration (replaced by LiveData)
     private fun dataObservable(subject: Subject): (Boolean, () -> Unit) -> Unit =
         { register, observer ->
             synchronized(observers) {
@@ -290,6 +303,7 @@ object Database {
             }
         }
 
+    // TODO not needed remove after migration (replaced by LiveData)
     fun observable(subject: Subject): Observable<Unit> {
         return Observable.create {
             val callback: () -> Unit = { it.onNext(Unit) }
@@ -299,12 +313,14 @@ object Database {
         }
     }
 
+    // TODO not needed remove after migration (replaced by LiveData)
     private fun notifyChanged(vararg subjects: Subject) {
         synchronized(observers) {
             subjects.asSequence().mapNotNull { observers[it] }.flatten().forEach { it() }
         }
     }
 
+    // TODO Done through inserts/replace of DAOs, only temporary still not finished
     private fun SQLiteDatabase.insertOrReplace(
         replace: Boolean,
         table: String,
@@ -350,6 +366,7 @@ object Database {
         return outputStream.toByteArray()
     }
 
+    // Partially done, only
     object RepositoryAdapter {
         // Done in put
         internal fun putWithoutNotification(repository: Repository, shouldReplace: Boolean): Long {
@@ -498,7 +515,7 @@ object Database {
                 .use { it.firstOrNull()?.getInt(0) ?: 0 }
         }
 
-        // Complex left to wiring phase
+        // TODO Too complex left to wiring phase
         fun query(
             installed: Boolean, updates: Boolean, searchQuery: String,
             section: ProductItem.Section, order: ProductItem.Order, signal: CancellationSignal?
@@ -596,7 +613,7 @@ object Database {
                 }
         }
 
-        // Unnecessary with Room
+        // TODO should be taken care of with extra functions that build on Room's queries
         fun transformItem(cursor: Cursor): ProductItem {
             return cursor.getBlob(cursor.getColumnIndex(Schema.Product.ROW_DATA_ITEM))
                 .jsonParse {
@@ -623,6 +640,7 @@ object Database {
         }
     }
 
+    // Done
     object CategoryAdapter {
         // Done
         fun getAll(signal: CancellationSignal?): Set<String> {
@@ -642,6 +660,7 @@ object Database {
         }
     }
 
+    // Done
     object InstalledAdapter {
         // Done
         fun get(packageName: String, signal: CancellationSignal?): InstalledItem? {
@@ -707,6 +726,7 @@ object Database {
         }
     }
 
+    // Done with some changes in DAOS
     object LockAdapter {
         // Done in insert (Lock object instead of pair)
         private fun put(lock: Pair<String, Long>, notify: Boolean) {
