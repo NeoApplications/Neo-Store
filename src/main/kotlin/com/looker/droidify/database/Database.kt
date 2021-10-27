@@ -515,7 +515,7 @@ object Database {
                 .use { it.firstOrNull()?.getInt(0) ?: 0 }
         }
 
-        // TODO Too complex left to wiring phase
+        // Done
         fun query(
             installed: Boolean, updates: Boolean, searchQuery: String,
             section: ProductItem.Section, order: ProductItem.Order, signal: CancellationSignal?
