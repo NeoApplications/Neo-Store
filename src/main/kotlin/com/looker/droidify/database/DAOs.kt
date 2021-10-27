@@ -1,17 +1,20 @@
 package com.looker.droidify.database
 
-import android.database.SQLException
 import androidx.room.*
 
-@Dao
-interface RepositoryDao {
+interface BaseDao<T> {
     @Insert
-    @Throws(SQLException::class)
-    fun insert(vararg repository: Repository)
+    fun insert(vararg product: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg repository: Repository?)
+    fun update(vararg obj: T)
 
+    @Delete
+    fun delete(obj: T)
+}
+
+@Dao
+interface RepositoryDao : BaseDao<Repository> {
     fun put(repository: Repository) {
         if (repository.id >= 0L) update(repository) else insert(repository)
     }
@@ -25,20 +28,18 @@ interface RepositoryDao {
     @get:Query("SELECT _id, deleted FROM repository WHERE deleted != 0 and enabled == 0 ORDER BY _id ASC")
     val allDisabledDeleted: List<Repository.IdAndDeleted>
 
-    @Delete
-    fun delete(repository: Repository)
-
     @Query("DELETE FROM repository WHERE _id = :id")
     fun deleteById(vararg id: Long): Int
 
+    // TODO optimize
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun markAsDeleted(id: Long) {
-        update(get(id).apply { this?.deleted = 1 })
+        get(id).apply { this?.deleted = 1 }?.let { update(it) }
     }
 }
 
 @Dao
-interface ProductDao {
+interface ProductDao : BaseDao<Product> {
     @Query("SELECT COUNT(*) FROM product WHERE repository_id = :id")
     fun countForRepository(id: Long): Long
 
@@ -50,7 +51,7 @@ interface ProductDao {
 }
 
 @Dao
-interface CategoryDao {
+interface CategoryDao : BaseDao<Category> {
     @Query(
         """SELECT DISTINCT category.name
         FROM category AS category
@@ -66,11 +67,7 @@ interface CategoryDao {
 }
 
 @Dao
-interface InstalledDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    @Throws(SQLException::class)
-    fun insert(vararg installed: Installed)
-
+interface InstalledDao : BaseDao<Installed> {
     @Query("SELECT * FROM installed WHERE package_name = :packageName")
     fun get(packageName: String): Installed?
 
@@ -79,11 +76,7 @@ interface InstalledDao {
 }
 
 @Dao
-interface LockDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    @Throws(SQLException::class)
-    fun insert(vararg lock: Lock)
-
+interface LockDao : BaseDao<Lock> {
     @Query("DELETE FROM lock WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
