@@ -166,6 +166,7 @@ import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat.
 import com.android.systemui.shared.system.TaskStackChangeListener;
 import com.android.systemui.shared.system.TaskStackChangeListeners;
 import com.android.wm.shell.pip.IPipAnimationListener;
+import com.saggitt.omega.OmegaApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -788,8 +789,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().addCallback(this);
         mActivity.addMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        TaskStackChangeListeners.getInstance().registerTaskStackListener(mTaskStackListener);
-        mSyncTransactionApplier = new SurfaceTransactionApplier(this);
+        if (OmegaApp.isRecentsEnabled()) {
+            TaskStackChangeListeners.getInstance().registerTaskStackListener(mTaskStackListener);
+            mSyncTransactionApplier = new SurfaceTransactionApplier(this);
+        }
         mLiveTileParams.setSyncTransactionApplier(mSyncTransactionApplier);
         RecentsModel.INSTANCE.get(getContext()).addThumbnailChangeListener(this);
         mIPipAnimationListener.setActivityAndRecentsView(mActivity, this);
@@ -806,8 +809,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().removeCallback(this);
         mActivity.removeMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        TaskStackChangeListeners.getInstance().unregisterTaskStackListener(mTaskStackListener);
-        mSyncTransactionApplier = null;
+        if (OmegaApp.isRecentsEnabled()) {
+            TaskStackChangeListeners.getInstance().unregisterTaskStackListener(mTaskStackListener);
+            mSyncTransactionApplier = null;
+        }
         mLiveTileParams.setSyncTransactionApplier(null);
         executeSideTaskLaunchCallback();
         RecentsModel.INSTANCE.get(getContext()).removeThumbnailChangeListener(this);
@@ -3955,6 +3960,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
      * Update the current activity locus id to show the enabled state of Overview
      */
     public void updateLocusId() {
+        if (!Utilities.ATLEAST_R) return;
         String locusId = "Overview";
 
         if (mOverviewStateEnabled && mActivity.isStarted()) {

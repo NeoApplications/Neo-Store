@@ -29,6 +29,7 @@ import android.provider.Settings
 import android.util.Log
 import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
+import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
@@ -38,6 +39,12 @@ class OmegaApp : Application() {
     var accessibilityService: OmegaAccessibilityService? = null
 
     val activityHandler = ActivityHandler()
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+        QuickStepContract.sRecentsDisabled = !recentsEnabled
+    }
 
     fun performGlobalAction(action: Int): Boolean {
         return if (accessibilityService != null) {

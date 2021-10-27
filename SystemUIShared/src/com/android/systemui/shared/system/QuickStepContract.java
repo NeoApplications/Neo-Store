@@ -270,6 +270,7 @@ public class QuickStepContract {
         return mode == NAV_BAR_MODE_3BUTTON;
     }
 
+    public static boolean sRecentsDisabled = false;
     public static boolean sHasCustomCornerRadius = false;
     public static float sCustomCornerRadius = 0f;
 
@@ -279,6 +280,9 @@ public class QuickStepContract {
      * scaling, this means that we don't have to reload them on config changes.
      */
     public static float getWindowCornerRadius(Resources resources) {
+        if (sRecentsDisabled) {
+            return 0;
+        }
         if (sHasCustomCornerRadius) {
             return sCustomCornerRadius;
         }
@@ -289,6 +293,9 @@ public class QuickStepContract {
      * If live rounded corners are supported on windows.
      */
     public static boolean supportsRoundedCornersOnWindows(Resources resources) {
+        if (sRecentsDisabled) {
+            return false;
+        }
         return ScreenDecorationsUtils.supportsRoundedCornersOnWindows(resources);
     }
 }

@@ -27,6 +27,7 @@ public class ApiWrapper {
     public static final boolean TASKBAR_DRAWN_IN_PROCESS = true;
 
     public static Person[] getPersons(ShortcutInfo si) {
+        if (!Utilities.ATLEAST_Q) return Utilities.EMPTY_PERSON_ARRAY;
         Person[] persons = si.getPersons();
         return persons == null ? Utilities.EMPTY_PERSON_ARRAY : persons;
     }

@@ -194,7 +194,7 @@ public class QuickstepModelDelegate extends ModelDelegate implements OnIDPChange
     @WorkerThread
     private void recreatePredictors() {
         destroyPredictors();
-        if (!mActive) {
+        if (!Utilities.ATLEAST_Q || !mActive) {
             return;
         }
         Context context = mApp.getContext();
@@ -202,7 +202,6 @@ public class QuickstepModelDelegate extends ModelDelegate implements OnIDPChange
         if (apm == null) {
             return;
         }
-        if (!Utilities.ATLEAST_Q) return;
         int usagePerm = mApp.getContext().checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS);
         if (usagePerm != PackageManager.PERMISSION_GRANTED) return;
 
