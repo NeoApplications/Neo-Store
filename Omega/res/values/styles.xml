@@ -47,7 +47,7 @@
 
     <style name="AppTheme.Black.DarkText" parent="@style/AppTheme.Black" />
 
-    <style name="SettingsTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="SettingsTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:colorEdgeEffect">?colorAccent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>

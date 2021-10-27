@@ -19,11 +19,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.saggitt.omega.theme.ui.ThemeListPreference
-        android:key="pref_launcherTheme"
+    <com.saggitt.omega.preferences.custom.ThemePreference
+        android:key="launcherTheme"
         android:title="@string/title__general_theme"
-        app:content="@xml/theme_dialog"
-        app:iconSpaceReserved="false" />
+        app:useSimpleSummaryProvider="true" />
 
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:defaultValue="@color/colorAccent"
@@ -32,6 +31,5 @@
         app:cpv_dialogTitle="@string/title__theme_accent_color"
         app:cpv_dialogType="custom"
         app:cpv_previewSize="large"
-        app:cpv_showAlphaSlider="true"
-        app:iconSpaceReserved="false" />
+        app:cpv_showAlphaSlider="true" />
 </PreferenceScreen>
