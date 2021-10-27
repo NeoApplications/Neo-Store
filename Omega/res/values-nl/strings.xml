@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_folder_name">Nieuwe map</string>
+    <string name="title__general_about">Over</string>
+    <string name="title__general_desktop">Bureaublad</string>
+    <string name="title__general_theme">Thema</string>
+    <string name="title__general_search">Zoeken en Mappen</string>
+    <string name="title__general_advanced">Geavanceerde instellingen</string>
+    <string name="summary__general_desktop">Pas je bureaublad aan</string>
+    <string name="summary__general_theme">Verander kleur, iconen pakket, icoon vorm</string>
+    <string name="summary__general_search">Zoekfunctie provider, stijl, iconen</string>
+    <string name="title__general_notifications">Gestures en notificaties</string>
+    <string name="summary__general_smartspace">Datum, tijd, home widget</string>
+    <string name="summary__general_about">Meer informatie over Omega Launcher</string>
+    <string name="pref_category__interfaces">Gebruikersinterface</string>
+    <string name="pref_category__inputs">Gestures en zoeken</string>
+    <string name="pref_category__others">Andere</string>
+    <string name="allow_rotation_blocked_desc">Je huidige beeld instellingen staan geen rotatie toe</string>
+    <string name="title__desktop_icon_size">Icoon grote</string>
+    <string name="title__desktop_hide_icon_labels">Verberg icoon labels op het startscherm</string>
+    <string name="title_desktop_overlap_placement">Sta overlappingen toe</string>
+    <string name="title_desktop_lock_desktop">Vergrendel bureaublad</string>
+    <string name="title_desktop_keep_empty">Sta lege pagina\'s toe</string>
+    <string name="title_desktop_hide_statusbar">Verberg status bar</string>
+    <string name="title_desktop_text_size">Tekst grote</string>
+    <string name="grid_size_height">Hoogte</string>
+    <string name="grid_size_width">Breedte</string>
+    <string name="title__dock_icon_size">Icoon grote</string>
+    <string name="title_dock_fill">Toon achtergrond</string>
+    <string name="title_dock_background_color">Achtergrondkleur</string>
+    <string name="title__dock_hide_labels">Verberg labels</string>
+    <string name="title__dock_colored_icons">Gekleurde iconen</string>
+    <string name="title__dock_search_bar">Toon zoekbalk</string>
+    <string name="title__dock_hotseat_icons">Icoon hoeveelheid</string>
+</resources>
