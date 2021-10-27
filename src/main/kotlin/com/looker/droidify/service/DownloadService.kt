@@ -9,10 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.BuildConfig
-import com.looker.droidify.Common
-import com.looker.droidify.MainActivity
-import com.looker.droidify.R
+import com.looker.droidify.*
 import com.looker.droidify.content.Cache
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.entity.Release
@@ -119,7 +116,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             } else {
                 cancelTasks(packageName)
                 cancelCurrentTask(packageName)
-                notificationManager.cancel(task.notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
+                notificationManager.cancel(task.notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 tasks += task
                 if (currentTask == null) {
                     handleDownload()
@@ -151,7 +148,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
         if (Android.sdk(26)) {
             NotificationChannel(
-                Common.NOTIFICATION_CHANNEL_DOWNLOADING,
+                NOTIFICATION_CHANNEL_DOWNLOADING,
                 getString(R.string.downloading), NotificationManager.IMPORTANCE_LOW
             )
                 .apply { setShowBadge(false) }
@@ -208,9 +205,9 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private fun showNotificationError(task: Task, errorType: ErrorType) {
         notificationManager.notify(task.notificationTag,
-            Common.NOTIFICATION_ID_DOWNLOADING,
+            NOTIFICATION_ID_DOWNLOADING,
             NotificationCompat
-                .Builder(this, Common.NOTIFICATION_CHANNEL_DOWNLOADING)
+                .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
                 .setAutoCancel(true)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
                 .setColor(
@@ -275,8 +272,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private fun showNotificationInstall(task: Task) {
         notificationManager.notify(
-            task.notificationTag, Common.NOTIFICATION_ID_DOWNLOADING, NotificationCompat
-                .Builder(this, Common.NOTIFICATION_CHANNEL_DOWNLOADING)
+            task.notificationTag, NOTIFICATION_ID_DOWNLOADING, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
                 .setAutoCancel(true)
                 .setSmallIcon(android.R.drawable.stat_sys_download_done)
                 .setColor(
@@ -373,7 +370,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private val stateNotificationBuilder by lazy {
         NotificationCompat
-            .Builder(this, Common.NOTIFICATION_CHANNEL_DOWNLOADING)
+            .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
             .setSmallIcon(android.R.drawable.stat_sys_download)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -395,7 +392,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     private fun publishForegroundState(force: Boolean, state: State) {
         if (force || currentTask != null) {
             currentTask = currentTask?.copy(lastState = state)
-            startForeground(Common.NOTIFICATION_ID_SYNCING, stateNotificationBuilder.apply {
+            startForeground(NOTIFICATION_ID_SYNCING, stateNotificationBuilder.apply {
                 when (state) {
                     is State.Connecting -> {
                         setContentTitle(getString(R.string.downloading_FORMAT, state.name))

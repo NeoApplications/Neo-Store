@@ -104,19 +104,19 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun updateSyncJob(force: Boolean) {
         val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        val reschedule = force || !jobScheduler.allPendingJobs.any { it.id == Common.JOB_ID_SYNC }
+        val reschedule = force || !jobScheduler.allPendingJobs.any { it.id == JOB_ID_SYNC }
         if (reschedule) {
             val autoSync = Preferences[Preferences.Key.AutoSync]
             when (autoSync) {
                 Preferences.AutoSync.Never -> {
-                    jobScheduler.cancel(Common.JOB_ID_SYNC)
+                    jobScheduler.cancel(JOB_ID_SYNC)
                 }
                 Preferences.AutoSync.Wifi, Preferences.AutoSync.Always -> {
                     val period = 12 * 60 * 60 * 1000L // 12 hours
                     val wifiOnly = autoSync == Preferences.AutoSync.Wifi
                     jobScheduler.schedule(JobInfo
                         .Builder(
-                            Common.JOB_ID_SYNC,
+                            JOB_ID_SYNC,
                             ComponentName(this, SyncService.Job::class.java)
                         )
                         .setRequiredNetworkType(if (wifiOnly) JobInfo.NETWORK_TYPE_UNMETERED else JobInfo.NETWORK_TYPE_ANY)
