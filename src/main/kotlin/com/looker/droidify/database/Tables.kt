@@ -30,8 +30,8 @@ class Repository {
     }
 }
 
-@Entity(primaryKeys = ["repository_id", "package_name"])
-class Product {
+@Entity(tableName = "product", primaryKeys = ["repository_id", "package_name"])
+open class Product {
     var repository_id: Long = 0
     var package_name = ""
 
@@ -51,14 +51,14 @@ class Product {
     var data_item: ProductItem? = null
 }
 
-@Entity(primaryKeys = ["repository_id", "package_name", "name"])
-class Category {
+@Entity(tableName = "category", primaryKeys = ["repository_id", "package_name", "name"])
+open class Category {
     var repository_id: Long = 0
     var package_name = ""
     var name = ""
 }
 
-@Entity
+@Entity(tableName = "memory.installed")
 class Installed {
     @PrimaryKey
     var package_name = ""
@@ -68,7 +68,7 @@ class Installed {
     var signature = ""
 }
 
-@Entity
+@Entity(tableName = "memory.lock")
 class Lock {
     @PrimaryKey
     var package_name = ""

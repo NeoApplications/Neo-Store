@@ -166,15 +166,15 @@ interface CategoryDao : BaseDao<Category> {
 
 @Dao
 interface InstalledDao : BaseDao<Installed> {
-    @Query("SELECT * FROM installed WHERE package_name = :packageName")
+    @Query("SELECT * FROM `memory.installed` WHERE package_name = :packageName")
     fun get(packageName: String): Installed?
 
-    @Query("DELETE FROM installed WHERE package_name = :packageName")
+    @Query("DELETE FROM 'memory.installed' WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
 
 @Dao
 interface LockDao : BaseDao<Lock> {
-    @Query("DELETE FROM lock WHERE package_name = :packageName")
+    @Query("DELETE FROM 'memory.lock' WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
