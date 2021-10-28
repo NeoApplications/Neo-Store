@@ -1,21 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
-  ~
-  ~  This program is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as
-  ~  published by the Free Software Foundation, either version 3 of the
-  ~  License, or (at your option) any later version.
-  ~
-  ~  This program is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -27,19 +10,18 @@
         android:fullBackupContent="@xml/backupscheme"
         android:fullBackupOnly="true"
         android:hardwareAccelerated="true"
+        android:icon="${appIcon}"
         android:label="@string/derived_app_name"
         android:largeHeap="@bool/config_largeHeap"
         android:restoreAnyVersion="true"
+        android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:icon="${appIcon}"
-        android:roundIcon="${appIconRound}"
         tools:replace="android:label">
 
         <activity
             android:name="com.android.launcher3.Launcher"
             tools:node="remove" />
-
         <!--
         Main launcher activity. When extending only change the name, and keep all the
         attributes and intent filters the same
@@ -49,6 +31,7 @@
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize"
             android:enabled="true"
+            android:exported="true"
             android:label="@string/derived_app_name"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
@@ -56,7 +39,6 @@
             android:screenOrientation="unspecified"
             android:stateNotNeeded="true"
             android:taskAffinity=""
-            android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,33 +49,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER_APP" />
             </intent-filter>
+
             <meta-data
                 android:name="com.android.launcher3.grid.control"
                 android:value="${packageName}.grid_control" />
         </activity>
-
         <activity
             android:name="com.android.launcher3.settings.SettingsActivity"
             tools:node="remove" />
-
         <activity
             android:name="com.saggitt.omega.settings.SettingsActivity"
-            android:label="@string/settings_button_text"
-            android:theme="@style/SettingsTheme.Light"
+            android:autoRemoveFromRecents="true"
             android:exported="true"
-            android:autoRemoveFromRecents="true">
+            android:label="@string/settings_button_text"
+            android:theme="@style/SettingsTheme.Light">
             <intent-filter android:priority="-1">
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.saggitt.omega.preferences.views.PreferencesActivity"
-            android:label="@string/settings_button_text"
-            android:theme="@style/SettingsTheme.Dark"
+            android:autoRemoveFromRecents="true"
             android:exported="true"
-            android:autoRemoveFromRecents="true">
+            android:label="@string/settings_button_text"
+            android:theme="@style/SettingsTheme.Dark">
             <intent-filter android:priority="-1">
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -106,21 +88,58 @@
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
 
+        <!-- Actions -->
+        <activity
+            android:name="com.saggitt.omega.gestures.OmegaShortcutActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/omega_actions"
+            android:theme="@style/SettingsTheme.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
+            android:exported="false"
+            android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
+            android:theme="@style/SettingsTheme.Light.Transparent">
+            <intent-filter>
+                <action android:name="ch.deletescape.lawnchair.START_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"
-            android:label="@string/derived_app_name"
             android:exported="true"
+            android:label="@string/derived_app_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
-
         <service
             android:name="com.android.launcher3.uioverrides.WallpaperManagerCompat$ColorExtractionService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":wallpaper_chooser" />
+
+        <receiver
+            android:name="com.saggitt.omega.widget.ClockWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/clock_widget_info" />
+        </receiver>
 
         <meta-data
             android:name="android.max_aspect"
@@ -128,6 +147,6 @@
         <meta-data
             android:name="com.samsung.android.non_immersive"
             android:value="true" />
-
     </application>
+
 </manifest>
