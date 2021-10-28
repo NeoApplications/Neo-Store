@@ -64,6 +64,10 @@
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
     </style>
 
+    <style name="SettingsTheme.Light.Transparent" parent="SettingsTheme">
+        <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+    </style>
+
     <style name="SettingsTheme.Dark" parent="SettingsTheme">
         <item name="android:windowBackground">@color/settings_background_dark</item>
         <item name="colorPrimary">?android:windowBackground</item>
@@ -179,5 +183,27 @@
     <style name="WidgetContainerTheme.Black" parent="AppTheme.Black">
         <item name="android:colorPrimaryDark">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
+    </style>
+
+    <style name="Widget.Omega.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:letterSpacing">@dimen/smartspaceLetterSpacing</item>
+        <item name="android:shadowColor">?attr/workspaceShadowColor</item>
+        <item name="android:shadowRadius">3</item>
+    </style>
+
+    <style name="ClockWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">16dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
+
+    <style name="ClockWidgetContainer" parent="ClockWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetPadding">16dp</item>
     </style>
 </resources>
