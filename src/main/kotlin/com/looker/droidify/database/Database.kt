@@ -477,7 +477,7 @@ object Database {
             ).observable(Subject.Repositories)
         }
 
-        // Unnecessary with Room
+        // Done
         fun transform(cursor: Cursor): Repository {
             return cursor.getBlob(cursor.getColumnIndex(Schema.Repository.ROW_DATA))
                 .jsonParse {
@@ -600,7 +600,7 @@ object Database {
             return builder.query(db, signal).observable(Subject.Products)
         }
 
-        // Unnecessary with Room
+        // Done
         private fun transform(cursor: Cursor): Product {
             return cursor.getBlob(cursor.getColumnIndex(Schema.Product.ROW_DATA))
                 .jsonParse {
@@ -613,7 +613,7 @@ object Database {
                 }
         }
 
-        // TODO should be taken care of with extra functions that build on Room's queries
+        // Done
         fun transformItem(cursor: Cursor): ProductItem {
             return cursor.getBlob(cursor.getColumnIndex(Schema.Product.ROW_DATA_ITEM))
                 .jsonParse {
@@ -726,7 +726,7 @@ object Database {
         }
     }
 
-    // Done with some changes in DAOS
+    // Done with some changes in DAOs
     object LockAdapter {
         // Done in insert (Lock object instead of pair)
         private fun put(lock: Pair<String, Long>, notify: Boolean) {
@@ -766,6 +766,7 @@ object Database {
         private val Table.temporaryName: String
             get() = "${name}_temporary"
 
+        // Done
         fun createTemporaryTable() {
             db.execSQL("DROP TABLE IF EXISTS ${Schema.Product.temporaryName}")
             db.execSQL("DROP TABLE IF EXISTS ${Schema.Category.temporaryName}")
