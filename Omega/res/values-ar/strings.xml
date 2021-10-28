@@ -30,7 +30,7 @@
     <string name="title__theme_blur_radius">شدة الضبابية</string>
     <string name="title__theme_blur">ضبابية</string>
     <string name="title__theme_accent_color">اللون المميز</string>
-    <string name="msg_missing_usage_access">لأظهار أقتراحات التطبيقات, شغل الوصول للأستخدام ل <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">لعرض اقتراحات التطبيقات، قم بتشغيل الوصول إلى الاستخدام ل <xliff:g example="My App" id="name">%1$s</xliff:g></string>
     <string name="needs_usage_access">يحتاج ألوصول للأستخدام</string>
     <string name="hide_app_reset">إعادة تعيين التطبيقات المخفية</string>
     <string name="hide_app_selected">  مخفي</string>
@@ -168,7 +168,7 @@
     <string name="permission_iplocate_twilight_explanation">السماح بالوصول إلى موقعك التقريبي؟ وهذا يتيح حساب دقيق اكثر لضوء النهار.</string>
     <string name="permission_iplocate">الموقع التقريبي</string>
     <string name="event_provider_missing_notification_dots">ﻷستعمال <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, فعل نقاط الاشعارات.</string>
-    <string name="event_provider_missing_notification_access">لأسعمال<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, فعل الأشعارات من <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_access">لاستخدام <xliff:g example="My Provider" id="providerName">\"%1$s\"</xliff:g>، قم بتمكين الإشعارات من <xliff:g example="My App" id="name">\"%2$s\". </xliff:g></string>
     <string name="battery_low">البطارية منخفضة</string>
     <string name="battery_full">شُحن</string>
     <string name="battery_charging">يشحن</string>
@@ -412,4 +412,5 @@
     <string name="modify_system_settings">تعديل إعدادات النظام</string>
     <string name="gesture_launch_assistant">تشغيل المساعد (من خلال زر أو إيماءة)</string>
     <string name="modify_system_settings_message">يجب أن تسمح لOmega بتعديل إعدادات النظام حتى يعمل هذا</string>
+    <string name="app_widget_name">قطعة الساعة(الويدجيت)</string>
 </resources>
