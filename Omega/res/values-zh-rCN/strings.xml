@@ -229,7 +229,7 @@
     <string name="title__theme_blur_radius">模糊程度</string>
     <string name="title__theme_blur">模糊</string>
     <string name="title__theme_accent_color">强调色</string>
-    <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g id="name" example="My App">%1$s</xliff:g> 使用情况权限</string>
+    <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g example="My App" id="name">%1$s</xliff:g> 使用情况权限</string>
     <string name="needs_usage_access">需用使用权限</string>
     <string name="hide_app_reset">重置隐藏应用</string>
     <string name="hide_app_selected">  隐藏</string>
@@ -402,4 +402,5 @@
     <string name="modify_system_settings_message">您必须允许 Omega 修改系统设置才能使其正常工作</string>
     <string name="dash_wifi_summary">Wifi 状态和连接</string>
     <string name="dash_bluetooth">蓝牙</string>
+    <string name="app_widget_name">时钟部件</string>
 </resources>
