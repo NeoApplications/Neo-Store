@@ -22,8 +22,16 @@ interface BaseDao<T> {
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
-    fun put(repository: Repository) {
-        if (repository.id >= 0L) update(repository) else insert(repository)
+    fun put(repository: com.looker.droidify.entity.Repository) {
+        repository.let {
+            val dbRepo = Repository().apply {
+                id = it.id
+                enabled = if (it.enabled) 1 else 0
+                deleted = 0
+                data = it
+            }
+            if (repository.id >= 0L) update(dbRepo) else insert(dbRepo)
+        }
     }
 
     @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
