@@ -178,3 +178,55 @@ interface LockDao : BaseDao<Lock> {
     @Query("DELETE FROM 'memory.lock' WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
+
+@Dao
+interface ProductTempDao : BaseDao<ProductTemp> {
+    @get:Query("SELECT * FROM `product.temporary`")
+    val all: Array<ProductTemp>
+
+    @Query("DELETE FROM `product.temporary`")
+    fun emptyTable()
+
+    @Insert
+    fun insertCategory(vararg product: CategoryTemp)
+
+    @Transaction
+    fun putTemporary(products: List<com.looker.droidify.entity.Product>) {
+        products.forEach {
+            val signatures = it.signatures.joinToString { ".$it" }
+                .let { if (it.isNotEmpty()) "$it." else "" }
+            insert(it.let {
+                ProductTemp().apply {
+                    repository_id = it.repositoryId
+                    package_name = it.packageName
+                    name = it.name
+                    summary = it.summary
+                    description = it.description
+                    added = it.added
+                    updated = it.updated
+                    version_code = it.versionCode
+                    this.signatures = signatures
+                    compatible = if (it.compatible) 1 else 0
+                    data = it
+                    data_item = it.item()
+                }
+            })
+            it.categories.forEach { category ->
+                insertCategory(CategoryTemp().apply {
+                    repository_id = it.repositoryId
+                    package_name = it.packageName
+                    name = category
+                })
+            }
+        }
+    }
+}
+
+@Dao
+interface CategoryTempDao : BaseDao<CategoryTemp> {
+    @get:Query("SELECT * FROM `category.temporary`")
+    val all: Array<CategoryTemp>
+
+    @Query("DELETE FROM `category.temporary`")
+    fun emptyTable()
+}

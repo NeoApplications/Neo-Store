@@ -761,7 +761,7 @@ object Database {
         }
     }
 
-    // TODO add temporary tables
+    // Done
     object UpdaterAdapter {
         private val Table.temporaryName: String
             get() = "${name}_temporary"
@@ -774,6 +774,7 @@ object Database {
             db.execSQL(Schema.Category.formatCreateTable(Schema.Category.temporaryName))
         }
 
+        // Done
         fun putTemporary(products: List<Product>) {
             db.beginTransaction()
             try {
@@ -812,6 +813,7 @@ object Database {
             }
         }
 
+        // Done
         fun finishTemporary(repository: Repository, success: Boolean) {
             if (success) {
                 db.beginTransaction()

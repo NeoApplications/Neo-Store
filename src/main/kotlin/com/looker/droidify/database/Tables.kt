@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.looker.droidify.database.Database.jsonGenerate
 import com.looker.droidify.database.Database.jsonParse
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 
@@ -32,24 +31,27 @@ class Repository {
 
 @Entity(tableName = "product", primaryKeys = ["repository_id", "package_name"])
 open class Product {
-    var repository_id: Long = 0
+    var repository_id = 0L
     var package_name = ""
 
     var name = ""
     var summary = ""
     var description = ""
-    var added = 0
-    var updated = 0
-    var version_code = 0
+    var added = 0L
+    var updated = 0L
+    var version_code = 0L
     var signatures = ""
     var compatible = 0
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    var data: Product? = null
+    var data: com.looker.droidify.entity.Product? = null
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data_item: ProductItem? = null
 }
+
+@Entity(tableName = "product.temporary")
+class ProductTemp : Product()
 
 @Entity(tableName = "category", primaryKeys = ["repository_id", "package_name", "name"])
 open class Category {
@@ -57,6 +59,9 @@ open class Category {
     var package_name = ""
     var name = ""
 }
+
+@Entity(tableName = "category.temporary")
+class CategoryTemp : Category()
 
 @Entity(tableName = "memory.installed")
 class Installed {
@@ -87,11 +92,12 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toProduct(byteArray: ByteArray) = byteArray.jsonParse { Product.deserialize(it) }
+    fun toProduct(byteArray: ByteArray) =
+        byteArray.jsonParse { com.looker.droidify.entity.Product.deserialize(it) }
 
     @TypeConverter
     @JvmStatic
-    fun toByteArray(product: Product) = jsonGenerate(product::serialize)
+    fun toByteArray(product: com.looker.droidify.entity.Product) = jsonGenerate(product::serialize)
 
     @TypeConverter
     @JvmStatic
