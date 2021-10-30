@@ -24,7 +24,7 @@
     android:minWidth="203dp"
     android:minHeight="40dp"
     android:previewImage="@drawable/smartspace_widget"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen"
     launcher:numColumns="5"

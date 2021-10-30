@@ -21,19 +21,28 @@ package com.saggitt.omega.widget
 import android.content.Context
 import android.widget.RemoteViews
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 
 class ClockWidgetCreator(context: Context) {
     private val mContext: Context = context
-    private val timeFormat = "k:mm"
     private val dateFormat = "EEE, MMM d"
+    private val timeFormat = "k:mm"
+    private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
     fun createWidgetRemoteView(): RemoteViews {
         val views = RemoteViews(mContext.packageName, R.layout.clock_widget)
 
         //set clock and date format
-        views.setCharSequence(R.id.appwidget_clock, "setFormat24Hour", timeFormat);
+        views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat);
         views.setCharSequence(R.id.appwidget_date, "setFormat24Hour", dateFormat);
 
         return views
+    }
+
+    private fun getTimeFormat(): String {
+        return if (prefs.smartspaceTime24H)
+            "setFormat24Hour"
+        else
+            "setFormat12Hour"
     }
 }

@@ -63,6 +63,9 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     var overrideWindowCornerRadius by BooleanPref("pref_override_corner_radius", false, doNothing)
     val windowCornerRadius by FloatPref("pref_global_corner_radius", 8f, updateBlur)
 
+    //SMARTSPACE
+    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, recreate)
+
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
 

@@ -203,7 +203,8 @@
     </style>
 
     <style name="AllAppsTheme">
-        <item name="disabledIconAlpha">.54</item>
+        <!--
+        <item name="disabledIconAlpha">.54</item> -->
     </style>
 
     <style name="AllAppsTheme.Dark">
