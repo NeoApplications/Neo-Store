@@ -33,8 +33,8 @@ class ClockWidgetCreator(context: Context) {
         val views = RemoteViews(mContext.packageName, R.layout.clock_widget)
 
         //set clock and date format
-        views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat);
-        views.setCharSequence(R.id.appwidget_date, "setFormat24Hour", dateFormat);
+        views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat)
+        views.setCharSequence(R.id.appwidget_date, "setFormat24Hour", dateFormat)
 
         return views
     }
