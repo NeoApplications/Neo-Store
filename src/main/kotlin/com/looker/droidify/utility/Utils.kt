@@ -5,9 +5,10 @@ import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.database.Cursor
 import android.graphics.drawable.Drawable
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Database.jsonParse
 import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
@@ -17,9 +18,13 @@ import com.looker.droidify.service.DownloadService
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.singleSignature
 import com.looker.droidify.utility.extension.android.versionCodeCompat
+import com.looker.droidify.utility.extension.json.Json
+import com.looker.droidify.utility.extension.json.parseDictionary
+import com.looker.droidify.utility.extension.json.writeDictionary
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
+import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -143,3 +148,13 @@ fun Cursor.getRepository(): Repository = getBlob(getColumnIndex(ROW_DATA))
             this.id = getLong(getColumnIndex(ROW_ID))
         }
     }
+
+fun <T> ByteArray.jsonParse(callback: (JsonParser) -> T): T {
+    return Json.factory.createParser(this).use { it.parseDictionary(callback) }
+}
+
+fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
+    val outputStream = ByteArrayOutputStream()
+    Json.factory.createGenerator(outputStream).use { it.writeDictionary(callback) }
+    return outputStream.toByteArray()
+}

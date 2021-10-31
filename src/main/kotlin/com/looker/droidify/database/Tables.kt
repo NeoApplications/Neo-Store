@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.looker.droidify.database.Database.jsonGenerate
-import com.looker.droidify.database.Database.jsonParse
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
+import com.looker.droidify.utility.jsonGenerate
+import com.looker.droidify.utility.jsonParse
 
 @Entity
 class Repository {
