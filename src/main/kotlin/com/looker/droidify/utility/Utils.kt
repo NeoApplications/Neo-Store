@@ -149,6 +149,13 @@ fun Cursor.getRepository(): Repository = getBlob(getColumnIndex(ROW_DATA))
         }
     }
 
+fun Cursor.getInstalledItem(): InstalledItem = InstalledItem(
+    getString(getColumnIndex(ROW_PACKAGE_NAME)),
+    getString(getColumnIndex(ROW_VERSION)),
+    getLong(getColumnIndex(ROW_VERSION_CODE)),
+    getString(getColumnIndex(ROW_SIGNATURE))
+)
+
 fun <T> ByteArray.jsonParse(callback: (JsonParser) -> T): T {
     return Json.factory.createParser(this).use { it.parseDictionary(callback) }
 }
