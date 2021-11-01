@@ -349,7 +349,7 @@
     <string name="title__theme_blur_radius">Suliejimo intensyvumas</string>
     <string name="title__theme_blur">Suliejimas</string>
     <string name="title__theme_accent_color">Akcento spalva</string>
-    <string name="msg_missing_usage_access">Jei norite rodyti programėlių pasiūlymus, įjunkite naudojimo prieigą <xliff:g id="name" example="My App"> %1$s </xliff:g></string>
+    <string name="msg_missing_usage_access">Jei norite rodyti programėlių pasiūlymus, įjunkite naudojimo prieigą <xliff:g example="My App" id="name">%1$s</xliff:g></string>
     <string name="needs_usage_access">Reikalinga naudojimo prieiga</string>
     <string name="hide_app_reset">Atstatyti paslėptas programėles</string>
     <string name="hide_app_selected">  paslėpta</string>
@@ -406,4 +406,5 @@
     <string name="launch_assistant">Paleidimo asistentas</string>
     <string name="modify_system_settings">Sistemos nustatymų keitimas</string>
     <string name="modify_system_settings_message">Kad tai veiktų, turite leisti „Omega“ keisti sistemos nustatymus</string>
+    <string name="app_widget_name">Laikrodžio valdiklis</string>
 </resources>
