@@ -55,6 +55,8 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     //DRAWER
     var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
+    var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
+    var enableProtectedApps by BooleanPref("pref_protected_apps", false)
 
     //THEME
     var launcherTheme by StringIntPref(

@@ -86,6 +86,19 @@ open class BasePreferences(context: Context) {
         }
     }
 
+    open inner class StringSetPref(
+        key: String,
+        defaultValue: Set<String>,
+        onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Set<String>>(key, defaultValue, onChange) {
+        override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
+
+        override fun onSetValue(value: Set<String>) {
+            edit { putStringSet(getKey(), value) }
+        }
+    }
+
     open inner class StringIntPref(
         key: String,
         defaultValue: Int = 0,

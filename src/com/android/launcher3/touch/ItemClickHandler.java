@@ -307,6 +307,7 @@ public class ItemClickHandler {
         if (intent == null) {
             throw new IllegalArgumentException("Input must have a valid intent");
         }
+        boolean isProtected = false;
         if (item instanceof WorkspaceItemInfo) {
             WorkspaceItemInfo si = (WorkspaceItemInfo) item;
             if (si.hasStatusFlag(WorkspaceItemInfo.FLAG_SUPPORTS_WEB_UI)
@@ -317,6 +318,9 @@ public class ItemClickHandler {
                 // web ui. This only works though if the package isn't set
                 intent = new Intent(intent);
                 intent.setPackage(null);
+                isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
+                        ((AppInfo) item).toComponentKey()) &&
+                        Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
             }
         }
         if (v != null && launcher.supportsAdaptiveIconAnimation(v)) {
@@ -324,11 +328,18 @@ public class ItemClickHandler {
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
         }
         if (item instanceof AppInfo) {
-            Log.i(TAG, "Clicking App " + item.title);
             DbHelper db = new DbHelper(launcher.getApplicationContext());
             db.updateAppCount(((AppInfo) item).componentName.getPackageName());
+            isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
+                    ((AppInfo) item).toComponentKey()) &&
+                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
             db.close();
         }
-        launcher.startActivitySafely(v, intent, item);
+
+        if (isProtected && Utilities.ATLEAST_R) {
+            launcher.startActivitySafelyAuth(v, intent, item);
+        } else {
+            launcher.startActivitySafely(v, intent, item);
+        }
     }
 }
