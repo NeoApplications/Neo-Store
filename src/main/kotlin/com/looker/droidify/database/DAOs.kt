@@ -14,7 +14,7 @@ interface BaseDao<T> {
     fun insert(vararg product: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg obj: T)
+    fun update(vararg obj: T): Int
 
     @Delete
     fun delete(obj: T)
@@ -22,20 +22,27 @@ interface BaseDao<T> {
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
-    fun put(repository: com.looker.droidify.entity.Repository) {
+    fun put(repository: com.looker.droidify.entity.Repository): com.looker.droidify.entity.Repository {
         repository.let {
             val dbRepo = Repository().apply {
                 id = it.id
                 enabled = if (it.enabled) 1 else 0
-                deleted = 0
+                deleted = false
                 data = it
             }
-            if (repository.id >= 0L) update(dbRepo) else insert(dbRepo)
+            val newId = if (repository.id >= 0L) update(dbRepo).toLong() else returnInsert(dbRepo)
+            return if (newId != repository.id) repository.copy(id = newId) else repository
         }
     }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun returnInsert(product: Repository): Long
+
     @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
     fun get(id: Long): Repository?
+
+    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    val allCursor: Cursor
 
     @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
     val all: List<Repository>
@@ -49,7 +56,7 @@ interface RepositoryDao : BaseDao<Repository> {
     // TODO optimize
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun markAsDeleted(id: Long) {
-        get(id).apply { this?.deleted = 1 }?.let { update(it) }
+        get(id).apply { this?.deleted = true }?.let { update(it) }
     }
 }
 
@@ -59,7 +66,7 @@ interface ProductDao : BaseDao<Product> {
     fun countForRepository(id: Long): Long
 
     @Query("SELECT * FROM product WHERE package_name = :packageName")
-    fun get(packageName: String): Product?
+    fun get(packageName: String): List<Product?>
 
     @Query("DELETE FROM product WHERE repository_id = :id")
     fun deleteById(vararg id: Long): Int
@@ -158,7 +165,7 @@ interface ProductDao : BaseDao<Product> {
 
 @Dao
 interface CategoryDao : BaseDao<Category> {
-    @Query(
+    @get:Query(
         """SELECT DISTINCT category.name
         FROM category AS category
         JOIN repository AS repository
@@ -166,7 +173,7 @@ interface CategoryDao : BaseDao<Category> {
         WHERE repository.enabled != 0 AND
         repository.deleted == 0"""
     )
-    fun getAll(): List<String>
+    val allNames: List<String>
 
     @Query("DELETE FROM category WHERE repository_id = :id")
     fun deleteById(vararg id: Long): Int
@@ -174,8 +181,18 @@ interface CategoryDao : BaseDao<Category> {
 
 @Dao
 interface InstalledDao : BaseDao<Installed> {
+    fun put(vararg isntalled: com.looker.droidify.entity.InstalledItem) {
+        isntalled.forEach {
+            insert(Installed(it.packageName).apply {
+                version = it.version
+                version_code = it.versionCode
+                signature = it.signature
+            })
+        }
+    }
+
     @Query("SELECT * FROM `memory.installed` WHERE package_name = :packageName")
-    fun get(packageName: String): Installed?
+    fun get(packageName: String): Cursor
 
     @Query("DELETE FROM 'memory.installed' WHERE package_name = :packageName")
     fun delete(packageName: String)
