@@ -34,6 +34,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     private var onChangeCallback: OmegaPreferencesChangeCallback? = null
     val recreate = { recreate() }
     val restart = { restart() }
+    val reloadApps = { reloadApps() }
     val updateBlur = { updateBlur() }
 
     //HOME SCREEN PREFERENCES
@@ -51,6 +52,9 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     )
 
     var torchState = false
+
+    //DRAWER
+    var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
 
     //THEME
     var launcherTheme by StringIntPref(
@@ -123,6 +127,10 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     fun getOnChangeCallback() = onChangeCallback
 
+    fun updateSortApps() {
+        onChangeCallback?.reloadApps()
+    }
+
     inline fun withChangeCallback(
         crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
     ): () -> Unit {
@@ -131,6 +139,10 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     fun recreate() {
         onChangeCallback?.recreate()
+    }
+
+    fun reloadApps() {
+        onChangeCallback?.reloadApps()
     }
 
     fun restart() {

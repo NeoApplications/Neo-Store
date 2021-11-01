@@ -19,7 +19,6 @@
 package com.saggitt.omega.util
 
 import android.content.Context
-import com.android.launcher3.R
 
 class Config(var mContext: Context) {
 
@@ -27,5 +26,11 @@ class Config(var mContext: Context) {
         //PERMISION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
+
+        //APP DRAWER SORT MODE
+        const val SORT_AZ = 0
+        const val SORT_ZA = 1
+        const val SORT_MOST_USED = 2
+        const val SORT_BY_COLOR = 3
     }
 }

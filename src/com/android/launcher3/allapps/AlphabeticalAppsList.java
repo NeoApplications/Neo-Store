@@ -15,6 +15,10 @@
  */
 package com.android.launcher3.allapps;
 
+import static com.saggitt.omega.util.Config.SORT_AZ;
+import static com.saggitt.omega.util.Config.SORT_BY_COLOR;
+import static com.saggitt.omega.util.Config.SORT_MOST_USED;
+import static com.saggitt.omega.util.Config.SORT_ZA;
 
 import android.content.Context;
 
@@ -24,7 +28,12 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
+import com.saggitt.omega.allapps.AppColorComparator;
+import com.saggitt.omega.allapps.AppCountInfo;
+import com.saggitt.omega.allapps.AppUsageComparator;
+import com.saggitt.omega.util.DbHelper;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +89,8 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     // The of ordered component names as a result of a search query
     private ArrayList<AdapterItem> mSearchResults;
     private AllAppsGridAdapter mAdapter;
-    private AppInfoComparator mAppNameComparator;
+    private final AppInfoComparator mAppNameComparator;
+    private final AppColorComparator mAppColorComparator;
     private final int mNumAppsPerRow;
     private int mNumAppRowsInAdapter;
     private ItemInfoMatcher mItemFilter;
@@ -90,6 +100,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         mAllAppsStore = appsStore;
         mLauncher = BaseDraggingActivity.fromContext(context);
         mAppNameComparator = new AppInfoComparator(context);
+        mAppColorComparator = new AppColorComparator(context);
         mWorkAdapterProvider = adapterProvider;
         mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColumns;
         mAllAppsStore.addUpdateListener(this);
@@ -112,6 +123,32 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      */
     public List<AppInfo> getApps() {
         return mApps;
+    }
+
+    private void sortApps(int sortType) {
+        switch (sortType) {
+            case SORT_ZA:
+                mApps.sort((p2, p1) -> Collator
+                        .getInstance()
+                        .compare(p1.title, p2.title));
+                break;
+
+            case SORT_MOST_USED:
+                DbHelper db = new DbHelper(mLauncher.getApplicationContext());
+                List<AppCountInfo> appsCounter = db.getAppsCount();
+                db.close();
+                AppUsageComparator mostUsedComparator = new AppUsageComparator(appsCounter);
+                mApps.sort(mostUsedComparator);
+                break;
+
+            case SORT_BY_COLOR:
+                mApps.sort(mAppColorComparator);
+                break;
+            case SORT_AZ:
+            default:
+                mApps.sort(mAppNameComparator);
+                break;
+        }
     }
 
     /**

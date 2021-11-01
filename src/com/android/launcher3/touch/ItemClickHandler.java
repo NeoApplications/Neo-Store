@@ -63,6 +63,8 @@ import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.util.Config;
+import com.saggitt.omega.util.DbHelper;
 
 /**
  * Class for handling clicks on workspace and all-apps items
@@ -92,8 +94,10 @@ public class ItemClickHandler {
                 onClickFolderIcon(v);
             }
         } else if (tag instanceof AppInfo) {
-            startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher
-            );
+            startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher);
+            if (Utilities.getOmegaPrefs(v.getContext()).getSortMode() == Config.SORT_MOST_USED) {
+                Utilities.getOmegaPrefs(v.getContext()).updateSortApps();
+            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);
@@ -318,6 +322,12 @@ public class ItemClickHandler {
         if (v != null && launcher.supportsAdaptiveIconAnimation(v)) {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
+        }
+        if (item instanceof AppInfo) {
+            Log.i(TAG, "Clicking App " + item.title);
+            DbHelper db = new DbHelper(launcher.getApplicationContext());
+            db.updateAppCount(((AppInfo) item).componentName.getPackageName());
+            db.close();
         }
         launcher.startActivitySafely(v, intent, item);
     }

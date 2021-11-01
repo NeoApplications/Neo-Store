@@ -18,12 +18,22 @@
 
 package com.saggitt.omega.preferences
 
+import android.content.Context.USER_SERVICE
+import android.os.UserManager
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.blur.BlurWallpaperProvider
 
 class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     fun recreate() {
         if (launcher.shouldRecreate()) launcher.recreate()
+    }
+
+    fun reloadApps() {
+        (launcher.applicationContext.getSystemService(
+            USER_SERVICE
+        ) as UserManager).userProfiles.forEach {
+            launcher.model.onPackagesReload(it)
+        }
     }
 
     fun restart() {

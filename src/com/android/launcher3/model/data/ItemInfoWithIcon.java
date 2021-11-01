@@ -35,6 +35,11 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
     public static final String TAG = "ItemInfoDebug";
 
     /**
+     * Dominant color in the .
+     */
+    public int iconColor;
+
+    /**
      * The bitmap for the application icon
      */
     public BitmapInfo bitmap = BitmapInfo.LOW_RES_INFO;
