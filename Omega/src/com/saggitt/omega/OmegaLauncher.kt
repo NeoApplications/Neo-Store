@@ -33,6 +33,7 @@ import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.util.DbHelper
 
 class OmegaLauncher : QuickstepLauncher() {
     val gestureController by lazy { GestureController(this) }
@@ -47,6 +48,10 @@ class OmegaLauncher : QuickstepLauncher() {
         super.onCreate(savedInstanceState)
         val mPrefs = Utilities.getOmegaPrefs(this)
         mPrefs.registerCallback(prefCallback)
+
+        /*CREATE DB TO HANDLE APPS COUNT*/
+        val db = DbHelper(this)
+        db.close()
     }
 
     override fun onDestroy() {
