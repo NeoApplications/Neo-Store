@@ -2,7 +2,8 @@ package com.looker.droidify.content
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.Lock
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.utility.extension.json.Json
 import com.looker.droidify.utility.extension.json.parseDictionary
@@ -16,25 +17,32 @@ object ProductPreferences {
     private val defaultProductPreference = ProductPreference(false, 0L)
     private lateinit var preferences: SharedPreferences
     private val subject = PublishSubject.create<Pair<String, Long?>>()
+    lateinit var db: DatabaseX
 
     fun init(context: Context) {
+        db = DatabaseX.getInstance(context)
         preferences = context.getSharedPreferences("product_preferences", Context.MODE_PRIVATE)
-        Database.LockAdapter.putAll(preferences.all.keys
-            .mapNotNull { packageName ->
-                this[packageName].databaseVersionCode?.let {
-                    Pair(
-                        packageName,
-                        it
-                    )
+        db.lockDao.insert(*preferences.all.keys
+            .mapNotNull { pName ->
+                this[pName].databaseVersionCode?.let {
+                    Lock().apply {
+                        package_name = pName
+                        version_code = it
+                    }
                 }
-            })
+            }
+            .toTypedArray()
+        )
         subject
             .observeOn(Schedulers.io())
-            .subscribe { (packageName, versionCode) ->
+            .subscribe { (pName, versionCode) ->
                 if (versionCode != null) {
-                    Database.LockAdapter.put(Pair(packageName, versionCode))
+                    db.lockDao.insert(Lock().apply {
+                        package_name = pName
+                        version_code = versionCode
+                    })
                 } else {
-                    Database.LockAdapter.delete(packageName)
+                    db.lockDao.delete(pName)
                 }
             }
     }

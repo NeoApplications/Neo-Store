@@ -16,7 +16,7 @@ class Repository {
     var id: Long = 0
 
     var enabled = 0
-    var deleted = 0
+    var deleted = false
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: Repository? = null
@@ -25,7 +25,7 @@ class Repository {
         @ColumnInfo(name = "_id")
         var id = 0L
 
-        var deleted = 0
+        var deleted = false
     }
 }
 
@@ -64,12 +64,12 @@ open class Category {
 class CategoryTemp : Category()
 
 @Entity(tableName = "memory.installed")
-class Installed {
+class Installed(pName: String = "") {
     @PrimaryKey
-    var package_name = ""
+    var package_name = pName
 
     var version = ""
-    var version_code = 0
+    var version_code = 0L
     var signature = ""
 }
 
@@ -78,7 +78,7 @@ class Lock {
     @PrimaryKey
     var package_name = ""
 
-    var version_code = 0
+    var version_code = 0L
 }
 
 object Converters {

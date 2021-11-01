@@ -10,7 +10,7 @@ import coil.ImageLoaderFactory
 import com.looker.droidify.content.Cache
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.network.Downloader
@@ -24,19 +24,21 @@ import java.net.Proxy
 @Suppress("unused")
 class MainApplication : Application(), ImageLoaderFactory {
 
+    lateinit var db: DatabaseX
+
     override fun onCreate() {
         super.onCreate()
 
-        val databaseUpdated = Database.init(this)
+        db = DatabaseX.getInstance(applicationContext)
         Preferences.init(this)
         ProductPreferences.init(this)
-        RepositoryUpdater.init()
+        RepositoryUpdater.init(this)
         listenApplications()
         listenPreferences()
 
-        if (databaseUpdated) {
+        /*if (databaseUpdated) {
             forceSyncAll()
-        }
+        }*/
 
         Cache.cleanup(this)
         updateSyncJob(false)
@@ -60,9 +62,9 @@ class MainApplication : Application(), ImageLoaderFactory {
                                 null
                             }
                             if (packageInfo != null) {
-                                Database.InstalledAdapter.put(packageInfo.toInstalledItem())
+                                db.installedDao.put(packageInfo.toInstalledItem())
                             } else {
-                                Database.InstalledAdapter.delete(packageName)
+                                db.installedDao.delete(packageName)
                             }
                         }
                     }
@@ -76,7 +78,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         val installedItems =
             packageManager.getInstalledPackages(Android.PackageManager.signaturesFlag)
                 .map { it.toInstalledItem() }
-        Database.InstalledAdapter.putAll(installedItems)
+        db.installedDao.put(*installedItems.toTypedArray())
     }
 
     private fun listenPreferences() {
@@ -160,9 +162,9 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun forceSyncAll() {
-        Database.RepositoryAdapter.getAll(null).forEach {
+        db.repositoryDao.all.mapNotNull { it.data }.forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                Database.RepositoryAdapter.put(it.copy(lastModified = "", entityTag = ""))
+                db.repositoryDao.put(it.copy(lastModified = "", entityTag = ""))
             }
         }
         Connection(SyncService::class.java, onBind = { connection, binder ->

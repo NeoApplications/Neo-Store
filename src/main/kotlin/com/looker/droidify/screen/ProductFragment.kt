@@ -28,6 +28,7 @@ import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.*
 import com.looker.droidify.utility.extension.text.trimAfter
+import com.looker.droidify.utility.getInstalledItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -132,12 +133,16 @@ class ProductFragment() : ScreenFragment(), ProductAdapter.Callbacks {
 
         var first = true
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products))
+            .concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.ProductAdapter.get(packageName, it) } }
+            .flatMapSingle {
+                RxUtils.querySingle {
+                    screenActivity.db.productDao.get(packageName).mapNotNull { it?.data }
+                }
+            }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Database.RepositoryAdapter.getAll(it) }
+                    .querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } }
                     .map { it ->
                         it.asSequence().map { Pair(it.id, it) }.toMap()
                             .let {
@@ -154,7 +159,7 @@ class ProductFragment() : ScreenFragment(), ProductAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Nullable(Database.InstalledAdapter.get(packageName, it)) }
+                    .querySingle { Nullable(screenActivity.db.installedDao.get(packageName).getInstalledItem()) }
                     .map { Pair(products, it) }
             }
             .observeOn(AndroidSchedulers.mainThread())

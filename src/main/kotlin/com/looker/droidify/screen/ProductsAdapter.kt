@@ -16,13 +16,13 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.resources.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
+import com.looker.droidify.utility.getProductItem
 import com.looker.droidify.widget.CursorRecyclerAdapter
 
 class ProductsAdapter(private val onClick: (ProductItem) -> Unit) :
@@ -113,7 +113,7 @@ class ProductsAdapter(private val onClick: (ProductItem) -> Unit) :
     }
 
     private fun getProductItem(position: Int): ProductItem {
-        return Database.ProductAdapter.transformItem(moveTo(position))
+        return moveTo(position).getProductItem()
     }
 
     override fun onCreateViewHolder(

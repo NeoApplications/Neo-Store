@@ -161,7 +161,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         })
 
         if (savedInstanceState == null) {
-            val repository = repositoryId?.let(Database.RepositoryAdapter::get)
+            val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.data }
             if (repository == null) {
                 val clipboardManager =
                     requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -240,9 +240,9 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            .concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.RepositoryAdapter.getAll(it) } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } } }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 takenAddresses = it.asSequence().filter { it.id != repositoryId }
@@ -462,10 +462,10 @@ class EditRepositoryFragment() : ScreenFragment() {
                 MessageDialog(MessageDialog.Message.CantEditSyncing).show(childFragmentManager)
                 invalidateState()
             } else {
-                val repository = repositoryId?.let(Database.RepositoryAdapter::get)
+                val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.data }
                     ?.edit(address, fingerprint, authentication)
                     ?: Repository.newRepository(address, fingerprint, authentication)
-                val changedRepository = Database.RepositoryAdapter.put(repository)
+                val changedRepository = screenActivity.db.repositoryDao.put(repository)
                 if (repositoryId == null && changedRepository.enabled) {
                     binder.sync(changedRepository)
                 }

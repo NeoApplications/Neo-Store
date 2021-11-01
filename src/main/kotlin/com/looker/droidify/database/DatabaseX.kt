@@ -1,8 +1,10 @@
 package com.looker.droidify.database
 
 import android.content.Context
-import androidx.room.*
 import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 @Database(
     entities = [
@@ -47,15 +49,16 @@ abstract class DatabaseX : RoomDatabase() {
         }
     }
 
-    @Transaction
     fun cleanUp(pairs: Set<Pair<Long, Boolean>>) {
-        val result = pairs.windowed(10, 10, true).map {
-            val ids = it.map { it.first }.toLongArray()
-            val productsCount = productDao.deleteById(*ids)
-            val categoriesCount = categoryDao.deleteById(*ids)
-            val deleteIds = it.filter { it.second }.map { it.first }.toLongArray()
-            repositoryDao.deleteById(*deleteIds)
-            productsCount != 0 || categoriesCount != 0
+        runInTransaction {
+            val result = pairs.windowed(10, 10, true).map {
+                val ids = it.map { it.first }.toLongArray()
+                val productsCount = productDao.deleteById(*ids)
+                val categoriesCount = categoryDao.deleteById(*ids)
+                val deleteIds = it.filter { it.second }.map { it.first }.toLongArray()
+                repositoryDao.deleteById(*deleteIds)
+                productsCount != 0 || categoriesCount != 0
+            }
         }
         // Use live objects and observers instead
         /*if (result.any { it }) {
@@ -63,16 +66,17 @@ abstract class DatabaseX : RoomDatabase() {
         }*/
     }
 
-    @Transaction
     fun finishTemporary(repository: com.looker.droidify.entity.Repository, success: Boolean) {
-        if (success) {
-            productDao.deleteById(repository.id)
-            categoryDao.deleteById(repository.id)
-            productDao.insert(*(productTempDao.all))
-            categoryDao.insert(*(categoryTempDao.all))
-            repositoryDao.put(repository)
+        runInTransaction {
+            if (success) {
+                productDao.deleteById(repository.id)
+                categoryDao.deleteById(repository.id)
+                productDao.insert(*(productTempDao.all))
+                categoryDao.insert(*(categoryTempDao.all))
+                repositoryDao.put(repository)
+            }
+            productTempDao.emptyTable()
+            categoryTempDao.emptyTable()
         }
-        productTempDao.emptyTable()
-        categoryTempDao.emptyTable()
     }
 }

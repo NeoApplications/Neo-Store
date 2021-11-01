@@ -108,9 +108,9 @@ class ProductsFragment() : BaseFragment(), CursorOwner.Callback {
 
         screenActivity.cursorOwner.attach(this, request)
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            .concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.RepositoryAdapter.getAll(it) } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } } }
             .map { it.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (recyclerView?.adapter as? ProductsAdapter)?.repositories = it }
