@@ -26,7 +26,7 @@
     <string name="summary__general_desktop">Masaüstünü özelleştir</string>
     <string name="title__general_notifications">Hareketler ve Bildirimler</string>
     <string name="title__general_advanced">Gelişmiş Ayarlar</string>
-    <string name="title__general_search">Arama</string>
+    <string name="title__general_search">Arama ve Klasörler</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_drawer">Çekmece</string>
     <string name="title__general_dock">Alt panel</string>
@@ -36,7 +36,7 @@
     <string name="title_desktop_overlap_placement">Çakışmalara İzin Ver</string>
     <string name="title_desktop_keep_empty">Boş Sayfalara İzin Ver</string>
     <string name="pref_category__others">Diğerleri</string>
-    <string name="pref_category__interfaces">Arayüzler</string>
+    <string name="pref_category__interfaces">Kullanıcı Arayüzü</string>
     <string name="title__general_smartspace">Ana Sayfa Widget\'ı</string>
     <string name="summary__general_smartspace">Tarih, saat, ana sayfa widget\'ı</string>
     <string name="summary__general_dock">Hotseat simgeleri, arama çubuğu</string>
@@ -182,9 +182,9 @@
     <string name="summary__theme_blur">Sayfa arka planlarını bulanıklaştır</string>
     <string name="title_theme_icon_packs">Simge Paketleri</string>
     <string name="title__theme_icon_shape">Simge şeklini değiştir</string>
-    <string name="msg_missing_usage_access">Uygulama Önerilerini göstermek için <xliff:g id="name" example="My App">%1$s</xliff:g> için kullanım erişimini açın</string>
+    <string name="msg_missing_usage_access">Uygulama Önerilerini göstermek için <xliff:g example="My App" id="name">%1$s</xliff:g> için kullanım erişimini açın</string>
     <string name="needs_usage_access">Kullanım erişimi gerekli</string>
-    <string name="hide_app_reset">Sıfırla</string>
+    <string name="hide_app_reset">Gizli uygulamaları sıfırla</string>
     <string name="hide_app_selected">  gizli</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Gizli</item>
@@ -255,7 +255,7 @@
     <string name="title__drawer_icon_popup_menu">Kısayol Balonu</string>
     <string name="title__drawer_icon_size">Tüm Uygulamaların Simge Boyutu</string>
     <string name="title__drawer_hide_apps">Gizli Uygulama Kısayolları</string>
-    <string name="title__drawer_paged_apps">Disk Belleği Uygulamaları görünümü</string>
+    <string name="title__drawer_paged_apps">Sayfalı Uygulamalar görünümü</string>
     <string name="title_separate_work_apps">İş Uygulamaları için İkinci Sekme</string>
     <string name="title__drawer_all_apps">Tüm Uygulamaları Göster etiketi</string>
     <string name="title__dock_hide">Dock\'u Gizle</string>
@@ -379,4 +379,30 @@
     <string name="pref_appcategorization_tabs_summary">Gruplar arasında kaydırın.</string>
     <string name="pref_appcategorization_folders_summary">Açılır pencereyi açmak için dokunun.</string>
     <string name="pref_appcategorization_style_text">Stil</string>
+    <string name="icu_abbrev_date">dd MMMM</string>
+    <string name="units_rakine">Rankine</string>
+    <string name="units_newton">Newton</string>
+    <string name="units_delisle">Delisle</string>
+    <string name="units_reaumur">Réaumur</string>
+    <string name="units_romer">Rømer</string>
+    <string name="dash_volume_title">Ses Düzeyi İletişim Kutusu</string>
+    <string name="dash_location_summary">Konum ayarlarını değiştirin</string>
+    <string name="dash_torch_summary">El fenerini açın/kapatın.</string>
+    <string name="dash_sync">Eşzamanlama</string>
+    <string name="launch_assistant">Başlatma Yardımcısı</string>
+    <string name="gesture_launch_assistant">Başlatma Yardımcısı (düğme veya hareket yoluyla)</string>
+    <string name="modify_system_settings">Sistem ayarlarını değiştir</string>
+    <string name="dash_wifi_summary">Wi-Fi durumu ve bağlantısı</string>
+    <string name="dash_bluetooth_summary">Bluetooth\'u açın veya kapatın</string>
+    <string name="dash_location">Konum</string>
+    <string name="dash_torch">El feneri</string>
+    <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
+    <string name="icu_abbrev_wday_month_day_no_year">EEEEMMMd</string>
+    <string name="dash_wifi">Wi-Fi</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="dash_auto_rotation_summary">Otomatik döndürmeyi açın/kapatın.</string>
+    <string name="dash_sync_summary">Eşzamanlamayı açın/kapatın.</string>
+    <string name="dash_auto_rotation">Otomatik Döndürme</string>
+    <string name="modify_system_settings_message">Bunun çalışması için Omega\'nın sistem ayarlarını değiştirmesine izin vermelisiniz</string>
+    <string name="app_widget_name">Saat Widget\'ı</string>
 </resources>
