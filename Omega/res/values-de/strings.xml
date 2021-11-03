@@ -256,7 +256,6 @@
     <string name="category__about_licenses">Lizenz</string>
     <string name="about_source">Quelltext</string>
     <string name="about_team">Familienmitglieder</string>
-    <string name="title__about_project_team">Entwickler</string>
     <string name="title__about_changelog">Änderungslog</string>
     <string name="title__about_donate">Spenden</string>
     <string name="about_build_information">Build Informationen</string>

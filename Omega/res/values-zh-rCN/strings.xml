@@ -136,7 +136,6 @@
     <string name="units_kelvin">开氏度</string>
     <string name="units_metric">摄氏度</string>
     <string name="units_imperial">华氏度</string>
-    <string name="title__about_project_team">开发者</string>
     <string name="developer_options_title">开发者选项</string>
     <string name="developer_options_enabled">开发者选项已启用</string>
     <string name="action_press_back">返回键</string>

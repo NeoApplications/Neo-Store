@@ -162,7 +162,6 @@
     <string name="about_source">Pirminis kodas</string>
     <string name="about_translators">Vertėjai</string>
     <string name="about_team">Šeimos nariai</string>
-    <string name="title__about_project_team">Kūrėjas</string>
     <string name="title__about_changelog">Pakeitimų žurnalas</string>
     <string name="title__about_donate">Paaukoti</string>
     <string name="about_build_information">Versijos informacija</string>

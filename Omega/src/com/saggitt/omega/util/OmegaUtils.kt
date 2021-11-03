@@ -35,6 +35,7 @@ import android.widget.ImageView
 import android.widget.Switch
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
@@ -306,3 +307,10 @@ class KFloatProperty(private val property: KMutableProperty0<Float>, name: Strin
         property.set(value)
     }
 }
+
+/*Compose*/
+inline fun Modifier.addIf(
+    condition: Boolean,
+    crossinline factory: Modifier.() -> Modifier
+): Modifier =
+    if (condition) factory() else this

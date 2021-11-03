@@ -114,7 +114,6 @@
     <string name="about_source">Codice Sorgente</string>
     <string name="about_team">Team di Sviluppo</string>
     <string name="about_translators">Traduttori</string>
-    <string name="title__about_project_team">Sviluppatore</string>
     <string name="title__about_changelog">Lista modifiche</string>
     <string name="about_build_information">Informazioni rilascio</string>
     <string name="feed_widget">Widget</string>

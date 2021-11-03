@@ -91,7 +91,6 @@
     <string name="wallpaper_pick">Velg bakgrunnsbilde</string>
     <string name="title_storage_permission_required">Lagringstilgang trengs</string>
     <string name="category__about_licenses">Lisens</string>
-    <string name="title__about_project_team">Utvikler</string>
     <string name="title__about_changelog">Endringslogg</string>
     <string name="title__about_donate">Doner</string>
     <string name="about_build_information">Kopier bygginfo</string>

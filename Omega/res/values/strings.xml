@@ -435,13 +435,17 @@
     <string name="about_build_information">Build information</string>
     <string name="title__about_donate">Donate</string>
     <string name="title__about_changelog">Changelog</string>
-    <string name="title__about_project_team">Developer</string>
     <string name="about_copyright" translatable="false">Copyright © 2020–2021</string>
-    <string name="about_team">Family Members</string>
+    <string name="about_team">Team Members</string>
+    <string name="about_translators_group">Contributors and Translators</string>
     <string name="about_translators">Translators</string>
     <string name="about_source">Source Code</string>
+    <string name="about_channel">Channel</string>
+    <string name="about_community">Community</string>
+    <string name="about_open_source">Libraries that we use</string>
     <string name="about_source_url" translatable="false">https://github.com/otakuhqz/Omega</string>
     <string name="category__about_licenses">License</string>
+    <string name="license_gpl" translatable="false">GPL v3</string>
     <string name="app_donate_url" translatable="false">https://paypal.me/saulhenriquez</string>
     <string name="author" translatable="false">Saul Henriquez</string>
     <string name="author_role" translatable="false">Developer</string>

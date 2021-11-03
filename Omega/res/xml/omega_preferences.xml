@@ -81,4 +81,10 @@
             app:content="@xml/omega_preferences_developer"
             app:controllerClass="com.saggitt.omega.settings.controllers.DeveloperOptionsController" />
     </PreferenceCategory>
+
+    <androidx.preference.Preference
+        android:icon="@drawable/ic_info"
+        android:key="pref_about"
+        android:summary="@string/summary__general_about"
+        android:title="@string/title__general_about" />
 </PreferenceScreen>

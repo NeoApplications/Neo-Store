@@ -80,7 +80,6 @@
     <string name="about_source">Kaynak Kodları</string>
     <string name="about_translators">Çevirenler</string>
     <string name="about_team">Aile Üyeleri</string>
-    <string name="title__about_project_team">Geliştirici</string>
     <string name="title__about_changelog">Değişiklik Günlüğü</string>
     <string name="title__about_donate">Bağış Yap</string>
     <string name="feed_widget">Widget\'lar</string>

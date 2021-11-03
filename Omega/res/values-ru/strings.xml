@@ -57,7 +57,6 @@
     <string name="category__about_licenses">Лицензии</string>
     <string name="about_source">Исходный код</string>
     <string name="about_team">Члены семьи</string>
-    <string name="title__about_project_team">Разработчик</string>
     <string name="title__about_changelog">Список изменений</string>
     <string name="title__about_donate">Пожертвовать</string>
     <string name="about_build_information">Информация о сборке</string>

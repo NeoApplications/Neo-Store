@@ -41,7 +41,6 @@
     <string name="content_storage_permission_required">Pour définir un fond d\'écran, veuillez autoriser l\'accès au stockage.</string>
     <string name="title_storage_permission_required">Accès au stockage requis</string>
     <string name="category__about_licenses">Licence</string>
-    <string name="title__about_project_team">Équipe du projet</string>
     <string name="title__about_changelog">Journal des modifications</string>
     <string name="title__about_donate">Faire un don</string>
     <string name="about_build_information">Copier les informations de build</string>

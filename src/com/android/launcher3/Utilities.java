@@ -76,6 +76,7 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.os.BuildCompat;
@@ -100,6 +101,9 @@ import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -956,6 +960,34 @@ public final class Utilities {
         } catch (NullPointerException e) {
             throw new NullPointerException("Trying to create invalid component key: " + componentKeyStr);
         }
+    }
+
+    public static String readTextfileFromRawRes(@RawRes int rawResId, Context context, String linePrefix, String linePostfix) {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        String line;
+
+        linePrefix = linePrefix == null ? "" : linePrefix;
+        linePostfix = linePostfix == null ? "" : linePostfix;
+
+        try {
+            br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(rawResId)));
+            while ((line = br.readLine()) != null) {
+                sb.append(linePrefix);
+                sb.append(line);
+                sb.append(linePostfix);
+                sb.append("\n");
+            }
+        } catch (Exception ignored) {
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        return sb.toString();
     }
 
     public static <T> T notNullOrDefault(T value, T defValue) {

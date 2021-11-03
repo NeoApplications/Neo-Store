@@ -52,6 +52,7 @@ import com.saggitt.omega.preferences.SubPreference
 import com.saggitt.omega.settings.search.SettingsSearchActivity
 import com.saggitt.omega.theme.ui.ThemeListDialogFragment
 import com.saggitt.omega.theme.ui.ThemePreference
+import com.saggitt.omega.ui.AboutFragment
 import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.views.SpringRecyclerView
 
@@ -431,6 +432,15 @@ open class SettingsActivity : SettingsBaseActivity(),
             mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
             preferenceManager.sharedPreferencesName = LauncherFiles.SHARED_PREFERENCES_KEY
             setHasOptionsMenu(true)
+            findPreference<Preference>("pref_about")?.setOnPreferenceClickListener {
+                val intent = Intent()
+                intent.setClassName(
+                    BuildConfig.APPLICATION_ID,
+                    AboutFragment::class.java.name
+                )
+                requireActivity().startActivity(intent)
+                false
+            }
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
