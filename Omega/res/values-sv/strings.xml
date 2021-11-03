@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title__general_desktop">Skrivbord</string>
+    <string name="title__general_search">Sök och Mappar</string>
+    <string name="title__general_advanced">Avancerade Inställningar</string>
+    <string name="summary__general_desktop">Anpassa ditt skrivbord</string>
+    <string name="default_folder_name">Ny Mapp</string>
+    <string name="title__general_about">Om</string>
+    <string name="title__general_theme">Tema</string>
+    <string name="title__general_notifications">Gester och Notifikationer</string>
+</resources>
