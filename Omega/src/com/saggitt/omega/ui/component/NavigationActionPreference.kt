@@ -19,7 +19,7 @@
 package com.saggitt.omega.ui.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ fun NavigationActionPreference(
     label: String,
     subtitle: String? = null,
     destination: String,
-    endWidget: (@Composable () -> Unit)? = null
+    startWidget: (@Composable () -> Unit)? = null
 ) {
     //val navController = LocalNavController.current
 
@@ -38,7 +38,7 @@ fun NavigationActionPreference(
         modifier = Modifier.clickable { /*navController.navigate(route = destination)*/ },
         title = { Text(text = label) },
         description = { subtitle?.let { Text(text = it) } },
-        endWidget = endWidget,
+        startWidget = startWidget,
         showDivider = false
     )
 }

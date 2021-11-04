@@ -20,12 +20,7 @@ package com.saggitt.omega.ui.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -40,10 +35,9 @@ fun PreferenceGroup(
     val columnModifier = Modifier
     CompositionLocalProvider(
         LocalContentAlpha provides ContentAlpha.medium,
-        LocalContentColor provides MaterialTheme.colorScheme.onBackground
+        LocalContentColor provides MaterialTheme.colors.onBackground
     ) {
         Card(
-            //border = BorderStroke(1.dp, Grey600),
             shape = RoundedCornerShape(8.dp)
         ) {
             Column(modifier = columnModifier) {
@@ -70,12 +64,12 @@ fun PreferenceGroupHeading(
         ) {
             CompositionLocalProvider(
                 LocalContentAlpha provides ContentAlpha.medium,
-                LocalContentColor provides MaterialTheme.colorScheme.onBackground
+                LocalContentColor provides MaterialTheme.colors.onBackground
             ) {
                 Text(
                     text = heading,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.primary
                 )
             }
         }

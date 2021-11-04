@@ -25,8 +25,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.saggitt.omega.theme.OmegaTheme
 
 @ExperimentalCoilApi
 @Composable
@@ -56,8 +57,13 @@ fun ContributorRow(
                     context.startActivity(intent)
                 }
             },
-        description = { Text(text = contributorRole) },
-        endWidget = {
+        description = {
+            Text(
+                text = contributorRole,
+                color = OmegaTheme.colors.textPrimary
+            )
+        },
+        startWidget = {
             Image(
                 painter = rememberImagePainter(
                     data = photoUrl,
@@ -69,7 +75,7 @@ fun ContributorRow(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(32.dp)
-                    .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
             )
         },
         showDivider = showDivider
