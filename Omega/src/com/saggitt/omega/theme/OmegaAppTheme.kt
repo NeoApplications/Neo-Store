@@ -18,55 +18,89 @@
 
 package com.saggitt.omega.theme
 
-import android.os.Build
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun OmegaAppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    isDynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val dynamicColor = isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val myColorScheme = when {
-        dynamicColor && isDarkTheme -> {
-            dynamicDarkColorScheme(LocalContext.current)
-        }
-        dynamicColor && !isDarkTheme -> {
-            dynamicLightColorScheme(LocalContext.current)
-        }
-        isDarkTheme -> AppDarkColorScheme
-        else -> AppLightColorScheme
-    }
-
-    MaterialTheme(
-        colorScheme = myColorScheme,
-        typography = AppTypography
-    ) {
-        val rippleIndication = rememberRipple()
-        CompositionLocalProvider(
-            LocalIndication provides rippleIndication,
+    val colors = if (isDarkTheme) darkColorPalette else lightColorPalette
+    ProvideOmegaColors(colors) {
+        MaterialTheme(
             content = content
         )
     }
 }
 
-private val AppDarkColorScheme = darkColorScheme(
-    primary = Purple200,
-    secondary = Teal200,
-    onBackground = Grey600
+object OmegaTheme {
+    val colors: OmegaColors
+        @Composable
+        get() = localOmegaColors.current
+}
+
+private val darkColorPalette = OmegaColors(
+    surface = DarkGrey50,
+    textPrimary = LightGrey05,
+    textSecondary = LightGrey05,
+    dividerLine = DarkGrey05
 )
 
-private val AppLightColorScheme = lightColorScheme(
-    primary = Purple500,
-    secondary = Teal200,
-    onBackground = Grey600
+private val lightColorPalette = OmegaColors(
+    surface = White,
+    textPrimary = DarkGrey90,
+    textSecondary = DarkGrey05,
+    dividerLine = LightGrey30
 )
 
+@Stable
+class OmegaColors(
+    surface: Color,
+    textPrimary: Color,
+    textSecondary: Color,
+    dividerLine: Color
+) {
+    var surface by mutableStateOf(surface)
+        private set
+    var textPrimary by mutableStateOf(textPrimary)
+        private set
+    var textSecondary by mutableStateOf(textSecondary)
+        private set
+    var dividerLine by mutableStateOf(dividerLine)
+        private set
 
+    fun update(other: OmegaColors) {
+        surface = other.surface
+        textPrimary = other.textPrimary
+        textSecondary = other.textSecondary
+        dividerLine = other.dividerLine
+    }
+
+    fun copy(): OmegaColors = OmegaColors(
+        surface = surface,
+        textPrimary = textPrimary,
+        textSecondary = textSecondary,
+        dividerLine = dividerLine
+    )
+}
+
+@Composable
+fun ProvideOmegaColors(
+    colors: OmegaColors,
+    content: @Composable () -> Unit
+) {
+    val colorPalette = remember {
+        // Explicitly creating a new object here so we don't mutate the initial [colors]
+        // provided, and overwrite the values set in it.
+        colors.copy()
+    }
+    colorPalette.update(colors)
+    CompositionLocalProvider(localOmegaColors provides colorPalette, content = content)
+}
+
+private val localOmegaColors = staticCompositionLocalOf<OmegaColors> {
+    error("No OmegaColors provided")
+}
