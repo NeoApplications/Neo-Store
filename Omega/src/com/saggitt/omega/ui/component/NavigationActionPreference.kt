@@ -18,13 +18,17 @@
 
 package com.saggitt.omega.ui.component
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationActionPreference(
     label: String,
@@ -32,15 +36,18 @@ fun NavigationActionPreference(
     destination: String,
     startWidget: (@Composable () -> Unit)? = null
 ) {
-    //val navController = LocalNavController.current
-
-    PreferenceItem(
-        modifier = Modifier.clickable { /*navController.navigate(route = destination)*/ },
-        title = { Text(text = label) },
-        description = { subtitle?.let { Text(text = it) } },
-        startWidget = startWidget,
-        showDivider = false
-    )
+    val navController = rememberAnimatedNavController()
+    CompositionLocalProvider(
+        LocalNavController provides navController,
+    ) {
+        PreferenceItem(
+            modifier = Modifier.clickable { navController.navigate(route = destination) },
+            title = { Text(text = label) },
+            description = { subtitle?.let { Text(text = it) } },
+            startWidget = startWidget,
+            showDivider = false
+        )
+    }
 }
 
 val LocalNavController = staticCompositionLocalOf<NavController> {

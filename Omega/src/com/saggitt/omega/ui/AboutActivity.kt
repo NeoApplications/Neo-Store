@@ -26,9 +26,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -39,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +51,6 @@ import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.theme.kaushanScript
 import com.saggitt.omega.ui.component.ContributorRow
 import com.saggitt.omega.ui.component.ItemLink
-import com.saggitt.omega.ui.component.NavigationActionPreference
 import com.saggitt.omega.ui.component.PreferenceGroup
 
 @ExperimentalCoilApi
@@ -166,6 +162,7 @@ fun CreateMainScreen() {
             url = "https://github.com/nonaybay"
         )
 
+        /*
         NavigationActionPreference(
             label = stringResource(id = R.string.category__about_licenses),
             subtitle = stringResource(id = R.string.license_gpl),
@@ -210,7 +207,7 @@ fun CreateMainScreen() {
                         .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
                 )
             }
-        )
+        )*/
     }
 }
 
