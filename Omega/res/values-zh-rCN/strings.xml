@@ -341,7 +341,7 @@
     <string name="title_storage_permission_required">需要存储权限</string>
     <string name="category__about_licenses">许可证</string>
     <string name="about_source">源代码</string>
-    <string name="about_team">家庭成员</string>
+    <string name="about_team">团队成员</string>
     <string name="title__about_changelog">更新日志</string>
     <string name="title__about_donate">捐助</string>
     <string name="about_build_information">编译信息</string>
@@ -402,4 +402,8 @@
     <string name="dash_wifi_summary">Wifi 状态和连接</string>
     <string name="dash_bluetooth">蓝牙</string>
     <string name="app_widget_name">时钟部件</string>
+    <string name="about_translators_group">贡献者和翻译者</string>
+    <string name="about_channel">频道</string>
+    <string name="about_open_source">我们使用的库</string>
+    <string name="about_community">社区</string>
 </resources>
