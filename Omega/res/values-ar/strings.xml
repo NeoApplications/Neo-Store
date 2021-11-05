@@ -279,7 +279,7 @@
     <string name="title_storage_permission_required">الوصول إلى التخزين مطلوب</string>
     <string name="category__about_licenses">الرخصة</string>
     <string name="about_source">الكود المصدري</string>
-    <string name="about_team">أفراد العائلة</string>
+    <string name="about_team">أعضاء الفريق</string>
     <string name="title__about_changelog">سجل التغييرات</string>
     <string name="title__about_donate">تبرّع</string>
     <string name="about_build_information">معلومات البناء</string>
@@ -412,4 +412,8 @@
     <string name="gesture_launch_assistant">تشغيل المساعد (من خلال زر أو إيماءة)</string>
     <string name="modify_system_settings_message">يجب أن تسمح لOmega بتعديل إعدادات النظام حتى يعمل هذا</string>
     <string name="app_widget_name">قطعة الساعة(الويدجيت)</string>
+    <string name="about_channel">القناة</string>
+    <string name="about_open_source">المكتبات التي نستخدمها</string>
+    <string name="about_translators_group">المساهمون والمترجمون</string>
+    <string name="about_community">المجتمع</string>
 </resources>
