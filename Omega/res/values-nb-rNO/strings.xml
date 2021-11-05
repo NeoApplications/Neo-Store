@@ -7,7 +7,7 @@
     <string name="title__general_notifications">Håndvendinger og merknader</string>
     <string name="title__general_advanced">Avansert</string>
     <string name="title__general_smartspace">Hjemmeskjerms-miniprogram</string>
-    <string name="title__general_search">Søk</string>
+    <string name="title__general_search">Søk og mapper</string>
     <string name="title__general_theme">Drakt</string>
     <string name="title__general_drawer">Skuff</string>
     <string name="title__general_dock">Dokk</string>
@@ -21,7 +21,7 @@
     <string name="allow_rotation_blocked_desc">Nåværende skjerminnstillinger tillater ikke rotasjon</string>
     <string name="pref_category__others">Annet</string>
     <string name="pref_category__inputs">Grensesnitt og søk</string>
-    <string name="pref_category__interfaces">Grensesnitt</string>
+    <string name="pref_category__interfaces">Brukergrensesnitt</string>
     <string name="summary__general_about">Mer info om Omega-oppstarteren</string>
     <string name="summary__general_advanced">Språk, sikkerhetskopi, innstillingssøk</string>
     <string name="title__dock_colored_icons">Fargede ikoner</string>
@@ -186,7 +186,7 @@
     <string name="icon_shape_system_default">Systemforvalg</string>
     <string name="icon_shape_override_label">Endre ikonstørrelse</string>
     <string name="title__theme_accent_color">Aksentfarge</string>
-    <string name="hide_app_reset">Tilbakestill</string>
+    <string name="hide_app_reset">Tilbakestill skjulte programmer</string>
     <string name="hide_app_selected">  skjult</string>
     <string name="selected_count">%1$d valgt</string>
     <string name="title__dock_hotseat_icons">Ikonantall</string>
@@ -284,8 +284,8 @@
     <string name="title_smartspace_time_above">Vis stor klokke</string>
     <string name="title_smartspace_time_24_h">Bruk 24-timersformat</string>
     <string name="title_smartspace_date">Vis dato</string>
-    <string name="event_provider_missing_notification_dots">For å bruke <xliff:g example="My Provider" id="providerName">"%1$s"</xliff:g> må du skru på merknadsdotter.<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
-    <string name="event_provider_missing_notification_access">Skru på merknader fra <xliff:g example="My App" id="name">“%2$s”.</xliff:g> for å bruke <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>,<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">Skru på merknadsdotter for å bruke <xliff:g example="My Provider" id="providerName">«%1$s»</xliff:g></string>
+    <string name="event_provider_missing_notification_access">Skru på merknader fra <xliff:g example="My App" id="name">«%2$s».</xliff:g> for å bruke <xliff:g example="My Provider" id="providerName">«%1$s»</xliff:g>.</string>
     <string name="zen_mode_enabled">«Ikke forstyrr» er påslått</string>
     <string name="title_theme_icon_packs">Ikonpakker</string>
     <string name="title_text_color">Tekstfarge</string>
@@ -314,7 +314,7 @@
     <string name="title_adaptify_pack">Opprett tilpasningsdyktige ikoner for ikonpakke</string>
     <string name="import_as_adaptive">Som tilpasningsdyktig ikon</string>
     <string name="menu_icon_shape">Egendefinert ikonform</string>
-    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for <xliff:g example="My App" id="name">%1$s</xliff:g></string>
     <string name="title_all_apps_google_search">Globalt søk</string>
     <string name="pref_category__incubating">Inkubasjon</string>
     <string name="summary__general_notifications">Skilt-telling, skiltfarge, håndvendinger</string>
@@ -335,7 +335,7 @@
     <string name="smartspace_provider_bridge">Rotløs pixel-bro</string>
     <string name="title_legacy_treatment">Opprett tilpasningsdyktige ikoner</string>
     <string name="about_source">Kildekode</string>
-    <string name="about_team">Familiemedlemmer</string>
+    <string name="about_team">Lagmedlemmer</string>
     <string name="title_all_apps_keep_scroll_state">Husk posisjon</string>
     <string name="title_desktop_text_size">Tekststørrelse</string>
     <string name="title_desktop_overlap_placement">Tillat overlapping</string>
@@ -375,4 +375,38 @@
     <string name="title_disabled">Avskrudd</string>
     <string name="about_translators">Oversettere</string>
     <string name="title_create">Opprett</string>
+    <string name="dash_media_player_description">Vis eller skjul lydspillerkontrollene</string>
+    <string name="dash_bluetooth">Blåtann</string>
+    <string name="dash_bluetooth_summary">Slå på/av Blåtann</string>
+    <string name="dash_location">Posisjon</string>
+    <string name="app_widget_name">Klokke-miniprogram</string>
+    <string name="dash_torch_summary">Skru på/av lommelykt.</string>
+    <string name="dash_sync">Synkroniser</string>
+    <string name="dash_sync_summary">Skru på/av synkronisering.</string>
+    <string name="about_community">Gemenskap</string>
+    <string name="trust_apps_no_lock_error">Sett opp en sikker låseskjerm for å begrense programtilgang</string>
+    <string name="fonts_global_font">Skrift</string>
+    <string name="trust_apps_manager_name">Skjulte og beskyttede programmer</string>
+    <string name="dash_location_summary">Endre posisjonsinnstillinger</string>
+    <string name="dash_torch">Lommelykt</string>
+    <string name="disable_protected_apps_message">Skru av krav om identitetsbekreftelse for beskyttede programmer</string>
+    <string name="fonts_change_global_font">Endre</string>
+    <string name="about_channel">Kanal</string>
+    <string name="about_open_source">Biblioteker i bruk</string>
+    <string name="dash_auto_rotation_summary">Skru på/av automatisk sideretning.</string>
+    <string name="about_translators_group">Bidragsytere og oversettere</string>
+    <string name="dash_auto_rotation">Automatisk sideretning</string>
+    <string name="launch_assistant">Start assistent</string>
+    <string name="gesture_launch_assistant">Kjør assistent (gjennom knapp eller håndvending)</string>
+    <string name="protected_app_reset">Tilbakestill beskyttede programmer</string>
+    <string name="enable_protected_apps">Skru på beskyttede programmer</string>
+    <string name="disable_protected_apps">Skru av beskyttede programmer</string>
+    <string name="folder_custom_background">Bruk egendefinert mappebakgrunn</string>
+    <string name="folder_background">Mappebakgrunnsfarge</string>
+    <string name="folder_radius">Mappehjørneradius</string>
+    <string name="dash_media_player">Lydspiller</string>
+    <string name="dash_wifi">Wi-Fi</string>
+    <string name="dash_wifi_summary">Wi-Fi-tilstand og tilkobling</string>
+    <string name="modify_system_settings">Endre systeminnstilinger</string>
+    <string name="modify_system_settings_message">Innvilg tilgang til å endre systeminnstillinger for at dette skal virke</string>
 </resources>
