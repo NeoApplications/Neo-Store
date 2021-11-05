@@ -79,7 +79,7 @@
     <string name="category__about_licenses">Lisans</string>
     <string name="about_source">Kaynak Kodları</string>
     <string name="about_translators">Çevirenler</string>
-    <string name="about_team">Aile Üyeleri</string>
+    <string name="about_team">Ekip Üyeleri</string>
     <string name="title__about_changelog">Değişiklik Günlüğü</string>
     <string name="title__about_donate">Bağış Yap</string>
     <string name="feed_widget">Widget\'lar</string>
@@ -404,4 +404,8 @@
     <string name="dash_auto_rotation">Otomatik Döndürme</string>
     <string name="modify_system_settings_message">Bunun çalışması için Omega\'nın sistem ayarlarını değiştirmesine izin vermelisiniz</string>
     <string name="app_widget_name">Saat Widget\'ı</string>
+    <string name="about_channel">Kanal</string>
+    <string name="about_open_source">Kullandığımız kütüphaneler</string>
+    <string name="about_translators_group">Katkıda Bulunanlar ve Çevirmenler</string>
+    <string name="about_community">Topluluk</string>
 </resources>
