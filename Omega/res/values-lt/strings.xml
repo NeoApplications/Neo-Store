@@ -161,7 +161,7 @@
     <string name="dash_all_apps_title">Atidaryti „Visos programėlės“</string>
     <string name="about_source">Pirminis kodas</string>
     <string name="about_translators">Vertėjai</string>
-    <string name="about_team">Šeimos nariai</string>
+    <string name="about_team">Komandos nariai</string>
     <string name="title__about_changelog">Pakeitimų žurnalas</string>
     <string name="title__about_donate">Paaukoti</string>
     <string name="about_build_information">Versijos informacija</string>
@@ -406,4 +406,8 @@
     <string name="modify_system_settings">Sistemos nustatymų keitimas</string>
     <string name="modify_system_settings_message">Kad tai veiktų, turite leisti „Omega“ keisti sistemos nustatymus</string>
     <string name="app_widget_name">Laikrodžio valdiklis</string>
+    <string name="about_community">Bendruomenė</string>
+    <string name="about_translators_group">Bendraautoriai ir vertėjai</string>
+    <string name="about_channel">Kanalas</string>
+    <string name="about_open_source">Bibliotekos, kurias naudojame</string>
 </resources>
