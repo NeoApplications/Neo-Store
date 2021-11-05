@@ -35,7 +35,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Insets;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -97,7 +96,6 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pageindicators.PageIndicatorDots;
 import com.android.launcher3.util.Executors;
-import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
@@ -278,6 +276,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         mBackground = (GradientDrawable) ResourcesCompat.getDrawable(getResources(),
                 R.drawable.round_rect_folder, getContext().getTheme());
 
+        customizeFolder();
+
         mContent = findViewById(R.id.folder_content);
         mContent.setPadding(paddingLeftRight, dp.folderContentPaddingTop, paddingLeftRight, 0);
         mContent.setFolder(this);
@@ -298,8 +298,6 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         mFooter = findViewById(R.id.folder_footer);
         mFooterHeight = getResources().getDimensionPixelSize(R.dimen.folder_label_height);
 
-        customizeFolder();
-
         if (Utilities.ATLEAST_R) {
             mKeyboardInsetAnimationCallback = new KeyboardInsetAnimationCallback(this);
             setWindowInsetsAnimationCallback(mKeyboardInsetAnimationCallback);
@@ -307,17 +305,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     }
 
     private void customizeFolder() {
-        int bgColor;
-        if (prefs.getCustomFolderBackground()) {
-            bgColor = prefs.getFolderBackground();
-        } else {
-            bgColor = Themes.getAttrColor(mLauncher.getApplicationContext(), R.attr.folderFillColor);
-        }
-        GradientDrawable bg = new GradientDrawable();
-        bg.setShape(GradientDrawable.RECTANGLE);
-        bg.setColorFilter(bgColor, PorterDuff.Mode.SRC_OVER);
-        bg.setCornerRadius(getCornerRadius());
-        setBackground(bg);
+        mBackground.setCornerRadius(getCornerRadius());
     }
 
     public float getCornerRadius() {
