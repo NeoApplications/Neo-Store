@@ -24,11 +24,13 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.util.Property
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -271,6 +273,17 @@ val Int.luminance get() = ColorUtils.calculateLuminance(this)
 
 val Int.isDark get() = luminance < 0.5f
 
+fun dpToPx(size: Float): Float {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        size,
+        Resources.getSystem().displayMetrics
+    )
+}
+
+fun pxToDp(size: Float): Float {
+    return size / dpToPx(1f)
+}
 
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)

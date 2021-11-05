@@ -24,6 +24,7 @@ import static com.android.launcher3.config.FeatureFlags.ALWAYS_USE_HARDWARE_OPTI
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_FOLDER_LABEL_UPDATED;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ITEM_DROP_COMPLETED;
 import static com.android.launcher3.util.DisplayController.getSingleFrameMs;
+import static java.lang.Math.round;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -34,6 +35,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Insets;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -72,6 +74,7 @@ import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.OnAlarmListener;
 import com.android.launcher3.PagedView;
 import com.android.launcher3.R;
+import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace.ItemOperator;
@@ -82,6 +85,7 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragController.DragListener;
 import com.android.launcher3.dragndrop.DragOptions;
+import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.logging.StatsLogManager;
@@ -93,11 +97,13 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pageindicators.PageIndicatorDots;
 import com.android.launcher3.util.Executors;
+import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -231,6 +237,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     private KeyboardInsetAnimationCallback mKeyboardInsetAnimationCallback;
 
     private GradientDrawable mBackground;
+    private final OmegaPreferences prefs;
+    private final Launcher mLauncher;
 
     /**
      * Used to inflate the Workspace from XML.
@@ -252,6 +260,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         // click).
         setFocusableInTouchMode(true);
 
+        prefs = Utilities.getOmegaPrefs(context);
+        mLauncher = Launcher.getLauncher(context);
     }
 
     @Override
@@ -288,9 +298,38 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         mFooter = findViewById(R.id.folder_footer);
         mFooterHeight = getResources().getDimensionPixelSize(R.dimen.folder_label_height);
 
+        customizeFolder();
+
         if (Utilities.ATLEAST_R) {
             mKeyboardInsetAnimationCallback = new KeyboardInsetAnimationCallback(this);
             setWindowInsetsAnimationCallback(mKeyboardInsetAnimationCallback);
+        }
+    }
+
+    private void customizeFolder() {
+        int bgColor;
+        if (prefs.getCustomFolderBackground()) {
+            bgColor = prefs.getFolderBackground();
+        } else {
+            bgColor = Themes.getAttrColor(mLauncher.getApplicationContext(), R.attr.folderFillColor);
+        }
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.RECTANGLE);
+        bg.setColorFilter(bgColor, PorterDuff.Mode.SRC_OVER);
+        bg.setCornerRadius(getCornerRadius());
+        setBackground(bg);
+    }
+
+    public float getCornerRadius() {
+        float radius = round(prefs.getFolderRadius());
+        if (radius > 0f) {
+            return radius;
+        }
+        TypedValue edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius);
+        if (edgeRadius != null) {
+            return edgeRadius.getDimension(mLauncher.getApplicationContext().getResources().getDisplayMetrics());
+        } else {
+            return ResourceUtils.pxFromDp(8, getResources().getDisplayMetrics());
         }
     }
 

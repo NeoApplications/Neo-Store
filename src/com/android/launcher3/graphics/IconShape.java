@@ -37,15 +37,20 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.util.TypedValue;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.R;
 import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.views.ClipPathView;
+import com.saggitt.omega.adaptive.IconShapeManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -62,6 +67,7 @@ public abstract class IconShape {
     private static IconShape sInstance = new Circle();
     private static Path sShapePath;
     private static float sNormalizationScale = ICON_VISIBLE_AREA_FACTOR;
+    protected SparseArray<TypedValue> mAttrs;
 
     public static final int DEFAULT_PATH_SIZE = 100;
     public static IconShape getShape() {
@@ -94,6 +100,11 @@ public abstract class IconShape {
 
     public abstract <T extends View & ClipPathView> Animator createRevealAnimator(T target,
                                                                                   Rect startRect, Rect endRect, float endRadius, boolean isReversed);
+
+    @Nullable
+    public TypedValue getAttrValue(int attr) {
+        return mAttrs == null ? null : mAttrs.get(attr);
+    }
 
     /**
      * Abstract shape where the reveal animation is a derivative of a round rect animation
@@ -166,6 +177,42 @@ public abstract class IconShape {
             });
 
             return va;
+        }
+    }
+
+    public static final class AdaptiveIconShape extends PathShape {
+
+        private final com.saggitt.omega.adaptive.IconShape mIconShape;
+
+        public AdaptiveIconShape(Context context) {
+            mIconShape = IconShapeManager.Companion.getInstance(context).getIconShape();
+            mAttrs = new SparseArray<>();
+            int qsbEdgeRadius = mIconShape.getQsbEdgeRadius();
+            if (qsbEdgeRadius != 0) {
+                TypedValue value = new TypedValue();
+                context.getResources().getValue(qsbEdgeRadius, value, false);
+                mAttrs.append(R.attr.qsbEdgeRadius, value);
+            }
+        }
+
+        @Override
+        public void addToPath(Path path, float offsetX, float offsetY, float radius) {
+            mIconShape.addShape(path, offsetX, offsetY, radius);
+        }
+
+        @Override
+        protected AnimatorUpdateListener newUpdateListener(Rect startRect, Rect endRect, float endRadius, Path outPath) {
+            float startRadius = startRect.width() / 2f;
+            float[] start = new float[]{startRect.left, startRect.top, startRect.right, startRect.bottom};
+            float[] end = new float[]{endRect.left, endRect.top, endRect.right, endRect.bottom};
+            FloatArrayEvaluator evaluator = new FloatArrayEvaluator();
+            return animation -> {
+                float progress = (float) animation.getAnimatedValue();
+                float[] values = evaluator.evaluate(progress, start, end);
+                mIconShape.addToPath(outPath,
+                        values[0], values[1], values[2], values[3],
+                        startRadius, endRadius, progress);
+            };
         }
     }
 

@@ -22,6 +22,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.launcher3.LauncherFiles
+import com.saggitt.omega.util.dpToPx
+import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
 import java.io.File
 import kotlin.reflect.KProperty
@@ -154,6 +156,20 @@ open class BasePreferences(context: Context) {
 
         override fun unflattenValue(value: String) = value
         override fun flattenValue(value: String) = value
+    }
+
+    open inner class DimensionPref(
+        key: String,
+        defaultValue: Float = 0f,
+        onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Float>(key, defaultValue, onChange) {
+
+        override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
+
+        override fun onSetValue(value: Float) {
+            edit { putFloat(getKey(), pxToDp(value)) }
+        }
     }
 
     abstract inner class MutableListPref<T>(

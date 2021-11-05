@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import android.os.Looper
 import com.android.launcher3.R
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.android.launcher3.util.Themes
 import com.saggitt.omega.theme.ThemeManager
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
@@ -68,6 +69,15 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     val blurRadius by FloatPref("pref_blurRadius", 75f, updateBlur)
     var overrideWindowCornerRadius by BooleanPref("pref_override_corner_radius", false, doNothing)
     val windowCornerRadius by FloatPref("pref_global_corner_radius", 8f, updateBlur)
+
+    //FOLDER
+    var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
+    val customFolderBackground by BooleanPref("pref_custom_folder_background", false, recreate)
+    val folderBackground by IntPref(
+        "pref_folder_background",
+        Themes.getAttrColor(context, R.attr.folderFillColor),
+        recreate
+    )
 
     //SMARTSPACE
     val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, recreate)
