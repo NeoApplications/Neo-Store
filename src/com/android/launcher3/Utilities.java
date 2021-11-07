@@ -17,8 +17,10 @@
 package com.android.launcher3;
 
 import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -77,6 +79,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.os.BuildCompat;
@@ -927,6 +930,11 @@ public final class Utilities {
 
     public static boolean hasStoragePermission(Context context) {
         return hasPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    public static void requestStoragePermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_STORAGE_ACCESS);
     }
 
     public static OmegaPreferences getOmegaPrefs(Context context) {

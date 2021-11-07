@@ -18,6 +18,8 @@ package com.android.launcher3.uioverrides;
 import static android.app.WallpaperManager.FLAG_SYSTEM;
 import static com.android.launcher3.Utilities.getDevicePrefs;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.app.job.JobInfo;
@@ -45,6 +47,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.icons.ColorExtractor;
@@ -157,6 +160,7 @@ public class WallpaperManagerCompat {
     }
 
     private static final int getWallpaperId(Context context) {
+        @SuppressLint("MissingPermission")
         Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
         if (wallpaper != null) {
             Bitmap bm = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
@@ -208,7 +212,7 @@ public class WallpaperManagerCompat {
         private HandlerThread mWorkerThread;
         private Handler mWorkerHandler;
 
-        private ColorExtractor mColorExtractor = new ColorExtractor();
+        private final ColorExtractor mColorExtractor = new ColorExtractor();
 
         @Override
         public void onCreate() {
@@ -252,6 +256,16 @@ public class WallpaperManagerCompat {
                 // For live wallpaper, extract colors from thumbnail
                 drawable = info.loadThumbnail(getPackageManager());
             } else {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 try (ParcelFileDescriptor fd = wm.getWallpaperFile(FLAG_SYSTEM)) {
                     BitmapRegionDecoder decoder = BitmapRegionDecoder
                             .newInstance(fd.getFileDescriptor(), false);
@@ -273,6 +287,16 @@ public class WallpaperManagerCompat {
                     Log.e(TAG, "Fetching partial bitmap failed, trying old method", e);
                 }
                 if (bitmap == null) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
                     drawable = wm.getDrawable();
                 }
             }
