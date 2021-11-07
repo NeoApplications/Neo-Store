@@ -28,12 +28,15 @@ import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.gestures.GestureController
+import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.DbHelper
+import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher() {
     val gestureController by lazy { GestureController(this) }
@@ -52,6 +55,17 @@ class OmegaLauncher : QuickstepLauncher() {
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
+    }
+
+    override fun getSupportedShortcuts(): Stream<SystemShortcut.Factory<*>> {
+        return Stream.concat(
+            super.getSupportedShortcuts(),
+            Stream.of(
+                OmegaShortcuts.CUSTOMIZE,
+                OmegaShortcuts.APP_REMOVE,
+                OmegaShortcuts.APP_UNINSTALL
+            )
+        )
     }
 
     override fun onDestroy() {

@@ -25,6 +25,7 @@ import com.android.launcher3.LauncherFiles
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import kotlin.reflect.KProperty
 
@@ -272,6 +273,58 @@ open class BasePreferences(context: Context) {
 
         override fun onSetValue(value: List<T>) {
             setAll(value)
+        }
+    }
+
+    abstract inner class MutableMapPref<K, V>(
+        private val prefKey: String,
+        onChange: () -> Unit = doNothing
+    ) {
+        private val valueMap = HashMap<K, V>()
+
+        init {
+            val obj = JSONObject(sharedPrefs.getString(prefKey, "{}"))
+            obj.keys().forEach {
+                valueMap[unflattenKey(it)] = unflattenValue(obj.getString(it))
+            }
+            if (onChange !== doNothing) {
+                onChangeMap[prefKey] = onChange
+            }
+        }
+
+        fun toMap() = HashMap<K, V>(valueMap)
+
+        open fun flattenKey(key: K) = key.toString()
+        abstract fun unflattenKey(key: String): K
+
+        open fun flattenValue(value: V) = value.toString()
+        abstract fun unflattenValue(value: String): V
+
+        operator fun set(key: K, value: V?) {
+            if (value != null) {
+                valueMap[key] = value
+            } else {
+                valueMap.remove(key)
+            }
+            saveChanges()
+        }
+
+        private fun saveChanges() {
+            val obj = JSONObject()
+            valueMap.entries.forEach { obj.put(flattenKey(it.key), flattenValue(it.value)) }
+            @SuppressLint("CommitPrefEdits") val editor =
+                if (bulkEditing) editor!! else sharedPrefs.edit()
+            editor.putString(prefKey, obj.toString())
+            if (!bulkEditing) commitOrApply(editor, blockingEditing)
+        }
+
+        operator fun get(key: K): V? {
+            return valueMap[key]
+        }
+
+        fun clear() {
+            valueMap.clear()
+            saveChanges()
         }
     }
 

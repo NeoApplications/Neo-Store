@@ -46,5 +46,7 @@
     <color name="system_accent2_800">#ff2c2f46</color>
     <color name="system_accent2_900">#ff161a30</color>
     <color name="system_accent2_1000">#ff000000</color>
+
+    <color name="all_apps_navbar_color">#28000000</color>
 </resources>
 

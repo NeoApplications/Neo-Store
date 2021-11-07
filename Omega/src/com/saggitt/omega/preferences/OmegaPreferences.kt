@@ -23,6 +23,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
 import com.android.launcher3.R
+import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.theme.ThemeManager
@@ -36,6 +38,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     val recreate = { recreate() }
     val restart = { restart() }
     val reloadApps = { reloadApps() }
+    val reloadAll = { reloadAll() }
     val updateBlur = { updateBlur() }
 
     //HOME SCREEN PREFERENCES
@@ -52,6 +55,8 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
         )
     )
 
+    val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
+
     var torchState = false
 
     //DRAWER
@@ -64,6 +69,12 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     )
     var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
+
+    /*POPUP DIALOG PREFERENCES */
+    val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
+    val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)
+    val drawerPopupEdit by BooleanPref("drawer_popup_edit", true, doNothing)
+    val drawerPopupUninstall by BooleanPref("drawer_popup_uninstall", false, doNothing)
 
     //THEME
     var launcherTheme by StringIntPref(
@@ -96,6 +107,14 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
+
+    val customAppName =
+        object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
+            override fun flattenKey(key: ComponentKey) = key.toString()
+            override fun unflattenKey(key: String) = makeComponentKey(context, key)
+            override fun flattenValue(value: String) = value
+            override fun unflattenValue(value: String) = value
+        }
 
     interface OnPreferenceChangeListener {
         fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
@@ -161,6 +180,10 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     fun reloadApps() {
         onChangeCallback?.reloadApps()
+    }
+
+    private fun reloadAll() {
+        onChangeCallback?.reloadAll()
     }
 
     fun restart() {

@@ -36,6 +36,10 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
         }
     }
 
+    fun reloadAll() {
+        launcher.model.forceReload()
+    }
+
     fun restart() {
         launcher.scheduleRestart()
     }

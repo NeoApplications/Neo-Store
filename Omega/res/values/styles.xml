@@ -20,6 +20,7 @@
 
     <style name="AppTheme" parent="@style/LauncherTheme">
         <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Light</item>
     </style>
 
     <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText" />
@@ -58,6 +59,7 @@
         <item name="settingsPopupBackground">?settingsBackground</item>
         <item name="useLightSystemBars">true</item>
         <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
     </style>
 
     <style name="SettingsTheme.Light" parent="SettingsTheme">
@@ -180,7 +182,11 @@
         <item name="cpv_borderColor">@color/colorAccent</item>
     </style>
 
-    <style name="WidgetContainerTheme.Black" parent="AppTheme.Black">
+    <style name="WidgetContainerTheme.Light" parent="WidgetContainerTheme">
+        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
+    </style>
+
+    <style name="WidgetContainerTheme.Black" parent="WidgetContainerTheme.Dark">
         <item name="android:colorPrimaryDark">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
     </style>
