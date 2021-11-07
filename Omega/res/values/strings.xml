@@ -248,7 +248,7 @@
     <string name="battery_charging">Charging</string>
     <string name="battery_full">Charged</string>
     <string name="battery_low">Battery Low</string>
-    <string name="event_provider_missing_notification_access">Turn on notifications from <xliff:g example="My App" id="name">“%2$s” to use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</xliff:g></string>
+    <string name="event_provider_missing_notification_access">Turn on notifications from <xliff:g example="My App" id="name">“%2$s” to use </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”.</xliff:g></string>
     <string name="event_provider_missing_notification_dots">Turn on notification dots to use <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</string>
     <string name="permission_iplocate">Approximate Location</string>
     <string name="permission_iplocate_twilight_explanation">Allow access to your approximate location? This enables more accurate daylight calculation.</string>
