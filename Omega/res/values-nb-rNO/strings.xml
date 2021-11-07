@@ -409,4 +409,5 @@
     <string name="dash_wifi_summary">Wi-Fi-tilstand og tilkobling</string>
     <string name="modify_system_settings">Endre systeminnstilinger</string>
     <string name="modify_system_settings_message">Innvilg tilgang til å endre systeminnstillinger for at dette skal virke</string>
+    <string name="about_copyright">Opphavsrett © 2020–2021</string>
 </resources>
