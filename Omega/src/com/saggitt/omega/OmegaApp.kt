@@ -79,7 +79,7 @@ class OmegaApp : Application() {
         if (!isRecentsComponent) {
             Log.d(
                 TAG,
-                "config_recentsComponentName ($recentsComponent) is not Lawnchair, disabling recents"
+                "config_recentsComponentName ($recentsComponent) is not Omega, disabling recents"
             )
             return false
         }

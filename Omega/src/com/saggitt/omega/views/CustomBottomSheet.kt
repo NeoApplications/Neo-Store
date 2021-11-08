@@ -15,113 +15,245 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.saggitt.omega.views
 
-import android.animation.PropertyValuesHolder
+import android.app.FragmentManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Rect
+import android.os.Bundle
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import com.android.launcher3.Insettable
+import android.view.MotionEvent
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragment
+import androidx.preference.SwitchPreference
 import com.android.launcher3.Launcher
+import com.android.launcher3.LauncherSettings
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.anim.Interpolators
-import com.android.launcher3.util.SystemUiController
-import com.android.launcher3.util.Themes
-import com.android.launcher3.views.AbstractSlideInView
+import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.ItemInfo
+import com.android.launcher3.model.data.ItemInfoWithIcon
+import com.android.launcher3.touch.SingleAxisSwipeDetector
+import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.PackageManagerHelper
+import com.android.launcher3.widget.WidgetsBottomSheet
+import com.saggitt.omega.allapps.CustomAppFilter
+import com.saggitt.omega.preferences.OmegaPreferences
 
 class CustomBottomSheet @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet?,
     defStyleAttr: Int = 0
-) : AbstractSlideInView<Launcher>(context, attrs, defStyleAttr), Insettable {
+) : WidgetsBottomSheet(context, attrs, defStyleAttr) {
 
-    private val mInsets: Rect
-    private val mLauncher = Launcher.getLauncher(context)
+    private var mEditTitle: EditText? = null
+    private var mPreviousTitle: String? = null
+    private lateinit var mItemInfo: ItemInfo
+    private var mForceOpen = false
+    private var mLauncher = Launcher.getLauncher(context)
+    private val mFragmentManager: FragmentManager = mLauncher.fragmentManager
+    private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
-    init {
-        setWillNotDraw(false)
-        mInsets = Rect()
-        mContent = this
+    override fun populateAndShow(itemInfo: ItemInfo) {
+        super.populateAndShow(itemInfo)
+        mItemInfo = itemInfo
+        val title = findViewById<TextView>(R.id.title)
+        title.text = itemInfo.title
+        (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
+            itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
+        var allowTitleEdit = true
+        if (itemInfo is ItemInfoWithIcon) {
+            val icon = findViewById<ImageView>(R.id.icon)
+            icon.setImageBitmap(itemInfo.bitmap.icon)
+
+        }
     }
 
-    fun show(view: View?, animate: Boolean) {
-        (findViewById<View>(R.id.sheet_contents) as ViewGroup).addView(view)
-        mActivityContext.dragLayer.addView(this)
-        mIsOpen = false
-        animateOpen(animate)
-    }
-
-    private fun setupNavBarColor() {
-        val isSheetDark = Themes.getAttrBoolean(mActivityContext, R.attr.isMainColorDark)
-        mActivityContext.systemUiController.updateUiState(
-            SystemUiController.UI_STATE_WIDGET_BOTTOM_SHEET,
-            if (isSheetDark) SystemUiController.FLAG_DARK_NAV else SystemUiController.FLAG_LIGHT_NAV
-        )
-    }
-
-    private fun animateOpen(animate: Boolean) {
-        if (mIsOpen || mOpenCloseAnimator.isRunning) {
-            return
-        }
-        mIsOpen = true
-        setupNavBarColor()
-        mOpenCloseAnimator.setValues(
-            PropertyValuesHolder.ofFloat(TRANSLATION_SHIFT, TRANSLATION_SHIFT_OPENED)
-        )
-        mOpenCloseAnimator.interpolator = Interpolators.FAST_OUT_SLOW_IN
-        if (!animate) {
-            mOpenCloseAnimator.duration = 0
-        }
-        post {
-            mOpenCloseAnimator.start()
-            mContent.animate().alpha(1f).duration = 150
-        }
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        mContent = findViewById(R.id.widgets_bottom_sheet)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        super.onLayout(changed, l, t, r, b)
-        setTranslationShift(mTranslationShift)
-    }
+        val width = r - l
+        val height = b - t
 
-    override fun handleClose(animate: Boolean) {
-        handleClose(animate, DEFAULT_CLOSE_DURATION.toLong())
-    }
-
-    override fun isOfType(@FloatingViewType type: Int): Boolean {
-        return type and TYPE_SETTINGS_SHEET != 0
-    }
-
-    override fun setInsets(insets: Rect) {
-        // Extend behind left, right, and bottom insets.
-        val leftInset = insets.left - mInsets.left
-        val rightInset = insets.right - mInsets.right
-        var bottomInset = insets.bottom - mInsets.bottom
-        mInsets.set(insets)
-        if (!Utilities.ATLEAST_OREO && !mLauncher.deviceProfile.isVerticalBarLayout) {
-            val navBarBg = findViewById<View>(R.id.nav_bar_bg)
-            val navBarBgLp = navBarBg.layoutParams
-            navBarBgLp.height = bottomInset
-            navBarBg.layoutParams = navBarBgLp
-            bottomInset = 0
-        }
-        setPadding(
-            paddingLeft + leftInset, paddingTop,
-            paddingRight + rightInset, paddingBottom + bottomInset
+        // Content is laid out as center bottom aligned.
+        val contentWidth = mContent.measuredWidth
+        val contentLeft = (width - contentWidth - mInsets.left - mInsets.right) / 2 + mInsets.left
+        mContent.layout(
+            contentLeft, height - mContent.measuredHeight,
+            contentLeft + contentWidth, height
         )
+        setTranslationShift(mTranslationShift)
+
+    }
+
+    override fun updateMaxSpansPerRow(): Boolean {
+        return false
+    }
+
+    override fun onControllerInterceptTouchEvent(ev: MotionEvent): Boolean {
+        val directionsToDetectScroll =
+            if (mSwipeDetector.isIdleState) SingleAxisSwipeDetector.DIRECTION_NEGATIVE else 0
+        mSwipeDetector.setDetectableScrollConditions(
+            directionsToDetectScroll, false
+        )
+        mSwipeDetector.onTouchEvent(ev)
+        return (mSwipeDetector.isDraggingOrSettling
+                || !popupContainer.isEventOverView(mContent, ev))
+    }
+
+    public override fun onDetachedFromWindow() {
+        val pf = mFragmentManager.findFragmentById(R.id.sheet_prefs)
+        if (pf != null) {
+            mFragmentManager.beginTransaction().remove(pf).commitAllowingStateLoss()
+        }
+        if (mEditTitle != null) {
+            var newTitle: String? = mEditTitle!!.text.toString()
+            if (newTitle != mPreviousTitle) {
+                if (newTitle == "") newTitle = null
+                /*mInfoProvider!!.setTitle(
+                    mItemInfo, newTitle,
+                    mLauncher.model.getWriter(false, true)
+                )*/
+                if (mItemInfo is ItemInfoWithIcon)
+                    prefs.reloadApps
+            }
+        }
+        super.onDetachedFromWindow()
+    }
+
+    override fun handleClose(animate: Boolean, defaultDuration: Long) {
+        if (mForceOpen) return
+        super.handleClose(animate, defaultDuration)
+    }
+
+    private fun setForceOpen() {
+        mForceOpen = true
+    }
+
+    private fun unsetForceOpen() {
+        mForceOpen = false
+    }
+
+    private fun reopen() {
+        mForceOpen = false
+        mIsOpen = true
+        mLauncher.dragLayer.onViewAdded(this)
+    }
+
+    override fun onWidgetsBound() {}
+
+    class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener,
+        Preference.OnPreferenceClickListener {
+
+        private lateinit var prefs: OmegaPreferences
+        private var mKey: ComponentKey? = null
+        private lateinit var itemInfo: ItemInfo
+        private var setForceOpen: Runnable? = null
+        private var unsetForceOpen: Runnable? = null
+        private var reopen: Runnable? = null
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.app_edit_prefs, rootKey)
+        }
+
+        fun loadForApp(
+            info: ItemInfo,
+            setForceOpen: Runnable?,
+            unsetForceOpen: Runnable?,
+            reopen: Runnable?
+        ) {
+            itemInfo = info
+            this.setForceOpen = setForceOpen
+            this.unsetForceOpen = unsetForceOpen
+            this.reopen = reopen
+
+            val context: Context = activity
+            val isApp =
+                itemInfo is AppInfo || itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+            val screen = preferenceScreen
+            prefs = Utilities.getOmegaPrefs(activity)
+            if (itemInfo !is FolderInfo) {
+                mKey = ComponentKey(itemInfo.targetComponent, itemInfo.user)
+            }
+            val mPrefHide = findPreference<SwitchPreference>(PREF_HIDE)
+            if (isApp) {
+                mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
+                mPrefHide.onPreferenceChangeListener = this
+            } else {
+                screen.removePreference(mPrefHide)
+            }
+
+            if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
+                val componentPref = preferenceScreen.findPreference<Preference>("componentName")
+                val versionPref = preferenceScreen.findPreference<Preference>("versionName")
+                componentPref!!.onPreferenceClickListener = this
+                versionPref!!.onPreferenceClickListener = this
+                componentPref.summary = mKey.toString()
+                versionPref.summary =
+                    PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
+            } else {
+                preferenceScreen.removePreference(preferenceScreen.findPreference("debug"))
+            }
+        }
+
+        override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
+            val enabled = newValue as Boolean
+            val launcher = Launcher.getLauncher(activity)
+            when (preference.key) {
+                PREF_HIDE -> CustomAppFilter.setComponentNameState(
+                    launcher,
+                    mKey.toString(),
+                    enabled
+                )
+            }
+            return true
+        }
+
+        override fun onPreferenceClick(preference: Preference): Boolean {
+            when (preference.key) {
+                "componentName", "versionName" -> {
+                    val clipboard =
+                        activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText(
+                        getString(R.string.debug_component_name),
+                        preference.summary
+                    )
+                    clipboard.setPrimaryClip(clip)
+                    Toast.makeText(
+                        activity,
+                        R.string.debug_component_name_copied,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            return true
+        }
+
+        companion object {
+            private const val PREF_HIDE = "pref_app_hide"
+        }
     }
 
     companion object {
-        private const val DEFAULT_CLOSE_DURATION = 200
-        fun inflate(launcher: Launcher): CustomBottomSheet {
-            return launcher.layoutInflater
+        @JvmStatic
+        fun show(launcher: Launcher, itemInfo: ItemInfo) {
+            val cbs = launcher.layoutInflater
                 .inflate(
-                    R.layout.custom_bottom_sheet,
+                    R.layout.app_edit_bottom_sheet,
                     launcher.dragLayer,
                     false
                 ) as CustomBottomSheet
+            cbs.populateAndShow(itemInfo)
         }
     }
 }

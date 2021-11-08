@@ -16,59 +16,71 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.views.CustomBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="@drawable/top_round_rect_primary"
-    android:elevation="@dimen/deep_shortcuts_elevation"
-    android:orientation="vertical"
-    android:paddingTop="28dp"
     android:theme="?attr/widgetsTheme">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="12dp" />
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/TextTitle"
+    <LinearLayout
+        android:id="@+id/widgets_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:gravity="center_horizontal"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp" />
+        android:background="@drawable/widgets_bottom_sheet_background"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
 
-    <EditText
-        android:id="@+id/edit_title"
-        style="@style/TextTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:background="@android:color/transparent"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp"
-        android:visibility="gone" />
+        <View
+            android:id="@+id/collapse_handle"
+            android:layout_width="48dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/textColorSecondary" />
 
-    <fragment
-        android:id="@+id/sheet_prefs"
-        android:name="com.saggitt.omega.views.EditBottomSheet$PrefsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp" />
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="12dp" />
 
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center_horizontal"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="24sp" />
 
-    <View
-        android:id="@+id/nav_bar_bg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:background="?attr/bottomSheetNavBarColor"
-        android:focusable="false" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <EditText
+            android:id="@+id/edit_title"
+            style="@style/TextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="24sp"
+            android:visibility="gone" />
+
+        <fragment
+            android:id="@+id/sheet_prefs"
+            android:name="com.saggitt.omega.views.CustomBottomSheet$PrefsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp" />
+
+        <View
+            android:id="@+id/nav_bar_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:background="?attr/bottomSheetNavBarColor"
+            android:focusable="false" />
+    </LinearLayout>
+</com.saggitt.omega.views.CustomBottomSheet>

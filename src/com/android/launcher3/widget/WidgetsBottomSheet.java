@@ -136,7 +136,7 @@ public class WidgetsBottomSheet extends BaseWidgetSheet {
     /**
      * Returns {@code true} if the max spans have been updated.
      */
-    private boolean updateMaxSpansPerRow() {
+    public boolean updateMaxSpansPerRow() {
         if (getMeasuredWidth() == 0) return false;
 
         int paddingPx = 2 * getResources().getDimensionPixelOffset(

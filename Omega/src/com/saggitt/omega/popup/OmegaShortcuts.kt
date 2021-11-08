@@ -34,7 +34,7 @@ import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.hasFlags
-import com.saggitt.omega.views.EditBottomSheet
+import com.saggitt.omega.views.CustomBottomSheet
 import java.net.URISyntaxException
 
 class OmegaShortcuts {
@@ -53,12 +53,12 @@ class OmegaShortcuts {
             if (launcher.isInState(LauncherState.ALL_APPS)) {
                 if (prefs.drawerPopupEdit) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    EditBottomSheet.show(launcher, mItemInfo, true)
+                    CustomBottomSheet.show(launcher, mItemInfo)
                 }
             } else if (launcher.isInState(LauncherState.NORMAL)) {
                 if (prefs.desktopPopupEdit && !prefs.lockDesktop) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    EditBottomSheet.show(launcher, mItemInfo, true)
+                    CustomBottomSheet.show(launcher, mItemInfo)
                 }
             }
         }
