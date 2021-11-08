@@ -112,6 +112,15 @@ public class PackageManagerHelper {
         }
     }
 
+    public String getPackageVersion(final String packageName) {
+        try {
+            PackageInfo info = mPm.getPackageInfo(packageName, 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return "";
+    }
+
     public boolean isSafeMode() {
         return mPm.isSafeMode();
     }

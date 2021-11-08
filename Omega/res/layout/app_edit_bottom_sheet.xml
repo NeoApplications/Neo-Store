@@ -16,8 +16,7 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.saggitt.omega.views.CustomBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widgets_bottom_sheet"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -59,10 +58,11 @@
 
     <fragment
         android:id="@+id/sheet_prefs"
-        android:name="com.saggitt.omega.views.CustomBottomSheet$PrefsFragment"
+        android:name="com.saggitt.omega.views.EditBottomSheet$PrefsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp" />
+
 
     <View
         android:id="@+id/nav_bar_bg"
@@ -71,5 +71,4 @@
         android:layout_gravity="bottom"
         android:background="?attr/bottomSheetNavBarColor"
         android:focusable="false" />
-
-</com.saggitt.omega.views.CustomBottomSheet>
+</androidx.appcompat.widget.LinearLayoutCompat>

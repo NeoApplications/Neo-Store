@@ -15,24 +15,20 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
+<com.saggitt.omega.views.CustomBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/top_round_rect_primary"
+    android:elevation="@dimen/deep_shortcuts_elevation"
+    android:orientation="vertical"
+    android:paddingTop="28dp"
+    android:theme="?attr/widgetsTheme">
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_app_hide"
-        android:persistent="false"
-        android:title="@string/hide_app" />
+    <FrameLayout
+        android:id="@+id/sheet_contents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <PreferenceCategory
-        android:key="debug"
-        android:title="@string/developer_options_title">
-
-        <Preference
-            android:key="componentName"
-            android:title="@string/debug_component_name" />
-
-        <Preference
-            android:key="versionName"
-            android:title="Version" />
-    </PreferenceCategory>
-</PreferenceScreen>
+</com.saggitt.omega.views.CustomBottomSheet>

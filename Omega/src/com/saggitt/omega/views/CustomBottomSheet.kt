@@ -17,174 +17,111 @@
  */
 package com.saggitt.omega.views
 
-import android.annotation.SuppressLint
-import android.app.Fragment
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Rect
-import android.os.Bundle
 import android.util.AttributeSet
-import android.widget.EditText
-import android.widget.TextView
-import androidx.preference.PreferenceFragment
+import android.view.View
+import android.view.ViewGroup
+import com.android.launcher3.Insettable
 import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherSettings
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.model.data.ItemInfo
-import com.android.launcher3.model.data.ItemInfoWithIcon
-import com.android.launcher3.widget.WidgetsBottomSheet
+import com.android.launcher3.anim.Interpolators
+import com.android.launcher3.util.SystemUiController
+import com.android.launcher3.util.Themes
+import com.android.launcher3.views.AbstractSlideInView
 
 class CustomBottomSheet @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet?,
     defStyleAttr: Int = 0
-) : WidgetsBottomSheet(context, attrs, defStyleAttr) {
+) : AbstractSlideInView<Launcher>(context, attrs, defStyleAttr), Insettable {
 
-    private lateinit var mItemInfo: ItemInfo
-    private var mEditTitle: EditText? = null
-    private var mPreviousTitle: String? = null
-    private var mForceOpen = false
-    private val prefs by lazy { Utilities.getOmegaPrefs(context) }
+    private val mInsets: Rect
+    private val mLauncher = Launcher.getLauncher(context)
 
-    private var mLauncher = Launcher.getLauncher(context)
-    private var mFragmentManager = mLauncher.fragmentManager
+    init {
+        setWillNotDraw(false)
+        mInsets = Rect()
+        mContent = this
+    }
 
-    override fun populateAndShow(itemInfo: ItemInfo) {
-        super.populateAndShow(itemInfo)
-        mItemInfo = itemInfo
-        val title = findViewById<TextView>(R.id.title)
-        title.text = itemInfo.title
-        (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
-            itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
-        var allowTitleEdit = true
+    fun show(view: View?, animate: Boolean) {
+        (findViewById<View>(R.id.sheet_contents) as ViewGroup).addView(view)
+        mActivityContext.dragLayer.addView(this)
+        mIsOpen = false
+        animateOpen(animate)
+    }
 
-        /*if (itemInfo is ItemInfoWithIcon || mInfoProvider!!.supportsIcon()) {
-            val icon = findViewById<ImageView>(R.id.icon)
-            if (itemInfo is WorkspaceItemInfo && itemInfo.customIcon != null) {
-                icon.setImageBitmap(itemInfo.customIcon)
-            } else if (itemInfo is ItemInfoWithIcon) {
-                icon.setImageBitmap(itemInfo.bitmap.icon)
-            } else if (itemInfo is FolderInfo) {
-                icon.setImageDrawable(itemInfo.getIcon(mLauncher))
-                // Drawer folder
-                if (itemInfo.container == ItemInfo.NO_ID) {
-                    // TODO: Allow editing title for drawer folder & sync with group backend
-                    allowTitleEdit = false
-                }
-            }
-            if (mInfoProvider != null) {
-                icon.setOnClickListener {
-                    val editItem: ItemInfo? =
-                        if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
-                            (mItemInfo as FolderInfo).coverInfo
-                        } else {
-                            mItemInfo
-                        }
-                    val editProvider = CustomInfoProvider.forItem<ItemInfo>(context, editItem)
-                    if (editProvider != null) {
-                        mLauncher.startEditIcon(editItem!!, editProvider)
-                    }
-                }
-            }
+    private fun setupNavBarColor() {
+        val isSheetDark = Themes.getAttrBoolean(mActivityContext, R.attr.isMainColorDark)
+        mActivityContext.systemUiController.updateUiState(
+            SystemUiController.UI_STATE_WIDGET_BOTTOM_SHEET,
+            if (isSheetDark) SystemUiController.FLAG_DARK_NAV else SystemUiController.FLAG_LIGHT_NAV
+        )
+    }
+
+    private fun animateOpen(animate: Boolean) {
+        if (mIsOpen || mOpenCloseAnimator.isRunning) {
+            return
         }
-        if (mInfoProvider != null && allowTitleEdit) {
-            mPreviousTitle = mInfoProvider!!.getCustomTitle(mItemInfo)
-            if (mPreviousTitle == null) mPreviousTitle = ""
-            mEditTitle = findViewById(R.id.edit_title)
-            mEditTitle?.let {
-                it.hint = mInfoProvider!!.getDefaultTitle(mItemInfo)
-                it.setText(mPreviousTitle)
-                it.visibility = VISIBLE
-            }
-            title.visibility = GONE
-        }*/
-    }
-
-    @SuppressLint("CommitTransaction")
-    override fun onDetachedFromWindow() {
-        val pf: Fragment? = mFragmentManager.findFragmentById(R.id.sheet_prefs)
-        if (pf != null) {
-            mFragmentManager.beginTransaction().remove(pf).commitAllowingStateLoss()
-        }
-        if (mEditTitle != null) {
-            var newTitle: String? = mEditTitle!!.text.toString()
-            if (newTitle != mPreviousTitle) {
-                if (newTitle == "") newTitle = null
-                /*mInfoProvider!!.setTitle(
-                    mItemInfo, newTitle,
-                    mLauncher.model.getWriter(false, true)
-                )*/
-                if (mItemInfo is ItemInfoWithIcon)
-                    prefs.reloadApps
-            }
-        }
-        super.onDetachedFromWindow()
-    }
-
-    override fun handleClose(animate: Boolean, defaultDuration: Long) {
-        if (mForceOpen) return
-        super.handleClose(animate, defaultDuration)
-    }
-
-    private fun setForceOpen() {
-        mForceOpen = true
-    }
-
-    private fun unsetForceOpen() {
-        mForceOpen = false
-    }
-
-    private fun reopen() {
-        mForceOpen = false
         mIsOpen = true
-        mLauncher.dragLayer.onViewAdded(this)
+        setupNavBarColor()
+        mOpenCloseAnimator.setValues(
+            PropertyValuesHolder.ofFloat(TRANSLATION_SHIFT, TRANSLATION_SHIFT_OPENED)
+        )
+        mOpenCloseAnimator.interpolator = Interpolators.FAST_OUT_SLOW_IN
+        if (!animate) {
+            mOpenCloseAnimator.duration = 0
+        }
+        post {
+            mOpenCloseAnimator.start()
+            mContent.animate().alpha(1f).duration = 150
+        }
     }
 
-    override fun onWidgetsBound() {}
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+        setTranslationShift(mTranslationShift)
+    }
 
-    override fun setInsets(insets: Rect) {}
+    override fun handleClose(animate: Boolean) {
+        handleClose(animate, DEFAULT_CLOSE_DURATION.toLong())
+    }
 
-    class PrefsFragment : PreferenceFragment() {
+    override fun isOfType(@FloatingViewType type: Int): Boolean {
+        return type and TYPE_SETTINGS_SHEET != 0
+    }
 
-        private lateinit var itemInfo: ItemInfo
-        private var setForceOpen: Runnable? = null
-        private var unsetForceOpen: Runnable? = null
-        private var reopen: Runnable? = null
-
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.app_edit_prefs, rootKey)
+    override fun setInsets(insets: Rect) {
+        // Extend behind left, right, and bottom insets.
+        val leftInset = insets.left - mInsets.left
+        val rightInset = insets.right - mInsets.right
+        var bottomInset = insets.bottom - mInsets.bottom
+        mInsets.set(insets)
+        if (!Utilities.ATLEAST_OREO && !mLauncher.deviceProfile.isVerticalBarLayout) {
+            val navBarBg = findViewById<View>(R.id.nav_bar_bg)
+            val navBarBgLp = navBarBg.layoutParams
+            navBarBgLp.height = bottomInset
+            navBarBg.layoutParams = navBarBgLp
+            bottomInset = 0
         }
-
-        fun loadForApp(
-            info: ItemInfo,
-            setForceOpen: Runnable?,
-            unsetForceOpen: Runnable?,
-            reopen: Runnable?
-        ) {
-            itemInfo = info
-            this.setForceOpen = setForceOpen
-            this.unsetForceOpen = unsetForceOpen
-            this.reopen = reopen
-
-            val context: Context = activity
-            val isApp =
-                itemInfo is AppInfo || itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-
-        }
-
+        setPadding(
+            paddingLeft + leftInset, paddingTop,
+            paddingRight + rightInset, paddingBottom + bottomInset
+        )
     }
 
     companion object {
-        @JvmStatic
-        fun show(launcher: Launcher, itemInfo: ItemInfo) {
-            val cbs = launcher.layoutInflater
+        private const val DEFAULT_CLOSE_DURATION = 200
+        fun inflate(launcher: Launcher): CustomBottomSheet {
+            return launcher.layoutInflater
                 .inflate(
-                    R.layout.app_edit_bottom_sheet,
+                    R.layout.custom_bottom_sheet,
                     launcher.dragLayer,
                     false
                 ) as CustomBottomSheet
-            cbs.populateAndShow(itemInfo)
         }
     }
 }

@@ -106,7 +106,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
     private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref("pref_showDebugInfo", false, doNothing)
+    val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)
 
     val customAppName =
         object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
