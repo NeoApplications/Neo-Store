@@ -25,7 +25,7 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaLauncher
 
-class CustomAppFilter(context: Context) : AppFilter(context) {
+class CustomAppFilter(context: Context) : AppFilter() {
     private val mHideList = HashSet<ComponentName>()
 
     init {

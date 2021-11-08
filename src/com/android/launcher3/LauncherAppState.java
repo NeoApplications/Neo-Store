@@ -141,7 +141,7 @@ public class LauncherAppState {
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile,
                 iconCacheFileName, mIconProvider);
         mWidgetCache = new DatabaseWidgetPreviewLoader(mContext, mIconCache);
-        mModel = new LauncherModel(context, this, mIconCache, new AppFilter(mContext));
+        mModel = new LauncherModel(context, this, mIconCache, AppFilter.newInstance(mContext));
         mOnTerminateCallback.add(mIconCache::close);
     }
 

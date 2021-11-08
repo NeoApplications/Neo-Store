@@ -249,7 +249,7 @@ public class WidgetsModel {
 
         WidgetValidityCheck(LauncherAppState app) {
             mIdp = app.getInvariantDeviceProfile();
-            mAppFilter = new AppFilter(app.getContext());
+            mAppFilter = AppFilter.newInstance(app.getContext());
         }
 
         @Override

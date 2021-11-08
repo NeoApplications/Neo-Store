@@ -18,6 +18,7 @@
 <resources>
     <!-- String representing the fragment class for settings activity.-->
     <string name="settings_fragment_name" translatable="false">com.saggitt.omega.settings.SettingsActivity$LauncherSettingsFragment</string>
+    <string name="app_filter_class" translatable="false">com.saggitt.omega.allapps.CustomAppFilter</string>
 
     <!-- Out of 100, the percent to shrink the workspace during options mode. -->
     <integer name="config_workspaceOptionsShrinkPercentage">70</integer>
