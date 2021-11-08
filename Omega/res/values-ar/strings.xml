@@ -22,7 +22,7 @@
     <string name="theme_light">ساطع</string>
     <string name="theme_dark_text">مشرق مع نص داكن</string>
     <string name="theme_based">حسب السمة</string>
-    <string name="theme_auto_night_mode">أتبع سمة النظام</string>
+    <string name="theme_auto_night_mode">النظام</string>
     <string name="theme_auto">أتبع الخلفية</string>
     <string name="summary__theme_blur">ضبابة لخلفية الصفحة</string>
     <string name="title_theme_icon_packs">حزمة الايقونات</string>
@@ -30,10 +30,10 @@
     <string name="title__theme_blur_radius">شدة الضبابية</string>
     <string name="title__theme_blur">ضبابية</string>
     <string name="title__theme_accent_color">اللون المميز</string>
-    <string name="msg_missing_usage_access">لعرض اقتراحات التطبيقات، قم بتشغيل الوصول إلى الاستخدام ل <xliff:g example="My App" id="name">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">تشغيل الوصول إلى الاستخدام ل <xliff:g example="My App" id="name">%1$s</xliff:g> لعرض اقتراحات التطبيق</string>
     <string name="needs_usage_access">يحتاج ألوصول للأستخدام</string>
     <string name="hide_app_reset">إعادة تعيين التطبيقات المخفية</string>
-    <string name="hide_app_selected">  مخفي</string>
+    <string name="hide_app_selected"> مخفي</string>
     <plurals name="hidden_apps_count">
         <item quantity="zero">%1$d مخفي</item>
         <item quantity="one"/>
@@ -68,7 +68,7 @@
     <string name="title_text_color">لون النص</string>
     <string name="label_turn_off_suggestions">تعطيل</string>
     <string name="msg_disable_suggestions_prompt">بيانات الأستخدام سيتم حذفها.</string>
-    <string name="title_disable_suggestions_prompt">تعطيل أقتراحات التطبيقات</string>
+    <string name="title_disable_suggestions_prompt">إيقاف تشغيل اقتراحات التطبيقات</string>
     <string name="summary__drawer_hide_apps">أخفاء التطبيقات من درج التطبيقات</string>
     <string name="summary_all_apps_google_search">جد نتائج الويب والتطبيقات</string>
     <string name="summary_search_hidden_apps">أظهر الأختصارات المخفية في البحث.</string>
@@ -79,8 +79,8 @@
     <string name="title__sort_by_color">عن طريق اللون</string>
     <string name="title__sort_most_used">مستعمل بكثرة</string>
     <string name="title__sort_last_installed">مثبت مؤخرا</string>
-    <string name="title__sort_alphabetical_za">أبجديا ب-أ</string>
-    <string name="title__sort_alphabetical_az">أبجديا أ-ب</string>
+    <string name="title__sort_alphabetical_za">ي → أ</string>
+    <string name="title__sort_alphabetical_az">أ → ي</string>
     <string name="title__sort_mode">فرز التطبيقات</string>
     <string name="title_drawer_row_height">طول الاعمدة</string>
     <string name="title_drawer_enable_background">أستخدم لون خلفية مخصصة</string>
@@ -95,7 +95,7 @@
     <string name="title__drawer_all_apps">أظهر كل أسماء التطبيقات</string>
     <string name="title__drawer_sort">فرز التطبيقات</string>
     <string name="num_hotseat_icons_pref_title">تعداد الايقونات</string>
-    <string name="title_disabled">معطل</string>
+    <string name="title_disabled">ايقاف</string>
     <string name="hotseat_show_page_indicator">أظهر مؤشر الصفحة</string>
     <string name="title_opacity">الشفافية</string>
     <string name="dock_colored_google">لون الايقونات</string>
@@ -129,7 +129,7 @@
     <string name="pref_category__others">أخرى</string>
     <string name="pref_category__inputs">الأيماءات والبحث</string>
     <string name="pref_category__interfaces">واجهة المستخدم</string>
-    <string name="summary__general_about">لمزيد من المعلومات عن لانشر أوميغا</string>
+    <string name="summary__general_about">المزيد حول مشغل أوميغا</string>
     <string name="summary__general_advanced">اللغة, النسخ الأحتياطي, بحث الأعدادات</string>
     <string name="summary__general_smartspace">الزمن, الوقت, أدوات سطح المكتب</string>
     <string name="summary__general_drawer">خصص الدرج</string>
@@ -167,8 +167,8 @@
     <string name="allow">أسمح</string>
     <string name="permission_iplocate_twilight_explanation">السماح بالوصول إلى موقعك التقريبي؟ وهذا يتيح حساب دقيق اكثر لضوء النهار.</string>
     <string name="permission_iplocate">الموقع التقريبي</string>
-    <string name="event_provider_missing_notification_dots">ﻷستعمال <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, فعل نقاط الاشعارات.</string>
-    <string name="event_provider_missing_notification_access">لاستخدام <xliff:g example="My Provider" id="providerName">\"%1$s\"</xliff:g>، قم بتمكين الإشعارات من <xliff:g example="My App" id="name">\"%2$s\". </xliff:g></string>
+    <string name="event_provider_missing_notification_dots">قم بتشغيل نقاط الإعلام لاستخدام <xliff:g example="My Provider" id="providerName"> “%1$s” </xliff:g>.</string>
+    <string name="event_provider_missing_notification_access">تشغيل الإشعارات من <xliff:g example="My App" id="name">\"%2$s\" لاستخدام </xliff:g><xliff:g example="My Provider" id="providerName">\"%1$s\". </xliff:g></string>
     <string name="battery_low">البطارية منخفضة</string>
     <string name="battery_full">شُحن</string>
     <string name="battery_charging">يشحن</string>
@@ -220,7 +220,7 @@
     <string name="icon_shape_circle">دائرة</string>
     <string name="icon_shape_squircle">مربع شبه دائري</string>
     <string name="icon_shape_square">مربع</string>
-    <string name="icon_shape_system_default">النظام الافتراضي</string>
+    <string name="icon_shape_system_default">النظام</string>
     <string name="icon_shape_override_label_location">على الشاشة الرئيسية</string>
     <string name="icon_shape_override_label">تغيير شكل الايقونة</string>
     <string name="icon_shape_override_progress">تطبيق تغييرات شكل الايقونة</string>
@@ -234,9 +234,9 @@
     <string name="title_use_pill_qsb">ظهر أختصار بحث الحب</string>
     <string name="backup_creating">أنشئ نسخة احتياطية</string>
     <string name="button_organize_screens">ترتيب الصفحات</string>
-    <string name="uninstall_failed">إلغاء تثبيت التطبيق فشل</string>
+    <string name="uninstall_failed">تعذر إلغاء تثبيت التطبيق</string>
     <string name="loading">جار التحميل…</string>
-    <string name="folder_cover_mode_desc">اضغط لفتح التطبيق الأول، مرر لأعلى لعرض الكل.</string>
+    <string name="folder_cover_mode_desc">اضغط لفتح التطبيق الأول. اسحب لأعلى لعرض الكل.</string>
     <string name="folder_cover_mode">استخدام وضع الغطاء</string>
     <string name="hide_app">إخفاء الاختصار</string>
     <string name="debug_component_name_copied">نُسخ الى الحافظة.</string>
@@ -258,16 +258,16 @@
     <string name="automatic_short">تلقائي</string>
     <string name="reset_to_default">إعادة التعيين إلى الوضع الافتراضي</string>
     <string name="enabled_icon_packs">ممكن</string>
-    <string name="drag_to_enable_packs">اسحب لأعلى للتمكين</string>
-    <string name="drag_to_disable_packs">اسحب لأسفل لتعطيل</string>
+    <string name="drag_to_enable_packs">اسحب لأعلى للإيقاف</string>
+    <string name="drag_to_disable_packs">اسحب لأسفل للتشغيل</string>
     <string name="dash_device_settings_summary">افتح إعدادات الجهاز</string>
     <string name="dash_volume_summary">اعرض محدد الصوت للجهاز</string>
     <string name="dash_launcher_settings_summary">عرض اعدادات الانشر</string>
     <string name="wallpaper_pick_summary">أفتح منتقي الخلفيات</string>
-    <string name="edit_dash_summary">فعل او عطل الاختصار</string>
-    <string name="dash_all_apps_summary">أظهر كل ازرار التطبيق</string>
+    <string name="edit_dash_summary">تشغيل الاختصارات أو إيقاف تشغيلها</string>
+    <string name="dash_all_apps_summary">إظهار كل زر التطبيق</string>
     <string name="dash_mobile_network_summary">أظهر إعدادات شبكات الجوال</string>
-    <string name="dash_manage_apps_summary">افتح مدير تطبيقات اندرويد</string>
+    <string name="dash_manage_apps_summary">افتح مدير تطبيق Android</string>
     <string name="dash_mobile_network_title">شبكة الجوال</string>
     <string name="dash_launch_app_title">أفتح تطبيق</string>
     <string name="dash_volume_title">مربع حوار مستوى الصوت</string>
@@ -275,7 +275,7 @@
     <string name="dash_all_apps_title">افتح جميع التطبيقات</string>
     <string name="wallpaper_pick">أختر خلفية</string>
     <string name="edit_dash">تحرير لوحة</string>
-    <string name="content_storage_permission_required">لتعيين خلفية، أمنح إذن التخزين.</string>
+    <string name="content_storage_permission_required">منح صلاحية الوصول إلى التخزين لتعيين خلفية.</string>
     <string name="title_storage_permission_required">الوصول إلى التخزين مطلوب</string>
     <string name="category__about_licenses">الرخصة</string>
     <string name="about_source">الكود المصدري</string>
@@ -296,7 +296,7 @@
     <string name="search_menu">جِدّ الاعدادات</string>
     <string name="developer_options_enabled">خيارات المطور مفعلة</string>
     <string name="local_backups">في التخزين</string>
-    <string name="read_external_storage_required">لإنشاء نسخة احتياطية، امنح إذن التخزين.</string>
+    <string name="read_external_storage_required">منح صلاحية الوصول إلى التخزين لإنشاء نسخة احتياطية.</string>
     <string name="backup_location_device_storage">مجلد أوميغا</string>
     <string name="backup_location">موقع</string>
     <string name="backup_share_text">ملف النسخ الاحتياطي لأوميغا</string>
@@ -312,8 +312,8 @@
     <string name="backup_remove_from_recents">أزل من القائمة</string>
     <string name="backup_invalid">غير متوفر</string>
     <string name="no_recent_backups">لا توجد نسخ احتياطية مؤخرة</string>
-    <string name="backup_error_blank_contents">المحتوى لايجب ان يكون فارغا</string>
-    <string name="backup_error_blank_name">ألاسم لايجب أن يكون فارغا</string>
+    <string name="backup_error_blank_contents">لا يمكن أن يكون المحتوى فارغا</string>
+    <string name="backup_error_blank_name">يجب تعبئة الاسم</string>
     <string name="backup_wallpaper">خلفية</string>
     <string name="backup_settings">إعدادات</string>
     <string name="backup_contents">محتوى النسخ الاحتياطية</string>
@@ -329,7 +329,7 @@
     <string name="title__advanced_setting_search">أظهر بحث الاعدادات</string>
     <string name="summary__advanced_language">غير لغة هذا التطبيق</string>
     <string name="summary__advanced_setting_search">أظهر بحث الإعدادات في شريط الاجراءات</string>
-    <string name="error_no_browser">لم يتم العثور على نشاط للتعامل مع عناوين URL</string>
+    <string name="error_no_browser">قم بتثبيت تطبيق لفتح عناوين URL أولاً</string>
     <string name="search_provider_appsearch">بحث التطبيقات</string>
     <string name="search_no_results">لا نتائج</string>
     <string name="cat_search_bar">شريط البحث</string>
@@ -339,7 +339,7 @@
     <string name="title__search_show_assistant">أظهر زر البحث الصوتي</string>
     <string name="title__search_action_assistant">أفتح مساعد</string>
     <string name="title__search_bubble_searchbar">أظهر فقاعتين</string>
-    <string name="dt2s_admin_hint">لاستعمال النقر المزدوج للسبات, أمنح أذن المسؤول.</string>
+    <string name="dt2s_admin_hint">لاستخدام الضغط المزدوج للنوم ومنح إذن المسؤول.</string>
     <string name="dt2s_admin_warning">النقر المزدوج للسبات سيتم تعطيله.</string>
     <string name="omega_actions">أجراءات</string>
     <string name="action_open_drawer_or_recents">أفتح المؤخرة\\درج التطبيقات</string>
@@ -351,7 +351,7 @@
     <string name="icon_shape_corner_squircle">مربع شبه دائري</string>
     <string name="gesture_dock_swipe_up">أسحب للأعلى من الدرج</string>
     <string name="gesture_swipe_up">أسحب للأعلى</string>
-    <string name="gesture_long_press">المس &amp; امسك</string>
+    <string name="gesture_long_press">اضغط مع الاستمرار</string>
     <string name="gesture_double_tap">ضغط مزدوج</string>
     <string name="action_sleep_timeout">السبات بأستعمال مؤقت الشاشة</string>
     <string name="action_sleep">سبات</string>
@@ -382,16 +382,16 @@
     <string name="folder_name_format">المجلد: <xliff:g example="Games" id="name"> %1$s </xliff:g></string>
     <string name="cat_drawer_icons">الأيقونات</string>
     <string name="cat_drawer_grid">شبكة</string>
-    <string name="dialog_message_change_sort">تغيير ترتيب التطبيقات إلى أبجدي؟</string>
+    <string name="dialog_message_change_sort">هل تريد التغيير إلى فرز التطبيقات أبجديا؟</string>
     <string name="title_drawer_paged">صفحات</string>
     <string name="title_drawer_vertical_list">قائمة عمودية</string>
     <string name="title_drawer_vertical">عمودي</string>
     <string name="title_drawer_layout">وضع التخطيط</string>
     <string name="fonts_change_global_font">تغيير</string>
-    <string name="fonts_global_font">الخط العام</string>
-    <string name="disable_protected_apps_message">يتطلب تعطيل التطبيقات المحمية المصادقة</string>
-    <string name="disable_protected_apps">تعطيل التطبيقات المحمية</string>
-    <string name="enable_protected_apps">تمكين التطبيقات المحمية</string>
+    <string name="fonts_global_font">الخط</string>
+    <string name="disable_protected_apps_message">قم بإيقاف تشغيل التطبيقات المحمية التي تتطلب المصادقة</string>
+    <string name="disable_protected_apps">إيقاف تشغيل التطبيقات المحمية</string>
+    <string name="enable_protected_apps">تشغيل التطبيقات المحمية</string>
     <string name="trust_apps_manager_name">التطبيقات المخفية والمحمية</string>
     <string name="trust_apps_no_lock_error">يرجى إعداد شاشة قفل آمنة لتقييد وصول التطبيق</string>
     <string name="protected_app_reset">إعادة تعيين التطبيقات المحمية</string>
@@ -401,19 +401,20 @@
     <string name="dash_auto_rotation">دوران تلقائي</string>
     <string name="launch_assistant">مساعد التشغيل</string>
     <string name="dash_bluetooth">بلوتوث</string>
-    <string name="dash_bluetooth_summary">تشغيل البلوتوث أو إيقاف تشغيله</string>
+    <string name="dash_bluetooth_summary">قم بتشغيل Bluetooth أو إيقاف تشغيله</string>
     <string name="dash_location">الموقع</string>
     <string name="dash_location_summary">تغيير إعدادات الموقع</string>
     <string name="dash_torch">الكشاف</string>
-    <string name="dash_auto_rotation_summary">تشغيل/إيقاف تشغيل التدوير التلقائي.</string>
+    <string name="dash_auto_rotation_summary">تشغيل أو إيقاف تشغيل التدوير التلقائي.</string>
     <string name="dash_sync">مزامنة</string>
     <string name="dash_sync_summary">تشغيل/إيقاف تشغيل المزامنة.</string>
     <string name="modify_system_settings">تعديل إعدادات النظام</string>
     <string name="gesture_launch_assistant">تشغيل المساعد (من خلال زر أو إيماءة)</string>
-    <string name="modify_system_settings_message">يجب أن تسمح لOmega بتعديل إعدادات النظام حتى يعمل هذا</string>
+    <string name="modify_system_settings_message">منح القدرة على تعديل إعدادات النظام لهذا العمل</string>
     <string name="app_widget_name">قطعة الساعة(الويدجيت)</string>
     <string name="about_channel">القناة</string>
-    <string name="about_open_source">المكتبات التي نستخدمها</string>
+    <string name="about_open_source">مكتبات Libre</string>
     <string name="about_translators_group">المساهمون والمترجمون</string>
     <string name="about_community">المجتمع</string>
+    <string name="about_copyright">حقوق الطبع والنشر © 2020-2021</string>
 </resources>
