@@ -18,7 +18,7 @@
     <string name="pref_category__others">Kita</string>
     <string name="pref_category__inputs">Gestai ir paieška</string>
     <string name="pref_category__interfaces">Vartotojo sąsaja</string>
-    <string name="summary__general_about">Daugiau informacijos apie Omega Launcher</string>
+    <string name="summary__general_about">Daugiau apie Omega Launcher</string>
     <string name="summary__general_advanced">Kalba, atsarginė kopija, paieškos nustatymas</string>
     <string name="summary__general_notifications">Ženklelių skaičius, ženklelio spalva, gestai</string>
     <string name="summary__general_search">Paieškos teikėjas, stilius, piktogramos</string>
@@ -66,8 +66,8 @@
     <string name="title__sort_by_color">Pagal spalvą</string>
     <string name="title__sort_most_used">Dažniausiai naudojamos</string>
     <string name="title__sort_last_installed">Vėliausiai įdiegtos</string>
-    <string name="title__sort_alphabetical_za">Abėcėlės tvarka ZA</string>
-    <string name="title__sort_alphabetical_az">Abėcėlės tvarka AZ</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
     <string name="title__sort_mode">Programėlių rikiavimas</string>
     <string name="title_drawer_row_height">Eilutės aukštis</string>
     <string name="title_drawer_enable_background">Naudoti pasirinktinę fono spalvą</string>
