@@ -19,7 +19,6 @@ import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.imageview.ShapeableImageView
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Repository
@@ -134,7 +133,7 @@ class ScreenshotsFragment() : DialogFragment() {
 
         var restored = false
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {

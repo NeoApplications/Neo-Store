@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.*
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.service.Connection
@@ -133,7 +132,7 @@ class ProductFragment() : ScreenFragment(), ProductAdapter.Callbacks {
 
         var first = true
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {

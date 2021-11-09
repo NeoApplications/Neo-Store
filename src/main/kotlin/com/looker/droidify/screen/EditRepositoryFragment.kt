@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
 import com.looker.droidify.databinding.EditRepositoryBinding
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.network.Downloader
@@ -240,7 +239,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } } }
             .observeOn(AndroidSchedulers.mainThread())

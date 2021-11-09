@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.widget.RecyclerFastScroller
@@ -108,7 +107,7 @@ class ProductsFragment() : BaseFragment(), CursorOwner.Callback {
 
         screenActivity.cursorOwner.attach(this, request)
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } } }
             .map { it.asSequence().map { Pair(it.id, it) }.toMap() }

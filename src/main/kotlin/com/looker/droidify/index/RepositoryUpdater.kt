@@ -3,7 +3,6 @@ package com.looker.droidify.index
 import android.content.Context
 import android.net.Uri
 import com.looker.droidify.content.Cache
-import com.looker.droidify.database.Database
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Release
@@ -66,7 +65,7 @@ object RepositoryUpdater {
         db = DatabaseX.getInstance(context)
         var lastDisabled = setOf<Long>()
         Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {
