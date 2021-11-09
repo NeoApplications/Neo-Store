@@ -184,6 +184,7 @@
 
     <style name="WidgetContainerTheme.Light" parent="WidgetContainerTheme">
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
+        <item name="android:textColorPrimary">#000000</item>
     </style>
 
     <style name="WidgetContainerTheme.Black" parent="WidgetContainerTheme.Dark">
