@@ -50,7 +50,7 @@ import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.views.ClipPathView;
-import com.saggitt.omega.adaptive.IconShapeManager;
+import com.saggitt.omega.icons.IconShapeManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -182,7 +182,7 @@ public abstract class IconShape {
 
     public static final class AdaptiveIconShape extends PathShape {
 
-        private final com.saggitt.omega.adaptive.IconShape mIconShape;
+        private final com.saggitt.omega.icons.IconShape mIconShape;
 
         public AdaptiveIconShape(Context context) {
             mIconShape = IconShapeManager.Companion.getInstance(context).getIconShape();

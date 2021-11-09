@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.adaptive
+package com.saggitt.omega.icons
 
 import android.content.Context
 import com.saggitt.omega.util.OmegaSingletonHolder
