@@ -44,12 +44,14 @@ import com.android.launcher3.R
 import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.settings.NotificationDotsPreference
 import com.android.launcher3.settings.PreferenceHighlighter
+import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.preferences.ControlledPreference
 import com.saggitt.omega.preferences.PreferenceController
 import com.saggitt.omega.preferences.ResumablePreference
 import com.saggitt.omega.preferences.SubPreference
 import com.saggitt.omega.settings.search.SettingsSearchActivity
+import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ui.ThemeListDialogFragment
 import com.saggitt.omega.theme.ui.ThemePreference
 import com.saggitt.omega.ui.AboutActivity
@@ -523,6 +525,16 @@ open class SettingsActivity : SettingsBaseActivity(),
                     NOTIFICATION_BADGING,
                     NOTIFICATION_ENABLED_LISTENERS
                 )
+            } else if (content == R.xml.omega_preferences_developer) {
+                findPreference<Preference>("kill")?.onPreferenceClickListener = this
+
+                findPreference<Preference>("pref_desktop_mode_settings")?.setOnPreferenceClickListener {
+                    Taskbar.openSettings(
+                        requireContext(),
+                        ThemeOverride.Settings().getTheme(requireContext())
+                    )
+                    true
+                }
             }
         }
 

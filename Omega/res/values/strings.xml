@@ -521,4 +521,9 @@
     <string name="modify_system_settings">Modify system settings</string>
     <string name="modify_system_settings_message">Grant the ability to modify system settings for this to work</string>
     <string name="app_widget_name">Clock Widget</string>
+
+    <!-- DESKTOP MODE -->
+    <string name="pref_desktop_mode">Desktop mode</string>
+    <string name="pref_desktop_mode_summary">Activate Android\'s desktop mode</string>
+    <string name="pref_desktop_mode_settings">Desktop mode settings</string>
 </resources>

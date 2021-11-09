@@ -17,6 +17,32 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:key="kill"
+        android:summary="@string/summary__dev_restart"
+        android:title="@string/title__restart_launcher"
+        app:iconSpaceReserved="false" />
 
+    <com.saggitt.omega.preferences.StyledSwitchPreference
+        android:defaultValue="false"
+        android:key="pref_showDevOptions"
+        android:persistent="true"
+        android:title="@string/title__dev_show_Dev"
+        app:iconSpaceReserved="false" />
+
+    <PreferenceCategory android:title="@string/pref_category__incubating">
+
+        <com.saggitt.omega.preferences.StyledSwitchPreference
+            android:defaultValue="true"
+            android:key="pref_desktop_mode"
+            android:summary="@string/pref_desktop_mode_summary"
+            android:title="@string/pref_desktop_mode" />
+
+        <Preference
+            android:dependency="pref_desktop_mode"
+            android:key="pref_desktop_mode_settings"
+            android:title="@string/pref_desktop_mode_settings" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

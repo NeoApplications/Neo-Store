@@ -56,6 +56,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     )
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
+    val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
 
     var torchState = false
 
@@ -104,6 +105,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     //DEVELOPER PREFERENCES
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
+    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, recreate)
     private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)

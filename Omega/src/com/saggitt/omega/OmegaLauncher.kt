@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
@@ -32,6 +33,7 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
+import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
@@ -39,11 +41,12 @@ import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
-class OmegaLauncher : QuickstepLauncher() {
+class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
 
+    private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
     private val prefCallback = OmegaPreferencesChangeCallback(this)
@@ -58,6 +61,7 @@ class OmegaLauncher : QuickstepLauncher() {
         super.onCreate(savedInstanceState)
         val mPrefs = Utilities.getOmegaPrefs(this)
         mPrefs.registerCallback(prefCallback)
+        mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
 
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
@@ -79,7 +83,7 @@ class OmegaLauncher : QuickstepLauncher() {
         super.onDestroy()
 
         Utilities.getOmegaPrefs(this).unregisterCallback()
-
+        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this)
         if (sRestart) {
             sRestart = false
             OmegaPreferences.destroyInstance()
@@ -127,6 +131,17 @@ class OmegaLauncher : QuickstepLauncher() {
         }
         dummyView.requestLayout()
         dummyView.post { callback(dummyView) }
+    }
+
+    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
+        if (key == hideStatusBarKey) {
+            if (prefs.hideStatusBar) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            } else if (!force) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+        }
+        Taskbar.setEnabled(this, prefs.desktopModeEnabled)
     }
 }
 
