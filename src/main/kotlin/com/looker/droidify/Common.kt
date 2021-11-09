@@ -30,8 +30,8 @@ const val ROW_MATCH_RANK = "match_rank"
 const val ROW_REPOSITORY_NAME = "repository"
 const val ROW_PRODUCT_NAME = "product"
 const val ROW_CATEGORY_NAME = "category"
-const val ROW_INSTALLED_NAME = "memory.installed"
-const val ROW_LOCK_NAME = "memory.lock"
+const val ROW_INSTALLED_NAME = "memory_installed"
+const val ROW_LOCK_NAME = "memory_lock"
 
 const val JOB_ID_SYNC = 1
 

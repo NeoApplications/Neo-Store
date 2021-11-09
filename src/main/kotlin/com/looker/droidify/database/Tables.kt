@@ -50,7 +50,7 @@ open class Product {
     var data_item: ProductItem? = null
 }
 
-@Entity(tableName = "product.temporary")
+@Entity(tableName = "temporary_product")
 class ProductTemp : Product()
 
 @Entity(tableName = "category", primaryKeys = ["repository_id", "package_name", "name"])
@@ -60,10 +60,10 @@ open class Category {
     var name = ""
 }
 
-@Entity(tableName = "category.temporary")
+@Entity(tableName = "temporary_category")
 class CategoryTemp : Category()
 
-@Entity(tableName = "memory.installed")
+@Entity(tableName = "memory_installed")
 class Installed(pName: String = "") {
     @PrimaryKey
     var package_name = pName
@@ -73,7 +73,7 @@ class Installed(pName: String = "") {
     var signature = ""
 }
 
-@Entity(tableName = "memory.lock")
+@Entity(tableName = "memory_lock")
 class Lock {
     @PrimaryKey
     var package_name = ""

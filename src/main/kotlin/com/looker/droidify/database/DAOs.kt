@@ -10,7 +10,7 @@ import com.looker.droidify.entity.ProductItem
 
 
 interface BaseDao<T> {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg product: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -191,25 +191,25 @@ interface InstalledDao : BaseDao<Installed> {
         }
     }
 
-    @Query("SELECT * FROM `memory.installed` WHERE package_name = :packageName")
+    @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
     fun get(packageName: String): Cursor
 
-    @Query("DELETE FROM 'memory.installed' WHERE package_name = :packageName")
+    @Query("DELETE FROM memory_installed WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
 
 @Dao
 interface LockDao : BaseDao<Lock> {
-    @Query("DELETE FROM 'memory.lock' WHERE package_name = :packageName")
+    @Query("DELETE FROM memory_lock WHERE package_name = :packageName")
     fun delete(packageName: String)
 }
 
 @Dao
 interface ProductTempDao : BaseDao<ProductTemp> {
-    @get:Query("SELECT * FROM `product.temporary`")
+    @get:Query("SELECT * FROM temporary_product")
     val all: Array<ProductTemp>
 
-    @Query("DELETE FROM `product.temporary`")
+    @Query("DELETE FROM temporary_product")
     fun emptyTable()
 
     @Insert
@@ -249,9 +249,9 @@ interface ProductTempDao : BaseDao<ProductTemp> {
 
 @Dao
 interface CategoryTempDao : BaseDao<CategoryTemp> {
-    @get:Query("SELECT * FROM `category.temporary`")
+    @get:Query("SELECT * FROM temporary_category")
     val all: Array<CategoryTemp>
 
-    @Query("DELETE FROM `category.temporary`")
+    @Query("DELETE FROM temporary_category")
     fun emptyTable()
 }
