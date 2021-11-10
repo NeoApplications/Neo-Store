@@ -37,12 +37,14 @@
             android:defaultValue="true"
             android:key="pref_desktop_mode"
             android:summary="@string/pref_desktop_mode_summary"
-            android:title="@string/pref_desktop_mode" />
+            android:title="@string/pref_desktop_mode"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:dependency="pref_desktop_mode"
             android:key="pref_desktop_mode_settings"
-            android:title="@string/pref_desktop_mode_settings" />
+            android:title="@string/pref_desktop_mode_settings"
+            app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 </PreferenceScreen>
