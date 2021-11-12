@@ -450,4 +450,6 @@
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use double tap to sleep, grant the admin permission.</string>
     <string name="dt2s_admin_warning">Double tap to sleep will be off.</string>
+    <string name="title_override_corner_radius">Override window corner radius</string>
+    <string name="title_override_corner_radius_value">Global corner radius</string>
 </resources>

@@ -83,9 +83,9 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     ) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
-    val blurRadius by FloatPref("pref_blurRadius", 75f, updateBlur)
-    var overrideWindowCornerRadius by BooleanPref("pref_override_corner_radius", false, doNothing)
-    val windowCornerRadius by FloatPref("pref_global_corner_radius", 8f, updateBlur)
+    var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
+    var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
+    var windowCornerRadius by IntPref("pref_customWindowCornerRadius", 8, updateBlur)
 
     //FOLDER
     var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)

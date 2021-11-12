@@ -6,3 +6,7 @@ const val PREFS_PROTECTED_APPS = "pref_protected_apps"
 
 // THEME PREFS
 const val PREFS_THEME = "pref_launcherTheme"
+const val PREFS_BLUR = "pref_enableBlur"
+const val PREFS_BLUR_RADIUS = "pref_blurRadius"
+const val PREFS_WINDOWCORNER = "pref_customWindowCorner"
+const val PREFS_WINDOWCORNER_RADIUS = "pref_customWindowCornerRadius"

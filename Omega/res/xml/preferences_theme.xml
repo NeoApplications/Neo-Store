@@ -33,4 +33,32 @@
         app:cpv_dialogType="custom"
         app:cpv_previewSize="large"
         app:cpv_showAlphaSlider="true" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_enableBlur"
+        app:title="@string/title__theme_blur" />
+
+    <SeekBarPreference
+        android:dependency="pref_enableBlur"
+        android:key="pref_blurRadius"
+        android:max="150"
+        app:defaultValue="75"
+        app:min="10"
+        app:showSeekBarValue="true"
+        app:title="@string/title__theme_blur_radius" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_customWindowCorner"
+        app:title="@string/title_override_corner_radius" />
+
+    <SeekBarPreference
+        android:dependency="pref_customWindowCorner"
+        android:key="pref_customWindowCornerRadius"
+        android:max="50"
+        app:defaultValue="8"
+        app:min="0"
+        app:showSeekBarValue="true"
+        app:title="@string/title_override_corner_radius_value" />
 </PreferenceScreen>
