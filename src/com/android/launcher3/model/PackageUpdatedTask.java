@@ -33,6 +33,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.IconCache;
@@ -50,6 +51,7 @@ import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.SafeCloseable;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,6 +144,10 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                 for (int i = 0; i < N; i++) {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
+                    OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+                    if (packages[i].equals(prefs.getIconPackPackage().onGetValue())) {
+                        prefs.getIconPackPackage().onSetValue("");
+                    }
                 }
                 // Fall through
             }
