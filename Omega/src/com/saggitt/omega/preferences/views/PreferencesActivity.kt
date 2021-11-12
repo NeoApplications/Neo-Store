@@ -3,13 +3,19 @@ package com.saggitt.omega.preferences.views
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
 import com.android.launcher3.databinding.PreferencesActivityBinding
+import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.PREFS_THEME
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.omegaPrefs
 
 class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
@@ -65,11 +71,33 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_drawer, rootKey)
         }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            findPreference<ListPreference>(PREFS_SORT)?.apply {
+                onPreferenceChangeListener =
+                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                        requireActivity().omegaPrefs.sortMode = newValue.toString().toInt()
+                        true
+                    }
+            }
+        }
     }
 
     class PrefsThemeFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_theme, rootKey)
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            findPreference<ListPreference>(PREFS_THEME)?.apply {
+                onPreferenceChangeListener =
+                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                        requireActivity().omegaPrefs.launcherTheme = newValue.toString().toInt()
+                        true
+                    }
+            }
         }
     }
 

@@ -60,7 +60,7 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     var torchState = false
 
     //DRAWER
-    var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
+    var sortMode by StringIntPref("pref_sortMode", 0, reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
         "pref_hidden_prediction_set",
