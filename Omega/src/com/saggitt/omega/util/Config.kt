@@ -20,6 +20,7 @@ package com.saggitt.omega.util
 
 import android.app.KeyguardManager
 import android.content.Context
+import android.content.Intent
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
@@ -31,10 +32,11 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 
-class Config(var mContext: Context) {
+class Config(var context: Context) {
+    val mContext = context
 
     companion object {
-        //PERMISION FLAGS
+        //PERMISSION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
 
@@ -43,6 +45,18 @@ class Config(var mContext: Context) {
         const val SORT_ZA = 1
         const val SORT_MOST_USED = 2
         const val SORT_BY_COLOR = 3
+
+        val ICON_INTENTS = arrayOf(
+            Intent("com.novalauncher.THEME"),
+            Intent("org.adw.launcher.THEMES"),
+            Intent("org.adw.launcher.icons.ACTION_PICK_ICON"),
+            Intent("com.anddoes.launcher.THEME"),
+            Intent("com.teslacoilsw.launcher.THEME"),
+            Intent("com.fede.launcher.THEME_ICONPACK"),
+            Intent("com.gau.go.launcherex.theme"),
+            Intent("com.dlto.atom.launcher.THEME"),
+            Intent("net.oneplus.launcher.icons.ACTION_PICK_ICON")
+        )
 
         /**
          * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
