@@ -23,4 +23,9 @@
         android:key="pref_sortMode"
         android:title="@string/title__sort_mode"
         app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_protected_apps"
+        app:title="@string/enable_protected_apps" />
 </PreferenceScreen>

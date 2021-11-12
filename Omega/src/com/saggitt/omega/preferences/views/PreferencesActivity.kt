@@ -9,8 +9,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.android.launcher3.R
 import com.android.launcher3.databinding.PreferencesActivityBinding
+import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.PREFS_THEME
 import com.saggitt.omega.theme.ThemeManager
@@ -78,6 +80,13 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
                 onPreferenceChangeListener =
                     Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                         requireActivity().omegaPrefs.sortMode = newValue.toString().toInt()
+                        true
+                    }
+            }
+            findPreference<SwitchPreferenceCompat>(PREFS_PROTECTED_APPS)?.apply {
+                onPreferenceChangeListener =
+                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                        requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
                         true
                     }
             }
