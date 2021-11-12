@@ -372,6 +372,11 @@ public class InvariantDeviceProfile {
         MAIN_EXECUTOR.execute(() -> onConfigChanged(appContext));
     }
 
+    public void onPreferencesChanged(Context context) {
+        Context appContext = context.getApplicationContext();
+        MAIN_EXECUTOR.execute(() -> onConfigChanged(appContext));
+    }
+
     private void onConfigChanged(Context context) {
         // Re-init grid
         String gridName = getCurrentGridName(context);

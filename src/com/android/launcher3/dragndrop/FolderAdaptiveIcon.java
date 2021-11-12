@@ -38,17 +38,18 @@ import com.android.launcher3.folder.PreviewBackground;
 import com.android.launcher3.graphics.ShiftedBitmapDrawable;
 import com.android.launcher3.icons.BitmapRenderer;
 import com.android.launcher3.util.Preconditions;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 /**
  * {@link AdaptiveIconDrawable} representation of a {@link FolderIcon}
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class FolderAdaptiveIcon extends AdaptiveIconDrawable {
+public class FolderAdaptiveIcon extends CustomAdaptiveIconDrawable {
     private static final String TAG = "FolderAdaptiveIcon";
 
     private final Drawable mBadge;
     private final Path mMask;
-    private final ConstantState mConstantState;
+    private final Drawable.ConstantState mConstantState;
     private static final Rect sTmpRect = new Rect();
 
     private FolderAdaptiveIcon(Drawable bg, Drawable fg, Drawable badge, Path mask) {

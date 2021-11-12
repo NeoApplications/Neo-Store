@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
@@ -299,6 +300,11 @@ fun supportsRoundedCornersOnWindows(context: Context): Boolean {
         return true
     }
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)
+}
+
+fun String.asNonEmpty(): String? {
+    if (TextUtils.isEmpty(this)) return null
+    return this
 }
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :

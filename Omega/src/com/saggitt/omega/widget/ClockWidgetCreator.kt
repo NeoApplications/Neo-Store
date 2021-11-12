@@ -34,7 +34,11 @@ class ClockWidgetCreator(context: Context) {
 
         //set clock and date format
         views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat)
-        views.setCharSequence(R.id.appwidget_date, "setFormat12Hour", dateFormat)
+
+        if (Utilities.ATLEAST_R)
+            views.setCharSequence(R.id.appwidget_date, "setFormat24Hour", dateFormat)
+        else
+            views.setCharSequence(R.id.appwidget_date, "setFormat12Hour", dateFormat)
 
         return views
     }

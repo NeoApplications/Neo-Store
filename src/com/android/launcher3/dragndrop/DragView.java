@@ -66,6 +66,7 @@ import com.android.launcher3.util.RunnableList;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 /**
  * A custom view for rendering an icon, folder, shortcut or widget during drag-n-drop.
@@ -250,7 +251,7 @@ public class DragView extends FrameLayout implements StateListener<LauncherState
                         nDr = dr;
                     } else {
                         // Since we just want the scale, avoid heavy drawing operations
-                        nDr = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
+                        nDr = new CustomAdaptiveIconDrawable(new ColorDrawable(Color.BLACK), null);
                     }
                     Utilities.scaleRectAboutCenter(bounds,
                             li.getNormalizer().getScale(nDr, null, null, null));

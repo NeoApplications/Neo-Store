@@ -40,6 +40,7 @@ import com.android.systemui.shared.system.KeyguardManagerCompat;
 import com.android.systemui.shared.system.TaskStackChangeListener;
 import com.android.systemui.shared.system.TaskStackChangeListeners;
 import com.saggitt.omega.OmegaApp;
+import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class RecentsModel extends TaskStackChangeListener implements IconChangeL
         mTaskList = new RecentTasksList(MAIN_EXECUTOR,
                 new KeyguardManagerCompat(context), ActivityManagerWrapper.getInstance());
 
-        IconProvider iconProvider = new IconProvider(context);
+        IconProvider iconProvider = new CustomIconProvider(context);
         mIconCache = new TaskIconCache(context, RECENTS_MODEL_EXECUTOR, iconProvider);
         mThumbnailCache = new TaskThumbnailCache(context, RECENTS_MODEL_EXECUTOR);
 

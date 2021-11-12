@@ -55,6 +55,7 @@ import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.Preconditions;
+import com.saggitt.omega.icons.CustomIconProvider;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -81,7 +82,7 @@ public class IconCache extends BaseIconCache {
     private int mPendingIconRequestCount = 0;
 
     public IconCache(Context context, InvariantDeviceProfile idp) {
-        this(context, idp, LauncherFiles.APP_ICONS_DB, new IconProvider(context));
+        this(context, idp, LauncherFiles.APP_ICONS_DB, new CustomIconProvider(context));
     }
 
     public IconCache(Context context, InvariantDeviceProfile idp, String dbFileName,

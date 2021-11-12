@@ -36,7 +36,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -89,6 +88,8 @@ import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.LocalColorExtractor;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.iconpack.IconPackProvider;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,6 +113,86 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class LauncherPreviewRenderer extends ContextWrapper
         implements ActivityContext, WorkspaceLayoutManager, LayoutInflater.Factory2 {
 
+    public LauncherPreviewRenderer(Context context,
+                                   InvariantDeviceProfile idp,
+                                   WallpaperColors wallpaperColorsOverride) {
+
+        super(context);
+        mUiHandler = new Handler(Looper.getMainLooper());
+        mContext = context;
+        mIdp = idp;
+        mDp = idp.getDeviceProfile(context).copy(context);
+
+        if (Utilities.ATLEAST_R) {
+            WindowInsets currentWindowInsets = context.getSystemService(WindowManager.class)
+                    .getCurrentWindowMetrics().getWindowInsets();
+            mInsets = new Rect(
+                    currentWindowInsets.getSystemWindowInsetLeft(),
+                    currentWindowInsets.getSystemWindowInsetTop(),
+                    currentWindowInsets.getSystemWindowInsetRight(),
+                    currentWindowInsets.getSystemWindowInsetBottom());
+        } else {
+            mInsets = new Rect();
+            mInsets.left = mInsets.right = (mDp.widthPx - mDp.availableWidthPx) / 2;
+            mInsets.top = mInsets.bottom = (mDp.heightPx - mDp.availableHeightPx) / 2;
+        }
+        mDp.updateInsets(mInsets);
+
+        BaseIconFactory iconFactory =
+                new BaseIconFactory(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize) {
+                };
+        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new CustomAdaptiveIconDrawable(
+                        new ColorDrawable(Color.WHITE), new ColorDrawable(Color.WHITE)),
+                Process.myUserHandle(),
+                Build.VERSION.SDK_INT);
+
+        mWorkspaceItemInfo = new WorkspaceItemInfo();
+        mWorkspaceItemInfo.bitmap = iconInfo;
+        mWorkspaceItemInfo.intent = new Intent();
+        mWorkspaceItemInfo.contentDescription = mWorkspaceItemInfo.title =
+                context.getString(R.string.label_application);
+
+        mHomeElementInflater = LayoutInflater.from(
+                new ContextThemeWrapper(this, R.style.HomeScreenElementTheme));
+        mHomeElementInflater.setFactory2(this);
+
+        mRootView = (InsettableFrameLayout) mHomeElementInflater.inflate(
+                R.layout.launcher_preview_layout, null, false);
+        mRootView.setInsets(mInsets);
+        measureView(mRootView, mDp.widthPx, mDp.heightPx);
+
+        mHotseat = mRootView.findViewById(R.id.hotseat);
+        mHotseat.resetLayout(false);
+
+        mWorkspace = mRootView.findViewById(R.id.workspace);
+        mWorkspace.setPadding(mDp.workspacePadding.left + mDp.cellLayoutPaddingLeftRightPx,
+                mDp.workspacePadding.top,
+                mDp.workspacePadding.right + mDp.cellLayoutPaddingLeftRightPx,
+                mDp.workspacePadding.bottom);
+
+        if (Utilities.ATLEAST_S) {
+            WallpaperColors wallpaperColors = wallpaperColorsOverride != null
+                    ? wallpaperColorsOverride
+                    : WallpaperManager.getInstance(context).getWallpaperColors(FLAG_SYSTEM);
+            mWallpaperColorResources = wallpaperColors != null ? LocalColorExtractor.newInstance(
+                    context).generateColorsOverride(wallpaperColors) : null;
+        } else {
+            mWallpaperColorResources = null;
+        }
+    }
+
+    private final Handler mUiHandler;
+    private final Context mContext;
+    private final InvariantDeviceProfile mIdp;
+    private final DeviceProfile mDp;
+    private final Rect mInsets;
+    private final WorkspaceItemInfo mWorkspaceItemInfo;
+    private final LayoutInflater mHomeElementInflater;
+    private final InsettableFrameLayout mRootView;
+    private final Hotseat mHotseat;
+    private final CellLayout mWorkspace;
+    private final SparseIntArray mWallpaperColorResources;
+
     /**
      * Context used just for preview. It also provides a few objects (e.g. UserCache) just for
      * preview purposes.
@@ -133,10 +214,16 @@ public class LauncherPreviewRenderer extends ContextWrapper
         public PreviewContext(Context base, InvariantDeviceProfile idp) {
             super(base);
             mIdp = idp;
+            putBaseInstance(IconPackProvider.INSTANCE);
             mObjectMap.put(InvariantDeviceProfile.INSTANCE, idp);
             mObjectMap.put(LauncherAppState.INSTANCE,
                     new LauncherAppState(this, null /* iconCacheFileName */));
 
+        }
+
+        private void putBaseInstance(MainThreadInitializedObject mainThreadInitializedObject) {
+            mAllowedObjects.add(mainThreadInitializedObject);
+            mObjectMap.put(mainThreadInitializedObject, mainThreadInitializedObject.get(getBaseContext()));
         }
 
         @Override
@@ -192,86 +279,6 @@ public class LauncherPreviewRenderer extends ContextWrapper
                 clear();
                 mIconPool.offer(this);
             }
-        }
-    }
-
-    private final Handler mUiHandler;
-    private final Context mContext;
-    private final InvariantDeviceProfile mIdp;
-    private final DeviceProfile mDp;
-    private final Rect mInsets;
-    private final WorkspaceItemInfo mWorkspaceItemInfo;
-    private final LayoutInflater mHomeElementInflater;
-    private final InsettableFrameLayout mRootView;
-    private final Hotseat mHotseat;
-    private final CellLayout mWorkspace;
-    private final SparseIntArray mWallpaperColorResources;
-
-    public LauncherPreviewRenderer(Context context,
-                                   InvariantDeviceProfile idp,
-                                   WallpaperColors wallpaperColorsOverride) {
-
-        super(context);
-        mUiHandler = new Handler(Looper.getMainLooper());
-        mContext = context;
-        mIdp = idp;
-        mDp = idp.getDeviceProfile(context).copy(context);
-
-        if (Utilities.ATLEAST_R) {
-            WindowInsets currentWindowInsets = context.getSystemService(WindowManager.class)
-                    .getCurrentWindowMetrics().getWindowInsets();
-            mInsets = new Rect(
-                    currentWindowInsets.getSystemWindowInsetLeft(),
-                    currentWindowInsets.getSystemWindowInsetTop(),
-                    currentWindowInsets.getSystemWindowInsetRight(),
-                    currentWindowInsets.getSystemWindowInsetBottom());
-        } else {
-            mInsets = new Rect();
-            mInsets.left = mInsets.right = (mDp.widthPx - mDp.availableWidthPx) / 2;
-            mInsets.top = mInsets.bottom = (mDp.heightPx - mDp.availableHeightPx) / 2;
-        }
-        mDp.updateInsets(mInsets);
-
-        BaseIconFactory iconFactory =
-                new BaseIconFactory(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize) {
-                };
-        BitmapInfo iconInfo = iconFactory.createBadgedIconBitmap(new AdaptiveIconDrawable(
-                        new ColorDrawable(Color.WHITE), new ColorDrawable(Color.WHITE)),
-                Process.myUserHandle(),
-                Build.VERSION.SDK_INT);
-
-        mWorkspaceItemInfo = new WorkspaceItemInfo();
-        mWorkspaceItemInfo.bitmap = iconInfo;
-        mWorkspaceItemInfo.intent = new Intent();
-        mWorkspaceItemInfo.contentDescription = mWorkspaceItemInfo.title =
-                context.getString(R.string.label_application);
-
-        mHomeElementInflater = LayoutInflater.from(
-                new ContextThemeWrapper(this, R.style.HomeScreenElementTheme));
-        mHomeElementInflater.setFactory2(this);
-
-        mRootView = (InsettableFrameLayout) mHomeElementInflater.inflate(
-                R.layout.launcher_preview_layout, null, false);
-        mRootView.setInsets(mInsets);
-        measureView(mRootView, mDp.widthPx, mDp.heightPx);
-
-        mHotseat = mRootView.findViewById(R.id.hotseat);
-        mHotseat.resetLayout(false);
-
-        mWorkspace = mRootView.findViewById(R.id.workspace);
-        mWorkspace.setPadding(mDp.workspacePadding.left + mDp.cellLayoutPaddingLeftRightPx,
-                mDp.workspacePadding.top,
-                mDp.workspacePadding.right + mDp.cellLayoutPaddingLeftRightPx,
-                mDp.workspacePadding.bottom);
-
-        if (Utilities.ATLEAST_S) {
-            WallpaperColors wallpaperColors = wallpaperColorsOverride != null
-                    ? wallpaperColorsOverride
-                    : WallpaperManager.getInstance(context).getWallpaperColors(FLAG_SYSTEM);
-            mWallpaperColorResources = wallpaperColors != null ? LocalColorExtractor.newInstance(
-                    context).generateColorsOverride(wallpaperColors) : null;
-        } else {
-            mWallpaperColorResources = null;
         }
     }
 

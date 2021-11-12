@@ -76,6 +76,12 @@ public class Executors {
             new LooperExecutor(createAndStartNewLooper("launcher-loader"));
 
     /**
+     * Executor used for executing tasks related to icon packs, allows us to offload UI executor
+     */
+    public static final LooperExecutor ICON_PACK_EXECUTOR =
+            new LooperExecutor(createAndStartNewLooper("icon-pack-loader"));
+
+    /**
      * A simple ThreadFactory to set the thread name and priority when used with executors.
      */
     public static class SimpleThreadFactory implements ThreadFactory {

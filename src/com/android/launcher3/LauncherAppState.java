@@ -50,6 +50,7 @@ import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.widget.DatabaseWidgetPreviewLoader;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.icons.CustomIconProvider;
 
 public class LauncherAppState {
 
@@ -137,7 +138,7 @@ public class LauncherAppState {
         mContext = context;
 
         mInvariantDeviceProfile = InvariantDeviceProfile.INSTANCE.get(context);
-        mIconProvider = new IconProvider(context, Themes.isThemedIconEnabled(context));
+        mIconProvider = new CustomIconProvider(context, Themes.isThemedIconEnabled(context));
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile,
                 iconCacheFileName, mIconProvider);
         mWidgetCache = new DatabaseWidgetPreviewLoader(mContext, mIconCache);
