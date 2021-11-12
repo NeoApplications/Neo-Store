@@ -34,4 +34,10 @@
         app:cpv_previewSize="large"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />
+
+    <androidx.preference.Preference
+        android:fragment="com.saggitt.omega.iconpack.IconPackFragment"
+        android:key="pref_icon_packs"
+        android:title="@string/title_theme_icon_packs"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
