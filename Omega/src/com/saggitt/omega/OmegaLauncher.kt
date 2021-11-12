@@ -35,6 +35,7 @@ import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
 import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.gestures.GestureController
+import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
@@ -49,6 +50,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
+    private val prefs by lazy { Utilities.getOmegaPrefs(this) }
     private val prefCallback = OmegaPreferencesChangeCallback(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +60,14 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         ) {
             Utilities.requestStoragePermission(this)
         }
-        super.onCreate(savedInstanceState)
-        val mPrefs = Utilities.getOmegaPrefs(this)
-        mPrefs.registerCallback(prefCallback)
-        mPrefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
 
+        super.onCreate(savedInstanceState)
+        prefs.registerCallback(prefCallback)
+        prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
+        if (prefs.firstRun) {
+            prefs.firstRun = false
+            prefs.iconShape = IconShape.Cylinder
+        }
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
