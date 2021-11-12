@@ -47,12 +47,11 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Supplier;
 
 import com.android.launcher3.icons.ThemedIconDrawable.ThemeData;
+import com.saggitt.omega.icons.ClockMetadata;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntFunction;
-
-import app.lawnchair.icons.ClockMetadata;
 
 /**
  * Wrapper over {@link AdaptiveIconDrawable} to intercept icon flattening logic for dynamic

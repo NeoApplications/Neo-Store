@@ -1,4 +1,4 @@
-package app.lawnchair.icons
+package com.saggitt.omega.icons
 
 data class ClockMetadata(
     val hourLayerIndex: Int,
