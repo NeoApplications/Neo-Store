@@ -59,7 +59,7 @@ import java.util.function.Supplier;
 public class IconProvider {
 
     private final String ACTION_OVERLAY_CHANGED = "android.intent.action.OVERLAY_CHANGED";
-    private static final int CONFIG_ICON_MASK_RES_ID = Resources.getSystem().getIdentifier(
+    public static final int CONFIG_ICON_MASK_RES_ID = Resources.getSystem().getIdentifier(
             "config_icon_mask", "string", "android");
 
     private static final String TAG_ICON = "icon";

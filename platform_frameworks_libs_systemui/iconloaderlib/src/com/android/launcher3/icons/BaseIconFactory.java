@@ -27,6 +27,9 @@ import android.os.UserHandle;
 import androidx.annotation.NonNull;
 
 import com.android.launcher3.icons.BitmapInfo.Extender;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
+import com.saggitt.omega.icons.ExtendedBitmapDrawable;
+import com.saggitt.omega.icons.IconPreferencesKt;
 
 /**
  * This class will be moved to androidx library. There shouldn't be any dependency outside
@@ -140,7 +143,7 @@ public class BaseIconFactory implements AutoCloseable {
         mTextPaint.setColor(color);
         Canvas canvas = new Canvas(placeholderBitmap);
         canvas.drawText(placeholder, mIconBitmapSize / 2, mIconBitmapSize * 5 / 8, mTextPaint);
-        AdaptiveIconDrawable drawable = new AdaptiveIconDrawable(
+        AdaptiveIconDrawable drawable = new CustomAdaptiveIconDrawable(
                 new ColorDrawable(PLACEHOLDER_BACKGROUND_COLOR),
                 new BitmapDrawable(mContext.getResources(), placeholderBitmap));
         Bitmap icon = createIconBitmap(drawable, 1f);
@@ -163,7 +166,7 @@ public class BaseIconFactory implements AutoCloseable {
         if (ATLEAST_OREO) {
             float inset = AdaptiveIconDrawable.getExtraInsetFraction();
             inset = inset / (1 + 2 * inset);
-            d = new AdaptiveIconDrawable(new ColorDrawable(Color.BLACK),
+            d = new CustomAdaptiveIconDrawable(new ColorDrawable(Color.BLACK),
                     new InsetDrawable(d, inset, inset, inset, inset));
         }
         return createBadgedIconBitmap(d, user, true);
@@ -287,6 +290,10 @@ public class BaseIconFactory implements AutoCloseable {
 
     private Drawable normalizeAndWrapToAdaptiveIcon(@NonNull Drawable icon,
                                                     boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
+        if (shrinkNonAdaptiveIcons) {
+            boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
+            shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
+        }
         if (icon == null) {
             return null;
         }
@@ -294,21 +301,24 @@ public class BaseIconFactory implements AutoCloseable {
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
             if (mWrapperIcon == null) {
-                mWrapperIcon = mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper)
-                        .mutate();
+                Drawable background = new ColorDrawable(mContext.getColor(R.color.legacy_icon_background));
+                Drawable foreground = new FixedScaleDrawable();
+                mWrapperIcon = new CustomAdaptiveIconDrawable(background, foreground);
             }
             AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
             dr.setBounds(0, 0, 1, 1);
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
             if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
+
+                int wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
                 icon = dr;
                 scale = getNormalizer().getScale(icon, outIconBounds, null, null);
 
-                ((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
+                ((ColorDrawable) dr.getBackground()).setColor(wrapperBackgroundColor);
             }
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);

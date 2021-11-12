@@ -48,6 +48,7 @@ import androidx.core.util.Supplier;
 
 import com.android.launcher3.icons.ThemedIconDrawable.ThemeData;
 import com.saggitt.omega.icons.ClockMetadata;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +59,7 @@ import java.util.function.IntFunction;
  * clock icons
  */
 @TargetApi(Build.VERSION_CODES.O)
-public class ClockDrawableWrapper extends AdaptiveIconDrawable implements BitmapInfo.Extender {
+public class ClockDrawableWrapper extends CustomAdaptiveIconDrawable implements BitmapInfo.Extender {
 
     private static final String TAG = "ClockDrawableWrapper";
 
