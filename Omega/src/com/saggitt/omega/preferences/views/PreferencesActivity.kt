@@ -1,22 +1,30 @@
 package com.saggitt.omega.preferences.views
 
 import android.app.ActivityOptions
+import android.content.ComponentName
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
+import com.android.launcher3.notification.NotificationListener
+import com.android.launcher3.settings.NotificationDotsPreference
 import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.util.omegaPrefs
 
 class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
@@ -123,8 +131,26 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
     }
 
     class PrefsGesturesFragment : PreferenceFragmentCompat() {
+        private var mIconBadgingObserver: IconBadgingObserver? = null
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_gestures, rootKey)
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            val iconBadgingPref: NotificationDotsPreference = findPreference<Preference>(
+                NOTIFICATION_DOTS_PREFERENCE_KEY
+            ) as NotificationDotsPreference
+            // Listen to system notification badge settings while this UI is active.
+            mIconBadgingObserver = IconBadgingObserver(
+                iconBadgingPref, requireContext().contentResolver, fragmentManager
+            )
+            mIconBadgingObserver?.register(
+                NOTIFICATION_BADGING,
+                NOTIFICATION_ENABLED_LISTENERS
+            )
         }
     }
 
@@ -168,8 +194,71 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         return intent.putExtra("state", state)
     }
 
-    companion object {
 
+    /**
+     * Content observer which listens for system badging setting changes, and updates the launcher
+     * badging setting subtext accordingly.
+     */
+    private class IconBadgingObserver(
+        val badgingPref: NotificationDotsPreference, val resolver: ContentResolver,
+        val fragmentManager: FragmentManager?
+    ) : SettingsObserver.Secure(resolver), Preference.OnPreferenceClickListener {
+        private var serviceEnabled = true
+        override fun onSettingChanged(keySettingEnabled: Boolean) {
+            var summary =
+                if (keySettingEnabled) R.string.notification_dots_desc_on else R.string.notification_dots_desc_off
+            if (keySettingEnabled) {
+                // Check if the listener is enabled or not.
+                val enabledListeners =
+                    Settings.Secure.getString(
+                        resolver,
+                        NOTIFICATION_ENABLED_LISTENERS
+                    )
+                val myListener =
+                    ComponentName(badgingPref.context, NotificationListener::class.java)
+                serviceEnabled = enabledListeners != null &&
+                        (enabledListeners.contains(myListener.flattenToString()) ||
+                                enabledListeners.contains(myListener.flattenToShortString()))
+                if (!serviceEnabled) {
+                    summary = R.string.title_missing_notification_access
+                }
+            }
+            badgingPref.setWidgetFrameVisible(!serviceEnabled)
+            badgingPref.onPreferenceClickListener =
+                if (serviceEnabled && Utilities.ATLEAST_OREO) null else this
+            badgingPref.setSummary(summary)
+        }
+
+        override fun onPreferenceClick(preference: Preference): Boolean {
+            if (!Utilities.ATLEAST_OREO && serviceEnabled) {
+                val cn = ComponentName(
+                    preference.context,
+                    NotificationListener::class.java
+                )
+                val intent: Intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(":settings:fragment_args_key", cn.flattenToString())
+                preference.context.startActivity(intent)
+            } else {
+                fragmentManager?.let {
+                    SettingsActivity.NotificationAccessConfirmation()
+                        .show(it, "notification_access")
+                }
+            }
+            return true
+        }
+    }
+
+
+    companion object {
         var DEFAULT_HOME: String? = ""
+
+        const val NOTIFICATION_BADGING = "notification_badging"
+        private const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
+
+        /**
+         * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
+         */
+        private const val NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners"
     }
 }
