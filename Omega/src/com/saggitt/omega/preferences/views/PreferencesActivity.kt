@@ -11,6 +11,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_SORT
@@ -113,6 +114,14 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
     class PrefsDevFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_dev, rootKey)
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            findPreference<Preference>("kill")?.setOnPreferenceClickListener {
+                Utilities.killLauncher()
+                false
+            }
         }
     }
 

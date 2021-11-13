@@ -15,9 +15,41 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:key="kill"
+        android:summary="@string/summary__dev_restart"
+        android:title="@string/title__restart_launcher"
+        app:iconSpaceReserved="false" />
 
-    <androidx.preference.Preference
-        android:summary="Developer's Preferences"
-        android:title="You're now here:" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_showDevOptions"
+        android:persistent="true"
+        android:title="@string/title__dev_show_Dev"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_showDebugInfo"
+        android:persistent="true"
+        android:title="@string/title__dev_show_debug_info"
+        app:iconSpaceReserved="false" />
+
+    <PreferenceCategory android:title="@string/pref_category__incubating">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_desktop_mode"
+            android:summary="@string/pref_desktop_mode_summary"
+            android:title="@string/pref_desktop_mode"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:dependency="pref_desktop_mode"
+            android:key="pref_desktop_mode_settings"
+            android:title="@string/pref_desktop_mode_settings"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 </PreferenceScreen>
