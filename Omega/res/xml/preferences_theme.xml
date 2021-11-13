@@ -23,6 +23,7 @@
         android:defaultValue="17"
         android:key="pref_launcherTheme"
         android:title="@string/title__general_theme"
+        app:iconSpaceReserved="false"
         app:useSimpleSummaryProvider="true" />
 
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
@@ -32,7 +33,8 @@
         app:cpv_dialogTitle="@string/title__theme_accent_color"
         app:cpv_dialogType="preset"
         app:cpv_previewSize="large"
-        app:cpv_showAlphaSlider="true" />
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.Preference
         android:fragment="com.saggitt.omega.iconpack.IconPackFragment"
@@ -43,6 +45,7 @@
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_enableBlur"
+        app:iconSpaceReserved="false"
         app:title="@string/title__theme_blur" />
 
     <SeekBarPreference
@@ -52,11 +55,13 @@
         app:defaultValue="75"
         app:min="10"
         app:showSeekBarValue="true"
+        app:iconSpaceReserved="false"
         app:title="@string/title__theme_blur_radius" />
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_customWindowCorner"
+        app:iconSpaceReserved="false"
         app:title="@string/title_override_corner_radius" />
 
     <SeekBarPreference
@@ -66,5 +71,6 @@
         app:defaultValue="8"
         app:min="0"
         app:showSeekBarValue="true"
+        app:iconSpaceReserved="false"
         app:title="@string/title_override_corner_radius_value" />
 </PreferenceScreen>
