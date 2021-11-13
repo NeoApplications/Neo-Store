@@ -67,7 +67,6 @@
             android:label="@string/settings_button_text"
             android:theme="@style/SettingsTheme.Light">
             <intent-filter android:priority="-1">
-                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -78,6 +77,7 @@
             android:label="@string/settings_button_text"
             android:theme="@style/SettingsTheme.Dark">
             <intent-filter android:priority="-1">
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

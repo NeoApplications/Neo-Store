@@ -23,9 +23,9 @@
         <ListPreference
             android:defaultValue="0"
             android:disableDependentsState="false"
-            android:entries="@array/entries__sort_mode"
-            android:entryValues="@array/values__zero_to_three"
-            android:key="key_sort_mode"
+            android:entries="@array/sortMode"
+            android:entryValues="@array/sortModeValues"
+            android:key="pref_sortMode"
             android:persistent="true"
             android:summary="%s"
             android:title="@string/title__drawer_sort"

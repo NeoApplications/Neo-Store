@@ -22,16 +22,28 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
+import com.android.launcher3.InvariantDeviceProfile
+import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
+import com.saggitt.omega.icons.IconShape
+import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.util.dpToPx
+import com.saggitt.omega.util.pxToDp
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.reflect.KProperty
+import com.android.launcher3.graphics.IconShape as L3IconShape
 
-class OmegaPreferences(context: Context) : BasePreferences(context),
+class OmegaPreferences(private val context: Context) :
     SharedPreferences.OnSharedPreferenceChangeListener {
     val mContext = context
 
@@ -72,10 +84,11 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
             context.getString(R.string.launch_assistant),
             context.getString(R.string.dash_volume_title),
             context.getString(R.string.edit_dash)
-        )
+        ), doNothing
     )
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
+    val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
 
     var torchState = false
 
@@ -106,6 +119,15 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
     var windowCornerRadius by IntPref("pref_customWindowCornerRadius", 8, updateBlur)
+    val iconPackPackage = StringPref("pref_iconPackPackage", "", reloadIcons)
+
+    var iconShape by StringBasedPref(
+        "pref_iconShape", IconShape.Circle, onIconShapeChanged,
+        {
+            IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
+        }, IconShape::toString
+    ) { /* no dispose */ }
+
 
     //FOLDER
     var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
@@ -121,9 +143,11 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
 
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
+    var firstRun by BooleanPref("pref_first_run", true)
 
     //DEVELOPER PREFERENCES
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
+    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, recreate)
     private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)
@@ -136,8 +160,34 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
             override fun unflattenValue(value: String) = value
         }
 
-    interface OnPreferenceChangeListener {
-        fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
+    private fun createPreferences(): SharedPreferences {
+        val dir = mContext.cacheDir.parent
+        val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
+        val newFile = File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
+        if (oldFile.exists() && !newFile.exists()) {
+            oldFile.renameTo(newFile)
+            oldFile.delete()
+        }
+        return mContext.applicationContext
+            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+            .apply {
+                migrateConfig(this)
+            }
+    }
+
+    /*Load Initial preferences*/
+    private fun migrateConfig(prefs: SharedPreferences) {
+        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
+        if (version != CURRENT_VERSION) {
+            with(prefs.edit()) {
+
+                // Default accent color
+                putInt("pref_key__accent_color", 0XE80142)
+                initializeIconShape()
+                putInt(VERSION_KEY, CURRENT_VERSION)
+                commit()
+            }
+        }
     }
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
@@ -183,10 +233,6 @@ class OmegaPreferences(context: Context) : BasePreferences(context),
     }
 
     fun getOnChangeCallback() = onChangeCallback
-
-    fun updateSortApps() {
-        onChangeCallback?.reloadApps()
-    }
 
     inline fun withChangeCallback(
         crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
