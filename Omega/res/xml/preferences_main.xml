@@ -82,6 +82,7 @@
     <Preference
         android:icon="@drawable/ic_info"
         android:key="pref_about"
+        android:fragment="com.saggitt.omega.ui.AboutFragment"
         android:layout="@layout/home_preference"
         android:summary="@string/summary__general_about"
         android:title="@string/title__general_about" />

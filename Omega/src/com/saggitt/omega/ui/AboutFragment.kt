@@ -21,8 +21,9 @@ package com.saggitt.omega.ui
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -31,11 +32,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
@@ -54,15 +56,23 @@ import com.saggitt.omega.ui.component.ItemLink
 import com.saggitt.omega.ui.component.PreferenceGroup
 
 @ExperimentalCoilApi
-class AboutActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            OmegaAppTheme {
-                CreateMainScreen()
+class AboutFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        return inflater.inflate(R.layout.icon_pack_fragment, container, false).apply {
+            findViewById<ComposeView>(R.id.icon_pack_view).setContent {
+                OmegaAppTheme {
+                    CreateMainScreen()
+                }
             }
         }
     }
+
+
 }
 
 @ExperimentalCoilApi
@@ -161,53 +171,6 @@ fun CreateMainScreen() {
             photoUrl = "https://avatars.githubusercontent.com/u/69337602",
             url = "https://github.com/nonaybay"
         )
-
-        /*
-        NavigationActionPreference(
-            label = stringResource(id = R.string.category__about_licenses),
-            subtitle = stringResource(id = R.string.license_gpl),
-            destination = subRoute(name = AboutRoutes.LICENSE),
-            startWidget = {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_copyright),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(32.dp)
-                        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                )
-            }
-        )
-
-        NavigationActionPreference(
-            label = stringResource(id = R.string.title__about_changelog),
-            destination = subRoute(name = AboutRoutes.CHANGELOG),
-            startWidget = {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_list),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(32.dp)
-                        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                )
-            }
-        )
-
-        NavigationActionPreference(
-            label = stringResource(id = R.string.about_open_source),
-            destination = subRoute(name = AboutRoutes.OPEN_SOURCE),
-            startWidget = {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_copyright),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(32.dp)
-                        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                )
-            }
-        )*/
     }
 }
 
@@ -256,14 +219,3 @@ private val contributors = listOf(
         webpage = "https://github.com/machiav3lli"
     )
 )
-
-val LocalRoute = compositionLocalOf { "" }
-
-@Composable
-fun subRoute(name: String) = "${LocalRoute.current}$name/"
-
-object AboutRoutes {
-    const val LICENSE = "license"
-    const val OPEN_SOURCE = "libraries"
-    const val CHANGELOG = "changelog"
-}

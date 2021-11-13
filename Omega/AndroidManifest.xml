@@ -90,12 +90,6 @@
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
 
-        <activity
-            android:name="com.saggitt.omega.ui.AboutActivity"
-            android:autoRemoveFromRecents="true"
-            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
-            android:theme="@style/SettingsTheme.Light" />
-
         <!-- Actions -->
         <activity
             android:name="com.saggitt.omega.gestures.OmegaShortcutActivity"
