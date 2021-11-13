@@ -18,17 +18,36 @@
 
 package com.saggitt.omega.dash
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.launcher3.R
 import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.views.RecyclerViewFragment
 
-class DashFragment : RecyclerViewFragment() {
+class DashFragment : Fragment() {
     private val adapter by lazy { DashEditAdapter(requireContext()) }
+    val layoutId = R.layout.preference_insettable_recyclerview
 
-    override fun onRecyclerViewCreated(recyclerView: RecyclerView) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return LayoutInflater.from(container!!.context).inflate(layoutId, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        onRecyclerViewCreated(view.findViewById(R.id.list))
+    }
+
+    private fun onRecyclerViewCreated(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView.adapter = adapter
         (recyclerView.itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = false
