@@ -41,7 +41,7 @@
             android:title="@string/title__general_drawer" />
 
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsThemeFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsThemeFragment"
             android:icon="@drawable/ic_style"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_theme"
