@@ -18,11 +18,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.saggitt.omega.preferences.custom.SortAppsPreference
-        android:defaultValue="0"
-        android:key="pref_sortMode"
-        android:title="@string/title__sort_mode"
-        app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory android:title="@string/cat_drawer_grid">
+        <com.saggitt.omega.preferences.custom.SortAppsPreference
+            android:defaultValue="0"
+            android:key="pref_sortMode"
+            android:title="@string/title__sort_mode"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
