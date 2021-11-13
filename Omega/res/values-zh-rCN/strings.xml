@@ -56,7 +56,7 @@
     <string name="title__desktop_full_width_widgets">全屏组件</string>
     <string name="allow_rotation_blocked_desc">当前显示设置不允许屏幕旋转</string>
     <string name="pref_category__incubating">孵化</string>
-    <string name="folder_cover_mode_desc">点击以打开第一个应用，上划以浏览全部应用。</string>
+    <string name="folder_cover_mode_desc">点击打开第一个应用，上划以浏览全部应用。</string>
     <string name="folder_cover_mode">启用覆盖模式</string>
     <string name="customize">定制</string>
     <string name="hide_app">隐藏快捷方式</string>
@@ -77,7 +77,7 @@
     <string name="action_open_recents">打开最近</string>
     <string name="title__gesture_swipe_down">下划</string>
     <string name="gesture_swipe_up">上划</string>
-    <string name="gesture_long_press">按住</string>
+    <string name="gesture_long_press">点击并按住</string>
     <string name="gesture_double_tap">双击</string>
     <string name="pref_category__gestures">手势</string>
     <string name="action_close_notifications">禁用通知</string>
@@ -87,7 +87,7 @@
     <string name="title__notification_count">显示通知数量</string>
     <string name="event_provider_unread_notifications">通知</string>
     <string name="local_backups">已存储的</string>
-    <string name="read_external_storage_required">要创建备份，请允许存储权限。</string>
+    <string name="read_external_storage_required">要创建备份，请授予存储权限。</string>
     <string name="backup_location_device_storage">Omega 文件夹</string>
     <string name="backup_location">位置</string>
     <string name="backup_share_text">Omega 备份文件</string>
@@ -137,7 +137,7 @@
     <string name="units_metric">摄氏度</string>
     <string name="units_imperial">华氏度</string>
     <string name="developer_options_title">开发者选项</string>
-    <string name="developer_options_enabled">开发者选项已启用</string>
+    <string name="developer_options_enabled">开发者选项已开启</string>
     <string name="action_press_back">返回键</string>
     <string name="icon_shape_top_left">左上角</string>
     <string name="smartspace_provider_calendar">日历事件</string>
@@ -145,8 +145,8 @@
     <string name="allow">允许</string>
     <string name="permission_iplocate_twilight_explanation">允许访问您的粗略位置？ 这可以实现更准确的日光计算。</string>
     <string name="permission_iplocate">粗略位置</string>
-    <string name="event_provider_missing_notification_dots">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, 请启用通知圆点。</string>
-    <string name="event_provider_missing_notification_access">要使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>，启用系统通知。请转到 <xliff:g example="我的应用" id="name">“%2$s”</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">请启用通知圆点来使用 <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>。</string>
+    <string name="event_provider_missing_notification_access">请打开 <xliff:g example="My App" id="name">“%2$s” 的通知来使用 </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”.</xliff:g></string>
     <string name="battery_low">电量低</string>
     <string name="battery_full">已充满</string>
     <string name="battery_charging">充电中</string>
@@ -200,7 +200,7 @@
     <string name="icon_shape_circle">圆形</string>
     <string name="icon_shape_squircle">方圆形</string>
     <string name="icon_shape_square">方形</string>
-    <string name="icon_shape_system_default">系统默认</string>
+    <string name="icon_shape_system_default">系统</string>
     <string name="icon_shape_override_label_location">在主屏幕</string>
     <string name="icon_shape_override_label">变更图标形状</string>
     <string name="icon_shape_override_progress">应用图标形状变更</string>
@@ -220,7 +220,7 @@
     <string name="theme_with_dark_text">暗色文字</string>
     <string name="theme_light">亮色</string>
     <string name="theme_based">按主题设置</string>
-    <string name="theme_auto_night_mode">基于系统主题</string>
+    <string name="theme_auto_night_mode">基于系统</string>
     <string name="theme_auto">基于壁纸</string>
     <string name="summary__theme_blur">模糊页面背景</string>
     <string name="title_theme_icon_packs">图标集</string>
@@ -228,10 +228,10 @@
     <string name="title__theme_blur_radius">模糊程度</string>
     <string name="title__theme_blur">模糊</string>
     <string name="title__theme_accent_color">强调色</string>
-    <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g example="My App" id="name">%1$s</xliff:g> 使用情况权限</string>
+    <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g example="My App" id="name">%1$s</xliff:g> 的使用情况权限</string>
     <string name="needs_usage_access">需用使用权限</string>
     <string name="hide_app_reset">重置隐藏应用</string>
-    <string name="hide_app_selected">  隐藏</string>
+    <string name="hide_app_selected"> 隐藏</string>
     <plurals name="hidden_apps_count">
         <item quantity="other">已隐藏 %1$d 个</item>
     </plurals>
@@ -247,7 +247,7 @@
     <string name="pref_app_groups_edit_tip">点击以编辑，拖拽以排序。</string>
     <string name="pref_appcategorization_tabs_summary">在组之间滑动。</string>
     <string name="app_categorization_tabs">标签</string>
-    <string name="pref_appcategorization_folders_summary">点击打开弹出窗口。</string>
+    <string name="pref_appcategorization_folders_summary">轻按打开弹出窗口。</string>
     <string name="app_categorization_folders">文件夹</string>
     <string name="pref_appcategorization_style_text">风格</string>
     <string name="pref_appcategorization_enable_summary">选择抽屉布局模式</string>
@@ -262,7 +262,7 @@
     <string name="title_text_color">字体颜色</string>
     <string name="label_turn_off_suggestions">禁用</string>
     <string name="msg_disable_suggestions_prompt">使用数据将被删除。</string>
-    <string name="title_disable_suggestions_prompt">禁用应用建议</string>
+    <string name="title_disable_suggestions_prompt">关闭应用建议</string>
     <string name="summary__drawer_hide_apps">在抽屉中隐藏应用</string>
     <string name="summary_all_apps_google_search">搜索网页结果和应用</string>
     <string name="summary_search_hidden_apps">在搜索结果中显示隐藏的快捷方式。</string>
@@ -273,11 +273,11 @@
     <string name="title__sort_by_color">按颜色</string>
     <string name="title__sort_most_used">按使用频率</string>
     <string name="title__sort_last_installed">按最后安装时间</string>
-    <string name="title__sort_alphabetical_za">按字母顺序 Z-A</string>
-    <string name="title__sort_alphabetical_az">按字母顺序 A-Z</string>
+    <string name="title__sort_alphabetical_za">Z-A</string>
+    <string name="title__sort_alphabetical_az">A-Z</string>
     <string name="title__sort_mode">应用排序</string>
     <string name="title__drawer_paged_apps">分页应用视图</string>
-    <string name="gesture_dock_swipe_up">从快捷启动栏向上轻扫</string>
+    <string name="gesture_dock_swipe_up">从快捷启动栏向上滑动</string>
     <string name="num_hotseat_icons_pref_title">图标数量</string>
     <string name="title__drawer_all_apps">显示所有应用标签</string>
     <string name="title_separate_work_apps">第二个标签显示工作应用</string>
@@ -319,15 +319,15 @@
     <string name="tab_bottom_sheet_save">保存</string>
     <string name="automatic_short">自动</string>
     <string name="reset_to_default">重置为默认</string>
-    <string name="enabled_icon_packs">已启用</string>
-    <string name="drag_to_enable_packs">向上拖动以启用</string>
-    <string name="drag_to_disable_packs">向下拖动以禁用</string>
+    <string name="enabled_icon_packs">已开启</string>
+    <string name="drag_to_enable_packs">向上拖动以关闭</string>
+    <string name="drag_to_disable_packs">向下拖动以开启</string>
     <string name="dash_device_settings_summary">打开设备设置</string>
     <string name="dash_volume_summary">显示设置音频选择器</string>
     <string name="dash_launcher_settings_summary">显示启动器设置</string>
     <string name="wallpaper_pick_summary">打开壁纸选择器</string>
-    <string name="edit_dash_summary">启用或禁用快捷方式</string>
-    <string name="dash_all_apps_summary">显示所有应用按钮</string>
+    <string name="edit_dash_summary">打开或关闭快捷方式</string>
+    <string name="dash_all_apps_summary">显示“所有应用”按钮</string>
     <string name="dash_mobile_network_summary">显示移动网络设置</string>
     <string name="dash_manage_apps_summary">打开 Android 应用管理器</string>
     <string name="dash_mobile_network_title">移动网络</string>
@@ -337,7 +337,7 @@
     <string name="dash_all_apps_title">打开所有应用</string>
     <string name="wallpaper_pick">选择壁纸</string>
     <string name="edit_dash">编辑 Dash</string>
-    <string name="content_storage_permission_required">要设置壁纸，请批准存储权限。</string>
+    <string name="content_storage_permission_required">要设置壁纸，请授予存储权限。</string>
     <string name="title_storage_permission_required">需要存储权限</string>
     <string name="category__about_licenses">许可证</string>
     <string name="about_source">源代码</string>
@@ -355,8 +355,8 @@
     <string name="restore_failed">恢复失败</string>
     <string name="restore_success">恢复成功</string>
     <string name="restore_contents">恢复内容</string>
-    <string name="error_no_browser">没有找到能处理链接的活动</string>
-    <string name="dt2s_admin_warning">双击睡眠将会被禁用。</string>
+    <string name="error_no_browser">要打开 URL 请先安装一款合适的应用</string>
+    <string name="dt2s_admin_warning">双击睡眠将被禁用。</string>
     <string name="dt2s_admin_hint">要使用双击睡眠，请授予管理员权限。</string>
     <string name="title__folder_badge_count">显示文件夹角标数量</string>
     <string name="folder_name_format">文件夹：<xliff:g example="Games" id="name">%1$s</xliff:g></string>
@@ -369,7 +369,7 @@
     <string name="personality_provider">您好</string>
     <string name="gesture_press_back">返回键</string>
     <string name="gesture_press_home">轻按主页按钮</string>
-    <string name="dialog_message_change_sort">将应用顺序更改为按字母顺序？</string>
+    <string name="dialog_message_change_sort">将排序方法更改为按字母顺序？</string>
     <string name="notification_custom_color">使用自定义颜色</string>
     <string name="about_translators">译员</string>
     <string name="folder_radius">文件夹圆角半径</string>
@@ -378,11 +378,11 @@
     <string name="dash_media_player_description">显示或隐藏音频播放器控件</string>
     <string name="dash_media_player">音频播放器</string>
     <string name="fonts_change_global_font">更改</string>
-    <string name="fonts_global_font">全局字体</string>
-    <string name="disable_protected_apps_message">需要验证才能禁用受保护应用</string>
-    <string name="disable_protected_apps">禁用受保护应用</string>
-    <string name="enable_protected_apps">启用受保护应用</string>
-    <string name="trust_apps_manager_name">隐藏和受保护应用</string>
+    <string name="fonts_global_font">字体</string>
+    <string name="disable_protected_apps_message">需要验证才能关闭受保护的应用</string>
+    <string name="disable_protected_apps">关闭受保护的应用</string>
+    <string name="enable_protected_apps">打开受保护的应用</string>
+    <string name="trust_apps_manager_name">隐藏和受保护的应用</string>
     <string name="trust_apps_no_lock_error">请设置安全锁屏来限制应用访问</string>
     <string name="protected_app_reset">重置受保护应用</string>
     <string name="gesture_launch_assistant">启动助手（通过按钮或手势）</string>
@@ -397,13 +397,17 @@
     <string name="dash_auto_rotation_summary">打开/关闭自动旋转。</string>
     <string name="dash_torch">闪光灯</string>
     <string name="dash_wifi">无线网络</string>
-    <string name="dash_sync_summary">打开/关闭同步。</string>
+    <string name="dash_sync_summary">打开或关闭同步。</string>
     <string name="modify_system_settings_message">您必须允许 Omega 修改系统设置才能使其正常工作</string>
-    <string name="dash_wifi_summary">Wifi 状态和连接</string>
+    <string name="dash_wifi_summary">Wi-Fi 状态和连接</string>
     <string name="dash_bluetooth">蓝牙</string>
     <string name="app_widget_name">时钟部件</string>
     <string name="about_translators_group">贡献者和翻译者</string>
     <string name="about_channel">频道</string>
-    <string name="about_open_source">我们使用的库</string>
+    <string name="about_open_source">自由软件库</string>
     <string name="about_community">社区</string>
+    <string name="about_copyright">Copyright © 2020–2021</string>
+    <string name="pref_desktop_mode">桌面模式</string>
+    <string name="pref_desktop_mode_summary">激活 Android 桌面模式</string>
+    <string name="pref_desktop_mode_settings">桌面模式设置</string>
 </resources>
