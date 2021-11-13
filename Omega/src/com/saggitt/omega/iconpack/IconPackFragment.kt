@@ -55,8 +55,8 @@ class IconPackFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        return inflater.inflate(R.layout.icon_pack_fragment, container, false).apply {
-            findViewById<ComposeView>(R.id.icon_pack_view).setContent {
+        return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
+            findViewById<ComposeView>(R.id.base_compose_view).setContent {
                 iconPack = iconPackList()
             }
         }
