@@ -75,7 +75,7 @@
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsDevFragment"
             android:icon="@drawable/ic_code"
-            android:key="developerOptions"
+            android:key="pref_showDevOptions"
             android:layout="@layout/home_preference"
             android:title="@string/developer_options_title" />
     </PreferenceCategory>

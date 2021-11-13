@@ -1,27 +1,33 @@
 package com.saggitt.omega.preferences.views
 
 import android.app.ActivityOptions
-import android.content.ComponentName
-import android.content.ContentResolver
-import android.content.Intent
+import android.app.Dialog
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.settings.NotificationDotsPreference
 import com.saggitt.omega.PREFS_PROTECTED_APPS
-import com.saggitt.omega.settings.SettingsActivity
+import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.SettingsObserver
@@ -78,6 +84,11 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
+            setHasOptionsMenu(true)
+
+            findPreference<Preference>("pref_showDevOptions")?.apply {
+                isVisible = Utilities.getOmegaPrefs(context).developerOptionsEnabled
+            }
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -90,6 +101,29 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
             if (dev != mShowDevOptions) {
                 activity?.recreate()
             }
+        }
+
+        override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+            inflater.inflate(R.menu.menu_settings, menu)
+            if (BuildConfig.APPLICATION_ID != DEFAULT_HOME) {
+                inflater.inflate(R.menu.menu_change_default_home, menu)
+            }
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.action_change_default_home -> changeDefaultHome(requireContext())
+                R.id.action_restart_launcher -> Utilities.killLauncher()
+                R.id.action_dev_options -> {
+                    val transaction: FragmentTransaction =
+                        requireFragmentManager().beginTransaction()
+                    transaction.replace(R.id.fragment_container, PrefsDevFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+                else -> return false
+            }
+            return true
         }
     }
 
@@ -194,6 +228,29 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         return intent.putExtra("state", state)
     }
 
+    class NotificationAccessConfirmation : DialogFragment(), DialogInterface.OnClickListener {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val context: Context? = activity
+            val msg = context!!.getString(
+                R.string.msg_missing_notification_access,
+                context.getString(R.string.derived_app_name)
+            )
+            return AlertDialog.Builder(context)
+                .setTitle(R.string.title_missing_notification_access)
+                .setMessage(msg)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.title_change_settings, this)
+                .create()
+        }
+
+        override fun onClick(dialogInterface: DialogInterface, i: Int) {
+            val cn = ComponentName(requireActivity(), NotificationListener::class.java)
+            val intent: Intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(":settings:fragment_args_key", cn.flattenToString())
+            requireActivity().startActivity(intent)
+        }
+    }
 
     /**
      * Content observer which listens for system badging setting changes, and updates the launcher
@@ -241,7 +298,7 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
                 preference.context.startActivity(intent)
             } else {
                 fragmentManager?.let {
-                    SettingsActivity.NotificationAccessConfirmation()
+                    NotificationAccessConfirmation()
                         .show(it, "notification_access")
                 }
             }
