@@ -110,6 +110,8 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
                         requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
                         true
                     }
+
+                isVisible = Utilities.ATLEAST_R
             }
         }
     }
