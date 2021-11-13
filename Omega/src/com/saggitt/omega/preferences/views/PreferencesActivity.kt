@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -14,7 +13,6 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.saggitt.omega.PREFS_PROTECTED_APPS
-import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.omegaPrefs
@@ -76,13 +74,6 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-            findPreference<ListPreference>(PREFS_SORT)?.apply {
-                onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                        requireActivity().omegaPrefs.sortMode = newValue.toString().toInt()
-                        true
-                    }
-            }
             findPreference<SwitchPreferenceCompat>(PREFS_PROTECTED_APPS)?.apply {
                 onPreferenceChangeListener =
                     Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->

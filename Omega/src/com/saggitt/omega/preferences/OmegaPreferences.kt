@@ -29,6 +29,7 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
@@ -93,7 +94,7 @@ class OmegaPreferences(private val context: Context) :
     var torchState = false
 
     //DRAWER
-    var sortMode by StringIntPref("pref_sortMode", 0, reloadApps)
+    var sortMode by StringIntPref(PREFS_SORT, 0, reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
         "pref_hidden_prediction_set",
