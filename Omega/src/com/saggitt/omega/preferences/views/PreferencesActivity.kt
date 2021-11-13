@@ -2,6 +2,8 @@ package com.saggitt.omega.preferences.views
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -45,13 +47,41 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
                     AppCompatResources.getDrawable(this, R.drawable.ic_sysbar_back)
             }
         }
+
+        DEFAULT_HOME = resolveDefaultHome()
+    }
+
+    private fun resolveDefaultHome(): String? {
+        val homeIntent: Intent = Intent(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_HOME)
+        val info: ResolveInfo? = packageManager
+            .resolveActivity(homeIntent, PackageManager.MATCH_DEFAULT_ONLY)
+        return if (info?.activityInfo != null) {
+            info.activityInfo.packageName
+        } else {
+            null
+        }
     }
 
     // TODO should any of those sub classes get larger, then it should be moved to own class
 
     class PrefsMainFragment : PreferenceFragmentCompat() {
+        private var mShowDevOptions = false
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_main, rootKey)
+        }
+
+        override fun onResume() {
+            super.onResume()
+            val dev = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
+            if (dev != mShowDevOptions) {
+                activity?.recreate()
+            }
         }
     }
 
@@ -116,12 +146,6 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         }
     }
 
-    class PrefsAboutFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_dev, rootKey)
-        }
-    }
-
     override fun onThemeChanged() {
         if (currentTheme == themeOverride.getTheme(this)) return
         if (paused) {
@@ -140,5 +164,10 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         val state = Bundle()
         onSaveInstanceState(state)
         return intent.putExtra("state", state)
+    }
+
+    companion object {
+
+        var DEFAULT_HOME: String? = ""
     }
 }
