@@ -6,12 +6,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
+import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.databinding.PreferencesActivityBinding
-import com.saggitt.omega.*
+import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.ui.AboutActivity
 import com.saggitt.omega.util.omegaPrefs
 
 class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
@@ -49,6 +55,20 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
     class PrefsMainFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_main, rootKey)
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            findPreference<Preference>("pref_about")?.setOnPreferenceClickListener {
+                val intent = Intent()
+                intent.setClassName(
+                    BuildConfig.APPLICATION_ID,
+                    AboutActivity::class.java.name
+                )
+                requireActivity().startActivity(intent)
+                false
+            }
         }
     }
 
@@ -107,6 +127,12 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
     }
 
     class PrefsDevFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.preferences_dev, rootKey)
+        }
+    }
+
+    class PrefsAboutFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_dev, rootKey)
         }
