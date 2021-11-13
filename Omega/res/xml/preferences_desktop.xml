@@ -33,6 +33,7 @@
         android:summary="@string/auto_add_shortcuts_description"
         android:title="@string/auto_add_shortcuts_label"
         launcher:logIdOff="614"
+        app:iconSpaceReserved="false"
         launcher:logIdOn="613" />
 
     <!--
@@ -46,6 +47,7 @@
         android:summary="@string/allow_rotation_desc"
         android:title="@string/allow_rotation_title"
         launcher:logIdOff="616"
+        app:iconSpaceReserved="false"
         launcher:logIdOn="615" />
 
     <Preference
