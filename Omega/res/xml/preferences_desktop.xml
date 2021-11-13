@@ -15,9 +15,43 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:launcher="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/pref_category__interfaces">
 
-    <androidx.preference.Preference
-        android:summary="Desktop Preferences"
-        android:title="You're now here:" />
+    </PreferenceCategory>
+
+    <!--
+      LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_ENABLED(613)
+      LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_DISABLED(614)
+    -->
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="pref_add_icon_to_home"
+        android:persistent="true"
+        android:summary="@string/auto_add_shortcuts_description"
+        android:title="@string/auto_add_shortcuts_label"
+        launcher:logIdOff="614"
+        launcher:logIdOn="613" />
+
+    <!--
+      LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
+      LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)
+    -->
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_allowRotation"
+        android:persistent="true"
+        android:summary="@string/allow_rotation_desc"
+        android:title="@string/allow_rotation_title"
+        launcher:logIdOff="616"
+        launcher:logIdOn="615" />
+
+    <Preference
+        android:fragment="com.saggitt.omega.dash.DashFragment"
+        android:key="pref_dash_providers"
+        android:summary="@string/edit_dash_summary"
+        android:title="@string/edit_dash"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
