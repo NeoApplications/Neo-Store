@@ -122,6 +122,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.saggitt.omega.FakeLauncher"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"
             android:exported="true"
