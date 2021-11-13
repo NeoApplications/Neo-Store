@@ -288,15 +288,15 @@ fun pxToDp(size: Float): Float {
 
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)
-    if (prefs.overrideWindowCornerRadius) {
-        return prefs.windowCornerRadius
+    if (prefs.customWindowCorner) {
+        return prefs.windowCornerRadius.toFloat()
     }
     return QuickStepContract.getWindowCornerRadius(context.resources)
 }
 
 fun supportsRoundedCornersOnWindows(context: Context): Boolean {
     val pref = Utilities.getOmegaPrefs(context)
-    if (!Utilities.ATLEAST_R || pref.overrideWindowCornerRadius) {
+    if (!Utilities.ATLEAST_R || pref.customWindowCorner) {
         return true
     }
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)

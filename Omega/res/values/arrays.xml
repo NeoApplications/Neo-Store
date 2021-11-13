@@ -39,13 +39,14 @@
         <item>14</item> <!-- 01110 -->
     </string-array>
 
-    <string-array name="entries__sort_mode">
+    <string-array name="sortMode" translatable="false">
         <item>@string/title__sort_alphabetical_az</item>
         <item>@string/title__sort_alphabetical_za</item>
         <item>@string/title__sort_most_used</item>
         <item>@string/title__sort_by_color</item>
     </string-array>
-    <string-array name="values__zero_to_three" translatable="false">
+
+    <string-array name="sortModeValues" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>

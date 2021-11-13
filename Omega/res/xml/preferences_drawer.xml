@@ -15,9 +15,17 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.Preference
-        android:summary="Drawer Preferences"
-        android:title="You're now here:" />
+    <com.saggitt.omega.preferences.custom.SortAppsPreference
+        android:defaultValue="0"
+        android:key="pref_sortMode"
+        android:title="@string/title__sort_mode"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_protected_apps"
+        app:title="@string/enable_protected_apps" />
 </PreferenceScreen>

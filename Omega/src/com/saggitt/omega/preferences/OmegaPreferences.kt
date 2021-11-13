@@ -22,28 +22,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
-import com.android.launcher3.InvariantDeviceProfile
-import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
-import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
-import com.saggitt.omega.icons.IconShape
-import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.theme.ThemeManager
-import com.saggitt.omega.util.dpToPx
-import com.saggitt.omega.util.pxToDp
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.File
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
-import kotlin.reflect.KProperty
-import com.android.launcher3.graphics.IconShape as L3IconShape
 
-class OmegaPreferences(private val context: Context) :
+class OmegaPreferences(context: Context) : BasePreferences(context),
     SharedPreferences.OnSharedPreferenceChangeListener {
     val mContext = context
 
@@ -84,18 +72,21 @@ class OmegaPreferences(private val context: Context) :
             context.getString(R.string.launch_assistant),
             context.getString(R.string.dash_volume_title),
             context.getString(R.string.edit_dash)
-        ), doNothing
+        )
     )
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
-    val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
 
     var torchState = false
 
     //DRAWER
-    var sortMode by StringIntPref("key_sort_mode", 0, reloadApps)
+    var sortMode by StringIntPref("pref_sortMode", 0, reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
-
+    var hiddenPredictionAppSet by StringSetPref(
+        "pref_hidden_prediction_set",
+        setOf(),
+        doNothing
+    )
     var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
 
@@ -112,18 +103,9 @@ class OmegaPreferences(private val context: Context) :
     ) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
-    val blurRadius by FloatPref("pref_blurRadius", 75f, updateBlur)
-    var overrideWindowCornerRadius by BooleanPref("pref_override_corner_radius", false, doNothing)
-    val windowCornerRadius by FloatPref("pref_global_corner_radius", 8f, updateBlur)
-    val iconPackPackage = StringPref("pref_iconPackPackage", "", reloadIcons)
-
-    var iconShape by StringBasedPref(
-        "pref_iconShape", IconShape.Circle, onIconShapeChanged,
-        {
-            IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
-        }, IconShape::toString
-    ) { /* no dispose */ }
-
+    var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
+    var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
+    var windowCornerRadius by IntPref("pref_customWindowCornerRadius", 8, updateBlur)
 
     //FOLDER
     var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
@@ -139,11 +121,9 @@ class OmegaPreferences(private val context: Context) :
 
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
-    var firstRun by BooleanPref("pref_first_run", true)
 
     //DEVELOPER PREFERENCES
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
-    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, recreate)
     private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)
@@ -156,34 +136,8 @@ class OmegaPreferences(private val context: Context) :
             override fun unflattenValue(value: String) = value
         }
 
-    private fun createPreferences(): SharedPreferences {
-        val dir = mContext.cacheDir.parent
-        val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
-        val newFile = File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
-        if (oldFile.exists() && !newFile.exists()) {
-            oldFile.renameTo(newFile)
-            oldFile.delete()
-        }
-        return mContext.applicationContext
-            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-            .apply {
-                migrateConfig(this)
-            }
-    }
-
-    /*Load Initial preferences*/
-    private fun migrateConfig(prefs: SharedPreferences) {
-        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
-        if (version != CURRENT_VERSION) {
-            with(prefs.edit()) {
-
-                // Default accent color
-                putInt("pref_key__accent_color", 0XE80142)
-                initializeIconShape()
-                putInt(VERSION_KEY, CURRENT_VERSION)
-                commit()
-            }
-        }
+    interface OnPreferenceChangeListener {
+        fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean)
     }
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
@@ -229,6 +183,10 @@ class OmegaPreferences(private val context: Context) :
     }
 
     fun getOnChangeCallback() = onChangeCallback
+
+    fun updateSortApps() {
+        onChangeCallback?.reloadApps()
+    }
 
     inline fun withChangeCallback(
         crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
