@@ -67,6 +67,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         if (prefs.firstRun) {
             prefs.firstRun = false
             prefs.iconShape = IconShape.Cylinder
+            prefs.initializeIconShape()
         }
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)

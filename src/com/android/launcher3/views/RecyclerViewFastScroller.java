@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -48,6 +49,8 @@ import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.graphics.FastScrollThumbDrawable;
 import com.android.launcher3.util.Themes;
+import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.Config;
 
 import java.util.Collections;
 import java.util.List;
@@ -137,6 +140,8 @@ public class RecyclerViewFastScroller extends View {
     private int mDownY;
     private int mLastY;
 
+    private OmegaPreferences prefs;
+
     public RecyclerViewFastScroller(Context context) {
         this(context, null);
     }
@@ -173,6 +178,7 @@ public class RecyclerViewFastScroller extends View {
                 context.obtainStyledAttributes(attrs, R.styleable.RecyclerViewFastScroller, defStyleAttr, 0);
         mCanThumbDetach = ta.getBoolean(R.styleable.RecyclerViewFastScroller_canThumbDetach, false);
         ta.recycle();
+        prefs = Utilities.getOmegaPrefs(context);
     }
 
     public void setRecyclerView(BaseRecyclerView rv, TextView popupView) {
@@ -324,13 +330,24 @@ public class RecyclerViewFastScroller extends View {
         // Update the fastscroller section name at this touch position
         int bottom = mRv.getScrollbarTrackHeight() - mThumbHeight;
         float boundedY = (float) Math.max(0, Math.min(bottom, y - mTouchOffsetY));
-        String sectionName = mRv.scrollToPositionAtProgress(boundedY / bottom);
+        BaseRecyclerView.PositionThumbInfo thumbInfo = mRv.scrollToPositionAtProgress(boundedY / bottom);
+        String sectionName = thumbInfo.name;
+        //String sectionName = mRv.scrollToPositionAtProgress(boundedY / bottom);
         if (!sectionName.equals(mPopupSectionName)) {
             mPopupSectionName = sectionName;
             mPopupView.setText(sectionName);
             performHapticFeedback(CLOCK_TICK);
         }
-        animatePopupVisibility(!sectionName.isEmpty());
+        int color = thumbInfo.color;
+        if (color != 0 && prefs.getSortMode() == Config.SORT_BY_COLOR) {
+            setColor(color, Color.WHITE);
+            if (!prefs.getShowDebugInfo()) {
+                mPopupSectionName = "";
+                mPopupView.setText("");
+            }
+        } else {
+            animatePopupVisibility(!sectionName.isEmpty());
+        }
         mLastTouchY = boundedY;
         setThumbOffsetY((int) mLastTouchY);
     }
@@ -481,5 +498,10 @@ public class RecyclerViewFastScroller extends View {
          * Called when the recycler view scroll has changed.
          */
         void onScrollChanged();
+    }
+
+    public void setColor(int color, int foregroundColor) {
+        mThumbPaint.setColor(color);
+        mPopupView.setTextColor(foregroundColor);
     }
 }

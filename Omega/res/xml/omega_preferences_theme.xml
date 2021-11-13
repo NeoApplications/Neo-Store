@@ -30,7 +30,7 @@
         android:key="pref_key__accent_color"
         android:title="@string/title__theme_accent_color"
         app:cpv_dialogTitle="@string/title__theme_accent_color"
-        app:cpv_dialogType="custom"
+        app:cpv_dialogType="preset"
         app:cpv_previewSize="large"
         app:cpv_showAlphaSlider="true"
         app:iconSpaceReserved="false" />

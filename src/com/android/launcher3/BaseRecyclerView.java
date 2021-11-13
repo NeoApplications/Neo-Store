@@ -162,7 +162,7 @@ public abstract class BaseRecyclerView extends RecyclerView  {
      * Maps the touch (from 0..1) to the adapter position that should be visible.
      * <p>Override in each subclass of this base class.
      */
-    public abstract String scrollToPositionAtProgress(float touchFraction);
+    public abstract PositionThumbInfo scrollToPositionAtProgress(float touchFraction);
 
     /**
      * Updates the bounds for the scrollbar.
@@ -206,5 +206,15 @@ public abstract class BaseRecyclerView extends RecyclerView  {
             }
         }
         scrollToPosition(0);
+    }
+
+    public class PositionThumbInfo {
+        public String name;
+        public int color;
+
+        public PositionThumbInfo(String name, int color) {
+            this.name = name;
+            this.color = color;
+        }
     }
 }

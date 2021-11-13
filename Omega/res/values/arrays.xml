@@ -38,4 +38,17 @@
         <item>12</item> <!-- 01100 -->
         <item>14</item> <!-- 01110 -->
     </string-array>
+
+    <string-array name="entries__sort_mode">
+        <item>@string/title__sort_alphabetical_az</item>
+        <item>@string/title__sort_alphabetical_za</item>
+        <item>@string/title__sort_most_used</item>
+        <item>@string/title__sort_by_color</item>
+    </string-array>
+    <string-array name="values__zero_to_three" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

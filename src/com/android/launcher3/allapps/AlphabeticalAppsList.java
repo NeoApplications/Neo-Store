@@ -23,6 +23,7 @@ import static com.saggitt.omega.util.Config.SORT_ZA;
 import android.content.Context;
 
 import com.android.launcher3.BaseDraggingActivity;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.model.data.AppInfo;
@@ -31,11 +32,11 @@ import com.android.launcher3.util.LabelComparator;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.AppCountInfo;
 import com.saggitt.omega.allapps.AppUsageComparator;
+import com.saggitt.omega.preferences.OmegaPreferences;
 import com.saggitt.omega.util.DbHelper;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -55,22 +56,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private final int mFastScrollDistributionMode = FAST_SCROLL_FRACTION_DISTRIBUTE_BY_NUM_SECTIONS;
     private final WorkAdapterProvider mWorkAdapterProvider;
 
-    /**
-     * Info about a fast scroller section, depending if sections are merged, the fast scroller
-     * sections will not be the same set as the section headers.
-     */
-    public static class FastScrollSectionInfo {
-        // The section name
-        public String sectionName;
-        // The AdapterItem to scroll to for this section
-        public AdapterItem fastScrollToItem;
-        // The touch fraction that should map to this fast scroll section info
-        public float touchFraction;
-
-        public FastScrollSectionInfo(String sectionName) {
-            this.sectionName = sectionName;
-        }
-    }
+    private final OmegaPreferences prefs;
 
 
     private final BaseDraggingActivity mLauncher;
@@ -104,6 +90,58 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         mWorkAdapterProvider = adapterProvider;
         mNumAppsPerRow = mLauncher.getDeviceProfile().inv.numColumns;
         mAllAppsStore.addUpdateListener(this);
+        prefs = Utilities.getOmegaPrefs(context);
+    }
+
+    /**
+     * Updates internals when the set of apps are updated.
+     */
+    @Override
+    public void onAppsUpdated() {
+        // Sort the list of apps
+        mApps.clear();
+
+        for (AppInfo app : mAllAppsStore.getApps()) {
+            if (mItemFilter == null || mItemFilter.matches(app, null) || hasFilter()) {
+                mApps.add(app);
+            }
+        }
+
+        //Collections.sort(mApps, mAppNameComparator);
+        sortApps(prefs.getSortMode());
+
+        // As a special case for some languages (currently only Simplified Chinese), we may need to
+        // coalesce sections
+        Locale curLocale = mLauncher.getResources().getConfiguration().locale;
+        boolean localeRequiresSectionSorting = curLocale.equals(Locale.SIMPLIFIED_CHINESE);
+        if (localeRequiresSectionSorting) {
+            // Compute the section headers. We use a TreeMap with the section name comparator to
+            // ensure that the sections are ordered when we iterate over it later
+            TreeMap<String, ArrayList<AppInfo>> sectionMap = new TreeMap<>(new LabelComparator());
+            for (AppInfo info : mApps) {
+                // Add the section to the cache
+                String sectionName = info.sectionName;
+
+                // Add it to the mapping
+                ArrayList<AppInfo> sectionApps = sectionMap.get(sectionName);
+                if (sectionApps == null) {
+                    sectionApps = new ArrayList<>();
+                    sectionMap.put(sectionName, sectionApps);
+                }
+                sectionApps.add(info);
+            }
+
+            // Add each of the section apps to the list in order
+            mApps.clear();
+            for (Map.Entry<String, ArrayList<AppInfo>> entry : sectionMap.entrySet()) {
+                mApps.addAll(entry.getValue());
+            }
+        }
+
+        // Recompose the set of adapter items from the current set of apps
+        if (mSearchResults == null) {
+            updateAdapterItems();
+        }
     }
 
     public void updateItemFilter(ItemInfoMatcher itemFilter) {
@@ -248,71 +286,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
     }
 
-    /**
-     * Updates internals when the set of apps are updated.
-     */
-    @Override
-    public void onAppsUpdated() {
-        // Sort the list of apps
-        mApps.clear();
-
-        for (AppInfo app : mAllAppsStore.getApps()) {
-            if (mItemFilter == null || mItemFilter.matches(app, null) || hasFilter()) {
-                mApps.add(app);
-            }
-        }
-
-        Collections.sort(mApps, mAppNameComparator);
-
-        // As a special case for some languages (currently only Simplified Chinese), we may need to
-        // coalesce sections
-        Locale curLocale = mLauncher.getResources().getConfiguration().locale;
-        boolean localeRequiresSectionSorting = curLocale.equals(Locale.SIMPLIFIED_CHINESE);
-        if (localeRequiresSectionSorting) {
-            // Compute the section headers. We use a TreeMap with the section name comparator to
-            // ensure that the sections are ordered when we iterate over it later
-            TreeMap<String, ArrayList<AppInfo>> sectionMap = new TreeMap<>(new LabelComparator());
-            for (AppInfo info : mApps) {
-                // Add the section to the cache
-                String sectionName = info.sectionName;
-
-                // Add it to the mapping
-                ArrayList<AppInfo> sectionApps = sectionMap.get(sectionName);
-                if (sectionApps == null) {
-                    sectionApps = new ArrayList<>();
-                    sectionMap.put(sectionName, sectionApps);
-                }
-                sectionApps.add(info);
-            }
-
-            // Add each of the section apps to the list in order
-            mApps.clear();
-            for (Map.Entry<String, ArrayList<AppInfo>> entry : sectionMap.entrySet()) {
-                mApps.addAll(entry.getValue());
-            }
-        }
-
-        // Recompose the set of adapter items from the current set of apps
-        if (mSearchResults == null) {
-            updateAdapterItems();
-        }
-    }
-
-    /**
-     * Updates the set of filtered apps with the current filter. At this point, we expect
-     * mCachedSectionNames to have been calculated for the set of all apps in mApps.
-     */
-    public void updateAdapterItems() {
-        refillAdapterItems();
-        refreshRecyclerView();
-    }
-
-    private void refreshRecyclerView() {
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
     private void refillAdapterItems() {
         String lastSectionName = null;
         FastScrollSectionInfo lastFastScrollerSectionInfo = null;
@@ -341,7 +314,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 // Create a new section if the section names do not match
                 if (!sectionName.equals(lastSectionName)) {
                     lastSectionName = sectionName;
-                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName);
+                    int color = 0;
+                    if (prefs.getSortMode() == SORT_BY_COLOR) {
+                        color = info.bitmap.color;
+                    }
+                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, color);
                     mFastScrollerSections.add(lastFastScrollerSectionInfo);
                 }
 
@@ -419,6 +396,41 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     }
                     break;
             }
+        }
+    }
+
+    /**
+     * Updates the set of filtered apps with the current filter. At this point, we expect
+     * mCachedSectionNames to have been calculated for the set of all apps in mApps.
+     */
+    public void updateAdapterItems() {
+        refillAdapterItems();
+        refreshRecyclerView();
+    }
+
+    private void refreshRecyclerView() {
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Info about a fast scroller section, depending if sections are merged, the fast scroller
+     * sections will not be the same set as the section headers.
+     */
+    public static class FastScrollSectionInfo {
+        // The section name
+        public String sectionName;
+        // The AdapterItem to scroll to for this section
+        public AdapterItem fastScrollToItem;
+        // The touch fraction that should map to this fast scroll section info
+        public float touchFraction;
+        // The color of this fast scroll section
+        public int color;
+
+        public FastScrollSectionInfo(String sectionName, int color) {
+            this.sectionName = sectionName;
+            this.color = color;
         }
     }
 }

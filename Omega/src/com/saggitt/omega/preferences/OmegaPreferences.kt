@@ -93,7 +93,7 @@ class OmegaPreferences(private val context: Context) :
     var torchState = false
 
     //DRAWER
-    var sortMode by StringIntPref("pref_key__sort_mode", 0, reloadApps)
+    var sortMode by StringIntPref("key_sort_mode", 0, reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
 
     var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
@@ -229,10 +229,6 @@ class OmegaPreferences(private val context: Context) :
     }
 
     fun getOnChangeCallback() = onChangeCallback
-
-    fun updateSortApps() {
-        onChangeCallback?.reloadApps()
-    }
 
     inline fun withChangeCallback(
         crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
