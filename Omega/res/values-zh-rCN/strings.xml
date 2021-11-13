@@ -407,4 +407,7 @@
     <string name="about_open_source">自由软件库</string>
     <string name="about_community">社区</string>
     <string name="about_copyright">Copyright © 2020–2021</string>
+    <string name="pref_desktop_mode">桌面模式</string>
+    <string name="pref_desktop_mode_summary">激活 Android 桌面模式</string>
+    <string name="pref_desktop_mode_settings">桌面模式设置</string>
 </resources>
