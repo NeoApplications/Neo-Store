@@ -46,6 +46,14 @@ class OmegaApp : Application() {
         QuickStepContract.sRecentsDisabled = !recentsEnabled
     }
 
+    fun restart(recreateLauncher: Boolean = true) {
+        if (recreateLauncher) {
+            activityHandler.finishAll(recreateLauncher)
+        } else {
+            Utilities.restartLauncher(this)
+        }
+    }
+
     fun performGlobalAction(action: Int): Boolean {
         return if (accessibilityService != null) {
             accessibilityService!!.performGlobalAction(action)

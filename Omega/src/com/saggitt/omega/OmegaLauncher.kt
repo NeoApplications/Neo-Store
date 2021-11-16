@@ -35,7 +35,6 @@ import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
 import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.gestures.GestureController
-import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
@@ -50,8 +49,6 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
-    private val prefs by lazy { Utilities.getOmegaPrefs(this) }
-    private val prefCallback = OmegaPreferencesChangeCallback(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(
@@ -62,13 +59,9 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         }
 
         super.onCreate(savedInstanceState)
-        prefs.registerCallback(prefCallback)
+        val prefs = Utilities.getOmegaPrefs(this)
+        prefs.registerCallback(OmegaPreferencesChangeCallback(this))
         prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
-        if (prefs.firstRun) {
-            prefs.firstRun = false
-            prefs.iconShape = IconShape.Cylinder
-        }
-        prefs.initializeIconShape()
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
@@ -85,14 +78,21 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         )
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onResume() {
+        super.onResume()
 
-        Utilities.getOmegaPrefs(this).unregisterCallback()
-        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this)
+        restartIfPending()
+        paused = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        paused = true
+    }
+
+    private fun restartIfPending() {
         if (sRestart) {
-            sRestart = false
-            OmegaPreferences.destroyInstance()
+            omegaApp.restart(false)
         }
     }
 
@@ -104,6 +104,17 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Utilities.getOmegaPrefs(this).unregisterCallback()
+        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this)
+        if (sRestart) {
+            sRestart = false
+            OmegaPreferences.destroyInstance()
+        }
+    }
+
     fun shouldRecreate() = !sRestart
 
     private val customLayoutInflater by lazy {
@@ -111,6 +122,13 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
             super.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater,
             this
         )
+    }
+
+    override fun getSystemService(name: String): Any? {
+        if (name == Context.LAYOUT_INFLATER_SERVICE) {
+            return customLayoutInflater
+        }
+        return super.getSystemService(name)
     }
 
     inline fun prepareDummyView(view: View, crossinline callback: (View) -> Unit) {
