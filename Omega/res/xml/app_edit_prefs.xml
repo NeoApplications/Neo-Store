@@ -17,7 +17,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_app_hide"
         android:title="@string/hide_app" />

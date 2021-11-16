@@ -31,7 +31,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragment
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.SwitchPreference
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherSettings
 import com.android.launcher3.R
@@ -185,7 +185,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             if (itemInfo !is FolderInfo) {
                 mKey = ComponentKey(itemInfo.targetComponent, itemInfo.user)
             }
-            val mPrefHide = findPreference<SwitchPreferenceCompat>(PREF_HIDE)
+            val mPrefHide = findPreference<SwitchPreference>(PREF_HIDE)
             if (isApp) {
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
                 mPrefHide.onPreferenceChangeListener = this

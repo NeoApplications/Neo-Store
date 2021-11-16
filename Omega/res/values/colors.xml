@@ -28,25 +28,19 @@
     <color name="settings_background_black_2dp">#ff121212</color>
     <color name="settings_background_black_8dp">#ff1e1e1e</color>
 
-    <color name="system_neutral1_900">#ff1b1b1b</color>
     <color name="ic_allapps_background">#FAFAFA</color>
     <color name="ic_launcher_background">#0F111A</color>
     <color name="ic_launcher_foreground">#0988d1</color>
 
-    <color name="system_accent2_0">#ffffffff</color>
-    <color name="system_accent2_10">#fffdfbff</color>
     <color name="system_accent2_50">#ffedeeff</color>
-    <color name="system_accent2_100">#ffdfe0ff</color>
-    <color name="system_accent2_200">#ffc3c4e2</color>
-    <color name="system_accent2_300">#ffa8a9c6</color>
-    <color name="system_accent2_400">#ff8d8fab</color>
-    <color name="system_accent2_500">#ff72738f</color>
-    <color name="system_accent2_600">#ff5a5c77</color>
-    <color name="system_accent2_700">#ff43455e</color>
-    <color name="system_accent2_800">#ff2c2f46</color>
-    <color name="system_accent2_900">#ff161a30</color>
-    <color name="system_accent2_1000">#ff000000</color>
 
     <color name="all_apps_navbar_color">#28000000</color>
+
+    <color name="system_neutral1_10">#fffbfbfb</color>
+    <color name="system_neutral1_100">#ffe2e2e2</color>
+    <color name="system_neutral1_900">#ff1b1b1b</color>
+
+    <color name="material_gray_700">#616161</color>
+    <color name="material_gray_900">#212121</color>
 </resources>
 

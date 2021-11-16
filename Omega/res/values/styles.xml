@@ -21,21 +21,32 @@
     <style name="AppTheme" parent="@style/LauncherTheme">
         <item name="alertDialogTheme">@style/AlertDialogLight</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Light</item>
+
+        <item name="allAppsScrimColor">#FFFFFF</item>
+        <item name="allappsHeaderProtectionColor">@color/system_neutral1_100</item>
     </style>
 
     <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText">
+        <item name="allAppsScrimColor">#FFFFFF</item>
     </style>
 
     <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
+        <item name="allAppsScrimColor">#FFFFFF</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
+        <item name="allAppsScrimColor">@color/material_gray_900</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
     </style>
 
     <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText">
+        <item name="allAppsScrimColor">@color/material_gray_900</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
     </style>
 
     <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor">
+        <item name="allAppsScrimColor">@color/material_gray_900</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
     </style>
 
     <style name="AppTheme.Black" parent="AppTheme.Dark">
@@ -44,7 +55,7 @@
         <item name="allAppsNavBarScrimColor">#80000000</item>
         <item name="popupColorPrimary">?android:attr/colorPrimary</item>
         <item name="popupColorSecondary">#000000</item>
-        <item name="popupColorTertiary">#212121</item>
+        <item name="popupColorTertiary">@color/material_gray_900</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
         <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
@@ -192,8 +203,17 @@
         <item name="android:textColorPrimary">#000000</item>
     </style>
 
+    <style name="WidgetContainerTheme.Dark" parent="WidgetContainerTheme">
+        <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
+        <item name="android:colorPrimary">@color/settings_background_dark</item>
+        <item name="bottomSheetNavBarColor">@color/material_gray_900</item>
+        <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="android:textColorSecondary">#A8A7A7</item>
+        <item name="android:textColorTertiary">#7C7C7C</item>
+    </style>
+
     <style name="WidgetContainerTheme.Black" parent="WidgetContainerTheme.Dark">
-        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="android:colorPrimary">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
     </style>
 
