@@ -25,6 +25,7 @@ import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.util.ResourceBasedOverride;
 import com.saggitt.omega.icons.IconShapeManager;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import org.chickenhook.restrictionbypass.Unseal;
 
@@ -54,6 +55,11 @@ public class MainProcessInitializer implements ResourceBasedOverride {
         FileLog.setDir(context.getApplicationContext().getFilesDir());
         IconShapeManager.Companion.getSystemIconShape(context);
         FeatureFlags.initialize(context);
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
+        if (prefs.getFirstRun()) {
+            prefs.setFirstRun(false);
+        }
+        prefs.initializeIconShape();
         IconShape.init(context);
 
         if (BitmapCreationCheck.ENABLED) {
