@@ -6,17 +6,17 @@ on:
     branches: [ A-12 ]
 
 jobs:
-#  send-start-notification:
-  #    runs-on: ubuntu-latest
-  #    continue-on-error: true
-  #    if: github.event_name == 'push'
-  #    steps:
-  #      - name: Send start notification
-  #        uses: appleboy/telegram-action@v0.1.1
-  #        with:
-  #          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-  #          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-  #          message: New push to “Omega Launcher”. Building debug APK…
+  send-start-notification:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: github.event_name == 'push'
+    steps:
+      - name: Send start notification
+        uses: appleboy/telegram-action@v0.1.1
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: New push to “Omega Launcher”. Building debug APK…
   build:
     runs-on: ubuntu-latest
     steps:
@@ -52,21 +52,21 @@ jobs:
           name: ${{ env.ARTIFACT_NAME_APK }}
           path: ${{ env.ARTIFACT_PATHNAME_APK }}
 
-#  send-end-notification:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    if: github.event_name == 'push'
-#    steps:
-#      - name: Download artifact
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: Omega-debug.apk
-#          path: artifacts/debug-apk
-#      - uses: technote-space/workflow-conclusion-action@v2.1.5
-#      - name: Send notification
-#        uses: appleboy/telegram-action@v0.1.1
-#        with:
-#          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-#          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-#          document: artifacts/debug-apk/**.apk
-#          message: Build finished with status “${{ env.WORKFLOW_CONCLUSION }}”. Uploading APK if available…
+  send-end-notification:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: Omega-debug.apk
+          path: artifacts/debug-apk
+      - uses: technote-space/workflow-conclusion-action@v2.1.5
+      - name: Send notification
+        uses: appleboy/telegram-action@v0.1.1
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          document: artifacts/debug-apk/**.apk
+          message: Build finished with status “${{ env.WORKFLOW_CONCLUSION }}”. Uploading APK if available…
