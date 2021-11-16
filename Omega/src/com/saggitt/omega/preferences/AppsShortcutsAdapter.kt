@@ -157,7 +157,7 @@ open class AppsShortcutsAdapter(
         val launcherApps = context.getSystemService(LauncherApps::class.java)
         profiles.forEach { apps += launcherApps.getActivityList(null, it) }
         return if (filter != null) {
-            apps.filter { filter.shouldShowApp(it.componentName) }//, it.user) }
+            apps.filter { filter.shouldShowApp(it.componentName, it.user) }
         } else {
             apps
         }

@@ -20,26 +20,15 @@ package com.saggitt.omega.allapps
 
 import android.content.ComponentName
 import android.content.Context
-import com.android.launcher3.AppFilter
+import android.os.UserHandle
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.omega.OmegaLauncher
 
-class CustomAppFilter(context: Context) : AppFilter() {
-    private val mHideList = HashSet<ComponentName>()
+class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) {
 
-    init {
-        mHideList.add(ComponentName(context, OmegaLauncher::class.java.name))
-        //Voice Search
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/.VoiceSearchActivity")!!)
-        //Google Now Launcher
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.launcher/.StubApp")!!)
-        //Actions Services
-        mHideList.add(ComponentName.unflattenFromString("com.google.android.as/com.google.android.apps.miphone.aiai.allapps.main.MainDummyActivity")!!)
-    }
-
-    override fun shouldShowApp(componentName: ComponentName?): Boolean {
-        return !mHideList.contains(componentName) && super.shouldShowApp(componentName)
+    override fun shouldShowApp(componentName: ComponentName?, user: UserHandle?): Boolean {
+        return super.shouldShowApp(componentName, user)
+                && (user == null || !isHiddenApp(mContext, ComponentKey(componentName, user)))
     }
 
     companion object {
@@ -59,7 +48,7 @@ class CustomAppFilter(context: Context) : AppFilter() {
         }
 
         // This can't be null anyway
-        private fun getHiddenApps(context: Context?): MutableSet<String> {
+        fun getHiddenApps(context: Context?): MutableSet<String> {
             return HashSet(Utilities.getOmegaPrefs(context).hiddenAppSet)
         }
 

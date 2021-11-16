@@ -270,7 +270,7 @@ public class WidgetsModel {
                     return false;
                 }
             }
-            if (!mAppFilter.shouldShowApp(item.componentName)) {
+            if (!mAppFilter.shouldShowApp(item.componentName, item.user)) {
                 if (DEBUG) {
                     Log.d(TAG, String.format("%s is filtered and not added to the widget tray.",
                             item.componentName));
