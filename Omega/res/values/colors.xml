@@ -42,5 +42,7 @@
 
     <color name="material_gray_700">#616161</color>
     <color name="material_gray_900">#212121</color>
+
+    <color name="default_folder_color">#D6D6D6</color>
 </resources>
 
