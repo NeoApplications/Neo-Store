@@ -50,7 +50,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -792,7 +791,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
 
     protected void updateHeaderScroll(int scrolledOffset) {
-        float prog = Math.max(0, Math.min(1, (float) scrolledOffset / mHeaderThreshold));
+        /*float prog = Math.max(0, Math.min(1, (float) scrolledOffset / mHeaderThreshold));
         int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
         int headerColor = ColorUtils.setAlphaComponent(viewBG,
                 (int) (getSearchView().getAlpha() * 255));
@@ -804,7 +803,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             if (scrolledOffset == 0 && mSearchUiManager.getEditText() != null) {
                 mSearchUiManager.getEditText().show();
             }
-        }
+        }*/
     }
 
     /**
