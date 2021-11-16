@@ -417,4 +417,7 @@
     <string name="about_translators_group">المساهمون والمترجمون</string>
     <string name="about_community">المجتمع</string>
     <string name="about_copyright">حقوق الطبع والنشر © 2020-2021</string>
+    <string name="pref_desktop_mode_settings">إعدادات وضع سطح المكتب</string>
+    <string name="pref_desktop_mode">وضع سطح المكتب</string>
+    <string name="pref_desktop_mode_summary">تنشيط وضع سطح المكتب لأندرويد</string>
 </resources>
