@@ -60,8 +60,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: Omega-debug.apk
-          path: artifacts/debug-apk
+          name: ${{ env.ARTIFACT_NAME_APK }}
+          path: ${{ env.ARTIFACT_PATHNAME_APK }}
       - uses: technote-space/workflow-conclusion-action@v2.1.5
       - name: Send notification
         uses: appleboy/telegram-action@v0.1.1
