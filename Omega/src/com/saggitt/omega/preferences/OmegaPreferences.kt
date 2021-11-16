@@ -44,9 +44,27 @@ import java.util.concurrent.ExecutionException
 import kotlin.reflect.KProperty
 import com.android.launcher3.graphics.IconShape as L3IconShape
 
-class OmegaPreferences(private val context: Context) :
+class OmegaPreferences(val context: Context) :
     SharedPreferences.OnSharedPreferenceChangeListener {
-    val mContext = context
+    private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
+    val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
+    private var onChangeCallback: OmegaPreferencesChangeCallback? = null
+    val sharedPrefs = createPreferences()
+
+    private fun createPreferences(): SharedPreferences {
+        val dir = context.cacheDir.parent
+        val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
+        val newFile = File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
+        if (oldFile.exists() && !newFile.exists()) {
+            oldFile.renameTo(newFile)
+            oldFile.delete()
+        }
+        return context.applicationContext
+            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+            .apply {
+                migrateConfig(this)
+            }
+    }
 
     val doNothing = { }
     val recreate = { recreate() }
@@ -54,8 +72,9 @@ class OmegaPreferences(private val context: Context) :
     val reloadApps = { reloadApps() }
     val reloadAll = { reloadAll() }
     private val updateBlur = { updateBlur() }
-    private val idp get() = InvariantDeviceProfile.INSTANCE.get(mContext)
+    private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
     private val reloadIcons = { idp.onPreferencesChanged(context) }
+
     private val onIconShapeChanged = {
         initializeIconShape()
         L3IconShape.init(context)
@@ -68,11 +87,6 @@ class OmegaPreferences(private val context: Context) :
         CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
         CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
     }
-
-    private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
-    val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
-    private var onChangeCallback: OmegaPreferencesChangeCallback? = null
-    val sharedPrefs = createPreferences()
 
     //HOME SCREEN PREFERENCES
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
@@ -161,20 +175,6 @@ class OmegaPreferences(private val context: Context) :
             override fun unflattenValue(value: String) = value
         }
 
-    private fun createPreferences(): SharedPreferences {
-        val dir = mContext.cacheDir.parent
-        val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
-        val newFile = File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
-        if (oldFile.exists() && !newFile.exists()) {
-            oldFile.renameTo(newFile)
-            oldFile.delete()
-        }
-        return mContext.applicationContext
-            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-            .apply {
-                migrateConfig(this)
-            }
-    }
 
     /*Load Initial preferences*/
     private fun migrateConfig(prefs: SharedPreferences) {
@@ -203,6 +203,10 @@ class OmegaPreferences(private val context: Context) :
         listener.onValueChanged(key, this, true)
     }
 
+    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
+        onChangeListeners[key]?.remove(listener)
+    }
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         onChangeMap[key]?.invoke()
         onChangeListeners[key]?.forEach {
@@ -210,17 +214,6 @@ class OmegaPreferences(private val context: Context) :
                 it.onValueChanged(key, this, false)
             }
         }
-    }
-
-    fun removeOnPreferenceChangeListener(
-        listener: OnPreferenceChangeListener,
-        vararg keys: String
-    ) {
-        keys.forEach { removeOnPreferenceChangeListener(it, listener) }
-    }
-
-    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
-        onChangeListeners[key]?.remove(listener)
     }
 
     fun registerCallback(callback: OmegaPreferencesChangeCallback) {
@@ -231,14 +224,6 @@ class OmegaPreferences(private val context: Context) :
     fun unregisterCallback() {
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
         onChangeCallback = null
-    }
-
-    fun getOnChangeCallback() = onChangeCallback
-
-    inline fun withChangeCallback(
-        crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
-    ): () -> Unit {
-        return { getOnChangeCallback()?.let { callback(it) } }
     }
 
     fun recreate() {
@@ -342,18 +327,6 @@ class OmegaPreferences(private val context: Context) :
 
         override fun onSetValue(value: Float) {
             edit { putFloat(getKey(), pxToDp(value)) }
-        }
-    }
-
-    open inner class FloatPref(
-        key: String,
-        defaultValue: Float = 0f,
-        onChange: () -> Unit = doNothing
-    ) : PrefDelegate<Float>(key, defaultValue, onChange) {
-        override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
-
-        override fun onSetValue(value: Float) {
-            edit { putFloat(getKey(), value) }
         }
     }
 
@@ -611,7 +584,6 @@ class OmegaPreferences(private val context: Context) :
     /*
         Helper functions and class
     */
-
     var blockingEditing = false
     var bulkEditing = false
     var editor: SharedPreferences.Editor? = null
@@ -642,18 +614,6 @@ class OmegaPreferences(private val context: Context) :
         editor = null
     }
 
-    inline fun blockingEdit(body: OmegaPreferences.() -> Unit) {
-        beginBlockingEdit()
-        body(this)
-        endBlockingEdit()
-    }
-
-    inline fun bulkEdit(body: OmegaPreferences.() -> Unit) {
-        beginBulkEdit()
-        body(this)
-        endBulkEdit()
-    }
-
     companion object {
 
         @SuppressLint("StaticFieldLeak")
@@ -672,7 +632,6 @@ class OmegaPreferences(private val context: Context) :
                     } catch (e: ExecutionException) {
                         throw RuntimeException(e)
                     }
-
                 }
             }
             return INSTANCE!!
