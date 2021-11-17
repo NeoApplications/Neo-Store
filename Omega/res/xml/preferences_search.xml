@@ -15,9 +15,17 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.Preference
-        android:summary="Search Preferences"
-        android:title="You're now here:" />
+    <PreferenceCategory android:title="@string/app_categorization_folders">
+        <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
+            android:key="pref_folder_radius"
+            android:title="@string/folder_radius"
+            app:defaultSeekbarValue="-1.0"
+            app:maxValue="24"
+            app:minValue="0.0"
+            app:steps="24"
+            app:summaryFormat="%.0fdp" />
+    </PreferenceCategory>
 </PreferenceScreen>
