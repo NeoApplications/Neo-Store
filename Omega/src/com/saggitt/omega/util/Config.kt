@@ -40,6 +40,8 @@ class Config(var context: Context) {
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
 
+        const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
+
         //APP DRAWER SORT MODE
         const val SORT_AZ = 0
         const val SORT_ZA = 1

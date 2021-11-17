@@ -33,13 +33,16 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
+import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.farmerbb.taskbar.lib.Taskbar
+import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
+
 
 class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
@@ -116,6 +119,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     }
 
     fun shouldRecreate() = !sRestart
+
+    override fun getDefaultOverlay(): LauncherOverlayManager {
+        return OverlayCallbackImpl(this)
+    }
 
     private val customLayoutInflater by lazy {
         OmegaLayoutInflater(

@@ -56,4 +56,11 @@
         android:summary="@string/edit_dash_summary"
         android:title="@string/edit_dash"
         app:iconSpaceReserved="false" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_enable_minus_one"
+        android:summary="@string/msg_minus_one_on_left"
+        android:title="@string/title_show_google_app"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

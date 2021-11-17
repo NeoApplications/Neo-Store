@@ -88,7 +88,7 @@ class OmegaPreferences(val context: Context) :
         CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
     }
 
-    //HOME SCREEN PREFERENCES
+    //HOME SCREEN
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     var dashProviders = StringListPref(
         "pref_dash_providers",
@@ -104,6 +104,7 @@ class OmegaPreferences(val context: Context) :
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
+    val enableMinus by BooleanPref("pref_enable_minus_one", false, recreate)
 
     var torchState = false
 
@@ -159,6 +160,10 @@ class OmegaPreferences(val context: Context) :
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
     var firstRun by BooleanPref("pref_first_run", true)
+
+    // FEED
+    var feedProvider by StringPref("pref_feedProvider", "", restart)
+    val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", true, restart)
 
     //DEVELOPER PREFERENCES
     var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
