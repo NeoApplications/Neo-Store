@@ -76,6 +76,10 @@ class CustomBottomSheet @JvmOverloads constructor(
         }
     }
 
+    override fun hasSeenEducationTip(): Boolean {
+        return true
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         mContent = findViewById(R.id.widgets_bottom_sheet)
