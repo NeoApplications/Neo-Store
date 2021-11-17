@@ -134,12 +134,13 @@
 
         <!--
         The content provider for exposing various launcher grid options.
-        TODO: Add proper permissions
         -->
         <provider
             android:name="com.android.launcher3.graphics.GridCustomizationsProvider"
             android:authorities="${packageName}.grid_control"
-            android:exported="true" />
+            android:exported="true"
+            android:readPermission="${packageName}.permission.READ_SETTINGS"
+            android:writePermission="${packageName}.permission.WRITE_SETTINGS" />
 
         <!--
         The settings activity. To extend point settings_fragment_name to appropriate fragment class
