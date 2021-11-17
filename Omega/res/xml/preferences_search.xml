@@ -15,36 +15,9 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/app_categorization_folders">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="pref_custom_folder_background"
-            android:persistent="true"
-            android:title="@string/folder_custom_background"
-            app:iconSpaceReserved="false" />
-
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="@color/default_folder_color"
-            android:dependency="pref_custom_folder_background"
-            android:key="pref_folder_background"
-            android:title="@string/folder_background"
-            app:cpv_dialogTitle="@string/folder_background"
-            app:cpv_previewSize="large"
-            app:cpv_showAlphaSlider="false"
-            app:iconSpaceReserved="false" />
-
-        <SeekBarPreference
-            android:key="pref_folder_radius"
-            android:title="@string/folder_radius"
-            app:defaultSeekbarValue="-1.0"
-            app:iconSpaceReserved="false"
-            app:maxValue="24"
-            app:minValue="0.0"
-            app:showSeekBarValue="true"
-            app:steps="24"
-            app:summaryFormat="%.0fdp" />
-    </PreferenceCategory>
+    <androidx.preference.Preference
+        android:summary="Search Preferences"
+        android:title="You're now here:" />
 </PreferenceScreen>

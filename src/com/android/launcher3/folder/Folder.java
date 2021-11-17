@@ -273,8 +273,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         final DeviceProfile dp = mActivityContext.getDeviceProfile();
         final int paddingLeftRight = dp.folderContentPaddingLeftRight;
 
-        //mBackground = (GradientDrawable) ResourcesCompat.getDrawable(getResources(),
-        //        R.drawable.round_rect_folder, getContext().getTheme());
+        mBackground = (GradientDrawable) ResourcesCompat.getDrawable(getResources(),
+                R.drawable.round_rect_folder, getContext().getTheme());
+
         customizeFolder();
 
         mContent = findViewById(R.id.folder_content);
@@ -304,18 +305,6 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     }
 
     private void customizeFolder() {
-        GradientDrawable mBackground;
-        if (prefs.getCustomFolderBackground()) {
-            GradientDrawable dynamicDrawable = new GradientDrawable();
-            dynamicDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-            dynamicDrawable.setUseLevel(false);
-            dynamicDrawable.setColor(prefs.getFolderBackground());
-            mBackground = dynamicDrawable;
-        } else {
-            mBackground = (GradientDrawable) ResourcesCompat.getDrawable(getResources(),
-                    R.drawable.round_rect_folder, getContext().getTheme());
-        }
-
         mBackground.setCornerRadius(getCornerRadius());
     }
 
