@@ -20,7 +20,7 @@
 
     <PreferenceCategory android:title="@string/pref_category__interfaces">
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsDesktopFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsDesktopFragment"
             android:icon="@drawable/ic_desktop"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_desktop"

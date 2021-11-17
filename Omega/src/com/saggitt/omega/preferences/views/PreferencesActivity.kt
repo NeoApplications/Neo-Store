@@ -127,12 +127,6 @@ class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity 
         }
     }
 
-    class PrefsDesktopFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_desktop, rootKey)
-        }
-    }
-
     class PrefsDockFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_dock, rootKey)
