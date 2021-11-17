@@ -129,7 +129,7 @@ class OmegaPreferences(val context: Context) :
         "pref_launcherTheme",
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref("pref_key__accent_color", R.color.colorAccent, recreate)
+    val accentColor by IntPref("pref_accent_color", R.color.colorAccent, recreate)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
@@ -183,7 +183,7 @@ class OmegaPreferences(val context: Context) :
             with(prefs.edit()) {
 
                 // Default accent color
-                putInt("pref_key__accent_color", 0XE80142)
+                putInt("pref_accent_color", 0XE80142)
                 initializeIconShape()
                 putInt(VERSION_KEY, CURRENT_VERSION)
                 commit()

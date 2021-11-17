@@ -28,7 +28,7 @@
 
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:defaultValue="@color/colorAccent"
-        android:key="pref_key__accent_color"
+        android:key="pref_accent_color"
         android:title="@string/title__theme_accent_color"
         app:cpv_dialogTitle="@string/title__theme_accent_color"
         app:cpv_dialogType="preset"
