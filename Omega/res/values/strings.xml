@@ -389,7 +389,6 @@
     <!-- PREFERENCES BACKUP -->
     <string name="backups">Backups</string>
     <string name="backup_delete">Hide</string>
-    <string name="backup_delete_failed">Something went wrong</string>
     <string name="backup_share">Share</string>
     <string name="backup_pref_summary">Save home screen, restore backups</string>
     <string name="title_create">Create</string>

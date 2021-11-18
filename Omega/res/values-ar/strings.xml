@@ -322,7 +322,6 @@
     <string name="title_create">أنشئ</string>
     <string name="backup_pref_summary">حفظ الشاشة الرئيسية &lt;استعادة النسخ الاحتياطية</string>
     <string name="backup_share">شارِك</string>
-    <string name="backup_delete_failed">حدث خطأ ما</string>
     <string name="backup_delete">أخفى</string>
     <string name="backups">النسخ الإحتياطي</string>
     <string name="title__advanced_language">اللغة</string>

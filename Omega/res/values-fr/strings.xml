@@ -311,7 +311,6 @@
     <string name="title_create">Créer</string>
     <string name="backup_pref_summary">Enregistrer l’écran d’accueil, restaurer les sauvegardes</string>
     <string name="backup_share">Partager</string>
-    <string name="backup_delete_failed">Une erreur s\'est produite</string>
     <string name="backup_delete">Masquer</string>
     <string name="backups">Sauvegardes</string>
     <string name="dt2s_admin_hint">Pour utiliser « Double appui pour dormir », accordez l\'autorisation d\'administrateur.</string>

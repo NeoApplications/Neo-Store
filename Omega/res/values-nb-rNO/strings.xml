@@ -254,7 +254,6 @@
     <string name="backup_settings">Innstillinger</string>
     <string name="backup_homescreen">Hjemmeskjerm</string>
     <string name="backup_share">Del</string>
-    <string name="backup_delete_failed">Noe gikk galt</string>
     <string name="backup_delete">Skjul</string>
     <string name="backups">Sikkerhetskopier</string>
     <string name="action_open_app_with_target">Åpne «%s»</string>

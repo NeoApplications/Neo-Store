@@ -110,7 +110,6 @@
     <string name="title_create">创建</string>
     <string name="backup_pref_summary">保存主屏幕，恢复备份</string>
     <string name="backup_share">分享</string>
-    <string name="backup_delete_failed">出问题了</string>
     <string name="backup_delete">隐藏</string>
     <string name="backups">备份</string>
     <string name="title__advanced_language">语言</string>

@@ -153,7 +153,6 @@
     <string name="title_create">Crea</string>
     <string name="backup_pref_summary">Salvare la schermata iniziale, ripristina backup</string>
     <string name="backup_share">Condividi</string>
-    <string name="backup_delete_failed">Qualcosa è andato storto</string>
     <string name="backup_delete">Nascondi</string>
     <string name="backups">Backup</string>
     <string name="title__advanced_language">Lingua</string>

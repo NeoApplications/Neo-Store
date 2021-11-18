@@ -296,7 +296,6 @@
     <string name="title_create">Erstelle</string>
     <string name="backup_pref_summary">Sichere den Hauptschirm. Stelle Sicherungen wieder her</string>
     <string name="backup_share">Teile</string>
-    <string name="backup_delete_failed">Etwas ist schief gelaufen</string>
     <string name="backup_delete">Verstecke</string>
     <string name="backups">Sicherungen</string>
     <string name="title__advanced_language">Sprache</string>

@@ -93,7 +93,6 @@
     <string name="restore_backup">Восстановить</string>
     <string name="backup_pref_summary">Сохранить домашний экран, восстановить резервную копию</string>
     <string name="backup_share">Поделиться</string>
-    <string name="backup_delete_failed">Что-то пошло не так</string>
     <string name="backup_delete">Скрыть</string>
     <string name="backups">Резервные копии</string>
     <string name="title__advanced_language">Язык</string>

@@ -267,7 +267,6 @@
     <string name="restore_backup">Restaurar</string>
     <string name="backup_pref_summary">Salvar tela inicial, restaurar backups</string>
     <string name="backup_share">Compartilhar</string>
-    <string name="backup_delete_failed">Algo deu errado</string>
     <string name="backup_delete">Ocultar</string>
     <string name="backups">Backups</string>
     <string name="title__advanced_language">Idioma</string>

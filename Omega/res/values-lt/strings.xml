@@ -204,7 +204,6 @@
     <string name="title_create">Sukurti</string>
     <string name="backup_pref_summary">Išsaugoti pagrindinį ekraną, atkurti atsargines kopijas</string>
     <string name="backup_share">Dalintis</string>
-    <string name="backup_delete_failed">Kažkas nutiko ne taip</string>
     <string name="backup_delete">Slėpti</string>
     <string name="backups">Atsarginės kopijos</string>
     <string name="title__advanced_language">Kalba</string>
