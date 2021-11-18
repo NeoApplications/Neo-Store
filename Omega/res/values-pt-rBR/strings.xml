@@ -17,7 +17,7 @@
     <string name="theme_with_dark_text">Texto escuro</string>
     <string name="theme_light">Claro</string>
     <string name="theme_based">Definido pelo tema</string>
-    <string name="theme_auto_night_mode">Baseado no tema do sistema</string>
+    <string name="theme_auto_night_mode">Sistema</string>
     <string name="theme_auto">Baseado no papel de parede</string>
     <string name="summary__theme_blur">Desfocar o fundo da página</string>
     <string name="title__theme_icon_shape">Mudar a forma do ícone</string>
@@ -58,9 +58,9 @@
     <string name="title__sort_by_color">Por cor</string>
     <string name="title__sort_most_used">Mais usados</string>
     <string name="title__sort_last_installed">Mais recentes primeiro</string>
-    <string name="title__sort_alphabetical_za">Ordem alfabética (Z-A)</string>
-    <string name="title__sort_alphabetical_az">Ordem alfabética (A-Z)</string>
-    <string name="title__sort_mode">Classificar os aplicativos</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
+    <string name="title__sort_mode">Ordenação dos aplicativos</string>
     <string name="title__drawer_columns">Número de colunas</string>
     <string name="title__drawer_categorization">Categorias</string>
     <string name="title__drawer_icon_size">Tamanho do ícone para todos os apps</string>
@@ -92,18 +92,18 @@
     <string name="title_desktop_icon_popup_menu">Itens do menu popup</string>
     <string name="pref_category__others">Outros</string>
     <string name="pref_category__inputs">Gestos e Pesquisa</string>
-    <string name="pref_category__interfaces">Interfaces</string>
-    <string name="summary__general_about">Mais informação sobre Omega Launcher</string>
+    <string name="pref_category__interfaces">Interface</string>
+    <string name="summary__general_about">Mais sobre Omega Launcher</string>
     <string name="summary__general_advanced">Idioma, backup, pesquisa de configuração</string>
     <string name="summary__general_search">Provedor de pesquisa, estilo, ícones</string>
     <string name="summary__general_theme">Alterar cores, pacote de ícones, forma de ícones</string>
-    <string name="summary__general_drawer">Personalize sua Gaveta de Apps</string>
+    <string name="summary__general_drawer">Personalize sua gaveta de apps</string>
     <string name="summary__general_dock">Ícones hotseat, barra de pesquisa</string>
     <string name="summary__general_desktop">Personalize sua Tela Inicial</string>
     <string name="title__general_notifications">Gestos e Notificações</string>
     <string name="title__general_advanced">Configurações Avançadas</string>
     <string name="title__general_smartspace">Widget da Tela Inicial</string>
-    <string name="title__general_search">Pesquisa</string>
+    <string name="title__general_search">Pesquisa e Pastas</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_dock">Doca</string>
     <string name="title__general_desktop">Área de Trabalho</string>
@@ -153,12 +153,12 @@
     <string name="icon_shape_circle">Círculo</string>
     <string name="icon_shape_squircle">Esquilo</string>
     <string name="icon_shape_square">Quadrado</string>
-    <string name="icon_shape_system_default">Padrão do sistema</string>
+    <string name="icon_shape_system_default">Sistema</string>
     <string name="icon_shape_override_label_location">na Tela inicial</string>
     <string name="icon_shape_override_label">Alterar a forma do ícone</string>
     <string name="menu_icon_shape">Formato de ícone personalizado</string>
     <string name="title_theme_icon_packs">Pacotes de ícones</string>
-    <string name="msg_missing_usage_access">Para mostrar sugestões de aplicativos, ative o acesso de uso para <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">Ative o acesso de uso para <xliff:g example="My App" id="name">%1$s</xliff:g> para mostrar sugestões de apps</string>
     <string name="needs_usage_access">É necessário acesso ao uso</string>
     <string name="title_text_color">Cor do Texto</string>
     <string name="title_app_suggestions">Aplicativos</string>
@@ -245,8 +245,8 @@
     <string name="full_wday_month_day_no_year">EEEE, MMMM d</string>
     <string name="onbording">Integrando</string>
     <string name="action_open_recents">Abrir recentes</string>
-    <string name="event_provider_missing_notification_dots">Para usar <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, ative os Pontos de Notificação.</string>
-    <string name="event_provider_missing_notification_access">Para usar <xliff:g example="My Provider" id="providerName">"%1$s”</xliff:g>, ative as notificações de <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">Ative os pontos de notificação para usar <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</string>
+    <string name="event_provider_missing_notification_access">Ative as notificações de <xliff:g example="My App" id="name">“%2$s” para usar </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”.</xliff:g></string>
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>
@@ -259,7 +259,7 @@
     <string name="no_recent_backups">Sem backups recentes</string>
     <string name="backup_creating">Criando backup</string>
     <string name="backup_error_blank_contents">O conteúdo não pode ficar em branco</string>
-    <string name="backup_error_blank_name">O nome não pode ficar em branco</string>
+    <string name="backup_error_blank_name">O nome precisa ser preenchido</string>
     <string name="backup_wallpaper">Papel de parede</string>
     <string name="backup_settings">Configurações</string>
     <string name="backup_contents">Conteúdo de backup</string>
@@ -273,7 +273,7 @@
     <string name="title__advanced_language">Idioma</string>
     <string name="title__advanced_setting_search">Mostrar configurações de pesquisa</string>
     <string name="summary__advanced_language">Alterar o idioma deste aplicativo</string>
-    <string name="error_no_browser">Nenhuma atividade encontrada para lidar com URLs</string>
+    <string name="error_no_browser">Primeiro instale um aplicativo para abrir URLs</string>
     <string name="search_no_results">Sem resultados</string>
     <string name="cat_search_bar">Barra de pesquisa</string>
     <string name="summary__search_show_as_assistant_summary">Abra o Assistente em vez da Pesquisa por Voz</string>
@@ -283,14 +283,14 @@
     <string name="reset_to_default">Redefinir aos padrões</string>
     <string name="enabled_icon_packs">Habilitado</string>
     <string name="drag_to_enable_packs">Arraste para cima para habilitar</string>
-    <string name="drag_to_disable_packs">Arraste para baixo para desabilitar</string>
+    <string name="drag_to_disable_packs">Arraste para baixo para desativar</string>
     <string name="wallpaper_pick">Escolher papel de parede</string>
     <string name="edit_dash">Editar Dash</string>
-    <string name="content_storage_permission_required">Para aplicar o fundo de tela, conceda permissão aos arquivos.</string>
+    <string name="content_storage_permission_required">Conceda permissão aos arquivos para definir um papel de parede.</string>
     <string name="title_storage_permission_required">Acesso ao Armazenamento Necessário</string>
     <string name="category__about_licenses">Licença</string>
     <string name="about_source">Código fonte</string>
-    <string name="about_team">Membros da familia</string>
+    <string name="about_team">Membros do Time</string>
     <string name="title__about_changelog">Log de mudanças</string>
     <string name="title__about_donate">Doar</string>
     <string name="about_build_information">Informação da build</string>
@@ -302,9 +302,9 @@
     <string name="developer_options_title">Opções do desenvolvedor</string>
     <string name="failed">Algo deu errado.</string>
     <string name="search_menu">Procurar configurações</string>
-    <string name="developer_options_enabled">Opções de desenvolvedor habilitadas</string>
+    <string name="developer_options_enabled">Opções de desenvolvedor ativadas</string>
     <string name="local_backups">No Armazenamento</string>
-    <string name="read_external_storage_required">Para criar um backup, permita acesso aos arquivos.</string>
+    <string name="read_external_storage_required">Permita acesso aos arquivos para criar um backup.</string>
     <string name="backup_location_device_storage">Pasta do Omega</string>
     <string name="backup_location">Localização</string>
     <string name="backup_share_text">Arquivo de backup do omega</string>
@@ -312,8 +312,8 @@
     <string name="restore_read_meta_fail">Arquivo de Backup inválido</string>
     <string name="restore_failed">Restauração falhou</string>
     <string name="backup_failed">Backup falhou</string>
-    <string name="restore_success">Restaurado com sucesso</string>
-    <string name="restore_contents">Restaurar conteúdos</string>
+    <string name="restore_success">Restaurado</string>
+    <string name="restore_contents">Restaurar conteúdo</string>
     <string name="backup_restarting">Reiniciando</string>
     <string name="backup_restoring">Restaurando Backup</string>
     <string name="backup_timestamp">Criado em</string>
@@ -356,11 +356,11 @@
     <string name="dash_device_settings_summary">Abrir as Configurações do Dispositivo</string>
     <string name="dash_volume_summary">Mostrar o seletor de dispositivo de áudio</string>
     <string name="dash_launcher_settings_summary">Mostrar as configurações do lançador</string>
-    <string name="wallpaper_pick_summary">Abrir seletor de Papel de Parede</string>
+    <string name="wallpaper_pick_summary">Abrir seletor de papel de parede</string>
     <string name="edit_dash_summary">Ativar ou desativar atalhos</string>
     <string name="dash_all_apps_summary">Exibir botão Todos Apps</string>
     <string name="dash_mobile_network_summary">Exibir as configurações de rede móvel</string>
-    <string name="dash_manage_apps_summary">Abrir o Gerenciador de Apps Android</string>
+    <string name="dash_manage_apps_summary">Abrir o gerenciador de apps do Android</string>
     <string name="dash_mobile_network_title">Rede Móvel</string>
     <string name="dash_launch_app_title">Abrir App</string>
     <string name="folder_name_format">Pasta: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
@@ -374,20 +374,45 @@
     <string name="gesture_press_back">Botão voltar</string>
     <string name="gesture_press_home">Toque no botão Iniciar</string>
     <string name="notification_custom_color">Use uma cor personalizada</string>
-    <string name="dialog_message_change_sort">Alterar a ordem dos aplicativos para alfabética\?</string>
+    <string name="dialog_message_change_sort">Alterar ordenação dos aplicativos para alfabética\?</string>
     <string name="about_translators">Tradutores</string>
     <string name="title_create">Criar</string>
-    <string name="dash_media_player_description">Mostrar ou ocultar os controles do Reprodutor de Áudio</string>
+    <string name="dash_media_player_description">Mostrar ou ocultar os controles do reprodutor de áudio</string>
     <string name="dash_media_player">Reprodutor de Áudio</string>
     <string name="folder_radius">Raio do canto da pasta</string>
     <string name="folder_background">Cor de fundo da pasta</string>
     <string name="folder_custom_background">Usar fundo de pasta personalizado</string>
     <string name="fonts_change_global_font">Mudar</string>
     <string name="trust_apps_manager_name">Aplicativos Ocultos e Protegidos</string>
-    <string name="fonts_global_font">Fonte Global</string>
-    <string name="disable_protected_apps_message">Desabilitar Aplicativos protegidos exigem autenticação</string>
-    <string name="disable_protected_apps">Desabilitar aplicativos protegidos</string>
-    <string name="enable_protected_apps">Habilitar aplicativos protegidos</string>
+    <string name="fonts_global_font">Fonte</string>
+    <string name="disable_protected_apps_message">Desativar aplicativos protegidos exigem autenticação</string>
+    <string name="disable_protected_apps">Desativar aplicativos protegidos</string>
+    <string name="enable_protected_apps">Ativar aplicativos protegidos</string>
     <string name="trust_apps_no_lock_error">Por favor, configure uma tela de bloqueio segura para restringir o acesso ao aplicativo</string>
     <string name="protected_app_reset">Redefinir aplicativos protegidos</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="dash_location">Localização</string>
+    <string name="dash_location_summary">Alterar as configurações de localização</string>
+    <string name="dash_auto_rotation">Rotação automática</string>
+    <string name="dash_sync">Sincronização</string>
+    <string name="launch_assistant">Iniciar o Assistente</string>
+    <string name="modify_system_settings">Modificar as configurações do sistema</string>
+    <string name="app_widget_name">Widget de Relógio</string>
+    <string name="pref_desktop_mode">Modo desktop</string>
+    <string name="pref_desktop_mode_summary">Ativar o modo desktop do Android</string>
+    <string name="about_open_source">Bibliotecas Livres</string>
+    <string name="dash_bluetooth_summary">Ligar ou desligar o Bluetooth</string>
+    <string name="dash_torch_summary">Ligar ou desligar a luz do flash.</string>
+    <string name="dash_auto_rotation_summary">Ligar ou desligar a rotação automática.</string>
+    <string name="dash_sync_summary">Ativar ou desativar a sincronização.</string>
+    <string name="dash_wifi_summary">Estado do Wi-Fi e conexão</string>
+    <string name="modify_system_settings_message">Conceda a capacidade de modificar as configurações do sistema para que isso funcione</string>
+    <string name="about_translators_group">Colaboradores e Tradutores</string>
+    <string name="about_channel">Canal</string>
+    <string name="about_community">Comunidade</string>
+    <string name="pref_desktop_mode_settings">Configurações do modo desktop</string>
+    <string name="dash_torch">Lanterna</string>
+    <string name="gesture_launch_assistant">Iniciar o Assistente (por meio de botão ou gesto)</string>
+    <string name="about_copyright">Copyright © 2020–2021</string>
+    <string name="dash_wifi">Wi-Fi</string>
 </resources>
