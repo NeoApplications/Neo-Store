@@ -72,6 +72,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -175,14 +176,14 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
 
     @Override
     public void onPackagesAvailable(String[] packageNames, UserHandle user,
-            boolean replacing) {
+                                    boolean replacing) {
         enqueueModelUpdateTask(
                 new PackageUpdatedTask(PackageUpdatedTask.OP_UPDATE, user, packageNames));
     }
 
     @Override
     public void onPackagesUnavailable(String[] packageNames, UserHandle user,
-            boolean replacing) {
+                                      boolean replacing) {
         if (!replacing) {
             enqueueModelUpdateTask(new PackageUpdatedTask(
                     PackageUpdatedTask.OP_UNAVAILABLE, user, packageNames));
@@ -330,6 +331,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
 
     /**
      * Adds a callbacks to receive model updates
+     *
      * @return true if workspace load was performed synchronously
      */
     public boolean addCallbacksAndLoad(Callbacks callbacks) {
@@ -352,6 +354,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
 
     /**
      * Starts the loader. Tries to bind {@params synchronousBindPage} synchronously if possible.
+     *
      * @return true if the page could be bound synchronously.
      */
     public boolean startLoader() {
@@ -382,7 +385,13 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
                     loaderResults.bindWidgets();
                     return true;
                 } else {
-                    startLoaderForResults(loaderResults);
+                    stopLoader();
+                    mLoaderTask = new LoaderTask(
+                            mApp, mBgAllAppsList, mBgDataModel, mModelDelegate, loaderResults);
+
+                    // Always post the loader task, instead of running directly
+                    // (even on same thread) so that we exit any nested synchronized blocks
+                    MODEL_EXECUTOR.post(mLoaderTask);
                 }
             }
         }
@@ -391,6 +400,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
 
     /**
      * If there is already a loader task running, tell it to stop.
+     *
      * @return true if an existing loader was stopped.
      */
     public boolean stopLoader() {
@@ -405,25 +415,18 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
         }
     }
 
-    public void startLoaderForResults(LoaderResults results) {
+    /**
+     * Loads the model if not loaded
+     *
+     * @param callback called with the data model upon successful load or null on model thread.
+     */
+    public void loadAsync(Consumer<BgDataModel> callback) {
         synchronized (mLock) {
-            stopLoader();
-            mLoaderTask = new LoaderTask(
-                    mApp, mBgAllAppsList, mBgDataModel, mModelDelegate, results);
-
-            // Always post the loader task, instead of running directly (even on same thread) so
-            // that we exit any nested synchronized blocks
-            MODEL_EXECUTOR.post(mLoaderTask);
-        }
-    }
-
-    public void startLoaderForResultsIfNotLoaded(LoaderResults results) {
-        synchronized (mLock) {
-            if (!isModelLoaded()) {
-                Log.d(TAG, "Workspace not loaded, loading now");
-                startLoaderForResults(results);
+            if (!mModelLoaded && !mIsLoaderTaskRunning) {
+                startLoader();
             }
         }
+        MODEL_EXECUTOR.post(() -> callback.accept(isModelLoaded() ? mBgDataModel : null));
     }
 
     @Override
@@ -579,7 +582,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
          * Called before the task is posted to initialize the internal state.
          */
         void init(LauncherAppState app, LauncherModel model,
-                BgDataModel dataModel, AllAppsList allAppsList, Executor uiExecutor);
+                  BgDataModel dataModel, AllAppsList allAppsList, Executor uiExecutor);
 
     }
 
