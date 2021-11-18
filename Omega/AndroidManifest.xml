@@ -86,6 +86,12 @@
             android:autoRemoveFromRecents="true"
             android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
             android:theme="@style/SettingsTheme" />
+
+        <activity
+            android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
+            android:label="@string/action_open_app_select_app"
+            android:theme="@style/SettingsTheme.Light" />
+
         <activity
             android:name="com.saggitt.omega.BlankActivity"
             android:theme="@style/Theme.Transparent" />
