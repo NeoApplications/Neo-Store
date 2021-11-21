@@ -116,7 +116,9 @@
             android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
             android:theme="@style/SettingsTheme.Light.Transparent">
             <intent-filter>
-                <action android:name="ch.deletescape.lawnchair.START_ACTION" />
+                <action android:name="com.saggitt.omega.START_ACTION" />
+                <action android:name="android.intent.action.ASSIST" />
+                <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
