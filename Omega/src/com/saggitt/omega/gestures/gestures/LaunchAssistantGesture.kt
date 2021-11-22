@@ -28,6 +28,16 @@ class LaunchAssistantGesture(controller: GestureController) : Gesture(controller
     )
     override val isEnabled = true
 
+    /*get() {
+        controller.launcher.baseContext.packageManager.resolveActivity(
+            Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+            PackageManager.MATCH_DEFAULT_ONLY
+        )?.let {
+            return it.activityInfo.packageName == RunHandlerActivity::javaClass.name && it.isDefault
+        }
+        return false
+    }*/
+
     override fun onEvent(): Boolean {
         handler.onGestureTrigger(controller)
         return true

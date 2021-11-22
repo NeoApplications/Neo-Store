@@ -43,7 +43,6 @@ import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
-
 class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }

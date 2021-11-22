@@ -72,7 +72,9 @@ open class OpenDrawerGestureHandler(context: Context, config: JSONObject?) :
         )
     }
 
-    open fun getOnCompleteRunnable(controller: GestureController): Runnable? = null
+    open fun getOnCompleteRunnable(controller: GestureController): Runnable? {
+        return Runnable { }
+    }
 
     override fun getTargetState(): LauncherState {
         return LauncherState.ALL_APPS

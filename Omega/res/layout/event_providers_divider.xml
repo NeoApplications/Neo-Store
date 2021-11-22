@@ -30,7 +30,7 @@
         android:importantForAccessibility="no" />
 
     <include
-        layout="@layout/event_provider_text"
+        layout="@layout/icon_pack_text_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"

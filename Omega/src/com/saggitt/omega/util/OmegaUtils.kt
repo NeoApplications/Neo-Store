@@ -34,6 +34,7 @@ import android.util.Property
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.annotation.ColorInt
@@ -231,6 +232,12 @@ fun Switch.applyColor(color: Int) {
     )
     DrawableCompat.setTintList(thumbDrawable, thstateList)
     DrawableCompat.setTintList(trackDrawable, trstateList)
+}
+
+fun CheckedTextView.applyAccent() {
+    val tintList = ColorStateList.valueOf(context.getColorAccent())
+    compoundDrawableTintList = tintList
+    backgroundTintList = tintList
 }
 
 operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)

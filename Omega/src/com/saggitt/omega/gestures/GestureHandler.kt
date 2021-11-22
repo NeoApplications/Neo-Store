@@ -58,7 +58,6 @@ class BlankGestureHandler(context: Context, config: JSONObject?) : GestureHandle
     override fun onGestureTrigger(controller: GestureController, view: View?) {}
 }
 
-// keep for folder cover
 class RunnableGestureHandler(context: Context, private val onTrigger: Runnable) :
     GestureHandler(context, null) {
     override val displayName: String = context.getString(R.string.action_none)

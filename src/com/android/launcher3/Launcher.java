@@ -203,6 +203,7 @@ import com.android.systemui.plugins.shared.LauncherExterns;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.util.Config;
 
 import java.io.FileDescriptor;
@@ -1529,6 +1530,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         boolean isActionMain = Intent.ACTION_MAIN.equals(intent.getAction());
         boolean internalStateHandled = ACTIVITY_TRACKER.handleNewIntent(this);
         hideKeyboard();
+        boolean handled = false;
         if (isActionMain) {
             if (!internalStateHandled) {
                 // In all these cases, only animate if we're already on home
@@ -1538,15 +1540,20 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
                     // Only change state, if not already the same. This prevents cancelling any
                     // animations running as part of resume
                     mStateManager.goToState(NORMAL, mStateManager.shouldAnimateStateChange());
+                    handled = true;
                 }
 
                 // Reset the apps view
                 if (!alreadyOnHome) {
                     mAppsView.reset(isStarted() /* animate */);
+                    handled = true;
                 }
 
                 if (shouldMoveToDefaultScreen && !mWorkspace.isHandlingTouch()) {
                     mWorkspace.post(mWorkspace::moveToDefaultScreen);
+                }
+                if (!handled && this instanceof OmegaLauncher) {
+                    ((OmegaLauncher) this).getGestureController().onPressHome();
                 }
             }
 

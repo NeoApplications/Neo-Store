@@ -33,7 +33,7 @@ import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.SettingsObserver
 import com.saggitt.omega.util.omegaPrefs
 
-class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
+open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
     private var currentTheme = 0
     private lateinit var themeOverride: ThemeOverride

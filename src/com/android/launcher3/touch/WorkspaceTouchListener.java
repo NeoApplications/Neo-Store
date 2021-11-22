@@ -41,6 +41,8 @@ import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
 import com.android.launcher3.views.OptionsPopupView;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.gestures.GestureController;
 
 /**
  * Helper class to handle touch on empty space in workspace and show options popup on long press
@@ -68,6 +70,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
     private int mLongPressState = STATE_CANCELLED;
 
     private final GestureDetector mGestureDetector;
+    private final GestureController mGestureController;
 
     public WorkspaceTouchListener(Launcher launcher, Workspace workspace) {
         mLauncher = launcher;
@@ -76,6 +79,8 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
         // likely to cause movement.
         mTouchSlop = 2 * ViewConfiguration.get(launcher).getScaledTouchSlop();
         mGestureDetector = new GestureDetector(workspace.getContext(), this);
+        mGestureController = ((OmegaLauncher) launcher).getGestureController();
+        mGestureController.attachDoubleTapListener(mGestureDetector);
     }
 
     @Override
@@ -102,6 +107,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
             if (handleLongPress) {
                 mLongPressState = STATE_REQUESTED;
                 mTouchDownPoint.set(ev.getX(), ev.getY());
+                mGestureController.setTouchDownPoint(mTouchDownPoint);
             }
 
             mWorkspace.onTouchEvent(ev);
