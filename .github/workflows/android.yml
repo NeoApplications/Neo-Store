@@ -52,28 +52,21 @@ jobs:
           name: ${{ env.ARTIFACT_NAME_APK }}
           path: ${{ env.ARTIFACT_PATHNAME_APK }}
 
-  send-end-notification:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name == 'push'
-    steps:
-      - name: Get Artifact
-        id: get-result-artifact
-        run: |
-          ARTIFACT_PATH_APK=$(ls /home/runner/work/Omega/Omega/*.apk | head -n 1)
-          ARTIFACT_APK=$(basename ARTIFACT_PATH_APK)
-          echo "ARTIFACT_PATH_APK=${ARTIFACT_PATH_APK}" >> $GITHUB_ENV
-          echo "ARTIFACT_APK=${ARTIFACT_APK}" >> $GITHUB_ENV
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_APK }}
-          path: ${{ env.ARTIFACT_PATH_APK }}
-      - uses: technote-space/workflow-conclusion-action@v2.1.5
-      - name: Send notification
-        uses: appleboy/telegram-action@v0.1.1
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          document: artifacts/debug-apk/**.apk
-          message: Build finished with status “${{ env.WORKFLOW_CONCLUSION }}”. Uploading APK if available…
+#  send-end-notification:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    if: github.event_name == 'push'
+#    steps:
+#      - name: Download artifact
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: ${{ env.ARTIFACT_NAME_APK }}
+#          path: ${{ env.ARTIFACT_PATHNAME_APK }}
+#      - uses: technote-space/workflow-conclusion-action@v2.1.5
+#      - name: Send notification
+#        uses: appleboy/telegram-action@v0.1.1
+#        with:
+#          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+#          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#          document: artifacts/debug-apk/**.apk
+#          message: Build finished with status “${{ env.WORKFLOW_CONCLUSION }}”. Uploading APK if available…
