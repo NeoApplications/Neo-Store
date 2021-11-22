@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_folder_name">Novo Cartafol</string>
+    <string name="title__general_about">Acerca de</string>
+    <string name="title__general_desktop">Escritorio</string>
+    <string name="title__general_dock">Barra</string>
+    <string name="title__general_theme">Decorado</string>
+    <string name="title__general_search">Busca e Cartafoles</string>
+    <string name="title__general_smartspace">Widget do Inicio</string>
+    <string name="summary__general_desktop">Personaliza o escritorio</string>
+    <string name="title__general_advanced">Axustes avanzados</string>
+    <string name="title__general_notifications">Xestos e Notificacións</string>
+</resources>
