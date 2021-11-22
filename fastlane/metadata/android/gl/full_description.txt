@@ -1,0 +1,3 @@
+<p>Un potente lanzador libre con moitas funcións intelixentes.</p>
+<br>
+<p>Estado: Beta</p>
