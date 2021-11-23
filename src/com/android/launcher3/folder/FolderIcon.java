@@ -80,6 +80,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -628,6 +629,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public void drawDot(Canvas canvas) {
         if (!mForceHideDot && ((mDotInfo != null && mDotInfo.hasDot()) || mDotScale > 0)) {
+            OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
             Rect iconBounds = mDotParams.iconBounds;
             BubbleTextView.getIconBounds(this, iconBounds, mActivity.getDeviceProfile().iconSizePx);
             float iconScale = (float) mBackground.previewSize / iconBounds.width();
@@ -635,7 +637,15 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             // If we are animating to the accepting state, animate the dot out.
             mDotParams.scale = Math.max(0, mDotScale - mBackground.getScaleProgress());
-            mDotParams.color = mBackground.getDotColor();
+            if (prefs.getNotificationCustomColor()) {
+                mDotParams.color = prefs.getNotificationBackground();
+            } else {
+                mDotParams.color = mBackground.getDotColor();
+            }
+
+            mDotParams.count = mDotInfo.getNotificationCount();
+            if (prefs.getNotificationCount())
+                mDotParams.showCount = true;
             mDotRenderer.draw(canvas, mDotParams);
         }
     }

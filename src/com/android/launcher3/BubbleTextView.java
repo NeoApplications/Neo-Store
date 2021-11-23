@@ -66,6 +66,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.text.NumberFormat;
 
@@ -450,6 +451,15 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
             final int scrollX = getScrollX();
             final int scrollY = getScrollY();
             canvas.translate(scrollX, scrollY);
+            if (mDotInfo != null) {
+                OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
+                mDotParams.count = mDotInfo.getNotificationCount();
+                mDotParams.notificationKeys = mDotInfo.getNotificationKeys().size();
+                mDotParams.showCount = prefs.getNotificationCount();
+                if (prefs.getNotificationCustomColor()) {
+                    mDotParams.color = prefs.getNotificationBackground();
+                }
+            }
             mDotRenderer.draw(canvas, mDotParams);
             canvas.translate(-scrollX, -scrollY);
         }

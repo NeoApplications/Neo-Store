@@ -25,6 +25,30 @@
         android:widgetLayout="@layout/notification_pref_warning"
         app:iconSpaceReserved="false" />
 
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:dependency="pref_icon_badging"
+        android:key="pref_notification_count"
+        android:title="@string/title__notification_count"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_custom_background"
+        android:persistent="true"
+        android:title="@string/notification_custom_color"
+        app:iconSpaceReserved="false" />
+
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@color/notification_background"
+        android:dependency="pref_custom_background"
+        android:key="pref_notification_background"
+        android:title="@string/title__notification_background"
+        app:cpv_dialogTitle="@string/title__notification_background"
+        app:cpv_previewSize="large"
+        app:cpv_showAlphaSlider="true"
+        app:iconSpaceReserved="false" />
+
     <PreferenceCategory android:title="@string/pref_category__gestures">
 
         <com.saggitt.omega.preferences.custom.GesturePreference

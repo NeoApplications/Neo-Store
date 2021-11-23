@@ -157,6 +157,13 @@ class OmegaPreferences(val context: Context) :
     //SMARTSPACE
     val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, recreate)
 
+    //NOTIFICATION
+    val notificationCount: Boolean by BooleanPref("pref_notification_count", false, restart)
+    val notificationCustomColor: Boolean by BooleanPref("pref_custom_background", false, restart)
+    val notificationBackground by IntPref(
+        "pref_notification_background", R.color.notification_background, recreate
+    )
+
     //ADVANCED
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
     var firstRun by BooleanPref("pref_first_run", true)

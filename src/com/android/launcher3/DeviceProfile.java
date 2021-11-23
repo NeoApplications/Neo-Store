@@ -28,7 +28,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -41,8 +40,8 @@ import android.view.WindowManager;
 import com.android.launcher3.CellLayout.ContainerType;
 import com.android.launcher3.DevicePaddings.DevicePadding;
 import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.icons.DotRenderer;
-import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.DisplayController.Info;
@@ -416,10 +415,17 @@ public class DeviceProfile {
                 R.dimen.drag_flingToDeleteMinVelocity);
 
         // This is done last, after iconSizePx is calculated above.
-        Path dotPath = GraphicsUtils.getShapePath(DEFAULT_DOT_SIZE);
-        mDotRendererWorkSpace = new DotRenderer(iconSizePx, dotPath, DEFAULT_DOT_SIZE);
+        float dotSize = 0.38f;
+        if (!Utilities.getOmegaPrefs(context).getNotificationCount()) {
+            dotSize = 0.228f;
+        }
+
+        // This is done last, after iconSizePx is calculated above.
+        mDotRendererWorkSpace = new DotRenderer(iconSizePx, IconShape.getShapePath(),
+                IconShape.DEFAULT_PATH_SIZE, dotSize);
         mDotRendererAllApps = iconSizePx == allAppsIconSizePx ? mDotRendererWorkSpace :
-                new DotRenderer(allAppsIconSizePx, dotPath, DEFAULT_DOT_SIZE);
+                new DotRenderer(allAppsIconSizePx, IconShape.getShapePath(),
+                        IconShape.DEFAULT_PATH_SIZE, dotSize);
     }
 
     private void updateHotseatIconSize(int hotseatIconSizePx) {
