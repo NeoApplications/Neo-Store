@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="default_folder_name">Novo Cartafol</string>
     <string name="title__general_about">Acerca de</string>
     <string name="title__general_desktop">Escritorio</string>
@@ -58,4 +58,58 @@
     <string name="hotseat_show_page_indicator">Mostrar indicador de páxina</string>
     <string name="title_disabled">Off</string>
     <string name="title__drawer_categorization">Categorías</string>
+    <string name="title__drawer_icon_popup_menu">Burbulla de atallos</string>
+    <string name="title__drawer_columns">Número de columnas</string>
+    <string name="title_drawer_enable_background">Usar cor de fondo personalizada</string>
+    <string name="title_search_hidden_apps">Atopar atallos ocultos</string>
+    <string name="summary_search_hidden_apps">Mostra nos resultados os atallos agochados.</string>
+    <string name="title_drawer_layout">Disposición</string>
+    <string name="title_drawer_vertical">Vertical</string>
+    <string name="title_drawer_vertical_list">Lista vertical</string>
+    <string name="title_drawer_paged">Paxinada</string>
+    <string name="dialog_message_change_sort">Cambiar á orde alfabética das apps\?</string>
+    <string name="cat_drawer_grid">Grella</string>
+    <string name="cat_drawer_icons">Iconas</string>
+    <string name="pref_appcategorization_enable_title">Categorizar Apps</string>
+    <string name="pref_appcategorization_enable_summary">Elixe o modo da disposición do panel</string>
+    <string name="pref_appcategorization_style_text">Estilo</string>
+    <string name="app_categorization_folders">Cartafoles</string>
+    <string name="pref_app_groups_edit_tip">Toca para editar, arrastra para reordenar.</string>
+    <string name="add_new_tab">Engadir</string>
+    <string name="selected_count">%1$d seleccionado</string>
+    <plurals name="hidden_apps_count">
+        <item quantity="one">%1$d agochado</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="hide_app_selected"> agochado</string>
+    <string name="tab_type_custom_desc">Elixe manualmente os atallos.</string>
+    <string name="tab_type_smart">Automático</string>
+    <string name="pref_appcategorization_flowerpot_summary">Elixe os atallos automáticamente.</string>
+    <plurals name="tab_apps_count">
+        <item quantity="one">%1$d App</item>
+        <item quantity="other">%1$d Apps</item>
+    </plurals>
+    <string name="protected_app_reset">Restablecer apps protexidas</string>
+    <string name="title_drawer_row_height">Altura da fila</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_mode">Orde das apps</string>
+    <string name="title__sort_most_used">Máis usada</string>
+    <string name="title__sort_by_color">Por cor</string>
+    <string name="title_all_apps_google_search">Busca global</string>
+    <string name="title_all_apps_keep_scroll_state">Lembrar posición</string>
+    <string name="msg_disable_suggestions_prompt">Borraranse os datos de uso.</string>
+    <string name="title_text_color">Cor do texto</string>
+    <string name="pref_appcategorization_folders_summary">Toca para abrir o emerxente.</string>
+    <string name="title_disable_suggestions_prompt">Desactivar suxestións de apps</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
+    <string name="title__sort_last_installed">Última instalada</string>
+    <string name="summary_all_apps_google_search">Atopa resultados web e apps</string>
+    <string name="summary__drawer_hide_apps">Agochar app do panel de apps</string>
+    <string name="label_turn_off_suggestions">Desactivar</string>
+    <string name="pref_appcategorization_flowerpot_title">Categoría da App</string>
+    <string name="app_categorization_tabs">Lapelas</string>
+    <string name="pref_appcategorization_tabs_summary">Despraza entre grupos.</string>
+    <string name="hide_app_reset">Restablecer apps ocultas</string>
+    <string name="needs_usage_access">Precísase acceso ao uso</string>
+    <string name="msg_missing_usage_access">Activa o acceso ao uso de <xliff:g example="My App" id="name">%1$s</xliff:g> e así ver suxestións de apps</string>
 </resources>
