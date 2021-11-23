@@ -497,9 +497,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private void replaceRVContainer(boolean showTabs) {
-        for (int i = 0; i < mAH.length; i++) {
-            if (mAH[i].recyclerView != null) {
-                mAH[i].recyclerView.setLayoutManager(null);
+        for (AdapterHolder adapterHolder : mAH) {
+            AllAppsRecyclerView rv = adapterHolder.recyclerView;
+            if (rv != null) {
+                rv.setLayoutManager(null);
+                rv.setAdapter(null);
             }
         }
         View oldView = getRecyclerViewContainer();
