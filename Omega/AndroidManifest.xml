@@ -7,6 +7,14 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
+    <uses-permission
+        android:name="android.permission.MANAGE_DEVICE_ADMINS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission
+        android:name="android.permission.STATUS_BAR"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:name="com.saggitt.omega.OmegaApp"
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
