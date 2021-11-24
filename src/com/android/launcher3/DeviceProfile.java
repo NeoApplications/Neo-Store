@@ -46,6 +46,7 @@ import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.DisplayController.Info;
 import com.android.launcher3.util.WindowBounds;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.io.PrintWriter;
 
@@ -210,10 +211,13 @@ public class DeviceProfile {
     // DragController
     public int flingToDeleteThresholdVelocity;
 
+    private final OmegaPreferences prefs;
+
     DeviceProfile(Context context, InvariantDeviceProfile inv, Info info, WindowBounds windowBounds,
                   boolean isMultiWindowMode, boolean transposeLayoutWithOrientation,
                   boolean useTwoPanels) {
 
+        prefs = Utilities.getOmegaPrefs(context);
         this.inv = inv;
         this.isLandscape = windowBounds.isLandscape();
         this.isMultiWindowMode = isMultiWindowMode;
@@ -649,6 +653,9 @@ public class DeviceProfile {
         // Folder icon
         folderIconSizePx = IconNormalizer.getNormalizedCircleSize(iconSizePx);
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
+
+        //Customize Icon and text size
+        allAppsIconSizePx *= prefs.getAllAppsIconScale();
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {

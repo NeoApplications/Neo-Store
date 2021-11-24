@@ -118,6 +118,7 @@ class OmegaPreferences(val context: Context) :
     )
     var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
+    var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
 
     /*POPUP DIALOG PREFERENCES */
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
@@ -325,6 +326,18 @@ class OmegaPreferences(val context: Context) :
 
         override fun onSetValue(value: Boolean) {
             edit { putBoolean(getKey(), value) }
+        }
+    }
+
+    open inner class FloatPref(
+        key: String,
+        defaultValue: Float = 0f,
+        onChange: () -> Unit = doNothing
+    ) : PrefDelegate<Float>(key, defaultValue, onChange) {
+        override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
+
+        override fun onSetValue(value: Float) {
+            edit { putFloat(getKey(), value) }
         }
     }
 

@@ -18,6 +18,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.saggitt.omega.preferences.custom.SeekbarPreference
+        android:key="pref_allapps_icon_scale"
+        android:persistent="true"
+        android:title="@string/title__drawer_icon_size"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="2.0"
+        app:minValue="0.5"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
     <PreferenceCategory android:title="@string/cat_drawer_grid">
         <com.saggitt.omega.preferences.custom.SortAppsPreference
             android:defaultValue="0"
