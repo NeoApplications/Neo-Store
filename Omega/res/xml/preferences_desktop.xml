@@ -18,9 +18,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:launcher="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="@string/pref_category__interfaces">
 
-    </PreferenceCategory>
+    <com.saggitt.omega.preferences.custom.SeekbarPreference
+        android:key="pref_home_icon_scale"
+        android:title="@string/title__desktop_icon_size"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="2.0"
+        app:minValue="0.5"
+        app:steps="150"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
 
     <!--
       LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_ENABLED(613)

@@ -88,7 +88,8 @@ class OmegaPreferences(val context: Context) :
         CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
     }
 
-    //HOME SCREEN
+    // HOME SCREEN
+    val desktopIconScale by FloatPref("pref_home_icon_scale", 1f, recreate)
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     var dashProviders = StringListPref(
         "pref_dash_providers",
@@ -108,7 +109,10 @@ class OmegaPreferences(val context: Context) :
 
     var torchState = false
 
-    //DRAWER
+    // DOCK
+    val dockIconScale by FloatPref("pref_hotseat_icon_scale", 1f, recreate)
+
+    // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, reloadApps)
     var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
@@ -120,7 +124,7 @@ class OmegaPreferences(val context: Context) :
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
     var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
 
-    /*POPUP DIALOG PREFERENCES */
+    // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
     val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)
     val drawerPopupEdit by BooleanPref("drawer_popup_edit", true, doNothing)

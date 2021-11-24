@@ -655,6 +655,7 @@ public class DeviceProfile {
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
 
         //Customize Icon and text size
+        iconSizePx *= prefs.getDesktopIconScale();
         allAppsIconSizePx *= prefs.getAllAppsIconScale();
     }
 
