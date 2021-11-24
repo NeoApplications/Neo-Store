@@ -57,7 +57,7 @@
             android:title="@string/title__general_search" />
 
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsGesturesFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsGesturesFragment"
             android:icon="@drawable/ic_gesture"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_notifications"

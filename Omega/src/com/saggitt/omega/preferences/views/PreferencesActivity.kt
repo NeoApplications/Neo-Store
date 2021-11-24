@@ -219,13 +219,5 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
     companion object {
         var DEFAULT_HOME: String? = ""
-
-        const val NOTIFICATION_BADGING = "notification_badging"
-        const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
-
-        /**
-         * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
-         */
-        const val NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners"
     }
 }
