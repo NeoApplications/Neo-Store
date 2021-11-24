@@ -39,6 +39,318 @@
         <item>14</item> <!-- 01110 -->
     </string-array>
 
+    <integer-array name="theme_colors">
+        <!-- Red -->
+        <item name="red_50">0xFFFFEBEE</item>
+        <item name="red_100">0xFFFFCDD2</item>
+        <item name="red_200">0xFFEF9A9A</item>
+        <item name="red_300">0xFFE57373</item>
+        <item name="red_400">0xFFEF5350</item>
+        <item name="red_500">0xFFF44336</item>
+        <item name="red_600">0xFFE53935</item>
+        <item name="red_700">0xFFD32F2F</item>
+        <item name="red_800">0xFFC62828</item>
+        <item name="red_900">0xFFB71C1C</item>
+        <item name="red_A100">0xFFFF8A80</item>
+        <item name="red_A200">0xFFFF5252</item>
+        <item name="red_A400">0xFFFF1744</item>
+        <item name="red_A700">0xFFD50000</item>
+        <!-- Red -->
+
+        <!-- Pink -->
+        <item name="pink_50">0xFFFCE4EC</item>
+        <item name="pink_100">0xFFF8BBD0</item>
+        <item name="pink_200">0xFFF48FB1</item>
+        <item name="pink_300">0xFFF06292</item>
+        <item name="pink_400">0xFFEC407A</item>
+        <item name="pink_500">0xFFE91E63</item>
+        <item name="pink_600">0xFFD81B60</item>
+        <item name="pink_700">0xFFC2185B</item>
+        <item name="pink_800">0xFFAD1457</item>
+        <item name="pink_900">0xFF880E4F</item>
+        <item name="pink_A100">0xFFFF80AB</item>
+        <item name="pink_A200">0xFFFF4081</item>
+        <item name="pink_A400">0xFFF50057</item>
+        <item name="pink_A700">0xFFC51162</item>
+        <!-- Pink -->
+
+        <!-- Purple -->
+        <item name="purple_50">0xFFF3E5F5</item>
+        <item name="purple_100">0xFFE1BEE7</item>
+        <item name="purple_200">0xFFCE93D8</item>
+        <item name="purple_300">0xFFBA68C8</item>
+        <item name="purple_400">0xFFAB47BC</item>
+        <item name="purple_500">0xFF9C27B0</item>
+        <item name="purple_600">0xFF8E24AA</item>
+        <item name="purple_700">0xFF7B1FA2</item>
+        <item name="purple_800">0xFF6A1B9A</item>
+        <item name="purple_900">0xFF4A148C</item>
+        <item name="purple_A100">0xFFEA80FC</item>
+        <item name="purple_A200">0xFFE040FB</item>
+        <item name="purple_A400">0xFFD500F9</item>
+        <item name="purple_A700">0xFFAA00FF</item>
+        <!-- Purple -->
+
+        <!-- Deep Purple -->
+        <item name="dark_purple_50">0xFFEDE7F6</item>
+        <item name="dark_purple_100">0xFFD1C4E9</item>
+        <item name="dark_purple_200">0xFFB39DDB</item>
+        <item name="dark_purple_300">0xFF9575CD</item>
+        <item name="dark_purple_400">0xFF7E57C2</item>
+        <item name="dark_purple_500">0xFF673AB7</item>
+        <item name="dark_purple_600">0xFF5E35B1</item>
+        <item name="dark_purple_700">0xFF512DA8</item>
+        <item name="dark_purple_800">0xFF4527A0</item>
+        <item name="dark_purple_900">0xFF311B92</item>
+        <item name="dark_purple_A100">0xFFB388FF</item>
+        <item name="dark_purple_A200">0xFF7C4DFF</item>
+        <item name="dark_purple_A400">0xFF651FFF</item>
+        <item name="dark_purple_A700">0xFF6200EA</item>
+        <!-- Deep Purple -->
+
+        <!-- Indigo -->
+        <item name="indigo_50">0xFFE8EAF6</item>
+        <item name="indigo_100">0xFFC5CAE9</item>
+        <item name="indigo_200">0xFF9FA8DA</item>
+        <item name="indigo_300">0xFF7986CB</item>
+        <item name="indigo_400">0xFF5C6BC0</item>
+        <item name="indigo_500">0xFF3F51B5</item>
+        <item name="indigo_600">0xFF3949AB</item>
+        <item name="indigo_700">0xFF303F9F</item>
+        <item name="indigo_800">0xFF283593</item>
+        <item name="indigo_900">0xFF1A237E</item>
+        <item name="indigo_A100">0xFF8C9EFF</item>
+        <item name="indigo_A200">0xFF536DFE</item>
+        <item name="indigo_A400">0xFF3D5AFE</item>
+        <item name="indigo_A700">0xFF304FFE</item>
+        <!-- Indigo -->
+
+        <!-- Blue -->
+        <item name="blue_50">0xFFE3F2FD</item>
+        <item name="blue_100">0xFFBBDEFB</item>
+        <item name="blue_200">0xFF90CAF9</item>
+        <item name="blue_300">0xFF64B5F6</item>
+        <item name="blue_400">0xFF42A5F5</item>
+        <item name="blue_500">0xFF2196F3</item>
+        <item name="blue_600">0xFF1E88E5</item>
+        <item name="blue_700">0xFF1976D2</item>
+        <item name="blue_800">0xFF1565C0</item>
+        <item name="blue_900">0xFF0D47A1</item>
+        <item name="blue_A100">0xFF82B1FF</item>
+        <item name="blue_A200">0xFF448AFF</item>
+        <item name="blue_A400">0xFF2979FF</item>
+        <item name="blue_A700">0xFF2962FF</item>
+        <!-- Blue -->
+
+        <!-- Light Blue -->
+        <item name="light_blue_50">0xFFE1F5FE</item>
+        <item name="light_blue_100">0xFFB3E5FC</item>
+        <item name="light_blue_200">0xFF81D4FA</item>
+        <item name="light_blue_300">0xFF4FC3F7</item>
+        <item name="light_blue_400">0xFF29B6F6</item>
+        <item name="light_blue_500">0xFF03A9F4</item>
+        <item name="light_blue_600">0xFF039BE5</item>
+        <item name="light_blue_700">0xFF0288D1</item>
+        <item name="light_blue_800">0xFF0277BD</item>
+        <item name="light_blue_900">0xFF01579B</item>
+        <item name="light_blue_A100">0xFF80D8FF</item>
+        <item name="light_blue_A200">0xFF40C4FF</item>
+        <item name="light_blue_A400">0xFF00B0FF</item>
+        <item name="light_blue_A700">0xFF0091EA</item>
+        <!-- Light Blue -->
+
+        <!-- Cyan -->
+        <item name="cyan_50">0xFFE0F7FA</item>
+        <item name="cyan_100">0xFFB2EBF2</item>
+        <item name="cyan_200">0xFF80DEEA</item>
+        <item name="cyan_300">0xFF4DD0E1</item>
+        <item name="cyan_400">0xFF26C6DA</item>
+        <item name="cyan_500">0xFF00BCD4</item>
+        <item name="cyan_600">0xFF00ACC1</item>
+        <item name="cyan_700">0xFF0097A7</item>
+        <item name="cyan_800">0xFF00838F</item>
+        <item name="cyan_900">0xFF006064</item>
+        <item name="cyan_A100">0xFF84FFFF</item>
+        <item name="cyan_A200">0xFF18FFFF</item>
+        <item name="cyan_A400">0xFF00E5FF</item>
+        <item name="cyan_A700">0xFF00B8D4</item>
+        <!-- Cyan -->
+
+        <!-- Teal -->
+        <item name="teal_50">0xFFE0F2F1</item>
+        <item name="teal_100">0xFFB2DFDB</item>
+        <item name="teal_200">0xFF80CBC4</item>
+        <item name="teal_300">0xFF4DB6AC</item>
+        <item name="teal_400">0xFF26A69A</item>
+        <item name="teal_500">0xFF009688</item>
+        <item name="teal_600">0xFF00897B</item>
+        <item name="teal_700">0xFF00796B</item>
+        <item name="teal_800">0xFF00695C</item>
+        <item name="teal_900">0xFF004D40</item>
+        <item name="teal_A100">0xFFA7FFEB</item>
+        <item name="teal_A200">0xFF64FFDA</item>
+        <item name="teal_A400">0xFF1DE9B6</item>
+        <item name="teal_A700">0xFF00BFA5</item>
+        <!-- Teal -->
+
+        <!-- Green -->
+        <item name="green_50">0xFFE8F5E9</item>
+        <item name="green_100">0xFFC8E6C9</item>
+        <item name="green_200">0xFFA5D6A7</item>
+        <item name="green_300">0xFF81C784</item>
+        <item name="green_400">0xFF66BB6A</item>
+        <item name="green_500">0xFF4CAF50</item>
+        <item name="green_600">0xFF43A047</item>
+        <item name="green_700">0xFF388E3C</item>
+        <item name="green_800">0xFF2E7D32</item>
+        <item name="green_900">0xFF1B5E20</item>
+        <item name="green_A100">0xFFB9F6CA</item>
+        <item name="green_A200">0xFF69F0AE</item>
+        <item name="green_A400">0xFF00E676</item>
+        <item name="green_A700">0xFF00C853</item>
+        <!-- Green -->
+
+        <!-- Light Green -->
+        <item name="light_green_50">0xFFF1F8E9</item>
+        <item name="light_green_100">0xFFDCEDC8</item>
+        <item name="light_green_200">0xFFC5E1A5</item>
+        <item name="light_green_300">0xFFAED581</item>
+        <item name="light_green_400">0xFF9CCC65</item>
+        <item name="light_green_500">0xFF8BC34A</item>
+        <item name="light_green_600">0xFF7CB342</item>
+        <item name="light_green_700">0xFF689F38</item>
+        <item name="light_green_800">0xFF558B2F</item>
+        <item name="light_green_900">0xFF33691E</item>
+        <item name="light_green_A100">0xFFCCFF90</item>
+        <item name="light_green_A200">0xFFB2FF59</item>
+        <item name="light_green_A400">0xFF76FF03</item>
+        <item name="light_green_A700">0xFF64DD17</item>
+        <!-- Light Green -->
+
+        <!-- Lime -->
+        <item name="lime_50">0xFFF9FBE7</item>
+        <item name="lime_100">0xFFF0F4C3</item>
+        <item name="lime_200">0xFFE6EE9C</item>
+        <item name="lime_300">0xFFDCE775</item>
+        <item name="lime_400">0xFFD4E157</item>
+        <item name="lime_500">0xFFCDDC39</item>
+        <item name="lime_600">0xFFC0CA33</item>
+        <item name="lime_700">0xFFAFB42B</item>
+        <item name="lime_800">0xFF9E9D24</item>
+        <item name="lime_900">0xFF827717</item>
+        <item name="lime_A100">0xFFF4FF81</item>
+        <item name="lime_A200">0xFFEEFF41</item>
+        <item name="lime_A400">0xFFC6FF00</item>
+        <item name="lime_A700">0xFFAEEA00</item>
+        <!-- Lime -->
+
+        <!-- Yellow -->
+        <item name="yellow_50">0xFFFFFDE7</item>
+        <item name="yellow_100">0xFFFFF9C4</item>
+        <item name="yellow_200">0xFFFFF59D</item>
+        <item name="yellow_300">0xFFFFF176</item>
+        <item name="yellow_400">0xFFFFEE58</item>
+        <item name="yellow_500">0xFFFFEB3B</item>
+        <item name="yellow_600">0xFFFDD835</item>
+        <item name="yellow_700">0xFFFBC02D</item>
+        <item name="yellow_800">0xFFF9A825</item>
+        <item name="yellow_900">0xFFF57F17</item>
+        <item name="yellow_A100">0xFFFFFF8D</item>
+        <item name="yellow_A200">0xFFFFFF00</item>
+        <item name="yellow_A400">0xFFFFEA00</item>
+        <item name="yellow_A700">0xFFFFD600</item>
+        <!-- Yellow -->
+
+        <!-- Amber -->
+        <item name="amber_50">0xFFFFF8E1</item>
+        <item name="amber_100">0xFFFFECB3</item>
+        <item name="amber_200">0xFFFFE082</item>
+        <item name="amber_300">0xFFFFD54F</item>
+        <item name="amber_400">0xFFFFCA28</item>
+        <item name="amber_500">0xFFFFC107</item>
+        <item name="amber_600">0xFFFFB300</item>
+        <item name="amber_700">0xFFFFA000</item>
+        <item name="amber_800">0xFFFF8F00</item>
+        <item name="amber_900">0xFFFF6F00</item>
+        <item name="amber_A100">0xFFFFE57F</item>
+        <item name="amber_A200">0xFFFFD740</item>
+        <item name="amber_A400">0xFFFFC400</item>
+        <item name="amber_A700">0xFFFFAB00</item>
+        <!-- Amber -->
+
+        <!-- Orange -->
+        <item name="orange_50">0xFFFFF3E0</item>
+        <item name="orange_100">0xFFFFE0B2</item>
+        <item name="orange_200">0xFFFFCC80</item>
+        <item name="orange_300">0xFFFFB74D</item>
+        <item name="orange_400">0xFFFFA726</item>
+        <item name="orange_500">0xFFFF9800</item>
+        <item name="orange_600">0xFFFB8C00</item>
+        <item name="orange_700">0xFFF57C00</item>
+        <item name="orange_800">0xFFEF6C00</item>
+        <item name="orange_900">0xFFE65100</item>
+        <item name="orange_A100">0xFFFFD180</item>
+        <item name="orange_A200">0xFFFFAB40</item>
+        <item name="orange_A400">0xFFFF9100</item>
+        <item name="orange_A700">0xFFFF6D00</item>
+        <!-- Orange -->
+
+        <!-- Deep Orange -->
+        <item name="deep_orange_50">0xFFFBE9E7</item>
+        <item name="deep_orange_100">0xFFFFCCBC</item>
+        <item name="deep_orange_200">0xFFFFAB91</item>
+        <item name="deep_orange_300">0xFFFF8A65</item>
+        <item name="deep_orange_400">0xFFFF7043</item>
+        <item name="deep_orange_500">0xFFFF5722</item>
+        <item name="deep_orange_600">0xFFF4511E</item>
+        <item name="deep_orange_700">0xFFE64A19</item>
+        <item name="deep_orange_800">0xFFD84315</item>
+        <item name="deep_orange_900">0xFFBF360C</item>
+        <item name="deep_orange_A100">0xFFFF9E80</item>
+        <item name="deep_orange_A200">0xFFFF6E40</item>
+        <item name="deep_orange_A400">0xFFFF3D00</item>
+        <item name="deep_orange_A700">0xFFDD2C00</item>
+        <!-- Deep Orange -->
+
+        <!-- Brown -->
+        <item name="brown_50">0xFFEFEBE9</item>
+        <item name="brown_100">0xFFD7CCC8</item>
+        <item name="brown_200">0xFFBCAAA4</item>
+        <item name="brown_300">0xFFA1887F</item>
+        <item name="brown_400">0xFF8D6E63</item>
+        <item name="brown_500">0xFF795548</item>
+        <item name="brown_600">0xFF6D4C41</item>
+        <item name="brown_700">0xFF5D4037</item>
+        <item name="brown_800">0xFF4E342E</item>
+        <item name="brown_900">0xFF3E2723</item>
+        <!-- Brown -->
+
+        <!-- Grey -->
+        <item name="grey_50">0xFFFAFAFA</item>
+        <item name="grey_100">0xFFF5F5F5</item>
+        <item name="grey_200">0xFFEEEEEE</item>
+        <item name="grey_300">0xFFE0E0E0</item>
+        <item name="grey_400">0xFFBDBDBD</item>
+        <item name="grey_500">0xFF9E9E9E</item>
+        <item name="grey_600">0xFF757575</item>
+        <item name="grey_700">0xFF616161</item>
+        <item name="grey_800">0xFF424242</item>
+        <item name="grey_900">0xFF212121</item>
+        <!-- Grey -->
+
+        <!-- Blue Grey -->
+        <item name="blue_grey_50">0xFFECEFF1</item>
+        <item name="blue_grey_100">0xFFCFD8DC</item>
+        <item name="blue_grey_200">0xFFB0BEC5</item>
+        <item name="blue_grey_300">0xFF90A4AE</item>
+        <item name="blue_grey_400">0xFF78909C</item>
+        <item name="blue_grey_500">0xFF607D8B</item>
+        <item name="blue_grey_600">0xFF546E7A</item>
+        <item name="blue_grey_700">0xFF455A64</item>
+        <item name="blue_grey_800">0xFF37474F</item>
+        <item name="blue_grey_900">0xFF263238</item>
+    </integer-array>
+
     <string-array name="sortMode" translatable="false">
         <item>@string/title__sort_alphabetical_az</item>
         <item>@string/title__sort_alphabetical_za</item>
