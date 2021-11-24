@@ -103,6 +103,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
         override fun onResume() {
             super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.settings_button_text)
             val dev = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
             if (dev != mShowDevOptions) {
                 activity?.recreate()
@@ -137,6 +138,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_dock, rootKey)
         }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.title__general_dock)
+        }
     }
 
     class PrefsDrawerFragment : PreferenceFragmentCompat() {
@@ -162,6 +168,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_search, rootKey)
         }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.title__general_search)
+        }
     }
 
     class PrefsGesturesFragment : PreferenceFragmentCompat() {
@@ -186,11 +197,22 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 NOTIFICATION_ENABLED_LISTENERS
             )
         }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title =
+                requireActivity().getString(R.string.title__general_notifications)
+        }
     }
 
     class PrefsAdvancedFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_advanced, rootKey)
+        }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.title__general_advanced)
         }
     }
 
@@ -205,6 +227,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 Utilities.killLauncher()
                 false
             }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.developer_options_title)
         }
     }
 
