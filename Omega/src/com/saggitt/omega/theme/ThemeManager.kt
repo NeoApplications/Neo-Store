@@ -32,6 +32,7 @@ import com.saggitt.omega.twilight.TwilightState
 import com.saggitt.omega.util.*
 import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
 
+// TODO refactor the whole class to simplify its function and remove useless themes
 class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
 
     private val app = context.omegaApp
@@ -188,6 +189,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         usingNightMode = newConfig.usingNightMode
     }
 
+    // TODO make all activities (including the desktop one) apply the chosen theme
     interface ThemeableActivity {
         fun onThemeChanged()
     }

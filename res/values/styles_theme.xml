@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- TODO add more attributes to each style -->
     <!-- Red -->
     <style name="ffffebee">
         <item name="colorAccent">@color/red_50</item>
