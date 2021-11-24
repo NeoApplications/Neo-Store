@@ -64,4 +64,9 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                 }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = requireActivity().getString(R.string.title__general_theme)
+    }
 }

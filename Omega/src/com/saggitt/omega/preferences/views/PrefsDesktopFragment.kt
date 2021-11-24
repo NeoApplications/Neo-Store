@@ -26,4 +26,9 @@ class PrefsDesktopFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_desktop, rootKey)
     }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = requireActivity().getString(R.string.title__general_desktop)
+    }
 }

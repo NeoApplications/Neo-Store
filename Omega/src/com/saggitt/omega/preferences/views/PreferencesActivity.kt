@@ -154,6 +154,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 isVisible = Utilities.ATLEAST_R
             }
         }
+
+        override fun onResume() {
+            super.onResume()
+            requireActivity().title = requireActivity().getString(R.string.title__general_drawer)
+        }
     }
 
     class PrefsSearchFragment : PreferenceFragmentCompat() {
