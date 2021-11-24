@@ -44,7 +44,13 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         currentTheme = themeOverride.getTheme(this)
-
+        theme.applyStyle(
+            resources.getIdentifier(
+                Integer.toHexString(omegaPrefs.accentColor),
+                "style",
+                packageName
+            ), true
+        )
         super.onCreate(savedInstanceState)
         binding = PreferencesActivityBinding.inflate(layoutInflater)
         supportFragmentManager.beginTransaction()
