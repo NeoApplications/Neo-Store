@@ -22,7 +22,7 @@
     <string name="pref_category__others">Annet</string>
     <string name="pref_category__inputs">Grensesnitt og søk</string>
     <string name="pref_category__interfaces">Brukergrensesnitt</string>
-    <string name="summary__general_about">Mer info om Omega-oppstarteren</string>
+    <string name="summary__general_about">Mer om Omega-oppstarteren</string>
     <string name="summary__general_advanced">Språk, sikkerhetskopi, innstillingssøk</string>
     <string name="title__dock_colored_icons">Fargede ikoner</string>
     <string name="title__dock_search_bar">Vis søkefelt</string>
@@ -93,7 +93,7 @@
     <string name="category__about_licenses">Lisens</string>
     <string name="title__about_changelog">Endringslogg</string>
     <string name="title__about_donate">Doner</string>
-    <string name="about_build_information">Kopier bygginfo</string>
+    <string name="about_build_information">Bygginfo</string>
     <string name="change_default_home">Bruk som hjemmeprogram</string>
     <string name="summary__dev_restart">Kan være nyttig når noen innstillinger ikke har trådt i kraft</string>
     <string name="title__restart_launcher">Omstart</string>
@@ -391,7 +391,7 @@
     <string name="disable_protected_apps_message">Skru av krav om identitetsbekreftelse for beskyttede programmer</string>
     <string name="fonts_change_global_font">Endre</string>
     <string name="about_channel">Kanal</string>
-    <string name="about_open_source">Biblioteker i bruk</string>
+    <string name="about_open_source">Frie biblioteker</string>
     <string name="dash_auto_rotation_summary">Skru på/av automatisk sideretning.</string>
     <string name="about_translators_group">Bidragsytere og oversettere</string>
     <string name="dash_auto_rotation">Automatisk sideretning</string>
@@ -409,4 +409,7 @@
     <string name="modify_system_settings">Endre systeminnstilinger</string>
     <string name="modify_system_settings_message">Innvilg tilgang til å endre systeminnstillinger for at dette skal virke</string>
     <string name="about_copyright">Opphavsrett © 2020–2021</string>
+    <string name="pref_desktop_mode">Skrivebordsmodus</string>
+    <string name="pref_desktop_mode_summary">Aktiver Android sitt skrivebordsmodus</string>
+    <string name="pref_desktop_mode_settings">Innstillinger for skrivebordsmodus</string>
 </resources>
