@@ -2910,6 +2910,10 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         return new float[]{NO_SCALE, NO_OFFSET};
     }
 
+    public boolean useVerticalBarLayout() {
+        return mDeviceProfile.isVerticalBarLayout();
+    }
+
     /**
      * @see LauncherState#getTaskbarScale(Launcher)
      */

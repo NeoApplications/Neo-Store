@@ -57,4 +57,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="qsb_radius_square">8dp</dimen>
     <dimen name="qsb_radius_squircle">16dp</dimen>
+
+    <dimen name="all_apps_scrim_blur">4dp</dimen>
 </resources>

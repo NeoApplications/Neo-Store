@@ -15,9 +15,47 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.Preference
-        android:summary="Dock Preferences"
-        android:title="You're now here:" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:disableDependentsState="true"
+        android:key="pref_hideHotseat"
+        android:title="@string/title__dock_hide"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreferenceCompat
+        android:dependency="pref_hideHotseat"
+        android:key="pref_dockBackground"
+        android:title="@string/title_dock_fill"
+        app:iconSpaceReserved="false" />
+
+    <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+        android:defaultValue="@android:color/white"
+        android:dependency="pref_dockBackground"
+        android:key="pref_dock_background_color"
+        android:title="@string/title_dock_background_color"
+        app:cpv_dialogTitle="@string/title_dock_background_color"
+        app:cpv_previewSize="large"
+        app:cpv_showAlphaSlider="false"
+        app:iconSpaceReserved="false" />
+
+    <com.saggitt.omega.preferences.custom.SeekbarPreference
+        android:dependency="pref_dockBackground"
+        android:key="pref_dockOpacity"
+        android:title="@string/title_opacity"
+        app:maxValue="1"
+        app:minValue="0"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
+
+    <com.saggitt.omega.preferences.custom.SeekbarPreference
+        android:key="pref_dockScale"
+        android:title="@string/title__dock_scale"
+        app:defaultSeekbarValue="1.0"
+        app:maxValue="1.75"
+        app:minValue="0.70"
+        app:summaryFormat="%.0f%%"
+        app:summaryMultiplier="100" />
 </PreferenceScreen>

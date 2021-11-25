@@ -159,7 +159,7 @@ public class DeviceProfile {
     // In portrait: size = height, in landscape: size = width
     public int hotseatBarSizePx;
     public int hotseatBarTopPaddingPx;
-    public final int hotseatBarBottomPaddingPx;
+    public int hotseatBarBottomPaddingPx;
     // Start is the side next to the nav bar, end is the side next to the workspace
     public final int hotseatBarSidePaddingStartPx;
     public final int hotseatBarSidePaddingEndPx;
@@ -379,10 +379,9 @@ public class DeviceProfile {
             hotseatBarSizePx += extraHotseatBottomPadding;
 
             qsbBottomMarginPx = Math.round(qsbBottomMarginOriginalPx * cellScaleToFit);
-        } else if (!isVerticalBarLayout() && isPhone && isTallDevice) {
+        } /*else if (!isVerticalBarLayout() && isPhone && isTallDevice) {
             // We increase the hotseat size when there is extra space.
 
-            /*
             if (Float.compare(aspectRatio, TALLER_DEVICE_ASPECT_RATIO_THRESHOLD) >= 0
                     && extraSpace >= Utilities.dpToPx(TALL_DEVICE_EXTRA_SPACE_THRESHOLD_DP)) {
                 // For taller devices, we will take a piece of the extra space from each row,
@@ -406,13 +405,36 @@ public class DeviceProfile {
                 hotseatBarSizeExtraSpacePx = getCellSize().y - iconSizePx
                         - iconDrawablePaddingPx * 2 - workspacePageIndicatorHeight;
             }
-            */
 
             updateHotseatIconSize(iconSizePx);
 
             // Recalculate the available dimensions using the new hotseat size.
             updateAvailableDimensions(res);
+        }*/
+
+        float targetDockScale = prefs.getDockScale();
+
+        int previousDockSize = hotseatBarSizePx;
+        int previousDockBottomPadding = hotseatBarBottomPaddingPx;
+        if (prefs.getDockHide()) {
+            hotseatBarSizePx = 0;
+            updateAvailableDimensions(res);
+        } else if (targetDockScale > 0f && !isVerticalBarLayout()) {
+            int extraSpace = (int) (targetDockScale * previousDockSize - hotseatBarSizePx);
+            if (extraSpace != 0) {
+                hotseatBarSizePx += extraSpace;
+
+                int dockTopSpace = workspacePageIndicatorHeight - mWorkspacePageIndicatorOverlapWorkspace;
+                int dockBottomSpace =
+                        Math.max(hotseatBarBottomPaddingPx - previousDockBottomPadding, dockTopSpace);
+                int dockVerticalSpace = dockTopSpace + dockBottomSpace;
+
+                hotseatBarBottomPaddingPx += extraSpace * ((float) dockBottomSpace / dockVerticalSpace);
+
+                updateAvailableDimensions(res);
+            }
         }
+
         updateWorkspacePadding();
 
         flingToDeleteThresholdVelocity = res.getDimensionPixelSize(

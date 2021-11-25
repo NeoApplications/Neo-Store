@@ -8,6 +8,7 @@ import androidx.preference.*
 import com.android.launcher3.R
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.*
+import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.util.omegaPrefs
 
 class PrefsThemeFragment : PreferenceFragmentCompat() {
@@ -56,10 +57,10 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                     true
                 }
         }
-        findPreference<SeekBarPreference>(PREFS_WINDOWCORNER_RADIUS)?.apply {
+        findPreference<SeekbarPreference>(PREFS_WINDOWCORNER_RADIUS)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.windowCornerRadius = newValue as Int
+                    requireActivity().omegaPrefs.windowCornerRadius = newValue as Float
                     true
                 }
         }

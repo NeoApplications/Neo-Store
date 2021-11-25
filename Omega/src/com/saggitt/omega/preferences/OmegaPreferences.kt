@@ -41,6 +41,7 @@ import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.math.roundToInt
 import kotlin.reflect.KProperty
 import com.android.launcher3.graphics.IconShape as L3IconShape
 
@@ -110,7 +111,12 @@ class OmegaPreferences(val context: Context) :
     var torchState = false
 
     // DOCK
+    var dockHide by BooleanPref("pref_hideHotseat", false, restart)
     val dockIconScale by FloatPref("pref_hotseat_icon_scale", 1f, recreate)
+    var dockScale by FloatPref("pref_dockScale", 1f, recreate)
+    val dockBackground by BooleanPref("pref_dockBackground", false, recreate)
+    val dockBackgroundColor by IntPref("pref_dock_background_color", 0x101010, recreate)
+    var dockOpacity by AlphaPref("pref_dockOpacity", -1, recreate)
 
     // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, reloadApps)
@@ -139,7 +145,7 @@ class OmegaPreferences(val context: Context) :
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
-    var windowCornerRadius by IntPref("pref_customWindowCornerRadius", 8, updateBlur)
+    var windowCornerRadius by FloatPref("pref_customWindowCornerRadius", 8f, updateBlur)
     val iconPackPackage = StringPref("pref_iconPackPackage", "", reloadIcons)
 
     var iconShape by StringBasedPref(
@@ -218,6 +224,13 @@ class OmegaPreferences(val context: Context) :
         }
         onChangeListeners[key]?.add(listener)
         listener.onValueChanged(key, this, true)
+    }
+
+    fun removeOnPreferenceChangeListener(
+        listener: OnPreferenceChangeListener,
+        vararg keys: String
+    ) {
+        keys.forEach { removeOnPreferenceChangeListener(it, listener) }
     }
 
     fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
@@ -365,6 +378,20 @@ class OmegaPreferences(val context: Context) :
 
         override fun onSetValue(value: Int) {
             edit { putInt(getKey(), value) }
+        }
+    }
+
+    open inner class AlphaPref(
+        key: String,
+        defaultValue: Int = 0,
+        onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Int>(key, defaultValue, onChange) {
+        override fun onGetValue(): Int =
+            (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
+
+        override fun onSetValue(value: Int) {
+            edit { putFloat(getKey(), value.toFloat() / 255) }
         }
     }
 

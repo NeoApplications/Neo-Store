@@ -296,7 +296,7 @@ fun pxToDp(size: Float): Float {
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)
     if (prefs.customWindowCorner) {
-        return prefs.windowCornerRadius.toFloat()
+        return prefs.windowCornerRadius
     }
     return QuickStepContract.getWindowCornerRadius(context.resources)
 }

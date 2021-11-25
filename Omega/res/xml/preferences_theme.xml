@@ -66,13 +66,14 @@
         app:iconSpaceReserved="false"
         app:title="@string/title_override_corner_radius" />
 
-    <SeekBarPreference
+    <com.saggitt.omega.preferences.custom.SeekbarPreference
         android:dependency="pref_customWindowCorner"
         android:key="pref_customWindowCornerRadius"
-        android:max="50"
-        app:defaultValue="8"
-        app:min="0"
-        app:showSeekBarValue="true"
+        android:title="@string/title_override_corner_radius_value"
+        app:defaultSeekbarValue="-1.0"
         app:iconSpaceReserved="false"
-        app:title="@string/title_override_corner_radius_value" />
+        app:maxValue="24"
+        app:minValue="0.0"
+        app:steps="24"
+        app:summaryFormat="%.0fdp" />
 </PreferenceScreen>

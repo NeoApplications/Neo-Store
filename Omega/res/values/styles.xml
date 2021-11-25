@@ -24,30 +24,36 @@
         <item name="dashIconBackground">#B0DFDFDF</item>
         <item name="allAppsScrimColor">#FFFFFF</item>
         <item name="allappsHeaderProtectionColor">@color/system_neutral1_100</item>
+        <item name="allAppsInterimScrimAlpha">46</item>
     </style>
 
     <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText">
         <item name="allAppsScrimColor">#FFFFFF</item>
+        <item name="allAppsInterimScrimAlpha">128</item>
     </style>
 
     <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
         <item name="allAppsScrimColor">#FFFFFF</item>
+        <item name="allAppsInterimScrimAlpha">128</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
         <item name="allAppsScrimColor">@color/material_gray_900</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
         <item name="dashIconBackground">#A05C5C5C</item>
+        <item name="allAppsInterimScrimAlpha">102</item>
     </style>
 
     <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText">
         <item name="allAppsScrimColor">@color/material_gray_900</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
+        <item name="allAppsInterimScrimAlpha">25</item>
     </style>
 
     <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor">
         <item name="allAppsScrimColor">@color/material_gray_900</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
+        <item name="allAppsInterimScrimAlpha">25</item>
     </style>
 
     <style name="AppTheme.Black" parent="AppTheme.Dark">
