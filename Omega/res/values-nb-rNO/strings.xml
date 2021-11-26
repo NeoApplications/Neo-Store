@@ -56,7 +56,7 @@
     <string name="pref_app_groups_edit_tip">Trykk for å redigere, dra for å omorganisere.</string>
     <string name="pref_appcategorization_tabs_summary">Dra mellom grupper.</string>
     <string name="app_categorization_tabs">Faner</string>
-    <string name="pref_appcategorization_folders_summary">Fane for åpning av oppsprettsvindu.</string>
+    <string name="pref_appcategorization_folders_summary">Trykk for å åpne oppsprettsvindu.</string>
     <string name="pref_appcategorization_flowerpot_summary">Velg snarveier automatisk.</string>
     <string name="tab_type_smart">Automatisk</string>
     <string name="tab_type_custom_desc">Velg snarveier manuelt.</string>
@@ -145,7 +145,7 @@
     <string name="theme_with_dark_text">mørk tekst</string>
     <string name="theme_dark_text">Lys med mørk tekst</string>
     <string name="theme_light">Lys</string>
-    <string name="theme_auto_night_mode">Følg systemdrakt</string>
+    <string name="theme_auto_night_mode">System</string>
     <string name="theme_auto">Følg bakgrunnsbilde</string>
     <string name="summary__theme_blur">Tilslør sidebakgrunner</string>
     <string name="title__theme_blur_radius">Tilsløringsgrad</string>
@@ -183,7 +183,7 @@
     <string name="icon_shape_circle">Sirkel</string>
     <string name="icon_shape_squircle">Kvirkel</string>
     <string name="icon_shape_square">Firkant</string>
-    <string name="icon_shape_system_default">Systemforvalg</string>
+    <string name="icon_shape_system_default">System</string>
     <string name="icon_shape_override_label">Endre ikonstørrelse</string>
     <string name="title__theme_accent_color">Aksentfarge</string>
     <string name="hide_app_reset">Tilbakestill skjulte programmer</string>
@@ -206,7 +206,7 @@
     <string name="title_dock_fill">Vis bakgrunn</string>
     <string name="read_external_storage_required">Innvilg lagringstilgang for å opprette sikkerhetskopi.</string>
     <string name="backup_error_blank_contents">Innholdet kan ikke være tomt</string>
-    <string name="backup_error_blank_name">Navnet kan ikke stå tomt</string>
+    <string name="backup_error_blank_name">Navn må fylles inn</string>
     <string name="backup_wallpaper">Bakgrunnsbilde</string>
     <string name="backup_contents">Sikkerhetskopier innhold</string>
     <string name="backup_pref_summary">Lagre hjemmeskjerm, gjenopprett sikkerhetskopier</string>
