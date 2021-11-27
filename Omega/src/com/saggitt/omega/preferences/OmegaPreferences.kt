@@ -107,6 +107,7 @@ class OmegaPreferences(val context: Context) :
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
     val enableMinus by BooleanPref("pref_enable_minus_one", false, recreate)
+    var allowEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
 
     var torchState = false
 

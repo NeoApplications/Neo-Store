@@ -116,6 +116,7 @@ import com.android.launcher3.widget.WidgetManagerHelper;
 import com.android.launcher3.widget.dragndrop.AppWidgetHostViewDragListener;
 import com.android.launcher3.widget.util.WidgetSizes;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
+import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -271,6 +272,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     private final WorkspaceStateTransitionAnimation mStateTransitionAnimation;
 
     private final StatsLogManager mStatsLogManager;
+    private final OmegaPreferences prefs;
 
     /**
      * Used to inflate the Workspace from XML.
@@ -305,6 +307,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         setMotionEventSplittingEnabled(true);
         setOnTouchListener(new WorkspaceTouchListener(mLauncher, this));
         mStatsLogManager = StatsLogManager.newInstance(context);
+        prefs = Utilities.getOmegaPrefs(context);
     }
 
     @Override
@@ -693,6 +696,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         if (hasExtraEmptyScreen() || mScreenOrder.size() == 0) return;
+
+        if (prefs.getAllowEmptyScreens()) {
+            return;
+        }
+
         int finalScreenId = mScreenOrder.get(mScreenOrder.size() - 1);
 
         CellLayout finalScreen = mWorkspaceScreens.get(finalScreenId);
@@ -811,6 +819,10 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (mLauncher.isWorkspaceLoading()) {
             // Don't strip empty screens if the workspace is still loading.
             // This is dangerous and can result in data loss.
+            return;
+        }
+
+        if (prefs.getAllowEmptyScreens()) {
             return;
         }
 
