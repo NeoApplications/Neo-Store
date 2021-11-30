@@ -28,6 +28,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashControlProvider
 
 class AutoRotation(context: Context) : DashControlProvider(context) {
+    override val itemId = 12
     override val name = context.getString(R.string.dash_auto_rotation)
     override val description = context.getString(R.string.dash_auto_rotation_summary)
 

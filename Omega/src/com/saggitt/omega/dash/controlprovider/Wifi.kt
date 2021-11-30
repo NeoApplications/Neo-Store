@@ -28,6 +28,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashControlProvider
 
 class Wifi(context: Context) : DashControlProvider(context) {
+    override val itemId = 17
     override val name = context.getString(R.string.dash_wifi)
     override val description = context.getString(R.string.dash_wifi_summary)
     private var wifiManager: WifiManager =

@@ -26,6 +26,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
 class DeviceSettings(context: Context) : DashActionProvider(context) {
+    override val itemId = 4
     override val name = context.getString(R.string.dash_device_settings_title)
     override val description = context.getString(R.string.dash_device_settings_summary)
 

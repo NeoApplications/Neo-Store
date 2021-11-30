@@ -29,6 +29,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashControlProvider
 
 class Location(context: Context) : DashControlProvider(context) {
+    override val itemId = 14
     override val name = context.getString(R.string.dash_location)
     override val description = context.getString(R.string.dash_location_summary)
     var locationManager =

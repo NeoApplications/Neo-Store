@@ -26,6 +26,7 @@ import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.util.omegaPrefs
 
 class Torch(context: Context) : DashActionProvider(context) {
+    override val itemId = 11
     override val name = context.getString(R.string.dash_torch)
     override val description = context.getString(R.string.dash_torch_summary)
 

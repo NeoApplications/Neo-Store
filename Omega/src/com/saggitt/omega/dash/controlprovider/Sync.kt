@@ -25,6 +25,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashControlProvider
 
 class Sync(context: Context) : DashControlProvider(context) {
+    override val itemId = 16
     override val name = context.getString(R.string.dash_sync)
     override val description = context.getString(R.string.dash_sync_summary)
 

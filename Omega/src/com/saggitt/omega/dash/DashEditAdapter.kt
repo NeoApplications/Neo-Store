@@ -20,7 +20,6 @@ package com.saggitt.omega.dash
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -88,8 +87,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         while (iterator.hasNext()) {
             val item = iterator.next()
             if (item is ProviderItem) {
-                newSpecs.add(item.info.name)
-                Log.d("SmartspaceEventProvider", "adding item ${item.info.name}")
+                newSpecs.add(item.info.itemId.toString())
             }
             if (item is DividerItem) break
         }
@@ -113,11 +111,11 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         adapterItems.addAll(otherItems)
     }
 
-    private fun getAndRemoveOther(s: String): ProviderItem? {
+    private fun getAndRemoveOther(itemId: String): ProviderItem? {
         val iterator = otherItems.iterator()
         while (iterator.hasNext()) {
             val item = iterator.next()
-            if (item.info.name == s) {
+            if (item.info.itemId == Integer.valueOf(itemId)) {
                 iterator.remove()
                 return item
             }

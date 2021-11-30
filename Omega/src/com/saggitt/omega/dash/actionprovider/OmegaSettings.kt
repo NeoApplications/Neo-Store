@@ -25,6 +25,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
 class OmegaSettings(context: Context) : DashActionProvider(context) {
+    override val itemId = 9
     override val name = context.getString(R.string.settings_button_text)
     override val description = context.getString(R.string.dash_launcher_settings_summary)
 

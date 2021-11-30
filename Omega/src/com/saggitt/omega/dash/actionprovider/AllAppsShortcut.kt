@@ -26,6 +26,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
 class AllAppsShortcut(context: Context) : DashActionProvider(context) {
+    override val itemId = 1
     override val name = context.getString(R.string.dash_all_apps_title)
     override val description = context.getString(R.string.dash_all_apps_summary)
 

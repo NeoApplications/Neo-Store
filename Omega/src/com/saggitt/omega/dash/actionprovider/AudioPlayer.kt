@@ -24,6 +24,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
 class AudioPlayer(context: Context) : DashActionProvider(context) {
+    override val itemId = 2
     override val name = context.getString(R.string.dash_media_player)
     override val description = context.getString(R.string.dash_media_player_description)
     override val icon: Drawable?

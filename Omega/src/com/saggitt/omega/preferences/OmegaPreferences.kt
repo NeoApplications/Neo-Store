@@ -94,14 +94,7 @@ class OmegaPreferences(val context: Context) :
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     var dashProviders = StringListPref(
         "pref_dash_providers",
-        listOf(
-            context.getString(R.string.dash_wifi),
-            context.getString(R.string.dash_mobile_network_title),
-            context.getString(R.string.dash_device_settings_title),
-            context.getString(R.string.launch_assistant),
-            context.getString(R.string.dash_volume_title),
-            context.getString(R.string.edit_dash)
-        ), doNothing
+        listOf("17", "15", "4", "6", "8", "5"), doNothing
     )
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
@@ -156,7 +149,6 @@ class OmegaPreferences(val context: Context) :
         }, IconShape::toString
     ) { /* no dispose */ }
 
-
     //FOLDER
     var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
     val customFolderBackground by BooleanPref("pref_custom_folder_background", false, recreate)
@@ -177,6 +169,7 @@ class OmegaPreferences(val context: Context) :
     )
 
     //ADVANCED
+    var language by StringPref("pref_language", "", recreate)
     var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
     var firstRun by BooleanPref("pref_first_run", true)
 

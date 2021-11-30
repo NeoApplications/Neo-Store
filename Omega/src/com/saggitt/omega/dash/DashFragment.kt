@@ -31,7 +31,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.util.omegaPrefs
 
 class DashFragment : Fragment() {
-    private val adapter by lazy { DashEditAdapter(requireContext()) }
+    private val adapter by lazy { DashEditAdapter(requireActivity()) }
     val layoutId = R.layout.preference_insettable_recyclerview
 
     override fun onCreateView(
@@ -59,5 +59,10 @@ class DashFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         requireContext().omegaPrefs.dashProviders.setAll(adapter.saveSpecs())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = requireActivity().getString(R.string.edit_dash)
     }
 }

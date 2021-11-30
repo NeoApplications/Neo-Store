@@ -26,6 +26,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
 class ManageApps(context: Context) : DashActionProvider(context) {
+    override val itemId = 7
     override val name = context.getString(R.string.tab_manage_apps)
     override val description = context.getString(R.string.dash_manage_apps_summary)
 

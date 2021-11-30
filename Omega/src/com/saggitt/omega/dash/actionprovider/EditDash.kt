@@ -25,6 +25,7 @@ import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.settings.SettingsActivity
 
 class EditDash(context: Context) : DashActionProvider(context) {
+    override val itemId = 5
     override val name = context.getString(R.string.edit_dash)
     override val description = context.getString(R.string.edit_dash_summary)
 

@@ -63,8 +63,8 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
             adapter = dashActionFastAdapter
         }
         val controlItems = activeDashProviders
-            .mapNotNull { name ->
-                allControlItems.find { it.name == name }?.let {
+            .mapNotNull { itemId ->
+                allControlItems.find { it.itemId.toString() == itemId }?.let {
                     DashControlItem(context, it)
                 }
             }
@@ -73,10 +73,9 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
         val actionMediaPlayer = resources.getString(R.string.dash_media_player)
 
         val dashItems = activeDashProviders
-            .mapNotNull { name ->
+            .mapNotNull { itemId ->
                 allActionItems.find {
-                    it.name == name
-                            && it.name != actionMediaPlayer
+                    it.itemId.toString() == itemId && it.itemId != 2
                 }?.let {
                     DashActionItem(context, it)
                 }
@@ -161,7 +160,7 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
 
         val musicTab = findViewById<ConstraintLayout>(R.id.musicTab)
 
-        if (activeDashProviders.contains(actionMediaPlayer)) {
+        if (activeDashProviders.contains("2")) {
             musicTab.visibility = View.VISIBLE
         } else {
             musicTab.visibility = View.GONE
