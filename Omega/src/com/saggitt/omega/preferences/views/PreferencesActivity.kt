@@ -1,6 +1,7 @@
 package com.saggitt.omega.preferences.views
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -11,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -45,8 +47,9 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         )
         super.onCreate(savedInstanceState)
         binding = PreferencesActivityBinding.inflate(layoutInflater)
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, PrefsMainFragment()).commit()
+            .replace(R.id.fragment_container, getSettingFragment()).commit()
         setContentView(binding.root)
         setSupportActionBar(binding.actionBar)
         supportFragmentManager.addOnBackStackChangedListener {
@@ -61,6 +64,15 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
 
         DEFAULT_HOME = resolveDefaultHome()
+    }
+
+    private fun getSettingFragment(): Fragment {
+        val fragment: String = intent.getStringExtra(EXTRA_FRAGMENT) ?: ""
+        return if (fragment.isNotEmpty()) {
+            Fragment.instantiate(this, fragment, intent.getBundleExtra(EXTRA_FRAGMENT_ARGS))
+        } else {
+            PrefsMainFragment()
+        }
     }
 
     private fun resolveDefaultHome(): String? {
@@ -224,5 +236,31 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
     companion object {
         var DEFAULT_HOME: String? = ""
+
+        const val EXTRA_TITLE = "title"
+        const val EXTRA_FRAGMENT = "fragment"
+        const val EXTRA_FRAGMENT_ARGS = "fragmentArgs"
+
+        fun startFragment(
+            context: Context,
+            fragment: String?,
+            title: String?
+        ) {
+            context.startActivity(createFragmentIntent(context, fragment, title))
+        }
+
+        private fun createFragmentIntent(
+            context: Context,
+            fragment: String?,
+            title: CharSequence?
+        ): Intent {
+            val intent = Intent(context, PreferencesActivity::class.java)
+            intent.putExtra(EXTRA_FRAGMENT, fragment)
+            if (title != null) {
+                intent.putExtra(EXTRA_TITLE, title)
+            }
+
+            return intent
+        }
     }
 }

@@ -40,6 +40,7 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
@@ -64,6 +65,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         val prefs = Utilities.getOmegaPrefs(this)
         prefs.registerCallback(OmegaPreferencesChangeCallback(this))
         prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
+
+        val config = Config(this)
+        config.setAppLanguage(prefs.language)
+
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()

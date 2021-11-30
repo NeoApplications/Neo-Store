@@ -21,19 +21,40 @@ package com.saggitt.omega.util
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.CancellationSignal
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import java.util.*
 
-class Config(var context: Context) {
-    val mContext = context
+class Config(val context: Context) {
+
+    fun setAppLanguage(languageCode: String) {
+        val locale = getLocaleByAndroidCode(languageCode)
+        val config = context.resources.configuration
+        val mLocale =
+            if (languageCode.isNotEmpty()) locale else Resources.getSystem().configuration.locales[0]
+        config.setLocale(mLocale)
+        context.createConfigurationContext(config)
+    }
+
+    fun getLocaleByAndroidCode(languageCode: String): Locale {
+        return if (!TextUtils.isEmpty(languageCode)) {
+            if (languageCode.contains("-r")) Locale(
+                languageCode.substring(0, 2),
+                languageCode.substring(4, 6)
+            ) // de-rAt
+            else Locale(languageCode) // de
+        } else Resources.getSystem().configuration.locales[0]
+    }
 
     companion object {
         //PERMISSION FLAGS
