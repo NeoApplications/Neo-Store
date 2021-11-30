@@ -38,6 +38,7 @@ import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.getWindowCornerRadius
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.runOnMainThread
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 class CustomHotseat @JvmOverloads constructor(
@@ -131,7 +132,7 @@ class CustomHotseat @JvmOverloads constructor(
     private fun reloadPrefs() {
         bgEnabled = prefs.dockBackground
         radius = dpToPx(getWindowCornerRadius(context))
-        //shadow = prefs.dockShadow
+        shadow = true //prefs.dockShadow
         bgAlpha = (prefs.dockOpacity.takeIf { it >= 0 }
             ?: Themes.getAttrInteger(context, R.attr.allAppsInterimScrimAlpha)).toFloat() / 255f
         shadowBitmap = generateShadowBitmap()
@@ -190,6 +191,20 @@ class CustomHotseat @JvmOverloads constructor(
         invalidate()
     }
 
+    override fun setAlpha(alpha: Float) {
+        this.viewAlpha = max(0f, alpha)
+        shortcutsAndWidgets.alpha = alpha
+    }
+
+    override fun getAlpha(): Float {
+        return shortcutsAndWidgets.alpha
+    }
+
+    override fun setTranslationX(translationX: Float) {
+        super.setTranslationX(translationX)
+        invalidateBlur()
+    }
+
     private fun generateShadowBitmap(): Bitmap {
         val tmp = radius + shadowBlur
         val builder = ShadowGenerator.Builder(0)
@@ -215,5 +230,17 @@ class CustomHotseat @JvmOverloads constructor(
         } else {
             null
         }
+    }
+
+    private fun invalidateBlur() {
+        if (blurDrawable != null) {
+            invalidate()
+        }
+    }
+
+    override fun onEnabledChanged() {
+        super.onEnabledChanged()
+        createBlurDrawable()
+        invalidate()
     }
 }
