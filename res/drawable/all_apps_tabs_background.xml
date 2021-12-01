@@ -17,14 +17,14 @@
     <item android:id="@+id/unselected" android:state_selected="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/all_apps_header_pill_corner_radius" />
-            <solid android:color="@color/all_apps_tabs_background" />
+            <solid android:color="?colorControlNormal" />
         </shape>
     </item>
 
     <item android:id="@+id/selected" android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/all_apps_header_pill_corner_radius" />
-            <solid android:color="@color/all_apps_tab_background_selected" />
+            <solid android:color="?colorAccent" />
         </shape>
     </item>
 </selector>
