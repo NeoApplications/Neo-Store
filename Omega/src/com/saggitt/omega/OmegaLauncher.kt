@@ -40,20 +40,37 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.DbHelper
+import com.saggitt.omega.util.omegaPrefs
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
+    private var currentTheme = 0
+    private var currentAccent = 0
+    private lateinit var themeOverride: ThemeOverride
+    private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
 
     private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        themeOverride = ThemeOverride(themeSet, this)
+        themeOverride.applyTheme(this)
+        currentAccent = omegaPrefs.accentColor
+        currentTheme = themeOverride.getTheme(this)
+        theme.applyStyle(
+            resources.getIdentifier(
+                Integer.toHexString(currentAccent),
+                "style",
+                packageName
+            ), true
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(
                 this
             )
@@ -87,7 +104,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
 
     override fun onResume() {
         super.onResume()
-
+        if (currentAccent != omegaPrefs.accentColor) recreate()
         restartIfPending()
         paused = false
     }
