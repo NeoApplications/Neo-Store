@@ -44,4 +44,10 @@
         android:key="pref_protected_apps"
         app:iconSpaceReserved="false"
         app:title="@string/enable_protected_apps" />
+
+    <Preference
+        android:key="pref_trust_apps"
+        android:summary="@string/summary__drawer_hide_apps"
+        android:title="@string/title__drawer_hide_apps"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

@@ -22,9 +22,11 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.PREFS_TRUST_APPS
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
@@ -164,6 +166,35 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                     }
 
                 isVisible = Utilities.ATLEAST_R
+            }
+
+            findPreference<Preference>(PREFS_TRUST_APPS)?.apply {
+                onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+                    if (
+                        Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
+                        Utilities.ATLEAST_R
+                    ) {
+                        Config.showLockScreen(
+                            requireContext(),
+                            getString(R.string.trust_apps_manager_name)
+                        ) {
+                            val fragment = "com.saggitt.omega.allapps.HiddenAppsFragment"
+                            startFragment(
+                                context,
+                                fragment,
+                                context.resources.getString(R.string.title__drawer_hide_apps)
+                            )
+                        }
+                    } else {
+                        val fragment = "com.saggitt.omega.allapps.HiddenAppsFragment"
+                        startFragment(
+                            context,
+                            fragment,
+                            context.resources.getString(R.string.title__drawer_hide_apps)
+                        )
+                    }
+                    false
+                }
             }
         }
 

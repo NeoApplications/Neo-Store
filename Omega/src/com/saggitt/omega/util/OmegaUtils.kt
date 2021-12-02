@@ -334,6 +334,17 @@ class KFloatProperty(private val property: KMutableProperty0<Float>, name: Strin
     }
 }
 
+fun <T, U : Comparable<U>> comparing(extractKey: (T) -> U): Comparator<T> {
+    return Comparator { o1, o2 -> extractKey(o1).compareTo(extractKey(o2)) }
+}
+
+fun <T, U : Comparable<U>> Comparator<T>.then(extractKey: (T) -> U): Comparator<T> {
+    return kotlin.Comparator { o1, o2 ->
+        val res = compare(o1, o2)
+        if (res != 0) res else extractKey(o1).compareTo(extractKey(o2))
+    }
+}
+
 /*Compose*/
 inline fun Modifier.addIf(
     condition: Boolean,
