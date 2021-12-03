@@ -17,7 +17,7 @@
     <item android:id="@+id/unselected" android:state_selected="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/all_apps_header_pill_corner_radius" />
-            <solid android:color="?colorControlNormal" />
+            <solid android:color="?popupColorPrimary" />
         </shape>
     </item>
 
