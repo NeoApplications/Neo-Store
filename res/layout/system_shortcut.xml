@@ -33,7 +33,7 @@
         android:minLines="1"
         android:maxLines="2"
         android:ellipsize="end"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?colorControlNormal"
         launcher:iconDisplay="shortcut_popup"
         launcher:layoutHorizontal="true"
         android:focusable="false" />
@@ -44,6 +44,6 @@
         android:layout_height="@dimen/system_shortcut_icon_size"
         android:layout_marginStart="@dimen/system_shortcut_margin_start"
         android:layout_gravity="start|center_vertical"
-        android:backgroundTint="?android:attr/textColorPrimary" />
+        android:backgroundTint="?colorControlNormal" />
 
 </com.android.launcher3.shortcuts.DeepShortcutView>
