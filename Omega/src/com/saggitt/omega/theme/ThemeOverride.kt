@@ -52,58 +52,32 @@ class ThemeOverride(private val themeSet: ThemeSet, val listener: ThemeOverrideL
     }
 
     class Launcher : ThemeSet {
-
-        /*Light Theme*/
         override val lightTheme = R.style.AppTheme
-        override val lightDarkTextTheme = R.style.AppTheme_DarkText
-        override val lightDarkMainColorTheme = R.style.AppTheme_DarkMainColor
-
-        /*Dark Theme*/
         override val darkTheme = R.style.AppTheme_Dark
-        override val darkDarkTextTheme = R.style.AppTheme_Dark_DarkText
-        override val darkDarkMainColorTheme = R.style.AppTheme_Dark_DarkMainColor
-
-        /*Black Theme*/
         override val blackTheme = R.style.AppTheme_Black
-        override val blackDarkTextTheme = R.style.AppTheme_Black_DarkText
     }
 
     class Settings : ThemeSet {
         override val lightTheme = R.style.SettingsTheme_Light
-        override val lightDarkTextTheme = R.style.SettingsTheme_Light
         override val darkTheme = R.style.SettingsTheme_Dark
-        override val darkDarkTextTheme = R.style.SettingsTheme_Dark
         override val blackTheme = R.style.SettingsTheme_Black
-        override val blackDarkTextTheme = R.style.SettingsTheme_Black
     }
 
     interface ThemeSet {
         val lightTheme: Int
-        val lightDarkTextTheme: Int
-        val lightDarkMainColorTheme get() = lightTheme
         val darkTheme: Int
-        val darkDarkTextTheme: Int
-        val darkDarkMainColorTheme get() = darkTheme
         val blackTheme: Int
-        val blackDarkTextTheme: Int
 
         fun getTheme(context: Context): Int {
             return getTheme(ThemeManager.getInstance(context).getCurrentFlags())
         }
 
         fun getTheme(themeFlags: Int): Int {
-            val isDarkText = ThemeManager.isDarkText(themeFlags)
-            val isDarkMainColor = ThemeManager.isDarkMainColor(themeFlags)
             val isBlack = ThemeManager.isBlack(themeFlags)
             val isDark = ThemeManager.isDark(themeFlags)
             return when {
                 isBlack -> blackTheme
-                isBlack && isDarkText -> blackDarkTextTheme
-                isDark && isDarkMainColor -> darkDarkMainColorTheme
-                isDark && isDarkText -> darkDarkTextTheme
                 isDark -> darkTheme
-                isDarkMainColor -> lightDarkMainColorTheme
-                isDarkText -> lightDarkTextTheme
                 else -> lightTheme
             }
         }
