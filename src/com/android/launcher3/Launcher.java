@@ -1155,11 +1155,13 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         LauncherState[] stateValues = LauncherState.values();
         LauncherState state = stateValues[stateOrdinal];
 
-        NonConfigInstance lastInstance = (NonConfigInstance) getLastNonConfigurationInstance();
-        boolean forceRestore = lastInstance != null
-                && (lastInstance.config.diff(mOldConfig) & CONFIG_UI_MODE) != 0;
-        if (forceRestore || !state.shouldDisableRestore()) {
-            mStateManager.goToState(state, false /* animated */);
+        if (getLastNonConfigurationInstance() instanceof NonConfigInstance) {
+            NonConfigInstance lastInstance = (NonConfigInstance) getLastNonConfigurationInstance();
+            boolean forceRestore = lastInstance != null
+                    && (lastInstance.config.diff(mOldConfig) & CONFIG_UI_MODE) != 0;
+            if (forceRestore || !state.shouldDisableRestore()) {
+                mStateManager.goToState(state, false /* animated */);
+            }
         }
 
         PendingRequestArgs requestArgs = savedState.getParcelable(
@@ -1431,7 +1433,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     }
 
     @Override
-    public Object onRetainNonConfigurationInstance() {
+    public Object onRetainCustomNonConfigurationInstance() {
         NonConfigInstance instance = new NonConfigInstance();
         instance.config = new Configuration(mOldConfig);
 
@@ -2939,7 +2941,8 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
      * updates.
      */
     private void crossFadeWithPreviousAppearance() {
-        NonConfigInstance lastInstance = (NonConfigInstance) getLastNonConfigurationInstance();
+        NonConfigInstance lastInstance = getLastNonConfigurationInstance() instanceof NonConfigInstance ?
+                (NonConfigInstance) getLastNonConfigurationInstance() : null;
 
         if (lastInstance == null || lastInstance.snapshot == null) {
             return;
