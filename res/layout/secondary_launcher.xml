@@ -72,26 +72,28 @@
                 android:orientation="horizontal"
                 style="@style/TextHeadline">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/tab_personal"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="?android:attr/selectableItemBackground"
                     android:text="@string/all_apps_personal_tab"
                     android:textAllCaps="true"
-                    android:textColor="@color/all_apps_tab_text"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/tab_work"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="?android:attr/selectableItemBackground"
                     android:text="@string/all_apps_work_tab"
                     android:textAllCaps="true"
-                    android:textColor="@color/all_apps_tab_text"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp" />
             </com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip>
         </com.android.launcher3.allapps.FloatingHeaderView>
