@@ -56,7 +56,6 @@ class ThemePreference(context: Context, attrs: AttributeSet?) :
         val theme = prefs.launcherTheme
 
         val forceDark = theme.hasFlag(ThemeManager.THEME_DARK)
-        val forceDarkText = theme.hasFlag(ThemeManager.THEME_DARK_TEXT)
         val followWallpaper = theme.hasFlag(ThemeManager.THEME_FOLLOW_WALLPAPER)
         val followNightMode = theme.hasFlag(ThemeManager.THEME_FOLLOW_NIGHT_MODE)
         val followDaylight = theme.hasFlag(ThemeManager.THEME_FOLLOW_DAYLIGHT)
@@ -75,9 +74,6 @@ class ThemePreference(context: Context, attrs: AttributeSet?) :
         }
         if (useBlack && !forceDark) {
             themeDesc.add(R.string.theme_black)
-        }
-        if (forceDarkText) {
-            themeDesc.add(R.string.theme_with_dark_text)
         }
 
         val res = context.resources

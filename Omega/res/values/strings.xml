@@ -156,6 +156,7 @@
     <string name="summary__theme_blur">Blur page backgrounds</string>
     <string name="theme_auto">Follow wallpaper</string>
     <string name="theme_auto_night_mode">System</string>
+    <string name="theme_auto_night_mode_black">System (Black)</string>
     <string name="theme_based">Set by Theme</string>
     <string name="theme_light">Light</string>
     <string name="theme_with_dark_text">dark text</string>
@@ -168,6 +169,7 @@
     <string name="theme_dark_theme_mode_follow_wallpaper" translatable="false">@string/theme_auto</string>
     <string name="theme_dark_theme_mode_follow_system" translatable="false">@string/theme_auto_night_mode</string>
     <string name="theme_dark_theme_mode_follow_daylight">Follow daylight</string>
+    <string name="theme_dark_theme_mode_follow_daylight_black">Follow daylight (Black)</string>
     <string name="theme_use_black">Use pure black</string>
     <string name="theme_use_dark_text">Use dark text</string>
     <string name="title_default">Default</string>

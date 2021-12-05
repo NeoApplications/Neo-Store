@@ -20,23 +20,23 @@
     <string-array name="themes" translatable="false">
         <item>@string/theme_auto</item>
         <item>@string/theme_auto_night_mode</item>
+        <item>@string/theme_auto_night_mode_black</item>
+        <item>@string/theme_dark_theme_mode_follow_daylight</item>
+        <item>@string/theme_dark_theme_mode_follow_daylight_black</item>
         <item>@string/theme_light</item>
-        <item>@string/theme_dark_text</item>
         <item>@string/theme_dark</item>
-        <item>@string/theme_dark_dark_text</item>
         <item>@string/theme_black</item>
-        <item>@string/theme_black_dark_text</item>
     </string-array>
 
     <string-array name="themeValues" translatable="false">
-        <item>1</item>  <!-- 00001 -->
-        <item>17</item> <!-- 10001 -->
-        <item>0</item>  <!-- 00000 -->
-        <item>2</item>  <!-- 00010 -->
         <item>4</item>  <!-- 00100 -->
-        <item>6</item>  <!-- 00110 -->
-        <item>12</item> <!-- 01100 -->
-        <item>14</item> <!-- 01110 -->
+        <item>8</item>  <!-- 01000 -->
+        <item>10</item> <!-- 01010 -->
+        <item>16</item> <!-- 10000 -->
+        <item>18</item> <!-- 10010 -->
+        <item>0</item>  <!-- 00000 -->
+        <item>1</item>  <!-- 00001 -->
+        <item>3</item>  <!-- 00011 -->
     </string-array>
 
     <integer-array name="theme_colors">
