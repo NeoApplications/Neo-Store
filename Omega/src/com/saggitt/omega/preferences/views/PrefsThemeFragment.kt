@@ -6,12 +6,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.preference.*
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.*
 import com.saggitt.omega.preferences.custom.SeekbarPreference
+import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.util.checkLocationAccess
+import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.omegaPrefs
 
 class PrefsThemeFragment : PreferenceFragmentCompat() {
+    private var themeChanged = false
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_theme, rootKey)
     }
@@ -22,6 +28,10 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                     requireActivity().omegaPrefs.launcherTheme = newValue.toString().toInt()
+                    themeChanged = this.value != newValue
+                    if ((newValue as Int).hasFlag(ThemeManager.THEME_FOLLOW_DAYLIGHT)) {
+                        requireContext().checkLocationAccess()
+                    }
                     true
                 }
         }
@@ -69,5 +79,17 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         requireActivity().title = requireActivity().getString(R.string.title__general_theme)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (themeChanged) {
+            startActivity(
+                Intent.makeRestartActivityTask(
+                    ComponentName(requireContext(), PreferencesActivity::class.java)
+                )
+            )
+            Utilities.killLauncher()
+        }
     }
 }
