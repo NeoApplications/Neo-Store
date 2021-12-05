@@ -31,6 +31,7 @@
             android:layout_height="1dp"
             android:layout_weight="1" />
 
+        <!-- TODO Fix: causes a crash sometimes as it seems to be existing twice (two views with same id) for some unknown reason -->
         <Button
             android:id="@+id/action_screenshot"
             style="@style/OverviewActionButton"

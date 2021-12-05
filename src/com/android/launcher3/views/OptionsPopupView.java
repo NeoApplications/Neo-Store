@@ -149,7 +149,7 @@ public class OptionsPopupView extends ArrowPopup
             if (width > 0) {
                 view.getLayoutParams().width = width;
             }
-            view.getIconView().setBackgroundDrawable(item.icon);
+            view.getIconView().setBackground(item.icon);
             view.getBubbleText().setText(item.label);
             view.setOnClickListener(popup);
             view.setOnLongClickListener(popup);
