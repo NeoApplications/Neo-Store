@@ -37,13 +37,14 @@ import java.util.*
 
 class Config(val context: Context) {
 
+    //TODO: Use ContextWrapper instead of UpdateConfiguration
     fun setAppLanguage(languageCode: String) {
         val locale = getLocaleByAndroidCode(languageCode)
         val config = context.resources.configuration
         val mLocale =
             if (languageCode.isNotEmpty()) locale else Resources.getSystem().configuration.locales[0]
         config.setLocale(mLocale)
-        context.createConfigurationContext(config)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 
     fun getLocaleByAndroidCode(languageCode: String): Locale {
