@@ -11,9 +11,7 @@ import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.*
 import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.theme.ThemeManager
-import com.saggitt.omega.util.checkLocationAccess
-import com.saggitt.omega.util.hasFlag
-import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.*
 
 class PrefsThemeFragment : PreferenceFragmentCompat() {
     private var themeChanged = false
@@ -27,11 +25,18 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>(PREFS_THEME)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                    var newTheme = (newValue as String).toInt()
+                    if (newTheme.hasFlag(ThemeManager.THEME_FOLLOW_DAYLIGHT) && !requireContext().checkLocationAccess())
+                        BlankActivity.requestPermission(
+                            context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Config.REQUEST_PERMISSION_LOCATION_ACCESS
+                        ) {
+                            if (!it)
+                                newTheme = newTheme.removeFlag(ThemeManager.THEME_DARK_MASK)
+                        }
+                    themeChanged = (this.value as String).toInt() != newTheme
+                    this.value = newTheme.toString()
                     requireActivity().omegaPrefs.launcherTheme = newValue.toString().toInt()
-                    themeChanged = this.value != newValue
-                    if ((newValue as Int).hasFlag(ThemeManager.THEME_FOLLOW_DAYLIGHT)) {
-                        requireContext().checkLocationAccess()
-                    }
                     true
                 }
         }
