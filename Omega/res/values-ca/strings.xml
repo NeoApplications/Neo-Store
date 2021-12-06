@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title__general_desktop">Scriptori</string>
+    <string name="title__general_theme">Tema</string>
+    <string name="title__general_advanced">Configuració avançada</string>
+    <string name="default_folder_name">Carpeta nova</string>
+    <string name="title__general_about">Sobre</string>
+    <string name="title__general_search">Cerca i Carpetes</string>
+    <string name="title__general_notifications">Gestos i notificacions</string>
+</resources>
