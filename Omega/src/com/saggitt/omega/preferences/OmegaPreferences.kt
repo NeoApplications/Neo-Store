@@ -29,6 +29,7 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
@@ -72,9 +73,9 @@ class OmegaPreferences(val context: Context) :
     val restart = { restart() }
     val reloadApps = { reloadApps() }
     val reloadAll = { reloadAll() }
-    private val updateBlur = { updateBlur() }
+    val updateBlur = { updateBlur() }
     private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
-    private val reloadIcons = { idp.onPreferencesChanged(context) }
+    val reloadIcons = { idp.onPreferencesChanged(context) }
 
     private val onIconShapeChanged = {
         initializeIconShape()
@@ -90,7 +91,7 @@ class OmegaPreferences(val context: Context) :
     }
 
     // HOME SCREEN
-    val desktopIconScale by FloatPref("pref_home_icon_scale", 1f, recreate)
+    val desktopIconScale by FloatPref("pref_home_icon_scale", 1f, reloadIcons)
     val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
     var dashProviders = StringListPref(
         "pref_dash_providers",
@@ -114,13 +115,13 @@ class OmegaPreferences(val context: Context) :
 
     // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, reloadApps)
-    var hiddenAppSet by StringSetPref("hidden-app-set", setOf(), reloadApps)
+    var hiddenAppSet by StringSetPref("hidden_app_set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
         "pref_hidden_prediction_set",
         setOf(),
         doNothing
     )
-    var protectedAppsSet by StringSetPref("protected-app-set", setOf(), reloadApps)
+    var protectedAppsSet by StringSetPref("protected_app_set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
     var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
 
@@ -135,7 +136,7 @@ class OmegaPreferences(val context: Context) :
         "pref_launcherTheme",
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref("pref_accent_color", R.color.colorAccent, recreate)
+    val accentColor by IntPref(PREFS_ACCENT, R.color.colorAccent, doNothing)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
@@ -313,7 +314,6 @@ class OmegaPreferences(val context: Context) :
 
         private fun onValueChanged() {
             discardCachedValue()
-            cached = false
             onChange.invoke()
         }
 

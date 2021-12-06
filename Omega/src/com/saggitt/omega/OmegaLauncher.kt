@@ -50,6 +50,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
+
     private var currentTheme = 0
     private var currentAccent = 0
     private lateinit var themeOverride: ThemeOverride
@@ -58,12 +59,17 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
+    private val prefCallback = OmegaPreferencesChangeCallback(this)
+    val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         currentAccent = omegaPrefs.accentColor
         currentTheme = themeOverride.getTheme(this)
+        val config = Config(this)
+        config.setAppLanguage(prefs.language)
+
         theme.applyStyle(
             resources.getIdentifier(
                 Integer.toHexString(currentAccent),
@@ -77,14 +83,11 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         ) {
             Utilities.requestStoragePermission(this)
         }
+        prefs.registerCallback(prefCallback)
 
         super.onCreate(savedInstanceState)
-        val prefs = Utilities.getOmegaPrefs(this)
-        prefs.registerCallback(OmegaPreferencesChangeCallback(this))
-        prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
 
-        val config = Config(this)
-        config.setAppLanguage(prefs.language)
+        prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
 
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
@@ -131,8 +134,8 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     override fun onDestroy() {
         super.onDestroy()
 
-        Utilities.getOmegaPrefs(this).unregisterCallback()
-        Utilities.getOmegaPrefs(this).removeOnPreferenceChangeListener(hideStatusBarKey, this)
+        prefs.unregisterCallback()
+        prefs.removeOnPreferenceChangeListener(hideStatusBarKey, this)
         if (sRestart) {
             sRestart = false
             OmegaPreferences.destroyInstance()
