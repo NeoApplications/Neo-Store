@@ -102,6 +102,10 @@ class OmegaPreferences(val context: Context) :
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
     val enableMinus by BooleanPref("pref_enable_minus_one", false, recreate)
     var allowEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
+    val hideAppLabels by BooleanPref("pref_hide_app_label", false, reloadApps)
+    val desktopTextScale by FloatPref("pref_icon_text_scale", 1f, reloadApps)
+    private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, recreate)
+    val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 
     var torchState = false
 
@@ -114,7 +118,7 @@ class OmegaPreferences(val context: Context) :
     var dockOpacity by AlphaPref("pref_dockOpacity", -1, recreate)
 
     // DRAWER
-    var sortMode by StringIntPref(PREFS_SORT, 0, reloadApps)
+    var sortMode by StringIntPref(PREFS_SORT, 0, restart)
     var hiddenAppSet by StringSetPref("hidden_app_set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
         "pref_hidden_prediction_set",
@@ -124,6 +128,15 @@ class OmegaPreferences(val context: Context) :
     var protectedAppsSet by StringSetPref("protected_app_set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
     var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
+    val allAppsTextScale by FloatPref("pref_all_apps_icon_text_scale", 1f)
+    val hideAllAppsAppLabels by BooleanPref("pref_hide_all_apps_app_label", false, recreate)
+    private val drawerMultilineLabel by BooleanPref(
+        "pref_apps_icon_labels_two_lines",
+        false,
+        recreate
+    )
+    val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
+    val allAppsCellHeightMultiplier by FloatPref("pref_allAppsCellHeightMultiplier", 1F, recreate)
 
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)

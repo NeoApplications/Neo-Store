@@ -50,6 +50,7 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.WindowBounds;
+import com.saggitt.omega.DeviceProfileOverrides;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -85,6 +86,11 @@ public class InvariantDeviceProfile {
     private static final float WEIGHT_EFFICIENT = 100000f;
 
     /**
+     * Original profile before preference overrides
+     */
+    public GridOption closestProfile;
+
+    /**
      * Number of icons per row and column in the workspace.
      */
     public int numRows;
@@ -113,7 +119,7 @@ public class InvariantDeviceProfile {
     /**
      * Number of icons inside the hotseat area.
      */
-    protected int numShownHotseatIcons;
+    public int numShownHotseatIcons;
 
     /**
      * Number of icons inside the hotseat area that is stored in the database. This is greater than
@@ -213,6 +219,28 @@ public class InvariantDeviceProfile {
         }
     }
 
+    public InvariantDeviceProfile(Context context, DeviceProfileOverrides.Options overrideOptions) {
+        Info displayInfo = DisplayController.INSTANCE.get(context).getInfo();
+        // Determine if we have split display
+
+        boolean isTablet = false, isPhone = false;
+        for (WindowBounds bounds : displayInfo.supportedBounds) {
+            if (displayInfo.isTablet(bounds)) {
+                isTablet = true;
+            } else {
+                isPhone = true;
+            }
+        }
+        boolean isSplitDisplay = isPhone && isTablet && ENABLE_TWO_PANEL_HOME.get();
+
+        String gridName = getCurrentGridName(context);
+        ArrayList<DisplayOption> allOptions =
+                getPredefinedDeviceProfiles(context, gridName, isSplitDisplay);
+        DisplayOption displayOption =
+                invDistWeightedInterpolate(displayInfo, allOptions, isSplitDisplay);
+        initGrid(context, displayInfo, displayOption, isSplitDisplay, overrideOptions);
+    }
+
     /**
      * This constructor should NOT have any monitors by design.
      */
@@ -276,8 +304,16 @@ public class InvariantDeviceProfile {
     private void initGrid(
             Context context, Info displayInfo, DisplayOption displayOption,
             boolean isSplitDisplay) {
+        DeviceProfileOverrides.Options overrideOptions = DeviceProfileOverrides.INSTANCE.get(context)
+                .getOverrides(displayOption.grid);
+        initGrid(context, displayInfo, displayOption, isSplitDisplay, overrideOptions);
+    }
+
+    private void initGrid(
+            Context context, Info displayInfo, DisplayOption displayOption,
+            boolean isSplitDisplay, DeviceProfileOverrides.Options overrideOptions) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        GridOption closestProfile = displayOption.grid;
+        closestProfile = displayOption.grid;
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
         dbFile = closestProfile.dbFile;
@@ -324,6 +360,10 @@ public class InvariantDeviceProfile {
         // If the partner customization apk contains any grid overrides, apply them
         // Supported overrides: numRows, numColumns, iconSize
         applyPartnerDeviceProfileOverrides(context, metrics);
+        overrideOptions.apply(this);
+
+        iconBitmapSize = ResourceUtils.pxFromDp(Math.max(iconSize, allAppsIconSize), metrics);
+        fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
 
         final List<DeviceProfile> localSupportedProfiles = new ArrayList<>();
         defaultWallpaperSize = new Point(displayInfo.currentSize);

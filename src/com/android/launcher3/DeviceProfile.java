@@ -175,6 +175,7 @@ public class DeviceProfile {
     public int allAppsIconDrawablePaddingPx;
     public final int numShownAllAppsColumns;
     public float allAppsIconTextSizePx;
+    private float allAppsCellHeightMultiplier;
 
     // Overview
     public int overviewTaskMarginPx;
@@ -218,6 +219,7 @@ public class DeviceProfile {
                   boolean useTwoPanels) {
 
         prefs = Utilities.getOmegaPrefs(context);
+        allAppsCellHeightMultiplier = prefs.getAllAppsCellHeightMultiplier();
         this.inv = inv;
         this.isLandscape = windowBounds.isLandscape();
         this.isMultiWindowMode = isMultiWindowMode;
@@ -547,8 +549,14 @@ public class DeviceProfile {
     public void autoResizeAllAppsCells() {
         int textHeight = Utilities.calculateTextHeight(allAppsIconTextSizePx);
         int topBottomPadding = textHeight;
-        allAppsCellHeightPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx
-                + textHeight + (topBottomPadding * 2);
+        int baseCellHeight = allAppsIconSizePx + allAppsIconDrawablePaddingPx + textHeight + (topBottomPadding * 2);
+        allAppsCellHeightPx = (int) (baseCellHeight * allAppsCellHeightMultiplier);
+        if (allAppsIconTextSizePx == 0) {
+            int leftRightPadding = desiredWorkspaceLeftRightMarginPx + cellLayoutPaddingLeftRightPx;
+            int drawerWidth = availableWidthPx - leftRightPadding * 2;
+            allAppsCellHeightPx = (int) (drawerWidth / inv.numAllAppsColumns * allAppsCellHeightMultiplier);
+            allAppsIconDrawablePaddingPx = 0;
+        }
     }
 
     /**
@@ -677,8 +685,8 @@ public class DeviceProfile {
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
 
         //Customize Icon and text size
-        iconSizePx *= prefs.getDesktopIconScale();
-        allAppsIconSizePx *= prefs.getAllAppsIconScale();
+        //iconSizePx *= prefs.getDesktopIconScale();
+        //allAppsIconSizePx *= prefs.getAllAppsIconScale();
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {
