@@ -32,22 +32,22 @@
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:disableDependentsState="true"
-        android:key="pref_hide_all_apps_app_label"
+        android:key="pref_hide_allapps_app_label"
         android:persistent="true"
         android:title="@string/title__drawer_hide_icon_labels"
         app:iconSpaceReserved="false" />
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
-        android:dependency="pref_hide_all_apps_app_label"
+        android:dependency="pref_hide_allapps_app_label"
         android:key="pref_apps_icon_labels_two_lines"
         android:persistent="true"
         android:title="@string/title__multiline_labels"
         app:iconSpaceReserved="false" />
 
     <com.saggitt.omega.preferences.custom.SeekbarPreference
-        android:dependency="pref_hide_all_apps_app_label"
-        android:key="pref_all_apps_icon_text_scale"
+        android:dependency="pref_hide_allapps_app_label"
+        android:key="pref_allapps_icon_text_scale"
         android:title="@string/title_desktop_text_size"
         app:defaultSeekbarValue="1.0"
         app:maxValue="1.8"

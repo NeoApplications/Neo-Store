@@ -128,8 +128,8 @@ class OmegaPreferences(val context: Context) :
     var protectedAppsSet by StringSetPref("protected_app_set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
     var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
-    val allAppsTextScale by FloatPref("pref_all_apps_icon_text_scale", 1f)
-    val hideAllAppsAppLabels by BooleanPref("pref_hide_all_apps_app_label", false, recreate)
+    val allAppsTextScale by FloatPref("pref_allapps_icon_text_scale", 1f)
+    val hideAllAppsAppLabels by BooleanPref("pref_hide_allapps_app_label", false, recreate)
     private val drawerMultilineLabel by BooleanPref(
         "pref_apps_icon_labels_two_lines",
         false,
