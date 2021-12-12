@@ -30,7 +30,6 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.useApplicationContext
-import okhttp3.internal.toHexString
 
 class FeedBridge(private val context: Context) {
 
@@ -137,7 +136,7 @@ class FeedBridge(private val context: Context) {
                 val signingInfo = info.signingInfo
                 if (signingInfo.hasMultipleSigners()) return false
                 signingInfo.signingCertificateHistory.forEach {
-                    val hash = it.hashCode().toHexString()
+                    val hash = it.hashCode().toString(16)
                     Log.d("FeedBridge", "Feed provider $packageName(0x$hash) isn't whitelisted")
                 }
             }
