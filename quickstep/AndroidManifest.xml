@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 **
 ** Copyright 2017, The Android Open Source Project
@@ -45,20 +44,20 @@
 
     <application
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
-        android:fullBackupOnly="true"
         android:fullBackupContent="@xml/backupscheme"
+        android:fullBackupOnly="true"
         android:hardwareAccelerated="true"
         android:label="@string/derived_app_name"
-        android:theme="@style/AppTheme"
         android:largeHeap="@bool/config_largeHeap"
         android:restoreAnyVersion="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <service
             android:name="com.android.quickstep.TouchInteractionService"
-            android:permission="android.permission.STATUS_BAR_SERVICE"
             android:directBootAware="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.STATUS_BAR_SERVICE">
             <intent-filter>
                 <action android:name="android.intent.action.QUICKSTEP_SERVICE" />
             </intent-filter>
@@ -66,26 +65,26 @@
 
         <activity
             android:name="com.android.quickstep.RecentsActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:theme="@style/LauncherTheme"
-            android:screenOrientation="unspecified"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:resumeWhilePausing="true"
-            android:exported="true"
-            android:taskAffinity="" />
+            android:screenOrientation="unspecified"
+            android:stateNotNeeded="true"
+            android:taskAffinity=""
+            android:theme="@style/LauncherTheme" />
 
         <!-- Content provider to settings search. The autority should be same as the packageName -->
         <provider
             android:name="com.android.quickstep.LauncherSearchIndexablesProvider"
             android:authorities="${packageName}"
+            android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="true"
-            android:permission="android.permission.READ_SEARCH_INDEXABLES"
-            android:exported="true">
+            android:permission="android.permission.READ_SEARCH_INDEXABLES">
             <intent-filter>
                 <action android:name="android.content.action.SEARCH_INDEXABLES_PROVIDER" />
             </intent-filter>
@@ -104,17 +103,17 @@
 
         <activity
             android:name="com.android.launcher3.proxy.ProxyActivityStarter"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <activity
             android:name="com.android.quickstep.interaction.GestureSandboxActivity"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.android.quickstep.action.GESTURE_SANDBOX" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -130,11 +129,11 @@
             android:name="com.android.quickstep.interaction.AllSetActivity"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:permission="android.permission.REBOOT"
-            android:theme="@style/AllSetTheme"
+            android:exported="true"
             android:label="@string/allset_title"
-            android:exported="true">
+            android:permission="android.permission.REBOOT"
+            android:screenOrientation="portrait"
+            android:theme="@style/AllSetTheme">
             <intent-filter>
                 <action android:name="com.android.quickstep.action.GESTURE_ONBOARDING_ALL_SET" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -143,12 +142,12 @@
 
         <activity
             android:name=".hybridhotseat.HotseatEduActivity"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:noHistory="true"
-            android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
             android:permission="${packageName}.permission.HOTSEAT_EDU"
-            android:exported="true">
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="com.android.launcher3.action.SHOW_HYBRID_HOTSEAT_EDU" />
                 <category android:name="android.intent.category.DEFAULT" />

@@ -22,7 +22,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.aardwolf">
     <uses-sdk
-        android:targetSdkVersion="29"
+        android:targetSdkVersion="31"
         android:minSdkVersion="21" />
     <application android:label="Aardwolf">
         <activity

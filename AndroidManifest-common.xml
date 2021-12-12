@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 **
 ** Copyright 2016, The Android Open Source Project
@@ -17,8 +16,7 @@
 ** limitations under the License.
 */
 -->
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.launcher3">
 
     <!--
@@ -43,9 +41,9 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- for rotating surface by arbitrary degree -->
     <uses-permission android:name="android.permission.ROTATE_SURFACE_FLINGER" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <!--
     Permissions required for read/write access to the workspace data. These permission name
@@ -99,8 +97,8 @@
 
         <service
             android:name="com.android.launcher3.notification.NotificationListener"
-            android:label="@string/notification_dots_service_title"
             android:exported="true"
+            android:label="@string/notification_dots_service_title"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
@@ -109,14 +107,15 @@
 
         <meta-data
             android:name="android.nfc.disable_beam_default"
+            android:exported="true"
             android:value="true" />
 
         <activity
             android:name="com.android.launcher3.dragndrop.AddItemActivity"
-            android:theme="@style/AddItemActivityTheme"
-            android:excludeFromRecents="true"
             android:autoRemoveFromRecents="true"
-            android:exported="true">
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/AddItemActivityTheme">
             <intent-filter>
                 <action android:name="android.content.pm.action.CONFIRM_PIN_SHORTCUT" />
                 <action android:name="android.content.pm.action.CONFIRM_PIN_APPWIDGET" />
@@ -132,8 +131,8 @@
             android:name="com.android.launcher3.LauncherProvider"
             android:authorities="${packageName}.settings"
             android:exported="true"
-            android:writePermission="${packageName}.permission.WRITE_SETTINGS"
-            android:readPermission="${packageName}.permission.READ_SETTINGS" />
+            android:readPermission="${packageName}.permission.READ_SETTINGS"
+            android:writePermission="${packageName}.permission.WRITE_SETTINGS" />
 
         <!--
         The content provider for exposing various launcher grid options.
@@ -151,10 +150,10 @@
 
         <activity
             android:name="com.android.launcher3.settings.SettingsActivity"
-            android:label="@string/settings_button_text"
-            android:theme="@style/HomeSettingsTheme"
+            android:autoRemoveFromRecents="true"
             android:exported="true"
-            android:autoRemoveFromRecents="true">
+            android:label="@string/settings_button_text"
+            android:theme="@style/HomeSettingsTheme">
             <intent-filter android:priority="-1">
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -164,20 +163,20 @@
         <provider
             android:name="com.android.launcher3.testing.TestInformationProvider"
             android:authorities="${packageName}.TestInfo"
-            android:readPermission="android.permission.WRITE_SECURE_SETTINGS"
-            android:writePermission="android.permission.WRITE_SECURE_SETTINGS"
+            android:enabled="false"
             android:exported="true"
-            android:enabled="false" />
+            android:readPermission="android.permission.WRITE_SECURE_SETTINGS"
+            android:writePermission="android.permission.WRITE_SECURE_SETTINGS" />
 
         <!--
         Launcher activity for secondary display
         -->
         <activity
             android:name="com.android.launcher3.secondarydisplay.SecondaryDisplayLauncher"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTop"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
