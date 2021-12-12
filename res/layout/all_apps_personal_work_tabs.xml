@@ -32,7 +32,7 @@
         android:layout_weight="1"
         android:background="@drawable/all_apps_tabs_background"
         android:text="@string/all_apps_personal_tab"
-        android:textColor="?colorControlNormal"
+        android:textColor="@color/all_apps_tab_text"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -45,6 +45,6 @@
         android:layout_weight="1"
         android:background="@drawable/all_apps_tabs_background"
         android:text="@string/all_apps_work_tab"
-        android:textColor="?colorControlNormal"
+        android:textColor="@color/all_apps_tab_text"
         android:textSize="14sp" />
 </com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip>
