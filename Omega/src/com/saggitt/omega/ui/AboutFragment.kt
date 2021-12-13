@@ -72,6 +72,10 @@ class AboutFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = requireActivity().getString(R.string.title__general_about)
+    }
 
 }
 
