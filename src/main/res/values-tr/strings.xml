@@ -172,4 +172,10 @@
     <string name="prefs_language_title">Dil</string>
     <string name="prefs_personalization">Kişiselleştirme</string>
     <string name="show_less">Daha Az Göster</string>
+    <string name="sort_filter">Sırala ve Filtrele</string>
+    <string name="installed_applications">Kurulu uygulamalar</string>
+    <string name="new_applications">Yeni uygulamalar</string>
+    <string name="latest">En yeni</string>
+    <string name="update_all">Tümünü güncelle</string>
+    <string name="explore">Keşfet</string>
 </resources>
