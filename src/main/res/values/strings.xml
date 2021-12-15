@@ -78,7 +78,7 @@
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="links">Links</string>
     <string name="list_animation">List Animations</string>
-    <string name="list_animation_description">Animation the list on the main page</string>
+    <string name="list_animation_description">Animate the list on the main page</string>
     <string name="merging_FORMAT">Merging %s</string>
     <string name="name">Name</string>
     <string name="network_error_DESC">Network error.</string>
@@ -176,7 +176,7 @@
     <string name="show_less">Show Less</string>
     <string name="latest">Latest</string>
     <string name="explore">Explore…</string>
-    <string name="update_all">Upgrade all</string>
+    <string name="update_all">Install all</string>
     <string name="installed_applications">Installed</string>
     <string name="sort_filter">Sorting</string>
     <string name="new_applications">New</string>
