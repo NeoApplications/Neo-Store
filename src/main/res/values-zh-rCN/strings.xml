@@ -173,4 +173,10 @@
     <string name="prefs_language_title">语言</string>
     <string name="prefs_personalization">个性化</string>
     <string name="show_less">显示较少程序</string>
+    <string name="latest">最新</string>
+    <string name="sort_filter">排序和筛选</string>
+    <string name="explore">探索</string>
+    <string name="update_all">更新全部</string>
+    <string name="new_applications">新程序</string>
+    <string name="installed_applications">已安装的程序</string>
 </resources>
