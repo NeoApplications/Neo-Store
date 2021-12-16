@@ -10,7 +10,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/action_bar"
-            style="?android:attr/actionBarStyle"
+            style="@style/Widget.Material3.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="?android:attr/actionBarTheme" />
