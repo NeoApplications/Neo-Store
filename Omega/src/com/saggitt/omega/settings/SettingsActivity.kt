@@ -44,6 +44,7 @@ import com.android.launcher3.R
 import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.settings.NotificationDotsPreference
 import com.android.launcher3.settings.PreferenceHighlighter
+import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.preferences.ControlledPreference
 import com.saggitt.omega.preferences.PreferenceController
@@ -518,11 +519,10 @@ open class SettingsActivity : SettingsBaseActivity(),
                 findPreference<Preference>("kill")?.onPreferenceClickListener = this
 
                 findPreference<Preference>("pref_desktop_mode_settings")?.setOnPreferenceClickListener {
-                    /*Taskbar.openSettings(
+                    Taskbar.openSettings(
                         requireContext(),
                         ThemeOverride.Settings().getTheme(requireContext())
                     )
-                     */
                     true
                 }
             }

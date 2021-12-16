@@ -217,6 +217,7 @@ dependencies {
     implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
     implementation "com.github.LawnchairLauncher:hoko-lite:0e21db9ae5"
     implementation "com.luckycatlabs:SunriseSunsetCalculator:1.2"
+    implementation "com.github.farmerbb:libtaskbar:2.2.0"
     implementation "com.mikepenz:fastadapter:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-diff:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0"

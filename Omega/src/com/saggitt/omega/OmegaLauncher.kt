@@ -34,6 +34,7 @@ import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
 import com.android.systemui.plugins.shared.LauncherOverlayManager
+import com.farmerbb.taskbar.lib.Taskbar
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
@@ -195,7 +196,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
         }
-        // Taskbar.setEnabled(this, prefs.desktopModeEnabled)
+        Taskbar.setEnabled(this, prefs.desktopModeEnabled)
     }
 }
 

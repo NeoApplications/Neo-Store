@@ -21,6 +21,7 @@ import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
+import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_TRUST_APPS
 import com.saggitt.omega.changeDefaultHome
@@ -236,6 +237,13 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             findPreference<Preference>("kill")?.setOnPreferenceClickListener {
                 Utilities.killLauncher()
                 false
+            }
+            findPreference<Preference>("pref_desktop_mode_settings")?.setOnPreferenceClickListener {
+                Taskbar.openSettings(
+                    requireContext(),
+                    ThemeOverride.Settings().getTheme(requireContext())
+                )
+                true
             }
         }
 
