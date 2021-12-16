@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.SwitchPreference
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -158,7 +158,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-            findPreference<SwitchPreferenceCompat>(PREFS_PROTECTED_APPS)?.apply {
+            findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
                 onPreferenceChangeListener =
                     Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                         requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean

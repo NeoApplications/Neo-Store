@@ -25,14 +25,14 @@
         android:widgetLayout="@layout/notification_pref_warning"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:dependency="pref_icon_badging"
         android:key="pref_notification_count"
         android:title="@string/title__notification_count"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_custom_background"
         android:persistent="true"

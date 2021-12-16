@@ -45,7 +45,7 @@
         android:title="@string/title_theme_icon_packs"
         app:iconSpaceReserved="false" /> -->
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_enableBlur"
         app:iconSpaceReserved="false"
@@ -61,7 +61,7 @@
         app:iconSpaceReserved="false"
         app:title="@string/title__theme_blur_radius" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_customWindowCorner"
         app:iconSpaceReserved="false"
