@@ -19,7 +19,7 @@ package com.saggitt.omega.dash.controlprovider
 
 import android.Manifest
 import android.app.Activity
-import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -41,7 +41,7 @@ class Bluetooth(context: Context) : DashControlProvider(context) {
 
     override var state: Boolean
         get() =
-            BluetoothAdapter.getDefaultAdapter()?.isEnabled == true
+            (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.isEnabled == true
         set(value) {
             if (value) {
                 if (ActivityCompat.checkSelfPermission(
@@ -58,9 +58,9 @@ class Bluetooth(context: Context) : DashControlProvider(context) {
                     }
                     return
                 }
-                BluetoothAdapter.getDefaultAdapter()?.enable()
+                (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.enable()
             } else {
-                BluetoothAdapter.getDefaultAdapter()?.disable()
+                (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.disable()
             }
         }
 }
