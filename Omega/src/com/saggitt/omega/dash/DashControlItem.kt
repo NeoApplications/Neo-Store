@@ -42,14 +42,15 @@ class DashControlItem(val context: Context, val provider: DashControlProvider) :
     override fun bindView(binding: DashControlItemBinding, payloads: List<Any>) {
         val backgroundColor =
             ColorStateList.valueOf(Themes.getAttrColor(context, R.attr.dashIconBackground))
+        val sheetColor =
+            ColorStateList.valueOf(Themes.getAttrColor(context, R.attr.dashSheetBackground))
         val activeColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
-        binding.root.backgroundTintList =
-            if (provider.state) activeColor.withAlpha(144) else backgroundColor
+        binding.root.backgroundTintList = if (provider.state) activeColor else backgroundColor
         binding.itemIcon.setImageDrawable(provider.icon)
         binding.itemName.text = provider.name
         binding.itemIcon.tooltipText = provider.description
-        binding.itemIcon.imageTintList = activeColor
-        binding.itemName.setTextColor(activeColor)
+        binding.itemIcon.imageTintList = if (provider.state) sheetColor else activeColor
+        binding.itemName.setTextColor(if (provider.state) sheetColor else activeColor)
         binding.root.setOnClickListener {
             provider.state = !provider.state
             AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(context))
