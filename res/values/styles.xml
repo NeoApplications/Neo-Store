@@ -69,6 +69,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#00000000</item>
         <item name="android:navigationBarColor">#00000000</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Light</item>
 
         <item name="android:dialogCornerRadius" tools:ignore="NewApi">
             @dimen/default_dialog_corner_radius
@@ -122,6 +123,7 @@
         <item name="workProfileOverlayTextColor">@android:color/white</item>
         <item name="eduHalfSheetBGColor">#DD000000</item>
         <item name="overviewScrimColor">@color/overview_scrim_dark</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
     </style>
 
     <style name="LauncherTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark">
