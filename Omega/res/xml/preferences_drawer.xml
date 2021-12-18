@@ -29,7 +29,7 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:disableDependentsState="true"
         android:key="pref_hide_allapps_app_label"
@@ -37,7 +37,7 @@
         android:title="@string/title__drawer_hide_icon_labels"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:dependency="pref_hide_allapps_app_label"
         android:key="pref_apps_icon_labels_two_lines"
@@ -66,7 +66,7 @@
 
     </PreferenceCategory>
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_protected_apps"
         app:iconSpaceReserved="false"

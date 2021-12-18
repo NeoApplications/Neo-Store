@@ -29,7 +29,7 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:disableDependentsState="true"
         android:key="pref_hide_app_label"
@@ -37,7 +37,7 @@
         android:title="@string/title__desktop_hide_icon_labels"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:dependency="pref_hide_app_label"
         android:key="pref_icon_labels_two_lines"
@@ -61,7 +61,7 @@
       LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_ENABLED(613)
       LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_DISABLED(614)
     -->
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="true"
         android:key="pref_add_icon_to_home"
         android:persistent="true"
@@ -75,7 +75,7 @@
       LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
       LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)
     -->
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_allowRotation"
         android:persistent="true"
@@ -99,7 +99,7 @@
         android:title="@string/title_show_google_app"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_keepEmptyScreens"
         android:title="@string/title_desktop_keep_empty"

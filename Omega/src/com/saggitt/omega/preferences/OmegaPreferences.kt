@@ -107,7 +107,7 @@ class OmegaPreferences(val context: Context) :
     private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, recreate)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 
-    var torchState = false
+    var torchState by BooleanPref("pref_torch", false, doNothing)
 
     // DOCK
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)

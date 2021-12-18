@@ -14,4 +14,4 @@
      limitations under the License.
 -->
 
-<manifest package="com.android.app.search"></manifest>
+<manifest package="com.android.app.search" />

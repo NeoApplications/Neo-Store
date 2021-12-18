@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2015 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2015 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,8 +18,8 @@
     package="com.android.launcher3.tests">
 
     <uses-sdk
-        android:targetSdkVersion="29"
-        android:minSdkVersion="25"
+        android:minSdkVersion="26"
+        android:targetSdkVersion="31"
         tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <application android:debuggable="true">
@@ -28,8 +27,8 @@
     </application>
 
     <instrumentation
+        android:name="androidx.test.runner.AndroidJUnitRunner"
         android:functionalTest="false"
         android:handleProfiling="false"
-        android:name="androidx.test.runner.AndroidJUnitRunner"
-        android:targetPackage="com.android.launcher3"></instrumentation>
+        android:targetPackage="com.android.launcher3" />
 </manifest>

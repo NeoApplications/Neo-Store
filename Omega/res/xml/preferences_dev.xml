@@ -23,14 +23,14 @@
         android:title="@string/title__restart_launcher"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_showDevOptions"
         android:persistent="true"
         android:title="@string/title__dev_show_Dev"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_showDebugInfo"
         android:persistent="true"
@@ -39,7 +39,7 @@
 
     <PreferenceCategory android:title="@string/pref_category__incubating">
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
             android:key="pref_desktop_mode"
             android:summary="@string/pref_desktop_mode_summary"

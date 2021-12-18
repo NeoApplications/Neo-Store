@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
+// TODO apply accent color to this
 /**
  * Popup for showing the full list of available widgets
  */

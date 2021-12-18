@@ -51,7 +51,7 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                     true
                 }
         }
-        findPreference<SwitchPreferenceCompat>(PREFS_BLUR)?.apply {
+        findPreference<SwitchPreference>(PREFS_BLUR)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                     requireActivity().omegaPrefs.enableBlur = newValue as Boolean
@@ -65,7 +65,7 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                     true
                 }
         }
-        findPreference<SwitchPreferenceCompat>(PREFS_WINDOWCORNER)?.apply {
+        findPreference<SwitchPreference>(PREFS_WINDOWCORNER)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                     requireActivity().omegaPrefs.customWindowCorner = newValue as Boolean

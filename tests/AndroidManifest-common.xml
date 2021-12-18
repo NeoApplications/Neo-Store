@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2017 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,14 +13,13 @@
     limitations under the License.
 -->
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.launcher3.tests">
 
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <application android:debuggable="true">
@@ -77,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.android.launcher3.testcomponent.RequestPinItemActivity"
-            android:icon="@drawable/test_drawable_pin_item" android:exported="true"
+            android:exported="true" android:icon="@drawable/test_drawable_pin_item"
             android:label="Test Pin Item">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,7 +85,7 @@
         </activity>
 
         <service android:name="com.android.launcher3.testcomponent.ListViewService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:exported="true" android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <provider android:name="com.android.launcher3.testcomponent.TestCommandProvider"
             android:authorities="${packageName}.commands" android:exported="true" />
@@ -95,11 +93,12 @@
         <activity android:name="com.android.launcher3.testcomponent.TestLauncherActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density"
-            android:enabled="false" android:label="Test launcher" android:launchMode="singleTask"
-            android:process=":testLauncherProcess" android:resizeableActivity="true"
-            android:screenOrientation="unspecified" android:stateNotNeeded="true"
-            android:taskAffinity="" android:theme="@android:style/Theme.DeviceDefault.Light"
-            android:exported="true" android:windowSoftInputMode="adjustPan">
+            android:enabled="false" android:exported="true" android:label="Test launcher"
+            android:launchMode="singleTask" android:process=":testLauncherProcess"
+            android:resizeableActivity="true" android:screenOrientation="unspecified"
+            android:stateNotNeeded="true" android:taskAffinity=""
+            android:theme="@android:style/Theme.DeviceDefault.Light"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -109,7 +108,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.android.launcher3.testcomponent.BaseTestingActivity"
-            android:label="LauncherTestApp" android:exported="true"
+            android:exported="true" android:label="LauncherTestApp"
             android:taskAffinity="com.android.launcher3.testcomponent.Affinity1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -121,80 +120,80 @@
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
-        <activity-alias android:name="Activity2" android:label="TestActivity2"
-            android:exported="true"
+        <activity-alias android:name="Activity2" android:exported="true"
+            android:label="TestActivity2"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity3" android:label="TestActivity3"
-            android:exported="true"
+        <activity-alias android:name="Activity3" android:exported="true"
+            android:label="TestActivity3"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity4" android:label="TestActivity4"
-            android:exported="true"
+        <activity-alias android:name="Activity4" android:exported="true"
+            android:label="TestActivity4"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity5" android:label="TestActivity5"
-            android:exported="true"
+        <activity-alias android:name="Activity5" android:exported="true"
+            android:label="TestActivity5"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity6" android:label="TestActivity6"
-            android:exported="true"
+        <activity-alias android:name="Activity6" android:exported="true"
+            android:label="TestActivity6"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity7" android:label="TestActivity7"
-            android:exported="true"
+        <activity-alias android:name="Activity7" android:exported="true"
+            android:label="TestActivity7"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity8" android:label="TestActivity8"
-            android:exported="true"
+        <activity-alias android:name="Activity8" android:exported="true"
+            android:label="TestActivity8"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity9" android:label="TestActivity9"
-            android:exported="true"
+        <activity-alias android:name="Activity9" android:exported="true"
+            android:label="TestActivity9"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity10" android:label="TestActivity10"
-            android:exported="true"
+        <activity-alias android:name="Activity10" android:exported="true"
+            android:label="TestActivity10"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="Activity11" android:label="TestActivity11"
-            android:exported="true"
+        <activity-alias android:name="Activity11" android:exported="true"
+            android:label="TestActivity11"
             android:targetActivity="com.android.launcher3.testcomponent.BaseTestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

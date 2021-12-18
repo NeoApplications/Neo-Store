@@ -14,8 +14,12 @@
     <uses-permission
         android:name="android.permission.STATUS_BAR"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <application
         android:name="com.saggitt.omega.OmegaApp"
@@ -34,6 +38,7 @@
 
         <activity
             android:name="com.android.launcher3.Launcher"
+            android:exported="true"
             tools:node="remove" />
         <!--
         Main launcher activity. When extending only change the name, and keep all the
@@ -68,6 +73,7 @@
         </activity>
         <activity
             android:name="com.android.launcher3.settings.SettingsActivity"
+            android:exported="true"
             tools:node="remove" />
         <activity
             android:name="com.saggitt.omega.settings.SettingsActivity"
@@ -93,16 +99,19 @@
         <activity
             android:name="com.saggitt.omega.settings.search.SettingsSearchActivity"
             android:autoRemoveFromRecents="true"
+            android:exported="true"
             android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
             android:theme="@style/SettingsTheme" />
 
         <activity
             android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
+            android:exported="true"
             android:label="@string/action_open_app_select_app"
             android:theme="@style/SettingsTheme.Light" />
 
         <activity
             android:name="com.saggitt.omega.BlankActivity"
+            android:exported="true"
             android:theme="@style/Theme.Transparent" />
 
         <!-- Actions -->
@@ -135,7 +144,8 @@
 
         <activity
             android:name="com.saggitt.omega.FakeLauncher"
-            android:enabled="false">
+            android:enabled="false"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -178,5 +188,4 @@
             android:name="com.samsung.android.non_immersive"
             android:value="true" />
     </application>
-
 </manifest>

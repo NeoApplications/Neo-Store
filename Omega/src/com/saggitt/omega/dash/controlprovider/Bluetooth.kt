@@ -18,10 +18,12 @@
 package com.saggitt.omega.dash.controlprovider
 
 import android.Manifest
-import android.bluetooth.BluetoothAdapter
+import android.app.Activity
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.android.launcher3.R
@@ -39,7 +41,7 @@ class Bluetooth(context: Context) : DashControlProvider(context) {
 
     override var state: Boolean
         get() =
-            BluetoothAdapter.getDefaultAdapter()?.isEnabled == true
+            (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.isEnabled == true
         set(value) {
             if (value) {
                 if (ActivityCompat.checkSelfPermission(
@@ -47,18 +49,18 @@ class Bluetooth(context: Context) : DashControlProvider(context) {
                         Manifest.permission.BLUETOOTH_CONNECT
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions(
+                            context as Activity,
+                            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                            34
+                        )
+                    }
                     return
                 }
-                BluetoothAdapter.getDefaultAdapter()?.enable()
+                (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.enable()
             } else {
-                BluetoothAdapter.getDefaultAdapter()?.disable()
+                (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter?.disable()
             }
         }
 }

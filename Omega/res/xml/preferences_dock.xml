@@ -18,14 +18,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:disableDependentsState="true"
         android:key="pref_hideHotseat"
         android:title="@string/title__dock_hide"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:dependency="pref_hideHotseat"
         android:key="pref_dockBackground"
         android:title="@string/title_dock_fill"

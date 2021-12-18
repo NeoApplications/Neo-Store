@@ -14,4 +14,4 @@
      limitations under the License.
 -->
 
-<manifest package="com.android.launcher3.icons"></manifest>
+<manifest package="com.android.launcher3.icons" />

@@ -19,61 +19,44 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="@style/LauncherTheme">
-        <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="allAppsScrimColor">@color/grey_50</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Light</item>
         <item name="dashIconBackground">@color/grey_300</item>
-        <item name="allAppsScrimColor">#FFFFFF</item>
+        <item name="dashSheetBackground">@color/grey_50</item>
+        <item name="popupColorPrimary">@color/grey_300</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
+
         <item name="allappsHeaderProtectionColor">@color/system_neutral1_100</item>
         <item name="allAppsInterimScrimAlpha">46</item>
-        <item name="popupColorPrimary">@color/grey_300</item>
-    </style>
-
-    <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText">
-        <item name="allAppsScrimColor">#FFFFFF</item>
-        <item name="allAppsInterimScrimAlpha">128</item>
-        <item name="popupColorPrimary">@color/grey_300</item>
-    </style>
-
-    <style name="AppTheme.DarkMainColor" parent="@style/LauncherTheme.DarkMainColor">
-        <item name="allAppsScrimColor">#FFFFFF</item>
-        <item name="allAppsInterimScrimAlpha">128</item>
-        <item name="popupColorPrimary">@color/grey_300</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
         <item name="allAppsScrimColor">@color/grey_900</item>
-        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
-        <item name="dashIconBackground">#A05C5C5C</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Dark</item>
+        <item name="dashIconBackground">@color/grey_800</item>
+        <item name="dashSheetBackground">@color/grey_900</item>
+        <item name="popupColorPrimary">@color/grey_800</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+
         <item name="allAppsInterimScrimAlpha">102</item>
     </style>
 
-    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText">
-        <item name="allAppsScrimColor">@color/grey_900</item>
-        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
-        <item name="allAppsInterimScrimAlpha">25</item>
-    </style>
-
-    <style name="AppTheme.Dark.DarkMainColor" parent="@style/LauncherTheme.Dark.DarkMainColor">
-        <item name="allAppsScrimColor">@color/grey_900</item>
-        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
-        <item name="allAppsInterimScrimAlpha">25</item>
-    </style>
-
     <style name="AppTheme.Black" parent="AppTheme.Dark">
+        <item name="allAppsScrimColor">@color/settings_background_black</item>
+        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
+        <item name="dashIconBackground">@color/grey_900</item>
+        <item name="dashSheetBackground">@color/settings_background_black</item>
+        <item name="popupColorPrimary">@color/grey_900</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+
         <item name="android:colorPrimary">#000000</item>
-        <item name="allAppsScrimColor">#EA000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
-        <item name="popupColorPrimary">?android:attr/colorPrimary</item>
         <item name="popupColorSecondary">#000000</item>
         <item name="popupColorTertiary">@color/grey_900</item>
-        <item name="widgetsTheme">@style/WidgetContainerTheme.Black</item>
         <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
-        <item name="dashIconBackground">#A0202020</item>
     </style>
-
-    <style name="AppTheme.Black.DarkText" parent="@style/AppTheme.Black" />
 
     <style name="SettingsTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:colorEdgeEffect">?colorAccent</item>
@@ -85,13 +68,23 @@
         <item name="settingsSearchBackground">?settingsBackground</item>
         <item name="settingsPopupBackground">?settingsBackground</item>
         <item name="useLightSystemBars">true</item>
-        <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="workspaceShadowColor">#B0000000</item>
         <item name="workspaceAmbientShadowColor">#40000000</item>
     </style>
 
-    <style name="SettingsTheme.Light" parent="SettingsTheme">
+    <style name="SettingsTheme.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:colorEdgeEffect">?colorAccent</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="settingsBackground">@android:color/white</item>
+        <item name="settingsSearchBackground">?settingsBackground</item>
+        <item name="settingsPopupBackground">?settingsBackground</item>
+        <item name="useLightSystemBars">true</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
         <item name="iconShapeTint">@color/grey_700</item>
     </style>
@@ -100,11 +93,10 @@
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
     </style>
 
-    <style name="SettingsTheme.Dark" parent="SettingsTheme">
+    <style name="SettingsTheme.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@color/settings_background_dark</item>
         <item name="colorPrimary">?android:windowBackground</item>
         <item name="colorPrimaryDark">?android:windowBackground</item>
-        <item name="colorAccent">@color/colorAccentDark</item>
         <item name="android:textColorPrimary">#D5D2D2</item>
         <item name="android:textColorSecondary">#A8A7A7</item>
         <item name="android:textColorTertiary">#7C7C7C</item>
@@ -112,12 +104,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="useLightSystemBars">false</item>
-        <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
         <item name="buttonStyle">@style/SettingsTheme.Button</item>
         <item name="settingsBackground">@color/settings_background_dark</item>
         <item name="settingsSearchBackground">@color/settings_background_dark_2dp</item>
         <item name="settingsPopupBackground">@color/settings_background_dark_8dp</item>
-        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
         <item name="bottomSheetNavBarColor">@android:color/transparent</item>
         <item name="bottomSheetScrimColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
@@ -142,19 +134,21 @@
         <item name="iconShapeTint">@color/grey_50</item>
     </style>
 
-    <style name="AlertDialogLight" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/dialog_material_background</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="buttonStyle">@style/SettingsTheme.Button</item>
-        <item name="android:buttonStyle">@style/SettingsTheme.Button</item>
+    <style name="AlertDialog.Light" parent="Theme.Material3.Light.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
-        <item name="android:dialogCornerRadius" tools:ignore="NewApi">16dp</item>
     </style>
 
-    <style name="SettingsTheme.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:colorPrimary">@color/settings_background_dark</item>
-        <item name="android:colorPrimaryDark">@color/settings_background_dark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+    <style name="AlertDialog.Dark" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="dialogCornerRadius">16dp</item>
+    </style>
+
+    <style name="SettingsTheme.BottomSheetDialog.Light" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+        <item name="bottomSheetStyle">@style/SettingsTheme.BottomSheet</item>
+    </style>
+
+    <style name="SettingsTheme.BottomSheetDialog.Dark" parent="Theme.Material3.Dark.BottomSheetDialog">
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
         <item name="bottomSheetStyle">@style/SettingsTheme.BottomSheet</item>
@@ -187,7 +181,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="alertDialogTheme">@style/AlertDialogLight</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -217,21 +211,32 @@
         <item name="cpv_borderColor">@color/colorAccent</item>
     </style>
 
-    <style name="WidgetContainerTheme.Light" parent="WidgetContainerTheme">
+    <style name="WidgetContainerTheme.Light" parent="SettingsTheme.Light">
+        <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
+        <item name="android:colorPrimary">?backgroundColor</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#3A3939</item>
+        <item name="android:textColorTertiary">#545454</item>
+        <item name="colorBackgroundFloating">?backgroundColor</item>
     </style>
 
-    <style name="WidgetContainerTheme.Dark" parent="WidgetContainerTheme">
+    <style name="WidgetContainerTheme.Dark" parent="SettingsTheme.Dark">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
         <item name="android:colorPrimary">@color/settings_background_dark</item>
         <item name="bottomSheetNavBarColor">@color/grey_900</item>
         <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="backgroundTint">?backgroundColor</item>
         <item name="android:textColorSecondary">#A8A7A7</item>
         <item name="android:textColorTertiary">#7C7C7C</item>
     </style>
 
-    <style name="WidgetContainerTheme.Black" parent="WidgetContainerTheme.Dark">
+    <style name="WidgetContainerTheme.Black" parent="SettingsTheme.Black">
+        <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
+        <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="backgroundTint">?backgroundColor</item>
+        <item name="android:textColorSecondary">#A8A7A7</item>
+        <item name="android:textColorTertiary">#7C7C7C</item>
         <item name="android:colorPrimary">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
     </style>

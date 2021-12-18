@@ -20,7 +20,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.saggitt.omega.preferences.custom.ThemePreference
-        android:defaultValue="17"
+        android:defaultValue="8"
         android:key="pref_launcherTheme"
         android:title="@string/title__general_theme"
         app:iconSpaceReserved="false"
@@ -46,7 +46,7 @@
         app:iconSpaceReserved="false" /> -->
 
     <Preference
-        android:key="pref_about"
+        android:key="pref_icon_shape"
         android:fragment="com.saggitt.omega.preferences.views.IconShapeFragment"
         android:title="@string/title_theme_customize_icons"
         app:iconSpaceReserved="false" />
