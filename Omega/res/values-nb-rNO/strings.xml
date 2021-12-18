@@ -231,7 +231,7 @@
     <string name="title_smartspace_time">Vis tid</string>
     <string name="title_smartspace_feed_theme">Informasjonskanalens drakt</string>
     <string name="title_white_only_treatment">Erstatt hvite bakgrunner</string>
-    <string name="title_legacy_colored_backgrounds">Fargede bakgrunner</string>
+    <string name="title_colored_backgrounds">Fargede bakgrunner</string>
     <string name="icon_shape_override_label_location">på hjemmeskjermen</string>
     <string name="theme_based">Satt av drakt</string>
     <string name="title_desktop_hide_statusbar">Skjul statusfelt</string>

@@ -24,7 +24,7 @@
     <string name="title_show_google_app">Zeige Google App</string>
     <string name="title_white_only_treatment">Ersetze weiße Hintergründe</string>
     <string name="title_legacy_treatment">Erstelle adaptive Symbole</string>
-    <string name="title_legacy_colored_backgrounds">Farbige Hintergründe</string>
+    <string name="title_colored_backgrounds">Farbige Hintergründe</string>
     <string name="title_force_shapeless">Erzwinge formlose Symbole</string>
     <string name="title_adaptify_pack">Erstelle adaptive Symbole für das Symbol Paket</string>
     <string name="color_presets">Voreinstellungen</string>

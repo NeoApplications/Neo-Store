@@ -128,7 +128,7 @@
     <string name="title_show_google_app">Mostrar app da Google</string>
     <string name="title_white_only_treatment">Substituir fundos brancos</string>
     <string name="title_legacy_treatment">Crie ícones adaptáveis</string>
-    <string name="title_legacy_colored_backgrounds">Fundos coloridos</string>
+    <string name="title_colored_backgrounds">Fundos coloridos</string>
     <string name="title_force_shapeless">Forçar ícones sem forma</string>
     <string name="title_adaptify_pack">Crie ícones adaptáveis para pacote de ícones</string>
     <string name="color_presets">Predefinições</string>

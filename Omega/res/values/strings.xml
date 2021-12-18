@@ -153,6 +153,7 @@
     <string name="title__theme_blur_radius">Blur Intensity</string>
     <string name="title__theme_icon_shape">Change icon shape</string>
     <string name="title_theme_icon_packs">Icon Packs</string>
+    <string name="title_theme_customize_icons">Customize Icons</string>
     <string name="summary__theme_blur">Blur page backgrounds</string>
     <string name="theme_auto">Follow wallpaper</string>
     <string name="theme_auto_night_mode">System</string>
@@ -212,9 +213,13 @@
     <string name="color_presets">Presets</string>
     <string name="title_adaptify_pack">Create adaptive icons for icon pack</string>
     <string name="title_force_shapeless">Force shapeless icons</string>
-    <string name="title_legacy_colored_backgrounds">Coloured backgrounds</string>
+    <string name="title_colored_backgrounds">Coloured backgrounds</string>
+    <string name="summary_colored_backgrounds">Color generated Adaptive Icons’ backgrounds.</string>
+    <string name="summary_force_shapeless">Try to use legacy icons for all apps.</string>
     <string name="title_legacy_treatment">Create Adaptive Icons</string>
+    <string name="summary_legacy_treatment">Create Adaptive Icons for all shortcuts.</string>
     <string name="title_white_only_treatment">Replace White Backgrounds</string>
+    <string name="summary_white_only_treatment">Color all Adaptive Icons’ backgrounds.</string>
     <string name="preview_app_google_photos" translatable="false">Google Photos</string>
     <string name="preview_app_instagram" translatable="false">Instagram</string>
     <string name="preview_app_youtube" translatable="false">Youtube</string>

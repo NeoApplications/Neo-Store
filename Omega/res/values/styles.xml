@@ -87,10 +87,13 @@
         <item name="useLightSystemBars">true</item>
         <item name="alertDialogTheme">@style/AlertDialogLight</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#40000000</item>
     </style>
 
     <style name="SettingsTheme.Light" parent="SettingsTheme">
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+        <item name="iconShapeTint">@color/grey_700</item>
     </style>
 
     <style name="SettingsTheme.Light.Transparent" parent="SettingsTheme">
@@ -119,6 +122,8 @@
         <item name="bottomSheetScrimColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
         <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
+
+        <item name="iconShapeTint">@color/grey_400</item>
     </style>
 
     <style name="SettingsTheme.Black" parent="SettingsTheme.Dark">
@@ -132,6 +137,9 @@
         <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
         <item name="workspaceKeyShadowColor">@android:color/transparent</item>
         <item name="isWorkspaceDarkText">true</item>
+
+
+        <item name="iconShapeTint">@color/grey_50</item>
     </style>
 
     <style name="AlertDialogLight" parent="Theme.AppCompat.Light.Dialog.Alert">

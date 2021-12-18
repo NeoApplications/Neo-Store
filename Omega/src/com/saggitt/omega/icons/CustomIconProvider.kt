@@ -102,16 +102,8 @@ class CustomIconProvider @JvmOverloads constructor(
                 field?.close()
                 field = value
             }
-        private var iconState = systemIconState
+
         private val iconPackPref = prefs.iconPackPackage
-        /*private val subscription = iconPackPref.subscribeChanges {
-            val newState = systemIconState
-            if (iconState != newState) {
-                iconState = newState
-                callback.onSystemIconStateChanged(iconState)
-                recreateCalendarAndClockChangeReceiver()
-            }
-        }*/
 
         init {
             recreateCalendarAndClockChangeReceiver()
@@ -129,7 +121,6 @@ class CustomIconProvider @JvmOverloads constructor(
 
         override fun close() {
             calendarAndClockChangeReceiver = null
-            //subscription.close()
         }
     }
 

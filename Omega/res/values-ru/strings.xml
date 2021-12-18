@@ -174,7 +174,7 @@
     <string name="title_show_google_app">Показать приложение Google</string>
     <string name="title_white_only_treatment">Заменить белый фон</string>
     <string name="title_legacy_treatment">Создание адаптивных иконок</string>
-    <string name="title_legacy_colored_backgrounds">Цветные фоны</string>
+    <string name="title_colored_backgrounds">Цветные фоны</string>
     <string name="title_adaptify_pack">Создать адаптивные иконки для пакета иконок</string>
     <string name="color_presets">Предустановки</string>
     <string name="reset_custom_icons_confirmation">Вернуться к иконкам по умолчанию из этого пакета иконок\? Это нельзя отменить.</string>

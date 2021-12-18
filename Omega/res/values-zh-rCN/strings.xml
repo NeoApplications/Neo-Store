@@ -174,7 +174,7 @@
     <string name="title_use_pill_qsb">显示胶囊搜索快捷方式</string>
     <string name="title_show_google_app">显示 Google 应用</string>
     <string name="title_white_only_treatment">替换白色背景</string>
-    <string name="title_legacy_colored_backgrounds">彩色背景</string>
+    <string name="title_colored_backgrounds">彩色背景</string>
     <string name="title_legacy_treatment">创建自适应图标</string>
     <string name="title_force_shapeless">强制无遮罩图标</string>
     <string name="title_adaptify_pack">为图标集创建自适应图标</string>

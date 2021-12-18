@@ -15,11 +15,17 @@
  */
 package com.android.launcher3.icons;
 
+import static com.saggitt.omega.icons.IconPreferencesKt.drawableToBitmap;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for extracting colors from a bitmap.
@@ -126,5 +132,57 @@ public class ColorExtractor {
             }
         }
         return bestColor;
+    }
+
+
+
+    public static boolean isSingleColor(Drawable drawable, int color) {
+        if (drawable == null) return true;
+        final int testColor = posterize(color);
+        if (drawable instanceof ColorDrawable) {
+            return posterize(((ColorDrawable) drawable).getColor()) == testColor;
+        }
+        final Bitmap bitmap = drawableToBitmap(drawable);
+        final int height = bitmap.getHeight();
+        final int width = bitmap.getWidth();
+
+        int[] pixels = new int[height * width];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+        Set<Integer> set = Arrays.stream(pixels).boxed().collect(Collectors.toSet());
+        Integer[] distinctPixels = new Integer[set.size()];
+        set.toArray(distinctPixels);
+
+        for (int pixel : distinctPixels) {
+            if (testColor != posterize(pixel)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static final int MAGIC_NUMBER = 25;
+
+    /*
+     * References:
+     * https://www.cs.umb.edu/~jreyes/csit114-fall-2007/project4/filters.html#posterize
+     * https://github.com/gitgraghu/image-processing/blob/master/src/Effects/Posterize.java
+     */
+    public static int posterize(int rgb) {
+        int red = (0xff & (rgb >> 16));
+        int green = (0xff & (rgb >> 8));
+        int blue = (0xff & rgb);
+        red -= red % MAGIC_NUMBER;
+        green -= green % MAGIC_NUMBER;
+        blue -= blue % MAGIC_NUMBER;
+        if (red < 0) {
+            red = 0;
+        }
+        if (green < 0) {
+            green = 0;
+        }
+        if (blue < 0) {
+            blue = 0;
+        }
+        return red << 16 | green << 8 | blue;
     }
 }

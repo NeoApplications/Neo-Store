@@ -45,6 +45,12 @@
         android:title="@string/title_theme_icon_packs"
         app:iconSpaceReserved="false" /> -->
 
+    <Preference
+        android:key="pref_about"
+        android:fragment="com.saggitt.omega.preferences.views.IconShapeFragment"
+        android:title="@string/title_theme_customize_icons"
+        app:iconSpaceReserved="false" />
+
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="pref_enableBlur"

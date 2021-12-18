@@ -175,7 +175,7 @@ public class IconProvider {
                 final Resources resources = mContext.getPackageManager()
                         .getResourcesForApplication(ai.applicationInfo);
                 icon = resources.getDrawableForDensity(iconRes, density);
-            } catch (NameNotFoundException | Resources.NotFoundException exc) {
+            } catch (NameNotFoundException | Resources.NotFoundException ignored) {
             }
         }
         // Get the default density icon

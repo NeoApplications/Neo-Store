@@ -19,6 +19,7 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
 import android.os.Process;
@@ -62,6 +63,7 @@ public class BaseIconFactory implements AutoCloseable {
     private Drawable mWrapperIcon;
     private int mWrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
     private Bitmap mUserBadgeBitmap;
+    private boolean isWhiteBackground;
 
     private final Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private static final float PLACEHOLDER_TEXT_SIZE = 20f;
@@ -294,10 +296,12 @@ public class BaseIconFactory implements AutoCloseable {
             boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
             shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
         }
-        if (icon == null) {
-            return null;
+        float scale;
+
+        int wrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
+        if(IconPreferencesKt.coloredBackground(mContext)){
+            wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
         }
-        float scale = 1f;
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
             if (mWrapperIcon == null) {
@@ -311,7 +315,6 @@ public class BaseIconFactory implements AutoCloseable {
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
             if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
 
-                int wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
@@ -322,9 +325,23 @@ public class BaseIconFactory implements AutoCloseable {
             }
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);
+
+            if (icon instanceof AdaptiveIconDrawable && IconPreferencesKt.replaceWhiteBackground(mContext)) {
+                if (((AdaptiveIconDrawable) icon).getBackground() instanceof ColorDrawable) {
+                    AdaptiveIconDrawable mutIcon = (AdaptiveIconDrawable) icon.mutate();
+
+                    if (!ColorExtractor.isSingleColor(mutIcon.getBackground(), Color.WHITE)) {
+                        ((ColorDrawable) mutIcon.getBackground()).setColor(Color.RED);
+                        outScale[0] = scale;
+                        return mutIcon;
+                    }
+                }
+            }
+
         }
 
         outScale[0] = scale;
+
         return icon;
     }
 

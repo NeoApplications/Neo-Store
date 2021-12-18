@@ -42,7 +42,7 @@ class IconShapeManager(private val context: Context) {
                 return Path(iconMask)
             }
 
-            override fun toString() = ""
+            override fun toString() = "system"
 
             override fun getHashString(): String {
                 val resId = IconProvider.CONFIG_ICON_MASK_RES_ID
@@ -86,11 +86,6 @@ class IconShapeManager(private val context: Context) {
         val INSTANCE = MainThreadInitializedObject(::IconShapeManager)
 
         fun getSystemIconShape(context: Context) = INSTANCE.get(context).systemIconShape
-
-        @JvmStatic
-        fun getWindowTransitionRadius(context: Context): Float {
-            return OmegaPreferences.getInstance(context).iconShape.windowTransitionRadius
-        }
     }
 
 }

@@ -79,6 +79,7 @@ import com.android.quickstep.TaskUtils;
 import com.android.quickstep.util.QuickstepOnboardingPrefs;
 import com.android.quickstep.views.RecentsView;
 import com.android.quickstep.views.TaskView;
+import com.saggitt.omega.gestures.VerticalSwipeGestureController;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -312,6 +313,7 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
                 list.add(new PortraitStatesTouchController(this));
         }
 
+        list.add(new VerticalSwipeGestureController(this));
         if (!getDeviceProfile().isMultiWindowMode) {
             list.add(new StatusBarTouchController(this));
         }

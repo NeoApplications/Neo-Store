@@ -196,7 +196,7 @@
     <string name="title_show_google_app">أظهر تطبيق جوجل</string>
     <string name="title_white_only_treatment">استبدال الخلفيات البيضاء</string>
     <string name="title_legacy_treatment">أنشئ أيقونات تكيفية</string>
-    <string name="title_legacy_colored_backgrounds">خلفيات ملونة</string>
+    <string name="title_colored_backgrounds">خلفيات ملونة</string>
     <string name="title_force_shapeless">أفرض أيقونات بلا شكل</string>
     <string name="title_adaptify_pack">أنشئ ايقونات تكيفية لحزمة الايقونات هذه</string>
     <string name="color_presets">مُعد مسبقا</string>

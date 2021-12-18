@@ -92,8 +92,6 @@ public abstract class IconShape {
         return false;
     }
 
-    ;
-
     public abstract void drawShape(Canvas canvas, float offsetX, float offsetY, float radius,
                                    Paint paint);
 

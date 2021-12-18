@@ -163,6 +163,12 @@ class OmegaPreferences(val context: Context) :
         }, IconShape::toString
     ) { /* no dispose */ }
 
+    var coloredBackground by BooleanPref("pref_colored_background",false, doNothing)
+    var enableWhiteOnlyTreatment by BooleanPref("pref_white_only_treatment", false, doNothing)
+    var enableLegacyTreatment by BooleanPref("pref_legacy_treatment", false, doNothing)
+    var adaptifyIconPacks by BooleanPref("pref_adaptive_icon_pack", false, doNothing)
+    var forceShapeless by BooleanPref("pref_force_shape_less", false, doNothing)
+
     //FOLDER
     var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
     val customFolderBackground by BooleanPref("pref_custom_folder_background", false, recreate)

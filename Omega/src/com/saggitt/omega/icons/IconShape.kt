@@ -246,7 +246,7 @@ open class IconShape(
         override val windowTransitionRadius = .6f
 
         override fun toString(): String {
-            return "roundedSquare"
+            return "rounded"
         }
     }
 
@@ -313,9 +313,10 @@ open class IconShape(
 
         fun fromString(value: String): IconShape? {
             return when (value) {
+                "system" -> IconShapeManager.INSTANCE.noCreate.systemIconShape
                 "circle" -> Circle
                 "square" -> Square
-                "roundedSquare" -> RoundedSquare
+                "rounded" -> RoundedSquare
                 "squircle" -> Squircle
                 "teardrop" -> Teardrop
                 "cylinder" -> Cylinder

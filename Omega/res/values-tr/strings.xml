@@ -342,7 +342,7 @@
     <string name="title_smartspace_feed_theme">Özet Akışı Teması</string>
     <string name="title_white_only_treatment">Beyaz arka planları değiştir</string>
     <string name="title_legacy_treatment">Uyarlanabilir Simgeler Oluştur</string>
-    <string name="title_legacy_colored_backgrounds">Renkli arka planlar</string>
+    <string name="title_colored_backgrounds">Renkli arka planlar</string>
     <string name="title_force_shapeless">Kalıpsız simgeleri zorla</string>
     <string name="title_adaptify_pack">Simge paketi için uyarlanabilir simgeler oluştur</string>
     <string name="color_presets">Hazır Ayarlar</string>

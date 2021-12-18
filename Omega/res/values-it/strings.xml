@@ -259,7 +259,7 @@
     <string name="title_show_google_app">Mostra app Google</string>
     <string name="title_white_only_treatment">Sostituisci sfondi bianchi</string>
     <string name="title_legacy_treatment">Crea icone adattive</string>
-    <string name="title_legacy_colored_backgrounds">Sfondi colorati</string>
+    <string name="title_colored_backgrounds">Sfondi colorati</string>
     <string name="title_force_shapeless">Forza icone senza forma</string>
     <string name="title_adaptify_pack">Crea icone adattive per il pacchetto icone</string>
     <string name="color_presets">Preimpostazioni</string>

@@ -115,7 +115,7 @@
     <string name="title_show_google_app">Rodyti Google app</string>
     <string name="title_white_only_treatment">Pakeisti baltus fonus</string>
     <string name="title_legacy_treatment">Sukurti prisitaikančias piktogramas</string>
-    <string name="title_legacy_colored_backgrounds">Spalvoti fonai</string>
+    <string name="title_colored_backgrounds">Spalvoti fonai</string>
     <string name="title_force_shapeless">Priverstinai naudoti beformes piktogramas</string>
     <string name="title_adaptify_pack">Sukurti prisitaikančias piktogramų paketo piktogramas</string>
     <string name="color_presets">Parinktys</string>

@@ -255,7 +255,7 @@
     <string name="smartspace_add_to_home">Ajouter à l\'écran d\'accueil</string>
     <string name="title_white_only_treatment">Remplacer les arrière-plans blancs</string>
     <string name="title_legacy_treatment">Créer des icônes adaptatives</string>
-    <string name="title_legacy_colored_backgrounds">Arrière-plans colorés</string>
+    <string name="title_colored_backgrounds">Arrière-plans colorés</string>
     <string name="title_force_shapeless">Forcer la mise en forme des icônes</string>
     <string name="title_adaptify_pack">Créer des icônes adaptatives pour le pack d\'icônes</string>
     <string name="summary_search_hidden_apps">Afficher les raccourcis masqués dans les résultats.</string>

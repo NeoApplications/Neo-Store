@@ -224,7 +224,7 @@
     <string name="name_provider_alarm_events">Próximas alarmas</string>
     <string name="smartspace_in_time">En %1$s</string>
     <string name="title_legacy_treatment">Crear iconos adaptivos</string>
-    <string name="title_legacy_colored_backgrounds">Fondo de colores</string>
+    <string name="title_colored_backgrounds">Fondo de colores</string>
     <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
     <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no se puede deshacer.</string>
     <string name="import_as_adaptive">Como Icono adaptativo</string>
