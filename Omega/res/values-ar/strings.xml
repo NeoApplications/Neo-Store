@@ -421,4 +421,9 @@
     <string name="pref_desktop_mode_summary">تنشيط وضع سطح المكتب لأندرويد</string>
     <string name="theme_auto_night_mode_black">النظام (أسود)</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">اتبع ضوء النهار (بلاك)</string>
+    <string name="summary_force_shapeless">حاول استخدام الرموز القديمة لجميع التطبيقات.</string>
+    <string name="title_theme_customize_icons">تخصيص الأيقونات</string>
+    <string name="summary_colored_backgrounds">خلفيات أيقونات تكيفية تم إنشاؤها بالألوان.</string>
+    <string name="summary_legacy_treatment">قم بإنشاء أيقونات تكيفية لجميع الاختصارات.</string>
+    <string name="summary_white_only_treatment">قم بتلوين جميع خلفيات الأيقونات التكيفية.</string>
 </resources>
