@@ -93,6 +93,8 @@ class InstallerService : Service() {
                         Common.NOTIFICATION_ID_DOWNLOADING,
                         notification
                     )
+                    Thread.sleep(5000)
+                    notificationManager.cancel(notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
                 }
             }
             PackageInstaller.STATUS_FAILURE_ABORTED -> {

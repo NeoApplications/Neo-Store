@@ -256,71 +256,88 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
         updateButtons(ProductPreferences[packageName])
     }
 
-    private suspend fun updateButtons(preference: ProductPreference) {
-        val installed = installed
-        val product = Product.findSuggested(products, installed?.installedItem) { it.first }?.first
-        val compatible = product != null && product.selectedReleases.firstOrNull()
-            .let { it != null && it.incompatibilities.isEmpty() }
-        val canInstall = product != null && installed == null && compatible
-        val canUpdate =
-            product != null && compatible && product.canUpdate(installed?.installedItem) &&
-                    !preference.shouldIgnoreUpdate(product.versionCode)
-        val canUninstall = product != null && installed != null && !installed.isSystem
-        val canLaunch =
-            product != null && installed != null && installed.launcherActivities.isNotEmpty()
-        val canShare = product != null && products[0].second.name == "F-Droid"
+    private suspend fun updateButtons(preference: ProductPreference) =
+        withContext(Dispatchers.Default) {
+            val installed = installed
+            val product =
+                Product.findSuggested(products, installed?.installedItem) { it.first }?.first
+            val compatible = product != null && product.selectedReleases.firstOrNull()
+                .let { it != null && it.incompatibilities.isEmpty() }
+            val canInstall = product != null && installed == null && compatible
+            val canUpdate =
+                product != null && compatible && product.canUpdate(installed?.installedItem) &&
+                        !preference.shouldIgnoreUpdate(product.versionCode)
+            val canUninstall = product != null && installed != null && !installed.isSystem
+            val canLaunch =
+                product != null && installed != null && installed.launcherActivities.isNotEmpty()
+            val canShare = product != null && products[0].second.name == "F-Droid"
 
-        val actions = mutableSetOf<Action>()
-        if (canInstall) {
-            actions += Action.INSTALL
-        }
-        if (canUpdate) {
-            actions += Action.UPDATE
-        }
-        if (canLaunch) {
-            actions += Action.LAUNCH
-        }
-        if (installed != null) {
-            actions += Action.DETAILS
-        }
-        if (canUninstall) {
-            actions += Action.UNINSTALL
-        }
-        if (canShare) {
-            actions += Action.SHARE
-        }
-        val primaryAction = when {
-            canUpdate -> Action.UPDATE
-            canLaunch -> Action.LAUNCH
-            canInstall -> Action.INSTALL
-            installed != null -> Action.DETAILS
-            canShare -> Action.SHARE
-            else -> null
-        }
+            val actions = mutableSetOf<Action>()
+            launch {
+                if (canInstall) {
+                    actions += Action.INSTALL
+                }
+            }
+            launch {
+                if (canUpdate) {
+                    actions += Action.UPDATE
+                }
+            }
+            launch {
+                if (canLaunch) {
+                    actions += Action.LAUNCH
+                }
+            }
+            launch {
+                if (installed != null) {
+                    actions += Action.DETAILS
+                }
+            }
+            launch {
+                if (canUninstall) {
+                    actions += Action.UNINSTALL
+                }
+            }
+            launch {
+                if (canShare) {
+                    actions += Action.SHARE
+                }
+            }
+            val primaryAction = when {
+                canUpdate -> Action.UPDATE
+                canLaunch -> Action.LAUNCH
+                canInstall -> Action.INSTALL
+                installed != null -> Action.DETAILS
+                canShare -> Action.SHARE
+                else -> null
+            }
 
-        val adapterAction =
-            if (downloading) AppDetailAdapter.Action.CANCEL else primaryAction?.adapterAction
-        (recyclerView?.adapter as? AppDetailAdapter)?.setAction(adapterAction)
-
-        for (action in sequenceOf(
-            Action.INSTALL,
-            Action.SHARE,
-            Action.UPDATE,
-            Action.UNINSTALL
-        )) {
-            toolbar.menu.findItem(action.id).isEnabled = !downloading
+            launch(Dispatchers.Main) {
+                val adapterAction =
+                    if (downloading) AppDetailAdapter.Action.CANCEL else primaryAction?.adapterAction
+                (recyclerView?.adapter as? AppDetailAdapter)?.setAction(adapterAction)
+                for (action in sequenceOf(
+                    Action.INSTALL,
+                    Action.SHARE,
+                    Action.UPDATE,
+                    Action.UNINSTALL
+                )) {
+                    toolbar.menu.findItem(action.id).isEnabled = !downloading
+                }
+            }
+            launch { this@AppDetailFragment.actions = Pair(actions, primaryAction) }
+            launch(Dispatchers.Main) { updateToolbarButtons() }
         }
-        this.actions = Pair(actions, primaryAction)
-        withContext(Dispatchers.Main) { updateToolbarButtons() }
-    }
 
     private suspend fun updateToolbarTitle() {
         withContext(Dispatchers.Main) {
             val showPackageName = recyclerView
                 ?.let { (it.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 } == true
-            collapsingToolbar.title =
-                if (showPackageName) products[0].first.name.trimAfter(' ', 2)
-                else getString(R.string.application)
+            launch {
+                collapsingToolbar.title =
+                    if (showPackageName) products[0].first.name.trimAfter(' ', 2)
+                    else getString(R.string.application)
+            }
         }
     }
 
@@ -330,11 +347,15 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             val showPrimaryAction = recyclerView
                 ?.let { (it.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 } == true
             val displayActions = actions.toMutableSet()
-            if (!showPrimaryAction && primaryAction != null) {
-                displayActions -= primaryAction
+            launch {
+                if (!showPrimaryAction && primaryAction != null) {
+                    displayActions -= primaryAction
+                }
             }
-            if (displayActions.size >= 4 && resources.configuration.screenWidthDp < 400) {
-                displayActions -= Action.DETAILS
+            launch {
+                if (displayActions.size >= 4 && resources.configuration.screenWidthDp < 400) {
+                    displayActions -= Action.DETAILS
+                }
             }
 
             launch(Dispatchers.Main) {
