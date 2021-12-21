@@ -144,7 +144,7 @@ dependencies {
     implementation 'com.github.topjohnwu.libsu:core:3.1.2'
 
     // JackSon
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
 
     // Coroutines / Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
