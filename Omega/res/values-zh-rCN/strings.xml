@@ -411,4 +411,9 @@
     <string name="pref_desktop_mode_settings">桌面模式设置</string>
     <string name="theme_auto_night_mode_black">系统（黑色）</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">跟随白天（黑色）</string>
+    <string name="title_theme_customize_icons">自定义图标</string>
+    <string name="summary_white_only_treatment">为所有自适应图标的背景着色。</string>
+    <string name="summary_colored_backgrounds">为生成的自适应图标的背景着色。</string>
+    <string name="summary_force_shapeless">尝试为所有应用程序使用旧图标。</string>
+    <string name="summary_legacy_treatment">为所有快捷方式创建自适应图标。</string>
 </resources>

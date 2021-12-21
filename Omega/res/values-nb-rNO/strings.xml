@@ -44,8 +44,8 @@
     <string name="title__sort_by_color">Etter farge</string>
     <string name="title__sort_most_used">Mest brukt</string>
     <string name="title__sort_last_installed">Sist installert</string>
-    <string name="title__sort_alphabetical_za">Å-A</string>
-    <string name="title__sort_alphabetical_az">A-Z</string>
+    <string name="title__sort_alphabetical_za">Å→A</string>
+    <string name="title__sort_alphabetical_az">A→Å</string>
     <string name="title__sort_mode">Programsortering</string>
     <string name="title__drawer_columns">Antall kolonner</string>
     <string name="title__drawer_icon_popup_menu">Snarveisboble</string>
@@ -63,7 +63,7 @@
     <string name="reset_custom_icons_confirmation">Tilbakestill til forvalgte ikoner fra denne ikonpakken\? Dette kan ikke angres.</string>
     <string name="reset_custom_icons">Tilbakestill tilpassede ikoner</string>
     <string name="loading">Laster inn …</string>
-    <string name="folder_cover_mode_desc">Trykk for å åpne det første programmet, dra oppover for å vise alle.</string>
+    <string name="folder_cover_mode_desc">Trykk for å åpne det første programmet. Dra oppover for å vise alle.</string>
     <string name="folder_cover_mode">Bruk omslagsmodus</string>
     <string name="hide_app">Skjul snarvei</string>
     <string name="debug_component_name_copied">Kopiert til utklippstavle.</string>
@@ -106,7 +106,7 @@
     <string name="title__advanced_setting_search">Vis innstillingssøk</string>
     <string name="summary__advanced_language">Endre programspråk</string>
     <string name="summary__advanced_setting_search">Vis innstillingssøk i handlingsfelt</string>
-    <string name="error_no_browser">Ingenting kan håndtere nettadresser</string>
+    <string name="error_no_browser">Installer et program som kan åpne nettadresser først</string>
     <string name="search_provider_appsearch">Programsøk</string>
     <string name="search_no_results">Resultatløst</string>
     <string name="cat_search_bar">Søkefelt</string>
@@ -187,7 +187,7 @@
     <string name="icon_shape_override_label">Endre ikonstørrelse</string>
     <string name="title__theme_accent_color">Aksentfarge</string>
     <string name="hide_app_reset">Tilbakestill skjulte programmer</string>
-    <string name="hide_app_selected">  skjult</string>
+    <string name="hide_app_selected"> skjult</string>
     <string name="selected_count">%1$d valgt</string>
     <string name="title__dock_hotseat_icons">Ikonantall</string>
     <string name="title__dock_icon_size">Ikonstørrelse</string>
@@ -313,7 +313,7 @@
     <string name="title_adaptify_pack">Opprett tilpasningsdyktige ikoner for ikonpakke</string>
     <string name="import_as_adaptive">Som tilpasningsdyktig ikon</string>
     <string name="menu_icon_shape">Egendefinert ikonform</string>
-    <string name="msg_missing_usage_access">For å vise programforslag, skru på brukstilgang for <xliff:g example="My App" id="name">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">Skru på brukstilgang for <xliff:g example="My App" id="name">%1$s</xliff:g> for å vise programforslag</string>
     <string name="title_all_apps_google_search">Globalt søk</string>
     <string name="pref_category__incubating">Inkubasjon</string>
     <string name="summary__general_notifications">Skilt-telling, skiltfarge, håndvendinger</string>
@@ -325,8 +325,8 @@
     <string name="action_open_dash">Vis oversikt</string>
     <string name="action_sleep">Dvalgang</string>
     <string name="gesture_dock_swipe_up">Dra oppover fra dokken</string>
-    <string name="dt2s_admin_hint">Innvilg tilgangen for å bruke dobbeltklikk for dvalgang.</string>
-    <string name="dt2s_admin_warning">Dobbelttrykk for å skru av dvalgang.</string>
+    <string name="dt2s_admin_hint">Innvilg administratortilgang for å bruke dobbeltklikk for dvalgang.</string>
+    <string name="dt2s_admin_warning">Dobbelttrykk for å skru av dvalgang vil skrus av.</string>
     <string name="local_backups">I lager</string>
     <string name="edit_dash">Rediger oversikt</string>
     <string name="home_widget">I oversikt</string>
@@ -412,4 +412,11 @@
     <string name="pref_desktop_mode">Skrivebordsmodus</string>
     <string name="pref_desktop_mode_summary">Aktiver Android sitt skrivebordsmodus</string>
     <string name="pref_desktop_mode_settings">Innstillinger for skrivebordsmodus</string>
+    <string name="theme_auto_night_mode_black">System (svart)</string>
+    <string name="theme_dark_theme_mode_follow_daylight_black">Følg dagslys (svart)</string>
+    <string name="summary_legacy_treatment">Opprett tilpasningsdyktige ikoner for alle snarveier.</string>
+    <string name="title_theme_customize_icons">Tilpass ikoner</string>
+    <string name="summary_force_shapeless">Prøv å bruke gammeldagse ikoner for alle programmer.</string>
+    <string name="summary_colored_backgrounds">Fargelegg genererte bakgrunner for tilpasningsdyktige ikoner</string>
+    <string name="summary_white_only_treatment">Fargelegg bakgrunner for tilpasningsdyktige ikoner.</string>
 </resources>
