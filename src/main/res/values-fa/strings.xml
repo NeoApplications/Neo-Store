@@ -18,7 +18,7 @@
     <string name="password">گذرواژه</string>
     <string name="open_DESC_FORMAT">باز کردن %s؟</string>
     <string name="prefs_personalization">شخصی‌سازی</string>
-    <string name="no_matching_applications_found">نمی‌توان چنین برنامه‌ای را یافت</string>
+    <string name="no_matching_applications_found">نمی‌توان چنین برنامه‌هایی را یافت</string>
     <string name="author_email">رایانامهٔ نویسنده</string>
     <string name="syncing_FORMAT">هماهنگ‌سازی %s…</string>
     <string name="saving_details">ذخیرهٔ جزئیات…</string>
@@ -29,10 +29,10 @@
     <string name="prefs_language_title">زبان</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">یک برنامه نسخه‌ای جدید دارد.</item>
-        <item quantity="other">%d برنامه نسخه‌ای جدید دارند.</item>
+        <item quantity="other">%d برنامه نسخه‌های جدید دارند.</item>
     </plurals>
     <string name="number_of_applications">تعداد برنامه</string>
-    <string name="notify_about_updates_summary">نمایش یک اعلان وقتی نسخه‌های جدید موجود است</string>
+    <string name="notify_about_updates_summary">نمایش یک اعلان وقتی نسخه‌هایی جدید موجود است</string>
     <string name="all_applications">همهٔ برنامه‌ها</string>
     <string name="action_failed">عمل ناموفق بود</string>
     <string name="already_exists">در حال حاضر موجود است</string>
@@ -53,7 +53,7 @@
     <string name="only_on_wifi">فقط در وای-فای</string>
     <string name="only_compatible_with_FORMAT">فقط هماهنگ با %s</string>
     <string name="ok">باشد</string>
-    <string name="notify_about_updates">اعلان دربارهٔ نسخه‌های جدید برنامه</string>
+    <string name="notify_about_updates">اطلاع‌رسانی دربارهٔ نسخه‌های جدید برنامه</string>
     <string name="no_proxy">بدون پراکسی</string>
     <string name="no_description_available_DESC">توضیحی موجود نیست.</string>
     <string name="new_updates_available">نسخه‌های جدیدی از برنامه‌ها موجود است</string>
@@ -83,7 +83,7 @@
     <string name="show_older_versions">نمایش نسخه‌های پیشین</string>
     <string name="show_more">نمایش بیشتر</string>
     <string name="share">همرسانی</string>
-    <string name="select_mirror">انتخاب یک میرور</string>
+    <string name="select_mirror">انتخاب یک آیینه</string>
     <string name="search">جستجو</string>
     <string name="screenshots">نماگرفت‌ها</string>
     <string name="save">ذخیره‌سازی</string>
@@ -132,21 +132,21 @@
     <string name="has_advertising">دارای تبلیغات</string>
     <string name="has_non_free_dependencies">دارای وابستگی‌های غیرآزاد</string>
     <string name="has_security_vulnerabilities">دارای آسیب پذیری‌های امنیتی</string>
-    <string name="http_proxy">پروکسی HTTP</string>
+    <string name="http_proxy">پراکسی HTTP</string>
     <string name="add_repository">افزودن مخزن</string>
     <string name="all_applications_up_to_date">همهٔ برنامه‌های شما به‌روز هستند</string>
     <string name="file_format_error_DESC">قالب پروندهٔ نامعتبر.</string>
     <string name="incompatible_older_DESC">این نسخه قدیمی تر از نسخه ای است که روی دستگاه شما نصب شده است. ابتدا آن را حذف کنید.</string>
-    <string name="incompatible_version">نسخه ناسازگار</string>
-    <string name="incompatible_versions">نسخه های ناسازگار</string>
-    <string name="incompatible_versions_summary">نمایش نسخه های برنامه ناسازگار با دستگاه</string>
+    <string name="incompatible_version">نسخهٔ ناسازگار</string>
+    <string name="incompatible_versions">نسخه‌های ناسازگار</string>
+    <string name="incompatible_versions_summary">نمایش نسخه‌های برنامه ناسازگار با دستگاه</string>
     <string name="install">نصب</string>
-    <string name="invalid_username_format">فرمت نام کاربری نامعتبر</string>
+    <string name="invalid_username_format">قالب نام کاربری نامعتبر</string>
     <string name="license">مجوز</string>
     <string name="name">نام</string>
     <string name="network_error_DESC">خطای شبکه.</string>
     <string name="never">هرگز</string>
-    <string name="list_animation_description">نمایش انیمیشن لیست در صفحه اصلی</string>
+    <string name="list_animation_description">نمایش انیمیشن فهرست در صفحه اصلی</string>
     <string name="incompatible_api_max_DESC_FORMAT">بالاترین نسخهٔ ای‌پی‌آی %d است.</string>
     <string name="incompatible_api_min_DESC_FORMAT">پایین‌ترین نسخهٔ ای‌پی‌آی %d است.</string>
     <string name="compiled_for_debugging">کامپایل‌شده برای رفع اشکال</string>
@@ -166,7 +166,7 @@
     <string name="invalid_fingerprint_format">نسخهٔ اثرانگشت نادرست</string>
     <string name="invalid_metadata_error_DESC">فراداده نارست.</string>
     <string name="invalid_permissions_error_DESC">مجوزهای نادرست.</string>
-    <string name="invalid_signature_error_DESC">امضاهای نادرست.</string>
+    <string name="invalid_signature_error_DESC">امضای نادرست.</string>
     <string name="launch">راه‌اندازی</string>
     <string name="license_FORMAT">مجوز %s</string>
     <string name="light">روشن</string>
@@ -174,7 +174,7 @@
     <string name="links">پیوندها</string>
     <string name="list_animation">فهرست انیمیشن‌ها</string>
     <string name="merging_FORMAT">ادغام %s</string>
-    <string name="ignore_all_updates">نادیده گرفتن تمام نسخه های جدید</string>
-    <string name="http_error_DESC">پاسخ سرور نامعتبر.</string>
+    <string name="ignore_all_updates">نادیده گرفتن تمام نسخه‌های جدید</string>
+    <string name="http_error_DESC">پاسخ نادرست سرور.</string>
     <string name="incompatible_with_FORMAT">ناسازگار با %s</string>
 </resources>
