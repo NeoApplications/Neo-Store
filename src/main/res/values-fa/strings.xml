@@ -174,4 +174,7 @@
     <string name="links">پیوندها</string>
     <string name="list_animation">فهرست انیمیشن‌ها</string>
     <string name="merging_FORMAT">ادغام %s</string>
+    <string name="ignore_all_updates">نادیده گرفتن تمام نسخه های جدید</string>
+    <string name="http_error_DESC">پاسخ سرور نامعتبر.</string>
+    <string name="incompatible_with_FORMAT">ناسازگار با %s</string>
 </resources>
