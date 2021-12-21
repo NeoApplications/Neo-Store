@@ -51,7 +51,7 @@
         android:title="@string/title_theme_customize_icons"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:defaultValue="false"
         android:key="pref_enableBlur"
         app:iconSpaceReserved="false"
