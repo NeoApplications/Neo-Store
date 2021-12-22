@@ -87,6 +87,9 @@
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
         <item name="iconShapeTint">@color/grey_700</item>
+
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#40000000</item>
     </style>
 
     <style name="SettingsTheme.Light.Transparent" parent="SettingsTheme">
@@ -116,6 +119,8 @@
         <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
 
         <item name="iconShapeTint">@color/grey_400</item>
+        <item name="workspaceShadowColor">#B0000000</item>
+        <item name="workspaceAmbientShadowColor">#40000000</item>
     </style>
 
     <style name="SettingsTheme.Black" parent="SettingsTheme.Dark">
@@ -125,11 +130,10 @@
         <item name="settingsPopupBackground">@color/settings_background_black_8dp</item>
 
         <item name="workspaceTextColor">#FF212121</item>
-        <item name="workspaceShadowColor">@android:color/transparent</item>
-        <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
+        <item name="workspaceShadowColor">@android:color/white</item>
+        <item name="workspaceAmbientShadowColor">@android:color/white</item>
         <item name="workspaceKeyShadowColor">@android:color/transparent</item>
         <item name="isWorkspaceDarkText">true</item>
-
 
         <item name="iconShapeTint">@color/grey_50</item>
     </style>
@@ -213,7 +217,7 @@
 
     <style name="WidgetContainerTheme.Light" parent="SettingsTheme.Light">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
-        <item name="android:colorPrimary">?backgroundColor</item>
+        <item name="android:colorPrimary">@color/grey_100</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="android:textColorPrimary">#000000</item>
         <item name="android:textColorSecondary">#3A3939</item>
