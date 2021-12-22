@@ -415,7 +415,7 @@
     <string name="pref_desktop_mode">Masaüstü modu</string>
     <string name="pref_desktop_mode_summary">Android\'in masaüstü modunu etkinleştirin</string>
     <string name="pref_desktop_mode_settings">Masaüstü modu ayarları</string>
-    <string name="summary_colored_backgrounds">Oluşturulan Uyarlanabilir Simgelerin arka planlarını renklendir.</string>
+    <string name="summary_colored_backgrounds">Uyarlanabilir Simgelerin arka planları için.</string>
     <string name="summary_white_only_treatment">Tüm Uyarlanabilir Simgelerin arka planlarını renklendir.</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Gün ışığını takip et (Siyah)</string>
 </resources>
