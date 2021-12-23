@@ -140,10 +140,17 @@
 
     <style name="AlertDialog.Light" parent="Theme.Material3.Light.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
+        <item name="android:colorBackground">@color/settings_background_light_2dp</item>
     </style>
 
     <style name="AlertDialog.Dark" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
+        <item name="android:colorBackground">@color/settings_background_dark_2dp</item>
+    </style>
+
+    <style name="AlertDialog.Black" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="android:colorBackground">@color/settings_background_black_2dp</item>
     </style>
 
     <style name="SettingsTheme.BottomSheetDialog.Light" parent="Theme.Material3.Light.BottomSheetDialog">
