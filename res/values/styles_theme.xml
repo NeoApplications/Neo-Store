@@ -4,1035 +4,1543 @@
     <!-- Red -->
     <style name="ffffebee">
         <item name="colorAccent">@color/red_50</item>
+        <item name="colorPrimary">@color/red_50</item>
+        <item name="colorOnPrimary">@color/red_50_trans</item>
     </style>
 
     <style name="ffffcdd2">
         <item name="colorAccent">@color/red_100</item>
+        <item name="colorPrimary">@color/red_100</item>
+        <item name="colorOnPrimary">@color/red_100_trans</item>
     </style>
 
     <style name="ffef9a9a">
         <item name="colorAccent">@color/red_200</item>
+        <item name="colorPrimary">@color/red_200</item>
+        <item name="colorOnPrimary">@color/red_200_trans</item>
     </style>
 
     <style name="ffe57373">
         <item name="colorAccent">@color/red_300</item>
+        <item name="colorPrimary">@color/red_300</item>
+        <item name="colorOnPrimary">@color/red_300_trans</item>
     </style>
 
     <style name="ffef5350">
         <item name="colorAccent">@color/red_400</item>
+        <item name="colorPrimary">@color/red_400</item>
+        <item name="colorOnPrimary">@color/red_400_trans</item>
     </style>
 
     <style name="fff44336">
         <item name="colorAccent">@color/red_500</item>
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorOnPrimary">@color/red_500_trans</item>
     </style>
 
     <style name="ffe53935">
         <item name="colorAccent">@color/red_600</item>
+        <item name="colorPrimary">@color/red_600</item>
+        <item name="colorOnPrimary">@color/red_600_trans</item>
     </style>
 
     <style name="ffd32f2f">
         <item name="colorAccent">@color/red_700</item>
+        <item name="colorPrimary">@color/red_700</item>
+        <item name="colorOnPrimary">@color/red_700_trans</item>
     </style>
 
     <style name="ffc62828">
         <item name="colorAccent">@color/red_800</item>
+        <item name="colorPrimary">@color/red_800</item>
+        <item name="colorOnPrimary">@color/red_800_trans</item>
     </style>
 
     <style name="ffb71c1c">
         <item name="colorAccent">@color/red_900</item>
+        <item name="colorPrimary">@color/red_900</item>
+        <item name="colorOnPrimary">@color/red_900_trans</item>
     </style>
 
     <style name="ffff8a80">
         <item name="colorAccent">@color/red_a100</item>
+        <item name="colorPrimary">@color/red_a100</item>
+        <item name="colorOnPrimary">@color/red_a100_trans</item>
     </style>
 
     <style name="ffff5252">
         <item name="colorAccent">@color/red_a200</item>
+        <item name="colorPrimary">@color/red_a200</item>
+        <item name="colorOnPrimary">@color/red_a200_trans</item>
     </style>
 
     <style name="ffff1744">
         <item name="colorAccent">@color/red_a400</item>
+        <item name="colorPrimary">@color/red_a400</item>
+        <item name="colorOnPrimary">@color/red_a400_trans</item>
     </style>
 
     <style name="ffd50000">
         <item name="colorAccent">@color/red_a700</item>
+        <item name="colorPrimary">@color/red_a700</item>
+        <item name="colorOnPrimary">@color/red_a700_trans</item>
     </style>
 
     <!-- Pink -->
     <style name="fffce4ec">
         <item name="colorAccent">@color/pink_50</item>
+        <item name="colorPrimary">@color/pink_50</item>
+        <item name="colorOnPrimary">@color/pink_50_trans</item>
     </style>
 
     <style name="fff8bbd0">
         <item name="colorAccent">@color/pink_100</item>
+        <item name="colorPrimary">@color/pink_100</item>
+        <item name="colorOnPrimary">@color/pink_100_trans</item>
     </style>
 
     <style name="fff48fb1">
         <item name="colorAccent">@color/pink_200</item>
+        <item name="colorPrimary">@color/pink_200</item>
+        <item name="colorOnPrimary">@color/pink_200_trans</item>
     </style>
 
     <style name="fff06292">
         <item name="colorAccent">@color/pink_300</item>
+        <item name="colorPrimary">@color/pink_300</item>
+        <item name="colorOnPrimary">@color/pink_300_trans</item>
     </style>
 
     <style name="ffec407a">
         <item name="colorAccent">@color/pink_400</item>
+        <item name="colorPrimary">@color/pink_400</item>
+        <item name="colorOnPrimary">@color/pink_400_trans</item>
     </style>
 
     <style name="ffe91e63">
         <item name="colorAccent">@color/pink_500</item>
+        <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorOnPrimary">@color/pink_500_trans</item>
     </style>
 
     <style name="ffd81b60">
         <item name="colorAccent">@color/pink_600</item>
+        <item name="colorPrimary">@color/pink_600</item>
+        <item name="colorOnPrimary">@color/pink_600_trans</item>
     </style>
 
     <style name="ffc2185b">
         <item name="colorAccent">@color/pink_700</item>
+        <item name="colorPrimary">@color/pink_700</item>
+        <item name="colorOnPrimary">@color/pink_700_trans</item>
     </style>
 
     <style name="ffad1457">
         <item name="colorAccent">@color/pink_800</item>
+        <item name="colorPrimary">@color/pink_800</item>
+        <item name="colorOnPrimary">@color/pink_800_trans</item>
     </style>
 
     <style name="ff880e4f">
         <item name="colorAccent">@color/pink_900</item>
+        <item name="colorPrimary">@color/pink_900</item>
+        <item name="colorOnPrimary">@color/pink_900_trans</item>
     </style>
 
     <style name="ffff80ab">
         <item name="colorAccent">@color/pink_a100</item>
+        <item name="colorPrimary">@color/pink_a100</item>
+        <item name="colorOnPrimary">@color/pink_a100_trans</item>
     </style>
 
     <style name="fff4081">
         <item name="colorAccent">@color/pink_a200</item>
+        <item name="colorPrimary">@color/pink_a200</item>
+        <item name="colorOnPrimary">@color/pink_a200_trans</item>
     </style>
 
     <style name="fff50057">
         <item name="colorAccent">@color/pink_a400</item>
+        <item name="colorPrimary">@color/pink_a400</item>
+        <item name="colorOnPrimary">@color/pink_a400_trans</item>
     </style>
 
     <style name="ffc51162">
         <item name="colorAccent">@color/pink_a700</item>
+        <item name="colorPrimary">@color/pink_a700</item>
+        <item name="colorOnPrimary">@color/pink_a700_trans</item>
     </style>
 
     <!-- Purple -->
     <style name="fff3e5f5">
         <item name="colorAccent">@color/purple_50</item>
+        <item name="colorPrimary">@color/purple_50</item>
+        <item name="colorOnPrimary">@color/purple_50_trans</item>
     </style>
 
     <style name="ffe1bee7">
         <item name="colorAccent">@color/purple_100</item>
+        <item name="colorPrimary">@color/purple_100</item>
+        <item name="colorOnPrimary">@color/purple_100_trans</item>
     </style>
 
     <style name="ffce93d8">
         <item name="colorAccent">@color/purple_200</item>
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorOnPrimary">@color/purple_200_trans</item>
     </style>
 
     <style name="ffba68c8">
         <item name="colorAccent">@color/purple_300</item>
+        <item name="colorPrimary">@color/purple_300</item>
+        <item name="colorOnPrimary">@color/purple_300_trans</item>
     </style>
 
     <style name="ffab47bc">
         <item name="colorAccent">@color/purple_400</item>
+        <item name="colorPrimary">@color/purple_400</item>
+        <item name="colorOnPrimary">@color/purple_400_trans</item>
     </style>
 
     <style name="ff9c27b0">
         <item name="colorAccent">@color/purple_500</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorOnPrimary">@color/purple_500_trans</item>
     </style>
 
     <style name="ff8e24aa">
         <item name="colorAccent">@color/purple_600</item>
+        <item name="colorPrimary">@color/purple_600</item>
+        <item name="colorOnPrimary">@color/purple_600_trans</item>
     </style>
 
     <style name="ff7b1fa2">
         <item name="colorAccent">@color/purple_700</item>
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/purple_700_trans</item>
     </style>
 
     <style name="ff6a1b9a">
         <item name="colorAccent">@color/purple_800</item>
+        <item name="colorPrimary">@color/purple_800</item>
+        <item name="colorOnPrimary">@color/purple_800_trans</item>
     </style>
 
     <style name="ff4a148c">
         <item name="colorAccent">@color/purple_900</item>
+        <item name="colorPrimary">@color/purple_900</item>
+        <item name="colorOnPrimary">@color/purple_900_trans</item>
     </style>
 
     <style name="ffea80fc">
         <item name="colorAccent">@color/purple_a100</item>
+        <item name="colorPrimary">@color/purple_a100</item>
+        <item name="colorOnPrimary">@color/purple_a100_trans</item>
     </style>
 
     <style name="ffe040fb">
         <item name="colorAccent">@color/purple_a200</item>
+        <item name="colorPrimary">@color/purple_a200</item>
+        <item name="colorOnPrimary">@color/purple_a200_trans</item>
     </style>
 
     <style name="ffd500f9">
         <item name="colorAccent">@color/purple_a400</item>
+        <item name="colorPrimary">@color/purple_a400</item>
+        <item name="colorOnPrimary">@color/purple_a400_trans</item>
     </style>
 
     <style name="ffaa00ff">
         <item name="colorAccent">@color/purple_a700</item>
+        <item name="colorPrimary">@color/purple_a700</item>
+        <item name="colorOnPrimary">@color/purple_a700_trans</item>
     </style>
 
     <!-- Deep Purple -->
     <style name="ffede7f6">
         <item name="colorAccent">@color/dark_purple_50</item>
+        <item name="colorPrimary">@color/dark_purple_50</item>
+        <item name="colorOnPrimary">@color/dark_purple_50_trans</item>
     </style>
 
     <style name="ffd1c4e9">
         <item name="colorAccent">@color/dark_purple_100</item>
+        <item name="colorPrimary">@color/dark_purple_100</item>
+        <item name="colorOnPrimary">@color/dark_purple_100_trans</item>
     </style>
 
     <style name="ffb39ddb">
         <item name="colorAccent">@color/dark_purple_200</item>
+        <item name="colorPrimary">@color/dark_purple_200</item>
+        <item name="colorOnPrimary">@color/dark_purple_200_trans</item>
     </style>
 
     <style name="ff9575cd">
         <item name="colorAccent">@color/dark_purple_300</item>
+        <item name="colorPrimary">@color/dark_purple_300</item>
+        <item name="colorOnPrimary">@color/dark_purple_300_trans</item>
     </style>
 
     <style name="ff7e57c2">
         <item name="colorAccent">@color/dark_purple_400</item>
+        <item name="colorPrimary">@color/dark_purple_400</item>
+        <item name="colorOnPrimary">@color/dark_purple_400_trans</item>
     </style>
 
     <style name="ff673ab7">
         <item name="colorAccent">@color/dark_purple_500</item>
+        <item name="colorPrimary">@color/dark_purple_500</item>
+        <item name="colorOnPrimary">@color/dark_purple_500_trans</item>
     </style>
 
     <style name="ff5e35b1">
         <item name="colorAccent">@color/dark_purple_600</item>
+        <item name="colorPrimary">@color/dark_purple_600</item>
+        <item name="colorOnPrimary">@color/dark_purple_600_trans</item>
     </style>
 
     <style name="ff512da8">
         <item name="colorAccent">@color/dark_purple_700</item>
+        <item name="colorPrimary">@color/dark_purple_700</item>
+        <item name="colorOnPrimary">@color/dark_purple_700_trans</item>
     </style>
 
     <style name="ff4527a0">
         <item name="colorAccent">@color/dark_purple_800</item>
+        <item name="colorPrimary">@color/dark_purple_800</item>
+        <item name="colorOnPrimary">@color/dark_purple_800_trans</item>
     </style>
 
     <style name="ff311b92">
         <item name="colorAccent">@color/dark_purple_900</item>
+        <item name="colorPrimary">@color/dark_purple_900</item>
+        <item name="colorOnPrimary">@color/dark_purple_900_trans</item>
     </style>
 
     <style name="ffb388ff">
         <item name="colorAccent">@color/dark_purple_a100</item>
+        <item name="colorPrimary">@color/dark_purple_a100</item>
+        <item name="colorOnPrimary">@color/dark_purple_a100_trans</item>
     </style>
 
     <style name="ff7c4dff">
         <item name="colorAccent">@color/dark_purple_a200</item>
+        <item name="colorPrimary">@color/dark_purple_a200</item>
+        <item name="colorOnPrimary">@color/dark_purple_a200_trans</item>
     </style>
 
     <style name="ff651fff">
         <item name="colorAccent">@color/dark_purple_a400</item>
+        <item name="colorPrimary">@color/dark_purple_a400</item>
+        <item name="colorOnPrimary">@color/dark_purple_a400_trans</item>
     </style>
 
     <style name="ff6200ea">
         <item name="colorAccent">@color/dark_purple_a700</item>
+        <item name="colorPrimary">@color/dark_purple_a700</item>
+        <item name="colorOnPrimary">@color/dark_purple_a700_trans</item>
     </style>
 
     <!-- Indigo -->
     <style name="ffe8eaf6">
         <item name="colorAccent">@color/indigo_50</item>
+        <item name="colorPrimary">@color/indigo_50</item>
+        <item name="colorOnPrimary">@color/indigo_50_trans</item>
     </style>
 
     <style name="ffc5cae9">
         <item name="colorAccent">@color/indigo_100</item>
+        <item name="colorPrimary">@color/indigo_100</item>
+        <item name="colorOnPrimary">@color/indigo_100_trans</item>
     </style>
 
     <style name="ff9fa8da">
         <item name="colorAccent">@color/indigo_200</item>
+        <item name="colorPrimary">@color/indigo_200</item>
+        <item name="colorOnPrimary">@color/indigo_200_trans</item>
     </style>
 
     <style name="ff7986cb">
         <item name="colorAccent">@color/indigo_300</item>
+        <item name="colorPrimary">@color/indigo_300</item>
+        <item name="colorOnPrimary">@color/indigo_300_trans</item>
     </style>
 
     <style name="ff5c6bc0">
         <item name="colorAccent">@color/indigo_400</item>
+        <item name="colorPrimary">@color/indigo_400</item>
+        <item name="colorOnPrimary">@color/indigo_400_trans</item>
     </style>
 
     <style name="ff3f51b5">
         <item name="colorAccent">@color/indigo_500</item>
+        <item name="colorPrimary">@color/indigo_500</item>
+        <item name="colorOnPrimary">@color/indigo_500_trans</item>
     </style>
 
     <style name="ff3949ab">
         <item name="colorAccent">@color/indigo_600</item>
+        <item name="colorPrimary">@color/indigo_600</item>
+        <item name="colorOnPrimary">@color/indigo_600_trans</item>
     </style>
 
     <style name="ff303f9f">
         <item name="colorAccent">@color/indigo_700</item>
+        <item name="colorPrimary">@color/indigo_700</item>
+        <item name="colorOnPrimary">@color/indigo_700_trans</item>
     </style>
 
     <style name="ff283593">
         <item name="colorAccent">@color/indigo_800</item>
+        <item name="colorPrimary">@color/indigo_800</item>
+        <item name="colorOnPrimary">@color/indigo_800_trans</item>
     </style>
 
     <style name="ff1a237e">
         <item name="colorAccent">@color/indigo_900</item>
+        <item name="colorPrimary">@color/indigo_900</item>
+        <item name="colorOnPrimary">@color/indigo_900_trans</item>
     </style>
 
     <style name="ff8c9eff">
         <item name="colorAccent">@color/indigo_a100</item>
+        <item name="colorPrimary">@color/indigo_a100</item>
+        <item name="colorOnPrimary">@color/indigo_a100_trans</item>
     </style>
 
     <style name="ff536dfe">
         <item name="colorAccent">@color/indigo_a200</item>
+        <item name="colorPrimary">@color/indigo_a200</item>
+        <item name="colorOnPrimary">@color/indigo_a200_trans</item>
     </style>
 
     <style name="ff3d5afe">
         <item name="colorAccent">@color/indigo_a400</item>
+        <item name="colorPrimary">@color/indigo_a400</item>
+        <item name="colorOnPrimary">@color/indigo_a400_trans</item>
     </style>
 
     <style name="ff304ffe">
         <item name="colorAccent">@color/indigo_a700</item>
+        <item name="colorPrimary">@color/indigo_a700</item>
+        <item name="colorOnPrimary">@color/indigo_a700_trans</item>
     </style>
 
     <!-- Blue -->
     <style name="ffe3f2fd">
         <item name="colorAccent">@color/blue_50</item>
+        <item name="colorPrimary">@color/blue_50</item>
+        <item name="colorOnPrimary">@color/blue_50_trans</item>
     </style>
 
     <style name="ffbbdefb">
         <item name="colorAccent">@color/blue_100</item>
+        <item name="colorPrimary">@color/blue_100</item>
+        <item name="colorOnPrimary">@color/blue_100_trans</item>
     </style>
 
     <style name="ff90caf9">
         <item name="colorAccent">@color/blue_200</item>
+        <item name="colorPrimary">@color/blue_200</item>
+        <item name="colorOnPrimary">@color/blue_200_trans</item>
     </style>
 
     <style name="ff64b5f6">
         <item name="colorAccent">@color/blue_300</item>
+        <item name="colorPrimary">@color/blue_300</item>
+        <item name="colorOnPrimary">@color/blue_300_trans</item>
     </style>
 
     <style name="ff42a5f5">
         <item name="colorAccent">@color/blue_400</item>
+        <item name="colorPrimary">@color/blue_400</item>
+        <item name="colorOnPrimary">@color/blue_400_trans</item>
     </style>
 
     <style name="ff2196f3">
         <item name="colorAccent">@color/blue_500</item>
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorOnPrimary">@color/blue_500_trans</item>
     </style>
 
     <style name="ff1e88e5">
         <item name="colorAccent">@color/blue_600</item>
+        <item name="colorPrimary">@color/blue_600</item>
+        <item name="colorOnPrimary">@color/blue_600_trans</item>
     </style>
 
     <style name="ff1976d2">
         <item name="colorAccent">@color/blue_700</item>
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorOnPrimary">@color/blue_700_trans</item>
     </style>
 
     <style name="ff1565c0">
         <item name="colorAccent">@color/blue_800</item>
+        <item name="colorPrimary">@color/blue_800</item>
+        <item name="colorOnPrimary">@color/blue_800_trans</item>
     </style>
 
     <style name="ff0d47a1">
         <item name="colorAccent">@color/blue_900</item>
+        <item name="colorPrimary">@color/blue_900</item>
+        <item name="colorOnPrimary">@color/blue_900_trans</item>
     </style>
 
     <style name="ff82b1ff">
         <item name="colorAccent">@color/blue_a100</item>
+        <item name="colorPrimary">@color/blue_a100</item>
+        <item name="colorOnPrimary">@color/blue_a100_trans</item>
     </style>
 
     <style name="ff448aff">
         <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorPrimary">@color/blue_a200</item>
+        <item name="colorOnPrimary">@color/blue_a200_trans</item>
     </style>
 
     <style name="ff2979ff">
         <item name="colorAccent">@color/blue_a400</item>
+        <item name="colorPrimary">@color/blue_a400</item>
+        <item name="colorOnPrimary">@color/blue_a400_trans</item>
     </style>
 
     <style name="ff2962ff">
         <item name="colorAccent">@color/blue_a700</item>
+        <item name="colorPrimary">@color/blue_a700</item>
+        <item name="colorOnPrimary">@color/blue_a700_trans</item>
     </style>
 
     <!-- Light Blue -->
     <style name="ffe1f5fe">
         <item name="colorAccent">@color/light_blue_50</item>
+        <item name="colorPrimary">@color/light_blue_50</item>
+        <item name="colorOnPrimary">@color/light_blue_50_trans</item>
     </style>
 
     <style name="ffb3e5fc">
         <item name="colorAccent">@color/light_blue_100</item>
+        <item name="colorPrimary">@color/light_blue_100</item>
+        <item name="colorOnPrimary">@color/light_blue_100_trans</item>
     </style>
 
     <style name="ff81d4fa">
         <item name="colorAccent">@color/light_blue_200</item>
+        <item name="colorPrimary">@color/light_blue_200</item>
+        <item name="colorOnPrimary">@color/light_blue_200_trans</item>
     </style>
 
     <style name="ff4fc3f7">
         <item name="colorAccent">@color/light_blue_300</item>
+        <item name="colorPrimary">@color/light_blue_300</item>
+        <item name="colorOnPrimary">@color/light_blue_300_trans</item>
     </style>
 
     <style name="ff29b6f6">
         <item name="colorAccent">@color/light_blue_400</item>
+        <item name="colorPrimary">@color/light_blue_400</item>
+        <item name="colorOnPrimary">@color/light_blue_400_trans</item>
     </style>
 
     <style name="ff03a9f4">
         <item name="colorAccent">@color/light_blue_500</item>
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorOnPrimary">@color/light_blue_500_trans</item>
     </style>
 
     <style name="ff039be5">
         <item name="colorAccent">@color/light_blue_600</item>
+        <item name="colorPrimary">@color/light_blue_600</item>
+        <item name="colorOnPrimary">@color/light_blue_600_trans</item>
     </style>
 
     <style name="ff0288d1">
         <item name="colorAccent">@color/light_blue_700</item>
+        <item name="colorPrimary">@color/light_blue_700</item>
+        <item name="colorOnPrimary">@color/light_blue_700_trans</item>
     </style>
 
     <style name="ff0277bd">
         <item name="colorAccent">@color/light_blue_800</item>
+        <item name="colorPrimary">@color/light_blue_800</item>
+        <item name="colorOnPrimary">@color/light_blue_800_trans</item>
     </style>
 
     <style name="ff01579b">
         <item name="colorAccent">@color/light_blue_900</item>
+        <item name="colorPrimary">@color/light_blue_900</item>
+        <item name="colorOnPrimary">@color/light_blue_900_trans</item>
     </style>
 
     <style name="ff80d8ff">
         <item name="colorAccent">@color/light_blue_a100</item>
+        <item name="colorPrimary">@color/light_blue_a100</item>
+        <item name="colorOnPrimary">@color/light_blue_a100_trans</item>
     </style>
 
     <style name="ff40c4ff">
         <item name="colorAccent">@color/light_blue_a200</item>
+        <item name="colorPrimary">@color/light_blue_a200</item>
+        <item name="colorOnPrimary">@color/light_blue_a200_trans</item>
     </style>
 
     <style name="ff00b0ff">
         <item name="colorAccent">@color/light_blue_a400</item>
+        <item name="colorPrimary">@color/light_blue_a400</item>
+        <item name="colorOnPrimary">@color/light_blue_a400_trans</item>
     </style>
 
     <style name="ff0091ea">
         <item name="colorAccent">@color/light_blue_a700</item>
+        <item name="colorPrimary">@color/light_blue_a700</item>
+        <item name="colorOnPrimary">@color/light_blue_a700_trans</item>
     </style>
 
     <!-- Cyan -->
     <style name="ffe0f7fa">
         <item name="colorAccent">@color/cyan_50</item>
+        <item name="colorPrimary">@color/cyan_50</item>
+        <item name="colorOnPrimary">@color/cyan_50_trans</item>
     </style>
 
     <style name="ffb2ebf2">
         <item name="colorAccent">@color/cyan_100</item>
+        <item name="colorPrimary">@color/cyan_100</item>
+        <item name="colorOnPrimary">@color/cyan_100_trans</item>
     </style>
 
     <style name="ff80deea">
         <item name="colorAccent">@color/cyan_200</item>
+        <item name="colorPrimary">@color/cyan_200</item>
+        <item name="colorOnPrimary">@color/cyan_200_trans</item>
     </style>
 
     <style name="ff4dd0e1">
         <item name="colorAccent">@color/cyan_300</item>
+        <item name="colorPrimary">@color/cyan_300</item>
+        <item name="colorOnPrimary">@color/cyan_300_trans</item>
     </style>
 
     <style name="ff26c6da">
         <item name="colorAccent">@color/cyan_400</item>
+        <item name="colorPrimary">@color/cyan_400</item>
+        <item name="colorOnPrimary">@color/cyan_400_trans</item>
     </style>
 
     <style name="ff00bcd4">
         <item name="colorAccent">@color/cyan_500</item>
+        <item name="colorPrimary">@color/cyan_500</item>
+        <item name="colorOnPrimary">@color/cyan_500_trans</item>
     </style>
 
     <style name="ff00acc1">
         <item name="colorAccent">@color/cyan_600</item>
+        <item name="colorPrimary">@color/cyan_600</item>
+        <item name="colorOnPrimary">@color/cyan_600_trans</item>
     </style>
 
     <style name="ff0097a7">
         <item name="colorAccent">@color/cyan_700</item>
+        <item name="colorPrimary">@color/cyan_700</item>
+        <item name="colorOnPrimary">@color/cyan_700_trans</item>
     </style>
 
     <style name="ff00838f">
         <item name="colorAccent">@color/cyan_800</item>
+        <item name="colorPrimary">@color/cyan_800</item>
+        <item name="colorOnPrimary">@color/cyan_800_trans</item>
     </style>
 
     <style name="ff006064">
         <item name="colorAccent">@color/cyan_900</item>
+        <item name="colorPrimary">@color/cyan_900</item>
+        <item name="colorOnPrimary">@color/cyan_900_trans</item>
     </style>
 
     <style name="ff84ffff">
         <item name="colorAccent">@color/cyan_a100</item>
+        <item name="colorPrimary">@color/cyan_a100</item>
+        <item name="colorOnPrimary">@color/cyan_a100_trans</item>
     </style>
 
     <style name="ff18ffff">
         <item name="colorAccent">@color/cyan_a200</item>
+        <item name="colorPrimary">@color/cyan_a200</item>
+        <item name="colorOnPrimary">@color/cyan_a200_trans</item>
     </style>
 
     <style name="ff00e5ff">
         <item name="colorAccent">@color/cyan_a400</item>
+        <item name="colorPrimary">@color/cyan_a400</item>
+        <item name="colorOnPrimary">@color/cyan_a400_trans</item>
     </style>
 
     <style name="ff00b8d4">
         <item name="colorAccent">@color/cyan_a700</item>
+        <item name="colorPrimary">@color/cyan_a700</item>
+        <item name="colorOnPrimary">@color/cyan_a700_trans</item>
     </style>
 
     <!-- Teal -->
     <style name="ffe0f2f1">
         <item name="colorAccent">@color/teal_50</item>
+        <item name="colorPrimary">@color/teal_50</item>
+        <item name="colorOnPrimary">@color/teal_50_trans</item>
     </style>
 
     <style name="ffb2dfdb">
         <item name="colorAccent">@color/teal_100</item>
+        <item name="colorPrimary">@color/teal_100</item>
+        <item name="colorOnPrimary">@color/teal_100_trans</item>
     </style>
 
     <style name="ff80cbc4">
         <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimary">@color/teal_200</item>
+        <item name="colorOnPrimary">@color/teal_200_trans</item>
     </style>
 
     <style name="ff4db6ac">
         <item name="colorAccent">@color/teal_300</item>
+        <item name="colorPrimary">@color/teal_300</item>
+        <item name="colorOnPrimary">@color/teal_300_trans</item>
     </style>
 
     <style name="ff26a69a">
         <item name="colorAccent">@color/teal_400</item>
+        <item name="colorPrimary">@color/teal_400</item>
+        <item name="colorOnPrimary">@color/teal_400_trans</item>
     </style>
 
     <style name="ff009688">
         <item name="colorAccent">@color/teal_500</item>
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorOnPrimary">@color/teal_500_trans</item>
     </style>
 
     <style name="ff00897b">
         <item name="colorAccent">@color/teal_600</item>
+        <item name="colorPrimary">@color/teal_600</item>
+        <item name="colorOnPrimary">@color/teal_600_trans</item>
     </style>
 
     <style name="ff00796b">
         <item name="colorAccent">@color/teal_700</item>
+        <item name="colorPrimary">@color/teal_700</item>
+        <item name="colorOnPrimary">@color/teal_700_trans</item>
     </style>
 
     <style name="ff00695c">
         <item name="colorAccent">@color/teal_800</item>
+        <item name="colorPrimary">@color/teal_800</item>
+        <item name="colorOnPrimary">@color/teal_800_trans</item>
     </style>
 
     <style name="ff004d40">
         <item name="colorAccent">@color/teal_900</item>
+        <item name="colorPrimary">@color/teal_900</item>
+        <item name="colorOnPrimary">@color/teal_900_trans</item>
     </style>
 
     <style name="ffa7ffeb">
         <item name="colorAccent">@color/teal_a100</item>
+        <item name="colorPrimary">@color/teal_a100</item>
+        <item name="colorOnPrimary">@color/teal_a100_trans</item>
     </style>
 
     <style name="ff64ffda">
         <item name="colorAccent">@color/teal_a200</item>
+        <item name="colorPrimary">@color/teal_a200</item>
+        <item name="colorOnPrimary">@color/teal_a200_trans</item>
     </style>
 
     <style name="ff1de9b6">
         <item name="colorAccent">@color/teal_a400</item>
+        <item name="colorPrimary">@color/teal_a400</item>
+        <item name="colorOnPrimary">@color/teal_a400_trans</item>
     </style>
 
     <style name="ff00bfa5">
         <item name="colorAccent">@color/teal_a700</item>
+        <item name="colorPrimary">@color/teal_a700</item>
+        <item name="colorOnPrimary">@color/teal_a700_trans</item>
     </style>
 
     <!-- Green -->
     <style name="ffe8f5e9">
         <item name="colorAccent">@color/green_50</item>
+        <item name="colorPrimary">@color/green_50</item>
+        <item name="colorOnPrimary">@color/green_50_trans</item>
     </style>
 
     <style name="ffc8e6c9">
         <item name="colorAccent">@color/green_100</item>
+        <item name="colorPrimary">@color/green_100</item>
+        <item name="colorOnPrimary">@color/green_100_trans</item>
     </style>
 
     <style name="ffa5d6a7">
         <item name="colorAccent">@color/green_200</item>
+        <item name="colorPrimary">@color/green_200</item>
+        <item name="colorOnPrimary">@color/green_200_trans</item>
     </style>
 
     <style name="ff81c784">
         <item name="colorAccent">@color/green_300</item>
+        <item name="colorPrimary">@color/green_300</item>
+        <item name="colorOnPrimary">@color/green_300_trans</item>
     </style>
 
     <style name="ff66bb6a">
         <item name="colorAccent">@color/green_400</item>
+        <item name="colorPrimary">@color/green_400</item>
+        <item name="colorOnPrimary">@color/green_400_trans</item>
     </style>
 
     <style name="ff4caf50">
         <item name="colorAccent">@color/green_500</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorOnPrimary">@color/green_500_trans</item>
     </style>
 
     <style name="ff43a047">
         <item name="colorAccent">@color/green_600</item>
+        <item name="colorPrimary">@color/green_600</item>
+        <item name="colorOnPrimary">@color/green_600_trans</item>
     </style>
 
     <style name="ff388e3c">
         <item name="colorAccent">@color/green_700</item>
+        <item name="colorPrimary">@color/green_700</item>
+        <item name="colorOnPrimary">@color/green_700_trans</item>
     </style>
 
     <style name="ff2e7d32">
         <item name="colorAccent">@color/green_800</item>
+        <item name="colorPrimary">@color/green_800</item>
+        <item name="colorOnPrimary">@color/green_800_trans</item>
     </style>
 
     <style name="ff1b5e20">
         <item name="colorAccent">@color/green_900</item>
+        <item name="colorPrimary">@color/green_900</item>
+        <item name="colorOnPrimary">@color/green_900_trans</item>
     </style>
 
     <style name="ffb9f6ca">
         <item name="colorAccent">@color/green_a100</item>
+        <item name="colorPrimary">@color/green_a100</item>
+        <item name="colorOnPrimary">@color/green_a100_trans</item>
     </style>
 
     <style name="ff69f0ae">
         <item name="colorAccent">@color/green_a200</item>
+        <item name="colorPrimary">@color/green_a200</item>
+        <item name="colorOnPrimary">@color/green_a200_trans</item>
     </style>
 
     <style name="ff00e676">
         <item name="colorAccent">@color/green_a400</item>
+        <item name="colorPrimary">@color/green_a400</item>
+        <item name="colorOnPrimary">@color/green_a400_trans</item>
     </style>
 
     <style name="ff00c853">
         <item name="colorAccent">@color/green_a700</item>
+        <item name="colorPrimary">@color/green_a700</item>
+        <item name="colorOnPrimary">@color/green_a700_trans</item>
     </style>
 
     <!-- Light Green -->
     <style name="fff1f8e9">
         <item name="colorAccent">@color/light_green_50</item>
+        <item name="colorPrimary">@color/light_green_50</item>
+        <item name="colorOnPrimary">@color/light_green_50_trans</item>
     </style>
 
     <style name="ffdcedc8">
         <item name="colorAccent">@color/light_green_100</item>
+        <item name="colorPrimary">@color/light_green_100</item>
+        <item name="colorOnPrimary">@color/light_green_100_trans</item>
     </style>
 
     <style name="ffc5e1a5">
         <item name="colorAccent">@color/light_green_200</item>
+        <item name="colorPrimary">@color/light_green_200</item>
+        <item name="colorOnPrimary">@color/light_green_200_trans</item>
     </style>
 
     <style name="ffaed581">
         <item name="colorAccent">@color/light_green_300</item>
+        <item name="colorPrimary">@color/light_green_300</item>
+        <item name="colorOnPrimary">@color/light_green_300_trans</item>
     </style>
 
     <style name="ff9ccc65">
         <item name="colorAccent">@color/light_green_400</item>
+        <item name="colorPrimary">@color/light_green_400</item>
+        <item name="colorOnPrimary">@color/light_green_400_trans</item>
     </style>
 
     <style name="ff8bc34a">
         <item name="colorAccent">@color/light_green_500</item>
+        <item name="colorPrimary">@color/light_green_500</item>
+        <item name="colorOnPrimary">@color/light_green_500_trans</item>
     </style>
 
     <style name="ff7cb342">
         <item name="colorAccent">@color/light_green_600</item>
+        <item name="colorPrimary">@color/light_green_600</item>
+        <item name="colorOnPrimary">@color/light_green_600_trans</item>
     </style>
 
     <style name="ff689f38">
         <item name="colorAccent">@color/light_green_700</item>
+        <item name="colorPrimary">@color/light_green_700</item>
+        <item name="colorOnPrimary">@color/light_green_700_trans</item>
     </style>
 
     <style name="ff558b2f">
         <item name="colorAccent">@color/light_green_800</item>
+        <item name="colorPrimary">@color/light_green_800</item>
+        <item name="colorOnPrimary">@color/light_green_800_trans</item>
     </style>
 
     <style name="ff33691e">
         <item name="colorAccent">@color/light_green_900</item>
+        <item name="colorPrimary">@color/light_green_900</item>
+        <item name="colorOnPrimary">@color/light_green_900_trans</item>
     </style>
 
     <style name="ffccff90">
         <item name="colorAccent">@color/light_green_a100</item>
+        <item name="colorPrimary">@color/light_green_a100</item>
+        <item name="colorOnPrimary">@color/light_green_a100_trans</item>
     </style>
 
     <style name="ffb2ff59">
         <item name="colorAccent">@color/light_green_a200</item>
+        <item name="colorPrimary">@color/light_green_a200</item>
+        <item name="colorOnPrimary">@color/light_green_a200_trans</item>
     </style>
 
     <style name="ff76ff03">
         <item name="colorAccent">@color/light_green_a400</item>
+        <item name="colorPrimary">@color/light_green_a400</item>
+        <item name="colorOnPrimary">@color/light_green_a400_trans</item>
     </style>
 
     <style name="ff64dd17">
         <item name="colorAccent">@color/light_green_a700</item>
+        <item name="colorPrimary">@color/light_green_a700</item>
+        <item name="colorOnPrimary">@color/light_green_a700_trans</item>
     </style>
 
     <!-- Lime -->
     <style name="fff9fbe7">
         <item name="colorAccent">@color/lime_50</item>
+        <item name="colorPrimary">@color/lime_50</item>
+        <item name="colorOnPrimary">@color/lime_50_trans</item>
     </style>
 
     <style name="fff0f4c3">
         <item name="colorAccent">@color/lime_100</item>
+        <item name="colorPrimary">@color/lime_100</item>
+        <item name="colorOnPrimary">@color/lime_100_trans</item>
     </style>
 
     <style name="ffe6ee9c">
         <item name="colorAccent">@color/lime_200</item>
+        <item name="colorPrimary">@color/lime_200</item>
+        <item name="colorOnPrimary">@color/lime_200_trans</item>
     </style>
 
     <style name="ffdce775">
         <item name="colorAccent">@color/lime_300</item>
+        <item name="colorPrimary">@color/lime_300</item>
+        <item name="colorOnPrimary">@color/lime_300_trans</item>
     </style>
 
     <style name="ffd4e157">
         <item name="colorAccent">@color/lime_400</item>
+        <item name="colorPrimary">@color/lime_400</item>
+        <item name="colorOnPrimary">@color/lime_400_trans</item>
     </style>
 
     <style name="ffcddc39">
         <item name="colorAccent">@color/lime_500</item>
+        <item name="colorPrimary">@color/lime_500</item>
+        <item name="colorOnPrimary">@color/lime_500_trans</item>
     </style>
 
     <style name="ffc0ca33">
         <item name="colorAccent">@color/lime_600</item>
+        <item name="colorPrimary">@color/lime_600</item>
+        <item name="colorOnPrimary">@color/lime_600_trans</item>
     </style>
 
     <style name="ffafb42b">
         <item name="colorAccent">@color/lime_700</item>
+        <item name="colorPrimary">@color/lime_700</item>
+        <item name="colorOnPrimary">@color/lime_700_trans</item>
     </style>
 
     <style name="ff9e9d24">
         <item name="colorAccent">@color/lime_800</item>
+        <item name="colorPrimary">@color/lime_800</item>
+        <item name="colorOnPrimary">@color/lime_800_trans</item>
     </style>
 
     <style name="ff827717">
         <item name="colorAccent">@color/lime_900</item>
+        <item name="colorPrimary">@color/lime_900</item>
+        <item name="colorOnPrimary">@color/lime_900_trans</item>
     </style>
 
     <style name="fff4ff81">
         <item name="colorAccent">@color/lime_a100</item>
+        <item name="colorPrimary">@color/lime_a100</item>
+        <item name="colorOnPrimary">@color/lime_a100_trans</item>
     </style>
 
     <style name="ffeeff41">
         <item name="colorAccent">@color/lime_a200</item>
+        <item name="colorPrimary">@color/lime_a200</item>
+        <item name="colorOnPrimary">@color/lime_a200_trans</item>
     </style>
 
     <style name="ffc6ff00">
         <item name="colorAccent">@color/lime_a400</item>
+        <item name="colorPrimary">@color/lime_a400</item>
+        <item name="colorOnPrimary">@color/lime_a400_trans</item>
     </style>
 
     <style name="ffaeea00">
         <item name="colorAccent">@color/lime_a700</item>
+        <item name="colorPrimary">@color/lime_a700</item>
+        <item name="colorOnPrimary">@color/lime_a700_trans</item>
     </style>
 
     <!-- Yellow -->
     <style name="fffffde7">
         <item name="colorAccent">@color/yellow_50</item>
+        <item name="colorPrimary">@color/yellow_50</item>
+        <item name="colorOnPrimary">@color/yellow_50_trans</item>
     </style>
 
     <style name="fffff9c4">
         <item name="colorAccent">@color/yellow_100</item>
+        <item name="colorPrimary">@color/yellow_100</item>
+        <item name="colorOnPrimary">@color/yellow_100_trans</item>
     </style>
 
     <style name="fffff59d">
         <item name="colorAccent">@color/yellow_200</item>
+        <item name="colorPrimary">@color/yellow_200</item>
+        <item name="colorOnPrimary">@color/yellow_200_trans</item>
     </style>
 
     <style name="fffff176">
         <item name="colorAccent">@color/yellow_300</item>
+        <item name="colorPrimary">@color/yellow_300</item>
+        <item name="colorOnPrimary">@color/yellow_300_trans</item>
     </style>
 
     <style name="ffffee58">
         <item name="colorAccent">@color/yellow_400</item>
+        <item name="colorPrimary">@color/yellow_400</item>
+        <item name="colorOnPrimary">@color/yellow_400_trans</item>
     </style>
 
     <style name="ffffeb3b">
         <item name="colorAccent">@color/yellow_500</item>
+        <item name="colorPrimary">@color/yellow_500</item>
+        <item name="colorOnPrimary">@color/yellow_500_trans</item>
     </style>
 
     <style name="fffdd835">
         <item name="colorAccent">@color/yellow_600</item>
+        <item name="colorPrimary">@color/yellow_600</item>
+        <item name="colorOnPrimary">@color/yellow_600_trans</item>
     </style>
 
     <style name="fffbc02d">
         <item name="colorAccent">@color/yellow_700</item>
+        <item name="colorPrimary">@color/yellow_700</item>
+        <item name="colorOnPrimary">@color/yellow_700_trans</item>
     </style>
 
     <style name="fff9a825">
         <item name="colorAccent">@color/yellow_800</item>
+        <item name="colorPrimary">@color/yellow_800</item>
+        <item name="colorOnPrimary">@color/yellow_800_trans</item>
     </style>
 
     <style name="fff57f17">
         <item name="colorAccent">@color/yellow_900</item>
+        <item name="colorPrimary">@color/yellow_900</item>
+        <item name="colorOnPrimary">@color/yellow_900_trans</item>
     </style>
 
     <style name="ffffff8d">
         <item name="colorAccent">@color/yellow_a100</item>
+        <item name="colorPrimary">@color/yellow_a100</item>
+        <item name="colorOnPrimary">@color/yellow_a100_trans</item>
     </style>
 
     <style name="ffffff00">
         <item name="colorAccent">@color/yellow_a200</item>
+        <item name="colorPrimary">@color/yellow_a200</item>
+        <item name="colorOnPrimary">@color/yellow_a200_trans</item>
     </style>
 
     <style name="ffffea00">
         <item name="colorAccent">@color/yellow_a400</item>
+        <item name="colorPrimary">@color/yellow_a400</item>
+        <item name="colorOnPrimary">@color/yellow_a400_trans</item>
     </style>
 
     <style name="ffffd600">
         <item name="colorAccent">@color/yellow_a700</item>
+        <item name="colorPrimary">@color/yellow_a700</item>
+        <item name="colorOnPrimary">@color/yellow_a700_trans</item>
     </style>
 
     <!-- Amber -->
     <style name="fffff8e1">
         <item name="colorAccent">@color/amber_50</item>
+        <item name="colorPrimary">@color/amber_50</item>
+        <item name="colorOnPrimary">@color/amber_50_trans</item>
     </style>
 
     <style name="ffffecb3">
         <item name="colorAccent">@color/amber_100</item>
+        <item name="colorPrimary">@color/amber_100</item>
+        <item name="colorOnPrimary">@color/amber_100_trans</item>
     </style>
 
     <style name="ffffe082">
         <item name="colorAccent">@color/amber_200</item>
+        <item name="colorPrimary">@color/amber_200</item>
+        <item name="colorOnPrimary">@color/amber_200_trans</item>
     </style>
 
     <style name="ffffd54f">
         <item name="colorAccent">@color/amber_300</item>
+        <item name="colorPrimary">@color/amber_300</item>
+        <item name="colorOnPrimary">@color/amber_300_trans</item>
     </style>
 
     <style name="ffffca28">
         <item name="colorAccent">@color/amber_400</item>
+        <item name="colorPrimary">@color/amber_400</item>
+        <item name="colorOnPrimary">@color/amber_400_trans</item>
     </style>
 
     <style name="ffffc107">
         <item name="colorAccent">@color/amber_500</item>
+        <item name="colorPrimary">@color/amber_500</item>
+        <item name="colorOnPrimary">@color/amber_500_trans</item>
     </style>
 
     <style name="ffffb300">
         <item name="colorAccent">@color/amber_600</item>
+        <item name="colorPrimary">@color/amber_600</item>
+        <item name="colorOnPrimary">@color/amber_600_trans</item>
     </style>
 
     <style name="ffffa000">
         <item name="colorAccent">@color/amber_700</item>
+        <item name="colorPrimary">@color/amber_700</item>
+        <item name="colorOnPrimary">@color/amber_700_trans</item>
     </style>
 
     <style name="ffff8f00">
         <item name="colorAccent">@color/amber_800</item>
+        <item name="colorPrimary">@color/amber_800</item>
+        <item name="colorOnPrimary">@color/amber_800_trans</item>
     </style>
 
     <style name="ffff6f00">
         <item name="colorAccent">@color/amber_900</item>
+        <item name="colorPrimary">@color/amber_900</item>
+        <item name="colorOnPrimary">@color/amber_900_trans</item>
     </style>
 
     <style name="ffffe57f">
         <item name="colorAccent">@color/amber_a100</item>
+        <item name="colorPrimary">@color/amber_a100</item>
+        <item name="colorOnPrimary">@color/amber_a100_trans</item>
     </style>
 
     <style name="ffffd740">
         <item name="colorAccent">@color/amber_a200</item>
+        <item name="colorPrimary">@color/amber_a200</item>
+        <item name="colorOnPrimary">@color/amber_a200_trans</item>
     </style>
 
     <style name="ffffc400">
         <item name="colorAccent">@color/amber_a400</item>
+        <item name="colorPrimary">@color/amber_a400</item>
+        <item name="colorOnPrimary">@color/amber_a400_trans</item>
     </style>
 
     <style name="ffffab00">
         <item name="colorAccent">@color/amber_a700</item>
+        <item name="colorPrimary">@color/amber_a700</item>
+        <item name="colorOnPrimary">@color/amber_a700_trans</item>
     </style>
 
     <!-- Orange -->
     <style name="fffff3e0">
         <item name="colorAccent">@color/orange_50</item>
+        <item name="colorPrimary">@color/orange_50</item>
+        <item name="colorOnPrimary">@color/orange_50_trans</item>
     </style>
 
     <style name="ffffe0b2">
         <item name="colorAccent">@color/orange_100</item>
+        <item name="colorPrimary">@color/orange_100</item>
+        <item name="colorOnPrimary">@color/orange_100_trans</item>
     </style>
 
     <style name="ffffcc80">
         <item name="colorAccent">@color/orange_200</item>
+        <item name="colorPrimary">@color/orange_200</item>
+        <item name="colorOnPrimary">@color/orange_200_trans</item>
     </style>
 
     <style name="ffffb74d">
         <item name="colorAccent">@color/orange_300</item>
+        <item name="colorPrimary">@color/orange_300</item>
+        <item name="colorOnPrimary">@color/orange_300_trans</item>
     </style>
 
     <style name="ffffa726">
         <item name="colorAccent">@color/orange_400</item>
+        <item name="colorPrimary">@color/orange_400</item>
+        <item name="colorOnPrimary">@color/orange_400_trans</item>
     </style>
 
     <style name="ffff9800">
         <item name="colorAccent">@color/orange_500</item>
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorOnPrimary">@color/orange_500_trans</item>
     </style>
 
     <style name="fffb8c00">
         <item name="colorAccent">@color/orange_600</item>
+        <item name="colorPrimary">@color/orange_600</item>
+        <item name="colorOnPrimary">@color/orange_600_trans</item>
     </style>
 
     <style name="fff57c00">
         <item name="colorAccent">@color/orange_700</item>
+        <item name="colorPrimary">@color/orange_700</item>
+        <item name="colorOnPrimary">@color/orange_700_trans</item>
     </style>
 
     <style name="ffef6c00">
         <item name="colorAccent">@color/orange_800</item>
+        <item name="colorPrimary">@color/orange_800</item>
+        <item name="colorOnPrimary">@color/orange_800_trans</item>
     </style>
 
     <style name="ffe65100">
         <item name="colorAccent">@color/orange_900</item>
+        <item name="colorPrimary">@color/orange_900</item>
+        <item name="colorOnPrimary">@color/orange_900_trans</item>
     </style>
 
     <style name="ffffd180">
         <item name="colorAccent">@color/orange_a100</item>
+        <item name="colorPrimary">@color/orange_a100</item>
+        <item name="colorOnPrimary">@color/orange_a100_trans</item>
     </style>
 
     <style name="ffffab40">
         <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimary">@color/orange_a200</item>
+        <item name="colorOnPrimary">@color/orange_a200_trans</item>
     </style>
 
     <style name="ffff9100">
         <item name="colorAccent">@color/orange_a400</item>
+        <item name="colorPrimary">@color/orange_a400</item>
+        <item name="colorOnPrimary">@color/orange_a400_trans</item>
     </style>
 
     <style name="ffff6d00">
         <item name="colorAccent">@color/orange_a700</item>
+        <item name="colorPrimary">@color/orange_a700</item>
+        <item name="colorOnPrimary">@color/orange_a700_trans</item>
     </style>
 
     <!-- Deep Orange -->
     <style name="fffbe9e7">
         <item name="colorAccent">@color/deep_orange_50</item>
+        <item name="colorPrimary">@color/deep_orange_50</item>
+        <item name="colorOnPrimary">@color/deep_orange_50_trans</item>
     </style>
 
     <style name="ffffccbc">
         <item name="colorAccent">@color/deep_orange_100</item>
+        <item name="colorPrimary">@color/deep_orange_100</item>
+        <item name="colorOnPrimary">@color/deep_orange_100_trans</item>
     </style>
 
     <style name="ffffab91">
         <item name="colorAccent">@color/deep_orange_200</item>
+        <item name="colorPrimary">@color/deep_orange_200</item>
+        <item name="colorOnPrimary">@color/deep_orange_200_trans</item>
     </style>
 
     <style name="ffff8a65">
         <item name="colorAccent">@color/deep_orange_300</item>
+        <item name="colorPrimary">@color/deep_orange_300</item>
+        <item name="colorOnPrimary">@color/deep_orange_300_trans</item>
     </style>
 
     <style name="ffff7043">
         <item name="colorAccent">@color/deep_orange_400</item>
+        <item name="colorPrimary">@color/deep_orange_400</item>
+        <item name="colorOnPrimary">@color/deep_orange_400_trans</item>
     </style>
 
     <style name="ffff5722">
         <item name="colorAccent">@color/deep_orange_500</item>
+        <item name="colorPrimary">@color/deep_orange_500</item>
+        <item name="colorOnPrimary">@color/deep_orange_500_trans</item>
     </style>
 
     <style name="fff4511e">
         <item name="colorAccent">@color/deep_orange_600</item>
+        <item name="colorPrimary">@color/deep_orange_600</item>
+        <item name="colorOnPrimary">@color/deep_orange_600_trans</item>
     </style>
 
     <style name="ffe64a19">
         <item name="colorAccent">@color/deep_orange_700</item>
+        <item name="colorPrimary">@color/deep_orange_700</item>
+        <item name="colorOnPrimary">@color/deep_orange_700_trans</item>
     </style>
 
     <style name="ffd84315">
         <item name="colorAccent">@color/deep_orange_800</item>
+        <item name="colorPrimary">@color/deep_orange_800</item>
+        <item name="colorOnPrimary">@color/deep_orange_800_trans</item>
     </style>
 
     <style name="ffbf360c">
         <item name="colorAccent">@color/deep_orange_900</item>
+        <item name="colorPrimary">@color/deep_orange_900</item>
+        <item name="colorOnPrimary">@color/deep_orange_900_trans</item>
     </style>
 
     <style name="ffff9e80">
         <item name="colorAccent">@color/deep_orange_a100</item>
+        <item name="colorPrimary">@color/deep_orange_a100</item>
+        <item name="colorOnPrimary">@color/deep_orange_a100_trans</item>
     </style>
 
     <style name="ffff6e40">
         <item name="colorAccent">@color/deep_orange_a200</item>
+        <item name="colorPrimary">@color/deep_orange_a200</item>
+        <item name="colorOnPrimary">@color/deep_orange_a200_trans</item>
     </style>
 
     <style name="ffff3d00">
         <item name="colorAccent">@color/deep_orange_a400</item>
+        <item name="colorPrimary">@color/deep_orange_a400</item>
+        <item name="colorOnPrimary">@color/deep_orange_a400_trans</item>
     </style>
 
     <style name="ffdd2c00">
         <item name="colorAccent">@color/deep_orange_a700</item>
+        <item name="colorPrimary">@color/deep_orange_a700</item>
+        <item name="colorOnPrimary">@color/deep_orange_a700_trans</item>
     </style>
 
     <!-- Brown -->
     <style name="ffefebe9">
         <item name="colorAccent">@color/brown_50</item>
+        <item name="colorPrimary">@color/brown_50</item>
+        <item name="colorOnPrimary">@color/brown_50_trans</item>
     </style>
 
     <style name="ffd7ccc8">
         <item name="colorAccent">@color/brown_100</item>
+        <item name="colorPrimary">@color/brown_100</item>
+        <item name="colorOnPrimary">@color/brown_100_trans</item>
     </style>
 
     <style name="ffbcaaa4">
         <item name="colorAccent">@color/brown_200</item>
+        <item name="colorPrimary">@color/brown_200</item>
+        <item name="colorOnPrimary">@color/brown_200_trans</item>
     </style>
 
     <style name="ffa1887f">
         <item name="colorAccent">@color/brown_300</item>
+        <item name="colorPrimary">@color/brown_300</item>
+        <item name="colorOnPrimary">@color/brown_300_trans</item>
     </style>
 
     <style name="ff8d6e63">
         <item name="colorAccent">@color/brown_400</item>
+        <item name="colorPrimary">@color/brown_400</item>
+        <item name="colorOnPrimary">@color/brown_400_trans</item>
     </style>
 
     <style name="ff795548">
         <item name="colorAccent">@color/brown_500</item>
+        <item name="colorPrimary">@color/brown_500</item>
+        <item name="colorOnPrimary">@color/brown_500_trans</item>
     </style>
 
     <style name="ff6d4c41">
         <item name="colorAccent">@color/brown_600</item>
+        <item name="colorPrimary">@color/brown_600</item>
+        <item name="colorOnPrimary">@color/brown_600_trans</item>
     </style>
 
     <style name="ff5d4037">
         <item name="colorAccent">@color/brown_700</item>
+        <item name="colorPrimary">@color/brown_700</item>
+        <item name="colorOnPrimary">@color/brown_700_trans</item>
     </style>
 
     <style name="ff4e342e">
         <item name="colorAccent">@color/brown_800</item>
+        <item name="colorPrimary">@color/brown_800</item>
+        <item name="colorOnPrimary">@color/brown_800_trans</item>
     </style>
 
     <style name="ff3e2723">
         <item name="colorAccent">@color/brown_900</item>
+        <item name="colorPrimary">@color/brown_900</item>
+        <item name="colorOnPrimary">@color/brown_900_trans</item>
     </style>
 
     <!-- Grey -->
     <style name="fffafafa">
         <item name="colorAccent">@color/grey_50</item>
+        <item name="colorPrimary">@color/grey_50</item>
+        <item name="colorOnPrimary">@color/grey_50_trans</item>
     </style>
 
     <style name="fff5f5f5">
         <item name="colorAccent">@color/grey_100</item>
+        <item name="colorPrimary">@color/grey_100</item>
+        <item name="colorOnPrimary">@color/grey_100_trans</item>
     </style>
 
     <style name="ffeeeeee">
         <item name="colorAccent">@color/grey_200</item>
+        <item name="colorPrimary">@color/grey_200</item>
+        <item name="colorOnPrimary">@color/grey_200_trans</item>
     </style>
 
     <style name="ffe0e0e0">
         <item name="colorAccent">@color/grey_300</item>
+        <item name="colorPrimary">@color/grey_300</item>
+        <item name="colorOnPrimary">@color/grey_300_trans</item>
     </style>
 
     <style name="ffbdbdbd">
         <item name="colorAccent">@color/grey_400</item>
+        <item name="colorPrimary">@color/grey_400</item>
+        <item name="colorOnPrimary">@color/grey_400_trans</item>
     </style>
 
     <style name="ff9e9e9e">
         <item name="colorAccent">@color/grey_500</item>
+        <item name="colorPrimary">@color/grey_500</item>
+        <item name="colorOnPrimary">@color/grey_500_trans</item>
     </style>
 
     <style name="ff757575">
         <item name="colorAccent">@color/grey_600</item>
+        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/grey_600_trans</item>
     </style>
 
     <style name="ff616161">
         <item name="colorAccent">@color/grey_700</item>
+        <item name="colorPrimary">@color/grey_700</item>
+        <item name="colorOnPrimary">@color/grey_700_trans</item>
     </style>
 
     <style name="ff424242">
         <item name="colorAccent">@color/grey_800</item>
+        <item name="colorPrimary">@color/grey_800</item>
+        <item name="colorOnPrimary">@color/grey_800_trans</item>
     </style>
 
     <style name="ff212121">
         <item name="colorAccent">@color/grey_900</item>
+        <item name="colorPrimary">@color/grey_900</item>
+        <item name="colorOnPrimary">@color/grey_900_trans</item>
     </style>
 
     <!-- Blue Grey -->
     <style name="ffeceff1">
         <item name="colorAccent">@color/blue_grey_50</item>
+        <item name="colorPrimary">@color/blue_grey_50</item>
+        <item name="colorOnPrimary">@color/blue_grey_50_trans</item>
     </style>
 
     <style name="ffcfd8dc">
         <item name="colorAccent">@color/blue_grey_100</item>
+        <item name="colorPrimary">@color/blue_grey_100</item>
+        <item name="colorOnPrimary">@color/blue_grey_100_trans</item>
     </style>
 
     <style name="ffb0bec5">
         <item name="colorAccent">@color/blue_grey_200</item>
+        <item name="colorPrimary">@color/blue_grey_200</item>
+        <item name="colorOnPrimary">@color/blue_grey_200_trans</item>
     </style>
 
     <style name="ff90a4ae">
         <item name="colorAccent">@color/blue_grey_300</item>
+        <item name="colorPrimary">@color/blue_grey_300</item>
+        <item name="colorOnPrimary">@color/blue_grey_300_trans</item>
     </style>
 
     <style name="ff78909c">
         <item name="colorAccent">@color/blue_grey_400</item>
+        <item name="colorPrimary">@color/blue_grey_400</item>
+        <item name="colorOnPrimary">@color/blue_grey_400_trans</item>
     </style>
 
     <style name="ff607d8b">
         <item name="colorAccent">@color/blue_grey_500</item>
+        <item name="colorPrimary">@color/blue_grey_500</item>
+        <item name="colorOnPrimary">@color/blue_grey_500_trans</item>
     </style>
 
     <style name="ff546e7a">
         <item name="colorAccent">@color/blue_grey_600</item>
+        <item name="colorPrimary">@color/blue_grey_600</item>
+        <item name="colorOnPrimary">@color/blue_grey_600_trans</item>
     </style>
 
     <style name="ff455a64">
         <item name="colorAccent">@color/blue_grey_700</item>
+        <item name="colorPrimary">@color/blue_grey_700</item>
+        <item name="colorOnPrimary">@color/blue_grey_700_trans</item>
     </style>
 
     <style name="ff37474f">
         <item name="colorAccent">@color/blue_grey_800</item>
+        <item name="colorPrimary">@color/blue_grey_800</item>
+        <item name="colorOnPrimary">@color/blue_grey_800_trans</item>
     </style>
 
     <style name="ff263238">
         <item name="colorAccent">@color/blue_grey_900</item>
+        <item name="colorPrimary">@color/blue_grey_900</item>
+        <item name="colorOnPrimary">@color/blue_grey_900_trans</item>
     </style>
 </resources>
