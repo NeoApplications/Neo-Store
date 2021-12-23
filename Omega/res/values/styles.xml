@@ -75,21 +75,27 @@
     </style>
 
     <style name="SettingsTheme.Light" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:colorEdgeEffect">?colorAccent</item>
-        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="settingsBackground">@android:color/white</item>
-        <item name="settingsSearchBackground">?settingsBackground</item>
-        <item name="settingsPopupBackground">?settingsBackground</item>
-        <item name="useLightSystemBars">true</item>
-        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
-        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
-        <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+        <item name="settingsSearchBackground">@color/settings_background_light_2dp</item>
+        <item name="settingsPopupBackground">@color/settings_background_light_8dp</item>
         <item name="iconShapeTint">@color/grey_700</item>
-
         <item name="workspaceShadowColor">#B0000000</item>
         <item name="workspaceAmbientShadowColor">#40000000</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#3A3939</item>
+        <item name="android:textColorTertiary">#545454</item>
+
+        <item name="android:colorEdgeEffect">?colorAccent</item>
+        <item name="bottomSheetNavBarColor">@android:color/transparent</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Light</item>
+        <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
+        <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
+        <item name="useLightSystemBars">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="SettingsTheme.Light.Transparent" parent="SettingsTheme">
@@ -98,29 +104,26 @@
 
     <style name="SettingsTheme.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@color/settings_background_dark</item>
-        <item name="colorPrimary">?android:windowBackground</item>
-        <item name="colorPrimaryDark">?android:windowBackground</item>
-        <item name="android:textColorPrimary">#D5D2D2</item>
-        <item name="android:textColorSecondary">#A8A7A7</item>
-        <item name="android:textColorTertiary">#7C7C7C</item>
-        <item name="android:colorEdgeEffect">?colorAccent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="useLightSystemBars">false</item>
-        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
-        <item name="buttonStyle">@style/SettingsTheme.Button</item>
         <item name="settingsBackground">@color/settings_background_dark</item>
         <item name="settingsSearchBackground">@color/settings_background_dark_2dp</item>
         <item name="settingsPopupBackground">@color/settings_background_dark_8dp</item>
-        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
-        <item name="bottomSheetNavBarColor">@android:color/transparent</item>
-        <item name="bottomSheetScrimColor">@android:color/black</item>
-        <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
-        <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
-
         <item name="iconShapeTint">@color/grey_400</item>
         <item name="workspaceShadowColor">#B0000000</item>
         <item name="workspaceAmbientShadowColor">#40000000</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+        <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="android:textColorSecondary">#A8A7A7</item>
+        <item name="android:textColorTertiary">#7C7C7C</item>
+
+        <item name="android:colorEdgeEffect">?colorAccent</item>
+        <item name="bottomSheetNavBarColor">@android:color/transparent</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
+        <item name="actionOverflowMenuStyle">@style/SettingsTheme.PopupMenu.Overflow</item>
+        <item name="popupMenuStyle">@style/SettingsTheme.PopupMenu</item>
+        <item name="useLightSystemBars">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="SettingsTheme.Black" parent="SettingsTheme.Dark">
@@ -128,14 +131,17 @@
         <item name="settingsBackground">@color/settings_background_black</item>
         <item name="settingsSearchBackground">@color/settings_background_black_2dp</item>
         <item name="settingsPopupBackground">@color/settings_background_black_8dp</item>
-
-        <item name="workspaceTextColor">#FF212121</item>
+        <item name="iconShapeTint">@color/grey_50</item>
         <item name="workspaceShadowColor">@android:color/white</item>
         <item name="workspaceAmbientShadowColor">@android:color/white</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Black</item>
+        <item name="android:textColorPrimary">#D5D2D2</item>
+        <item name="android:textColorSecondary">#A8A7A7</item>
+        <item name="android:textColorTertiary">#7C7C7C</item>
+
+        <item name="workspaceTextColor">#FF212121</item>
         <item name="workspaceKeyShadowColor">@android:color/transparent</item>
         <item name="isWorkspaceDarkText">true</item>
-
-        <item name="iconShapeTint">@color/grey_50</item>
     </style>
 
     <style name="AlertDialog.Light" parent="Theme.Material3.Light.Dialog.Alert">
@@ -178,7 +184,7 @@
         <item name="android:popupElevation">8dp</item>
     </style>
 
-    <style name="SettingsTheme.PopupMenu.Overflow" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+    <style name="SettingsTheme.PopupMenu.Overflow" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
         <item name="android:popupElevation">8dp</item>
     </style>
