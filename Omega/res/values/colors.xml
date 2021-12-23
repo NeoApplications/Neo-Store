@@ -28,8 +28,8 @@
     <color name="settings_background_dark_2dp">#ff252628</color>
     <color name="settings_background_dark_8dp">@color/grey_800</color>
     <color name="settings_background_black">@android:color/black</color>
-    <color name="settings_background_black_2dp">@color/grey_900</color>
-    <color name="settings_background_black_8dp">#ff1e1e1e</color>
+    <color name="settings_background_black_2dp">#ff121212</color>
+    <color name="settings_background_black_8dp">@color/grey_900</color>
 
     <color name="ic_allapps_background">@color/grey_50</color>
     <color name="ic_launcher_background">#0F111A</color>
