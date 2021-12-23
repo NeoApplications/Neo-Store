@@ -118,7 +118,6 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:scrollIndicators="end"
-                app:fastScrollEnabled="true"
                 tools:listitem="@layout/item_app_vertical_x" />
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
