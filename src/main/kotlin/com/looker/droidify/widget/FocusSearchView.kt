@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent
 import androidx.appcompat.widget.SearchView
+import com.looker.droidify.R
 
 class FocusSearchView : SearchView {
     constructor(context: Context) : super(context)
@@ -15,6 +16,11 @@ class FocusSearchView : SearchView {
     )
 
     var allowFocus = true
+
+    init {
+        maxWidth = Int.MAX_VALUE
+        queryHint = context.getString(R.string.search)
+    }
 
     override fun dispatchKeyEventPreIme(event: KeyEvent): Boolean {
         // Always clear focus on back press
