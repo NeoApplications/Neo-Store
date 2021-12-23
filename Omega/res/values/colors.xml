@@ -22,8 +22,8 @@
     <color name="lollipopStatusBar">#61000000</color>
 
     <color name="settings_background_light">@android:color/white</color>
-    <color name="settings_background_light_2dp">@color/grey_50</color>
-    <color name="settings_background_light_8dp">@color/grey_100</color>
+    <color name="settings_background_light_2dp">@color/grey_200</color>
+    <color name="settings_background_light_8dp">@color/grey_300</color>
     <color name="settings_background_dark">@color/grey_900</color>
     <color name="settings_background_dark_2dp">#ff252628</color>
     <color name="settings_background_dark_8dp">@color/grey_800</color>
