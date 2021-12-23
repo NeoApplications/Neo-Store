@@ -37,17 +37,21 @@
                         android:id="@+id/toolbar"
                         style="?attr/toolbarStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="?actionBarSize" />
+                        android:layout_height="?actionBarSize"
+                        app:menu="@menu/menu_main" />
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_content"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_recycler_bottom"
                 android:backgroundTint="?android:colorBackground"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:defaultNavHost="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:navGraph="@navigation/navigation_graph_main" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

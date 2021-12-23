@@ -45,7 +45,7 @@ class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         fun onCursorData(request: Request, cursor: Cursor?)
     }
 
-    private data class ActiveRequest(
+    data class ActiveRequest(
         val request: Request,
         val callback: Callback?,
         val cursor: Cursor?,
