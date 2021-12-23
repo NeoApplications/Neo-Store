@@ -18,6 +18,7 @@ package com.android.quickstep.inputconsumers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
+import android.os.Build;
 import android.view.MotionEvent;
 
 import com.android.launcher3.testing.TestLogging;
@@ -76,7 +77,8 @@ public class SysUiOverlayInputConsumer implements InputConsumer,
     @Override
     public void onSwipeUp(boolean wasFling, PointF finalVelocity) {
         // Close system dialogs when a swipe up is detected.
-        mContext.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S)
+            mContext.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
     }
 
     @Override
