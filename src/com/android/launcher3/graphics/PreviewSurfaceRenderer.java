@@ -151,7 +151,7 @@ public class PreviewSurfaceRenderer {
             inflationContext = new ContextThemeWrapper(context,
                     Themes.getActivityThemeRes(context, mWallpaperColors.getColorHints()));
         } else {
-            inflationContext = new ContextThemeWrapper(mContext, R.style.AppTheme);
+            inflationContext = new ContextThemeWrapper(mContext, R.style.AppTheme_Light);
         }
 
         if (migrated) {

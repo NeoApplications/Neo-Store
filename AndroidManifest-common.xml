@@ -176,7 +176,7 @@
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

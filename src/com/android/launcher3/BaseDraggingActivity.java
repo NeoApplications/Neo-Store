@@ -84,7 +84,7 @@ public abstract class BaseDraggingActivity extends BaseActivity
     private Runnable mOnStartCallback;
     private RunnableList mOnResumeCallbacks = new RunnableList();
 
-    private int mThemeRes = R.style.AppTheme;
+    private int mThemeRes = R.style.AppTheme_Light;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

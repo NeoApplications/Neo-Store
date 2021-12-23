@@ -59,7 +59,7 @@ public class Themes {
         if (Utilities.isDarkTheme(context)) {
             return R.style.AppTheme_Dark;
         } else {
-            return R.style.AppTheme;
+            return R.style.AppTheme_Light;
         }
     }
 

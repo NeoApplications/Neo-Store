@@ -18,7 +18,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="@style/LauncherTheme">
+    <style name="AppTheme.Light" parent="@style/LauncherTheme">
         <item name="allAppsScrimColor">@color/grey_50</item>
         <item name="widgetsTheme">@style/WidgetContainerTheme.Light</item>
         <item name="dashIconBackground">@color/grey_300</item>

@@ -51,7 +51,7 @@
         android:largeHeap="@bool/config_largeHeap"
         android:restoreAnyVersion="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Light">
 
         <service
             android:name="com.android.quickstep.TouchInteractionService"
