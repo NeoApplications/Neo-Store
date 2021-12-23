@@ -16,9 +16,12 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Settings">
 
-    <PreferenceCategory android:title="@string/pref_category__interfaces">
+    <PreferenceCategory
+        android:title="@string/pref_category__interfaces"
+        app:allowDividerAbove="false">
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PrefsDesktopFragment"
             android:icon="@drawable/ic_desktop"
@@ -48,7 +51,9 @@
             android:title="@string/title__general_theme" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category__inputs">
+    <PreferenceCategory
+        android:title="@string/pref_category__inputs"
+        app:allowDividerAbove="false">
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsSearchFragment"
             android:icon="@drawable/ic_search_colored"
@@ -64,7 +69,9 @@
             android:title="@string/title__general_notifications" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category__others">
+    <PreferenceCategory
+        android:title="@string/pref_category__others"
+        app:allowDividerAbove="false">
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsAdvancedFragment"
             android:icon="@drawable/ic_more_horiz"
@@ -78,12 +85,13 @@
             android:key="pref_showDevOptions"
             android:layout="@layout/home_preference"
             android:title="@string/developer_options_title" />
+
+        <Preference
+            android:fragment="com.saggitt.omega.ui.AboutFragment"
+            android:icon="@drawable/ic_info"
+            android:key="pref_about"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_about"
+            android:title="@string/title__general_about" />
     </PreferenceCategory>
-    <Preference
-        android:icon="@drawable/ic_info"
-        android:key="pref_about"
-        android:fragment="com.saggitt.omega.ui.AboutFragment"
-        android:layout="@layout/home_preference"
-        android:summary="@string/summary__general_about"
-        android:title="@string/title__general_about" />
 </androidx.preference.PreferenceScreen>
