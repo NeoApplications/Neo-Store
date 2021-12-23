@@ -83,7 +83,7 @@
         <item name="settingsSearchBackground">?settingsBackground</item>
         <item name="settingsPopupBackground">?settingsBackground</item>
         <item name="useLightSystemBars">true</item>
-        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="android:statusBarColor">@color/lollipopStatusBar</item>
         <item name="iconShapeTint">@color/grey_700</item>
