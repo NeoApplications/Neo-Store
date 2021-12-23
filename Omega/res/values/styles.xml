@@ -25,8 +25,10 @@
         <item name="dashSheetBackground">@color/grey_50</item>
         <item name="popupColorPrimary">@color/grey_300</item>
         <item name="alertDialogTheme">@style/AlertDialog.Light</item>
+        <item name="popupShadeFirst">@color/settings_background_light</item>
+        <item name="popupShadeSecond">@color/settings_background_light_2dp</item>
+        <item name="popupShadeThird">@color/settings_background_light_8dp</item>
 
-        <item name="allappsHeaderProtectionColor">@color/system_neutral1_100</item>
         <item name="allAppsInterimScrimAlpha">46</item>
     </style>
 
@@ -37,6 +39,9 @@
         <item name="dashSheetBackground">@color/grey_900</item>
         <item name="popupColorPrimary">@color/grey_800</item>
         <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+        <item name="popupShadeFirst">@color/settings_background_dark</item>
+        <item name="popupShadeSecond">@color/settings_background_dark_2dp</item>
+        <item name="popupShadeThird">@color/settings_background_dark_8dp</item>
 
         <item name="allAppsInterimScrimAlpha">102</item>
     </style>
@@ -48,11 +53,12 @@
         <item name="dashSheetBackground">@color/settings_background_black</item>
         <item name="popupColorPrimary">@color/grey_900</item>
         <item name="alertDialogTheme">@style/AlertDialog.Black</item>
+        <item name="popupShadeFirst">@color/settings_background_black</item>
+        <item name="popupShadeSecond">@color/settings_background_black_2dp</item>
+        <item name="popupShadeThird">@color/settings_background_black_8dp</item>
 
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
-        <item name="popupColorSecondary">#000000</item>
-        <item name="popupColorTertiary">@color/grey_900</item>
         <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
