@@ -30,7 +30,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:padding="15dp"
-        android:theme="@style/DashTheme.Item" />
+        android:theme="@style/DashTheme" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_name"

@@ -28,5 +28,5 @@
         android:layout_height="75dp"
         android:background="@drawable/ripple_dash_item_bg"
         android:padding="15dp"
-        android:theme="@style/DashTheme.Item" />
+        android:theme="@style/DashTheme" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -211,10 +211,6 @@
         <item name="background">@android:color/transparent</item>
     </style>
 
-    <style name="DashTheme.Item" parent="DashTheme">
-        <item name="cpv_borderColor">@color/colorAccent</item>
-    </style>
-
     <style name="WidgetContainerTheme.Light" parent="SettingsTheme.Light">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
         <item name="android:colorPrimary">@color/grey_100</item>
