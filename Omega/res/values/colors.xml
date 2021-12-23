@@ -16,19 +16,22 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <color name="colorPrimary">#fff5f5f5</color>
-    <color name="colorAccent">#FF1744</color>
-    <color name="colorAccentDark">#ff8AB4f8</color>
+    <color name="colorPrimary">@color/grey_100</color>
+    <color name="colorAccent">@color/red_a400</color>
+    <color name="colorAccentDark">@color/light_blue_200</color>
     <color name="lollipopStatusBar">#61000000</color>
 
-    <color name="settings_background_dark">#ff303030</color>
+    <color name="settings_background_light">@android:color/white</color>
+    <color name="settings_background_light_2dp">@color/grey_50</color>
+    <color name="settings_background_light_8dp">@color/grey_100</color>
+    <color name="settings_background_dark">@color/grey_900</color>
     <color name="settings_background_dark_2dp">#ff252628</color>
-    <color name="settings_background_dark_8dp">#ff303133</color>
-    <color name="settings_background_black">#ff000000</color>
-    <color name="settings_background_black_2dp">#ff121212</color>
+    <color name="settings_background_dark_8dp">@color/grey_800</color>
+    <color name="settings_background_black">@android:color/black</color>
+    <color name="settings_background_black_2dp">@color/grey_900</color>
     <color name="settings_background_black_8dp">#ff1e1e1e</color>
 
-    <color name="ic_allapps_background">#FAFAFA</color>
+    <color name="ic_allapps_background">@color/grey_50</color>
     <color name="ic_launcher_background">#0F111A</color>
     <color name="ic_launcher_foreground">#0988d1</color>
 
