@@ -47,7 +47,7 @@
         <item name="dashIconBackground">@color/grey_900</item>
         <item name="dashSheetBackground">@color/settings_background_black</item>
         <item name="popupColorPrimary">@color/grey_900</item>
-        <item name="alertDialogTheme">@style/AlertDialog.Dark</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Black</item>
 
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
