@@ -87,9 +87,10 @@ class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val request = activeRequests[id]!!.request
+        val db = DatabaseX.getInstance(requireContext())
         return QueryLoader(requireContext()) {
             when (request) {
-                is Request.ProductsAvailable -> Database.ProductAdapter
+                is Request.ProductsAvailable -> db.productDao
                     .query(
                         installed = false,
                         updates = false,
@@ -98,7 +99,7 @@ class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                         order = request.order,
                         signal = it
                     )
-                is Request.ProductsInstalled -> Database.ProductAdapter
+                is Request.ProductsInstalled -> db.productDao
                     .query(
                         installed = true,
                         updates = false,
@@ -107,7 +108,7 @@ class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                         order = request.order,
                         signal = it
                     )
-                is Request.ProductsUpdates -> Database.ProductAdapter
+                is Request.ProductsUpdates -> db.productDao
                     .query(
                         installed = true,
                         updates = true,
@@ -116,7 +117,7 @@ class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                         order = request.order,
                         signal = it
                     )
-                is Request.Repositories -> Database.RepositoryAdapter.query(it)
+                is Request.Repositories -> db.repositoryDao.allCursor
             }
         }
     }

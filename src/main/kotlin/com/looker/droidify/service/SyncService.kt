@@ -13,12 +13,9 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
-import com.looker.droidify.BuildConfig
-import com.looker.droidify.Common
-import com.looker.droidify.MainActivity
-import com.looker.droidify.R
+import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.index.RepositoryUpdater
@@ -28,6 +25,7 @@ import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
+import com.looker.droidify.utility.getProductItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -99,7 +97,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun sync(request: SyncRequest) {
-            val ids = Database.RepositoryAdapter.getAll(null)
+            val ids = db.repositoryDao.all.mapNotNull { it.data }
                 .asSequence().filter { it.enabled }.map { it.id }.toList()
             sync(ids, request)
         }
@@ -120,12 +118,12 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         fun setUpdateNotificationBlocker(fragment: Fragment?) {
             updateNotificationBlockerFragment = fragment?.let(::WeakReference)
             if (fragment != null) {
-                notificationManager.cancel(Common.NOTIFICATION_ID_UPDATES)
+                notificationManager.cancel(NOTIFICATION_ID_UPDATES)
             }
         }
 
         fun setEnabled(repository: Repository, enabled: Boolean): Boolean {
-            Database.RepositoryAdapter.put(repository.enable(enabled))
+            db.repositoryDao.put(repository.enable(enabled))
             if (enabled) {
                 if (repository.id != currentTask?.task?.repositoryId && !tasks.any { it.repositoryId == repository.id }) {
                     tasks += Task(repository.id, true)
@@ -144,10 +142,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun deleteRepository(repositoryId: Long): Boolean {
-            val repository = Database.RepositoryAdapter.get(repositoryId)
+            val repository = db.repositoryDao.get(repositoryId)?.data
             return repository != null && run {
                 setEnabled(repository, false)
-                Database.RepositoryAdapter.markAsDeleted(repository.id)
+                db.repositoryDao.markAsDeleted(repository.id)
                 true
             }
         }
@@ -155,19 +153,21 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private val binder = Binder()
     override fun onBind(intent: Intent): Binder = binder
+    lateinit var db: DatabaseX
 
     override fun onCreate() {
         super.onCreate()
 
+        db = DatabaseX.getInstance(applicationContext)
         if (Android.sdk(26)) {
             NotificationChannel(
-                Common.NOTIFICATION_CHANNEL_SYNCING,
+                NOTIFICATION_CHANNEL_SYNCING,
                 getString(R.string.syncing), NotificationManager.IMPORTANCE_LOW
             )
                 .apply { setShowBadge(false) }
                 .let(notificationManager::createNotificationChannel)
             NotificationChannel(
-                Common.NOTIFICATION_CHANNEL_UPDATES,
+                NOTIFICATION_CHANNEL_UPDATES,
                 getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
             )
                 .let(notificationManager::createNotificationChannel)
@@ -210,8 +210,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private fun showNotificationError(repository: Repository, exception: Exception) {
         notificationManager.notify(
-            "repository-${repository.id}", Common.NOTIFICATION_ID_SYNCING, NotificationCompat
-                .Builder(this, Common.NOTIFICATION_CHANNEL_SYNCING)
+            "repository-${repository.id}", NOTIFICATION_ID_SYNCING, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
                 .setColor(
                     ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -237,7 +237,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private val stateNotificationBuilder by lazy {
         NotificationCompat
-            .Builder(this, Common.NOTIFICATION_CHANNEL_SYNCING)
+            .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
             .setSmallIcon(R.drawable.ic_sync)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -260,7 +260,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         if (force || currentTask?.lastState != state) {
             currentTask = currentTask?.copy(lastState = state)
             if (started == Started.MANUAL) {
-                startForeground(Common.NOTIFICATION_ID_SYNCING, stateNotificationBuilder.apply {
+                startForeground(NOTIFICATION_ID_SYNCING, stateNotificationBuilder.apply {
                     when (state) {
                         is State.Connecting -> {
                             setContentTitle(getString(R.string.syncing_FORMAT, state.name))
@@ -330,7 +330,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         if (currentTask == null) {
             if (tasks.isNotEmpty()) {
                 val task = tasks.removeAt(0)
-                val repository = Database.RepositoryAdapter.get(task.repositoryId)
+                val repository = db.repositoryDao.get(task.repositoryId)?.data
                 if (repository != null && repository.enabled) {
                     val lastStarted = started
                     val newStarted =
@@ -376,7 +376,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 if (hasUpdates && Preferences[Preferences.Key.UpdateNotify]) {
                     val disposable = RxUtils
                         .querySingle { it ->
-                            Database.ProductAdapter
+                            db.productDao
                                 .query(
                                     installed = true,
                                     updates = true,
@@ -386,8 +386,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     signal = it
                                 )
                                 .use {
-                                    it.asSequence().map(Database.ProductAdapter::transformItem)
-                                        .toList()
+                                    it.asSequence().map { it.getProductItem() }.toList()
                                 }
                         }
                         .subscribeOn(Schedulers.io())
@@ -419,8 +418,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         val maxUpdates = 5
         fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
         notificationManager.notify(
-            Common.NOTIFICATION_ID_UPDATES, NotificationCompat
-                .Builder(this, Common.NOTIFICATION_CHANNEL_UPDATES)
+            NOTIFICATION_ID_UPDATES, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
                 .setSmallIcon(R.drawable.ic_new_releases)
                 .setContentTitle(getString(R.string.new_updates_available))
                 .setContentText(

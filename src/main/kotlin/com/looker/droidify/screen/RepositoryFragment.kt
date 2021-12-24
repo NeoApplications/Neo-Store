@@ -12,7 +12,6 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.lifecycleScope
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
 import com.looker.droidify.databinding.TitleTextItemBinding
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
@@ -99,7 +98,7 @@ class RepositoryFragment() : ScreenFragment() {
     }
 
     private fun updateRepositoryView() {
-        val repository = Database.RepositoryAdapter.get(repositoryId)
+        val repository = screenActivity.db.repositoryDao.get(repositoryId)?.data
         val layout = layout!!
         layout.removeAllViews()
         if (repository == null) {
@@ -125,7 +124,7 @@ class RepositoryFragment() : ScreenFragment() {
                 if (repository.enabled && (repository.lastModified.isNotEmpty() || repository.entityTag.isNotEmpty())) {
                     layout.addTitleText(
                         R.string.number_of_applications,
-                        Database.ProductAdapter.getCount(repository.id).toString()
+                        screenActivity.db.productDao.countForRepository(repository.id).toString()
                     )
                 }
             } else {

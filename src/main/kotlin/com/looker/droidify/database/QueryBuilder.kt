@@ -33,6 +33,8 @@ class QueryBuilder {
         this.arguments += arguments
     }
 
+    fun build() = builder.toString()
+
     fun query(db: SQLiteDatabase, signal: CancellationSignal?): Cursor {
         val query = builder.toString()
         val arguments = arguments.toTypedArray()

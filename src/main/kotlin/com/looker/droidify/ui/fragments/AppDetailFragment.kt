@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.*
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
@@ -32,6 +31,7 @@ import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.*
 import com.looker.droidify.utility.extension.text.trimAfter
+import com.looker.droidify.utility.getInstalledItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -129,12 +129,16 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
 
         var first = true
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products))
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.ProductAdapter.get(packageName, it) } }
+            .flatMapSingle {
+                RxUtils.querySingle {
+                    screenActivity.db.productDao.get(packageName).mapNotNull { it?.data }
+                }
+            }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Database.RepositoryAdapter.getAll(it) }
+                    .querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } }
                     .map { it ->
                         it.asSequence().map { Pair(it.id, it) }.toMap()
                             .let {
@@ -151,7 +155,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Nullable(Database.InstalledAdapter.get(packageName, it)) }
+                    .querySingle { Nullable(screenActivity.db.installedDao.get(packageName).getInstalledItem()) }
                     .map { Pair(products, it) }
             }
             .observeOn(AndroidSchedulers.mainThread())

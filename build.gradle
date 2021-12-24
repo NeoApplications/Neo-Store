@@ -25,6 +25,13 @@ android {
         versionCode = 43
         versionName = "0.4.3"
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments += ["room.incremental": "true"]
+            }
+        }
     }
 
     sourceSets.all {

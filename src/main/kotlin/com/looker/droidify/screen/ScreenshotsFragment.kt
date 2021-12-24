@@ -19,7 +19,7 @@ import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.imageview.ShapeableImageView
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.graphics.PaddingDrawable
@@ -68,6 +68,7 @@ class ScreenshotsFragment() : DialogFragment() {
 
         val window = dialog.window
         val decorView = window?.decorView
+        val db = DatabaseX.getInstance(requireContext())
 
         if (window != null) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -132,13 +133,17 @@ class ScreenshotsFragment() : DialogFragment() {
 
         var restored = false
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products))
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.ProductAdapter.get(packageName, it) } }
+            .flatMapSingle {
+                RxUtils.querySingle {
+                    db.productDao.get(packageName).mapNotNull { it?.data }
+                }
+            }
             .map { it ->
                 Pair(
                     it.find { it.repositoryId == repositoryId },
-                    Database.RepositoryAdapter.get(repositoryId)
+                    db.repositoryDao.get(repositoryId)?.data
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())
