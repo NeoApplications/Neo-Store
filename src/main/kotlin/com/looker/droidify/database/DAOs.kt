@@ -10,7 +10,7 @@ import com.looker.droidify.entity.ProductItem
 
 
 interface BaseDao<T> {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insert(vararg product: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -22,20 +22,23 @@ interface BaseDao<T> {
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
+    @get:Query("SELECT COUNT(_id) FROM repository")
+    val count: Int
+
     fun put(repository: com.looker.droidify.entity.Repository): com.looker.droidify.entity.Repository {
         repository.let {
             val dbRepo = Repository().apply {
-                id = it.id
+                if (it.id >= 0L) id = it.id
                 enabled = if (it.enabled) 1 else 0
                 deleted = false
                 data = it
             }
-            val newId = if (repository.id >= 0L) update(dbRepo).toLong() else returnInsert(dbRepo)
+            val newId = if (it.id > 0L) update(dbRepo).toLong() else returnInsert(dbRepo)
             return if (newId != repository.id) repository.copy(id = newId) else repository
         }
     }
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun returnInsert(product: Repository): Long
 
     @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
