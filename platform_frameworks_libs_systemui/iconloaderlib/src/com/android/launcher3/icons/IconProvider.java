@@ -43,8 +43,12 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.launcher3.icons.ThemedIconDrawable.ThemeData;
 import com.android.launcher3.util.SafeCloseable;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -185,6 +189,20 @@ public class IconProvider {
         return icon;
     }
 
+    protected boolean isThemeEnabled() {
+        return mThemedIconMap != DISABLED_MAP;
+    }
+
+    @Nullable
+    protected final ThemeData getThemeData(@NonNull String packageName, @NonNull String component) {
+        return getThemeData(new ComponentName(packageName, component));
+    }
+
+    @Nullable
+    protected ThemeData getThemeData(@NonNull ComponentName componentName) {
+        return getThemedIconMap().get(componentName.getPackageName());
+    }
+
     private Map<String, ThemeData> getThemedIconMap() {
         if (mThemedIconMap != null) {
             return mThemedIconMap;
@@ -289,9 +307,8 @@ public class IconProvider {
      * Returns a string representation of the current system icon state
      */
     public String getSystemIconState() {
-        return (CONFIG_ICON_MASK_RES_ID == ID_NULL
-                ? "" : mContext.getResources().getString(CONFIG_ICON_MASK_RES_ID))
-                + (mThemedIconMap == DISABLED_MAP ? ",no-theme" : ",with-theme");
+        return CustomAdaptiveIconDrawable.sMaskId
+                + (isThemeEnabled() ? ",with-theme" : ",no-theme");
     }
 
     /**

@@ -19,7 +19,6 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
 import android.os.Process;
@@ -298,9 +297,9 @@ public class BaseIconFactory implements AutoCloseable {
         }
         float scale;
 
-        int wrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
+        //int wrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
         if(IconPreferencesKt.coloredBackground(mContext)){
-            wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
+            mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
         }
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
@@ -321,7 +320,7 @@ public class BaseIconFactory implements AutoCloseable {
                 icon = dr;
                 scale = getNormalizer().getScale(icon, outIconBounds, null, null);
 
-                ((ColorDrawable) dr.getBackground()).setColor(wrapperBackgroundColor);
+                ((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
             }
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);
@@ -331,7 +330,7 @@ public class BaseIconFactory implements AutoCloseable {
                     AdaptiveIconDrawable mutIcon = (AdaptiveIconDrawable) icon.mutate();
 
                     if (!ColorExtractor.isSingleColor(mutIcon.getBackground(), Color.WHITE)) {
-                        ((ColorDrawable) mutIcon.getBackground()).setColor(Color.RED);
+                        ((ColorDrawable) mutIcon.getBackground()).setColor(mWrapperBackgroundColor);
                         outScale[0] = scale;
                         return mutIcon;
                     }
@@ -440,10 +439,11 @@ public class BaseIconFactory implements AutoCloseable {
     }
 
     public static Drawable getFullResDefaultActivityIcon(int iconDpi) {
-        return Resources.getSystem().getDrawableForDensity(
+        Drawable icon = Resources.getSystem().getDrawableForDensity(
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                         ? android.R.drawable.sym_def_app_icon : android.R.mipmap.sym_def_app_icon,
                 iconDpi);
+        return CustomAdaptiveIconDrawable.wrapNonNull(icon);
     }
 
     /**

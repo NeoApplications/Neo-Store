@@ -29,6 +29,8 @@ import android.util.Log;
 
 import androidx.annotation.ColorInt;
 
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -100,7 +102,7 @@ public class GraphicsUtils {
      * Returns the default path to be used by an icon
      */
     public static Path getShapePath(int size) {
-        AdaptiveIconDrawable drawable = new AdaptiveIconDrawable(
+        AdaptiveIconDrawable drawable = new CustomAdaptiveIconDrawable(
                 new ColorDrawable(Color.BLACK), new ColorDrawable(Color.BLACK));
         drawable.setBounds(0, 0, size, size);
         return new Path(drawable.getIconMask());

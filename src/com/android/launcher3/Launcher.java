@@ -1979,8 +1979,12 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         AbstractFloatingView topView = AbstractFloatingView.getTopOpenView(this);
         if (topView != null && topView.onBackPressed()) {
             // Handled by the floating view.
-        } else {
+        } else if (!isInState(NORMAL)) {
             mStateManager.getState().onBackPressed(this);
+        } else {
+            if (this instanceof OmegaLauncher) {
+                ((OmegaLauncher) this).getGestureController().onPressBack();
+            }
         }
     }
 

@@ -133,7 +133,7 @@ public class ClockDrawableWrapper extends CustomAdaptiveIconDrawable implements 
                         Drawable bg = new ColorDrawable(colors[0]);
                         Drawable fg = themeData.mResources.getDrawable(resId).mutate();
                         fg.setTint(colors[1]);
-                        return new AdaptiveIconDrawable(bg, fg);
+                        return new CustomAdaptiveIconDrawable(bg, fg);
                     });
             if (drawable != null) {
                 return drawable;
@@ -219,7 +219,7 @@ public class ClockDrawableWrapper extends CustomAdaptiveIconDrawable implements 
     public ClockBitmapInfo getExtendedInfo(Bitmap bitmap, int color,
                                            BaseIconFactory iconFactory, float normalizationScale, UserHandle user) {
         iconFactory.disableColorExtraction();
-        AdaptiveIconDrawable background = new AdaptiveIconDrawable(
+        AdaptiveIconDrawable background = new CustomAdaptiveIconDrawable(
                 getBackground().getConstantState().newDrawable(), null);
         BitmapInfo bitmapInfo = iconFactory.createBadgedIconBitmap(background,
                 Process.myUserHandle(), mTargetSdkVersion, false);

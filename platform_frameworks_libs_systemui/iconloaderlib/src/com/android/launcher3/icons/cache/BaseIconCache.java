@@ -50,6 +50,7 @@ import com.android.launcher3.icons.BaseIconFactory;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.SQLiteCacheHelper;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 import java.util.AbstractMap;
 import java.util.Collections;
@@ -155,8 +156,9 @@ public abstract class BaseIconCache {
     private Drawable getFullResIcon(Resources resources, int iconId) {
         if (resources != null && iconId != 0) {
             try {
-                return resources.getDrawableForDensity(iconId, mIconDpi);
-            } catch (Resources.NotFoundException e) {
+                Drawable icon = resources.getDrawableForDensity(iconId, mIconDpi);
+                return CustomAdaptiveIconDrawable.wrap(icon);
+            } catch (Resources.NotFoundException ignored) {
             }
         }
         return getFullResDefaultActivityIcon(mIconDpi);
@@ -165,7 +167,7 @@ public abstract class BaseIconCache {
     public Drawable getFullResIcon(String packageName, int iconId) {
         try {
             return getFullResIcon(mPackageManager.getResourcesForApplication(packageName), iconId);
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         return getFullResDefaultActivityIcon(mIconDpi);
     }
@@ -174,7 +176,7 @@ public abstract class BaseIconCache {
         try {
             return getFullResIcon(mPackageManager.getResourcesForApplication(info.applicationInfo),
                     info.getIconResource());
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         return getFullResDefaultActivityIcon(mIconDpi);
     }
