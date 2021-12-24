@@ -37,10 +37,11 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     companion object {
@@ -456,15 +457,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                 } else Unit
             }
             AppDetailAdapter.Action.SHARE -> {
-                val sendIntent: Intent = Intent().apply {
-                    this.action = Intent.ACTION_SEND
-                    putExtra(
-                        Intent.EXTRA_TEXT,
-                        "https://www.f-droid.org/packages/${products[0].first.packageName}/"
-                    )
-                    type = "text/plain"
-                }
-                startActivity(Intent.createChooser(sendIntent, null))
+                shareIntent(packageName, products[0].first.name)
             }
         }::class
     }
@@ -480,6 +473,21 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun shareIntent(packageName: String, appName: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        val extraText = if (Android.sdk(24)) {
+            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+
+
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+
+        startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
     }
 
     override fun onPreferenceChanged(preference: ProductPreference) {
