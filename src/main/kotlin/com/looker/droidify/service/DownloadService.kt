@@ -23,9 +23,7 @@ import com.looker.droidify.utility.extension.text.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import java.io.File
 import java.security.MessageDigest
 import kotlin.math.*
@@ -42,7 +40,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
         private val downloadState = mutableDownloadState.asSharedFlow()
     }
 
-    val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.Default)
+    private val mainDispatcher = Dispatchers.Main
 
     class Receiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -150,9 +149,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 .let(notificationManager::createNotificationChannel)
         }
 
-        scope.launch {
-            downloadState.collect { publishForegroundState(false, it) }
-        }
+        downloadState.onEach { publishForegroundState(false, it) }.launchIn(scope)
     }
 
     override fun onDestroy() {
@@ -173,7 +170,14 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     private fun cancelTasks(packageName: String?) {
         tasks.removeAll {
             (packageName == null || it.packageName == packageName) && run {
-                scope.launch { mutableStateSubject.emit(State.Cancel(it.packageName, it.name)) }
+                scope.launch(mainDispatcher) {
+                    mutableStateSubject.emit(
+                        State.Cancel(
+                            it.packageName,
+                            it.name
+                        )
+                    )
+                }
                 true
             }
         }
@@ -183,7 +187,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
         currentTask?.let {
             if (packageName == null || it.task.packageName == packageName) {
                 currentTask = null
-                scope.launch {
+                scope.launch(mainDispatcher) {
                     mutableStateSubject.emit(
                         State.Cancel(
                             it.task.packageName,
@@ -300,7 +304,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private fun publishSuccess(task: Task) {
         var consumed = false
-        scope.launch {
+        scope.launch(mainDispatcher) {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
             consumed = true
         }
