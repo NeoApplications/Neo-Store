@@ -41,11 +41,11 @@ object ProductPreferences {
         CoroutineScope(Dispatchers.Default).launch {
             subject.collect { (packageName, versionCode) ->
                 if (versionCode != null) db.lockDao.insert(Lock().apply {
-                        package_name = pName
+                        package_name = packageName
                         version_code = versionCode
                     }
                 )
-                else db.lockDao.delete(pName)
+                else db.lockDao.delete(packageName)
             }
         }
     }

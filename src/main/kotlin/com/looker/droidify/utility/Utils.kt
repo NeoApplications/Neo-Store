@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
+import android.database.Cursor
 import android.graphics.drawable.Drawable
 import android.os.Build
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.entity.InstalledItem
@@ -26,6 +29,7 @@ import com.looker.droidify.utility.extension.text.hex
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
