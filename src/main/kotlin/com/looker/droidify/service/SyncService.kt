@@ -96,6 +96,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             }
         }
 
+        // TODO fix sync (better management of repositories' ids
         fun sync(request: SyncRequest) {
             val ids = db.repositoryDao.all.mapNotNull { it.data }
                 .asSequence().filter { it.enabled }.map { it.id }.toList()

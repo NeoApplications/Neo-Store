@@ -66,7 +66,7 @@ abstract class DatabaseX : RoomDatabase() {
                 productsCount != 0 || categoriesCount != 0
             }
         }
-        // Use live objects and observers instead
+        // TODO Use live objects and observers instead
         /*if (result.any { it }) {
             com.looker.droidify.database.Database.notifyChanged(com.looker.droidify.database.Database.Subject.Products)
         }*/
