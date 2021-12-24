@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.looker.droidify.entity.Repository.Companion.defaultRepositories
 
 @Database(
     entities = [
@@ -43,6 +44,11 @@ abstract class DatabaseX : RoomDatabase() {
                         .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build()
+                    INSTANCE?.let { instance ->
+                        if (instance.repositoryDao.count == 0) defaultRepositories.forEach {
+                            instance.repositoryDao.put(it)
+                        }
+                    }
                 }
                 return INSTANCE!!
             }
