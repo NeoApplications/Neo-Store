@@ -12,7 +12,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.database.Database
 import com.looker.droidify.databinding.FragmentLatestXBinding
 import com.looker.droidify.ui.adapters.AppListAdapter
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
@@ -59,9 +58,9 @@ class LatestFragment : MainNavFragmentX(), CursorOwner.Callback {
 
         mainActivityX.attachCursorOwner(this, viewModel.request(source))
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            //.concatWith(Database.observable(Database.Subject.Repositories)) TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.RepositoryAdapter.getAll(it) } }
+            .flatMapSingle { RxUtils.querySingle { mainActivityX.db.repositoryDao.all.mapNotNull { it.data } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (binding.recyclerView.adapter as? AppListAdapter)?.repositories = it }

@@ -20,10 +20,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.ContextWrapperX
+import com.looker.droidify.MainApplication
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.database.Database
 import com.looker.droidify.database.QueryLoader
 import com.looker.droidify.databinding.ActivityMainXBinding
 import com.looker.droidify.installer.AppInstaller
@@ -66,6 +66,9 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
             updateUpdateNotificationBlocker(source)
         }
     })
+
+    val db
+        get() = (application as MainApplication).db
 
     lateinit var cursorOwner: CursorOwner
         private set
@@ -264,7 +267,7 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
         val request = viewModel.activeRequests[id]!!.request
         return QueryLoader(this) {
             when (request) {
-                is CursorOwner.Request.ProductsAvailable -> Database.ProductAdapter
+                is CursorOwner.Request.ProductsAvailable -> db.productDao
                     .query(
                         installed = false,
                         updates = false,
@@ -273,7 +276,7 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
                         order = request.order,
                         signal = it
                     )
-                is CursorOwner.Request.ProductsInstalled -> Database.ProductAdapter
+                is CursorOwner.Request.ProductsInstalled -> db.productDao
                     .query(
                         installed = true,
                         updates = false,
@@ -282,7 +285,7 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
                         order = request.order,
                         signal = it
                     )
-                is CursorOwner.Request.ProductsUpdates -> Database.ProductAdapter
+                is CursorOwner.Request.ProductsUpdates -> db.productDao
                     .query(
                         installed = true,
                         updates = true,
@@ -291,7 +294,7 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
                         order = request.order,
                         signal = it
                     )
-                is CursorOwner.Request.Repositories -> Database.RepositoryAdapter.query(it)
+                is CursorOwner.Request.Repositories -> db.repositoryDao.allCursor
             }
         }
     }
