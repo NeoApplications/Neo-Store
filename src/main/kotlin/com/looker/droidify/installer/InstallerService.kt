@@ -7,7 +7,8 @@ import android.content.pm.PackageManager
 import android.os.IBinder
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.Common
+import com.looker.droidify.NOTIFICATION_CHANNEL_DOWNLOADING
+import com.looker.droidify.NOTIFICATION_ID_DOWNLOADING
 import com.looker.droidify.R
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
@@ -70,7 +71,7 @@ class InstallerService : Service() {
 
         // start building
         val builder = NotificationCompat
-            .Builder(this, Common.NOTIFICATION_CHANNEL_DOWNLOADING)
+            .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
             .setAutoCancel(true)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -81,7 +82,7 @@ class InstallerService : Service() {
             PackageInstaller.STATUS_SUCCESS -> {
                 if (installerAction == ACTION_UNINSTALL)
                 // remove any notification for this app
-                    notificationManager.cancel(notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
+                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 else {
                     val notification = builder
                         .setSmallIcon(android.R.drawable.stat_sys_download_done)
@@ -90,11 +91,11 @@ class InstallerService : Service() {
                         .build()
                     notificationManager.notify(
                         notificationTag,
-                        Common.NOTIFICATION_ID_DOWNLOADING,
+                        NOTIFICATION_ID_DOWNLOADING,
                         notification
                     )
                     Thread.sleep(5000)
-                    notificationManager.cancel(notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
+                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 }
             }
             PackageInstaller.STATUS_FAILURE_ABORTED -> {
@@ -109,7 +110,7 @@ class InstallerService : Service() {
                     .build()
                 notificationManager.notify(
                     notificationTag,
-                    Common.NOTIFICATION_ID_DOWNLOADING,
+                    NOTIFICATION_ID_DOWNLOADING,
                     notification
                 )
             }

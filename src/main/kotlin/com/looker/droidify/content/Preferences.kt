@@ -3,8 +3,8 @@ package com.looker.droidify.content
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import com.looker.droidify.Common.PREFS_LANGUAGE
-import com.looker.droidify.Common.PREFS_LANGUAGE_DEFAULT
+import com.looker.droidify.PREFS_LANGUAGE
+import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.utility.extension.android.Android

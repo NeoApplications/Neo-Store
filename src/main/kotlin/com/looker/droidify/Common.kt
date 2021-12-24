@@ -35,8 +35,5 @@ const val ROW_LOCK_NAME = "memory_lock"
 
 const val JOB_ID_SYNC = 1
 
-    const val PREFS_LANGUAGE = "languages"
-    const val PREFS_LANGUAGE_DEFAULT = "system"
-
-    const val JOB_ID_SYNC = 1
-}
+const val PREFS_LANGUAGE = "languages"
+const val PREFS_LANGUAGE_DEFAULT = "system"
