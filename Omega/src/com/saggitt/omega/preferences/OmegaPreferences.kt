@@ -69,7 +69,7 @@ class OmegaPreferences(val context: Context) :
     }
 
     val doNothing = { }
-    val recreate = { recreate() }
+    //val recreate = { recreate() }
     val restart = { restart() }
     val reloadApps = { reloadApps() }
     val reloadAll = { reloadAll() }
@@ -100,43 +100,43 @@ class OmegaPreferences(val context: Context) :
 
     val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
     val hideStatusBar by BooleanPref("pref_hideStatusBar", false, restart)
-    val enableMinus by BooleanPref("pref_enable_minus_one", false, recreate)
+    val enableMinus by BooleanPref("pref_enable_minus_one", false, restart)
     var allowEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
     val hideAppLabels by BooleanPref("pref_hide_app_label", false, reloadApps)
     val desktopTextScale by FloatPref("pref_icon_text_scale", 1f, reloadApps)
-    private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, recreate)
+    private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, reloadApps)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 
     var torchState by BooleanPref("pref_torch", false, doNothing)
 
     // DOCK
     var dockHide by BooleanPref("pref_hideHotseat", false, restart)
-    val dockIconScale by FloatPref("pref_hotseat_icon_scale", 1f, recreate)
-    var dockScale by FloatPref("pref_dockScale", 1f, recreate)
-    val dockBackground by BooleanPref("pref_dockBackground", false, recreate)
-    val dockBackgroundColor by IntPref("pref_dock_background_color", 0x101010, recreate)
-    var dockOpacity by AlphaPref("pref_dockOpacity", -1, recreate)
+    val dockIconScale by FloatPref("pref_hotseat_icon_scale", 1f, restart)
+    var dockScale by FloatPref("pref_dockScale", 1f, restart)
+    val dockBackground by BooleanPref("pref_dockBackground", false, restart)
+    val dockBackgroundColor by IntPref("pref_dock_background_color", 0x101010, restart)
+    var dockOpacity by AlphaPref("pref_dockOpacity", -1, restart)
 
     // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, restart)
     var hiddenAppSet by StringSetPref("hidden_app_set", setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(
-        "pref_hidden_prediction_set",
-        setOf(),
-        doNothing
+            "pref_hidden_prediction_set",
+            setOf(),
+            doNothing
     )
     var protectedAppsSet by StringSetPref("protected_app_set", setOf(), reloadApps)
     var enableProtectedApps by BooleanPref("pref_protected_apps", false)
     var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
     val allAppsTextScale by FloatPref("pref_allapps_icon_text_scale", 1f)
-    val hideAllAppsAppLabels by BooleanPref("pref_hide_allapps_app_label", false, recreate)
+    val hideAllAppsAppLabels by BooleanPref("pref_hide_allapps_app_label", false, reloadApps)
     private val drawerMultilineLabel by BooleanPref(
-        "pref_apps_icon_labels_two_lines",
-        false,
-        recreate
+            "pref_apps_icon_labels_two_lines",
+            false,
+            reloadApps
     )
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
-    val allAppsCellHeightMultiplier by FloatPref("pref_allAppsCellHeightMultiplier", 1F, recreate)
+    val allAppsCellHeightMultiplier by FloatPref("pref_allAppsCellHeightMultiplier", 1F, restart)
 
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
@@ -163,34 +163,34 @@ class OmegaPreferences(val context: Context) :
         }, IconShape::toString
     ) { /* no dispose */ }
 
-    var coloredBackground by BooleanPref("pref_colored_background",false, doNothing)
+    var coloredBackground by BooleanPref("pref_colored_background", false, doNothing)
     var enableWhiteOnlyTreatment by BooleanPref("pref_white_only_treatment", false, doNothing)
     var enableLegacyTreatment by BooleanPref("pref_legacy_treatment", false, doNothing)
     var adaptifyIconPacks by BooleanPref("pref_adaptive_icon_pack", false, doNothing)
     var forceShapeless by BooleanPref("pref_force_shape_less", false, doNothing)
 
     //FOLDER
-    var folderRadius by DimensionPref("pref_folder_radius", -1f, recreate)
-    val customFolderBackground by BooleanPref("pref_custom_folder_background", false, recreate)
+    var folderRadius by DimensionPref("pref_folder_radius", -1f, restart)
+    val customFolderBackground by BooleanPref("pref_custom_folder_background", false, restart)
     val folderBackground by IntPref(
-        "pref_folder_background",
-        Themes.getAttrColor(context, R.attr.folderFillColor),
-        recreate
+            "pref_folder_background",
+            Themes.getAttrColor(context, R.attr.folderFillColor),
+            restart
     )
 
     //SMARTSPACE
-    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, recreate)
+    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, restart)
 
     //NOTIFICATION
     val notificationCount: Boolean by BooleanPref("pref_notification_count", false, restart)
     val notificationCustomColor: Boolean by BooleanPref("pref_custom_background", false, restart)
     val notificationBackground by IntPref(
-        "pref_notification_background", R.color.notification_background, recreate
+            "pref_notification_background", R.color.notification_background, restart
     )
 
     //ADVANCED
-    var language by StringPref("pref_language", "", recreate)
-    var settingsSearch by BooleanPref("pref_settings_search", true, recreate)
+    var language by StringPref("pref_language", "", restart)
+    var settingsSearch by BooleanPref("pref_settings_search", true, restart)
     var firstRun by BooleanPref("pref_first_run", true)
 
     // FEED
@@ -198,19 +198,19 @@ class OmegaPreferences(val context: Context) :
     val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", true, restart)
 
     //DEVELOPER PREFERENCES
-    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, recreate)
-    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, recreate)
-    private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, recreate)
+    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, restart)
+    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, restart)
+    private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, restart)
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)
 
     val customAppName =
-        object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
-            override fun flattenKey(key: ComponentKey) = key.toString()
-            override fun unflattenKey(key: String) = makeComponentKey(context, key)
-            override fun flattenValue(value: String) = value
-            override fun unflattenValue(value: String) = value
-        }
+            object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
+                override fun flattenKey(key: ComponentKey) = key.toString()
+                override fun unflattenKey(key: String) = makeComponentKey(context, key)
+                override fun flattenValue(value: String) = value
+                override fun unflattenValue(value: String) = value
+            }
 
 
     /*Load Initial preferences*/
