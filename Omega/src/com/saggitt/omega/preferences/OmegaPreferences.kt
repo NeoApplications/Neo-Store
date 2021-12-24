@@ -188,6 +188,15 @@ class OmegaPreferences(val context: Context) :
             "pref_notification_background", R.color.notification_background, restart
     )
 
+    var doubleTapGesture by StringPref("pref_gesture_double_tap", "", restart)
+    var longPressGesture by StringPref("pref_gesture_long_press", "", restart)
+    var homePressGesture by StringPref("pref_gesture_press_home", "", restart)
+    var backPressGesture by StringPref("pref_gesture_press_back", "", restart)
+    var swipeDownGesture by StringPref("pref_gesture_swipe_down", "", restart)
+    var swipeUpGesture by StringPref("pref_gesture_swipe_up", "", restart)
+    var dockSwipeUpGesture by StringPref("pref_gesture_dock_swipe_up", "", restart)
+    var launchAssistantGesture by StringPref("pref_gesture_launch_assistant", "", restart)
+
     //ADVANCED
     var language by StringPref("pref_language", "", restart)
     var settingsSearch by BooleanPref("pref_settings_search", true, restart)
