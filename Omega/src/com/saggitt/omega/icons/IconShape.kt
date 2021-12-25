@@ -318,6 +318,7 @@ open class IconShape(
                 "square" -> Square
                 "rounded" -> RoundedSquare
                 "squircle" -> Squircle
+                "sammy" -> Sammy
                 "teardrop" -> Teardrop
                 "cylinder" -> Cylinder
                 "" -> null

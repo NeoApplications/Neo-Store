@@ -53,7 +53,7 @@ class IconShapeFragment : Fragment(){
         val context: Context? = activity
         val systemShape = IconShapeManager.getSystemIconShape(context!!)
         val iconShapes = arrayOf(systemShape, IconShape.Circle, IconShape.Square, IconShape.RoundedSquare,
-            IconShape.Squircle, IconShape.Teardrop, IconShape.Cylinder)
+            IconShape.Squircle, IconShape.Sammy, IconShape.Teardrop, IconShape.Cylinder)
         val iconShapeItems = iconShapes.map {
             ItemIconShape(context, ShapeModel(
                     it.toString(),
