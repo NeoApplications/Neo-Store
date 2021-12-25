@@ -1,0 +1,58 @@
+<!--
+  ~  The file on which this xml is based on is part of NewPipe (https://newpipe.net)
+  ~  Copyright (c) 2015   Christian Schabesberger
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+    <path
+        android:fillColor="#ff5252"
+        android:pathData="M88,104m-0,0a0,0 0,1 1,0 0a0,0 0,1 1,-0 0"
+        android:strokeWidth="17.10300064"
+        android:strokeColor="#00000000" />
+    <path
+        android:fillColor="#ff7575"
+        android:pathData="M96,96m-88,0a88,88 0,1 1,176 0a88,88 0,1 1,-176 0"
+        android:strokeWidth="17.10300064"
+        android:strokeColor="#00000000" />
+    <path
+        android:fillColor="#cc4242"
+        android:pathData="M184,96A88,88 0,0 1,96.123 184,88 88,0 0,1 8,96.246"
+        android:strokeWidth="17.10300064"
+        android:strokeColor="#00000000" />
+    <path
+        android:fillColor="#cd201f"
+        android:pathData="M8,96a88,87 0,1 0,176 0a88,87 0,1 0,-176 0z"
+        android:strokeWidth="17.10300064"
+        android:strokeColor="#00000000" />
+    <path
+        android:fillType="evenOdd"
+        android:pathData="M96.002,96.022m-88,0a88,88 0,1 1,176 0a88,88 0,1 1,-176 0"
+        android:strokeWidth="3.5"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"
+        android:pathData="M62.038,154.848 L79.885,143.472 80.259,68.066 126.183,95.333 92.951,114.496v21.928L161.985,95.333 61.944,36.538Z"
+        android:strokeWidth="1"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+</vector>

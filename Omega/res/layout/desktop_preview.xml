@@ -38,7 +38,7 @@
                 android:id="@+id/icon_photos"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_google_photos"
+                app:srcCompat="@drawable/ic_osmand"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_google_photos" />
+                android:text="@string/preview_app_osmand" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +62,7 @@
                 android:id="@+id/icon_youtube"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_youtube_color"
+                app:srcCompat="@drawable/ic_newpipe"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_youtube" />
+                android:text="@string/preview_app_newpipe" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +86,7 @@
                 android:id="@+id/icon_instagram"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_instagram_color"
+                app:srcCompat="@mipmap/ic_launcher"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_instagram" />
+                android:text="@string/app_name" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,7 +110,7 @@
                 android:id="@+id/icon_whatsapp"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_whatsapp_color"
+                app:srcCompat="@drawable/ic_signal"
                 android:padding="10dp"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_whatsapp" />
+                android:text="@string/preview_app_signal" />
         </LinearLayout>
     </LinearLayout>
 </com.saggitt.omega.icons.PreviewFrameView>
