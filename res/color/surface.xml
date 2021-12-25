@@ -17,5 +17,5 @@
 */
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?android:attr/colorBackgroundFloating" />
+    <item android:color="?popupColorPrimary" />
 </selector>
