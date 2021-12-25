@@ -232,35 +232,23 @@
 
     <style name="WidgetContainerTheme.Light" parent="SettingsTheme.Light">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
-        <item name="android:colorPrimary">@color/grey_100</item>
         <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
         <item name="bottomSheetScrimColor">@color/grey_50</item>
         <item name="colorBackgroundFloating">?backgroundColor</item>
-        <item name="android:textColorPrimary">#000000</item>
-        <item name="android:textColorSecondary">#3A3939</item>
-        <item name="android:textColorTertiary">#545454</item>
     </style>
 
     <style name="WidgetContainerTheme.Dark" parent="SettingsTheme.Dark">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
-        <item name="android:colorPrimary">@color/settings_background_dark</item>
         <item name="bottomSheetNavBarColor">@color/grey_900</item>
         <item name="bottomSheetScrimColor">@color/grey_900</item>
         <item name="colorBackgroundFloating">?backgroundColor</item>
-        <item name="android:textColorPrimary">#D5D2D2</item>
-        <item name="android:textColorSecondary">#A8A7A7</item>
-        <item name="android:textColorTertiary">#7C7C7C</item>
     </style>
 
     <style name="WidgetContainerTheme.Black" parent="SettingsTheme.Black">
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
-        <item name="android:colorPrimary">#000000</item>
         <item name="bottomSheetNavBarColor">#00000000</item>
         <item name="colorBackgroundFloating">?backgroundColor</item>
         <item name="bottomSheetScrimColor">@color/settings_background_black</item>
-        <item name="android:textColorPrimary">#D5D2D2</item>
-        <item name="android:textColorSecondary">#A8A7A7</item>
-        <item name="android:textColorTertiary">#7C7C7C</item>
     </style>
 
     <style name="Widget.Omega.AppWidget.InnerView" parent="android:Widget">
