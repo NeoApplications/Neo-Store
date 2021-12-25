@@ -74,8 +74,5 @@ class ItemIconShape(val context: Context, val item: ShapeModel) :
 
         binding.shapeName.text =
             item.shapeName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        binding.shapeIcon.setOnClickListener {
-            prefs.iconShape = IconShape.fromString(item.shapeName)!!
-        }
     }
 }

@@ -18,18 +18,19 @@
 
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_marginStart="8dp"
-    android:clickable="true"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
+        android:elevation="2dp"
         android:gravity="center_horizontal">
 
         <Button
@@ -39,16 +40,16 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/shape_teardrop"
+            android:clickable="false"
             android:gravity="center" />
 
         <ImageView
             android:id="@+id/check_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_check"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="12dp"
-            android:elevation="2dp"/>
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/ic_check" />
     </RelativeLayout>
 
     <TextView
@@ -56,11 +57,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Circle"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="11sp"
         android:elevation="2dp"
-        android:gravity="center" />
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Circle"
+        android:textSize="11sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>
 
