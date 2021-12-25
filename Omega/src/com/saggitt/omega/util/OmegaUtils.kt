@@ -44,6 +44,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.LauncherAppState
@@ -351,3 +352,14 @@ inline fun Modifier.addIf(
     crossinline factory: Modifier.() -> Modifier
 ): Modifier =
     if (condition) factory() else this
+
+fun Fragment.recreate() {
+    parentFragmentManager
+        .beginTransaction()
+        .detach(this)
+        .commit()
+    parentFragmentManager
+        .beginTransaction()
+        .attach(this)
+        .commit()
+}
