@@ -20,20 +20,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:title="@string/title_colored_backgrounds"
         android:summary="@string/summary_colored_backgrounds"
         android:key="pref_colored_background"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:title="@string/title_white_only_treatment"
         android:summary="@string/summary_white_only_treatment"
         android:key="pref_white_only_treatment"
         android:dependency="pref_colored_background"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:title="@string/title_adaptify_pack"
         android:key="pref_adaptive_icon_pack"
         app:iconSpaceReserved="false" />
