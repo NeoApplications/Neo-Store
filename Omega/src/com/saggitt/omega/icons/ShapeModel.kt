@@ -20,7 +20,6 @@ package com.saggitt.omega.icons
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 
 class ShapeModel(val shapeName: String, var isSelected: Boolean) {
@@ -34,7 +33,7 @@ class ShapeModel(val shapeName: String, var isSelected: Boolean) {
             "sammy" -> AppCompatResources.getDrawable(context, R.drawable.shape_squircle)
             "teardrop" -> AppCompatResources.getDrawable(context, R.drawable.shape_teardrop)
             "cylinder" -> AppCompatResources.getDrawable(context, R.drawable.shape_cylinder)
-            else -> ResourcesCompat.getDrawable(context.resources, R.drawable.ic_style, null)
+            else -> AppCompatResources.getDrawable(context, R.drawable.ic_style)
         }
     }
 }

@@ -17,9 +17,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/preview_frame"
@@ -40,15 +42,18 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:clipChildren="true"
-            android:clipToPadding="true" />
+            android:clipToPadding="true"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/item_icon_shape" />
 
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/icon_preferences"
+            android:name="com.saggitt.omega.preferences.views.IconPreferencesFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/shape_view"
-            android:layout_marginTop="8dp"
-            android:id="@+id/icon_preferences"
-            android:name="com.saggitt.omega.preferences.views.IconPreferencesFragment" />
+            android:layout_marginTop="8dp" />
 
     </RelativeLayout>
 </LinearLayout>

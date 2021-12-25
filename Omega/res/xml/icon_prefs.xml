@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Omega Launcher Team
   ~
@@ -21,21 +20,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
-        android:title="@string/title_colored_backgrounds"
-        android:summary="@string/summary_colored_backgrounds"
         android:key="pref_colored_background"
+        android:summary="@string/summary_colored_backgrounds"
+        android:title="@string/title_colored_backgrounds"
         app:iconSpaceReserved="false" />
 
     <SwitchPreference
-        android:title="@string/title_white_only_treatment"
-        android:summary="@string/summary_white_only_treatment"
-        android:key="pref_white_only_treatment"
         android:dependency="pref_colored_background"
+        android:key="pref_white_only_treatment"
+        android:summary="@string/summary_white_only_treatment"
+        android:title="@string/title_white_only_treatment"
         app:iconSpaceReserved="false" />
 
     <SwitchPreference
-        android:title="@string/title_adaptify_pack"
         android:key="pref_adaptive_icon_pack"
+        android:title="@string/title_adaptify_pack"
         app:iconSpaceReserved="false" />
-
 </PreferenceScreen>

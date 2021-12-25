@@ -30,97 +30,97 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_photos"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_osmand"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:padding="10dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
+                app:srcCompat="@drawable/ic_osmand" />
 
             <TextView
                 android:id="@+id/item_name"
+                style="@style/BaseIcon.Workspace.Shadows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_osmand" />
+                android:text="@string/preview_app_osmand"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_youtube"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_newpipe"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:padding="10dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
+                app:srcCompat="@drawable/ic_newpipe" />
 
             <TextView
                 android:id="@+id/item_youtube"
+                style="@style/BaseIcon.Workspace.Shadows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_newpipe" />
+                android:text="@string/preview_app_newpipe"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_instagram"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@mipmap/ic_launcher"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:padding="10dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
+                app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/item_instagram"
+                style="@style/BaseIcon.Workspace.Shadows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_whatsapp"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_signal"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:padding="10dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
+                app:srcCompat="@drawable/ic_signal" />
 
             <TextView
                 android:id="@+id/item_ws"
+                style="@style/BaseIcon.Workspace.Shadows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                style="@style/BaseIcon.Workspace.Shadows"
-                android:text="@string/preview_app_signal" />
+                android:text="@string/preview_app_signal"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </com.saggitt.omega.icons.PreviewFrameView>

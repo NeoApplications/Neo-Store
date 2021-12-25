@@ -213,9 +213,7 @@ open class IconShape(
             path.addCircle(x + radius, y + radius, radius, Path.Direction.CW)
         }
 
-        override fun toString(): String {
-            return "circle"
-        }
+        override fun toString() = "circle"
     }
 
     object Square : IconShape(
@@ -229,9 +227,7 @@ open class IconShape(
         override val qsbEdgeRadius = R.dimen.qsb_radius_square
         override val windowTransitionRadius = .16f
 
-        override fun toString(): String {
-            return "square"
-        }
+        override fun toString() = "square"
     }
 
     object RoundedSquare : IconShape(
@@ -245,9 +241,7 @@ open class IconShape(
         override val qsbEdgeRadius = R.dimen.qsb_radius_square
         override val windowTransitionRadius = .6f
 
-        override fun toString(): String {
-            return "rounded"
-        }
+        override fun toString() = "rounded"
     }
 
     object Squircle : IconShape(
@@ -260,9 +254,7 @@ open class IconShape(
 
         override val qsbEdgeRadius = R.dimen.qsb_radius_squircle
 
-        override fun toString(): String {
-            return "squircle"
-        }
+        override fun toString() = "squircle"
     }
 
     object Sammy : IconShape(
@@ -275,9 +267,7 @@ open class IconShape(
 
         override val qsbEdgeRadius = R.dimen.qsb_radius_squircle
 
-        override fun toString(): String {
-            return "sammy"
-        }
+        override fun toString() = "sammy"
     }
 
     object Teardrop : IconShape(
@@ -288,9 +278,7 @@ open class IconShape(
         1f, 1f, 1f, .3f
     ) {
 
-        override fun toString(): String {
-            return "teardrop"
-        }
+        override fun toString() = "teardrop"
     }
 
     object Cylinder : IconShape(
@@ -304,9 +292,7 @@ open class IconShape(
         PointF(1f, .6f)
     ) {
 
-        override fun toString(): String {
-            return "cylinder"
-        }
+        override fun toString() = "cylinder"
     }
 
     companion object {

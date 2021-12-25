@@ -82,7 +82,6 @@ import androidx.annotation.RawRes;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
-import androidx.core.os.BuildCompat;
 
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.GridCustomizationsProvider;
@@ -147,8 +146,7 @@ public final class Utilities {
 
     public static final boolean ATLEAST_R = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
 
-    public static final boolean ATLEAST_S = BuildCompat.isAtLeastS()
-            || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    public static final boolean ATLEAST_S = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
 
     /**
      * Set on a motion event dispatched from the nav bar. See {@link MotionEvent#setEdgeFlags(int)}.
