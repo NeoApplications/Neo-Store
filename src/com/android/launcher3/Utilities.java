@@ -637,7 +637,7 @@ public final class Utilities {
                 // We need to get the application info to get the component's default state
                 try {
                     PackageInfo packageInfo = pm.getPackageInfo(pkgName,
-                            PackageManager.GET_PROVIDERS | PackageManager.GET_DISABLED_COMPONENTS);
+                            PackageManager.GET_PROVIDERS | PackageManager.MATCH_DISABLED_COMPONENTS);
 
                     if (packageInfo.providers != null) {
                         return Arrays.stream(packageInfo.providers).anyMatch(
