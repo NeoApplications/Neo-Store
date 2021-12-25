@@ -15,15 +15,11 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="128dp"
-    android:height="128dp"
-    android:viewportWidth="100.0"
-    android:viewportHeight="100.0"
-    android:tint="@color/grey_700">
-
-    <path
-        android:fillColor="@android:color/white"
-        android:pathData="M50,0L100,0 100,100 0,100 0,0z" />
-
-</vector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/grey_700" />
+    <corners android:radius="3dp" />
+    <size
+        android:width="128dp"
+        android:height="128dp" />
+</shape>
