@@ -22,6 +22,7 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
 
+// TODO apply changes to the previews directly
 class IconPreferencesFragment: PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.icon_prefs, rootKey)
