@@ -13,6 +13,9 @@ interface BaseDao<T> {
     @Insert
     fun insert(vararg product: T)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertReplace(vararg product: T)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(vararg obj: T): Int
 
@@ -186,7 +189,7 @@ interface CategoryDao : BaseDao<Category> {
 interface InstalledDao : BaseDao<Installed> {
     fun put(vararg isntalled: com.looker.droidify.entity.InstalledItem) {
         isntalled.forEach {
-            insert(Installed(it.packageName).apply {
+            insertReplace(Installed(it.packageName).apply {
                 version = it.version
                 version_code = it.versionCode
                 signature = it.signature
