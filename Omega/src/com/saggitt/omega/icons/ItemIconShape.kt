@@ -18,7 +18,7 @@
 package com.saggitt.omega.icons
 
 import android.content.Context
-import android.graphics.Color
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.PathShape
@@ -32,40 +32,48 @@ import com.android.launcher3.util.Themes
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import java.util.*
 
-class ItemIconShape(val context: Context, val item:ShapeModel) : AbstractBindingItem<ItemIconShapeBinding>() {
+class ItemIconShape(val context: Context, val item: ShapeModel) :
+    AbstractBindingItem<ItemIconShapeBinding>() {
     override val type: Int
         get() = R.id.fastadapter_item
 
     private var prefs = Utilities.getOmegaPrefs(context)
     private val backgroundColor = Themes.getAttrColor(context, R.attr.iconShapeTint)
+    private val highlightColor = Themes.getAttrColor(context, android.R.attr.textColorPrimary)
 
     override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?) =
-            ItemIconShapeBinding.inflate(inflater, parent, false)
+        ItemIconShapeBinding.inflate(inflater, parent, false)
 
     override fun bindView(binding: ItemIconShapeBinding, payloads: List<Any>) {
 
-        val drawable: Drawable? = if(item.shapeName!="system"){
+        val drawable: Drawable? = if (item.shapeName != "system") {
             item.getIcon(context, item.shapeName)
-        } else{
-            val sd = ShapeDrawable(PathShape(IconShapeManager.getSystemIconShape(context).getMaskPath(), 100f, 100f))
-            sd.paint.color = Color.parseColor("#ff616161")
+        } else {
+            val sd = ShapeDrawable(
+                PathShape(
+                    IconShapeManager.getSystemIconShape(context).getMaskPath(),
+                    100f,
+                    100f
+                )
+            )
+            sd.paint.color = backgroundColor
             sd
         }
-        drawable!!.setTint(backgroundColor)
         binding.shapeIcon.background = drawable
 
         if (prefs.iconShape.toString() == item.shapeName) {
-            drawable.setTint(prefs.accentColor)
+            binding.shapeIcon.backgroundTintList = ColorStateList.valueOf(prefs.accentColor)
             item.isSelected = true
-            binding.checkMark.drawable.setTint(Color.WHITE)
+            binding.checkMark.drawable.setTint(highlightColor)
             binding.checkMark.visibility = View.VISIBLE
         } else {
-            drawable.setTint(backgroundColor)
+            binding.shapeIcon.backgroundTintList = ColorStateList.valueOf(backgroundColor)
             item.isSelected = false
             binding.checkMark.visibility = View.INVISIBLE
         }
 
-        binding.shapeName.text = item.shapeName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        binding.shapeName.text =
+            item.shapeName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         binding.shapeIcon.setOnClickListener {
             prefs.iconShape = IconShape.fromString(item.shapeName)!!
         }
