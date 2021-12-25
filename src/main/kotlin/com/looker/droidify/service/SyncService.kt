@@ -96,9 +96,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             }
         }
 
-        // TODO fix sync (better management of repositories' ids
         fun sync(request: SyncRequest) {
-            val ids = db.repositoryDao.all.mapNotNull { it.data }
+            val ids = db.repositoryDao.all.mapNotNull { it.trueData }
                 .asSequence().filter { it.enabled }.map { it.id }.toList()
             sync(ids, request)
         }
@@ -143,7 +142,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun deleteRepository(repositoryId: Long): Boolean {
-            val repository = db.repositoryDao.get(repositoryId)?.data
+            val repository = db.repositoryDao.get(repositoryId)?.trueData
             return repository != null && run {
                 setEnabled(repository, false)
                 db.repositoryDao.markAsDeleted(repository.id)
@@ -331,7 +330,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         if (currentTask == null) {
             if (tasks.isNotEmpty()) {
                 val task = tasks.removeAt(0)
-                val repository = db.repositoryDao.get(task.repositoryId)?.data
+                val repository = db.repositoryDao.get(task.repositoryId)?.trueData
                 if (repository != null && repository.enabled) {
                     val lastStarted = started
                     val newStarted =

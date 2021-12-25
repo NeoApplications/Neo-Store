@@ -138,7 +138,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } }
+                    .querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } }
                     .map { it ->
                         it.asSequence().map { Pair(it.id, it) }.toMap()
                             .let {

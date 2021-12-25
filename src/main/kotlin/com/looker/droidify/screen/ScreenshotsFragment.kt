@@ -143,7 +143,7 @@ class ScreenshotsFragment() : DialogFragment() {
             .map { it ->
                 Pair(
                     it.find { it.repositoryId == repositoryId },
-                    db.repositoryDao.get(repositoryId)?.data
+                    db.repositoryDao.get(repositoryId)?.trueData
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())

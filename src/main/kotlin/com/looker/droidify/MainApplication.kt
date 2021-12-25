@@ -183,7 +183,7 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun forceSyncAll() {
-        db.repositoryDao.all.mapNotNull { it.data }.forEach {
+        db.repositoryDao.all.mapNotNull { it.trueData }.forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
                 db.repositoryDao.put(it.copy(lastModified = "", entityTag = ""))
             }

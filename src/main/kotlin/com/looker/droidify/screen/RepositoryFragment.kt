@@ -98,7 +98,7 @@ class RepositoryFragment() : ScreenFragment() {
     }
 
     private fun updateRepositoryView() {
-        val repository = screenActivity.db.repositoryDao.get(repositoryId)?.data
+        val repository = screenActivity.db.repositoryDao.get(repositoryId)?.trueData
         val layout = layout!!
         layout.removeAllViews()
         if (repository == null) {

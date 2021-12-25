@@ -79,7 +79,7 @@ class AppListFragment() : BaseFragment(), CursorOwner.Callback {
         repositoriesDisposable = Observable.just(Unit)
             //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.data } } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } } }
             .map { it.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (recyclerView?.adapter as? AppListAdapter)?.repositories = it }

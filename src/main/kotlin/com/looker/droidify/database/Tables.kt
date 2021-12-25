@@ -21,6 +21,9 @@ class Repository {
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: Repository? = null
 
+    val trueData: Repository?
+        get() = data?.copy(id = id)
+
     class IdAndDeleted {
         @ColumnInfo(name = "_id")
         var id = 0L

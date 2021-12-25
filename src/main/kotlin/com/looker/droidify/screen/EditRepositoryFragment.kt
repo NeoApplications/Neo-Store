@@ -153,7 +153,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         if (savedInstanceState == null) {
-            val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.data }
+            val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.trueData }
             if (repository == null) {
                 val clipboardManager =
                     requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -232,7 +232,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         lifecycleScope.launch {
-            val list = screenActivity.db.repositoryDao.all.mapNotNull { it.data }
+            val list = screenActivity.db.repositoryDao.all.mapNotNull { it.trueData }
             takenAddresses = list.asSequence().filter { it.id != repositoryId }
                 .flatMap { (it.mirrors + it.address).asSequence() }
                 .map { it.withoutKnownPath }.toSet()
@@ -448,7 +448,7 @@ class EditRepositoryFragment() : ScreenFragment() {
                 MessageDialog(MessageDialog.Message.CantEditSyncing).show(childFragmentManager)
                 invalidateState()
             } else {
-                val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.data }
+                val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.trueData }
                     ?.edit(address, fingerprint, authentication)
                     ?: Repository.newRepository(address, fingerprint, authentication)
                 val changedRepository = screenActivity.db.repositoryDao.put(repository)

@@ -60,7 +60,7 @@ class LatestFragment : MainNavFragmentX(), CursorOwner.Callback {
         repositoriesDisposable = Observable.just(Unit)
             //.concatWith(Database.observable(Database.Subject.Repositories)) TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { mainActivityX.db.repositoryDao.all.mapNotNull { it.data } } }
+            .flatMapSingle { RxUtils.querySingle { mainActivityX.db.repositoryDao.all.mapNotNull { it.trueData } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (binding.recyclerView.adapter as? AppListAdapter)?.repositories = it }
