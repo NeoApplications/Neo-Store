@@ -177,4 +177,6 @@
     <string name="update_all">Оновити все</string>
     <string name="installed_applications">Встановлені додатки</string>
     <string name="new_applications">Нові додатки</string>
+    <string name="latest">Останні</string>
+    <string name="sort_filter">Сортувати та фільтрувати</string>
 </resources>
