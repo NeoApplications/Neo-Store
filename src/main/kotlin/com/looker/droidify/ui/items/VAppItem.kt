@@ -18,7 +18,7 @@ import com.looker.droidify.utility.extension.resources.toPx
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class VAppItem(val item: ProductItem, val repository: Repository) :
+class VAppItem(val item: ProductItem, val repository: Repository?) :
     AbstractBindingItem<ItemAppVerticalXBinding>() {
     override val type: Int
         get() = R.id.fastadapter_item
@@ -34,15 +34,18 @@ class VAppItem(val item: ProductItem, val repository: Repository) :
             if (item.name == item.summary) "" else item.summary
         binding.summary.visibility =
             if (binding.summary.text.isNotEmpty()) View.VISIBLE else View.GONE
-        binding.icon.load(
-            CoilDownloader.createIconUri(
-                binding.icon, item.packageName,
-                item.icon, item.metadataIcon, repository
-            )
-        ) {
-            transformations(RoundedCornersTransformation(4.toPx))
-            placeholder(progressIcon)
-            error(defaultIcon)
+
+        repository?.let {
+            binding.icon.load(
+                CoilDownloader.createIconUri(
+                    binding.icon, item.packageName,
+                    item.icon, item.metadataIcon, it
+                )
+            ) {
+                transformations(RoundedCornersTransformation(4.toPx))
+                placeholder(progressIcon)
+                error(defaultIcon)
+            }
         }
         binding.status.apply {
             if (item.canUpdate) {

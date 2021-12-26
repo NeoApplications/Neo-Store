@@ -13,7 +13,7 @@ import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.resources.toPx
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class HAppItem(val item: ProductItem, val repository: Repository) :
+class HAppItem(val item: ProductItem, val repository: Repository?) :
     AbstractBindingItem<ItemAppHorizXBinding>() {
     override val type: Int
         get() = R.id.fastadapter_item
@@ -25,15 +25,17 @@ class HAppItem(val item: ProductItem, val repository: Repository) :
         val (progressIcon, defaultIcon) = Utils.getDefaultApplicationIcons(binding.icon.context)
 
         binding.name.text = item.name
-        binding.icon.load(
-            CoilDownloader.createIconUri(
-                binding.icon, item.packageName,
-                item.icon, item.metadataIcon, repository
-            )
-        ) {
-            transformations(RoundedCornersTransformation(4.toPx))
-            placeholder(progressIcon)
-            error(defaultIcon)
+        repository?.let {
+            binding.icon.load(
+                CoilDownloader.createIconUri(
+                    binding.icon, item.packageName,
+                    item.icon, item.metadataIcon, repository
+                )
+            ) {
+                transformations(RoundedCornersTransformation(4.toPx))
+                placeholder(progressIcon)
+                error(defaultIcon)
+            }
         }
         binding.version.text = if (item.canUpdate) item.version else item.installedVersion
     }
