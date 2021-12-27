@@ -14,7 +14,7 @@
     <string name="reset_custom_icons_confirmation">Réinitialiser les icônes de ce pack \? Cela ne peut pas être annulé.</string>
     <string name="reset_custom_icons">Supprimer les icônes personnalisées</string>
     <string name="loading">Chargement…</string>
-    <string name="folder_cover_mode_desc">Appuyer pour ouvrir la première application, défiler vers le haut pour tout voir.</string>
+    <string name="folder_cover_mode_desc">Appuyer pour ouvrir la première application. Glisser vers le haut pour tout voir.</string>
     <string name="hide_app">Masquer le raccourci</string>
     <string name="debug_component_name_copied">Copié dans le presse-papiers.</string>
     <string name="debug_component_name">Nom du composant</string>
@@ -35,10 +35,10 @@
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Réinitialiser les valeurs par défaut</string>
     <string name="enabled_icon_packs">Actif</string>
-    <string name="drag_to_enable_packs">Glisser vers le haut pour activer</string>
-    <string name="drag_to_disable_packs">Glisser vers le bas pour désactiver</string>
+    <string name="drag_to_enable_packs">Glisser vers le haut pour désactiver</string>
+    <string name="drag_to_disable_packs">Glisser vers le bas pour activer</string>
     <string name="wallpaper_pick">Sélectionner un fond d\'écran</string>
-    <string name="content_storage_permission_required">Pour définir un fond d\'écran, veuillez autoriser l\'accès au stockage.</string>
+    <string name="content_storage_permission_required">Autorisez l\'accès au stockage pour pouvoir définir un fond d\'écran.</string>
     <string name="title_storage_permission_required">Accès au stockage requis</string>
     <string name="category__about_licenses">Licence</string>
     <string name="title__about_changelog">Journal des modifications</string>
@@ -313,10 +313,10 @@
     <string name="backup_share">Partager</string>
     <string name="backup_delete">Masquer</string>
     <string name="backups">Sauvegardes</string>
-    <string name="dt2s_admin_hint">Pour utiliser « Double appui pour dormir », accordez l\'autorisation d\'administrateur.</string>
+    <string name="dt2s_admin_hint">Pour utiliser le double appui pour la veille et accorder l\'autorisation administrateur.</string>
     <string name="title_desktop_hide_statusbar">Masquer la barre d\'état</string>
     <string name="title_desktop_icon_popup_menu">Éléments du menu pop-up</string>
-    <string name="dt2s_admin_warning">La fonction « Double appui pour la veille » sera désactivée.</string>
+    <string name="dt2s_admin_warning">Le double appui pour la veille sera désactivée.</string>
     <string name="action_sleep">Veille</string>
     <string name="action_sleep_timeout">Veille à l’aide du délai d’expiration de l’écran</string>
     <string name="name_provider_alarm_events">Alarmes à venir</string>
@@ -341,13 +341,13 @@
     <string name="about_team">Membres de l\'équipe</string>
     <string name="title_all_apps_keep_scroll_state">Enregistrer la position</string>
     <string name="button_organize_screens">Réorganiser les pages</string>
-    <string name="uninstall_failed">La désinstallation de l\'application a échoué</string>
+    <string name="uninstall_failed">Échec de la désinstallation de l\'application</string>
     <string name="dash_device_settings_summary">Ouvrir les paramètres de l\'appareil</string>
     <string name="dash_volume_summary">Afficher le sélecteur audio de l\'appareil</string>
     <string name="dash_launcher_settings_summary">Afficher les paramètres du lanceur</string>
-    <string name="wallpaper_pick_summary">Ouvrir le sélecteur de papier peint</string>
+    <string name="wallpaper_pick_summary">Ouvrir le sélecteur de fond d\'écran</string>
     <string name="edit_dash_summary">Activer ou désactiver les raccourcis</string>
-    <string name="dash_all_apps_summary">Afficher le bouton Toutes les applications</string>
+    <string name="dash_all_apps_summary">Afficher le bouton toutes les applications</string>
     <string name="dash_mobile_network_summary">Afficher les paramètres des réseaux mobiles</string>
     <string name="dash_manage_apps_summary">Ouvrez le gestionnaire d\'applications Android</string>
     <string name="dash_mobile_network_title">Réseau mobile</string>
@@ -416,4 +416,7 @@
     <string name="title_drawer_layout">Mise en page</string>
     <string name="title_drawer_vertical">Vertical</string>
     <string name="folder_name_format">Dossier : <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="title_theme_customize_icons">Personnaliser les icônes</string>
+    <string name="summary_force_shapeless">Essayer d\'utiliser les anciennes icônes pour toutes les apps.</string>
+    <string name="dash_media_player_description">Afficher ou masquer les contrôles du lecteur audio</string>
 </resources>
