@@ -28,6 +28,7 @@
         <item name="popupShadeFirst">@color/settings_background_light</item>
         <item name="popupShadeSecond">@color/settings_background_light_2dp</item>
         <item name="popupShadeThird">@color/settings_background_light_8dp</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Light</item>
 
         <item name="allAppsInterimScrimAlpha">46</item>
     </style>
@@ -42,6 +43,7 @@
         <item name="popupShadeFirst">@color/settings_background_dark</item>
         <item name="popupShadeSecond">@color/settings_background_dark_2dp</item>
         <item name="popupShadeThird">@color/settings_background_dark_8dp</item>
+        <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
 
         <item name="allAppsInterimScrimAlpha">102</item>
     </style>
