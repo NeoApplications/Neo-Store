@@ -178,4 +178,5 @@
     <string name="latest">En yeni</string>
     <string name="update_all">Tümünü güncelle</string>
     <string name="explore">Keşfet</string>
+    <string name="only_on_wifi_and_battery">Yalnızca Wi-Fi\'de ve Prize Takılı</string>
 </resources>
