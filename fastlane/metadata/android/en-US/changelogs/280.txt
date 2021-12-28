@@ -1,0 +1,12 @@
+<ul>
+  <li>Add: Brave web search</li>
+  <li>Add: Press back gesture preference</li>
+  <li>Add: Press Home gesture preference</li>
+  <li>Add: Desktop Mode</li>
+  <li>Fix: Text color on widget selector for light theme</li>
+  <li>Fix: Search hidden apps</li>
+  <li>Fix: Folder icon in cover mode</li>
+  <li>Restore smartspace widget</li>
+  <li>Restore Adaptive clock icon (Google)</li>
+  <li>Restore Adaptive calendar icon (Google)</li>
+</ul>
