@@ -1,3 +1,0 @@
-<p>Your powerful libre launcher with a lot of smart features.</p>
-<br>
-<p>Status: Beta</p>
