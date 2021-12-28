@@ -153,9 +153,9 @@ object IndexV1Parser {
                 it.string("openCollective") -> donates += Product.Donate.OpenCollective(
                     valueAsString
                 )
-                it.dictionary("localized") -> forEachKey { it ->
-                    if (it.token == JsonToken.START_OBJECT) {
-                        val locale = it.key
+                it.dictionary("localized") -> forEachKey { keyToken ->
+                    if (keyToken.token == JsonToken.START_OBJECT) {
+                        val locale = keyToken.key
                         var name = ""
                         var summary = ""
                         var description = ""

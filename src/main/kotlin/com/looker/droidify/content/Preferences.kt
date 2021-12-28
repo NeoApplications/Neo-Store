@@ -18,8 +18,8 @@ import java.net.Proxy
 object Preferences {
     private lateinit var preferences: SharedPreferences
 
-    private val _subject = MutableSharedFlow<Key<*>>()
-    val subject = _subject.asSharedFlow()
+    private val mutableSubject = MutableSharedFlow<Key<*>>()
+    val subject = mutableSubject.asSharedFlow()
 
     private val keys = sequenceOf(
         Key.Language,
@@ -45,7 +45,7 @@ object Preferences {
         preferences.registerOnSharedPreferenceChangeListener { _, keyString ->
             CoroutineScope(Dispatchers.Default).launch {
                 keys[keyString]?.let {
-                    _subject.emit(it)
+                    mutableSubject.emit(it)
                 }
             }
         }
