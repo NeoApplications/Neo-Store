@@ -177,4 +177,5 @@
     <string name="update_all">Actualizar todos</string>
     <string name="installed_applications">Aplicaciones instaladas</string>
     <string name="new_applications">Aplicaciones nuevas</string>
+    <string name="only_on_wifi_and_battery">Solo en Wi-Fi y Conectado</string>
 </resources>
