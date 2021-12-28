@@ -180,4 +180,5 @@
     <string name="latest">Mais recente</string>
     <string name="explore">Explorar</string>
     <string name="installed_applications">Aplicativos instalados</string>
+    <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e Plugado</string>
 </resources>
