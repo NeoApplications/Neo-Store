@@ -179,4 +179,5 @@
     <string name="update_all">更新全部</string>
     <string name="new_applications">新程序</string>
     <string name="installed_applications">已安装的程序</string>
+    <string name="only_on_wifi_and_battery">仅在 Wi-Fi 和充电情况下</string>
 </resources>
