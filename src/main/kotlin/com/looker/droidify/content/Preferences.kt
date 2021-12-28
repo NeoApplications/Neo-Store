@@ -38,8 +38,10 @@ object Preferences {
 
     fun init(context: Context) {
         preferences =
-            context.getSharedPreferences("${context.packageName}_preferences",
-                Context.MODE_PRIVATE)
+            context.getSharedPreferences(
+                "${context.packageName}_preferences",
+                Context.MODE_PRIVATE
+            )
         preferences.registerOnSharedPreferenceChangeListener { _, keyString ->
             CoroutineScope(Dispatchers.Default).launch {
                 keys[keyString]?.let {
@@ -164,10 +166,11 @@ object Preferences {
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
         override val values: List<AutoSync>
-            get() = listOf(Never, Wifi, Always)
+            get() = listOf(Never, Wifi, WifiBattery, Always)
 
         object Never : AutoSync("never")
         object Wifi : AutoSync("wifi")
+        object WifiBattery : AutoSync("wifi-battery")
         object Always : AutoSync("always")
     }
 

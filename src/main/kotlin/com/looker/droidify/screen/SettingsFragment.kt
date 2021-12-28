@@ -33,7 +33,6 @@ import com.looker.droidify.utility.Utils.languagesList
 import com.looker.droidify.utility.Utils.translateLocale
 import com.looker.droidify.utility.extension.resources.*
 import com.topjohnwu.superuser.Shell
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SettingsFragment : ScreenFragment() {
@@ -100,6 +99,7 @@ class SettingsFragment : ScreenFragment() {
                 when (it) {
                     Preferences.AutoSync.Never -> getString(R.string.never)
                     Preferences.AutoSync.Wifi -> getString(R.string.only_on_wifi)
+                    Preferences.AutoSync.WifiBattery -> getString(R.string.only_on_wifi_and_battery)
                     Preferences.AutoSync.Always -> getString(R.string.always)
                 }
             }
