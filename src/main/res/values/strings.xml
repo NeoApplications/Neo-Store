@@ -88,8 +88,8 @@
         <item quantity="one">%d app has a new version.</item>
         <item quantity="other">%d apps with new versions.</item>
     </plurals>
-    <string name="no_applications_available">None available</string>
-    <string name="no_applications_installed">None installed</string>
+    <string name="no_applications_available">No available apps</string>
+    <string name="no_applications_installed">No installed apps</string>
     <string name="no_description_available_DESC">No description.</string>
     <string name="no_matching_applications_found">Could not find any such apps</string>
     <string name="no_proxy">No proxy</string>
