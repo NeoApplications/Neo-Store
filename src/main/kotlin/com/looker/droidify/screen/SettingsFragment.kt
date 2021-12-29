@@ -217,7 +217,7 @@ class SettingsFragment : ScreenFragment() {
         }
     }
 
-    private fun LinearLayoutCompat.addCategory(
+    private inline fun LinearLayoutCompat.addCategory(
         title: String,
         callback: LinearLayoutCompat.() -> Unit,
     ) {
