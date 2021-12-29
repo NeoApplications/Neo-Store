@@ -1,3 +1,0 @@
-<p>Din kraftige frie oppstarter med mange smarte funksjoner.</p>
-<br>
-<p>Status: Beta</p>

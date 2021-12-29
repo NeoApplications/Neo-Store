@@ -1,3 +1,0 @@
-<p>Dein leistungsstarker libre Launcher mit vielen intelligenten Features.</p>
-<br>
-<p>Status: Beta</p>
