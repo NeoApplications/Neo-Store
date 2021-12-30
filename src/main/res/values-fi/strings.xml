@@ -78,10 +78,10 @@
     <string name="name">Nimi</string>
     <string name="network_error_DESC">Verkkovirhe.</string>
     <string name="never">Ei koskaan</string>
-    <string name="new_updates_available">Uusia sovellusten versioita saatavilla</string>
+    <string name="new_updates_available">Päivityksiä saatavilla</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d -sovelluksesta on uusi versio.</item>
-        <item quantity="other">%d -sovelluksia, joilla on uusia versioita.</item>
+        <item quantity="one">Uusi versio on saatavilla yhteen sovellukseen.</item>
+        <item quantity="other">Uusi versio saatavilla %d sovellukseen.</item>
     </plurals>
     <string name="no_applications_available">Ei sovelluksia saatavilla</string>
     <string name="no_applications_installed">Ei asennettuja sovelluksia</string>
