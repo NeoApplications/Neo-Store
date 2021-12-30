@@ -1,0 +1,3 @@
+<p>Seu Launcher poderoso e gratuíto com um punhado de recurso bom.</p>
+<br>
+<p>Situação atual: Fase Beta</p>

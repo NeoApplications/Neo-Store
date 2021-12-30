@@ -1,0 +1,12 @@
+* Merge android-11.0.0_r31
+* Add: Keep Empty screen preference
+* Add: Color selector for tabs
+* Add: additional dash controls
+* Add: Dash Customization
+* Add: Support QuickSwitch
+* Add: FiveSecs KLWP
+* Add: Searx provider
+* Add: Sleep assistant
+* Add: Vertical List Apps (Experimental)
+* Fix: Dock size on long screens
+* Fix: Crash when opening Google Assistant
