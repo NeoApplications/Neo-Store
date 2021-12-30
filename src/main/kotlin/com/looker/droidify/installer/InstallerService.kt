@@ -1,32 +1,41 @@
 package com.looker.droidify.installer
 
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.IBinder
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.Common
+import com.looker.droidify.Common.NOTIFICATION_CHANNEL_DOWNLOADING
+import com.looker.droidify.Common.NOTIFICATION_ID_DOWNLOADING
 import com.looker.droidify.R
+import com.looker.droidify.MainActivity
+import com.looker.droidify.utility.Utils
+import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 
 /**
  * Runs during or after a PackageInstaller session in order to handle completion, failure, or
- * interruptions requiring user intervention (e.g. "Install Unknown Apps" permission requests).
+ * interruptions requiring user intervention, such as the package installer prompt.
  */
 class InstallerService : Service() {
     companion object {
         const val KEY_ACTION = "installerAction"
+        const val KEY_APP_NAME = "appName"
         const val ACTION_UNINSTALL = "uninstall"
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
 
-        if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
-            // prompts user to enable unknown source
+        // only trigger a prompt if in foreground or below Android 10, otherwise make notification
+        // launching a prompt in the background will fail silently
+        if ((!Android.sdk(29) || Utils.inForeground()) && status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
+            // Triggers the installer prompt and "unknown apps" prompt if needed
             val promptIntent: Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
 
             promptIntent?.let {
@@ -45,7 +54,10 @@ class InstallerService : Service() {
     }
 
     /**
-     * Notifies user of installer outcome.
+     * Notifies user of installer outcome. This can be success, error, or a request for user action
+     * if installation cannot proceed automatically.
+     *
+     * @param intent provided by PackageInstaller to the callback service/activity.
      */
     private fun notifyStatus(intent: Intent) {
         // unpack from intent
@@ -55,22 +67,23 @@ class InstallerService : Service() {
         val installerAction = intent.getStringExtra(KEY_ACTION)
 
         // get application name for notifications
-        val appLabel = try {
-            if (name != null) packageManager.getApplicationLabel(
-                packageManager.getApplicationInfo(
-                    name,
-                    PackageManager.GET_META_DATA
-                )
-            ) else null
-        } catch (_: Exception) {
-            null
-        }
+        val appLabel = intent.getStringExtra(KEY_APP_NAME)
+            ?: try {
+                if (name != null) packageManager.getApplicationLabel(
+                    packageManager.getApplicationInfo(
+                        name,
+                        PackageManager.GET_META_DATA
+                    )
+                ) else null
+            } catch (_: Exception) {
+                null
+            }
 
         val notificationTag = "download-$name"
 
         // start building
         val builder = NotificationCompat
-            .Builder(this, Common.NOTIFICATION_CHANNEL_DOWNLOADING)
+            .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
             .setAutoCancel(true)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -78,10 +91,21 @@ class InstallerService : Service() {
             )
 
         when (status) {
+            PackageInstaller.STATUS_PENDING_USER_ACTION -> {
+                // request user action with "downloaded" notification that triggers a working prompt
+                notificationManager.notify(
+                    notificationTag, NOTIFICATION_ID_DOWNLOADING, builder
+                        .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                        .setContentIntent(installIntent(intent))
+                        .setContentTitle(getString(R.string.downloaded_FORMAT, appLabel))
+                        .setContentText(getString(R.string.tap_to_install_DESC))
+                        .build()
+                )
+            }
             PackageInstaller.STATUS_SUCCESS -> {
                 if (installerAction == ACTION_UNINSTALL)
                 // remove any notification for this app
-                    notificationManager.cancel(notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
+                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 else {
                     val notification = builder
                         .setSmallIcon(android.R.drawable.stat_sys_download_done)
@@ -90,11 +114,11 @@ class InstallerService : Service() {
                         .build()
                     notificationManager.notify(
                         notificationTag,
-                        Common.NOTIFICATION_ID_DOWNLOADING,
+                        NOTIFICATION_ID_DOWNLOADING,
                         notification
                     )
                     Thread.sleep(5000)
-                    notificationManager.cancel(notificationTag, Common.NOTIFICATION_ID_DOWNLOADING)
+                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 }
             }
             PackageInstaller.STATUS_FAILURE_ABORTED -> {
@@ -109,7 +133,7 @@ class InstallerService : Service() {
                     .build()
                 notificationManager.notify(
                     notificationTag,
-                    Common.NOTIFICATION_ID_DOWNLOADING,
+                    NOTIFICATION_ID_DOWNLOADING,
                     notification
                 )
             }
@@ -118,6 +142,34 @@ class InstallerService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    /**
+     * Generates an intent that provides the specified activity information necessary to trigger
+     * the package manager's prompt, thus completing a staged installation requiring user
+     * intervention.
+     *
+     * @param intent the intent provided by PackageInstaller to the callback target passed to
+     * PackageInstaller.Session.commit().
+     * @return a pending intent that can be attached to a background-accessible entry point such as
+     * a notification
+     */
+    private fun installIntent(intent: Intent): PendingIntent {
+        // prepare prompt intent
+        val promptIntent : Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
+        val name = intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
+
+        return PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java)
+                .setAction(MainActivity.ACTION_INSTALL)
+                .setData(Uri.parse("package:$name"))
+                .putExtra(Intent.EXTRA_INTENT, promptIntent)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            if (Android.sdk(23)) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            else PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
 

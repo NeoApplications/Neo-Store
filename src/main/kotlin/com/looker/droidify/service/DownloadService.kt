@@ -219,11 +219,13 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                         .getColorFromAttr(R.attr.colorPrimary).defaultColor
                 )
                 .setContentIntent(
-                    PendingIntent.getBroadcast(
+                    PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, Receiver::class.java)
-                            .setAction("$ACTION_OPEN.${task.packageName}"),
+                        Intent(this, MainActivity::class.java)
+                            .setAction(Intent.ACTION_VIEW)
+                            .setData(Uri.parse("package:${task.packageName}"))
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         if (Android.sdk(23))
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         else
@@ -308,12 +310,10 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             consumed = true
         }
         if (!consumed) {
-            if (rootInstallerEnabled) {
-                scope.launch {
-                    AppInstaller.getInstance(this@DownloadService)
-                        ?.defaultInstaller?.install(task.release.cacheFileName)
-                }
-            } else showNotificationInstall(task)
+            scope.launch {
+                AppInstaller.getInstance(this@DownloadService)
+                    ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+            }
         }
     }
 
