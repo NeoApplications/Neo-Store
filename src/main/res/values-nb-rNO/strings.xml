@@ -177,4 +177,5 @@
     <string name="installed_applications">Installerte programmer</string>
     <string name="sort_filter">Sorter og filtrer</string>
     <string name="new_applications">Nye programmer</string>
+    <string name="only_on_wifi_and_battery">Kun på Wi-Fi tilkoblet lader</string>
 </resources>
