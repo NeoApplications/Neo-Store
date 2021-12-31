@@ -177,4 +177,5 @@
     <string name="latest">Nouveautés</string>
     <string name="new_applications">Nouvelles applications</string>
     <string name="update_all">Tout mettre à jour</string>
+    <string name="only_on_wifi_and_battery">Uniquement en Wi-Fi et branché</string>
 </resources>
