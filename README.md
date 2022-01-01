@@ -1,9 +1,6 @@
 <h1>Omega Launcher</h1>
-<p><strong>Free and Open Sourcer Launcher</strong></p>
+<p><strong>Free and Open Source Launcher</strong></p>
 
-<br />
-<br />
-<br />
 <br />
 <br />
 
@@ -19,16 +16,9 @@
 
 <br />
 <br />
-<br />
-<br />
-<br />
-
 <h1><i>Community</i></h1>
 <p>You can join our Telegram group to make suggestions, ask questions, receive news and chat. <a href="https://t.me/omegalauncher_group">Here is the invitation link</a>.</p>
 
-<br />
-<br />
-<br />
 <br />
 <br />
 
@@ -70,9 +60,6 @@
 
 <br />
 <br />
-<br />
-<br />
-<br />
 
 <h1><i>Screenshots</i></h1>
 <table>
@@ -94,9 +81,6 @@
 
 <br />
 <br />
-<br />
-<br />
-<br />
 
 <h1><i>Contributions</i></h1>
 <p><strong>If you have knowledge in Java or Kotlin you can work on additional features or bugs, and open pull requests. Make sure the code is formatted before make a pull request.</strong></p>
@@ -104,19 +88,12 @@
 
 <br />
 <br />
-<br />
-<br />
-<br />
 
 <h1><i>Support</i></h1>
-<p><img src="https://img.shields.io/badge/Bitcoin-bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52-blue?logo=bitcoin&style=for-the-badge" alt="bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52"/> <code>bc1qxur06j2jath458lhccvwgjz4kf9vnhcr526m52</code></p>
 
 <a href="https://www.paypal.com/paypalme/saulhenriquez"><img src="https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal" alt="Donate via PayPal"/></a>
 <a href="https://www.patreon.com/omegalauncher"><img src="https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon" alt="Donate via Patreon"/></a>
 
-<br />
-<br />
-<br />
 <br />
 <br />
 
@@ -126,18 +103,12 @@
 
 <br />
 <br />
-<br />
-<br />
-<br />
 
 <h1><i>Credits</i></h1>
 <h4>Thanks to The LawnchairLauncher team for the great work on Lawnchair.</h4>
 <h4>Thanks to <a href="https://github.com/machiav3lli">Antonios Hazim</a> for creating the logo and his great contributions in the project.</h4>
 <h4>Thanks to <a href="https://github.com/nonaybay">Rafael Venâncio</a> for creating the F-Droid repo.</h4>
 
-<br />
-<br />
-<br />
 <br />
 <br />
 
