@@ -28,6 +28,7 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.WallpaperColors;
 import android.app.WallpaperManager;
+import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -85,10 +86,12 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
+import com.android.launcher3.widget.BaseLauncherAppWidgetHostView;
+import com.android.launcher3.widget.LauncherAppWidgetHost;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.LocalColorExtractor;
+import com.android.launcher3.widget.NavigableAppWidgetHostView;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
-import com.saggitt.omega.iconpack.IconPackProvider;
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
 
 import java.util.ArrayList;
@@ -112,6 +115,102 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @TargetApi(Build.VERSION_CODES.O)
 public class LauncherPreviewRenderer extends ContextWrapper
         implements ActivityContext, WorkspaceLayoutManager, LayoutInflater.Factory2 {
+
+    /**
+     * Context used just for preview. It also provides a few objects (e.g. UserCache) just for
+     * preview purposes.
+     */
+    public static class PreviewContext extends ContextWrapper {
+
+        private final Set<MainThreadInitializedObject> mAllowedObjects = new HashSet<>(
+                Arrays.asList(UserCache.INSTANCE, InstallSessionHelper.INSTANCE,
+                        LauncherAppState.INSTANCE, InvariantDeviceProfile.INSTANCE,
+                        CustomWidgetManager.INSTANCE, PluginManagerWrapper.INSTANCE));
+
+        private final InvariantDeviceProfile mIdp;
+        private final Map<MainThreadInitializedObject, Object> mObjectMap = new HashMap<>();
+        private final ConcurrentLinkedQueue<LauncherIconsForPreview> mIconPool =
+                new ConcurrentLinkedQueue<>();
+
+        private boolean mDestroyed = false;
+
+        public PreviewContext(Context base, InvariantDeviceProfile idp) {
+            super(base);
+            mIdp = idp;
+            mObjectMap.put(InvariantDeviceProfile.INSTANCE, idp);
+            mObjectMap.put(LauncherAppState.INSTANCE,
+                    new LauncherAppState(this, null /* iconCacheFileName */));
+
+        }
+
+        @Override
+        public Context getApplicationContext() {
+            return this;
+        }
+
+        public void onDestroy() {
+            CustomWidgetManager.INSTANCE.get(this).onDestroy();
+            LauncherAppState.INSTANCE.get(this).onTerminate();
+            mDestroyed = true;
+        }
+
+        /**
+         * Find a cached object from mObjectMap if we have already created one. If not, generate
+         * an object using the provider.
+         */
+        public <T> T getObject(MainThreadInitializedObject<T> mainThreadInitializedObject,
+                               MainThreadInitializedObject.ObjectProvider<T> provider) {
+            if (FeatureFlags.IS_STUDIO_BUILD && mDestroyed) {
+                throw new RuntimeException("Context already destroyed");
+            }
+            if (!mAllowedObjects.contains(mainThreadInitializedObject)) {
+                throw new IllegalStateException("Leaking unknown objects");
+            }
+            if (mObjectMap.containsKey(mainThreadInitializedObject)) {
+                return (T) mObjectMap.get(mainThreadInitializedObject);
+            }
+            T t = provider.get(this);
+            mObjectMap.put(mainThreadInitializedObject, t);
+            return t;
+        }
+
+        public LauncherIcons newLauncherIcons(Context context, boolean shapeDetection) {
+            LauncherIconsForPreview launcherIconsForPreview = mIconPool.poll();
+            if (launcherIconsForPreview != null) {
+                return launcherIconsForPreview;
+            }
+            return new LauncherIconsForPreview(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize,
+                    -1 /* poolId */, shapeDetection);
+        }
+
+        private final class LauncherIconsForPreview extends LauncherIcons {
+
+            private LauncherIconsForPreview(Context context, int fillResIconDpi, int iconBitmapSize,
+                                            int poolId, boolean shapeDetection) {
+                super(context, fillResIconDpi, iconBitmapSize, poolId, shapeDetection);
+            }
+
+            @Override
+            public void recycle() {
+                // Clear any temporary state variables
+                clear();
+                mIconPool.offer(this);
+            }
+        }
+    }
+
+    private final Handler mUiHandler;
+    private final Context mContext;
+    private final InvariantDeviceProfile mIdp;
+    private final DeviceProfile mDp;
+    private final Rect mInsets;
+    private final WorkspaceItemInfo mWorkspaceItemInfo;
+    private final LayoutInflater mHomeElementInflater;
+    private final InsettableFrameLayout mRootView;
+    private final Hotseat mHotseat;
+    private final CellLayout mWorkspace;
+    private final SparseIntArray mWallpaperColorResources;
+    private final AppWidgetHost mAppWidgetHost;
 
     public LauncherPreviewRenderer(Context context,
                                    InvariantDeviceProfile idp,
@@ -179,107 +278,9 @@ public class LauncherPreviewRenderer extends ContextWrapper
         } else {
             mWallpaperColorResources = null;
         }
-    }
-
-    private final Handler mUiHandler;
-    private final Context mContext;
-    private final InvariantDeviceProfile mIdp;
-    private final DeviceProfile mDp;
-    private final Rect mInsets;
-    private final WorkspaceItemInfo mWorkspaceItemInfo;
-    private final LayoutInflater mHomeElementInflater;
-    private final InsettableFrameLayout mRootView;
-    private final Hotseat mHotseat;
-    private final CellLayout mWorkspace;
-    private final SparseIntArray mWallpaperColorResources;
-
-    /**
-     * Context used just for preview. It also provides a few objects (e.g. UserCache) just for
-     * preview purposes.
-     */
-    public static class PreviewContext extends ContextWrapper {
-
-        private final Set<MainThreadInitializedObject> mAllowedObjects = new HashSet<>(
-                Arrays.asList(UserCache.INSTANCE, InstallSessionHelper.INSTANCE,
-                        LauncherAppState.INSTANCE, InvariantDeviceProfile.INSTANCE,
-                        CustomWidgetManager.INSTANCE, PluginManagerWrapper.INSTANCE));
-
-        private final InvariantDeviceProfile mIdp;
-        private final Map<MainThreadInitializedObject, Object> mObjectMap = new HashMap<>();
-        private final ConcurrentLinkedQueue<LauncherIconsForPreview> mIconPool =
-                new ConcurrentLinkedQueue<>();
-
-        private boolean mDestroyed = false;
-
-        public PreviewContext(Context base, InvariantDeviceProfile idp) {
-            super(base);
-            mIdp = idp;
-            putBaseInstance(IconPackProvider.INSTANCE);
-            mObjectMap.put(InvariantDeviceProfile.INSTANCE, idp);
-            mObjectMap.put(LauncherAppState.INSTANCE,
-                    new LauncherAppState(this, null /* iconCacheFileName */));
-
-        }
-
-        private void putBaseInstance(MainThreadInitializedObject mainThreadInitializedObject) {
-            mAllowedObjects.add(mainThreadInitializedObject);
-            mObjectMap.put(mainThreadInitializedObject, mainThreadInitializedObject.get(getBaseContext()));
-        }
-
-        @Override
-        public Context getApplicationContext() {
-            return this;
-        }
-
-        public void onDestroy() {
-            CustomWidgetManager.INSTANCE.get(this).onDestroy();
-            LauncherAppState.INSTANCE.get(this).onTerminate();
-            mDestroyed = true;
-        }
-
-        /**
-         * Find a cached object from mObjectMap if we have already created one. If not, generate
-         * an object using the provider.
-         */
-        public <T> T getObject(MainThreadInitializedObject<T> mainThreadInitializedObject,
-                               MainThreadInitializedObject.ObjectProvider<T> provider) {
-            if (FeatureFlags.IS_STUDIO_BUILD && mDestroyed) {
-                throw new RuntimeException("Context already destroyed");
-            }
-            if (!mAllowedObjects.contains(mainThreadInitializedObject)) {
-                throw new IllegalStateException("Leaking unknown objects");
-            }
-            if (mObjectMap.containsKey(mainThreadInitializedObject)) {
-                return (T) mObjectMap.get(mainThreadInitializedObject);
-            }
-            T t = provider.get(this);
-            mObjectMap.put(mainThreadInitializedObject, t);
-            return t;
-        }
-
-        public LauncherIcons newLauncherIcons(Context context, boolean shapeDetection) {
-            LauncherIconsForPreview launcherIconsForPreview = mIconPool.poll();
-            if (launcherIconsForPreview != null) {
-                return launcherIconsForPreview;
-            }
-            return new LauncherIconsForPreview(context, mIdp.fillResIconDpi, mIdp.iconBitmapSize,
-                    -1 /* poolId */, shapeDetection);
-        }
-
-        private final class LauncherIconsForPreview extends LauncherIcons {
-
-            private LauncherIconsForPreview(Context context, int fillResIconDpi, int iconBitmapSize,
-                                            int poolId, boolean shapeDetection) {
-                super(context, fillResIconDpi, iconBitmapSize, poolId, shapeDetection);
-            }
-
-            @Override
-            public void recycle() {
-                // Clear any temporary state variables
-                clear();
-                mIconPool.offer(this);
-            }
-        }
+        mAppWidgetHost = FeatureFlags.WIDGETS_IN_LAUNCHER_PREVIEW.get()
+                ? new LauncherPreviewAppWidgetHost(context)
+                : null;
     }
 
     /**
@@ -381,9 +382,20 @@ public class LauncherPreviewRenderer extends ContextWrapper
 
     private void inflateAndAddWidgets(
             LauncherAppWidgetInfo info, LauncherAppWidgetProviderInfo providerInfo) {
-        AppWidgetHostView view = new AppWidgetHostView(mContext);
-        view.setAppWidget(-1, providerInfo);
-        view.updateAppWidget(null);
+        AppWidgetHostView view;
+        if (FeatureFlags.WIDGETS_IN_LAUNCHER_PREVIEW.get()) {
+            view = mAppWidgetHost.createView(mContext, info.appWidgetId, providerInfo);
+        } else {
+            view = new NavigableAppWidgetHostView(this) {
+                @Override
+                protected boolean shouldAllowDirectClick() {
+                    return false;
+                }
+            };
+            view.setAppWidget(-1, providerInfo);
+            view.updateAppWidget(null);
+        }
+
         view.setTag(info);
 
         if (mWallpaperColorResources != null) {
@@ -502,9 +514,7 @@ public class LauncherPreviewRenderer extends ContextWrapper
         view.layout(0, 0, width, height);
     }
 
-    /**
-     * Root layout for launcher preview that intercepts all touch events.
-     */
+    /** Root layout for launcher preview that intercepts all touch events. */
     public static class LauncherPreviewLayout extends InsettableFrameLayout {
         public LauncherPreviewLayout(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -513,6 +523,33 @@ public class LauncherPreviewRenderer extends ContextWrapper
         @Override
         public boolean onInterceptTouchEvent(MotionEvent ev) {
             return true;
+        }
+    }
+
+    private class LauncherPreviewAppWidgetHost extends AppWidgetHost {
+
+        private LauncherPreviewAppWidgetHost(Context context) {
+            super(context, LauncherAppWidgetHost.APPWIDGET_HOST_ID);
+        }
+
+        @Override
+        protected AppWidgetHostView onCreateView(
+                Context context,
+                int appWidgetId,
+                AppWidgetProviderInfo appWidget) {
+            return new LauncherPreviewAppWidgetHostView(LauncherPreviewRenderer.this);
+        }
+    }
+
+    private static class LauncherPreviewAppWidgetHostView extends BaseLauncherAppWidgetHostView {
+
+        private LauncherPreviewAppWidgetHostView(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected boolean shouldAllowDirectClick() {
+            return false;
         }
     }
 }

@@ -48,9 +48,9 @@ public class WorkModeSwitch extends Button implements Insettable, View.OnClickLi
     private Rect mInsets = new Rect();
     private boolean mWorkEnabled;
 
-
     @Nullable
     private KeyboardInsetAnimationCallback mKeyboardInsetAnimationCallback;
+    private boolean mWorkTabVisible;
 
     public WorkModeSwitch(Context context) {
         this(context, null, 0);
@@ -91,11 +91,10 @@ public class WorkModeSwitch extends Button implements Insettable, View.OnClickLi
      */
     public void setWorkTabVisible(boolean workTabVisible) {
         clearAnimation();
-        if (workTabVisible) {
+        mWorkTabVisible = workTabVisible;
+        if (workTabVisible && mWorkEnabled) {
             setEnabled(true);
-            if (mWorkEnabled) {
-                setVisibility(VISIBLE);
-            }
+            setVisibility(VISIBLE);
             setAlpha(0);
             animate().alpha(1).start();
         } else {
@@ -105,7 +104,7 @@ public class WorkModeSwitch extends Button implements Insettable, View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (Utilities.ATLEAST_P) {
+        if (Utilities.ATLEAST_P && mWorkTabVisible) {
             setEnabled(false);
             Launcher.fromContext(getContext()).getStatsLogManager().logger().log(
                     LAUNCHER_TURN_OFF_WORK_APPS_TAP);
@@ -137,7 +136,7 @@ public class WorkModeSwitch extends Button implements Insettable, View.OnClickLi
 
     @Override
     public WindowInsets onApplyWindowInsets(WindowInsets insets) {
-        if (Utilities.ATLEAST_R) {
+        if (Utilities.ATLEAST_R && mWorkTabVisible) {
             setTranslationY(0);
             if (insets.isVisible(WindowInsets.Type.ime())) {
                 Insets keyboardInsets = insets.getInsets(WindowInsets.Type.ime());

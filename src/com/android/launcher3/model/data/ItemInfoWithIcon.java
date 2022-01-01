@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.FastBitmapDrawable;
+import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.util.PackageManagerHelper;
 
@@ -185,6 +186,12 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
      */
     public void setProgressLevel(PackageInstallInfo installInfo) {
         setProgressLevel(installInfo.progress, installInfo.state);
+
+        if (installInfo.state == PackageInstallInfo.STATUS_FAILED) {
+            FileLog.d(TAG,
+                    "Icon info: " + this + " marked broken with install info: " + installInfo,
+                    new Exception());
+        }
     }
 
     /**

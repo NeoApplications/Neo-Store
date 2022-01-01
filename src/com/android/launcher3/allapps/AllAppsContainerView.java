@@ -117,7 +117,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private SpannableStringBuilder mSearchQueryBuilder = null;
 
     protected boolean mUsingTabs;
-    private boolean mSearchModeWhileUsingTabs = false;
+    private boolean mIsSearching;
+    private boolean mHasWorkApps;
 
     protected RecyclerViewFastScroller mTouchHandler;
     protected final Point mFastScrollerOffset = new Point();
@@ -131,6 +132,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private final float mHeaderThreshold;
     private ScrimView mScrimView;
     private int mHeaderColor;
+    private int mTabsProtectionAlpha;
 
     public AllAppsContainerView(Context context) {
         this(context, null);
@@ -188,7 +190,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             int currentPage = state.getInt(BUNDLE_KEY_CURRENT_PAGE, 0);
             if (currentPage != 0 && mViewPager != null) {
                 mViewPager.setCurrentPage(currentPage);
-                rebindAdapters(true);
+                rebindAdapters();
             } else {
                 reset(true);
             }
@@ -242,10 +244,14 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 break;
             }
         }
+        mHasWorkApps = hasWorkApps;
         if (!mAH[AdapterHolder.MAIN].appsList.hasFilter()) {
             rebindAdapters(hasWorkApps);
             if (hasWorkApps) {
-                resetWorkProfile();
+                rebindAdapters();
+                if (mHasWorkApps) {
+                    resetWorkProfile();
+                }
             }
         }
     }
@@ -321,6 +327,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     mViewPager.getNextPage() == 0
                             ? R.string.all_apps_button_personal_label
                             : R.string.all_apps_button_work_label;
+        } else if (mIsSearching) {
+            descriptionRes = R.string.all_apps_search_results;
         } else {
             descriptionRes = R.string.all_apps_button_label;
         }
@@ -369,7 +377,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         });
 
         mHeader = findViewById(R.id.all_apps_header);
-        rebindAdapters(mUsingTabs, true /* force */);
+        rebindAdapters(true /* force */);
 
         mSearchContainer = findViewById(R.id.search_container_all_apps);
         mSearchUiManager = (SearchUiManager) mSearchContainer;
@@ -438,11 +446,12 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
     }
 
-    private void rebindAdapters(boolean showTabs) {
-        rebindAdapters(showTabs, false /* force */);
+    private void rebindAdapters() {
+        rebindAdapters(false /* force */);
     }
 
-    protected void rebindAdapters(boolean showTabs, boolean force) {
+    protected void rebindAdapters(boolean force) {
+        boolean showTabs = mHasWorkApps && !mIsSearching;
         if (showTabs == mUsingTabs && !force) {
             return;
         }
@@ -453,7 +462,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mAllAppsStore.unregisterIconContainer(mAH[AdapterHolder.WORK].recyclerView);
 
         if (mUsingTabs) {
-            setupWorkToggle();
             mAH[AdapterHolder.MAIN].setup(mViewPager.getChildAt(0), mPersonalMatcher);
             mAH[AdapterHolder.WORK].setup(mViewPager.getChildAt(1), mWorkMatcher);
             mAH[AdapterHolder.WORK].recyclerView.setId(R.id.apps_list_view_work);
@@ -484,6 +492,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private void setupWorkToggle() {
+        removeWorkToggle();
         if (Utilities.ATLEAST_P) {
             mWorkModeSwitch = (WorkModeSwitch) mLauncher.getLayoutInflater().inflate(
                     R.layout.work_mode_fab, this, false);
@@ -496,9 +505,17 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
     }
 
+    private void removeWorkToggle() {
+        if (mWorkModeSwitch == null) return;
+        if (mWorkModeSwitch.getParent() == this) {
+            this.removeView(mWorkModeSwitch);
+        }
+        mWorkModeSwitch = null;
+    }
+
     private void replaceRVContainer(boolean showTabs) {
-        for (AdapterHolder adapterHolder : mAH) {
-            AllAppsRecyclerView rv = adapterHolder.recyclerView;
+        for (int i = 0; i < mAH.length; i++) {
+            AllAppsRecyclerView rv = mAH[i].recyclerView;
             if (rv != null) {
                 rv.setLayoutManager(null);
                 rv.setAdapter(null);
@@ -518,8 +535,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mViewPager = (AllAppsPagedView) newView;
             mViewPager.initParentViews(this);
             mViewPager.getPageIndicator().setOnActivePageChangedListener(this);
+            setupWorkToggle();
         } else {
             mViewPager = null;
+            removeWorkToggle();
         }
     }
 
@@ -538,14 +557,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mWorkModeSwitch.setWorkTabVisible(currentActivePage == AdapterHolder.WORK
                     && mAllAppsStore.hasModelFlag(
                     FLAG_HAS_SHORTCUT_PERMISSION | FLAG_QUIET_MODE_CHANGE_PERMISSION));
-
-            if (currentActivePage == AdapterHolder.WORK) {
-                if (mWorkModeSwitch.getParent() == null) {
-                    addView(mWorkModeSwitch);
-                }
-            } else {
-                removeView(mWorkModeSwitch);
-            }
         }
     }
 
@@ -622,18 +633,16 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         for (int i = 0; i < mAH.length; i++) {
             mAH[i].adapter.setLastSearchQuery(query);
         }
-        if (mUsingTabs) {
-            mSearchModeWhileUsingTabs = true;
-            rebindAdapters(false); // hide tabs
-        }
+
+        mIsSearching = true;
+        rebindAdapters();
         mHeader.setCollapsed(true);
     }
 
     public void onClearSearchResult() {
-        if (mSearchModeWhileUsingTabs) {
-            rebindAdapters(true); // show tabs
-            mSearchModeWhileUsingTabs = false;
-        }
+        mIsSearching = false;
+        rebindAdapters();
+        getActiveRecyclerView().scrollToTop();
     }
 
     public void onSearchResultsChanged() {
@@ -707,13 +716,12 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mHeaderPaint.setColor(mHeaderColor);
         mHeaderPaint.setAlpha((int) (getAlpha() * Color.alpha(mHeaderColor)));
         if (mHeaderPaint.getColor() != mScrimColor && mHeaderPaint.getColor() != 0) {
-            int bottom = mUsingTabs && mHeader.mHeaderCollapsed ? mHeader.getVisibleBottomBound()
-                    : mSearchContainer.getBottom();
-            canvas.drawRect(0, 0, canvas.getWidth(), bottom + getTranslationY(),
-                    mHeaderPaint);
-
-            if (FeatureFlags.ENABLE_DEVICE_SEARCH.get() && getTranslationY() == 0) {
-                mSearchUiManager.getEditText().setBackground(null);
+            int bottom = (int) (mSearchContainer.getBottom() + getTranslationY());
+            canvas.drawRect(0, 0, canvas.getWidth(), bottom, mHeaderPaint);
+            int tabsHeight = getFloatingHeaderView().getPeripheralProtectionHeight();
+            if (mTabsProtectionAlpha > 0 && tabsHeight != 0) {
+                mHeaderPaint.setAlpha((int) (getAlpha() * mTabsProtectionAlpha));
+                canvas.drawRect(0, bottom, canvas.getWidth(), bottom + tabsHeight, mHeaderPaint);
             }
         }
     }
@@ -793,26 +801,40 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
 
     protected void updateHeaderScroll(int scrolledOffset) {
-        /*float prog = Math.max(0, Math.min(1, (float) scrolledOffset / mHeaderThreshold));
+
+        /*
+        float prog = Utilities.boundToRange((float) scrolledOffset / mHeaderThreshold, 0f, 1f);
         int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
         int headerColor = ColorUtils.setAlphaComponent(viewBG,
                 (int) (getSearchView().getAlpha() * 255));
-        if (headerColor != mHeaderColor) {
+                int tabsAlpha = mHeader.getPeripheralProtectionHeight() == 0 ? 0
+                : (int) (Utilities.boundToRange(
+                        (scrolledOffset + mHeader.mSnappedScrolledY) / mHeaderThreshold, 0f, 1f)
+                        * 255);
+        if (headerColor != mHeaderColor || mTabsProtectionAlpha != tabsAlpha) {
             mHeaderColor = headerColor;
-            getSearchView().setBackgroundColor(viewBG);
-            getFloatingHeaderView().setHeaderColor(viewBG);
+             mTabsProtectionAlpha = tabsAlpha;
             invalidateHeader();
-            if (scrolledOffset == 0 && mSearchUiManager.getEditText() != null) {
-                mSearchUiManager.getEditText().show();
+
+        }
+        if (mSearchUiManager.getEditText() != null) {
+            ExtendedEditText editText = mSearchUiManager.getEditText();
+            boolean bgVisible = editText.getBackgroundVisibility();
+            if (scrolledOffset == 0 && !mIsSearching) {
+                bgVisible = true;
+            } else if (scrolledOffset > mHeaderThreshold) {
+                bgVisible = false;
             }
-        }*/
+            editText.setBackgroundVisibility(bgVisible, 1 - prog);
+                */
+
     }
 
     /**
      * redraws header protection
      */
     public void invalidateHeader() {
-        if (mScrimView != null && FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
+        if (mScrimView != null && mHeader.isHeaderProtectionSupported()) {
             mScrimView.invalidate();
         }
     }
