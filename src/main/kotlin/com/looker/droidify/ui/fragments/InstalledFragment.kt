@@ -20,8 +20,6 @@ import com.looker.droidify.widget.RecyclerFastScroller
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
@@ -37,7 +35,6 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
     override val source = Source.INSTALLED
 
     private var repositories: Map<Long, Repository> = mapOf()
-    private var repositoriesDisposable: Disposable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,10 +73,9 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
         super.onViewCreated(view, savedInstanceState)
 
         mainActivityX.attachCursorOwner(this, viewModel.request(source))
-        repositoriesDisposable = Observable.just(Unit)
-            //.concatWith(Database.observable(Database.Subject.Repositories)) TODO have to be replaced like whole rxJava
+        viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { mainActivityX.db.repositoryDao.all.mapNotNull { it.trueData } } }
+            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
@@ -89,8 +85,6 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
         super.onDestroyView()
 
         mainActivityX.detachCursorOwner(this)
-        repositoriesDisposable?.dispose()
-        repositoriesDisposable = null
     }
 
     override fun onCursorData(request: CursorOwner.Request, cursor: Cursor?) {

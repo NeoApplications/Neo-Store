@@ -7,6 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.looker.droidify.*
 import com.looker.droidify.entity.ProductItem
+import io.reactivex.rxjava3.core.Flowable
 
 
 interface BaseDao<T> {
@@ -52,6 +53,9 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
     val all: List<Repository>
+
+    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    val allFlowable: Flowable<List<Repository>>
 
     @get:Query("SELECT _id, deleted FROM repository WHERE deleted != 0 and enabled == 0 ORDER BY _id ASC")
     val allDisabledDeleted: List<Repository.IdAndDeleted>

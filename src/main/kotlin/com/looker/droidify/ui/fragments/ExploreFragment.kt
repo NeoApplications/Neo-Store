@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.databinding.FragmentExploreXBinding
+import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.adapters.AppListAdapter
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.widget.RecyclerFastScroller
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
 
     override val source = Source.AVAILABLE
 
-    private var repositoriesDisposable: Disposable? = null
+    private var repositories: Map<Long, Repository> = mapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,21 +60,18 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
         super.onViewCreated(view, savedInstanceState)
 
         mainActivityX.attachCursorOwner(this, viewModel.request(source))
-        repositoriesDisposable = Observable.just(Unit)
-            //.concatWith(Database.observable(Database.Subject.Repositories)) TODO have to be replaced like whole rxJava
+        viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { mainActivityX.db.repositoryDao.all.mapNotNull { it.trueData } } }
+            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { (binding.recyclerView.adapter as? AppListAdapter)?.repositories = it }
+            .subscribe { repositories = it }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         mainActivityX.detachCursorOwner(this)
-        repositoriesDisposable?.dispose()
-        repositoriesDisposable = null
     }
 
     override fun onCursorData(request: CursorOwner.Request, cursor: Cursor?) {
