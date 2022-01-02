@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
 
-    override val viewModel: MainNavFragmentViewModelX by viewModels()
+    override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentExploreXBinding
 
     override val source = Source.AVAILABLE
@@ -41,6 +41,9 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
         super.onCreate(savedInstanceState)
         binding = FragmentExploreXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
+        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MainNavFragmentViewModelX::class.java)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

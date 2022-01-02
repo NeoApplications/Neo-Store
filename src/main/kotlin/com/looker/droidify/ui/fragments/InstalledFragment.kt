@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.database.CursorOwner
@@ -26,7 +26,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
 
-    override val viewModel: MainNavFragmentViewModelX by viewModels()
+    override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentInstalledXBinding
 
     private val installedItemAdapter = ItemAdapter<VAppItem>()
@@ -47,6 +47,9 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
         super.onCreate(savedInstanceState)
         binding = FragmentInstalledXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
+        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MainNavFragmentViewModelX::class.java)
 
         installedFastAdapter = FastAdapter.with(installedItemAdapter)
         installedFastAdapter?.setHasStableIds(true)

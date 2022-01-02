@@ -1,15 +1,20 @@
 package com.looker.droidify.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.looker.droidify.database.CursorOwner
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Source
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class MainNavFragmentViewModelX : ViewModel() {
+class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
 
     private val _order = MutableStateFlow(ProductItem.Order.LAST_UPDATE)
     private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
@@ -84,6 +89,16 @@ class MainNavFragmentViewModelX : ViewModel() {
                 _searchQuery.emit(newSearchQuery)
                 launch(Dispatchers.Main) { perform() }
             }
+        }
+    }
+
+    class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
+        @Suppress("unchecked_cast")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainNavFragmentViewModelX::class.java)) {
+                return MainNavFragmentViewModelX(db) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }

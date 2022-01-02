@@ -10,7 +10,7 @@ import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 abstract class MainNavFragmentX : Fragment(), CursorOwner.Callback {
     val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
-    abstract val viewModel: MainNavFragmentViewModelX
+    abstract var viewModel: MainNavFragmentViewModelX
     abstract val source: Source
 
     open fun onBackPressed(): Boolean = false
