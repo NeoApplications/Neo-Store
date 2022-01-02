@@ -179,4 +179,5 @@
     <string name="new_applications">Нові додатки</string>
     <string name="latest">Останні</string>
     <string name="sort_filter">Сортувати та фільтрувати</string>
+    <string name="only_on_wifi_and_battery">Лише при Wi-Fi і підключеному до мережі</string>
 </resources>
