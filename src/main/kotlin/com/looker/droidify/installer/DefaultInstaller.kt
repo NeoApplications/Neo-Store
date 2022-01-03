@@ -51,16 +51,18 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
         val session = sessionInstaller.openSession(id)
 
-        session.use { activeSession ->
-            activeSession.openWrite("package", 0, cacheFile.length()).use { packageStream ->
-                cacheFile.inputStream().use { fileStream ->
-                    fileStream.copyTo(packageStream)
+        if (cacheFile.exists()) {
+            session.use { activeSession ->
+                activeSession.openWrite("package", 0, cacheFile.length()).use { packageStream ->
+                    cacheFile.inputStream().use { fileStream ->
+                        fileStream.copyTo(packageStream)
+                    }
                 }
+
+                val pendingIntent = PendingIntent.getService(context, id, intent, flags)
+
+                session.commit(pendingIntent.intentSender)
             }
-
-            val pendingIntent = PendingIntent.getService(context, id, intent, flags)
-
-            session.commit(pendingIntent.intentSender)
         }
         cacheFile.delete()
     }
