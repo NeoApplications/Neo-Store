@@ -153,7 +153,7 @@
             android:autoRemoveFromRecents="true"
             android:exported="true"
             android:label="@string/settings_button_text"
-            android:theme="@style/HomeSettingsTheme">
+            android:theme="@style/HomeSettings.Theme">
             <intent-filter android:priority="-1">
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
