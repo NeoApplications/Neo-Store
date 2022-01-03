@@ -23,6 +23,7 @@ import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.utility.RxUtils
+import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
@@ -72,6 +73,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     private var currentTask: CurrentTask? = null
 
     private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
+
+    private val downloadConnection = Connection(DownloadService::class.java)
 
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
@@ -173,11 +176,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 .let(notificationManager::createNotificationChannel)
         }
 
+        downloadConnection.bind(this)
         stateSubject.onEach { publishForegroundState(false, it) }.launchIn(scope)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        downloadConnection.unbind(this)
         cancelTasks { true }
         cancelCurrentTask { true }
     }
@@ -366,14 +371,14 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             if (throwable != null && task.manual) {
                                 showNotificationError(repository, throwable as Exception)
                             }
-                            handleNextTask(result == true || hasUpdates)
+                            handleNextTask(BuildConfig.DEBUG || result == true || hasUpdates)
                         }
                     currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
                 } else {
                     handleNextTask(hasUpdates)
                 }
             } else if (started != Started.NO) {
-                if (hasUpdates && Preferences[Preferences.Key.UpdateNotify]) {
+                if (hasUpdates) {
                     val disposable = RxUtils
                         .querySingle { it ->
                             Database.ProductAdapter
@@ -396,9 +401,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             throwable?.printStackTrace()
                             currentTask = null
                             handleNextTask(false)
-                            val blocked = updateNotificationBlockerFragment?.get()?.isAdded == true
-                            if (!blocked && result != null && result.isNotEmpty()) {
-                                displayUpdatesNotification(result)
+                            if (result.isNotEmpty()) {
+                                runAutoUpdate(result)
                             }
                         }
                     currentTask = CurrentTask(null, disposable, true, State.Finishing)
@@ -415,58 +419,110 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
     }
 
-    private fun displayUpdatesNotification(productItems: List<ProductItem>) {
-        val maxUpdates = 5
-        fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
-        notificationManager.notify(
-            Common.NOTIFICATION_ID_UPDATES, NotificationCompat
-                .Builder(this, Common.NOTIFICATION_CHANNEL_UPDATES)
-                .setSmallIcon(R.drawable.ic_new_releases)
-                .setContentTitle(getString(R.string.new_updates_available))
-                .setContentText(
-                    resources.getQuantityString(
-                        R.plurals.new_updates_DESC_FORMAT,
-                        productItems.size, productItems.size
-                    )
+    /**
+     * Performs automatic update after a repo sync if it is enabled. Otherwise, it continues on to
+     * displayUpdatesNotification.
+     *
+     * @param productItems a list of apps pending updates
+     * @see SyncService.displayUpdatesNotification
+     */
+    private fun runAutoUpdate(productItems: List<ProductItem>) {
+        if (Preferences[Preferences.Key.AutoSyncInstall]) {
+            // run startUpdate on every item
+            productItems.map { productItem ->
+                Pair(
+                    Database.InstalledAdapter.get(productItem.packageName, null),
+                    Database.RepositoryAdapter.get(productItem.repositoryId)
                 )
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-                )
-                .setContentIntent(
-                    PendingIntent.getActivity(
-                        this,
-                        0,
-                        Intent(this, MainActivity::class.java)
-                            .setAction(MainActivity.ACTION_UPDATES),
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        else
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    )
-                )
-                .setStyle(NotificationCompat.InboxStyle().applyHack {
-                    for (productItem in productItems.take(maxUpdates)) {
-                        val builder = SpannableStringBuilder(productItem.name)
-                        builder.setSpan(
-                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
-                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            }
+                .filter { pair -> pair.first != null && pair.second != null }
+                .forEach { installedRepository ->
+                    run {
+                        // Redundant !! as linter doesn't recognise the above filter's effects
+                        val installedItem = installedRepository.first!!
+                        val repository = installedRepository.second!!
+
+                        val productRepository = Database.ProductAdapter.get(
+                            installedItem.packageName,
+                            null
                         )
-                        builder.append(' ').append(productItem.version)
-                        addLine(builder)
-                    }
-                    if (productItems.size > maxUpdates) {
-                        val summary =
-                            getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                        if (Android.sdk(24)) {
-                            addLine(summary)
-                        } else {
-                            setSummaryText(summary)
+                            .filter { product -> product.repositoryId == repository.id }
+                            .map { product -> Pair(product, repository) }
+
+                        scope.launch {
+                            Utils.startUpdate(
+                                installedItem.packageName,
+                                installedRepository.first,
+                                productRepository,
+                                downloadConnection
+                            )
                         }
                     }
-                })
-                .build()
-        )
+                }
+        } else {
+            displayUpdatesNotification(productItems)
+        }
+    }
+
+    /**
+     * Displays summary of available updates.
+     *
+     * @param productItems list of apps pending updates
+     */
+    private fun displayUpdatesNotification(productItems: List<ProductItem>) {
+        if (updateNotificationBlockerFragment?.get()?.isAdded == true && Preferences[Preferences.Key.UpdateNotify]) {
+            val maxUpdates = 5
+            fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
+            notificationManager.notify(
+                Common.NOTIFICATION_ID_UPDATES, NotificationCompat
+                    .Builder(this, Common.NOTIFICATION_CHANNEL_UPDATES)
+                    .setSmallIcon(R.drawable.ic_new_releases)
+                    .setContentTitle(getString(R.string.new_updates_available))
+                    .setContentText(
+                        resources.getQuantityString(
+                            R.plurals.new_updates_DESC_FORMAT,
+                            productItems.size, productItems.size
+                        )
+                    )
+                    .setColor(
+                        ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                            .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
+                    )
+                    .setContentIntent(
+                        PendingIntent.getActivity(
+                            this,
+                            0,
+                            Intent(this, MainActivity::class.java)
+                                .setAction(MainActivity.ACTION_UPDATES),
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                            else
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                    )
+                    .setStyle(NotificationCompat.InboxStyle().applyHack {
+                        for (productItem in productItems.take(maxUpdates)) {
+                            val builder = SpannableStringBuilder(productItem.name)
+                            builder.setSpan(
+                                ForegroundColorSpan(Color.BLACK), 0, builder.length,
+                                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            builder.append(' ').append(productItem.version)
+                            addLine(builder)
+                        }
+                        if (productItems.size > maxUpdates) {
+                            val summary =
+                                getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
+                            if (Android.sdk(24)) {
+                                addLine(summary)
+                            } else {
+                                setSummaryText(summary)
+                            }
+                        }
+                    })
+                    .build()
+            )
+        }
     }
 
     class Job : JobService() {

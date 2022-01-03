@@ -24,6 +24,7 @@ object Preferences {
     private val keys = sequenceOf(
         Key.Language,
         Key.AutoSync,
+        Key.AutoSyncInstall,
         Key.IncompatibleVersions,
         Key.ListAnimation,
         Key.ProxyHost,
@@ -130,6 +131,8 @@ object Preferences {
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
+        object AutoSyncInstall :
+            Key<Boolean>("auto_sync_install", Value.BooleanValue(true))
 
         object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))

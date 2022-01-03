@@ -4,11 +4,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller.SessionParams
+import android.util.Log
 import com.looker.droidify.content.Cache
 import com.looker.droidify.utility.extension.android.Android
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileNotFoundException
 
 class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
@@ -51,18 +53,20 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
         val session = sessionInstaller.openSession(id)
 
-        if (cacheFile.exists()) {
-            session.use { activeSession ->
-                activeSession.openWrite("package", 0, cacheFile.length()).use { packageStream ->
+        session.use { activeSession ->
+            activeSession.openWrite("package", 0, cacheFile.length()).use { packageStream ->
+                try {
                     cacheFile.inputStream().use { fileStream ->
                         fileStream.copyTo(packageStream)
                     }
+                } catch (error: FileNotFoundException) {
+                    Log.w("DefaultInstaller", "Cache file for DefaultInstaller does not seem to exist.")
                 }
-
-                val pendingIntent = PendingIntent.getService(context, id, intent, flags)
-
-                session.commit(pendingIntent.intentSender)
             }
+
+            val pendingIntent = PendingIntent.getService(context, id, intent, flags)
+
+            session.commit(pendingIntent.intentSender)
         }
         cacheFile.delete()
     }
