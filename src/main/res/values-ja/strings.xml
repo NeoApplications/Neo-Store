@@ -120,9 +120,9 @@
     <string name="unknown">不明</string>
     <string name="unknown_error_DESC">不明なエラーです。</string>
     <string name="username">ユーザーネーム</string>
-    <string name="upstream_source_code_is_not_free">上流のソースコードは不自由です</string>
+    <string name="upstream_source_code_is_not_free">上流のソースコードは非フリーです</string>
     <string name="installed_applications">インストール済みのアプリケーション</string>
-    <string name="only_on_wifi_and_battery">Wi-Fi接続時と充電時</string>
+    <string name="only_on_wifi_and_battery">Wi-Fi接続時と充電時のみ</string>
     <string name="root_permission">サイレントインストール</string>
     <string name="show_older_versions">古いバージョンを見る</string>
     <string name="signed_using_unsafe_algorithm">安全ではないアルゴリズムで署名されています</string>
@@ -158,4 +158,16 @@
     <string name="select_mirror">ミラーを選択</string>
     <string name="search">検索</string>
     <string name="validation_index_error_DESC">インデックスが検証できません。</string>
+    <string name="socks_proxy">SOCKSプロキシ</string>
+    <string name="username_missing">ユーザーネームがありません</string>
+    <string name="sort_filter">並べ替えとフィルター</string>
+    <string name="saving_details">詳細を保存しています…</string>
+    <string name="signature_FORMAT">署名 %s</string>
+    <string name="syncing_FORMAT">%sを同期中…</string>
+    <string name="unsigned">署名なし</string>
+    <string name="updates">アップデート</string>
+    <string name="whats_new">新機能</string>
+    <string name="versions">バージョン</string>
+    <string name="unverified">未確認</string>
+    <string name="themes">テーマ</string>
 </resources>
