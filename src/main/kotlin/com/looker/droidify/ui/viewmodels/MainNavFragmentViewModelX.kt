@@ -1,11 +1,13 @@
 package com.looker.droidify.ui.viewmodels
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.Product
 import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
 
@@ -37,7 +40,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
         started = SharingStarted.WhileSubscribed(5000)
     )
 
-    fun request(source: Source): CursorOwner.Request {
+    fun request(source: Source): Request {
         var mSearchQuery = ""
         var mSections: ProductItem.Section = ProductItem.Section.All
         var mOrder: ProductItem.Order = ProductItem.Order.NAME
@@ -47,21 +50,61 @@ class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
             launch { order.collect { if (source.order) mOrder = it } }
         }
         return when (source) {
-            Source.AVAILABLE -> CursorOwner.Request.ProductsAvailable(
+            Source.AVAILABLE -> Request.ProductsAvailable(
                 mSearchQuery,
                 mSections,
                 mOrder
             )
-            Source.INSTALLED -> CursorOwner.Request.ProductsInstalled(
+            Source.INSTALLED -> Request.ProductsInstalled(
                 mSearchQuery,
                 mSections,
                 mOrder
             )
-            Source.UPDATES -> CursorOwner.Request.ProductsUpdates(
+            Source.UPDATES -> Request.ProductsUpdates(
                 mSearchQuery,
                 mSections,
                 mOrder
             )
+        }
+    }
+
+    var productsList = MediatorLiveData<MutableList<Product>>()
+
+    fun fillList(source: Source) {
+        viewModelScope.launch {
+            productsList.value = query(request(source))?.toMutableList()
+        }
+    }
+
+    private suspend fun query(request: Request): List<Product>? {
+        return withContext(Dispatchers.IO) {
+            when (request) {
+                is Request.ProductsAvailable -> db.productDao
+                    .queryList(
+                        installed = false,
+                        updates = false,
+                        searchQuery = request.searchQuery,
+                        section = request.section,
+                        order = request.order
+                    )
+                is Request.ProductsInstalled -> db.productDao
+                    .queryList(
+                        installed = true,
+                        updates = false,
+                        searchQuery = request.searchQuery,
+                        section = request.section,
+                        order = request.order
+                    )
+                is Request.ProductsUpdates -> db.productDao
+                    .queryList(
+                        installed = true,
+                        updates = true,
+                        searchQuery = request.searchQuery,
+                        section = request.section,
+                        order = request.order
+                    )
+                else -> listOf()
+            }
         }
     }
 

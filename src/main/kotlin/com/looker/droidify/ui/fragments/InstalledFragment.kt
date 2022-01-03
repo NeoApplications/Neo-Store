@@ -72,19 +72,13 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainActivityX.attachCursorOwner(this, viewModel.request(source))
+        viewModel.fillList(source)
         viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
             .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        mainActivityX.detachCursorOwner(this)
     }
 
     override fun onCursorData(request: CursorOwner.Request, cursor: Cursor?) {

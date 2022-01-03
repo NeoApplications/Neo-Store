@@ -234,35 +234,6 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
         syncConnection.binder?.setUpdateNotificationBlocker(blockerFragment)
     }
 
-    fun attachCursorOwner(callback: CursorOwner.Callback, request: CursorOwner.Request) {
-        val oldActiveRequest = viewModel.activeRequests[request.id]
-        if (oldActiveRequest?.callback != null &&
-            oldActiveRequest.callback != callback && oldActiveRequest.cursor != null
-        ) {
-            oldActiveRequest.callback.onCursorData(oldActiveRequest.request, null)
-        }
-        val cursor = if (oldActiveRequest?.request == request && oldActiveRequest.cursor != null) {
-            callback.onCursorData(request, oldActiveRequest.cursor)
-            oldActiveRequest.cursor
-        } else {
-            null
-        }
-        viewModel.activeRequests[request.id] = CursorOwner.ActiveRequest(request, callback, cursor)
-        if (cursor == null) {
-            LoaderManager.getInstance(this).restartLoader(request.id, null, this)
-        }
-    }
-
-
-    fun detachCursorOwner(callback: CursorOwner.Callback) {
-        for (id in viewModel.activeRequests.keys) {
-            val activeRequest = viewModel.activeRequests[id]!!
-            if (activeRequest.callback == callback) {
-                viewModel.activeRequests[id] = activeRequest.copy(callback = null)
-            }
-        }
-    }
-
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val request = viewModel.activeRequests[id]!!.request
         return QueryLoader(this) {
