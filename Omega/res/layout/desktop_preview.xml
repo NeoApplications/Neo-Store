@@ -35,7 +35,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/icon_photos"
+                android:id="@+id/icon_osmand"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -59,7 +59,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/icon_youtube"
+                android:id="@+id/icon_newpipe"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -83,7 +83,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/icon_instagram"
+                android:id="@+id/icon_launcher"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -95,7 +95,7 @@
                 style="@style/BaseIcon.Workspace.Shadows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="@string/derived_app_name"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -107,7 +107,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/icon_whatsapp"
+                android:id="@+id/icon_signal"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center_horizontal|center_vertical"

@@ -19,6 +19,7 @@
 package com.saggitt.omega.preferences.views
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,16 +40,18 @@ import com.saggitt.omega.icons.ShapeModel
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.recreate
 
-class IconShapeFragment : Fragment() {
+class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var prefs: OmegaPreferences
     private lateinit var binding: FragmentIconCustomizationBinding
     private val fastItemAdapter = ItemAdapter<ItemIconShape>()
 
+    private lateinit var sharedPrefs: SharedPreferences
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         binding = FragmentIconCustomizationBinding.inflate(inflater, container, false)
         return binding.root
@@ -59,14 +62,16 @@ class IconShapeFragment : Fragment() {
         prefs = Utilities.getOmegaPrefs(context)
         val context: Context? = activity
 
+        sharedPrefs = Utilities.getPrefs(context)
+
         val systemShape = IconShapeManager.getSystemIconShape(context!!)
         val iconShapes = arrayOf(
-            systemShape, IconShape.Circle, IconShape.Square, IconShape.RoundedSquare,
-            IconShape.Squircle, IconShape.Sammy, IconShape.Teardrop, IconShape.Cylinder
+                systemShape, IconShape.Circle, IconShape.Square, IconShape.RoundedSquare,
+                IconShape.Squircle, IconShape.Sammy, IconShape.Teardrop, IconShape.Cylinder
         )
         val iconShapeItems = iconShapes.map {
             ItemIconShape(
-                context, ShapeModel(
+                    context, ShapeModel(
                     it.toString(),
                     Utilities.getOmegaPrefs(context).iconShape == it
                 )
@@ -80,11 +85,21 @@ class IconShapeFragment : Fragment() {
         //Load Shapes
         binding.shapeView.layoutManager = GridLayoutManager(context, 4)
         binding.shapeView.adapter = fastAdapter
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().title = requireActivity().getString(R.string.title_theme_customize_icons)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        this@IconShapeFragment.recreate()
     }
 
     inner class OnIconClickHook : ClickEventHook<ItemIconShape>() {
@@ -93,9 +108,9 @@ class IconShapeFragment : Fragment() {
         }
 
         override fun onClick(
-            v: View,
-            position: Int,
-            fastAdapter: FastAdapter<ItemIconShape>,
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<ItemIconShape>,
             item: ItemIconShape
         ) {
             prefs.iconShape = IconShape.fromString(item.item.shapeName)!!

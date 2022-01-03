@@ -1,13 +1,36 @@
 <vector android:height="48dp" android:viewportHeight="999.97626"
     android:viewportWidth="999.97626" android:width="48dp"
     xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillType="evenOdd" android:pathData="m598.33,913.706 l-84.95,80.979a19.593,19.593 0,0 1,-26.784 0l-84.947,-80.978c-207.9,-45.1 -363.672,-230.086 -363.672,-451.553 0,-255.237 206.849,-462.154 462.011,-462.154s462.012,206.917 462.012,462.154c0,221.466 -155.771,406.451 -363.67,451.552zM500.012,198.057c-145.786,0 -263.971,118.208 -263.971,264.036s118.185,264.039 263.971,264.039 263.976,-118.217 263.976,-264.039 -118.19,-264.036 -263.976,-264.036z">
+
+    <path
+        android:fillType="evenOdd"
+        android:pathData="m598.33,913.706 l-84.95,80.979a19.593,19.593 0,0 1,-26.784 0l-84.947,-80.978c-207.9,-45.1 -363.672,-230.086 -363.672,-451.553 0,-255.237 206.849,-462.154 462.011,-462.154s462.012,206.917 462.012,462.154c0,221.466 -155.771,406.451 -363.67,451.552zM500.012,198.057c-145.786,0 -263.971,118.208 -263.971,264.036s118.185,264.039 263.971,264.039 263.976,-118.217 263.976,-264.039 -118.19,-264.036 -263.976,-264.036z">
         <aapt:attr name="android:fillColor">
-            <gradient android:endX="499.52142" android:endY="1000.235"
-                android:startX="502.0607" android:startY="5E-6" android:type="linear">
-                <item android:color="#FFFFA033" android:offset="0"/>
-                <item android:color="#FFFF8800" android:offset="1"/>
+            <gradient
+                android:endX="499.52142"
+                android:endY="1000.235"
+                android:startX="502.0607"
+                android:startY="5E-6"
+                android:type="linear">
+                <item
+                    android:color="#FFFFA033"
+                    android:offset="0" />
+                <item
+                    android:color="#FFFF8800"
+                    android:offset="1" />
             </gradient>
         </aapt:attr>
     </path>
+
+    <group
+        android:scaleX="17"
+        android:scaleY="17"
+        android:translateX="230"
+        android:translateY="190">
+        <path
+            android:pathData="M16,16m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0"
+            android:strokeAlpha="0.30"
+            android:fillColor="@android:color/white" />
+    </group>
+
 </vector>

@@ -33,21 +33,14 @@ import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.wallpaper.WallpaperPreviewProvider
 
 class PreviewFrameView @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) , OmegaPreferences.OnPreferenceChangeListener{
+        context: Context?,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
     private val wallpaper: Drawable
     private val viewLocation = IntArray(2)
     private val icons = arrayOfNulls<ImageView>(4)
     private val prefs: OmegaPreferences
-    private val prefsToWatch = arrayOf(
-            "pref_iconShape", "pref_colored_background",
-            "pref_white_only_treatment", "pref_legacy_treatment",
-            "pref_adaptive_icon_pack", "pref_force_shape_less"
-    )
-    private var count = 6
-    private var isFirstLoad = true
 
     init {
         orientation = HORIZONTAL
@@ -61,51 +54,45 @@ class PreviewFrameView @JvmOverloads constructor(
         loadBackground(prefs.forceShapeless)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        prefs.reloadIcons()
-        prefs.removeOnPreferenceChangeListener(this, *prefsToWatch)
-    }
-
-    private fun loadBackground(shapeless: Boolean) {
-        val drawable: Drawable = if(prefs.iconShape==IconShapeManager.getSystemIconShape(context)){
+    private fun getShapeDrawable(): Drawable {
+        val drawable = if (prefs.iconShape == IconShapeManager.getSystemIconShape(context)) {
             IconShapeDrawable(IconShapeManager.getSystemIconShape(context))
-        }
-        else{
+        } else {
             IconShapeDrawable(fromString(prefs.iconShape.toString())!!)
         }
 
+        return drawable
+    }
+
+    private fun loadBackground(shapeless: Boolean) {
+
         if (!shapeless) {
-            if (prefs.enableWhiteOnlyTreatment) {
-                /*Instagram*/
-                val drawable1: Drawable = drawable
+            if (prefs.coloredBackground) {
+                /*Omega*/
+                val drawable1: Drawable = getShapeDrawable()
                 drawable1.colorFilter =
-                        PorterDuffColorFilter(Color.rgb(0x9f, 0x47, 0xd2), PorterDuff.Mode.SRC_IN)
+                        PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
                 icons[0]!!.background = drawable1
 
-                /*Youtube*/
-                val drawable2: Drawable = drawable
+                /*NewPipe*/
+                val drawable2: Drawable = getShapeDrawable()
                 drawable2.colorFilter =
                         PorterDuffColorFilter(Color.rgb(0xbf, 0x19, 0x19), PorterDuff.Mode.SRC_IN)
                 icons[1]!!.background = drawable2
 
-                /*WhatsApp*/
-                val drawable3: Drawable = drawable
+                /*Signal*/
+                val drawable3: Drawable = getShapeDrawable()
                 drawable3.colorFilter =
-                        PorterDuffColorFilter(Color.rgb(0x5e, 0xea, 0x7f), PorterDuff.Mode.SRC_IN)
+                        PorterDuffColorFilter(Color.parseColor("#FF568AF4"), PorterDuff.Mode.SRC_IN)
                 icons[2]!!.background = drawable3
 
                 /*Photos*/
-                val drawable4: Drawable = drawable
+                val drawable4: Drawable = getShapeDrawable()
                 drawable4.colorFilter =
-                        PorterDuffColorFilter(Color.rgb(0x1c, 0x60, 0xd8), PorterDuff.Mode.SRC_IN)
+                        PorterDuffColorFilter(Color.parseColor("#FFFFB969"), PorterDuff.Mode.SRC_IN)
                 icons[3]!!.background = drawable4
             } else {
+                val drawable = getShapeDrawable()
                 drawable.colorFilter = PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
                 for (icon in icons) {
                     icon!!.background = drawable
@@ -119,10 +106,10 @@ class PreviewFrameView @JvmOverloads constructor(
     }
 
     private fun loadIcons() {
-        icons[0] = findViewById(R.id.icon_instagram)
-        icons[1] = findViewById(R.id.icon_youtube)
-        icons[2] = findViewById(R.id.icon_whatsapp)
-        icons[3] = findViewById(R.id.icon_photos)
+        icons[0] = findViewById(R.id.icon_launcher)
+        icons[1] = findViewById(R.id.icon_newpipe)
+        icons[2] = findViewById(R.id.icon_signal)
+        icons[3] = findViewById(R.id.icon_osmand)
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -145,16 +132,4 @@ class PreviewFrameView @JvmOverloads constructor(
         canvas.restore()
         super.dispatchDraw(canvas)
     }
-
-    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        //if (!isFirstLoad && count == 0) {
-            loadIcons()
-            loadBackground(prefs.forceShapeless)
-            invalidate()
-        //} else {
-        //    isFirstLoad = false
-        //    count--
-        //}
-    }
-
 }
