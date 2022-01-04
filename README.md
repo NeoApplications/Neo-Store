@@ -58,6 +58,8 @@ You can join our Telegram group to make suggestions, ask questions, receive news
 - Add auto tab mode for drawer.
 - Animations.
 
+There's also a [devloper's document](DEVDOC.md), where the maintainer and collaborators communicate their TODOs and plans.
+
 # *Screenshots*
 
 <table>
