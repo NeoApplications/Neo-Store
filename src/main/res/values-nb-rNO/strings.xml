@@ -178,4 +178,6 @@
     <string name="sort_filter">Sorter og filtrer</string>
     <string name="new_applications">Nye programmer</string>
     <string name="only_on_wifi_and_battery">Kun på Wi-Fi tilkoblet lader</string>
+    <string name="install_after_sync_summary">Installerer programoppgraderinger automatisk etter synkronisering av pakkebrønner</string>
+    <string name="install_after_sync">Installer oppgraderinger automatisk</string>
 </resources>
