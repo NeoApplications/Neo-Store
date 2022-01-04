@@ -33,7 +33,7 @@ import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
-    val TAG = "OmegaApp"
+    private val TAG = "OmegaApp"
     var mismatchedQuickstepTarget = false
     private val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null
@@ -44,6 +44,10 @@ class OmegaApp : Application() {
         super.onCreate()
         instance = this
         QuickStepContract.sRecentsDisabled = !recentsEnabled
+    }
+
+    fun onLauncherAppStateCreated() {
+        registerActivityLifecycleCallbacks(activityHandler)
     }
 
     fun restart(recreateLauncher: Boolean = true) {
