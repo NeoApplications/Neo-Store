@@ -2,29 +2,33 @@
 
 **Free and Open Source Launcher**
 
-# *Installation & Download*
+## *Installation & Download*
 
-Our builds are available on: **Github Releases**, **Github Actions**, **F-Droid: IzzyOnDroid**, **F-Droid: Our own repo**, **Telegram**.
+Our builds are available on:
 
-## *Links*
+- **Github:** Releases or Actions (usually).
 
-#### <a href="#">Go to Github Releases</a>
+- **F-Droid**: Either IzzyOnDroid or our own repo.
 
-#### <a href="#">Go to Github Actions</a>
+- **Telegram**.
 
-## ***F-Droid**: Add the links below into your F-Droid client.*
+### *Links*
 
-#### <a href="https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A">IzzyOnDroid repo link</a><br /><code>https://apt.izzysoft.de/fdroid/repo</code>
+**Github Releases**: [here](https://github.com/otakuhqz/Omega/releases)
 
-#### <a href="https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo">Our own repo link</a><br /><code>https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo</code>
+**F-Droid** Add the links below into your F-Droid client:
 
-# *Community*
+- **[IzzyOnDroid repo link](https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A)**
 
-You can join our Telegram group to make suggestions, ask questions, receive news and chat. <a href="https://t.me/omegalauncher_group">Here is the invitation link</a>.
+- **[Our own repo link](https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo)**
 
-# *App features:*
+## *Community*
 
-## **Working**
+You can join our Telegram group to make suggestions, ask questions, receive news and chat. [Here is the invitation link](https://t.me/omegalauncher_group).
+
+## *App features:*
+
+### **Working**
 
 - Five modes of sorting apps in the drawer.
 - Google feed integration.
@@ -49,7 +53,7 @@ You can join our Telegram group to make suggestions, ask questions, receive news
 - Back up and restore preferences.
 - Vertical Apps Lists.
 
-## **TODOs**
+### **TODOs**
 
 - Turn off "auto remove empty screen".
 - Add desktop screen manually.
@@ -60,7 +64,7 @@ You can join our Telegram group to make suggestions, ask questions, receive news
 
 There's also a [devloper's document](DEVDOC.md), where the maintainer and collaborators communicate their TODOs and plans.
 
-# *Screenshots*
+## *Screenshots*
 
 <table>
     <tr>
@@ -77,24 +81,24 @@ There's also a [devloper's document](DEVDOC.md), where the maintainer and collab
     </tr>
 </table>
 
-# <i>Contributions</i>
+## *Contributions*
 
 **If you have knowledge in Java or Kotlin you can work on additional features or bugs, and open pull requests. Make sure the code is formatted before make a pull request.**
 
 **You can also contribute to this project by opening issues for bugs or new features.**
 
-# <i>Support</i>
+## *Support*
 
 <a href="https://www.paypal.com/paypalme/saulhenriquez"><img src="https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal" alt="Donate via PayPal"/></a>
 <a href="https://www.patreon.com/omegalauncher"><img src="https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon" alt="Donate via Patreon"/></a>
 
-# <i>FAQ</i>
+## *FAQ*
 
-## **Q: Google Feed not working!**
+#### Q: Google Feed not working!
 
-## **A:** Make sure the Google App is installed. If the app is installed, make sure the feed is enabled by clicking <code>Settings> Home Widget > Show Google App</code>. If the app is installed and enabled, try restarting the Launcher and if still does not work, restart the phone.
+**A:** Make sure the Google App is installed. If the app is installed, make sure the feed is enabled by clicking <code>Settings> Home Widget > Show Google App</code>. If the app is installed and enabled, try restarting the Launcher and if still does not work, restart the phone.
 
-# <i>Credits</i>
+## *Credits*
 
 #### Thanks to The LawnchairLauncher team for the great work on Lawnchair.
 
@@ -102,10 +106,10 @@ There's also a [devloper's document](DEVDOC.md), where the maintainer and collab
 
 #### Thanks to <a href="https://github.com/nonaybay">Rafael Venâncio</a> for creating the F-Droid repo.
 
-# *Translation*
+## *Translation*
 
 Translations are handled via Weblate. If want to help, visit <a href="https://hosted.weblate.org/projects/omegalauncher">Hosted Weblate</a>.
 
-## **Translation stats:** [<img align="right" src="https://hosted.weblate.org/widgets/omegalauncher/-/287x66-white.png" alt="Übersetzungsstatus" />](https://hosted.weblate.org/engage/omegalauncher/?utm_source=widget)
+#### **Translation stats:** [<img align="right" src="https://hosted.weblate.org/widgets/omegalauncher/-/287x66-white.png" alt="Übersetzungsstatus" />](https://hosted.weblate.org/engage/omegalauncher/?utm_source=widget)
 
 <img src="https://hosted.weblate.org/widgets/omegalauncher/-/multi-red.svg" />
