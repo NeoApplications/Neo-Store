@@ -435,8 +435,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Pair(
-                    Database.InstalledAdapter.get(productItem.packageName, null),
-                    Database.RepositoryAdapter.get(productItem.repositoryId)
+                    db.installedDao.getObject(productItem.packageName),
+                    db.repositoryDao.get(productItem.repositoryId)
                 )
             }
                 .filter { pair -> pair.first != null && pair.second != null }
@@ -446,16 +446,15 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         val installedItem = installedRepository.first!!
                         val repository = installedRepository.second!!
 
-                        val productRepository = Database.ProductAdapter.get(
-                            installedItem.packageName,
-                            null
+                        val productRepository = db.productDao.get(
+                            installedItem.package_name
                         )
-                            .filter { product -> product.repositoryId == repository.id }
-                            .map { product -> Pair(product, repository) }
+                            .filter { product -> product?.repository_id == repository.id }
+                            .map { product -> Pair(product?.data!!, repository.data!!) }
 
                         scope.launch {
                             Utils.startUpdate(
-                                installedItem.packageName,
+                                installedItem.package_name,
                                 installedRepository.first,
                                 productRepository,
                                 downloadConnection

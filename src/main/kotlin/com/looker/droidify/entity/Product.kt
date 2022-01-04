@@ -3,6 +3,7 @@ package com.looker.droidify.entity
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.Installed
 import com.looker.droidify.utility.extension.json.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 
@@ -87,9 +88,9 @@ data class Product(
         )
     }
 
-    fun canUpdate(installedItem: InstalledItem?): Boolean {
-        return installedItem != null && compatible && versionCode > installedItem.versionCode &&
-                installedItem.signature in signatures
+    fun canUpdate(installed: Installed?): Boolean {
+        return installed != null && compatible && versionCode > installed.version_code &&
+                installed.signature in signatures
     }
 
     fun serialize(generator: JsonGenerator) {
@@ -162,12 +163,12 @@ data class Product(
     companion object {
         fun <T> findSuggested(
             products: List<T>,
-            installedItem: InstalledItem?,
+            installed: Installed?,
             extract: (T) -> Product,
         ): T? {
             return products.maxWithOrNull(compareBy({
                 extract(it).compatible &&
-                        (installedItem == null || installedItem.signature in extract(it).signatures)
+                        (installed == null || installed.signature in extract(it).signatures)
             }, { extract(it).versionCode }))
         }
 

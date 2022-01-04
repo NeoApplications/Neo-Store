@@ -43,6 +43,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.Installed
 import com.looker.droidify.entity.*
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.ScreenshotsAdapter
@@ -537,13 +538,13 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
     private val items = mutableListOf<Item>()
     private val expanded = mutableSetOf<ExpandType>()
     private var product: Product? = null
-    private var installedItem: InstalledItem? = null
+    private var installed: Installed? = null
 
     fun setProducts(
         context: Context, packageName: String,
-        products: List<Pair<Product, Repository>>, installedItem: InstalledItem?,
+        products: List<Pair<Product, Repository>>, installed: Installed?,
     ) {
-        val productRepository = Product.findSuggested(products, installedItem) { it.first }
+        val productRepository = Product.findSuggested(products, installed) { it.first }
         items.clear()
 
         if (productRepository != null) {
@@ -579,7 +580,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 }
             }
 
-            if (installedItem != null) {
+            if (installed != null) {
                 items.add(
                     Item.SwitchItem(
                         SwitchType.IGNORE_ALL_UPDATES,
@@ -587,7 +588,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                         productRepository.first.versionCode
                     )
                 )
-                if (productRepository.first.canUpdate(installedItem)) {
+                if (productRepository.first.canUpdate(installed)) {
                     items.add(
                         Item.SwitchItem(
                             SwitchType.IGNORE_THIS_UPDATE,
@@ -853,7 +854,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
             items += Item.EmptyItem(packageName)
         }
         this.product = productRepository?.first
-        this.installedItem = installedItem
+        this.installed = installed
         notifyDataSetChanged()
     }
 
@@ -1301,8 +1302,8 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 val incompatibility = item.release.incompatibilities.firstOrNull()
                 val singlePlatform =
                     if (item.release.platforms.size == 1) item.release.platforms.first() else null
-                val installed = installedItem?.versionCode == item.release.versionCode &&
-                        installedItem?.signature == item.release.signature
+                val installed = installed?.version_code == item.release.versionCode &&
+                        installed?.signature == item.release.signature
                 val suggested =
                     incompatibility == null && item.release.selected && item.selectedRepository
 

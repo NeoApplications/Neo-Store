@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
+import com.looker.droidify.database.Installed
 import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
@@ -31,7 +32,6 @@ import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.security.cert.Certificate
@@ -99,13 +99,13 @@ object Utils {
 
     suspend fun startUpdate(
         packageName: String,
-        installedItem: InstalledItem?,
+        installed: Installed?,
         products: List<Pair<Product, Repository>>,
         downloadConnection: Connection<DownloadService.Binder, DownloadService>,
     ) {
-        val productRepository = Product.findSuggested(products, installedItem) { it.first }
+        val productRepository = Product.findSuggested(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
-            .filter { installedItem == null || installedItem.signature == it.signature }
+            .filter { installed == null || installed.signature == it.signature }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
         if (compatibleReleases.size > 1) {
             releaseFlow.emit(

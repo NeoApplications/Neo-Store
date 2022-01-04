@@ -31,7 +31,6 @@ import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.*
 import com.looker.droidify.utility.extension.text.trimAfter
-import com.looker.droidify.utility.getInstalledItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -71,7 +70,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     }
 
     private class Installed(
-        val installedItem: InstalledItem, val isSystem: Boolean,
+        val data: com.looker.droidify.database.Installed, val isSystem: Boolean,
         val launcherActivities: List<Pair<String, String>>,
     )
 
@@ -156,7 +155,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Nullable(screenActivity.db.installedDao.get(packageName).getInstalledItem()) }
+                    .querySingle { Nullable(screenActivity.db.installedDao.getObject(packageName)) }
                     .map { Pair(products, it) }
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -165,7 +164,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                 val firstChanged = first
                 first = false
                 val productChanged = this.products != products
-                val installedItemChanged = this.installed?.installedItem != installedItem.value
+                val installedItemChanged = this.installed?.data != installedItem.value
                 if (firstChanged || productChanged || installedItemChanged) {
                     layoutManagerState?.let {
                         recyclerView?.layoutManager!!.onRestoreInstanceState(
@@ -265,12 +264,12 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
         withContext(Dispatchers.Default) {
             val installed = installed
             val product =
-                Product.findSuggested(products, installed?.installedItem) { it.first }?.first
+                Product.findSuggested(products, installed?.data) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall = product != null && installed == null && compatible
             val canUpdate =
-                product != null && compatible && product.canUpdate(installed?.installedItem) &&
+                product != null && compatible && product.canUpdate(installed?.data) &&
                         !preference.shouldIgnoreUpdate(product.versionCode)
             val canUninstall = product != null && installed != null && !installed.isSystem
             val canLaunch =
@@ -415,7 +414,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             AppDetailAdapter.Action.INSTALL,
             AppDetailAdapter.Action.UPDATE,
             -> {
-                val installedItem = installed?.installedItem
+                val installedItem = installed?.data
                 lifecycleScope.launch {
                     startUpdate(
                         packageName,
@@ -520,7 +519,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     }
 
     override fun onReleaseClick(release: Release) {
-        val installedItem = installed?.installedItem
+        val installedItem = installed?.data
         when {
             release.incompatibilities.isNotEmpty() -> {
                 MessageDialog(
@@ -530,7 +529,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                     )
                 ).show(childFragmentManager)
             }
-            installedItem != null && installedItem.versionCode > release.versionCode -> {
+            installedItem != null && installedItem.version_code > release.versionCode -> {
                 MessageDialog(MessageDialog.Message.ReleaseOlder).show(childFragmentManager)
             }
             installedItem != null && installedItem.signature != release.signature -> {
