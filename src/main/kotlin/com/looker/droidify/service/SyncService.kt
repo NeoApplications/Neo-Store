@@ -19,6 +19,7 @@ import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.utility.RxUtils
+import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
@@ -69,6 +70,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     private var currentTask: CurrentTask? = null
 
     private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
+
+    private val downloadConnection = Connection(DownloadService::class.java)
 
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
@@ -172,11 +175,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 .let(notificationManager::createNotificationChannel)
         }
 
+        downloadConnection.bind(this)
         stateSubject.onEach { publishForegroundState(false, it) }.launchIn(scope)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        downloadConnection.unbind(this)
         cancelTasks { true }
         cancelCurrentTask { true }
     }
@@ -372,33 +377,38 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     handleNextTask(hasUpdates)
                 }
             } else if (started != Started.NO) {
-                if (hasUpdates && Preferences[Preferences.Key.UpdateNotify]) {
-                    val disposable = RxUtils
-                        .querySingle { it ->
-                            db.productDao
-                                .query(
-                                    installed = true,
-                                    updates = true,
-                                    searchQuery = "",
-                                    section = ProductItem.Section.All,
-                                    order = ProductItem.Order.NAME,
-                                    signal = it
-                                )
-                                .use {
-                                    it.asSequence().map { it.getProductItem() }.toList()
-                                }
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { result, throwable ->
-                            throwable?.printStackTrace()
-                            currentTask = null
-                            handleNextTask(false)
-                            val blocked = updateNotificationBlockerFragment?.get()?.isAdded == true
-                            if (!blocked && result != null && result.isNotEmpty()) {
-                                displayUpdatesNotification(result)
+                val disposable = RxUtils
+                    .querySingle { it ->
+                        db.productDao
+                            .query(
+                                installed = true,
+                                updates = true,
+                                searchQuery = "",
+                                section = ProductItem.Section.All,
+                                order = ProductItem.Order.NAME,
+                                signal = it
+                            )
+                            .use {
+                                it.asSequence().map { it.getProductItem() }
+                                    .toList()
                             }
+                    }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result, throwable ->
+                        throwable?.printStackTrace()
+                        currentTask = null
+                        handleNextTask(false)
+                        if (result.isNotEmpty()) {
+                            if (Preferences[Preferences.Key.InstallAfterSync])
+                                runAutoUpdate(result)
+                            if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
+                                updateNotificationBlockerFragment?.get()?.isAdded == true
+                            )
+                                displayUpdatesNotification(result)
                         }
+                    }
+                if (hasUpdates) {
                     currentTask = CurrentTask(null, disposable, true, State.Finishing)
                 } else {
                     scope.launch { mutableFinishState.emit(Unit) }
@@ -413,6 +423,54 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
     }
 
+    /**
+     * Performs automatic update after a repo sync if it is enabled. Otherwise, it continues on to
+     * displayUpdatesNotification.
+     *
+     * @param productItems a list of apps pending updates
+     * @see SyncService.displayUpdatesNotification
+     */
+    private fun runAutoUpdate(productItems: List<ProductItem>) {
+        if (Preferences[Preferences.Key.InstallAfterSync]) {
+            // run startUpdate on every item
+            productItems.map { productItem ->
+                Pair(
+                    Database.InstalledAdapter.get(productItem.packageName, null),
+                    Database.RepositoryAdapter.get(productItem.repositoryId)
+                )
+            }
+                .filter { pair -> pair.first != null && pair.second != null }
+                .forEach { installedRepository ->
+                    run {
+                        // Redundant !! as linter doesn't recognise the above filter's effects
+                        val installedItem = installedRepository.first!!
+                        val repository = installedRepository.second!!
+
+                        val productRepository = Database.ProductAdapter.get(
+                            installedItem.packageName,
+                            null
+                        )
+                            .filter { product -> product.repositoryId == repository.id }
+                            .map { product -> Pair(product, repository) }
+
+                        scope.launch {
+                            Utils.startUpdate(
+                                installedItem.packageName,
+                                installedRepository.first,
+                                productRepository,
+                                downloadConnection
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    /**
+     * Displays summary of available updates.
+     *
+     * @param productItems list of apps pending updates
+     */
     private fun displayUpdatesNotification(productItems: List<ProductItem>) {
         val maxUpdates = 5
         fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)

@@ -2,6 +2,7 @@ package com.looker.droidify
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInstaller
 import com.looker.droidify.ContextWrapperX.Companion.wrap
 import com.looker.droidify.screen.ScreenActivity
 
@@ -19,7 +20,8 @@ class MainActivity : ScreenActivity() {
             ACTION_INSTALL -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,
-                    intent.getStringExtra(EXTRA_CACHE_FILE_NAME)
+                    intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1),
+                    intent.getParcelableExtra(Intent.EXTRA_INTENT)
                 )
             )
             else -> super.handleIntent(intent)

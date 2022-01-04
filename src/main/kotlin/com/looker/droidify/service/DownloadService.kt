@@ -3,8 +3,6 @@ package com.looker.droidify.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.ContextThemeWrapper
@@ -16,7 +14,6 @@ import com.looker.droidify.entity.Repository
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.utility.Utils
-import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.extension.android.*
 import com.looker.droidify.utility.extension.resources.*
 import com.looker.droidify.utility.extension.text.*
@@ -30,11 +27,7 @@ import kotlin.math.*
 
 class DownloadService : ConnectionService<DownloadService.Binder>() {
     companion object {
-        private const val ACTION_OPEN = "${BuildConfig.APPLICATION_ID}.intent.action.OPEN"
-        private const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
         private const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"
-        private const val EXTRA_CACHE_FILE_NAME =
-            "${BuildConfig.APPLICATION_ID}.intent.extra.CACHE_FILE_NAME"
 
         private val mutableDownloadState = MutableSharedFlow<State.Downloading>()
         private val downloadState = mutableDownloadState.asSharedFlow()
@@ -42,34 +35,6 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private val scope = CoroutineScope(Dispatchers.Default)
     private val mainDispatcher = Dispatchers.Main
-
-    class Receiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action.orEmpty()
-            when {
-                action.startsWith("$ACTION_OPEN.") -> {
-                    val packageName = action.substring(ACTION_OPEN.length + 1)
-                    context.startActivity(
-                        Intent(context, MainActivity::class.java)
-                            .setAction(Intent.ACTION_VIEW)
-                            .setData(Uri.parse("package:$packageName"))
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    )
-                }
-                action.startsWith("$ACTION_INSTALL.") -> {
-                    val packageName = action.substring(ACTION_INSTALL.length + 1)
-                    val cacheFileName = intent.getStringExtra(EXTRA_CACHE_FILE_NAME)
-                    context.startActivity(
-                        Intent(context, MainActivity::class.java)
-                            .setAction(MainActivity.ACTION_INSTALL)
-                            .setData(Uri.parse("package:$packageName"))
-                            .putExtra(MainActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    )
-                }
-            }
-        }
-    }
 
     sealed class State(val packageName: String, val name: String) {
         class Pending(packageName: String, name: String) : State(packageName, name)
@@ -220,11 +185,13 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                         .getColorFromAttr(R.attr.colorPrimary).defaultColor
                 )
                 .setContentIntent(
-                    PendingIntent.getBroadcast(
+                    PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, Receiver::class.java)
-                            .setAction("$ACTION_OPEN.${task.packageName}"),
+                        Intent(this, MainActivity::class.java)
+                            .setAction(Intent.ACTION_VIEW)
+                            .setData(Uri.parse("package:${task.packageName}"))
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         if (Android.sdk(23))
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         else
@@ -275,33 +242,6 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 .build())
     }
 
-    private fun showNotificationInstall(task: Task) {
-        notificationManager.notify(
-            task.notificationTag, NOTIFICATION_ID_DOWNLOADING, NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
-                .setAutoCancel(true)
-                .setSmallIcon(android.R.drawable.stat_sys_download_done)
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                        .getColorFromAttr(R.attr.colorPrimary).defaultColor
-                )
-                .setContentIntent(installIntent(task))
-                .setContentTitle(getString(R.string.downloaded_FORMAT, task.name))
-                .setContentText(getString(R.string.tap_to_install_DESC))
-                .build()
-        )
-    }
-
-    private fun installIntent(task: Task): PendingIntent = PendingIntent.getBroadcast(
-        this,
-        0,
-        Intent(this, Receiver::class.java)
-            .setAction("$ACTION_INSTALL.${task.packageName}")
-            .putExtra(EXTRA_CACHE_FILE_NAME, task.release.cacheFileName),
-        if (Android.sdk(23)) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        else PendingIntent.FLAG_UPDATE_CURRENT
-    )
-
     private fun publishSuccess(task: Task) {
         var consumed = false
         scope.launch(mainDispatcher) {
@@ -309,12 +249,10 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             consumed = true
         }
         if (!consumed) {
-            if (rootInstallerEnabled) {
-                scope.launch {
-                    AppInstaller.getInstance(this@DownloadService)
-                        ?.defaultInstaller?.install(task.release.cacheFileName)
-                }
-            } else showNotificationInstall(task)
+            scope.launch {
+                AppInstaller.getInstance(this@DownloadService)
+                    ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+            }
         }
     }
 

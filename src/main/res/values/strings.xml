@@ -181,4 +181,6 @@
     <string name="installed_applications">Installed applications</string>
     <string name="sort_filter">Sort &amp; Filter</string>
     <string name="new_applications">New applications</string>
+    <string name="install_after_sync">Install updates automatically</string>
+    <string name="install_after_sync_summary">Automatically install app updates after syncing repositories</string>
 </resources>

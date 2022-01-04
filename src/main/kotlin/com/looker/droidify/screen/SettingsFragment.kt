@@ -109,6 +109,10 @@ class SettingsFragment : ScreenFragment() {
                 }
             }
             addSwitch(
+                Preferences.Key.InstallAfterSync, getString(R.string.install_after_sync),
+                getString(R.string.install_after_sync_summary)
+            )
+            addSwitch(
                 Preferences.Key.UpdateNotify, getString(R.string.notify_about_updates),
                 getString(R.string.notify_about_updates_summary)
             )

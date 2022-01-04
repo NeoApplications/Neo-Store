@@ -1,5 +1,8 @@
 package com.looker.droidify.utility
 
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.Signature
@@ -172,6 +175,17 @@ object Utils {
         )
         else -> Locale(localeCode)
     }
+
+    /**
+     * Checks if app is currently considered to be in the foreground by Android.
+     */
+    fun inForeground(): Boolean {
+        val appProcessInfo = ActivityManager.RunningAppProcessInfo()
+        ActivityManager.getMyMemoryState(appProcessInfo)
+        val importance = appProcessInfo.importance
+        return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
+    }
+
 }
 
 fun Cursor.getProduct(): Product = getBlob(getColumnIndex(ROW_DATA))

@@ -1,6 +1,7 @@
 package com.looker.droidify.screen
 
 import android.content.Intent
+import android.content.pm.PackageInstaller
 import android.os.Bundle
 import android.os.Parcel
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.looker.droidify.MainApplication
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.installer.AppInstaller
+import com.looker.droidify.installer.InstallerService
 import com.looker.droidify.ui.fragments.AppDetailFragment
 import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.extension.resources.getDrawableFromAttr
@@ -31,7 +32,7 @@ abstract class ScreenActivity : AppCompatActivity() {
 
     sealed class SpecialIntent {
         object Updates : SpecialIntent()
-        class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
+        class Install(val packageName: String?, val status: Int?, val promptIntent: Intent?) : SpecialIntent()
     }
 
     private class FragmentStackItem(
@@ -221,13 +222,23 @@ abstract class ScreenActivity : AppCompatActivity() {
             }
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
-                if (!packageName.isNullOrEmpty()) {
+                val status = specialIntent.status
+                val promptIntent = specialIntent.promptIntent
+                if (!packageName.isNullOrEmpty() && status != null && promptIntent != null) {
                     lifecycleScope.launch {
-                        specialIntent.cacheFileName?.let {
-                            AppInstaller.getInstance(this@ScreenActivity)
-                                ?.defaultInstaller?.install(packageName, it)
-                        }
+                        startService(
+                            Intent(baseContext, InstallerService::class.java)
+                                .putExtra(PackageInstaller.EXTRA_STATUS, status)
+                                .putExtra(
+                                    PackageInstaller.EXTRA_PACKAGE_NAME,
+                                    packageName
+                                )
+                                .putExtra(Intent.EXTRA_INTENT, promptIntent)
+                        )
                     }
+                }
+                else {
+                    throw IllegalArgumentException("Missing parameters needed to relaunch InstallerService and trigger prompt.")
                 }
                 Unit
             }
