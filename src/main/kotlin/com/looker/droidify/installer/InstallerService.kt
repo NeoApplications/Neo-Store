@@ -32,9 +32,8 @@ class InstallerService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
 
-        // only trigger a prompt if in foreground or below Android 10, otherwise make notification
-        // launching a prompt in the background will fail silently
-        if ((!Android.sdk(29) || Utils.inForeground()) && status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
+        // only trigger a prompt if in foreground, otherwise make notification
+        if (Utils.inForeground() && status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
             // Triggers the installer prompt and "unknown apps" prompt if needed
             val promptIntent: Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
 

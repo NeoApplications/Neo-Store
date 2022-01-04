@@ -132,7 +132,7 @@ object Preferences {
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
         object AutoSyncInstall :
-            Key<Boolean>("auto_sync_install", Value.BooleanValue(true))
+            Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))
 
         object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
