@@ -53,7 +53,17 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         // clean up inactive sessions
         sessionInstaller.mySessions
             .filter { session -> !session.isActive }
-            .forEach { session -> sessionInstaller.abandonSession(session.sessionId) }
+            .forEach { session ->
+                try {
+                    sessionInstaller.abandonSession(session.sessionId)
+                }
+                catch (_: SecurityException) {
+                    Log.w(
+                        "DefaultInstaller",
+                        "Attempted to abandon a session we do not own."
+                    )
+                }
+            }
 
         // start new session
         val id = sessionInstaller.createSession(sessionParams)
@@ -67,24 +77,38 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         var hasErrors = false
 
         session.use { activeSession ->
-            activeSession.openWrite(packageName, 0, cacheFile.length()).use { packageStream ->
-                try {
-                    cacheFile.inputStream().use { fileStream ->
-                        fileStream.copyTo(packageStream)
+            try {
+                activeSession.openWrite(packageName, 0, cacheFile.length()).use { packageStream ->
+                    try {
+                        cacheFile.inputStream().use { fileStream ->
+                            fileStream.copyTo(packageStream)
+                        }
+                    } catch (_: FileNotFoundException) {
+                        Log.w(
+                            "DefaultInstaller",
+                            "Cache file does not seem to exist."
+                        )
+                        hasErrors = true
+                    } catch (_: IOException) {
+                        Log.w(
+                            "DefaultInstaller",
+                            "Failed to perform cache to package copy due to a bad pipe."
+                        )
+                        hasErrors = true
                     }
-                } catch (e: FileNotFoundException) {
-                    Log.w(
-                        "DefaultInstaller",
-                        "Cache file for DefaultInstaller does not seem to exist."
-                    )
-                    hasErrors = true
-                } catch (e: IOException) {
-                    Log.w(
-                        "DefaultInstaller",
-                        "Failed to perform cache to package copy due to a bad pipe."
-                    )
-                    hasErrors = true
                 }
+            } catch (_: SecurityException) {
+                Log.w(
+                    "DefaultInstaller",
+                    "Attempted to use a destroyed or sealed session when installing."
+                )
+                hasErrors = true
+            } catch (_: IOException) {
+                Log.w(
+                    "DefaultInstaller",
+                    "Couldn't open up active session file for copying install data."
+                )
+                hasErrors = true
             }
         }
 
