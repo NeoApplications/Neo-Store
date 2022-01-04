@@ -24,7 +24,7 @@ object Preferences {
     private val keys = sequenceOf(
         Key.Language,
         Key.AutoSync,
-        Key.AutoSyncInstall,
+        Key.InstallAfterSync,
         Key.IncompatibleVersions,
         Key.ListAnimation,
         Key.ProxyHost,
@@ -131,7 +131,7 @@ object Preferences {
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
-        object AutoSyncInstall :
+        object InstallAfterSync :
             Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))
 
         object IncompatibleVersions :

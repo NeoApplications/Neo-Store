@@ -403,7 +403,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         currentTask = null
                         handleNextTask(false)
                         if (result.isNotEmpty()) {
-                            if (Preferences[Preferences.Key.AutoSyncInstall])
+                            if (Preferences[Preferences.Key.InstallAfterSync])
                                 runAutoUpdate(result)
                             if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
                                 updateNotificationBlockerFragment?.get()?.isAdded == true
@@ -434,7 +434,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @see SyncService.displayUpdatesNotification
      */
     private fun runAutoUpdate(productItems: List<ProductItem>) {
-        if (Preferences[Preferences.Key.AutoSyncInstall]) {
+        if (Preferences[Preferences.Key.InstallAfterSync]) {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Pair(
