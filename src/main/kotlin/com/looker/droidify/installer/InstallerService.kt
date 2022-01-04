@@ -1,16 +1,17 @@
 package com.looker.droidify.installer
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.IBinder
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.Common.NOTIFICATION_CHANNEL_DOWNLOADING
-import com.looker.droidify.Common.NOTIFICATION_ID_DOWNLOADING
+import com.looker.droidify.Common.NOTIFICATION_CHANNEL_INSTALLER
+import com.looker.droidify.Common.NOTIFICATION_ID_INSTALLER
 import com.looker.droidify.R
 import com.looker.droidify.MainActivity
 import com.looker.droidify.utility.Utils
@@ -27,6 +28,20 @@ class InstallerService : Service() {
         const val KEY_ACTION = "installerAction"
         const val KEY_APP_NAME = "appName"
         const val ACTION_UNINSTALL = "uninstall"
+        private const val INSTALLED_NOTIFICATION_TIMEOUT: Long = 10000
+        private const val NOTIFICATION_TAG_PREFIX = "install-"
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (Android.sdk(26)) {
+            NotificationChannel(
+                NOTIFICATION_CHANNEL_INSTALLER,
+                getString(R.string.syncing), NotificationManager.IMPORTANCE_LOW
+            )
+                .let(notificationManager::createNotificationChannel)
+        }
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -61,12 +76,18 @@ class InstallerService : Service() {
     private fun notifyStatus(intent: Intent) {
         // unpack from intent
         val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
-        val name = intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
+        val sessionId = intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1)
+
+        // get package information from session
+        val sessionInstaller = this.packageManager.packageInstaller
+        val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
+
+        val name = session?.appPackageName ?: intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
         val message = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
         val installerAction = intent.getStringExtra(KEY_ACTION)
 
         // get application name for notifications
-        val appLabel = intent.getStringExtra(KEY_APP_NAME)
+        val appLabel = session?.appLabel ?: intent.getStringExtra(KEY_APP_NAME)
             ?: try {
                 if (name != null) packageManager.getApplicationLabel(
                     packageManager.getApplicationInfo(
@@ -78,11 +99,11 @@ class InstallerService : Service() {
                 null
             }
 
-        val notificationTag = "download-$name"
+        val notificationTag = "${NOTIFICATION_TAG_PREFIX}$name"
 
         // start building
         val builder = NotificationCompat
-            .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
+            .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
             .setAutoCancel(true)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Light)
@@ -93,7 +114,7 @@ class InstallerService : Service() {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
                 // request user action with "downloaded" notification that triggers a working prompt
                 notificationManager.notify(
-                    notificationTag, NOTIFICATION_ID_DOWNLOADING, builder
+                    notificationTag, NOTIFICATION_ID_INSTALLER, builder
                         .setSmallIcon(android.R.drawable.stat_sys_download_done)
                         .setContentIntent(installIntent(intent))
                         .setContentTitle(getString(R.string.downloaded_FORMAT, appLabel))
@@ -104,20 +125,19 @@ class InstallerService : Service() {
             PackageInstaller.STATUS_SUCCESS -> {
                 if (installerAction == ACTION_UNINSTALL)
                 // remove any notification for this app
-                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
+                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
                 else {
                     val notification = builder
                         .setSmallIcon(android.R.drawable.stat_sys_download_done)
                         .setContentTitle(getString(R.string.installed))
                         .setContentText(appLabel)
+                        .setTimeoutAfter(INSTALLED_NOTIFICATION_TIMEOUT)
                         .build()
                     notificationManager.notify(
                         notificationTag,
-                        NOTIFICATION_ID_DOWNLOADING,
+                        NOTIFICATION_ID_INSTALLER,
                         notification
                     )
-                    Thread.sleep(5000)
-                    notificationManager.cancel(notificationTag, NOTIFICATION_ID_DOWNLOADING)
                 }
             }
             PackageInstaller.STATUS_FAILURE_ABORTED -> {
@@ -132,7 +152,7 @@ class InstallerService : Service() {
                     .build()
                 notificationManager.notify(
                     notificationTag,
-                    NOTIFICATION_ID_DOWNLOADING,
+                    NOTIFICATION_ID_INSTALLER,
                     notification
                 )
             }
@@ -163,7 +183,6 @@ class InstallerService : Service() {
             0,
             Intent(this, MainActivity::class.java)
                 .setAction(MainActivity.ACTION_INSTALL)
-                .setData(Uri.parse("package:$name"))
                 .putExtra(Intent.EXTRA_INTENT, promptIntent)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             if (Android.sdk(23)) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

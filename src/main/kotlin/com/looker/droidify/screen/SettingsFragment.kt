@@ -41,6 +41,11 @@ class SettingsFragment : ScreenFragment() {
     private var preferenceBinding: PreferenceItemBinding? = null
     private val preferences = mutableMapOf<Preferences.Key<*>, Preference<*>>()
 
+    override fun onResume() {
+        super.onResume()
+        preferences.forEach { (_, preference) -> preference.update() }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferenceBinding = PreferenceItemBinding.inflate(layoutInflater)
@@ -216,7 +221,7 @@ class SettingsFragment : ScreenFragment() {
         }
     }
 
-    private fun LinearLayoutCompat.addCategory(
+    private inline fun LinearLayoutCompat.addCategory(
         title: String,
         callback: LinearLayoutCompat.() -> Unit,
     ) {

@@ -11,10 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 
 class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
-    private val sessionInstaller = context.packageManager.packageInstaller
+    private val packageManager = context.packageManager
+    private val sessionInstaller = packageManager.packageInstaller
     private val intent = Intent(context, InstallerService::class.java)
 
     companion object {
@@ -48,27 +50,48 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun uninstall(packageName: String) = mDefaultUninstaller(packageName)
 
     private fun mDefaultInstaller(cacheFile: File) {
+        // clean up inactive sessions
+        sessionInstaller.mySessions
+            .filter { session -> !session.isActive }
+            .forEach { session -> sessionInstaller.abandonSession(session.sessionId) }
 
+        // start new session
         val id = sessionInstaller.createSession(sessionParams)
-
         val session = sessionInstaller.openSession(id)
 
+        // get package name
+        val packageInfo = packageManager.getPackageArchiveInfo(cacheFile.absolutePath, 0)
+        val packageName = packageInfo?.packageName ?: "unknown-package"
+
+        // error flags
+        var hasErrors = false
+
         session.use { activeSession ->
-            activeSession.openWrite("package", 0, cacheFile.length()).use { packageStream ->
+            activeSession.openWrite(packageName, 0, cacheFile.length()).use { packageStream ->
                 try {
                     cacheFile.inputStream().use { fileStream ->
                         fileStream.copyTo(packageStream)
                     }
-                } catch (error: FileNotFoundException) {
-                    Log.w("DefaultInstaller", "Cache file for DefaultInstaller does not seem to exist.")
+                } catch (e: FileNotFoundException) {
+                    Log.w(
+                        "DefaultInstaller",
+                        "Cache file for DefaultInstaller does not seem to exist."
+                    )
+                    hasErrors = true
+                } catch (e: IOException) {
+                    Log.w(
+                        "DefaultInstaller",
+                        "Failed to perform cache to package copy due to a bad pipe."
+                    )
+                    hasErrors = true
                 }
             }
-
-            val pendingIntent = PendingIntent.getService(context, id, intent, flags)
-
-            session.commit(pendingIntent.intentSender)
         }
-        cacheFile.delete()
+
+        if (!hasErrors) {
+            session.commit(PendingIntent.getService(context, id, intent, flags).intentSender)
+            cacheFile.delete()
+        }
     }
 
     private suspend fun mDefaultUninstaller(packageName: String) {
