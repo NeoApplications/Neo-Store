@@ -203,6 +203,7 @@ import com.android.systemui.plugins.shared.LauncherExterns;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
+import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.util.Config;
 
@@ -276,13 +277,13 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     @VisibleForTesting
     public static final int NEW_APPS_PAGE_MOVE_DELAY = 500;
     private static final int NEW_APPS_ANIMATION_INACTIVE_TIMEOUT_SECONDS = 5;
+
     @Thunk
     @VisibleForTesting
     public static final int NEW_APPS_ANIMATION_DELAY = 500;
 
     private static final int THEME_CROSS_FADE_ANIMATION_DURATION = 375;
 
-    private QuickstepTransitionManager mTransitionManager;
     private Configuration mOldConfig;
 
     @Thunk
@@ -1161,13 +1162,11 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         LauncherState[] stateValues = LauncherState.values();
         LauncherState state = stateValues[stateOrdinal];
 
-        if (getLastNonConfigurationInstance() instanceof NonConfigInstance) {
-            NonConfigInstance lastInstance = (NonConfigInstance) getLastNonConfigurationInstance();
-            boolean forceRestore = lastInstance != null
-                    && (lastInstance.config.diff(mOldConfig) & CONFIG_UI_MODE) != 0;
-            if (forceRestore || !state.shouldDisableRestore()) {
-                mStateManager.goToState(state, false /* animated */);
-            }
+        NonConfigInstance lastInstance = (NonConfigInstance) getLastNonConfigurationInstance();
+        boolean forceRestore = lastInstance != null
+                && (lastInstance.config.diff(mOldConfig) & CONFIG_UI_MODE) != 0;
+        if (forceRestore || !state.shouldDisableRestore()) {
+            mStateManager.goToState(state, false /* animated */);
         }
 
         PendingRequestArgs requestArgs = savedState.getParcelable(
@@ -1547,7 +1546,11 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
                 if (!isInState(NORMAL)) {
                     // Only change state, if not already the same. This prevents cancelling any
                     // animations running as part of resume
-                    mStateManager.goToState(NORMAL, mStateManager.shouldAnimateStateChange());
+                    boolean animate = mStateManager.shouldAnimateStateChange();
+                    if (!OmegaApp.isRecentsEnabled()) {
+                        animate &= alreadyOnHome;
+                    }
+                    mStateManager.goToState(NORMAL, animate);
                     handled = true;
                 }
 
@@ -1993,6 +1996,11 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         }
     }
 
+    @Override
+    public ActivityOptions getActivityLaunchOptions(View v) {
+        return null;
+    }
+
     protected void onScreenOff() {
         // Reset AllApps to its initial state only if we are not in the middle of
         // processing a multi-step drop
@@ -2002,12 +2010,6 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
             }
             mStateManager.goToState(NORMAL);
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public ActivityOptions getActivityLaunchOptions(View v) {
-        return mTransitionManager.getActivityLaunchOptions(v).options;
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -2153,7 +2155,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Refreshes the shortcuts shown on the workspace.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void startBinding() {
@@ -2242,7 +2244,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Bind the items start-end from the list.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override
@@ -2253,7 +2255,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Bind the items start-end from the list.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      *
      * @param focusFirstItemForAccessibility true iff the first item to be added to the workspace
@@ -2614,7 +2616,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Callback saying that there aren't any more items to bind.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void finishBindingItems(int pageBoundFirst) {
@@ -2669,7 +2671,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Add the icons for all apps.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override
@@ -2713,7 +2715,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Update the state of a package, typically related to install state.
-     * <p>
+     *
      * Implementation of the method from LauncherModel.Callbacks.
      */
     @Override
@@ -2946,7 +2948,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Cross-fades the launcher's updated appearance with its previous appearance.
-     * <p>
+     *
      * This method is used to cross-fade UI updates on activity creation, specifically dark mode
      * updates.
      */

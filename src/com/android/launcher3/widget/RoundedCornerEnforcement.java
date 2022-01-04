@@ -104,10 +104,10 @@ public class RoundedCornerEnforcement {
      * in the given context.
      */
     public static float computeEnforcedRadius(@NonNull Context context) {
-        if (!Utilities.ATLEAST_S) {
-            return 0;
-        }
         Resources res = context.getResources();
+        if (!Utilities.ATLEAST_S) {
+            return res.getDimension(R.dimen.enforced_rounded_corner_max_radius);
+        }
         float systemRadius = res.getDimension(android.R.dimen.system_app_widget_background_radius);
         float defaultRadius = res.getDimension(R.dimen.enforced_rounded_corner_max_radius);
         return Math.min(defaultRadius, systemRadius);

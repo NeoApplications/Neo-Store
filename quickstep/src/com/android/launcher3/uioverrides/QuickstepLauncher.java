@@ -79,6 +79,7 @@ import com.android.quickstep.TaskUtils;
 import com.android.quickstep.util.QuickstepOnboardingPrefs;
 import com.android.quickstep.views.RecentsView;
 import com.android.quickstep.views.TaskView;
+import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.gestures.VerticalSwipeGestureController;
 
 import java.io.FileDescriptor;
@@ -329,7 +330,7 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
 
     protected LauncherAppWidgetHost createAppWidgetHost() {
         LauncherAppWidgetHost appWidgetHost = super.createAppWidgetHost();
-        if (ENABLE_QUICKSTEP_WIDGET_APP_START.get()) {
+        if (ENABLE_QUICKSTEP_WIDGET_APP_START.get() && OmegaApp.isRecentsEnabled()) {
             appWidgetHost.setInteractionHandler(new QuickstepInteractionHandler(this));
         }
         return appWidgetHost;

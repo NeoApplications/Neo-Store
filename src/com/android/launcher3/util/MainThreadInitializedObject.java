@@ -48,6 +48,7 @@ public class MainThreadInitializedObject<T> {
             if (Looper.myLooper() == Looper.getMainLooper()) {
                 mValue = TraceHelper.allowIpcs("main.thread.object",
                         () -> mProvider.get(context.getApplicationContext()));
+                onPostInit(context);
             } else {
                 try {
                     return MAIN_EXECUTOR.submit(() -> get(context)).get();
@@ -57,6 +58,9 @@ public class MainThreadInitializedObject<T> {
             }
         }
         return mValue;
+    }
+
+    protected void onPostInit(Context context) {
     }
 
     public T getNoCreate() {

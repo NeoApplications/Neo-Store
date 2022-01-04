@@ -50,6 +50,7 @@ import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.widget.DatabaseWidgetPreviewLoader;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
+import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.icons.CustomIconProvider;
 
 public class LauncherAppState {
@@ -59,7 +60,13 @@ public class LauncherAppState {
 
     // We do not need any synchronization for this variable as its only written on UI thread.
     public static final MainThreadInitializedObject<LauncherAppState> INSTANCE =
-            new MainThreadInitializedObject<>(LauncherAppState::new);
+            new MainThreadInitializedObject<LauncherAppState>(LauncherAppState::new) {
+                @Override
+                protected void onPostInit(Context context) {
+                    super.onPostInit(context);
+                    OmegaAppKt.getOmegaApp(context).onLauncherAppStateCreated();
+                }
+            };
 
     private final Context mContext;
     private final LauncherModel mModel;
