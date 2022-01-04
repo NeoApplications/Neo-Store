@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.screen.BaseFragment
 import com.looker.droidify.ui.adapters.AppListAdapter
@@ -78,10 +77,10 @@ class AppListFragment() : BaseFragment(), CursorOwner.Callback {
 
         screenActivity.cursorOwner.attach(this, viewModel.request(source))
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.RepositoryAdapter.getAll(it) } }
-            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } } }
+            .map { it.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (recyclerView?.adapter as? AppListAdapter)?.repositories = it }
     }

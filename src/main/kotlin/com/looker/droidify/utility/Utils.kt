@@ -7,26 +7,32 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
+import android.database.Cursor
 import android.graphics.drawable.Drawable
 import android.os.Build
-import com.looker.droidify.BuildConfig
-import com.looker.droidify.Common.PREFS_LANGUAGE_DEFAULT
-import com.looker.droidify.R
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.singleSignature
 import com.looker.droidify.utility.extension.android.versionCodeCompat
+import com.looker.droidify.utility.extension.json.Json
+import com.looker.droidify.utility.extension.json.parseDictionary
+import com.looker.droidify.utility.extension.json.writeDictionary
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -180,4 +186,52 @@ object Utils {
         return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
     }
 
+}
+
+fun Cursor.getProduct(): Product = getBlob(getColumnIndex(ROW_DATA))
+    .jsonParse {
+        Product.deserialize(it).apply {
+            this.repositoryId = getLong(getColumnIndex(ROW_REPOSITORY_ID))
+            this.description = getString(getColumnIndex(ROW_DESCRIPTION))
+        }
+    }
+
+
+fun Cursor.getProductItem(): ProductItem = getBlob(getColumnIndex(ROW_DATA_ITEM))
+    .jsonParse {
+        ProductItem.deserialize(it).apply {
+            this.repositoryId = getLong(getColumnIndex(ROW_REPOSITORY_ID))
+            this.packageName = getString(getColumnIndex(ROW_PACKAGE_NAME))
+            this.name = getString(getColumnIndex(ROW_NAME))
+            this.summary = getString(getColumnIndex(ROW_SUMMARY))
+            this.installedVersion = getString(getColumnIndex(ROW_VERSION))
+                .orEmpty()
+            this.compatible = getInt(getColumnIndex(ROW_COMPATIBLE)) != 0
+            this.canUpdate = getInt(getColumnIndex(ROW_CAN_UPDATE)) != 0
+            this.matchRank = getInt(getColumnIndex(ROW_MATCH_RANK))
+        }
+    }
+
+fun Cursor.getRepository(): Repository = getBlob(getColumnIndex(ROW_DATA))
+    .jsonParse {
+        Repository.deserialize(it).apply {
+            this.id = getLong(getColumnIndex(ROW_ID))
+        }
+    }
+
+fun Cursor.getInstalledItem(): InstalledItem = InstalledItem(
+    getString(getColumnIndex(ROW_PACKAGE_NAME)),
+    getString(getColumnIndex(ROW_VERSION)),
+    getLong(getColumnIndex(ROW_VERSION_CODE)),
+    getString(getColumnIndex(ROW_SIGNATURE))
+)
+
+fun <T> ByteArray.jsonParse(callback: (JsonParser) -> T): T {
+    return Json.factory.createParser(this).use { it.parseDictionary(callback) }
+}
+
+fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
+    val outputStream = ByteArrayOutputStream()
+    Json.factory.createGenerator(outputStream).use { it.writeDictionary(callback) }
+    return outputStream.toByteArray()
 }

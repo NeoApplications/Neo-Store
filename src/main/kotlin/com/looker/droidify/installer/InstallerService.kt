@@ -11,8 +11,8 @@ import android.net.Uri
 import android.os.IBinder
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.Common.NOTIFICATION_CHANNEL_INSTALLER
-import com.looker.droidify.Common.NOTIFICATION_ID_INSTALLER
+import com.looker.droidify.NOTIFICATION_CHANNEL_INSTALLER
+import com.looker.droidify.NOTIFICATION_ID_INSTALLER
 import com.looker.droidify.MainActivity
 import com.looker.droidify.R
 import com.looker.droidify.utility.Utils

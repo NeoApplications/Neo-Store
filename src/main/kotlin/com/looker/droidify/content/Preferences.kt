@@ -3,8 +3,8 @@ package com.looker.droidify.content
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import com.looker.droidify.Common.PREFS_LANGUAGE
-import com.looker.droidify.Common.PREFS_LANGUAGE_DEFAULT
+import com.looker.droidify.PREFS_LANGUAGE
+import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.utility.extension.android.Android
@@ -18,8 +18,8 @@ import java.net.Proxy
 object Preferences {
     private lateinit var preferences: SharedPreferences
 
-    private val _subject = MutableSharedFlow<Key<*>>()
-    val subject = _subject.asSharedFlow()
+    private val mutableSubject = MutableSharedFlow<Key<*>>()
+    val subject = mutableSubject.asSharedFlow()
 
     private val keys = sequenceOf(
         Key.Language,
@@ -39,12 +39,14 @@ object Preferences {
 
     fun init(context: Context) {
         preferences =
-            context.getSharedPreferences("${context.packageName}_preferences",
-                Context.MODE_PRIVATE)
+            context.getSharedPreferences(
+                "${context.packageName}_preferences",
+                Context.MODE_PRIVATE
+            )
         preferences.registerOnSharedPreferenceChangeListener { _, keyString ->
             CoroutineScope(Dispatchers.Default).launch {
                 keys[keyString]?.let {
-                    _subject.emit(it)
+                    mutableSubject.emit(it)
                 }
             }
         }
@@ -167,10 +169,11 @@ object Preferences {
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
         override val values: List<AutoSync>
-            get() = listOf(Never, Wifi, Always)
+            get() = listOf(Never, Wifi, WifiBattery, Always)
 
         object Never : AutoSync("never")
         object Wifi : AutoSync("wifi")
+        object WifiBattery : AutoSync("wifi-battery")
         object Always : AutoSync("always")
     }
 

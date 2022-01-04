@@ -81,4 +81,9 @@
     <string name="link_copied_to_clipboard">Odkaz zkopírován do schránky</string>
     <string name="install_types">Typy instalací</string>
     <string name="links">Odkazy</string>
+    <plurals name="new_updates_DESC_FORMAT">
+        <item quantity="one">%d aplikace má novou verzi.</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
 </resources>

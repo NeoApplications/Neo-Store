@@ -12,15 +12,9 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
-import com.looker.droidify.BuildConfig
-import com.looker.droidify.Common.NOTIFICATION_ID_UPDATES
-import com.looker.droidify.Common.NOTIFICATION_ID_SYNCING
-import com.looker.droidify.Common.NOTIFICATION_CHANNEL_SYNCING
-import com.looker.droidify.Common.NOTIFICATION_CHANNEL_UPDATES
-import com.looker.droidify.MainActivity
-import com.looker.droidify.R
+import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.index.RepositoryUpdater
@@ -31,6 +25,7 @@ import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
+import com.looker.droidify.utility.getProductItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -104,7 +99,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun sync(request: SyncRequest) {
-            val ids = Database.RepositoryAdapter.getAll(null)
+            val ids = db.repositoryDao.all.mapNotNull { it.trueData }
                 .asSequence().filter { it.enabled }.map { it.id }.toList()
             sync(ids, request)
         }
@@ -130,7 +125,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun setEnabled(repository: Repository, enabled: Boolean): Boolean {
-            Database.RepositoryAdapter.put(repository.enable(enabled))
+            db.repositoryDao.put(repository.enable(enabled))
             if (enabled) {
                 if (repository.id != currentTask?.task?.repositoryId && !tasks.any { it.repositoryId == repository.id }) {
                     tasks += Task(repository.id, true)
@@ -149,10 +144,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun deleteRepository(repositoryId: Long): Boolean {
-            val repository = Database.RepositoryAdapter.get(repositoryId)
+            val repository = db.repositoryDao.get(repositoryId)?.trueData
             return repository != null && run {
                 setEnabled(repository, false)
-                Database.RepositoryAdapter.markAsDeleted(repository.id)
+                db.repositoryDao.markAsDeleted(repository.id)
                 true
             }
         }
@@ -160,10 +155,12 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private val binder = Binder()
     override fun onBind(intent: Intent): Binder = binder
+    lateinit var db: DatabaseX
 
     override fun onCreate() {
         super.onCreate()
 
+        db = DatabaseX.getInstance(applicationContext)
         if (Android.sdk(26)) {
             NotificationChannel(
                 NOTIFICATION_CHANNEL_SYNCING,
@@ -337,7 +334,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         if (currentTask == null) {
             if (tasks.isNotEmpty()) {
                 val task = tasks.removeAt(0)
-                val repository = Database.RepositoryAdapter.get(task.repositoryId)
+                val repository = db.repositoryDao.get(task.repositoryId)?.trueData
                 if (repository != null && repository.enabled) {
                     val lastStarted = started
                     val newStarted =
@@ -382,7 +379,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             } else if (started != Started.NO) {
                 val disposable = RxUtils
                     .querySingle { it ->
-                        Database.ProductAdapter
+                        db.productDao
                             .query(
                                 installed = true,
                                 updates = true,
@@ -392,7 +389,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 signal = it
                             )
                             .use {
-                                it.asSequence().map(Database.ProductAdapter::transformItem)
+                                it.asSequence().map { it.getProductItem() }
                                     .toList()
                             }
                     }

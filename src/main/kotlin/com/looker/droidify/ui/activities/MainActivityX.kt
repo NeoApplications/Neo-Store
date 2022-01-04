@@ -2,15 +2,12 @@ package com.looker.droidify.ui.activities
 
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,11 +17,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.ContextWrapperX
+import com.looker.droidify.MainApplication
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.database.Database
-import com.looker.droidify.database.QueryLoader
 import com.looker.droidify.databinding.ActivityMainXBinding
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.*
@@ -37,7 +33,7 @@ import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import kotlinx.coroutines.launch
 
-class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+class MainActivityX : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
         const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
@@ -66,6 +62,9 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
             updateUpdateNotificationBlocker(source)
         }
     })
+
+    val db
+        get() = (application as MainApplication).db
 
     lateinit var cursorOwner: CursorOwner
         private set
@@ -230,79 +229,4 @@ class MainActivityX : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
         }
         syncConnection.binder?.setUpdateNotificationBlocker(blockerFragment)
     }
-
-    fun attachCursorOwner(callback: CursorOwner.Callback, request: CursorOwner.Request) {
-        val oldActiveRequest = viewModel.activeRequests[request.id]
-        if (oldActiveRequest?.callback != null &&
-            oldActiveRequest.callback != callback && oldActiveRequest.cursor != null
-        ) {
-            oldActiveRequest.callback.onCursorData(oldActiveRequest.request, null)
-        }
-        val cursor = if (oldActiveRequest?.request == request && oldActiveRequest.cursor != null) {
-            callback.onCursorData(request, oldActiveRequest.cursor)
-            oldActiveRequest.cursor
-        } else {
-            null
-        }
-        viewModel.activeRequests[request.id] = CursorOwner.ActiveRequest(request, callback, cursor)
-        if (cursor == null) {
-            LoaderManager.getInstance(this).restartLoader(request.id, null, this)
-        }
-    }
-
-
-    fun detachCursorOwner(callback: CursorOwner.Callback) {
-        for (id in viewModel.activeRequests.keys) {
-            val activeRequest = viewModel.activeRequests[id]!!
-            if (activeRequest.callback == callback) {
-                viewModel.activeRequests[id] = activeRequest.copy(callback = null)
-            }
-        }
-    }
-
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val request = viewModel.activeRequests[id]!!.request
-        return QueryLoader(this) {
-            when (request) {
-                is CursorOwner.Request.ProductsAvailable -> Database.ProductAdapter
-                    .query(
-                        installed = false,
-                        updates = false,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order,
-                        signal = it
-                    )
-                is CursorOwner.Request.ProductsInstalled -> Database.ProductAdapter
-                    .query(
-                        installed = true,
-                        updates = false,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order,
-                        signal = it
-                    )
-                is CursorOwner.Request.ProductsUpdates -> Database.ProductAdapter
-                    .query(
-                        installed = true,
-                        updates = true,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order,
-                        signal = it
-                    )
-                is CursorOwner.Request.Repositories -> Database.RepositoryAdapter.query(it)
-            }
-        }
-    }
-
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        val activeRequest = viewModel.activeRequests[loader.id]
-        if (activeRequest != null) {
-            viewModel.activeRequests[loader.id] = activeRequest.copy(cursor = data)
-            activeRequest.callback?.onCursorData(activeRequest.request, data)
-        }
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) = onLoadFinished(loader, null)
 }

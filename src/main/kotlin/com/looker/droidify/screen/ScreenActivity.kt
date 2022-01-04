@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.circularreveal.CircularRevealFrameLayout
+import com.looker.droidify.MainApplication
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
@@ -25,6 +26,9 @@ abstract class ScreenActivity : AppCompatActivity() {
     companion object {
         private const val STATE_FRAGMENT_STACK = "fragmentStack"
     }
+
+    val db
+        get() = (application as MainApplication).db
 
     sealed class SpecialIntent {
         object Updates : SpecialIntent()

@@ -7,12 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.looker.droidify.BuildConfig
-import com.looker.droidify.Common.NOTIFICATION_ID_DOWNLOADING
-import com.looker.droidify.Common.NOTIFICATION_ID_SYNCING
-import com.looker.droidify.Common.NOTIFICATION_CHANNEL_DOWNLOADING
-import com.looker.droidify.MainActivity
-import com.looker.droidify.R
+import com.looker.droidify.*
 import com.looker.droidify.content.Cache
 import com.looker.droidify.entity.Release
 import com.looker.droidify.entity.Repository

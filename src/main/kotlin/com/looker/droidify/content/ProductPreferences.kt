@@ -2,7 +2,8 @@ package com.looker.droidify.content
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.Lock
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.utility.extension.json.Json
 import com.looker.droidify.utility.extension.json.parseDictionary
@@ -21,17 +22,30 @@ object ProductPreferences {
     private lateinit var preferences: SharedPreferences
     private val mutableSubject = MutableSharedFlow<Pair<String, Long?>>()
     private val subject = mutableSubject.asSharedFlow()
+    lateinit var db: DatabaseX
 
     fun init(context: Context) {
+        db = DatabaseX.getInstance(context)
         preferences = context.getSharedPreferences("product_preferences", Context.MODE_PRIVATE)
-        Database.LockAdapter.putAll(preferences.all.keys
-            .mapNotNull { packageName ->
-                this[packageName].databaseVersionCode?.let { Pair(packageName, it) }
-            })
+        db.lockDao.insert(*preferences.all.keys
+            .mapNotNull { pName ->
+                this[pName].databaseVersionCode?.let {
+                    Lock().apply {
+                        package_name = pName
+                        version_code = it
+                    }
+                }
+            }
+            .toTypedArray()
+        )
         CoroutineScope(Dispatchers.Default).launch {
             subject.collect { (packageName, versionCode) ->
-                if (versionCode != null) Database.LockAdapter.put(Pair(packageName, versionCode))
-                else Database.LockAdapter.delete(packageName)
+                if (versionCode != null) db.lockDao.insert(Lock().apply {
+                        package_name = packageName
+                        version_code = versionCode
+                    }
+                )
+                else db.lockDao.delete(packageName)
             }
         }
     }

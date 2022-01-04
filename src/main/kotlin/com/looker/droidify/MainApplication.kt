@@ -5,12 +5,13 @@ import android.app.Application
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.*
+import android.os.BatteryManager
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.looker.droidify.content.Cache
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.network.Downloader
@@ -21,27 +22,30 @@ import com.looker.droidify.utility.Utils.toInstalledItem
 import com.looker.droidify.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.net.InetSocketAddress
 import java.net.Proxy
+import kotlin.time.Duration.Companion.hours
+
 
 @Suppress("unused")
 class MainApplication : Application(), ImageLoaderFactory {
 
+    lateinit var db: DatabaseX
+
     override fun onCreate() {
         super.onCreate()
 
-        val databaseUpdated = Database.init(this)
+        db = DatabaseX.getInstance(applicationContext)
         Preferences.init(this)
         ProductPreferences.init(this)
-        RepositoryUpdater.init()
+        RepositoryUpdater.init(this)
         listenApplications()
         listenPreferences()
 
-        if (databaseUpdated) {
+        /*if (databaseUpdated) {
             forceSyncAll()
-        }
+        }*/
 
         Cache.cleanup(this)
         updateSyncJob(false)
@@ -66,9 +70,9 @@ class MainApplication : Application(), ImageLoaderFactory {
                                 null
                             }
                             if (packageInfo != null) {
-                                Database.InstalledAdapter.put(packageInfo.toInstalledItem())
+                                db.installedDao.put(packageInfo.toInstalledItem())
                             } else {
-                                Database.InstalledAdapter.delete(packageName)
+                                db.installedDao.delete(packageName)
                             }
                         }
                     }
@@ -82,7 +86,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         val installedItems =
             packageManager.getInstalledPackages(Android.PackageManager.signaturesFlag)
                 .map { it.toInstalledItem() }
-        Database.InstalledAdapter.putAll(installedItems)
+        db.installedDao.put(*installedItems.toTypedArray())
     }
 
     private fun listenPreferences() {
@@ -125,38 +129,65 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun updateSyncJob(force: Boolean) {
         val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        val reschedule = force || !jobScheduler.allPendingJobs.any { it.id == Common.JOB_ID_SYNC }
+        val reschedule = force || !jobScheduler.allPendingJobs.any { it.id == JOB_ID_SYNC }
         if (reschedule) {
             val autoSync = Preferences[Preferences.Key.AutoSync]
             when (autoSync) {
-                Preferences.AutoSync.Never -> {
-                    jobScheduler.cancel(Common.JOB_ID_SYNC)
+                is Preferences.AutoSync.Never -> {
+                    jobScheduler.cancel(JOB_ID_SYNC)
                 }
-                Preferences.AutoSync.Wifi, Preferences.AutoSync.Always -> {
-                    val period = 12 * 60 * 60 * 1000L // 12 hours
-                    val wifiOnly = autoSync == Preferences.AutoSync.Wifi
-                    jobScheduler.schedule(JobInfo
-                        .Builder(
-                            Common.JOB_ID_SYNC,
-                            ComponentName(this, SyncService.Job::class.java)
+                is Preferences.AutoSync.Wifi -> {
+                    autoSync(
+                        jobScheduler = jobScheduler,
+                        connectionType = JobInfo.NETWORK_TYPE_UNMETERED
+                    )
+                }
+                is Preferences.AutoSync.WifiBattery -> {
+                    if (isCharging(this)) {
+                        autoSync(
+                            jobScheduler = jobScheduler,
+                            connectionType = JobInfo.NETWORK_TYPE_UNMETERED
                         )
-                        .setRequiredNetworkType(if (wifiOnly) JobInfo.NETWORK_TYPE_UNMETERED else JobInfo.NETWORK_TYPE_ANY)
-                        .apply {
-                            if (Android.sdk(26)) {
-                                setRequiresBatteryNotLow(true)
-                                setRequiresStorageNotLow(true)
-                            }
-                            if (Android.sdk(24)) {
-                                setPeriodic(period, JobInfo.getMinFlexMillis())
-                            } else {
-                                setPeriodic(period)
-                            }
-                        }
-                        .build())
+                    }
                     Unit
+                }
+                is Preferences.AutoSync.Always -> {
+                    autoSync(
+                        jobScheduler = jobScheduler,
+                        connectionType = JobInfo.NETWORK_TYPE_ANY
+                    )
                 }
             }::class.java
         }
+    }
+
+    private fun autoSync(jobScheduler: JobScheduler, connectionType: Int) {
+        val period = 12.hours.inWholeMilliseconds
+        jobScheduler.schedule(
+            JobInfo
+                .Builder(
+                    JOB_ID_SYNC,
+                    ComponentName(this, SyncService.Job::class.java)
+                )
+                .setRequiredNetworkType(connectionType)
+                .apply {
+                    if (Android.sdk(26)) {
+                        setRequiresBatteryNotLow(true)
+                        setRequiresStorageNotLow(true)
+                    }
+                    if (Android.sdk(24)) setPeriodic(period, JobInfo.getMinFlexMillis())
+                    else setPeriodic(period)
+                }
+                .build()
+        )
+    }
+
+    private fun isCharging(context: Context): Boolean {
+        val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val plugged = intent!!.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+        return plugged == BatteryManager.BATTERY_PLUGGED_AC
+                || plugged == BatteryManager.BATTERY_PLUGGED_USB
+                || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
     }
 
     private fun updateProxy() {
@@ -176,14 +207,14 @@ class MainApplication : Application(), ImageLoaderFactory {
                 }
             }
         }
-        val proxy = socketAddress?.let { Proxy(type, socketAddress) }
+        val proxy = socketAddress?.let { Proxy(type, it) }
         Downloader.proxy = proxy
     }
 
     private fun forceSyncAll() {
-        Database.RepositoryAdapter.getAll(null).forEach {
+        db.repositoryDao.all.mapNotNull { it.trueData }.forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                Database.RepositoryAdapter.put(it.copy(lastModified = "", entityTag = ""))
+                db.repositoryDao.put(it.copy(lastModified = "", entityTag = ""))
             }
         }
         Connection(SyncService::class.java, onBind = { connection, binder ->

@@ -178,4 +178,7 @@
     <string name="explore">Исследуйте</string>
     <string name="update_all">Обновить все</string>
     <string name="installed_applications">Установленные приложения</string>
+    <string name="latest">Последние</string>
+    <string name="sort_filter">Сортировать и фильтровать</string>
+    <string name="only_on_wifi_and_battery">Только при Wi-Fi и подключении к сети</string>
 </resources>

@@ -19,7 +19,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Database
 import com.looker.droidify.databinding.TabsToolbarBinding
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.service.Connection
@@ -235,9 +234,9 @@ class TabsFragment : ScreenFragment() {
         }
 
         categoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products))
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.CategoryAdapter.getAll(it) } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.categoryDao.allNames } }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 setSectionsAndUpdate(
@@ -246,9 +245,9 @@ class TabsFragment : ScreenFragment() {
                 )
             }
         repositoriesDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.RepositoryAdapter.getAll(it) } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } } }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 setSectionsAndUpdate(null, it.asSequence().filter { it.enabled }

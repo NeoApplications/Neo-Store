@@ -23,23 +23,38 @@
             android:elevation="8dp"
             android:src="@drawable/ic_application_default"
             android:tint="?colorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/label"
+            app:layout_constraintBottom_toTopOf="@id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label"
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_marginBottom="2dp"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintBottom_toTopOf="@id/version"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/version"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/icon" />
+            app:layout_constraintTop_toBottomOf="@id/name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

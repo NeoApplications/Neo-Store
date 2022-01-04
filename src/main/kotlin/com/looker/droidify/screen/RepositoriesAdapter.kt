@@ -9,11 +9,11 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.utility.extension.resources.clear
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.inflate
+import com.looker.droidify.utility.getRepository
 import com.looker.droidify.widget.CursorRecyclerAdapter
 
 class RepositoriesAdapter(
@@ -45,7 +45,7 @@ class RepositoriesAdapter(
     }
 
     private fun getRepository(position: Int): Repository {
-        return Database.RepositoryAdapter.transform(moveTo(position))
+        return moveTo(position).getRepository()
     }
 
     override fun onCreateViewHolder(

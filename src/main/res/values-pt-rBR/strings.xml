@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_failed">A ação falhou</string>
+    <string name="action_failed">Ação falhou</string>
     <string name="add_repository">Adicionar repositório</string>
     <string name="address">Endereço</string>
     <string name="all_applications">Todos os aplicativos</string>
-    <string name="all_applications_up_to_date">Todos os seus aplicativos estão atualizados</string>
+    <string name="all_applications_up_to_date">Todos os teus aplicativos estão atualizados</string>
     <string name="already_exists">Já existe</string>
     <string name="always">Sempre</string>
-    <string name="amoled">Escuro</string>
-    <string name="anti_features">Características indesejadas</string>
+    <string name="amoled">Preto</string>
+    <string name="anti_features">Anti-funções</string>
     <string name="application">Aplicativo</string>
     <string name="application_not_found">Não foi possível encontrar esse aplicativo</string>
     <string name="author_email">E-mail do autor</string>
@@ -180,4 +180,5 @@
     <string name="latest">Mais recente</string>
     <string name="explore">Explorar</string>
     <string name="installed_applications">Aplicativos instalados</string>
+    <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e Plugado</string>
 </resources>

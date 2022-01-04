@@ -44,12 +44,12 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginVertical="14dp"
                 android:text="@string/new_applications"
-                app:layout_constraintBottom_toTopOf="@id/updatedRecycler"
+                app:layout_constraintBottom_toTopOf="@id/newRecycler"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/updatedRecycler"
+                android:id="@+id/newRecycler"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
@@ -112,7 +112,7 @@
             app:layout_constraintTop_toBottomOf="@id/modeBar">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/updatedRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipChildren="false"

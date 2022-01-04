@@ -3,7 +3,7 @@ package com.looker.droidify.index
 import android.content.Context
 import android.net.Uri
 import com.looker.droidify.content.Cache
-import com.looker.droidify.database.Database
+import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Release
 import com.looker.droidify.entity.Repository
@@ -59,29 +59,28 @@ object RepositoryUpdater {
 
     private val updaterLock = Any()
     private val cleanupLock = Any()
+    lateinit var db: DatabaseX
 
-    fun init() {
-
+    fun init(context: Context) {
+        db = DatabaseX.getInstance(context)
         var lastDisabled = setOf<Long>()
         Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Repositories))
+            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {
-                    Database.RepositoryAdapter.getAllDisabledDeleted(
-                        it
-                    )
+                    db.repositoryDao.allDisabledDeleted
                 }
             }
             .forEach { it ->
-                val newDisabled = it.asSequence().filter { !it.second }.map { it.first }.toSet()
+                val newDisabled = it.asSequence().filter { !it.deleted }.map { it.id }.toSet()
                 val disabled = newDisabled - lastDisabled
                 lastDisabled = newDisabled
-                val deleted = it.asSequence().filter { it.second }.map { it.first }.toSet()
+                val deleted = it.asSequence().filter { it.deleted }.map { it.id }.toSet()
                 if (disabled.isNotEmpty() || deleted.isNotEmpty()) {
                     val pairs = (disabled.asSequence().map { Pair(it, false) } +
                             deleted.asSequence().map { Pair(it, true) }).toSet()
-                    synchronized(cleanupLock) { Database.RepositoryAdapter.cleanup(pairs) }
+                    synchronized(cleanupLock) { db.cleanUp(pairs) }
                 }
             }
     }
@@ -193,12 +192,14 @@ object RepositoryUpdater {
         file: File, lastModified: String, entityTag: String, callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         var rollback = true
+        val db = DatabaseX.getInstance(context)
         return synchronized(updaterLock) {
             try {
                 val jarFile = JarFile(file, true)
                 val indexEntry = jarFile.getEntry(indexType.contentName) as JarEntry
                 val total = indexEntry.size
-                Database.UpdaterAdapter.createTemporaryTable()
+                db.productTempDao.emptyTable()
+                db.categoryTempDao.emptyTable()
                 val features = context.packageManager.systemAvailableFeatures
                     .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -231,7 +232,7 @@ object RepositoryUpdater {
                                     }
                                     products += transformProduct(product, features, unstable)
                                     if (products.size >= 50) {
-                                        Database.UpdaterAdapter.putTemporary(products)
+                                        db.productTempDao.putTemporary(products)
                                         products.clear()
                                     }
                                 }
@@ -249,7 +250,7 @@ object RepositoryUpdater {
                             throw InterruptedException()
                         }
                         if (products.isNotEmpty()) {
-                            Database.UpdaterAdapter.putTemporary(products)
+                            db.productTempDao.putTemporary(products)
                             products.clear()
                         }
                         Pair(changedRepository, certificateFromIndex)
@@ -334,7 +335,7 @@ object RepositoryUpdater {
                                             progress.toLong(),
                                             totalCount.toLong()
                                         )
-                                        Database.UpdaterAdapter.putTemporary(products
+                                        db.productTempDao.putTemporary(products
                                             .map { transformProduct(it, features, unstable) })
                                     }
                                 }
@@ -407,7 +408,7 @@ object RepositoryUpdater {
                     }
                     callback(Stage.COMMIT, 0, null)
                     synchronized(cleanupLock) {
-                        Database.UpdaterAdapter.finishTemporary(
+                        db.finishTemporary(
                             commitRepository,
                             true
                         )
@@ -423,7 +424,7 @@ object RepositoryUpdater {
             } finally {
                 file.delete()
                 if (rollback) {
-                    Database.UpdaterAdapter.finishTemporary(repository, false)
+                    db.finishTemporary(repository, false)
                 }
             }
         }

@@ -17,7 +17,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
-import com.looker.droidify.database.Database
 import com.looker.droidify.databinding.EditRepositoryBinding
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.network.Downloader
@@ -154,7 +153,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         if (savedInstanceState == null) {
-            val repository = repositoryId?.let(Database.RepositoryAdapter::get)
+            val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.trueData }
             if (repository == null) {
                 val clipboardManager =
                     requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -233,7 +232,7 @@ class EditRepositoryFragment() : ScreenFragment() {
         }
 
         lifecycleScope.launch {
-            val list = Database.RepositoryAdapter.getAll(null)
+            val list = screenActivity.db.repositoryDao.all.mapNotNull { it.trueData }
             takenAddresses = list.asSequence().filter { it.id != repositoryId }
                 .flatMap { (it.mirrors + it.address).asSequence() }
                 .map { it.withoutKnownPath }.toSet()
@@ -449,10 +448,10 @@ class EditRepositoryFragment() : ScreenFragment() {
                 MessageDialog(MessageDialog.Message.CantEditSyncing).show(childFragmentManager)
                 invalidateState()
             } else {
-                val repository = repositoryId?.let(Database.RepositoryAdapter::get)
+                val repository = repositoryId?.let { screenActivity.db.repositoryDao.get(it)?.trueData }
                     ?.edit(address, fingerprint, authentication)
                     ?: Repository.newRepository(address, fingerprint, authentication)
-                val changedRepository = Database.RepositoryAdapter.put(repository)
+                val changedRepository = screenActivity.db.repositoryDao.put(repository)
                 if (repositoryId == null && changedRepository.enabled) {
                     binder.sync(changedRepository)
                 }

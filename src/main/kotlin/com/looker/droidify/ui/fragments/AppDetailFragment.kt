@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Database
 import com.looker.droidify.entity.*
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
@@ -32,15 +31,17 @@ import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.*
 import com.looker.droidify.utility.extension.text.trimAfter
+import com.looker.droidify.utility.getInstalledItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     companion object {
@@ -129,12 +130,16 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
 
         var first = true
         productDisposable = Observable.just(Unit)
-            .concatWith(Database.observable(Database.Subject.Products))
+            //.concatWith(Database.observable(Database.Subject.Products)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { Database.ProductAdapter.get(packageName, it) } }
+            .flatMapSingle {
+                RxUtils.querySingle {
+                    screenActivity.db.productDao.get(packageName).mapNotNull { it?.data }
+                }
+            }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Database.RepositoryAdapter.getAll(it) }
+                    .querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } }
                     .map { it ->
                         it.asSequence().map { Pair(it.id, it) }.toMap()
                             .let {
@@ -151,7 +156,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Nullable(Database.InstalledAdapter.get(packageName, it)) }
+                    .querySingle { Nullable(screenActivity.db.installedDao.get(packageName).getInstalledItem()) }
                     .map { Pair(products, it) }
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -452,15 +457,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                 } else Unit
             }
             AppDetailAdapter.Action.SHARE -> {
-                val sendIntent: Intent = Intent().apply {
-                    this.action = Intent.ACTION_SEND
-                    putExtra(
-                        Intent.EXTRA_TEXT,
-                        "https://www.f-droid.org/packages/${products[0].first.packageName}/"
-                    )
-                    type = "text/plain"
-                }
-                startActivity(Intent.createChooser(sendIntent, null))
+                shareIntent(packageName, products[0].first.name)
             }
         }::class
     }
@@ -476,6 +473,21 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun shareIntent(packageName: String, appName: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        val extraText = if (Android.sdk(24)) {
+            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+
+
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+
+        startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
     }
 
     override fun onPreferenceChanged(preference: ProductPreference) {
