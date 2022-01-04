@@ -373,40 +373,45 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             if (throwable != null && task.manual) {
                                 showNotificationError(repository, throwable as Exception)
                             }
-                            handleNextTask(BuildConfig.DEBUG || result == true || hasUpdates)
+                            handleNextTask(result == true || hasUpdates)
                         }
                     currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
                 } else {
                     handleNextTask(hasUpdates)
                 }
             } else if (started != Started.NO) {
-                if (hasUpdates) {
-                    val disposable = RxUtils
-                        .querySingle { it ->
-                            Database.ProductAdapter
-                                .query(
-                                    installed = true,
-                                    updates = true,
-                                    searchQuery = "",
-                                    section = ProductItem.Section.All,
-                                    order = ProductItem.Order.NAME,
-                                    signal = it
-                                )
-                                .use {
-                                    it.asSequence().map(Database.ProductAdapter::transformItem)
-                                        .toList()
-                                }
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { result, throwable ->
-                            throwable?.printStackTrace()
-                            currentTask = null
-                            handleNextTask(false)
-                            if (result.isNotEmpty()) {
-                                runAutoUpdate(result)
+                val disposable = RxUtils
+                    .querySingle { it ->
+                        Database.ProductAdapter
+                            .query(
+                                installed = true,
+                                updates = true,
+                                searchQuery = "",
+                                section = ProductItem.Section.All,
+                                order = ProductItem.Order.NAME,
+                                signal = it
+                            )
+                            .use {
+                                it.asSequence().map(Database.ProductAdapter::transformItem)
+                                    .toList()
                             }
+                    }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result, throwable ->
+                        throwable?.printStackTrace()
+                        currentTask = null
+                        handleNextTask(false)
+                        if (result.isNotEmpty()) {
+                            if (Preferences[Preferences.Key.AutoSyncInstall])
+                                runAutoUpdate(result)
+                            if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
+                                updateNotificationBlockerFragment?.get()?.isAdded == true
+                            )
+                                displayUpdatesNotification(result)
                         }
+                    }
+                if (hasUpdates) {
                     currentTask = CurrentTask(null, disposable, true, State.Finishing)
                 } else {
                     scope.launch { mutableFinishState.emit(Unit) }
@@ -461,8 +466,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         }
                     }
                 }
-        } else {
-            displayUpdatesNotification(productItems)
         }
     }
 
@@ -472,59 +475,57 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @param productItems list of apps pending updates
      */
     private fun displayUpdatesNotification(productItems: List<ProductItem>) {
-        if (updateNotificationBlockerFragment?.get()?.isAdded == true && Preferences[Preferences.Key.UpdateNotify]) {
-            val maxUpdates = 5
-            fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
-            notificationManager.notify(
-                NOTIFICATION_ID_UPDATES, NotificationCompat
-                    .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
-                    .setSmallIcon(R.drawable.ic_new_releases)
-                    .setContentTitle(getString(R.string.new_updates_available))
-                    .setContentText(
-                        resources.getQuantityString(
-                            R.plurals.new_updates_DESC_FORMAT,
-                            productItems.size, productItems.size
+        val maxUpdates = 5
+        fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
+        notificationManager.notify(
+            NOTIFICATION_ID_UPDATES, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
+                .setSmallIcon(R.drawable.ic_new_releases)
+                .setContentTitle(getString(R.string.new_updates_available))
+                .setContentText(
+                    resources.getQuantityString(
+                        R.plurals.new_updates_DESC_FORMAT,
+                        productItems.size, productItems.size
+                    )
+                )
+                .setColor(
+                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
+                )
+                .setContentIntent(
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        Intent(this, MainActivity::class.java)
+                            .setAction(MainActivity.ACTION_UPDATES),
+                        if (Android.sdk(23))
+                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                        else
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                )
+                .setStyle(NotificationCompat.InboxStyle().applyHack {
+                    for (productItem in productItems.take(maxUpdates)) {
+                        val builder = SpannableStringBuilder(productItem.name)
+                        builder.setSpan(
+                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
+                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
-                    )
-                    .setColor(
-                        ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                            .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-                    )
-                    .setContentIntent(
-                        PendingIntent.getActivity(
-                            this,
-                            0,
-                            Intent(this, MainActivity::class.java)
-                                .setAction(MainActivity.ACTION_UPDATES),
-                            if (Android.sdk(23))
-                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                            else
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        )
-                    )
-                    .setStyle(NotificationCompat.InboxStyle().applyHack {
-                        for (productItem in productItems.take(maxUpdates)) {
-                            val builder = SpannableStringBuilder(productItem.name)
-                            builder.setSpan(
-                                ForegroundColorSpan(Color.BLACK), 0, builder.length,
-                                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
-                            builder.append(' ').append(productItem.version)
-                            addLine(builder)
+                        builder.append(' ').append(productItem.version)
+                        addLine(builder)
+                    }
+                    if (productItems.size > maxUpdates) {
+                        val summary =
+                            getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
+                        if (Android.sdk(24)) {
+                            addLine(summary)
+                        } else {
+                            setSummaryText(summary)
                         }
-                        if (productItems.size > maxUpdates) {
-                            val summary =
-                                getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                            if (Android.sdk(24)) {
-                                addLine(summary)
-                            } else {
-                                setSummaryText(summary)
-                            }
-                        }
-                    })
-                    .build()
-            )
-        }
+                    }
+                })
+                .build()
+        )
     }
 
     class Job : JobService() {
