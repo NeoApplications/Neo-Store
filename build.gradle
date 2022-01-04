@@ -45,7 +45,7 @@ android {
     compileSdk 31
 
     def name = "0.9.0"
-    def code = 306
+    def code = 308
 
     defaultConfig {
         minSdkVersion 26
@@ -64,6 +64,7 @@ android {
         variant.outputs.all {
             outputFileName = "OmegaLauncher_v${variant.versionName}_build_${variant.versionCode}.apk"
         }
+        resValue("string", "launcher_component", "${applicationId}/com.saggitt.omega.OmegaLauncher")
     }
     buildTypes {
         debug {

@@ -646,17 +646,10 @@ public class DeviceProfile {
         }
 
         // All apps
-        if (numShownAllAppsColumns != inv.numColumns) {
-            allAppsIconSizePx = pxFromDp(inv.allAppsIconSize, mMetrics);
-            allAppsIconTextSizePx = pxFromSp(inv.allAppsIconTextSize, mMetrics);
-            allAppsIconDrawablePaddingPx = iconDrawablePaddingOriginalPx;
-            autoResizeAllAppsCells();
-        } else {
-            allAppsIconSizePx = iconSizePx;
-            allAppsIconTextSizePx = iconTextSizePx;
-            allAppsIconDrawablePaddingPx = iconDrawablePaddingPx;
-            allAppsCellHeightPx = getCellSize().y;
-        }
+        allAppsIconSizePx = pxFromDp(inv.allAppsIconSize, mMetrics);
+        allAppsIconTextSizePx = pxFromSp(inv.allAppsIconTextSize, mMetrics);
+        allAppsIconDrawablePaddingPx = iconDrawablePaddingOriginalPx;
+        autoResizeAllAppsCells();
         allAppsCellWidthPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx;
 
         if (isVerticalLayout) {
@@ -686,7 +679,7 @@ public class DeviceProfile {
 
         //TODO enable grid GridCustomizationsProvider
         //iconSizePx *= prefs.getDesktopIconScale();
-        allAppsIconSizePx *= prefs.getAllAppsIconScale();
+        //allAppsIconSizePx *= prefs.getAllAppsIconScale();
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {
