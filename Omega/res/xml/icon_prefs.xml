@@ -25,12 +25,13 @@
         android:title="@string/title_colored_backgrounds"
         app:iconSpaceReserved="false" />
 
+    <!--
     <SwitchPreference
         android:dependency="pref_colored_background"
         android:key="pref_white_only_treatment"
         android:summary="@string/summary_white_only_treatment"
         android:title="@string/title_white_only_treatment"
-        app:iconSpaceReserved="false" />
+        app:iconSpaceReserved="false" /> -->
 
     <SwitchPreference
         android:key="pref_adaptive_icon_pack"
