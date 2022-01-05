@@ -49,7 +49,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/icon_preferences"
-            android:name="com.saggitt.omega.preferences.views.IconShapeFragment$IconPreferencesFragment"
+            android:name="com.saggitt.omega.preferences.views.PrefIconShapeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/shape_view"

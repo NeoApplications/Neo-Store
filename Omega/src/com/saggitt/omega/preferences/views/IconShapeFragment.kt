@@ -25,7 +25,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceFragmentCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
@@ -116,12 +115,6 @@ class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChange
         ) {
             prefs.iconShape = IconShape.fromString(item.item.shapeName)!!
             this@IconShapeFragment.recreate()
-        }
-    }
-
-    inner class IconPreferencesFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.icon_shape_prefs, rootKey)
         }
     }
 }
