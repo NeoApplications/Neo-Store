@@ -38,12 +38,11 @@
         app:cpv_showColorShades="false"
         app:iconSpaceReserved="false" />
 
-    <!--
-    <Preference
-        android:fragment="com.saggitt.omega.iconpack.IconPackFragment"
+    <com.saggitt.omega.preferences.custom.IconPackIconPreference
+        android:fragment="com.saggitt.omega.preferences.views.IconPackFragment"
         android:key="pref_icon_packs"
         android:title="@string/title_theme_icon_packs"
-        app:iconSpaceReserved="false" /> -->
+        app:iconSpaceReserved="false" />
 
     <Preference
         android:key="pref_icon_shape"
