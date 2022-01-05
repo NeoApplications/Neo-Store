@@ -177,4 +177,7 @@
     <string name="new_applications">Neue Anwendungen</string>
     <string name="installed_applications">Installierte Anwendungen</string>
     <string name="update_all">Alle aktualisieren</string>
+    <string name="only_on_wifi_and_battery">Nur mit WLAN und Stromversorgung</string>
+    <string name="install_after_sync">Aktualisierungen automatisch installieren</string>
+    <string name="install_after_sync_summary">Automatische Installation von Anwendungsaktualisierungen nach der Synchronisierung von Repositories</string>
 </resources>
