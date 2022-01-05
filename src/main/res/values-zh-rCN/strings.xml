@@ -180,4 +180,6 @@
     <string name="new_applications">新程序</string>
     <string name="installed_applications">已安装的程序</string>
     <string name="only_on_wifi_and_battery">仅在 Wi-Fi 和充电情况下</string>
+    <string name="install_after_sync">自动安装更新</string>
+    <string name="install_after_sync_summary">同步仓库后自动安装应用更新</string>
 </resources>
