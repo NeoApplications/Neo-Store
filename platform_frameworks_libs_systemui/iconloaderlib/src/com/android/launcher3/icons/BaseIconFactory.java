@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 
 import com.android.launcher3.icons.BitmapInfo.Extender;
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
-import com.saggitt.omega.icons.ExtendedBitmapDrawable;
 import com.saggitt.omega.icons.IconPreferencesKt;
 
 /**
@@ -214,6 +213,12 @@ public class BaseIconFactory implements AutoCloseable {
      */
     public BitmapInfo createBadgedIconBitmap(@NonNull Drawable icon, UserHandle user,
                                              boolean shrinkNonAdaptiveIcons, boolean isInstantApp, float[] scale) {
+        if (shrinkNonAdaptiveIcons) {
+            //shrinkNonAdaptiveIcons = IconPreferencesKt.shouldWrapAdaptive(mContext);
+            //boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
+            //shrinkNonAdaptiveIcons = !isFromIconPack && !IconPreferencesKt.shouldWrapAdaptive(mContext);
+        }
+
         if (scale == null) {
             scale = new float[1];
         }
@@ -291,13 +296,8 @@ public class BaseIconFactory implements AutoCloseable {
 
     private Drawable normalizeAndWrapToAdaptiveIcon(@NonNull Drawable icon,
                                                     boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
-        if (shrinkNonAdaptiveIcons) {
-            boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
-            shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
-        }
         float scale;
 
-        //int wrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
         if(IconPreferencesKt.coloredBackground(mContext)){
             mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
         }

@@ -16,7 +16,7 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.saggitt.omega.icons.PreviewFrameView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.saggitt.omega.icons.CustomizeIconsPreview xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/icon_preview"
     android:layout_width="match_parent"
@@ -123,4 +123,4 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
-</com.saggitt.omega.icons.PreviewFrameView>
+</com.saggitt.omega.icons.CustomizeIconsPreview>

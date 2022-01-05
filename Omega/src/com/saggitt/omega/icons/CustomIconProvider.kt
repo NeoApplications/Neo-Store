@@ -111,7 +111,7 @@ class CustomIconProvider @JvmOverloads constructor(
 
         private fun recreateCalendarAndClockChangeReceiver() {
             val iconPack =
-                IconPackProvider.INSTANCE.get(context).getIconPack(iconPackPref.onGetValue())
+                IconPackProvider.INSTANCE.get(context).getIconPack(iconPackPref)
             calendarAndClockChangeReceiver = if (iconPack != null) {
                 CalendarAndClockChangeReceiver(context, handler, iconPack, callback)
             } else {
