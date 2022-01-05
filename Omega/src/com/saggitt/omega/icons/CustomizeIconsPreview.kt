@@ -32,7 +32,7 @@ import com.saggitt.omega.icons.IconShape.Companion.fromString
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.wallpaper.WallpaperPreviewProvider
 
-class PreviewFrameView @JvmOverloads constructor(
+class CustomizeIconsPreview @JvmOverloads constructor(
         context: Context?,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
