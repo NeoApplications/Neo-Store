@@ -23,6 +23,7 @@
         android:key="pref_colored_background"
         android:summary="@string/summary_colored_backgrounds"
         android:title="@string/title_colored_backgrounds"
+        android:defaultValue="false"
         app:iconSpaceReserved="false" />
 
     <!--
@@ -36,5 +37,6 @@
     <SwitchPreference
         android:key="pref_adaptive_icon_pack"
         android:title="@string/title_adaptify_pack"
+        android:defaultValue="false"
         app:iconSpaceReserved="false" />
 </PreferenceScreen>

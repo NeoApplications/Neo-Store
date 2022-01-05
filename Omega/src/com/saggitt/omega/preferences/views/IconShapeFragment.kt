@@ -121,7 +121,7 @@ class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChange
 
     inner class IconPreferencesFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.icon_prefs, rootKey)
+            setPreferencesFromResource(R.xml.icon_shape_prefs, rootKey)
         }
     }
 }
