@@ -24,29 +24,37 @@ import androidx.preference.Preference
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.iconpack.IconPackProvider
+import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.util.omegaPrefs
 
-class IconPackIconPreference(context: Context, attrs: AttributeSet? = null) : Preference(context, attrs) {
+class IconPackIconPreference(context: Context, attrs: AttributeSet? = null) : Preference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
     private val prefs = Utilities.getOmegaPrefs(context)
 
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
+    private val current
+        get() = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
+                ?: packs[0]
 
     init {
         layoutResource = R.layout.preference_preview_icon
-        updatePreview()
     }
 
-    private fun updatePreview() {
-        try {
-            for (pack in packs) {
-                if (pack.packageName == prefs.iconPackPackage) {
-                    summary = pack.name
-                    icon = pack.icon
-                } else {
-                    summary = context.getString(R.string.icon_pack_default)
-                    icon = context.getDrawable(R.mipmap.ic_launcher)
-                }
-            }
-        } catch (ignored: Exception) {
-        }
+    override fun onAttached() {
+        super.onAttached()
+        context.omegaPrefs.addOnPreferenceChangeListener("pref_iconPackPackage", this)
+    }
+
+    override fun onDetached() {
+        super.onDetached()
+        context.omegaPrefs.removeOnPreferenceChangeListener("pref_iconPackPackage", this)
+    }
+
+    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
+        updateSummaryAndIcon()
+    }
+
+    private fun updateSummaryAndIcon() {
+        summary = current.name
+        icon = current.icon
     }
 }
