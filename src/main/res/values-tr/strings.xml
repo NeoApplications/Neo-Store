@@ -16,7 +16,7 @@
     <string name="available">Mevcut</string>
     <string name="bug_tracker">Hata izleme</string>
     <string name="cancel">İptal et</string>
-    <string name="cant_edit_sync_DESC">Depo şuan senkronize edildiği için düzenlenemiyor.</string>
+    <string name="cant_edit_sync_DESC">Depo şu anda eşzamanlandığı için düzenlenemiyor.</string>
     <string name="changelog">Değişim Günlüğü</string>
     <string name="changes">Değişiklikler</string>
     <string name="checking_repository">Depo denetleniyor…</string>
@@ -25,7 +25,7 @@
     <string name="connecting">Bağlanıyor…</string>
     <string name="contains_non_free_media">Özgür olmayan içerik içerir</string>
     <string name="could_not_download_FORMAT">%s indirilemedi</string>
-    <string name="could_not_sync_FORMAT">%s senkronize edilemedi</string>
+    <string name="could_not_sync_FORMAT">%s eşzamanlanamadı</string>
     <string name="could_not_validate_FORMAT">%s doğrulanamadı</string>
     <string name="credits">Katkı Sağlayanlar</string>
     <string name="dark">Koyu</string>
@@ -139,10 +139,10 @@
     <string name="source_code">Kaynak kodu</string>
     <string name="source_code_no_longer_available">Kaynak kodu artık mevcut değil</string>
     <string name="suggested">Önerilen</string>
-    <string name="sync_repositories">Depoları senkronize et</string>
-    <string name="sync_repositories_automatically">Depoları otomatik senkronize et</string>
-    <string name="syncing">Senkronize ediliyor</string>
-    <string name="syncing_FORMAT">%s senkronize ediliyor…</string>
+    <string name="sync_repositories">Depoları eşzamanla</string>
+    <string name="sync_repositories_automatically">Depoları otomatik olarak eşzamanla</string>
+    <string name="syncing">Eşzamanlanıyor</string>
+    <string name="syncing_FORMAT">%s eşzamanlanıyor…</string>
     <string name="system">Sistem</string>
     <string name="tap_to_install_DESC">Kurmak için dokunun.</string>
     <string name="target">Hedef</string>
@@ -179,4 +179,6 @@
     <string name="update_all">Tümünü güncelle</string>
     <string name="explore">Keşfet</string>
     <string name="only_on_wifi_and_battery">Yalnızca Wi-Fi\'de ve Prize Takılı</string>
+    <string name="install_after_sync">Güncellemeleri otomatik olarak kur</string>
+    <string name="install_after_sync_summary">Depoları eşzamanladıktan sonra uygulama güncellemelerini otomatik olarak kur</string>
 </resources>
