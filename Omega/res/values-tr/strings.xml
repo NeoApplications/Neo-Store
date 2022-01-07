@@ -352,7 +352,7 @@
     <string name="open_image_picker">Resim seçiciyi aç</string>
     <string name="icon_pack_external_picker">Harici seçiciyi aç</string>
     <string name="icon_shape_system_default">Sistem</string>
-    <string name="get_more_icon_packs">Daha fazlasını al</string>
+    <string name="get_more_icon_packs">Yeni simge paketi indir</string>
     <string name="title_default">Varsayılan</string>
     <string name="theme_use_dark_text">Koyu metin kullan</string>
     <string name="theme_use_black">Saf siyah kullan</string>
