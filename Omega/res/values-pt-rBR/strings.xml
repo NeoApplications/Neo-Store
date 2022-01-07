@@ -105,7 +105,7 @@
     <string name="title__general_smartspace">Widget da Tela Inicial</string>
     <string name="title__general_search">Pesquisa e Pastas</string>
     <string name="title__general_theme">Tema</string>
-    <string name="title__general_dock">Doca</string>
+    <string name="title__general_dock">Dock</string>
     <string name="title__general_desktop">Área de Trabalho</string>
     <string name="title__general_about">Sobre</string>
     <string name="resuable_text_alarm">Alarme</string>
@@ -210,7 +210,7 @@
     <string name="dt2s_admin_warning">O toque duplo pra adormecer será destivado.</string>
     <string name="dt2s_admin_hint">Para adormecer com Toque duplo, garanta a permissão de Administrador.</string>
     <string name="omega_actions">Ações</string>
-    <string name="gesture_dock_swipe_up">Deslizar pra cima a partir da \"Dock\"</string>
+    <string name="gesture_dock_swipe_up">Deslizar pra cima a partir da dock</string>
     <string name="gesture_swipe_up">Deslizar pra cima</string>
     <string name="gesture_long_press">Toque e segure</string>
     <string name="gesture_double_tap">Toque duplo</string>
@@ -230,7 +230,7 @@
     <string name="action_none">Fazer nada</string>
     <string name="pref_category__gestures">Gestos</string>
     <string name="pref_category__notifications">Notificações</string>
-    <string name="title__gesture_swipe_down">Deslize pra baixo</string>
+    <string name="title__gesture_swipe_down">Deslizar pra baixo</string>
     <string name="title__notification_background">Cor de fundo da Notificação</string>
     <string name="title__folder_badge_count">Mostrar Pontos de Notificação na Pasta</string>
     <string name="units_romer">ºRø</string>
@@ -250,7 +250,7 @@
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>
-    <string name="folder_cover_mode_desc">Toque para abrir o primeiro aplicativo, deslize para cima para ver todos.</string>
+    <string name="folder_cover_mode_desc">Toque para abrir o primeiro aplicativo. Deslize para cima para ver todos.</string>
     <string name="folder_cover_mode">Usar modo de cobertura</string>
     <string name="hide_app">Ocultar atalho</string>
     <string name="feed_widget">Widgets</string>
@@ -382,7 +382,7 @@
     <string name="folder_background">Cor de fundo da pasta</string>
     <string name="folder_custom_background">Usar fundo de pasta personalizado</string>
     <string name="fonts_change_global_font">Mudar</string>
-    <string name="trust_apps_manager_name">Aplicativos Ocultos e Protegidos</string>
+    <string name="trust_apps_manager_name">Aplicativos ocultos e protegidos</string>
     <string name="fonts_global_font">Fonte</string>
     <string name="disable_protected_apps_message">Desativar aplicativos protegidos exigem autenticação</string>
     <string name="disable_protected_apps">Desativar aplicativos protegidos</string>
@@ -418,4 +418,7 @@
     <string name="theme_auto_night_mode_black">Sistema (Preto)</string>
     <string name="summary_colored_backgrounds">Para os planos de fundo de ícones adaptáveis.</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Seguir a luz do dia (Preto)</string>
+    <string name="summary_force_shapeless">Tentar usar ícones legados para todos os apps.</string>
+    <string name="summary_legacy_treatment">Criar ícones adaptáveis para todos os atalhos.</string>
+    <string name="summary_white_only_treatment">Colorir os fundos de todos os ícones adaptáveis.</string>
 </resources>
