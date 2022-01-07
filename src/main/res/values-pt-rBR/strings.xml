@@ -181,4 +181,6 @@
     <string name="explore">Explorar</string>
     <string name="installed_applications">Aplicativos instalados</string>
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e Plugado</string>
+    <string name="install_after_sync">Instalar atualizações automaticamente</string>
+    <string name="install_after_sync_summary">Instalar automaticamente as atualizações dos aplicativos após sincronizar os repositórios</string>
 </resources>
