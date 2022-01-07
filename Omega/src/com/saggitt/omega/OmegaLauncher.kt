@@ -60,7 +60,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private var paused = false
     private var sRestart = false
     private val prefCallback = OmegaPreferencesChangeCallback(this)
-    val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
+    private val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
@@ -83,10 +83,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
         ) {
             Utilities.requestStoragePermission(this)
         }
-        prefs.registerCallback(prefCallback)
 
         super.onCreate(savedInstanceState)
 
+        prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
 
         /*CREATE DB TO HANDLE APPS COUNT*/
@@ -134,8 +134,8 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     override fun onDestroy() {
         super.onDestroy()
 
-        prefs.unregisterCallback()
         prefs.removeOnPreferenceChangeListener(hideStatusBarKey, this)
+        prefs.unregisterCallback()
         if (sRestart) {
             sRestart = false
             OmegaPreferences.destroyInstance()

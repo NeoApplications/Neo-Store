@@ -21,18 +21,23 @@ package com.saggitt.omega.util
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.content.res.Resources
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.CancellationSignal
+import android.os.Process
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.android.launcher3.util.PackageManagerHelper
+import com.saggitt.omega.allapps.CustomAppFilter
 import java.util.*
 
 class Config(val context: Context) {
@@ -79,7 +84,6 @@ class Config(val context: Context) {
             Intent("com.fede.launcher.THEME_ICONPACK"),
             Intent("com.gau.go.launcherex.theme"),
             Intent("com.dlto.atom.launcher.THEME"),
-            Intent("net.oneplus.launcher.icons.ACTION_PICK_ICON")
         )
 
         /**
@@ -144,13 +148,65 @@ class Config(val context: Context) {
         fun isAppProtected(context: Context, componentKey: ComponentKey): Boolean {
             var result = false
             val protectedApps = ArrayList(
-                Utilities.getOmegaPrefs(context).protectedAppsSet
-                    .map { Utilities.makeComponentKey(context, it) })
+                    Utilities.getOmegaPrefs(context).protectedAppsSet
+                            .map { Utilities.makeComponentKey(context, it) })
 
             if (protectedApps.contains(componentKey)) {
                 result = true
             }
             return result
+        }
+
+        val PLACE_HOLDERS = arrayOf(
+                "com.google.android.apps.photos",
+                "com.google.android.apps.maps",
+                "com.google.android.gm",
+                "com.instagram.android",
+                "com.google.android.youtube",
+                "com.twitter.android",
+                "com.whatsapp",
+                "com.facebook.katana",
+                "com.google.android.calendar",
+                "com.facebook.orca",
+                "com.yodo1.crossyroad",
+                "com.spotify.music",
+                "com.android.chrome",
+                "com.skype.raider",
+                "com.snapchat.android",
+                "com.viber.voip",
+                "com.google.android.deskclock",
+                "com.android.phone",
+                "com.google.android.music",
+                "com.google.android.apps.genie.geniewidget",
+                "com.netflix.mediaclient",
+                "bbc.iplayer.android",
+                "com.android.settings",
+                "com.google.android.videos",
+                "com.amazon.mShop.android.shopping",
+                "com.microsoft.office.word",
+                "com.google.android.apps.docs",
+                "com.google.android.keep",
+                "com.google.android.apps.plus",
+                "com.google.android.talk"
+        )
+
+        fun getPreviewAppInfos(context: Context): List<AppInfo> {
+            val launcherApps = context.getSystemService(LauncherApps::class.java)
+            val user = Process.myUserHandle()
+            val appFilter = CustomAppFilter(context)
+            val predefined = PLACE_HOLDERS
+                    .filter { PackageManagerHelper(context).isAppInstalled(it, user) }
+                    .mapNotNull { launcherApps.getActivityList(it, user).firstOrNull() }
+                    .shuffled()
+                    .asSequence()
+            val randomized = launcherApps.getActivityList(null, Process.myUserHandle())
+                    .shuffled()
+                    .asSequence()
+            return (predefined + randomized)
+                    .filter { appFilter.shouldShowApp(it.componentName, it.user) }
+                    .take(20)
+                    .map { AppInfo(it, it.user, false) }
+                    .toList()
         }
     }
 }

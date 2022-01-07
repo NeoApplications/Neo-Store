@@ -27,6 +27,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
@@ -34,9 +35,7 @@ import android.util.Property
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckedTextView
-import android.widget.ImageView
-import android.widget.Switch
+import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.Modifier
@@ -225,14 +224,26 @@ fun Switch.applyColor(color: Int) {
             intArrayOf(android.R.attr.state_checked),
             intArrayOf()
         ),
-        intArrayOf(
-            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
-            color,
-            colorForeground
-        )
+            intArrayOf(
+                    ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
+                    color,
+                    colorForeground
+            )
     )
     DrawableCompat.setTintList(thumbDrawable, thstateList)
     DrawableCompat.setTintList(trackDrawable, trstateList)
+}
+
+fun Button.applyColor(color: Int) {
+    val rippleColor = ColorStateList.valueOf(ColorUtils.setAlphaComponent(color, 31))
+    background?.let {
+        (it as RippleDrawable).setColor(rippleColor)
+        DrawableCompat.setTint(background, color)
+    }
+    val tintList = ColorStateList.valueOf(color)
+    if (this is RadioButton) {
+        buttonTintList = tintList
+    }
 }
 
 fun CheckedTextView.applyAccent() {

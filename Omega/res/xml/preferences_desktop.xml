@@ -71,6 +71,13 @@
         app:iconSpaceReserved="false"
         launcher:logIdOn="613" />
 
+    <SwitchPreference
+        android:defaultValue="falser"
+        android:key="pref_hideStatusBar"
+        android:persistent="true"
+        android:title="@string/title_desktop_hide_statusbar"
+        app:iconSpaceReserved="false" />
+
     <!--
       LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
       LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)

@@ -175,7 +175,7 @@
     <string name="theme_use_dark_text">Use dark text</string>
     <string name="title_default">Default</string>
     <string name="icon_pack">Icon pack</string>
-    <string name="get_more_icon_packs">Get more</string>
+    <string name="get_more_icon_packs">Download new icon pack</string>
     <string name="menu_icon_shape">Custom Icon Shape</string>
     <string name="icon_shape_override_progress">"Applying icon shape changes"</string>
     <!-- Developer setting to change the shape of icons on home screen. [CHAR LIMIT=50] -->

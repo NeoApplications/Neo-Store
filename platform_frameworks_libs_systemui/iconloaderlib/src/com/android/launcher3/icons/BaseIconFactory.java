@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 
 import com.android.launcher3.icons.BitmapInfo.Extender;
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
+import com.saggitt.omega.icons.ExtendedBitmapDrawable;
 import com.saggitt.omega.icons.IconPreferencesKt;
 
 /**
@@ -65,7 +66,7 @@ public class BaseIconFactory implements AutoCloseable {
 
     private final Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private static final float PLACEHOLDER_TEXT_SIZE = 20f;
-    private static int PLACEHOLDER_BACKGROUND_COLOR = Color.rgb(240, 240, 240);
+    private static final int PLACEHOLDER_BACKGROUND_COLOR = Color.rgb(240, 240, 240);
 
     protected BaseIconFactory(Context context, int fillResIconDpi, int iconBitmapSize,
                               boolean shapeDetection) {
@@ -213,12 +214,6 @@ public class BaseIconFactory implements AutoCloseable {
      */
     public BitmapInfo createBadgedIconBitmap(@NonNull Drawable icon, UserHandle user,
                                              boolean shrinkNonAdaptiveIcons, boolean isInstantApp, float[] scale) {
-        if (shrinkNonAdaptiveIcons) {
-            //shrinkNonAdaptiveIcons = IconPreferencesKt.shouldWrapAdaptive(mContext);
-            //boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
-            //shrinkNonAdaptiveIcons = !isFromIconPack && !IconPreferencesKt.shouldWrapAdaptive(mContext);
-        }
-
         if (scale == null) {
             scale = new float[1];
         }
@@ -296,14 +291,23 @@ public class BaseIconFactory implements AutoCloseable {
 
     private Drawable normalizeAndWrapToAdaptiveIcon(@NonNull Drawable icon,
                                                     boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
-        float scale;
-
-        if(IconPreferencesKt.coloredBackground(mContext)){
-            mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
+        if (shrinkNonAdaptiveIcons) {
+            boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
+            shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
         }
+
+        if (icon == null) {
+            return null;
+        }
+        float scale = 1f;
+
+        //if(IconPreferencesKt.coloredBackground(mContext)){
+        //    mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
+        //}
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
             if (mWrapperIcon == null) {
+                //TODO revisar los colores de fondo aqui
                 Drawable background = new ColorDrawable(mContext.getColor(R.color.legacy_icon_background));
                 Drawable foreground = new FixedScaleDrawable();
                 mWrapperIcon = new CustomAdaptiveIconDrawable(background, foreground);
@@ -314,18 +318,20 @@ public class BaseIconFactory implements AutoCloseable {
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
             if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
 
+                int wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
                 icon = dr;
                 scale = getNormalizer().getScale(icon, outIconBounds, null, null);
 
-                ((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
+                //((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
+                ((ColorDrawable) dr.getBackground()).setColor(wrapperBackgroundColor);
             }
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);
 
-            if (icon instanceof AdaptiveIconDrawable && IconPreferencesKt.replaceWhiteBackground(mContext)) {
+            /*if (icon instanceof AdaptiveIconDrawable) {
                 if (((AdaptiveIconDrawable) icon).getBackground() instanceof ColorDrawable) {
                     AdaptiveIconDrawable mutIcon = (AdaptiveIconDrawable) icon.mutate();
 
@@ -335,7 +341,7 @@ public class BaseIconFactory implements AutoCloseable {
                         return mutIcon;
                     }
                 }
-            }
+            }*/
 
         }
 
@@ -387,6 +393,7 @@ public class BaseIconFactory implements AutoCloseable {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
                     Math.round(size * (1 - scale) / 2));
             icon.setBounds(offset, offset, size - offset, size - offset);
+            icon.draw(mCanvas);
             if (icon instanceof BitmapInfo.Extender) {
                 ((Extender) icon).drawForPersistence(mCanvas);
             } else {

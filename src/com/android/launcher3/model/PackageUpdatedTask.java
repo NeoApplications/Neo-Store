@@ -145,8 +145,8 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
                     OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-                    if (packages[i].equals(prefs.getIconPackPackage().onGetValue())) {
-                        prefs.getIconPackPackage().onSetValue("");
+                    if (packages[i].equals(prefs.getIconPackPackage())) {
+                        prefs.setIconPackPackage("");
                     }
                 }
                 // Fall through

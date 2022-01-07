@@ -20,41 +20,40 @@ package com.saggitt.omega.preferences.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.preference.Preference
+import androidx.preference.DialogPreference
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.omegaPrefs
 
-class IconPackIconPreference(context: Context, attrs: AttributeSet? = null) : Preference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
-    private val prefs = Utilities.getOmegaPrefs(context)
-
+class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
+        DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+    private val prefs = context.omegaPrefs
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
-    private val current
-        get() = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
-                ?: packs[0]
+    private var current = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
+            ?: packs[0]
 
     init {
         layoutResource = R.layout.preference_preview_icon
+        dialogLayoutResource = R.layout.dialog_icon_pack
     }
 
     override fun onAttached() {
         super.onAttached()
-        context.omegaPrefs.addOnPreferenceChangeListener("pref_iconPackPackage", this)
+        context.omegaPrefs.addOnPreferenceChangeListener(this, "pref_icon_pack_package")
     }
 
     override fun onDetached() {
         super.onDetached()
-        context.omegaPrefs.removeOnPreferenceChangeListener("pref_iconPackPackage", this)
-    }
-
-    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        updateSummaryAndIcon()
+        context.omegaPrefs.removeOnPreferenceChangeListener(this, "pref_icon_pack_package")
     }
 
     private fun updateSummaryAndIcon() {
         summary = current.name
         icon = current.icon
+    }
+
+    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
+        updateSummaryAndIcon()
     }
 }

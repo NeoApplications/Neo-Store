@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
+import android.util.Log
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
@@ -46,8 +47,28 @@ import kotlin.math.roundToInt
 import kotlin.reflect.KProperty
 import com.android.launcher3.graphics.IconShape as L3IconShape
 
-class OmegaPreferences(val context: Context) :
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
+
+    val doNothing = { }
+    val restart = { restart() }
+    val reloadApps = { reloadApps() }
+    val reloadAll = { reloadAll() }
+    private val updateBlur = { updateBlur() }
+    private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
+    private val reloadIcons = { idp.onPreferencesChanged(context) }
+    private val onIconShapeChanged = {
+        initializeIconShape()
+        L3IconShape.init(context)
+        idp.onPreferencesChanged(context)
+    }
+
+    fun initializeIconShape() {
+        val shape = iconShape
+        CustomAdaptiveIconDrawable.sInitialized = true
+        CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
+        CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
+    }
+
     private val onChangeMap: MutableMap<String, () -> Unit> = HashMap()
     val onChangeListeners: MutableMap<String, MutableSet<OnPreferenceChangeListener>> = HashMap()
     private var onChangeCallback: OmegaPreferencesChangeCallback? = null
@@ -62,32 +83,25 @@ class OmegaPreferences(val context: Context) :
             oldFile.delete()
         }
         return context.applicationContext
-            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-            .apply {
-                migrateConfig(this)
+                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+                .apply {
+                    migrateConfig(this)
+                }
+    }
+
+    /*Load Initial preferences*/
+    private fun migrateConfig(prefs: SharedPreferences) {
+        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
+        if (version != CURRENT_VERSION) {
+            with(prefs.edit()) {
+
+                // Default accent color
+                putInt("pref_accent_color", 0XE80142)
+                initializeIconShape()
+                putInt(VERSION_KEY, CURRENT_VERSION)
+                commit()
             }
-    }
-
-    val doNothing = { }
-    //val recreate = { recreate() }
-    val restart = { restart() }
-    val reloadApps = { reloadApps() }
-    val reloadAll = { reloadAll() }
-    val updateBlur = { updateBlur() }
-    private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
-    val reloadIcons = { idp.onPreferencesChanged(context) }
-
-    private val onIconShapeChanged = {
-        initializeIconShape()
-        L3IconShape.init(context)
-        idp.onPreferencesChanged(context)
-    }
-
-    fun initializeIconShape() {
-        val shape = iconShape
-        CustomAdaptiveIconDrawable.sInitialized = true
-        CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
-        CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
+        }
     }
 
     // HOME SCREEN
@@ -154,19 +168,20 @@ class OmegaPreferences(val context: Context) :
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
     var windowCornerRadius by FloatPref("pref_customWindowCornerRadius", 8f, updateBlur)
-    val iconPackPackage = StringPref("pref_iconPackPackage", "", reloadIcons)
+    var iconPackPackage by StringPref("pref_icon_pack_package", "", reloadIcons)
 
     var iconShape by StringBasedPref(
-        "pref_iconShape", IconShape.Circle, onIconShapeChanged,
-        {
-            IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
-        }, IconShape::toString
+            "pref_iconShape", IconShape.Circle, onIconShapeChanged,
+            {
+                IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
+            }, IconShape::toString
     ) { /* no dispose */ }
 
     var coloredBackground by BooleanPref("pref_colored_background", false, doNothing)
-    var enableWhiteOnlyTreatment by BooleanPref("pref_white_only_treatment", false, doNothing)
-    var enableLegacyTreatment by BooleanPref("pref_legacy_treatment", false, doNothing)
-    var adaptifyIconPacks by BooleanPref("pref_adaptive_icon_pack", false, doNothing)
+
+    //ar enableWhiteOnlyTreatment by BooleanPref("pref_white_only_treatment", false, doNothing)
+    //var enableLegacyTreatment by BooleanPref("pref_legacy_treatment", false, doNothing)
+    //var adaptifyIconPacks by BooleanPref("pref_adaptive_icon_pack", false, doNothing)
     var forceShapeless by BooleanPref("pref_force_shape_less", false, doNothing)
 
     //FOLDER
@@ -188,6 +203,9 @@ class OmegaPreferences(val context: Context) :
             "pref_notification_background", R.color.notification_background, restart
     )
 
+    /*
+    * Preferences not used. Added to register the change and restart only
+    */
     var doubleTapGesture by StringPref("pref_gesture_double_tap", "", restart)
     var longPressGesture by StringPref("pref_gesture_long_press", "", restart)
     var homePressGesture by StringPref("pref_gesture_press_home", "", restart)
@@ -221,46 +239,8 @@ class OmegaPreferences(val context: Context) :
                 override fun unflattenValue(value: String) = value
             }
 
-
-    /*Load Initial preferences*/
-    private fun migrateConfig(prefs: SharedPreferences) {
-        val version = prefs.getInt(VERSION_KEY, CURRENT_VERSION)
-        if (version != CURRENT_VERSION) {
-            with(prefs.edit()) {
-
-                // Default accent color
-                putInt("pref_accent_color", 0XE80142)
-                initializeIconShape()
-                putInt(VERSION_KEY, CURRENT_VERSION)
-                commit()
-            }
-        }
-    }
-
-    fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
-        keys.forEach { addOnPreferenceChangeListener(it, listener) }
-    }
-
-    fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
-        if (onChangeListeners[key] == null) {
-            onChangeListeners[key] = HashSet()
-        }
-        onChangeListeners[key]?.add(listener)
-        listener.onValueChanged(key, this, true)
-    }
-
-    fun removeOnPreferenceChangeListener(
-        listener: OnPreferenceChangeListener,
-        vararg keys: String
-    ) {
-        keys.forEach { removeOnPreferenceChangeListener(it, listener) }
-    }
-
-    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
-        onChangeListeners[key]?.remove(listener)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        Log.d("OmegaPreferences", "cambiando preferencia " + key)
         onChangeMap[key]?.invoke()
         onChangeListeners[key]?.forEach {
             if (key != null) {
@@ -278,6 +258,8 @@ class OmegaPreferences(val context: Context) :
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
         onChangeCallback = null
     }
+
+    fun getOnChangeCallback() = onChangeCallback
 
     fun recreate() {
         onChangeCallback?.recreate()
@@ -299,11 +281,41 @@ class OmegaPreferences(val context: Context) :
         onChangeCallback?.updateBlur()
     }
 
+    inline fun withChangeCallback(
+            crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
+    ): () -> Unit {
+        return { getOnChangeCallback()?.let { callback(it) } }
+    }
+
+    fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
+        keys.forEach { addOnPreferenceChangeListener(it, listener) }
+    }
+
+    fun addOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
+        if (onChangeListeners[key] == null) {
+            onChangeListeners[key] = HashSet()
+        }
+        onChangeListeners[key]?.add(listener)
+        listener.onValueChanged(key, this, true)
+    }
+
+    fun removeOnPreferenceChangeListener(
+            listener: OnPreferenceChangeListener,
+            vararg keys: String
+    ) {
+        keys.forEach { removeOnPreferenceChangeListener(it, listener) }
+    }
+
+    fun removeOnPreferenceChangeListener(key: String, listener: OnPreferenceChangeListener) {
+        onChangeListeners[key]?.remove(listener)
+    }
+
+
     /*Base Preferences*/
     abstract inner class PrefDelegate<T : Any>(
-        val key: String,
-        val defaultValue: T,
-        private val onChange: () -> Unit
+            val key: String,
+            val defaultValue: T,
+            private val onChange: () -> Unit
     ) {
 
         private var cached = false
@@ -692,11 +704,23 @@ class OmegaPreferences(val context: Context) :
         editor = null
     }
 
+    inline fun blockingEdit(body: OmegaPreferences.() -> Unit) {
+        beginBlockingEdit()
+        body(this)
+        endBlockingEdit()
+    }
+
+    inline fun bulkEdit(body: OmegaPreferences.() -> Unit) {
+        beginBulkEdit()
+        body(this)
+        endBulkEdit()
+    }
+
     companion object {
 
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: OmegaPreferences? = null
-        const val CURRENT_VERSION = 300
+        const val CURRENT_VERSION = 200
         const val VERSION_KEY = "config_version"
         fun getInstance(context: Context): OmegaPreferences {
             if (INSTANCE == null) {

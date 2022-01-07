@@ -73,7 +73,7 @@
     <string name="title_smartspace_feed_theme">Tema del Feed</string>
     <string name="color_presets">Predeterminados</string>
     <string name="icon_shape_override_label_location">en la pantalla de inicio</string>
-    <string name="get_more_icon_packs">Obtener más</string>
+    <string name="get_more_icon_packs">Descargar un nuevo pack de iconos</string>
     <string name="icon_pack">Pack de Iconos</string>
     <string name="title_default">Predeterminado</string>
     <string name="theme_use_dark_text">Usar texto oscuro</string>

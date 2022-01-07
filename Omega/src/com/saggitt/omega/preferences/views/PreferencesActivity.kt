@@ -30,7 +30,8 @@ import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 
-open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
+open class PreferencesActivity : AppCompatActivity(),
+        ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
     private var currentTheme = 0
     private lateinit var themeOverride: ThemeOverride
@@ -91,7 +92,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     }
 
     // TODO should any of those sub classes get larger, then it should be moved to own class
-
     class PrefsMainFragment : PreferenceFragmentCompat() {
         private var mShowDevOptions = false
         override fun onCreate(savedInstanceState: Bundle?) {
