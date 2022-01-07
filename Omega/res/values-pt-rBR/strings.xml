@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="icon_shape_override_progress">Aplicando as mudanças no formato do ícone</string>
-    <string name="get_more_icon_packs">Obter mais</string>
+    <string name="get_more_icon_packs">Baixar novo pacote de ícones</string>
     <string name="icon_pack">Pacote de ícones</string>
     <string name="title_default">Padrão</string>
     <string name="theme_use_dark_text">Usar um texto escuro</string>
@@ -74,8 +74,8 @@
     <string name="title__dock_search_bar">Mostrar a barra de pesquisa</string>
     <string name="title__dock_colored_icons">Ícones coloridos</string>
     <string name="title__dock_hide_labels">Esconder os rótulos</string>
-    <string name="title__dock_hide">Esconder a \'Dock\'</string>
-    <string name="title__dock_scale">Escala da Dock</string>
+    <string name="title__dock_hide">Esconder a dock</string>
+    <string name="title__dock_scale">Tamanho da dock</string>
     <string name="title__dock_icon_size">Tamanho do ícone</string>
     <string name="grid_size_width">Largura</string>
     <string name="grid_size_height">Altura</string>
@@ -207,8 +207,8 @@
     <string name="smartspace_provider_bridge">Rootless Pixel Bridge</string>
     <string name="smartspace_in_time">em %1$s</string>
     <string name="title__search_action_assistant">Abrir o assistente</string>
-    <string name="dt2s_admin_warning">O toque duplo pra adormecer será destivado.</string>
-    <string name="dt2s_admin_hint">Para adormecer com Toque duplo, garanta a permissão de Administrador.</string>
+    <string name="dt2s_admin_warning">O toque duplo pra adormecer será desativado.</string>
+    <string name="dt2s_admin_hint">Para adormecer com toque duplo, garanta a permissão de administrador.</string>
     <string name="omega_actions">Ações</string>
     <string name="gesture_dock_swipe_up">Deslizar pra cima a partir da dock</string>
     <string name="gesture_swipe_up">Deslizar pra cima</string>
@@ -258,7 +258,7 @@
     <string name="backup_invalid">Indisponível</string>
     <string name="no_recent_backups">Sem backups recentes</string>
     <string name="backup_creating">Criando backup</string>
-    <string name="backup_error_blank_contents">O conteúdo não pode ficar em branco</string>
+    <string name="backup_error_blank_contents">O conteúdo não pode ficar vazio</string>
     <string name="backup_error_blank_name">O nome precisa ser preenchido</string>
     <string name="backup_wallpaper">Papel de parede</string>
     <string name="backup_settings">Configurações</string>
