@@ -3,8 +3,8 @@
     <string name="action_failed">Eylem başarısız oldu</string>
     <string name="add_repository">Yeni depo ekle</string>nm
     <string name="address">Depo adresi</string>
-    <string name="all_applications">Tüm uygulamalar</string>
-    <string name="all_applications_up_to_date">Tüm uygulamalarınız güncel</string>
+    <string name="all_applications">Tümü</string>
+    <string name="all_applications_up_to_date">Hepsi güncel</string>
     <string name="already_exists">Zaten mevcut</string>
     <string name="always">Her zaman</string>
     <string name="amoled">Siyah</string>
@@ -16,7 +16,7 @@
     <string name="available">Mevcut</string>
     <string name="bug_tracker">Hata izleme</string>
     <string name="cancel">İptal et</string>
-    <string name="cant_edit_sync_DESC">Depo şu anda eşzamanlandığı için düzenlenemiyor.</string>
+    <string name="cant_edit_sync_DESC">Eşzamanlanan depolar düzenlenemiyor…</string>
     <string name="changelog">Değişim Günlüğü</string>
     <string name="changes">Değişiklikler</string>
     <string name="checking_repository">Depo denetleniyor…</string>
@@ -57,7 +57,7 @@
     <string name="incompatible_signature_DESC">Bu sürüm aygıtınızda kurulu olan sürümden farklı bir sertifika ile imzalanmış. Önce onu kaldırın.</string>
     <string name="incompatible_version">Uyumsuz sürüm</string>
     <string name="incompatible_versions">Uyumsuz sürümler</string>
-    <string name="incompatible_versions_summary">Aygıtla uyumlu olmayan uygulama sürümlerini göster</string>
+    <string name="incompatible_versions_summary">Aygıtla uyumlu olmayan sürümleri göster</string>
     <string name="incompatible_with_FORMAT">%s ile uyumsuz</string>
     <string name="install">Kur</string>
     <string name="install_types">Kurulum Türleri</string>
@@ -76,15 +76,15 @@
     <string name="link_copied_to_clipboard">Bağlantı panoya kopyalandı</string>
     <string name="links">Bağlantılar</string>
     <string name="list_animation">Liste Animasyonu</string>
-    <string name="list_animation_description">Liste canlandırmasını ana sayfada göster</string>
+    <string name="list_animation_description">Ana sayfada listeyi canlandır</string>
     <string name="merging_FORMAT">%s birleştiriliyor</string>
     <string name="name">İsim</string>
     <string name="network_error_DESC">Bağlantı hatası.</string>
     <string name="never">Asla</string>
-    <string name="new_updates_available">Uygulamaların yeni sürümleri var</string>
+    <string name="new_updates_available">Yeni sürümler var</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d uygulamanın yeni bir sürümü var.</item>
-        <item quantity="other">%d uygulamanın sürümleri var.</item>
+        <item quantity="other">%d uygulamanın yeni sürümleri var.</item>
     </plurals>
     <string name="no_applications_available">Kullanılabilir uygulama yok</string>
     <string name="no_applications_installed">Kurulu uygulama yok</string>
@@ -121,7 +121,7 @@
     <string name="repository_unsigned_DESC">İmzalanmamış. Uygulama listesi doğrulanamadı. İmzalanmamış depolardan uygulama indirirken dikkatli olun.</string>
     <string name="requires_FORMAT">%s gerektirir</string>
     <string name="root_permission">Sessiz Kurulum</string>
-    <string name="root_permission_description">Sessiz kurulumlar için root iznine izin ver</string>
+    <string name="root_permission_description">Etkileşimsiz kurulumlar için root kullan</string>
     <string name="save">Kaydet</string>
     <string name="saving_details">Ayrıntılar kaydediliyor…</string>
     <string name="screenshots">Ekran görüntüleri</string>
@@ -166,7 +166,7 @@
     <string name="version">Sürüm</string>
     <string name="version_FORMAT">Sürüm %s</string>
     <string name="versions">Sürümler</string>
-    <string name="waiting_to_start_download">İndirmenin başlaması bekleniyor…</string>
+    <string name="waiting_to_start_download">İndirme başlatılıyor…</string>
     <string name="whats_new">Ne var ne yok</string>
     <string name="website">Web sitesi</string>
     <string name="prefs_language_title">Dil</string>
