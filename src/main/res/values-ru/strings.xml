@@ -3,8 +3,8 @@
     <string name="action_failed">Действие не удалось</string>
     <string name="add_repository">Добавить репозиторий</string>
     <string name="address">Адрес</string>
-    <string name="all_applications">Все приложения</string>
-    <string name="all_applications_up_to_date">Все ваши приложения в актуальном состоянии</string>
+    <string name="all_applications">Все</string>
+    <string name="all_applications_up_to_date">Все в актуальном состоянии</string>
     <string name="already_exists">Уже существует</string>
     <string name="always">Всегда</string>
     <string name="amoled">Черная</string>
@@ -16,7 +16,7 @@
     <string name="available">Доступно</string>
     <string name="bug_tracker">Баг трекер</string>
     <string name="cancel">Отмена</string>
-    <string name="cant_edit_sync_DESC">Невозможно редактировать репозиторий, так как он сейчас синхронизируется.</string>
+    <string name="cant_edit_sync_DESC">Невозможно отредактировать синхронизация репозиториев…</string>
     <string name="changelog">Список изменений</string>
     <string name="changes">Изменения</string>
     <string name="checking_repository">Проверка репозитория…</string>
@@ -57,7 +57,7 @@
     <string name="incompatible_signature_DESC">Эта версия подписана сертификатом, отличным от того, который установленным на вашем устройстве. Сначала удалите его.</string>
     <string name="incompatible_version">Несовместимая версия</string>
     <string name="incompatible_versions">Несовместимые версии</string>
-    <string name="incompatible_versions_summary">Показать версии приложений, несовместимые с устройством</string>
+    <string name="incompatible_versions_summary">Показать версии, несовместимые с устройством</string>
     <string name="incompatible_with_FORMAT">Несовместимо с %s</string>
     <string name="install">Установить</string>
     <string name="install_types">Типы установки</string>
@@ -76,12 +76,12 @@
     <string name="link_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
     <string name="links">Ссылки</string>
     <string name="list_animation">Анимация списков</string>
-    <string name="list_animation_description">Показывать анимацию списка на главной странице</string>
+    <string name="list_animation_description">Анимировать список на главной странице</string>
     <string name="merging_FORMAT">Слияние %s</string>
     <string name="name">Имя</string>
     <string name="network_error_DESC">Ошибка сети.</string>
     <string name="never">Никогда</string>
-    <string name="new_updates_available">Доступны новые версии приложений</string>
+    <string name="new_updates_available">Доступны новые версии</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d новое обновлений.</item>
         <item quantity="few">%d новых обновлений.</item>
@@ -123,7 +123,7 @@
     <string name="repository_unsigned_DESC">Подпись отсутствует. Не удалось проверить список приложений. Будьте осторожны, загружая приложения из неподписанных репозиториев.</string>
     <string name="requires_FORMAT">Требуется %s</string>
     <string name="root_permission">Тихая установка</string>
-    <string name="root_permission_description">Предоставить Root права для включения тихой установки</string>
+    <string name="root_permission_description">Используйте root для установки без взаимодействия</string>
     <string name="save">Сохранить</string>
     <string name="saving_details">Сохранение данных…</string>
     <string name="screenshots">Скриншоты</string>
@@ -142,7 +142,7 @@
     <string name="source_code_no_longer_available">Исходный код больше не доступен</string>
     <string name="suggested">Рекомендуется</string>
     <string name="sync_repositories">Синхронизация репозиториев</string>
-    <string name="sync_repositories_automatically">Синхронизировать репозитории автоматически</string>
+    <string name="sync_repositories_automatically">Авто-синхронизация репозиториев</string>
     <string name="syncing">Синхронизация</string>
     <string name="syncing_FORMAT">Синхронизация %s…</string>
     <string name="system">Система</string>
@@ -164,11 +164,11 @@
     <string name="upstream_source_code_is_not_free">Исходный код вышестоящего не является открытым</string>
     <string name="username">Имя пользователя</string>
     <string name="username_missing">Имя пользователя отсутствует</string>
-    <string name="validation_index_error_DESC">Индекс не может быть проверен.</string>
+    <string name="validation_index_error_DESC">Не удалось проверить индекс.</string>
     <string name="version">Версия</string>
     <string name="version_FORMAT">Версия %s</string>
     <string name="versions">Версии</string>
-    <string name="waiting_to_start_download">Ожидание скачивания…</string>
+    <string name="waiting_to_start_download">Начинается скачивание…</string>
     <string name="whats_new">Что нового</string>
     <string name="website">Веб-сайт</string>
     <string name="prefs_language_title">Язык</string>
