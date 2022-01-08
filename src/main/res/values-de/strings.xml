@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_repository">Paketquelle hinzufügen</string>
-    <string name="all_applications">Alle Anwendungen</string>
-    <string name="all_applications_up_to_date">Alle Ihre Anwendungen sind aktuell</string>
+    <string name="all_applications">Alle</string>
+    <string name="all_applications_up_to_date">Alles ist aktuell</string>
     <string name="already_exists">Bereits vorhanden</string>
     <string name="always">Immer</string>
     <string name="address">Adresse</string>
@@ -15,7 +15,7 @@
     <string name="application_not_found">Diese Anwendung konnte nicht gefunden werden</string>
     <string name="bug_tracker">Fehlerverwaltung</string>
     <string name="changelog">Änderungsliste</string>
-    <string name="cant_edit_sync_DESC">Die Paketquelle kann nicht bearbeitet werden, da es gerade synchronisiert wird.</string>
+    <string name="cant_edit_sync_DESC">Die Paketquelle kann nicht bearbeitet werden, da es gerade synchronisiert wird …</string>
     <string name="checking_repository">Paketquelle wird abgefragt …</string>
     <string name="compiled_for_debugging">Kompiliert für die Fehlersuche</string>
     <string name="connecting">Verbinden …</string>
@@ -50,7 +50,7 @@
     <string name="never">Nie</string>
     <string name="network_error_DESC">Netzwerk Fehler.</string>
     <string name="notify_about_updates">Über neue Versionen von Anwendungen benachrichtigen</string>
-    <string name="no_description_available_DESC">Keine Beschreibung vorhanden.</string>
+    <string name="no_description_available_DESC">Keine Beschreibung.</string>
     <string name="no_matching_applications_found">Keine derartigen Anwendungen konnten gefunden werden</string>
     <string name="no_applications_installed">Keine installierten Anwendungen</string>
     <string name="only_on_wifi">Nur bei Wi-Fi</string>
@@ -82,8 +82,8 @@
     <string name="version">Version</string>
     <string name="versions">Versionen</string>
     <string name="whats_new">Was gibt es Neues</string>
-    <string name="waiting_to_start_download">Warten auf den Downloadbeginn …</string>
-    <string name="validation_index_error_DESC">Der Index konnte nicht validiert werden.</string>
+    <string name="waiting_to_start_download">Start des Herunterladen …</string>
+    <string name="validation_index_error_DESC">Index konnte nicht validiert werden.</string>
     <string name="website">Webseite</string>
     <string name="changes">Änderungen</string>
     <string name="author_email">E-Mail des Autors</string>
@@ -148,7 +148,7 @@
     <string name="repository_unsigned_DESC">Nicht signiert. Die Anwendungsliste konnte nicht verifiziert werden. Sei vorsichtig beim Herunterladen von Anwendungen aus nicht signierten Paketquellen.</string>
     <string name="unstable_updates_summary">Installation von instabilen Versionen vorschlagen</string>
     <string name="unstable_updates">Instabile Aktualisierungen</string>
-    <string name="root_permission_description">Root-Rechte für stille Installationen zulassen</string>
+    <string name="root_permission_description">Root für Installationen ohne Interaktion verwenden</string>
     <string name="proxy_host">Proxy Host</string>
     <string name="tap_to_install_DESC">Tippe um zu installieren.</string>
     <string name="tracks_or_reports_your_activity">Verfolgt oder erfasst deine Aktivitäten</string>
