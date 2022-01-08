@@ -5,10 +5,10 @@
     <string name="invalid_permissions_error_DESC">Невірні дозволи.</string>
     <string name="could_not_validate_FORMAT">Не вдалося перевірити %s</string>
     <string name="incompatible_signature_DESC">Ця версія підписана сертифікатом, що відрізняється від того, що встановлений на вашому пристрої. Спершу видаліть встановлену.</string>
-    <string name="no_applications_available">Немає доступний додатків</string>
+    <string name="no_applications_available">Немає доступних додатків</string>
     <string name="no_matching_applications_found">Не вдалося знайти ні одного подібного додатку</string>
     <string name="incompatible_features_DESC">Відсутні функції.</string>
-    <string name="all_applications">Всі додатки</string>
+    <string name="all_applications">Всі</string>
     <string name="cancel">Відмінити</string>
     <string name="changes">Зміни</string>
     <string name="checking_repository">Перевіряю розпозиторії…</string>
@@ -17,7 +17,7 @@
     <string name="action_failed">Дія не вдалася</string>
     <string name="add_repository">Додати репозиторій</string>
     <string name="address">Адреса</string>
-    <string name="all_applications_up_to_date">Усі ваші додатки оновлені</string>
+    <string name="all_applications_up_to_date">Усе в актуальному стані</string>
     <string name="already_exists">Уже існує</string>
     <string name="amoled">Чорна</string>
     <string name="anti_features">Анти-функції</string>
@@ -25,7 +25,7 @@
     <string name="author_website">Веб-сайт автора</string>
     <string name="available">Доступно</string>
     <string name="bug_tracker">Баг-трекер</string>
-    <string name="cant_edit_sync_DESC">Не можу редагувати репозиторії, оскільки він зараз синхронізується.</string>
+    <string name="cant_edit_sync_DESC">Неможливо відредагувати синхронізація репозиторіїв…</string>
     <string name="changelog">Список змін</string>
     <string name="compiled_for_debugging">Скомпільовано для відладки</string>
     <string name="connecting">Приєднуюся…</string>
@@ -51,7 +51,7 @@
     <string name="incompatible_older_DESC">Поточна версія старіша за встановлену на вашому пристрої. Спершу видаліть встановлену.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Ваша %1$s платформа не підтримується. Платформи, що підтримуються: %2$s.</string>
     <string name="incompatible_version">Несумісна версія</string>
-    <string name="incompatible_versions_summary">Показати версії додатку, що не сумісні з цим пристроєм</string>
+    <string name="incompatible_versions_summary">Показати версії, що не сумісні з цим пристроєм</string>
     <string name="incompatible_with_FORMAT">Несумісно з %s</string>
     <string name="install">Встановити</string>
     <string name="install_types">Типи встановлення</string>
@@ -63,11 +63,11 @@
     <string name="link_copied_to_clipboard">Посилання скопійоване у буфер обміну</string>
     <string name="links">Посилання</string>
     <string name="list_animation">Анімація Списків</string>
-    <string name="list_animation_description">Показувати анімацію списку на головній сторінці</string>
+    <string name="list_animation_description">Анімувати список на головній сторінці</string>
     <string name="merging_FORMAT">Злиття %s</string>
     <string name="name">Ім\'я</string>
     <string name="network_error_DESC">Помилка мережі.</string>
-    <string name="new_updates_available">Доступні нові версії додатків</string>
+    <string name="new_updates_available">Доступні нові версії</string>
     <string name="no_applications_installed">Немає встановлених додатків</string>
     <string name="no_description_available_DESC">Опис відсутній.</string>
     <string name="no_proxy">Без проксі</string>
@@ -101,7 +101,7 @@
         <item quantity="other">%d додатків мають нову версію.</item>
     </plurals>
     <string name="prefs_personalization">Персоналізація</string>
-    <string name="root_permission_description">Надати root права для увімкнення тихого встановлення</string>
+    <string name="root_permission_description">Використовувати root для встановлення без взаємодії</string>
     <string name="save">Зберегти</string>
     <string name="saving_details">Збереження даних…</string>
     <string name="screenshots">Скріншоти</string>
@@ -115,7 +115,7 @@
     <string name="source_code">Вихідний код</string>
     <string name="suggested">Рекомендується</string>
     <string name="sync_repositories">Синхронізація репозиторіїв</string>
-    <string name="sync_repositories_automatically">Синхронізувати репозиторії автоматично</string>
+    <string name="sync_repositories_automatically">Авто-синхронізація репозиторіїв</string>
     <string name="syncing">Синхронізація</string>
     <string name="syncing_FORMAT">Синхронізація %s…</string>
     <string name="theme">Тема</string>
@@ -134,7 +134,7 @@
     <string name="upstream_source_code_is_not_free">Вихідний код батьківського додатку не є відкритим</string>
     <string name="username">Ім\'я користувача</string>
     <string name="username_missing">Ім\'я користувача відсутнє</string>
-    <string name="validation_index_error_DESC">Не можу перевірити індекс.</string>
+    <string name="validation_index_error_DESC">Не вдалося перевірити індекс.</string>
     <string name="version_FORMAT">Версія %s</string>
     <string name="versions">Версії</string>
     <string name="whats_new">Що нового</string>
@@ -171,7 +171,7 @@
     <string name="tap_to_install_DESC">Натисніть щоб встановити.</string>
     <string name="target">Цільовий</string>
     <string name="version">Версія</string>
-    <string name="waiting_to_start_download">Очікування завантаження…</string>
+    <string name="waiting_to_start_download">Починається завантаження…</string>
     <string name="show_less">Показати менше</string>
     <string name="explore">Досліджуйте</string>
     <string name="update_all">Оновити все</string>
@@ -179,7 +179,7 @@
     <string name="new_applications">Нові додатки</string>
     <string name="latest">Останні</string>
     <string name="sort_filter">Сортувати та фільтрувати</string>
-    <string name="only_on_wifi_and_battery">Лише при Wi-Fi і підключеному до мережі</string>
+    <string name="only_on_wifi_and_battery">Лише при Wi-Fi та підключеному до мережі</string>
     <string name="install_after_sync">Встановлювати оновлення автоматично</string>
     <string name="install_after_sync_summary">Автоматично встановлювати оновлення додатків після синхронізації репозиторіїв</string>
 </resources>
