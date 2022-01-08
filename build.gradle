@@ -6,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
     }
 }
 
@@ -53,7 +53,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.5"
+        kotlinCompilerExtensionVersion "1.1.0-rc02"
     }
 
     buildTypes {
@@ -133,7 +133,7 @@ repositories {
 dependencies {
 
     // Core
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'androidx.appcompat:appcompat-resources:1.4.0'
@@ -181,13 +181,13 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.0'
 
     // Compose
-    implementation "androidx.compose.runtime:runtime:1.0.5"
-    implementation "androidx.compose.ui:ui:1.0.5"
-    implementation "androidx.compose.ui:ui-tooling:1.0.5"
-    implementation "androidx.compose.foundation:foundation:1.0.5"
-    implementation "androidx.compose.foundation:foundation-layout:1.0.5"
-    implementation "androidx.compose.runtime:runtime-livedata:1.0.5"
-    implementation "androidx.compose.material:material:1.0.5"
+    implementation "androidx.compose.runtime:runtime:1.1.0-rc01"
+    implementation "androidx.compose.ui:ui:1.1.0-rc01"
+    implementation "androidx.compose.ui:ui-tooling:1.1.0-rc01"
+    implementation "androidx.compose.foundation:foundation:1.1.0-rc01"
+    implementation "androidx.compose.foundation:foundation-layout:1.1.0-rc01"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0-rc01"
+    implementation "androidx.compose.material:material:1.1.0-rc01"
     implementation "com.google.android.material:compose-theme-adapter:1.1.2"
 }
 

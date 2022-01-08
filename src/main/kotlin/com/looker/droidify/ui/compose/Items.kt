@@ -93,7 +93,7 @@ fun ProductRow(
 @Preview
 @Composable
 fun ProductColumn(
-    name: String = "Droid-ifsdfsdfy",
+    name: String = "Droid-iy",
     version: String = "69",
     onUserClick: (String) -> Unit = {}
 ) {
