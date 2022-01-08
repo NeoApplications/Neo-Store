@@ -48,6 +48,14 @@ android {
         jvmTarget = compileOptions.sourceCompatibility.toString()
     }
 
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.0.5"
+    }
+
     buildTypes {
         debug {
             minifyEnabled = false
@@ -146,6 +154,7 @@ dependencies {
 
     // Coil
     implementation 'io.coil-kt:coil:1.4.0'
+    implementation "io.coil-kt:coil-compose:1.4.0"
 
     // OkHttps
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
@@ -170,6 +179,16 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.4.0'
     implementation 'androidx.room:room-rxjava3:2.4.0'
     kapt 'androidx.room:room-compiler:2.4.0'
+
+    // Compose
+    implementation "androidx.compose.runtime:runtime:1.0.5"
+    implementation "androidx.compose.ui:ui:1.0.5"
+    implementation "androidx.compose.ui:ui-tooling:1.0.5"
+    implementation "androidx.compose.foundation:foundation:1.0.5"
+    implementation "androidx.compose.foundation:foundation-layout:1.0.5"
+    implementation "androidx.compose.runtime:runtime-livedata:1.0.5"
+    implementation "androidx.compose.material:material:1.0.5"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.2"
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
