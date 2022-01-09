@@ -19,13 +19,9 @@
 package com.saggitt.omega.preferences.views
 
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
-import com.saggitt.omega.preferences.custom.CustomDialogPreference
 
-class PrefsDesktopFragment : PreferenceFragmentCompat() {
+class PrefsDesktopFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_desktop, rootKey)
     }
@@ -33,19 +29,5 @@ class PrefsDesktopFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         requireActivity().title = requireActivity().getString(R.string.title__general_desktop)
-    }
-
-    override fun onDisplayPreferenceDialog(preference: Preference) {
-        val f: DialogFragment
-        parentFragmentManager.let {
-            f = if (preference is CustomDialogPreference) {
-                PreferenceDialogFragment.newInstance(preference)
-            } else {
-                super.onDisplayPreferenceDialog(preference)
-                return
-            }
-            f.setTargetFragment(this, 0)
-            f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
-        }
     }
 }

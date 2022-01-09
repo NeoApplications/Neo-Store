@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
@@ -26,7 +25,6 @@ import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_TRUST_APPS
 import com.saggitt.omega.changeDefaultHome
-import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
@@ -157,7 +155,7 @@ open class PreferencesActivity : AppCompatActivity(),
         }
     }
 
-    class PrefsDrawerFragment : PreferenceFragmentCompat() {
+    class PrefsDrawerFragment : BasePreferenceFragment() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_drawer, rootKey)
         }
@@ -166,10 +164,10 @@ open class PreferencesActivity : AppCompatActivity(),
             super.onViewCreated(view, savedInstanceState)
             findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
                 onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                        requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
-                        true
-                    }
+                        Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                            requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
+                            true
+                        }
 
                 isVisible = Utilities.ATLEAST_R
             }
@@ -207,20 +205,6 @@ open class PreferencesActivity : AppCompatActivity(),
         override fun onResume() {
             super.onResume()
             requireActivity().title = requireActivity().getString(R.string.title__general_drawer)
-        }
-
-        override fun onDisplayPreferenceDialog(preference: Preference) {
-            val f: DialogFragment
-            fragmentManager?.let {
-                f = if (preference is CustomDialogPreference) {
-                    PreferenceDialogFragment.newInstance(preference)
-                } else {
-                    super.onDisplayPreferenceDialog(preference)
-                    return
-                }
-                f.setTargetFragment(this, 0)
-                f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
-            }
         }
     }
 
