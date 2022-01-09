@@ -103,8 +103,6 @@ class FeedBridge(private val context: Context) {
         }
 
         open fun isSigned(): Boolean {
-            //if (BuildConfig.FLAVOR_build.equals("dev"))
-            //    return true // Skip signature checks for dev builds
             if (Utilities.ATLEAST_P) {
                 val info = context.packageManager.getPackageInfo(
                     packageName,

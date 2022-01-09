@@ -20,40 +20,31 @@ package com.saggitt.omega.preferences.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.preference.DialogPreference
-import com.android.launcher3.R
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import com.saggitt.omega.iconpack.IconPackProvider
-import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.omegaPrefs
 
 class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
-        DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+        ListPreference(context, attrs), Preference.OnPreferenceChangeListener {
     private val prefs = context.omegaPrefs
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
-    private var current = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
-            ?: packs[0]
 
     init {
-        layoutResource = R.layout.preference_preview_icon
-        dialogLayoutResource = R.layout.dialog_icon_pack
+        entries = packs.map { it.name }.toTypedArray()
+        entryValues = packs.map { it.packageName }.toTypedArray()
+        updateSummary()
     }
 
-    override fun onAttached() {
-        super.onAttached()
-        context.omegaPrefs.addOnPreferenceChangeListener(this, "pref_icon_pack_package")
-    }
-
-    override fun onDetached() {
-        super.onDetached()
-        context.omegaPrefs.removeOnPreferenceChangeListener(this, "pref_icon_pack_package")
-    }
-
-    private fun updateSummaryAndIcon() {
+    private fun updateSummary() {
+        val current = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
+                ?: packs[0]
         summary = current.name
         icon = current.icon
     }
 
-    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        updateSummaryAndIcon()
+    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+        updateSummary()
+        return true
     }
 }

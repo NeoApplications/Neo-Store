@@ -20,15 +20,15 @@ package com.saggitt.omega.gestures
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.icons.LauncherIcons
 import com.saggitt.omega.gestures.ui.HandlerListAdapter
 import com.saggitt.omega.gestures.ui.RunHandlerActivity
-import com.saggitt.omega.settings.SettingsBaseActivity
 
-class OmegaShortcutActivity : SettingsBaseActivity() {
+class OmegaShortcutActivity : AppCompatActivity() {
     private var selectedHandler: GestureHandler? = null
     private val launcherIcons by lazy { LauncherIcons.obtain(this) }
 

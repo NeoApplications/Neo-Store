@@ -1,6 +1,6 @@
 /*
  *  This file is part of Omega Launcher
- *  Copyright (c) 2021   Saul Henriquez
+ *  Copyright (c) 2021   Omega Launcher Team
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as
@@ -43,7 +43,6 @@ import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.DbHelper
-import com.saggitt.omega.util.omegaPrefs
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
@@ -60,12 +59,12 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private var paused = false
     private var sRestart = false
     private val prefCallback = OmegaPreferencesChangeCallback(this)
-    private val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
+    val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
-        currentAccent = omegaPrefs.accentColor
+        currentAccent = prefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         val config = Config(this)
         config.setAppLanguage(prefs.language)
@@ -107,7 +106,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
 
     override fun onResume() {
         super.onResume()
-        if (currentAccent != omegaPrefs.accentColor) recreate()
+        if (currentAccent != prefs.accentColor) recreate()
         restartIfPending()
         paused = false
     }

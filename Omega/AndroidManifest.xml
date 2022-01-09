@@ -86,16 +86,7 @@
             android:name="com.android.launcher3.settings.SettingsActivity"
             android:exported="true"
             tools:node="remove" />
-        <activity
-            android:name="com.saggitt.omega.settings.SettingsActivity"
-            android:autoRemoveFromRecents="true"
-            android:exported="true"
-            android:label="@string/settings_button_text"
-            android:theme="@style/SettingsTheme.Light">
-            <intent-filter android:priority="-1">
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+
         <activity
             android:name="com.saggitt.omega.preferences.views.PreferencesActivity"
             android:autoRemoveFromRecents="true"
@@ -107,12 +98,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.saggitt.omega.settings.search.SettingsSearchActivity"
-            android:autoRemoveFromRecents="true"
-            android:exported="true"
-            android:parentActivityName="com.saggitt.omega.settings.SettingsActivity"
-            android:theme="@style/SettingsTheme" />
 
         <activity
             android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"

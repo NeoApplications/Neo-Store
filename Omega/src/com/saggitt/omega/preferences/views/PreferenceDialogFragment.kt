@@ -23,10 +23,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.XmlRes
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
-import com.saggitt.omega.settings.SettingsActivity
 import com.saggitt.omega.util.getThemeAttr
 
 class PreferenceDialogFragment : DialogFragment() {
@@ -39,7 +40,7 @@ class PreferenceDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val content = requireArguments().getInt(KEY_CONTENT)
-        val fragment = SettingsActivity.DialogSettingsFragment.newInstance("", content)
+        val fragment = DialogSettingsFragment.newInstance("", content)
         childFragmentManager.beginTransaction()
                 .replace(R.id.fragment_content, fragment)
                 .commit()
@@ -59,6 +60,27 @@ class PreferenceDialogFragment : DialogFragment() {
                 putInt(KEY_THEME, preference.context.getThemeAttr(R.attr.alertDialogTheme))
                 putInt(KEY_CONTENT, preference.content)
             }
+        }
+    }
+}
+
+class DialogSettingsFragment : PreferenceFragmentCompat() {
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(content, rootKey)
+    }
+
+    private val content: Int
+        get() = arguments?.getInt("content_res_id") ?: -1
+
+    companion object {
+        fun newInstance(title: String?, @XmlRes content: Int): DialogSettingsFragment {
+            val fragment = DialogSettingsFragment()
+            val b = Bundle(2)
+            b.putString("title", title)
+            b.putInt("content_res_id", content)
+            fragment.arguments = b
+            return fragment
         }
     }
 }

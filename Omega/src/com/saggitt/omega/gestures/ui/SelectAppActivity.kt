@@ -20,14 +20,14 @@ package com.saggitt.omega.gestures.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.shortcuts.ShortcutKey
 import com.saggitt.omega.preferences.AppsShortcutsAdapter
-import com.saggitt.omega.settings.SettingsBaseActivity
 
-class SelectAppActivity : SettingsBaseActivity(), AppsShortcutsAdapter.Callback {
+class SelectAppActivity : AppCompatActivity(), AppsShortcutsAdapter.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

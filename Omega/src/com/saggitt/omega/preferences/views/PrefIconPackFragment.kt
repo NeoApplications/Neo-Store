@@ -21,11 +21,9 @@ package com.saggitt.omega.preferences.views
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
-import com.saggitt.omega.preferences.custom.IconPackListPreference
 
 class PrefIconPackFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -34,6 +32,7 @@ class PrefIconPackFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         findPreference<Preference>("pref_get_icon_pack")?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
                 val intent = Intent.parseUri(context.getString(R.string.market_search_intent), 0)
@@ -44,20 +43,6 @@ class PrefIconPackFragment : PreferenceFragmentCompat() {
 
                 false
             }
-        }
-    }
-
-    override fun onDisplayPreferenceDialog(preference: Preference) {
-        val f: DialogFragment
-        fragmentManager?.let {
-            f = if (preference is IconPackListPreference) {
-                IconPackListFragment.newInstance(preference)
-            } else {
-                super.onDisplayPreferenceDialog(preference)
-                return
-            }
-            f.setTargetFragment(this, 0)
-            f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
         }
     }
 }

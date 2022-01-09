@@ -16,8 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.saggitt.omega.preferences.custom.IconPackListPreference
         android:title="@string/icon_pack"
@@ -26,6 +25,6 @@
     <Preference
         android:title="@string/get_more_icon_packs"
         android:key="pref_get_icon_pack"
-        app:iconSpaceReserved="false" />
+        android:icon="@drawable/ic_add" />
 
 </PreferenceScreen>

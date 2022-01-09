@@ -15,10 +15,10 @@
  */
 package com.android.launcher3.settings;
 
+import static com.android.launcher3.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
+import static com.android.launcher3.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import static com.android.launcher3.util.SettingsCache.NOTIFICATION_BADGING_URI;
-import static com.saggitt.omega.settings.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
-import static com.saggitt.omega.settings.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

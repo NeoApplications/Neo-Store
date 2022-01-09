@@ -23,8 +23,8 @@ import android.util.AttributeSet
 import androidx.annotation.Keep
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.preferences.CustomDialogPreference
 import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.hasFlags

@@ -30,15 +30,16 @@ import android.util.Log
 import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
 import com.android.systemui.shared.system.QuickStepContract
+import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.theme.ThemeManager
 
 class OmegaApp : Application() {
     private val TAG = "OmegaApp"
+
+    val activityHandler = ActivityHandler()
     var mismatchedQuickstepTarget = false
     private val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null
-
-    val activityHandler = ActivityHandler()
 
     override fun onCreate() {
         super.onCreate()
@@ -48,6 +49,7 @@ class OmegaApp : Application() {
 
     fun onLauncherAppStateCreated() {
         registerActivityLifecycleCallbacks(activityHandler)
+        BlurWallpaperProvider.getInstance(this)
     }
 
     fun restart(recreateLauncher: Boolean = true) {
@@ -125,7 +127,6 @@ class OmegaApp : Application() {
         }
 
         override fun onActivityStarted(activity: Activity) {
-
         }
 
         override fun onActivityDestroyed(activity: Activity) {
@@ -135,11 +136,9 @@ class OmegaApp : Application() {
         }
 
         override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
-
         }
 
         override fun onActivityStopped(activity: Activity) {
-
         }
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
