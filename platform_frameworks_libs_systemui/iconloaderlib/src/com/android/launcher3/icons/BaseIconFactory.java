@@ -301,9 +301,9 @@ public class BaseIconFactory implements AutoCloseable {
         }
         float scale = 1f;
 
-        //if(IconPreferencesKt.coloredBackground(mContext)){
-        //    mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
-        //}
+        if (IconPreferencesKt.coloredBackground(mContext)) {
+            mWrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
+        }
 
         if (shrinkNonAdaptiveIcons && ATLEAST_OREO) {
             if (mWrapperIcon == null) {

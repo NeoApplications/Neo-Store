@@ -18,50 +18,51 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.saggitt.omega.preferences.custom.SeekbarPreference
-        android:key="pref_allapps_icon_scale"
-        android:persistent="true"
-        android:title="@string/title__drawer_icon_size"
-        app:defaultSeekbarValue="1.0"
-        app:maxValue="2.0"
-        app:minValue="0.5"
-        app:steps="150"
-        app:summaryFormat="%.0f%%"
-        app:summaryMultiplier="100" />
+    <PreferenceCategory android:title="@string/cat_drawer_icons">
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:key="pref_allapps_icon_scale"
+            android:persistent="true"
+            android:title="@string/title__drawer_icon_size"
+            app:defaultSeekbarValue="1.0"
+            app:maxValue="2.0"
+            app:minValue="0.5"
+            app:steps="150"
+            app:summaryFormat="%.0f%%"
+            app:summaryMultiplier="100" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:disableDependentsState="true"
-        android:key="pref_hide_allapps_app_label"
-        android:persistent="true"
-        android:title="@string/title__drawer_hide_icon_labels"
-        app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="pref_hide_allapps_app_label"
+            android:persistent="true"
+            android:title="@string/title__drawer_hide_icon_labels"
+            app:iconSpaceReserved="false" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:dependency="pref_hide_allapps_app_label"
-        android:key="pref_apps_icon_labels_two_lines"
-        android:persistent="true"
-        android:title="@string/title__multiline_labels"
-        app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="pref_hide_allapps_app_label"
+            android:key="pref_apps_icon_labels_two_lines"
+            android:persistent="true"
+            android:title="@string/title__multiline_labels"
+            app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.custom.SeekbarPreference
-        android:dependency="pref_hide_allapps_app_label"
-        android:key="pref_allapps_icon_text_scale"
-        android:title="@string/title_desktop_text_size"
-        app:defaultSeekbarValue="1.0"
-        app:maxValue="1.8"
-        app:minValue="0.3"
-        app:steps="150"
-        app:summaryFormat="%.0f%%"
-        app:summaryMultiplier="100" />
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:dependency="pref_hide_allapps_app_label"
+            android:key="pref_allapps_icon_text_scale"
+            android:title="@string/title_desktop_text_size"
+            app:defaultSeekbarValue="1.0"
+            app:maxValue="1.8"
+            app:minValue="0.3"
+            app:steps="150"
+            app:summaryFormat="%.0f%%"
+            app:summaryMultiplier="100" />
 
-    <com.saggitt.omega.preferences.custom.CustomDialogPreference
-        android:key="pref_icon_popup_menu"
-        android:title="@string/title__drawer_icon_popup_menu"
-        app:content="@xml/drawer_icon_popup"
-        app:iconSpaceReserved="false" />
-
+        <com.saggitt.omega.preferences.custom.CustomDialogPreference
+            android:key="pref_icon_popup_menu"
+            android:title="@string/title__drawer_icon_popup_menu"
+            app:content="@xml/drawer_icon_popup"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/cat_drawer_grid">
         <com.saggitt.omega.preferences.custom.SortAppsPreference
             android:defaultValue="0"
