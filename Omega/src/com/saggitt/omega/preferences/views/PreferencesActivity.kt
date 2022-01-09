@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
@@ -25,6 +26,7 @@ import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_TRUST_APPS
 import com.saggitt.omega.changeDefaultHome
+import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
@@ -41,13 +43,16 @@ open class PreferencesActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
+        val config = Config(this)
+        config.setAppLanguage(omegaPrefs.language)
+
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
-            resources.getIdentifier(
-                Integer.toHexString(omegaPrefs.accentColor),
-                "style",
-                packageName
-            ), true
+                resources.getIdentifier(
+                        Integer.toHexString(omegaPrefs.accentColor),
+                        "style",
+                        packageName
+                ), true
         )
         super.onCreate(savedInstanceState)
         binding = PreferencesActivityBinding.inflate(layoutInflater)
@@ -202,6 +207,20 @@ open class PreferencesActivity : AppCompatActivity(),
         override fun onResume() {
             super.onResume()
             requireActivity().title = requireActivity().getString(R.string.title__general_drawer)
+        }
+
+        override fun onDisplayPreferenceDialog(preference: Preference) {
+            val f: DialogFragment
+            fragmentManager?.let {
+                f = if (preference is CustomDialogPreference) {
+                    PreferenceDialogFragment.newInstance(preference)
+                } else {
+                    super.onDisplayPreferenceDialog(preference)
+                    return
+                }
+                f.setTargetFragment(this, 0)
+                f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
+            }
         }
     }
 

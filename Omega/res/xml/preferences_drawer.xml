@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
+  ~  Copyright (c) 2021   Omega Launcher Team
   ~
   ~  This program is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as
@@ -55,6 +55,12 @@
         app:steps="150"
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
+
+    <com.saggitt.omega.preferences.custom.CustomDialogPreference
+        android:key="pref_icon_popup_menu"
+        android:title="@string/title__drawer_icon_popup_menu"
+        app:content="@xml/drawer_icon_popup"
+        app:iconSpaceReserved="false" />
 
     <PreferenceCategory android:title="@string/cat_drawer_grid">
         <com.saggitt.omega.preferences.custom.SortAppsPreference
