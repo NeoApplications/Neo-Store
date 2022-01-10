@@ -404,7 +404,7 @@
     <string name="modify_system_settings_message">Bunun çalışması için sistem ayarlarını değiştirme izni verin</string>
     <string name="app_widget_name">Saat Widget\'ı</string>
     <string name="about_channel">Kanal</string>
-    <string name="about_open_source">Özgür Kütüphaneler</string>
+    <string name="about_open_source">Açık Kaynaklı Kütüphaneler</string>
     <string name="about_translators_group">Katkıda Bulunanlar ve Çevirmenler</string>
     <string name="about_community">Topluluk</string>
     <string name="title_theme_customize_icons">Simgeleri Özelleştir</string>
