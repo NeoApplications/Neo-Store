@@ -16,8 +16,7 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.saggitt.omega.preferences.custom.SeekbarPreference
         android:key="pref_home_icon_scale"
@@ -73,9 +72,9 @@
         android:persistent="true"
         android:summary="@string/auto_add_shortcuts_description"
         android:title="@string/auto_add_shortcuts_label"
-        launcher:logIdOff="614"
-        app:iconSpaceReserved="false"
-        launcher:logIdOn="613" />
+        app:logIdOff="614"
+        app:logIdOn="613"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="falser"
@@ -94,9 +93,9 @@
         android:persistent="true"
         android:summary="@string/allow_rotation_desc"
         android:title="@string/allow_rotation_title"
-        launcher:logIdOff="616"
+        app:logIdOff="616"
         app:iconSpaceReserved="false"
-        launcher:logIdOn="615" />
+        app:logIdOn="615" />
 
     <Preference
         android:fragment="com.saggitt.omega.dash.DashFragment"
