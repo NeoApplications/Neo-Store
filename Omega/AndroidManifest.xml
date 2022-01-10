@@ -128,7 +128,7 @@
             android:name="com.saggitt.omega.gestures.ui.RunHandlerActivity"
             android:exported="false"
             android:taskAffinity="${applicationId}.tasks.RUN_HANDLER"
-            android:theme="@style/SettingsTheme.Light.Transparent">
+            android:theme="@style/SettingsTheme.Light">
             <intent-filter>
                 <action android:name="com.saggitt.omega.START_ACTION" />
                 <action android:name="android.intent.action.ASSIST" />
