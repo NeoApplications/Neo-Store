@@ -61,25 +61,8 @@
 
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
-        <item name="isMainColorDark">true</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
-    </style>
-
-    <style name="SettingsTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:colorEdgeEffect">?colorAccent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="settingsBackground">@android:color/white</item>
-        <item name="settingsSearchBackground">?settingsBackground</item>
-        <item name="settingsPopupBackground">?settingsBackground</item>
-        <item name="useLightSystemBars">true</item>
-        <item name="alertDialogTheme">@style/AlertDialog.Light</item>
-        <item name="bottomSheetNavBarColor">@color/all_apps_navbar_color</item>
-        <item name="workspaceShadowColor">#B0000000</item>
-        <item name="workspaceAmbientShadowColor">#40000000</item>
     </style>
 
     <style name="SettingsTheme.Light" parent="Theme.Material3.Light.NoActionBar">
@@ -104,10 +87,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="SettingsTheme.Light.Transparent" parent="SettingsTheme">
-        <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+        <item name="isMainColorDark">false</item>
     </style>
 
     <style name="SettingsTheme.Dark" parent="Theme.Material3.Dark.NoActionBar">
@@ -132,6 +112,7 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="isMainColorDark">true</item>
     </style>
 
     <style name="SettingsTheme.Black" parent="SettingsTheme.Dark">
