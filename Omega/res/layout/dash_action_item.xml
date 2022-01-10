@@ -15,18 +15,21 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="horizontal"
+    android:layout_margin="6dp"
+    android:background="@drawable/ripple_dash_item_bg"
     android:padding="6dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_icon"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:background="@drawable/ripple_dash_item_bg"
-        android:padding="15dp"
-        android:theme="@style/DashTheme" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="18dp"
+        android:theme="@style/DashTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
