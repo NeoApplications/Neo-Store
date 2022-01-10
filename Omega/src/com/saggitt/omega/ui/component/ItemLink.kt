@@ -26,6 +26,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
 fun ItemLink(
@@ -65,7 +67,7 @@ fun ItemLink(
         Text(
             text = label,
             style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onBackground,
+            color = MaterialTheme.colors.primary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
