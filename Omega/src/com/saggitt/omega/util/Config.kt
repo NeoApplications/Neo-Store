@@ -157,25 +157,25 @@ class Config(val context: Context) {
             return result
         }
 
-        val PLACE_HOLDERS = arrayOf(
+        private val PLACE_HOLDERS = arrayOf(
+                "com.android.phone",
+                "com.whatsapp",
+                "com.android.chrome",
                 "com.google.android.apps.photos",
                 "com.google.android.apps.maps",
                 "com.google.android.gm",
                 "com.instagram.android",
                 "com.google.android.youtube",
                 "com.twitter.android",
-                "com.whatsapp",
                 "com.facebook.katana",
                 "com.google.android.calendar",
                 "com.facebook.orca",
                 "com.yodo1.crossyroad",
                 "com.spotify.music",
-                "com.android.chrome",
                 "com.skype.raider",
                 "com.snapchat.android",
                 "com.viber.voip",
                 "com.google.android.deskclock",
-                "com.android.phone",
                 "com.google.android.music",
                 "com.google.android.apps.genie.geniewidget",
                 "com.netflix.mediaclient",
@@ -186,7 +186,6 @@ class Config(val context: Context) {
                 "com.microsoft.office.word",
                 "com.google.android.apps.docs",
                 "com.google.android.keep",
-                "com.google.android.apps.plus",
                 "com.google.android.talk"
         )
 
@@ -197,7 +196,6 @@ class Config(val context: Context) {
             val predefined = PLACE_HOLDERS
                     .filter { PackageManagerHelper(context).isAppInstalled(it, user) }
                     .mapNotNull { launcherApps.getActivityList(it, user).firstOrNull() }
-                    .shuffled()
                     .asSequence()
             val randomized = launcherApps.getActivityList(null, Process.myUserHandle())
                     .shuffled()
