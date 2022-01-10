@@ -46,6 +46,9 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
                 updateTheme()
             }
         }
+
+    val isDark get() = themeFlags and THEME_DARK != 0
+    val isBlack get() = themeFlags and THEME_USE_BLACK != 0
     val supportsDarkText get() = false
     val displayName: String
         get() {

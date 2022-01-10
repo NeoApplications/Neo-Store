@@ -29,7 +29,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,6 +47,7 @@ import androidx.fragment.app.Fragment
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
+import com.android.launcher3.util.Themes
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.theme.kaushanScript
@@ -63,9 +63,10 @@ class AboutFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
 
+        val isDark = Themes.getAttrBoolean(requireActivity(), R.attr.isMainColorDark)
         return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
             findViewById<ComposeView>(R.id.base_compose_view).setContent {
-                OmegaAppTheme {
+                OmegaAppTheme(isDark) {
                     CreateMainScreen()
                 }
             }
@@ -125,7 +126,7 @@ fun CreateMainScreen() {
                     fontFamily = kaushanScript,
                     fontWeight = FontWeight.Normal,
                     fontSize = 30.sp,
-                    color = MaterialTheme.colors.primary
+                    color = OmegaTheme.colors.primary
             )
 
             Text(

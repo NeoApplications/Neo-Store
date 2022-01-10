@@ -43,27 +43,37 @@ object OmegaTheme {
 }
 
 private val darkColorPalette = OmegaColors(
-    surface = DarkGrey50,
-    textPrimary = LightGrey05,
-    textSecondary = LightGrey05,
-    dividerLine = DarkGrey05
+        surface = Grey900,
+        border = Grey100,
+        primary = IndigoA100,
+        textPrimary = Grey100,
+        textSecondary = Grey200,
+        dividerLine = Grey600
 )
 
 private val lightColorPalette = OmegaColors(
-    surface = White,
-    textPrimary = DarkGrey90,
-    textSecondary = DarkGrey05,
-    dividerLine = LightGrey30
+        surface = Grey50,
+        border = Grey300,
+        primary = IndigoA700,
+        textPrimary = Grey700,
+        textSecondary = Grey600,
+        dividerLine = Grey300
 )
 
 @Stable
 class OmegaColors(
-    surface: Color,
-    textPrimary: Color,
-    textSecondary: Color,
-    dividerLine: Color
+        surface: Color,
+        border: Color,
+        primary: Color,
+        textPrimary: Color,
+        textSecondary: Color,
+        dividerLine: Color
 ) {
     var surface by mutableStateOf(surface)
+        private set
+    var border by mutableStateOf(border)
+        private set
+    var primary by mutableStateOf(primary)
         private set
     var textPrimary by mutableStateOf(textPrimary)
         private set
@@ -74,16 +84,20 @@ class OmegaColors(
 
     fun update(other: OmegaColors) {
         surface = other.surface
+        border = other.border
+        primary = other.primary
         textPrimary = other.textPrimary
         textSecondary = other.textSecondary
         dividerLine = other.dividerLine
     }
 
     fun copy(): OmegaColors = OmegaColors(
-        surface = surface,
-        textPrimary = textPrimary,
-        textSecondary = textSecondary,
-        dividerLine = dividerLine
+            surface = surface,
+            border = border,
+            primary = primary,
+            textPrimary = textPrimary,
+            textSecondary = textSecondary,
+            dividerLine = dividerLine
     )
 }
 
@@ -102,5 +116,5 @@ fun ProvideOmegaColors(
 }
 
 private val localOmegaColors = staticCompositionLocalOf<OmegaColors> {
-    error("No OmegaColors provided")
+    error("No Custom Colors provided")
 }

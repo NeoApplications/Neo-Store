@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.ui.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun PreferenceGroup(
@@ -35,10 +37,12 @@ fun PreferenceGroup(
     val columnModifier = Modifier
     CompositionLocalProvider(
         LocalContentAlpha provides ContentAlpha.medium,
-        LocalContentColor provides MaterialTheme.colors.onBackground
+            LocalContentColor provides OmegaTheme.colors.primary
     ) {
         Card(
-            shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(16.dp),
+                backgroundColor = OmegaTheme.colors.surface,
+                border = BorderStroke(1.dp, OmegaTheme.colors.border)
         ) {
             Column(modifier = columnModifier) {
                 content()
@@ -58,9 +62,9 @@ fun PreferenceGroupHeading(
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .height(48.dp)
-                .padding(horizontal = 32.dp)
-                .fillMaxWidth()
+                    .height(48.dp)
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth()
         ) {
             CompositionLocalProvider(
                 LocalContentAlpha provides ContentAlpha.medium,
@@ -69,7 +73,7 @@ fun PreferenceGroupHeading(
                 Text(
                     text = heading,
                     style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.primary
+                        color = OmegaTheme.colors.primary
                 )
             }
         }
