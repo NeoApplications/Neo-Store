@@ -25,7 +25,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.XmlRes
 import androidx.fragment.app.DialogFragment
-import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.util.getThemeAttr
@@ -64,7 +63,7 @@ class PreferenceDialogFragment : DialogFragment() {
     }
 }
 
-class DialogSettingsFragment : PreferenceFragmentCompat() {
+class DialogSettingsFragment : BasePreferenceFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(content, rootKey)
