@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title__desktop_full_width_widgets">Widgeti pune širine</string>
+    <string name="title_desktop_full_width_widgets">Widgeti pune širine</string>
     <string name="allow_rotation_blocked_desc">Trenutna postavka zaslona ne dozvoljava rotaciju</string>
     <string name="pref_category__incubating">Inkubiranje</string>
     <string name="pref_category__others">Ostalo</string>

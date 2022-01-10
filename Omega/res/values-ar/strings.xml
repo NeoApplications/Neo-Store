@@ -112,7 +112,7 @@
     <string name="title__dock_icon_size">حجم الايقونات</string>
     <string name="grid_size_width">العرض</string>
     <string name="grid_size_height">الطول</string>
-    <string name="summary__full_width_widgets">أسمح للأدوات بالأمتداد للعرض كاملا بدون حشوة</string>
+    <string name="summary_full_width_widgets">أسمح للأدوات بالأمتداد للعرض كاملا بدون حشوة</string>
     <string name="title_desktop_text_size">حجم النص</string>
     <string name="title_desktop_hide_statusbar">اخفاء شريط الحالة</string>
     <string name="title_desktop_icon_popup_menu">عناصر قائمة منبثقة</string>
@@ -123,7 +123,7 @@
     <string name="title__desktop_hide_icon_labels">أخفاء أسم الايقونة على الشاشة الرئيسية</string>
     <string name="title__desktop_grid_size">حجم الشبكة</string>
     <string name="title__desktop_icon_size">حجم الايقونات</string>
-    <string name="title__desktop_full_width_widgets">أدوات كاملة العرض</string>
+    <string name="title_desktop_full_width_widgets">أدوات كاملة العرض</string>
     <string name="allow_rotation_blocked_desc">أعدادات الشاشة الحالية لاتسمح بتدوير الشاشة</string>
     <string name="pref_category__incubating">الأحتضان</string>
     <string name="pref_category__others">أخرى</string>

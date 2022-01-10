@@ -177,8 +177,8 @@
     <string name="title__dock_hide_labels">Masquer les noms</string>
     <string name="title__dock_hide">Masquer le dock</string>
     <string name="title__dock_scale">Échelle du dock</string>
-    <string name="summary__full_width_widgets">Autoriser les widgets à s\'étendre sur toute la largeur sans remplissage</string>
-    <string name="title__desktop_full_width_widgets">Widgets en pleine largeur</string>
+    <string name="summary_full_width_widgets">Autoriser les widgets à s\'étendre sur toute la largeur sans remplissage</string>
+    <string name="title_desktop_full_width_widgets">Widgets en pleine largeur</string>
     <string name="allow_rotation_blocked_desc">Le paramètre d’affichage actuel ne permet pas la rotation</string>
     <string name="pref_category__others">Autres</string>
     <string name="pref_category__inputs">Gestes et recherche</string>

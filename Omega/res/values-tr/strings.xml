@@ -14,7 +14,7 @@
     <string name="title__desktop_hide_icon_labels">Ana ekranda simge etiketlerini gizle</string>
     <string name="title__desktop_grid_size">Izgara boyutu</string>
     <string name="title__desktop_icon_size">Simge boyutu</string>
-    <string name="title__desktop_full_width_widgets">Tam genişlikte widget\'lar</string>
+    <string name="title_desktop_full_width_widgets">Tam genişlikte widget\'lar</string>
     <string name="allow_rotation_blocked_desc">Geçerli görüntü ayarı döndürmeye izin vermiyor</string>
     <string name="pref_category__inputs">Hareketler ve Arama</string>
     <string name="summary__general_about">Omega Launcher hakkında daha fazlası</string>
@@ -235,7 +235,7 @@
     <string name="title__dock_colored_icons">Renkli simgeler</string>
     <string name="title_dock_two_row">İkinci Satırı Göster</string>
     <string name="title__dock_icon_size">Simge boyutu</string>
-    <string name="summary__full_width_widgets">Widget\'ların kenar dolgusu olmadan tam genişliğe yayılmasına izin verin</string>
+    <string name="summary_full_width_widgets">Widget\'ların kenar dolgusu olmadan tam genişliğe yayılmasına izin verin</string>
     <string name="backup_share">Paylaş</string>
     <string name="backup_delete">Gizle</string>
     <string name="backups">Yedeklemeler</string>

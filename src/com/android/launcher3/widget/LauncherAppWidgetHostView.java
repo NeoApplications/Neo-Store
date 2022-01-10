@@ -49,6 +49,7 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.views.BaseDragLayer.TouchCompleteListener;
+import com.android.launcher3.widget.custom.CustomAppWidgetProviderInfo;
 import com.android.launcher3.widget.dragndrop.AppWidgetHostViewDragListener;
 
 import java.util.List;
@@ -147,6 +148,18 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
         }
         view.performLongClick();
         return true;
+    }
+
+    @Override
+    public void setAppWidget(int appWidgetId, AppWidgetProviderInfo info) {
+        super.setAppWidget(appWidgetId, info);
+        if (info != null && Utilities.getOmegaPrefs(getContext()).getAllowFullWidthWidgets()) {
+            setPadding(0, 0, 0, 0);
+        } else if (info instanceof CustomAppWidgetProviderInfo) {
+            if (((CustomAppWidgetProviderInfo) info).noPadding) {
+                setPadding(0, 0, 0, 0);
+            }
+        }
     }
 
     @Override

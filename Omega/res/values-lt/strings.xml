@@ -12,7 +12,7 @@
     <string name="title__general_smartspace">Pagrindinio ekrano valdiklis</string>
     <string name="title__desktop_grid_size">Tinklelio dydis</string>
     <string name="title__desktop_icon_size">Piktogramos dydis</string>
-    <string name="title__desktop_full_width_widgets">Viso pločio valdikliai</string>
+    <string name="title_desktop_full_width_widgets">Viso pločio valdikliai</string>
     <string name="allow_rotation_blocked_desc">Dabartinis ekrano nustatymas neleidžia pasukimo</string>
     <string name="pref_category__incubating">Inkubacija</string>
     <string name="pref_category__others">Kita</string>
@@ -369,7 +369,7 @@
     <string name="title__drawer_icon_size">„Visos programėlės“ piktogramos dydis</string>
     <string name="title__drawer_hide_apps">Paslėptų programėlių nuorodos</string>
     <string name="title_separate_work_apps">Antras skirtukas darbo programėlėms</string>
-    <string name="summary__full_width_widgets">Leisti valdikliams išsidėstyti per visą plotį be užpildų</string>
+    <string name="summary_full_width_widgets">Leisti valdikliams išsidėstyti per visą plotį be užpildų</string>
     <string name="summary__general_desktop">Pritaikykite savo darbalaukį</string>
     <string name="edit_dash">Redaguoti skydelį</string>
     <string name="action_open_dash">Atidaryti skydelį</string>

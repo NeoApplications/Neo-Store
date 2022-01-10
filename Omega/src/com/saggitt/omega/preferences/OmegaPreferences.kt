@@ -97,6 +97,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var allowEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
     val hideAppLabels by BooleanPref("pref_hide_app_label", false, reloadApps)
     val desktopTextScale by FloatPref("pref_icon_text_scale", 1f, reloadApps)
+    val allowFullWidthWidgets by BooleanPref("pref_full_width_widgets", false, restart)
     private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, reloadApps)
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 

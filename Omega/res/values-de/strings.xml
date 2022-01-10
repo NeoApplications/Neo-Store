@@ -148,7 +148,7 @@
     <string name="title__dock_icon_size">Symbol-Größe</string>
     <string name="grid_size_width">Breite</string>
     <string name="grid_size_height">Höhe</string>
-    <string name="summary__full_width_widgets">Widgets füllen die volle Breite ohne Randabstand aus</string>
+    <string name="summary_full_width_widgets">Widgets füllen die volle Breite ohne Randabstand aus</string>
     <string name="title_desktop_text_size">Textgröße</string>
     <string name="title_desktop_hide_statusbar">Statusleiste ausblenden</string>
     <string name="title_desktop_icon_popup_menu">Dialogfenster-Menüelemente</string>
@@ -158,7 +158,7 @@
     <string name="title__desktop_hide_icon_labels">Symbol-Beschriftung auf dem Startbildschirm verstecken</string>
     <string name="title__desktop_grid_size">Rastergröße</string>
     <string name="title__desktop_icon_size">Symbolgröße</string>
-    <string name="title__desktop_full_width_widgets">Widgets in voller Breite</string>
+    <string name="title_desktop_full_width_widgets">Widgets in voller Breite</string>
     <string name="allow_rotation_blocked_desc">Aktuelle Display-Einstellung erlaubt keine Drehung</string>
     <string name="pref_category__others">Anderes</string>
     <string name="pref_category__inputs">Gesten und Suche</string>

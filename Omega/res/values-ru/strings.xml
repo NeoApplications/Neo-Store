@@ -281,7 +281,7 @@
     <string name="title__dock_icon_size">Размер иконки</string>
     <string name="grid_size_width">Ширина</string>
     <string name="grid_size_height">Высота</string>
-    <string name="summary__full_width_widgets">Разрешить виджетам занимать всю ширину без отступов</string>
+    <string name="summary_full_width_widgets">Разрешить виджетам занимать всю ширину без отступов</string>
     <string name="title_desktop_text_size">Размер текста</string>
     <string name="title_desktop_hide_statusbar">Скрыть панель уведомлений</string>
     <string name="title_desktop_icon_popup_menu">Пункты всплывающего меню</string>
@@ -290,7 +290,7 @@
     <string name="title__desktop_hide_icon_labels">Скрыть ярлыки иконок на главном экране</string>
     <string name="title__desktop_grid_size">Размер сетки</string>
     <string name="title__desktop_icon_size">Размер иконки</string>
-    <string name="title__desktop_full_width_widgets">Виджеты на всю ширину</string>
+    <string name="title_desktop_full_width_widgets">Виджеты на всю ширину</string>
     <string name="allow_rotation_blocked_desc">Текущая настройка экрана не допускает вращения</string>
     <string name="pref_category__others">Другое</string>
     <string name="summary__general_about">Больше информации об Omega Launcher</string>

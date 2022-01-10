@@ -19,7 +19,7 @@
     <string name="pref_category__interfaces">Interface de usuaria</string>
     <string name="pref_category__others">Outros</string>
     <string name="pref_category__incubating">Incubando</string>
-    <string name="title__desktop_full_width_widgets">Widgets de ancho completo</string>
+    <string name="title_desktop_full_width_widgets">Widgets de ancho completo</string>
     <string name="title__desktop_icon_size">Tamaño da icona</string>
     <string name="title__desktop_grid_size">Tamaño da grella</string>
     <string name="title__desktop_hide_icon_labels">Agochar etiquetas das iconas na pantalla inicial</string>
@@ -27,7 +27,7 @@
     <string name="title_desktop_keep_empty">Permitir páxinas baleiras</string>
     <string name="title__multiline_labels">Nomes de app multiliña</string>
     <string name="title_desktop_icon_popup_menu">Elementos de menú emerxentes</string>
-    <string name="summary__full_width_widgets">Permitir que os widgets ocupen todo o ancho sen deixar espazo</string>
+    <string name="summary_full_width_widgets">Permitir que os widgets ocupen todo o ancho sen deixar espazo</string>
     <string name="grid_size_height">Altura</string>
     <string name="grid_size_width">Ancho</string>
     <string name="title__dock_icon_size">Tamaño da icona</string>

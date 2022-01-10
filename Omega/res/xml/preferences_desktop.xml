@@ -97,6 +97,14 @@
         app:iconSpaceReserved="false"
         app:logIdOn="615" />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_full_width_widgets"
+        android:persistent="true"
+        android:summary="@string/summary_full_width_widgets"
+        android:title="@string/title_desktop_full_width_widgets"
+        app:iconSpaceReserved="false" />
+
     <Preference
         android:fragment="com.saggitt.omega.dash.DashFragment"
         android:key="pref_dash_providers"

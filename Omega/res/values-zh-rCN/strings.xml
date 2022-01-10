@@ -45,7 +45,7 @@
     <string name="title__dock_icon_size">图标大小</string>
     <string name="grid_size_width">宽度</string>
     <string name="grid_size_height">高度</string>
-    <string name="summary__full_width_widgets">允许组件不重叠地贴边</string>
+    <string name="summary_full_width_widgets">允许组件不重叠地贴边</string>
     <string name="title_desktop_text_size">文字大小</string>
     <string name="title_desktop_hide_statusbar">隐藏状态栏</string>
     <string name="title_desktop_icon_popup_menu">弹出列表项</string>
@@ -53,7 +53,7 @@
     <string name="title_desktop_lock_desktop">锁定桌面</string>
     <string name="title__desktop_hide_icon_labels">在主屏幕上隐藏图标名称</string>
     <string name="title__desktop_icon_size">图标大小</string>
-    <string name="title__desktop_full_width_widgets">全屏组件</string>
+    <string name="title_desktop_full_width_widgets">全屏组件</string>
     <string name="allow_rotation_blocked_desc">当前显示设置不允许屏幕旋转</string>
     <string name="pref_category__incubating">孵化</string>
     <string name="folder_cover_mode_desc">点击打开第一个应用，上划以浏览全部应用。</string>

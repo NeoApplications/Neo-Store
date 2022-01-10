@@ -118,7 +118,7 @@
     <string name="title__multiline_labels">Nombre de aplicaciones en varias lineas</string>
     <string name="title__desktop_hide_icon_labels">Ocultar etiquetas en los iconos de la pantalla de inicio</string>
     <string name="title__desktop_grid_size">Tamaño de la cuadrícula</string>
-    <string name="title__desktop_full_width_widgets">Widgets en ancho completo</string>
+    <string name="title_desktop_full_width_widgets">Widgets en ancho completo</string>
     <string name="pref_category__incubating">Incubando</string>
     <string name="title__notification_background">Color de la notificación</string>
     <string name="theme_use_black">Usar negro puro</string>
@@ -236,7 +236,7 @@
     <string name="title_drawer_paged">Paginado</string>
     <string name="title_drawer_vertical_list">Lista Vertical</string>
     <string name="title_drawer_vertical">Vertical</string>
-    <string name="summary__full_width_widgets">Permitir que los widgets abarquen todo el ancho sin relleno</string>
+    <string name="summary_full_width_widgets">Permitir que los widgets abarquen todo el ancho sin relleno</string>
     <string name="title__drawer_icon_popup_menu">Burbuja de acceso directo</string>
     <string name="title__drawer_icon_size">Tamaño de icono para todas las aplicaciones</string>
     <string name="title__drawer_paged_apps">Vista de aplicaciones por páginas</string>

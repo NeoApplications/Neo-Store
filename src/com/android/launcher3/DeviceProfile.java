@@ -219,6 +219,7 @@ public class DeviceProfile {
                   boolean useTwoPanels) {
 
         prefs = Utilities.getOmegaPrefs(context);
+        boolean fullWidthWidgets = prefs.getAllowFullWidthWidgets();
         allAppsCellHeightMultiplier = prefs.getAllAppsCellHeightMultiplier();
         this.inv = inv;
         this.isLandscape = windowBounds.isLandscape();
@@ -307,7 +308,7 @@ public class DeviceProfile {
             cellLayoutPaddingLeftRightPx = 0;
             cellLayoutBottomPaddingPx = cellLayoutPadding;
         } else {
-            cellLayoutPaddingLeftRightPx = cellLayoutPaddingLeftRightMultiplier * cellLayoutPadding;
+            cellLayoutPaddingLeftRightPx = (fullWidthWidgets) ? 0 : cellLayoutPaddingLeftRightMultiplier * cellLayoutPadding;
             cellLayoutBottomPaddingPx = 0;
         }
 
@@ -821,9 +822,12 @@ public class DeviceProfile {
                 }
             } else {
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
-                padding.set(desiredWorkspaceLeftRightMarginPx,
+                int horizontalPadding = prefs.getAllowFullWidthWidgets() ? 0 : desiredWorkspaceLeftRightMarginPx;
+
+                // Pad the top and bottom of the workspace with search/hotseat bar sizes
+                padding.set(horizontalPadding,
                         workspaceTopPadding + (isScalableGrid ? 0 : edgeMarginPx),
-                        desiredWorkspaceLeftRightMarginPx,
+                        horizontalPadding,
                         paddingBottom);
             }
         }
