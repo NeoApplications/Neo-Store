@@ -21,6 +21,7 @@ package com.saggitt.omega.preferences.views
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
@@ -37,9 +38,13 @@ class PrefIconPackFragment : PreferenceFragmentCompat() {
             onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
                 val intent = Intent.parseUri(context.getString(R.string.market_search_intent), 0)
                 intent.data = intent.data!!.buildUpon()
-                        .appendQueryParameter("q", context.getString(R.string.icon_pack)).build()
+                    .appendQueryParameter("q", context.getString(R.string.icon_pack)).build()
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
+
+                if (intent.resolveActivity(context.packageManager) != null)
+                    context.startActivity(intent)
+                else Toast.makeText(context, R.string.no_store_found, Toast.LENGTH_LONG)
+                    .show()
 
                 false
             }
