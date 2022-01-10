@@ -36,11 +36,16 @@ class CustomizeIconsPreview @JvmOverloads constructor(
         context: Context?,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), OmegaPreferences.OnPreferenceChangeListener {
     private val wallpaper: Drawable
     private val viewLocation = IntArray(2)
     private val icons = arrayOfNulls<ImageView>(4)
     private val prefs: OmegaPreferences
+    private val prefsToWatch = arrayOf(
+            "pref_colored_background", "pref_adaptive_icon_pack"
+    )
+    private var count = 2
+    private var isFirstLoad = true
 
     init {
         orientation = HORIZONTAL
@@ -52,6 +57,17 @@ class CustomizeIconsPreview @JvmOverloads constructor(
         super.onFinishInflate()
         loadIcons()
         loadBackground(prefs.forceShapeless)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        prefs.addOnPreferenceChangeListener(this, *prefsToWatch)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        prefs.reloadIcons()
+        prefs.removeOnPreferenceChangeListener(this, *prefsToWatch)
     }
 
     private fun getShapeDrawable(): Drawable {
@@ -132,4 +148,16 @@ class CustomizeIconsPreview @JvmOverloads constructor(
         canvas.restore()
         super.dispatchDraw(canvas)
     }
+
+    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
+        if (!isFirstLoad && count == 0) {
+            loadIcons()
+            loadBackground(prefs.forceShapeless)
+            invalidate()
+        } else {
+            isFirstLoad = false
+            count--
+        }
+    }
+
 }

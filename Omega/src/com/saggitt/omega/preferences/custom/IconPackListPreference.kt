@@ -21,13 +21,13 @@ package com.saggitt.omega.preferences.custom
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.ListPreference
-import androidx.preference.Preference
+import com.android.launcher3.Utilities
 import com.saggitt.omega.iconpack.IconPackProvider
-import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.preferences.OmegaPreferences
 
 class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
-        ListPreference(context, attrs), Preference.OnPreferenceChangeListener {
-    private val prefs = context.omegaPrefs
+        ListPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+    private val prefs = Utilities.getOmegaPrefs(context)
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
 
     init {
@@ -43,8 +43,17 @@ class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
         icon = current.icon
     }
 
-    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+    override fun onAttached() {
+        super.onAttached()
+        Utilities.getOmegaPrefs(context).addOnPreferenceChangeListener("pref_icon_pack_package", this)
+    }
+
+    override fun onDetached() {
+        super.onAttached()
+        Utilities.getOmegaPrefs(context).removeOnPreferenceChangeListener("pref_icon_pack_package", this)
+    }
+
+    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         updateSummary()
-        return true
     }
 }

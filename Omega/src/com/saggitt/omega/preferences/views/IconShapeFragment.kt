@@ -19,7 +19,6 @@
 package com.saggitt.omega.preferences.views
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,13 +39,11 @@ import com.saggitt.omega.icons.ShapeModel
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.recreate
 
-class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class IconShapeFragment : Fragment() {
 
     private lateinit var prefs: OmegaPreferences
     private lateinit var binding: FragmentIconCustomizationBinding
     private val fastItemAdapter = ItemAdapter<ItemIconShape>()
-
-    private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -61,8 +58,6 @@ class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChange
         super.onViewCreated(view, savedInstanceState)
         prefs = Utilities.getOmegaPrefs(context)
         val context: Context? = activity
-
-        sharedPrefs = Utilities.getPrefs(context)
 
         val systemShape = IconShapeManager.getSystemIconShape(context!!)
         val iconShapes = arrayOf(
@@ -81,25 +76,16 @@ class IconShapeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChange
         fastAdapter.setHasStableIds(true)
         fastItemAdapter.set(iconShapeItems)
         fastAdapter.addEventHook(OnIconClickHook())
+        fastAdapter.notifyAdapterDataSetChanged()
 
         //Load Shapes
         binding.shapeView.layoutManager = GridLayoutManager(context, 4)
         binding.shapeView.adapter = fastAdapter
-        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().title = requireActivity().getString(R.string.title_theme_customize_icons)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        this@IconShapeFragment.recreate()
     }
 
     inner class OnIconClickHook : ClickEventHook<ItemIconShape>() {

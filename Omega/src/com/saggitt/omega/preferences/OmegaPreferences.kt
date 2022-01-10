@@ -21,12 +21,11 @@ package com.saggitt.omega.preferences
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Looper
 import android.util.Log
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
-import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_SORT
@@ -38,8 +37,6 @@ import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
 import java.io.File
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutionException
 import kotlin.math.roundToInt
 import kotlin.reflect.KProperty
 import com.android.launcher3.graphics.IconShape as L3IconShape
@@ -57,7 +54,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val reloadAll = { reloadAll() }
     private val updateBlur = { updateBlur() }
     private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
-    private val reloadIcons = { idp.onPreferencesChanged(context) }
+    val reloadIcons = { idp.onPreferencesChanged(context) }
     private val onIconShapeChanged = {
         initializeIconShape()
         L3IconShape.init(context)
@@ -592,30 +589,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     companion object {
 
-        @SuppressLint("StaticFieldLeak")
-        private var INSTANCE: OmegaPreferences? = null
-        fun getInstance(context: Context): OmegaPreferences {
-            if (INSTANCE == null) {
-                return if (Looper.myLooper() == Looper.getMainLooper()) {
-                    OmegaPreferences(context)
-                } else {
-                    try {
-                        MAIN_EXECUTOR.submit(Callable { getInstance(context) }).get()
-                    } catch (e: InterruptedException) {
-                        throw RuntimeException(e)
-                    } catch (e: ExecutionException) {
-                        throw RuntimeException(e)
-                    }
-                }
-            }
-            return INSTANCE!!
-        }
+        @JvmField
+        val INSTANCE = MainThreadInitializedObject(::OmegaPreferences)
 
-        fun destroyInstance() {
-            INSTANCE?.apply {
-                onChangeListeners.clear()
-                onChangeCallback = null
-            }
-        }
+        @JvmStatic
+        fun getInstance(context: Context) = INSTANCE.get(context)!!
+
     }
 }

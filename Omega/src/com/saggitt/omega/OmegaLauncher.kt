@@ -55,19 +55,18 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
 
-    private val hideStatusBarKey = "pref_hideStatusBar"
     private var paused = false
     private var sRestart = false
     private val prefCallback = OmegaPreferencesChangeCallback(this)
-    val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
+    val mPrefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
-        currentAccent = prefs.accentColor
+        currentAccent = mPrefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         val config = Config(this)
-        config.setAppLanguage(prefs.language)
+        config.setAppLanguage(mPrefs.language)
 
         theme.applyStyle(
             resources.getIdentifier(
@@ -77,16 +76,16 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
             ), true
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !Utilities.hasStoragePermission(
-                this
-            )
+                        this
+                )
         ) {
             Utilities.requestStoragePermission(this)
         }
 
         super.onCreate(savedInstanceState)
 
-        prefs.registerCallback(prefCallback)
-        prefs.addOnPreferenceChangeListener(hideStatusBarKey, this)
+        mPrefs.registerCallback(prefCallback)
+        mPrefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
@@ -106,7 +105,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
 
     override fun onResume() {
         super.onResume()
-        if (currentAccent != prefs.accentColor) recreate()
+        if (currentAccent != mPrefs.accentColor) recreate()
         restartIfPending()
         paused = false
     }
@@ -133,11 +132,10 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     override fun onDestroy() {
         super.onDestroy()
 
-        prefs.removeOnPreferenceChangeListener(hideStatusBarKey, this)
-        prefs.unregisterCallback()
+        mPrefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
+        mPrefs.unregisterCallback()
         if (sRestart) {
             sRestart = false
-            OmegaPreferences.destroyInstance()
         }
     }
 
@@ -188,7 +186,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        if (key == hideStatusBarKey) {
+        if (key == "pref_hideStatusBar") {
             if (prefs.hideStatusBar) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             } else if (!force) {
