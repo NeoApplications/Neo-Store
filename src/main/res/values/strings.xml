@@ -3,13 +3,13 @@
     <string name="action_failed">Action failed</string>
     <string name="add_repository">Add repository</string>
     <string name="address">Address</string>
-    <string name="all_applications">All</string>
-    <string name="all_applications_up_to_date">All up to date</string>
+    <string name="all_applications">All Apps</string>
+    <string name="all_applications_up_to_date">All apps are up to date</string>
     <string name="already_exists">Already exists</string>
     <string name="always">Always</string>
     <string name="amoled">Black</string>
     <string name="anti_features">Anti-features</string>
-    <string name="application">App</string>
+    <string name="application">Application</string>
     <string name="application_not_found">Could not find that app</string>
     <string name="author_email">Author e-mail</string>
     <string name="author_website">Author website</string>
