@@ -31,7 +31,7 @@ class DeviceSettings(context: Context) : DashActionProvider(context) {
     override val description = context.getString(R.string.dash_device_settings_summary)
 
     override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_device_settings).apply {
+        get() = AppCompatResources.getDrawable(context, R.drawable.ic_setting).apply {
             this?.setTint(darkenColor(accentColor))
         }
 
