@@ -4,7 +4,7 @@
     <string name="add_repository">Adicionar repositório</string>
     <string name="address">Endereço</string>
     <string name="all_applications">Todos os aplicativos</string>
-    <string name="all_applications_up_to_date">Todos os teus aplicativos estão atualizados</string>
+    <string name="all_applications_up_to_date">Todos os aplicativos estão atualizados</string>
     <string name="already_exists">Já existe</string>
     <string name="always">Sempre</string>
     <string name="amoled">Preto</string>
@@ -16,7 +16,7 @@
     <string name="available">Disponível</string>
     <string name="bug_tracker">Rastreador de erros</string>
     <string name="cancel">Cancelar</string>
-    <string name="cant_edit_sync_DESC">Não é possível editar o repositório pois ele está sincronizando no momento.</string>
+    <string name="cant_edit_sync_DESC">Não é possível editar os repositórios em sincronização…</string>
     <string name="changelog">Lista de mudanças</string>
     <string name="changes">Mudanças</string>
     <string name="checking_repository">Checando o repositório…</string>
@@ -59,7 +59,7 @@
     instalado no seu dispositivo. Desinstale-a primeiro.</string>
     <string name="incompatible_version">Versão incompatível</string>
     <string name="incompatible_versions">Versões incompatíveis</string>
-    <string name="incompatible_versions_summary">Mostrar versões do aplicativo incompatíveis com o dispositivo</string>
+    <string name="incompatible_versions_summary">Mostrar versões incompatíveis com o dispositivo</string>
     <string name="incompatible_with_FORMAT">Incompatível com %s</string>
     <string name="install">Instalar</string>
     <string name="install_types">Tipos de instalação</string>
@@ -78,19 +78,19 @@
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="links">Links</string>
     <string name="list_animation">Animação da lista</string>
-    <string name="list_animation_description">Mostrar a animação da lista na página principal</string>
+    <string name="list_animation_description">Animar lista na página principal</string>
     <string name="merging_FORMAT">Incorporando %s</string>
     <string name="name">Nome</string>
     <string name="network_error_DESC">Erro da rede.</string>
     <string name="never">Nunca</string>
-    <string name="new_updates_available">Novas versões de aplicativos disponíveis</string>
+    <string name="new_updates_available">Novas versões disponíveis</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d aplicativo tem uma nova versão.</item>
         <item quantity="other">%d aplicativos com novas versões.</item>
     </plurals>
     <string name="no_applications_available">Nenhum aplicativo disponível</string>
     <string name="no_applications_installed">Nenhum aplicativo instalado</string>
-    <string name="no_description_available_DESC">Nenhuma descrição disponível.</string>
+    <string name="no_description_available_DESC">Nenhuma descrição.</string>
     <string name="no_matching_applications_found">Não foi possível encontrar nenhum desses aplicativos</string>
     <string name="no_proxy">Sem proxy</string>
     <string name="notify_about_updates">Notificar sobre novas versões de aplicativos</string>
@@ -123,7 +123,7 @@
     <string name="repository_unsigned_DESC">Sem assinatura. Não foi possível verificar a lista de aplicativos. Tenha cuidado ao baixar aplicativos de repositórios não assinados.</string>
     <string name="requires_FORMAT">Requer %s</string>
     <string name="root_permission">Instalação Silenciosa</string>
-    <string name="root_permission_description">Permitir acesso root para instalações silenciosas</string>
+    <string name="root_permission_description">Usar root para instalações sem interação</string>
     <string name="save">Salvar</string>
     <string name="saving_details">Salvando detalhes…</string>
     <string name="screenshots">Capturas de tela</string>
@@ -164,11 +164,11 @@
     <string name="upstream_source_code_is_not_free">O código-fonte upstream não é gratuito</string>
     <string name="username">Nome de usuário</string>
     <string name="username_missing">Falta o nome de usuário</string>
-    <string name="validation_index_error_DESC">O índice não pôde ser validado.</string>
+    <string name="validation_index_error_DESC">Não foi possível validar o índice.</string>
     <string name="version">Versão</string>
     <string name="version_FORMAT">Versão %s</string>
     <string name="versions">Versões</string>
-    <string name="waiting_to_start_download">Esperando para começar a baixar…</string>
+    <string name="waiting_to_start_download">Iniciando download…</string>
     <string name="whats_new">O que há de novo</string>
     <string name="website">Página web</string>
     <string name="prefs_language_title">Idioma</string>
