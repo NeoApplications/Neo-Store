@@ -31,24 +31,24 @@
         android:translateX="4.5"
         android:translateY="4.5">
         <path
-            android:fillColor="#00000000"
+            android:fillColor="@android:color/transparent"
             android:pathData="M88,134.9 L177.9,214a8,8 0,0 0,13.1 -4.2L228.6,45.6a8,8 0,0 0,-10.7 -9.2L33.3,108.9c-7.4,2.9 -6.4,13.7 1.4,15.3Z"
             android:strokeWidth="24"
-            android:strokeColor="#000000"
+            android:strokeColor="?settingsBackground"
             android:strokeLineCap="round"
             android:strokeLineJoin="round" />
         <path
-            android:fillColor="#00000000"
+            android:fillColor="@android:color/transparent"
             android:pathData="M88,134.9L224.1,36.6"
             android:strokeWidth="24"
-            android:strokeColor="#000000"
+            android:strokeColor="?settingsBackground"
             android:strokeLineCap="round"
             android:strokeLineJoin="round" />
         <path
-            android:fillColor="#00000000"
+            android:fillColor="@android:color/transparent"
             android:pathData="M132.9,174.4l-31.2,31.2A8,8 0,0 1,88 200V134.9"
             android:strokeWidth="24"
-            android:strokeColor="#000000"
+            android:strokeColor="?settingsBackground"
             android:strokeLineCap="round"
             android:strokeLineJoin="round" />
     </group>
