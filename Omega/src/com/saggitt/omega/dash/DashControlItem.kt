@@ -21,6 +21,7 @@ package com.saggitt.omega.dash
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.android.launcher3.AbstractFloatingView
 import com.android.launcher3.Launcher
@@ -50,6 +51,8 @@ class DashControlItem(val context: Context, val provider: DashControlProvider) :
         binding.itemName.text = provider.name
         binding.itemIcon.tooltipText = provider.description
         binding.itemIcon.imageTintList = if (provider.state) sheetColor else activeColor
+        binding.itemExtend.visibility = if (provider.extendable) View.VISIBLE else View.GONE
+        binding.itemExtend.imageTintList = if (provider.state) sheetColor else activeColor
         binding.itemName.setTextColor(if (provider.state) sheetColor else activeColor)
         binding.root.setOnClickListener {
             provider.state = !provider.state

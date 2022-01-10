@@ -31,6 +31,7 @@ class AutoRotation(context: Context) : DashControlProvider(context) {
     override val itemId = 12
     override val name = context.getString(R.string.dash_auto_rotation)
     override val description = context.getString(R.string.dash_auto_rotation_summary)
+    override val extendable = false
 
     override val icon: Drawable?
         get() = AppCompatResources.getDrawable(context, R.drawable.ic_auto_rotation).apply {

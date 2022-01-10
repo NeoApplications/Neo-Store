@@ -46,4 +46,5 @@ abstract class DashActionProvider(context: Context) : DashProvider(context) {
 
 abstract class DashControlProvider(context: Context) : DashProvider(context) {
     abstract var state: Boolean
+    abstract val extendable: Boolean
 }

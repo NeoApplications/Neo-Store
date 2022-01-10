@@ -33,6 +33,7 @@ class Bluetooth(context: Context) : DashControlProvider(context) {
     override val itemId = 13
     override val name = context.getString(R.string.dash_bluetooth)
     override val description = context.getString(R.string.dash_bluetooth_summary)
+    override val extendable = false
 
     override val icon: Drawable?
         get() = AppCompatResources.getDrawable(context, R.drawable.ic_bluetooth).apply {

@@ -28,6 +28,7 @@ class Sync(context: Context) : DashControlProvider(context) {
     override val itemId = 16
     override val name = context.getString(R.string.dash_sync)
     override val description = context.getString(R.string.dash_sync_summary)
+    override val extendable = false
 
     override val icon: Drawable?
         get() = AppCompatResources.getDrawable(context, R.drawable.ic_sync).apply {

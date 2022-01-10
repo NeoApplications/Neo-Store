@@ -32,6 +32,8 @@ class Location(context: Context) : DashControlProvider(context) {
     override val itemId = 14
     override val name = context.getString(R.string.dash_location)
     override val description = context.getString(R.string.dash_location_summary)
+    override val extendable = true
+
     var locationManager =
         context.getSystemService(LOCATION_SERVICE) as LocationManager
 

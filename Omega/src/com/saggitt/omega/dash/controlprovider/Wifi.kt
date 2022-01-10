@@ -31,6 +31,7 @@ class Wifi(context: Context) : DashControlProvider(context) {
     override val itemId = 17
     override val name = context.getString(R.string.dash_wifi)
     override val description = context.getString(R.string.dash_wifi_summary)
+    override val extendable = true
     private var wifiManager: WifiManager =
         context.getSystemService(WIFI_SERVICE) as WifiManager
 
