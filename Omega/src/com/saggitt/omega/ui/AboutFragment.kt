@@ -58,9 +58,9 @@ import com.saggitt.omega.ui.component.PreferenceGroup
 @ExperimentalCoilApi
 class AboutFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
 
         return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
@@ -84,72 +84,72 @@ class AboutFragment : Fragment() {
 @Composable
 fun CreateMainScreen() {
     Column(
-        modifier = Modifier
-            .padding(8.dp)
+            modifier = Modifier
+                    .padding(8.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                        .fillMaxWidth()
         ) {
             Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(16f))
+                    modifier = Modifier
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(16f))
 
             ) {
                 ResourcesCompat.getDrawable(
-                    LocalContext.current.resources,
-                    R.mipmap.ic_launcher,
-                    LocalContext.current.theme
+                        LocalContext.current.resources,
+                        R.mipmap.ic_launcher,
+                        LocalContext.current.theme
                 )?.let { drawable ->
                     val bitmap = Bitmap.createBitmap(
-                        drawable.intrinsicWidth,
-                        drawable.intrinsicHeight,
-                        Bitmap.Config.ARGB_8888
+                            drawable.intrinsicWidth,
+                            drawable.intrinsicHeight,
+                            Bitmap.Config.ARGB_8888
                     )
                     val canvas = Canvas(bitmap)
                     drawable.setBounds(0, 0, canvas.width, canvas.height)
                     drawable.draw(canvas)
                     Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = null,
-                        modifier = Modifier.requiredSize(72.dp)
+                            bitmap = bitmap.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier.requiredSize(72.dp)
                     )
                 }
             }
 
             Text(
-                text = stringResource(id = R.string.derived_app_name),
-                fontFamily = kaushanScript,
-                fontWeight = FontWeight.Normal,
-                fontSize = 30.sp,
-                color = MaterialTheme.colors.primary
+                    text = stringResource(id = R.string.derived_app_name),
+                    fontFamily = kaushanScript,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 30.sp,
+                    color = MaterialTheme.colors.primary
             )
 
             Text(
-                text = stringResource(id = R.string.app_version) + ": "
-                        + BuildConfig.VERSION_NAME + " ( Build " + BuildConfig.VERSION_CODE + " )",
-                fontWeight = FontWeight.Normal,
-                fontSize = 13.sp,
-                color = OmegaTheme.colors.textPrimary
+                    text = stringResource(id = R.string.app_version) + ": "
+                            + BuildConfig.VERSION_NAME + " ( Build " + BuildConfig.VERSION_CODE + " )",
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 13.sp,
+                    color = OmegaTheme.colors.textPrimary
             )
         }
 
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
         ) {
             links.map { link ->
                 ItemLink(
-                    iconResId = link.iconResId,
-                    label = stringResource(id = link.labelResId),
-                    modifier = Modifier.weight(1f),
-                    url = link.url
+                        iconResId = link.iconResId,
+                        label = stringResource(id = link.labelResId),
+                        modifier = Modifier.weight(1f),
+                        url = link.url
                 )
             }
         }
@@ -159,67 +159,68 @@ fun CreateMainScreen() {
         PreferenceGroup(heading = stringResource(id = R.string.about_team)) {
             contributors.forEach {
                 ContributorRow(
-                    contributorName = stringResource(it.name),
-                    contributorRole = stringResource(it.descriptionRes),
-                    photoUrl = it.photoUrl,
-                    url = it.webpage
+                        contributorName = stringResource(it.name),
+                        contributorRole = stringResource(it.descriptionRes),
+                        photoUrl = it.photoUrl,
+                        url = it.webpage
                 )
             }
         }
 
         Spacer(modifier = Modifier.requiredHeight(8.dp))
-
-        ContributorRow(
-            contributorName = stringResource(id = R.string.contributor2),
-            contributorRole = stringResource(id = R.string.contributor_role),
-            photoUrl = "https://avatars.githubusercontent.com/u/69337602",
-            url = "https://github.com/nonaybay"
-        )
+        PreferenceGroup(heading = stringResource(id = R.string.about_translators_group)) {
+            ContributorRow(
+                    contributorName = stringResource(id = R.string.contributor2),
+                    contributorRole = stringResource(id = R.string.contributor_role),
+                    photoUrl = "https://avatars.githubusercontent.com/u/69337602",
+                    url = "https://github.com/nonaybay"
+            )
+        }
     }
 }
 
 private data class Link(
-    @DrawableRes val iconResId: Int,
-    @StringRes val labelResId: Int,
-    val url: String
+        @DrawableRes val iconResId: Int,
+        @StringRes val labelResId: Int,
+        val url: String
 )
 
 private data class TeamMember(
-    @StringRes val name: Int,
-    @StringRes val descriptionRes: Int,
-    val photoUrl: String,
-    val webpage: String
+        @StringRes val name: Int,
+        @StringRes val descriptionRes: Int,
+        val photoUrl: String,
+        val webpage: String
 )
 
 private val links = listOf(
-    Link(
-        iconResId = R.drawable.ic_github,
-        labelResId = R.string.about_source,
-        url = "https://github.com/otakuhqz/Omega"
-    ),
-    Link(
-        iconResId = R.drawable.ic_channel,
-        labelResId = R.string.about_channel,
-        url = "https://t.me/omegalauncher"
-    ),
-    Link(
-        iconResId = R.drawable.ic_community,
-        labelResId = R.string.about_community,
-        url = "https://t.me/omegalauncher_group"
-    )
+        Link(
+                iconResId = R.drawable.ic_github,
+                labelResId = R.string.about_source,
+                url = "https://github.com/otakuhqz/Omega"
+        ),
+        Link(
+                iconResId = R.drawable.ic_channel,
+                labelResId = R.string.about_channel,
+                url = "https://t.me/omegalauncher"
+        ),
+        Link(
+                iconResId = R.drawable.ic_community,
+                labelResId = R.string.about_community,
+                url = "https://t.me/omegalauncher_group"
+        )
 )
 
 private val contributors = listOf(
-    TeamMember(
-        name = R.string.author,
-        descriptionRes = R.string.author_role,
-        photoUrl = "https://avatars.githubusercontent.com/u/6044050",
-        webpage = "https://github.com/otakuhqz"
-    ),
-    TeamMember(
-        name = R.string.contributor1,
-        descriptionRes = R.string.author_role,
-        photoUrl = "https://avatars.githubusercontent.com/u/40302595",
-        webpage = "https://github.com/machiav3lli"
-    )
+        TeamMember(
+                name = R.string.author,
+                descriptionRes = R.string.author_role,
+                photoUrl = "https://avatars.githubusercontent.com/u/6044050",
+                webpage = "https://github.com/otakuhqz"
+        ),
+        TeamMember(
+                name = R.string.contributor1,
+                descriptionRes = R.string.author_role,
+                photoUrl = "https://avatars.githubusercontent.com/u/40302595",
+                webpage = "https://github.com/machiav3lli"
+        )
 )
