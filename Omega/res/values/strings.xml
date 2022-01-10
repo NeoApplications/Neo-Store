@@ -448,7 +448,7 @@
     <string name="about_source">Source Code</string>
     <string name="about_channel">Channel</string>
     <string name="about_community">Community</string>
-    <string name="about_open_source">Libre Libraries</string>
+    <string name="about_open_source">Open Source Libraries</string>
     <string name="about_source_url" translatable="false">https://github.com/otakuhqz/Omega</string>
     <string name="category__about_licenses">License</string>
     <string name="license_gpl" translatable="false">GPLv3+</string>
