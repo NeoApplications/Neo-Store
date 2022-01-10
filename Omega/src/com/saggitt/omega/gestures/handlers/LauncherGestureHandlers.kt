@@ -146,7 +146,7 @@ class StartAppSearchGestureHandler(context: Context, config: JSONObject?) :
             by lazy {
                 Intent.ShortcutIconResource.fromContext(
                     context,
-                    R.drawable.ic_search_shadow
+                    R.drawable.ic_search
                 )
             }
 

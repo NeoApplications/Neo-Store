@@ -1,0 +1,88 @@
+<!--
+  ~  This file is part of Omega Launcher
+  ~  Copyright (c) 2021   Saul Henriquez
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:tint="?colorControlNormal"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M128.034,127.399m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M190.187,127.399m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M65.882,127.399m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M129.111,190.34m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M191.264,190.34m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M65.044,190.58m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M128.436,64.488m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M190.589,64.488m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M66.284,64.488m-15.538,0a15.538,15.538 0,1 1,31.076 0a15.538,15.538 0,1 1,-31.076 0"
+        android:strokeWidth="18"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

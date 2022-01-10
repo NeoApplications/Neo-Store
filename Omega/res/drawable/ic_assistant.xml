@@ -2,9 +2,41 @@
     android:width="24dp"
     android:height="24dp"
     android:tint="?attr/colorControlNormal"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:viewportWidth="256"
+    android:viewportHeight="256">
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M7,18c-2.21,0 -4,-1.79 -4,-4s1.79,-4 4,-4 4,1.79 4,4 -1.79,4 -4,4zM7,12c-1.1,0 -2,0.9 -2,2s0.9,2 2,2 2,-0.9 2,-2 -0.9,-2 -2,-2zM11,10c-2.21,0 -4,-1.79 -4,-4s1.79,-4 4,-4 4,1.79 4,4 -1.79,4 -4,4zM11,4c-1.1,0 -2,0.9 -2,2s0.9,2 2,2 2,-0.9 2,-2 -0.9,-2 -2,-2zM16.6,21.6c-2.21,0 -4,-1.79 -4,-4s1.79,-4 4,-4 4,1.79 4,4 -1.79,4 -4,4zM16.6,15.6c-1.1,0 -2,0.9 -2,2s0.9,2 2,2 2,-0.9 2,-2 -0.9,-2 -2,-2z" />
+        android:fillColor="@android:color/transparent"
+        android:pathData="M138.7,175.5l-19.2,52.1a8,8 0,0 1,-15 0L85.3,175.5a8.1,8.1 0,0 0,-4.8 -4.8L28.4,151.5a8,8 0,0 1,0 -15l52.1,-19.2a8.1,8.1 0,0 0,4.8 -4.8l19.2,-52.1a8,8 0,0 1,15 0l19.2,52.1a8.1,8.1 0,0 0,4.8 4.8l52.1,19.2a8,8 0,0 1,0 15l-52.1,19.2A8.1,8.1 0,0 0,138.7 175.5Z"
+        android:strokeWidth="24"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M176,16L176,64"
+        android:strokeWidth="24"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M200,40L152,40"
+        android:strokeWidth="24"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M224,72L224,104"
+        android:strokeWidth="24"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M240,88L208,88"
+        android:strokeWidth="24"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

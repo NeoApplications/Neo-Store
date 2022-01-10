@@ -198,7 +198,7 @@ private val links = listOf(
         url = "https://github.com/otakuhqz/Omega"
     ),
     Link(
-        iconResId = R.drawable.ic_group,
+        iconResId = R.drawable.ic_channel,
         labelResId = R.string.about_channel,
         url = "https://t.me/omegalauncher"
     ),

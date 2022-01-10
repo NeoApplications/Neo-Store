@@ -66,7 +66,7 @@ open class PreferencesActivity : AppCompatActivity(),
             } else {
                 binding.actionBar.setNavigationOnClickListener { supportFragmentManager.popBackStack() }
                 binding.actionBar.navigationIcon =
-                    AppCompatResources.getDrawable(this, R.drawable.ic_sysbar_back)
+                    AppCompatResources.getDrawable(this, R.drawable.ic_arrow_back)
             }
         }
 

@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:padding="12dp"
-        android:src="@drawable/ic_gm_close_24"
+        android:src="@drawable/ic_remove_no_shadow"
         android:background="@drawable/full_rounded_transparent_ripple"
         android:layout_gravity="center"
         android:contentDescription="@string/widgets_full_sheet_cancel_button_description"

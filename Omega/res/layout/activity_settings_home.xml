@@ -49,7 +49,7 @@
                 android:theme="@style/Toolbar"
                 app:contentInsetEnd="32dp"
                 app:contentInsetStartWithNavigation="32dp"
-                app:navigationIcon="@drawable/ic_settings_search">
+                app:navigationIcon="@drawable/ic_search">
                 <TextView
                     android:id="@+id/search_action_bar_title"
                     style="@style/TextAppearance.Settings.SearchBar"

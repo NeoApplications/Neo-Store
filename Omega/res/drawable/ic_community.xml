@@ -1,0 +1,77 @@
+<!--
+  ~  This file is part of Omega Launcher
+  ~  Copyright (c) 2021   Omega Launcher Team
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation, either version 3 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="38dp"
+    android:height="38dp"
+    android:autoMirrored="true"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <path
+        android:fillAlpha="0.80"
+        android:fillColor="?colorAccent"
+        android:pathData="M16,16m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0"
+        android:strokeAlpha="0.30" />
+    <group
+        android:scaleX="0.09"
+        android:scaleY="0.09"
+        android:translateX="4.5"
+        android:translateY="4.5">
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M128,140m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M70.4,216a64.1,64.1 0,0 1,115.2 0"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M204.5,116.6A60.1,60.1 0,0 1,244 140"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M167.1,70.2A32,32 0,1 1,204 115"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M52,115A32,32 0,1 1,88.9 70.2"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M12,140a60.1,60.1 0,0 1,39.5 -23.4"
+            android:strokeWidth="24"
+            android:strokeColor="?settingsBackground"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+    </group>
+</vector>

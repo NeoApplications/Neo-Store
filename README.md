@@ -106,6 +106,8 @@ There's also a [devloper's document](DEVDOC.md), where the maintainer and collab
 
 #### Thanks to <a href="https://github.com/nonaybay">Rafael Venâncio</a> for creating the F-Droid repo.
 
+#### Thanks to Helena Zhang and Toby Fried for the great [Phosphor icons](https://phosphoricons.com), which we use since 0.9.0.
+
 ## *Translation*
 
 Translations are handled via Weblate. If want to help, visit <a href="https://hosted.weblate.org/projects/omegalauncher">Hosted Weblate</a>.
