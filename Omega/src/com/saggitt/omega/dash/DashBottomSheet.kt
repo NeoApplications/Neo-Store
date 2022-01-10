@@ -58,7 +58,7 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
             layoutManager = GridLayoutManager(context, 2)
             adapter = controlFastAdapter
         }
-        findViewById<RecyclerView>(R.id.dash_recycler).apply {
+        findViewById<RecyclerView>(R.id.dash_action_recycler).apply {
             layoutManager = GridLayoutManager(context, 4)
             adapter = dashActionFastAdapter
         }

@@ -15,36 +15,41 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_static"
+        android:layout_gravity="center|bottom"
+        android:background="@drawable/bg_bottomsheet"
         android:orientation="vertical"
         android:padding="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/musicTab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="6dp"
             android:background="@drawable/ripple_dash_item_bg"
             android:backgroundTint="?dashIconBackground"
-            android:padding="6dp">
+            android:padding="6dp"
+            app:layout_constraintBottom_toTopOf="@id/dash_control_recycler"
+            app:layout_constraintDimensionRatio="4:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/musicPrev"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/ripple_accent_bg"
-                android:paddingVertical="12dp"
+                android:paddingVertical="18dp"
                 android:tint="@color/colorAccent"
                 app:layout_constraintEnd_toStartOf="@id/musicPlay"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +59,9 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/musicPlay"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/ripple_accent_bg"
-                android:paddingVertical="12dp"
+                android:paddingVertical="18dp"
                 android:tint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/musicNext"
@@ -67,9 +72,10 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/musicNext"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/ripple_accent_bg"
-                android:paddingVertical="12dp"
+                android:foregroundGravity="right"
+                android:paddingVertical="18dp"
                 android:tint="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/musicPlay"
@@ -79,20 +85,28 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dash_control_recycler"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/dash_action_recycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/musicTab"
             app:spanCount="2"
             tools:itemCount="6"
             tools:listitem="@layout/dash_control_item" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/dash_recycler"
-            android:layout_width="wrap_content"
+            android:id="@+id/dash_action_recycler"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dash_control_recycler"
             app:spanCount="4"
             tools:itemCount="12"
             tools:listitem="@layout/dash_action_item" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
