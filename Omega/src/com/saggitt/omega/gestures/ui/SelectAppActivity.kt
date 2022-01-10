@@ -17,20 +17,38 @@
 
 package com.saggitt.omega.gestures.ui
 
+import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.shortcuts.ShortcutKey
+import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.preferences.AppsShortcutsAdapter
+import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.theme.ThemeOverride
 
-class SelectAppActivity : AppCompatActivity(), AppsShortcutsAdapter.Callback {
+class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, AppsShortcutsAdapter.Callback {
+    private lateinit var themeOverride: ThemeOverride
+    private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
+    private val customLayoutInflater by lazy {
+        OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
+    }
+
+    private var currentTheme = 0
+    private var paused = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeOverride = ThemeOverride(themeSet, this)
+        themeOverride.applyTheme(this)
+        currentTheme = themeOverride.getTheme(this)
+
         setContentView(R.layout.preference_insettable_recyclerview)
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -69,4 +87,39 @@ class SelectAppActivity : AppCompatActivity(), AppsShortcutsAdapter.Callback {
         })
         finish()
     }
+
+    override fun onThemeChanged() {
+        if (currentTheme == themeOverride.getTheme(this)) return
+        if (paused) {
+            recreate()
+        } else {
+            finish()
+            startActivity(createRelaunchIntent(), ActivityOptions.makeCustomAnimation(
+                    this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        paused = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        paused = true
+    }
+
+    private fun createRelaunchIntent(): Intent {
+        val state = Bundle()
+        onSaveInstanceState(state)
+        return intent.putExtra("state", state)
+    }
+
+    override fun getSystemService(name: String): Any? {
+        if (name == Context.LAYOUT_INFLATER_SERVICE) {
+            return customLayoutInflater
+        }
+        return super.getSystemService(name)
+    }
+
 }

@@ -16,7 +16,6 @@
  */
 package com.saggitt.omega.preferences
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
@@ -47,24 +46,13 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.makeBasicHandler
+import java.util.*
 
 open class AppsShortcutsAdapter(
     private val context: Context,
     private val callback: Callback? = null,
     private val filter: AppFilter? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    companion object {
-        private const val TYPE_LOADING = 0
-        private const val TYPE_APP = 1
-        private const val TYPE_SHORTCUT = 2
-
-        private val iconDpi =
-            LauncherAppState.getInstanceNoCreate().invariantDeviceProfile.fillResIconDpi
-
-        private var iconProvider: IconProvider? =
-            null // TODO maybe use a custom icon provider in the future
-    }
 
     var items = ArrayList<Item>().apply { add(LoadingItem()) }
     val apps = ArrayList<AppItem>()
@@ -112,7 +100,7 @@ open class AppsShortcutsAdapter(
 
     protected open fun loadAppsList() {
         val apps = getAppsList(context)
-            .sortedBy { it.label.toString().toLowerCase() }
+                .sortedBy { it.label.toString().lowercase(Locale.getDefault()) }
             .map { AppItem(context, it) }
         handler.postAtFrontOfQueue { onAppsListLoaded(apps) }
     }
@@ -208,10 +196,7 @@ open class AppsShortcutsAdapter(
         private val label: TextView = itemView.findViewById(R.id.label)
         private val icon: ImageView = itemView.findViewById(R.id.icon)
         private val caretContainer: View = itemView.findViewById(R.id.caretContainer)
-        private val caretView: ImageView = itemView.findViewById(R.id.caretImageView)
-        private val caretDrawable = CaretDrawable(context).apply {
-            caretProgress = CaretDrawable.PROGRESS_CARET_POINTING_DOWN
-        }
+
         private var caretPointingUp = false
             set(value) {
                 animator?.cancel()
@@ -227,7 +212,7 @@ open class AppsShortcutsAdapter(
 
         init {
             itemView.setOnClickListener(this)
-            caretView.setImageDrawable(caretDrawable)
+            //caretView.setImageDrawable(caretDrawable)
             caretContainer.setOnClickListener(this)
         }
 
@@ -236,8 +221,8 @@ open class AppsShortcutsAdapter(
             icon.setImageDrawable(app.iconDrawable)
             caretContainer.isVisible = app.hasShortcuts
             caretPointingUp = app.expanded
-            caretDrawable.caretProgress =
-                if (caretPointingUp) CaretDrawable.PROGRESS_CARET_POINTING_UP else CaretDrawable.PROGRESS_CARET_POINTING_DOWN
+            //caretDrawable.caretProgress =
+            //    if (caretPointingUp) CaretDrawable.PROGRESS_CARET_POINTING_UP else CaretDrawable.PROGRESS_CARET_POINTING_DOWN
         }
 
         override fun onClick(v: View) {
@@ -251,15 +236,15 @@ open class AppsShortcutsAdapter(
 
         private fun animateCaretPointingUp(pointingUp: Boolean) {
             caretPointingUp = pointingUp
-            animator = ObjectAnimator.ofFloat(
+            /*animator = ObjectAnimator.ofFloat(
                 caretDrawable.caretProgress,
                 if (pointingUp) CaretDrawable.PROGRESS_CARET_POINTING_UP else CaretDrawable.PROGRESS_CARET_POINTING_DOWN
             )
-                .setDuration(200)
+                .setDuration(200)*/
         }
 
         override fun onAnimationUpdate(animator: ValueAnimator) {
-            caretDrawable.caretProgress = animator.animatedValue as Float
+            //caretDrawable.caretProgress = animator.animatedValue as Float
         }
     }
 
@@ -319,4 +304,14 @@ open class AppsShortcutsAdapter(
         fun onAppSelected(app: AppItem)
         fun onShortcutSelected(shortcut: ShortcutItem)
     }
+
+    companion object {
+        private const val TYPE_LOADING = 0
+        private const val TYPE_APP = 1
+        private const val TYPE_SHORTCUT = 2
+
+        private var iconProvider: IconProvider? =
+                null // TODO maybe use a custom icon provider in the future
+    }
+
 }
