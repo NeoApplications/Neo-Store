@@ -33,7 +33,7 @@
     <string name="title__general_desktop">Masaüstü</string>
     <string name="title__general_about">Hakkında</string>
     <string name="title_desktop_icon_popup_menu">Açılır menü öğeleri</string>
-    <string name="title_desktop_overlap_placement">Çakışmalara İzin Ver</string>
+    <string name="title_desktop_overlap_placement">Çakışan widget\'lara izin ver</string>
     <string name="title_desktop_keep_empty">Boş Sayfalara İzin Ver</string>
     <string name="pref_category__others">Diğerleri</string>
     <string name="pref_category__interfaces">Kullanıcı Arayüzü</string>
