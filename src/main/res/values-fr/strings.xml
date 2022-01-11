@@ -71,7 +71,7 @@
     <string name="repositories">Dépôts</string>
     <string name="unknown">Inconnu</string>
     <string name="always">Toujours</string>
-    <string name="application">Appli</string>
+    <string name="application">Application</string>
     <string name="version">Version</string>
     <string name="version_FORMAT">Version %s</string>
     <string name="versions">Versions</string>
@@ -84,11 +84,11 @@
     <string name="unknown_FORMAT">Inconnu : %s</string>
     <string name="unknown_error_DESC">Erreur inconnue.</string>
     <string name="add_repository">Ajouter un dépôt</string>
-    <string name="all_applications_up_to_date">Tout est à jour</string>
+    <string name="all_applications_up_to_date">Toutes les applis sont à jour</string>
     <string name="repository">Dépôt</string>
     <string name="promotes_non_free_network_services">Promeut des services réseau non libres</string>
     <string name="promotes_non_free_software">Promeut des logiciels non libres</string>
-    <string name="all_applications">Tout</string>
+    <string name="all_applications">Toutes les applis</string>
     <string name="tap_to_install_DESC">Appuyez pour installer.</string>
     <string name="provided_by_FORMAT">Fourni par %s</string>
     <string name="project_website">Site web du projet</string>
