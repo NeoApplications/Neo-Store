@@ -16,7 +16,7 @@
     <string name="settings">Beállítások</string>
     <string name="recently_updated">Nemrég frissített</string>
     <string name="root_permission">Néma telepítés</string>
-    <string name="root_permission_description">Rendszergazdai jogosultság engedélyezése a néma telepítés érdekében</string>
+    <string name="root_permission_description">Néma telepítés rendszergazdaként</string>
     <string name="share">Megosztás</string>
     <string name="size">Méret</string>
     <string name="target">Cél</string>
@@ -25,7 +25,7 @@
     <string name="version">Verzió</string>
     <string name="whats_new">Újdonságok</string>
     <string name="prefs_language_title">Nyelv</string>
-    <string name="all_applications_up_to_date">Az összes alkalmazása naprakész</string>
+    <string name="all_applications_up_to_date">Az összes alkalmazás naprakész</string>
     <string name="already_exists">Már létezik</string>
     <string name="always">Mindig</string>
     <string name="anti_features">Előnytelen funkciók</string>
@@ -36,7 +36,7 @@
     <string name="available">Elérhető</string>
     <string name="bug_tracker">Hibakövető</string>
     <string name="cancel">Mégse</string>
-    <string name="cant_edit_sync_DESC">A tároló most nem szerkeszthető, mert épp szinkronizál.</string>
+    <string name="cant_edit_sync_DESC">A tárolók szinkronizálás közben em szerkeszthetők…</string>
     <string name="changelog">Változásnapló</string>
     <string name="changes">Változások</string>
     <string name="compiled_for_debugging">Hibakereséshez fordítva</string>
@@ -67,7 +67,7 @@
     <string name="incompatible_features_DESC">Hiányzó funkciók.</string>
     <string name="incompatible_version">Nem kompatibilis verzió</string>
     <string name="incompatible_versions">Nem kompatibilis verziók</string>
-    <string name="incompatible_versions_summary">Az eszközzel nem kompatibilis alkalmazásverziók megjelenítése</string>
+    <string name="incompatible_versions_summary">Az eszközzel nem kompatibilis verziók megjelenítése</string>
     <string name="incompatible_with_FORMAT">Nem kompatibilis ezzel: %s</string>
     <string name="install">Telepítés</string>
     <string name="installed">Telepített</string>
@@ -88,10 +88,10 @@
     <string name="name">Név</string>
     <string name="network_error_DESC">Hálózati hiba.</string>
     <string name="never">Soha</string>
-    <string name="new_updates_available">Új alkalmazásverziók érhetők el</string>
+    <string name="new_updates_available">Új verziók érhetők el</string>
     <string name="no_applications_available">Nem érhetők el alkalmazások</string>
     <string name="no_applications_installed">Nincsenek telepített alkalmazások</string>
-    <string name="no_description_available_DESC">Nem érhető el leírás.</string>
+    <string name="no_description_available_DESC">Nincs leírás.</string>
     <string name="no_matching_applications_found">Nem találhatók ilyen alkalmazások</string>
     <string name="no_proxy">Nincs proxy</string>
     <string name="notify_about_updates">Értesítés az alkalmazások új verzióiról</string>
@@ -99,7 +99,7 @@
     <string name="number_of_applications">Alkalmazások száma</string>
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Csak ezzel kompatibilis: %s</string>
-    <string name="only_on_wifi">Csak Wi-Fin</string>
+    <string name="only_on_wifi">Csak Wi-Fi-n</string>
     <string name="open_DESC_FORMAT">%s megnyitása\?</string>
     <string name="other">Egyéb</string>
     <string name="parsing_index_error_DESC">Az indexfájl nem értelmezhető.</string>
@@ -155,7 +155,7 @@
     <string name="version_FORMAT">Verzió: %s</string>
     <string name="versions">Verziók</string>
     <string name="website">Weboldal</string>
-    <string name="list_animation_description">Listaanimációk megjelenítése a főoldalon</string>
+    <string name="list_animation_description">Lista animálása a főoldalon</string>
     <string name="file_format_error_DESC">Érvénytelen fájlformátum.</string>
     <string name="prefs_personalization">Testreszabás</string>
     <string name="connecting">Kapcsolódás…</string>
@@ -164,11 +164,20 @@
     <string name="incompatible_older_DESC">Ez a verzió régebbi mint az eszközre telepített. Előbb távolítsa el azt.</string>
     <string name="incompatible_platforms_DESC_FORMAT">A platform nem támogatott: %1$s. Támogatott platformok: %2$s.</string>
     <string name="saving_details">Részletek mentése…</string>
-    <string name="waiting_to_start_download">Várakozás a letöltés elindítására…</string>
+    <string name="waiting_to_start_download">Letöltés indítása…</string>
     <string name="incompatible_signature_DESC">Ez a verzió a jelenleg az eszközére telepített verziójától eltérő tanúsítvánnyal rendelkezik. Előbb távolítsa el azt.</string>
     <string name="processing_FORMAT">%1$s feldolgozása…</string>
     <string name="syncing_FORMAT">%s szinkronizálása…</string>
     <string name="repository_not_used_DESC">Ez a tároló még nem volt használva. Kapcsolja be, hogy megtekintse a benne lévő alkalmazásokat.</string>
     <string name="repository_unsigned_DESC">Nincs aláírva. Nem sikerült ellenőrizni az alkalmazáslistát. Legyen óvatos amikor nem aláírt tárolókból tölt le alkalmazásokat.</string>
     <string name="show_less">Kevesebb megjelenítése</string>
+    <string name="latest">Legfrissebb</string>
+    <string name="explore">Felfedezés</string>
+    <string name="update_all">Összes frissítése</string>
+    <string name="installed_applications">Telepített alkalmazások</string>
+    <string name="only_on_wifi_and_battery">Csak Wi-Fi-n és töltőn</string>
+    <string name="sort_filter">Rendezés és szűrés</string>
+    <string name="new_applications">Új alkalmazások</string>
+    <string name="install_after_sync">Frissítések automatikus telepítése</string>
+    <string name="install_after_sync_summary">Alkalmazásfrissítések automatikus telepítése a tárolók szinkronizálása után</string>
 </resources>
