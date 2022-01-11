@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="icon_shape_override_progress">Aplicando as mudanças no formato do ícone</string>
-    <string name="get_more_icon_packs">Obter mais</string>
+    <string name="get_more_icon_packs">Baixar novo pacote de ícones</string>
     <string name="icon_pack">Pacote de ícones</string>
     <string name="title_default">Padrão</string>
     <string name="theme_use_dark_text">Usar um texto escuro</string>
@@ -25,7 +25,7 @@
     <string name="title__theme_blur">Fosco (blur)</string>
     <string name="title__theme_accent_color">Cor de destaque</string>
     <string name="hide_app_reset">Redefinir aplicativos ocultos</string>
-    <string name="hide_app_selected">  oculto</string>
+    <string name="hide_app_selected"> oculto</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Oculto</item>
         <item quantity="other">%1$d Ocultos</item>
@@ -42,7 +42,7 @@
     <string name="pref_app_groups_edit_tip">Toque para editar, arraste para reorganizar.</string>
     <string name="pref_appcategorization_tabs_summary">Deslizar entre os grupos.</string>
     <string name="app_categorization_tabs">Abas</string>
-    <string name="pref_appcategorization_folders_summary">Toque para abrir o pop-up.</string>
+    <string name="pref_appcategorization_folders_summary">Toque para abrir o popup.</string>
     <string name="app_categorization_folders">Pastas</string>
     <string name="pref_appcategorization_style_text">Estilo</string>
     <string name="pref_appcategorization_enable_summary">Escolha o modo do \'layout\' da Gaveta de Apps</string>
@@ -74,8 +74,8 @@
     <string name="title__dock_search_bar">Mostrar a barra de pesquisa</string>
     <string name="title__dock_colored_icons">Ícones coloridos</string>
     <string name="title__dock_hide_labels">Esconder os rótulos</string>
-    <string name="title__dock_hide">Esconder a \'Dock\'</string>
-    <string name="title__dock_scale">Escala da Dock</string>
+    <string name="title__dock_hide">Esconder a dock</string>
+    <string name="title__dock_scale">Tamanho da dock</string>
     <string name="title__dock_icon_size">Tamanho do ícone</string>
     <string name="grid_size_width">Largura</string>
     <string name="grid_size_height">Altura</string>
@@ -105,7 +105,7 @@
     <string name="title__general_smartspace">Widget da Tela Inicial</string>
     <string name="title__general_search">Pesquisa e Pastas</string>
     <string name="title__general_theme">Tema</string>
-    <string name="title__general_dock">Doca</string>
+    <string name="title__general_dock">Dock</string>
     <string name="title__general_desktop">Área de Trabalho</string>
     <string name="title__general_about">Sobre</string>
     <string name="resuable_text_alarm">Alarme</string>
@@ -207,10 +207,10 @@
     <string name="smartspace_provider_bridge">Rootless Pixel Bridge</string>
     <string name="smartspace_in_time">em %1$s</string>
     <string name="title__search_action_assistant">Abrir o assistente</string>
-    <string name="dt2s_admin_warning">O toque duplo pra adormecer será destivado.</string>
-    <string name="dt2s_admin_hint">Para adormecer com Toque duplo, garanta a permissão de Administrador.</string>
+    <string name="dt2s_admin_warning">O toque duplo pra adormecer será desativado.</string>
+    <string name="dt2s_admin_hint">Para adormecer com toque duplo, garanta a permissão de administrador.</string>
     <string name="omega_actions">Ações</string>
-    <string name="gesture_dock_swipe_up">Deslizar pra cima a partir da \"Dock\"</string>
+    <string name="gesture_dock_swipe_up">Deslizar pra cima a partir da dock</string>
     <string name="gesture_swipe_up">Deslizar pra cima</string>
     <string name="gesture_long_press">Toque e segure</string>
     <string name="gesture_double_tap">Toque duplo</string>
@@ -230,7 +230,7 @@
     <string name="action_none">Fazer nada</string>
     <string name="pref_category__gestures">Gestos</string>
     <string name="pref_category__notifications">Notificações</string>
-    <string name="title__gesture_swipe_down">Deslize pra baixo</string>
+    <string name="title__gesture_swipe_down">Deslizar pra baixo</string>
     <string name="title__notification_background">Cor de fundo da Notificação</string>
     <string name="title__folder_badge_count">Mostrar Pontos de Notificação na Pasta</string>
     <string name="units_romer">ºRø</string>
@@ -250,7 +250,7 @@
     <string name="home_widget">At a Glance</string>
     <string name="feed_add_widget">Adicionar Widget</string>
     <string name="loading">Carregando…</string>
-    <string name="folder_cover_mode_desc">Toque para abrir o primeiro aplicativo, deslize para cima para ver todos.</string>
+    <string name="folder_cover_mode_desc">Toque para abrir o primeiro aplicativo. Deslize para cima para ver todos.</string>
     <string name="folder_cover_mode">Usar modo de cobertura</string>
     <string name="hide_app">Ocultar atalho</string>
     <string name="feed_widget">Widgets</string>
@@ -258,7 +258,7 @@
     <string name="backup_invalid">Indisponível</string>
     <string name="no_recent_backups">Sem backups recentes</string>
     <string name="backup_creating">Criando backup</string>
-    <string name="backup_error_blank_contents">O conteúdo não pode ficar em branco</string>
+    <string name="backup_error_blank_contents">O conteúdo não pode ficar vazio</string>
     <string name="backup_error_blank_name">O nome precisa ser preenchido</string>
     <string name="backup_wallpaper">Papel de parede</string>
     <string name="backup_settings">Configurações</string>
@@ -382,7 +382,7 @@
     <string name="folder_background">Cor de fundo da pasta</string>
     <string name="folder_custom_background">Usar fundo de pasta personalizado</string>
     <string name="fonts_change_global_font">Mudar</string>
-    <string name="trust_apps_manager_name">Aplicativos Ocultos e Protegidos</string>
+    <string name="trust_apps_manager_name">Aplicativos ocultos e protegidos</string>
     <string name="fonts_global_font">Fonte</string>
     <string name="disable_protected_apps_message">Desativar aplicativos protegidos exigem autenticação</string>
     <string name="disable_protected_apps">Desativar aplicativos protegidos</string>
@@ -414,4 +414,11 @@
     <string name="gesture_launch_assistant">Iniciar o Assistente (por meio de botão ou gesto)</string>
     <string name="about_copyright">Copyright © 2020–2021</string>
     <string name="dash_wifi">Wi-Fi</string>
+    <string name="title_theme_customize_icons">Personalizar Ícones</string>
+    <string name="theme_auto_night_mode_black">Sistema (Preto)</string>
+    <string name="summary_colored_backgrounds">Para os planos de fundo de ícones adaptáveis.</string>
+    <string name="theme_dark_theme_mode_follow_daylight_black">Seguir a luz do dia (Preto)</string>
+    <string name="summary_force_shapeless">Tentar usar ícones legados para todos os apps.</string>
+    <string name="summary_legacy_treatment">Criar ícones adaptáveis para todos os atalhos.</string>
+    <string name="summary_white_only_treatment">Colorir os fundos de todos os ícones adaptáveis.</string>
 </resources>

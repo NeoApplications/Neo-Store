@@ -33,7 +33,7 @@
     <string name="title__general_desktop">Masaüstü</string>
     <string name="title__general_about">Hakkında</string>
     <string name="title_desktop_icon_popup_menu">Açılır menü öğeleri</string>
-    <string name="title_desktop_overlap_placement">Çakışmalara İzin Ver</string>
+    <string name="title_desktop_overlap_placement">Çakışan widget\'lara izin ver</string>
     <string name="title_desktop_keep_empty">Boş Sayfalara İzin Ver</string>
     <string name="pref_category__others">Diğerleri</string>
     <string name="pref_category__interfaces">Kullanıcı Arayüzü</string>
@@ -352,7 +352,7 @@
     <string name="open_image_picker">Resim seçiciyi aç</string>
     <string name="icon_pack_external_picker">Harici seçiciyi aç</string>
     <string name="icon_shape_system_default">Sistem</string>
-    <string name="get_more_icon_packs">Daha fazlasını al</string>
+    <string name="get_more_icon_packs">Yeni simge paketi indir</string>
     <string name="title_default">Varsayılan</string>
     <string name="theme_use_dark_text">Koyu metin kullan</string>
     <string name="theme_use_black">Saf siyah kullan</string>
@@ -404,7 +404,7 @@
     <string name="modify_system_settings_message">Bunun çalışması için sistem ayarlarını değiştirme izni verin</string>
     <string name="app_widget_name">Saat Widget\'ı</string>
     <string name="about_channel">Kanal</string>
-    <string name="about_open_source">Özgür Kütüphaneler</string>
+    <string name="about_open_source">Açık Kaynaklı Kütüphaneler</string>
     <string name="about_translators_group">Katkıda Bulunanlar ve Çevirmenler</string>
     <string name="about_community">Topluluk</string>
     <string name="title_theme_customize_icons">Simgeleri Özelleştir</string>

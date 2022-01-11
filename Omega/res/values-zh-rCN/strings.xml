@@ -204,7 +204,7 @@
     <string name="icon_shape_override_label">变更图标形状</string>
     <string name="icon_shape_override_progress">应用图标形状变更</string>
     <string name="menu_icon_shape">定制图标形状</string>
-    <string name="get_more_icon_packs">获取更多</string>
+    <string name="get_more_icon_packs">下载新图标包</string>
     <string name="icon_pack">图标集</string>
     <string name="title_default">默认</string>
     <string name="theme_use_dark_text">使用暗色文字</string>

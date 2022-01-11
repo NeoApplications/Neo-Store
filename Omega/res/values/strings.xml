@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Saul Henriquez
   ~
@@ -14,8 +15,7 @@
   ~
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  --><resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="derived_app_name" translatable="false">Omega Launcher</string>
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
@@ -49,7 +49,7 @@
     <string name="title__desktop_icon_size">Icon size</string>
     <string name="title__desktop_grid_size">Grid size</string>
     <string name="title__desktop_hide_icon_labels">Hide icon labels on home screen</string>
-    <string name="title_desktop_overlap_placement">Allow Overlaps</string>
+    <string name="title_desktop_overlap_placement">Allow overlapping widgets</string>
     <string name="title_desktop_lock_desktop">Lock Desktop</string>
     <string name="title_desktop_keep_empty">Allow Empty Pages</string>
     <string name="title__multiline_labels">Multiline app names</string>
@@ -146,7 +146,6 @@
     <string name="enable_protected_apps">Turn on protected apps</string>
     <string name="disable_protected_apps">Turn off protected apps</string>
     <string name="disable_protected_apps_message">Turn off protected apps requiring authentication</string>
-
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>
@@ -342,7 +341,6 @@
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use double tap to sleep and grant admin permission.</string>
     <string name="dt2s_admin_warning">Double tap to sleep will be turned off.</string>
-
     <!-- SEARCH -->
     <string name="title__search_bubble_searchbar">Show Two Bubbles</string>
     <string name="title__search_action_assistant">Open Assistant</string>
@@ -380,14 +378,12 @@
     <string name="web_search_baidu" translatable="false">Baidu (web)</string>
     <string name="web_search_yahoo" translatable="false">Yahoo (web)</string>
     <string name="error_no_browser">Install an app to open URLs first</string>
-
     <string name="folder_custom_background">Use custom folder background</string>
     <string name="folder_background">Folder background color</string>
     <string name="folder_radius">Folder corner radius</string>
     <!-- FONT -->
     <string name="fonts_global_font">Font</string>
     <string name="fonts_change_global_font">Change</string>
-
     <!-- ADVANCED -->
     <string name="summary__advanced_setting_search">Display setting search in the action bar</string>
     <string name="summary__advanced_language">Change language of this app</string>
@@ -495,7 +491,6 @@
     <string name="dash_sync_summary">Turn sync on or off.</string>
     <string name="launch_assistant">Launch Assistant</string>
     <string name="gesture_launch_assistant">Launch Assistant (through button or gesture)</string>
-
     <!-- SEEKBAR PREFERENCE -->
     <string name="reset_to_default">Reset to default</string>
     <string name="automatic_short">Auto</string>
@@ -527,7 +522,6 @@
     <string name="modify_system_settings">Modify system settings</string>
     <string name="modify_system_settings_message">Grant the ability to modify system settings for this to work</string>
     <string name="app_widget_name">Clock Widget</string>
-
     <!-- DESKTOP MODE -->
     <string name="pref_desktop_mode">Desktop mode</string>
     <string name="pref_desktop_mode_summary">Activate Android\'s desktop mode</string>

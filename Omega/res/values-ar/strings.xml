@@ -225,7 +225,7 @@
     <string name="icon_shape_override_label">تغيير شكل الايقونة</string>
     <string name="icon_shape_override_progress">تطبيق تغييرات شكل الايقونة</string>
     <string name="menu_icon_shape">شكل مخصص للأيقونة</string>
-    <string name="get_more_icon_packs">أحصل على المزيد</string>
+    <string name="get_more_icon_packs">تنزيل حزمة رموز جديدة</string>
     <string name="icon_pack">حزمة ايقونات</string>
     <string name="title_default">أفتراضي</string>
     <string name="theme_use_dark_text">أسنعمل نص اسود</string>

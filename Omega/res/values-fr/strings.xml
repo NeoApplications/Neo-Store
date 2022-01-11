@@ -419,4 +419,7 @@
     <string name="title_theme_customize_icons">Personnaliser les icônes</string>
     <string name="summary_force_shapeless">Essayer d\'utiliser les anciennes icônes pour toutes les apps.</string>
     <string name="dash_media_player_description">Afficher ou masquer les contrôles du lecteur audio</string>
+    <string name="summary_white_only_treatment">Colorer tous les arrière-plans des Adaptive Icons.</string>
+    <string name="summary_colored_backgrounds">Pour les arrière-plans prévus pour Adaptive Icons.</string>
+    <string name="summary_legacy_treatment">Créer des Adaptive Icons pour tous les raccourcis.</string>
 </resources>
