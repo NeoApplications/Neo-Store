@@ -1,0 +1,12 @@
+* Flettet Android-11.0.0_r31
+* Tillagt: Behold innstilling for tom skjerm
+* Tillagt: Fargevelger for faner
+* Tillagt: Ytterligere oversiktskontroller
+* Tillagt: Oversiktstilpasning
+* Tillagt: Støtte for hurtigbytte
+* Tillagt: FiveSecs KLWP
+* Tillagt: Searx-tilbyder
+* Tillagt: Søvn-assistent
+* Tillagt: Vertikalt opplistede programmer (eksperimentelt)
+* Fikset: Dokkstørrelse for lange skjermer
+* Fikset: Krasj ved åpning av Google-assistent

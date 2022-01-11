@@ -1,0 +1,12 @@
+<ul>
+  <li>Brave-vevsøk</li>
+  <li>Foretrukken innstilling for «Tilbake»-håndvending</li>
+  <li>Foretrukken innstilling for «Hjem»-håndvending</li>
+  <li>Skrivebordsmodus</li>
+  <li>Fikset: Tekstfarge på miniprogramvelger for lys drakt</li>
+  <li>Fikset: Søk etter skjulte programmer</li>
+  <li>Fikset: Mappeikon i omslagsmodus</li>
+  <li>Gjenopprettet smartområde-miniprogram</li>
+  <li>Gjenopprettet adaptivt klokke-ikon (Google)</li>
+  <li>Gjenopprettet adaptivt kalender-ikon (Google)</li>
+</ul>
