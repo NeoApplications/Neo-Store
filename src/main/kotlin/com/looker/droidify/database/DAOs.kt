@@ -172,7 +172,7 @@ interface ProductDao : BaseDao<Product> {
         return query(SimpleSQLiteQuery(builder.build()))
     }
 
-    @RawQuery
+    @RawQuery(observedEntities = [Product::class])
     fun queryList(
         query: SupportSQLiteQuery
     ): List<Product>
@@ -181,7 +181,7 @@ interface ProductDao : BaseDao<Product> {
     @Transaction
     fun queryList(
         installed: Boolean, updates: Boolean, searchQuery: String,
-        section: ProductItem.Section, order: ProductItem.Order
+        section: ProductItem.Section, order: ProductItem.Order, numberOfItems: Int = 0
     ): List<Product> {
         val builder = QueryBuilder()
 
@@ -189,7 +189,7 @@ interface ProductDao : BaseDao<Product> {
         product.${ROW_SIGNATURES} LIKE ('%.' || installed.${ROW_SIGNATURE} || '.%') AND
         product.${ROW_SIGNATURES} != ''"""
 
-        builder += """SELECT product.rowid AS _id, product.${ROW_REPOSITORY_ID},
+        builder += """SELECT ${if (numberOfItems > 0) "TOP $numberOfItems " else ""}product.rowid AS _id, product.${ROW_REPOSITORY_ID},
         product.${ROW_PACKAGE_NAME}, product.${ROW_NAME},
         product.${ROW_SUMMARY}, installed.${ROW_VERSION},
         (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
