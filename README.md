@@ -38,7 +38,7 @@ width="60%">](https://hosted.weblate.org/projects/droidify/localization/)
 * :airplane: Fast repository syncing
 * :wrench: Standard Android components and minimal dependencies
 
-### :camera: Screenshots
+## :framed_picture: Screenshots
 
 <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="48%" />
 
