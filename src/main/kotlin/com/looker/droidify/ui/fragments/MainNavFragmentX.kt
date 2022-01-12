@@ -48,33 +48,70 @@ enum class Source(val titleResId: Int, val sections: Boolean, val order: Boolean
 
 sealed class Request {
     internal abstract val id: Int
+    internal abstract val installed: Boolean
+    internal abstract val updates: Boolean
+    internal abstract val searchQuery: String
+    internal abstract val section: ProductItem.Section
+    internal abstract val order: ProductItem.Order
+    internal open val numberOfItems: Int = 0
 
-    data class ProductsAvailable(
-        val searchQuery: String, val section: ProductItem.Section,
-        val order: ProductItem.Order,
+    data class ProductsAll(
+        override val searchQuery: String, override val section: ProductItem.Section,
+        override val order: ProductItem.Order,
     ) : Request() {
         override val id: Int
             get() = 1
+        override val installed: Boolean
+            get() = false
+        override val updates: Boolean
+            get() = false
     }
 
     data class ProductsInstalled(
-        val searchQuery: String, val section: ProductItem.Section,
-        val order: ProductItem.Order,
+        override val searchQuery: String, override val section: ProductItem.Section,
+        override val order: ProductItem.Order,
     ) : Request() {
         override val id: Int
             get() = 2
+        override val installed: Boolean
+            get() = true
+        override val updates: Boolean
+            get() = false
     }
 
     data class ProductsUpdates(
-        val searchQuery: String, val section: ProductItem.Section,
-        val order: ProductItem.Order,
+        override val searchQuery: String, override val section: ProductItem.Section,
+        override val order: ProductItem.Order,
     ) : Request() {
         override val id: Int
             get() = 3
+        override val installed: Boolean
+            get() = true
+        override val updates: Boolean
+            get() = true
     }
 
-    object Repositories : Request() {
+    data class ProductsUpdated(
+        override val searchQuery: String, override val section: ProductItem.Section,
+        override val order: ProductItem.Order, override val numberOfItems: Int,
+    ) : Request() {
         override val id: Int
             get() = 4
+        override val installed: Boolean
+            get() = false
+        override val updates: Boolean
+            get() = false
+    }
+
+    data class ProductsNew(
+        override val searchQuery: String, override val section: ProductItem.Section,
+        override val order: ProductItem.Order, override val numberOfItems: Int,
+    ) : Request() {
+        override val id: Int
+            get() = 5
+        override val installed: Boolean
+            get() = false
+        override val updates: Boolean
+            get() = false
     }
 }

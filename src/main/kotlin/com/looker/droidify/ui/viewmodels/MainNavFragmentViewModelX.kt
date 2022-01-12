@@ -50,7 +50,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
             launch { order.collect { if (source.order) mOrder = it } }
         }
         return when (source) {
-            Source.AVAILABLE -> Request.ProductsAvailable(
+            Source.AVAILABLE -> Request.ProductsAll(
                 mSearchQuery,
                 mSections,
                 mOrder
@@ -77,34 +77,16 @@ class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun query(request: Request): List<Product>? {
-        return withContext(Dispatchers.IO) {
-            when (request) {
-                is Request.ProductsAvailable -> db.productDao
-                    .queryList(
-                        installed = false,
-                        updates = false,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order
-                    )
-                is Request.ProductsInstalled -> db.productDao
-                    .queryList(
-                        installed = true,
-                        updates = false,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order
-                    )
-                is Request.ProductsUpdates -> db.productDao
-                    .queryList(
-                        installed = true,
-                        updates = true,
-                        searchQuery = request.searchQuery,
-                        section = request.section,
-                        order = request.order
-                    )
-                else -> listOf()
-            }
+        return withContext(Dispatchers.Default) {
+            db.productDao
+                .queryList(
+                    installed = request.installed,
+                    updates = request.updates,
+                    searchQuery = request.searchQuery,
+                    section = request.section,
+                    order = request.order,
+                    numberOfItems = request.numberOfItems
+                )
         }
     }
 
