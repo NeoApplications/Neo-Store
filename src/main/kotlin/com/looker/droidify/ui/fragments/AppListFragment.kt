@@ -18,13 +18,14 @@ import com.looker.droidify.screen.BaseFragment
 import com.looker.droidify.ui.adapters.AppListAdapter
 import com.looker.droidify.ui.viewmodels.AppListViewModel
 import com.looker.droidify.utility.RxUtils
-import com.looker.droidify.widget.RecyclerFastScroller
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
 class AppListFragment() : BaseFragment(), CursorOwner.Callback {
 
@@ -67,7 +68,10 @@ class AppListFragment() : BaseFragment(), CursorOwner.Callback {
             recycledViewPool.setMaxRecycledViews(AppListAdapter.ViewType.PRODUCT.ordinal, 30)
             val adapter = AppListAdapter { screenActivity.navigateProduct(it.packageName) }
             this.adapter = adapter
-            RecyclerFastScroller(this)
+            FastScrollerBuilder(this)
+                .useMd2Style()
+                .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
+                .build()
             recyclerView = this
         }
     }

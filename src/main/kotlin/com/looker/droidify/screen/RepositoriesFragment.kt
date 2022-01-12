@@ -13,7 +13,8 @@ import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.utility.Utils
-import com.looker.droidify.widget.RecyclerFastScroller
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
 class RepositoriesFragment : ScreenFragment(), CursorOwner.Callback {
     private var recyclerView: RecyclerView? = null
@@ -38,7 +39,10 @@ class RepositoriesFragment : ScreenFragment(), CursorOwner.Callback {
                                 syncConnection.binder?.setEnabled(repository, isEnabled) == true
                     })
                 recyclerView = this
-                RecyclerFastScroller(this)
+                FastScrollerBuilder(this)
+                    .useMd2Style()
+                    .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
+                    .build()
             })
         }
         this.toolbar = fragmentBinding.toolbar

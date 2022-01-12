@@ -32,9 +32,6 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
-        <item name="android:fastScrollThumbDrawable">@drawable/scrollbar_thumb</item>
-        <item name="android:fastScrollTrackDrawable">@drawable/scrollbar_track</item>
-
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
         <item name="toolbarStyle">@style/Theme.Toolbar</item>
@@ -72,9 +69,6 @@
         <item name="android:statusBarColor">@color/grey_dark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
 
-        <item name="android:fastScrollThumbDrawable">@drawable/scrollbar_thumb</item>
-        <item name="android:fastScrollTrackDrawable">@drawable/scrollbar_track</item>
-
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
         <item name="toolbarStyle">@style/Theme.Toolbar</item>
@@ -111,9 +105,6 @@
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
         <item name="android:statusBarColor">@color/md_theme_dark_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-
-        <item name="android:fastScrollThumbDrawable">@drawable/scrollbar_thumb</item>
-        <item name="android:fastScrollTrackDrawable">@drawable/scrollbar_track</item>
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>

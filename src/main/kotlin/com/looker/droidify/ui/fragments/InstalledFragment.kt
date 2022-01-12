@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.databinding.FragmentInstalledXBinding
 import com.looker.droidify.entity.ProductItem
@@ -16,11 +17,12 @@ import com.looker.droidify.ui.items.HAppItem
 import com.looker.droidify.ui.items.VAppItem
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 import com.looker.droidify.utility.RxUtils
-import com.looker.droidify.widget.RecyclerFastScroller
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
 class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
 
@@ -55,7 +57,10 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
             isMotionEventSplittingEnabled = false
             isVerticalScrollBarEnabled = false
             adapter = installedFastAdapter
-            RecyclerFastScroller(this)
+            FastScrollerBuilder(this)
+                .useMd2Style()
+                .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
+                .build()
         }
         updatedFastAdapter = FastAdapter.with(updatedItemAdapter)
         updatedFastAdapter?.setHasStableIds(true)
@@ -64,7 +69,10 @@ class InstalledFragment : MainNavFragmentX(), CursorOwner.Callback {
             isMotionEventSplittingEnabled = false
             isVerticalScrollBarEnabled = false
             adapter = updatedFastAdapter
-            RecyclerFastScroller(this)
+            FastScrollerBuilder(this)
+                .useMd2Style()
+                .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
+                .build()
         }
         return binding.root
     }

@@ -17,11 +17,12 @@ import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.adapters.AppListAdapter
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 import com.looker.droidify.utility.RxUtils
-import com.looker.droidify.widget.RecyclerFastScroller
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
 class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
 
@@ -51,7 +52,10 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
             setHasFixedSize(true)
             recycledViewPool.setMaxRecycledViews(AppListAdapter.ViewType.PRODUCT.ordinal, 30)
             adapter = AppListAdapter { mainActivityX.navigateProduct(it.packageName) }
-            RecyclerFastScroller(this)
+            FastScrollerBuilder(this)
+                .useMd2Style()
+                .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
+                .build()
         }
         return binding.root
     }

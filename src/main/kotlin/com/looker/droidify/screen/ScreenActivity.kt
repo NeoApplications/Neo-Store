@@ -32,7 +32,8 @@ abstract class ScreenActivity : AppCompatActivity() {
 
     sealed class SpecialIntent {
         object Updates : SpecialIntent()
-        class Install(val packageName: String?, val status: Int?, val promptIntent: Intent?) : SpecialIntent()
+        class Install(val packageName: String?, val status: Int?, val promptIntent: Intent?) :
+            SpecialIntent()
     }
 
     private class FragmentStackItem(
@@ -236,8 +237,7 @@ abstract class ScreenActivity : AppCompatActivity() {
                                 .putExtra(Intent.EXTRA_INTENT, promptIntent)
                         )
                     }
-                }
-                else {
+                } else {
                     throw IllegalArgumentException("Missing parameters needed to relaunch InstallerService and trigger prompt.")
                 }
                 Unit
