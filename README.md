@@ -65,7 +65,6 @@ package manager.
 [![Translation status](https://hosted.weblate.org/widgets/droidify/-/multi-auto.svg)](https://hosted.weblate.org/engage/droidify/?utm_source=widget)
 
 You can always add other lanuages.
-  
 
 ## :scroll: License
 
