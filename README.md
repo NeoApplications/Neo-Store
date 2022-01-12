@@ -69,4 +69,4 @@ You can always add other lanuages.
 
 Licensed GPLv3+. \
 Direct Adaptation/Modification of [Foxy-Droid](https://github.com/kitsunyan/foxy-droid/) \
-Copyright © 2020–2021 Iamlooker and contributors.
+Copyright © 2020–2022 Iamlooker and contributors.
