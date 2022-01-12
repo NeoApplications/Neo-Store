@@ -2,16 +2,20 @@ package com.looker.droidify.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.AppListFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AppListViewModel : ViewModel() {
 
-    private val _order = MutableStateFlow(ProductItem.Order.LAST_UPDATE)
+    private val _order = MutableStateFlow(Preferences[Preferences.Key.SortOrder].order)
     private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
     private val _searchQuery = MutableStateFlow("")
 
