@@ -4,7 +4,7 @@
 
 # Droid-ify
 
-A quick material F-Droid client.
+### A quick material F-Droid client.
 
 [![Github repo stars](https://img.shields.io/github/stars/Iamlooker/Droid-ify?style=flat)](https://github.com/Iamlooker/Droid-ify/stargazers)
 [![Github License](https://img.shields.io/github/license/Iamlooker/Droid-ify)](https://github.com/Iamlooker/Droid-ify/blob/master/COPYING)
