@@ -37,6 +37,9 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -88,11 +91,12 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
 
     private var productDisposable: Disposable? = null
     private val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
-        lifecycleScope.launch {
-            binder.stateSubject.filter { it.packageName == packageName }.collect {
-                updateDownloadState(it)
-            }
-        }
+        binder.stateSubject
+            .filter { it.packageName == packageName }
+            .flowOn(Dispatchers.Default)
+            .onEach { updateDownloadState(it) }
+            .flowOn(Dispatchers.Main)
+            .launchIn(lifecycleScope)
     })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

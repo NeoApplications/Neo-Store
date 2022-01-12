@@ -34,7 +34,6 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     }
 
     private val scope = CoroutineScope(Dispatchers.Default)
-    private val mainDispatcher = Dispatchers.Main
 
     sealed class State(val packageName: String, val name: String) {
         class Pending(packageName: String, name: String) : State(packageName, name)
@@ -135,7 +134,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     private fun cancelTasks(packageName: String?) {
         tasks.removeAll {
             (packageName == null || it.packageName == packageName) && run {
-                scope.launch(mainDispatcher) {
+                scope.launch {
                     mutableStateSubject.emit(
                         State.Cancel(
                             it.packageName,
@@ -152,7 +151,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
         currentTask?.let {
             if (packageName == null || it.task.packageName == packageName) {
                 currentTask = null
-                scope.launch(mainDispatcher) {
+                scope.launch {
                     mutableStateSubject.emit(
                         State.Cancel(
                             it.task.packageName,
@@ -244,7 +243,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private fun publishSuccess(task: Task) {
         var consumed = false
-        scope.launch(mainDispatcher) {
+        scope.launch {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
             consumed = true
         }
