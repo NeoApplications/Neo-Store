@@ -34,7 +34,7 @@ width="60%">](https://hosted.weblate.org/projects/droidify/localization/)
 ## :book: Features
 
 * :art: Material F-Droid style
-* :notebook_with_decorative_cover: No cards or inappropriate animations
+* :dart: No cards or inappropriate animations
 * :airplane: Fast repository syncing
 * :wrench: Standard Android components and minimal dependencies
 
