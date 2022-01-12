@@ -56,7 +56,7 @@ key.alias=key-alias
 key.password=key-password
 ```
 
-Run `./gradlew assembleRelease` to build the package, which can be installed using the Android
+Run `./gradlew assembleRelease` to build the *.apk package, which can be installed using the Android
 package manager.
 
 ## 👁️‍🗨️ Translations
