@@ -12,6 +12,7 @@
 [![Github release](https://img.shields.io/github/v/release/Iamlooker/Droid-ify?display_name=tag)](https://github.com/Iamlooker/Droid-ify/releases/latest)
 [![Github watchers](https://img.shields.io/github/watchers/Iamlooker/Droid-ify?label=Watch)](https://github.com/Iamlooker/Droid-ify/watchers)
 [![Github forks](https://img.shields.io/github/forks/Iamlooker/Droid-ify?label=Fork)](https://github.com/Iamlooker/Droid-ify/network/members)
+[![Translation status](https://hosted.weblate.org/widgets/droidify/-/localization/svg-badge.svg)](https://hosted.weblate.org/engage/droidify/)
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
 alt="Get it on IzzyDroid"
@@ -61,7 +62,7 @@ Run `./gradlew assembleRelease` to build the package, which can be installed usi
 package manager.
 
 ## 👁️‍🗨️ Translations
-[Translate Droid-ify on Hosted Weblate](https://hosted.weblate.org/engage/droidify/). \
+Help translate Droid-ify on [Hosted Weblate](https://hosted.weblate.org/engage/droidify/). \
 [![Translation status](https://hosted.weblate.org/widgets/droidify/-/multi-auto.svg)](https://hosted.weblate.org/engage/droidify/?utm_source=widget)
 
 You can always add other lanuages.
