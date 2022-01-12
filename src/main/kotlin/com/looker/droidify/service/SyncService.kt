@@ -99,9 +99,11 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun sync(request: SyncRequest) {
-            val ids = db.repositoryDao.all.mapNotNull { it.trueData }
-                .asSequence().filter { it.enabled }.map { it.id }.toList()
-            sync(ids, request)
+            GlobalScope.launch {
+                val ids = db.repositoryDao.all.mapNotNull { it.trueData }
+                    .asSequence().filter { it.enabled }.map { it.id }.toList()
+                sync(ids, request)
+            }
         }
 
         fun sync(repository: Repository) {
@@ -332,91 +334,93 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private fun handleNextTask(hasUpdates: Boolean) {
         if (currentTask == null) {
-            if (tasks.isNotEmpty()) {
-                val task = tasks.removeAt(0)
-                val repository = db.repositoryDao.get(task.repositoryId)?.trueData
-                if (repository != null && repository.enabled) {
-                    val lastStarted = started
-                    val newStarted =
-                        if (task.manual || lastStarted == Started.MANUAL) Started.MANUAL else Started.AUTO
-                    started = newStarted
-                    if (newStarted == Started.MANUAL && lastStarted != Started.MANUAL) {
-                        startSelf()
-                        handleSetStarted()
-                    }
-                    val initialState = State.Connecting(repository.name)
-                    publishForegroundState(true, initialState)
-                    val unstable = Preferences[Preferences.Key.UpdateUnstable]
-                    lateinit var disposable: Disposable
-                    disposable = RepositoryUpdater
-                        .update(this, repository, unstable) { stage, progress, total ->
-                            if (!disposable.isDisposed) {
-                                scope.launch {
-                                    mutableStateSubject.emit(
-                                        State.Syncing(
-                                            repository.name,
-                                            stage,
-                                            progress,
-                                            total
+            GlobalScope.launch {
+                if (tasks.isNotEmpty()) {
+                    val task = tasks.removeAt(0)
+                    val repository = db.repositoryDao.get(task.repositoryId)?.trueData
+                    if (repository != null && repository.enabled) {
+                        val lastStarted = started
+                        val newStarted =
+                            if (task.manual || lastStarted == Started.MANUAL) Started.MANUAL else Started.AUTO
+                        started = newStarted
+                        if (newStarted == Started.MANUAL && lastStarted != Started.MANUAL) {
+                            startSelf()
+                            handleSetStarted()
+                        }
+                        val initialState = State.Connecting(repository.name)
+                        publishForegroundState(true, initialState)
+                        val unstable = Preferences[Preferences.Key.UpdateUnstable]
+                        lateinit var disposable: Disposable
+                        disposable = RepositoryUpdater
+                            .update(this@SyncService, repository, unstable) { stage, progress, total ->
+                                if (!disposable.isDisposed) {
+                                    scope.launch {
+                                        mutableStateSubject.emit(
+                                            State.Syncing(
+                                                repository.name,
+                                                stage,
+                                                progress,
+                                                total
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             }
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { result, throwable ->
+                                currentTask = null
+                                throwable?.printStackTrace()
+                                if (throwable != null && task.manual) {
+                                    showNotificationError(repository, throwable as Exception)
+                                }
+                                handleNextTask(result == true || hasUpdates)
+                            }
+                        currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
+                    } else {
+                        handleNextTask(hasUpdates)
+                    }
+                } else if (started != Started.NO) {
+                    val disposable = RxUtils
+                        .querySingle { it ->
+                            db.productDao
+                                .query(
+                                    installed = true,
+                                    updates = true,
+                                    searchQuery = "",
+                                    section = ProductItem.Section.All,
+                                    order = ProductItem.Order.NAME,
+                                    signal = it
+                                )
+                                .use {
+                                    it.asSequence().map { it.getProductItem() }
+                                        .toList()
+                                }
                         }
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { result, throwable ->
-                            currentTask = null
                             throwable?.printStackTrace()
-                            if (throwable != null && task.manual) {
-                                showNotificationError(repository, throwable as Exception)
+                            currentTask = null
+                            handleNextTask(false)
+                            if (result.isNotEmpty()) {
+                                if (Preferences[Preferences.Key.InstallAfterSync])
+                                    runAutoUpdate(result)
+                                if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
+                                    updateNotificationBlockerFragment?.get()?.isAdded == true
+                                )
+                                    displayUpdatesNotification(result)
                             }
-                            handleNextTask(result == true || hasUpdates)
                         }
-                    currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
-                } else {
-                    handleNextTask(hasUpdates)
-                }
-            } else if (started != Started.NO) {
-                val disposable = RxUtils
-                    .querySingle { it ->
-                        db.productDao
-                            .query(
-                                installed = true,
-                                updates = true,
-                                searchQuery = "",
-                                section = ProductItem.Section.All,
-                                order = ProductItem.Order.NAME,
-                                signal = it
-                            )
-                            .use {
-                                it.asSequence().map { it.getProductItem() }
-                                    .toList()
-                            }
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { result, throwable ->
-                        throwable?.printStackTrace()
-                        currentTask = null
-                        handleNextTask(false)
-                        if (result.isNotEmpty()) {
-                            if (Preferences[Preferences.Key.InstallAfterSync])
-                                runAutoUpdate(result)
-                            if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
-                                updateNotificationBlockerFragment?.get()?.isAdded == true
-                            )
-                                displayUpdatesNotification(result)
+                    if (hasUpdates) {
+                        currentTask = CurrentTask(null, disposable, true, State.Finishing)
+                    } else {
+                        scope.launch { mutableFinishState.emit(Unit) }
+                        val needStop = started == Started.MANUAL
+                        started = Started.NO
+                        if (needStop) {
+                            stopForeground(true)
+                            stopSelf()
                         }
-                    }
-                if (hasUpdates) {
-                    currentTask = CurrentTask(null, disposable, true, State.Finishing)
-                } else {
-                    scope.launch { mutableFinishState.emit(Unit) }
-                    val needStop = started == Started.MANUAL
-                    started = Started.NO
-                    if (needStop) {
-                        stopForeground(true)
-                        stopSelf()
                     }
                 }
             }

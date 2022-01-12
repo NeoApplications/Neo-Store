@@ -18,7 +18,7 @@ abstract class MainNavFragmentX : Fragment(), CursorOwner.Callback {
     internal fun setSearchQuery(searchQuery: String) {
         viewModel.setSearchQuery(searchQuery) {
             if (view != null) {
-                viewModel.fillList(source)
+                //viewModel.fillList(source)
             }
         }
     }
@@ -26,7 +26,7 @@ abstract class MainNavFragmentX : Fragment(), CursorOwner.Callback {
     internal fun setSection(section: ProductItem.Section) {
         viewModel.setSection(section) {
             if (view != null) {
-                viewModel.fillList(source)
+                //viewModel.fillList(source)
             }
         }
     }
@@ -34,7 +34,7 @@ abstract class MainNavFragmentX : Fragment(), CursorOwner.Callback {
     internal fun setOrder(order: ProductItem.Order) {
         viewModel.setOrder(order) {
             if (view != null) {
-                viewModel.fillList(source)
+                //viewModel.fillList(source)
             }
         }
     }

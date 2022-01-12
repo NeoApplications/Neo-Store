@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset
@@ -27,23 +26,23 @@ object ProductPreferences {
     fun init(context: Context) {
         db = DatabaseX.getInstance(context)
         preferences = context.getSharedPreferences("product_preferences", Context.MODE_PRIVATE)
-        db.lockDao.insert(*preferences.all.keys
-            .mapNotNull { pName ->
-                this[pName].databaseVersionCode?.let {
-                    Lock().apply {
-                        package_name = pName
-                        version_code = it
+        CoroutineScope(Dispatchers.Default).launch {
+            db.lockDao.insert(*preferences.all.keys
+                .mapNotNull { pName ->
+                    this@ProductPreferences[pName].databaseVersionCode?.let {
+                        Lock().apply {
+                            package_name = pName
+                            version_code = it
+                        }
                     }
                 }
-            }
-            .toTypedArray()
-        )
-        CoroutineScope(Dispatchers.Default).launch {
+                .toTypedArray()
+            )
             subject.collect { (packageName, versionCode) ->
                 if (versionCode != null) db.lockDao.insert(Lock().apply {
-                        package_name = packageName
-                        version_code = versionCode
-                    }
+                    package_name = packageName
+                    version_code = versionCode
+                }
                 )
                 else db.lockDao.delete(packageName)
             }

@@ -86,7 +86,9 @@ class MainApplication : Application(), ImageLoaderFactory {
         val installedItems =
             packageManager.getInstalledPackages(Android.PackageManager.signaturesFlag)
                 .map { it.toInstalledItem() }
-        db.installedDao.put(*installedItems.toTypedArray())
+        CoroutineScope(Dispatchers.Default).launch {
+            db.installedDao.put(*installedItems.toTypedArray())
+        }
     }
 
     private fun listenPreferences() {

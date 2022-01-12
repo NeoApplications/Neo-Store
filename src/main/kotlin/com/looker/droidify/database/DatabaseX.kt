@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.looker.droidify.entity.Repository.Companion.defaultRepositories
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Database(
     entities = [
@@ -42,11 +45,12 @@ abstract class DatabaseX : RoomDatabase() {
                             "main_database.db"
                         )
                         .fallbackToDestructiveMigration()
-                        .allowMainThreadQueries()
                         .build()
                     INSTANCE?.let { instance ->
-                        if (instance.repositoryDao.count == 0) defaultRepositories.forEach {
-                            instance.repositoryDao.put(it)
+                        GlobalScope.launch(Dispatchers.IO) {
+                            if (instance.repositoryDao.count == 0) defaultRepositories.forEach {
+                                instance.repositoryDao.put(it)
+                            }
                         }
                     }
                 }

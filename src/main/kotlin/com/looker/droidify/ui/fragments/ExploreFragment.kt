@@ -63,7 +63,7 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fillList(source)
+        //viewModel.fillList(source)
         viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
             .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
