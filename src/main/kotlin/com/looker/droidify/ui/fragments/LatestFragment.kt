@@ -35,7 +35,7 @@ class LatestFragment : MainNavFragmentX() {
     private var newFastAdapter: FastAdapter<HAppItem>? = null
 
     // TODO replace the source with one that get a certain amount of updated apps
-    override val source = Source.AVAILABLE
+    override val source = Source.UPDATED
 
     private var repositories: Map<Long, Repository> = mapOf()
 
