@@ -11,7 +11,7 @@
     <string name="application">アプリ</string>
     <string name="available">利用可能</string>
     <string name="bug_tracker">バグトラッカー</string>
-    <string name="cant_edit_sync_DESC">現在同期中のため，リポジトリを編集できません。</string>
+    <string name="cant_edit_sync_DESC">編集不可 同期中…</string>
     <string name="changes">変更内容</string>
     <string name="confirmation">確認</string>
     <string name="connecting">接続中…</string>
@@ -49,7 +49,7 @@
     <string name="light">ライト</string>
     <string name="links">リンク</string>
     <string name="list_animation">リストアニメーション</string>
-    <string name="list_animation_description">メインページにリストアニメーションを表示</string>
+    <string name="list_animation_description">メインページでリストをアニメーションする</string>
     <string name="merging_FORMAT">%s をマージ</string>
     <string name="name">名前</string>
     <string name="network_error_DESC">ネットワーク エラー。</string>
@@ -60,7 +60,7 @@
     <string name="no_description_available_DESC">説明がありません。</string>
     <string name="no_proxy">プロキシなし</string>
     <string name="notify_about_updates">アプリの新バージョンを通知</string>
-    <string name="number_of_applications">アプリの数</string>
+    <string name="number_of_applications">アプリ数</string>
     <string name="ok">OK</string>
     <string name="only_on_wifi">Wi-Fiのみ</string>
     <string name="open_DESC_FORMAT">%s を開きますか\?</string>
@@ -98,7 +98,7 @@
     <string name="integrity_check_error_DESC">整合性を確認できませんでした。</string>
     <string name="incompatible_platforms_DESC_FORMAT">あなたの %1$s プラットフォームはサポート外です。サポートされているプラットフォーム: %2$s 。</string>
     <string name="incompatible_signature_DESC">このバージョンは，デバイスにインストールされているアプリの証明書とは異なる証明書で署名されています。先にアンインストールしてください。</string>
-    <string name="incompatible_versions_summary">デバイスと互換性のないアプリケーションのバージョンを表示</string>
+    <string name="incompatible_versions_summary">デバイスと互換性のないアプリのバージョンを表示</string>
     <string name="incompatible_with_FORMAT">%s とは互換性がありません</string>
     <string name="link_copied_to_clipboard">リンクがクリップボードにコピーされました</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -115,7 +115,7 @@
     <string name="project_website">プロジェクトのウェブサイト</string>
     <string name="proxy">プロキシ</string>
     <string name="repository">リポジトリ</string>
-    <string name="repository_not_used_DESC">このリポジトリは未だ使用されていません。オンにすると、アプリケーションを見ることができます。</string>
+    <string name="repository_not_used_DESC">このリポジトリは未だ使用されていません。オンにすると、アプリを見ることができます。</string>
     <string name="syncing">同期中</string>
     <string name="unknown">不明</string>
     <string name="unknown_error_DESC">不明なエラーです。</string>
@@ -145,13 +145,13 @@
     <string name="latest">最新</string>
     <string name="update_all">全てをアップデート</string>
     <string name="new_applications">新しいアプリケーション</string>
-    <string name="root_permission_description">サイレントインストールのためにスーパーユーザー権限を許可</string>
+    <string name="root_permission_description">自動インストールのためroot権限を利用</string>
     <string name="share">共有</string>
     <string name="show_more">もっと見る</string>
     <string name="update">アップデート</string>
     <string name="unstable_updates_summary">不安定なバージョンのインストールを提案する</string>
     <string name="version">バージョン</string>
-    <string name="waiting_to_start_download">ダウンロード開始を待っています…</string>
+    <string name="waiting_to_start_download">ダウンロード開始…</string>
     <string name="save">保存</string>
     <string name="theme">テーマ</string>
     <string name="screenshots">スクリーンショット</string>
@@ -170,4 +170,13 @@
     <string name="versions">バージョン</string>
     <string name="unverified">未確認</string>
     <string name="themes">テーマ</string>
+    <string name="requires_FORMAT">%s が必要</string>
+    <string name="repository_unsigned_DESC">署名がありません。アプリリストの検証が不可能です。署名なしのリポジトリからアプリを入手する際は注意してください。</string>
+    <string name="target">ターゲット</string>
+    <string name="unknown_FORMAT">不明: %s</string>
+    <string name="version_FORMAT">バージョン %s</string>
+    <string name="prefs_personalization">個人設定</string>
+    <string name="explore">探索</string>
+    <string name="install_after_sync">アップデートを自動的にインストール</string>
+    <string name="install_after_sync_summary">リポジトリの同期後、アプリのアップデートを自動的にインストール</string>
 </resources>

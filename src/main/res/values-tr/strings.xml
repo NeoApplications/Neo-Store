@@ -3,8 +3,8 @@
     <string name="action_failed">Eylem başarısız oldu</string>
     <string name="add_repository">Yeni depo ekle</string>nm
     <string name="address">Depo adresi</string>
-    <string name="all_applications">Tümü</string>
-    <string name="all_applications_up_to_date">Hepsi güncel</string>
+    <string name="all_applications">Tüm Uygulamalar</string>
+    <string name="all_applications_up_to_date">Tüm uygulamalar güncel</string>
     <string name="already_exists">Zaten mevcut</string>
     <string name="always">Her zaman</string>
     <string name="amoled">Siyah</string>

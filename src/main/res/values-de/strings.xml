@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_repository">Paketquelle hinzufügen</string>
-    <string name="all_applications">Alle</string>
-    <string name="all_applications_up_to_date">Alles ist aktuell</string>
+    <string name="all_applications">Alle Anwendungen</string>
+    <string name="all_applications_up_to_date">Alle Anwendungen sind aktuell</string>
     <string name="already_exists">Bereits vorhanden</string>
     <string name="always">Immer</string>
     <string name="address">Adresse</string>
