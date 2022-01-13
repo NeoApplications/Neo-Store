@@ -189,7 +189,7 @@ interface ProductDao : BaseDao<Product> {
         product.${ROW_SIGNATURES} LIKE ('%.' || installed.${ROW_SIGNATURE} || '.%') AND
         product.${ROW_SIGNATURES} != ''"""
 
-        builder += """SELECT ${if (numberOfItems > 0) "TOP $numberOfItems " else ""}product.rowid AS _id, product.${ROW_REPOSITORY_ID},
+        builder += """SELECT product.rowid AS _id, product.${ROW_REPOSITORY_ID},
         product.${ROW_PACKAGE_NAME}, product.${ROW_NAME},
         product.${ROW_SUMMARY}, installed.${ROW_VERSION},
         (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
@@ -258,7 +258,7 @@ interface ProductDao : BaseDao<Product> {
             ProductItem.Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"
             ProductItem.Order.LAST_UPDATE -> builder += "product.${ROW_UPDATED} DESC,"
         }::class
-        builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC"
+        builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
 
         return queryList(SimpleSQLiteQuery(builder.build()))
     }
