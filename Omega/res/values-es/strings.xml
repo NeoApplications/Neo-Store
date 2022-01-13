@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="title__general_about">Acerca de</string>
     <string name="title__general_desktop">Escritorio</string>
-    <string name="title__general_dock">Dock</string>
+    <string name="title__general_dock">Muelle</string>
     <string name="title__general_drawer">Aplicaciones</string>
     <string name="title__general_theme">Temas</string>
     <string name="title__general_search">Búsqueda y Carpetas</string>
@@ -62,8 +62,8 @@
     <string name="title__desktop_icon_size">Tamaño de icono</string>
     <string name="allow_rotation_blocked_desc">La configuración actual no permite la rotación de pantalla</string>
     <string name="pref_category__inputs">Gestos y Búsqueda</string>
-    <string name="pref_category__interfaces">Interfáz de usuario</string>
-    <string name="summary__general_about">Mas información sobre Omega Launcher</string>
+    <string name="pref_category__interfaces">Interfaz de usuario</string>
+    <string name="summary__general_about">Más información sobre Omega Launcher</string>
     <string name="summary__general_advanced">Idioma, respaldo, búsqueda de preferencias</string>
     <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
@@ -81,8 +81,8 @@
     <string name="theme_dark_text">Claro con texto oscuro</string>
     <string name="theme_with_dark_text">Texto oscuro</string>
     <string name="theme_light">Claro</string>
-    <string name="hide_app_reset">Reiniciar</string>
-    <string name="hide_app_selected">  Oculta</string>
+    <string name="hide_app_reset">Restablecer apps ocultas</string>
+    <string name="hide_app_selected"> oculto</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Ocultas</item>
         <item quantity="other"/>
@@ -113,7 +113,7 @@
     <string name="title__dock_show_arrow">Mostrar flecha</string>
     <string name="title_dock_background_color">Color de fondo</string>
     <string name="title_dock_fill">Mostrar fondo</string>
-    <string name="title_desktop_overlap_placement">Superposición</string>
+    <string name="title_desktop_overlap_placement">Permitir superposición</string>
     <string name="title_desktop_hide_statusbar">Ocultar barra de estado</string>
     <string name="title__multiline_labels">Nombre de aplicaciones en varias lineas</string>
     <string name="title__desktop_hide_icon_labels">Ocultar etiquetas en los iconos de la pantalla de inicio</string>
@@ -265,14 +265,14 @@
     <string name="restore_read_meta_fail">Archivo de respaldo no válido</string>
     <string name="restore_failed">La restauración falló</string>
     <string name="backup_failed">El respaldo falló</string>
-    <string name="restore_success">Restaruración correcta</string>
+    <string name="restore_success">Restauración correcta</string>
     <string name="backup_restarting">Reiniciando</string>
     <string name="backup_restoring">Restaurando respaldo</string>
     <string name="backup_timestamp">Creado en</string>
     <string name="backup_remove_from_recents">Remover de la lista</string>
     <string name="backup_invalid">No disponible</string>
     <string name="no_recent_backups">No hay respaldos recientes</string>
-    <string name="dialog_message_change_sort">¿Cambiar el orden a Alfabético?</string>
+    <string name="dialog_message_change_sort">¿Cambiar el orden a alfabético\?</string>
     <string name="icu_abbrev_time">HH:mm</string>
     <string name="icu_abbrev_time_12h">hh:mm aa</string>
     <string name="icu_abbrev_date">dd MMMM</string>
@@ -300,9 +300,10 @@
     <string name="action_app_search">Abrir el buscador de aplicaciones</string>
     <string name="dash_all_apps_title">Abrir todas las aplicaciones</string>
     <string name="search_no_results">No se encontraron resultados</string>
-    <string name="default_tab_name">Nueba pestaña</string>
+    <string name="default_tab_name">Pestaña nueva</string>
     <string name="tabs_manage">Administrar</string>
     <string name="tab_manage_apps">Administrar aplicaciones</string>
     <string name="title_force_shapeless">Forzar iconos sin forma</string>
     <string name="title_drawer_layout">Modo de diseño</string>
+    <string name="about_translators_group">Contribuidores y Traductores</string>
 </resources>
