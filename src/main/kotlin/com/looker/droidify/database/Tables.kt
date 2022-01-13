@@ -9,6 +9,7 @@ import com.looker.droidify.entity.Repository
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
 
+// TODO LATER: reduce redundancy by merging the entity and database classes
 @Entity
 class Repository {
     @PrimaryKey(autoGenerate = true)

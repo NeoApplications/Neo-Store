@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:scrollIndicators="end"
+                android:scrollbars="none"
                 tools:listitem="@layout/item_app_vertical_x" />
         </androidx.core.widget.NestedScrollView>
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>

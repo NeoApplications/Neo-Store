@@ -22,7 +22,6 @@
             android:layout_marginBottom="4dp"
             android:elevation="8dp"
             android:src="@drawable/ic_application_default"
-            android:tint="?colorPrimary"
             app:layout_constraintBottom_toTopOf="@id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
