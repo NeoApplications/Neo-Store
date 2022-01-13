@@ -1,17 +1,13 @@
 package com.looker.droidify.ui.fragments
 
-import android.database.Cursor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.looker.droidify.R
-import com.looker.droidify.database.CursorOwner
+import com.looker.droidify.database.Product
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.adapters.AppListAdapter
@@ -20,11 +16,10 @@ import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
-class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
+// TODO create categories layouts that hold the apps in horizontal layout
+class ExploreFragment : MainNavFragmentX() {
 
     override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentExploreXBinding
@@ -70,21 +65,5 @@ class ExploreFragment : MainNavFragmentX(), CursorOwner.Callback {
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
-    }
-
-    override fun onCursorData(request: CursorOwner.Request, cursor: Cursor?) {
-        (binding.recyclerView.adapter as? AppListAdapter)?.apply {
-            this.cursor = cursor
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    emptyText = when {
-                        cursor == null -> ""
-                        viewModel.searchQuery.first()
-                            .isNotEmpty() -> getString(R.string.no_matching_applications_found)
-                        else -> getString(R.string.no_applications_available)
-                    }
-                }
-            }
-        }
     }
 }

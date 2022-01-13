@@ -1,6 +1,5 @@
 package com.looker.droidify.ui.fragments
 
-import android.database.Cursor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.R
-import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.databinding.FragmentLatestXBinding
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Repository
@@ -24,7 +22,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 
-class LatestFragment : MainNavFragmentX(), CursorOwner.Callback {
+class LatestFragment : MainNavFragmentX() {
 
     override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentLatestXBinding
@@ -87,29 +85,5 @@ class LatestFragment : MainNavFragmentX(), CursorOwner.Callback {
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
-    }
-
-    override fun onCursorData(request: CursorOwner.Request, cursor: Cursor?) {
-        // TODO get a list instead of the cursor
-        // TODO use LiveData and observers instead of listeners
-        val appItemList: List<ProductItem> = listOf()
-        updatedItemAdapter.set(appItemList  // .filter { !it.hasOneRelease }
-            .map { VAppItem(it, repositories[it.repositoryId]) }
-        )
-        newItemAdapter.set(appItemList // .filter { it.hasOneRelease }
-            .map { HAppItem(it, repositories[it.repositoryId]) }
-        )
-        /*
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    emptyText = when {
-                        cursor == null -> ""
-                        viewModel.searchQuery.first()
-                            .isNotEmpty() -> getString(R.string.no_matching_applications_found)
-                        else -> getString(R.string.all_applications_up_to_date)
-                    }
-                }
-            }
-        */
     }
 }

@@ -2,12 +2,11 @@ package com.looker.droidify.ui.fragments
 
 import androidx.fragment.app.Fragment
 import com.looker.droidify.R
-import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 
-abstract class MainNavFragmentX : Fragment(), CursorOwner.Callback {
+abstract class MainNavFragmentX : Fragment() {
     val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
     abstract var viewModel: MainNavFragmentViewModelX
