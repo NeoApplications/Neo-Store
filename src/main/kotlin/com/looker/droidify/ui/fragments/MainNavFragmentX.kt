@@ -1,5 +1,7 @@
 package com.looker.droidify.ui.fragments
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.looker.droidify.R
 import com.looker.droidify.entity.ProductItem
@@ -37,6 +39,15 @@ abstract class MainNavFragmentX : Fragment() {
             }
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupAdapters()
+        setupLayout()
+    }
+
+    abstract fun setupAdapters()
+    abstract fun setupLayout()
 }
 
 enum class Source(val sections: Boolean, val order: Boolean) {

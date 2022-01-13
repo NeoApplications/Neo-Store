@@ -51,7 +51,15 @@ class LatestFragment : MainNavFragmentX() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.db.repositoryDao.allFlowable
+            .observeOn(Schedulers.io())
+            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
+            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { repositories = it }
+    }
 
+    override fun setupAdapters() {
         updatedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -71,14 +79,9 @@ class LatestFragment : MainNavFragmentX() {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = newFastAdapter
         }
+    }
 
-        viewModel.db.repositoryDao.allFlowable
-            .observeOn(Schedulers.io())
-            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
-            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { repositories = it }
-
+    override fun setupLayout() {
         viewModel.productsList.observe(requireActivity()) {
             newItemAdapter.submitList(it)
             updatedItemAdapter.submitList(it)

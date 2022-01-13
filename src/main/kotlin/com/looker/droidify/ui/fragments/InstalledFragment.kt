@@ -50,7 +50,15 @@ class InstalledFragment : MainNavFragmentX() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.db.repositoryDao.allFlowable
+            .observeOn(Schedulers.io())
+            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
+            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { repositories = it }
+    }
 
+    override fun setupAdapters() {
         installedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -70,15 +78,18 @@ class InstalledFragment : MainNavFragmentX() {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = updatedFastAdapter
         }
+    }
 
-        viewModel.db.repositoryDao.allFlowable
-            .observeOn(Schedulers.io())
-            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
-            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { repositories = it }
+    override fun setupLayout() {
+        binding.buttonUpdated.setOnClickListener {
+            binding.updatedRecycler.apply {
+                visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            }
+        }
 
         viewModel.productsList.observe(requireActivity()) {
+            binding.updatedBar.visibility =
+                if (it.any { item -> item.data_item?.canUpdate == true }) View.VISIBLE else View.GONE
             updatedItemAdapter.submitList(it)
             installedItemAdapter.submitList(it)
         }

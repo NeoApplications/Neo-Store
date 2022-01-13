@@ -46,7 +46,15 @@ class ExploreFragment : MainNavFragmentX() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.db.repositoryDao.allFlowable
+            .observeOn(Schedulers.io())
+            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
+            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { repositories = it }
+    }
 
+    override fun setupAdapters() {
         appsItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -57,14 +65,9 @@ class ExploreFragment : MainNavFragmentX() {
             setHasFixedSize(true)
             adapter = appsFastAdapter
         }
+    }
 
-        viewModel.db.repositoryDao.allFlowable
-            .observeOn(Schedulers.io())
-            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
-            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { repositories = it }
-
+    override fun setupLayout() {
         viewModel.productsList.observe(requireActivity()) {
             appsItemAdapter.submitList(it)
         }
