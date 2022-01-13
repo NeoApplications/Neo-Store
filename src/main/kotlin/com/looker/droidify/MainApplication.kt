@@ -22,6 +22,7 @@ import com.looker.droidify.utility.Utils.toInstalledItem
 import com.looker.droidify.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -69,10 +70,9 @@ class MainApplication : Application(), ImageLoaderFactory {
                             } catch (e: Exception) {
                                 null
                             }
-                            if (packageInfo != null) {
-                                db.installedDao.put(packageInfo.toInstalledItem())
-                            } else {
-                                db.installedDao.delete(packageName)
+                            GlobalScope.launch {
+                                if (packageInfo != null) db.installedDao.put(packageInfo.toInstalledItem())
+                                else db.installedDao.delete(packageName)
                             }
                         }
                     }

@@ -435,7 +435,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @see SyncService.displayUpdatesNotification
      */
     private fun runAutoUpdate(productItems: List<ProductItem>) {
-        if (Preferences[Preferences.Key.InstallAfterSync]) {
+        if (Preferences[Preferences.Key.InstallAfterSync]) GlobalScope.launch {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Pair(
