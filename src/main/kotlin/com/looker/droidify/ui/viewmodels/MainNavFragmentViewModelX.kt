@@ -69,6 +69,18 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
                 mSections,
                 mOrder
             )
+            Source.UPDATED -> Request.ProductsUpdated(
+                mSearchQuery,
+                mSections,
+                ProductItem.Order.LAST_UPDATE,
+                100 // TODO add to preferences
+            )
+            Source.NEW -> Request.ProductsNew(
+                mSearchQuery,
+                mSections,
+                ProductItem.Order.LAST_UPDATE,
+                20 // TODO add to preferences
+            )
         }
     }
 

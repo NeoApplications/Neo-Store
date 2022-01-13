@@ -39,10 +39,12 @@ abstract class MainNavFragmentX : Fragment() {
     }
 }
 
-enum class Source(val titleResId: Int, val sections: Boolean, val order: Boolean) {
-    AVAILABLE(R.string.available, true, true),
-    INSTALLED(R.string.installed, false, true),
-    UPDATES(R.string.updates, false, false)
+enum class Source(val sections: Boolean, val order: Boolean) {
+    AVAILABLE( true, true),
+    INSTALLED( false, true),
+    UPDATES( false, false),
+    UPDATED( false, true),
+    NEW( false, true)
 }
 
 sealed class Request {
