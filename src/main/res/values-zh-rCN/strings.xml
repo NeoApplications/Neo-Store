@@ -3,7 +3,7 @@
     <string name="action_failed">操作失败</string>
     <string name="add_repository">添加存储库</string>
     <string name="address">地址</string>
-    <string name="all_applications">所有</string>
+    <string name="all_applications">所有程序</string>
     <string name="all_applications_up_to_date">所有程序均为最新</string>
     <string name="already_exists">已经存在</string>
     <string name="always">总是</string>
