@@ -157,7 +157,7 @@
     <string name="unstable_updates">Kararsız güncellemeler</string>
     <string name="unstable_updates_summary">Kararsız sürümleri kurmayı öner</string>
     <string name="unverified">Doğrulanmamış</string>
-    <string name="update">Güncelleme</string>
+    <string name="update">Güncelle</string>
     <string name="updates">Güncellemeler</string>
     <string name="upstream_source_code_is_not_free">Yukarı akış kaynak kodu özgür değil</string>
     <string name="username">Kullanıcı adı</string>
