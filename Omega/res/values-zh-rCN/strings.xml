@@ -283,7 +283,7 @@
     <string name="title__desktop_grid_size">网格尺寸</string>
     <string name="dock_colored_google">彩色图标</string>
     <string name="title_desktop_keep_empty">允许空白页</string>
-    <string name="title_desktop_overlap_placement">允许重叠</string>
+    <string name="title_desktop_overlap_placement">允许重叠小部件</string>
     <string name="onbording">启动中</string>
     <string name="onbording_settings_summary">点击并按住主屏幕。</string>
     <string name="units_romer">Rømer</string>
@@ -403,7 +403,7 @@
     <string name="app_widget_name">时钟部件</string>
     <string name="about_translators_group">贡献者和翻译者</string>
     <string name="about_channel">频道</string>
-    <string name="about_open_source">自由软件库</string>
+    <string name="about_open_source">开源库</string>
     <string name="about_community">社区</string>
     <string name="about_copyright">Copyright © 2020–2021</string>
     <string name="pref_desktop_mode">桌面模式</string>
