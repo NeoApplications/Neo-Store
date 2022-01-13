@@ -151,6 +151,7 @@ dependencies {
     implementation("com.mikepenz:fastadapter:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-diff:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-binding:5.6.0")
+    implementation("com.mikepenz:fastadapter-extensions-paged:5.6.0")
 
     // Coil
     implementation 'io.coil-kt:coil:1.4.0'

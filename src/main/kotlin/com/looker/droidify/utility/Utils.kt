@@ -10,6 +10,8 @@ import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.drawable.Drawable
 import android.os.Build
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
@@ -235,3 +237,22 @@ fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
     Json.factory.createGenerator(outputStream).use { it.writeDictionary(callback) }
     return outputStream.toByteArray()
 }
+
+val PRODUCT_ASYNC_DIFFER_CONFIG
+    get() = AsyncDifferConfig.Builder(object :
+        DiffUtil.ItemCallback<com.looker.droidify.database.Product>() {
+        override fun areItemsTheSame(
+            oldItem: com.looker.droidify.database.Product,
+            newItem: com.looker.droidify.database.Product
+        ): Boolean {
+            return oldItem.repository_id == newItem.repository_id
+                    && oldItem.package_name == newItem.package_name
+        }
+
+        override fun areContentsTheSame(
+            oldItem: com.looker.droidify.database.Product,
+            newItem: com.looker.droidify.database.Product
+        ): Boolean {
+            return oldItem.data_item == newItem.data_item
+        }
+    }).build()

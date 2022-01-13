@@ -11,9 +11,13 @@ import com.looker.droidify.database.Product
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.adapters.AppListAdapter
+import com.looker.droidify.ui.items.VAppItem
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
+import com.looker.droidify.utility.PRODUCT_ASYNC_DIFFER_CONFIG
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.paged.PagedModelAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
@@ -23,6 +27,8 @@ class ExploreFragment : MainNavFragmentX() {
 
     override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentExploreXBinding
+    private lateinit var appsItemAdapter: PagedModelAdapter<Product, VAppItem>
+    private var appsFastAdapter: FastAdapter<VAppItem>? = null
 
     override val source = Source.AVAILABLE
 
@@ -40,13 +46,19 @@ class ExploreFragment : MainNavFragmentX() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainNavFragmentViewModelX::class.java)
 
+        appsItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
+            it.data_item?.let { item ->
+                VAppItem(item, repositories[it.repository_id])
+            }
+        }
+
+        appsFastAdapter = FastAdapter.with(appsItemAdapter)
+        appsFastAdapter?.setHasStableIds(true)
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            isMotionEventSplittingEnabled = false
-            isVerticalScrollBarEnabled = false
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             recycledViewPool.setMaxRecycledViews(AppListAdapter.ViewType.PRODUCT.ordinal, 30)
-            adapter = AppListAdapter { mainActivityX.navigateProduct(it.packageName) }
+            adapter = appsFastAdapter
             FastScrollerBuilder(this)
                 .useMd2Style()
                 .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))

@@ -2,6 +2,7 @@ package com.looker.droidify.database
 
 import android.database.Cursor
 import android.os.CancellationSignal
+import androidx.paging.DataSource
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
@@ -175,14 +176,13 @@ interface ProductDao : BaseDao<Product> {
     @RawQuery(observedEntities = [Product::class])
     fun queryList(
         query: SupportSQLiteQuery
-    ): List<Product>
+    ): DataSource.Factory<Int, Product>
 
     // TODO optimize and simplify
-    @Transaction
     fun queryList(
         installed: Boolean, updates: Boolean, searchQuery: String,
         section: ProductItem.Section, order: ProductItem.Order, numberOfItems: Int = 0
-    ): List<Product> {
+    ): DataSource.Factory<Int, Product> {
         val builder = QueryBuilder()
 
         val signatureMatches = """installed.${ROW_SIGNATURE} IS NOT NULL AND

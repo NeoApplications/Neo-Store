@@ -1,14 +1,18 @@
 package com.looker.droidify.ui.viewmodels
 
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.Product
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -68,15 +72,36 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
         }
     }
 
-    var productsList = MediatorLiveData<MutableList<Product>>()
+    var productsList: LiveData<PagedList<Product>>
+
+    init {
+
+        val pagedListConfig = PagedList.Config.Builder()
+            .setPageSize(30)
+            .setPrefetchDistance(30)
+            .setEnablePlaceholders(false)
+            .build()
+        val request = request(source)
+
+        productsList = LivePagedListBuilder(
+            db.productDao.queryList(
+                installed = request.installed,
+                updates = request.updates,
+                searchQuery = request.searchQuery,
+                section = request.section,
+                order = request.order,
+                numberOfItems = request.numberOfItems
+            ), pagedListConfig
+        ).build()
+    }
 
     fun fillList(source: Source) {
-        viewModelScope.launch {
-            productsList.value = query(request(source))?.toMutableList()
+        CoroutineScope(Dispatchers.Default).launch {
+            // productsList = query(request(source))
         }
     }
 
-    private suspend fun query(request: Request): List<Product>? {
+    private suspend fun query(request: Request): DataSource.Factory<Int, Product> {
         return withContext(Dispatchers.Default) {
             db.productDao
                 .queryList(
