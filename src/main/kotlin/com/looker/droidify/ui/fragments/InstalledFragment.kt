@@ -93,5 +93,10 @@ class InstalledFragment : MainNavFragmentX() {
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
+
+        viewModel.productsList.observe(requireActivity()) {
+            updatedItemAdapter.submitList(it)
+            installedItemAdapter.submitList(it)
+        }
     }
 }
