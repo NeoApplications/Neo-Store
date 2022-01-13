@@ -50,6 +50,11 @@ class LatestFragment : MainNavFragmentX() {
         val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainNavFragmentViewModelX::class.java)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         updatedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item ->
@@ -81,12 +86,6 @@ class LatestFragment : MainNavFragmentX() {
             recycledViewPool.setMaxRecycledViews(AppListAdapter.ViewType.PRODUCT.ordinal, 30)
             adapter = newFastAdapter
         }
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         //viewModel.fillList(source)
         viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())

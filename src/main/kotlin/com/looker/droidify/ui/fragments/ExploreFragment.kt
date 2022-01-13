@@ -45,6 +45,11 @@ class ExploreFragment : MainNavFragmentX() {
         val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainNavFragmentViewModelX::class.java)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         appsItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item ->
@@ -64,12 +69,6 @@ class ExploreFragment : MainNavFragmentX() {
                 .setThumbDrawable(this.context.getDrawableCompat(R.drawable.scrollbar_thumb))
                 .build()
         }
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         //viewModel.fillList(source)
         viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
