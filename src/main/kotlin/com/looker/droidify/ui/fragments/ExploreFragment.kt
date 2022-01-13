@@ -36,7 +36,7 @@ class ExploreFragment : MainNavFragmentX() {
         super.onCreate(savedInstanceState)
         binding = FragmentExploreXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db)
+        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainNavFragmentViewModelX::class.java)
 

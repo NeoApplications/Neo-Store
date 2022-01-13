@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
+class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel() {
 
     private val _order = MutableStateFlow(ProductItem.Order.LAST_UPDATE)
     private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
@@ -117,11 +117,11 @@ class MainNavFragmentViewModelX(val db: DatabaseX) : ViewModel() {
         }
     }
 
-    class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
+    class Factory(val db: DatabaseX, val source: Source) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainNavFragmentViewModelX::class.java)) {
-                return MainNavFragmentViewModelX(db) as T
+                return MainNavFragmentViewModelX(db, source) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

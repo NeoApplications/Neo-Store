@@ -44,7 +44,7 @@ class InstalledFragment : MainNavFragmentX() {
         super.onCreate(savedInstanceState)
         binding = FragmentInstalledXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db)
+        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainNavFragmentViewModelX::class.java)
 
