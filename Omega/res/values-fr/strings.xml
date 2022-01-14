@@ -83,7 +83,7 @@
     <string name="msg_minus_one_on_left">À gauche de l\'écran d\'accueil</string>
     <string name="title_show_google_app">Afficher l\'application Google</string>
     <string name="icon_shape_override_progress">Application des modifications</string>
-    <string name="get_more_icon_packs">En obtenir plus</string>
+    <string name="get_more_icon_packs">Télécharger un nouveau pack d\'icônes</string>
     <string name="icon_pack">Pack d\'icônes</string>
     <string name="title_default">Par défaut</string>
     <string name="theme_use_dark_text">Utiliser du texte noir</string>
@@ -240,8 +240,8 @@
     <string name="allow">Autoriser</string>
     <string name="permission_iplocate_twilight_explanation">Autoriser l\'accès à votre emplacement approximatif \? Cela aura pour effet un meilleur calcul de l\'heure de la journée.</string>
     <string name="permission_iplocate">Emplacement approximatif</string>
-    <string name="event_provider_missing_notification_dots">Pour utiliser <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, activez les notifications.<xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable Notification Dots.</string>
-    <string name="event_provider_missing_notification_access">Pour utiliser <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, activez les notifications depuis <xliff:g example="My App" id="name">“%2$s”.</xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, enable notifications from <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_dots">Activer les notifications dots pour utiliser <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</string>
+    <string name="event_provider_missing_notification_access">Activer les notifications depuis <xliff:g example="My App" id="name">“%2$s” pour utiliser </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”.</xliff:g></string>
     <string name="battery_low">Batterie faible</string>
     <string name="battery_full">Chargé</string>
     <string name="battery_charging">En cours de chargement</string>
@@ -325,7 +325,7 @@
     <string name="title_theme_icon_packs">Packs d\'icône</string>
     <string name="title_text_color">Couleur du texte</string>
     <string name="title_drawer_enable_background">Utiliser une couleur d\'arrière-plan personnalisée</string>
-    <string name="msg_missing_usage_access">Pour montrer App Suggestions, tourner sur l accès à l usage de <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">Activer l\'usage des accès pour <xliff:g example="My App" id="name">%1$s</xliff:g> afficher les suggestions d\'applications</string>
     <string name="feed_widget">Widget</string>
     <string name="feed_add_widget">Ajouter Un Widget</string>
     <string name="action_open_widgets">Ouvrir Le Tiroir Widget</string>
@@ -363,7 +363,7 @@
     <string name="title_dock_two_row">Afficher la deuxième ligne</string>
     <string name="title_desktop_text_size">Taille du texte</string>
     <string name="title_desktop_keep_empty">Autoriser les pages vides</string>
-    <string name="title_desktop_overlap_placement">Autoriser les chevauchements</string>
+    <string name="title_desktop_overlap_placement">Autoriser le chevauchement des widgets</string>
     <string name="about_channel">Canal</string>
     <string name="about_translators_group">Contributeurs et traducteurs</string>
     <string name="about_community">Communauté</string>
@@ -380,7 +380,7 @@
     <string name="folder_custom_background">Utiliser un arrière-plan de dossier personnalisé</string>
     <string name="fonts_global_font">Police</string>
     <string name="fonts_change_global_font">Modifier</string>
-    <string name="about_open_source">Bibliothèques libres</string>
+    <string name="about_open_source">Bibliothèques Open Source</string>
     <string name="dash_media_player">Lecteur audio</string>
     <string name="dash_wifi">Wifi</string>
     <string name="dash_wifi_summary">État et connexion Wifi</string>
