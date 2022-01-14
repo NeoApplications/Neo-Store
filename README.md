@@ -14,17 +14,17 @@
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
 alt="Get it on IzzyDroid"
-width="48%">](https://android.izzysoft.de/repo/apk/com.looker.droidify)
+width="48%" align="center">](https://android.izzysoft.de/repo/apk/com.looker.droidify)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
-width="48%">](https://f-droid.org/packages/com.looker.droidify)
+width="48%" align="center">](https://f-droid.org/packages/com.looker.droidify)
 [<img src="https://github.com/WeblateOrg/weblate/blob/main/weblate/static/weblate.svg"
 alt="Weblate"
-width="40%">](https://hosted.weblate.org/projects/droidify/localization/)
+width="40%" align="center">](https://hosted.weblate.org/projects/droidify/localization/)
 &nbsp;&nbsp;
 [<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
 alt="Join Telegram Channel"
-width="30%">](https://t.me/droid_ify)
+width="25%" align="center">](https://t.me/droid_ify)
 [<img src = "https://hosted.weblate.org/widgets/droidify/-/open-graph.png"
 alt= "Translation State"
 width="60%">](https://hosted.weblate.org/projects/droidify/localization/)
