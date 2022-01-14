@@ -42,7 +42,7 @@ width="60%">](https://hosted.weblate.org/projects/droidify/localization/)
 
 <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="48%" />
 
-## :hammer: Building and Installing
+## :hammer: Building from source
 
 Specify your Android SDK path either using the `ANDROID_HOME` environment variable, \
 or by filling out the `sdk.dir` property in `local.properties`.
