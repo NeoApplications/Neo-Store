@@ -31,6 +31,7 @@ import com.looker.droidify.ui.viewmodels.MainActivityViewModelX
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class MainActivityX : AppCompatActivity() {
     companion object {
@@ -65,8 +66,11 @@ class MainActivityX : AppCompatActivity() {
     val db
         get() = (application as MainApplication).db
 
+    var currentTheme by Delegates.notNull<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+        currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
+        setTheme(currentTheme)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainXBinding.inflate(layoutInflater)
@@ -105,6 +109,12 @@ class MainActivityX : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         syncConnection.bind(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (currentTheme != Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+            recreate()
     }
 
     override fun onSupportNavigateUp(): Boolean {
