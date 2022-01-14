@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/userTab">
+
+    <fragment
+        android:id="@+id/userTab"
+        android:name="com.looker.droidify.ui.fragments.PrefsUserFragment"
+        tools:layout="@layout/fragment_prefs" />
+
+    <fragment
+        android:id="@+id/updateTab"
+        android:name="com.looker.droidify.ui.fragments.PrefsUpdatesFragment"
+        tools:layout="@layout/fragment_prefs" />
+
+    <fragment
+        android:id="@+id/otherTab"
+        android:name="com.looker.droidify.ui.fragments.PrefsOtherFragment"
+        tools:layout="@layout/fragment_prefs" />
+</navigation>
