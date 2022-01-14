@@ -216,9 +216,9 @@ class MainActivityX : AppCompatActivity() {
         // TODO
     }
 
-    private fun navigateSettings() {
-        // TODO
-    }
+    private fun navigateSettings() = startActivity(
+        Intent(applicationContext, PrefsActivityX::class.java)
+    )
 
     private fun updateUpdateNotificationBlocker(activeSource: Source) {
         val blockerFragment = if (activeSource == Source.UPDATES) {

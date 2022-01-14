@@ -80,6 +80,12 @@
 
         </activity>
 
+        <activity
+            android:name=".ui.activities.PrefsActivityX"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+
         <service android:name=".service.SyncService" />
 
         <service
