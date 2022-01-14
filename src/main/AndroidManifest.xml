@@ -32,7 +32,7 @@
         </receiver>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivityX"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
