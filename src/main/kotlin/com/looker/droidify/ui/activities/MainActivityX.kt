@@ -81,13 +81,14 @@ class MainActivityX : AppCompatActivity() {
             handleIntent(intent)
         }
         setContentView(binding.root)
+    }
 
+    override fun onStart() {
+        super.onStart()
         setSupportActionBar(toolbar)
-
         if (Android.sdk(28) && !Android.Device.isHuaweiEmui) {
             toolbar.menu.setGroupDividerEnabled(true)
         }
-
         toolbar.isFocusableInTouchMode = true
         binding.collapsingToolbar.title = getString(R.string.application_name)
 
@@ -104,10 +105,6 @@ class MainActivityX : AppCompatActivity() {
         supportFragmentManager.addFragmentOnAttachListener { _, _ ->
             hideKeyboard()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
         syncConnection.bind(this)
     }
 

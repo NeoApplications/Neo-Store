@@ -73,9 +73,11 @@ class PrefsActivityX : AppCompatActivity() {
             handleIntent(intent)
         }
         setContentView(binding.root)
+    }
 
+    override fun onStart() {
+        super.onStart()
         setSupportActionBar(toolbar)
-
         toolbar.isFocusableInTouchMode = true
         binding.collapsingToolbar.title = getString(R.string.settings)
 
@@ -92,10 +94,6 @@ class PrefsActivityX : AppCompatActivity() {
         supportFragmentManager.addFragmentOnAttachListener { _, _ ->
             hideKeyboard()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
         syncConnection.bind(this)
     }
 
