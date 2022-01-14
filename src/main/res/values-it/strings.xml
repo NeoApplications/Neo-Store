@@ -83,7 +83,7 @@
     <string name="name">Nome</string>
     <string name="network_error_DESC">Errore di rete.</string>
     <string name="never">Mai</string>
-    <string name="new_updates_available">Nuove versioni di applicazioni disponibili</string>
+    <string name="new_updates_available">Nuove versioni disponibili</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d applicazione ha una nuova versione.</item>
         <item quantity="other">%d applicazioni hanno una nuova versione.</item>
@@ -134,7 +134,7 @@
     <string name="show_older_versions">Mostra versioni vecchie</string>
     <string name="signature_FORMAT">Firma %s</string>
     <string name="signed_using_unsafe_algorithm">Firmato usando un algoritmo non sicuro</string>
-    <string name="size">Taglia</string>
+    <string name="size">Dimensione</string>
     <string name="skip">Salta</string>
     <string name="socks_proxy">Proxy SOCKS</string>
     <string name="sorting_order">Ordinamento</string>
