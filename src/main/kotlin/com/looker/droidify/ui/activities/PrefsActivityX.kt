@@ -19,7 +19,6 @@ import com.looker.droidify.ContextWrapperX
 import com.looker.droidify.MainApplication
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.CursorOwner
 import com.looker.droidify.databinding.ActivityPrefsXBinding
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.service.Connection
@@ -62,9 +61,6 @@ class PrefsActivityX : AppCompatActivity() {
     val db
         get() = (application as MainApplication).db
 
-    lateinit var cursorOwner: CursorOwner
-        private set
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
         super.onCreate(savedInstanceState)
@@ -77,16 +73,6 @@ class PrefsActivityX : AppCompatActivity() {
             handleIntent(intent)
         }
         setContentView(binding.root)
-
-        if (savedInstanceState == null) {
-            cursorOwner = CursorOwner()
-            supportFragmentManager.beginTransaction()
-                .add(cursorOwner, CursorOwner::class.java.name)
-                .commit()
-        } else {
-            cursorOwner = supportFragmentManager
-                .findFragmentByTag(CursorOwner::class.java.name) as CursorOwner
-        }
 
         setSupportActionBar(toolbar)
 
