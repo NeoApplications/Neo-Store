@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title__general_desktop">デスクトップ</string>
+    <string name="title__general_dock">ドック</string>
+    <string name="title__general_theme">テーマ</string>
+    <string name="title__general_advanced">高度な設定</string>
+    <string name="title__general_notifications">ジェスチャーと通知</string>
+    <string name="summary__general_desktop">デスクトップのカスタマイズ</string>
+    <string name="summary__general_theme">色の変更、アイコンパック、アイコンの形</string>
+    <string name="summary__general_search">検索プロバイダー、スタイル、アイコン</string>
+    <string name="summary__general_advanced">言語、バックアップ、設定の検索</string>
+    <string name="summary__general_about">Omega Launcherについて</string>
+    <string name="pref_category__inputs">ジェスチャーと検索</string>
+    <string name="pref_category__others">その他</string>
+    <string name="title_desktop_full_width_widgets">最大幅のウィジェット</string>
+    <string name="title__desktop_icon_size">アイコンの大きさ</string>
+    <string name="title__desktop_grid_size">グリッド数</string>
+    <string name="title__desktop_hide_icon_labels">ホーム画面のアイコンラベルを非表示</string>
+    <string name="title_desktop_keep_empty">空白ページを許可</string>
+    <string name="default_folder_name">新しいフォルダ</string>
+    <string name="title__general_drawer">ドロワー</string>
+    <string name="summary__general_drawer">ドロワーのカスタマイズ</string>
+    <string name="summary__general_notifications">バッジの数字、バッジの色、ジェスチャー</string>
+    <string name="allow_rotation_blocked_desc">現在のディスプレイ設定は画面の回転が許可されていません</string>
+    <string name="title_desktop_lock_desktop">デスクトップのロック</string>
+</resources>
