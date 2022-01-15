@@ -51,17 +51,17 @@
     <string name="incompatible_api_max_DESC_FORMAT">En yüksek API sürümü %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">En düşük API sürümü %d.</string>
     <string name="incompatible_features_DESC">Özellikleri eksik.</string>
-    <string name="incompatible_older_DESC">Bu sürüm aygıtınızda kurulu olandan daha eski. Önce onu kaldırın.</string>
+    <string name="incompatible_older_DESC">Bu sürüm aygıtınızda yüklü olandan daha eski. Önce onu kaldırın.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Sizin %1$s platformunuz desteklenmemektedir.
     Desteklenen platformlar: %2$s.</string>
-    <string name="incompatible_signature_DESC">Bu sürüm aygıtınızda kurulu olan sürümden farklı bir sertifika ile imzalanmış. Önce onu kaldırın.</string>
+    <string name="incompatible_signature_DESC">Bu sürüm aygıtınızda yüklü olan sürümden farklı bir sertifika ile imzalanmış. Önce onu kaldırın.</string>
     <string name="incompatible_version">Uyumsuz sürüm</string>
     <string name="incompatible_versions">Uyumsuz sürümler</string>
     <string name="incompatible_versions_summary">Aygıtla uyumlu olmayan sürümleri göster</string>
     <string name="incompatible_with_FORMAT">%s ile uyumsuz</string>
     <string name="install">Kur</string>
-    <string name="install_types">Kurulum Türleri</string>
-    <string name="installed">Kurulu</string>
+    <string name="install_types">Yükleme Türleri</string>
+    <string name="installed">Yüklü</string>
     <string name="integrity_check_error_DESC">Bütünlük kontrol edilemedi.</string>
     <string name="invalid_address">Geçersiz adres</string>
     <string name="invalid_fingerprint_format">Geçersiz parmak izi biçimi</string>
@@ -87,7 +87,7 @@
         <item quantity="other">%d uygulamanın yeni sürümleri var.</item>
     </plurals>
     <string name="no_applications_available">Kullanılabilir uygulama yok</string>
-    <string name="no_applications_installed">Kurulu uygulama yok</string>
+    <string name="no_applications_installed">Yüklü uygulama yok</string>
     <string name="no_description_available_DESC">Açıklama yok.</string>
     <string name="no_matching_applications_found">Böyle bir uygulama bulunamadı</string>
     <string name="no_proxy">Proxy yok</string>
@@ -96,7 +96,7 @@
     <string name="number_of_applications">Uygulama sayısı</string>
     <string name="ok">Tamam</string>
     <string name="only_compatible_with_FORMAT">Yalnızca %s ile uyumlu</string>
-    <string name="only_on_wifi">Yalnızca Wi-Fi\'de</string>
+    <string name="only_on_wifi">Yalnızca Wi-Fi</string>
     <string name="open_DESC_FORMAT">%s açılsın mı?</string>
     <string name="other">Diğer</string>
     <string name="parsing_index_error_DESC">Dizin dosyası çözümlenemedi.</string>
@@ -120,8 +120,8 @@
     <string name="repository_not_used_DESC">Bu depo henüz kullanılmadı. İçindeki uygulamaları görüntülemek için etkinleştirin.</string>
     <string name="repository_unsigned_DESC">İmzalanmamış. Uygulama listesi doğrulanamadı. İmzalanmamış depolardan uygulama indirirken dikkatli olun.</string>
     <string name="requires_FORMAT">%s gerektirir</string>
-    <string name="root_permission">Sessiz Kurulum</string>
-    <string name="root_permission_description">Etkileşimsiz kurulumlar için root kullan</string>
+    <string name="root_permission">Sessiz Yükleme</string>
+    <string name="root_permission_description">Etkileşimsiz yüklemeler için root kullan</string>
     <string name="save">Kaydet</string>
     <string name="saving_details">Ayrıntılar kaydediliyor…</string>
     <string name="screenshots">Ekran görüntüleri</string>
@@ -173,12 +173,12 @@
     <string name="prefs_personalization">Kişiselleştirme</string>
     <string name="show_less">Daha Az Göster</string>
     <string name="sort_filter">Sırala ve Filtrele</string>
-    <string name="installed_applications">Kurulu uygulamalar</string>
+    <string name="installed_applications">Yüklü uygulamalar</string>
     <string name="new_applications">Yeni uygulamalar</string>
     <string name="latest">En yeni</string>
     <string name="update_all">Tümünü güncelle</string>
     <string name="explore">Keşfet</string>
-    <string name="only_on_wifi_and_battery">Yalnızca Wi-Fi\'de ve Prize Takılı</string>
+    <string name="only_on_wifi_and_battery">Yalnızca Wi-Fi üzerinde ve prize takılıyken</string>
     <string name="install_after_sync">Güncellemeleri otomatik olarak kur</string>
     <string name="install_after_sync_summary">Depoları eşzamanladıktan sonra uygulama güncellemelerini otomatik olarak kur</string>
 </resources>
