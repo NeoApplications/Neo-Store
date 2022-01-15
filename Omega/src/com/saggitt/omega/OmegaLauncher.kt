@@ -40,18 +40,20 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
-class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeListener {
+class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
+    OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
 
-    private var currentTheme = 0
-    private var currentAccent = 0
+    override var currentTheme = 0
+    override var currentAccent = 0
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
 
@@ -105,7 +107,7 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
 
     override fun onResume() {
         super.onResume()
-        if (currentAccent != mPrefs.accentColor) recreate()
+        if (currentAccent != mPrefs.accentColor || currentTheme != themeOverride.getTheme(this)) onThemeChanged()
         restartIfPending()
         paused = false
     }
@@ -138,6 +140,9 @@ class OmegaLauncher : QuickstepLauncher(), OmegaPreferences.OnPreferenceChangeLi
             sRestart = false
         }
     }
+
+    override fun onThemeChanged() = recreate()
+
 
     fun shouldRecreate() = !sRestart
 
