@@ -2,7 +2,10 @@ package com.saggitt.omega.preferences.views
 
 import android.os.Bundle
 import android.view.View
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.SeekBarPreference
+import androidx.preference.SwitchPreference
 import com.android.launcher3.R
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.*
@@ -10,12 +13,8 @@ import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.*
 
-class PrefsThemeFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences_theme, rootKey)
-    }
-
+class PrefsThemeFragment :
+    BasePreferenceFragment(R.xml.preferences_theme, R.string.title__general_theme) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findPreference<ListPreference>(PREFS_THEME)?.apply {
@@ -70,10 +69,5 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                     true
                 }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().title = requireActivity().getString(R.string.title__general_theme)
     }
 }

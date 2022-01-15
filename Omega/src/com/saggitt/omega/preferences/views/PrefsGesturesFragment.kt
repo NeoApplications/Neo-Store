@@ -26,19 +26,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.settings.NotificationDotsPreference
 import com.saggitt.omega.util.SettingsObserver
 
-class PrefsGesturesFragment : PreferenceFragmentCompat() {
+class PrefsGesturesFragment :
+    BasePreferenceFragment(R.xml.preferences_gestures, R.string.title__general_notifications) {
     private var mIconBadgingObserver: IconBadgingObserver? = null
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences_gestures, rootKey)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +50,6 @@ class PrefsGesturesFragment : PreferenceFragmentCompat() {
             NOTIFICATION_BADGING,
             NOTIFICATION_ENABLED_LISTENERS
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().title =
-            requireActivity().getString(R.string.title__general_notifications)
     }
 
     /**
