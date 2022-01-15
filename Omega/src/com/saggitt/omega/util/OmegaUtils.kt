@@ -228,11 +228,11 @@ fun Switch.applyColor(color: Int) {
             intArrayOf(android.R.attr.state_checked),
             intArrayOf()
         ),
-            intArrayOf(
-                    ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
-                    color,
-                    colorForeground
-            )
+        intArrayOf(
+            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
+            color,
+            colorForeground
+        )
     )
     DrawableCompat.setTintList(thumbDrawable, thstateList)
     DrawableCompat.setTintList(trackDrawable, trstateList)

@@ -31,7 +31,11 @@ import com.saggitt.omega.util.getThemeAttr
 
 class PreferenceDialogFragment : DialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_preference_fragment, container, false)
     }
 
@@ -41,8 +45,8 @@ class PreferenceDialogFragment : DialogFragment() {
         val content = requireArguments().getInt(KEY_CONTENT)
         val fragment = DialogSettingsFragment.newInstance("", content)
         childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_content, fragment)
-                .commit()
+            .replace(R.id.fragment_content, fragment)
+            .commit()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
