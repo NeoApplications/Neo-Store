@@ -17,7 +17,6 @@
 
 package com.saggitt.omega.gestures.ui
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -33,8 +32,10 @@ import com.saggitt.omega.preferences.AppsShortcutsAdapter
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.recreateAnimated
 
-class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, AppsShortcutsAdapter.Callback {
+class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity,
+    AppsShortcutsAdapter.Callback {
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private val customLayoutInflater by lazy {
@@ -96,9 +97,7 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, A
         if (paused) {
             recreate()
         } else {
-            finish()
-            startActivity(createRelaunchIntent(), ActivityOptions.makeCustomAnimation(
-                    this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+            recreateAnimated()
         }
     }
 
@@ -110,12 +109,6 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, A
     override fun onPause() {
         super.onPause()
         paused = true
-    }
-
-    private fun createRelaunchIntent(): Intent {
-        val state = Bundle()
-        onSaveInstanceState(state)
-        return intent.putExtra("state", state)
     }
 
     override fun getSystemService(name: String): Any? {

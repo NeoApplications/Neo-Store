@@ -28,6 +28,7 @@ import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.recreateAnimated
 
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
@@ -261,19 +262,8 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         if (paused) {
             recreate()
         } else {
-            finish()
-            startActivity(
-                createRelaunchIntent(), ActivityOptions.makeCustomAnimation(
-                    this, android.R.anim.fade_in, android.R.anim.fade_out
-                ).toBundle()
-            )
+            recreateAnimated()
         }
-    }
-
-    fun createRelaunchIntent(): Intent {
-        val state = Bundle()
-        onSaveInstanceState(state)
-        return intent.putExtra("state", state)
     }
 
     companion object {
