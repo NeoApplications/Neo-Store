@@ -32,6 +32,7 @@ import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.preferences.AppsShortcutsAdapter
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.omegaPrefs
 
 class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, AppsShortcutsAdapter.Callback {
     private lateinit var themeOverride: ThemeOverride
@@ -40,7 +41,8 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, A
         OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
     }
 
-    private var currentTheme = 0
+    override var currentTheme = 0
+    override var currentAccent = 0
     private var paused = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +50,7 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity, A
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         currentTheme = themeOverride.getTheme(this)
+        currentAccent = omegaPrefs.accentColor
 
         setContentView(R.layout.preference_insettable_recyclerview)
 

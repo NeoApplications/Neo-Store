@@ -181,6 +181,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
 
     // TODO make all activities (including the desktop one) apply the chosen theme
     interface ThemeableActivity {
+        var currentTheme: Int
+        var currentAccent: Int
         fun onThemeChanged()
     }
 

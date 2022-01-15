@@ -1,6 +1,5 @@
 package com.saggitt.omega.preferences.views
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,10 +29,10 @@ import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 
-open class PreferencesActivity : AppCompatActivity(),
-        ThemeManager.ThemeableActivity {
+open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
-    private var currentTheme = 0
+    override var currentTheme = 0
+    override var currentAccent = 0
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
@@ -44,13 +43,14 @@ open class PreferencesActivity : AppCompatActivity(),
         val config = Config(this)
         config.setAppLanguage(omegaPrefs.language)
 
+        currentAccent = omegaPrefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
-                resources.getIdentifier(
-                        Integer.toHexString(omegaPrefs.accentColor),
-                        "style",
-                        packageName
-                ), true
+            resources.getIdentifier(
+                Integer.toHexString(currentAccent),
+                "style",
+                packageName
+            ), true
         )
         super.onCreate(savedInstanceState)
         binding = PreferencesActivityBinding.inflate(layoutInflater)
