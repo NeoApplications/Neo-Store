@@ -12,7 +12,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -77,7 +76,10 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     private fun getSettingFragment(): Fragment {
         val fragment: String = intent.getStringExtra(EXTRA_FRAGMENT) ?: ""
         return if (fragment.isNotEmpty()) {
-            Fragment.instantiate(this, fragment, intent.getBundleExtra(EXTRA_FRAGMENT_ARGS))
+            supportFragmentManager.fragmentFactory
+                .instantiate(ClassLoader.getSystemClassLoader(), fragment).apply {
+                    arguments = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS)
+                }
         } else {
             PrefsMainFragment()
         }
@@ -133,11 +135,8 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 R.id.action_change_default_home -> changeDefaultHome(requireContext())
                 R.id.action_restart_launcher -> Utilities.killLauncher()
                 R.id.action_dev_options -> {
-                    val transaction: FragmentTransaction =
-                        requireFragmentManager().beginTransaction()
-                    transaction.replace(R.id.fragment_container, PrefsDevFragment())
-                    transaction.addToBackStack(null)
-                    transaction.commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, PrefsDevFragment()).commit()
                 }
                 else -> return false
             }
