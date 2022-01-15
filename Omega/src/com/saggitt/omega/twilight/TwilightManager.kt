@@ -20,6 +20,7 @@ package com.saggitt.omega.twilight
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -169,7 +170,7 @@ class TwilightManager(private val context: Context) : Handler.Callback, Location
         }
 
         if (lastTwilightState != null) {
-            alarmManager.cancel(PendingIntent.getBroadcast(context, 0, updateIntent, 0))
+            alarmManager.cancel(PendingIntent.getBroadcast(context, 0, updateIntent, FLAG_IMMUTABLE))
         }
 
         locationManager.removeUpdates(this)
@@ -189,7 +190,7 @@ class TwilightManager(private val context: Context) : Handler.Callback, Location
         // Schedule an alarm to update the state at the next sunrise or sunset.
         val triggerAtMillis = if (state.isNight) state.sunriseTimeMillis else state.sunsetTimeMillis
         alarmManager.setExact(AlarmManager.RTC, triggerAtMillis,
-                PendingIntent.getBroadcast(context, 0, updateIntent, 0))
+                PendingIntent.getBroadcast(context, 0, updateIntent, FLAG_IMMUTABLE))
     }
 
     override fun onLocationChanged(location: Location) {
