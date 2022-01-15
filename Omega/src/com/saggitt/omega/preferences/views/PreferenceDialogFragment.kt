@@ -63,18 +63,12 @@ class PreferenceDialogFragment : DialogFragment() {
     }
 }
 
-class DialogSettingsFragment : BasePreferenceFragment() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(content, rootKey)
-    }
-
-    private val content: Int
-        get() = arguments?.getInt("content_res_id") ?: -1
+class DialogSettingsFragment(val content: Int, val title: String) :
+    BasePreferenceFragment(content) {
 
     companion object {
         fun newInstance(title: String?, @XmlRes content: Int): DialogSettingsFragment {
-            val fragment = DialogSettingsFragment()
+            val fragment = DialogSettingsFragment(content, title ?: "")
             val b = Bundle(2)
             b.putString("title", title)
             b.putInt("content_res_id", content)
