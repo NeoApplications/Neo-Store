@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.looker.droidify.database.Product
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.items.VAppItem
-import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 import com.looker.droidify.utility.PRODUCT_ASYNC_DIFFER_CONFIG
 import com.looker.droidify.utility.RxUtils
 import com.mikepenz.fastadapter.FastAdapter
@@ -21,7 +19,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 // TODO create categories layouts that hold the apps in horizontal layout
 class ExploreFragment : MainNavFragmentX() {
 
-    override lateinit var viewModel: MainNavFragmentViewModelX
     private lateinit var binding: FragmentExploreXBinding
     private lateinit var appsItemAdapter: PagedModelAdapter<Product, VAppItem>
     private var appsFastAdapter: FastAdapter<VAppItem>? = null
@@ -38,9 +35,6 @@ class ExploreFragment : MainNavFragmentX() {
         super.onCreate(savedInstanceState)
         binding = FragmentExploreXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        val viewModelFactory = MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(MainNavFragmentViewModelX::class.java)
         return binding.root
     }
 
