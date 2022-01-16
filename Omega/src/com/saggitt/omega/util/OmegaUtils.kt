@@ -19,8 +19,12 @@
 package com.saggitt.omega.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ActivityOptions
+import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
@@ -224,11 +228,11 @@ fun Switch.applyColor(color: Int) {
             intArrayOf(android.R.attr.state_checked),
             intArrayOf()
         ),
-            intArrayOf(
-                    ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
-                    color,
-                    colorForeground
-            )
+        intArrayOf(
+            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
+            color,
+            colorForeground
+        )
     )
     DrawableCompat.setTintList(thumbDrawable, thstateList)
     DrawableCompat.setTintList(trackDrawable, trstateList)
@@ -374,3 +378,11 @@ fun Fragment.recreate() {
         .attach(this)
         .commit()
 }
+
+fun Activity.recreateAnimated() = startActivity(
+    Intent.makeRestartActivityTask(
+        ComponentName(this, this::class.java)
+    ), ActivityOptions.makeCustomAnimation(
+        this, android.R.anim.fade_in, android.R.anim.fade_out
+    ).toBundle()
+)

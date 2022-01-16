@@ -1,6 +1,5 @@
 package com.saggitt.omega.preferences.views
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +12,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -29,11 +27,12 @@ import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.recreateAnimated
 
-open class PreferencesActivity : AppCompatActivity(),
-        ThemeManager.ThemeableActivity {
+open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
-    private var currentTheme = 0
+    override var currentTheme = 0
+    override var currentAccent = 0
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
@@ -44,13 +43,14 @@ open class PreferencesActivity : AppCompatActivity(),
         val config = Config(this)
         config.setAppLanguage(omegaPrefs.language)
 
+        currentAccent = omegaPrefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
-                resources.getIdentifier(
-                        Integer.toHexString(omegaPrefs.accentColor),
-                        "style",
-                        packageName
-                ), true
+            resources.getIdentifier(
+                Integer.toHexString(currentAccent),
+                "style",
+                packageName
+            ), true
         )
         super.onCreate(savedInstanceState)
         binding = PreferencesActivityBinding.inflate(layoutInflater)
@@ -76,7 +76,10 @@ open class PreferencesActivity : AppCompatActivity(),
     private fun getSettingFragment(): Fragment {
         val fragment: String = intent.getStringExtra(EXTRA_FRAGMENT) ?: ""
         return if (fragment.isNotEmpty()) {
-            Fragment.instantiate(this, fragment, intent.getBundleExtra(EXTRA_FRAGMENT_ARGS))
+            supportFragmentManager.fragmentFactory
+                .instantiate(ClassLoader.getSystemClassLoader(), fragment).apply {
+                    arguments = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS)
+                }
         } else {
             PrefsMainFragment()
         }
@@ -132,11 +135,8 @@ open class PreferencesActivity : AppCompatActivity(),
                 R.id.action_change_default_home -> changeDefaultHome(requireContext())
                 R.id.action_restart_launcher -> Utilities.killLauncher()
                 R.id.action_dev_options -> {
-                    val transaction: FragmentTransaction =
-                        requireFragmentManager().beginTransaction()
-                    transaction.replace(R.id.fragment_container, PrefsDevFragment())
-                    transaction.addToBackStack(null)
-                    transaction.commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, PrefsDevFragment()).commit()
                 }
                 else -> return false
             }
@@ -144,36 +144,26 @@ open class PreferencesActivity : AppCompatActivity(),
         }
     }
 
-    class PrefsDockFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_dock, rootKey)
-        }
+    class PrefsDockFragment :
+        BasePreferenceFragment(R.xml.preferences_dock, R.string.title__general_dock)
 
-        override fun onResume() {
-            super.onResume()
-            requireActivity().title = requireActivity().getString(R.string.title__general_dock)
-        }
-    }
-
-    class PrefsDrawerFragment : BasePreferenceFragment() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_drawer, rootKey)
-        }
+    class PrefsDrawerFragment :
+        BasePreferenceFragment(R.xml.preferences_drawer, R.string.title__general_drawer) {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
                 onPreferenceChangeListener =
-                        Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                            requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
-                            true
-                        }
+                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                        requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
+                        true
+                    }
 
                 isVisible = Utilities.ATLEAST_R
             }
 
             findPreference<Preference>(PREFS_TRUST_APPS)?.apply {
-                onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+                onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     if (
                         Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
                         Utilities.ATLEAST_R
@@ -201,40 +191,16 @@ open class PreferencesActivity : AppCompatActivity(),
                 }
             }
         }
-
-        override fun onResume() {
-            super.onResume()
-            requireActivity().title = requireActivity().getString(R.string.title__general_drawer)
-        }
     }
 
-    class PrefsSearchFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_search, rootKey)
-        }
+    class PrefsSearchFragment :
+        BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search)
 
-        override fun onResume() {
-            super.onResume()
-            requireActivity().title = requireActivity().getString(R.string.title__general_search)
-        }
-    }
+    class PrefsAdvancedFragment :
+        BasePreferenceFragment(R.xml.preferences_advanced, R.string.title__general_advanced)
 
-    class PrefsAdvancedFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_advanced, rootKey)
-        }
-
-        override fun onResume() {
-            super.onResume()
-            requireActivity().title = requireActivity().getString(R.string.title__general_advanced)
-        }
-    }
-
-    class PrefsDevFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences_dev, rootKey)
-        }
-
+    class PrefsDevFragment :
+        BasePreferenceFragment(R.xml.preferences_dev, R.string.developer_options_title) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             findPreference<Preference>("kill")?.setOnPreferenceClickListener {
@@ -249,11 +215,6 @@ open class PreferencesActivity : AppCompatActivity(),
                 true
             }
         }
-
-        override fun onResume() {
-            super.onResume()
-            requireActivity().title = requireActivity().getString(R.string.developer_options_title)
-        }
     }
 
     override fun onThemeChanged() {
@@ -261,19 +222,8 @@ open class PreferencesActivity : AppCompatActivity(),
         if (paused) {
             recreate()
         } else {
-            finish()
-            startActivity(
-                createRelaunchIntent(), ActivityOptions.makeCustomAnimation(
-                    this, android.R.anim.fade_in, android.R.anim.fade_out
-                ).toBundle()
-            )
+            recreateAnimated()
         }
-    }
-
-    fun createRelaunchIntent(): Intent {
-        val state = Bundle()
-        onSaveInstanceState(state)
-        return intent.putExtra("state", state)
     }
 
     companion object {

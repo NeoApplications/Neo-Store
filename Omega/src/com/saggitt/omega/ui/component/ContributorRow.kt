@@ -36,6 +36,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.saggitt.omega.theme.OmegaTheme
 
+// TODO fix background coloring
 @ExperimentalCoilApi
 @Composable
 fun ContributorRow(

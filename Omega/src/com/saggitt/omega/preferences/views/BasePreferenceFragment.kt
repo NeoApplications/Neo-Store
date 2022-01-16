@@ -18,12 +18,18 @@
 
 package com.saggitt.omega.preferences.views
 
+import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
 
-abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
+abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) :
+    PreferenceFragmentCompat() {
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(layoutId, rootKey)
+    }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         val f: DialogFragment
@@ -37,5 +43,10 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
             f.setTargetFragment(this, 0)
             f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (titleId != -1) requireActivity().title = requireActivity().getString(titleId)
     }
 }

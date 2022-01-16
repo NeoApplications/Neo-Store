@@ -32,6 +32,7 @@ import com.android.quickstep.RecentsActivity
 import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.theme.ThemeManager
+import com.wind.hiddenapi.bypass.HiddenApiBypass
 
 class OmegaApp : Application() {
     private val TAG = "OmegaApp"
@@ -45,6 +46,13 @@ class OmegaApp : Application() {
         super.onCreate()
         instance = this
         QuickStepContract.sRecentsDisabled = !recentsEnabled
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            HiddenApiBypass.startBypass();
+        }
     }
 
     fun onLauncherAppStateCreated() {

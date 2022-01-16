@@ -1,25 +1,20 @@
 package com.saggitt.omega.preferences.views
 
-import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.SeekBarPreference
+import androidx.preference.SwitchPreference
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.*
 import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.*
 
-class PrefsThemeFragment : PreferenceFragmentCompat() {
-    private var themeChanged = false
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences_theme, rootKey)
-    }
-
+class PrefsThemeFragment :
+    BasePreferenceFragment(R.xml.preferences_theme, R.string.title__general_theme) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findPreference<ListPreference>(PREFS_THEME)?.apply {
@@ -34,7 +29,6 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                             if (!it)
                                 newTheme = newTheme.removeFlag(ThemeManager.THEME_DARK_MASK)
                         }
-                    themeChanged = (this.value as String).toInt() != newTheme
                     this.value = newTheme.toString()
                     requireActivity().omegaPrefs.launcherTheme = newValue.toString().toInt()
                     true
@@ -43,11 +37,7 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
         findPreference<ColorPreferenceCompat>(PREFS_ACCENT)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                    startActivity(
-                        Intent.makeRestartActivityTask(
-                            ComponentName(requireContext(), PreferencesActivity::class.java)
-                        )
-                    )
+                    requireActivity().recreateAnimated()
                     true
                 }
         }
@@ -78,23 +68,6 @@ class PrefsThemeFragment : PreferenceFragmentCompat() {
                     requireActivity().omegaPrefs.windowCornerRadius = newValue as Float
                     true
                 }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().title = requireActivity().getString(R.string.title__general_theme)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (themeChanged) {
-            startActivity(
-                Intent.makeRestartActivityTask(
-                    ComponentName(requireContext(), PreferencesActivity::class.java)
-                )
-            )
-            Utilities.killLauncher()
         }
     }
 }

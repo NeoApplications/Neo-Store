@@ -130,6 +130,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         if (isBlack) newFlags = newFlags or THEME_USE_BLACK
         if (newFlags == themeFlags) return
         themeFlags = newFlags
+        // TODO no listeners are added for now, either we keep this logic and use it in all classes or just use reloadActivities
         reloadActivities()
         synchronized(listeners) {
             removeDeadListeners()
@@ -181,6 +182,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
 
     // TODO make all activities (including the desktop one) apply the chosen theme
     interface ThemeableActivity {
+        var currentTheme: Int
+        var currentAccent: Int
         fun onThemeChanged()
     }
 

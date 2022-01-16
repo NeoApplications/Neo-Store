@@ -23,6 +23,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 
+// TODO create working themes parallel to the xml ones
 @Composable
 fun OmegaAppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),

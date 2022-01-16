@@ -31,7 +31,11 @@ import com.saggitt.omega.util.getThemeAttr
 
 class PreferenceDialogFragment : DialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_preference_fragment, container, false)
     }
 
@@ -41,8 +45,8 @@ class PreferenceDialogFragment : DialogFragment() {
         val content = requireArguments().getInt(KEY_CONTENT)
         val fragment = DialogSettingsFragment.newInstance("", content)
         childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_content, fragment)
-                .commit()
+            .replace(R.id.fragment_content, fragment)
+            .commit()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -63,18 +67,12 @@ class PreferenceDialogFragment : DialogFragment() {
     }
 }
 
-class DialogSettingsFragment : BasePreferenceFragment() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(content, rootKey)
-    }
-
-    private val content: Int
-        get() = arguments?.getInt("content_res_id") ?: -1
+class DialogSettingsFragment(val content: Int, val title: String) :
+    BasePreferenceFragment(content) {
 
     companion object {
         fun newInstance(title: String?, @XmlRes content: Int): DialogSettingsFragment {
-            val fragment = DialogSettingsFragment()
+            val fragment = DialogSettingsFragment(content, title ?: "")
             val b = Bundle(2)
             b.putString("title", title)
             b.putInt("content_res_id", content)

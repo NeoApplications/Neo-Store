@@ -18,16 +18,7 @@
 
 package com.saggitt.omega.preferences.views
 
-import android.os.Bundle
 import com.android.launcher3.R
 
-class PrefsDesktopFragment : BasePreferenceFragment() {
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences_desktop, rootKey)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().title = requireActivity().getString(R.string.title__general_desktop)
-    }
-}
+class PrefsDesktopFragment :
+    BasePreferenceFragment(R.xml.preferences_desktop, R.string.title__general_desktop)

@@ -110,11 +110,15 @@ public class WallpaperManagerCompat {
         String permission = null;
         // Find a permission which only we can use.
         try {
-            for (PermissionInfo info : context.getPackageManager().getPackageInfo(
-                    context.getPackageName(),
-                    PackageManager.GET_PERMISSIONS).permissions) {
-                if ((info.protectionLevel & PermissionInfo.PROTECTION_SIGNATURE) != 0) {
-                    permission = info.name;
+            PermissionInfo[] permissions = context
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS)
+                    .permissions;
+            if (permissions != null) {
+                for (PermissionInfo info : permissions) {
+                    if ((info.protectionLevel & PermissionInfo.PROTECTION_SIGNATURE) != 0) {
+                        permission = info.name;
+                    }
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
