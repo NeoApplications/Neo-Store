@@ -13,7 +13,6 @@ import com.looker.droidify.database.Product
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -109,7 +108,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
     }
 
     fun fillList(source: Source) {
-        CoroutineScope(Dispatchers.Default).launch {
+        viewModelScope.launch(Dispatchers.Default) {
             // productsList = query(request(source))
         }
     }

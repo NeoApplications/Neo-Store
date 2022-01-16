@@ -53,7 +53,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.1.0-rc02"
+        kotlinCompilerExtensionVersion "1.2.0-alpha01"
     }
 
     buildTypes {
@@ -176,6 +176,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+
+    // Paging
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
 
     // Room
     implementation 'androidx.room:room-runtime:2.4.1'
