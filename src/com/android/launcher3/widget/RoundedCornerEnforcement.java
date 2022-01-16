@@ -29,7 +29,6 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.config.FeatureFlags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,7 @@ import java.util.List;
  * Utilities to compute the enforced the use of rounded corners on App Widgets.
  */
 public class RoundedCornerEnforcement {
+    public static boolean sRoundedCornerEnabled;
     // This class is only a namespace and not meant to be instantiated.
     private RoundedCornerEnforcement() {
     }
@@ -46,7 +46,7 @@ public class RoundedCornerEnforcement {
      * Find the background view for a widget.
      *
      * @param appWidget the view containing the App Widget (typically the instance of
-     *                  {@link AppWidgetHostView}).
+     * {@link AppWidgetHostView}).
      */
     @Nullable
     public static View findBackground(@NonNull View appWidget) {
@@ -65,7 +65,7 @@ public class RoundedCornerEnforcement {
     }
 
     /**
-     * Check whether the app widget has opted out of the enforcement.
+     * Check if the app widget is in the deny list.
      */
     public static boolean hasAppWidgetOptedOut(@NonNull View appWidget, @NonNull View background) {
         return background.getId() == android.R.id.background && background.getClipToOutline();
@@ -75,16 +75,16 @@ public class RoundedCornerEnforcement {
      * Check if the app widget is in the deny list.
      */
     public static boolean isRoundedCornerEnabled() {
-        return Utilities.ATLEAST_S && FeatureFlags.ENABLE_ENFORCED_ROUNDED_CORNERS.get();
+        return Utilities.ATLEAST_S || sRoundedCornerEnabled;
     }
 
     /**
      * Computes the rounded rectangle needed for this app widget.
      *
-     * @param appWidget  View onto which the rounded rectangle will be applied.
+     * @param appWidget View onto which the rounded rectangle will be applied.
      * @param background Background view. This must be either {@code appWidget} or a descendant
-     *                   of {@code appWidget}.
-     * @param outRect    Rectangle set to the rounded rectangle coordinates, in the reference frame
+     *                  of {@code appWidget}.
+     * @param outRect  Rectangle set to the rounded rectangle coordinates, in the reference frame
      *                   of {@code appWidget}.
      */
     public static void computeRoundedRectangle(@NonNull View appWidget, @NonNull View background,
