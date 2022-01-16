@@ -33,7 +33,9 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.views.OptionsPopupView
+import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
+import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
 import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.saggitt.omega.gestures.GestureController
@@ -60,31 +62,36 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
     private var paused = false
     private var sRestart = false
     private val prefCallback = OmegaPreferencesChangeCallback(this)
-    val mPrefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
+    val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
-        currentAccent = mPrefs.accentColor
+        currentAccent = prefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         val config = Config(this)
-        config.setAppLanguage(mPrefs.language)
+        config.setAppLanguage(prefs.language)
 
         theme.applyStyle(
             resources.getIdentifier(
                 Integer.toHexString(currentAccent),
-                "style",
-                packageName
+                    "style",
+                    packageName
             ), true
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
-            && !Utilities.hasStoragePermission(this)
+                && !Utilities.hasStoragePermission(this)
         ) Utilities.requestStoragePermission(this)
 
         super.onCreate(savedInstanceState)
 
-        mPrefs.registerCallback(prefCallback)
-        mPrefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
+        prefs.registerCallback(prefCallback)
+        prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
+
+        if (prefs.customWindowCorner) {
+            RoundedCornerEnforcement.sRoundedCornerEnabled = true
+            QuickStepContract.sCustomCornerRadius = prefs.windowCornerRadius
+        }
 
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
@@ -104,7 +111,7 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     override fun onResume() {
         super.onResume()
-        if (currentAccent != mPrefs.accentColor || currentTheme != themeOverride.getTheme(this)) onThemeChanged()
+        if (currentAccent != prefs.accentColor || currentTheme != themeOverride.getTheme(this)) onThemeChanged()
         restartIfPending()
         paused = false
     }
@@ -131,8 +138,8 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
     override fun onDestroy() {
         super.onDestroy()
 
-        mPrefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
-        mPrefs.unregisterCallback()
+        prefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
+        prefs.unregisterCallback()
         if (sRestart) {
             sRestart = false
         }

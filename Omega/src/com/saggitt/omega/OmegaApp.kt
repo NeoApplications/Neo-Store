@@ -27,12 +27,14 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
 import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.wind.hiddenapi.bypass.HiddenApiBypass
+import java.io.File
 
 class OmegaApp : Application() {
     private val TAG = "OmegaApp"
@@ -68,13 +70,43 @@ class OmegaApp : Application() {
         }
     }
 
+    fun migrateDbName(dbName: String) {
+        val dbFile = getDatabasePath(dbName)
+        if (dbFile.exists()) return
+        val prefs = Utilities.getOmegaPrefs(this)
+        val dbJournalFile = getJournalFile(dbFile)
+        val oldDbSlot = prefs.StringPref("pref_currentDbSlot", "a").onGetValue()
+        val oldDbName = if (oldDbSlot == "a") "launcher.db" else "launcher.db_b"
+        val oldDbFile = getDatabasePath(oldDbName)
+        val oldDbJournalFile = getJournalFile(oldDbFile)
+        if (oldDbFile.exists()) {
+            oldDbFile.copyTo(dbFile)
+            oldDbJournalFile.copyTo(dbJournalFile)
+        }
+    }
+
+    fun cleanUpDatabases() {
+        val idp = InvariantDeviceProfile.INSTANCE.get(this)
+        val dbName = idp.dbFile
+        val dbFile = getDatabasePath(dbName)
+        dbFile?.parentFile?.listFiles()?.forEach { file ->
+            val name = file.name
+            if (name.startsWith("launcher") && !name.startsWith(dbName)) {
+                file.delete()
+            }
+        }
+    }
+
+    private fun getJournalFile(file: File): File =
+            File(file.parentFile, "${file.name}-journal")
+
     fun performGlobalAction(action: Int): Boolean {
         return if (accessibilityService != null) {
             accessibilityService!!.performGlobalAction(action)
         } else {
             startActivity(
-                Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             false
         }
