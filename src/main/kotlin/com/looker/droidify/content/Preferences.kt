@@ -27,6 +27,8 @@ object Preferences {
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
         Key.ListAnimation,
+        Key.UpdatedApps,
+        Key.NewApps,
         Key.ProxyHost,
         Key.ProxyPort,
         Key.ProxyType,
@@ -141,6 +143,9 @@ object Preferences {
 
         object ListAnimation :
             Key<Boolean>("list_animation", Value.BooleanValue(false))
+
+        object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
+        object NewApps : Key<Int>("new_apps", Value.IntValue(20))
 
         object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))
         object ProxyPort : Key<Int>("proxy_port", Value.IntValue(9050))

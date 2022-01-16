@@ -41,6 +41,8 @@ class PrefsUserFragment : PrefsNavFragmentX() {
                 Preferences.Key.ListAnimation, getString(R.string.list_animation),
                 getString(R.string.list_animation_description)
             )
+            addEditInt(Preferences.Key.UpdatedApps, getString(R.string.prefs_updated_apps), 1..200)
+            addEditInt(Preferences.Key.NewApps, getString(R.string.prefs_new_apps), 1..50)
         }
     }
 }
