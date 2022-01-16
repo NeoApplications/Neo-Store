@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.Product
 import com.looker.droidify.entity.ProductItem
@@ -73,13 +74,13 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
                 mSearchQuery,
                 mSections,
                 ProductItem.Order.LAST_UPDATE,
-                100 // TODO add to preferences
+                Preferences[Preferences.Key.UpdatedApps]
             )
             Source.NEW -> Request.ProductsNew(
                 mSearchQuery,
                 mSections,
                 ProductItem.Order.LAST_UPDATE,
-                20 // TODO add to preferences
+                Preferences[Preferences.Key.NewApps]
             )
         }
     }
