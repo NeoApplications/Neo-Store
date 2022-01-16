@@ -84,18 +84,16 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
         }
     }
 
-    var productsList: LiveData<PagedList<Product>>
-
-    init {
-
-        val pagedListConfig = PagedList.Config.Builder()
+    private val pagedListConfig by lazy {
+        PagedList.Config.Builder()
             .setPageSize(30)
             .setPrefetchDistance(30)
             .setEnablePlaceholders(false)
             .build()
-        val request = request(source)
-
-        productsList = LivePagedListBuilder(
+    }
+    val request = request(source)
+    val productsList: LiveData<PagedList<Product>> by lazy {
+        LivePagedListBuilder(
             db.productDao.queryList(
                 installed = request.installed,
                 updates = request.updates,
