@@ -16,7 +16,7 @@
     <string name="available">Disponibile</string>
     <string name="bug_tracker">Problemi</string>
     <string name="cancel">Annulla</string>
-    <string name="cant_edit_sync_DESC">Non puoi modificare la repository mentre è in aggiornamento.</string>
+    <string name="cant_edit_sync_DESC">Impossibile modificare i repository di sincronizzazione…</string>
     <string name="changelog">Registro delle modifiche</string>
     <string name="changes">Cambiamenti</string>
     <string name="checking_repository">Controllo repository…</string>
@@ -59,7 +59,7 @@
     Disinstalla prima quella.</string>
     <string name="incompatible_version">Versione non compatibile</string>
     <string name="incompatible_versions">Versioni non compatibili</string>
-    <string name="incompatible_versions_summary">Mostra le versioni delle applicazioni incompatibili con il dispositivo</string>
+    <string name="incompatible_versions_summary">Mostra le versioni incompatibili con il dispositivo</string>
     <string name="incompatible_with_FORMAT">Non compatibile con %s</string>
     <string name="install">Installa</string>
     <string name="install_types">Tipi di installazione</string>
@@ -78,24 +78,24 @@
     <string name="link_copied_to_clipboard">Collegamento copiato negli appunti</string>
     <string name="links">Collegamenti</string>
     <string name="list_animation">Elenco animazioni</string>
-    <string name="list_animation_description">Mostra l\'animazione della lista nella pagina principale</string>
+    <string name="list_animation_description">Anima la lista nella pagina principale</string>
     <string name="merging_FORMAT">Unione %s</string>
     <string name="name">Nome</string>
     <string name="network_error_DESC">Errore di rete.</string>
     <string name="never">Mai</string>
     <string name="new_updates_available">Nuove versioni disponibili</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d applicazione ha una nuova versione.</item>
-        <item quantity="other">%d applicazioni hanno una nuova versione.</item>
+        <item quantity="one">%d app ha una nuova versione.</item>
+        <item quantity="other">%d app hanno una nuova versione.</item>
     </plurals>
-    <string name="no_applications_available">Nessuna applicazione disponibile</string>
-    <string name="no_applications_installed">Nessuna applicazione installata</string>
-    <string name="no_description_available_DESC">Nessuna descrizione disponibile.</string>
-    <string name="no_matching_applications_found">Impossibile trovare tali applicazioni</string>
+    <string name="no_applications_available">Nessuna app disponibile</string>
+    <string name="no_applications_installed">Nessuna app installata</string>
+    <string name="no_description_available_DESC">Nessuna descrizione.</string>
+    <string name="no_matching_applications_found">Impossibile trovare tali app</string>
     <string name="no_proxy">Senza proxy</string>
-    <string name="notify_about_updates">Notifica sulle nuove versioni delle applicazioni</string>
+    <string name="notify_about_updates">Notifica sulle nuove versioni delle app</string>
     <string name="notify_about_updates_summary">Mostra una notifica quando ci sono nuove versioni disponibili</string>
-    <string name="number_of_applications">Numero di applicazioni</string>
+    <string name="number_of_applications">Numero di app</string>
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Compatibile solo con %s</string>
     <string name="only_on_wifi">Solo con Wi-Fi</string>
@@ -119,11 +119,11 @@
     <string name="recently_updated">Aggiornato di recente</string>
     <string name="repositories">Repository</string>
     <string name="repository">Repository</string>
-    <string name="repository_not_used_DESC">Questo repository non è stato ancora utilizzato. Attivalo per vedere le applicazioni in esso contenute.</string>
-    <string name="repository_unsigned_DESC">Senza firma. Impossibile verificare la lista delle applicazioni. Stai attento quando scarichi applicazioni da repository senza firma.</string>
+    <string name="repository_not_used_DESC">Questo repository non è stato ancora utilizzato. Attivalo per vedere le app in esso contenute.</string>
+    <string name="repository_unsigned_DESC">Senza firma. Impossibile verificare la lista delle app. Stai attento quando scarichi app da repository senza firma.</string>
     <string name="requires_FORMAT">Richiede %s</string>
     <string name="root_permission">Installazione silenziosa</string>
-    <string name="root_permission_description">Consenti il permesso di Root per abilitare installazioni silenziose</string>
+    <string name="root_permission_description">Usa root per installazioni senza interazione</string>
     <string name="save">Salva</string>
     <string name="saving_details">Salvataggio dei dettagli…</string>
     <string name="screenshots">Schermate</string>
@@ -142,7 +142,7 @@
     <string name="source_code_no_longer_available">Codice sorgente non più disponibile</string>
     <string name="suggested">Suggerito</string>
     <string name="sync_repositories">Sincronizza repositories</string>
-    <string name="sync_repositories_automatically">Sincronizza automaticamente le repositories</string>
+    <string name="sync_repositories_automatically">Sincronizza automaticamente i repository</string>
     <string name="syncing">Sincronizzando</string>
     <string name="syncing_FORMAT">Sincronizzando %s…</string>
     <string name="system">Sistema</string>
@@ -164,11 +164,11 @@
     <string name="upstream_source_code_is_not_free">Il codice sorgente aggiornato non libero</string>
     <string name="username">Nome utente</string>
     <string name="username_missing">Nome utente mancante</string>
-    <string name="validation_index_error_DESC">Non è stato possibile convalidare l\'indice.</string>
+    <string name="validation_index_error_DESC">Impossibile convalidare l\'indice.</string>
     <string name="version">Versione</string>
     <string name="version_FORMAT">Versione %s</string>
     <string name="versions">Versioni</string>
-    <string name="waiting_to_start_download">In attesa dell\'inizio dello scaricamento…</string>
+    <string name="waiting_to_start_download">Avvio dello scaricamento…</string>
     <string name="whats_new">Novità</string>
     <string name="website">Sito web</string>
     <string name="prefs_language_title">Lingua</string>
@@ -183,4 +183,6 @@
     <string name="only_on_wifi_and_battery">Solo su Wi-Fi e Plugged-In</string>
     <string name="install_after_sync">Installa gli aggiornamenti automaticamente</string>
     <string name="install_after_sync_summary">Installa automaticamente gli aggiornamenti delle app dopo aver sincronizzato i repository</string>
+    <string name="prefs_updated_apps">Numero di app aggiornate da mostrare</string>
+    <string name="prefs_new_apps">Numero di nuove applicazioni da mostrare</string>
 </resources>
