@@ -27,7 +27,7 @@ alt="Join Telegram Channel"
 width="25%" align="center">](https://t.me/droid_ify)
 [<img src = "https://hosted.weblate.org/widgets/droidify/-/open-graph.png"
 alt= "Translation State"
-width="60%">](https://hosted.weblate.org/projects/droidify/localization/)
+width="60%" align="center">](https://hosted.weblate.org/projects/droidify/localization/)
 
 <div align="left">
 
