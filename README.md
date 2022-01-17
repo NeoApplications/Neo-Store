@@ -40,7 +40,23 @@ width="60%" align="center">](https://hosted.weblate.org/projects/droidify/locali
 
 ## :framed_picture: Screenshots
 
-<img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="48%" /><img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="48%" />
+### Light theme
+
+| <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="500"/>
+|:---:|:---:|
+|Home|App list|
+
+### Dark theme
+
+| <img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="500"/>
+|:---:|:---:|
+|Home|App list|
+
+### Amoled theme
+
+| <img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="500"/>
+|:---:|:---:|
+|Home|App list|
 
 ## :hammer: Building from source
 
