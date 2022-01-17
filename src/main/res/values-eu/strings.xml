@@ -1,2 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_failed">Ekintzak huts egin du</string>
+    <string name="add_repository">Gehitu biltegia</string>
+    <string name="address">Helbidea</string>
+    <string name="all_applications_up_to_date">Aplikazio guztiak egunean daude</string>
+    <string name="already_exists">Jada badago</string>
+    <string name="anti_features">Ezaugarri zalantzagarriak</string>
+    <string name="application">Aplikazioa</string>
+    <string name="cancel">Utzi</string>
+    <string name="cant_edit_sync_DESC">Ezin dira editatu sinkronizazio-biltegiak…</string>
+    <string name="changelog">Aldaketa-egunkaria</string>
+    <string name="confirmation">Berrespena</string>
+    <string name="connecting">Konektatzen…</string>
+    <string name="could_not_download_FORMAT">Ezin izan da %s deskargatu</string>
+    <string name="could_not_sync_FORMAT">Ezin izan da %s sinkronizatu</string>
+    <string name="could_not_validate_FORMAT">Ezin izan da %s balidatu</string>
+    <string name="credits">Kredituak</string>
+    <string name="dark">Iluna</string>
+    <string name="delete">Ezabatu</string>
+    <string name="delete_repository_DESC">Biltegia ezabatu\?</string>
+    <string name="description">Deskribapena</string>
+    <string name="details">Xehetasunak</string>
+    <string name="donate">Dohaintza egin</string>
+    <string name="checking_repository">Biltegia egiaztatzen…</string>
+    <string name="author_website">Egilearen webgunea</string>
+    <string name="compiled_for_debugging">Arazketarako konpilatua</string>
+    <string name="amoled">Beltza</string>
+    <string name="all_applications">Aplikazio guztiak</string>
+    <string name="always">Beti</string>
+    <string name="application_not_found">Ezin izan da aurkitu aplikazio hori</string>
+    <string name="author_email">Egilearen eposta</string>
+    <string name="bug_tracker">Akatsen jarraipena</string>
+    <string name="available">Eskuragarri</string>
+    <string name="changes">Aldaketak</string>
+</resources>
