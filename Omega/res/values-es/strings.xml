@@ -14,7 +14,7 @@
     <string name="title__drawer_sort">Ordenar Aplicaciones</string>
     <string name="title__dock_scale">Tamaño del Dock</string>
     <string name="title__drawer_categorization">Categorías</string>
-    <string name="title__sort_mode">Ordenar Aplicaciones</string>
+    <string name="title__sort_mode">Ordenar App</string>
     <string name="title__sort_alphabetical_az">Alfabético AZ</string>
     <string name="title__sort_alphabetical_za">Alfabético ZA</string>
     <string name="title__sort_last_installed">Fecha de Instalacion</string>
@@ -39,7 +39,7 @@
     <string name="theme_black_dark_text">Negro con texto oscuro</string>
     <string name="customize">Personalizar</string>
     <string name="theme_dark">Oscuro</string>
-    <string name="theme_dark_theme_mode">Tema Oscuro</string>
+    <string name="theme_dark_theme_mode">Tema oscuro</string>
     <string name="delete">Borrar</string>
     <string name="developer_options_title">Opciones de Desarrollador</string>
     <string name="dismiss_drop_target_label">No mostrar</string>
@@ -63,7 +63,7 @@
     <string name="allow_rotation_blocked_desc">La configuración actual no permite la rotación de pantalla</string>
     <string name="pref_category__inputs">Gestos y Búsqueda</string>
     <string name="pref_category__interfaces">Interfaz de usuario</string>
-    <string name="summary__general_about">Más información sobre Omega Launcher</string>
+    <string name="summary__general_about">Mas acerca de Omega Launcher</string>
     <string name="summary__general_advanced">Idioma, respaldo, búsqueda de preferencias</string>
     <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
@@ -94,19 +94,19 @@
     <string name="trust_apps_no_lock_error">Por favor, configura una pantalla de bloqueo segura para restringir el acceso a la aplicación</string>
     <string name="selected_count">%1$d seleccionada</string>
     <string name="tab_type_smart">Automático</string>
-    <string name="app_categorization_tabs">Tabs</string>
+    <string name="app_categorization_tabs">Toques</string>
     <string name="pref_appcategorization_enable_title">Categorizar aplicaciones</string>
     <string name="pref_appcategorization_flowerpot_title">Categoría de Aplicación</string>
     <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
-    <string name="title_disable_suggestions_prompt">Deshabilitar sugerencias</string>
+    <string name="title_disable_suggestions_prompt">Apagar sugerencias app</string>
     <string name="summary_all_apps_google_search">Buscar resultados web y aplicaciones</string>
     <string name="title_all_apps_google_search">Búsqueda global</string>
     <string name="title__drawer_all_apps">Mostrar la etiqueta All Apps</string>
-    <string name="title_disabled">Deshabilitado</string>
+    <string name="title_disabled">Apagado</string>
     <string name="title__dock_hotseat_icons">Cantidad de Iconos</string>
     <string name="title__dock_colored_icons">Iconos a colores</string>
     <string name="grid_size_height">Alto</string>
-    <string name="theme_auto_night_mode">Seguir tema del sistema</string>
+    <string name="theme_auto_night_mode">Sistema</string>
     <string name="theme_auto">Seguir wallpaper</string>
     <string name="hotseat_show_page_indicator">Mostrar indicador de página</string>
     <string name="title_opacity">Opacidad</string>
@@ -157,7 +157,7 @@
     <string name="battery_charging">Cargando</string>
     <string name="smartspace_widget_provider_not_found">Obtener la aplicación Google.</string>
     <string name="resuable_text_alarm">Alarma</string>
-    <string name="smartspace_now">Ahora</string>
+    <string name="smartspace_now">ahora</string>
     <string name="smartspace_setup_text">Toca para configurar</string>
     <string name="smartspace_add_to_home">Agregar al escritorio</string>
     <string name="category__behavior_weather">Clima</string>
@@ -178,12 +178,12 @@
     <string name="icon_shape_teardrop">Lágrima</string>
     <string name="icon_shape_circle">Circular</string>
     <string name="icon_shape_square">Cuadrado</string>
-    <string name="icon_shape_system_default">Predeterminado del sistema</string>
+    <string name="icon_shape_system_default">Sistema</string>
     <string name="title__theme_accent_color">Color de contraste</string>
     <string name="action_global_search">Abrir búsqueda global</string>
     <string name="personality_provider">Saludos</string>
     <string name="smartspace_hours_mins">%1$s %2$s</string>
-    <string name="icon_pack_default">Iconos del Sistema</string>
+    <string name="icon_pack_default">Iconos del sistema</string>
     <string name="icon_shape_bottom_right">Inferior derecha</string>
     <string name="icon_shape_bottom_left">Inferior izquierda</string>
     <string name="icon_shape_top_left">Superior izquierda</string>
@@ -198,7 +198,7 @@
     <string name="title_desktop_keep_empty">Permitir páginas en blanco</string>
     <string name="title_desktop_lock_desktop">Bloquear escritorio</string>
     <string name="summary__general_notifications">Contador de notificaciones, color de notificaciones, gestos</string>
-    <string name="summary__general_drawer">Personaliza tu panel</string>
+    <string name="summary__general_drawer">Personaliza tu cajón</string>
     <string name="summary__general_dock">Iconos del Dock, barra de búsqueda</string>
     <string name="title_theme_icon_packs">Paquete de Iconos</string>
     <string name="add_new_tab">Agregar</string>
@@ -207,13 +207,13 @@
     <string name="theme_based">Establecido por el tema</string>
     <string name="summary__theme_blur">Desenfocar los fondos de página</string>
     <string name="title__theme_blur_radius">Intensidad del desenfoque</string>
-    <string name="title__theme_blur">Desenfoque</string>
+    <string name="title__theme_blur">Difuminar</string>
     <string name="msg_missing_usage_access">Para mostrar sugerencias de aplicaciones, permite el acceso a datos de uso a <xliff:g id="name" example="My App">%1$s</xliff:g></string>
     <string name="needs_usage_access">Se necesita acceso a datos de uso</string>
     <string name="pref_appcategorization_flowerpot_summary">Elegir los atajos automáticamente.</string>
     <string name="tab_type_custom_desc">Elegir los atajos manualmente.</string>
     <string name="pref_appcategorization_tabs_summary">Deslizar para moverse entre grupos.</string>
-    <string name="pref_appcategorization_folders_summary">Pulsar para abrir la ventana emergente.</string>
+    <string name="pref_appcategorization_folders_summary">Pulsar para abrir emergente.</string>
     <string name="pref_appcategorization_enable_summary">Elije la disposición del Drawer</string>
     <string name="cat_drawer_icons">Iconos</string>
     <string name="cat_drawer_grid">Cuadrícula</string>
@@ -222,7 +222,7 @@
     <string name="event_provider_missing_notification_access">Para usarlo <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, habilite las notificaciones desde <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
     <string name="zen_mode_enabled">No molestar está habilitado.</string>
     <string name="name_provider_alarm_events">Próximas alarmas</string>
-    <string name="smartspace_in_time">En %1$s</string>
+    <string name="smartspace_in_time">en %1$s</string>
     <string name="title_legacy_treatment">Crear iconos adaptivos</string>
     <string name="title_colored_backgrounds">Fondo de colores</string>
     <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
@@ -245,7 +245,7 @@
     <string name="title__general_smartspace">Widget de Inicio</string>
     <string name="action_sleep">Dormir</string>
     <string name="action_open_settings">Abrir configuración del Launcher</string>
-    <string name="folder_name_format">Carpeta: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="folder_name_format">Carpeta: <xliff:g example="Juegos" id="name">%1$s</xliff:g></string>
     <string name="permission_iplocate_twilight_explanation">¿Permitir acceso a la ubicación aproximada\? Ésto permite un calculo de día noche mas certero.</string>
     <string name="gesture_press_home">Botón Inicio</string>
     <string name="gesture_press_back">Botón Atrás</string>
@@ -306,4 +306,14 @@
     <string name="title_force_shapeless">Forzar iconos sin forma</string>
     <string name="title_drawer_layout">Modo de diseño</string>
     <string name="about_translators_group">Contribuidores y Traductores</string>
+    <string name="backup_contents">Contenido de respaldo</string>
+    <string name="title_use_pill_qsb">Mostrar enlace a pila de búsqueda</string>
+    <string name="disable_protected_apps">Desactivar aplicaciones protegidas</string>
+    <string name="protected_app_reset">Restablece apps protegidas</string>
+    <string name="theme_auto_night_mode_black">Sistema (Negro)</string>
+    <string name="summary_force_shapeless">Intente utilizar iconos heredados para todas las apps.</string>
+    <string name="title_smartspace">Mostrar Smartspace</string>
+    <string name="units_newton">Newton</string>
+    <string name="summary__search_show_as_assistant_summary">Abrir Asistente en vez de Búsqueda Vocal</string>
+    <string name="summary_colored_backgrounds">Para iconos adaptados al fondo.</string>
 </resources>
