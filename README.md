@@ -72,8 +72,8 @@ key.alias=key-alias
 key.password=key-password
 ```
 
-Run `./gradlew assembleRelease` to build the *.apk package, which can be installed using the Android
-package manager.
+Run `./gradlew assembleRelease` to build release *.apk package or run `./gradlew assembleDebug` if you want to build debug *.apk
+All of these packages can be installed using the Android package manager
 
 ## 👁️‍🗨️ Translations
 Help us translate Droid-ify on [Hosted Weblate](https://hosted.weblate.org/engage/droidify/). \
