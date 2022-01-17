@@ -8,7 +8,7 @@
     <string name="no_applications_available">Немає доступних додатків</string>
     <string name="no_matching_applications_found">Не вдалося знайти ні одного подібного додатку</string>
     <string name="incompatible_features_DESC">Відсутні функції.</string>
-    <string name="all_applications">Всі</string>
+    <string name="all_applications">Усі додатки</string>
     <string name="cancel">Відмінити</string>
     <string name="changes">Зміни</string>
     <string name="checking_repository">Перевіряю розпозиторії…</string>
@@ -17,7 +17,7 @@
     <string name="action_failed">Дія не вдалася</string>
     <string name="add_repository">Додати репозиторій</string>
     <string name="address">Адреса</string>
-    <string name="all_applications_up_to_date">Усе в актуальному стані</string>
+    <string name="all_applications_up_to_date">Усі додатки в актуальному стані</string>
     <string name="already_exists">Уже існує</string>
     <string name="amoled">Чорна</string>
     <string name="anti_features">Анти-функції</string>
@@ -182,4 +182,6 @@
     <string name="only_on_wifi_and_battery">Лише при Wi-Fi та підключеному до мережі</string>
     <string name="install_after_sync">Встановлювати оновлення автоматично</string>
     <string name="install_after_sync_summary">Автоматично встановлювати оновлення додатків після синхронізації репозиторіїв</string>
+    <string name="prefs_updated_apps">Кількість оновлених програм для показу</string>
+    <string name="prefs_new_apps">Кількість нових програм для показу</string>
 </resources>
