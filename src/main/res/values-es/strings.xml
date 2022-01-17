@@ -4,7 +4,7 @@
     <string name="add_repository">Agregar repositorio</string>
     <string name="address">Dirección</string>
     <string name="all_applications">Todas las aplicaciones</string>
-    <string name="all_applications_up_to_date">Todas sus aplicaciones están al día</string>
+    <string name="all_applications_up_to_date">Todas las aplicaciones están al día</string>
     <string name="already_exists">Ya existe</string>
     <string name="always">Siempre</string>
     <string name="amoled">Negro</string>
@@ -80,7 +80,7 @@
     <string name="name">Nombre</string>
     <string name="network_error_DESC">Error de red.</string>
     <string name="never">Nunca</string>
-    <string name="new_updates_available">Nuevas versiones de aplicaciones disponibles</string>
+    <string name="new_updates_available">Nuevas versiones disponibles</string>
     <string name="no_applications_available">No hay aplicaciones disponibles</string>
     <string name="no_applications_installed">No hay aplicaciones instaladas</string>
     <string name="no_description_available_DESC">No hay descripción.</string>
@@ -166,7 +166,7 @@
     <string name="website">Sitio web</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d aplicación tiene una nueva versión.</item>
-        <item quantity="other">%d aplicaciones tienen una nueva versión.</item>
+        <item quantity="other">%d aplicaciones tienen nuevas versiónes.</item>
     </plurals>
     <string name="prefs_language_title">Lengua</string>
     <string name="prefs_personalization">Personalización</string>
