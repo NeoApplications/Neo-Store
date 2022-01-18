@@ -135,7 +135,6 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:scrollbars="none"
                 tools:listitem="@layout/item_app_vertical_x" />
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
