@@ -15,6 +15,11 @@
         tools:layout="@layout/fragment_prefs" />
 
     <fragment
+        android:id="@+id/reposTab"
+        android:name="com.looker.droidify.ui.fragments.PrefsRepositoriesFragment"
+        tools:layout="@layout/fragment_repositories_x" />
+
+    <fragment
         android:id="@+id/otherTab"
         android:name="com.looker.droidify.ui.fragments.PrefsOtherFragment"
         tools:layout="@layout/fragment_prefs" />

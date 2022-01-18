@@ -86,7 +86,7 @@ class PrefsActivityX : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.userTab, R.id.updateTab, R.id.otherTab)
+            setOf(R.id.userTab, R.id.updateTab, R.id.reposTab, R.id.otherTab)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
