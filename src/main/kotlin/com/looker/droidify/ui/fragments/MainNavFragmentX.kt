@@ -1,14 +1,11 @@
 package com.looker.droidify.ui.fragments
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 
-abstract class MainNavFragmentX : Fragment() {
+abstract class MainNavFragmentX : BaseNavFragment() {
     val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
     val viewModel: MainNavFragmentViewModelX by viewModels {
@@ -41,15 +38,6 @@ abstract class MainNavFragmentX : Fragment() {
             }
         }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupAdapters()
-        setupLayout()
-    }
-
-    abstract fun setupAdapters()
-    abstract fun setupLayout()
 }
 
 enum class Source(val sections: Boolean, val order: Boolean) {
