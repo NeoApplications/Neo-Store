@@ -2,6 +2,7 @@ package com.looker.droidify.database
 
 import android.database.Cursor
 import android.os.CancellationSignal
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -54,6 +55,9 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
     val all: List<Repository>
+
+    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    val allLive: LiveData<List<Repository>>
 
     @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
     val allFlowable: Flowable<List<Repository>>
