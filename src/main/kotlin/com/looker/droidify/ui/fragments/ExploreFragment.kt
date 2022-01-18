@@ -64,6 +64,7 @@ class ExploreFragment : MainNavFragmentX() {
     override fun setupLayout() {
         viewModel.productsList.observe(requireActivity()) {
             appsItemAdapter.submitList(it)
+            appsFastAdapter?.notifyDataSetChanged()
         }
     }
 }
