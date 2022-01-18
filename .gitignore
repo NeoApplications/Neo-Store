@@ -2,6 +2,7 @@
 !/.gitignore
 !/build.gradle
 !/COPYING
+!/DEVDOC.md
 !/extra
 !/gradle
 !/gradle.properties
