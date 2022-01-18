@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_failed">فشل الإجراء</string>
+    <string name="address">العنوان</string>
+    <string name="all_applications">كل التطبيقات</string>
+    <string name="always">دائما</string>
+    <string name="amoled">أسود</string>
+    <string name="all_applications_up_to_date">جميع التطبيقات محدثة</string>
+    <string name="already_exists">موجود مسبقا</string>
+    <string name="add_repository">إضافة مستودع</string>
+</resources>
