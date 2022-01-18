@@ -16,7 +16,7 @@
     <string name="title__drawer_categorization">Categorías</string>
     <string name="title__sort_mode">Ordenar App</string>
     <string name="title__sort_alphabetical_az">Alfabético AZ</string>
-    <string name="title__sort_alphabetical_za">Alfabético ZA</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
     <string name="title__sort_last_installed">Fecha de Instalacion</string>
     <string name="title__sort_most_used">Más usados</string>
     <string name="title__sort_by_color">Por Color</string>
