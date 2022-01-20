@@ -30,7 +30,7 @@ You can join our Telegram group to make suggestions, ask questions, receive news
 
 ### **Working**
 
-- Five modes of sorting apps in the drawer.
+- Sorting apps Alphabetically and by Usage.
 - Google feed integration.
 - Theme support.
 - Customize search engine.
