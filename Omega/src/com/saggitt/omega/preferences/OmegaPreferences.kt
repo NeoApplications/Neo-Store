@@ -140,7 +140,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             "pref_launcherTheme",
             ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref(PREFS_ACCENT, R.color.colorAccent, doNothing)
+    val accentColor by IntPref(PREFS_ACCENT, (0xffff1744).toInt(), doNothing)
     var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
     var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
     var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
