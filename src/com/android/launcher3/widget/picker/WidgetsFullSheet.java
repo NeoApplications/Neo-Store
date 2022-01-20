@@ -74,7 +74,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-// TODO apply accent color to this
 /**
  * Popup for showing the full list of available widgets
  */
@@ -104,8 +103,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
             entry -> mCurrentUser.equals(entry.mPkgItem.user);
     private final Predicate<WidgetsListBaseEntry> mWorkWidgetsFilter =
             mPrimaryWidgetsFilter.negate();
-    @Nullable
-    private ArrowTipView mLatestEducationalTip;
+    @Nullable private ArrowTipView mLatestEducationalTip;
     private final OnLayoutChangeListener mLayoutChangeListenerToShowTips =
             new OnLayoutChangeListener() {
                 @Override
@@ -156,10 +154,8 @@ public class WidgetsFullSheet extends BaseWidgetSheet
     private final int mSearchAndRecommendationContainerBottomMargin;
     private final int mWidgetCellHorizontalPadding;
 
-    @Nullable
-    private WidgetsRecyclerView mCurrentWidgetsRecyclerView;
-    @Nullable
-    private PersonalWorkPagedView mViewPager;
+    @Nullable private WidgetsRecyclerView mCurrentWidgetsRecyclerView;
+    @Nullable private PersonalWorkPagedView mViewPager;
     private boolean mIsInSearchMode;
     private boolean mIsNoWidgetsViewNeeded;
     private int mMaxSpansPerRow = 4;
@@ -379,9 +375,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         }
     }
 
-    /**
-     * Returns {@code true} if the max spans have been updated.
-     */
+    /** Returns {@code true} if the max spans have been updated. */
     private boolean updateMaxSpansPerRow() {
         if (getMeasuredWidth() == 0) return false;
 
@@ -607,9 +601,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         return super.onControllerInterceptTouchEvent(ev);
     }
 
-    /**
-     * Shows the {@link WidgetsFullSheet} on the launcher.
-     */
+    /** Shows the {@link WidgetsFullSheet} on the launcher. */
     public static WidgetsFullSheet show(Launcher launcher, boolean animate) {
         WidgetsFullSheet sheet = (WidgetsFullSheet) launcher.getLayoutInflater()
                 .inflate(R.layout.widgets_full_sheet, launcher.getDragLayer(), false);
@@ -619,9 +611,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         return sheet;
     }
 
-    /**
-     * Gets the {@link WidgetsRecyclerView} which shows all widgets in {@link WidgetsFullSheet}.
-     */
+    /** Gets the {@link WidgetsRecyclerView} which shows all widgets in {@link WidgetsFullSheet}. */
     @VisibleForTesting
     public static WidgetsRecyclerView getWidgetsView(Launcher launcher) {
         return launcher.findViewById(R.id.primary_widgets_list_view);
@@ -652,9 +642,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
                 (View) mSearchAndRecommendationViewHolder.mSearchBarContainer);
     }
 
-    /**
-     * private the height, in pixel, + the vertical margins of a given view.
-     */
+    /** private the height, in pixel, + the vertical margins of a given view. */
     private static int measureHeightWithVerticalMargins(View view) {
         if (view.getVisibility() != VISIBLE) {
             return 0;
@@ -693,8 +681,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         }
     }
 
-    @Nullable
-    private View getViewToShowEducationTip() {
+    @Nullable private View getViewToShowEducationTip() {
         if (mSearchAndRecommendationViewHolder.mRecommendedWidgetsTable.getVisibility() == VISIBLE
                 && mSearchAndRecommendationViewHolder.mRecommendedWidgetsTable.getChildCount() > 0
         ) {
@@ -722,18 +709,14 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         return null;
     }
 
-    /**
-     * Shows education dialog for widgets.
-     */
+    /** Shows education dialog for widgets. */
     private WidgetsEduView showEducationDialog() {
         mActivityContext.getSharedPrefs().edit()
                 .putBoolean(KEY_WIDGETS_EDUCATION_DIALOG_SEEN, true).apply();
         return WidgetsEduView.showEducationDialog(mActivityContext);
     }
 
-    /**
-     * Returns {@code true} if education dialog has previously been shown.
-     */
+    /** Returns {@code true} if education dialog has previously been shown. */
     protected boolean hasSeenEducationDialog() {
         return mActivityContext.getSharedPrefs()
                 .getBoolean(KEY_WIDGETS_EDUCATION_DIALOG_SEEN, false)
@@ -758,9 +741,7 @@ public class WidgetsFullSheet extends BaseWidgetSheet
         }
     }
 
-    /**
-     * A holder class for holding adapters & their corresponding recycler view.
-     */
+    /** A holder class for holding adapters & their corresponding recycler view. */
     private final class AdapterHolder {
         static final int PRIMARY = 0;
         static final int WORK = 1;

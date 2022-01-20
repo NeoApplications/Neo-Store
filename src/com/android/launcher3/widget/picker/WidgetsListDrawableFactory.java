@@ -33,9 +33,7 @@ import android.graphics.drawable.StateListDrawable;
 import com.android.launcher3.R;
 import com.android.launcher3.util.Themes;
 
-/**
- * Factory for creating drawables to use as background for list elements.
- */
+/** Factory for creating drawables to use as background for list elements. */
 final class WidgetsListDrawableFactory {
 
     private final float mTopBottomCornerRadius;
@@ -94,9 +92,7 @@ final class WidgetsListDrawableFactory {
         return new RippleDrawable(mRippleColor, /* content= */ stateList, /* mask= */ stateList);
     }
 
-    /**
-     * Creates a rounded-rect drawable with the specified radii.
-     */
+    /** Creates a rounded-rect drawable with the specified radii. */
     private Drawable createRoundedRectDrawable(float topRadius, float bottomRadius) {
         GradientDrawable backgroundMask = new GradientDrawable();
         backgroundMask.setColor(mSurfaceColor);

@@ -133,9 +133,7 @@ public class WidgetsBottomSheet extends BaseWidgetSheet {
         }
     }
 
-    /**
-     * Returns {@code true} if the max spans have been updated.
-     */
+    /** Returns {@code true} if the max spans have been updated. */
     public boolean updateMaxSpansPerRow() {
         if (getMeasuredWidth() == 0) return false;
 

@@ -78,9 +78,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutionException;
 
-/**
- * {@link WidgetPreviewLoader} that loads preview images from a {@link CacheDb}.
- */
+/** {@link WidgetPreviewLoader} that loads preview images from a {@link CacheDb}. */
 public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
 
     private static final String TAG = "WidgetPreviewLoader";
@@ -94,8 +92,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
      * Note: synchronized block used for this variable is expensive and the block should always
      * be posted to a background thread.
      */
-    @Thunk
-    final Set<Bitmap> mUnusedBitmaps = Collections.newSetFromMap(new WeakHashMap<>());
+    @Thunk final Set<Bitmap> mUnusedBitmaps = Collections.newSetFromMap(new WeakHashMap<>());
 
     private final Context mContext;
     private final IconCache mIconCache;
@@ -141,9 +138,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
         return signal;
     }
 
-    /**
-     * Clears the database storing previews.
-     */
+    /** Clears the database storing previews. */
     public void refresh() {
         mDb.clear();
     }
@@ -199,8 +194,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
         }
     }
 
-    @Thunk
-    void writeToDb(WidgetCacheKey key, long[] versions, Bitmap preview) {
+    @Thunk void writeToDb(WidgetCacheKey key, long[] versions, Bitmap preview) {
         ContentValues values = new ContentValues();
         values.put(CacheDb.COLUMN_COMPONENT, key.componentName.flattenToShortString());
         values.put(CacheDb.COLUMN_USER, mUserCache.getSerialNumberForUser(key.user));
@@ -212,16 +206,12 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
         mDb.insertOrReplace(values);
     }
 
-    /**
-     * Removes the package from the preview database.
-     */
+    /** Removes the package from the preview database. */
     public void removePackage(String packageName, UserHandle user) {
         removePackage(packageName, user, mUserCache.getSerialNumberForUser(user));
     }
 
-    /**
-     * Removes the package from the preview database.
-     */
+    /** Removes the package from the preview database. */
     public void removePackage(String packageName, UserHandle user, long userSerial) {
         synchronized (mPackageVersions) {
             mPackageVersions.remove(packageName);
@@ -234,8 +224,8 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
 
     /**
      * Updates the persistent DB:
-     * 1. Any preview generated for an old package version is removed
-     * 2. Any preview for an absent package is removed
+     *   1. Any preview generated for an old package version is removed
+     *   2. Any preview for an absent package is removed
      * This ensures that we remove entries for packages which changed while the launcher was dead.
      *
      * @param packageUser if provided, specifies that list only contains previews for the
@@ -315,8 +305,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
     /**
      * Reads the preview bitmap from the DB or null if the preview is not in the DB.
      */
-    @Thunk
-    Bitmap readFromDb(WidgetCacheKey key, Bitmap recycle, PreviewLoadTask loadTask) {
+    @Thunk Bitmap readFromDb(WidgetCacheKey key, Bitmap recycle, PreviewLoadTask loadTask) {
         Cursor cursor = null;
         try {
             cursor = mDb.query(
@@ -357,7 +346,6 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
     /**
      * Returns a generated preview for a widget and if the preview should be saved in persistent
      * storage.
-     *
      * @param launcher
      * @param item
      * @param recycle
@@ -382,11 +370,11 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
      * and add badge at the bottom right corner.
      *
      * @param launcher
-     * @param info              information about the widget
-     * @param maxPreviewWidth   width of the preview on either workspace or tray
-     * @param preview           bitmap that can be recycled
-     * @param preScaledWidthOut return the width of the returned bitmap
-     * @return Pair<Bitmap ( the preview ), Boolean ( should be stored in db )>
+     * @param info                        information about the widget
+     * @param maxPreviewWidth             width of the preview on either workspace or tray
+     * @param preview                     bitmap that can be recycled
+     * @param preScaledWidthOut           return the width of the returned bitmap
+     * @return Pair<Bitmap (the preview) , Boolean (should be stored in db)>
      */
     public Pair<Bitmap, Boolean> generateWidgetPreview(BaseActivity launcher,
                                                        LauncherAppWidgetProviderInfo info,
@@ -601,8 +589,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
     /**
      * @return an array of containing versionCode and lastUpdatedTime for the package.
      */
-    @Thunk
-    long[] getPackageVersion(String packageName) {
+    @Thunk long[] getPackageVersion(String packageName) {
         synchronized (mPackageVersions) {
             long[] versions = mPackageVersions.get(packageName);
             if (versions == null) {
@@ -623,20 +610,16 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
 
     private class PreviewLoadTask extends AsyncTask<Void, Void, Bitmap>
             implements CancellationSignal.OnCancelListener {
-        @Thunk
-        final WidgetCacheKey mKey;
+        @Thunk final WidgetCacheKey mKey;
         private final WidgetItem mInfo;
         private final int mPreviewHeight;
         private final int mPreviewWidth;
         private final WidgetPreviewLoadedCallback mCallback;
         private final BaseActivity mActivity;
-        @Thunk
-        long[] mVersions;
-        @Thunk
-        Bitmap mBitmapToRecycle;
+        @Thunk long[] mVersions;
+        @Thunk Bitmap mBitmapToRecycle;
 
-        @Nullable
-        private Bitmap mUnusedPreviewBitmap;
+        @Nullable private Bitmap mUnusedPreviewBitmap;
         private boolean mSaveToDB = false;
 
         PreviewLoadTask(BaseActivity activity, WidgetCacheKey key, WidgetItem info,
@@ -787,8 +770,7 @@ public class DatabaseWidgetPreviewLoader implements WidgetPreviewLoader {
 
     private static final class WidgetCacheKey extends ComponentKey {
 
-        @Thunk
-        final String mSize;
+        @Thunk final String mSize;
 
         WidgetCacheKey(ComponentName componentName, UserHandle user, String size) {
             super(componentName, user);

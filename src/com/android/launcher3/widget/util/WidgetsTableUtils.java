@@ -22,9 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * An utility class which groups {@link WidgetItem}s into a table.
- */
+/** An utility class which groups {@link WidgetItem}s into a table. */
 public final class WidgetsTableUtils {
 
     /**
@@ -32,9 +30,9 @@ public final class WidgetsTableUtils {
      * 1. Widgets always go before shortcuts.
      * 2. Widgets with smaller horizontal spans will be shown first.
      * 3. If widgets have the same horizontal spans, then widgets with a smaller vertical spans will
-     * go first.
+     *    go first.
      * 4. If both widgets have the same horizontal and vertical spans, they will use the same order
-     * from the given {@code widgetItems}.
+     *    from the given {@code widgetItems}.
      */
     private static final Comparator<WidgetItem> WIDGET_SHORTCUT_COMPARATOR = (item, otherItem) -> {
         if (item.widgetInfo != null && otherItem.widgetInfo == null) return -1;
@@ -54,9 +52,9 @@ public final class WidgetsTableUtils {
      * <p>Grouping:
      * 1. Widgets and shortcuts never group together in the same row.
      * 2. The ordered widgets are grouped together in the same row until their total horizontal
-     * spans exceed the {@code maxSpansPerRow} - 1.
+     *    spans exceed the {@code maxSpansPerRow} - 1.
      * 3. The order shortcuts are grouped together in the same row until their total horizontal
-     * spans exceed the {@code maxSpansPerRow} - 1.
+     *    spans exceed the {@code maxSpansPerRow} - 1.
      * 4. If there is only one widget in a row, its width may exceed the {@code maxSpansPerRow}.
      *
      * <p>Let's say the {@code maxSpansPerRow} is set to 6. Widgets can be grouped in the same row

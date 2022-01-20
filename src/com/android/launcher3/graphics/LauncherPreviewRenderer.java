@@ -397,7 +397,6 @@ public class LauncherPreviewRenderer extends ContextWrapper
         }
 
         view.setTag(info);
-
         if (mWallpaperColorResources != null) {
             view.setColorResources(mWallpaperColorResources);
         }
@@ -526,30 +525,30 @@ public class LauncherPreviewRenderer extends ContextWrapper
         }
     }
 
-    private class LauncherPreviewAppWidgetHost extends AppWidgetHost {
+private class LauncherPreviewAppWidgetHost extends AppWidgetHost {
 
-        private LauncherPreviewAppWidgetHost(Context context) {
-            super(context, LauncherAppWidgetHost.APPWIDGET_HOST_ID);
-        }
-
-        @Override
-        protected AppWidgetHostView onCreateView(
-                Context context,
-                int appWidgetId,
-                AppWidgetProviderInfo appWidget) {
-            return new LauncherPreviewAppWidgetHostView(LauncherPreviewRenderer.this);
-        }
+    private LauncherPreviewAppWidgetHost(Context context) {
+        super(context, LauncherAppWidgetHost.APPWIDGET_HOST_ID);
     }
 
-    private static class LauncherPreviewAppWidgetHostView extends BaseLauncherAppWidgetHostView {
-
-        private LauncherPreviewAppWidgetHostView(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected boolean shouldAllowDirectClick() {
-            return false;
-        }
+    @Override
+    protected AppWidgetHostView onCreateView(
+            Context context,
+            int appWidgetId,
+            AppWidgetProviderInfo appWidget) {
+        return new LauncherPreviewAppWidgetHostView(LauncherPreviewRenderer.this);
     }
+}
+
+private static class LauncherPreviewAppWidgetHostView extends BaseLauncherAppWidgetHostView {
+
+    private LauncherPreviewAppWidgetHostView(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected boolean shouldAllowDirectClick() {
+        return false;
+    }
+}
 }

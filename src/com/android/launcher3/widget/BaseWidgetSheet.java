@@ -234,9 +234,7 @@ public abstract class BaseWidgetSheet extends AbstractSlideInView<Launcher>
         return toast;
     }
 
-    /**
-     * Shows education tip on top center of {@code view} if view is laid out.
-     */
+    /** Shows education tip on top center of {@code view} if view is laid out. */
     @Nullable
     protected ArrowTipView showEducationTipOnViewIfPossible(@Nullable View view) {
         if (view == null || !ViewCompat.isLaidOut(view)) {
@@ -256,9 +254,7 @@ public abstract class BaseWidgetSheet extends AbstractSlideInView<Launcher>
         return arrowTipView;
     }
 
-    /**
-     * Returns {@code true} if tip has previously been shown on any of {@link BaseWidgetSheet}.
-     */
+    /** Returns {@code true} if tip has previously been shown on any of {@link BaseWidgetSheet}. */
     protected boolean hasSeenEducationTip() {
         return mActivityContext.getSharedPrefs().getBoolean(KEY_WIDGETS_EDUCATION_TIP_SEEN, false)
                 || Utilities.IS_RUNNING_IN_TEST_HARNESS;

@@ -29,9 +29,7 @@ import java.lang.annotation.Retention;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Holder class to store the package information of an entry shown in the widgets list.
- */
+/** Holder class to store the package information of an entry shown in the widgets list. */
 public abstract class WidgetsListBaseEntry {
     public final PackageItemInfo mPkgItem;
 
@@ -67,14 +65,10 @@ public abstract class WidgetsListBaseEntry {
      * @param <T> The type of this class.
      */
     public interface Header<T extends WidgetsListBaseEntry & Header<T>> {
-        /**
-         * Returns whether the widget list is currently expanded.
-         */
+        /** Returns whether the widget list is currently expanded. */
         boolean isWidgetListShown();
 
-        /**
-         * Returns a copy of the item with the widget list shown.
-         */
+        /** Returns a copy of the item with the widget list shown. */
         T withWidgetListShown();
     }
 

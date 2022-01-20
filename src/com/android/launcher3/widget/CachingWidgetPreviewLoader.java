@@ -35,30 +35,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Wrapper around {@link DatabaseWidgetPreviewLoader} that contains caching logic.
- */
+/** Wrapper around {@link DatabaseWidgetPreviewLoader} that contains caching logic. */
 public class CachingWidgetPreviewLoader implements WidgetPreviewLoader {
 
-    @NonNull
-    private final WidgetPreviewLoader mDelegate;
-    @NonNull
-    private final Map<ComponentKey, Map<Size, CacheResult>> mCache = new ArrayMap<>();
+    @NonNull private final WidgetPreviewLoader mDelegate;
+    @NonNull private final Map<ComponentKey, Map<Size, CacheResult>> mCache = new ArrayMap<>();
 
     public CachingWidgetPreviewLoader(@NonNull WidgetPreviewLoader delegate) {
         mDelegate = delegate;
     }
 
-    /**
-     * Returns whether the preview is loaded for the item and size.
-     */
+    /** Returns whether the preview is loaded for the item and size. */
     public boolean isPreviewLoaded(@NonNull WidgetItem item, @NonNull Size previewSize) {
         return getPreview(item, previewSize) != null;
     }
 
-    /**
-     * Returns the cached preview for the item and size, or null if there is none.
-     */
+    /** Returns the cached preview for the item and size, or null if there is none. */
     @Nullable
     public Bitmap getPreview(@NonNull WidgetItem item, @NonNull Size previewSize) {
         CacheResult cacheResult = getCacheResult(item, previewSize);
@@ -205,9 +197,7 @@ public class CachingWidgetPreviewLoader implements WidgetPreviewLoader {
         return signal;
     }
 
-    /**
-     * Clears all cached previews for {@code items}, cancelling any in-progress preview loading.
-     */
+    /** Clears all cached previews for {@code items}, cancelling any in-progress preview loading. */
     public void clearPreviews(Iterable<WidgetItem> items) {
         List<CacheResult> previousCacheResults = new ArrayList<>();
         synchronized (mCache) {
@@ -226,9 +216,7 @@ public class CachingWidgetPreviewLoader implements WidgetPreviewLoader {
         }
     }
 
-    /**
-     * Clears all cached previews, cancelling any in-progress preview loading.
-     */
+    /** Clears all cached previews, cancelling any in-progress preview loading. */
     public void clearAll() {
         List<CacheResult> previousCacheResults;
         synchronized (mCache) {
@@ -249,14 +237,11 @@ public class CachingWidgetPreviewLoader implements WidgetPreviewLoader {
     }
 
     private abstract static class CacheResult {
-        static final CacheResult MISS = new CacheResult() {
-        };
+        static final CacheResult MISS = new CacheResult() {};
 
         static final class Loading extends CacheResult {
-            @NonNull
-            final CancellationSignal mCancellationSignal;
-            @NonNull
-            final Set<WidgetPreviewLoadedCallback> mCallbacks;
+            @NonNull final CancellationSignal mCancellationSignal;
+            @NonNull final Set<WidgetPreviewLoadedCallback> mCallbacks;
 
             Loading(@NonNull CancellationSignal cancellationSignal,
                     @NonNull Set<WidgetPreviewLoadedCallback> callbacks) {
@@ -289,8 +274,7 @@ public class CachingWidgetPreviewLoader implements WidgetPreviewLoader {
         }
 
         static final class Loaded extends CacheResult {
-            @NonNull
-            final Bitmap mBitmap;
+            @NonNull final Bitmap mBitmap;
 
             Loaded(@NonNull Bitmap bitmap) {
                 mBitmap = bitmap;

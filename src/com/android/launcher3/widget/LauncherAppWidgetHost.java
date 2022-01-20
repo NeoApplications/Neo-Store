@@ -303,7 +303,6 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
 
     /**
      * Launches an app widget's configuration activity.
-     *
      * @param activity    The activity from which to launch the configuration activity
      * @param widgetId    The id of the bound app widget to be configured
      * @param requestCode An optional request code to be returned with the result

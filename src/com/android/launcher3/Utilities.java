@@ -678,8 +678,7 @@ public final class Utilities {
     public static void unregisterReceiverSafely(Context context, BroadcastReceiver receiver) {
         try {
             context.unregisterReceiver(receiver);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) {}
     }
 
     /**

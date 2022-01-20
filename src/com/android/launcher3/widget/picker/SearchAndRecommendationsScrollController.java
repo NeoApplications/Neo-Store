@@ -107,9 +107,7 @@ final class SearchAndRecommendationsScrollController implements
         setCurrentRecyclerView(currentRecyclerView, /* animateReset= */ true);
     }
 
-    /**
-     * Sets the current active {@link WidgetsRecyclerView}.
-     */
+    /** Sets the current active {@link WidgetsRecyclerView}. */
     private void setCurrentRecyclerView(WidgetsRecyclerView currentRecyclerView,
                                         boolean animateReset) {
         if (mCurrentRecyclerView == currentRecyclerView) {
@@ -294,9 +292,7 @@ final class SearchAndRecommendationsScrollController implements
         }
     }
 
-    /**
-     * Resets any previous view translation.
-     */
+    /** Resets any previous view translation. */
     public void reset(boolean animate) {
         if (mCurrentRecyclerViewScrollY == 0) {
             return;
@@ -353,9 +349,7 @@ final class SearchAndRecommendationsScrollController implements
                 - mSearchAndRecommendationViewParent.getTop();
     }
 
-    /**
-     * private the height, in pixel, + the vertical margins of a given view.
-     */
+    /** private the height, in pixel, + the vertical margins of a given view. */
     private static int measureHeightWithVerticalMargins(View view) {
         if (view.getVisibility() != View.VISIBLE) {
             return 0;
@@ -376,9 +370,7 @@ final class SearchAndRecommendationsScrollController implements
      * the relative position of the search and recommendation container.
      */
     public interface OnContentChangeListener {
-        /**
-         * Notifies a content change in the recycler view.
-         */
+        /** Notifies a content change in the recycler view. */
         void onContentChanged();
     }
 }

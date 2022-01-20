@@ -11,6 +11,7 @@ import static com.android.launcher3.views.BaseDragLayer.LAYOUT_Y;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -157,6 +158,11 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
         mDragHandles[INDEX_TOP] = findViewById(R.id.widget_resize_top_handle);
         mDragHandles[INDEX_RIGHT] = findViewById(R.id.widget_resize_right_handle);
         mDragHandles[INDEX_BOTTOM] = findViewById(R.id.widget_resize_bottom_handle);
+
+        int workspaceAccentColor = Utilities.getOmegaPrefs(getContext()).getAccentColor();
+        for (int i = 0; i < HANDLE_COUNT; i++) {
+            ((ImageView) mDragHandles[i]).setColorFilter(workspaceAccentColor);
+        }
     }
 
     @Override
@@ -216,6 +222,21 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
         mWidgetPadding = getDefaultPaddingForWidget(getContext(),
                 widgetView.getAppWidgetInfo().provider, null);
 
+        // Only show resize handles for the directions in which resizing is possible.
+        InvariantDeviceProfile idp = LauncherAppState.getIDP(cellLayout.getContext());
+        mVerticalResizeActive = (info.resizeMode & AppWidgetProviderInfo.RESIZE_VERTICAL) != 0
+                && mMinVSpan < idp.numRows && mMaxVSpan > 1;
+        if (!mVerticalResizeActive) {
+            mDragHandles[INDEX_TOP].setVisibility(GONE);
+            mDragHandles[INDEX_BOTTOM].setVisibility(GONE);
+        }
+        mHorizontalResizeActive = (info.resizeMode & AppWidgetProviderInfo.RESIZE_HORIZONTAL) != 0
+                && mMinHSpan < idp.numColumns && mMaxHSpan > 1;
+        if (!mHorizontalResizeActive) {
+            mDragHandles[INDEX_LEFT].setVisibility(GONE);
+            mDragHandles[INDEX_RIGHT].setVisibility(GONE);
+        }
+
         mReconfigureButton = (ImageButton) findViewById(R.id.widget_reconfigure_button);
         if (info.isReconfigurable()) {
             mReconfigureButton.setVisibility(VISIBLE);
@@ -268,10 +289,12 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
     }
 
     public boolean beginResizeIfPointInRegion(int x, int y) {
-        mLeftBorderActive = x < mTouchTargetWidth;
-        mRightBorderActive = x > getWidth() - mTouchTargetWidth;
-        mTopBorderActive = y < mTouchTargetWidth + mTopTouchRegionAdjustment;
-        mBottomBorderActive = y > getHeight() - mTouchTargetWidth + mBottomTouchRegionAdjustment;
+        mLeftBorderActive = (x < mTouchTargetWidth) && mHorizontalResizeActive;
+        mRightBorderActive = (x > getWidth() - mTouchTargetWidth) && mHorizontalResizeActive;
+        mTopBorderActive = (y < mTouchTargetWidth + mTopTouchRegionAdjustment)
+                && mVerticalResizeActive;
+        mBottomBorderActive = (y > getHeight() - mTouchTargetWidth + mBottomTouchRegionAdjustment)
+                && mVerticalResizeActive;
 
         boolean anyBordersActive = mLeftBorderActive || mRightBorderActive
                 || mTopBorderActive || mBottomBorderActive;

@@ -39,7 +39,6 @@ import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.android.launcher3.BaseActivity;
-import com.android.launcher3.BuildConfig;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -84,9 +83,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
     private static final String TAG = "WidgetsListAdapter";
     private static final boolean DEBUG = false;
 
-    /**
-     * Uniquely identifies widgets list view type within the app.
-     */
+    /** Uniquely identifies widgets list view type within the app. */
     private static final int VIEW_TYPE_WIDGETS_LIST = R.id.view_type_widgets_list;
     private static final int VIEW_TYPE_WIDGETS_HEADER = R.id.view_type_widgets_header;
     private static final int VIEW_TYPE_WIDGETS_SEARCH_HEADER = R.id.view_type_widgets_search_header;
@@ -102,20 +99,16 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
 
     private List<WidgetsListBaseEntry> mAllEntries = new ArrayList<>();
     private ArrayList<WidgetsListBaseEntry> mVisibleEntries = new ArrayList<>();
-    @Nullable
-    private PackageUserKey mWidgetsContentVisiblePackageUserKey = null;
+    @Nullable private PackageUserKey mWidgetsContentVisiblePackageUserKey = null;
 
     private Predicate<WidgetsListBaseEntry> mHeaderAndSelectedContentFilter = entry ->
             entry instanceof WidgetsListHeaderEntry
                     || entry instanceof WidgetsListSearchHeaderEntry
                     || new PackageUserKey(entry.mPkgItem.packageName, entry.mPkgItem.user)
                     .equals(mWidgetsContentVisiblePackageUserKey);
-    @Nullable
-    private Predicate<WidgetsListBaseEntry> mFilter = null;
-    @Nullable
-    private RecyclerView mRecyclerView;
-    @Nullable
-    private PackageUserKey mPendingClickHeader;
+    @Nullable private Predicate<WidgetsListBaseEntry> mFilter = null;
+    @Nullable private RecyclerView mRecyclerView;
+    @Nullable private PackageUserKey mPendingClickHeader;
     private final int mShortcutPreviewPadding;
     private final int mSpacingBetweenEntries;
     private int mMaxSpanSize = 4;
@@ -198,7 +191,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
             if (viewHolder.getItemViewType() == VIEW_TYPE_WIDGETS_LIST) {
                 WidgetsRowViewHolder holder = (WidgetsRowViewHolder) viewHolder;
                 for (int j = holder.mTableContainer.getChildCount() - 1; j >= 0; j--) {
-                    TableRow row = (TableRow) holder.mTableContainer.getChildAt(j);
+                    TableRow row =  (TableRow) holder.mTableContainer.getChildAt(j);
                     for (int k = row.getChildCount() - 1; k >= 0; k--) {
                         ((WidgetCell) row.getChildAt(k)).setApplyBitmapDeferred(isDeferred);
                     }
@@ -212,23 +205,17 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
         return mVisibleEntries.size();
     }
 
-    /**
-     * Returns all items that will be drawn in a recycler view.
-     */
+    /** Returns all items that will be drawn in a recycler view. */
     public List<WidgetsListBaseEntry> getItems() {
         return mVisibleEntries;
     }
 
-    /**
-     * Gets the section name for {@link com.android.launcher3.views.RecyclerViewFastScroller}.
-     */
+    /** Gets the section name for {@link com.android.launcher3.views.RecyclerViewFastScroller}. */
     public String getSectionName(int pos) {
         return mVisibleEntries.get(pos).mTitleSectionName;
     }
 
-    /**
-     * Updates the widget list based on {@code tempEntries}.
-     */
+    /** Updates the widget list based on {@code tempEntries}. */
     public void setWidgets(List<WidgetsListBaseEntry> tempEntries) {
         mCachingPreviewLoader.clearAll();
         mAllEntries = tempEntries.stream().sorted(mRowComparator)
@@ -239,9 +226,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
         updateVisibleEntries();
     }
 
-    /**
-     * Updates the widget list based on {@code searchResults}.
-     */
+    /** Updates the widget list based on {@code searchResults}. */
     public void setWidgetsOnSearch(List<WidgetsListBaseEntry> searchResults) {
         // Forget the expanded package every time widget list is refreshed in search mode.
         mWidgetsContentVisiblePackageUserKey = null;
@@ -339,9 +324,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
         return allReady;
     }
 
-    /**
-     * Returns whether {@code entry} matches {@code key}.
-     */
+    /** Returns whether {@code entry} matches {@code key}. */
     private static boolean isHeaderForPackageUserKey(
             @NonNull WidgetsListBaseEntry entry, @Nullable PackageUserKey key) {
         return entry instanceof WidgetsListBaseEntry.Header && matchesKey(entry, key);
@@ -441,9 +424,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
         mCachingPreviewLoader.clearAll();
     }
 
-    /**
-     * Returns the position of the currently expanded header, or empty if it's not present.
-     */
+    /** Returns the position of the currently expanded header, or empty if it's not present. */
     public OptionalInt getSelectedHeaderPosition() {
         if (mWidgetsContentVisiblePackageUserKey == null) return OptionalInt.empty();
         return getPositionForPackageUserKey(mWidgetsContentVisiblePackageUserKey);
@@ -483,8 +464,8 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
      * clicks, without interrupting the animation.
      *
      * @param positionOptional The position too scroll to. No scrolling will be done if empty.
-     * @param offsetOptional   The offset from the top to maintain. If empty, then the list will
-     *                         scroll to the top of the position.
+     * @param offsetOptional The offset from the top to maintain. If empty, then the list will
+     *                       scroll to the top of the position.
      */
     private void scrollToPositionAndMaintainOffset(
             OptionalInt positionOptional,
@@ -532,7 +513,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
                         .collect(Collectors.toMap(
                                 entry -> new PackageUserKey(entry.packageName, entry.user),
                                 entry -> entry));
-        for (WidgetsListBaseEntry visibleEntry : mVisibleEntries) {
+        for (WidgetsListBaseEntry visibleEntry: mVisibleEntries) {
             PackageUserKey key = new PackageUserKey(visibleEntry.mPkgItem.packageName,
                     visibleEntry.mPkgItem.user);
             PackageItemInfo packageItemInfo = packagesInfo.get(key);
@@ -544,9 +525,7 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
         return false;
     }
 
-    /**
-     * Comparator for sorting WidgetListRowEntry based on package title.
-     */
+    /** Comparator for sorting WidgetListRowEntry based on package title. */
     public static class WidgetListBaseRowEntryComparator implements
             Comparator<WidgetsListBaseEntry> {
 
@@ -554,17 +533,6 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
 
         @Override
         public int compare(WidgetsListBaseEntry a, WidgetsListBaseEntry b) {
-            boolean leftIsLC = a.mPkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
-            boolean rightIsLc = b.mPkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
-            if (leftIsLC || rightIsLc) {
-                if (leftIsLC && rightIsLc) {
-                    return 0;
-                }
-                if (leftIsLC) {
-                    return -1;
-                }
-                return 1;
-            }
             int i = mComparator.compare(a.mPkgItem.title.toString(), b.mPkgItem.title.toString());
             if (i != 0) {
                 return i;

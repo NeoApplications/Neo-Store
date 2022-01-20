@@ -21,9 +21,7 @@ import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragOptions;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
-/**
- * A drag listener of {@link LauncherAppWidgetHostView}.
- */
+/** A drag listener of {@link LauncherAppWidgetHostView}. */
 public final class AppWidgetHostViewDragListener implements DragController.DragListener {
     private final Launcher mLauncher;
     private DropTarget.DragObject mDragObject;
@@ -50,9 +48,7 @@ public final class AppWidgetHostViewDragListener implements DragController.DragL
         mLauncher.getDragController().removeDragListener(this);
     }
 
-    /**
-     * Notifies when there is a content change in the drag view.
-     */
+    /** Notifies when there is a content change in the drag view. */
     public void onDragContentChanged() {
         if (mDragObject.dragView != null) {
             mDragObject.dragView.invalidate();

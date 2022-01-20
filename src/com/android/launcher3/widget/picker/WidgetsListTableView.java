@@ -28,8 +28,7 @@ import androidx.annotation.UiThread;
  */
 public class WidgetsListTableView extends TableLayout {
 
-    @Nullable
-    private WidgetsListDrawableState mListDrawableState;
+    @Nullable private WidgetsListDrawableState mListDrawableState;
 
     public WidgetsListTableView(Context context) {
         super(context);
@@ -39,9 +38,7 @@ public class WidgetsListTableView extends TableLayout {
         super(context, attrs);
     }
 
-    /**
-     * Sets the {@link WidgetsListDrawableState} and refreshes the background drawable.
-     */
+    /** Sets the {@link WidgetsListDrawableState} and refreshes the background drawable. */
     @UiThread
     public void setListDrawableState(WidgetsListDrawableState state) {
         if (state == mListDrawableState) return;

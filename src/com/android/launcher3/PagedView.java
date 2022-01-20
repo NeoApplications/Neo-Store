@@ -388,6 +388,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             mPageIndicator.setActiveMarker(getNextPage());
         }
     }
+
     protected void pageBeginTransition() {
         if (!mIsPageInTransition) {
             mIsPageInTransition = true;
@@ -535,7 +536,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
     }
 
     public int getNormalChildHeight() {
-        return  getExpectedHeight() - getPaddingTop() - getPaddingBottom()
+        return getExpectedHeight() - getPaddingTop() - getPaddingBottom()
                 - mInsets.top - mInsets.bottom;
     }
 
@@ -544,7 +545,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
     }
 
     public int getNormalChildWidth() {
-        return  getExpectedWidth() - getPaddingLeft() - getPaddingRight()
+        return getExpectedWidth() - getPaddingLeft() - getPaddingRight()
                 - mInsets.left - mInsets.right;
     }
 
@@ -872,7 +873,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
     /**
      * If one of our descendant views decides that it could be focused now, only
      * pass that along if it's on the current page.
-     *
+     * <p>
      * This happens when live folders requery, and if they're off page, they
      * end up calling requestFocus, which pulls it on page.
      */
@@ -890,7 +891,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             }
             ViewParent parent = v.getParent();
             if (parent instanceof View) {
-                v = (View)v.getParent();
+                v = (View) v.getParent();
             } else {
                 return;
             }
@@ -1075,7 +1076,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
 
         float scrollProgress = delta / (totalDistance * 1.0f);
         scrollProgress = Math.min(scrollProgress, MAX_SCROLL_PROGRESS);
-        scrollProgress = Math.max(scrollProgress, - MAX_SCROLL_PROGRESS);
+        scrollProgress = Math.max(scrollProgress, -MAX_SCROLL_PROGRESS);
         return scrollProgress;
     }
 
@@ -1694,12 +1695,14 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
                 if (pagesFlipped ? scrollLeft() : scrollRight()) {
                     return true;
                 }
-            } break;
+            }
+            break;
             case AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD: {
                 if (pagesFlipped ? scrollRight() : scrollLeft()) {
                     return true;
                 }
-            } break;
+            }
+            break;
             case android.R.id.accessibilityActionPageRight: {
                 if (!mIsRtl) {
                     return scrollRight();

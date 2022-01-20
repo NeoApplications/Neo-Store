@@ -37,9 +37,7 @@ import com.android.launcher3.model.WidgetItem;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A utility class for widget sizes related calculations.
- */
+/** A utility class for widget sizes related calculations. */
 public final class WidgetSizes {
 
     /**
@@ -68,9 +66,7 @@ public final class WidgetSizes {
         return sizes;
     }
 
-    /**
-     * Returns the size, in pixels, a widget of given spans & {@code profile}.
-     */
+    /** Returns the size, in pixels, a widget of given spans & {@code profile}. */
     public static Size getWidgetSizePx(DeviceProfile profile, int spanX, int spanY) {
         return getWidgetSizePx(profile, spanX, spanY, /* recycledCellSize= */ null);
     }

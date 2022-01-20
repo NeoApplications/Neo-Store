@@ -41,9 +41,7 @@ import com.android.launcher3.widget.util.WidgetSizes;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A {@link TableLayout} for showing recommended widgets.
- */
+/** A {@link TableLayout} for showing recommended widgets. */
 public final class WidgetsRecommendationTableLayout extends TableLayout {
     private static final String TAG = "WidgetsRecommendationTableLayout";
     private static final float DOWN_SCALE_RATIO = 0.9f;
@@ -53,12 +51,9 @@ public final class WidgetsRecommendationTableLayout extends TableLayout {
     private final float mWidgetCellTextViewsHeight;
 
     private float mRecommendationTableMaxHeight = Float.MAX_VALUE;
-    @Nullable
-    private OnLongClickListener mWidgetCellOnLongClickListener;
-    @Nullable
-    private OnClickListener mWidgetCellOnClickListener;
-    @Nullable
-    private OnTouchListener mWidgetCellOnTouchListener;
+    @Nullable private OnLongClickListener mWidgetCellOnLongClickListener;
+    @Nullable private OnClickListener mWidgetCellOnClickListener;
+    @Nullable private OnTouchListener mWidgetCellOnTouchListener;
 
     public WidgetsRecommendationTableLayout(Context context) {
         this(context, /* attrs= */ null);
@@ -74,23 +69,17 @@ public final class WidgetsRecommendationTableLayout extends TableLayout {
         mWidgetCellTextViewsHeight = 4 * getResources().getDimension(R.dimen.widget_cell_font_size);
     }
 
-    /**
-     * Sets a {@link android.view.View.OnLongClickListener} for all widget cells in this table.
-     */
+    /** Sets a {@link android.view.View.OnLongClickListener} for all widget cells in this table. */
     public void setWidgetCellLongClickListener(OnLongClickListener onLongClickListener) {
         mWidgetCellOnLongClickListener = onLongClickListener;
     }
 
-    /**
-     * Sets a {@link android.view.View.OnClickListener} for all widget cells in this table.
-     */
+    /** Sets a {@link android.view.View.OnClickListener} for all widget cells in this table. */
     public void setWidgetCellOnClickListener(OnClickListener widgetCellOnClickListener) {
         mWidgetCellOnClickListener = widgetCellOnClickListener;
     }
 
-    /**
-     * Sets a {@link android.view.View.OnTouchListener} for all widget cells in this table.
-     */
+    /** Sets a {@link android.view.View.OnTouchListener} for all widget cells in this table. */
     public void setWidgetCellOnTouchListener(OnTouchListener widgetCellOnTouchListener) {
         mWidgetCellOnTouchListener = widgetCellOnTouchListener;
     }
@@ -192,9 +181,7 @@ public final class WidgetsRecommendationTableLayout extends TableLayout {
         return fitRecommendedWidgetsToTableSpace(nextPreviewScale, recommendedWidgetsInTable);
     }
 
-    /**
-     * Data class for the widgets recommendation table and widgets preview scaling.
-     */
+    /** Data class for the widgets recommendation table and widgets preview scaling. */
     private class RecommendationTableData {
         private final List<ArrayList<WidgetItem>> mRecommendationTable;
         private final float mPreviewScale;

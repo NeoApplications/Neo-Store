@@ -135,16 +135,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         DragController.DragListener, Insettable, StateHandler<LauncherState>,
         WorkspaceLayoutManager {
 
-    /**
-     * The value that {@link #mTransitionProgress} must be greater than for
-     * {@link #transitionStateShouldAllowDrop()} to return true.
-     */
+    /** The value that {@link #mTransitionProgress} must be greater than for
+     * {@link #transitionStateShouldAllowDrop()} to return true. */
     private static final float ALLOW_DROP_TRANSITION_PROGRESS = 0.25f;
 
-    /**
-     * The value that {@link #mTransitionProgress} must be greater than for
-     * {@link #isFinishedSwitchingState()} ()} to return true.
-     */
+    /** The value that {@link #mTransitionProgress} must be greater than for
+     * {@link #isFinishedSwitchingState()} ()} to return true. */
     private static final float FINISHED_SWITCHING_STATE_TRANSITION_PROGRESS = 0.5f;
 
     private static final boolean ENFORCE_DRAG_EVENT_ORDER = false;
@@ -158,18 +154,14 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     private static final int EXPANDED_SMARTSPACE_HEIGHT = 2;
 
     private LayoutTransition mLayoutTransition;
-    @Thunk
-    final WallpaperManager mWallpaperManager;
+    @Thunk final WallpaperManager mWallpaperManager;
 
     private ShortcutAndWidgetContainer mDragSourceInternal;
 
-    @Thunk
-    final IntSparseArrayMap<CellLayout> mWorkspaceScreens = new IntSparseArrayMap<>();
-    @Thunk
-    final IntArray mScreenOrder = new IntArray();
+    @Thunk final IntSparseArrayMap<CellLayout> mWorkspaceScreens = new IntSparseArrayMap<>();
+    @Thunk final IntArray mScreenOrder = new IntArray();
 
-    @Thunk
-    boolean mDeferRemoveExtraEmptyScreen = false;
+    @Thunk boolean mDeferRemoveExtraEmptyScreen = false;
 
     /**
      * CellInfo for the cell that is currently being dragged
@@ -179,8 +171,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     /**
      * Target drop area calculated during last acceptDrop call.
      */
-    @Thunk
-    int[] mTargetCell = new int[2];
+    @Thunk int[] mTargetCell = new int[2];
     private int mDragOverX = -1;
     private int mDragOverY = -1;
 
@@ -408,9 +399,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return mWallpaperOffset.wallpaperOffsetForScroll(pageScroll);
     }
 
-    /**
-     * Returns the number of pages used for the wallpaper parallax.
-     */
+    /** Returns the number of pages used for the wallpaper parallax. */
     public int getNumPagesForWallpaperParallax() {
         return mWallpaperOffset.getNumPagesForWallpaperParallax();
     }
@@ -2191,9 +2180,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
     /**
      * Updates the point in {@param xy} to point to the co-ordinate space of {@param layout}
-     *
      * @param layout either hotseat of a page in workspace
-     * @param xy     the point location in workspace co-ordinate space
+     * @param xy the point location in workspace co-ordinate space
      */
     private void mapPointFromDropLayout(CellLayout layout, float[] xy) {
         if (mLauncher.isHotseatLayout(layout)) {
@@ -2471,7 +2459,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
      * Drop an item that didn't originate on one of the workspace screens.
      * It may have come from Launcher (e.g. from all apps or customize), or it may have
      * come from another app altogether.
-     * <p>
+     *
      * NOTE: This can also be called when we are outside of a drag event, when we want
      * to add an item to one of the workspace screens.
      */
@@ -2981,13 +2969,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     }
 
     /**
-     * Similar to {@link #getFirstMatch} but optimized to finding a suitable view for the app close
-     * animation.
-     *
-     * @param preferredItemId The id of the preferred item to match to if it exists.
-     * @param packageName     The package name of the app to match.
-     * @param user            The user of the app to match.
+     * Finds the first view matching the ordered operators across the given cell layouts by order.
+     * @param cellLayouts List of CellLayouts to scan, in order of preference.
+     * @param operators List of operators, in order starting from best matching operator.
      */
+
     public View getFirstMatchForAppClose(int preferredItemId, String packageName, UserHandle user) {
         final Workspace.ItemOperator preferredItem = (ItemInfo info, View view) ->
                 info != null && info.id == preferredItemId;
@@ -3296,9 +3282,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return mOverlayShown;
     }
 
-    /**
-     * Calls {@link #snapToPage(int)} on the {@link #DEFAULT_PAGE}, then requests focus on it.
-     */
+    /** Calls {@link #snapToPage(int)} on the {@link #DEFAULT_PAGE}, then requests focus on it. */
     public void moveToDefaultScreen() {
         int page = DEFAULT_PAGE;
         if (!workspaceInModalState() && getNextPage() != page) {

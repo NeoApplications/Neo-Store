@@ -20,19 +20,16 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.AdapterView;
 import android.widget.Advanceable;
@@ -40,7 +37,6 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
 
 import com.android.launcher3.CheckLongPressHelper;
 import com.android.launcher3.Launcher;
@@ -76,8 +72,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
     // Maximum duration for which updates can be deferred.
     private static final long UPDATE_LOCK_TIMEOUT_MILLIS = 1000;
 
-    protected final LayoutInflater mInflater;
-
     private final CheckLongPressHelper mLongPressHelper;
     protected final Launcher mLauncher;
     private final Workspace mWorkspace;
@@ -102,18 +96,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
     private final Rect mWidgetSizeAtDrag = new Rect();
 
     private final RectF mTempRectF = new RectF();
-    private final Rect mEnforcedRectangle = new Rect();
-    private final float mEnforcedCornerRadius;
-    private final ViewOutlineProvider mCornerRadiusEnforcementOutline = new ViewOutlineProvider() {
-        @Override
-        public void getOutline(View view, Outline outline) {
-            if (mEnforcedRectangle.isEmpty() || mEnforcedCornerRadius <= 0) {
-                outline.setEmpty();
-            } else {
-                outline.setRoundRect(mEnforcedRectangle, mEnforcedCornerRadius);
-            }
-        }
-    };
 
     private final Object mUpdateLock = new Object();
     private final ViewGroupFocusHelper mDragLayerRelativeCoordinateHelper;
@@ -129,7 +111,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
         mLauncher = Launcher.getLauncher(context);
         mWorkspace = mLauncher.getWorkspace();
         mLongPressHelper = new CheckLongPressHelper(this, this);
-        mInflater = LayoutInflater.from(context);
         setAccessibilityDelegate(mLauncher.getAccessibilityDelegate());
         setBackgroundResource(R.drawable.widget_internal_focus_bg);
 
@@ -139,7 +120,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
         mColorExtractor = LocalColorExtractor.newInstance(getContext());
         mColorExtractor.setListener(this);
 
-        mEnforcedCornerRadius = RoundedCornerEnforcement.computeEnforcedRadius(getContext());
         mDragLayerRelativeCoordinateHelper = new ViewGroupFocusHelper(mLauncher.getDragLayer());
     }
 
@@ -181,11 +161,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
                 setPadding(0, 0, 0, 0);
             }
         }
-    }
-
-    @Override
-    protected View getErrorView() {
-        return mInflater.inflate(R.layout.appwidget_error, this, false);
     }
 
     @Override
@@ -350,7 +325,6 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
 
         mIsScrollable = checkScrollableRecursively(this);
         updateColorExtraction();
-        enforceRoundedCorners();
     }
 
     /**
@@ -566,44 +540,4 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
         }
         return false;
     }
-
-    @UiThread
-    private void resetRoundedCorners() {
-        setOutlineProvider(ViewOutlineProvider.BACKGROUND);
-        setClipToOutline(false);
-    }
-
-    @UiThread
-    private void enforceRoundedCorners() {
-        if (mEnforcedCornerRadius <= 0 || !RoundedCornerEnforcement.isRoundedCornerEnabled()) {
-            resetRoundedCorners();
-            return;
-        }
-        View background = RoundedCornerEnforcement.findBackground(this);
-        if (background == null
-                || RoundedCornerEnforcement.hasAppWidgetOptedOut(this, background)) {
-            resetRoundedCorners();
-            return;
-        }
-        RoundedCornerEnforcement.computeRoundedRectangle(this,
-                background,
-                mEnforcedRectangle);
-        setOutlineProvider(mCornerRadiusEnforcementOutline);
-        setClipToOutline(true);
-    }
-
-    /**
-     * Returns the corner radius currently enforced, in pixels.
-     */
-    public float getEnforcedCornerRadius() {
-        return mEnforcedCornerRadius;
-    }
-
-    /**
-     * Returns true if the corner radius are enforced for this App Widget.
-     */
-    public boolean hasEnforcedCornerRadius() {
-        return getClipToOutline();
-    }
-
 }

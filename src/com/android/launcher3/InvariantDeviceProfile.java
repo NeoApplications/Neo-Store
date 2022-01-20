@@ -420,7 +420,7 @@ public class InvariantDeviceProfile {
     private void onConfigChanged(Context context) {
         // Re-init grid
         String gridName = getCurrentGridName(context);
-        initGrid(context, Utilities.getPrefs(context).getString(KEY_IDP_GRID_NAME, gridName));
+        initGrid(context, gridName);
 
         for (OnIDPChangeListener listener : mChangeListeners) {
             listener.onIdpChanged(this);

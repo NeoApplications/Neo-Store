@@ -116,7 +116,7 @@ public class SecondaryDropTarget extends ButtonDropTarget implements OnAlarmList
             updateText(R.string.dismiss_prediction_label);
         } else if (action == RECONFIGURE) {
             setDrawable(R.drawable.ic_setting);
-            updateText(R.string.gadget_setup_text);
+            updateText(R.string.gadget_complete_setup_text);
         }
     }
 

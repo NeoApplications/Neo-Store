@@ -42,7 +42,6 @@ public final class FeatureFlags {
     public static boolean showFlagTogglerUi(Context context) {
         return Utilities.IS_DEBUG_DEVICE && Utilities.isDevelopersOptionsEnabled(context);
     }
-
     /**
      * True when the build has come from Android Studio and is being used for local debugging.
      */
@@ -353,7 +352,7 @@ public final class FeatureFlags {
     }
 
     private static BooleanFlag getDebugFlag(String key, boolean defaultValue, String description) {
-        return new BooleanFlag(key, defaultValue);
+        return new DebugFlag(key, defaultValue, description);
         /*return Utilities.IS_DEBUG_DEVICE
                 ? new DebugFlag(key, defaultValue, description)
                 : new BooleanFlag(key, defaultValue);*/

@@ -53,8 +53,7 @@ public class WidgetsRecyclerView extends BaseRecyclerView implements OnItemTouch
     private int mLastVisibleWidgetContentTableHeight = 0;
     private int mWidgetHeaderHeight = 0;
     private final int mSpacingBetweenEntries;
-    @Nullable
-    private OnContentChangeListener mOnContentChangeListener;
+    @Nullable private OnContentChangeListener mOnContentChangeListener;
 
     public WidgetsRecyclerView(Context context) {
         this(context, null);

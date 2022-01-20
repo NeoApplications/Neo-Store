@@ -98,12 +98,9 @@ public abstract class BaseQuickstepLauncher extends Launcher
 
     private OverviewActionsView mActionsView;
 
-    private @Nullable
-    TaskbarManager mTaskbarManager;
-    private @Nullable
-    OverviewCommandHelper mOverviewCommandHelper;
-    private @Nullable
-    LauncherTaskbarUIController mTaskbarUIController;
+    private @Nullable TaskbarManager mTaskbarManager;
+    private @Nullable OverviewCommandHelper mOverviewCommandHelper;
+    private @Nullable LauncherTaskbarUIController mTaskbarUIController;
     private final ServiceConnection mTisBinderConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -114,14 +111,12 @@ public abstract class BaseQuickstepLauncher extends Launcher
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-        }
+        public void onServiceDisconnected(ComponentName componentName) { }
     };
     private final TaskbarStateHandler mTaskbarStateHandler = new TaskbarStateHandler(this);
 
     // Will be updated when dragging from taskbar.
-    private @Nullable
-    DragOptions mNextWorkspaceDragOptions = null;
+    private @Nullable DragOptions mNextWorkspaceDragOptions = null;
     private SplitPlaceholderView mSplitPlaceholderView;
 
     @Override
@@ -203,18 +198,6 @@ public abstract class BaseQuickstepLauncher extends Launcher
             RecentsView recentsView = getOverviewPanel();
             recentsView.finishRecentsAnimation(true /* toRecents */, null);
         }
-    }
-
-    /**
-     * {@code LauncherOverlayCallbacks} scroll amount.
-     * Indicates transition progress to -1 screen.
-     *
-     * @param progress From 0 to 1.
-     */
-    @Override
-    public void onScrollChanged(float progress) {
-        super.onScrollChanged(progress);
-        mDepthController.onOverlayScrollChanged(progress);
     }
 
     @Override

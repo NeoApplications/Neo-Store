@@ -61,8 +61,7 @@ public class CustomAppWidgetProviderInfo extends LauncherAppWidgetProviderInfo
     }
 
     @Override
-    public void initSpans(Context context, InvariantDeviceProfile idp) {
-    }
+    public void initSpans(Context context, InvariantDeviceProfile idp) {}
 
     @Override
     public String getLabel(PackageManager packageManager) {

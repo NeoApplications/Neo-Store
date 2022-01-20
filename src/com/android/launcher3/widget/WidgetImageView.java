@@ -52,9 +52,7 @@ public class WidgetImageView extends View {
                 .getDimensionPixelSize(R.dimen.profile_badge_margin);
     }
 
-    /**
-     * Set the drawable to use for this view.
-     */
+    /** Set the drawable to use for this view. */
     public void setDrawable(Drawable drawable) {
         mDrawable = drawable;
         invalidate();

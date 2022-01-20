@@ -66,14 +66,10 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     private static final int FADE_IN_DURATION_MS = 90;
 
-    /**
-     * Widget cell width is calculated by multiplying this factor to grid cell width.
-     */
+    /** Widget cell width is calculated by multiplying this factor to grid cell width. */
     private static final float WIDTH_SCALE = 3f;
 
-    /**
-     * Widget preview width is calculated by multiplying this factor to the widget cell width.
-     */
+    /** Widget preview width is calculated by multiplying this factor to the widget cell width. */
     private static final float PREVIEW_SCALE = 0.8f;
 
     protected int mPreviewWidth;
@@ -359,16 +355,12 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
                 this::applyPreview);
     }
 
-    /**
-     * Sets the widget preview image size in number of cells.
-     */
+    /** Sets the widget preview image size in number of cells. */
     public Size setPreviewSize(WidgetItem widgetItem) {
         return setPreviewSize(widgetItem, 1f);
     }
 
-    /**
-     * Sets the widget preview image size, in number of cells, and preview scale.
-     */
+    /** Sets the widget preview image size, in number of cells, and preview scale. */
     public Size setPreviewSize(WidgetItem widgetItem, float previewScale) {
         DeviceProfile deviceProfile = mActivity.getDeviceProfile();
         Size widgetSize = WidgetSizes.getWidgetItemSizePx(getContext(), deviceProfile, widgetItem);

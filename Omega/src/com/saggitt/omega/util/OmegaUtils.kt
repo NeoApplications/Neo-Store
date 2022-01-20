@@ -34,7 +34,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
@@ -46,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.children
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
@@ -325,9 +325,10 @@ fun supportsRoundedCornersOnWindows(context: Context): Boolean {
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)
 }
 
-fun String.asNonEmpty(): String? {
-    if (TextUtils.isEmpty(this)) return null
-    return this
+val ViewGroup.recursiveChildren: Sequence<View> get() = children.flatMap {
+    if (it is ViewGroup) {
+        it.recursiveChildren + sequenceOf(it)
+    } else sequenceOf(it)
 }
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :

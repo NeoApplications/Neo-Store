@@ -53,10 +53,8 @@ public class PendingItemDragHelper extends DragPreviewProvider {
     private final PendingAddItemInfo mAddInfo;
     private int[] mEstimatedCellSize;
 
-    @Nullable
-    private RemoteViews mRemoteViewsPreview;
-    @Nullable
-    private NavigableAppWidgetHostView mAppWidgetHostViewPreview;
+    @Nullable private RemoteViews mRemoteViewsPreview;
+    @Nullable private NavigableAppWidgetHostView mAppWidgetHostViewPreview;
     private final float mEnforcedRoundedCornersForWidget;
 
     public PendingItemDragHelper(View view) {
@@ -74,9 +72,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
         mRemoteViewsPreview = remoteViewsPreview;
     }
 
-    /**
-     * Sets a {@link NavigableAppWidgetHostView} which shows a preview layout of an app widget.
-     */
+    /** Sets a {@link NavigableAppWidgetHostView} which shows a preview layout of an app widget. */
     public void setAppWidgetHostViewPreview(
             @Nullable NavigableAppWidgetHostView appWidgetHostViewPreview) {
         mAppWidgetHostViewPreview = appWidgetHostViewPreview;

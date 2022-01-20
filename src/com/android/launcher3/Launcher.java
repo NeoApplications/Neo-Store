@@ -222,8 +222,7 @@ import java.util.stream.Stream;
  * Default launcher application.
  */
 public class Launcher extends StatefulActivity<LauncherState> implements LauncherExterns,
-        Callbacks, InvariantDeviceProfile.OnIDPChangeListener, PluginListener<OverlayPlugin>,
-        LauncherOverlayCallbacks {
+        Callbacks, InvariantDeviceProfile.OnIDPChangeListener, PluginListener<OverlayPlugin>{
     public static final String TAG = "Launcher";
 
     public static final ActivityTracker<Launcher> ACTIVITY_TRACKER = new ActivityTracker<>();
@@ -514,8 +513,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     }
 
     protected LauncherOverlayManager getDefaultOverlay() {
-        return new LauncherOverlayManager() {
-        };
+        return new LauncherOverlayManager() { };
     }
 
     protected OnboardingPrefs createOnboardingPrefs(SharedPreferences sharedPrefs) {
@@ -591,7 +589,6 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     /**
      * Called when one handed mode activated and deactivated.
-     *
      * @param activated true if one handed mode activated, false otherwise.
      */
     public void onOneHandedStateChanged(boolean activated) {
@@ -631,7 +628,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     @Override
     public void setLauncherOverlay(LauncherOverlay overlay) {
         if (overlay != null) {
-            overlay.setOverlayCallbacks(this);
+            overlay.setOverlayCallbacks(new LauncherOverlayCallbacksImpl());
         }
         mWorkspace.setLauncherOverlay(overlay);
     }
@@ -1135,16 +1132,12 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         mAppWidgetHost.setActivityResumed(false);
     }
 
-    /**
-     * {@code LauncherOverlayCallbacks} scroll amount.
-     * Indicates transition progress to -1 screen.
-     *
-     * @param progress From 0 to 1.
-     */
-    @Override
-    public void onScrollChanged(float progress) {
-        if (mWorkspace != null) {
-            mWorkspace.onOverlayScrollChanged(progress);
+    class LauncherOverlayCallbacksImpl implements LauncherOverlayCallbacks {
+
+        public void onScrollChanged(float progress) {
+            if (mWorkspace != null) {
+                mWorkspace.onOverlayScrollChanged(progress);
+            }
         }
     }
 
@@ -2889,11 +2882,9 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         return new TouchController[]{getDragController(), new AllAppsSwipeController(this)};
     }
 
-    public void useFadeOutAnimationForLauncherStart(CancellationSignal signal) {
-    }
+    public void useFadeOutAnimationForLauncherStart(CancellationSignal signal) { }
 
-    public void onDragLayerHierarchyChanged() {
-    }
+    public void onDragLayerHierarchyChanged() { }
 
     @Override
     public void returnToHomescreen() {

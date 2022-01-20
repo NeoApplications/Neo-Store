@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 /**
  * A UI represents a header of an app shown in the full widgets tray.
- * <p>
+ *
  * It is a {@link LinearLayout} which contains an app icon, an app name, a subtitle and a checkbox
  * which indicates if the widgets content view underneath this header should be shown.
  */
@@ -55,10 +55,8 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
 
     private boolean mEnableIconUpdateAnimation = false;
 
-    @Nullable
-    private HandlerRunnable mIconLoadRequest;
-    @Nullable
-    private Drawable mIconDrawable;
+    @Nullable private HandlerRunnable mIconLoadRequest;
+    @Nullable private Drawable mIconDrawable;
     private final int mIconSize;
 
     private ImageView mAppIcon;
@@ -67,8 +65,7 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
 
     private CheckBox mExpandToggle;
     private boolean mIsExpanded = false;
-    @Nullable
-    private WidgetsListDrawableState mListDrawableState;
+    @Nullable private WidgetsListDrawableState mListDrawableState;
 
     public WidgetsListHeader(Context context) {
         this(context, /* attrs= */ null);
@@ -140,18 +137,14 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
         });
     }
 
-    /**
-     * Sets the expand toggle to expand / collapse.
-     */
+    /** Sets the expand toggle to expand / collapse. */
     @UiThread
     public void setExpanded(boolean isExpanded) {
         this.mIsExpanded = isExpanded;
         mExpandToggle.setChecked(isExpanded);
     }
 
-    /**
-     * Sets the {@link WidgetsListDrawableState} and refreshes the background drawable.
-     */
+    /** Sets the {@link WidgetsListDrawableState} and refreshes the background drawable. */
     @UiThread
     public void setListDrawableState(WidgetsListDrawableState state) {
         if (state == mListDrawableState) return;
@@ -159,9 +152,7 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
         refreshDrawableState();
     }
 
-    /**
-     * Apply app icon, labels and tag using a generic {@link WidgetsListHeaderEntry}.
-     */
+    /** Apply app icon, labels and tag using a generic {@link WidgetsListHeaderEntry}. */
     @UiThread
     public void applyFromItemInfoWithIcon(WidgetsListHeaderEntry entry) {
         applyIconAndLabel(entry);
@@ -243,9 +234,7 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
         mSubtitle.setVisibility(VISIBLE);
     }
 
-    /**
-     * Apply app icon, labels and tag using a generic {@link WidgetsListSearchHeaderEntry}.
-     */
+    /** Apply app icon, labels and tag using a generic {@link WidgetsListSearchHeaderEntry}. */
     @UiThread
     public void applyFromItemInfoWithIcon(WidgetsListSearchHeaderEntry entry) {
         applyIconAndLabel(entry);
@@ -297,9 +286,7 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
         return drawableState;
     }
 
-    /**
-     * Verifies that the current icon is high-res otherwise posts a request to load the icon.
-     */
+    /** Verifies that the current icon is high-res otherwise posts a request to load the icon. */
     public void verifyHighRes() {
         if (mIconLoadRequest != null) {
             mIconLoadRequest.cancel();
@@ -314,13 +301,9 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
         }
     }
 
-    /**
-     * A listener for the widget section expansion / collapse events.
-     */
+    /** A listener for the widget section expansion / collapse events. */
     public interface OnExpansionChangeListener {
-        /**
-         * Notifies that the widget section is expanded or collapsed.
-         */
+        /** Notifies that the widget section is expanded or collapsed. */
         void onExpansionChange(boolean isExpanded);
     }
 }

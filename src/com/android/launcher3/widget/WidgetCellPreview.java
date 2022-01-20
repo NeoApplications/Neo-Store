@@ -45,9 +45,7 @@ public class WidgetCellPreview extends FrameLayout {
         return true;
     }
 
-    /**
-     * Returns {@code true} if this container has a preview layout.
-     */
+    /** Returns {@code true} if this container has a preview layout. */
     public boolean hasPreviewLayout() {
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) instanceof LauncherAppWidgetHostView) {

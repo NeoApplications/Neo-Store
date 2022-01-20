@@ -72,6 +72,7 @@ import com.android.launcher3.util.NoLocaleSQLiteHelper;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.LauncherAppWidgetHost;
+import com.saggitt.omega.OmegaAppKt;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -172,8 +173,11 @@ public class LauncherProvider extends ContentProvider {
 
         final DatabaseHelper helper = src.get();
         mOpenHelper = dst.get();
+        SQLiteDatabase toDb = mOpenHelper.getWritableDatabase();
         copyTable(helper.getReadableDatabase(), Favorites.TABLE_NAME,
-                mOpenHelper.getWritableDatabase(), targetTableName, getContext());
+                toDb, targetTableName, getContext());
+        // remove old items in the db
+        copyTable(toDb, targetTableName, toDb, Favorites.TABLE_NAME, getContext());
         helper.close();
         return true;
     }
@@ -197,8 +201,7 @@ public class LauncherProvider extends ContentProvider {
         return result;
     }
 
-    @Thunk
-    static int dbInsertAndCheck(DatabaseHelper helper,
+    @Thunk static int dbInsertAndCheck(DatabaseHelper helper,
                                 SQLiteDatabase db, String table, String nullColumnHack, ContentValues values) {
         if (values == null) {
             throw new RuntimeException("Error: attempting to insert null values");
@@ -447,6 +450,10 @@ public class LauncherProvider extends ContentProvider {
                 }
                 return null;
             }
+            case LauncherSettings.Settings.METHOD_RE_INITIALIZE_IDS: {
+                mOpenHelper.reInitIds();
+                return null;
+            }
             case LauncherSettings.Settings.METHOD_PREP_FOR_PREVIEW: {
                 if (MULTI_DB_GRID_MIRATION_ALGO.get()) {
                     Bundle result = new Bundle();
@@ -513,8 +520,7 @@ public class LauncherProvider extends ContentProvider {
         }
     }
 
-    @Thunk
-    static void addModifiedTime(ContentValues values) {
+    @Thunk static void addModifiedTime(ContentValues values) {
         values.put(LauncherSettings.Favorites.MODIFIED, System.currentTimeMillis());
     }
 
@@ -658,6 +664,7 @@ public class LauncherProvider extends ContentProvider {
             if (dbName == null) {
                 dbName = MULTI_DB_GRID_MIRATION_ALGO.get() ? InvariantDeviceProfile.INSTANCE.get(
                         context).dbFile : LauncherFiles.LAUNCHER_DB;
+                OmegaAppKt.getOmegaApp(context).migrateDbName(dbName);
             }
             DatabaseHelper databaseHelper = new DatabaseHelper(context, dbName, forMigration);
             // Table creation sometimes fails silently, which leads to a crash loop.
@@ -697,6 +704,11 @@ public class LauncherProvider extends ContentProvider {
             if (mMaxScreenId == -1) {
                 mMaxScreenId = initializeMaxScreenId(getWritableDatabase());
             }
+        }
+
+        protected void reInitIds() {
+            mMaxItemId = initializeMaxItemId(getWritableDatabase());
+            mMaxScreenId = initializeMaxScreenId(getWritableDatabase());
         }
 
         @Override

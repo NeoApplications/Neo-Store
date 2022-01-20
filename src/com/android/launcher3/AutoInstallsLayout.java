@@ -78,6 +78,9 @@ public class AutoInstallsLayout {
 
     static AutoInstallsLayout get(Context context, AppWidgetHost appWidgetHost,
             LayoutParserCallback callback) {
+        if (!BuildConfig.ENABLE_AUTO_INSTALLS_LAYOUT) {
+            return null;
+        }
         Pair<String, Resources> customizationApkInfo = PackageManagerHelper.findSystemApk(
                 ACTION_LAUNCHER_CUSTOMIZATION, context.getPackageManager());
         if (customizationApkInfo == null) {
@@ -662,7 +665,7 @@ public class AutoInstallsLayout {
             throws XmlPullParserException, IOException {
         int type;
         while ((type = parser.next()) != XmlPullParser.START_TAG
-                && type != XmlPullParser.END_DOCUMENT) ;
+                && type != XmlPullParser.END_DOCUMENT);
 
         if (type != XmlPullParser.START_TAG) {
             throw new XmlPullParserException("No start tag found");

@@ -158,10 +158,10 @@
         <item name="android:navigationBarColor">?android:colorPrimaryDark</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="preferenceTheme">@style/HomeSettingsPreference.Theme</item>
+        <item name="preferenceTheme">@style/HomeSettings.PreferenceTheme</item>
     </style>
 
-    <style name="HomeSettingsPreference.Theme" parent="@style/PreferenceThemeOverlay.v14.Material">
+    <style name="HomeSettings.PreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="preferenceFragmentCompatStyle">@style/HomeSettings.FragmentCompatStyle</item>
     </style>
 
@@ -216,7 +216,7 @@
         <item name="disabledIconAlpha">.54</item>
     </style>
 
-    <style name="BaseIconRoot" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" />
+    <style name="BaseIconRoot" parent="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle"/>
 
     <style name="BaseIconUnBounded" parent="BaseIconRoot">
         <item name="android:layout_width">match_parent</item>
@@ -258,7 +258,7 @@
     </style>
 
     <!-- Intentionally empty so we can override -->
-    <style name="BaseIcon.Workspace" parent="BaseIcon.Workspace.Shadows"></style>
+    <style name="BaseIcon.Workspace" parent="BaseIcon.Workspace.Shadows"/>
 
     <!-- Theme for the popup container -->
     <style name="PopupItem">
@@ -316,7 +316,18 @@
         <item name="android:stateListAnimator">@null</item>
     </style>
 
-    <style name="AddItemActivityTheme" parent="@android:style/Theme.Translucent.NoTitleBar">
+    <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="backgroundColor">?colorPrimary</item>
+    </style>
+
+    <!--<style name="AddItemActivityTheme" parent="@android:style/Theme.Translucent.NoTitleBar"> -->
+    <style name="AddItemActivityTheme" parent="Theme.AppCompat.Transparent.NoActionBar">
         <item name="widgetsTheme">@style/WidgetContainerTheme</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>

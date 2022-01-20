@@ -32,18 +32,14 @@ import com.android.launcher3.util.ResourceBasedOverride;
 
 import java.util.List;
 
-/**
- * Extracts the colors we need from the wallpaper at given locations.
- */
+/** Extracts the colors we need from the wallpaper at given locations. */
 public class LocalColorExtractor implements ResourceBasedOverride {
 
-    /**
-     * Listener for color changes on a screen location.
-     */
+    /** Listener for color changes on a screen location. */
     public interface Listener {
         /**
          * Method called when the colors on a registered location has changed.
-         * <p>
+         *
          * {@code extractedColors} maps the color resources {@code android.R.colors.system_*} to
          * their value, in a format that can be passed directly to
          * {@link AppWidgetHostView#setColorResources(SparseIntArray)}.
@@ -59,23 +55,17 @@ public class LocalColorExtractor implements ResourceBasedOverride {
                 R.string.local_colors_extraction_class);
     }
 
-    /**
-     * Sets the object that will receive the color changes.
-     */
+    /** Sets the object that will receive the color changes. */
     public void setListener(@Nullable Listener listener) {
         // no-op
     }
 
-    /**
-     * Adds a list of locations to track with this listener.
-     */
+    /** Adds a list of locations to track with this listener. */
     public void addLocation(List<RectF> locations) {
         // no-op
     }
 
-    /**
-     * Stops tracking any locations.
-     */
+    /** Stops tracking any locations. */
     public void removeLocations() {
         // no-op
     }
@@ -83,8 +73,7 @@ public class LocalColorExtractor implements ResourceBasedOverride {
     /**
      * Updates the base context to contain the colors override
      */
-    public void applyColorsOverride(Context base, WallpaperColors colors) {
-    }
+    public void applyColorsOverride(Context base, WallpaperColors colors) { }
 
     /**
      * Generates color resource overrides from {@link WallpaperColors}.
@@ -97,9 +86,9 @@ public class LocalColorExtractor implements ResourceBasedOverride {
     /**
      * Takes a view and returns its rect that can be used by the wallpaper local color extractor.
      *
-     * @param launcher               Launcher class class.
-     * @param pageId                 The page the workspace item is on.
-     * @param v                      The view.
+     * @param launcher Launcher class class.
+     * @param pageId The page the workspace item is on.
+     * @param v The view.
      * @param colorExtractionRectOut The location rect, but converted to a format expected by the
      *                               wallpaper local color extractor.
      */
@@ -112,9 +101,9 @@ public class LocalColorExtractor implements ResourceBasedOverride {
      * Takes a rect in drag layer coordinates and returns the rect that can be used by the wallpaper
      * local color extractor.
      *
-     * @param launcher               Launcher class.
-     * @param pageId                 The page the workspace item is on.
-     * @param rectInDragLayer        The relevant bounds of the view in drag layer coordinates.
+     * @param launcher Launcher class.
+     * @param pageId The page the workspace item is on.
+     * @param rectInDragLayer The relevant bounds of the view in drag layer coordinates.
      * @param colorExtractionRectOut The location rect, but converted to a format expected by the
      *                               wallpaper local color extractor.
      */

@@ -20,9 +20,7 @@ import com.android.launcher3.model.data.PackageItemInfo;
 
 import java.util.List;
 
-/**
- * An information holder for an app which has widgets or/and shortcuts.
- */
+/** An information holder for an app which has widgets or/and shortcuts. */
 public final class WidgetsListHeaderEntry extends WidgetsListBaseEntry
         implements WidgetsListBaseEntry.Header<WidgetsListHeaderEntry> {
 
@@ -44,9 +42,7 @@ public final class WidgetsListHeaderEntry extends WidgetsListBaseEntry
         mIsWidgetListShown = isWidgetListShown;
     }
 
-    /**
-     * Returns {@code true} if the widgets list associated with this header is shown.
-     */
+    /** Returns {@code true} if the widgets list associated with this header is shown. */
     @Override
     public boolean isWidgetListShown() {
         return mIsWidgetListShown;
@@ -72,9 +68,7 @@ public final class WidgetsListHeaderEntry extends WidgetsListBaseEntry
                 && mIsWidgetListShown == otherEntry.mIsWidgetListShown;
     }
 
-    /**
-     * Returns a copy of this {@link WidgetsListHeaderEntry} with the widget list shown.
-     */
+    /** Returns a copy of this {@link WidgetsListHeaderEntry} with the widget list shown. */
     @Override
     public WidgetsListHeaderEntry withWidgetListShown() {
         if (mIsWidgetListShown) return this;

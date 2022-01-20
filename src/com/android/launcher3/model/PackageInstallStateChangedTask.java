@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.util.InstantAppResolver;
@@ -72,7 +73,13 @@ public class PackageInstallStateChangedTask extends BaseModelUpdateTask {
             dataModel.forAllWorkspaceItemInfos(mInstallInfo.user, si -> {
                 if (si.hasPromiseIconUi()
                         && mInstallInfo.packageName.equals(si.getTargetPackage())) {
-                    si.setProgressLevel(mInstallInfo);
+                    int installProgress = mInstallInfo.progress;
+
+                    si.setProgressLevel(installProgress, PackageInstallInfo.STATUS_INSTALLING);
+                    if (mInstallInfo.state == PackageInstallInfo.STATUS_FAILED) {
+                        // Mark this info as broken.
+                        si.runtimeStatusFlags &= ~ItemInfoWithIcon.FLAG_INSTALL_SESSION_ACTIVE;
+                    }
                     updates.add(si);
                 }
             });

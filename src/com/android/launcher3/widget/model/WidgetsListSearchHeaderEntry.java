@@ -20,9 +20,7 @@ import com.android.launcher3.model.data.PackageItemInfo;
 
 import java.util.List;
 
-/**
- * An information holder for an app which has widgets or/and shortcuts, to be shown in search.
- */
+/** An information holder for an app which has widgets or/and shortcuts, to be shown in search. */
 public final class WidgetsListSearchHeaderEntry extends WidgetsListBaseEntry
         implements WidgetsListBaseEntry.Header<WidgetsListSearchHeaderEntry> {
 

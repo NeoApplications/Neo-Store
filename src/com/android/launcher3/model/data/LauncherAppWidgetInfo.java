@@ -21,6 +21,7 @@ import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_BOTTOM_
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_PIN_WIDGETS;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_WIDGETS_PREDICTION;
 import static com.android.launcher3.LauncherSettings.Favorites.CONTAINER_WIDGETS_TRAY;
+import static com.android.launcher3.Utilities.ATLEAST_S;
 
 import android.appwidget.AppWidgetHostView;
 import android.content.ComponentName;
@@ -32,7 +33,6 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.util.ContentWriter;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
@@ -93,7 +93,6 @@ public class LauncherAppWidgetInfo extends ItemInfo {
 
     /**
      * Flags for recording all the features that a widget has enabled.
-     *
      * @see widgetFeatures
      */
     public static final int FEATURE_RECONFIGURABLE = 1;
@@ -173,13 +172,10 @@ public class LauncherAppWidgetInfo extends ItemInfo {
     public LauncherAppWidgetInfo(int appWidgetId, ComponentName providerName,
                                  LauncherAppWidgetProviderInfo providerInfo, AppWidgetHostView hostView) {
         this(appWidgetId, providerName);
-        if (Utilities.ATLEAST_S)
-            widgetFeatures = computeWidgetFeatures(providerInfo, hostView);
+        widgetFeatures = computeWidgetFeatures(providerInfo, hostView);
     }
 
-    /**
-     * Used for testing
-     **/
+    /** Used for testing **/
     public LauncherAppWidgetInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET;
     }
@@ -234,7 +230,6 @@ public class LauncherAppWidgetInfo extends ItemInfo {
 
     /**
      * returns if widget options include an option or not
-     *
      * @param option
      * @return
      */
@@ -252,16 +247,16 @@ public class LauncherAppWidgetInfo extends ItemInfo {
         if (providerInfo.isConfigurationOptional()) {
             widgetFeatures |= FEATURE_OPTIONAL_CONFIGURATION;
         }
-        if (Utilities.ATLEAST_S && providerInfo.previewLayout != Resources.ID_NULL) {
+        if (ATLEAST_S && providerInfo.previewLayout != Resources.ID_NULL) {
             widgetFeatures |= FEATURE_PREVIEW_LAYOUT;
         }
-        if (Utilities.ATLEAST_S && providerInfo.targetCellWidth > 0 || providerInfo.targetCellHeight > 0) {
+        if (ATLEAST_S && providerInfo.targetCellWidth > 0 || ATLEAST_S && providerInfo.targetCellHeight > 0) {
             widgetFeatures |= FEATURE_TARGET_CELL_SIZE;
         }
         if (providerInfo.minResizeWidth > 0 || providerInfo.minResizeHeight > 0) {
             widgetFeatures |= FEATURE_MIN_SIZE;
         }
-        if (Utilities.ATLEAST_S && providerInfo.maxResizeWidth > 0 || providerInfo.maxResizeHeight > 0) {
+        if (ATLEAST_S && providerInfo.maxResizeWidth > 0 || ATLEAST_S && providerInfo.maxResizeHeight > 0) {
             widgetFeatures |= FEATURE_MAX_SIZE;
         }
         if (hostView instanceof LauncherAppWidgetHostView &&
