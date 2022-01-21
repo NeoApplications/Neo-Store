@@ -36,13 +36,13 @@
   
    - [ ] Apply pref directly
 
-- [ ] Get Widgets working
+- [x] Get Widgets working
 
 - [ ] Search engines
 
 - [ ] Edit app's icons
 
-- [ ] Use icon packs
+- [x] Use icon packs
 
 - [ ] Folder cover mode
 
