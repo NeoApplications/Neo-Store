@@ -23,10 +23,11 @@ import android.util.AttributeSet
 import androidx.preference.ListPreference
 import com.android.launcher3.Utilities
 import com.saggitt.omega.iconpack.IconPackProvider
-import com.saggitt.omega.preferences.OmegaPreferences
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
-        ListPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
+    ListPreference(context, attrs) {
     private val prefs = Utilities.getOmegaPrefs(context)
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
 
@@ -38,22 +39,13 @@ class IconPackListPreference(context: Context, attrs: AttributeSet? = null) :
 
     private fun updateSummary() {
         val current = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
-                ?: packs[0]
+            ?: packs[0]
         summary = current.name
         icon = current.icon
     }
 
-    override fun onAttached() {
-        super.onAttached()
-        Utilities.getOmegaPrefs(context).addOnPreferenceChangeListener("pref_icon_pack_package", this)
-    }
-
-    override fun onDetached() {
-        super.onAttached()
-        Utilities.getOmegaPrefs(context).removeOnPreferenceChangeListener("pref_icon_pack_package", this)
-    }
-
-    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        updateSummary()
+    override fun callChangeListener(newValue: Any?): Boolean {
+        MainScope().launch { updateSummary() }
+        return super.callChangeListener(newValue)
     }
 }
