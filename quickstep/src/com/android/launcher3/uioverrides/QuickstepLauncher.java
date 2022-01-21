@@ -296,6 +296,7 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
 
         ArrayList<TouchController> list = new ArrayList<>();
         list.add(getDragController());
+        list.add(new VerticalSwipeGestureController(this));
         switch (mode) {
             case NO_BUTTON:
                 list.add(new NoButtonQuickSwitchTouchController(this));
@@ -313,8 +314,6 @@ public class QuickstepLauncher extends BaseQuickstepLauncher {
             default:
                 list.add(new PortraitStatesTouchController(this));
         }
-
-        list.add(new VerticalSwipeGestureController(this));
         if (!getDeviceProfile().isMultiWindowMode) {
             list.add(new StatusBarTouchController(this));
         }
