@@ -53,7 +53,7 @@ class IconPackPreview @JvmOverloads constructor(
     private val idp = previewContext.idp
     private val homeElementInflater = LayoutInflater.from(ContextThemeWrapper(previewContext, R.style.HomeScreenElementTheme))
     private lateinit var workspace: CellLayout
-    private val columns = idp.numColumns - 1
+    private val columns = idp.numColumns
 
     init {
         orientation = HORIZONTAL
@@ -122,13 +122,13 @@ class IconPackPreview @JvmOverloads constructor(
         if (!iconsLoaded || !isAttachedToWindow) return
 
         workspace.removeAllViews()
-        workspace.setGridSize(columns, 2)
+        workspace.setGridSize(columns, 1)
         workspace.setPadding(leftPadding,
                 verticalPadding,
                 rightPadding,
                 verticalPadding)
 
-        val apps = columns * 2
+        val apps = columns * 1
         var cellY = 0
         var cellX = 0
 
