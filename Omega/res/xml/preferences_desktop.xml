@@ -18,91 +18,106 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.saggitt.omega.preferences.custom.SeekbarPreference
-        android:key="pref_home_icon_scale"
-        android:title="@string/title__desktop_icon_size"
-        app:defaultSeekbarValue="1.0"
-        app:maxValue="2.0"
-        app:minValue="0.5"
-        app:steps="150"
-        app:summaryFormat="%.0f%%"
-        app:summaryMultiplier="100" />
+    <PreferenceCategory android:title="@string/cat_drawer_icons">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:disableDependentsState="true"
-        android:key="pref_hide_app_label"
-        android:persistent="true"
-        android:title="@string/title__desktop_hide_icon_labels"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:key="pref_home_icon_scale"
+            android:title="@string/title__desktop_icon_size"
+            app:defaultSeekbarValue="1.0"
+            app:maxValue="2.0"
+            app:minValue="0.5"
+            app:steps="150"
+            app:summaryFormat="%.0f%%"
+            app:summaryMultiplier="100" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:dependency="pref_hide_app_label"
-        android:key="pref_icon_labels_two_lines"
-        android:persistent="true"
-        android:title="@string/title__multiline_labels"
-        app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="pref_hide_app_label"
+            android:persistent="true"
+            android:title="@string/title__desktop_hide_icon_labels"
+            app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.custom.SeekbarPreference
-        android:dependency="pref_hide_app_label"
-        android:key="pref_icon_text_scale"
-        android:persistent="true"
-        android:title="@string/title_desktop_text_size"
-        app:defaultSeekbarValue="1.0"
-        app:maxValue="2.0"
-        app:minValue="0.5"
-        app:steps="150"
-        app:summaryFormat="%.0f%%"
-        app:summaryMultiplier="100" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="pref_hide_app_label"
+            android:key="pref_icon_labels_two_lines"
+            android:persistent="true"
+            android:title="@string/title__multiline_labels"
+            app:iconSpaceReserved="false" />
 
-    <com.saggitt.omega.preferences.custom.CustomDialogPreference
-        android:key="pref_icon_popup_menu"
-        android:title="@string/title_desktop_icon_popup_menu"
-        app:content="@xml/desktop_icon_popup"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:dependency="pref_hide_app_label"
+            android:key="pref_icon_text_scale"
+            android:persistent="true"
+            android:title="@string/title_desktop_text_size"
+            app:defaultSeekbarValue="1.0"
+            app:maxValue="2.0"
+            app:minValue="0.5"
+            app:steps="150"
+            app:summaryFormat="%.0f%%"
+            app:summaryMultiplier="100" />
 
-    <!--
-      LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_ENABLED(613)
-      LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_DISABLED(614)
-    -->
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_add_icon_to_home"
-        android:persistent="true"
-        android:summary="@string/auto_add_shortcuts_description"
-        android:title="@string/auto_add_shortcuts_label"
-        app:logIdOff="614"
-        app:logIdOn="613"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.custom.CustomDialogPreference
+            android:key="pref_icon_popup_menu"
+            android:title="@string/title_desktop_icon_popup_menu"
+            app:content="@xml/desktop_icon_popup"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/cat_desktop_grid">
+
+        <!--
+        LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_ENABLED(613)
+        LAUNCHER_ADD_NEW_APPS_TO_HOME_SCREEN_DISABLED(614)
+        -->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_add_icon_to_home"
+            android:persistent="true"
+            android:summary="@string/auto_add_shortcuts_description"
+            android:title="@string/auto_add_shortcuts_label"
+            app:iconSpaceReserved="false"
+            app:logIdOff="614"
+            app:logIdOn="613" />
+
+        <!--
+        LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
+        LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)
+        -->
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_allowRotation"
+            android:persistent="true"
+            android:summary="@string/allow_rotation_desc"
+            android:title="@string/allow_rotation_title"
+            app:iconSpaceReserved="false"
+            app:logIdOff="616"
+            app:logIdOn="615" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_full_width_widgets"
+            android:persistent="true"
+            android:summary="@string/summary_full_width_widgets"
+            android:title="@string/title_desktop_full_width_widgets"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_keepEmptyScreens"
+            android:title="@string/title_desktop_keep_empty"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
 
     <SwitchPreference
         android:defaultValue="falser"
         android:key="pref_hideStatusBar"
         android:persistent="true"
         android:title="@string/title_desktop_hide_statusbar"
-        app:iconSpaceReserved="false" />
-
-    <!--
-      LAUNCHER_HOME_SCREEN_ROTATION_ENABLED(615)
-      LAUNCHER_HOME_SCREEN_ROTATION_DISABLED(616)
-    -->
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_allowRotation"
-        android:persistent="true"
-        android:summary="@string/allow_rotation_desc"
-        android:title="@string/allow_rotation_title"
-        app:logIdOff="616"
-        app:iconSpaceReserved="false"
-        app:logIdOn="615" />
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_full_width_widgets"
-        android:persistent="true"
-        android:summary="@string/summary_full_width_widgets"
-        android:title="@string/title_desktop_full_width_widgets"
         app:iconSpaceReserved="false" />
 
     <Preference
@@ -119,9 +134,4 @@
         android:title="@string/title_show_google_app"
         app:iconSpaceReserved="false" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_keepEmptyScreens"
-        android:title="@string/title_desktop_keep_empty"
-        app:iconSpaceReserved="false" />
 </PreferenceScreen>
