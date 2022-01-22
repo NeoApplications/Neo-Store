@@ -43,7 +43,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.Installed
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.entity.*
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.ScreenshotsAdapter

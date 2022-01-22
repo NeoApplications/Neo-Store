@@ -4,7 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.looker.droidify.database.DatabaseX
-import com.looker.droidify.database.Repository
+import com.looker.droidify.database.entity.Repository
 
 class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
 

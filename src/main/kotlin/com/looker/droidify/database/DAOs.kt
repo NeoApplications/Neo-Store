@@ -8,6 +8,7 @@ import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.looker.droidify.*
+import com.looker.droidify.database.entity.*
 import com.looker.droidify.entity.ProductItem
 import io.reactivex.rxjava3.core.Flowable
 

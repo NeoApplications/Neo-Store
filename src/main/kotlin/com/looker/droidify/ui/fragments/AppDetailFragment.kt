@@ -73,7 +73,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     }
 
     private class Installed(
-        val data: com.looker.droidify.database.Installed, val isSystem: Boolean,
+        val data: com.looker.droidify.database.entity.Installed, val isSystem: Boolean,
         val launcherActivities: List<Pair<String, String>>,
     )
 

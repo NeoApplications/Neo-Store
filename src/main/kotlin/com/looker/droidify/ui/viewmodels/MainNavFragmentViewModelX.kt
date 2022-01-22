@@ -9,7 +9,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
-import com.looker.droidify.database.Product
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source

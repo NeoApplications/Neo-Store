@@ -16,7 +16,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.Installed
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
@@ -240,18 +240,18 @@ fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
 
 val PRODUCT_ASYNC_DIFFER_CONFIG
     get() = AsyncDifferConfig.Builder(object :
-        DiffUtil.ItemCallback<com.looker.droidify.database.Product>() {
+        DiffUtil.ItemCallback<com.looker.droidify.database.entity.Product>() {
         override fun areItemsTheSame(
-            oldItem: com.looker.droidify.database.Product,
-            newItem: com.looker.droidify.database.Product
+            oldItem: com.looker.droidify.database.entity.Product,
+            newItem: com.looker.droidify.database.entity.Product
         ): Boolean {
             return oldItem.repository_id == newItem.repository_id
                     && oldItem.package_name == newItem.package_name
         }
 
         override fun areContentsTheSame(
-            oldItem: com.looker.droidify.database.Product,
-            newItem: com.looker.droidify.database.Product
+            oldItem: com.looker.droidify.database.entity.Product,
+            newItem: com.looker.droidify.database.entity.Product
         ): Boolean {
             return oldItem.data_item == newItem.data_item
         }

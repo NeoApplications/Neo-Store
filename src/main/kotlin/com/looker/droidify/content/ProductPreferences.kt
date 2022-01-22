@@ -3,7 +3,7 @@ package com.looker.droidify.content
 import android.content.Context
 import android.content.SharedPreferences
 import com.looker.droidify.database.DatabaseX
-import com.looker.droidify.database.Lock
+import com.looker.droidify.database.entity.Lock
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.utility.extension.json.Json
 import com.looker.droidify.utility.extension.json.parseDictionary
