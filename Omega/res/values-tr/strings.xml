@@ -200,7 +200,7 @@
     <string name="tab_type_smart">Otomatik</string>
     <string name="app_categorization_tabs">Sekmeler</string>
     <string name="app_categorization_folders">Klasörler</string>
-    <string name="pref_appcategorization_enable_title">Uygulamaları Kategorilere Ayır</string>
+    <string name="title_app_categorize">Uygulamaları Kategorilere Ayır</string>
     <string name="pref_appcategorization_flowerpot_title">Uygulama Kategorisi</string>
     <string name="cat_drawer_icons">Simgeler</string>
     <string name="dialog_message_change_sort">Alfabetik uygulama sıralamasına geçilsin mi\?</string>

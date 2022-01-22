@@ -2,6 +2,7 @@ package com.android.launcher3.icons;
 
 import static android.graphics.Paint.DITHER_FLAG;
 import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+import static com.android.launcher3.icons.IconProvider.ICON_TYPE_DEFAULT;
 import static com.android.launcher3.icons.ShadowGenerator.BLUR_FACTOR;
 
 import android.content.Context;
@@ -317,14 +318,19 @@ public class BaseIconFactory implements AutoCloseable {
             boolean[] outShape = new boolean[1];
             scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
             if (!(icon instanceof AdaptiveIconDrawable) && !outShape[0]) {
-
+                ThemedIconDrawable.ThemeData themeData = null;
+                if (icon instanceof ThemedIconDrawable.ThemedBitmapIcon) {
+                    themeData = ((ThemedIconDrawable.ThemedBitmapIcon) icon).mThemeData;
+                }
                 int wrapperBackgroundColor = IconPreferencesKt.getWrapperBackgroundColor(mContext, icon);
                 FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
                 fsd.setDrawable(icon);
                 fsd.setScale(scale);
                 icon = dr;
                 scale = getNormalizer().getScale(icon, outIconBounds, null, null);
-
+                if (themeData != null) {
+                    icon = themeData.wrapDrawable(icon, ICON_TYPE_DEFAULT);
+                }
                 //((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
                 ((ColorDrawable) dr.getBackground()).setColor(wrapperBackgroundColor);
             }
@@ -391,9 +397,8 @@ public class BaseIconFactory implements AutoCloseable {
 
         if (ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
             int offset = Math.max((int) Math.ceil(BLUR_FACTOR * size),
-                    Math.round(size * (1 - scale) / 2));
+                    Math.round(size * (1 - scale) / 2 ));
             icon.setBounds(offset, offset, size - offset, size - offset);
-            icon.draw(mCanvas);
             if (icon instanceof BitmapInfo.Extender) {
                 ((Extender) icon).drawForPersistence(mCanvas);
             } else {

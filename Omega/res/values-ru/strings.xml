@@ -7,7 +7,7 @@
     <string name="app_categorization_tabs">Вкладки</string>
     <string name="app_categorization_folders">Папки</string>
     <string name="pref_appcategorization_style_text">Стиль</string>
-    <string name="pref_appcategorization_enable_title">Категоризация приложений</string>
+    <string name="title_app_categorize">Категоризация приложений</string>
     <string name="pref_appcategorization_flowerpot_title">Категория приложений</string>
     <string name="label_turn_off_suggestions">Отключить</string>
     <string name="title_all_apps_google_search">Глобальный поиск</string>

@@ -157,6 +157,33 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
         mTransparentRegion = new Region();
     }
 
+    public static @Nullable Drawable wrap(@Nullable Drawable icon) {
+        if (icon == null) {
+            return null;
+        }
+        return wrapNonNull(icon);
+    }
+
+    public static @NonNull Drawable wrapNonNull(@NonNull Drawable icon) {
+        if (icon.getClass() == AdaptiveIconDrawable.class) {
+            return new CustomAdaptiveIconDrawable((AdaptiveIconDrawable) icon);
+        }
+        return icon;
+    }
+
+    private ChildDrawable createChildDrawable(Drawable drawable) {
+        final ChildDrawable layer = new ChildDrawable(mLayerState.mDensity);
+        layer.mDrawable = drawable;
+        layer.mDrawable.setCallback(this);
+        mLayerState.mChildrenChangingConfigurations |=
+                layer.mDrawable.getChangingConfigurations();
+        return layer;
+    }
+
+    LayerState createConstantState(@Nullable LayerState state, @Nullable Resources res) {
+        return new LayerState(state, this, res);
+    }
+
     /**
      * Constructor used to dynamically create this drawable.
      *
@@ -178,21 +205,6 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
         this(drawable.getBackground(), drawable.getForeground());
     }
 
-    public static @Nullable
-    Drawable wrap(@Nullable Drawable icon) {
-        if (icon == null) {
-            return null;
-        }
-        return wrapNonNull(icon);
-    }
-
-    public static @NonNull
-    Drawable wrapNonNull(@NonNull Drawable icon) {
-        if (icon.getClass() == AdaptiveIconDrawable.class) {
-            return new CustomAdaptiveIconDrawable((AdaptiveIconDrawable) icon);
-        }
-        return icon;
-    }
 
     static int resolveDensity(@Nullable Resources r, int parentDensity) {
         final int densityDpi = r == null ? parentDensity : r.getDisplayMetrics().densityDpi;
@@ -215,19 +227,6 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
      */
     public static float getExtraInsetPercentage() {
         return EXTRA_INSET_PERCENTAGE;
-    }
-
-    private ChildDrawable createChildDrawable(Drawable drawable) {
-        final ChildDrawable layer = new ChildDrawable(mLayerState.mDensity);
-        layer.mDrawable = drawable;
-        layer.mDrawable.setCallback(this);
-        mLayerState.mChildrenChangingConfigurations |=
-                layer.mDrawable.getChangingConfigurations();
-        return layer;
-    }
-
-    LayerState createConstantState(@Nullable LayerState state, @Nullable Resources res) {
-        return new LayerState(state, this, res);
     }
 
     /**
@@ -383,8 +382,7 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
     }
 
     @Override
-    public @Nullable
-    Region getTransparentRegion() {
+    public @Nullable Region getTransparentRegion() {
         if (mTransparentRegion.isEmpty()) {
             mMask.toggleInverseFillType();
             mTransparentRegion.set(getBounds());
@@ -536,13 +534,13 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
     }
 
     @Override
-    public int getAlpha() {
-        return mPaint.getAlpha();
+    public void setAlpha(int alpha) {
+        mPaint.setAlpha(alpha);
     }
 
     @Override
-    public void setAlpha(int alpha) {
-        mPaint.setAlpha(alpha);
+    public int getAlpha() {
+        return mPaint.getAlpha();
     }
 
     @Override

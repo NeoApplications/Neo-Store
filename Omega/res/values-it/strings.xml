@@ -333,7 +333,7 @@
     <string name="pref_appcategorization_folders_summary">Tocca per aprire il pop-up.</string>
     <string name="pref_appcategorization_style_text">Stile</string>
     <string name="pref_appcategorization_enable_summary">Scegli disposizione cassetto</string>
-    <string name="pref_appcategorization_enable_title">Categorizza le app</string>
+    <string name="title_app_categorize">Categorizza le app</string>
     <string name="pref_appcategorization_flowerpot_title">Categorie App</string>
     <string name="cat_drawer_icons">Icone</string>
     <string name="cat_drawer_grid">Griglia</string>

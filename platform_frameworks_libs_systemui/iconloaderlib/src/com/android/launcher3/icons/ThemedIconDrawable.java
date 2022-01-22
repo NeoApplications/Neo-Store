@@ -30,6 +30,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -38,9 +39,12 @@ import android.os.UserHandle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.arch.core.util.Function;
 
 import com.android.launcher3.icons.BitmapInfo.Extender;
 import com.android.launcher3.icons.cache.BaseIconCache;
+import com.saggitt.omega.icons.CustomAdaptiveIconDrawable;
+import com.saggitt.omega.icons.ExtendedBitmapDrawable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -71,7 +75,7 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
         colorFg = constantState.colorFg;
 
         mMonochromeIcon = bitmapInfo.mThemeData.loadMonochromeDrawable(colorFg);
-        mBgWrapper = new AdaptiveIconDrawable(new ColorDrawable(colorBg), null);
+        mBgWrapper = new CustomAdaptiveIconDrawable(new ColorDrawable(colorBg), null);
         mBadgeBounds = bitmapInfo.mUserBadge == null ? null :
                 new Rect(0, 0, bitmapInfo.mUserBadge.getWidth(), bitmapInfo.mUserBadge.getHeight());
 
@@ -223,29 +227,39 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
         }
 
         public Drawable wrapDrawable(Drawable original, int iconType) {
-            if (!(original instanceof AdaptiveIconDrawable)) {
+            if (!(original instanceof AdaptiveIconDrawable) && !(original instanceof BitmapDrawable)) {
                 return original;
             }
-            AdaptiveIconDrawable aid = (AdaptiveIconDrawable) original;
             String resourceType = mResources.getResourceTypeName(mResID);
             if (iconType == ICON_TYPE_CALENDAR && "array".equals(resourceType)) {
                 TypedArray ta = mResources.obtainTypedArray(mResID);
                 int id = ta.getResourceId(IconProvider.getDay(), ID_NULL);
                 ta.recycle();
                 return id == ID_NULL ? original
-                        : new ThemedAdaptiveIcon(aid, new ThemeData(mResources, id));
+                        : wrapWithThemeData(original, new ThemeData(mResources, id));
             } else if (iconType == ICON_TYPE_CLOCK && "array".equals(resourceType)) {
-                ((ClockDrawableWrapper) original).mThemeData = this;
+                if (original instanceof ClockDrawableWrapper) {
+                    ((ClockDrawableWrapper) original).mThemeData = this;
+                }
                 return original;
             } else if ("drawable".equals(resourceType)) {
-                return new ThemedAdaptiveIcon(aid, this);
+                return wrapWithThemeData(original, this);
             } else {
                 return original;
             }
         }
+
+        private Drawable wrapWithThemeData(Drawable original, ThemeData themeData) {
+            if (original instanceof AdaptiveIconDrawable) {
+                return new ThemedAdaptiveIcon((AdaptiveIconDrawable) original, themeData);
+            } else if (original instanceof BitmapDrawable) {
+                return new ThemedBitmapIcon(mResources, (BitmapDrawable) original, themeData);
+            }
+            throw new IllegalArgumentException("original must be AdaptiveIconDrawable or BitmapDrawable");
+        }
     }
 
-    static class ThemedAdaptiveIcon extends AdaptiveIconDrawable implements Extender {
+    static class ThemedAdaptiveIcon extends CustomAdaptiveIconDrawable implements Extender {
 
         protected final ThemeData mThemeData;
 
@@ -273,7 +287,40 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
             Drawable bg = new ColorDrawable(colors[0]);
             float inset = getExtraInsetFraction() / (1 + 2 * getExtraInsetFraction());
             Drawable fg = new InsetDrawable(mThemeData.loadMonochromeDrawable(colors[1]), inset);
-            return new AdaptiveIconDrawable(bg, fg);
+            return new CustomAdaptiveIconDrawable(bg, fg);
+        }
+    }
+
+    static class ThemedBitmapIcon extends ExtendedBitmapDrawable implements Extender {
+
+        protected final ThemeData mThemeData;
+
+        public ThemedBitmapIcon(Resources res, BitmapDrawable parent, ThemeData themeData) {
+            super(res, parent.getBitmap(), ExtendedBitmapDrawable.isFromIconPack(parent));
+            mThemeData = themeData;
+        }
+
+        @Override
+        public BitmapInfo getExtendedInfo(Bitmap bitmap, int color, BaseIconFactory iconFactory,
+                                          float normalizationScale, UserHandle user) {
+            Bitmap userBadge = Process.myUserHandle().equals(user)
+                    ? null : iconFactory.getUserBadgeBitmap(user);
+            return new ThemedBitmapInfo(bitmap, color, mThemeData, normalizationScale, userBadge);
+        }
+
+        @Override
+        public void drawForPersistence(Canvas canvas) {
+            draw(canvas);
+        }
+
+        @Override
+        public Drawable getThemedDrawable(Context context) {
+            int[] colors = getColors(context);
+            Drawable bg = new ColorDrawable(colors[0]);
+            float extraInsetFraction = CustomAdaptiveIconDrawable.getExtraInsetFraction();
+            float inset = extraInsetFraction / (1 + 2 * extraInsetFraction);
+            Drawable fg = new InsetDrawable(mThemeData.loadMonochromeDrawable(colors[1]), inset);
+            return new CustomAdaptiveIconDrawable(bg, fg);
         }
     }
 
@@ -281,6 +328,9 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
      * Get an int array representing background and foreground colors for themed icons
      */
     public static int[] getColors(Context context) {
+        if (COLORS_LOADER != null) {
+            return COLORS_LOADER.apply(context);
+        }
         Resources res = context.getResources();
         int[] colors = new int[2];
         if ((res.getConfiguration().uiMode & UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES) {
@@ -292,4 +342,6 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
         }
         return colors;
     }
+
+    public static Function<Context, int[]> COLORS_LOADER;
 }

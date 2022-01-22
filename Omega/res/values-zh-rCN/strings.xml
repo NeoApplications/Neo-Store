@@ -250,7 +250,7 @@
     <string name="app_categorization_folders">文件夹</string>
     <string name="pref_appcategorization_style_text">风格</string>
     <string name="pref_appcategorization_enable_summary">选择抽屉布局模式</string>
-    <string name="pref_appcategorization_enable_title">分类应用</string>
+    <string name="title_app_categorize">分类应用</string>
     <string name="pref_appcategorization_flowerpot_title">应用分类</string>
     <string name="cat_drawer_icons">图标</string>
     <string name="cat_drawer_grid">网格</string>

@@ -68,6 +68,7 @@ public class IconProvider {
 
     private static final String TAG_ICON = "icon";
     private static final String ATTR_PACKAGE = "package";
+    protected static final String ATTR_COMPONENT = "component";
     private static final String ATTR_DRAWABLE = "drawable";
 
     private static final String TAG = "IconProvider";
@@ -166,7 +167,7 @@ public class IconProvider {
             iconType = ICON_TYPE_DEFAULT;
         }
 
-        ThemeData td = getThemedIconMap().get(packageName);
+        ThemeData td = getThemeData(packageName, component);
         return td != null ? td.wrapDrawable(icon, iconType) : icon;
     }
 

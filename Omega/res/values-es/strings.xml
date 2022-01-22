@@ -95,7 +95,7 @@
     <string name="selected_count">%1$d seleccionada</string>
     <string name="tab_type_smart">Automático</string>
     <string name="app_categorization_tabs">Toques</string>
-    <string name="pref_appcategorization_enable_title">Categorizar aplicaciones</string>
+    <string name="title_app_categorize">Categorizar aplicaciones</string>
     <string name="pref_appcategorization_flowerpot_title">Categoría de Aplicación</string>
     <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
     <string name="title_disable_suggestions_prompt">Apagar sugerencias app</string>

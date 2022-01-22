@@ -10,7 +10,7 @@
     <string name="icon_pack_external_picker">Ouvrir un sélecteur externe</string>
     <string name="pref_appcategorization_flowerpot_summary">Sélectionner les raccourcis automatiquement.</string>
     <string name="tab_type_custom_desc">Sélectionner les raccourcis manuellement.</string>
-    <string name="pref_appcategorization_enable_title">Catégoriser les applications</string>
+    <string name="title_app_categorize">Catégoriser les applications</string>
     <string name="reset_custom_icons_confirmation">Réinitialiser les icônes de ce pack \? Cela ne peut pas être annulé.</string>
     <string name="reset_custom_icons">Supprimer les icônes personnalisées</string>
     <string name="loading">Chargement…</string>

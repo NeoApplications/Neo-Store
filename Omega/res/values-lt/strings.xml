@@ -49,7 +49,7 @@
     <string name="pref_appcategorization_folders_summary">Bakstelėkite, kad atidarytumėte iššokantį langą.</string>
     <string name="app_categorization_folders">Aplankai</string>
     <string name="pref_appcategorization_style_text">Stilius</string>
-    <string name="pref_appcategorization_enable_title">Programėlių skirstymas į kategorijas</string>
+    <string name="title_app_categorize">Programėlių skirstymas į kategorijas</string>
     <string name="cat_drawer_icons">Piktogramos</string>
     <string name="cat_drawer_grid">Tinklelis</string>
     <string name="title_drawer_paged">Puslapiai</string>
