@@ -526,4 +526,6 @@
     <string name="pref_desktop_mode">Desktop mode</string>
     <string name="pref_desktop_mode_summary">Activate Android\'s desktop mode</string>
     <string name="pref_desktop_mode_settings">Desktop mode settings</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
 </resources>
