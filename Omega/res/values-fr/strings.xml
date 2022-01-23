@@ -148,7 +148,6 @@
     <string name="pref_appcategorization_folders_summary">Appuyer pour ouvrir la popup.</string>
     <string name="app_categorization_folders">Dossiers</string>
     <string name="pref_appcategorization_style_text">Style</string>
-    <string name="pref_appcategorization_enable_summary">Sélectionner la disposition du tiroir d\'applications</string>
     <string name="pref_appcategorization_flowerpot_title">Catégorie de l\'application</string>
     <string name="label_turn_off_suggestions">Désactiver</string>
     <string name="msg_disable_suggestions_prompt">Les données d\'utilisation vont être supprimées.</string>

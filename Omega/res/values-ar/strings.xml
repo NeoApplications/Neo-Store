@@ -62,7 +62,6 @@
     <string name="pref_appcategorization_folders_summary">أضغط لفتح الانبثاق.</string>
     <string name="app_categorization_folders">مجلدات</string>
     <string name="pref_appcategorization_style_text">أسلوب</string>
-    <string name="pref_appcategorization_enable_summary">أختر وضع نسق الدرج</string>
     <string name="title_app_categorize">صنف التطبيقات</string>
     <string name="pref_appcategorization_flowerpot_title">تصنيف التطبيقات</string>
     <string name="title_text_color">لون النص</string>

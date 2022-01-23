@@ -100,7 +100,6 @@
     <string name="pref_appcategorization_folders_summary">Antippen, um das Dialogfenster zu öffnen.</string>
     <string name="app_categorization_folders">Ordner</string>
     <string name="pref_appcategorization_style_text">Stil</string>
-    <string name="pref_appcategorization_enable_summary">Wähle die Anordnung der App-Übersicht</string>
     <string name="title_app_categorize">Apps kategorisieren</string>
     <string name="pref_appcategorization_flowerpot_title">App Kategorie</string>
     <string name="title_text_color">Textfarbe</string>

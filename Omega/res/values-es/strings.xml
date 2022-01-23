@@ -214,7 +214,6 @@
     <string name="tab_type_custom_desc">Elegir los atajos manualmente.</string>
     <string name="pref_appcategorization_tabs_summary">Deslizar para moverse entre grupos.</string>
     <string name="pref_appcategorization_folders_summary">Pulsar para abrir emergente.</string>
-    <string name="pref_appcategorization_enable_summary">Elije la disposición del Drawer</string>
     <string name="cat_drawer_icons">Iconos</string>
     <string name="cat_drawer_grid">Cuadrícula</string>
     <string name="summary_search_hidden_apps">Mostrar accesos directos ocultos en los resultados.</string>

@@ -245,7 +245,6 @@
     <string name="pref_app_groups_edit_tip">Нажмите, чтобы отредактировать, перетащите, чтобы изменить порядок.</string>
     <string name="pref_appcategorization_tabs_summary">Перелистывание между группами.</string>
     <string name="pref_appcategorization_folders_summary">Нажмите, чтобы открыть всплывающее окно.</string>
-    <string name="pref_appcategorization_enable_summary">Выберите режим компоновки выдвижной панели</string>
     <string name="title_text_color">Цвет текста</string>
     <string name="msg_disable_suggestions_prompt">Данные об использовании будут удалены.</string>
     <string name="title_disable_suggestions_prompt">Отключить предложения приложений</string>

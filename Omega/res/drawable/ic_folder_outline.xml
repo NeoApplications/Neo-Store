@@ -1,38 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~     This file is part of Lawnchair Launcher.
-  ~
-  ~     Lawnchair Launcher is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU General Public License as published by
-  ~     the Free Software Foundation, either version 3 of the License, or
-  ~     (at your option) any later version.
-  ~
-  ~     Lawnchair Launcher is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU General Public License
-  ~     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:tint="?colorAccent"
     android:viewportWidth="256"
     android:viewportHeight="256">
+
     <path
-        android:fillColor="@android:color/transparent"
-        android:pathData="M128,80h88a8,8 0,0 1,8 8V200a8,8 0,0 1,-8 8H40a8,8 0,0 1,-8 -8V104"
-        android:strokeWidth="24"
-        android:strokeColor="@android:color/white"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="@android:color/transparent"
-        android:pathData="M93.3,104H32V64a8,8 0,0 1,8 -8H93.3a8.1,8.1 0,0 1,4.8 1.6L128,80 98.1,102.4A8.1,8.1 0,0 1,93.3 104Z"
-        android:strokeWidth="24"
-        android:strokeColor="@android:color/white"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+        android:fillColor="?colorAccent"
+        android:pathData="M216,68H133.38867l-26.0332-29.28711h0A20.01378,20.01378,0,0,0,92.40723,32H40A20.02229,20.02229,0,0,0,20,52V200.61523A19.4065,19.4065,0,0,0,39.38477,220h177.5039A19.13289,19.13289,0,0,0,236,200.88867V88A20.02229,20.02229,0,0,0,216,68ZM44,56H90.61133l10.6665,12H44ZM212,196H44V92H212Z" />
+
 </vector>

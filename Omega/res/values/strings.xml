@@ -118,7 +118,8 @@
     <string name="cat_drawer_grid">Grid</string>
     <string name="cat_drawer_icons">Icons</string>
     <string name="pref_appcategorization_flowerpot_title">App Category</string>
-    <string name="pref_appcategorization_enable_summary">Choose the drawer layout mode</string>
+    <string name="title_app_categorization_enable">Enable apps categories</string>
+    <string name="summary_app_categorization_enable">Create tabs or folders</string>
     <string name="pref_appcategorization_style_text">Style</string>
     <string name="app_categorization_folders">Folders</string>
     <string name="pref_appcategorization_folders_summary">Tap to open popup.</string>

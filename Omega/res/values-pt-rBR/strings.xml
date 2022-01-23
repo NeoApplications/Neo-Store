@@ -45,7 +45,6 @@
     <string name="pref_appcategorization_folders_summary">Toque para abrir o popup.</string>
     <string name="app_categorization_folders">Pastas</string>
     <string name="pref_appcategorization_style_text">Estilo</string>
-    <string name="pref_appcategorization_enable_summary">Escolha o modo do \'layout\' da Gaveta de Apps</string>
     <string name="title_app_categorize">Categorizar os aplicativos</string>
     <string name="pref_appcategorization_flowerpot_title">Categoria de aplicativo</string>
     <string name="label_turn_off_suggestions">Desativar</string>

@@ -71,6 +71,13 @@
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true" />
 
+        <Preference
+            android:title="@string/title_app_categorize"
+            android:summary="@string/summary_app_categorize"
+            android:fragment="com.saggitt.omega.preferences.views.AppCategorizationFragment"
+            android:key="pref_categorization"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <SwitchPreference

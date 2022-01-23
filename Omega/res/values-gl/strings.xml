@@ -71,7 +71,6 @@
     <string name="cat_drawer_grid">Grella</string>
     <string name="cat_drawer_icons">Iconas</string>
     <string name="title_app_categorize">Categorizar Apps</string>
-    <string name="pref_appcategorization_enable_summary">Elixe o modo da disposición do panel</string>
     <string name="pref_appcategorization_style_text">Estilo</string>
     <string name="app_categorization_folders">Cartafoles</string>
     <string name="pref_app_groups_edit_tip">Toca para editar, arrastra para reordenar.</string>

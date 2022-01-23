@@ -32,7 +32,6 @@
     <string name="title__drawer_sort">Programsortering</string>
     <string name="app_categorization_folders">Mapper</string>
     <string name="pref_appcategorization_style_text">Stil</string>
-    <string name="pref_appcategorization_enable_summary">Velg visning for skuff</string>
     <string name="title_app_categorize">Kategoriser programmer</string>
     <string name="pref_appcategorization_flowerpot_title">Programkategori</string>
     <string name="label_turn_off_suggestions">Skru av</string>

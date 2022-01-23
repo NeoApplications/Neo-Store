@@ -293,7 +293,6 @@
     <string name="tab_type_smart">Automatiškai</string>
     <string name="tab_type_custom_desc">Pasirinkti nuorodas neautomatiniu būdu.</string>
     <string name="pref_appcategorization_tabs_summary">Braukite naršydami tarp grupių.</string>
-    <string name="pref_appcategorization_enable_summary">Pasirinkite stalčiaus išdėstymo režimą</string>
     <string name="summary__drawer_hide_apps">Slėpti programėlę iš programėlių stalčiaus</string>
     <string name="title_search_hidden_apps">Rasti paslėptas nuorodas</string>
     <string name="title_all_apps_search">Stalčiaus paieškos juosta</string>

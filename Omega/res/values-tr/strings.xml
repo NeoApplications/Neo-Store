@@ -338,7 +338,6 @@
     <string name="zen_mode_enabled">Rahatsız Etmeyin etkin.</string>
     <string name="smartspace_widget_provider_not_found">Google Uygulamasını edin.</string>
     <string name="title_smartspace">Smartspace\'i göster</string>
-    <string name="pref_appcategorization_enable_summary">Çekmece düzeni modunu seç</string>
     <string name="title_smartspace_feed_theme">Özet Akışı Teması</string>
     <string name="title_white_only_treatment">Beyaz arka planları değiştir</string>
     <string name="title_legacy_treatment">Uyarlanabilir Simgeler Oluştur</string>
