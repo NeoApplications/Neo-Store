@@ -1431,6 +1431,11 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         updateTextViewFocus();
     }
 
+    @Override
+    public void onIconChanged() {
+        FolderListener.super.onIconChanged();
+    }
+
     /**
      * Utility methods to iterate over items of the view
      */

@@ -179,6 +179,10 @@ public class FolderInfo extends ItemInfo {
         void onRemove(List<WorkspaceItemInfo> item);
 
         void onItemsChanged(boolean animate);
+
+        default void onIconChanged() {
+            // do nothing
+        }
     }
 
     public boolean hasOption(int optionFlag) {
@@ -199,6 +203,15 @@ public class FolderInfo extends ItemInfo {
         }
         if (writer != null && oldOptions != options) {
             writer.updateItemInDatabase(this);
+        }
+    }
+
+    /**
+     * DO NOT USE OUTSIDE CUSTOMINFOPROVIDER
+     */
+    public void onIconChanged() {
+        for (FolderListener listener : mListeners) {
+            listener.onIconChanged();
         }
     }
 

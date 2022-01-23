@@ -30,7 +30,7 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
 
     fun reloadApps() {
         (launcher.applicationContext.getSystemService(
-            USER_SERVICE
+                USER_SERVICE
         ) as UserManager).userProfiles.forEach {
             launcher.model.onPackagesReload(it)
         }
@@ -38,6 +38,11 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
 
     fun reloadAll() {
         launcher.model.forceReload()
+    }
+
+    fun reloadDrawer() {
+        //TODO Recargar los iconos
+        //launcher.appsView.appsLists.forEach { it.reset() }
     }
 
     fun restart() {

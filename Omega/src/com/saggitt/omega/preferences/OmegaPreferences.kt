@@ -29,6 +29,7 @@ import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
@@ -53,6 +54,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val reloadApps = { reloadApps() }
     val reloadAll = { reloadAll() }
     private val updateBlur = { updateBlur() }
+    val recreate = { recreate() }
+
     private val idp get() = InvariantDeviceProfile.INSTANCE.get(context)
     val reloadIcons = { idp.onPreferencesChanged(context) }
     private val onIconShapeChanged = {
@@ -128,6 +131,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     )
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
     val allAppsCellHeightMultiplier by FloatPref("pref_allAppsCellHeightMultiplier", 1F, restart)
+    val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
+    val appGroupsManager by lazy { AppGroupsManager(this) }
+    val drawerTabs get() = appGroupsManager.drawerTabs
+
 
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
@@ -224,6 +231,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         onChangeCallback = null
     }
 
+    fun getOnChangeCallback() = onChangeCallback
+
     fun recreate() {
         onChangeCallback?.recreate()
     }
@@ -236,12 +245,22 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         onChangeCallback?.reloadAll()
     }
 
+    fun reloadDrawer() {
+        onChangeCallback?.reloadDrawer()
+    }
+
     fun restart() {
         onChangeCallback?.restart()
     }
 
     private fun updateBlur() {
         onChangeCallback?.updateBlur()
+    }
+
+    inline fun withChangeCallback(
+            crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
+    ): () -> Unit {
+        return { getOnChangeCallback()?.let { callback(it) } }
     }
 
     fun addOnPreferenceChangeListener(listener: OnPreferenceChangeListener, vararg keys: String) {
@@ -382,6 +401,36 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
         override fun onSetValue(value: Int) {
             edit { putFloat(getKey(), value.toFloat() / 255) }
+        }
+    }
+
+    inline fun <reified T : Enum<T>> EnumPref(
+            key: String, defaultValue: T,
+            noinline onChange: () -> Unit = doNothing
+    ): PrefDelegate<T> {
+        return IntBasedPref(key, defaultValue, onChange, { value ->
+            enumValues<T>().firstOrNull { item -> item.ordinal == value } ?: defaultValue
+        }, { it.ordinal }, { })
+    }
+
+    open inner class IntBasedPref<T : Any>(
+            key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+            private val fromInt: (Int) -> T,
+            private val toInt: (T) -> Int,
+            private val dispose: (T) -> Unit
+    ) : PrefDelegate<T>(key, defaultValue, onChange) {
+        override fun onGetValue(): T {
+            return if (sharedPrefs.contains(key)) {
+                fromInt(sharedPrefs.getInt(getKey(), toInt(defaultValue)))
+            } else defaultValue
+        }
+
+        override fun onSetValue(value: T) {
+            edit { putInt(getKey(), toInt(value)) }
+        }
+
+        override fun disposeOldValue(oldValue: T) {
+            dispose(oldValue)
         }
     }
 
