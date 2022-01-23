@@ -21,17 +21,18 @@ package com.saggitt.omega.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
-import android.content.ComponentName
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
+import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Property
@@ -41,6 +42,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
@@ -51,14 +53,20 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.android.systemui.shared.system.QuickStepContract
+import org.json.JSONArray
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.reflect.KMutableProperty0
+
 
 val Context.omegaPrefs get() = Utilities.getOmegaPrefs(this)
 
@@ -387,3 +395,45 @@ fun Activity.recreateAnimated() = startActivity(
         this, android.R.anim.fade_in, android.R.anim.fade_out
     ).toBundle()
 )
+
+val Context.locale: Locale
+    get() = this.resources.configuration.locales[0]
+
+@Suppress("UNCHECKED_CAST")
+fun <T> JSONArray.toArrayList(): ArrayList<T> {
+    val arrayList = ArrayList<T>()
+    for (i in (0 until length())) {
+        arrayList.add(get(i) as T)
+    }
+    return arrayList
+}
+
+fun openURLinBrowser(context: Context, url: String?) {
+    openURLinBrowser(context, url, null, null)
+}
+
+fun openURLinBrowser(context: Context, url: String?, sourceBounds: Rect?, options: Bundle?) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        if (context !is AppCompatActivity) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.sourceBounds = sourceBounds
+        if (options == null) {
+            context.startActivity(intent)
+        } else {
+            context.startActivity(intent, options)
+        }
+    } catch (exc: ActivityNotFoundException) {
+        Toast.makeText(context, R.string.error_no_browser, Toast.LENGTH_SHORT).show()
+    }
+}
+
+fun PackageManager.isAppEnabled(packageName: String?, flags: Int): Boolean {
+    return try {
+        val info = getApplicationInfo(packageName!!, flags)
+        info != null && info.enabled
+    } catch (e: NameNotFoundException) {
+        false
+    }
+}
