@@ -415,4 +415,6 @@
     <string name="summary_colored_backgrounds">针对自适应图标的背景。</string>
     <string name="summary_force_shapeless">尝试为所有应用程序使用旧图标。</string>
     <string name="summary_legacy_treatment">为所有快捷方式创建自适应图标。</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
 </resources>
