@@ -33,6 +33,7 @@ import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
+import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
@@ -135,7 +136,6 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val drawerTabs get() = appGroupsManager.drawerTabs
 
-
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
     val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)
@@ -203,6 +203,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var language by StringPref("pref_language", "", restart)
     var settingsSearch by BooleanPref("pref_settings_search", true, restart)
     var firstRun by BooleanPref("pref_first_run", true)
+
+    //SEARCH
+    var searchProvider by StringPref(
+            "pref_globalSearchProvider",
+            ""
+    ) {
+        SearchProviderController.getInstance(context).onSearchProviderChanged()
+    }
 
     // FEED
     var feedProvider by StringPref("pref_feedProvider", "", restart)
