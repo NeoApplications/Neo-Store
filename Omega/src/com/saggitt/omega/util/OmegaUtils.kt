@@ -29,11 +29,13 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
@@ -55,9 +57,12 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.android.systemui.shared.system.QuickStepContract
+import org.json.JSONObject
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
+import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 
 val Context.omegaPrefs get() = Utilities.getOmegaPrefs(this)
@@ -256,6 +261,20 @@ fun CheckedTextView.applyAccent() {
     backgroundTintList = tintList
 }
 
+fun String.toTitleCase(): String = splitToSequence(" ").map {
+    it.replaceFirstChar { ch ->
+        if (ch.isLowerCase()) ch.titlecase(
+                Locale.getDefault()
+        ) else ch.toString()
+    }
+}.joinToString(" ")
+
+inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>().apply {
+    while (true) {
+        add(generator() ?: break)
+    }
+}
+
 operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)
 inline fun PreferenceGroup.forEachIndexed(action: (i: Int, pref: Preference) -> Unit) {
     for (i in 0 until preferenceCount) action(i, this[i])
@@ -308,6 +327,76 @@ fun dpToPx(size: Float): Float {
 fun pxToDp(size: Float): Float {
     return size / dpToPx(1f)
 }
+
+fun Context.createDisabledColor(color: Int): ColorStateList {
+    return ColorStateList(
+            arrayOf(
+                    intArrayOf(-android.R.attr.state_enabled),
+                    intArrayOf()
+            ),
+            intArrayOf(
+                    getDisabled(getColorAttr(android.R.attr.colorForeground)),
+                    color
+            )
+    )
+}
+
+@ColorInt
+fun Context.getDisabled(inputColor: Int): Int {
+    return applyAlphaAttr(android.R.attr.disabledAlpha, inputColor)
+}
+
+@ColorInt
+fun Context.applyAlphaAttr(attr: Int, inputColor: Int): Int {
+    val ta = obtainStyledAttributes(intArrayOf(attr))
+    val alpha = ta.getFloat(0, 0f)
+    ta.recycle()
+    return applyAlpha(alpha, inputColor)
+}
+
+@ColorInt
+fun applyAlpha(a: Float, inputColor: Int): Int {
+    var alpha = a
+    alpha *= Color.alpha(inputColor)
+    return Color.argb(
+            alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
+            Color.blue(inputColor)
+    )
+}
+
+fun JSONObject.asMap() = JSONMap(this)
+fun JSONObject.getNullable(key: String): Any? {
+    return opt(key)
+}
+
+fun String.asNonEmpty(): String? {
+    if (TextUtils.isEmpty(this)) return null
+    return this
+}
+
+fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
+    if (contains(obj) != exists) {
+        if (exists) add(obj)
+        else remove(obj)
+        return true
+    }
+    return false
+}
+
+fun getTabRipple(context: Context, accent: Int): ColorStateList {
+    return ColorStateList(
+            arrayOf(
+                    intArrayOf(android.R.attr.state_selected),
+                    intArrayOf()
+            ),
+            intArrayOf(
+                    ColorUtils.setAlphaComponent(accent, 31),
+                    context.getColorAttr(android.R.attr.colorControlHighlight)
+            )
+    )
+}
+
+val Long.Companion.random get() = Random.nextLong()
 
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)
