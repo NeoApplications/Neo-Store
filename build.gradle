@@ -220,7 +220,7 @@ dependencies {
     implementation "com.mikepenz:fastadapter:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-diff:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0"
-    implementation 'com.github.otakuhqz.colorpickerx:colorpickerx:1.4.4'
+    implementation 'com.github.otakuhqz.colorpickerx:colorpickerx:1.4.6'
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
     implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
