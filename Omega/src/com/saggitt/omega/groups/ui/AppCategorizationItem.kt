@@ -31,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,6 +91,7 @@ fun AppCategorizationItem() {
                             color = OmegaTheme.colors.textSecondary
                     )
                 }
+                Log.d("AppCatItem", "Categorization: " + manager.categorizationType)
                 if (manager.categorizationType != AppGroupsManager.CategorizationType.Tabs) {
                     Column(
                             modifier = Modifier
@@ -173,12 +173,4 @@ fun AppCategorizationItem() {
             }
         }
     }
-}
-
-@Composable
-fun getTabColor(isSelected: Boolean, accent: Int): Color {
-    return if (isSelected)
-        Color(accent)
-    else
-        OmegaTheme.colors.surface
 }
