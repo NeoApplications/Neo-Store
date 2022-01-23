@@ -417,4 +417,6 @@
     <string name="summary_colored_backgrounds">Uyarlanabilir Simgelerin arka planları için.</string>
     <string name="summary_white_only_treatment">Tüm Uyarlanabilir Simgelerin arka planlarını renklendir.</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Gün ışığını takip et (Siyah)</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
 </resources>
