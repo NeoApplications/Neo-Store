@@ -118,6 +118,7 @@
     </style>
 
     <style name="Theme.AppBarLayout" parent="Widget.Material3.AppBarLayout">
+        <item name="android:background">@drawable/appbar_background</item>
         <item name="android:backgroundTint">?attr/colorSurface</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
@@ -131,6 +132,7 @@
     </style>
 
     <style name="Theme.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+        <item name="android:background">@drawable/appbar_background</item>
         <item name="layout_collapseMode">pin</item>
         <item name="android:backgroundTint">?attr/colorSurface</item>
     </style>
