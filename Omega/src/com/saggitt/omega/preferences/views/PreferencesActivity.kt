@@ -172,7 +172,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                             requireContext(),
                             getString(R.string.trust_apps_manager_name)
                         ) {
-                            val fragment = "com.saggitt.omega.allapps.HiddenAppsFragment"
+                            val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
                             startFragment(
                                 context,
                                 fragment,
@@ -180,7 +180,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                             )
                         }
                     } else {
-                        val fragment = "com.saggitt.omega.allapps.HiddenAppsFragment"
+                        val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
                         startFragment(
                             context,
                             fragment,
