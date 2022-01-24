@@ -27,7 +27,8 @@ class InstalledFragment : MainNavFragmentX() {
     private lateinit var updatedItemAdapter: PagedModelAdapter<Product, HAppItem>
     private var updatedFastAdapter: FastAdapter<HAppItem>? = null
 
-    override val source = Source.INSTALLED
+    override val primarySource = Source.INSTALLED
+    override val secondarySource = Source.UPDATES
 
     private var repositories: Map<Long, Repository> = mapOf()
 
@@ -81,11 +82,12 @@ class InstalledFragment : MainNavFragmentX() {
             }
         }
 
-        viewModel.productsList.observe(viewLifecycleOwner) {
-            binding.updatedBar.visibility =
-                if (it.any { item -> item.data_item?.canUpdate == true }) View.VISIBLE else View.GONE
-            updatedItemAdapter.submitList(it)
+        viewModel.primaryProducts.observe(viewLifecycleOwner) {
             installedItemAdapter.submitList(it)
+        }
+        viewModel.secondaryProducts.observe(viewLifecycleOwner) {
+            binding.updatedBar.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            updatedItemAdapter.submitList(it)
         }
     }
 }

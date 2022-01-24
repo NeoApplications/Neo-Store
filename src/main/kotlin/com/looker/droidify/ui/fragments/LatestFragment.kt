@@ -28,7 +28,8 @@ class LatestFragment : MainNavFragmentX() {
     private var newFastAdapter: FastAdapter<HAppItem>? = null
 
     // TODO replace the source with one that get a certain amount of updated apps
-    override val source = Source.UPDATED
+    override val primarySource = Source.UPDATED
+    override val secondarySource = Source.NEW
 
     private var repositories: Map<Long, Repository> = mapOf()
 
@@ -76,9 +77,11 @@ class LatestFragment : MainNavFragmentX() {
     }
 
     override fun setupLayout() {
-        viewModel.productsList.observe(requireActivity()) {
-            newItemAdapter.submitList(it)
+        viewModel.primaryProducts.observe(viewLifecycleOwner) {
             updatedItemAdapter.submitList(it)
+        }
+        viewModel.secondaryProducts.observe(viewLifecycleOwner) {
+            newItemAdapter.submitList(it)
         }
     }
 }

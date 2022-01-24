@@ -14,11 +14,15 @@ import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel() {
+class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, secondarySource: Source) :
+    ViewModel() {
 
     private val _order = MutableStateFlow(ProductItem.Order.LAST_UPDATE)
     private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
@@ -88,16 +92,29 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
             .setEnablePlaceholders(false)
             .build()
     }
-    private val request = request(source)
-    val productsList: LiveData<PagedList<Product>> by lazy {
+    private val primaryRequest = request(primarySource)
+    val primaryProducts: LiveData<PagedList<Product>> by lazy {
         LivePagedListBuilder(
             db.productDao.queryList(
-                installed = request.installed,
-                updates = request.updates,
-                searchQuery = request.searchQuery,
-                section = request.section,
-                order = request.order,
-                numberOfItems = request.numberOfItems
+                installed = primaryRequest.installed,
+                updates = primaryRequest.updates,
+                searchQuery = primaryRequest.searchQuery,
+                section = primaryRequest.section,
+                order = primaryRequest.order,
+                numberOfItems = primaryRequest.numberOfItems
+            ), pagedListConfig
+        ).build()
+    }
+    private val secondaryRequest = request(secondarySource)
+    val secondaryProducts: LiveData<PagedList<Product>> by lazy {
+        LivePagedListBuilder(
+            db.productDao.queryList(
+                installed = secondaryRequest.installed,
+                updates = secondaryRequest.updates,
+                searchQuery = secondaryRequest.searchQuery,
+                section = secondaryRequest.section,
+                order = secondaryRequest.order,
+                numberOfItems = secondaryRequest.numberOfItems
             ), pagedListConfig
         ).build()
     }
@@ -149,11 +166,16 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
         }
     }
 
-    class Factory(val db: DatabaseX, val source: Source) : ViewModelProvider.Factory {
+    class Factory(
+        val db: DatabaseX,
+        private val primarySource: Source,
+        private val secondarySource: Source
+    ) :
+        ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainNavFragmentViewModelX::class.java)) {
-                return MainNavFragmentViewModelX(db, source) as T
+                return MainNavFragmentViewModelX(db, primarySource, secondarySource) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

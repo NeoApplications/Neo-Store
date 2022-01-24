@@ -1,6 +1,8 @@
 package com.looker.droidify.ui.fragments
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.looker.droidify.R
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
@@ -9,9 +11,10 @@ abstract class MainNavFragmentX : BaseNavFragment() {
     private val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
     val viewModel: MainNavFragmentViewModelX by viewModels {
-        MainNavFragmentViewModelX.Factory(mainActivityX.db, source)
+        MainNavFragmentViewModelX.Factory(mainActivityX.db, primarySource, secondarySource)
     }
-    abstract val source: Source
+    abstract val primarySource: Source
+    abstract val secondarySource: Source
 
     open fun onBackPressed(): Boolean = false
 

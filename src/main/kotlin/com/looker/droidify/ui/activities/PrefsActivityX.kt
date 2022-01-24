@@ -171,7 +171,7 @@ class PrefsActivityX : AppCompatActivity() {
     private fun updateUpdateNotificationBlocker(activeSource: Source) {
         val blockerFragment = if (activeSource == Source.UPDATES) {
             supportFragmentManager.fragments.asSequence().mapNotNull { it as? MainNavFragmentX }
-                .find { it.source == activeSource }
+                .find { it.primarySource == activeSource }
         } else {
             null
         }

@@ -23,7 +23,8 @@ class ExploreFragment : MainNavFragmentX() {
     private lateinit var appsItemAdapter: PagedModelAdapter<Product, VAppItem>
     private var appsFastAdapter: FastAdapter<VAppItem>? = null
 
-    override val source = Source.AVAILABLE
+    override val primarySource = Source.AVAILABLE
+    override val secondarySource = Source.AVAILABLE
 
     private var repositories: Map<Long, Repository> = mapOf()
 
@@ -62,7 +63,7 @@ class ExploreFragment : MainNavFragmentX() {
     }
 
     override fun setupLayout() {
-        viewModel.productsList.observe(viewLifecycleOwner) {
+        viewModel.primaryProducts.observe(viewLifecycleOwner) {
             appsItemAdapter.submitList(it)
             appsFastAdapter?.notifyDataSetChanged()
         }
