@@ -17,7 +17,6 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.paged.PagedModelAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.flow.collectLatest
 
 class LatestFragment : MainNavFragmentX() {
 
@@ -54,7 +53,7 @@ class LatestFragment : MainNavFragmentX() {
             .subscribe { repositories = it }
     }
 
-    override suspend fun setupAdapters() {
+    override fun setupAdapters() {
         updatedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -76,8 +75,8 @@ class LatestFragment : MainNavFragmentX() {
         }
     }
 
-    override suspend fun setupLayout() {
-        viewModel.productsList.collectLatest {
+    override fun setupLayout() {
+        viewModel.productsList.observe(requireActivity()) {
             newItemAdapter.submitList(it)
             updatedItemAdapter.submitList(it)
         }

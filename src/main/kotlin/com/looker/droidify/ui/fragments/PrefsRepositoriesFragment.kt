@@ -40,7 +40,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         return binding.root
     }
 
-    override suspend fun setupAdapters() {
+    override fun setupAdapters() {
         syncConnection.bind(requireContext())
 
         reposFastAdapter = FastAdapter.with(reposItemAdapter)
@@ -52,7 +52,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         }
     }
 
-    override suspend fun setupLayout() {
+    override fun setupLayout() {
         viewModel.productsList.observe(requireActivity()) {
             reposItemAdapter.set(
                 it.mapNotNull { dbRepo ->

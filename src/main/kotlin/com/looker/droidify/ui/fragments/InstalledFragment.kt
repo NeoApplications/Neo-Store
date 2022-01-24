@@ -17,7 +17,6 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.paged.PagedModelAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.flow.collectLatest
 
 class InstalledFragment : MainNavFragmentX() {
 
@@ -53,7 +52,7 @@ class InstalledFragment : MainNavFragmentX() {
             .subscribe { repositories = it }
     }
 
-    override suspend fun setupAdapters() {
+    override fun setupAdapters() {
         installedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -75,14 +74,14 @@ class InstalledFragment : MainNavFragmentX() {
         }
     }
 
-    override suspend fun setupLayout() {
+    override fun setupLayout() {
         binding.buttonUpdated.setOnClickListener {
             binding.updatedRecycler.apply {
                 visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
             }
         }
 
-        viewModel.productsList.collectLatest {
+        viewModel.productsList.observe(viewLifecycleOwner) {
             binding.updatedBar.visibility =
                 if (it.any { item -> item.data_item?.canUpdate == true }) View.VISIBLE else View.GONE
             updatedItemAdapter.submitList(it)
