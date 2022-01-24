@@ -13,7 +13,11 @@ import com.looker.droidify.ui.activities.PrefsActivityX
 import com.looker.droidify.ui.items.RepoItem
 import com.looker.droidify.ui.viewmodels.RepositoriesViewModelX
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PrefsRepositoriesFragment : BaseNavFragment() {
     private lateinit var binding: FragmentRepositoriesXBinding
@@ -45,6 +49,17 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
 
         reposFastAdapter = FastAdapter.with(reposItemAdapter)
         reposFastAdapter?.setHasStableIds(false)
+
+        reposFastAdapter?.onClickListener =
+            { _: View?, _: IAdapter<RepoItem>?, item: RepoItem?, _: Int? ->
+                item?.item?.let {
+                    it.enabled = !it.enabled
+                    GlobalScope.launch(Dispatchers.IO) {
+                        syncConnection.binder?.setEnabled(it, it.enabled)
+                    }
+                }
+                false
+            }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
