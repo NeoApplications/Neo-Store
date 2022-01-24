@@ -7,6 +7,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -72,15 +73,16 @@ class MainActivityX : AppCompatActivity() {
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
         setTheme(currentTheme)
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainXBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         binding.lifecycleOwner = this
         toolbar = binding.toolbar
 
         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
             handleIntent(intent)
         }
-        setContentView(binding.root)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     override fun onStart() {
@@ -90,7 +92,7 @@ class MainActivityX : AppCompatActivity() {
             toolbar.menu.setGroupDividerEnabled(true)
         }
         toolbar.isFocusableInTouchMode = true
-        binding.collapsingToolbar.title = getString(R.string.application_name)
+        toolbar.title = getString(R.string.application_name)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment

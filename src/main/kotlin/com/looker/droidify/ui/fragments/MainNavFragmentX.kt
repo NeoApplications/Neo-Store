@@ -6,7 +6,7 @@ import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 
 abstract class MainNavFragmentX : BaseNavFragment() {
-    val mainActivityX: MainActivityX
+    private val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
     val viewModel: MainNavFragmentViewModelX by viewModels {
         MainNavFragmentViewModelX.Factory(mainActivityX.db, source)

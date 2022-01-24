@@ -1,8 +1,8 @@
 package com.looker.droidify.ui.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -14,10 +14,7 @@ import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -92,7 +89,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
             .build()
     }
     val request = request(source)
-    val productsList: LiveData<PagedList<Product>> by lazy {
+    val productsList: Flow<PagedList<Product>> by lazy {
         LivePagedListBuilder(
             db.productDao.queryList(
                 installed = request.installed,
@@ -102,7 +99,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, source: Source) : ViewModel()
                 order = request.order,
                 numberOfItems = request.numberOfItems
             ), pagedListConfig
-        ).build()
+        ).build().asFlow()
     }
 
     fun fillList(source: Source) {

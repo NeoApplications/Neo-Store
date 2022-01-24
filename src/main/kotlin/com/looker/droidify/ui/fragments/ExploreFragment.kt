@@ -15,6 +15,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.paged.PagedModelAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.collectLatest
 
 // TODO create categories layouts that hold the apps in horizontal layout
 class ExploreFragment : MainNavFragmentX() {
@@ -44,11 +45,11 @@ class ExploreFragment : MainNavFragmentX() {
             .observeOn(Schedulers.io())
             .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }
     }
 
-    override fun setupAdapters() {
+    override suspend fun setupAdapters() {
         appsItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
@@ -61,8 +62,8 @@ class ExploreFragment : MainNavFragmentX() {
         }
     }
 
-    override fun setupLayout() {
-        viewModel.productsList.observe(requireActivity()) {
+    override suspend fun setupLayout() {
+        viewModel.productsList.collectLatest {
             appsItemAdapter.submitList(it)
             appsFastAdapter?.notifyDataSetChanged()
         }
