@@ -43,7 +43,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
     val dragLayer by lazy { SettingsDragLayer(this, null) }
-    val decorLayout by lazy { DecorLayout(this, window) }
+    val decorLayout by lazy { DecorLayout(this) }
     private val customLayoutInflater by lazy {
         OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
     }

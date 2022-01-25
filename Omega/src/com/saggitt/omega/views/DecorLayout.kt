@@ -20,13 +20,10 @@ package com.saggitt.omega.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.ColorDrawable
 import android.os.Environment
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
-import android.view.Window
 import com.android.launcher3.Insettable
 import com.android.launcher3.InsettableFrameLayout
 import com.android.launcher3.R
@@ -41,79 +38,25 @@ import com.saggitt.omega.util.parents
 import java.io.File
 
 @SuppressLint("ViewConstructor")
-class DecorLayout(context: Context, private val window: Window) : InsettableFrameLayout(context, null),
+class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
         View.OnClickListener, BlurWallpaperProvider.Listener {
 
     private var tapCount = 0
 
     private val contentFrame: View
-    private val actionBarContainer: View
-    private val toolbar: View
-    private val largeTitle: View
-    private val toolbarShadow: View
-    internal var toolbarElevated = false
-        set(value) {
-            if (field != value) {
-                field = value
-                if (value) {
-                    toolbarShadow.animate().alpha(1f).setDuration(200).start()
-                } else {
-                    toolbarShadow.animate().alpha(0f).setDuration(200).start()
-                }
-            }
-        }
 
     private val shouldDrawBackground by lazy { context.getBooleanAttr(android.R.attr.windowShowWallpaper) }
     private val settingsBackground by lazy { context.getColorAttr(R.attr.settingsBackground) }
 
-    var actionBarElevation: Float
-        get() = actionBarContainer.elevation
-        set(value) {
-            actionBarContainer.elevation = value
-            if (value.compareTo(0f) == 0) {
-                actionBarContainer.background = null
-                window.statusBarColor = 0
-            } else {
-                val backgroundColor = settingsBackground
-                actionBarContainer.background = ColorDrawable(backgroundColor)
-                window.statusBarColor = backgroundColor
-            }
-        }
-
-    var useLargeTitle: Boolean = false
-        set(value) {
-            field = value
-            updateToolbar()
-        }
-
-    var hideToolbar: Boolean = false
-        set(value) {
-            field = value
-            updateToolbar()
-        }
-
     private val contentTop
         get() = when {
-            hideToolbar -> 0
-            useLargeTitle -> context.resources.getDimensionPixelSize(R.dimen.large_title_height)
             else -> context.getDimenAttr(R.attr.actionBarSize)
         }
-
-    private fun updateToolbar() {
-        largeTitle.visibility = if (useLargeTitle && !hideToolbar) View.VISIBLE else View.GONE
-        toolbar.visibility = if (!useLargeTitle && !hideToolbar) View.VISIBLE else View.GONE
-        toolbarShadow.visibility = toolbar.visibility
-    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.decor_layout, this)
 
         contentFrame = findViewById(android.R.id.content)
-        actionBarContainer = findViewById(R.id.action_bar_container)
-        toolbar = findViewById(R.id.toolbar)
-        largeTitle = findViewById(R.id.large_title)
-        largeTitle.setOnClickListener(this)
-        toolbarShadow = findViewById(R.id.toolbar_shadow)
 
         onEnabledChanged()
 
@@ -315,23 +258,6 @@ class DecorLayout(context: Context, private val window: Window) : InsettableFram
 
         override fun setInsets(insets: Rect?) {
             // ignore this
-        }
-    }
-
-    class ToolbarElevationHelper constructor(private val scrollingView: View) : ViewTreeObserver.OnScrollChangedListener {
-
-        private val decorLayout by lazy { scrollingView.parents.first { it is DecorLayout } as DecorLayout }
-
-        init {
-            scrollingView.viewTreeObserver.addOnScrollChangedListener(this)
-        }
-
-        override fun onScrollChanged() {
-            decorLayout.toolbarElevated = scrollingView.canScrollVertically(-1)
-        }
-
-        fun destroy() {
-            scrollingView.viewTreeObserver.removeOnScrollChangedListener(this)
         }
     }
 }
