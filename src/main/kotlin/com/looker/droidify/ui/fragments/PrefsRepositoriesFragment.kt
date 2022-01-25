@@ -60,6 +60,16 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                 }
                 false
             }
+        reposFastAdapter?.onLongClickListener =
+            { _: View?, _: IAdapter<RepoItem>?, item: RepoItem?, _: Int? ->
+                item?.item?.let {
+                    RepositorySheetX(it.id).showNow(
+                        parentFragmentManager,
+                        "Repository ${it.id}"
+                    )
+                }
+                false
+            }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

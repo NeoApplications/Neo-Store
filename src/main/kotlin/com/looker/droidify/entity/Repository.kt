@@ -9,7 +9,7 @@ import java.net.URL
 
 data class Repository(
     var id: Long, val address: String, val mirrors: List<String>,
-    val name: String, val description: String, val version: Int, val enabled: Boolean,
+    val name: String, val description: String, val version: Int, var enabled: Boolean,
     val fingerprint: String, val lastModified: String, val entityTag: String,
     val updated: Long, val timestamp: Long, val authentication: String,
 ) {

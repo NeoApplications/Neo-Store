@@ -51,6 +51,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
     fun get(id: Long): Repository?
 
+    @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
+    fun getLive(id: Long): LiveData<Repository?>
+
     @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
     val allCursor: Cursor
 
@@ -80,6 +83,9 @@ interface RepositoryDao : BaseDao<Repository> {
 interface ProductDao : BaseDao<Product> {
     @Query("SELECT COUNT(*) FROM product WHERE repository_id = :id")
     fun countForRepository(id: Long): Long
+
+    @Query("SELECT COUNT(*) FROM product WHERE repository_id = :id")
+    fun countForRepositoryLive(id: Long): LiveData<Long>
 
     @Query("SELECT * FROM product WHERE package_name = :packageName")
     fun get(packageName: String): List<Product?>
