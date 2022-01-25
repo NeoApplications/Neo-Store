@@ -32,7 +32,8 @@
         android:id="@+id/icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"
+        android:tint="?colorAccent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"

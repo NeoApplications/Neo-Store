@@ -30,6 +30,7 @@ import com.android.launcher3.util.Themes
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.groups.AppGroupsManager
+import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
@@ -135,6 +136,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val drawerTabs get() = appGroupsManager.drawerTabs
+    val currentTabsModel
+        get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
 
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)

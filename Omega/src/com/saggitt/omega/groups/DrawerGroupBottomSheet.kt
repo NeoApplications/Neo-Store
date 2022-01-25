@@ -25,30 +25,32 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatButton
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.saggitt.omega.util.applyColor
+import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.views.BaseBottomSheet
+import com.saggitt.omega.views.SettingsBottomSheet
 
+/* Crea la vista principal para crear Folders o Tabs */
 @SuppressLint("ViewConstructor")
-class DrawerTabEditBottomSheet(context: Context, config: AppGroups.Group.CustomizationMap,
-                               private val callback: (Boolean) -> Unit) : FrameLayout(context), View.OnClickListener {
+class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.CustomizationMap,
+                             private val callback: (Boolean) -> Unit) : FrameLayout(context), View.OnClickListener {
 
     init {
-        View.inflate(context, R.layout.drawer_tab_edit_bottom_sheet, this)
+        View.inflate(context, R.layout.drawer_folder_bottom_sheet, this)
 
-        val accent = Utilities.getOmegaPrefs(context).accentColor
         val container = findViewById<ViewGroup>(R.id.customization_container)
         config.sortedEntries.reversed().forEach { entry ->
-            entry.createRow(context, container, accent)?.let { container.addView(it, 0) }
+            entry.createRow(context, container)?.let { container.addView(it, 0) }
         }
 
         findViewById<AppCompatButton>(R.id.save).apply {
-            applyColor(accent)
-            setTextColor(accent)
-            setOnClickListener(this@DrawerTabEditBottomSheet)
+            applyColor(context.getColorAccent())
+            setTextColor(context.getColorAccent())
+            setOnClickListener(this@DrawerGroupBottomSheet)
         }
         findViewById<AppCompatButton>(R.id.cancel).apply {
-            setOnClickListener(this@DrawerTabEditBottomSheet)
+            setOnClickListener(this@DrawerGroupBottomSheet)
         }
     }
 
@@ -62,23 +64,23 @@ class DrawerTabEditBottomSheet(context: Context, config: AppGroups.Group.Customi
     companion object {
 
         fun show(context: Context, config: AppGroups.Group.CustomizationMap, animate: Boolean, callback: () -> Unit) {
-            /*val sheet = SettingsBottomSheet.inflate(context)
-            sheet.show(DrawerTabEditBottomSheet(context, config) {
+            val sheet = SettingsBottomSheet.inflate(context)
+            sheet.show(DrawerGroupBottomSheet(context, config) {
                 if (it) {
                     callback()
                 }
                 sheet.close(true)
-            }, animate)*/
+            }, animate)
         }
 
         fun show(launcher: Launcher, config: AppGroups.Group.CustomizationMap, animate: Boolean, callback: () -> Unit) {
-            /*val sheet = BaseBottomSheet.inflate(launcher)
-            sheet.show(DrawerTabEditBottomSheet(launcher, config) {
+            val sheet = BaseBottomSheet.inflate(launcher)
+            sheet.show(DrawerGroupBottomSheet(launcher, config) {
                 if (it) {
                     callback()
                 }
                 sheet.close(true)
-            }, animate)*/
+            }, animate)
         }
 
         fun newGroup(context: Context, emptyGroup: AppGroups.Group, animate: Boolean, callback: (AppGroups.Group.CustomizationMap) -> Unit) {

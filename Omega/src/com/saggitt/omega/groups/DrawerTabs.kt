@@ -25,7 +25,6 @@ import android.os.UserHandle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -34,9 +33,9 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.ItemInfoMatcher
 import com.saggitt.omega.groups.FlowerpotTabs.FlowerpotTab
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.tintDrawable
 import org.json.JSONObject
 
 abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.CategorizationType) :
@@ -101,7 +100,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
     override fun onGroupsChanged(changeCallback: OmegaPreferencesChangeCallback) {
         //TODO revisar codigo para tabs
-        //changeCallback.launcher.allAppsController.appsView.reloadTabs()
+        changeCallback.launcher.allAppsController.appsView.reloadTabs()
     }
 
     abstract class Tab(context: Context, type: String, title: String) :
@@ -114,8 +113,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         }
     }
 
-    class CustomTab(context: Context) :
-            Tab(context, TYPE_CUSTOM, context.getString(R.string.default_tab_name)) {
+    class CustomTab(context: Context) : Tab(context, TYPE_CUSTOM, context.getString(R.string.default_tab_name)) {
         val hideFromAllApps = SwitchRow(
                 R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
                 KEY_HIDE_FROM_ALL_APPS, true
@@ -126,7 +124,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             addCustomization(hideFromAllApps)
             addCustomization(contents)
 
-            customizations.setOrder(KEY_TITLE, KEY_HIDE_FROM_ALL_APPS, KEY_COLOR, KEY_ITEMS)
+            customizations.setOrder(KEY_TITLE, KEY_HIDE_FROM_ALL_APPS, KEY_ITEMS, KEY_COLOR)
         }
 
         override val summary: String
@@ -174,11 +172,10 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
         private val predicate get() = getWorkFilter(profile)
 
-        override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+        override fun createRow(context: Context, parent: ViewGroup): View? {
             val view = LayoutInflater.from(context)
                     .inflate(R.layout.drawer_tab_hidden_apps_row, parent, false)
 
-            view.findViewById<ImageView>(R.id.manage_apps_icon).tintDrawable(accent)
             updateCount(view)
 
             view.setOnClickListener {
@@ -187,29 +184,31 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
                             context,
                             context.getString(R.string.trust_apps_manager_name)
                     ) {
-                        /*SelectableAppsActivity.start(
-                            context,
-                            filteredValue(context),
-                            { newSelections ->
-                                if (newSelections != null) {
-                                    value = HashSet(newSelections)
-                                    updateCount(view)
-                                }
-                            },
-                            profile
-                        )*/
+                        openFragment(context, view)
                     }
                 } else {
-                    /*SelectableAppsActivity.start(context, filteredValue(context), { newSelections ->
-                        if (newSelections != null) {
-                            value = HashSet(newSelections)
-                            updateCount(view)
-                        }
-                    }, profile)*/
+                    openFragment(context, view)
                 }
             }
 
             return view
+        }
+
+        private fun openFragment(context: Context, view: View) {
+            val fragment = "com.saggitt.omega.preferences.views.SelectableAppsFragment"
+            PreferencesActivity.startFragment(
+                    context,
+                    fragment,
+                    context.resources.getString(R.string.title__drawer_hide_apps),
+                    filteredValue(context),
+                    { newSelections ->
+                        if (newSelections != null) {
+                            value = HashSet(newSelections)
+                            updateCount(view)
+                        }
+                    },
+                    profile
+            )
         }
 
         override fun loadFromJson(context: Context, obj: Boolean?) {}

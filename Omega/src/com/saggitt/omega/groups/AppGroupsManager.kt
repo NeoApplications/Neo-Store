@@ -30,7 +30,7 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
     val drawerFolders by lazy { DrawerFolders(this) }
 
     private fun onPrefsChanged() {
-        prefs.getOnChangeCallback()?.let {
+        prefs.getOnChangeCallback()!!.let {
             drawerTabs.checkIsEnabled(it)
             flowerpotTabs.checkIsEnabled(it)
             drawerFolders.checkIsEnabled(it)

@@ -34,6 +34,7 @@ import com.android.launcher3.util.ComponentKey
 import com.saggitt.colorpickerx.ColorSelectorPresets
 import com.saggitt.colorpickerx.OnChooseColorListener
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.*
@@ -238,11 +239,12 @@ abstract class AppGroups<T : AppGroups.Group>(
 
             abstract fun clone(): Customization<T, S>
 
+            @Suppress("UNCHECKED_CAST")
             open fun applyFrom(other: Customization<*, *>) {
                 value = other.value as? T
             }
 
-            open fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+            open fun createRow(context: Context, parent: ViewGroup): View? {
                 return null
             }
         }
@@ -265,10 +267,9 @@ abstract class AppGroups<T : AppGroups.Group>(
 
         class CustomTitle(key: String, default: String) : StringCustomization(key, default) {
 
-            override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+            override fun createRow(context: Context, parent: ViewGroup): View? {
                 val view = LayoutInflater.from(context)
                         .inflate(R.layout.drawer_tab_custom_title_row, parent, false)
-                view.findViewById<TextView>(R.id.name_label).setTextColor(accent)
 
                 val tabName = view.findViewById<TextView>(R.id.name)
                 tabName.text = value
@@ -347,20 +348,20 @@ abstract class AppGroups<T : AppGroups.Group>(
         ) :
                 BooleanCustomization(key, default) {
 
-            override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+            override fun createRow(context: Context, parent: ViewGroup): View? {
                 val view = LayoutInflater.from(context)
                         .inflate(R.layout.drawer_tab_switch_row, parent, false)
 
                 view.findViewById<AppCompatImageView>(R.id.icon).apply {
                     setImageResource(icon)
-                    tintDrawable(accent)
                 }
 
                 view.findViewById<AppCompatTextView>(R.id.title).setText(label)
 
-                val switch = view.findViewById<SwitchCompat>(R.id.switch_widget)
-                switch.isChecked = value()
-                switch.applyColor(accent)
+                val switch = view.findViewById<SwitchCompat>(R.id.switch_widget).apply {
+                    isChecked = value()
+                    applyColor(context.omegaPrefs.accentColor)
+                }
 
                 view.setOnClickListener {
                     value = !value()
@@ -391,7 +392,7 @@ abstract class AppGroups<T : AppGroups.Group>(
         }
 
         class ColorRow(key: String, default: Int) : ColorCustomization(key, default) {
-            override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+            override fun createRow(context: Context, parent: ViewGroup): View? {
                 val view = LayoutInflater.from(context)
                         .inflate(R.layout.drawer_tab_color_row, parent, false)
 
@@ -407,10 +408,10 @@ abstract class AppGroups<T : AppGroups.Group>(
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
                     if (value == null) {
-                        value = accent
+                        value = context.getColorAccent()
                     }
                     colorPicker.setDefaultColorButton(value!!)
-                    colorPicker.positiveButton.applyColor(Utilities.getOmegaPrefs(context).accentColor)
+                    colorPicker.positiveButton.applyColor(context.getColorAccent())
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
                         override fun onCancel() {
@@ -492,11 +493,10 @@ abstract class AppGroups<T : AppGroups.Group>(
         class AppsRow(key: String, default: MutableSet<ComponentKey>) :
                 ComponentsCustomization(key, default) {
 
-            override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+            override fun createRow(context: Context, parent: ViewGroup): View? {
                 val view = LayoutInflater.from(context)
                         .inflate(R.layout.drawer_tab_apps_row, parent, false)
 
-                view.findViewById<AppCompatImageView>(R.id.manage_apps_icon).tintDrawable(accent)
                 updateCount(view)
 
                 view.setOnClickListener {
@@ -505,25 +505,29 @@ abstract class AppGroups<T : AppGroups.Group>(
                                 context,
                                 context.getString(R.string.trust_apps_manager_name)
                         ) {
-
-                            /*SelectAppActivity.start(context, value(), { newSelections ->
-                                if (newSelections != null) {
-                                    value = HashSet(newSelections)
-                                    updateCount(view)
-                                }
-                            }, DrawerTabs.Profile())*/
+                            openFragment(context, view)
                         }
                     } else {
-                        /*SelectableAppsActivity.start(context, value(), { newSelections ->
-                            if (newSelections != null) {
-                                value = HashSet(newSelections)
-                                updateCount(view)
-                            }
-                        }, DrawerTabs.Profile())*/
+                        openFragment(context, view)
                     }
                 }
 
                 return view
+            }
+
+            private fun openFragment(context: Context, view: View) {
+                val fragment = "com.saggitt.omega.preferences.views.SelectableAppsFragment"
+                PreferencesActivity.startFragment(
+                        context,
+                        fragment,
+                        context.resources.getString(R.string.title__drawer_hide_apps),
+                        value(), { newSelections ->
+                    if (newSelections != null) {
+                        value = HashSet(newSelections)
+                        updateCount(view)
+                    }
+                }, DrawerTabs.Profile()
+                )
             }
 
             private fun updateCount(view: View) {

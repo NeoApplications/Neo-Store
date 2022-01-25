@@ -40,7 +40,7 @@ class DrawerFolders(manager: AppGroupsManager) :
     override fun getGroupCreator(type: String): GroupCreator<Folder> {
         return when (type) {
             TYPE_CUSTOM -> object : GroupCreator<Folder> {
-                override fun createGroup(context: Context): Folder? {
+                override fun createGroup(context: Context): Folder {
                     return CustomFolder(context)
                 }
             }

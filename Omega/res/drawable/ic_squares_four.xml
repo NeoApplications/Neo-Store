@@ -1,0 +1,36 @@
+<!--
+  ~ This file is part of Omega Launcher
+  ~ Copyright (c) 2022   Omega Launcher Team
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector android:height="128dp"
+    android:viewportHeight="256"
+    android:viewportWidth="256"
+    android:width="128dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <path
+        android:fillColor="?colorAccent"
+        android:pathData="M108,36H48A12,12 0,0 0,36 48v60a12,12 0,0 0,12 12h60a12,12 0,0 0,12 -12V48A12,12 0,0 0,108 36ZM96,96H60V60H96Z" />
+    <path
+        android:fillColor="?colorAccent"
+        android:pathData="M208,36H148a12,12 0,0 0,-12 12v60a12,12 0,0 0,12 12h60a12,12 0,0 0,12 -12V48A12,12 0,0 0,208 36ZM196,96H160V60h36Z" />
+    <path
+        android:fillColor="?colorAccent"
+        android:pathData="M108,136H48a12,12 0,0 0,-12 12v60a12,12 0,0 0,12 12h60a12,12 0,0 0,12 -12V148A12,12 0,0 0,108 136ZM96,196H60V160H96Z" />
+    <path
+        android:fillColor="?colorAccent"
+        android:pathData="M208,136L148,136a12,12 0,0 0,-12 12v60a12,12 0,0 0,12 12h60a12,12 0,0 0,12 -12L220,148A12,12 0,0 0,208 136ZM196,196L160,196L160,160h36Z" />
+</vector>

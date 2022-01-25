@@ -37,17 +37,17 @@ open class DrawerTabsAdapter(context: Context) :
             UserCache.INSTANCE.get(context).userProfiles.size > 1
 
     override fun createGroup(callback: (DrawerTabs.Tab, Boolean) -> Unit) {
-        DrawerTabTypeSelectionBottomSheet.show(
-                context, mapOf(
-                FlowerpotTabs.TYPE_FLOWERPOT to arrayOf(
-                        R.string.tab_type_smart,
-                        R.string.pref_appcategorization_flowerpot_summary,
-                        R.drawable.ic_category
-                ),
-                DrawerTabs.TYPE_CUSTOM to arrayOf(
-                        R.string.custom,
-                        R.string.tab_type_custom_desc,
-                        R.drawable.ic_list
+         DrawerTabTypeSelectionBottomSheet.show(
+                 context, mapOf(
+                 FlowerpotTabs.TYPE_FLOWERPOT to arrayOf(
+                         R.string.tab_type_smart,
+                         R.string.pref_appcategorization_flowerpot_summary,
+                         R.drawable.ic_category
+                 ),
+                 DrawerTabs.TYPE_CUSTOM to arrayOf(
+                         R.string.custom,
+                         R.string.tab_type_custom_desc,
+                         R.drawable.ic_squares_four
                 )
         )
         ) {

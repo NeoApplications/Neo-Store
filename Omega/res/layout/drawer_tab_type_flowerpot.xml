@@ -71,4 +71,5 @@
         android:layout_marginStart="16dp"
         android:gravity="end|center_vertical"
         app:srcCompat="@drawable/chevron_right" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

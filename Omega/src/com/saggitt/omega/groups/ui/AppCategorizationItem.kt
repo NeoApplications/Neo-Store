@@ -48,10 +48,9 @@ import com.saggitt.omega.theme.OmegaTheme
 fun AppCategorizationItem() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val manager = AppGroupsManager(prefs)
 
     val (selectedOption, onOptionSelected) = remember {
-        mutableStateOf(manager.categorizationType)
+        mutableStateOf(prefs.appGroupsManager.categorizationType)
     }
 
     Column(
@@ -59,11 +58,12 @@ fun AppCategorizationItem() {
                     .fillMaxWidth()
                     .padding(2.dp)
     ) {
+        /* Crear opcion de Folders */
         Surface(
                 modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            manager.categorizationType = AppGroupsManager.CategorizationType.Folders
+                            prefs.appGroupsManager.categorizationType = AppGroupsManager.CategorizationType.Folders
                             onOptionSelected(AppGroupsManager.CategorizationType.Folders)
                         },
                 shape = RoundedCornerShape(8.dp),
@@ -91,8 +91,7 @@ fun AppCategorizationItem() {
                             color = OmegaTheme.colors.textSecondary
                     )
                 }
-                Log.d("AppCatItem", "Categorization: " + manager.categorizationType)
-                if (manager.categorizationType != AppGroupsManager.CategorizationType.Tabs) {
+                if (prefs.appGroupsManager.categorizationType != AppGroupsManager.CategorizationType.Tabs) {
                     Column(
                             modifier = Modifier
                                     .width(48.dp)
@@ -106,7 +105,7 @@ fun AppCategorizationItem() {
                                 modifier = Modifier
                                         .size(30.dp)
                                         .clickable {
-                                            manager.categorizationType = AppGroupsManager.CategorizationType.Folders
+                                            prefs.appGroupsManager.categorizationType = AppGroupsManager.CategorizationType.Folders
                                             onOptionSelected(AppGroupsManager.CategorizationType.Folders)
                                         }
                         )
@@ -117,11 +116,12 @@ fun AppCategorizationItem() {
 
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 
+        /* Crear opcion de Tabs */
         Surface(
                 modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            manager.categorizationType = AppGroupsManager.CategorizationType.Tabs
+                            prefs.appGroupsManager.categorizationType = AppGroupsManager.CategorizationType.Tabs
                             onOptionSelected(AppGroupsManager.CategorizationType.Tabs)
                         },
                 shape = RoundedCornerShape(8.dp),
@@ -150,7 +150,7 @@ fun AppCategorizationItem() {
                     )
                 }
 
-                if (manager.categorizationType == AppGroupsManager.CategorizationType.Tabs) {
+                if (prefs.appGroupsManager.categorizationType == AppGroupsManager.CategorizationType.Tabs) {
                     Column(
                             modifier = Modifier
                                     .width(48.dp)
@@ -164,7 +164,7 @@ fun AppCategorizationItem() {
                                 modifier = Modifier
                                         .size(30.dp)
                                         .clickable {
-                                            manager.categorizationType = AppGroupsManager.CategorizationType.Tabs
+                                            prefs.appGroupsManager.categorizationType = AppGroupsManager.CategorizationType.Tabs
                                             onOptionSelected(AppGroupsManager.CategorizationType.Tabs)
                                         }
                         )

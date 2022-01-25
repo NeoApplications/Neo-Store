@@ -1,14 +1,14 @@
 package com.saggitt.omega.preferences.views
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.os.Handler
+import android.os.ResultReceiver
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
@@ -16,18 +16,24 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.android.launcher3.BuildConfig
+import com.android.launcher3.InsettableFrameLayout
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
+import com.android.launcher3.util.ComponentKey
 import com.farmerbb.taskbar.lib.Taskbar
+import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_TRUST_APPS
 import com.saggitt.omega.changeDefaultHome
+import com.saggitt.omega.groups.DrawerTabs
+import com.saggitt.omega.settings.SettingsDragLayer
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.recreateAnimated
+import com.saggitt.omega.views.DecorLayout
 
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
@@ -36,6 +42,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
+    val dragLayer by lazy { SettingsDragLayer(this, null) }
+    val decorLayout by lazy { DecorLayout(this, window) }
+    private val customLayoutInflater by lazy {
+        OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
@@ -46,17 +57,21 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         currentAccent = omegaPrefs.accentColor
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
-            resources.getIdentifier(
-                Integer.toHexString(currentAccent),
-                "style",
-                packageName
-            ), true
+                resources.getIdentifier(
+                        Integer.toHexString(currentAccent),
+                        "style",
+                        packageName
+                ), true
         )
         super.onCreate(savedInstanceState)
+        dragLayer.addView(decorLayout, InsettableFrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        super.setContentView(dragLayer)
+
         binding = PreferencesActivityBinding.inflate(layoutInflater)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, getSettingFragment()).commit()
+                .replace(R.id.fragment_container, getSettingFragment()).commit()
         setContentView(binding.root)
         setSupportActionBar(binding.actionBar)
         supportFragmentManager.addOnBackStackChangedListener {
@@ -66,7 +81,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             } else {
                 binding.actionBar.setNavigationOnClickListener { supportFragmentManager.popBackStack() }
                 binding.actionBar.navigationIcon =
-                    AppCompatResources.getDrawable(this, R.drawable.ic_arrow_back)
+                        AppCompatResources.getDrawable(this, R.drawable.ic_arrow_back)
             }
         }
 
@@ -77,23 +92,70 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         val fragment: String = intent.getStringExtra(EXTRA_FRAGMENT) ?: ""
         return if (fragment.isNotEmpty()) {
             supportFragmentManager.fragmentFactory
-                .instantiate(ClassLoader.getSystemClassLoader(), fragment).apply {
-                    arguments = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS)
-                }
+                    .instantiate(ClassLoader.getSystemClassLoader(), fragment).apply {
+                        arguments = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS)
+                    }
         } else {
             PrefsMainFragment()
         }
     }
 
+    override fun onBackPressed() {
+        dragLayer.getTopOpenView()?.let {
+            it.close(true)
+            return
+        }
+        super.onBackPressed()
+    }
+
+    fun getContentFrame(): ViewGroup {
+        return decorLayout.findViewById(android.R.id.content)
+    }
+
+    override fun setContentView(v: View) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        contentParent.addView(v)
+    }
+
+    override fun setContentView(resId: Int) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        LayoutInflater.from(this).inflate(resId, contentParent)
+    }
+
+    override fun setContentView(v: View, lp: ViewGroup.LayoutParams) {
+        val contentParent = getContentFrame()
+        contentParent.removeAllViews()
+        contentParent.addView(v, lp)
+    }
+
+    override fun getSystemService(name: String): Any? {
+        if (name == Context.LAYOUT_INFLATER_SERVICE) {
+            return customLayoutInflater
+        }
+        return super.getSystemService(name)
+    }
+
+
     private fun resolveDefaultHome(): String? {
         val homeIntent: Intent = Intent(Intent.ACTION_MAIN)
-            .addCategory(Intent.CATEGORY_HOME)
+                .addCategory(Intent.CATEGORY_HOME)
         val info: ResolveInfo? = packageManager
-            .resolveActivity(homeIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                .resolveActivity(homeIntent, PackageManager.MATCH_DEFAULT_ONLY)
         return if (info?.activityInfo != null) {
             info.activityInfo.packageName
         } else {
             null
+        }
+    }
+
+    override fun onThemeChanged() {
+        if (currentTheme == themeOverride.getTheme(this)) return
+        if (paused) {
+            recreate()
+        } else {
+            recreateAnimated()
         }
     }
 
@@ -136,7 +198,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 R.id.action_restart_launcher -> Utilities.killLauncher()
                 R.id.action_dev_options -> {
                     requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, PrefsDevFragment()).commit()
+                            .replace(R.id.fragment_container, PrefsDevFragment()).commit()
                 }
                 else -> return false
             }
@@ -145,19 +207,19 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     }
 
     class PrefsDockFragment :
-        BasePreferenceFragment(R.xml.preferences_dock, R.string.title__general_dock)
+            BasePreferenceFragment(R.xml.preferences_dock, R.string.title__general_dock)
 
     class PrefsDrawerFragment :
-        BasePreferenceFragment(R.xml.preferences_drawer, R.string.title__general_drawer) {
+            BasePreferenceFragment(R.xml.preferences_drawer, R.string.title__general_drawer) {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
                 onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                        requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
-                        true
-                    }
+                        Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                            requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
+                            true
+                        }
 
                 isVisible = Utilities.ATLEAST_R
             }
@@ -165,26 +227,26 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             findPreference<Preference>(PREFS_TRUST_APPS)?.apply {
                 onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     if (
-                        Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
-                        Utilities.ATLEAST_R
+                            Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
+                            Utilities.ATLEAST_R
                     ) {
                         Config.showLockScreen(
-                            requireContext(),
-                            getString(R.string.trust_apps_manager_name)
+                                requireContext(),
+                                getString(R.string.trust_apps_manager_name)
                         ) {
                             val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
                             startFragment(
-                                context,
-                                fragment,
-                                context.resources.getString(R.string.title__drawer_hide_apps)
+                                    context,
+                                    fragment,
+                                    context.resources.getString(R.string.title__drawer_hide_apps)
                             )
                         }
                     } else {
                         val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
                         startFragment(
-                            context,
-                            fragment,
-                            context.resources.getString(R.string.title__drawer_hide_apps)
+                                context,
+                                fragment,
+                                context.resources.getString(R.string.title__drawer_hide_apps)
                         )
                     }
                     false
@@ -194,13 +256,13 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     }
 
     class PrefsSearchFragment :
-        BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search)
+            BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search)
 
     class PrefsAdvancedFragment :
-        BasePreferenceFragment(R.xml.preferences_advanced, R.string.title__general_advanced)
+            BasePreferenceFragment(R.xml.preferences_advanced, R.string.title__general_advanced)
 
     class PrefsDevFragment :
-        BasePreferenceFragment(R.xml.preferences_dev, R.string.developer_options_title) {
+            BasePreferenceFragment(R.xml.preferences_dev, R.string.developer_options_title) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             findPreference<Preference>("kill")?.setOnPreferenceClickListener {
@@ -209,20 +271,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             }
             findPreference<Preference>("pref_desktop_mode_settings")?.setOnPreferenceClickListener {
                 Taskbar.openSettings(
-                    requireContext(),
-                    ThemeOverride.Settings().getTheme(requireContext())
+                        requireContext(),
+                        ThemeOverride.Settings().getTheme(requireContext())
                 )
                 true
             }
-        }
-    }
-
-    override fun onThemeChanged() {
-        if (currentTheme == themeOverride.getTheme(this)) return
-        if (paused) {
-            recreate()
-        } else {
-            recreateAnimated()
         }
     }
 
@@ -234,17 +287,47 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         const val EXTRA_FRAGMENT_ARGS = "fragmentArgs"
 
         fun startFragment(
-            context: Context,
-            fragment: String?,
-            title: String?
+                context: Context,
+                fragment: String?,
+                title: String?
         ) {
             context.startActivity(createFragmentIntent(context, fragment, title))
         }
 
+        /* Used for SelectableAppsFragment */
+        private const val KEY_SELECTION = "selection"
+        private const val KEY_CALLBACK = "callback"
+        private const val KEY_FILTER_IS_WORK = "filterIsWork"
+        fun startFragment(
+                context: Context,
+                fragment: String?,
+                title: String?, selection: Collection<ComponentKey>,
+                callback: (Collection<ComponentKey>?) -> Unit, profile: DrawerTabs.Profile) {
+
+            val intent = Intent(context, PreferencesActivity::class.java).apply {
+                putStringArrayListExtra(KEY_SELECTION, ArrayList(selection.map { it.toString() }))
+                putExtra(KEY_CALLBACK, object : ResultReceiver(Handler()) {
+
+                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+                        if (resultCode == RESULT_OK) {
+                            callback(resultData!!.getStringArrayList(KEY_SELECTION)!!.map {
+                                Utilities.makeComponentKey(context, it)
+                            })
+                        } else {
+                            callback(null)
+                        }
+                    }
+                })
+                putExtra(KEY_FILTER_IS_WORK, profile)
+            }
+
+            context.startActivity(createFragmentIntent(context, fragment, title))
+        }
+
         private fun createFragmentIntent(
-            context: Context,
-            fragment: String?,
-            title: CharSequence?
+                context: Context,
+                fragment: String?,
+                title: CharSequence?
         ): Intent {
             val intent = Intent(context, PreferencesActivity::class.java)
             intent.putExtra(EXTRA_FRAGMENT, fragment)
@@ -253,6 +336,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             }
 
             return intent
+        }
+
+        fun getActivity(context: Context): PreferencesActivity {
+            return context as? PreferencesActivity
+                    ?: (context as ContextWrapper).baseContext as PreferencesActivity
         }
     }
 }

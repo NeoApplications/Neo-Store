@@ -226,4 +226,8 @@ public class AllAppsTransitionController
             mAppsView.reset(false /* animate */);
         }
     }
+
+    public AllAppsContainerView getAppsView() {
+        return mAppsView;
+    }
 }

@@ -17,6 +17,7 @@
 
 package com.saggitt.omega.groups
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
@@ -32,8 +33,10 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.getColorAttr
 import com.saggitt.omega.util.tintDrawable
+import com.saggitt.omega.views.SettingsBottomSheet
 
-class DrawerTabTypeSelectionBottomSheet(
+@SuppressLint("ViewConstructor")
+class DrawerTabTypeSelectionBottomSheet constructor(
         context: Context,
         selectionItems: Map<String, Array<Int>>,
         callback: (which: String) -> Unit
@@ -43,8 +46,6 @@ class DrawerTabTypeSelectionBottomSheet(
 
         val accent = Utilities.getOmegaPrefs(context).accentColor
         val container = findViewById<ViewGroup>(R.id.types_container)
-
-        findViewById<TextView>(android.R.id.title).setTextColor(accent)
 
         val tintNormal = ColorUtils
                 .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
@@ -70,7 +71,7 @@ class DrawerTabTypeSelectionBottomSheet(
         )
 
         for (item in selectionItems) {
-            val view = View.inflate(context, R.layout.drawer_tab_type_item, null)
+            val view = View.inflate(context, R.layout.drawer_tab_type_manual, null)
 
             view.background.setTintList(tintList)
             (view.background as RippleDrawable).setColor(rippleTintList)
@@ -100,11 +101,11 @@ class DrawerTabTypeSelectionBottomSheet(
                 selectionItems: Map<String, Array<Int>>,
                 callback: (which: String) -> Unit
         ) {
-            /*val sheet = SettingsBottomSheet.inflate(context)
+            val sheet = SettingsBottomSheet.inflate(context)
             sheet.show(DrawerTabTypeSelectionBottomSheet(context, selectionItems) {
                 sheet.close(false)
                 callback(it)
-            }, true)*/
+            }, true)
         }
     }
 }

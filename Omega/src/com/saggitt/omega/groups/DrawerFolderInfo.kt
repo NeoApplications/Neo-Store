@@ -18,7 +18,6 @@
 package com.saggitt.omega.groups
 
 import com.android.launcher3.Launcher
-import com.android.launcher3.allapps.AllAppsStore
 import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.FolderInfo
 import com.saggitt.omega.util.omegaPrefs
@@ -26,7 +25,6 @@ import com.saggitt.omega.util.omegaPrefs
 class DrawerFolderInfo(private val drawerFolder: DrawerFolders.Folder) : FolderInfo() {
 
     private var changed = false
-    lateinit var appsStore: AllAppsStore
 
     override fun setTitle(title: CharSequence?, modelWriter: ModelWriter) {
         super.setTitle(title, modelWriter)
@@ -49,6 +47,6 @@ class DrawerFolderInfo(private val drawerFolder: DrawerFolders.Folder) : FolderI
     }
 
     fun showEdit(launcher: Launcher) {
-        DrawerTabEditBottomSheet.editFolder(launcher, drawerFolder)
+        DrawerGroupBottomSheet.editFolder(launcher, drawerFolder)
     }
 }

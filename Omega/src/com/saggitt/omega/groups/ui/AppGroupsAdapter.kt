@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.groups.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.util.LayoutDirection
@@ -25,14 +26,17 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.saggitt.omega.groups.AppGroups
-import com.saggitt.omega.groups.DrawerTabEditBottomSheet
-import com.saggitt.omega.util.*
+import com.saggitt.omega.groups.DrawerGroupBottomSheet
+import com.saggitt.omega.util.getColorAccent
+import com.saggitt.omega.util.isVisible
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.tintDrawable
 
 abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : AppGroups.Group>(val context: Context) :
         RecyclerView.Adapter<AppGroupsAdapter.Holder>() {
@@ -81,6 +85,7 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     abstract fun filterGroups(): Collection<T>
 
+    @SuppressLint("NotifyDataSetChanged")
     open fun loadAppGroups() {
         items.clear()
         headerItemCount = 0
@@ -126,18 +131,8 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
         return true
     }
 
-    fun showAddDialog() {
-        createGroup { group, animate ->
-            DrawerTabEditBottomSheet.newGroup(context, group, animate) {
-                group.customizations.applyFrom(it)
-                addGroup(group)
-                saveChanges()
-            }
-        }
-    }
-
     fun showEditDialog(group: T) {
-        DrawerTabEditBottomSheet.edit(context, group) {
+        DrawerGroupBottomSheet.edit(context, group) {
             saved = false
             saveChanges()
             loadAppGroups()
@@ -148,47 +143,48 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     open class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    /* Crea la fila del encabezado*/
     inner class HeaderHolder(itemView: View) : Holder(itemView) {
 
         init {
-            val context = itemView.context
-            val title = itemView.findViewById<View>(R.id.categoryHeader)
-                    .findViewById<TextView>(android.R.id.title)
+            val title = itemView.findViewById<TextView>(R.id.group_title)
             title.setText(headerText)
-            title.setTextColor(context.createDisabledColor(accent))
-
-            val tipIcon =
-                    itemView.findViewById<View>(R.id.tipRow).findViewById<ImageView>(android.R.id.icon)
-            tipIcon.tintDrawable(accent)
         }
     }
 
+    /* Crea una fila para Opcion de Agregar*/
     inner class AddHolder(itemView: View) : Holder(itemView), View.OnClickListener {
 
         init {
-            val title = itemView.findViewById<TextView>(android.R.id.title)
-            title.setTextColor(accent)
-
-            val icon = itemView.findViewById<ImageView>(android.R.id.icon)
-            icon.tintDrawable(accent)
-
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
             showAddDialog()
         }
+
+        /* Mostrar el dialogo de Crear */
+        private fun showAddDialog() {
+            createGroup { group, animate ->
+                DrawerGroupBottomSheet.newGroup(context, group, animate) {
+                    group.customizations.applyFrom(it)
+                    addGroup(group)
+                    saveChanges()
+                }
+            }
+        }
     }
 
+    /* Crea una fila por cada folder*/
     open inner class GroupHolder(itemView: View) : Holder(itemView) {
 
         protected val title: TextView = itemView.findViewById(R.id.title)
         protected val summary: TextView = itemView.findViewById(R.id.summary)
-        protected val delete: ImageView = itemView.findViewById(R.id.delete)
+        protected val delete: AppCompatImageView = itemView.findViewById(R.id.delete)
         private var deleted = false
 
         init {
-            itemView.findViewById<View>(R.id.drag_handle).setOnTouchListener { _, event ->
+            itemView.findViewById<AppCompatImageView>(R.id.drag_handle).setOnTouchListener { _, event ->
                 if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                     itemTouchHelper.startDrag(this)
                 }

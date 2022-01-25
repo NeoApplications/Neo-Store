@@ -90,7 +90,7 @@ class FlowerpotTabs(manager: AppGroupsManager) :
                 return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
             }
 
-        fun getMatches(): Set<ComponentKey> {
+        private fun getMatches(): Set<ComponentKey> {
             pot.ensureLoaded()
             return pot.apps.matches
         }
@@ -115,9 +115,9 @@ class FlowerpotTabs(manager: AppGroupsManager) :
         private val displayName
             get() = flowerpotManager.getPot(value ?: default)?.displayName
 
-        override fun createRow(context: Context, parent: ViewGroup, accent: Int): View? {
+        override fun createRow(context: Context, parent: ViewGroup): View? {
             val view = LayoutInflater.from(context)
-                    .inflate(R.layout.drawer_tab_flowerpot_row, parent, false)
+                    .inflate(R.layout.drawer_tab_type_flowerpot, parent, false)
             updateSummary(view)
 
             view.setOnClickListener {
