@@ -130,7 +130,7 @@
     <string name="msg_minus_one_on_left">Til venstre for hovedhjemmeskjermen</string>
     <string name="title_show_google_app">Vis Google-program</string>
     <string name="icon_shape_override_progress">Bruker ikonformsendringer</string>
-    <string name="get_more_icon_packs">Hent flere</string>
+    <string name="get_more_icon_packs">Last ned ny ikonpakke</string>
     <string name="icon_pack">Ikonpakke</string>
     <string name="title_default">Forvalg</string>
     <string name="theme_use_dark_text">Bruk mørk tekst</string>
@@ -418,4 +418,6 @@
     <string name="summary_force_shapeless">Prøv å bruke gammeldagse ikoner for alle programmer.</string>
     <string name="summary_colored_backgrounds">Fargelegg genererte bakgrunner for tilpasningsdyktige ikoner</string>
     <string name="summary_white_only_treatment">Fargelegg bakgrunner for tilpasningsdyktige ikoner.</string>
+    <string name="web_search_searx">Searx (vev)</string>
+    <string name="web_search_metager">Metager (vev)</string>
 </resources>

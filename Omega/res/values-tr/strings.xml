@@ -417,4 +417,10 @@
     <string name="summary_colored_backgrounds">Uyarlanabilir Simgelerin arka planları için.</string>
     <string name="summary_white_only_treatment">Tüm Uyarlanabilir Simgelerin arka planlarını renklendir.</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Gün ışığını takip et (Siyah)</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
+    <string name="cat_desktop_grid">Izgara ve Düzen</string>
+    <string name="summary_app_categorize">Sekmeler veya Klasörler arasında seçim yapın</string>
+    <string name="title_app_categorization_enable">Uygulama kategorilerini etkinleştir</string>
+    <string name="summary_app_categorization_enable">Sekmeler veya klasörler oluşturun</string>
 </resources>

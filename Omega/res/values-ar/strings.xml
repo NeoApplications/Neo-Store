@@ -425,4 +425,10 @@
     <string name="summary_colored_backgrounds">خلفيات الأيقونات التكيفية.</string>
     <string name="summary_legacy_treatment">قم بإنشاء أيقونات تكيفية لجميع الاختصارات.</string>
     <string name="summary_white_only_treatment">قم بتلوين جميع خلفيات الأيقونات التكيفية.</string>
+    <string name="summary_app_categorization_enable">إنشاء علامات تبويب أو مجلدات</string>
+    <string name="summary_app_categorize">الاختيار بين علامات التبويب أو المجلدات</string>
+    <string name="cat_desktop_grid">الشبكة والتخطيط</string>
+    <string name="title_app_categorization_enable">تمكين فئات التطبيقات</string>
+    <string name="web_search_metager">Metager (ويب)</string>
+    <string name="web_search_searx">سيركس (ويب)</string>
 </resources>

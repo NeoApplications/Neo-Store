@@ -415,4 +415,10 @@
     <string name="summary_colored_backgrounds">针对自适应图标的背景。</string>
     <string name="summary_force_shapeless">尝试为所有应用程序使用旧图标。</string>
     <string name="summary_legacy_treatment">为所有快捷方式创建自适应图标。</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
+    <string name="cat_desktop_grid">网格和布局</string>
+    <string name="summary_app_categorization_enable">创建标签页或文件夹</string>
+    <string name="summary_app_categorize">选择选项卡或文件夹</string>
+    <string name="title_app_categorization_enable">启用应用类别</string>
 </resources>
