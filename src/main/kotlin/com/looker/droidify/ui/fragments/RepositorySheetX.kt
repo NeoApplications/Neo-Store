@@ -9,6 +9,7 @@ import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -48,8 +49,19 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
     private val syncConnection = Connection(SyncService::class.java)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val sheet = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        sheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        val sheet = super.onCreateDialog(savedInstanceState)
+        sheet.setOnShowListener {
+            val bsd = it as BottomSheetDialog
+            val parentLayout =
+                bsd.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            parentLayout?.let { view ->
+                val behaviour = BottomSheetBehavior.from(view)
+                val layoutParams = view.layoutParams
+                layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+                view.layoutParams = layoutParams
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
         return sheet
     }
 
