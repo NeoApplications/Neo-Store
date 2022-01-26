@@ -1,3 +1,21 @@
+/*
+ * This file is part of Omega Launcher
+ * Copyright (c) 2022   Omega Launcher Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.saggitt.omega.preferences.views
 
 import android.content.Context
@@ -6,7 +24,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.os.Handler
 import android.os.ResultReceiver
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +38,7 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.PREFS_PROTECTED_APPS
@@ -43,7 +61,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
     val dragLayer by lazy { SettingsDragLayer(this, null) }
-    val decorLayout by lazy { DecorLayout(this) }
+    private val decorLayout by lazy { DecorLayout(this) }
     private val customLayoutInflater by lazy {
         OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
     }
@@ -282,7 +300,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     companion object {
         var DEFAULT_HOME: String? = ""
 
-        const val EXTRA_TITLE = "title"
+        private const val EXTRA_TITLE = "title"
         const val EXTRA_FRAGMENT = "fragment"
         const val EXTRA_FRAGMENT_ARGS = "fragmentArgs"
 
@@ -295,18 +313,22 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
 
         /* Used for SelectableAppsFragment */
-        private const val KEY_SELECTION = "selection"
-        private const val KEY_CALLBACK = "callback"
-        private const val KEY_FILTER_IS_WORK = "filterIsWork"
+        const val KEY_SELECTION = "selection"
+        const val KEY_CALLBACK = "callback"
+        const val KEY_FILTER_IS_WORK = "filterIsWork"
+
         fun startFragment(
                 context: Context,
                 fragment: String?,
-                title: String?, selection: Collection<ComponentKey>,
-                callback: (Collection<ComponentKey>?) -> Unit, profile: DrawerTabs.Profile) {
-
+                title: String?,
+                selection: Collection<ComponentKey>,
+                callback: (Collection<ComponentKey>?) -> Unit,
+                profile: DrawerTabs.Profile
+        ) {
+            val args = Bundle()
             val intent = Intent(context, PreferencesActivity::class.java).apply {
-                putStringArrayListExtra(KEY_SELECTION, ArrayList(selection.map { it.toString() }))
-                putExtra(KEY_CALLBACK, object : ResultReceiver(Handler()) {
+                args.putStringArrayList(KEY_SELECTION, ArrayList(selection.map { it.toString() }))
+                args.putParcelable(KEY_CALLBACK, object : ResultReceiver(MAIN_EXECUTOR.handler) {
 
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                         if (resultCode == RESULT_OK) {
@@ -318,10 +340,15 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                         }
                     }
                 })
-                putExtra(KEY_FILTER_IS_WORK, profile)
-            }
+                args.putParcelable(KEY_FILTER_IS_WORK, profile)
 
-            context.startActivity(createFragmentIntent(context, fragment, title))
+                putExtra(EXTRA_FRAGMENT_ARGS, args)
+                putExtra(EXTRA_FRAGMENT, fragment)
+                if (title != null) {
+                    putExtra(EXTRA_TITLE, title)
+                }
+            }
+            context.startActivity(intent)
         }
 
         private fun createFragmentIntent(

@@ -516,7 +516,7 @@ abstract class AppGroups<T : AppGroups.Group>(
             }
 
             private fun openFragment(context: Context, view: View) {
-                val fragment = "com.saggitt.omega.preferences.views.SelectableAppsFragment"
+                val fragment = "com.saggitt.omega.views.SelectableAppsFragment"
                 PreferencesActivity.startFragment(
                         context,
                         fragment,

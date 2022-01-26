@@ -28,6 +28,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,9 +41,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.BubbleTextView;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.saggitt.omega.groups.DrawerFolderInfo;
+import com.saggitt.omega.groups.DrawerFolderItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,9 +73,12 @@ public class AllAppsGridAdapter extends
     // A divider that separates the apps list and the search market button
     public static final int VIEW_TYPE_ALL_APPS_DIVIDER = 1 << 4;
 
+    // Drawer folders
+    public static final int VIEW_TYPE_FOLDER = 1 << 6;
+
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
-    public static final int VIEW_TYPE_MASK_ICON = VIEW_TYPE_ICON;
+    public static final int VIEW_TYPE_MASK_ICON = VIEW_TYPE_ICON | VIEW_TYPE_FOLDER;
 
 
     private final BaseAdapterProvider[] mAdapterProviders;
@@ -114,6 +122,9 @@ public class AllAppsGridAdapter extends
         // Search section associated to result
         public DecorationInfo decorationInfo = null;
 
+        // The associated folder for the folder
+        public DrawerFolderItem folderItem = null;
+
         /**
          * Factory method for AppIcon AdapterItem
          */
@@ -155,6 +166,16 @@ public class AllAppsGridAdapter extends
             AdapterItem item = new AdapterItem();
             item.viewType = VIEW_TYPE_SEARCH_MARKET;
             item.position = pos;
+            return item;
+        }
+
+        public static AdapterItem asFolder(int pos, String sectionName,
+                                           DrawerFolderInfo folderInfo, int folderIndex) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = AllAppsGridAdapter.VIEW_TYPE_FOLDER;
+            item.position = pos;
+            item.sectionName = sectionName;
+            item.folderItem = new DrawerFolderItem(folderInfo, folderIndex);
             return item;
         }
 
@@ -372,6 +393,15 @@ public class AllAppsGridAdapter extends
             case VIEW_TYPE_ALL_APPS_DIVIDER:
                 return new ViewHolder(mLayoutInflater.inflate(
                         R.layout.all_apps_divider, parent, false));
+
+            case VIEW_TYPE_FOLDER:
+                FrameLayout layout = new FrameLayout(mLauncher);
+
+                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        mLauncher.getDeviceProfile().allAppsCellHeightPx);
+                layout.setLayoutParams(lp);
+                return new ViewHolder(layout);
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(viewType);
                 if (adapterProvider != null) {
@@ -408,6 +438,18 @@ public class AllAppsGridAdapter extends
             case VIEW_TYPE_ALL_APPS_DIVIDER:
                 // nothing to do
                 break;
+
+            case VIEW_TYPE_FOLDER:
+                ViewGroup container = (ViewGroup) holder.itemView;
+                FolderIcon folderIcon = mApps.getAdapterItems().get(position)
+                        .folderItem.getFolderIcon((Launcher) mLauncher, container);
+
+                container.removeAllViews();
+                container.addView(folderIcon);
+
+                folderIcon.verifyHighRes();
+                break;
+
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(holder.getItemViewType());
                 if (adapterProvider != null) {

@@ -21,17 +21,23 @@ import static com.saggitt.omega.util.Config.SORT_MOST_USED;
 import static com.saggitt.omega.util.Config.SORT_ZA;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.android.launcher3.BaseDraggingActivity;
+import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.model.data.AppInfo;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.AppCountInfo;
 import com.saggitt.omega.allapps.AppUsageComparator;
+import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
 import com.saggitt.omega.util.DbHelper;
 
@@ -41,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -291,6 +298,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         FastScrollSectionInfo lastFastScrollerSectionInfo = null;
         int position = 0;
         int appIndex = 0;
+        int folderIndex = 0;
 
         // Prepare to update the list of sections, filtered apps, etc.
         mAccessibilityResultsCount = 0;
@@ -308,17 +316,39 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     return;
                 }
             }
+
+            for (DrawerFolderInfo info : getFolderInfos()) {
+                String sectionName = "#";
+
+                // Create a new section if the section names do not match
+                if (!sectionName.equals(lastSectionName)) {
+                    lastSectionName = sectionName;
+                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, Color.WHITE);
+                    mFastScrollerSections.add(lastFastScrollerSectionInfo);
+                }
+
+                // Create an folder item
+                AdapterItem appItem = AdapterItem
+                        .asFolder(position++, sectionName, info, folderIndex++);
+                if (lastFastScrollerSectionInfo.fastScrollToItem == null) {
+                    lastFastScrollerSectionInfo.fastScrollToItem = appItem;
+                }
+                mAdapterItems.add(appItem);
+            }
+
+            Set<ComponentKey> folderFilters = getFolderFilteredApps();
             for (AppInfo info : mApps) {
+
+                if (folderFilters.contains(info.toComponentKey())) {
+                    continue;
+                }
+
                 String sectionName = info.sectionName;
 
                 // Create a new section if the section names do not match
                 if (!sectionName.equals(lastSectionName)) {
                     lastSectionName = sectionName;
-                    int color = 0;
-                    if (prefs.getSortMode() == SORT_BY_COLOR) {
-                        color = info.bitmap.color;
-                    }
-                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, color);
+                    lastFastScrollerSectionInfo = new FastScrollSectionInfo(sectionName, Color.WHITE);
                     mFastScrollerSections.add(lastFastScrollerSectionInfo);
                 }
 
@@ -331,7 +361,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
                 mAdapterItems.add(appItem);
             }
-        } else {
+        }
+
+        if (hasFilter()) {
             updateSearchAdapterItems(mSearchResults, 0);
             if (!FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
                 // Append the search market item
@@ -397,6 +429,24 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     break;
             }
         }
+    }
+
+    private List<DrawerFolderInfo> getFolderInfos() {
+        LauncherAppState app = LauncherAppState.getInstance(mLauncher);
+        LauncherModel model = app.getModel();
+        ModelWriter modelWriter = model.getWriter(false, true);
+        return Utilities.getOmegaPrefs(mLauncher)
+                .getAppGroupsManager()
+                .getDrawerFolders()
+                .getFolderInfos(this, modelWriter);
+    }
+
+    private Set<ComponentKey> getFolderFilteredApps() {
+
+        return Utilities.getOmegaPrefs(mLauncher)
+                .getAppGroupsManager()
+                .getDrawerFolders()
+                .getHiddenComponents();
     }
 
     /**
