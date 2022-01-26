@@ -55,12 +55,14 @@ width="60%" align="center">](https://hosted.weblate.org/projects/droidify/locali
 | <img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="500" align="center"/>
 |:---:|:---:|
 
-## :hammer: Building from source
+## :building_construction: Building from source
 
 Specify your Android SDK path either using the `ANDROID_HOME` environment variable, \
 or by filling out the `sdk.dir` property in `local.properties`.
 
-Signing can be done automatically using `keystore.properties` as follows:
+### :pen: Signing  
+
+Can be done automatically using `keystore.properties` as follows:
 
 ```properties
 store.file=/path/to/keystore
@@ -68,6 +70,8 @@ store.password=key-store-password
 key.alias=key-alias
 key.password=key-password
 ```
+
+### :hammer: Building
 
 Run `./gradlew assembleRelease` to build release package or run `./gradlew assembleDebug` if you want to build debug apk.
 
