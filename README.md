@@ -44,19 +44,16 @@ width="60%" align="center">](https://hosted.weblate.org/projects/droidify/locali
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="500"/>
 |:---:|:---:|
-|Home|App list|
 
 ### :last_quarter_moon_with_face: Dark theme
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="500"/>
 |:---:|:---:|
-|Home|App list|
 
 ### :waxing_crescent_moon: Amoled theme
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="500"/> | <img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="500"/>
 |:---:|:---:|
-|Home|App list|
 
 ## :hammer: Building from source
 
