@@ -41,6 +41,7 @@
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
+        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
     <style name="Theme.Main.Dark" parent="Theme.Material3.Dark.NoActionBar">
@@ -78,6 +79,7 @@
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
+        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
     <style name="Theme.Main.Amoled" parent="Theme.Material3.Dark.NoActionBar">
@@ -115,6 +117,7 @@
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
+        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
     <style name="Theme.AppBarLayout" parent="Widget.Material3.AppBarLayout">
@@ -135,6 +138,10 @@
         <item name="android:background">@drawable/appbar_background</item>
         <item name="layout_collapseMode">pin</item>
         <item name="android:backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <style name="Theme.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="Theme.Tab" parent="Widget.Material3.TabLayout">
