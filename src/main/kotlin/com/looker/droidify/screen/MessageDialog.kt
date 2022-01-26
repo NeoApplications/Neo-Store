@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.entity.Release
+import com.looker.droidify.ui.fragments.RepositorySheetX
 import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.PackageItemResolver
 import com.looker.droidify.utility.extension.android.Android
@@ -145,7 +146,7 @@ class MessageDialog() : DialogFragment() {
             is Message.DeleteRepositoryConfirm -> {
                 dialog.setTitle(R.string.confirmation)
                 dialog.setMessage(R.string.delete_repository_DESC)
-                dialog.setPositiveButton(R.string.delete) { _, _ -> (parentFragment as RepositoryFragment).onDeleteConfirm() }
+                dialog.setPositiveButton(R.string.delete) { _, _ -> (parentFragment as RepositorySheetX).onDeleteConfirm() }
                 dialog.setNegativeButton(R.string.cancel, null)
             }
             is Message.CantEditSyncing -> {

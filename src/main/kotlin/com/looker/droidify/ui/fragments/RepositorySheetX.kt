@@ -15,11 +15,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.looker.droidify.R
 import com.looker.droidify.databinding.SheetRepositoryBinding
+import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.PrefsActivityX
 import com.looker.droidify.ui.viewmodels.RepositoryViewModelX
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RepositorySheetX() : BottomSheetDialogFragment() {
@@ -56,8 +60,17 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
     ): View {
         binding = SheetRepositoryBinding.inflate(layoutInflater)
         syncConnection.bind(requireContext())
-        viewModel.repo.observe(viewLifecycleOwner) { updateRepositoryView() }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.repo.observe(viewLifecycleOwner) { updateRepositoryView() }
+        binding.delete.setOnClickListener {
+            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm).show(
+                childFragmentManager
+            )
+        }
     }
 
     override fun onDestroyView() {
@@ -130,6 +143,13 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
                 binding.fingerprint.text = fingerprint
                 binding.fingerprintBlock.visibility = View.VISIBLE
             }
+        }
+    }
+
+    internal fun onDeleteConfirm() {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (syncConnection.binder?.deleteRepository(repositoryId) == true)
+                dismissAllowingStateLoss()
         }
     }
 }
