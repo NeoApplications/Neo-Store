@@ -70,6 +70,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
                 mSections,
                 mOrder
             )
+            // TODO differentiate between updated and new (e.g. number of releases)
             Source.UPDATED -> Request.ProductsUpdated(
                 mSearchQuery,
                 mSections,

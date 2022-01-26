@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
 import com.looker.droidify.databinding.SheetRepositoryBinding
 import com.looker.droidify.screen.MessageDialog
@@ -31,10 +32,6 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
     private lateinit var binding: SheetRepositoryBinding
     val viewModel: RepositoryViewModelX by viewModels {
         RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
-    }
-
-    companion object {
-        private const val EXTRA_REPOSITORY_ID = "repositoryId"
     }
 
     constructor(repositoryId: Long = 0) : this() {

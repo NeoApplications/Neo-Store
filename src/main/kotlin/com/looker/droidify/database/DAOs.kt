@@ -70,7 +70,7 @@ interface RepositoryDao : BaseDao<Repository> {
     val allDisabledDeleted: List<Repository.IdAndDeleted>
 
     @Query("DELETE FROM repository WHERE _id = :id")
-    fun deleteById(vararg id: Long): Int
+    fun deleteById(id: Long): Int
 
     // TODO optimize
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -91,7 +91,7 @@ interface ProductDao : BaseDao<Product> {
     fun get(packageName: String): List<Product?>
 
     @Query("DELETE FROM product WHERE repository_id = :id")
-    fun deleteById(vararg id: Long): Int
+    fun deleteById(id: Long): Int
 
     @RawQuery
     fun query(
@@ -288,9 +288,10 @@ interface CategoryDao : BaseDao<Category> {
     val allNames: List<String>
 
     @Query("DELETE FROM category WHERE repository_id = :id")
-    fun deleteById(vararg id: Long): Int
+    fun deleteById(id: Long): Int
 }
 
+// TODO make sure that apps that not uninstalled by Droid-ify still get removed
 @Dao
 interface InstalledDao : BaseDao<Installed> {
     fun put(vararg isntalled: com.looker.droidify.entity.InstalledItem) {

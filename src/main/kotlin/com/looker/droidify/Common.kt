@@ -39,3 +39,5 @@ const val JOB_ID_SYNC = 1
 
 const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
+
+const val EXTRA_REPOSITORY_ID = "repositoryId"
