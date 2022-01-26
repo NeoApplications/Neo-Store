@@ -17,7 +17,6 @@
   -->
 
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="?attr/widgetsTheme"
     android:background="@drawable/widgets_bottom_sheet_background"
     android:layout_width="match_parent"
@@ -59,9 +58,7 @@
                 style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_bottom_sheet_save"
-                android:textColor="?colorAccent"
-                app:tint="?colorAccent" />
+                android:text="@string/tab_bottom_sheet_save" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

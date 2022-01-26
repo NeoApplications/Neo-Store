@@ -26,7 +26,6 @@ import androidx.appcompat.widget.AppCompatButton
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.saggitt.omega.util.applyColor
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.views.BaseBottomSheet
 import com.saggitt.omega.views.SettingsBottomSheet
@@ -45,8 +44,8 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
         }
 
         findViewById<AppCompatButton>(R.id.save).apply {
-            applyColor(context.getColorAccent())
-            setTextColor(context.getColorAccent())
+            applyColor(context.omegaPrefs.accentColor)
+            setTextColor(context.omegaPrefs.accentColor)
             setOnClickListener(this@DrawerGroupBottomSheet)
         }
         findViewById<AppCompatButton>(R.id.cancel).apply {
