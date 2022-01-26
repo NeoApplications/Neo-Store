@@ -62,19 +62,19 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun cleanUp(pairs: Set<Pair<Long, Boolean>>) {
         runInTransaction {
-            val result = pairs.windowed(10, 10, true).map {
-                val ids = it.map { it.first }.toLongArray()
-                val productsCount = productDao.deleteById(*ids)
-                val categoriesCount = categoryDao.deleteById(*ids)
-                val deleteIds = it.filter { it.second }.map { it.first }.toLongArray()
-                repositoryDao.deleteById(*deleteIds)
-                productsCount != 0 || categoriesCount != 0
+            pairs.windowed(10, 10, true).map {
+                it.map { it.first }
+                    .toLongArray()
+                    .forEach { id ->
+                        productDao.deleteById(id)
+                        categoryDao.deleteById(id)
+                    }
+                it.filter { it.second }
+                    .map { it.first }
+                    .toLongArray()
+                    .forEach { id -> repositoryDao.deleteById(id) }
             }
         }
-        // TODO Use live objects and observers instead
-        /*if (result.any { it }) {
-            com.looker.droidify.database.Database.notifyChanged(com.looker.droidify.database.Database.Subject.Products)
-        }*/
     }
 
     fun finishTemporary(repository: com.looker.droidify.entity.Repository, success: Boolean) {
