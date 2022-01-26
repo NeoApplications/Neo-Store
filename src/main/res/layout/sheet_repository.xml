@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -172,6 +173,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/delete"
+                            style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:text="@string/delete"
+                            android:textColor="?colorSurface"
+                            app:backgroundTint="?colorError" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_repository"
+                            style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="?colorPrimary"
+                            android:text="@string/edit_repository"
+                            android:textColor="?colorSurface" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </com.google.android.material.circularreveal.CircularRevealFrameLayout>
