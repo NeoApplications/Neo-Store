@@ -28,7 +28,7 @@ class RepoItem(val item: Repository) :
         else
             context.getColorFromAttr(R.attr.colorOnBackground)
 
-        binding.repoName.text = item.name
+        binding.repoName.text = item.name.ifEmpty { context.getString(R.string.new_repository) }
         binding.repoDescription.text = item.description.trim()
 
         binding.repoItem.setCardBackgroundColor(
