@@ -89,11 +89,12 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                 }
             }
             reposItemAdapter.set(
-                it.mapNotNull { dbRepo ->
-                    dbRepo.trueData?.let { repo ->
-                        RepoItem(repo)
+                it.sortedBy { repo -> -repo.enabled }
+                    .mapNotNull { dbRepo ->
+                        dbRepo.trueData?.let { repo ->
+                            RepoItem(repo)
+                        }
                     }
-                }
             )
         }
     }
