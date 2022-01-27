@@ -20,7 +20,7 @@ android {
     defaultConfig {
         archivesBaseName = 'droidify'
         applicationId = 'com.looker.droidify'
-        minSdk = 21
+        minSdk = 23
         targetSdk = 31
         versionCode = 43
         versionName = "0.4.3"
