@@ -8,10 +8,10 @@ import com.looker.droidify.database.entity.Repository
 
 class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
 
-    val productsList = MediatorLiveData<List<Repository>>()
+    val repositories = MediatorLiveData<List<Repository>>()
 
     init {
-        productsList.addSource(db.repositoryDao.allLive, productsList::setValue)
+        repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
     }
 
     class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
