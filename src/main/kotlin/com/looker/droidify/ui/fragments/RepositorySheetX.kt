@@ -1,6 +1,5 @@
 package com.looker.droidify.ui.fragments
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.format.DateUtils
@@ -9,11 +8,7 @@ import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
 import com.looker.droidify.databinding.SheetRepositoryBinding
@@ -28,7 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class RepositorySheetX() : BottomSheetDialogFragment() {
+class RepositorySheetX() : FullscreenBottomSheetDialogFragment() {
     private lateinit var binding: SheetRepositoryBinding
     val viewModel: RepositoryViewModelX by viewModels {
         RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
@@ -45,23 +40,6 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
 
     private val syncConnection = Connection(SyncService::class.java)
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val sheet = super.onCreateDialog(savedInstanceState)
-        sheet.setOnShowListener {
-            val bsd = it as BottomSheetDialog
-            val parentLayout =
-                bsd.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            parentLayout?.let { view ->
-                val behaviour = BottomSheetBehavior.from(view)
-                val layoutParams = view.layoutParams
-                layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-                view.layoutParams = layoutParams
-                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        return sheet
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,9 +50,8 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.repo.observe(viewLifecycleOwner) { updateRepositoryView() }
+    override fun setupLayout() {
+        viewModel.repo.observe(viewLifecycleOwner) { updateSheet() }
         binding.delete.setOnClickListener {
             MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm).show(
                 childFragmentManager
@@ -87,7 +64,7 @@ class RepositorySheetX() : BottomSheetDialogFragment() {
         syncConnection.unbind(requireContext())
     }
 
-    private fun updateRepositoryView() {
+    override fun updateSheet() {
         val repository = viewModel.repo.value?.trueData
 
         if (repository == null) {
