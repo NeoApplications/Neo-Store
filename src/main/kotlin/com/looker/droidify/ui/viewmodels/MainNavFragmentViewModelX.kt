@@ -174,7 +174,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
     ) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainNavFragmentViewModelX::class.java)) {
                 return MainNavFragmentViewModelX(db, primarySource, secondarySource) as T
             }

@@ -36,7 +36,7 @@ class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewMode
 
     class Factory(val db: DatabaseX, val repositoryId: Long) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(RepositoryViewModelX::class.java)) {
                 return RepositoryViewModelX(db, repositoryId) as T
             }
