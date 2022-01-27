@@ -57,6 +57,12 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment() {
                 childFragmentManager
             )
         }
+        binding.editRepository.setOnClickListener {
+            EditRepositorySheetX(repositoryId).showNow(
+                parentFragmentManager,
+                "Edit repository ${it.id}"
+            )
+        }
     }
 
     override fun onDestroyView() {
