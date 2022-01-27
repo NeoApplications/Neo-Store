@@ -2,18 +2,21 @@ package com.looker.droidify.database
 
 import androidx.room.TypeConverter
 import com.looker.droidify.entity.ProductItem
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
 
 object Converters {
     @TypeConverter
     @JvmStatic
-    fun toRepository(byteArray: ByteArray) = byteArray.jsonParse { Repository.deserialize(it) }
+    fun toStringList(byteArray: ByteArray): List<String> {
+        val string = byteArray.toString()
+        return if (string == "") emptyList()
+        else string.split(",")
+    }
 
     @TypeConverter
     @JvmStatic
-    fun toByteArray(repository: Repository) = jsonGenerate(repository::serialize)
+    fun toString(list: List<String>): ByteArray = list.toString().toByteArray()
 
     @TypeConverter
     @JvmStatic

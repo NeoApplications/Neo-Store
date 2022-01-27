@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.looker.droidify.database.entity.*
-import com.looker.droidify.entity.Repository.Companion.defaultRepositories
+import com.looker.droidify.database.entity.Repository.Companion.defaultRepositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -77,7 +77,7 @@ abstract class DatabaseX : RoomDatabase() {
         }
     }
 
-    fun finishTemporary(repository: com.looker.droidify.entity.Repository, success: Boolean) {
+    fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {
             if (success) {
                 productDao.deleteById(repository.id)

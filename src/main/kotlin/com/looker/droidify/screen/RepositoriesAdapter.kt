@@ -9,7 +9,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
-import com.looker.droidify.entity.Repository
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.utility.extension.resources.clear
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.inflate

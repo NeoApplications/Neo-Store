@@ -20,7 +20,7 @@ class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewMode
         appsCount.addSource(db.productDao.countForRepositoryLive(repositoryId), appsCount::setValue)
     }
 
-    fun updateRepo(newValue: com.looker.droidify.entity.Repository?) {
+    fun updateRepo(newValue: Repository?) {
         newValue?.let {
             viewModelScope.launch {
                 update(it)
@@ -28,7 +28,7 @@ class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewMode
         }
     }
 
-    private suspend fun update(newValue: com.looker.droidify.entity.Repository) {
+    private suspend fun update(newValue: Repository) {
         withContext(Dispatchers.IO) {
             db.repositoryDao.put(newValue)
         }

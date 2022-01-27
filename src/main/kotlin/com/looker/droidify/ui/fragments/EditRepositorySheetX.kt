@@ -133,7 +133,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment() {
         binding.save.setOnClickListener { onSaveRepositoryClick() }
 
         GlobalScope.launch {
-            val list = viewModel.db.repositoryDao.all.mapNotNull { it.trueData }
+            val list = viewModel.db.repositoryDao.all
             takenAddresses = list.asSequence().filter { it.id != repositoryId }
                 .flatMap { (it.mirrors + it.address).asSequence() }
                 .map { it.withoutKnownPath }.toSet()
@@ -142,7 +142,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment() {
     }
 
     override fun updateSheet() {
-        val repository = viewModel.repo.value?.trueData
+        val repository = viewModel.repo.value
         if (repository == null) {
             val clipboardManager =
                 requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -391,7 +391,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment() {
                 invalidateState()
             } else {
                 viewModel.updateRepo(
-                    viewModel.repo.value?.trueData?.copy(
+                    viewModel.repo.value?.copy(
                         address = address,
                         fingerprint = fingerprint,
                         authentication = authentication

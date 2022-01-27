@@ -17,10 +17,10 @@ import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.utility.extension.android.Android

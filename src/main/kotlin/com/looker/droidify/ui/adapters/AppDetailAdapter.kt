@@ -44,20 +44,23 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.entity.Installed
-import com.looker.droidify.entity.*
+import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.ProductPreference
+import com.looker.droidify.entity.Release
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.ScreenshotsAdapter
 import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.PackageItemResolver
 import com.looker.droidify.utility.Utils
-import com.looker.droidify.utility.extension.android.*
+import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.resources.*
 import com.looker.droidify.utility.extension.text.*
 import com.looker.droidify.widget.ClickableMovementMethod
 import com.looker.droidify.widget.StableRecyclerAdapter
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.math.*
+import kotlin.math.roundToInt
 
 class AppDetailAdapter(private val callbacks: Callbacks) :
     StableRecyclerAdapter<AppDetailAdapter.ViewType, RecyclerView.ViewHolder>() {

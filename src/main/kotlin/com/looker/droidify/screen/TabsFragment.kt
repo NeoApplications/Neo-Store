@@ -246,7 +246,7 @@ class TabsFragment : ScreenFragment() {
         repositoriesDisposable = Observable.just(Unit)
             //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
             .observeOn(Schedulers.io())
-            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all.mapNotNull { it.trueData } } }
+            .flatMapSingle { RxUtils.querySingle { screenActivity.db.repositoryDao.all } }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 setSectionsAndUpdate(null, it.asSequence().filter { it.enabled }

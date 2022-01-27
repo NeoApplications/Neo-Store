@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment
 import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
@@ -100,7 +100,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
         fun sync(request: SyncRequest) {
             GlobalScope.launch {
-                val ids = db.repositoryDao.all.mapNotNull { it.trueData }
+                val ids = db.repositoryDao.all
                     .asSequence().filter { it.enabled }.map { it.id }.toList()
                 sync(ids, request)
             }
@@ -146,10 +146,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         }
 
         fun deleteRepository(repositoryId: Long): Boolean {
-            val repository = db.repositoryDao.get(repositoryId)?.trueData
+            val repository = db.repositoryDao.get(repositoryId)
             return repository != null && run {
                 setEnabled(repository, false)
-                db.repositoryDao.markAsDeleted(repository.id)
+                db.repositoryDao.deleteById(repository.id)
                 true
             }
         }
@@ -337,7 +337,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             GlobalScope.launch {
                 if (tasks.isNotEmpty()) {
                     val task = tasks.removeAt(0)
-                    val repository = db.repositoryDao.get(task.repositoryId)?.trueData
+                    val repository = db.repositoryDao.get(task.repositoryId)
                     if (repository != null && repository.enabled) {
                         val lastStarted = started
                         val newStarted =
@@ -454,7 +454,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             installedItem.package_name
                         )
                             .filter { product -> product?.repository_id == repository.id }
-                            .map { product -> Pair(product?.data!!, repository.data!!) }
+                            .map { product -> Pair(product?.data!!, repository) }
 
                         scope.launch {
                             Utils.startUpdate(

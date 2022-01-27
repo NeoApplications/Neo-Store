@@ -75,25 +75,24 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = reposFastAdapter
         }
+        binding.addRepository.setOnClickListener { viewModel.addRepository() }
     }
 
     override fun setupLayout() {
         viewModel.repositories.observe(requireActivity()) {
             // Function: sync when an enabled repo got edited
-            val enabledList = it.filter { it.enabled == 1 }
+            val enabledList = it.filter { it.enabled }
             reposItemAdapter.adapterItems.filter(RepoItem::isEnabled).forEach { item ->
-                enabledList.firstOrNull { it.trueData?.id == item.item.id }?.let { repo ->
-                    repo.trueData?.let { data ->
+                enabledList.firstOrNull { it.id == item.item.id }?.let { repo ->
+                    repo.let { data ->
                         if (data != item.item) syncConnection.binder?.sync(data)
                     }
                 }
             }
             reposItemAdapter.set(
-                it.sortedBy { repo -> -repo.enabled }
+                it.sortedBy { repo -> !repo.enabled }
                     .mapNotNull { dbRepo ->
-                        dbRepo.trueData?.let { repo ->
-                            RepoItem(repo)
-                        }
+                        RepoItem(dbRepo)
                     }
             )
         }

@@ -32,15 +32,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @get:Query("SELECT COUNT(_id) FROM repository")
     val count: Int
 
-    fun put(repository: com.looker.droidify.entity.Repository): com.looker.droidify.entity.Repository {
-        repository.let {
-            val dbRepo = Repository().apply {
-                if (it.id >= 0L) id = it.id
-                enabled = if (it.enabled) 1 else 0
-                deleted = false
-                data = it
-            }
-            val newId = if (it.id > 0L) update(dbRepo).toLong() else returnInsert(dbRepo)
+    fun put(repository: Repository): Repository {
+        repository.let { item ->
+            val newId = if (item.id > 0L) update(item).toLong() else returnInsert(item)
             return if (newId != repository.id) repository.copy(id = newId) else repository
         }
     }
@@ -48,35 +42,30 @@ interface RepositoryDao : BaseDao<Repository> {
     @Insert
     fun returnInsert(product: Repository): Long
 
-    @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
+    @Query("SELECT * FROM repository WHERE _id = :id")
     fun get(id: Long): Repository?
 
-    @Query("SELECT * FROM repository WHERE _id = :id and deleted == 0")
+    @Query("SELECT * FROM repository WHERE _id = :id")
     fun getLive(id: Long): LiveData<Repository?>
 
-    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val allCursor: Cursor
 
-    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val all: List<Repository>
 
-    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val allLive: LiveData<List<Repository>>
 
-    @get:Query("SELECT * FROM repository WHERE deleted == 0 ORDER BY _id ASC")
+    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val allFlowable: Flowable<List<Repository>>
 
-    @get:Query("SELECT _id, deleted FROM repository WHERE deleted != 0 and enabled == 0 ORDER BY _id ASC")
-    val allDisabledDeleted: List<Repository.IdAndDeleted>
+    @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
+    val allDisabled: List<Long>
 
+    // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE _id = :id")
     fun deleteById(id: Long): Int
-
-    // TODO optimize
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun markAsDeleted(id: Long) {
-        get(id).apply { this?.deleted = true }?.let { update(it) }
-    }
 }
 
 @Dao
@@ -148,8 +137,7 @@ interface ProductDao : BaseDao<Product> {
           ON product.${ROW_PACKAGE_NAME} = category.${ROW_PACKAGE_NAME}"""
         }
 
-        builder += """WHERE repository.${ROW_ENABLED} != 0 AND
-        repository.${ROW_DELETED} == 0"""
+        builder += """WHERE repository.${ROW_ENABLED} != 0"""
 
         if (section is ProductItem.Section.Category) {
             builder += "AND category.${ROW_NAME} = ?"
@@ -238,8 +226,7 @@ interface ProductDao : BaseDao<Product> {
           ON product.${ROW_PACKAGE_NAME} = category.${ROW_PACKAGE_NAME}"""
         }
 
-        builder += """WHERE repository.${ROW_ENABLED} != 0 AND
-        repository.${ROW_DELETED} == 0"""
+        builder += """WHERE repository.${ROW_ENABLED} != 0"""
 
         if (section is ProductItem.Section.Category) {
             builder += "AND category.${ROW_NAME} = ?"
@@ -282,8 +269,7 @@ interface CategoryDao : BaseDao<Category> {
         FROM category AS category
         JOIN repository AS repository
         ON category.repository_id = repository._id
-        WHERE repository.enabled != 0 AND
-        repository.deleted == 0"""
+        WHERE repository.enabled != 0"""
     )
     val allNames: List<String>
 

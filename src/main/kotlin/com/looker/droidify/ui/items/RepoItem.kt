@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import coil.load
 import com.looker.droidify.R
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.ItemRepositoryXBinding
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.utility.extension.resources.clear
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.mikepenz.fastadapter.binding.AbstractBindingItem

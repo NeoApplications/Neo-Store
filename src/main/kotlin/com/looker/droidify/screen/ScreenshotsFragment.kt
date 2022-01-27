@@ -20,8 +20,8 @@ import coil.load
 import com.google.android.material.imageview.ShapeableImageView
 import com.looker.droidify.R
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.graphics.PaddingDrawable
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.RxUtils
@@ -143,7 +143,7 @@ class ScreenshotsFragment() : DialogFragment() {
             .map { it ->
                 Pair(
                     it.find { it.repositoryId == repositoryId },
-                    db.repositoryDao.get(repositoryId)?.trueData
+                    db.repositoryDao.get(repositoryId)
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())

@@ -16,8 +16,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.resources.*

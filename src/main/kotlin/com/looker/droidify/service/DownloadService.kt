@@ -9,21 +9,32 @@ import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import com.looker.droidify.*
 import com.looker.droidify.content.Cache
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Release
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.utility.Utils
-import com.looker.droidify.utility.extension.android.*
-import com.looker.droidify.utility.extension.resources.*
-import com.looker.droidify.utility.extension.text.*
+import com.looker.droidify.utility.extension.android.Android
+import com.looker.droidify.utility.extension.android.notificationManager
+import com.looker.droidify.utility.extension.android.singleSignature
+import com.looker.droidify.utility.extension.android.versionCodeCompat
+import com.looker.droidify.utility.extension.resources.getColorFromAttr
+import com.looker.droidify.utility.extension.text.formatSize
+import com.looker.droidify.utility.extension.text.hex
+import com.looker.droidify.utility.extension.text.nullIfEmpty
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.io.File
 import java.security.MessageDigest
-import kotlin.math.*
+import kotlin.math.roundToInt
 
 class DownloadService : ConnectionService<DownloadService.Binder>() {
     companion object {

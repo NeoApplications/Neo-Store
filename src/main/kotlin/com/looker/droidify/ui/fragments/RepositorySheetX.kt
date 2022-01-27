@@ -71,7 +71,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment() {
     }
 
     override fun updateSheet() {
-        val repository = viewModel.repo.value?.trueData
+        val repository = viewModel.repo.value
 
         if (repository == null) {
             binding.address.text = getString(R.string.unknown)

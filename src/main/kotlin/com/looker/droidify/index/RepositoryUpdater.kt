@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import com.looker.droidify.content.Cache
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Release
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.utility.ProgressInputStream
 import com.looker.droidify.utility.RxUtils
@@ -69,17 +69,15 @@ object RepositoryUpdater {
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {
-                    db.repositoryDao.allDisabledDeleted
+                    db.repositoryDao.allDisabled
                 }
             }
             .forEach { it ->
-                val newDisabled = it.asSequence().filter { !it.deleted }.map { it.id }.toSet()
+                val newDisabled = it.toSet()
                 val disabled = newDisabled - lastDisabled
                 lastDisabled = newDisabled
-                val deleted = it.asSequence().filter { it.deleted }.map { it.id }.toSet()
-                if (disabled.isNotEmpty() || deleted.isNotEmpty()) {
-                    val pairs = (disabled.asSequence().map { Pair(it, false) } +
-                            deleted.asSequence().map { Pair(it, true) }).toSet()
+                if (disabled.isNotEmpty()) {
+                    val pairs = (disabled.asSequence().map { Pair(it, false) }).toSet()
                     synchronized(cleanupLock) { db.cleanUp(pairs) }
                 }
             }

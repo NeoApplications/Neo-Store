@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.database.entity.Product
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentInstalledXBinding
-import com.looker.droidify.entity.Repository
 import com.looker.droidify.ui.items.HAppItem
 import com.looker.droidify.ui.items.VAppItem
 import com.looker.droidify.utility.PRODUCT_ASYNC_DIFFER_CONFIG
@@ -47,7 +47,7 @@ class InstalledFragment : MainNavFragmentX() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.db.repositoryDao.allFlowable
             .observeOn(Schedulers.io())
-            .flatMapSingle { list -> RxUtils.querySingle { list.mapNotNull { it.trueData } } }
+            .flatMapSingle { list -> RxUtils.querySingle { list } }
             .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repositories = it }

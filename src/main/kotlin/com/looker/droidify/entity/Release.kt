@@ -4,6 +4,7 @@ import android.net.Uri
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.utility.extension.json.*
 
 data class Release(
