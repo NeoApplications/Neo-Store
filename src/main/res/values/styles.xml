@@ -142,6 +142,13 @@
 
     <style name="Theme.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
         <item name="elevation">0dp</item>
+        <item name="itemActiveIndicatorStyle">@style/Bar.Bottom.ActiveIndicator</item>
+        <item name="itemIconTint">@color/selector_item_icon</item>
+    </style>
+
+    <style name="Bar.Bottom.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?colorPrimary</item>
+        <item name="itemIconTint">?colorSurface</item>
     </style>
 
     <style name="Theme.Tab" parent="Widget.Material3.TabLayout">
