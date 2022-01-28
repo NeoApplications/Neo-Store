@@ -177,12 +177,6 @@ class TabsFragment : ScreenFragment() {
                     true
                 }
 
-            add(1, 0, 0, R.string.repositories)
-                .setOnMenuItemClickListener {
-                    view.post { screenActivity.navigateRepositories() }
-                    true
-                }
-
             add(1, 0, 0, R.string.settings)
                 .setOnMenuItemClickListener {
                     view.post { screenActivity.navigatePreferences() }

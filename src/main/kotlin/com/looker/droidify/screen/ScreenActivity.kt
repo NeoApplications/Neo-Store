@@ -260,12 +260,5 @@ abstract class ScreenActivity : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) = pushFragment(AppDetailFragment(packageName))
-    internal fun navigateRepositories() = pushFragment(RepositoriesFragment())
     internal fun navigatePreferences() = pushFragment(SettingsFragment())
-    internal fun navigateAddRepository() = pushFragment(EditRepositoryFragment(null))
-    internal fun navigateRepository(repositoryId: Long) =
-        pushFragment(RepositoryFragment(repositoryId))
-
-    internal fun navigateEditRepository(repositoryId: Long) =
-        pushFragment(EditRepositoryFragment(repositoryId))
 }
