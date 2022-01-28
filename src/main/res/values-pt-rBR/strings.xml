@@ -185,4 +185,5 @@
     <string name="install_after_sync_summary">Instalar automaticamente as atualizações dos aplicativos após sincronizar os repositórios</string>
     <string name="prefs_updated_apps">Número de aplicativos atualizados a serem exibidos</string>
     <string name="prefs_new_apps">Número de novos aplicativos a serem exibidos</string>
+    <string name="new_repository">Novo repositório</string>
 </resources>
