@@ -53,11 +53,13 @@ class ScreenshotsAdapter(private val onClick: (Product.Screenshot) -> Unit) :
                 RecyclerView.LayoutParams.WRAP_CONTENT,
                 RecyclerView.LayoutParams.MATCH_PARENT
             ).apply {
-                marginStart = image.context.resources.getDimension(R.dimen.shape_small_corner).toInt()
+                marginStart =
+                    image.context.resources.getDimension(R.dimen.shape_small_corner).toInt()
                 marginEnd = image.context.resources.getDimension(R.dimen.shape_small_corner).toInt()
             }
 
-            val placeholder = image.context.getDrawableCompat(R.drawable.ic_screenshot_placeholder).mutate()
+            val placeholder =
+                image.context.getDrawableCompat(R.drawable.ic_screenshot_placeholder).mutate()
             placeholder.setTint(surfaceColor)
             this.placeholder = PaddingDrawable(placeholder, 2f)
         }

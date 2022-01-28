@@ -3,7 +3,10 @@ package com.looker.droidify.screen
 import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.widget.SearchView
@@ -26,8 +29,10 @@ import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.fragments.AppListFragment
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
-import com.looker.droidify.utility.extension.android.*
-import com.looker.droidify.utility.extension.resources.*
+import com.looker.droidify.utility.extension.android.Android
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
+import com.looker.droidify.utility.extension.resources.getDrawableFromAttr
+import com.looker.droidify.utility.extension.resources.sizeScaled
 import com.looker.droidify.widget.DividerItemDecoration
 import com.looker.droidify.widget.FocusSearchView
 import com.looker.droidify.widget.StableRecyclerAdapter
@@ -36,7 +41,8 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class TabsFragment : ScreenFragment() {
 

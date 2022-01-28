@@ -62,6 +62,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
 
+// TODO break this down
 class AppDetailAdapter(private val callbacks: Callbacks) :
     StableRecyclerAdapter<AppDetailAdapter.ViewType, RecyclerView.ViewHolder>() {
 

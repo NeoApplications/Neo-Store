@@ -32,7 +32,7 @@ import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
-import com.looker.droidify.utility.extension.android.*
+import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.trimAfter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -45,8 +45,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
-import kotlin.collections.ArrayList
 
 class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     companion object {

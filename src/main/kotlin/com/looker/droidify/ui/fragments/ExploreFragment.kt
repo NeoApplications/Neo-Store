@@ -12,11 +12,12 @@ import com.looker.droidify.ui.items.VAppItem
 import com.looker.droidify.utility.PRODUCT_ASYNC_DIFFER_CONFIG
 import com.looker.droidify.utility.RxUtils
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.paged.PagedModelAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-// TODO create categories layouts that hold the apps in horizontal layout
+// TODO add chips bar to navigate categories
 class ExploreFragment : MainNavFragmentX() {
 
     private lateinit var binding: FragmentExploreXBinding
@@ -55,6 +56,11 @@ class ExploreFragment : MainNavFragmentX() {
         }
         appsFastAdapter = FastAdapter.with(appsItemAdapter)
         appsFastAdapter?.setHasStableIds(true)
+        appsFastAdapter?.onClickListener =
+            { _: View?, _: IAdapter<VAppItem>?, item: VAppItem?, position: Int? ->
+                launchFragment(AppFragmentX(item?.item?.packageName ?: ""))
+                false
+            }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)

@@ -41,14 +41,23 @@ abstract class MainNavFragmentX : BaseNavFragment() {
             }
         }
     }
+
+    protected fun launchFragment(fragment: Fragment): Boolean {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_content, fragment)
+            .addToBackStack(null)
+            .commit()
+        return true
+    }
 }
 
 enum class Source(val sections: Boolean, val order: Boolean) {
-    AVAILABLE( true, true),
-    INSTALLED( false, true),
-    UPDATES( false, false),
-    UPDATED( false, true),
-    NEW( false, true)
+    AVAILABLE(true, true),
+    INSTALLED(false, true),
+    UPDATES(false, false),
+    UPDATED(false, true),
+    NEW(false, true)
 }
 
 sealed class Request {
