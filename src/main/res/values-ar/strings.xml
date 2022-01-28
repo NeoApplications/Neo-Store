@@ -9,7 +9,7 @@
     <string name="already_exists">متوفر مسبقا</string>
     <string name="add_repository">إضافة مستودع</string>
     <string name="anti_features">مميزات غير مرغوبة</string>
-    <string name="application">التطبيقات</string>
+    <string name="application">تطبيق</string>
     <string name="application_not_found">تعذر العثور على هذا التطبيق</string>
     <string name="author_email">بريد المطور</string>
     <string name="dark">داكن</string>
@@ -81,14 +81,14 @@
     <string name="new_applications">تطبيقات جديدة</string>
     <string name="install_after_sync">تثبيت التحديثات تلقائيا</string>
     <string name="prefs_new_apps">عدد التطبيقات الجديدة التي يجب عرضها</string>
-    <string name="author_website">موقع المنشئ الإلكتروني</string>
+    <string name="author_website">موقع المطور الإلكتروني</string>
     <string name="available">متوفر</string>
     <string name="bug_tracker">متعقب العلل</string>
     <string name="cancel">إلغاء</string>
     <string name="cant_edit_sync_DESC">لا يمكن تحرير المستودعات المزامنة…</string>
     <string name="changelog">سجل التغييرات</string>
-    <string name="changes">التغيرات</string>
-    <string name="checking_repository">جارى التحقق من المستودع…</string>
+    <string name="changes">التغييرات</string>
+    <string name="checking_repository">التحقق من المستودع…</string>
     <string name="compiled_for_debugging">تم تجميعه من أجل التصحيح</string>
     <string name="confirmation">تأكيد</string>
     <string name="connecting">جارى التوصيل…</string>
@@ -186,4 +186,5 @@
     <string name="update_all">تحديث الكل</string>
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="prefs_updated_apps">عدد التطبيقات المحدثة التي يجب عرضها</string>
+    <string name="new_repository">مستودع جديد</string>
 </resources>
