@@ -377,4 +377,9 @@ public class FolderInfo extends ItemInfo {
         }
         return LauncherAtom.ToState.TO_STATE_UNSPECIFIED;
     }
+
+    public boolean useIconMode() {
+        return false;
+    }
+
 }

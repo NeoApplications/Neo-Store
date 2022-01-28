@@ -212,8 +212,10 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> implements Cli
         if (item == null) {
             return null;
         }
+        int layout = mFolder.isInAppDrawer() ? R.layout.all_apps_folder_application
+                : R.layout.folder_application;
         final BubbleTextView textView = mViewCache.getView(
-                R.layout.folder_application, getContext(), null);
+                layout, getContext(), null);
         textView.applyFromWorkspaceItem(item);
         textView.setOnClickListener(ItemClickHandler.INSTANCE);
         textView.setOnLongClickListener(mFolder);
@@ -242,7 +244,11 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> implements Cli
     private CellLayout createAndAddNewPage() {
         DeviceProfile grid = mFolder.mActivityContext.getDeviceProfile();
         CellLayout page = mViewCache.getView(R.layout.folder_page, getContext(), this);
-        page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
+        if (mFolder.isInAppDrawer()) {
+            page.setCellDimensions(grid.allAppsCellWidthPx, grid.allAppsCellHeightPx);
+        } else {
+            page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
+        }
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);
         page.setGridSize(mGridCountX, mGridCountY);

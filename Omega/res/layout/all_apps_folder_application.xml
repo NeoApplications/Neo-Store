@@ -16,23 +16,10 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.android.launcher3.folder.FolderIcon xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.BubbleTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/folder_icon"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/dynamic_grid_cell_padding_x"
-    android:paddingRight="@dimen/dynamic_grid_cell_padding_x"
-    android:focusable="true">
-
-    <com.android.launcher3.views.DoubleShadowBubbleTextView
-        android:id="@+id/folder_icon_name"
-        style="@style/BaseIcon.AllApps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:focusable="false"
-        app:iconDisplay="all_apps" />
-</com.android.launcher3.folder.FolderIcon>
+    style="@style/BaseIcon.AllApps"
+    android:includeFontPadding="false"
+    android:hapticFeedbackEnabled="false"
+    app:iconDisplay="drawer_folder"
+    app:centerVertically="true" />

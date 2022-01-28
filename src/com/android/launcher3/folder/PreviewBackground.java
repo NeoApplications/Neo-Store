@@ -52,7 +52,7 @@ import com.android.launcher3.views.ActivityContext;
 public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
 
     private static final boolean DRAW_SHADOW = false;
-    private static final boolean DRAW_STROKE = false;
+    private static final boolean DRAW_STROKE = true;
 
     private static final int CONSUMPTION_ANIMATION_DURATION = 100;
 
@@ -126,6 +126,16 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
                 }
             };
 
+    private boolean isInDrawer;
+
+    public PreviewBackground() {
+        this(false);
+    }
+
+    public PreviewBackground(boolean inDrawer) {
+        isInDrawer = inDrawer;
+    }
+
     /**
      * Draws folder background under cell layout
      */
@@ -158,7 +168,7 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         ta.recycle();
 
         DeviceProfile grid = activity.getDeviceProfile();
-        previewSize = grid.folderIconSizePx;
+        previewSize = isInDrawer ? grid.allAppsIconSizePx : grid.folderIconSizePx;
 
         basePreviewOffsetX = (availableSpaceX - previewSize) / 2;
         basePreviewOffsetY = topPadding + grid.folderIconOffsetYPx;

@@ -88,6 +88,7 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
+        showFolderNotificationCount = prefs.folderBadgeCount
         if (prefs.customWindowCorner) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
             QuickStepContract.sCustomCornerRadius = prefs.windowCornerRadius
@@ -203,6 +204,10 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
             }
         }
         Taskbar.setEnabled(this, prefs.desktopModeEnabled)
+    }
+
+    companion object {
+        var showFolderNotificationCount = false
     }
 }
 

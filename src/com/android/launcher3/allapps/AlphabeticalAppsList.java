@@ -449,6 +449,10 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 .getHiddenComponents();
     }
 
+    public void reset() {
+        updateAdapterItems();
+    }
+
     /**
      * Updates the set of filtered apps with the current filter. At this point, we expect
      * mCachedSectionNames to have been calculated for the set of all apps in mApps.

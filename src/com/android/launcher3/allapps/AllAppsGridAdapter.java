@@ -172,10 +172,10 @@ public class AllAppsGridAdapter extends
         public static AdapterItem asFolder(int pos, String sectionName,
                                            DrawerFolderInfo folderInfo, int folderIndex) {
             AdapterItem item = new AdapterItem();
-            item.viewType = AllAppsGridAdapter.VIEW_TYPE_FOLDER;
+            item.viewType = VIEW_TYPE_FOLDER;
             item.position = pos;
             item.sectionName = sectionName;
-            item.folderItem = new DrawerFolderItem(folderInfo, folderIndex);
+            item.folderItem = new DrawerFolderItem(folderInfo);
             return item;
         }
 
@@ -396,7 +396,6 @@ public class AllAppsGridAdapter extends
 
             case VIEW_TYPE_FOLDER:
                 FrameLayout layout = new FrameLayout(mLauncher);
-
                 ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         mLauncher.getDeviceProfile().allAppsCellHeightPx);

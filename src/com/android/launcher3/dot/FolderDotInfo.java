@@ -19,6 +19,7 @@ package com.android.launcher3.dot;
 import android.view.ViewDebug;
 
 import com.android.launcher3.Utilities;
+import com.saggitt.omega.OmegaLauncher;
 
 /**
  * Subclass of DotInfo that only contains the dot count, which is
@@ -50,7 +51,13 @@ public class FolderDotInfo extends DotInfo {
 
     @Override
     public int getNotificationCount() {
-        return mNumNotifications;
+        boolean showBadgeCount = OmegaLauncher.Companion.getShowFolderNotificationCount();
+        if (showBadgeCount) {
+            return mNumNotifications;
+        } else {
+            // This forces the folder badge to always show up as a dot.
+            return 0;
+        }
     }
 
     @ViewDebug.ExportedProperty(category = "launcher")
