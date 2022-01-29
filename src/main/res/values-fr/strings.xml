@@ -182,4 +182,5 @@
     <string name="install_after_sync_summary">Installation automatique des mises à jour des applications après la synchronisation des dépôts</string>
     <string name="prefs_new_apps">Nombre de nouvelles applications à afficher</string>
     <string name="prefs_updated_apps">Nombre d\'applications mises à jour à afficher</string>
+    <string name="new_repository">Nouveau dépôt</string>
 </resources>
