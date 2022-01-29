@@ -22,6 +22,10 @@
         android:key="pref_app_hide"
         android:title="@string/hide_app" />
 
+    <com.saggitt.omega.preferences.custom.MultiSelectTabPreference
+        android:key="pref_show_in_tabs"
+        android:title="@string/app_categorization_tabs" />
+
     <PreferenceCategory
         android:key="debug"
         android:title="@string/developer_options_title">

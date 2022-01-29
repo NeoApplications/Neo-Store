@@ -46,6 +46,7 @@ import com.android.launcher3.util.PackageManagerHelper
 import com.android.launcher3.widget.WidgetsBottomSheet
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.preferences.custom.MultiSelectTabPreference
 
 class CustomBottomSheet @JvmOverloads constructor(
     context: Context?,
@@ -159,6 +160,7 @@ class CustomBottomSheet @JvmOverloads constructor(
     class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
 
+        private var mTabsPref: MultiSelectTabPreference? = null
         private lateinit var prefs: OmegaPreferences
         private var mKey: ComponentKey? = null
         private lateinit var itemInfo: ItemInfo
@@ -190,11 +192,19 @@ class CustomBottomSheet @JvmOverloads constructor(
                 mKey = ComponentKey(itemInfo.targetComponent, itemInfo.user)
             }
             val mPrefHide = findPreference<SwitchPreference>(PREF_HIDE)
+            mTabsPref = findPreference("pref_show_in_tabs")
             if (isApp) {
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
                 mPrefHide.onPreferenceChangeListener = this
             } else {
                 screen.removePreference(mPrefHide)
+            }
+            if (!isApp || !prefs.drawerTabs.isEnabled) {
+                screen.removePreference(mTabsPref)
+            } else {
+                mTabsPref!!.componentKey = mKey!!
+                mTabsPref!!.activity = activity
+                mTabsPref!!.updateSummary()
             }
 
             if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
@@ -204,9 +214,16 @@ class CustomBottomSheet @JvmOverloads constructor(
                 versionPref!!.onPreferenceClickListener = this
                 componentPref.summary = mKey.toString()
                 versionPref.summary =
-                    PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
+                        PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
             } else {
                 preferenceScreen.removePreference(preferenceScreen.findPreference("debug"))
+            }
+        }
+
+        override fun onDetach() {
+            super.onDetach()
+            if (mTabsPref!!.edited) {
+                prefs.drawerTabs.saveToJson()
             }
         }
 
@@ -215,9 +232,9 @@ class CustomBottomSheet @JvmOverloads constructor(
             val launcher = Launcher.getLauncher(activity)
             when (preference.key) {
                 PREF_HIDE -> CustomAppFilter.setComponentNameState(
-                    launcher,
-                    mKey.toString(),
-                    enabled
+                        launcher,
+                        mKey.toString(),
+                        enabled
                 )
             }
             return true
