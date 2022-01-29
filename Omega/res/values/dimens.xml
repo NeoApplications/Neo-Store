@@ -32,6 +32,7 @@
     <dimen name="all_apps_caret_shadow_spread">1dp</dimen>
     <dimen name="all_apps_caret_size">13dp</dimen>
 
+    <dimen name="all_apps_tabs_side_padding">12dp</dimen>
     <dimen name="button_corner_radius">4dp</dimen>
 
     <!-- Setting Search -->

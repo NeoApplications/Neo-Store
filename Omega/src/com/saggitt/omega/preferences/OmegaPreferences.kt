@@ -139,6 +139,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val currentTabsModel
         get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
 
+    val saveScrollPosition by BooleanPref("pref_keep_scroll_state", false, doNothing)
+
     // POPUP DIALOG PREFERENCES
     val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
     val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)

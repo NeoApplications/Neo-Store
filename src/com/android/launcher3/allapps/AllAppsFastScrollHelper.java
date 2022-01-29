@@ -27,10 +27,12 @@ public class AllAppsFastScrollHelper {
     private int mTargetFastScrollPosition = NO_POSITION;
 
     private AllAppsRecyclerView mRv;
+    private AlphabeticalAppsList mApps;
     private ViewHolder mLastSelectedViewHolder;
 
-    public AllAppsFastScrollHelper(AllAppsRecyclerView rv) {
+    public AllAppsFastScrollHelper(AllAppsRecyclerView rv, AlphabeticalAppsList apps) {
         mRv = rv;
+        mApps = apps;
     }
 
     /**

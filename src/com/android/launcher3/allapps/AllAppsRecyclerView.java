@@ -25,6 +25,7 @@ import static com.android.launcher3.util.UiThreadHelper.hideKeyboardAsync;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -60,7 +61,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView {
     // The specific view heights that we use to calculate scroll
     private final SparseIntArray mViewHeights = new SparseIntArray();
     private final SparseIntArray mCachedScrollPositions = new SparseIntArray();
-    private final AllAppsFastScrollHelper mFastScrollHelper;
+    private AllAppsFastScrollHelper mFastScrollHelper;
 
     private final AdapterDataObserver mObserver = new RecyclerView.AdapterDataObserver() {
         public void onChanged() {
@@ -93,14 +94,15 @@ public class AllAppsRecyclerView extends BaseRecyclerView {
         mEmptySearchBackgroundTopOffset = res.getDimensionPixelSize(
                 R.dimen.all_apps_empty_search_bg_top_offset);
         mNumAppsPerRow = LauncherAppState.getIDP(context).numColumns;
-        mFastScrollHelper = new AllAppsFastScrollHelper(this);
+        //mFastScrollHelper = new AllAppsFastScrollHelper(this);
     }
 
     /**
      * Sets the list of apps in this view, used to determine the fastscroll position.
      */
-    public void setApps(AlphabeticalAppsList apps) {
+    public void setApps(AlphabeticalAppsList apps, boolean usingTabs) {
         mApps = apps;
+        mFastScrollHelper = new AllAppsFastScrollHelper(this, apps);
     }
 
     public AlphabeticalAppsList getApps() {
@@ -455,6 +457,10 @@ public class AllAppsRecyclerView extends BaseRecyclerView {
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+
+    public void setScrollbarColor(int color) {
+        mScrollbar.setColor(color, Color.WHITE);
     }
 
     /**

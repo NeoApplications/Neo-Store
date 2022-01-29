@@ -84,8 +84,8 @@ public class FloatingHeaderView extends LinearLayout implements
     private final boolean mHeaderProtectionSupported;
 
     protected ViewGroup mTabLayout;
-    private AllAppsRecyclerView mMainRV;
-    private AllAppsRecyclerView mWorkRV;
+    //private AllAppsRecyclerView mMainRV;
+    //private AllAppsRecyclerView mWorkRV;
     private AllAppsRecyclerView mCurrentRV;
     private ViewGroup mParent;
     public boolean mHeaderCollapsed;
@@ -97,9 +97,11 @@ public class FloatingHeaderView extends LinearLayout implements
 
     protected boolean mTabsHidden;
     protected int mMaxTranslation;
-    private boolean mMainRVActive = true;
+    //private boolean mMainRVActive = true;
 
     private boolean mCollapsed = false;
+    private int mActiveRV = 0;
+    private ArrayList<AllAppsRecyclerView> mRVs = new ArrayList<>();
 
     // This is initialized once during inflation and stays constant after that. Fixed views
     // cannot be added or removed dynamically.
@@ -124,7 +126,7 @@ public class FloatingHeaderView extends LinearLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mTabLayout = findViewById(R.id.tabs);
+        mTabLayout = findViewById(R.id.tabs_scroller);
 
         // Find all floating header rows.
         ArrayList<FloatingHeaderRow> rows = new ArrayList<>();
@@ -152,13 +154,13 @@ public class FloatingHeaderView extends LinearLayout implements
         PluginManagerWrapper.INSTANCE.get(getContext()).removePluginListener(this);
     }
 
-    @Override
+    /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mMainRV != null) {
             mTabLayout.getLayoutParams().width = mMainRV.getTabWidth();
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+    }*/
 
     private void recreateAllRowsArray() {
         int pluginCount = mPluginRows.size();
@@ -230,10 +232,21 @@ public class FloatingHeaderView extends LinearLayout implements
 
         mTabsHidden = tabsHidden;
         mTabLayout.setVisibility(tabsHidden ? View.GONE : View.VISIBLE);
-        mMainRV = setupRV(mMainRV, mAH[AllAppsContainerView.AdapterHolder.MAIN].recyclerView);
-        mWorkRV = setupRV(mWorkRV, mAH[AllAppsContainerView.AdapterHolder.WORK].recyclerView);
-        mParent = (ViewGroup) mMainRV.getParent();
-        setMainActive(mMainRVActive || mWorkRV == null);
+        //mMainRV = setupRV(mMainRV, mAH[AllAppsContainerView.AdapterHolder.MAIN].recyclerView);
+        //mWorkRV = setupRV(mWorkRV, mAH[AllAppsContainerView.AdapterHolder.WORK].recyclerView);
+
+        for (AllAppsRecyclerView recyclerView : mRVs) {
+            recyclerView.removeOnScrollListener(mOnScrollListener);
+        }
+        mRVs.clear();
+        for (AllAppsContainerView.AdapterHolder holder : mAH) {
+            if (holder.recyclerView != null) {
+                mRVs.add(setupRV(null, holder.recyclerView));
+            }
+        }
+        mParent = (ViewGroup) mRVs.get(0).getParent();
+        setCurrentActive(Math.min(mActiveRV, mRVs.size() - 1));
+        //setMainActive(mMainRVActive || mWorkRV == null);
         reset(false);
     }
 
@@ -254,9 +267,14 @@ public class FloatingHeaderView extends LinearLayout implements
         }
     }
 
-    public void setMainActive(boolean active) {
+    /*public void setMainActive(boolean active) {
         mCurrentRV = active ? mMainRV : mWorkRV;
         mMainRVActive = active;
+    }*/
+
+    public void setCurrentActive(int active) {
+        mCurrentRV = mRVs.get(active);
+        mActiveRV = active;
     }
 
     public int getMaxTranslation() {
@@ -318,9 +336,13 @@ public class FloatingHeaderView extends LinearLayout implements
         mHeaderClip.top = clipHeight;
         // clipping on a draw might cause additional redraw
         setClipBounds(mHeaderClip);
-        mMainRV.setClipBounds(mRVClip);
+        /*mMainRV.setClipBounds(mRVClip);
         if (mWorkRV != null) {
             mWorkRV.setClipBounds(mRVClip);
+        }*/
+
+        for (AllAppsRecyclerView rv : mRVs) {
+            rv.setClipBounds(mRVClip);
         }
     }
 

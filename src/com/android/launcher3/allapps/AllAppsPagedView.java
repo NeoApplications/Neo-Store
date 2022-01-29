@@ -20,9 +20,11 @@ import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCH
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.PagedView;
+import com.android.launcher3.R;
 import com.android.launcher3.workprofile.PersonalWorkPagedView;
 
 /**
@@ -53,5 +55,16 @@ public class AllAppsPagedView extends PersonalWorkPagedView {
                             : LAUNCHER_ALLAPPS_SWIPE_TO_PERSONAL_TAB);
         }
         return resp;
+    }
+
+    public void addTabs(int count) {
+        int childCount = getChildCount();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (int i = childCount; i < count; i++) {
+            inflater.inflate(R.layout.all_apps_rv_layout, this);
+        }
+        while (getChildCount() > count) {
+            removeViewAt(0);
+        }
     }
 }

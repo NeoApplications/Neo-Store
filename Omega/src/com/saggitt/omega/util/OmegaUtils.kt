@@ -313,6 +313,36 @@ fun Context.checkLocationAccess(): Boolean {
             Utilities.hasPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
 }
 
+inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
+    val count = childCount
+    for (i in (0 until count)) {
+        action(getChildAt(i), i)
+    }
+}
+
+inline fun ViewGroup.forEachChild(action: (View) -> Unit) {
+    forEachChildIndexed { view, _ -> action(view) }
+}
+
+fun View.runOnAttached(runnable: Runnable) {
+    if (isAttachedToWindow) {
+        runnable.run()
+    } else {
+        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+
+            override fun onViewAttachedToWindow(v: View?) {
+                runnable.run()
+                removeOnAttachStateChangeListener(this)
+            }
+
+            override fun onViewDetachedFromWindow(v: View?) {
+                removeOnAttachStateChangeListener(this)
+            }
+        })
+
+    }
+}
+
 fun Float.ceilToInt() = ceil(this).toInt()
 
 val Int.luminance get() = ColorUtils.calculateLuminance(this)
@@ -376,6 +406,28 @@ fun JSONObject.getNullable(key: String): Any? {
 fun String.asNonEmpty(): String? {
     if (TextUtils.isEmpty(this)) return null
     return this
+}
+
+fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
+    if (contains(obj) != exists) {
+        if (exists) add(obj)
+        else remove(obj)
+        return true
+    }
+    return false
+}
+
+fun getTabRipple(context: Context, accent: Int): ColorStateList {
+    return ColorStateList(
+            arrayOf(
+                    intArrayOf(android.R.attr.state_selected),
+                    intArrayOf()
+            ),
+            intArrayOf(
+                    ColorUtils.setAlphaComponent(accent, 31),
+                    context.getColorAttr(android.R.attr.colorControlHighlight)
+            )
+    )
 }
 
 val Long.Companion.random get() = Random.nextLong()

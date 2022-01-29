@@ -29,12 +29,12 @@ import com.android.launcher3.R
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.util.getThemeAttr
 
-class PreferenceDialogFragment : DialogFragment() {
+open class PreferenceDialogFragment : DialogFragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.dialog_preference_fragment, container, false)
     }
