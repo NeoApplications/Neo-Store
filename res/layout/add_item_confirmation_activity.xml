@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="24dp"
-            android:background="@drawable/add_item_dialog_background"
+            android:background="@drawable/widgets_bottom_sheet_background"
             android:orientation="vertical">
 
             <TextView
