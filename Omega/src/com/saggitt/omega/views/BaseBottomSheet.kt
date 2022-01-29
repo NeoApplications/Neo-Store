@@ -39,6 +39,8 @@ open class BaseBottomSheet @JvmOverloads constructor(
         defStyleAttr: Int = 0
 ) : AbstractSlideInView<Launcher>(context, attrs, defStyleAttr), Insettable {
     private val mInsets: Rect = Rect()
+    private val mLauncher = Launcher.getLauncher(context)
+
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
         setTranslationShift(mTranslationShift)

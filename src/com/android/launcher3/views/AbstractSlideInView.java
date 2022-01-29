@@ -30,7 +30,6 @@ import android.view.View;
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.AbstractFloatingView;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.touch.BaseSwipeDetector;
@@ -77,12 +76,10 @@ public abstract class AbstractSlideInView<T extends Context & ActivityContext>
 
     protected boolean mNoIntercept;
     protected List<OnCloseListener> mOnCloseListeners = new ArrayList<>();
-    protected final Launcher mLauncher;
 
     public AbstractSlideInView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mActivityContext = ActivityContext.lookupContext(context);
-        mLauncher = Launcher.getLauncher(context);
 
         mScrollInterpolator = Interpolators.SCROLL_CUBIC;
         mSwipeDetector = new SingleAxisSwipeDetector(context, this,
