@@ -183,11 +183,10 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        disable 'ExtraTranslation'
+    lint {
         abortOnError false
         checkReleaseBuilds false
+        disable 'MissingTranslation', 'ExtraTranslation'
     }
 
     addFrameworkJar('framework-12.jar')
