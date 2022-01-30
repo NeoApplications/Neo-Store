@@ -204,7 +204,7 @@ dependencies {
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
     implementation "androidx.activity:activity-ktx:1.4.0"
-    implementation "androidx.fragment:fragment-ktx:1.4.0"
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "com.google.android.material:material:1.6.0-alpha02"
@@ -233,8 +233,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "io.coil-kt:coil-compose:1.4.0"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.19.0"
-    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.21.4-beta'
-    implementation 'com.google.accompanist:accompanist-drawablepainter:0.21.4-beta'
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.1-alpha'
+    implementation 'com.google.accompanist:accompanist-drawablepainter:0.24.1-alpha'
 
     // Recents lib dependency
     withQuickstepImplementation project(':SystemUIShared')
@@ -245,7 +245,7 @@ dependencies {
     withoutQuickstepImplementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'plugin_core.jar')
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'org.mockito:mockito-core:4.1.0'
+    androidTestImplementation 'org.mockito:mockito-core:4.3.1'
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.3'
