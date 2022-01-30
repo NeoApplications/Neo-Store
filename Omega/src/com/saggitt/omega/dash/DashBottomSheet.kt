@@ -33,7 +33,7 @@ import com.android.launcher3.Utilities
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.saggitt.omega.util.tintDrawable
-import com.saggitt.omega.views.CenterFloatingView
+import com.saggitt.omega.views.BaseBottomSheet
 
 class DashBottomSheet(context: Context) : RelativeLayout(context) {
     private var controlFastAdapter: FastAdapter<DashControlItem>? = null
@@ -169,7 +169,7 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
 
     companion object {
         fun show(launcher: Launcher, animate: Boolean) {
-            val sheet = CenterFloatingView.inflate(launcher)
+            val sheet = BaseBottomSheet.inflate(launcher)
             val view = DashBottomSheet(launcher)
             sheet.show(view, animate)
         }

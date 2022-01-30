@@ -108,7 +108,7 @@ class OpenDashGestureHandler(context: Context, config: JSONObject?) :
     override val requiresForeground = true
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
-        DashBottomSheet.show(controller.launcher, false)
+        DashBottomSheet.show(controller.launcher, true)
     }
 }
 
