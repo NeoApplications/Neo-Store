@@ -23,6 +23,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
+import com.saggitt.omega.preferences.custom.SearchProviderPreference
+import com.saggitt.omega.search.SelectSearchProviderFragment
 
 abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) :
     PreferenceFragmentCompat() {
@@ -34,11 +36,17 @@ abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         val f: DialogFragment
         parentFragmentManager.let {
-            f = if (preference is CustomDialogPreference) {
-                PreferenceDialogFragment.newInstance(preference)
-            } else {
-                super.onDisplayPreferenceDialog(preference)
-                return
+            f = when (preference) {
+                is CustomDialogPreference -> {
+                    PreferenceDialogFragment.newInstance(preference)
+                }
+                is SearchProviderPreference -> {
+                    SelectSearchProviderFragment.newInstance(preference)
+                }
+                else -> {
+                    super.onDisplayPreferenceDialog(preference)
+                    return
+                }
             }
             f.setTargetFragment(this, 0)
             f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")

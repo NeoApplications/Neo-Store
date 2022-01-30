@@ -76,7 +76,7 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
     }
 
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qsb_logo, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_google, null)!!
 
     override val voiceIcon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!

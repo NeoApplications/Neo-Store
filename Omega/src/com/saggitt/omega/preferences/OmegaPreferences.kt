@@ -212,7 +212,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     //SEARCH
     var searchProvider by StringPref(
-            "pref_globalSearchProvider",
+            "pref_global_search_provider",
             ""
     ) {
         SearchProviderController.getInstance(context).onSearchProviderChanged()

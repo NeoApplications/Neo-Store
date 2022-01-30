@@ -26,7 +26,6 @@ abstract class SearchProvider(protected val context: Context) {
     abstract val supportsVoiceSearch: Boolean
     abstract val supportsAssistant: Boolean
     abstract val supportsFeed: Boolean
-    // open val settingsIntent get() = Intent().setClass(context, SettingsSearchActivity::class.java)
 
     abstract val packageName: String
     abstract val icon: Drawable
