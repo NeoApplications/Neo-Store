@@ -14,44 +14,52 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.saggitt.omega.views
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
-import com.android.launcher3.Utilities
-import com.saggitt.omega.util.getTabRipple
+import com.android.launcher3.R
+import com.saggitt.omega.util.getColorAttr
 
 class ColoredButton(context: Context, attrs: AttributeSet) : AppCompatButton(context, attrs) {
-
     var color: Int = 0
 
-    private val defaultColor = currentTextColor
+    private val defaultColor = context.getColorAttr(R.attr.colorOnSurface)
+    private val selectedColor = context.getColorAttr(R.attr.colorSurface)
+    private val defaultBackgroundColor = context.getColorAttr(R.attr.popupColorPrimary)
 
-    fun reset() {
-        color = Utilities.getOmegaPrefs(context).accentColor
+    fun refreshColor() {
         setTextColor()
-        setRippleColor()
-    }
-
-    fun refreshTextColor() {
-        setTextColor()
+        setBackgroundColor()
     }
 
     private fun setTextColor() {
-        val stateList = ColorStateList(arrayOf(
+        val stateList = ColorStateList(
+            arrayOf(
                 intArrayOf(android.R.attr.state_selected),
-                intArrayOf()),
-                intArrayOf(
-                        color,
-                        defaultColor))
+                intArrayOf()
+            ),
+            intArrayOf(
+                selectedColor,
+                defaultColor
+            )
+        )
         setTextColor(stateList)
     }
 
-    private fun setRippleColor() {
-        background = RippleDrawable(getTabRipple(context, color), null, null)
+    private fun setBackgroundColor() {
+        val stateList = ColorStateList(
+            arrayOf(
+                intArrayOf(android.R.attr.state_selected),
+                intArrayOf()
+            ),
+            intArrayOf(
+                color,
+                defaultBackgroundColor
+            )
+        )
+        backgroundTintList = stateList
     }
 }
