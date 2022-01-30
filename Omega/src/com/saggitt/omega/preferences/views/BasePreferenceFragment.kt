@@ -23,8 +23,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
-import com.saggitt.omega.preferences.custom.SearchProviderPreference
-import com.saggitt.omega.search.SelectSearchProviderFragment
 
 abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) :
     PreferenceFragmentCompat() {
@@ -39,9 +37,6 @@ abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) 
             f = when (preference) {
                 is CustomDialogPreference -> {
                     PreferenceDialogFragment.newInstance(preference)
-                }
-                is SearchProviderPreference -> {
-                    SelectSearchProviderFragment.newInstance(preference)
                 }
                 else -> {
                     super.onDisplayPreferenceDialog(preference)

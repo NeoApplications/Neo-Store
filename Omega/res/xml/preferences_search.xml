@@ -19,9 +19,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.saggitt.omega.preferences.custom.SearchProviderPreference
-        android:title="@string/title_search_provider"
         android:key="pref_global_search_provider"
-        android:defaultValue="@string/config_default_search_provider" />
+        android:title="@string/title_search_provider" />
 
     <PreferenceCategory android:title="@string/app_categorization_folders">
         <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference

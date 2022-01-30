@@ -20,41 +20,33 @@ package com.saggitt.omega.preferences.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.preference.DialogPreference
-import com.android.launcher3.R
-import com.saggitt.omega.preferences.OmegaPreferences
+import androidx.preference.ListPreference
+import com.android.launcher3.Utilities
 import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.util.omegaPrefs
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
-        DialogPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
-    private val prefs = context.omegaPrefs
+    ListPreference(context, attrs) {
+    private val prefs = Utilities.getOmegaPrefs(context)
     private val mProviders = SearchProviderController.getSearchProviders(context)
     private val current
         get() = mProviders.firstOrNull { it::class.java.name == prefs.searchProvider }
-                ?: mProviders[0]
+            ?: mProviders[0]
 
     init {
-        layoutResource = R.layout.preference_preview_icon
-        dialogLayoutResource = R.layout.dialog_icon_pack
+        entries = mProviders.map { it.name }.toTypedArray()
+        entryValues = mProviders.map { it::class.java.name }.toTypedArray()
+        updateSummary()
     }
 
-    override fun onAttached() {
-        super.onAttached()
-        context.omegaPrefs.addOnPreferenceChangeListener("pref_global_search_provider", this)
-    }
-
-    override fun onDetached() {
-        super.onDetached()
-        context.omegaPrefs.removeOnPreferenceChangeListener("pref_global_search_provider", this)
-    }
-
-    override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        updateSummaryAndIcon()
-    }
-
-    private fun updateSummaryAndIcon() {
-        icon = current.icon
+    private fun updateSummary() {
         summary = current.name
+        icon = current.icon
+    }
+
+    override fun callChangeListener(newValue: Any?): Boolean {
+        MainScope().launch { updateSummary() }
+        return super.callChangeListener(newValue)
     }
 }
