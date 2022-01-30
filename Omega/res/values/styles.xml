@@ -144,16 +144,31 @@
     <style name="AlertDialog.Light" parent="Theme.Material3.Light.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:colorBackground">@color/settings_background_light_2dp</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/SettingsTheme.Widget.OutlinedButton.Colored
+        </item>
+        <item name="buttonBarNegativeButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
     </style>
 
     <style name="AlertDialog.Dark" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:colorBackground">@color/settings_background_dark_2dp</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/SettingsTheme.Widget.OutlinedButton.Colored
+        </item>
+        <item name="buttonBarNegativeButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
     </style>
 
     <style name="AlertDialog.Black" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:colorBackground">@color/settings_background_black_2dp</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/SettingsTheme.Widget.OutlinedButton.Colored
+        </item>
+        <item name="buttonBarNegativeButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/SettingsTheme.Widget.OutlinedButton</item>
     </style>
 
     <style name="SettingsTheme.BottomSheetDialog.Light" parent="Theme.Material3.Light.BottomSheetDialog">
