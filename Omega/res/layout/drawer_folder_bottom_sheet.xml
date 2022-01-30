@@ -48,14 +48,14 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancel"
-                style="@style/SettingsTheme.Widget.OutlinedButton"
+                style="@style/Button.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@android:string/cancel" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/save"
-                style="@style/SettingsTheme.Widget.OutlinedButton.Colored"
+                style="@style/Button.Outlined.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_bottom_sheet_save" />
