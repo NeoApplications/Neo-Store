@@ -229,7 +229,7 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
             val tab = tabs[i]
             val button = getChildAt(i) as ColoredButton
             button.color = tab.drawerTab.color.value()
-            button.refreshTextColor()
+            button.refreshColor()
             button.text = tab.name
             button.setOnLongClickListener { v: View? ->
                 editTab(Launcher.getLauncher(context), tab.drawerTab)

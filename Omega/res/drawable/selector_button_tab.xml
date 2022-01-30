@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="100">
+    <item android:id="@+id/unselected" android:state_selected="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/all_apps_header_pill_corner_radius" />
+            <solid android:color="?popupColorPrimary" />
+        </shape>
+    </item>
+
+    <item android:id="@+id/selected" android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/all_apps_header_pill_corner_radius" />
+            <solid android:color="?colorAccent" />
+        </shape>
+    </item>
+</selector>
