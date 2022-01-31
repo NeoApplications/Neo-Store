@@ -398,8 +398,7 @@ abstract class AppGroups<T : AppGroups.Group>(
 
                 updateColor(view)
 
-                val themedContext =
-                        ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
+                val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
                     val colorPicker = ColorSelectorPresets(themedContext)
@@ -411,7 +410,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                         value = context.getColorAccent()
                     }
                     colorPicker.setDefaultColorButton(value!!)
-                    colorPicker.positiveButton.applyColor(context.getColorAccent())
+                    colorPicker.positiveButton.applyColor(context.omegaPrefs.accentColor)
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
                         override fun onCancel() {
