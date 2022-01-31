@@ -443,7 +443,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Pair(
-                    db.installedDao.getObject(productItem.packageName),
+                    db.installedDao.get(productItem.packageName),
                     db.repositoryDao.get(productItem.repositoryId)
                 )
             }

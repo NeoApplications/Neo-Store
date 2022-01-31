@@ -285,7 +285,6 @@ interface InstalledDao : BaseDao<Installed> {
     }
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
-    fun get(packageName: String): Cursor
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
     fun getObject(packageName: String): Installed?

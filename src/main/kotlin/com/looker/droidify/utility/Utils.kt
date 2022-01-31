@@ -9,7 +9,6 @@ import android.content.pm.Signature
 import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.drawable.Drawable
-import android.os.Build
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import com.fasterxml.jackson.core.JsonGenerator
@@ -136,11 +135,7 @@ object Utils {
             setLocalCode = Locale.getDefault().language
         }
         val config = resources.configuration
-        val sysLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            config.locales[0]
-        } else {
-            config.locale
-        }
+        val sysLocale = if (Android.sdk(24)) config.locales[0] else config.locale
         if (setLocalCode != sysLocale.language || setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
             val newLocale = getLocaleOfCode(setLocalCode)
             Locale.setDefault(newLocale)
@@ -165,7 +160,7 @@ object Utils {
     }
 
     fun Context.getLocaleOfCode(localeCode: String): Locale = when {
-        localeCode.isEmpty() -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        localeCode.isEmpty() -> if (Android.sdk(24)) {
             resources.configuration.locales[0]
         } else {
             resources.configuration.locale

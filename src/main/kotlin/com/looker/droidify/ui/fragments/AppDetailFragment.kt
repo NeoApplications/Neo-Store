@@ -160,7 +160,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             }
             .flatMapSingle { products ->
                 RxUtils
-                    .querySingle { Nullable(screenActivity.db.installedDao.getObject(packageName)) }
+                    .querySingle { Nullable(screenActivity.db.installedDao.get(packageName)) }
                     .map { Pair(products, it) }
             }
             .observeOn(AndroidSchedulers.mainThread())

@@ -83,9 +83,9 @@ class MainApplication : Application(), ImageLoaderFactory {
             addAction(Intent.ACTION_PACKAGE_REMOVED)
             addDataScheme("package")
         })
-        val installedItems =
-            packageManager.getInstalledPackages(Android.PackageManager.signaturesFlag)
-                .map { it.toInstalledItem() }
+        val installedItems = packageManager
+            .getInstalledPackages(Android.PackageManager.signaturesFlag)
+            .map { it.toInstalledItem() }
         CoroutineScope(Dispatchers.Default).launch {
             db.installedDao.put(*installedItems.toTypedArray())
         }
