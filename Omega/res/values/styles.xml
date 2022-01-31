@@ -151,7 +151,8 @@
 
     <style name="AlertDialog.Dark" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
-        <item name="android:colorBackground">@color/settings_background_dark_2dp</item>
+        <item name="android:colorBackground">@color/grey_600</item>
+        <item name="android:windowBackground">@drawable/bg_alert_dialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/Button.Outlined.Colored</item>
         <item name="buttonBarNegativeButtonStyle">@style/Button.Outlined</item>
         <item name="buttonBarNeutralButtonStyle">@style/Button.Outlined</item>
@@ -160,6 +161,7 @@
     <style name="AlertDialog.Black" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:colorBackground">@color/settings_background_black_2dp</item>
+        <item name="android:windowBackground">@drawable/bg_alert_dialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/Button.Outlined.Colored</item>
         <item name="buttonBarNegativeButtonStyle">@style/Button.Outlined</item>
         <item name="buttonBarNeutralButtonStyle">@style/Button.Outlined</item>
