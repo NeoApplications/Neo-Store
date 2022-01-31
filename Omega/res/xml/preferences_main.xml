@@ -30,14 +30,14 @@
             android:title="@string/title__general_desktop" />
 
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsDockFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsDockFragment"
             android:icon="@drawable/ic_dock"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_dock"
             android:title="@string/title__general_dock" />
 
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsDrawerFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsDrawerFragment"
             android:icon="@drawable/ic_apps_colored"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_drawer"
@@ -55,7 +55,7 @@
         android:title="@string/pref_category__inputs"
         app:allowDividerAbove="false">
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsSearchFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsSearchFragment"
             android:icon="@drawable/ic_search_colored"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_search"
@@ -73,14 +73,14 @@
         android:title="@string/pref_category__others"
         app:allowDividerAbove="false">
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsAdvancedFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsAdvancedFragment"
             android:icon="@drawable/ic_more_horiz"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_advanced"
             android:title="@string/title__general_advanced" />
 
         <Preference
-            android:fragment="com.saggitt.omega.preferences.views.PreferencesActivity$PrefsDevFragment"
+            android:fragment="com.saggitt.omega.preferences.views.PrefsDevFragment"
             android:icon="@drawable/ic_code"
             android:key="pref_showDevOptions"
             android:layout="@layout/home_preference"

@@ -31,7 +31,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.InsettableFrameLayout
 import com.android.launcher3.R
@@ -39,8 +38,9 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.farmerbb.taskbar.lib.Taskbar
-import com.saggitt.omega.*
+import com.saggitt.omega.OmegaLayoutInflater
+import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
+import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.settings.SettingsDragLayer
 import com.saggitt.omega.theme.ThemeManager
@@ -177,7 +177,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
     }
 
-    // TODO should any of those sub classes get larger, then it should be moved to own class
     class PrefsMainFragment : PreferenceFragmentCompat() {
         private var mShowDevOptions = false
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -221,79 +220,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 else -> return false
             }
             return true
-        }
-    }
-
-    class PrefsDockFragment :
-        BasePreferenceFragment(R.xml.preferences_dock, R.string.title__general_dock)
-
-    class PrefsDrawerFragment :
-        BasePreferenceFragment(R.xml.preferences_drawer, R.string.title__general_drawer) {
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
-                onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                        requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
-                        true
-                    }
-
-                isVisible = Utilities.ATLEAST_R
-            }
-
-            findPreference<Preference>(PREFS_TRUST_APPS)?.apply {
-                onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                    if (
-                        Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
-                        Utilities.ATLEAST_R
-                    ) {
-                        Config.showLockScreen(
-                            requireContext(),
-                            getString(R.string.trust_apps_manager_name)
-                        ) {
-                            val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
-                            startFragment(
-                                context,
-                                fragment,
-                                context.resources.getString(R.string.title__drawer_hide_apps)
-                            )
-                        }
-                    } else {
-                        val fragment = "com.saggitt.omega.preferences.views.HiddenAppsFragment"
-                        startFragment(
-                            context,
-                            fragment,
-                            context.resources.getString(R.string.title__drawer_hide_apps)
-                        )
-                    }
-                    false
-                }
-            }
-        }
-    }
-
-    class PrefsSearchFragment :
-        BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search)
-
-    class PrefsAdvancedFragment :
-        BasePreferenceFragment(R.xml.preferences_advanced, R.string.title__general_advanced)
-
-    class PrefsDevFragment :
-        BasePreferenceFragment(R.xml.preferences_dev, R.string.developer_options_title) {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            findPreference<Preference>(PREFS_KILL)?.setOnPreferenceClickListener {
-                Utilities.killLauncher()
-                false
-            }
-            findPreference<Preference>(PREFS_DESKTOP_MODE_SETTINGS)?.setOnPreferenceClickListener {
-                Taskbar.openSettings(
-                    requireContext(),
-                    ThemeOverride.Settings().getTheme(requireContext())
-                )
-                true
-            }
         }
     }
 
