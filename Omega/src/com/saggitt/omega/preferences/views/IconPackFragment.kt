@@ -65,9 +65,7 @@ class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     lateinit var binding: FragmentIconPackBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentIconPackBinding.inflate(inflater, container, false)
         binding.installedPacks.apply {

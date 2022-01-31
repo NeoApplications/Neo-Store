@@ -69,6 +69,8 @@ import kotlin.math.ceil
 import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 
+// TODO break into specialised files/classes
+
 val Context.omegaPrefs get() = Utilities.getOmegaPrefs(this)
 
 val Context.launcherAppState get() = LauncherAppState.getInstance(this)
@@ -211,12 +213,12 @@ fun Switch.applyColor(color: Int) {
     val alphaDisabled = Themes.getAlpha(context, android.R.attr.disabledAlpha)
     val switchThumbNormal =
         context.resources.getColor(
-            androidx.preference.R.color.switch_thumb_normal_material_light,
+            R.color.switch_thumb_normal_material_light,
             null
         )
     val switchThumbDisabled =
         context.resources.getColor(
-            androidx.preference.R.color.switch_thumb_disabled_material_light,
+            R.color.switch_thumb_disabled_material_light,
             null
         )
     val thstateList = ColorStateList(
@@ -268,7 +270,7 @@ fun CheckedTextView.applyAccent() {
 fun String.toTitleCase(): String = splitToSequence(" ").map {
     it.replaceFirstChar { ch ->
         if (ch.isLowerCase()) ch.titlecase(
-                Locale.getDefault()
+            Locale.getDefault()
         ) else ch.toString()
     }
 }.joinToString(" ")
@@ -351,9 +353,9 @@ val Int.isDark get() = luminance < 0.5f
 
 fun dpToPx(size: Float): Float {
     return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            size,
-            Resources.getSystem().displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP,
+        size,
+        Resources.getSystem().displayMetrics
     )
 }
 
@@ -364,14 +366,14 @@ fun pxToDp(size: Float): Float {
 
 fun Context.createDisabledColor(color: Int): ColorStateList {
     return ColorStateList(
-            arrayOf(
-                    intArrayOf(-android.R.attr.state_enabled),
-                    intArrayOf()
-            ),
-            intArrayOf(
-                    getDisabled(getColorAttr(android.R.attr.colorForeground)),
-                    color
-            )
+        arrayOf(
+            intArrayOf(-android.R.attr.state_enabled),
+            intArrayOf()
+        ),
+        intArrayOf(
+            getDisabled(getColorAttr(android.R.attr.colorForeground)),
+            color
+        )
     )
 }
 
@@ -393,8 +395,8 @@ fun applyAlpha(a: Float, inputColor: Int): Int {
     var alpha = a
     alpha *= Color.alpha(inputColor)
     return Color.argb(
-            alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
-            Color.blue(inputColor)
+        alpha.toInt(), Color.red(inputColor), Color.green(inputColor),
+        Color.blue(inputColor)
     )
 }
 
@@ -417,19 +419,6 @@ fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
     return false
 }
 
-fun getTabRipple(context: Context, accent: Int): ColorStateList {
-    return ColorStateList(
-            arrayOf(
-                    intArrayOf(android.R.attr.state_selected),
-                    intArrayOf()
-            ),
-            intArrayOf(
-                    ColorUtils.setAlphaComponent(accent, 31),
-                    context.getColorAttr(android.R.attr.colorControlHighlight)
-            )
-    )
-}
-
 val Long.Companion.random get() = Random.nextLong()
 
 fun getWindowCornerRadius(context: Context): Float {
@@ -448,11 +437,12 @@ fun supportsRoundedCornersOnWindows(context: Context): Boolean {
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)
 }
 
-val ViewGroup.recursiveChildren: Sequence<View> get() = children.flatMap {
-    if (it is ViewGroup) {
-        it.recursiveChildren + sequenceOf(it)
-    } else sequenceOf(it)
-}
+val ViewGroup.recursiveChildren: Sequence<View>
+    get() = children.flatMap {
+        if (it is ViewGroup) {
+            it.recursiveChildren + sequenceOf(it)
+        } else sequenceOf(it)
+    }
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :
     FloatPropertyCompat<Any>(name) {
@@ -500,15 +490,15 @@ fun Fragment.recreate() {
     parentFragmentManager
         .beginTransaction()
         .attach(this)
-            .commit()
+        .commit()
 }
 
 fun Activity.recreateAnimated() = startActivity(
-        Intent.makeRestartActivityTask(
-                ComponentName(this, this::class.java)
-        ), ActivityOptions.makeCustomAnimation(
+    Intent.makeRestartActivityTask(
+        ComponentName(this, this::class.java)
+    ), ActivityOptions.makeCustomAnimation(
         this, android.R.anim.fade_in, android.R.anim.fade_out
-).toBundle()
+    ).toBundle()
 )
 
 val Context.locale: Locale
