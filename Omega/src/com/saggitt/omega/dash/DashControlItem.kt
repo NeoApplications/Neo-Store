@@ -20,6 +20,7 @@ package com.saggitt.omega.dash
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,12 @@ class DashControlItem(val context: Context, val provider: DashControlProvider) :
         val sheetColor =
             ColorStateList.valueOf(Themes.getAttrColor(context, R.attr.dashSheetBackground))
         val activeColor = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
-        binding.root.backgroundTintList = if (provider.state) activeColor else backgroundColor
+        binding.content.backgroundTintList = if (provider.state) activeColor else backgroundColor
+        binding.content.background = RippleDrawable(
+            if (provider.state) backgroundColor.withAlpha(120)
+            else activeColor.withAlpha(120),
+            binding.content.background, null
+        )
         binding.itemIcon.setImageDrawable(provider.icon)
         binding.itemName.text = provider.name
         binding.itemIcon.tooltipText = provider.description
@@ -54,7 +60,7 @@ class DashControlItem(val context: Context, val provider: DashControlProvider) :
         binding.itemExtend.visibility = if (provider.extendable) View.VISIBLE else View.GONE
         binding.itemExtend.imageTintList = if (provider.state) sheetColor else activeColor
         binding.itemName.setTextColor(if (provider.state) sheetColor else activeColor)
-        binding.root.setOnClickListener {
+        binding.content.setOnClickListener {
             provider.state = !provider.state
             AbstractFloatingView.closeAllOpenViews(Launcher.getLauncher(context))
         }
