@@ -23,7 +23,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.databinding.TabsToolbarBinding
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Section
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.fragments.AppListFragment
@@ -89,8 +89,8 @@ class TabsFragment : ScreenFragment() {
         }
 
     private var searchQuery = ""
-    private var sections = listOf<ProductItem.Section>(ProductItem.Section.All)
-    private var section: ProductItem.Section = ProductItem.Section.All
+    private var sections = listOf<Section>(Section.All)
+    private var section: Section = Section.All
 
     private val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
         viewPager?.let {
@@ -193,12 +193,12 @@ class TabsFragment : ScreenFragment() {
         this.layout = layout
 
         showSections = savedInstanceState?.getByte(STATE_SHOW_SECTIONS)?.toInt() ?: 0 != 0
-        sections = savedInstanceState?.getParcelableArrayList<ProductItem.Section>(STATE_SECTIONS)
+        sections = savedInstanceState?.getParcelableArrayList<Section>(STATE_SECTIONS)
             .orEmpty()
-        section = savedInstanceState?.getParcelable(STATE_SECTION) ?: ProductItem.Section.All
+        section = savedInstanceState?.getParcelable(STATE_SECTION) ?: Section.All
         layout.sectionChange.setOnClickListener {
             showSections = sections
-                .any { it !is ProductItem.Section.All } && !showSections
+                .any { it !is Section.All } && !showSections
         }
 
         updateOrder()
@@ -240,7 +240,7 @@ class TabsFragment : ScreenFragment() {
             .subscribe {
                 setSectionsAndUpdate(
                     it.asSequence().sorted()
-                        .map(ProductItem.Section::Category).toList(), null
+                        .map(Section::Category).toList(), null
                 )
             }
         repositoriesDisposable = Observable.just(Unit)
@@ -250,7 +250,7 @@ class TabsFragment : ScreenFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 setSectionsAndUpdate(null, it.asSequence().filter { it.enabled }
-                    .map { ProductItem.Section.Repository(it.id, it.name) }.toList())
+                    .map { Section.Repository(it.id, it.name) }.toList())
             }
         updateSection()
 
@@ -383,19 +383,19 @@ class TabsFragment : ScreenFragment() {
         productFragments.forEach { it.setOrder(order) }
     }
 
-    private inline fun <reified T : ProductItem.Section> collectOldSections(list: List<T>?): List<T>? {
+    private inline fun <reified T : Section> collectOldSections(list: List<T>?): List<T>? {
         val oldList = sections.mapNotNull { it as? T }
         return if (list == null || oldList == list) oldList else null
     }
 
     private fun setSectionsAndUpdate(
-        categories: List<ProductItem.Section.Category>?,
-        repositories: List<ProductItem.Section.Repository>?,
+        categories: List<Section.Category>?,
+        repositories: List<Section.Repository>?,
     ) {
         val oldCategories = collectOldSections(categories)
         val oldRepositories = collectOldSections(repositories)
         if (oldCategories == null || oldRepositories == null) {
-            sections = listOf(ProductItem.Section.All) +
+            sections = listOf(Section.All) +
                     (categories ?: oldCategories).orEmpty() +
                     (repositories ?: oldRepositories).orEmpty()
             updateSection()
@@ -404,15 +404,15 @@ class TabsFragment : ScreenFragment() {
 
     private fun updateSection() {
         if (section !in sections) {
-            section = ProductItem.Section.All
+            section = Section.All
         }
         layout?.sectionName?.text = when (val section = section) {
-            is ProductItem.Section.All -> getString(R.string.all_applications)
-            is ProductItem.Section.Category -> section.name
-            is ProductItem.Section.Repository -> section.name
+            is Section.All -> getString(R.string.all_applications)
+            is Section.Category -> section.name
+            is Section.Repository -> section.name
         }
         layout?.sectionIcon?.visibility =
-            if (sections.any { it !is ProductItem.Section.All }) View.VISIBLE else View.GONE
+            if (sections.any { it !is Section.All }) View.VISIBLE else View.GONE
         productFragments.forEach { it.setSection(section) }
         sectionsList?.adapter?.notifyDataSetChanged()
     }
@@ -507,8 +507,8 @@ class TabsFragment : ScreenFragment() {
     }
 
     private class SectionsAdapter(
-        private val sections: () -> List<ProductItem.Section>,
-        private val onClick: (ProductItem.Section) -> Unit,
+        private val sections: () -> List<Section>,
+        private val onClick: (Section) -> Unit,
     ) : StableRecyclerAdapter<SectionsAdapter.ViewType,
             RecyclerView.ViewHolder>() {
         enum class ViewType { SECTION }
@@ -589,9 +589,9 @@ class TabsFragment : ScreenFragment() {
                 section.javaClass != nextSection.javaClass
             ) margin else 0
             holder.title.text = when (section) {
-                is ProductItem.Section.All -> holder.itemView.resources.getString(R.string.all_applications)
-                is ProductItem.Section.Category -> section.name
-                is ProductItem.Section.Repository -> section.name
+                is Section.All -> holder.itemView.resources.getString(R.string.all_applications)
+                is Section.Category -> section.name
+                is Section.Repository -> section.name
             }
         }
     }

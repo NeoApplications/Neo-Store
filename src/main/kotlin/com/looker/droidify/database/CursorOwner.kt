@@ -5,31 +5,32 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.Loader
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 
 class CursorOwner : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     sealed class Request {
         internal abstract val id: Int
 
         data class ProductsAvailable(
-            val searchQuery: String, val section: ProductItem.Section,
-            val order: ProductItem.Order,
+            val searchQuery: String, val section: Section,
+            val order: Order,
         ) : Request() {
             override val id: Int
                 get() = 1
         }
 
         data class ProductsInstalled(
-            val searchQuery: String, val section: ProductItem.Section,
-            val order: ProductItem.Order,
+            val searchQuery: String, val section: Section,
+            val order: Order,
         ) : Request() {
             override val id: Int
                 get() = 2
         }
 
         data class ProductsUpdates(
-            val searchQuery: String, val section: ProductItem.Section,
-            val order: ProductItem.Order,
+            val searchQuery: String, val section: Section,
+            val order: Order,
         ) : Request() {
             override val id: Int
                 get() = 3

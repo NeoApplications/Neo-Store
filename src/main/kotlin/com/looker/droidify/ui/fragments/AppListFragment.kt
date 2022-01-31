@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.looker.droidify.R
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import com.looker.droidify.screen.BaseFragment
 import com.looker.droidify.ui.adapters.AppListAdapter
 import com.looker.droidify.ui.viewmodels.AppListViewModel
@@ -127,7 +128,7 @@ class AppListFragment() : BaseFragment(), CursorOwner.Callback {
         }
     }
 
-    internal fun setSection(section: ProductItem.Section) {
+    internal fun setSection(section: Section) {
         viewModel.setSection(section) {
             if (view != null) {
                 screenActivity.cursorOwner.attach(this, viewModel.request(source))
@@ -135,7 +136,7 @@ class AppListFragment() : BaseFragment(), CursorOwner.Callback {
         }
     }
 
-    internal fun setOrder(order: ProductItem.Order) {
+    internal fun setOrder(order: Order) {
         viewModel.setOrder(order) {
             if (view != null) {
                 screenActivity.cursorOwner.attach(this, viewModel.request(source))

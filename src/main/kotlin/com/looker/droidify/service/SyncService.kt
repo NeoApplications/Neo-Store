@@ -16,7 +16,9 @@ import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Section
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
@@ -391,8 +393,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     installed = true,
                                     updates = true,
                                     searchQuery = "",
-                                    section = ProductItem.Section.All,
-                                    order = ProductItem.Order.NAME,
+                                    section = Section.All,
+                                    order = Order.NAME,
                                     signal = it
                                 )
                                 .use {

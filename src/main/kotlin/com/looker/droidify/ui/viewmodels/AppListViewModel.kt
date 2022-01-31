@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.CursorOwner
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.fragments.AppListFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,17 +17,17 @@ import kotlinx.coroutines.launch
 class AppListViewModel : ViewModel() {
 
     private val _order = MutableStateFlow(Preferences[Preferences.Key.SortOrder].order)
-    private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
+    private val _sections = MutableStateFlow<Section>(Section.All)
     private val _searchQuery = MutableStateFlow("")
 
-    val order: StateFlow<ProductItem.Order> = _order.stateIn(
-        initialValue = ProductItem.Order.LAST_UPDATE,
+    val order: StateFlow<Order> = _order.stateIn(
+        initialValue = Order.LAST_UPDATE,
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000)
     )
 
-    val sections: StateFlow<ProductItem.Section> = _sections.stateIn(
-        initialValue = ProductItem.Section.All,
+    val sections: StateFlow<Section> = _sections.stateIn(
+        initialValue = Section.All,
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000)
     )
@@ -38,8 +39,8 @@ class AppListViewModel : ViewModel() {
 
     fun request(source: AppListFragment.Source): CursorOwner.Request {
         var mSearchQuery = ""
-        var mSections: ProductItem.Section = ProductItem.Section.All
-        var mOrder: ProductItem.Order = ProductItem.Order.NAME
+        var mSections: Section = Section.All
+        var mOrder: Order = Order.NAME
         viewModelScope.launch {
             launch { searchQuery.collect { if (source.sections) mSearchQuery = it } }
             launch { sections.collect { if (source.sections) mSections = it } }
@@ -64,7 +65,7 @@ class AppListViewModel : ViewModel() {
         }
     }
 
-    fun setSection(newSection: ProductItem.Section, perform: () -> Unit) {
+    fun setSection(newSection: Section, perform: () -> Unit) {
         viewModelScope.launch {
             if (newSection != sections.value) {
                 _sections.emit(newSection)
@@ -73,7 +74,7 @@ class AppListViewModel : ViewModel() {
         }
     }
 
-    fun setOrder(newOrder: ProductItem.Order, perform: () -> Unit) {
+    fun setOrder(newOrder: Order, perform: () -> Unit) {
         viewModelScope.launch {
             if (newOrder != order.value) {
                 _order.emit(newOrder)

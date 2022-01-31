@@ -9,7 +9,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.looker.droidify.*
 import com.looker.droidify.database.entity.*
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import io.reactivex.rxjava3.core.Flowable
 
 
@@ -91,7 +92,7 @@ interface ProductDao : BaseDao<Product> {
     @Transaction
     fun query(
         installed: Boolean, updates: Boolean, searchQuery: String,
-        section: ProductItem.Section, order: ProductItem.Order, signal: CancellationSignal?
+        section: Section, order: Order, signal: CancellationSignal?
     ): Cursor {
         val builder = QueryBuilder()
 
@@ -132,17 +133,17 @@ interface ProductDao : BaseDao<Product> {
         builder += """JOIN $ROW_INSTALLED_NAME AS installed
         ON product.${ROW_PACKAGE_NAME} = installed.${ROW_PACKAGE_NAME}"""
 
-        if (section is ProductItem.Section.Category) {
+        if (section is Section.Category) {
             builder += """JOIN $ROW_CATEGORY_NAME AS category
           ON product.${ROW_PACKAGE_NAME} = category.${ROW_PACKAGE_NAME}"""
         }
 
         builder += """WHERE repository.${ROW_ENABLED} != 0"""
 
-        if (section is ProductItem.Section.Category) {
+        if (section is Section.Category) {
             builder += "AND category.${ROW_NAME} = ?"
             builder %= section.name
-        } else if (section is ProductItem.Section.Repository) {
+        } else if (section is Section.Repository) {
             builder += "AND product.${ROW_REPOSITORY_ID} = ?"
             builder %= section.id.toString()
         }
@@ -163,9 +164,9 @@ interface ProductDao : BaseDao<Product> {
         }
 
         when (order) {
-            ProductItem.Order.NAME -> Unit
-            ProductItem.Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"
-            ProductItem.Order.LAST_UPDATE -> builder += "product.${ROW_UPDATED} DESC,"
+            Order.NAME -> Unit
+            Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"
+            Order.LAST_UPDATE -> builder += "product.${ROW_UPDATED} DESC,"
         }::class
         builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC"
 
@@ -180,7 +181,7 @@ interface ProductDao : BaseDao<Product> {
     // TODO optimize and simplify
     fun queryList(
         installed: Boolean, updates: Boolean, searchQuery: String,
-        section: ProductItem.Section, order: ProductItem.Order, numberOfItems: Int = 0
+        section: Section, order: Order, numberOfItems: Int = 0
     ): DataSource.Factory<Int, Product> {
         val builder = QueryBuilder()
 
@@ -221,17 +222,17 @@ interface ProductDao : BaseDao<Product> {
         builder += """JOIN $ROW_INSTALLED_NAME AS installed
         ON product.${ROW_PACKAGE_NAME} = installed.${ROW_PACKAGE_NAME}"""
 
-        if (section is ProductItem.Section.Category) {
+        if (section is Section.Category) {
             builder += """JOIN $ROW_CATEGORY_NAME AS category
           ON product.${ROW_PACKAGE_NAME} = category.${ROW_PACKAGE_NAME}"""
         }
 
         builder += """WHERE repository.${ROW_ENABLED} != 0"""
 
-        if (section is ProductItem.Section.Category) {
+        if (section is Section.Category) {
             builder += "AND category.${ROW_NAME} = ?"
             builder %= section.name
-        } else if (section is ProductItem.Section.Repository) {
+        } else if (section is Section.Repository) {
             builder += "AND product.${ROW_REPOSITORY_ID} = ?"
             builder %= section.id.toString()
         }
@@ -252,9 +253,9 @@ interface ProductDao : BaseDao<Product> {
         }
 
         when (order) {
-            ProductItem.Order.NAME -> Unit
-            ProductItem.Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"
-            ProductItem.Order.LAST_UPDATE -> builder += "product.${ROW_UPDATED} DESC,"
+            Order.NAME -> Unit
+            Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"
+            Order.LAST_UPDATE -> builder += "product.${ROW_UPDATED} DESC,"
         }::class
         builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
 

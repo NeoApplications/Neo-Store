@@ -10,7 +10,8 @@ import androidx.paging.PagedList
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Product
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
 import kotlinx.coroutines.Dispatchers
@@ -24,18 +25,18 @@ import kotlinx.coroutines.withContext
 class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, secondarySource: Source) :
     ViewModel() {
 
-    private val _order = MutableStateFlow(ProductItem.Order.LAST_UPDATE)
-    private val _sections = MutableStateFlow<ProductItem.Section>(ProductItem.Section.All)
+    private val _order = MutableStateFlow(Order.LAST_UPDATE)
+    private val _sections = MutableStateFlow<Section>(Section.All)
     private val _searchQuery = MutableStateFlow("")
 
-    val order: StateFlow<ProductItem.Order> = _order.stateIn(
-        initialValue = ProductItem.Order.LAST_UPDATE,
+    val order: StateFlow<Order> = _order.stateIn(
+        initialValue = Order.LAST_UPDATE,
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000)
     )
 
-    val sections: StateFlow<ProductItem.Section> = _sections.stateIn(
-        initialValue = ProductItem.Section.All,
+    val sections: StateFlow<Section> = _sections.stateIn(
+        initialValue = Section.All,
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000)
     )
@@ -47,8 +48,8 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
 
     fun request(source: Source): Request {
         var mSearchQuery = ""
-        var mSections: ProductItem.Section = ProductItem.Section.All
-        var mOrder: ProductItem.Order = ProductItem.Order.NAME
+        var mSections: Section = Section.All
+        var mOrder: Order = Order.NAME
         viewModelScope.launch {
             launch { searchQuery.collect { if (source.sections) mSearchQuery = it } }
             launch { sections.collect { if (source.sections) mSections = it } }
@@ -74,13 +75,13 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
             Source.UPDATED -> Request.ProductsUpdated(
                 mSearchQuery,
                 mSections,
-                ProductItem.Order.LAST_UPDATE,
+                Order.LAST_UPDATE,
                 Preferences[Preferences.Key.UpdatedApps]
             )
             Source.NEW -> Request.ProductsNew(
                 mSearchQuery,
                 mSections,
-                ProductItem.Order.LAST_UPDATE,
+                Order.LAST_UPDATE,
                 Preferences[Preferences.Key.NewApps]
             )
         }
@@ -140,7 +141,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
         }
     }
 
-    fun setSection(newSection: ProductItem.Section, perform: () -> Unit) {
+    fun setSection(newSection: Section, perform: () -> Unit) {
         viewModelScope.launch {
             if (newSection != sections.value) {
                 _sections.emit(newSection)
@@ -149,7 +150,7 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
         }
     }
 
-    fun setOrder(newOrder: ProductItem.Order, perform: () -> Unit) {
+    fun setOrder(newOrder: Order, perform: () -> Unit) {
         viewModelScope.launch {
             if (newOrder != order.value) {
                 _order.emit(newOrder)

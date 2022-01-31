@@ -1,63 +1,22 @@
 package com.looker.droidify.entity
 
-import android.os.Parcel
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
-import com.looker.droidify.R
-import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.extension.json.forEachKey
 
 data class ProductItem(
-    var repositoryId: Long, var packageName: String, var name: String, var summary: String,
-    val icon: String, val metadataIcon: String, val version: String, var installedVersion: String,
-    var compatible: Boolean, var canUpdate: Boolean, var matchRank: Int,
+    var repositoryId: Long,
+    var packageName: String,
+    var name: String,
+    var summary: String,
+    val icon: String,
+    val metadataIcon: String,
+    val version: String,
+    var installedVersion: String,
+    var compatible: Boolean,
+    var canUpdate: Boolean,
+    var matchRank: Int,
 ) {
-    sealed class Section : KParcelable {
-        object All : Section() {
-            @Suppress("unused")
-            @JvmField
-            val CREATOR = KParcelable.creator { All }
-        }
-
-        data class Category(val name: String) : Section() {
-            override fun writeToParcel(dest: Parcel, flags: Int) {
-                dest.writeString(name)
-            }
-
-            companion object {
-                @Suppress("unused")
-                @JvmField
-                val CREATOR = KParcelable.creator {
-                    val name = it.readString()!!
-                    Category(name)
-                }
-            }
-        }
-
-        data class Repository(val id: Long, val name: String) : Section() {
-            override fun writeToParcel(dest: Parcel, flags: Int) {
-                dest.writeLong(id)
-                dest.writeString(name)
-            }
-
-            companion object {
-                @Suppress("unused")
-                @JvmField
-                val CREATOR = KParcelable.creator {
-                    val id = it.readLong()
-                    val name = it.readString()!!
-                    Repository(id, name)
-                }
-            }
-        }
-    }
-
-    enum class Order(val titleResId: Int) {
-        NAME(R.string.name),
-        DATE_ADDED(R.string.whats_new),
-        LAST_UPDATE(R.string.recently_updated)
-    }
-
     fun serialize(generator: JsonGenerator) {
         generator.writeNumberField("serialVersion", 1)
         generator.writeNumberField("repositoryId", repositoryId)

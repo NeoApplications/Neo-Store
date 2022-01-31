@@ -3,7 +3,8 @@ package com.looker.droidify.ui.fragments
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.looker.droidify.R
-import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 
@@ -26,7 +27,7 @@ abstract class MainNavFragmentX : BaseNavFragment() {
         }
     }
 
-    internal fun setSection(section: ProductItem.Section) {
+    internal fun setSection(section: Section) {
         viewModel.setSection(section) {
             if (view != null) {
                 //viewModel.fillList(source)
@@ -34,7 +35,7 @@ abstract class MainNavFragmentX : BaseNavFragment() {
         }
     }
 
-    internal fun setOrder(order: ProductItem.Order) {
+    internal fun setOrder(order: Order) {
         viewModel.setOrder(order) {
             if (view != null) {
                 //viewModel.fillList(source)
@@ -65,13 +66,13 @@ sealed class Request {
     internal abstract val installed: Boolean
     internal abstract val updates: Boolean
     internal abstract val searchQuery: String
-    internal abstract val section: ProductItem.Section
-    internal abstract val order: ProductItem.Order
+    internal abstract val section: Section
+    internal abstract val order: Order
     internal open val numberOfItems: Int = 0
 
     data class ProductsAll(
-        override val searchQuery: String, override val section: ProductItem.Section,
-        override val order: ProductItem.Order,
+        override val searchQuery: String, override val section: Section,
+        override val order: Order,
     ) : Request() {
         override val id: Int
             get() = 1
@@ -82,8 +83,8 @@ sealed class Request {
     }
 
     data class ProductsInstalled(
-        override val searchQuery: String, override val section: ProductItem.Section,
-        override val order: ProductItem.Order,
+        override val searchQuery: String, override val section: Section,
+        override val order: Order,
     ) : Request() {
         override val id: Int
             get() = 2
@@ -94,8 +95,8 @@ sealed class Request {
     }
 
     data class ProductsUpdates(
-        override val searchQuery: String, override val section: ProductItem.Section,
-        override val order: ProductItem.Order,
+        override val searchQuery: String, override val section: Section,
+        override val order: Order,
     ) : Request() {
         override val id: Int
             get() = 3
@@ -106,8 +107,8 @@ sealed class Request {
     }
 
     data class ProductsUpdated(
-        override val searchQuery: String, override val section: ProductItem.Section,
-        override val order: ProductItem.Order, override val numberOfItems: Int,
+        override val searchQuery: String, override val section: Section,
+        override val order: Order, override val numberOfItems: Int,
     ) : Request() {
         override val id: Int
             get() = 4
@@ -118,8 +119,8 @@ sealed class Request {
     }
 
     data class ProductsNew(
-        override val searchQuery: String, override val section: ProductItem.Section,
-        override val order: ProductItem.Order, override val numberOfItems: Int,
+        override val searchQuery: String, override val section: Section,
+        override val order: Order, override val numberOfItems: Int,
     ) : Request() {
         override val id: Int
             get() = 5
