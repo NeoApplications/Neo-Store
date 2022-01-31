@@ -19,15 +19,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:background="@drawable/ripple_dash_item_bg"
-    android:padding="6dp">
+    android:padding="4dp"
+    app:layout_constraintDimensionRatio="1:1">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_icon"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="18dp"
+        android:background="@drawable/ripple_dash_item_bg"
+        android:padding="12dp"
         android:theme="@style/DashTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"

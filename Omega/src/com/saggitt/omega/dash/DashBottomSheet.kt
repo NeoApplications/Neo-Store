@@ -59,7 +59,8 @@ class DashBottomSheet(context: Context) : RelativeLayout(context) {
             adapter = controlFastAdapter
         }
         findViewById<RecyclerView>(R.id.dash_action_recycler).apply {
-            layoutManager = GridLayoutManager(context, 4)
+            // TODO add option to select between 4/6
+            layoutManager = GridLayoutManager(context, 6)
             adapter = dashActionFastAdapter
         }
         val controlItems = activeDashProviders
