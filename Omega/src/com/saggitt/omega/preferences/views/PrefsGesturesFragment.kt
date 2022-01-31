@@ -30,6 +30,8 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.notification.NotificationListener
 import com.android.launcher3.settings.NotificationDotsPreference
+import com.saggitt.omega.NOTIFICATION_BADGING
+import com.saggitt.omega.NOTIFICATION_DOTS_PREFERENCE_KEY
 import com.saggitt.omega.util.SettingsObserver
 
 class PrefsGesturesFragment :
@@ -131,9 +133,6 @@ class PrefsGesturesFragment :
     }
 
     companion object {
-        const val NOTIFICATION_BADGING = "notification_badging"
-        const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
-
         /**
          * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
          */

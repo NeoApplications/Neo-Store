@@ -27,8 +27,7 @@ import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
-import com.saggitt.omega.PREFS_ACCENT
-import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.*
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
@@ -82,152 +81,149 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
             oldFile.delete()
         }
         return context.applicationContext
-                .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+            .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
     }
 
-    // HOME SCREEN
-    val desktopIconScale by FloatPref("pref_home_icon_scale", 1f, reloadIcons)
-    val usePopupMenuView by BooleanPref("pref_desktopUsePopupMenuView", true, doNothing)
+    // DESKTOP
+    val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadIcons)
+    val usePopupMenuView by BooleanPref(PREFS_DESKTOP_POPUP_MENU, true, doNothing)
     var dashProviders = StringListPref(
-            "pref_dash_providers",
-            listOf("17", "15", "4", "6", "8", "5"), doNothing
+        PREFS_DASH_PROVIDERS,
+        listOf("17", "15", "4", "6", "8", "5"), doNothing
     )
-
-    val lockDesktop by BooleanPref("pref_lockDesktop", false, reloadAll)
-    val hideStatusBar by BooleanPref("pref_hideStatusBar", false, doNothing)
-    val enableMinus by BooleanPref("pref_enable_minus_one", false, restart)
-    var allowEmptyScreens by BooleanPref("pref_keepEmptyScreens", false)
-    val hideAppLabels by BooleanPref("pref_hide_app_label", false, reloadApps)
-    val desktopTextScale by FloatPref("pref_icon_text_scale", 1f, reloadApps)
-    val allowFullWidthWidgets by BooleanPref("pref_full_width_widgets", false, restart)
-    private val homeMultilineLabel by BooleanPref("pref_icon_labels_two_lines", false, reloadApps)
+    val lockDesktop by BooleanPref(PREFS_DESKTOP_LOCK, false, reloadAll)
+    val hideStatusBar by BooleanPref(PREFS_STATUSBAR_HIDE, false, doNothing)
+    val enableMinus by BooleanPref(PREFS_ENABLE_MINUS, false, restart)
+    var allowEmptyScreens by BooleanPref(PREFS_EMPTY_SCREENS, false)
+    val hideAppLabels by BooleanPref(PREFS_DESKTOP_HIDE_LABEL, false, reloadApps)
+    val desktopTextScale by FloatPref(PREFS_DESKTOP_ICON_TEXT_SCALE, 1f, reloadApps)
+    val allowFullWidthWidgets by BooleanPref(PREFS_WIDGETS_FULL_WIDTH, false, restart)
+    private val homeMultilineLabel by BooleanPref(
+        PREFS_DESKTOP_ICON_LABEL_TWOLINES,
+        false,
+        reloadApps
+    )
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 
-    var torchState by BooleanPref("pref_torch", false, doNothing)
-
     // DOCK
-    var dockHide by BooleanPref("pref_hideHotseat", false, restart)
-    val dockIconScale by FloatPref("pref_hotseat_icon_scale", 1f, restart)
-    var dockScale by FloatPref("pref_dockScale", 1f, restart)
-    val dockBackground by BooleanPref("pref_dockBackground", false, restart)
-    val dockBackgroundColor by IntPref("pref_dock_background_color", 0x101010, restart)
-    var dockOpacity by AlphaPref("pref_dockOpacity", -1, restart)
+    var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, restart)
+    val dockIconScale by FloatPref(PREFS_DOCK_ICON_SCALE, 1f, restart)
+    var dockScale by FloatPref(PREFS_DOCK_SCALE, 1f, restart)
+    val dockBackground by BooleanPref(PREFS_DOCK_BACKGROUND, false, restart)
+    val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, restart)
+    var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, restart)
 
     // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, restart)
-    var hiddenAppSet by StringSetPref("hidden_app_set", setOf(), reloadApps)
-    var hiddenPredictionAppSet by StringSetPref(
-            "pref_hidden_prediction_set",
-            setOf(),
-            doNothing
-    )
-    var protectedAppsSet by StringSetPref("protected_app_set", setOf(), reloadApps)
-    var enableProtectedApps by BooleanPref("pref_protected_apps", false)
-    var allAppsIconScale by FloatPref("pref_allapps_icon_scale", 1f, reloadApps)
-    val allAppsTextScale by FloatPref("pref_allapps_icon_text_scale", 1f)
-    val hideAllAppsAppLabels by BooleanPref("pref_hide_allapps_app_label", false, reloadApps)
+    var hiddenAppSet by StringSetPref(PREFS_HIDDEN_SET, setOf(), reloadApps)
+    var hiddenPredictionAppSet by StringSetPref(PREFS_HIDDEN_PREDICTION_SET, setOf(), doNothing)
+    var protectedAppsSet by StringSetPref(PREFS_PROTECTED_SET, setOf(), reloadApps)
+    var enableProtectedApps by BooleanPref(PREFS_PROTECTED_APPS, false)
+    var allAppsIconScale by FloatPref(PREFS_DRAWER_ICON_SCALE, 1f, reloadApps)
+    val allAppsTextScale by FloatPref(PREFS_DRAWER_ICON_TEXT_SCALE, 1f)
+    val hideAllAppsAppLabels by BooleanPref(PREFS_DRAWER_HIDE_LABEL, false, reloadApps)
     private val drawerMultilineLabel by BooleanPref(
-            "pref_apps_icon_labels_two_lines",
-            false,
-            reloadApps
+        PREFS_DRAWER_ICON_LABEL_TWOLINES,
+        false,
+        reloadApps
     )
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
-    val allAppsCellHeightMultiplier by FloatPref("pref_allAppsCellHeightMultiplier", 1F, restart)
-    val separateWorkApps by BooleanPref("pref_separateWorkApps", false, recreate)
+    val allAppsCellHeightMultiplier by FloatPref(PREFS_DRAWER_HEIGHT_MULTIPLIER, 1F, restart)
+    val separateWorkApps by BooleanPref(PREFS_WORK_PROFILE_SEPARATED, false, recreate)
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val drawerTabs get() = appGroupsManager.drawerTabs
     val currentTabsModel
         get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
 
-    val saveScrollPosition by BooleanPref("pref_keep_scroll_state", false, doNothing)
+    val saveScrollPosition by BooleanPref(PREFS_KEEP_SCROLL_STATE, false, doNothing)
 
-    // POPUP DIALOG PREFERENCES
-    val desktopPopupEdit by BooleanPref("desktop_popup_edit", true, doNothing)
-    val desktopPopupRemove by BooleanPref("desktop_popup_remove", false, doNothing)
-    val drawerPopupEdit by BooleanPref("drawer_popup_edit", true, doNothing)
-    val drawerPopupUninstall by BooleanPref("drawer_popup_uninstall", false, doNothing)
-
-    //THEME
+    // THEME
     var launcherTheme by StringIntPref(
-            "pref_launcherTheme",
-            ThemeManager.getDefaultTheme()
+        PREFS_THEME,
+        ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
     val accentColor by IntPref(PREFS_ACCENT, (0xffff1744).toInt(), doNothing)
-    var enableBlur by BooleanPref("pref_enableBlur", false, updateBlur)
-    var blurRadius by IntPref("pref_blurRadius", 75, updateBlur)
-    var customWindowCorner by BooleanPref("pref_customWindowCorner", false, doNothing)
-    var windowCornerRadius by FloatPref("pref_customWindowCornerRadius", 8f, updateBlur)
-    var iconPackPackage by StringPref("pref_icon_pack_package", "", reloadIcons)
+    var enableBlur by BooleanPref(PREFS_BLUR, false, updateBlur)
+    var blurRadius by IntPref(PREFS_BLUR_RADIUS, 75, updateBlur)
+    var customWindowCorner by BooleanPref(PREFS_WINDOWCORNER, false, doNothing)
+    var windowCornerRadius by FloatPref(PREFS_WINDOWCORNER_RADIUS, 8f, updateBlur)
+    var iconPackPackage by StringPref(PREFS_ICON_PACK, "", reloadIcons)
 
     var iconShape by StringBasedPref(
-            "pref_iconShape", IconShape.Circle, onIconShapeChanged,
-            {
-                IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
-            }, IconShape::toString
+        PREFS_ICON_SHAPE, IconShape.Circle, onIconShapeChanged,
+        {
+            IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
+        }, IconShape::toString
     ) { /* no dispose */ }
+    var coloredBackground by BooleanPref(PREFS_COLORED_BACKGROUND, false, doNothing)
+    var enableWhiteOnlyTreatment by BooleanPref(PREFS_WHITE_TREATMENT, false, doNothing)
+    var enableLegacyTreatment by BooleanPref(PREFS_LEGACY_TREATMENT, false, doNothing)
+    var adaptifyIconPacks by BooleanPref(PREFS_FORCE_ADAPTIVE, false, doNothing)
+    var forceShapeless by BooleanPref(PREFS_FORCE_SHAPELESS, false, doNothing)
 
-    var coloredBackground by BooleanPref("pref_colored_background", false, doNothing)
-
-    var enableWhiteOnlyTreatment by BooleanPref("pref_white_only_treatment", false, doNothing)
-    var enableLegacyTreatment by BooleanPref("pref_legacy_treatment", false, doNothing)
-    var adaptifyIconPacks by BooleanPref("pref_adaptive_icon_pack", false, doNothing)
-    var forceShapeless by BooleanPref("pref_force_shape_less", false, doNothing)
-
-    //FOLDER
-    var folderRadius by DimensionPref("pref_folder_radius", -1f, restart)
-    val customFolderBackground by BooleanPref("pref_custom_folder_background", false, restart)
+    // SEARCH & FOLDER
+    var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
+        SearchProviderController.getInstance(context).onSearchProviderChanged()
+    }
+    var settingsSearch by BooleanPref(PREFS_SEARCH_SETTINGS, true, restart)
+    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, restart)
+    val customFolderBackground by BooleanPref(PREFS_FOLDER_BACKGROUND_CUSTOM, false, restart)
     val folderBackground by IntPref(
-            "pref_folder_background",
-            Themes.getAttrColor(context, R.attr.folderFillColor),
-            restart
+        PREFS_FOLDER_BACKGROUND,
+        Themes.getAttrColor(context, R.attr.folderFillColor),
+        restart
     )
 
-    //SMARTSPACE
-    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", true, restart)
-
-    //NOTIFICATION
-    val notificationCount: Boolean by BooleanPref("pref_notification_count", false, restart)
-    val notificationCustomColor: Boolean by BooleanPref("pref_custom_background", false, restart)
+    // GESTURES & NOTIFICATION
+    val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, restart)
+    val notificationCustomColor: Boolean by BooleanPref(
+        PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
+        false,
+        restart
+    )
     val notificationBackground by IntPref(
-            "pref_notification_background", R.color.notification_background, restart
+        PREFS_NOTIFICATION_BACKGROUND,
+        R.color.notification_background,
+        restart
     )
-    val folderBadgeCount by BooleanPref("pref_folder_badge_count", true, recreate)
+    val folderBadgeCount by BooleanPref(PREFS_NOTIFICATION_COUNT_FOLDER, true, recreate)
 
     /*
     * Preferences not used. Added to register the change and restart only
     */
-    var doubleTapGesture by StringPref("pref_gesture_double_tap", "", restart)
-    var longPressGesture by StringPref("pref_gesture_long_press", "", restart)
-    var homePressGesture by StringPref("pref_gesture_press_home", "", restart)
-    var backPressGesture by StringPref("pref_gesture_press_back", "", restart)
-    var swipeDownGesture by StringPref("pref_gesture_swipe_down", "", restart)
-    var swipeUpGesture by StringPref("pref_gesture_swipe_up", "", restart)
-    var dockSwipeUpGesture by StringPref("pref_gesture_dock_swipe_up", "", restart)
-    var launchAssistantGesture by StringPref("pref_gesture_launch_assistant", "", restart)
+    var doubleTapGesture by StringPref(PREFS_GESTURE_DOUBLE_TAP, "", restart)
+    var longPressGesture by StringPref(PREFS_GESTURE_LONG_PRESS, "", restart)
+    var homePressGesture by StringPref(PREFS_GESTURE_HOME, "", restart)
+    var backPressGesture by StringPref(PREFS_GESTURE_BACK, "", restart)
+    var swipeDownGesture by StringPref(PREFS_GESTURE_SWIPE_DOWN, "", restart)
+    var swipeUpGesture by StringPref(PREFS_GESTURE_SWIPE_UP, "", restart)
+    var dockSwipeUpGesture by StringPref(PREFS_GESTURE_SWIPE_UP_DOCK, "", restart)
+    var launchAssistantGesture by StringPref(PREFS_GESTURE_ASSISTANT, "", restart)
 
-    //ADVANCED
-    var language by StringPref("pref_language", "", restart)
-    var settingsSearch by BooleanPref("pref_settings_search", true, restart)
-    var firstRun by BooleanPref("pref_first_run", true)
+    // ADVANCED
+    var language by StringPref(PREFS_LANGUAGE, "", restart)
+    var firstRun by BooleanPref(PREFS_FIRST_RUN, true)
 
-    //SEARCH
-    var searchProvider by StringPref(
-            "pref_global_search_provider",
-            ""
-    ) {
-        SearchProviderController.getInstance(context).onSearchProviderChanged()
-    }
+    // DEVELOPER PREFERENCES
+    var developerOptionsEnabled by BooleanPref(PREFS_DEV_PREFS_SHOW, false, restart)
+    var desktopModeEnabled by BooleanPref(PREFS_DESKTOP_MODE, true, restart)
+    private val lowPerformanceMode by BooleanPref(PREFS_LOW_PREFORMANCE, false, restart)
+    val enablePhysics get() = !lowPerformanceMode
+    val showDebugInfo by BooleanPref(PREFS_DEBUG_MODE, true, doNothing)
 
     // FEED
-    var feedProvider by StringPref("pref_feedProvider", "", restart)
-    val ignoreFeedWhitelist by BooleanPref("pref_feedProviderAllowAll", true, restart)
+    var feedProvider by StringPref(PREFS_FEED_PROVIDER, "", restart)
+    val ignoreFeedWhitelist by BooleanPref(PREFS_FEED_PROVIDER_ALLOW_ALL, true, restart)
 
-    //DEVELOPER PREFERENCES
-    var developerOptionsEnabled by BooleanPref("pref_showDevOptions", false, restart)
-    var desktopModeEnabled by BooleanPref("pref_desktop_mode", true, restart)
-    private val lowPerformanceMode by BooleanPref("pref_lowPerformanceMode", false, restart)
-    val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref("pref_showDebugInfo", true, doNothing)
+    // SMARTSPACE
+    val smartspaceTime24H by BooleanPref(PREFS_TIME_24H, true, restart)
+    var torchState by BooleanPref(PREFS_TORCH, false, doNothing)
+
+    // POPUP DIALOG PREFERENCES
+    val desktopPopupEdit by BooleanPref(PREFS_DESKTOP_POPUP_EDIT, true, doNothing)
+    val desktopPopupRemove by BooleanPref(PREFS_DESKTOP_POPUP_REMOVE, false, doNothing)
+    val drawerPopupEdit by BooleanPref(PREFS_DRAWER_POPUP_EDIT, true, doNothing)
+    val drawerPopupUninstall by BooleanPref(PREFS_DRAWER_POPUP_UNINSTALL, false, doNothing)
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         Log.d("OmegaPreferences", "Cambiando preferencia " + key)
@@ -272,7 +268,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     inline fun withChangeCallback(
-            crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
+        crossinline callback: (OmegaPreferencesChangeCallback) -> Unit
     ): () -> Unit {
         return { getOnChangeCallback()?.let { callback(it) } }
     }
@@ -290,8 +286,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     fun removeOnPreferenceChangeListener(
-            listener: OnPreferenceChangeListener,
-            vararg keys: String
+        listener: OnPreferenceChangeListener,
+        vararg keys: String
     ) {
         keys.forEach { removeOnPreferenceChangeListener(it, listener) }
     }
@@ -302,9 +298,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     /*Base Preferences*/
     abstract inner class PrefDelegate<T : Any>(
-            val key: String,
-            val defaultValue: T,
-            private val onChange: () -> Unit
+        val key: String,
+        val defaultValue: T,
+        private val onChange: () -> Unit
     ) {
 
         private var cached = false
@@ -358,9 +354,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class BooleanPref(
-            key: String,
-            defaultValue: Boolean = false,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Boolean = false,
+        onChange: () -> Unit = doNothing
     ) : PrefDelegate<Boolean>(key, defaultValue, onChange) {
         override fun onGetValue(): Boolean = sharedPrefs.getBoolean(getKey(), defaultValue)
 
@@ -370,9 +366,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class FloatPref(
-            key: String,
-            defaultValue: Float = 0f,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Float = 0f,
+        onChange: () -> Unit = doNothing
     ) : PrefDelegate<Float>(key, defaultValue, onChange) {
         override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
 
@@ -382,11 +378,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class DimensionPref(
-            key: String,
-            defaultValue: Float = 0f,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Float = 0f,
+        onChange: () -> Unit = doNothing
     ) :
-            PrefDelegate<Float>(key, defaultValue, onChange) {
+        PrefDelegate<Float>(key, defaultValue, onChange) {
 
         override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
 
@@ -396,7 +392,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class IntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
-            PrefDelegate<Int>(key, defaultValue, onChange) {
+        PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
 
         override fun onSetValue(value: Int) {
@@ -405,13 +401,13 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class AlphaPref(
-            key: String,
-            defaultValue: Int = 0,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Int = 0,
+        onChange: () -> Unit = doNothing
     ) :
-            PrefDelegate<Int>(key, defaultValue, onChange) {
+        PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int =
-                (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
+            (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
 
         override fun onSetValue(value: Int) {
             edit { putFloat(getKey(), value.toFloat() / 255) }
@@ -419,8 +415,8 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     inline fun <reified T : Enum<T>> EnumPref(
-            key: String, defaultValue: T,
-            noinline onChange: () -> Unit = doNothing
+        key: String, defaultValue: T,
+        noinline onChange: () -> Unit = doNothing
     ): PrefDelegate<T> {
         return IntBasedPref(key, defaultValue, onChange, { value ->
             enumValues<T>().firstOrNull { item -> item.ordinal == value } ?: defaultValue
@@ -428,10 +424,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class IntBasedPref<T : Any>(
-            key: String, defaultValue: T, onChange: () -> Unit = doNothing,
-            private val fromInt: (Int) -> T,
-            private val toInt: (T) -> Int,
-            private val dispose: (T) -> Unit
+        key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+        private val fromInt: (Int) -> T,
+        private val toInt: (T) -> Int,
+        private val dispose: (T) -> Unit
     ) : PrefDelegate<T>(key, defaultValue, onChange) {
         override fun onGetValue(): T {
             return if (sharedPrefs.contains(key)) {
@@ -449,9 +445,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class StringPref(
-            key: String,
-            defaultValue: String = "",
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: String = "",
+        onChange: () -> Unit = doNothing
     ) : PrefDelegate<String>(key, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
 
@@ -461,14 +457,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class StringBasedPref<T : Any>(
-            key: String, defaultValue: T, onChange: () -> Unit = doNothing,
-            private val fromString: (String) -> T,
-            private val toString: (T) -> String,
-            private val dispose: (T) -> Unit
+        key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+        private val fromString: (String) -> T,
+        private val toString: (T) -> String,
+        private val dispose: (T) -> Unit
     ) :
-            PrefDelegate<T>(key, defaultValue, onChange) {
+        PrefDelegate<T>(key, defaultValue, onChange) {
         override fun onGetValue(): T = sharedPrefs.getString(getKey(), null)?.run(fromString)
-                ?: defaultValue
+            ?: defaultValue
 
         override fun onSetValue(value: T) {
             edit { putString(getKey(), toString(value)) }
@@ -480,9 +476,9 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class StringIntPref(
-            key: String,
-            defaultValue: Int = 0,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Int = 0,
+        onChange: () -> Unit = doNothing
     ) : PrefDelegate<Int>(key, defaultValue, onChange) {
         override fun onGetValue(): Int = try {
             sharedPrefs.getString(getKey(), "$defaultValue")!!.toInt()
@@ -496,11 +492,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     open inner class StringSetPref(
-            key: String,
-            defaultValue: Set<String>,
-            onChange: () -> Unit = doNothing
+        key: String,
+        defaultValue: Set<String>,
+        onChange: () -> Unit = doNothing
     ) :
-            PrefDelegate<Set<String>>(key, defaultValue, onChange) {
+        PrefDelegate<Set<String>>(key, defaultValue, onChange) {
         override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
 
         override fun onSetValue(value: Set<String>) {
@@ -509,22 +505,22 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     inner class StringListPref(
-            prefKey: String,
-            default: List<String> = emptyList(),
-            onChange: () -> Unit = doNothing
+        prefKey: String,
+        default: List<String> = emptyList(),
+        onChange: () -> Unit = doNothing
     ) : MutableListPref<String>(prefKey, onChange, default) {
         override fun unflattenValue(value: String) = value
         override fun flattenValue(value: String) = value
     }
 
     abstract inner class MutableListPref<T>(
-            private val prefs: SharedPreferences, private val prefKey: String,
-            onChange: () -> Unit = doNothing,
-            default: List<T> = emptyList()
+        private val prefs: SharedPreferences, private val prefKey: String,
+        onChange: () -> Unit = doNothing,
+        default: List<T> = emptyList()
     ) : PrefDelegate<List<T>>(prefKey, default, onChange) {
         constructor(
-                prefKey: String, onChange: () -> Unit = doNothing,
-                default: List<T> = emptyList()
+            prefKey: String, onChange: () -> Unit = doNothing,
+            default: List<T> = emptyList()
         ) : this(sharedPrefs, prefKey, onChange, default)
 
         private val valueList = arrayListOf<T>()
