@@ -86,7 +86,7 @@
     <string name="no_description_available_DESC">No hay descripción.</string>
     <string name="no_matching_applications_found">No se ha podido encontrar ninguna aplicación de este tipo</string>
     <string name="no_proxy">Sin proxy</string>
-    <string name="notify_about_updates">Notificación de nuevas versiones de aplicaciones</string>
+    <string name="notify_about_updates">Notificar sobre nuevas versiones de aplicaciones</string>
     <string name="notify_about_updates_summary">Mostrar una notificación cuando haya nuevas versiones disponibles</string>
     <string name="number_of_applications">Número de aplicaciones</string>
     <string name="ok">OK</string>
@@ -113,10 +113,10 @@
     <string name="repositories">Repositorios</string>
     <string name="repository">Repositorio</string>
     <string name="repository_not_used_DESC">Este repositorio no se ha utilizado todavía. Actívelo para ver las aplicaciones que contiene.</string>
-    <string name="repository_unsigned_DESC">Sin firmar. No se pudo verificar la lista de apps; sé cuidadoso al descargar apps de repositorios sin firmar.</string>
+    <string name="repository_unsigned_DESC">Sin firma. No se pudo verificar la lista de aplicaciones. Tenga cuidado al descargar aplicaciones de repositorios sin firmar.</string>
     <string name="requires_FORMAT">Requiere %s</string>
     <string name="root_permission">Instalación Silenciosa</string>
-    <string name="root_permission_description">Concede permisos root para activar la instalación silenciosa</string>
+    <string name="root_permission_description">Usar root para instalaciones sin interacción</string>
     <string name="save">Guardar</string>
     <string name="saving_details">Guardando detalles…</string>
     <string name="screenshots">Capturas</string>
@@ -135,7 +135,7 @@
     <string name="source_code_no_longer_available">El código fuente ya no está disponible</string>
     <string name="suggested">Sugerido</string>
     <string name="sync_repositories">Sincronizar repositorios</string>
-    <string name="sync_repositories_automatically">Sincronizar repositories automáticamente</string>
+    <string name="sync_repositories_automatically">Sincronizar repositorios automáticamente</string>
     <string name="syncing">Sincronizando</string>
     <string name="syncing_FORMAT">Sincronizando %s…</string>
     <string name="system">Sistema</string>
@@ -157,11 +157,11 @@
     <string name="upstream_source_code_is_not_free">El código original no es libre</string>
     <string name="username">Nombre de usuario</string>
     <string name="username_missing">Falta el nombre de usuario</string>
-    <string name="validation_index_error_DESC">El índice no pudo ser validado.</string>
+    <string name="validation_index_error_DESC">No se ha podido validar el índice.</string>
     <string name="version">Versión</string>
     <string name="version_FORMAT">Versión %s</string>
     <string name="versions">Versiones</string>
-    <string name="waiting_to_start_download">Esperando para descargar…</string>
+    <string name="waiting_to_start_download">Iniciando la descarga…</string>
     <string name="whats_new">Novedades</string>
     <string name="website">Sitio web</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -182,4 +182,5 @@
     <string name="install_after_sync_summary">Actualizar automáticamente las apps despues de sincronizar los repositorios</string>
     <string name="prefs_updated_apps">Número de aplicaciones actualizadas para mostrar</string>
     <string name="prefs_new_apps">Número de nuevas aplicaciones a mostrar</string>
+    <string name="new_repository">Nuevo repositorio</string>
 </resources>
