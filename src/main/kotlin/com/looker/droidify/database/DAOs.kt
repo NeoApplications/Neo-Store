@@ -280,14 +280,8 @@ interface CategoryDao : BaseDao<Category> {
 // TODO make sure that apps that not uninstalled by Droid-ify still get removed
 @Dao
 interface InstalledDao : BaseDao<Installed> {
-    fun put(vararg isntalled: com.looker.droidify.entity.InstalledItem) {
-        isntalled.forEach {
-            insertReplace(Installed(it.packageName).apply {
-                version = it.version
-                version_code = it.versionCode
-                signature = it.signature
-            })
-        }
+    fun put(vararg installed: Installed) {
+        installed.forEach { insertReplace(it) }
     }
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
@@ -295,6 +289,9 @@ interface InstalledDao : BaseDao<Installed> {
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
     fun getObject(packageName: String): Installed?
+
+    @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
+    fun getObjectLive(packageName: String): LiveData<Installed?>
 
     @Query("DELETE FROM memory_installed WHERE package_name = :packageName")
     fun delete(packageName: String)

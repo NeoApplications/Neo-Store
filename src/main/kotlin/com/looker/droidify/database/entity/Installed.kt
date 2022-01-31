@@ -4,11 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "memory_installed")
-class Installed(pName: String = "") {
+data class Installed(
     @PrimaryKey
-    var package_name = pName
-
-    var version = ""
-    var version_code = 0L
-    var signature = ""
-}
+    var package_name: String = "",
+    var version: String = "",
+    var version_code: Long = 0L,
+    var signature: String = ""
+)

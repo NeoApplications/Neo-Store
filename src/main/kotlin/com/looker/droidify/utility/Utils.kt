@@ -18,7 +18,6 @@ import com.looker.droidify.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.InstalledItem
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.service.Connection
@@ -46,9 +45,9 @@ object Utils {
             .apply { setTintList(context.getColorFromAttr(tintAttrResId)) }
     }
 
-    fun PackageInfo.toInstalledItem(): InstalledItem {
+    fun PackageInfo.toInstalledItem(): Installed {
         val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
-        return InstalledItem(packageName, versionName.orEmpty(), versionCodeCompat, signatureString)
+        return Installed(packageName, versionName.orEmpty(), versionCodeCompat, signatureString)
     }
 
     fun getDefaultApplicationIcons(context: Context): Pair<Drawable, Drawable> {
@@ -220,13 +219,6 @@ fun Cursor.getRepository(): Repository = getBlob(getColumnIndex(ROW_DATA))
             this.id = getLong(getColumnIndex(ROW_ID))
         }
     }
-
-fun Cursor.getInstalledItem(): InstalledItem = InstalledItem(
-    getString(getColumnIndex(ROW_PACKAGE_NAME)),
-    getString(getColumnIndex(ROW_VERSION)),
-    getLong(getColumnIndex(ROW_VERSION_CODE)),
-    getString(getColumnIndex(ROW_SIGNATURE))
-)
 
 fun <T> ByteArray.jsonParse(callback: (JsonParser) -> T): T {
     return Json.factory.createParser(this).use { it.parseDictionary(callback) }
