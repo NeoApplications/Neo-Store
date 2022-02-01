@@ -80,6 +80,9 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT * FROM product WHERE package_name = :packageName")
     fun get(packageName: String): List<Product?>
 
+    @Query("SELECT * FROM product WHERE package_name = :packageName")
+    fun getLive(packageName: String): LiveData<List<Product?>>
+
     @Query("DELETE FROM product WHERE repository_id = :id")
     fun deleteById(id: Long): Int
 
@@ -285,12 +288,10 @@ interface InstalledDao : BaseDao<Installed> {
     }
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
+    fun get(packageName: String): Installed?
 
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
-    fun getObject(packageName: String): Installed?
-
-    @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
-    fun getObjectLive(packageName: String): LiveData<Installed?>
+    fun getLive(packageName: String): LiveData<Installed?>
 
     @Query("DELETE FROM memory_installed WHERE package_name = :packageName")
     fun delete(packageName: String)

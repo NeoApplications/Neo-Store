@@ -83,22 +83,23 @@ class InstallerService : Service() {
         val sessionInstaller = this.packageManager.packageInstaller
         val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
 
-        val name = session?.appPackageName ?: intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
+        val name =
+            session?.appPackageName ?: intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
         val message = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
         val installerAction = intent.getStringExtra(KEY_ACTION)
 
         // get application name for notifications
         val appLabel = session?.appLabel ?: intent.getStringExtra(KEY_APP_NAME)
-            ?: try {
-                if (name != null) packageManager.getApplicationLabel(
-                    packageManager.getApplicationInfo(
-                        name,
-                        PackageManager.GET_META_DATA
-                    )
-                ) else null
-            } catch (_: Exception) {
-                null
-            }
+        ?: try {
+            if (name != null) packageManager.getApplicationLabel(
+                packageManager.getApplicationInfo(
+                    name,
+                    PackageManager.GET_META_DATA
+                )
+            ) else null
+        } catch (_: Exception) {
+            null
+        }
 
         val notificationTag = "${NOTIFICATION_TAG_PREFIX}$name"
 
