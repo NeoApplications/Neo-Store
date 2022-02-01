@@ -178,6 +178,7 @@ interface ProductDao : BaseDao<Product> {
     ): DataSource.Factory<Int, Product>
 
     // TODO optimize and simplify
+    // TODO add an UpdateCategory argument
     fun queryList(
         installed: Boolean, updates: Boolean, searchQuery: String,
         section: Section, order: Order, numberOfItems: Int = 0
