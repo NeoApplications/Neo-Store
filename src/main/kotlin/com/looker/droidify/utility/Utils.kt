@@ -240,6 +240,6 @@ val PRODUCT_ASYNC_DIFFER_CONFIG
             oldItem: com.looker.droidify.database.entity.Product,
             newItem: com.looker.droidify.database.entity.Product
         ): Boolean {
-            return oldItem.data_item == newItem.data_item
+            return oldItem.item() == newItem.item()
         }
     }).build()

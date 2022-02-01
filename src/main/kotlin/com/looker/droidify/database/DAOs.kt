@@ -106,8 +106,7 @@ interface ProductDao : BaseDao<Product> {
         (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
         product.${ROW_COMPATIBLE} != 0 AND product.${ROW_VERSION_CODE} >
         COALESCE(installed.${ROW_VERSION_CODE}, 0xffffffff) AND $signatureMatches)
-        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
-        product.${ROW_DATA_ITEM},"""
+        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},"""
 
         if (searchQuery.isNotEmpty()) {
             builder += """(((product.${ROW_NAME} LIKE ? OR
@@ -195,8 +194,7 @@ interface ProductDao : BaseDao<Product> {
         (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
         product.${ROW_COMPATIBLE} != 0 AND product.${ROW_VERSION_CODE} >
         COALESCE(installed.${ROW_VERSION_CODE}, 0xffffffff) AND $signatureMatches)
-        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
-        product.${ROW_DATA_ITEM},"""
+        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},"""
 
         if (searchQuery.isNotEmpty()) {
             builder += """(((product.${ROW_NAME} LIKE ? OR
@@ -332,7 +330,6 @@ interface ProductTempDao : BaseDao<ProductTemp> {
                     this.signatures = signatures
                     compatible = if (it.compatible) 1 else 0
                     data = it
-                    data_item = it.item()
                 }
             })
             it.categories.forEach { category ->

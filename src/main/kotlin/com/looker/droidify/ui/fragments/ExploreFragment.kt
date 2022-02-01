@@ -52,7 +52,7 @@ class ExploreFragment : MainNavFragmentX() {
 
     override fun setupAdapters() {
         appsItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
-            it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
+            it.item()?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
         appsFastAdapter = FastAdapter.with(appsItemAdapter)
         appsFastAdapter?.setHasStableIds(true)

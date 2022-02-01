@@ -21,8 +21,7 @@ open class Product {
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: com.looker.droidify.entity.Product? = null
 
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    var data_item: ProductItem? = null
+    fun item(): ProductItem? = data?.item()
 }
 
 @Entity(tableName = "temporary_product")

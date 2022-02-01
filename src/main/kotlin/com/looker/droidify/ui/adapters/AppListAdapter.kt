@@ -22,7 +22,7 @@ import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.resources.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
-import com.looker.droidify.utility.getProductItem
+import com.looker.droidify.utility.getProduct
 import com.looker.droidify.widget.CursorRecyclerAdapter
 
 class AppListAdapter(private val onClick: (ProductItem) -> Unit) :
@@ -113,7 +113,7 @@ class AppListAdapter(private val onClick: (ProductItem) -> Unit) :
     }
 
     private fun getProductItem(position: Int): ProductItem {
-        return moveTo(position).getProductItem()
+        return moveTo(position).getProduct().item()
     }
 
     override fun onCreateViewHolder(

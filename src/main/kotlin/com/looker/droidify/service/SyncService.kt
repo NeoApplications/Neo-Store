@@ -27,7 +27,7 @@ import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
-import com.looker.droidify.utility.getProductItem
+import com.looker.droidify.utility.getProduct
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -398,7 +398,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     signal = it
                                 )
                                 .use {
-                                    it.asSequence().map { it.getProductItem() }
+                                    it.asSequence().map { it.getProduct().item() }
                                         .toList()
                                 }
                         }

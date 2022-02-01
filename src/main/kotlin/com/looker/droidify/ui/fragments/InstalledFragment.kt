@@ -55,11 +55,11 @@ class InstalledFragment : MainNavFragmentX() {
 
     override fun setupAdapters() {
         installedItemAdapter = PagedModelAdapter<Product, VAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
-            it.data_item?.let { item -> VAppItem(item, repositories[it.repository_id]) }
+            it.item()?.let { item -> VAppItem(item, repositories[it.repository_id]) }
         }
         updatedItemAdapter = PagedModelAdapter<Product, HAppItem>(PRODUCT_ASYNC_DIFFER_CONFIG) {
             // TODO filter for only updated apps and add placeholder
-            it.data_item?.let { item -> HAppItem(item, repositories[it.repository_id]) }
+            it.item()?.let { item -> HAppItem(item, repositories[it.repository_id]) }
         }
         installedFastAdapter = FastAdapter.with(installedItemAdapter)
         installedFastAdapter?.setHasStableIds(true)
