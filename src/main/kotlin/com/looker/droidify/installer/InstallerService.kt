@@ -13,8 +13,8 @@ import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import com.looker.droidify.NOTIFICATION_CHANNEL_INSTALLER
 import com.looker.droidify.NOTIFICATION_ID_INSTALLER
-import com.looker.droidify.MainActivity
 import com.looker.droidify.R
+import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.notificationManager
@@ -176,14 +176,14 @@ class InstallerService : Service() {
      */
     private fun installIntent(intent: Intent): PendingIntent {
         // prepare prompt intent
-        val promptIntent : Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
+        val promptIntent: Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
         val name = intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
 
         return PendingIntent.getActivity(
             this,
             0,
-            Intent(this, MainActivity::class.java)
-                .setAction(MainActivity.ACTION_INSTALL)
+            Intent(this, MainActivityX::class.java)
+                .setAction(MainActivityX.ACTION_INSTALL)
                 .setData(Uri.parse("package:$name"))
                 .putExtra(Intent.EXTRA_INTENT, promptIntent)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

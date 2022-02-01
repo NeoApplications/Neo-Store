@@ -17,6 +17,7 @@ import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
+import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils.setLanguage
 import com.looker.droidify.utility.Utils.toInstalledItem
 import com.looker.droidify.utility.extension.android.Android
@@ -119,7 +120,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         val refresh = Intent.makeRestartActivityTask(
                             ComponentName(
                                 baseContext,
-                                MainActivity::class.java
+                                MainActivityX::class.java
                             )
                         )
                         applicationContext.startActivity(refresh)

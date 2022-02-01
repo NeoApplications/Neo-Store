@@ -13,6 +13,7 @@ import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Release
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.Downloader
+import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.notificationManager
@@ -198,7 +199,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                     PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, MainActivity::class.java)
+                        Intent(this, MainActivityX::class.java)
                             .setAction(Intent.ACTION_VIEW)
                             .setData(Uri.parse("package:${task.packageName}"))
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

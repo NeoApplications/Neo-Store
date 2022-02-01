@@ -20,6 +20,7 @@ import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Section
 import com.looker.droidify.index.RepositoryUpdater
+import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
@@ -502,8 +503,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, MainActivity::class.java)
-                            .setAction(MainActivity.ACTION_UPDATES),
+                        Intent(this, MainActivityX::class.java)
+                            .setAction(MainActivityX.ACTION_UPDATES),
                         if (Android.sdk(23))
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         else
