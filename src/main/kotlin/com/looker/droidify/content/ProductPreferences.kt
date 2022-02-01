@@ -30,20 +30,13 @@ object ProductPreferences {
             db.lockDao.insert(*preferences.all.keys
                 .mapNotNull { pName ->
                     this@ProductPreferences[pName].databaseVersionCode?.let {
-                        Lock().apply {
-                            package_name = pName
-                            version_code = it
-                        }
+                        Lock(pName, it)
                     }
                 }
                 .toTypedArray()
             )
             subject.collect { (packageName, versionCode) ->
-                if (versionCode != null) db.lockDao.insert(Lock().apply {
-                    package_name = packageName
-                    version_code = versionCode
-                }
-                )
+                if (versionCode != null) db.lockDao.insert(Lock(packageName, versionCode))
                 else db.lockDao.delete(packageName)
             }
         }
