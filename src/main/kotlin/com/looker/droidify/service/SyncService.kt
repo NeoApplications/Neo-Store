@@ -84,12 +84,15 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             val cancelledTask =
                 cancelCurrentTask { request == SyncRequest.FORCE && it.task?.repositoryId in ids }
             cancelTasks { !it.manual && it.repositoryId in ids }
-            val currentIds = tasks.asSequence().map { it.repositoryId }.toSet()
+            val currentIds =
+                synchronized(tasks) { tasks.map { it.repositoryId }.toSet() }
             val manual = request != SyncRequest.AUTO
-            tasks += ids.asSequence().filter {
-                it !in currentIds &&
-                        it != currentTask?.task?.repositoryId
-            }.map { Task(it, manual) }
+            synchronized(tasks) {
+                tasks += ids.filter {
+                    it !in currentIds &&
+                            it != currentTask?.task?.repositoryId
+                }.map { Task(it, manual) }
+            }
             handleNextTask(cancelledTask?.hasUpdates == true)
             if (request != SyncRequest.AUTO && started == Started.AUTO) {
                 started = Started.MANUAL
@@ -101,8 +104,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
         fun sync(request: SyncRequest) {
             GlobalScope.launch {
-                val ids = db.repositoryDao.all
-                    .asSequence().filter { it.enabled }.map { it.id }.toList()
+                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList()
                 sync(ids, request)
             }
         }
@@ -131,7 +133,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             db.repositoryDao.put(repository.enable(enabled))
             if (enabled) {
                 if (repository.id != currentTask?.task?.repositoryId && !tasks.any { it.repositoryId == repository.id }) {
-                    tasks += Task(repository.id, true)
+                    synchronized(tasks) { tasks += Task(repository.id, true) }
                     handleNextTask(false)
                 }
             } else {
@@ -191,15 +193,15 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_CANCEL) {
-            tasks.clear()
+            synchronized(tasks) { tasks.clear() }
             val cancelledTask = cancelCurrentTask { it.task != null }
             handleNextTask(cancelledTask?.hasUpdates == true)
         }
         return START_NOT_STICKY
     }
 
-    private fun cancelTasks(condition: (Task) -> Boolean): Boolean {
-        return tasks.removeAll(condition)
+    private fun cancelTasks(condition: (Task) -> Boolean): Boolean = synchronized(tasks) {
+        tasks.removeAll(condition)
     }
 
     private fun cancelCurrentTask(condition: ((CurrentTask) -> Boolean)): CurrentTask? {
