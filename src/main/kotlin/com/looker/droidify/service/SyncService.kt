@@ -24,11 +24,9 @@ import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
-import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
-import com.looker.droidify.utility.getProduct
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -390,18 +388,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     val disposable = RxUtils
                         .querySingle { it ->
                             db.productDao
-                                .query(
+                                .queryObject(
                                     installed = true,
                                     updates = true,
                                     searchQuery = "",
                                     section = Section.All,
-                                    order = Order.NAME,
-                                    signal = it
-                                )
-                                .use {
-                                    it.asSequence().map { it.getProduct().item() }
-                                        .toList()
-                                }
+                                    order = Order.NAME
+                                ).mapNotNull { it.item }
                         }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

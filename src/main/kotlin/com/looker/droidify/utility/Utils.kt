@@ -184,6 +184,7 @@ object Utils {
 
 }
 
+// TODO Remove
 fun Cursor.getProduct(): Product = getBlob(getColumnIndex(ROW_DATA))
     .jsonParse {
         Product.deserialize(it).apply {
@@ -192,7 +193,7 @@ fun Cursor.getProduct(): Product = getBlob(getColumnIndex(ROW_DATA))
         }
     }
 
-
+// TODO Remove
 fun Cursor.getProductItem(): ProductItem = getBlob(getColumnIndex(ROW_DATA_ITEM))
     .jsonParse {
         ProductItem.deserialize(it).apply {
@@ -208,6 +209,7 @@ fun Cursor.getProductItem(): ProductItem = getBlob(getColumnIndex(ROW_DATA_ITEM)
         }
     }
 
+// TODO Remove
 fun Cursor.getRepository(): Repository = getBlob(getColumnIndex(ROW_DATA))
     .jsonParse {
         Repository.deserialize(it).apply {
@@ -240,6 +242,6 @@ val PRODUCT_ASYNC_DIFFER_CONFIG
             oldItem: com.looker.droidify.database.entity.Product,
             newItem: com.looker.droidify.database.entity.Product
         ): Boolean {
-            return oldItem.item() == newItem.item()
+            return oldItem.item == newItem.item
         }
     }).build()

@@ -3,6 +3,7 @@ package com.looker.droidify.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Release
 
 @Entity(tableName = "product", primaryKeys = ["repository_id", "package_name"])
 open class Product {
@@ -17,11 +18,39 @@ open class Product {
     var version_code = 0L
     var signatures = ""
     var compatible = 0
+    var icon = ""
+    var metadataIcon = ""
+    var releases: List<Release> = emptyList()
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: com.looker.droidify.entity.Product? = null
 
-    fun item(): ProductItem? = data?.item()
+    val selectedReleases: List<Release>
+        get() = releases.filter { it.selected }
+
+    val displayRelease: Release?
+        get() = selectedReleases.firstOrNull() ?: releases.firstOrNull()
+
+    val version: String
+        get() = displayRelease?.version.orEmpty()
+
+    val versionCode: Long
+        get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
+
+    val item: ProductItem
+        get() = ProductItem(
+            repository_id,
+            package_name,
+            name,
+            summary,
+            icon,
+            metadataIcon,
+            version,
+            "",
+            compatible != 0,
+            false,
+            0
+        )
 }
 
 @Entity(tableName = "temporary_product")

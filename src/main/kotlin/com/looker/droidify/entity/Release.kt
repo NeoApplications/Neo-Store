@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonToken
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.utility.extension.json.*
 
+// TODO make a Room entity
 data class Release(
     val selected: Boolean,
     val version: String,

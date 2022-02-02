@@ -15,7 +15,7 @@ fun ProductsVerticalRecycler(productsList: List<Product>) {
         verticalArrangement = spacedBy(2.dp)
     ) {
         items(productsList) { product: Product ->
-            product.item()?.let { item ->
+            product.item?.let { item ->
                 ProductRow(item.name, item.version, item.summary, onUserClick = {
                     Log.d(this.toString(), "You clicked $it")
                 })
@@ -30,7 +30,7 @@ fun ProductsHorizontalRecycler(productsList: List<Product>) {
         horizontalArrangement = spacedBy(2.dp)
     ) {
         items(productsList) { product: Product ->
-            product.item()?.let { item ->
+            product.item?.let { item ->
                 ProductColumn(item.name, item.version, onUserClick = {
                     Log.d(this.toString(), "You clicked $it")
                 })
