@@ -32,6 +32,7 @@ import com.android.launcher3.Utilities
 import com.android.quickstep.RecentsActivity
 import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.blur.BlurWallpaperProvider
+import com.saggitt.omega.smartspace.OmegaSmartspaceController
 import com.saggitt.omega.theme.ThemeManager
 import com.wind.hiddenapi.bypass.HiddenApiBypass
 import java.io.File
@@ -40,6 +41,8 @@ class OmegaApp : Application() {
     private val TAG = "OmegaApp"
 
     val activityHandler = ActivityHandler()
+
+    val smartspace by lazy { OmegaSmartspaceController(this) }
     var mismatchedQuickstepTarget = false
     private val recentsEnabled by lazy { checkRecentsComponent() }
     var accessibilityService: OmegaAccessibilityService? = null

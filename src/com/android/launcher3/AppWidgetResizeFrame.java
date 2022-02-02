@@ -13,6 +13,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -31,6 +32,7 @@ import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.logging.InstanceId;
 import com.android.launcher3.logging.InstanceIdSequence;
 import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.PendingRequestArgs;
 import com.android.launcher3.views.ArrowTipView;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
@@ -76,6 +78,15 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
                     close(false);
                 }
             };
+
+
+    // Represents the cell size on the grid in the two orientations.
+    private static final MainThreadInitializedObject<Point[]> CELL_SIZE =
+            new MainThreadInitializedObject<>(c -> {
+                InvariantDeviceProfile inv = LauncherAppState.getIDP(c);
+                return new Point[]{inv.getDeviceProfile(c).getCellSize(),
+                        inv.getDeviceProfile(c).getCellSize()};
+            });
 
 
     private LauncherAppWidgetHostView mWidgetView;
@@ -444,6 +455,24 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
             }
         }
         mWidgetView.requestLayout();
+    }
+
+    public static Rect getWidgetSizeRanges(Context context, int spanX, int spanY, Rect rect) {
+        if (rect == null) {
+            rect = new Rect();
+        }
+        final float density = context.getResources().getDisplayMetrics().density;
+        final Point[] cellSize = CELL_SIZE.get(context);
+
+        // Compute landscape size
+        int landWidth = (int) ((spanX * cellSize[0].x) / density);
+        int landHeight = (int) ((spanY * cellSize[0].y) / density);
+
+        // Compute portrait size
+        int portWidth = (int) ((spanX * cellSize[1].x) / density);
+        int portHeight = (int) ((spanY * cellSize[1].y) / density);
+        rect.set(portWidth, landHeight, landWidth, portHeight);
+        return rect;
     }
 
     @Override

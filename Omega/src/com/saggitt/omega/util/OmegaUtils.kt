@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.*
+import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.res.ColorStateList
@@ -36,7 +37,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.service.notification.StatusBarNotification
 import android.text.TextUtils
+import android.text.format.DateFormat
 import android.util.Property
 import android.util.TypedValue
 import android.view.View
@@ -58,6 +61,7 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
+import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.android.systemui.shared.system.QuickStepContract
 import org.json.JSONArray
@@ -120,8 +124,24 @@ fun makeBasicHandler(preferMyLooper: Boolean = false, callback: Handler.Callback
     else
         Handler(Looper.getMainLooper(), callback)
 
-val mainHandler by lazy { makeBasicHandler() }
+fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
+    try {
+        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+        info.requestedPermissions.forEachIndexed { index, s ->
+            if (s == permissionName) {
+                return info.requestedPermissionsFlags[index].hasFlag(REQUESTED_PERMISSION_GRANTED)
+            }
+        }
+    } catch (e: PackageManager.NameNotFoundException) {
+    }
+    return false
+}
 
+val mainHandler by lazy { makeBasicHandler() }
+val uiWorkerHandler: Handler by lazy { UI_HELPER_EXECUTOR.handler }
+fun runOnUiWorkerThread(r: () -> Unit) {
+    runOnThread(uiWorkerHandler, r)
+}
 fun runOnMainThread(r: () -> Unit) {
     runOnThread(mainHandler, r)
 }
@@ -279,6 +299,55 @@ inline fun <T> listWhileNotNull(generator: () -> T?): List<T> = mutableListOf<T>
     while (true) {
         add(generator() ?: break)
     }
+}
+
+fun formatTime(calendar: Calendar, context: Context? = null): String {
+    return when (context) {
+        null -> String.format(
+            "%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.HOUR_OF_DAY)
+        )
+        else -> if (DateFormat.is24HourFormat(context)) String.format(
+            "%02d:%02d", calendar.get(
+                Calendar.HOUR_OF_DAY
+            ), calendar.get(Calendar.MINUTE)
+        ) else String.format(
+            "%02d:%02d %s",
+            if (calendar.get(
+                    Calendar.HOUR_OF_DAY
+                ) % 12 == 0
+            ) 12 else calendar.get(
+                Calendar.HOUR_OF_DAY
+            ) % 12,
+            calendar.get(
+                Calendar.MINUTE
+            ),
+            if (calendar.get(
+                    Calendar.HOUR_OF_DAY
+                ) < 12
+            ) "AM" else "PM"
+        )
+    }
+}
+
+inline val Calendar.hourOfDay get() = get(Calendar.HOUR_OF_DAY)
+inline val Calendar.dayOfYear get() = get(Calendar.DAY_OF_YEAR)
+
+fun ViewGroup.getAllChilds() = ArrayList<View>().also { getAllChilds(it) }
+
+fun ViewGroup.getAllChilds(list: MutableList<View>) {
+    for (i in (0 until childCount)) {
+        val child = getChildAt(i)
+        if (child is ViewGroup) {
+            child.getAllChilds(list)
+        } else {
+            list.add(child)
+        }
+    }
+}
+
+fun StatusBarNotification.loadSmallIcon(context: Context): Drawable? {
+    return notification.smallIcon?.loadDrawable(context)
 }
 
 operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)

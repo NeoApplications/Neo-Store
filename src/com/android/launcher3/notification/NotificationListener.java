@@ -34,6 +34,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.AnyThread;
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
@@ -67,6 +68,7 @@ public class NotificationListener extends NotificationListenerService {
 
     private static NotificationListener sNotificationListenerInstance = null;
     private static NotificationsChangedListener sNotificationsChangedListener;
+    private static StatusBarNotificationsChangedListener sStatusBarNotificationsChangedListener;
     private static boolean sIsConnected;
 
     private final Handler mWorkerHandler;
@@ -115,8 +117,19 @@ public class NotificationListener extends NotificationListenerService {
         }
     }
 
+    @Keep
+    public static void setStatusBarNotificationsChangedListener
+            (StatusBarNotificationsChangedListener listener) {
+        sStatusBarNotificationsChangedListener = listener;
+    }
+
     public static void removeNotificationsChangedListener() {
         sNotificationsChangedListener = null;
+    }
+
+    @Keep
+    public static void removeStatusBarNotificationsChangedListener() {
+        sStatusBarNotificationsChangedListener = null;
     }
 
     private boolean handleWorkerMessage(Message message) {
@@ -233,6 +246,9 @@ public class NotificationListener extends NotificationListenerService {
 
     private void onNotificationFullRefresh() {
         mWorkerHandler.obtainMessage(MSG_NOTIFICATION_FULL_REFRESH).sendToTarget();
+        if (sStatusBarNotificationsChangedListener != null) {
+            sStatusBarNotificationsChangedListener.onNotificationFullRefresh();
+        }
     }
 
     @Override
@@ -248,12 +264,18 @@ public class NotificationListener extends NotificationListenerService {
         if (sbn != null) {
             mWorkerHandler.obtainMessage(MSG_NOTIFICATION_POSTED, sbn).sendToTarget();
         }
+        if (sStatusBarNotificationsChangedListener != null) {
+            sStatusBarNotificationsChangedListener.onNotificationPosted(sbn);
+        }
     }
 
     @Override
     public void onNotificationRemoved(final StatusBarNotification sbn) {
         if (sbn != null) {
             mWorkerHandler.obtainMessage(MSG_NOTIFICATION_REMOVED, sbn).sendToTarget();
+        }
+        if (sStatusBarNotificationsChangedListener != null) {
+            sStatusBarNotificationsChangedListener.onNotificationRemoved(sbn);
         }
     }
 
@@ -354,5 +376,13 @@ public class NotificationListener extends NotificationListenerService {
                                    NotificationKeyData notificationKey);
 
         void onNotificationFullRefresh(List<StatusBarNotification> activeNotifications);
+    }
+
+    public interface StatusBarNotificationsChangedListener {
+        void onNotificationPosted(StatusBarNotification sbn);
+
+        void onNotificationRemoved(StatusBarNotification sbn);
+
+        void onNotificationFullRefresh();
     }
 }

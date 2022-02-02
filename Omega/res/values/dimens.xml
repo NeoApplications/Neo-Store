@@ -56,6 +56,17 @@ Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">0dp</dimen>
+    <dimen name="smartspace_title_size">24sp</dimen>
+    <dimen name="smartspace_clock_above_size">40sp</dimen>
+    <dimen name="smartspace_title_min_size">14dp</dimen>
+    <dimen name="smartspace_horizontal_padding">56dp</dimen>
+    <dimen name="smartspace_title_sep_width">1dp</dimen>
+    <dimen name="smartspace_title_weather_icon_size">24dp</dimen>
+    <dimen name="smartspace_preview_height">100dp</dimen>
+    <dimen name="smartspace_preview_widget_margin">24dp</dimen>
+    <dimen name="smartspaceAmbientShadowBlur">1.5dp</dimen>
+    <dimen name="smartspaceKeyShadowBlur">2dp</dimen>
+    <dimen name="smartspaceKeyShadowOffset">0.5dp</dimen>
     <dimen name="smartspaceLetterSpacing">0.02</dimen>
 
     <dimen name="qsb_radius_square">8dp</dimen>
