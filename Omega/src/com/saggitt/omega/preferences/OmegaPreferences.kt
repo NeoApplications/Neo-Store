@@ -34,7 +34,13 @@ import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.smartspace.SmartspaceDataWidget
+import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
+import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
+import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
+import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
@@ -216,7 +222,37 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val ignoreFeedWhitelist by BooleanPref(PREFS_FEED_PROVIDER_ALLOW_ALL, true, restart)
 
     // SMARTSPACE
-    val smartspaceTime24H by BooleanPref(PREFS_TIME_24H, true, restart)
+    var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
+    val enableSmartspace by BooleanPref("enable_smartspace", false, recreate)
+    val smartspaceTime by BooleanPref("pref_smartspace_time", false, recreate)
+    val smartspaceDate by BooleanPref("pref_smartspace_date", true, recreate)
+    val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, recreate)
+    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", false, recreate)
+    val weatherUnit by StringBasedPref(
+        "pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
+        Temperature.Companion::unitFromString, Temperature.Companion::unitToString
+    ) { }
+    var smartspaceWidgetId by IntPref("smartspace_widget_id", -1, doNothing)
+    var weatherIconPack by StringPref("pref_weatherIcons", "", doNothing)
+    var weatherProvider by StringPref(
+        "pref_smartspace_widget_provider",
+        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+    )
+    var eventProvider by StringPref(
+        "pref_smartspace_event_provider",
+        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+    )
+    var eventProviders = StringListPref(
+        "pref_smartspace_event_providers", listOf(
+            eventProvider,
+            NotificationUnreadProvider::class.java.name,
+            NowPlayingProvider::class.java.name,
+            BatteryStatusProvider::class.java.name,
+            PersonalityProvider::class.java.name
+        ),
+        ::updateSmartspaceProvider
+    )
+
     var torchState by BooleanPref(PREFS_TORCH, false, doNothing)
 
     // POPUP DIALOG PREFERENCES
@@ -265,6 +301,10 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
 
     private fun updateBlur() {
         onChangeCallback?.updateBlur()
+    }
+
+    private fun updateSmartspaceProvider() {
+        onChangeCallback?.updateSmartspaceProvider()
     }
 
     inline fun withChangeCallback(

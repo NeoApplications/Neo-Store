@@ -22,6 +22,7 @@ import android.content.Context.USER_SERVICE
 import android.os.UserManager
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.blur.BlurWallpaperProvider
+import com.saggitt.omega.omegaApp
 
 class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     fun recreate() {
@@ -48,6 +49,11 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     fun restart() {
         launcher.scheduleRestart()
     }
+
+    fun updateSmartspaceProvider() {
+        launcher.omegaApp.smartspace.onProviderChanged()
+    }
+
 
     fun updateBlur() {
         BlurWallpaperProvider.getInstance(launcher).updateAsync()
