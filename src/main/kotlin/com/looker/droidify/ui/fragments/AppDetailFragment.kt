@@ -27,6 +27,7 @@ import com.looker.droidify.screen.ScreenFragment
 import com.looker.droidify.screen.ScreenshotsFragment
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
+import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.adapters.AppDetailAdapter
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
@@ -47,6 +48,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
+    private val screenActivity: MainActivityX
+        get() = requireActivity() as MainActivityX
+
     companion object {
         private const val EXTRA_PACKAGE_NAME = "packageName"
         private const val STATE_LAYOUT_MANAGER = "layoutManager"
@@ -103,7 +107,6 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        screenActivity.onToolbarCreated(toolbar)
         toolbar.menu.apply {
             for (action in Action.values()) {
                 add(0, action.id, 0, action.adapterAction.titleResId)
