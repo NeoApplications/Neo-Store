@@ -41,13 +41,13 @@ class GesturePreference(context: Context, attrs: AttributeSet?) :
     override fun onAttached() {
         super.onAttached()
 
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences!!.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onDetached() {
         super.onDetached()
 
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences!!.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String) {
