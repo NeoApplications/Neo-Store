@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
-import com.looker.droidify.entity.Release
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.screen.ScreenFragment

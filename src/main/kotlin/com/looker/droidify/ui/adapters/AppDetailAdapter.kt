@@ -44,10 +44,10 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
-import com.looker.droidify.entity.Release
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.ScreenshotsAdapter
 import com.looker.droidify.utility.KParcelable
@@ -1412,13 +1412,6 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 holder.packageName.text = item.packageName
             }
         }::class
-    }
-
-    private fun formatHtml(text: String): SpannableStringBuilder {
-        val html = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
-        val builder = run {
-            val builder = SpannableStringBuilder(html)
-            val last = builder.indexOfLast { it != '\n' }
             val first = builder.indexOfFirst { it != '\n' }
             if (last >= 0) {
                 builder.delete(last + 1, builder.length)

@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
-import com.looker.droidify.entity.Release
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.ui.fragments.RepositorySheetX
 import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.PackageItemResolver

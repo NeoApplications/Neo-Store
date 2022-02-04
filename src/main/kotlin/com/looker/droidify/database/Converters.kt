@@ -1,7 +1,7 @@
 package com.looker.droidify.database
 
 import androidx.room.TypeConverter
-import com.looker.droidify.entity.Release
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
 

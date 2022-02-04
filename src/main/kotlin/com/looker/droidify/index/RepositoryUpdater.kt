@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import com.looker.droidify.content.Cache
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
-import com.looker.droidify.entity.Release
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.utility.ProgressInputStream
 import com.looker.droidify.utility.RxUtils

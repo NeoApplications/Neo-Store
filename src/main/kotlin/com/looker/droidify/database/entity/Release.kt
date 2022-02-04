@@ -1,14 +1,16 @@
-package com.looker.droidify.entity
+package com.looker.droidify.database.entity
 
 import android.net.Uri
+import androidx.room.Entity
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.utility.extension.json.*
 
 // TODO make a Room entity
+@Entity(primaryKeys = ["packageName", "versionCode", "signature"])
 data class Release(
+    val packageName: String,
     val selected: Boolean,
     val version: String,
     val versionCode: Long,
@@ -51,6 +53,7 @@ data class Release(
         get() = "${hash.replace('/', '-')}.apk"
 
     fun serialize(generator: JsonGenerator) {
+        generator.writeStringField("packageName", packageName)
         generator.writeNumberField("serialVersion", 1)
         generator.writeBooleanField("selected", selected)
         generator.writeStringField("version", version)
@@ -99,6 +102,7 @@ data class Release(
 
     companion object {
         fun deserialize(parser: JsonParser): Release {
+            var packageName = ""
             var selected = false
             var version = ""
             var versionCode = 0L
@@ -124,6 +128,7 @@ data class Release(
             var incompatibilities = emptyList<Incompatibility>()
             parser.forEachKey { it ->
                 when {
+                    it.string("packageName") -> packageName = valueAsString
                     it.boolean("selected") -> selected = valueAsBoolean
                     it.string("version") -> version = valueAsString
                     it.number("versionCode") -> versionCode = valueAsLong
@@ -169,6 +174,7 @@ data class Release(
                 }
             }
             return Release(
+                packageName,
                 selected,
                 version,
                 versionCode,

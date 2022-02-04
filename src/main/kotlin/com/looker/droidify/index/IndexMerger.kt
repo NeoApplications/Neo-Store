@@ -3,8 +3,8 @@ package com.looker.droidify.index
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Product
-import com.looker.droidify.entity.Release
 import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.execWithResult
 import com.looker.droidify.utility.extension.json.Json

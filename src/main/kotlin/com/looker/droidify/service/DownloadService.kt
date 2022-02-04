@@ -9,8 +9,8 @@ import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import com.looker.droidify.*
 import com.looker.droidify.content.Cache
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Release
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.ui.activities.MainActivityX

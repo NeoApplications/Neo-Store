@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.utility.extension.json.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 

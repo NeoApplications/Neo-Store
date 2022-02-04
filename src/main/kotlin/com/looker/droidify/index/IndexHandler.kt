@@ -1,7 +1,7 @@
 package com.looker.droidify.index
 
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Product
-import com.looker.droidify.entity.Release
 import com.looker.droidify.utility.extension.android.Android
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
@@ -116,6 +116,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
     }
 
     private class ReleaseBuilder {
+        var packageName = ""
         var version = ""
         var versionCode = 0L
         var added = 0L
@@ -141,6 +142,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
             val obbMainHashType = if (obbMainHash.isNotEmpty()) "sha256" else ""
             val obbPatchHashType = if (obbPatchHash.isNotEmpty()) "sha256" else ""
             return Release(
+                packageName,
                 false,
                 version,
                 versionCode,

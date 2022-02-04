@@ -2,8 +2,8 @@ package com.looker.droidify.index
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Product
-import com.looker.droidify.entity.Release
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.json.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
@@ -91,7 +91,8 @@ object IndexV1Parser {
                     it.dictionary("packages") -> forEachKey {
                         if (it.token == JsonToken.START_ARRAY) {
                             val packageName = it.key
-                            val releases = collectNotNull(JsonToken.START_OBJECT) { parseRelease() }
+                            val releases =
+                                collectNotNull(JsonToken.START_OBJECT) { parseRelease(packageName) }
                             callback.onReleases(packageName, releases)
                         } else {
                             skipChildren()
@@ -250,7 +251,7 @@ object IndexV1Parser {
         )
     }
 
-    private fun JsonParser.parseRelease(): Release {
+    private fun JsonParser.parseRelease(packageName: String): Release {
         var version = ""
         var versionCode = 0L
         var added = 0L
@@ -300,6 +301,7 @@ object IndexV1Parser {
         val obbMainHashType = if (obbMainHash.isNotEmpty()) "sha256" else ""
         val obbPatchHashType = if (obbPatchHash.isNotEmpty()) "sha256" else ""
         return Release(
+            packageName,
             false,
             version,
             versionCode,
