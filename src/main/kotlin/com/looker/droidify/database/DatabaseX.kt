@@ -15,17 +15,19 @@ import kotlinx.coroutines.launch
     entities = [
         Repository::class,
         Product::class,
+        Release::class,
         ProductTemp::class,
         Category::class,
         CategoryTemp::class,
         Installed::class,
         Lock::class
-    ], version = 1
+    ], version = 2
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {
     abstract val repositoryDao: RepositoryDao
     abstract val productDao: ProductDao
+    abstract val releaseDao: ReleaseDao
     abstract val productTempDao: ProductTempDao
     abstract val categoryDao: CategoryDao
     abstract val categoryTempDao: CategoryTempDao

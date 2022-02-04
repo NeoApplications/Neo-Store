@@ -2,6 +2,8 @@ package com.looker.droidify.database
 
 import androidx.room.TypeConverter
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.database.entity.Release.Companion.deserializeIncompatibilities
+import com.looker.droidify.utility.extension.json.writeDictionary
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
 
@@ -35,8 +37,40 @@ object Converters {
         else string.split(",").map { byteArray.jsonParse { Release.deserialize(it) } }
     }
 
+    @JvmName("releasesToByteArray")
     @TypeConverter
     @JvmStatic
     fun toByteArray(releases: List<Release>) =
         jsonGenerate { releases.forEach { item -> item.serialize(it) }.toString().toByteArray() }
+
+    @TypeConverter
+    @JvmStatic
+    fun toIncompatibilities(byteArray: ByteArray) =
+        byteArray.jsonParse { it.deserializeIncompatibilities() }
+
+    @JvmName("incompatibilitiesToByteArray")
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(list: List<Release.Incompatibility>) =
+        jsonGenerate { generator ->
+            list.forEach {
+                generator.writeDictionary {
+                    when (it) {
+                        is Release.Incompatibility.MinSdk -> {
+                            writeStringField("type", "minSdk")
+                        }
+                        is Release.Incompatibility.MaxSdk -> {
+                            writeStringField("type", "maxSdk")
+                        }
+                        is Release.Incompatibility.Platform -> {
+                            writeStringField("type", "platform")
+                        }
+                        is Release.Incompatibility.Feature -> {
+                            writeStringField("type", "feature")
+                            writeStringField("feature", it.feature)
+                        }
+                    }::class
+                }
+            }
+        }
 }

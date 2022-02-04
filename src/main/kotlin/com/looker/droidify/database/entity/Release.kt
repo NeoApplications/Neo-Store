@@ -78,25 +78,7 @@ data class Release(
         generator.writeArray("features") { features.forEach { writeString(it) } }
         generator.writeArray("platforms") { platforms.forEach { writeString(it) } }
         generator.writeArray("incompatibilities") {
-            incompatibilities.forEach {
-                writeDictionary {
-                    when (it) {
-                        is Incompatibility.MinSdk -> {
-                            writeStringField("type", "minSdk")
-                        }
-                        is Incompatibility.MaxSdk -> {
-                            writeStringField("type", "maxSdk")
-                        }
-                        is Incompatibility.Platform -> {
-                            writeStringField("type", "platform")
-                        }
-                        is Incompatibility.Feature -> {
-                            writeStringField("type", "feature")
-                            writeStringField("feature", it.feature)
-                        }
-                    }::class
-                }
-            }
+            incompatibilities.forEach { serializeIncompatibility(it) }
         }
     }
 
@@ -152,24 +134,7 @@ data class Release(
                     it.array("features") -> features = collectNotNullStrings()
                     it.array("platforms") -> platforms = collectNotNullStrings()
                     it.array("incompatibilities") -> incompatibilities =
-                        collectNotNull(JsonToken.START_OBJECT) {
-                            var type = ""
-                            var feature = ""
-                            forEachKey {
-                                when {
-                                    it.string("type") -> type = valueAsString
-                                    it.string("feature") -> feature = valueAsString
-                                    else -> skipChildren()
-                                }
-                            }
-                            when (type) {
-                                "minSdk" -> Incompatibility.MinSdk
-                                "maxSdk" -> Incompatibility.MaxSdk
-                                "platform" -> Incompatibility.Platform
-                                "feature" -> Incompatibility.Feature(feature)
-                                else -> null
-                            }
-                        }
+                        deserializeIncompatibilities()
                     else -> skipChildren()
                 }
             }
@@ -200,5 +165,43 @@ data class Release(
                 incompatibilities
             )
         }
+
+        fun JsonParser.deserializeIncompatibilities() = collectNotNull(JsonToken.START_OBJECT) {
+            var type = ""
+            var feature = ""
+            forEachKey {
+                when {
+                    it.string("type") -> type = valueAsString
+                    it.string("feature") -> feature = valueAsString
+                    else -> skipChildren()
+                }
+            }
+            when (type) {
+                "minSdk" -> Incompatibility.MinSdk
+                "maxSdk" -> Incompatibility.MaxSdk
+                "platform" -> Incompatibility.Platform
+                "feature" -> Incompatibility.Feature(feature)
+                else -> null
+            }
+        }
+
+        fun JsonGenerator.serializeIncompatibility(incompatibility: Incompatibility) =
+            writeDictionary {
+                when (incompatibility) {
+                    is Incompatibility.MinSdk -> {
+                        writeStringField("type", "minSdk")
+                    }
+                    is Incompatibility.MaxSdk -> {
+                        writeStringField("type", "maxSdk")
+                    }
+                    is Incompatibility.Platform -> {
+                        writeStringField("type", "platform")
+                    }
+                    is Incompatibility.Feature -> {
+                        writeStringField("type", "feature")
+                        writeStringField("feature", incompatibility.feature)
+                    }
+                }::class
+            }
     }
 }
