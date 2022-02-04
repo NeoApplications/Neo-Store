@@ -315,4 +315,5 @@
     <string name="units_newton">Newton</string>
     <string name="summary__search_show_as_assistant_summary">Abrir Asistente en vez de Búsqueda Vocal</string>
     <string name="summary_colored_backgrounds">Para iconos adaptados al fondo.</string>
+    <string name="summary_app_categorize">Elegir entre Pestañas o Carpetas</string>
 </resources>
