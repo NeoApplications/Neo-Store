@@ -1,22 +1,22 @@
 /*
- *  This file is part of Omega Launcher
- *  Copyright (c) 2021   Omega Launcher Team
+ * This file is part of Omega Launcher
+ * Copyright (c) 2022   Omega Launcher Team
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.ui
+package com.saggitt.omega.compose.screens
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -48,12 +48,12 @@ import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.compose.components.ContributorRow
+import com.saggitt.omega.compose.components.ItemLink
+import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.theme.kaushanScript
-import com.saggitt.omega.ui.component.ContributorRow
-import com.saggitt.omega.ui.component.ItemLink
-import com.saggitt.omega.ui.component.PreferenceGroup
 
 @ExperimentalCoilApi
 class AboutFragment : Fragment() {
@@ -96,8 +96,8 @@ fun CreateMainScreen() {
         ) {
             Row(
                     modifier = Modifier
-                            .padding(8.dp)
-                            .clip(RoundedCornerShape(16f))
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(16f))
 
             ) {
                 ResourcesCompat.getDrawable(
@@ -142,8 +142,8 @@ fun CreateMainScreen() {
 
         Row(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
         ) {
             links.map { link ->
                 ItemLink(

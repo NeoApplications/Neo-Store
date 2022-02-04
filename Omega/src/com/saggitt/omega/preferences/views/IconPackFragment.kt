@@ -54,11 +54,11 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.FragmentIconPackBinding
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import com.saggitt.omega.compose.components.ListItemWithIcon
+import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.OmegaTheme
-import com.saggitt.omega.ui.component.ListItemWithIcon
-import com.saggitt.omega.ui.component.PreferenceItem
 import com.saggitt.omega.util.recreate
 
 class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -138,11 +138,11 @@ fun IconPackList() {
                                     painter = rememberDrawablePainter(drawable = item.icon),
                                     contentDescription = null,
                                     modifier = Modifier
-                                            .clip(CircleShape)
-                                            .size(36.dp)
-                                            .background(
-                                                    MaterialTheme.colors.onBackground.copy(alpha = 0.12F)
-                                            )
+                                        .clip(CircleShape)
+                                        .size(36.dp)
+                                        .background(
+                                            MaterialTheme.colors.onBackground.copy(alpha = 0.12F)
+                                        )
                             )
                         },
                         endCheckbox = {
