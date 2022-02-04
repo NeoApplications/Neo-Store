@@ -197,10 +197,10 @@ class CustomBottomSheet @JvmOverloads constructor(
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
                 mPrefHide.onPreferenceChangeListener = this
             } else {
-                screen.removePreference(mPrefHide)
+                screen.removePreference(mPrefHide!!)
             }
             if (!isApp || !prefs.drawerTabs.isEnabled) {
-                screen.removePreference(mTabsPref)
+                screen.removePreference(mTabsPref!!)
             } else {
                 mTabsPref!!.componentKey = mKey!!
                 mTabsPref!!.activity = activity
@@ -216,7 +216,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                 versionPref.summary =
                         PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
             } else {
-                preferenceScreen.removePreference(preferenceScreen.findPreference("debug"))
+                preferenceScreen.removePreference(preferenceScreen.findPreference("debug")!!)
             }
         }
 
