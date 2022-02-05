@@ -121,7 +121,8 @@ interface ProductDao : BaseDao<Product> {
         (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
         product.${ROW_COMPATIBLE} != 0 AND product.${ROW_VERSION_CODE} >
         COALESCE(installed.${ROW_VERSION_CODE}, 0xffffffff) AND $signatureMatches)
-        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},"""
+        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
+        product.${ROW_ICON}, product.${ROW_METADATA_ICON}, product.${ROW_RELEASES},"""
 
         if (searchQuery.isNotEmpty()) {
             builder += """(((product.${ROW_NAME} LIKE ? OR
