@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.google.android.apps.nexuslauncher;
+package com.saggitt.omega;
 
 import android.app.Activity;
 import android.os.Bundle;

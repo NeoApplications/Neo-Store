@@ -37,7 +37,6 @@ import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
-import com.google.android.apps.nexuslauncher.OverlayCallbackImpl
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
