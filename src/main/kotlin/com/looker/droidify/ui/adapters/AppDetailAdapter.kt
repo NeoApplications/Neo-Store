@@ -1412,6 +1412,13 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 holder.packageName.text = item.packageName
             }
         }::class
+    }
+
+    private fun formatHtml(text: String): SpannableStringBuilder {
+        val html = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        val builder = run {
+            val builder = SpannableStringBuilder(html)
+            val last = builder.indexOfLast { it != '\n' }
             val first = builder.indexOfFirst { it != '\n' }
             if (last >= 0) {
                 builder.delete(last + 1, builder.length)

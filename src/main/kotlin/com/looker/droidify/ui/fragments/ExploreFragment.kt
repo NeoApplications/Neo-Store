@@ -56,11 +56,6 @@ class ExploreFragment : MainNavFragmentX() {
         }
         appsFastAdapter = FastAdapter.with(appsItemAdapter)
         appsFastAdapter?.setHasStableIds(true)
-        appsFastAdapter?.onClickListener =
-            { _: View?, _: IAdapter<VAppItem>?, item: VAppItem?, position: Int? ->
-                launchFragment(AppFragmentX(item?.item?.packageName ?: ""))
-                false
-            }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
