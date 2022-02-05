@@ -96,8 +96,6 @@ interface ProductDao : BaseDao<Product> {
         query: SupportSQLiteQuery
     ): DataSource.Factory<Int, Product>
 
-    // TODO optimize and simplify
-    // TODO add an UpdateCategory argument
     fun queryList(
         installed: Boolean, updates: Boolean, searchQuery: String,
         section: Section, order: Order, numberOfItems: Int = 0
@@ -105,6 +103,7 @@ interface ProductDao : BaseDao<Product> {
         buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
     )
 
+    // TODO add an UpdateCategory argument
     fun buildProductQuery(
         installed: Boolean, updates: Boolean, searchQuery: String,
         section: Section, order: Order, numberOfItems: Int = 0
@@ -115,6 +114,7 @@ interface ProductDao : BaseDao<Product> {
         product.${ROW_SIGNATURES} LIKE ('%.' || installed.${ROW_SIGNATURE} || '.%') AND
         product.${ROW_SIGNATURES} != ''"""
 
+        // Select the return fields
         builder += """SELECT product.rowid AS _id, product.${ROW_REPOSITORY_ID},
         product.${ROW_PACKAGE_NAME}, product.${ROW_NAME},
         product.${ROW_SUMMARY}, installed.${ROW_VERSION},
@@ -124,6 +124,7 @@ interface ProductDao : BaseDao<Product> {
         AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
         product.${ROW_ICON}, product.${ROW_METADATA_ICON}, product.${ROW_RELEASES},"""
 
+        // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
             builder += """(((product.${ROW_NAME} LIKE ? OR
           product.${ROW_SUMMARY} LIKE ?) * 7) |
@@ -134,27 +135,34 @@ interface ProductDao : BaseDao<Product> {
             builder += "0 AS ${ROW_MATCH_RANK},"
         }
 
+        // Take product as main table
         builder += """MAX((product.${ROW_COMPATIBLE} AND
         (installed.${ROW_SIGNATURE} IS NULL OR $signatureMatches)) ||
         PRINTF('%016X', product.${ROW_VERSION_CODE})) FROM $ROW_PRODUCT_NAME AS product"""
+
+        // Merge the matching repositories
         builder += """JOIN $ROW_REPOSITORY_NAME AS repository
         ON product.${ROW_REPOSITORY_ID} = repository.${ROW_ID}"""
+
+        // Merge the matching locks
         builder += """LEFT JOIN $ROW_LOCK_NAME AS lock
         ON product.${ROW_PACKAGE_NAME} = lock.${ROW_PACKAGE_NAME}"""
 
-        if (!installed && !updates) {
-            builder += "LEFT"
-        }
+        // Merge the matching installed
+        if (!installed && !updates) builder += "LEFT"
         builder += """JOIN $ROW_INSTALLED_NAME AS installed
         ON product.${ROW_PACKAGE_NAME} = installed.${ROW_PACKAGE_NAME}"""
 
+        // Merge the matching category
         if (section is Section.Category) {
             builder += """JOIN $ROW_CATEGORY_NAME AS category
           ON product.${ROW_PACKAGE_NAME} = category.${ROW_PACKAGE_NAME}"""
         }
 
+        // Filter only active repositories
         builder += """WHERE repository.${ROW_ENABLED} != 0"""
 
+        // Filter only the selected repository/category
         if (section is Section.Category) {
             builder += "AND category.${ROW_NAME} = ?"
             builder %= section.name
@@ -163,21 +171,22 @@ interface ProductDao : BaseDao<Product> {
             builder %= section.id.toString()
         }
 
+        // Filter only apps that have some  matching score to the search query
         if (searchQuery.isNotEmpty()) {
             builder += """AND $ROW_MATCH_RANK > 0"""
         }
 
+        // Sum up all products with the same package name
         builder += "GROUP BY product.${ROW_PACKAGE_NAME} HAVING 1"
 
+        // Filter if only can update
         if (updates) {
             builder += "AND $ROW_CAN_UPDATE"
         }
+
+        // Set sorting order
         builder += "ORDER BY"
-
-        if (searchQuery.isNotEmpty()) {
-            builder += """$ROW_MATCH_RANK DESC,"""
-        }
-
+        if (searchQuery.isNotEmpty()) builder += """$ROW_MATCH_RANK DESC,"""
         when (order) {
             Order.NAME -> Unit
             Order.DATE_ADDED -> builder += "product.${ROW_ADDED} DESC,"

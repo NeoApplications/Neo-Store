@@ -21,6 +21,7 @@ open class Product {
     var metadataIcon = ""
     var releases: List<Release> = emptyList()
 
+    // TODO Remove in next iteration
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: com.looker.droidify.entity.Product? = null
 
