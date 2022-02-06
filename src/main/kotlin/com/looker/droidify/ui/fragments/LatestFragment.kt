@@ -12,11 +12,8 @@ import com.looker.droidify.databinding.FragmentLatestXBinding
 import com.looker.droidify.ui.items.HAppItem
 import com.looker.droidify.ui.items.VAppItem
 import com.looker.droidify.utility.PRODUCT_ASYNC_DIFFER_CONFIG
-import com.looker.droidify.utility.RxUtils
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.paged.PagedModelAdapter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class LatestFragment : MainNavFragmentX() {
 
@@ -42,16 +39,6 @@ class LatestFragment : MainNavFragmentX() {
         binding = FragmentLatestXBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.db.repositoryDao.allFlowable
-            .observeOn(Schedulers.io())
-            .flatMapSingle { list -> RxUtils.querySingle { list } }
-            .map { list -> list.asSequence().map { Pair(it.id, it) }.toMap() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { repositories = it }
     }
 
     override fun setupAdapters() {
@@ -82,6 +69,9 @@ class LatestFragment : MainNavFragmentX() {
         }
         viewModel.secondaryProducts.observe(viewLifecycleOwner) {
             newItemAdapter.submitList(it)
+        }
+        viewModel.repositories.observe(viewLifecycleOwner) {
+            repositories = it.associateBy { repo -> repo.id }
         }
     }
 }

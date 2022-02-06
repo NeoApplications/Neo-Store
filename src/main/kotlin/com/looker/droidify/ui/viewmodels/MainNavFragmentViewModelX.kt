@@ -1,15 +1,13 @@
 package com.looker.droidify.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Product
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.fragments.Request
@@ -119,6 +117,12 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
                 numberOfItems = secondaryRequest.numberOfItems
             ), pagedListConfig
         ).build()
+    }
+
+    val repositories = MediatorLiveData<List<Repository>>()
+
+    init {
+        repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
     }
 
     fun fillList(source: Source) {
