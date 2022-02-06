@@ -167,6 +167,9 @@ dependencies {
     // JackSon
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
 
+    // Markdown
+    implementation "org.jetbrains:markdown:0.2.4"
+
     // Coroutines / Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'

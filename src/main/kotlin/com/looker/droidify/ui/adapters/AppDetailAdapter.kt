@@ -55,9 +55,15 @@ import com.looker.droidify.utility.PackageItemResolver
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.resources.*
-import com.looker.droidify.utility.extension.text.*
+import com.looker.droidify.utility.extension.text.formatSize
+import com.looker.droidify.utility.extension.text.nullIfEmpty
+import com.looker.droidify.utility.extension.text.trimAfter
+import com.looker.droidify.utility.extension.text.trimBefore
 import com.looker.droidify.widget.ClickableMovementMethod
 import com.looker.droidify.widget.StableRecyclerAdapter
+import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.parser.MarkdownParser
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
@@ -689,7 +695,14 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 items += Item.TextItem(TextType.ANTI_FEATURES, antiFeatures)
             }
 
-            val changes = formatHtml(productRepository.first.whatsNew)
+            // Two steps parsing as some changelogs mix markdown with html
+            val source = formatHtml(productRepository.first.whatsNew).toString()
+            val flavour = CommonMarkFlavourDescriptor()
+            val parsedTree = MarkdownParser(flavour)
+                .buildMarkdownTreeFromString(source)
+            val html = HtmlGenerator(source, parsedTree, flavour)
+                .generateHtml()
+            val changes = formatHtml(html)
             if (changes.isNotEmpty()) {
                 items += Item.SectionItem(SectionType.CHANGES)
                 val cropped =
