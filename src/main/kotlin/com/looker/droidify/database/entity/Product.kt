@@ -25,6 +25,9 @@ open class Product {
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var data: com.looker.droidify.entity.Product? = null
 
+    val trueData: com.looker.droidify.entity.Product?
+        get() = data?.copy(repositoryId = repository_id)
+
     val selectedReleases: List<Release>
         get() = releases.filter { it.selected }
 
