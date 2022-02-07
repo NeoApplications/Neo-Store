@@ -1,7 +1,6 @@
 package com.looker.droidify.ui.viewmodels
 
 import androidx.lifecycle.*
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.looker.droidify.content.Preferences
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, secondarySource: Source) :
     ViewModel() {
@@ -123,26 +121,6 @@ class MainNavFragmentViewModelX(val db: DatabaseX, primarySource: Source, second
 
     init {
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
-    }
-
-    fun fillList(source: Source) {
-        viewModelScope.launch(Dispatchers.Default) {
-            // productsList = query(request(source))
-        }
-    }
-
-    private suspend fun query(request: Request): DataSource.Factory<Int, Product> {
-        return withContext(Dispatchers.Default) {
-            db.productDao
-                .queryList(
-                    installed = request.installed,
-                    updates = request.updates,
-                    searchQuery = request.searchQuery,
-                    section = request.section,
-                    order = request.order,
-                    numberOfItems = request.numberOfItems
-                )
-        }
     }
 
     fun setSection(newSection: Section, perform: () -> Unit) {

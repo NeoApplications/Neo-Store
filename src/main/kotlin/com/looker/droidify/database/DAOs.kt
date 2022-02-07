@@ -9,7 +9,6 @@ import com.looker.droidify.*
 import com.looker.droidify.database.entity.*
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
-import io.reactivex.rxjava3.core.Flowable
 
 interface BaseDao<T> {
     @Insert
@@ -51,9 +50,6 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val allLive: LiveData<List<Repository>>
-
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val allFlowable: Flowable<List<Repository>>
 
     @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
     val allDisabled: List<Long>

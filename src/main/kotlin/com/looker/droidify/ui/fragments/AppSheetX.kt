@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// TODO clean up and replace dropped functions from AppDetailFragment
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Callbacks {
     companion object {
         private const val EXTRA_PACKAGE_NAME = "packageName"
