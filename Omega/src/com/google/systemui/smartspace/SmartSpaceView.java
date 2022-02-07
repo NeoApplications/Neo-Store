@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
 import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAnimator.AnimatorUpdateListener,
+public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListener, ValueAnimator.AnimatorUpdateListener,
         View.OnClickListener, View.OnLongClickListener, Runnable, OmegaSmartspaceController.Listener {
     private TextView mSubtitleWeatherText;
     private final TextPaint dB;
@@ -71,8 +71,8 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     private IcuDateTextView mClockView;
     private IcuDateTextView mClockAboveView;
     private ViewGroup mSmartspaceContent;
-    private final SmartspaceController dp;
-    private SmartspaceDataContainer dq;
+    private final SmartSpaceController dp;
+    private SmartSpaceDataContainer dq;
     private BubbleTextView dr;
     private boolean ds;
     private boolean mDoubleLine;
@@ -107,7 +107,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     private boolean mPerformingSetup = false;
     public static final String GOOGLE_CALENDAR = "com.google.android.calendar";
 
-    public SmartspaceView(final Context context, AttributeSet set) {
+    public SmartSpaceView(final Context context, AttributeSet set) {
         super(context, set);
 
         mController = OmegaAppKt.getOmegaApp(context).getSmartspace();
@@ -141,7 +141,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
                 mController.openWeather(v);
         };
 
-        dp = SmartspaceController.get(context);
+        dp = SmartSpaceController.get(context);
         mHandler = new Handler();
         dH = ColorStateList.valueOf(Themes.getAttrColor(getContext(), R.attr.workspaceTextColor));
         ds = dp.cY();
@@ -245,7 +245,6 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void loadDoubleLine(@Nullable WeatherData weather, @NotNull CardData card) {
         setOnClickListener(mEventClickListener);
         setBackgroundResource(mSmartspaceBackgroundRes);
@@ -259,7 +258,6 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
         bindClockAbove(false);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void loadSingleLine(@Nullable WeatherData weather, @Nullable CardData card) {
         setOnClickListener(null);
         setBackgroundResource(0);
@@ -366,7 +364,7 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
 
     private String cn() {
         final boolean b = true;
-        final SmartspaceCard dp = dq.dP;
+        final SmartSpaceCardView dp = dq.dP;
         return dp.cC(TextUtils.ellipsize(dp.cB(b), dB, getWidth() - getPaddingLeft()
                 - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) - dB.measureText(dp.cA(b)), TextUtils.TruncateAt.END).toString());
     }
@@ -388,13 +386,14 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     public void onGsaChanged() {
         ds = dp.cY();
         if (dq != null) {
-            cr(dq);
+            onSmartSpaceUpdated(dq);
         } else {
             Log.d("SmartspaceView", "onGsaChanged but no data present");
         }
     }
 
-    public void cr(final SmartspaceDataContainer dq2) {
+    @Override
+    public void onSmartSpaceUpdated(final SmartSpaceDataContainer dq2) {
         dq = dq2;
         boolean visible = mSmartspaceContent.getVisibility() == View.VISIBLE;
         if (!visible) {

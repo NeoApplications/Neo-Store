@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
 import static com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam.FormatParamArgs.SOMETHING1;
 import static com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam.FormatParamArgs.SOMETHING2;
@@ -23,6 +23,7 @@ import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.ShadowGenerator;
 import com.google.android.apps.nexuslauncher.utils.ColorManipulation;
+import com.google.android.systemui.smartspace.SmartspaceProto;
 import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText;
@@ -30,8 +31,8 @@ import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.S
 import com.google.protobuf.ByteString;
 import com.saggitt.omega.smartspace.FeedBridge;
 
-public class SmartspaceCard {
-    private final SmartSpaceCard dI;
+public class SmartSpaceCardView {
+    private final SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard dI;
     private final long dJ;
     private final int dK;
     private final boolean dL;
@@ -41,8 +42,8 @@ public class SmartspaceCard {
     private Bitmap mIcon;
     private final Intent mIntent;
 
-    public SmartspaceCard(final Context context, final SmartSpaceCard di, final Intent mIntent, final boolean dm,
-                          final Bitmap mIcon, final boolean dl, final long dn, final long dj, final int dk) {
+    public SmartSpaceCardView(final Context context, final SmartSpaceCard di, final Intent mIntent, final boolean dm,
+                              final Bitmap mIcon, final boolean dl, final long dn, final long dj, final int dk) {
         this.mContext = context.getApplicationContext();
         this.dI = di;
         this.dM = dm;
@@ -54,7 +55,7 @@ public class SmartspaceCard {
         this.dL = dl;
     }
 
-    static SmartspaceCard cD(Context context, CardWrapper iVar, boolean z) {
+    static SmartSpaceCardView cD(Context context, CardWrapper iVar, boolean z) {
         if (iVar != null) {
             try {
                 Intent parseUri = TextUtils.isEmpty(iVar.getCard().getTapAction().getIntent()) ?
@@ -73,10 +74,10 @@ public class SmartspaceCard {
                     bitmap = newBitmap;
                 }
 
-                return new SmartspaceCard(context, iVar.getCard(), parseUri, z, bitmap, iVar.getIsIconGrayscale(),
+                return new SmartSpaceCardView(context, iVar.getCard(), parseUri, z, bitmap, iVar.getIsIconGrayscale(),
                         iVar.getPublishTime(), iVar.getGsaUpdateTime(), iVar.getGsaVersionCode());
             } catch (Throwable e) {
-                Log.e("SmartspaceCard", "from proto", e);
+                Log.e("SmartspaceCardView", "from proto", e);
             }
         }
 
@@ -279,7 +280,7 @@ public class SmartspaceCard {
 
     void click(View view) {
         if (this.dI.getTapAction() == null) {
-            Log.e("SmartspaceCard", "no tap action available: " + this);
+            Log.e("SmartspaceCardView", "no tap action available: " + this);
             return;
         }
         Intent intent = new Intent(this.getIntent());
@@ -297,7 +298,7 @@ public class SmartspaceCard {
                 break;
             }
             default: {
-                Log.w("SmartspaceCard", "unrecognized tap action: " + this);
+                Log.w("SmartspaceCardView", "unrecognized tap action: " + this);
                 break;
             }
         }

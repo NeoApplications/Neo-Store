@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
 import android.content.Context;
 import android.content.Intent;

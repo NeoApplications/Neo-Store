@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
@@ -17,7 +17,7 @@ import com.saggitt.omega.smartspace.FeedBridge;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class SmartspaceController {
+public class SmartSpaceController {
     enum Store {
         WEATHER("smartspace_weather"),
         CURRENT("smartspace_current");
@@ -29,20 +29,20 @@ public class SmartspaceController {
         }
     }
 
-    private static SmartspaceController dU;
-    private final SmartspaceDataContainer dQ;
+    private static SmartSpaceController dU;
+    private final SmartSpaceDataContainer dQ;
     private final Alarm dR;
     private final ProtoStore dT;
-    private ISmartspace dS;
+    private SmartSpaceUpdateListener dS;
     private final Context mAppContext;
     private final Handler mUiHandler;
     private final Handler mWorker;
 
-    public SmartspaceController(final Context mAppContext) {
+    public SmartSpaceController(final Context mAppContext) {
         this.mWorker = new Handler(MODEL_EXECUTOR.getLooper());
         this.mUiHandler = new Handler(Looper.getMainLooper());
         this.mAppContext = mAppContext;
-        this.dQ = new SmartspaceDataContainer();
+        this.dQ = new SmartSpaceDataContainer();
         this.dT = new ProtoStore(mAppContext);
         (this.dR = new Alarm()).setOnAlarmListener(alarm -> dc());
         this.dd();
@@ -58,11 +58,11 @@ public class SmartspaceController {
                 Intent.ACTION_PACKAGE_DATA_CLEARED));
     }
 
-    public static SmartspaceController get(final Context context) {
-        if (SmartspaceController.dU == null) {
-            SmartspaceController.dU = new SmartspaceController(context.getApplicationContext());
+    public static SmartSpaceController get(final Context context) {
+        if (SmartSpaceController.dU == null) {
+            SmartSpaceController.dU = new SmartSpaceController(context.getApplicationContext());
         }
-        return SmartspaceController.dU;
+        return SmartSpaceController.dU;
     }
 
     private Intent db() {
@@ -76,10 +76,10 @@ public class SmartspaceController {
         final boolean cs = this.dQ.cS();
         this.dQ.cU();
         if (cr && !this.dQ.isWeatherAvailable()) {
-            this.df(null, SmartspaceController.Store.WEATHER);
+            this.df(null, SmartSpaceController.Store.WEATHER);
         }
         if (cs && !this.dQ.cS()) {
-            this.df(null, SmartspaceController.Store.CURRENT);
+            this.df(null, SmartSpaceController.Store.CURRENT);
             this.mAppContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.EXPIRE_EVENT")
                     .setPackage(FeedBridge.Companion.getInstance(mAppContext).resolveSmartspace())
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -99,7 +99,7 @@ public class SmartspaceController {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    private void df(final NewCardInfo a, final SmartspaceController.Store SmartspaceControllerStore) {
+    private void df(final NewCardInfo a, final SmartSpaceController.Store SmartspaceControllerStore) {
         Message.obtain(this.mWorker, 2, SmartspaceControllerStore.ordinal(), 0, a).sendToTarget();
     }
 
@@ -110,15 +110,15 @@ public class SmartspaceController {
             this.dR.setAlarm(ct);
         }
         if (this.dS != null) {
-            this.dS.cr(this.dQ);
+            this.dS.onSmartSpaceUpdated(this.dQ);
         }
     }
 
     public void cV(final NewCardInfo a) {
         if (a != null && !a.dj) {
-            this.df(a, SmartspaceController.Store.WEATHER);
+            this.df(a, SmartSpaceController.Store.WEATHER);
         } else {
-            this.df(a, SmartspaceController.Store.CURRENT);
+            this.df(a, SmartSpaceController.Store.CURRENT);
         }
     }
 
@@ -142,10 +142,10 @@ public class SmartspaceController {
         return b;
     }
 
-    public void da(final ISmartspace ds) {
+    public void da(final SmartSpaceUpdateListener ds) {
         this.dS = ds;
         if (this.dS != null && this.dQ != null) {
-            this.dS.cr(this.dQ);
+            this.dS.onSmartSpaceUpdated(this.dQ);
             this.dS.onGsaChanged();
         }
     }

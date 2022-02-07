@@ -1,4 +1,4 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,15 +11,16 @@ import android.util.Log;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
 
-public class SmartspaceBroadcastReceiver extends BroadcastReceiver {
+public class SmartSpaceBroadcastReceiver extends BroadcastReceiver {
+
     private void cg(SmartSpaceCard b, Context context, Intent intent, boolean b2) throws PackageManager.NameNotFoundException {
         if (b.getShouldDiscard()) {
-            SmartspaceController.get(context).cV(null);
+            SmartSpaceController.get(context).cV(null);
             return;
         }
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo("com.google.android.googlequicksearchbox", 0);
-            SmartspaceController.get(context).cV(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
+            SmartSpaceController.get(context).cV(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
         } catch (PackageManager.NameNotFoundException ignored) {
         }
     }

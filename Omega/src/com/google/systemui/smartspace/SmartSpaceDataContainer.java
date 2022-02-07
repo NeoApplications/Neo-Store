@@ -1,10 +1,10 @@
-package com.google.android.apps.nexuslauncher.smartspace;
+package com.google.systemui.smartspace;
 
-public class SmartspaceDataContainer {
-    public SmartspaceCard dO;
-    public SmartspaceCard dP;
+public class SmartSpaceDataContainer {
+    public SmartSpaceCardView dO;
+    public SmartSpaceCardView dP;
 
-    public SmartspaceDataContainer() {
+    public SmartSpaceDataContainer() {
         dO = null;
         dP = null;
     }
