@@ -248,6 +248,7 @@
     <string name="smartspace_now">now</string>
     <string name="smartspace_in_time">in %1$s</string>
     <string name="smartspace_hours_mins">%1$s %2$s</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="smartspace_provider_bridge">Rootless Pixel Bridge</string>
     <string name="resuable_text_alarm">Alarm</string>
     <string name="name_provider_alarm_events">Upcoming alarms</string>

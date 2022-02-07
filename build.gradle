@@ -221,6 +221,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
     implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
+    implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
 
     //Compose
     implementation "androidx.compose.ui:ui:1.0.5"

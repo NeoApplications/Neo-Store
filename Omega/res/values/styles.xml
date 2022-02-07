@@ -299,7 +299,7 @@
         <item name="ambientShadowColor">?attr/workspaceAmbientShadowColor</item>
         <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
         <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
-        <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
+        <item name="keyShadowOffsetX">@dimen/smartspaceKeyShadowOffset</item>
         <item name="customFontType">smartspaceText</item>
     </style>
 
@@ -310,6 +310,14 @@
         <item name="ambientShadowColor">?attr/workspaceAmbientShadowColor</item>
         <item name="keyShadowBlur">@dimen/smartspaceKeyShadowBlur</item>
         <item name="keyShadowColor">?attr/workspaceKeyShadowColor</item>
-        <item name="keyShadowOffset">@dimen/smartspaceKeyShadowOffset</item>
+        <item name="keyShadowOffsetX">@dimen/smartspaceKeyShadowOffset</item>
+    </style>
+
+    <style name="WeatherWidget" />
+
+    <style name="WeatherWidget.Text">
+        <item name="android:shadowRadius">3.0</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowColor">#33000000</item>
     </style>
 </resources>

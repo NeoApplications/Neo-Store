@@ -30,6 +30,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
@@ -57,12 +58,14 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.util.Themes
+import com.android.launcher3.views.OptionsPopupView
 import com.android.systemui.shared.system.QuickStepContract
 import org.json.JSONArray
 import org.json.JSONObject
@@ -132,9 +135,42 @@ fun Context.checkPackagePermission(packageName: String, permissionName: String):
                 return info.requestedPermissionsFlags[index].hasFlag(REQUESTED_PERMISSION_GRANTED)
             }
         }
-    } catch (e: PackageManager.NameNotFoundException) {
+    } catch (e: NameNotFoundException) {
     }
     return false
+}
+
+fun openPopupMenu(view: View, rect: RectF?, vararg items: OptionsPopupView.OptionItem) {
+    val launcher = Launcher.getLauncher(view.context)
+    OptionsPopupView.show(
+        launcher,
+        rect ?: RectF(launcher.getViewBounds(view)),
+        items.toList(),
+        true
+    )
+}
+
+fun Context.getLauncherOrNull(): Launcher? {
+    return try {
+        Launcher.getLauncher(this)
+    } catch (e: IllegalArgumentException) {
+        null
+    }
+}
+
+fun createRipplePill(context: Context, color: Int, radius: Float): Drawable {
+    return RippleDrawable(
+        ContextCompat.getColorStateList(context, R.color.focused_background)!!,
+        createPill(color, radius), createPill(color, radius)
+    )
+}
+
+fun createPill(color: Int, radius: Float): Drawable {
+    return GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        setColor(color)
+        cornerRadius = radius
+    }
 }
 
 val mainHandler by lazy { makeBasicHandler() }
@@ -142,6 +178,7 @@ val uiWorkerHandler: Handler by lazy { UI_HELPER_EXECUTOR.handler }
 fun runOnUiWorkerThread(r: () -> Unit) {
     runOnThread(uiWorkerHandler, r)
 }
+
 fun runOnMainThread(r: () -> Unit) {
     runOnThread(mainHandler, r)
 }

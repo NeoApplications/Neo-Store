@@ -45,6 +45,11 @@
 
     <color name="notification_background">#EB0854</color>
 
+    <!-- Pixel 1 -->
+    <color name="qsb_connector">#fff2f2f2</color>
+    <color name="qsb_background">#ffffffff</color>
+    <color name="qsb_connector_gradient_end_color">#66ffffff</color>
+
     <!-- Red -->
     <color name="red_50">#ffffebee</color>
     <color name="red_50_trans">#80ffebee</color>

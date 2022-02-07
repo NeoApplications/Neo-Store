@@ -14,6 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+<!--
 <com.saggitt.omega.smartspace.SmartspaceQsb
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -27,4 +28,23 @@
         android:layout_height="match_parent"
         android:tag="smart_space_view"
         tools:ignore="FragmentTagUsage" />
-</com.saggitt.omega.smartspace.SmartspaceQsb>
+</com.saggitt.omega.smartspace.SmartspaceQsb> -->
+
+<com.google.android.apps.nexuslauncher.smartspace.SmartspaceView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/search_container_workspace"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:animateLayoutChanges="true">
+
+    <com.android.launcher3.BubbleTextView
+        android:layout_gravity="center"
+        android:id="@+id/dummyBubbleTextView"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:contentDescription="" />
+
+    <include layout="@layout/smartspace_singleline" />
+</com.google.android.apps.nexuslauncher.smartspace.SmartspaceView>
