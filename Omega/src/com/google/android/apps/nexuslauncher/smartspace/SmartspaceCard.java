@@ -1,5 +1,8 @@
 package com.google.android.apps.nexuslauncher.smartspace;
 
+import static com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam.FormatParamArgs.SOMETHING1;
+import static com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam.FormatParamArgs.SOMETHING2;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,16 +22,16 @@ import com.android.launcher3.R;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.ShadowGenerator;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.CardWrapper;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.b;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.c;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.e;
 import com.google.android.apps.nexuslauncher.utils.ColorManipulation;
+import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam;
 import com.google.protobuf.ByteString;
 import com.saggitt.omega.smartspace.FeedBridge;
 
 public class SmartspaceCard {
-    private final b dI;
+    private final SmartSpaceCard dI;
     private final long dJ;
     private final int dK;
     private final boolean dL;
@@ -38,7 +41,7 @@ public class SmartspaceCard {
     private Bitmap mIcon;
     private final Intent mIntent;
 
-    public SmartspaceCard(final Context context, final b di, final Intent mIntent, final boolean dm,
+    public SmartspaceCard(final Context context, final SmartSpaceCard di, final Intent mIntent, final boolean dm,
                           final Bitmap mIcon, final boolean dl, final long dn, final long dj, final int dk) {
         this.mContext = context.getApplicationContext();
         this.dI = di;
@@ -54,13 +57,13 @@ public class SmartspaceCard {
     static SmartspaceCard cD(Context context, CardWrapper iVar, boolean z) {
         if (iVar != null) {
             try {
-                Intent parseUri = TextUtils.isEmpty(iVar.getDe().getCG().getCZ()) ?
+                Intent parseUri = TextUtils.isEmpty(iVar.getCard().getTapAction().getIntent()) ?
                         null :
-                        Intent.parseUri(iVar.getDe().getCG().getCZ(), 0);
+                        Intent.parseUri(iVar.getCard().getTapAction().getIntent(), 0);
 
-                Bitmap bitmap = iVar.getDd() == null ?
+                Bitmap bitmap = iVar.getIcon() == null ?
                         null :
-                        BitmapFactory.decodeByteArray(iVar.getDd().toByteArray(), 0, iVar.getDd().size(), null);
+                        BitmapFactory.decodeByteArray(iVar.getIcon().toByteArray(), 0, iVar.getIcon().size(), null);
 
                 if (bitmap != null) {
                     ShadowGenerator shadowGenerator = new ShadowGenerator(
@@ -70,7 +73,8 @@ public class SmartspaceCard {
                     bitmap = newBitmap;
                 }
 
-                return new SmartspaceCard(context, iVar.getDe(), parseUri, z, bitmap, iVar.getDc(), iVar.getDf(), iVar.getDh(), iVar.getDg());
+                return new SmartspaceCard(context, iVar.getCard(), parseUri, z, bitmap, iVar.getIsIconGrayscale(),
+                        iVar.getPublishTime(), iVar.getGsaUpdateTime(), iVar.getGsaVersionCode());
             } catch (Throwable e) {
                 Log.e("SmartspaceCard", "from proto", e);
             }
@@ -79,7 +83,7 @@ public class SmartspaceCard {
         return null;
     }
 
-    private String cE(final e eVar) {
+    private String cE(final FormatParam eVar) {
         final Resources res = mContext.getResources();
         int minutesToEvent = cJ(eVar);
         if (minutesToEvent >= 60) {
@@ -95,66 +99,69 @@ public class SmartspaceCard {
         return res.getQuantityString(R.plurals.smartspace_minutes, minutesToEvent, minutesToEvent);
     }
 
-    private com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.d cG(final boolean b) {
-        final c ch = this.cH();
+    private FormattedText cG(final boolean b) {
+        final SmartSpaceCard.Message ch = this.cH();
         if (ch != null) {
-            com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.d d;
+            FormattedText d;
             if (b) {
-                d = ch.getCL();
+                d = ch.getTitle();
             } else {
-                d = ch.getCM();
+                d = ch.getSubtitle();
             }
             return d;
         }
         return null;
     }
 
-    private c cH() {
+    private SmartSpaceCard.Message cH() {
         final long currentTimeMillis = System.currentTimeMillis();
-        final long cd = this.dI.getCD();
-        final long n = this.dI.getCD() + this.dI.getCE();
-        if (currentTimeMillis < cd && this.dI.getCB() != null) {
-            return this.dI.getCB();
+        final long cd = this.dI.getEventTimeMillis();
+        final long n = this.dI.getEventTimeMillis() + this.dI.getEventDurationMillis();
+        if (currentTimeMillis < cd && this.dI.getPreEvent() != null) {
+            return this.dI.getPreEvent();
         }
-        if (currentTimeMillis > n && this.dI.getCH() != null) {
-            return this.dI.getCH();
+        if (currentTimeMillis > n && this.dI.getPostEvent() != null) {
+            return this.dI.getPostEvent();
         }
-        if (this.dI.getCC() != null) {
-            return this.dI.getCC();
+        if (this.dI.getDuringEvent() != null) {
+            return this.dI.getDuringEvent();
         }
         return null;
     }
 
-    private int cJ(final e e) {
+    private int cJ(final FormatParam e) {
         return (int) Math.ceil(this.cI(e) / 60000.0);
     }
 
-    private String[] cK(final e[] array, final String s) {
+    private String[] cK(final FormatParam[] array, final String s) {
         int i;
         String[] array2;
         String cr;
         for (i = 0, array2 = new String[array.length]; i < array2.length; ++i) {
-            switch (array[i].getCQ()) {
-                default: {
-                    array2[i] = "";
+            switch (array[i].getFormatParamArgs()) {
+
+                case SOMETHING1:
+                case SOMETHING2: {
+                    array2[i] = this.cE(array[i]);
                     break;
                 }
-                case 3: {
-                    if (s != null && array[i].getCS() != 0) {
+
+                case SOMETHING3: {
+                    if (s != null && array[i].getTruncateLocation() != 0) {
                         array2[i] = s;
                         break;
                     }
-                    if (array[i].getCR() != null) {
-                        cr = array[i].getCR();
+                    if (array[i].getText() != null) {
+                        cr = array[i].getText();
                     } else {
                         cr = "";
                     }
                     array2[i] = cr;
                     break;
                 }
-                case 1:
-                case 2: {
-                    array2[i] = this.cE(array[i]);
+
+                default: {
+                    array2[i] = "";
                     break;
                 }
             }
@@ -162,9 +169,9 @@ public class SmartspaceCard {
         return array2;
     }
 
-    private boolean cL(final com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.d d) {
+    private boolean cL(final FormattedText d) {
         boolean b = false;
-        if (d != null && d.getCN() != null && d.getCOList() != null && d.getCOList().size() > 0) {
+        if (d != null && d.getText() != null && d.getFormatParamList() != null && d.getFormatParamList().size() > 0) {
             b = true;
         }
         return b;
@@ -175,13 +182,13 @@ public class SmartspaceCard {
     }
 
     private String cO(final boolean b, final String s) {
-        final com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.d cg = this.cG(b);
-        if (cg == null || cg.getCN() == null) {
+        final FormattedText cg = this.cG(b);
+        if (cg == null || cg.getText() == null) {
             return "";
         }
-        String cn = cg.getCN();
+        String cn = cg.getText();
         if (this.cL(cg)) {
-            return String.format(cn, (Object[]) this.cK(cg.getCOList().toArray(new e[0]), s));
+            return String.format(cn, (Object[]) this.cK(cg.getFormatParamList().toArray(new FormatParam[0]), s));
         }
         if (cn == null) {
             cn = "";
@@ -204,7 +211,7 @@ public class SmartspaceCard {
         CardWrapper.Builder builder = CardWrapper.newBuilder();
         final Bitmap ci = a.getBitmap(context);
         Bitmap cp;
-        if (ci != null && builder.getDc()) {
+        if (ci != null && builder.getIsIconGrayscale()) {
             if (a.dj) {
                 cp = cP(ci, -1);
             } else {
@@ -219,13 +226,13 @@ public class SmartspaceCard {
         } else {
             flattenBitmap = new byte[0];
         }
-        builder.setDd(ByteString.copyFrom(flattenBitmap));
-        builder.setDc(cp != null && new ColorManipulation().dB(cp));
-        builder.setDe(a.di);
-        builder.setDf(a.dl);
+        builder.setIcon(ByteString.copyFrom(flattenBitmap));
+        builder.setIsIconGrayscale(cp != null && new ColorManipulation().dB(cp));
+        builder.setCard(a.di);
+        builder.setPublishTime(a.dl);
         if (a.dk != null) {
-            builder.setDg(a.dk.versionCode);
-            builder.setDh(a.dk.lastUpdateTime);
+            builder.setGsaVersionCode(a.dk.versionCode);
+            builder.setGsaUpdateTime(a.dk.lastUpdateTime);
         }
         return builder.build();
     }
@@ -236,11 +243,11 @@ public class SmartspaceCard {
 
     public String cB(final boolean b) {
         int i = 0;
-        final e[] co = this.cG(b).getCOList().toArray(new e[0]);
+        final FormatParam[] co = this.cG(b).getFormatParamList().toArray(new FormatParam[0]);
         if (co != null) {
             while (i < co.length) {
-                if (co[i].getCS() != 0) {
-                    return co[i].getCR();
+                if (co[i].getTruncateLocation() != 0) {
+                    return co[i].getText();
                 }
                 ++i;
             }
@@ -253,15 +260,15 @@ public class SmartspaceCard {
     }
 
     public long cF() {
-        return this.dI.getCF().getDa();
+        return this.dI.getExpiryCriteria().getExpirationTimeMillis();
     }
 
-    long cI(final e e) {
+    long cI(final FormatParam e) {
         long cd;
-        if (e.getCQ() == 2) {
-            cd = this.dI.getCD() + this.dI.getCE();
+        if (e.getFormatParamArgs() == SOMETHING2) {
+            cd = this.dI.getEventTimeMillis() + this.dI.getEventDurationMillis();
         } else {
-            cd = this.dI.getCE();
+            cd = this.dI.getEventDurationMillis();
         }
         return Math.abs(System.currentTimeMillis() - cd);
     }
@@ -271,43 +278,43 @@ public class SmartspaceCard {
     }
 
     void click(View view) {
-        if (this.dI.getCG() == null) {
+        if (this.dI.getTapAction() == null) {
             Log.e("SmartspaceCard", "no tap action available: " + this);
             return;
         }
         Intent intent = new Intent(this.getIntent());
         Launcher launcher = Launcher.getLauncher(view.getContext());
-        switch (this.dI.getCG().getCY()) {
-            default: {
-                Log.w("SmartspaceCard", "unrecognized tap action: " + this);
-                break;
-            }
-            case 1: {
+        switch (this.dI.getTapAction().getActionType()) {
+            case ACTION1: {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setSourceBounds(launcher.getViewBounds(view));
                 intent.setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace());
                 view.getContext().sendBroadcast(intent);
                 break;
             }
-            case 2: {
+            case ACTION2: {
                 launcher.startActivitySafely(view, intent, null);
+                break;
+            }
+            default: {
+                Log.w("SmartspaceCard", "unrecognized tap action: " + this);
                 break;
             }
         }
     }
 
     public boolean cv() {
-        final c ch = this.cH();
-        return ch != null && (this.cL(ch.getCL()) || this.cL(ch.getCL()));
+        final SmartSpaceCard.Message ch = this.cH();
+        return ch != null && (this.cL(ch.getTitle()) || this.cL(ch.getTitle()));
     }
 
     public long cw() {
-        final c ch = this.cH();
-        if (ch != null && this.cL(ch.getCL())) {
-            final e[] co = ch.getCL().getCOList().toArray(new e[0]);
+        final SmartSpaceCard.Message ch = this.cH();
+        if (ch != null && this.cL(ch.getTitle())) {
+            final FormatParam[] co = ch.getTitle().getFormatParamList().toArray(new FormatParam[0]);
             for (int i = 0; i < co.length; ++i) {
-                final e e = co[i];
-                if (e.getCQ() == 1 || e.getCQ() == 2) {
+                final FormatParam e = co[i];
+                if (e.getFormatParamArgs() == SOMETHING1 || e.getFormatParamArgs() == SOMETHING2) {
                     return this.cI(e);
                 }
             }
@@ -316,13 +323,13 @@ public class SmartspaceCard {
     }
 
     public TextUtils.TruncateAt cx(final boolean b) {
-        final c ch = this.cH();
+        final SmartSpaceCard.Message ch = this.cH();
         if (ch != null) {
             int n = 0;
-            if (b && ch.getCL() != null) {
-                n = ch.getCL().getCP();
-            } else if (!b && ch.getCM() != null) {
-                n = ch.getCM().getCP();
+            if (b && ch.getTitle() != null) {
+                n = ch.getTitle().getTruncateLocation();
+            } else if (!b && ch.getSubtitle() != null) {
+                n = ch.getSubtitle().getTruncateLocation();
             }
             switch (n) {
                 case 1: {

@@ -1,69 +1,116 @@
+/*
+ * This file is part of Omega Launcher
+ * Copyright (c) 2022   Omega Launcher Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 syntax = "proto2";
 
-option java_package = "com.google.android.apps.nexuslauncher.smartspace";
+option java_package = "com.google.android.systemui.smartspace";
 option java_outer_classname = "SmartspaceProto";
 
 package nano;
 
-message a {
-  repeated b cw = 1;
-}
+message SmartSpaceUpdate {
 
-message b {
-  optional bool cy = 1;
-  optional int32 cJ = 2;
-  optional c cB = 3;
-  optional c cC = 4;
-  optional c cH = 5;
-  optional f cx = 6;
-  optional int32 cA = 7;
-  optional g cG = 8;
-  optional int64 cK = 9;
-  optional int64 cD = 10;
-  optional int64 cE = 11;
-  optional h cF = 12;
-  optional int32 cz = 13;
-}
+  repeated SmartSpaceCard card = 1;
 
-message c {
-  optional d cL = 1;
-  optional d cM = 2;
-}
+  message SmartSpaceCard {
 
-message d {
-  optional string cN = 1;
-  optional int32 cP = 2;
-  repeated e cO = 3;
-}
+    message ExpiryCriteria {
+      optional int64 expirationTimeMillis = 1;
+      optional int32 maxImpressions = 2;
+    }
 
-message e {
-  optional string cR = 1;
-  optional int32 cS = 2;
-  optional int32 cQ = 3;
-  optional bool cU = 4;
-}
+    message Image {
+      optional string key = 1;
+      optional string gsaResourceName = 2;
+      optional string uri = 3;
+    }
 
-message f {
-  optional string cV = 1;
-  optional string cW = 2;
-  optional string cX = 3;
-}
+    message Message {
 
-message g {
-  optional int32 cY = 1;
-  optional string cZ = 2;
-}
+      message FormattedText {
 
-message h {
-  optional int64 da = 1;
-  optional int32 db = 2;
+        message FormatParam {
+
+          enum FormatParamArgs {
+            SOMETHING0 = 0;
+            SOMETHING1 = 1;
+            SOMETHING2 = 2;
+            SOMETHING3 = 3;
+          }
+
+          optional string text = 1;
+          optional int32 truncateLocation = 2;
+          optional FormatParamArgs formatParamArgs = 3;
+          optional bool updateTimeLocally = 4;
+        }
+
+        optional string text = 1;
+        optional int32 truncateLocation = 2;
+        repeated FormatParam formatParam = 3;
+      }
+
+      optional FormattedText title = 1;
+      optional FormattedText subtitle = 2;
+    }
+
+    message TapAction {
+
+      enum ActionType {
+        ACTION0 = 0;
+        ACTION1 = 1;
+        ACTION2 = 2;
+      }
+
+      optional ActionType actionType = 1;
+      optional string intent = 2;
+    }
+
+    enum CardType {
+      CARD0 = 0;
+      CARD1 = 1;
+      CARD2 = 2;
+      CARD3 = 3;
+      CARD4 = 4;
+      CARD5 = 5;
+      CARD6 = 6;
+    }
+
+    optional bool shouldDiscard = 1;
+    optional int32 cardId = 2;
+    optional Message preEvent = 3;
+    optional Message duringEvent = 4;
+    optional Message postEvent = 5;
+    optional Image icon = 6;
+    optional CardType cardType = 7;
+    optional TapAction tapAction = 8;
+    optional int64 updateTimeMillis = 9;
+    optional int64 eventTimeMillis = 10;
+    optional int64 eventDurationMillis = 11;
+    optional ExpiryCriteria expiryCriteria = 12;
+    optional int32 cardPriority = 13;
+  }
 }
 
 message CardWrapper {
-  optional b de = 1;
-  optional int64 df = 2;
-  optional int64 dh = 3;
-  optional int32 dg = 4;
-  optional bytes dd = 5;
-  optional bool dc = 6;
+  optional SmartSpaceUpdate.SmartSpaceCard card = 1;
+  optional int64 publishTime = 2;
+  optional int64 gsaUpdateTime = 3;
+  optional int32 gsaVersionCode = 4;
+  optional bytes icon = 5;
+  optional bool isIconGrayscale = 6;
 }

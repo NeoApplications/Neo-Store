@@ -1,7 +1,5 @@
 package com.google.android.apps.nexuslauncher.smartspace;
 
-import static com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.a;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +8,12 @@ import android.content.pm.PackageManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.b;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
 
 public class SmartspaceBroadcastReceiver extends BroadcastReceiver {
-    private void cg(b b, Context context, Intent intent, boolean b2) throws PackageManager.NameNotFoundException {
-        if (b.getCy()) {
+    private void cg(SmartSpaceCard b, Context context, Intent intent, boolean b2) throws PackageManager.NameNotFoundException {
+        if (b.getShouldDiscard()) {
             SmartspaceController.get(context).cV(null);
             return;
         }
@@ -28,16 +27,16 @@ public class SmartspaceBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         byte[] byteArrayExtra = intent.getByteArrayExtra("com.google.android.apps.nexuslauncher.extra.SMARTSPACE_CARD");
         if (byteArrayExtra != null) {
-            a.Builder builder = a.newBuilder();
+            SmartSpaceUpdate.Builder builder = SmartSpaceUpdate.newBuilder();
             try {
                 //mergeFrom(builder.build(), byteArrayExtra);
-                b[] cw = builder.getCwList().toArray(new b[0]);
+                SmartSpaceCard[] cw = builder.getCardList().toArray(new SmartSpaceCard[0]);
                 int length = cw.length;
                 int i = 0;
                 while (i < length) {
-                    b b2 = cw[i];
-                    boolean b3 = b2.getCz() == 1;
-                    if (b3 || b2.getCz() == 2) {
+                    SmartSpaceCard b2 = cw[i];
+                    boolean b3 = b2.getCardPriority() == 1;
+                    if (b3 || b2.getCardPriority() == 2) {
                         cg(b2, context, intent, b3);
                     } else {
                         Log.w("SmartspaceReceiver", "unrecognized card priority");

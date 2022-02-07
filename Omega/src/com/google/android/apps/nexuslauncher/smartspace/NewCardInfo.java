@@ -9,16 +9,17 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.b;
+import com.google.android.systemui.smartspace.SmartspaceProto;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
 
 public class NewCardInfo {
-    public final b di;
+    public final SmartSpaceCard di;
     public final boolean dj;
     public final PackageInfo dk;
     public final long dl;
     public final Intent intent;
 
-    public NewCardInfo(b di, Intent intent, boolean dj, long dl, PackageInfo dk) {
+    public NewCardInfo(SmartSpaceCard di, Intent intent, boolean dj, long dl, PackageInfo dk) {
         this.di = di;
         this.dj = dj;
         this.intent = intent;
@@ -34,16 +35,16 @@ public class NewCardInfo {
     }
 
     public Bitmap getBitmap(final Context context) {
-        com.google.android.apps.nexuslauncher.smartspace.SmartspaceProto.f fVar = this.di.getCx();
+        SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Image fVar = this.di.getIcon();
         if (fVar == null) {
             return null;
         }
-        Bitmap bitmap = (Bitmap) getParcelableExtra(fVar.getCV(), this.intent);
+        Bitmap bitmap = (Bitmap) getParcelableExtra(fVar.getKey(), this.intent);
         if (bitmap != null) {
             return bitmap;
         }
         try {
-            if (TextUtils.isEmpty(fVar.getCW())) {
+            if (TextUtils.isEmpty(fVar.getGsaResourceName())) {
                 /*if (!TextUtils.isEmpty(fVar.getCX())) {
                     Resources resourcesForApplication = context.getPackageManager().getResourcesForApplication("com.google.android.googlequicksearchbox");
                     return LauncherIcons.obtain(context).createIconBitmap(
@@ -52,9 +53,9 @@ public class NewCardInfo {
                 }*/
                 return null;
             }
-            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(fVar.getCW()));
+            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(fVar.getGsaResourceName()));
         } catch (Exception e) {
-            Log.e("NewCardInfo", "retrieving bitmap uri=" + fVar.getCW() + " gsaRes=" + fVar.getCX());
+            Log.e("NewCardInfo", "retrieving bitmap uri=" + fVar.getGsaResourceName() + " gsaRes=" + fVar.getUri());
             return null;
         }
     }
