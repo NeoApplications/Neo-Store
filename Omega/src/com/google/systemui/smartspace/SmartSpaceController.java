@@ -115,7 +115,7 @@ public class SmartSpaceController {
     }
 
     public void cV(final NewCardInfo a) {
-        if (a != null && !a.dj) {
+        if (a != null && !a.mIsPrimary) {
             this.df(a, SmartSpaceController.Store.WEATHER);
         } else {
             this.df(a, SmartSpaceController.Store.CURRENT);

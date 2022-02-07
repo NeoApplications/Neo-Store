@@ -2,61 +2,94 @@ package com.google.systemui.smartspace;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.pm.PackageInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Parcelable;
+import android.provider.MediaStore.Images.Media;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.android.systemui.smartspace.SmartspaceProto;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
+import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Image;
 
 public class NewCardInfo {
-    public final SmartSpaceCard di;
-    public final boolean dj;
-    public final PackageInfo dk;
-    public final long dl;
-    public final Intent intent;
+    public final SmartSpaceCard mCard;
+    public final boolean mIsPrimary;
+    public final PackageInfo mPackageInfo;
+    public final long mPublishTime;
+    public final Intent mIntent;
 
-    public NewCardInfo(SmartSpaceCard di, Intent intent, boolean dj, long dl, PackageInfo dk) {
-        this.di = di;
-        this.dj = dj;
-        this.intent = intent;
-        this.dl = dl;
-        this.dk = dk;
+    public NewCardInfo(SmartSpaceCard smartspaceCard, Intent intent, boolean isPrimary, long publishTime, PackageInfo packageInfo) {
+        mCard = smartspaceCard;
+        mIsPrimary = isPrimary;
+        mIntent = intent;
+        mPublishTime = publishTime;
+        mPackageInfo = packageInfo;
     }
 
-    private static Object getParcelableExtra(String name, Intent intent) {
-        if (!TextUtils.isEmpty(name)) {
-            return intent.getParcelableExtra(name);
-        }
-        return null;
+    public boolean isPrimary() {
+        return mIsPrimary;
     }
 
-    public Bitmap getBitmap(final Context context) {
-        SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Image fVar = this.di.getIcon();
-        if (fVar == null) {
+    public Bitmap retrieveIcon(Context context) {
+        Image image = mCard.getIcon();
+        if (image == null) {
             return null;
         }
-        Bitmap bitmap = (Bitmap) getParcelableExtra(fVar.getKey(), this.intent);
+        Bitmap bitmap = (Bitmap) retrieveFromIntent(image.getKey(), mIntent);
         if (bitmap != null) {
             return bitmap;
         }
         try {
-            if (TextUtils.isEmpty(fVar.getGsaResourceName())) {
-                /*if (!TextUtils.isEmpty(fVar.getCX())) {
-                    Resources resourcesForApplication = context.getPackageManager().getResourcesForApplication("com.google.android.googlequicksearchbox");
-                    return LauncherIcons.obtain(context).createIconBitmap(
-                            resourcesForApplication.getDrawableForDensity(resourcesForApplication.getIdentifier(fVar.getCX(), null, null),
-                                    LauncherAppState.getIDP(context).fillResIconDpi), 1f);
-                }*/
-                return null;
+            if (!TextUtils.isEmpty(image.getUri())) {
+                return Media.getBitmap(context.getContentResolver(), Uri.parse(image.getUri()));
             }
-            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(fVar.getGsaResourceName()));
-        } catch (Exception e) {
-            Log.e("NewCardInfo", "retrieving bitmap uri=" + fVar.getGsaResourceName() + " gsaRes=" + fVar.getUri());
-            return null;
+            if (!TextUtils.isEmpty(image.getGsaResourceName())) {
+                ShortcutIconResource shortcutIconResource = new ShortcutIconResource();
+                shortcutIconResource.packageName = "com.google.android.googlequicksearchbox";
+                shortcutIconResource.resourceName = image.getGsaResourceName();
+                return createIconBitmap(shortcutIconResource, context);
+            }
+        } catch (Exception unused) {
+            String sb = "retrieving bitmap uri=" +
+                    image.getUri() +
+                    " gsaRes=" +
+                    image.getGsaResourceName();
+            Log.e("NewCardInfo", sb);
         }
+        return null;
+    }
+
+    private static Parcelable retrieveFromIntent(String str, Intent intent) {
+        if (!TextUtils.isEmpty(str)) {
+            return intent.getParcelableExtra(str);
+        }
+        return null;
+    }
+
+    static Bitmap createIconBitmap(ShortcutIconResource shortcutIconResource, Context context) {
+        try {
+            Resources resourcesForApplication = context.getPackageManager()
+                    .getResourcesForApplication(shortcutIconResource.packageName);
+            if (resourcesForApplication != null) {
+                return BitmapFactory.decodeResource(resourcesForApplication,
+                        resourcesForApplication
+                                .getIdentifier(shortcutIconResource.resourceName, null, null));
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    public int getUserId() {
+        return mIntent.getIntExtra("uid", -1);
+    }
+
+    public boolean shouldDiscard() {
+        return mCard == null || mCard.getShouldDiscard();
     }
 }
