@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.0-alpha01'
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.16"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.18"
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
     }
 }
@@ -221,7 +221,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
     implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
-    implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
+    implementation 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
 
     //Compose
     implementation "androidx.compose.ui:ui:1.0.5"
