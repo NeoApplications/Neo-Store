@@ -194,6 +194,22 @@
                 android:resource="@xml/clock_widget_info" />
         </receiver>
 
+        <receiver
+            android:name="com.google.android.apps.nexuslauncher.qsb.OPAStatusReceiver"
+            android:permission="android.permission.CAPTURE_AUDIO_HOTWORD"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.systemui.OPA_ENABLED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.google.systemui.smartspace.SmartSpaceBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.apps.nexuslauncher.UPDATE_SMARTSPACE" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
