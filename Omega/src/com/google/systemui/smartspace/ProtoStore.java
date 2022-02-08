@@ -1,8 +1,9 @@
-package com.google.android.apps.nexuslauncher.utils;
+package com.google.systemui.smartspace;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
 import com.google.protobuf.nano.MessageNano;
 
 import java.io.File;
@@ -46,13 +47,13 @@ public class ProtoStore {
         }
     }
 
-    public <T extends MessageNano> boolean load(String name, T t) {
+    public <T extends MessageNano> boolean load(String name, CardWrapper wrapper) {
         File fileStreamPath = mContext.getFileStreamPath(name);
         try {
             FileInputStream fileInputStream = new FileInputStream(fileStreamPath);
             byte[] bArr = new byte[((int) fileStreamPath.length())];
             fileInputStream.read(bArr, 0, bArr.length);
-            MessageNano.mergeFrom(t, bArr);
+            //MessageNano.mergeFrom(wrapper, bArr);
             if (fileInputStream != null) {
                 fileInputStream.close();
             }

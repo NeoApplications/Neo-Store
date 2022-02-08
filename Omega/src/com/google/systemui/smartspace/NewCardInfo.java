@@ -13,8 +13,12 @@ import android.provider.MediaStore.Images.Media;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Image;
+import com.google.protobuf.ByteString;
+
+import java.io.ByteArrayOutputStream;
 
 public class NewCardInfo {
     public final SmartSpaceCard mCard;
@@ -62,6 +66,24 @@ public class NewCardInfo {
             Log.e("NewCardInfo", sb);
         }
         return null;
+    }
+
+    public CardWrapper toWrapper(Context context) {
+        CardWrapper.Builder cardWrapper = CardWrapper.newBuilder();
+        Bitmap retrieveIcon = retrieveIcon(context);
+        if (retrieveIcon != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            retrieveIcon.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            cardWrapper.setIcon(ByteString.copyFrom(byteArrayOutputStream.toByteArray()));
+        }
+        cardWrapper.setCard(mCard);
+        cardWrapper.setPublishTime(mPublishTime);
+        PackageInfo packageInfo = mPackageInfo;
+        if (packageInfo != null) {
+            cardWrapper.setGsaVersionCode(packageInfo.versionCode);
+            cardWrapper.setGsaUpdateTime(packageInfo.lastUpdateTime);
+        }
+        return cardWrapper.build();
     }
 
     private static Parcelable retrieveFromIntent(String str, Intent intent) {

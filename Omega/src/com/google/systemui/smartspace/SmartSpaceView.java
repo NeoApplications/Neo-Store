@@ -32,6 +32,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -72,7 +74,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     private IcuDateTextView mClockAboveView;
     private ViewGroup mSmartspaceContent;
     private final SmartSpaceController dp;
-    private SmartSpaceDataContainer dq;
+    private SmartSpaceData dq;
     private BubbleTextView dr;
     private boolean ds;
     private boolean mDoubleLine;
@@ -85,24 +87,24 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     private TextView mSubtitleText;
     private ViewGroup mSubtitleWeatherContent;
     private ImageView mSubtitleWeatherIcon;
-    private boolean mEnableShadow;
+    private final boolean mEnableShadow;
     private final Handler mHandler;
 
-    private OmegaSmartspaceController mController;
+    private final OmegaSmartspaceController mController;
     private boolean mFinishedInflate;
     private boolean mWeatherAvailable;
-    private OmegaPreferences mPrefs;
+    private final OmegaPreferences mPrefs;
 
-    private ShadowGenerator mShadowGenerator;
+    private final ShadowGenerator mShadowGenerator;
 
-    private int mTitleSize;
-    private int mTitleMinSize;
-    private int mHorizontalPadding;
-    private int mSeparatorWidth;
-    private int mWeatherIconSize;
+    private final int mTitleSize;
+    private final int mTitleMinSize;
+    private final int mHorizontalPadding;
+    private final int mSeparatorWidth;
+    private final int mWeatherIconSize;
 
-    private Paint mTextPaint = new Paint();
-    private Rect mTextBounds = new Rect();
+    private final Paint mTextPaint = new Paint();
+    private final Rect mTextBounds = new Rect();
 
     private boolean mPerformingSetup = false;
     public static final String GOOGLE_CALENDAR = "com.google.android.calendar";
@@ -136,10 +138,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
                             | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED), null);
         };
 
-        mWeatherClickListener = v -> {
-            if (mController != null)
-                mController.openWeather(v);
-        };
+        mWeatherClickListener = mController::openWeather;
 
         dp = SmartSpaceController.get(context);
         mHandler = new Handler();
@@ -162,7 +161,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         try {
             Launcher launcher = Launcher.getLauncher(getContext());
             if (launcher instanceof OmegaLauncher) {
-                //((OmegaLauncher) launcher).registerSmartspaceView(this);
+                ((OmegaLauncher) launcher).registerSmartspaceView(this);
             }
         } catch (IllegalArgumentException ignored) {
 
@@ -364,7 +363,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
     private String cn() {
         final boolean b = true;
-        final SmartSpaceCardView dp = dq.dP;
+        final SmartSpaceCardView dp = dq.mWeatherCard;
         return dp.cC(TextUtils.ellipsize(dp.cB(b), dB, getWidth() - getPaddingLeft()
                 - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) - dB.measureText(dp.cA(b)), TextUtils.TruncateAt.END).toString());
     }
@@ -393,7 +392,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     @Override
-    public void onSmartSpaceUpdated(final SmartSpaceDataContainer dq2) {
+    public void onSmartSpaceUpdated(@NonNull SmartSpaceData dq2) {
         dq = dq2;
         boolean visible = mSmartspaceContent.getVisibility() == View.VISIBLE;
         if (!visible) {
@@ -414,8 +413,8 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     public void onClick(final View view) {
-        if (dq != null && dq.cS()) {
-            dq.dP.click(view);
+        if (dq != null && dq.hasWeather()) {
+            dq.mWeatherCard.performCardAction(view);
         }
     }
 
@@ -445,9 +444,9 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
     protected void onLayout(final boolean b, final int n, final int n2, final int n3, final int n4) {
         super.onLayout(b, n, n2, n3, n4);
-        if (dq != null && dq.cS() && dq.dP.cv()) {
+        if (dq != null && dq.hasWeather() && dq.mWeatherCard.hasMessage()) {
             final String cn = cn();
-            if (!cn.equals(mTitleText.getText())) {
+            if (!cn.contentEquals(mTitleText.getText())) {
                 mTitleText.setText(cn);
             }
         }
@@ -493,5 +492,9 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     @Override
     public void setPadding(final int n, final int n2, final int n3, final int n4) {
         super.setPadding(0, 0, 0, 0);
+    }
+
+    @Override
+    public void onSensitiveModeChanged(boolean hideSensitiveData) {
     }
 }

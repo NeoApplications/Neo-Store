@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.SystemClock;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.UserHandle;
 import android.util.Log;
 
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate;
@@ -13,42 +13,60 @@ import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.S
 
 public class SmartSpaceBroadcastReceiver extends BroadcastReceiver {
 
-    private void cg(SmartSpaceCard b, Context context, Intent intent, boolean b2) throws PackageManager.NameNotFoundException {
-        if (b.getShouldDiscard()) {
-            SmartSpaceController.get(context).cV(null);
+    public void onReceive(Context context, Intent intent) {
+        String str = "SmartSpaceReceiver";
+
+        int myUserId = UserHandle.myUserId();
+        String str2 = "uid";
+        if (myUserId != 0) {
+            String str3 = "rebroadcast";
+            if (!intent.getBooleanExtra(str3, false)) {
+                intent.putExtra(str3, true);
+                intent.putExtra(str2, myUserId);
+                context.sendBroadcast(intent);
+                return;
+            }
             return;
         }
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo("com.google.android.googlequicksearchbox", 0);
-            SmartSpaceController.get(context).cV(new NewCardInfo(b, intent, b2, SystemClock.uptimeMillis(), packageInfo));
-        } catch (PackageManager.NameNotFoundException ignored) {
+        if (!intent.hasExtra(str2)) {
+            intent.putExtra(str2, myUserId);
+        }
+        byte[] byteArrayExtra = intent.getByteArrayExtra("com.google.android.apps.nexuslauncher.extra.SMARTSPACE_CARD");
+        if (byteArrayExtra != null) {
+            SmartSpaceUpdate smartspaceUpdate = SmartSpaceUpdate.newBuilder().build();
+            try {
+                //TODO: revisar el uso de MessageNano
+                //MessageNano.mergeFrom(smartspaceUpdate, byteArrayExtra);
+                for (SmartSpaceUpdate.SmartSpaceCard smartspaceCard : smartspaceUpdate.getCardList()) {
+                    boolean isPrimary = smartspaceCard.getCardPriority() == 1;
+                    boolean z2 = smartspaceCard.getCardPriority() == 2;
+                    if (!isPrimary) {
+                        if (!z2) {
+                            String sb = "unrecognized card priority: " + smartspaceCard.getCardPriority();
+                            Log.w(str, sb);
+                        }
+                    }
+                    notify(smartspaceCard, context, intent, isPrimary);
+                }
+            } catch (Exception e) {
+                Log.e(str, "proto", e);
+            }
+        } else {
+            String sb2 = "receiving update with no proto: " + intent.getExtras();
+            Log.e(str, sb2);
         }
     }
 
-    public void onReceive(Context context, Intent intent) {
-        byte[] byteArrayExtra = intent.getByteArrayExtra("com.google.android.apps.nexuslauncher.extra.SMARTSPACE_CARD");
-        if (byteArrayExtra != null) {
-            SmartSpaceUpdate.Builder builder = SmartSpaceUpdate.newBuilder();
-            try {
-                //mergeFrom(builder.build(), byteArrayExtra);
-                SmartSpaceCard[] cw = builder.getCardList().toArray(new SmartSpaceCard[0]);
-                int length = cw.length;
-                int i = 0;
-                while (i < length) {
-                    SmartSpaceCard b2 = cw[i];
-                    boolean b3 = b2.getCardPriority() == 1;
-                    if (b3 || b2.getCardPriority() == 2) {
-                        cg(b2, context, intent, b3);
-                    } else {
-                        Log.w("SmartspaceReceiver", "unrecognized card priority");
-                    }
-                    ++i;
-                }
-            } catch (PackageManager.NameNotFoundException ex) {
-                Log.e("SmartspaceReceiver", "proto", ex);
-            }
-        } else {
-            Log.e("SmartspaceReceiver", "receiving update with no proto: " + intent.getExtras());
+    private void notify(SmartSpaceCard smartspaceCard, Context context, Intent intent, boolean isPrimary) {
+        PackageInfo packageInfo;
+        long currentTimeMillis = System.currentTimeMillis();
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo("com.google.android.googlequicksearchbox", 0);
+        } catch (NameNotFoundException e) {
+            Log.w("SmartSpaceReceiver", "Cannot find GSA", e);
+            packageInfo = null;
         }
+        NewCardInfo newCardInfo = new NewCardInfo(smartspaceCard, intent, isPrimary, currentTimeMillis, packageInfo);
+        SmartSpaceController.get(context).onNewCard(newCardInfo);
     }
 }

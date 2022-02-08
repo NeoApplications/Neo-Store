@@ -20,5 +20,6 @@ package com.google.systemui.smartspace
 
 interface SmartSpaceUpdateListener {
     fun onGsaChanged() {}
-    fun onSmartSpaceUpdated(smartSpaceData: SmartSpaceDataContainer)
+    fun onSmartSpaceUpdated(smartSpaceData: SmartSpaceData)
+    fun onSensitiveModeChanged(hideSensitiveData: Boolean)
 }
