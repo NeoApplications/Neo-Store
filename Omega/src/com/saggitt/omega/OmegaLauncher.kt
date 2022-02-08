@@ -37,6 +37,7 @@ import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
+import com.google.systemui.smartspace.SmartSpaceView
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
@@ -193,6 +194,11 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         dummyView.requestLayout()
         dummyView.post { callback(dummyView) }
     }
+
+    fun registerSmartspaceView(smartspace: SmartSpaceView) {
+        defaultOverlay.registerSmartSpaceView(smartspace)
+    }
+
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         if (key == "pref_hideStatusBar") {

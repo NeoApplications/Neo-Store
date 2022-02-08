@@ -29,7 +29,12 @@ import com.google.android.libraries.gsa.launcherclient.ISerializableScrollCallba
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientCallbacks;
 import com.google.android.libraries.gsa.launcherclient.StaticInteger;
+import com.google.systemui.smartspace.SmartSpaceView;
 import com.saggitt.omega.preferences.OmegaPreferences;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 /**
  * Implements {@link LauncherOverlay} and passes all the corresponding events to {@link
@@ -49,6 +54,7 @@ public class OverlayCallbackImpl
     private LauncherOverlayCallbacks mLauncherOverlayCallbacks;
     private boolean mWasOverlayAttached = false;
     private int mFlags;
+    private final Set<SmartSpaceView> mSmartSpaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     public OverlayCallbackImpl(Launcher launcher) {
         OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
@@ -111,6 +117,13 @@ public class OverlayCallbackImpl
     @Override
     public void onActivityPaused(Activity activity) {
         mClient.onPause();
+        for (SmartSpaceView smartspace : mSmartSpaceViews) {
+            smartspace.onPause();
+        }
+    }
+
+    public void registerSmartspaceView(SmartSpaceView smartspace) {
+        mSmartSpaceViews.add(smartspace);
     }
 
     @Override

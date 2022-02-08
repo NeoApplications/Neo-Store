@@ -19,6 +19,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.google.systemui.smartspace.SmartSpaceView;
+
 import java.io.PrintWriter;
 
 /**
@@ -66,6 +68,9 @@ public interface LauncherOverlayManager extends Application.ActivityLifecycleCal
 
     @Override
     default void onActivityPaused(Activity activity) {
+    }
+
+    default void registerSmartSpaceView(SmartSpaceView smartspace) {
     }
 
     @Override
