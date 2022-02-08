@@ -16,12 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-syntax = "proto2";
+syntax = "proto3";
 
 option java_package = "com.google.android.systemui.smartspace";
 option java_outer_classname = "SmartspaceProto";
-
-package nano;
 
 message SmartSpaceUpdate {
 
