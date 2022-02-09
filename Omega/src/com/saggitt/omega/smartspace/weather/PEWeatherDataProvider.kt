@@ -25,12 +25,12 @@ import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.Utilities
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.util.Temperature
 
 @Keep
-class PEWeatherDataProvider(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.PeriodicDataProvider(controller) {
+class PEWeatherDataProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.PeriodicDataProvider(controller) {
 
     private val contentResolver = context.contentResolver
 
@@ -40,17 +40,20 @@ class PEWeatherDataProvider(controller: OmegaSmartspaceController) :
         }
     }
 
-    override fun queryWeatherData(): OmegaSmartspaceController.WeatherData? {
-        contentResolver.query(weatherUri, PROJECTION_DEFAULT_WEATHER, null, null, null)?.use { cursor ->
-            val count = cursor.count
-            if (count > 0) {
-                cursor.moveToPosition(0)
-                val status = cursor.getInt(0)
-                if (status == 0) {
-                    val conditions = cursor.getString(1)
-                    val temperature = cursor.getInt(2)
-                    return OmegaSmartspaceController.WeatherData(getConditionIcon(conditions),
-                            Temperature(temperature, Temperature.Unit.Celsius), "")
+    override fun queryWeatherData(): OmegaSmartSpaceController.WeatherData? {
+        contentResolver.query(weatherUri, PROJECTION_DEFAULT_WEATHER, null, null, null)
+            ?.use { cursor ->
+                val count = cursor.count
+                if (count > 0) {
+                    cursor.moveToPosition(0)
+                    val status = cursor.getInt(0)
+                    if (status == 0) {
+                        val conditions = cursor.getString(1)
+                        val temperature = cursor.getInt(2)
+                        return OmegaSmartSpaceController.WeatherData(
+                            getConditionIcon(conditions),
+                            Temperature(temperature, Temperature.Unit.Celsius), ""
+                        )
                 }
             }
         }

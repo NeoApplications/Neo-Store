@@ -19,18 +19,23 @@ package com.saggitt.omega.smartspace.weather
 
 import android.text.TextUtils
 import androidx.annotation.Keep
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.smartspace.weather.icons.WeatherIconProvider
 import com.saggitt.omega.util.Temperature
 
 @Keep
-class FakeDataProvider(controller: OmegaSmartspaceController) : OmegaSmartspaceController.DataProvider(controller) {
+class FakeDataProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller) {
 
     private val iconProvider = WeatherIconProvider(controller.context)
-    private val weather = OmegaSmartspaceController.WeatherData(iconProvider.getIcon("-1"),
-            Temperature(0, Temperature.Unit.Celsius), "")
-    private val card = OmegaSmartspaceController.CardData(iconProvider.getIcon("-1"),
-            "Title", TextUtils.TruncateAt.END, "Subtitle", TextUtils.TruncateAt.END)
+    private val weather = OmegaSmartSpaceController.WeatherData(
+        iconProvider.getIcon("-1"),
+        Temperature(0, Temperature.Unit.Celsius), ""
+    )
+    private val card = OmegaSmartSpaceController.CardData(
+        iconProvider.getIcon("-1"),
+        "Title", TextUtils.TruncateAt.END, "Subtitle", TextUtils.TruncateAt.END
+    )
 
     init {
         updateData(weather, card)

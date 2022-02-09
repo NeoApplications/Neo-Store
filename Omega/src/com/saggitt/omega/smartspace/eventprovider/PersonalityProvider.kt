@@ -25,7 +25,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.Keep
 import com.android.launcher3.R
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.util.dayOfYear
 import com.saggitt.omega.util.hourOfDay
 import java.util.*
@@ -33,8 +33,8 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 @Keep
-class PersonalityProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.DataProvider(controller) {
+class PersonalityProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller) {
     private val updateInterval = 60 * 1000
     private val timeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
@@ -92,15 +92,15 @@ class PersonalityProvider(controller: OmegaSmartspaceController) :
         handler.removeCallbacks(onUpdateRunnable)
     }
 
-    private fun getEventCard(): OmegaSmartspaceController.CardData? {
-        val lines = mutableListOf<OmegaSmartspaceController.Line>()
+    private fun getEventCard(): OmegaSmartSpaceController.CardData? {
+        val lines = mutableListOf<OmegaSmartSpaceController.Line>()
         when {
-            isMorning -> lines.add(OmegaSmartspaceController.Line(morningGreeting))
-            isEvening -> lines.add(OmegaSmartspaceController.Line(eveningGreeting))
-            isNight -> lines.add(OmegaSmartspaceController.Line(nightGreeting))
+            isMorning -> lines.add(OmegaSmartSpaceController.Line(morningGreeting))
+            isEvening -> lines.add(OmegaSmartSpaceController.Line(eveningGreeting))
+            isNight -> lines.add(OmegaSmartSpaceController.Line(nightGreeting))
             else -> return null
         }
-        return OmegaSmartspaceController.CardData(
+        return OmegaSmartSpaceController.CardData(
             lines = lines,
             forceSingleLine = true
         )

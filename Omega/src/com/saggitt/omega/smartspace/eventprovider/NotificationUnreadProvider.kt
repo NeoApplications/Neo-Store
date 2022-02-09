@@ -29,16 +29,16 @@ import com.android.launcher3.notification.NotificationMainView.NOTIFICATION_ITEM
 import com.android.launcher3.util.PackageUserKey
 import com.saggitt.omega.flowerpot.Flowerpot
 import com.saggitt.omega.flowerpot.FlowerpotApps
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.CardData
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.Line
 import com.saggitt.omega.util.loadSmallIcon
 import com.saggitt.omega.util.runOnMainThread
 import com.saggitt.omega.util.runOnUiWorkerThread
 
 @Keep
-class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.NotificationBasedDataProvider(controller),
+class NotificationUnreadProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.NotificationBasedDataProvider(controller),
     NotificationsManager.OnChangeListener {
 
     private val manager = NotificationsManager
@@ -119,7 +119,7 @@ class NotificationUnreadProvider(controller: OmegaSmartspaceController) :
         }
         return CardData(
             sbn.loadSmallIcon(context)?.toBitmap(), lines,
-            OmegaSmartspaceController.NotificationClickListener(sbn)
+            OmegaSmartSpaceController.NotificationClickListener(sbn)
         )
     }
 

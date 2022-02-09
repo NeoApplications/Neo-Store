@@ -24,12 +24,12 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import androidx.annotation.Keep
 import com.android.launcher3.R
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.*
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.*
 
 @Keep
-class BatteryStatusProvider(controller: OmegaSmartspaceController) :
-        DataProvider(controller) {
+class BatteryStatusProvider(controller: OmegaSmartSpaceController) :
+    DataProvider(controller) {
 
     private val batteryReceiver = object : BroadcastReceiver() {
 

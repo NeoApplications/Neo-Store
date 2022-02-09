@@ -34,7 +34,7 @@ import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.search.SearchProviderController
-import com.saggitt.omega.smartspace.SmartspaceDataWidget
+import com.saggitt.omega.smartspace.SmartSpaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
 import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
 import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
@@ -236,11 +236,11 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var weatherIconPack by StringPref("pref_weatherIcons", "", doNothing)
     var weatherProvider by StringPref(
         "pref_smartspace_widget_provider",
-        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+        SmartSpaceDataWidget::class.java.name, ::updateSmartspaceProvider
     )
     var eventProvider by StringPref(
         "pref_smartspace_event_provider",
-        SmartspaceDataWidget::class.java.name, ::updateSmartspaceProvider
+        SmartSpaceDataWidget::class.java.name, ::updateSmartspaceProvider
     )
     var eventProviders = StringListPref(
         "pref_smartspace_event_providers", listOf(

@@ -25,11 +25,10 @@ import android.location.Criteria
 import android.location.LocationManager
 import androidx.annotation.Keep
 import androidx.core.app.ActivityCompat
-import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.perms.CustomPermissionManager
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.smartspace.weather.icons.WeatherIconManager
 import com.saggitt.omega.twilight.TwilightManager
 import com.saggitt.omega.util.*
@@ -39,8 +38,8 @@ import java.util.Calendar.HOUR_OF_DAY
 import java.util.concurrent.TimeUnit
 
 @Keep
-class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.DataProvider(controller), OPWeatherProvider.IWeatherCallback {
+class OnePlusWeatherDataProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller), OPWeatherProvider.IWeatherCallback {
 
     private val provider by lazy { OPWeatherProvider(context) }
     private val locationAccess by lazy { context.checkLocationAccess() }
@@ -84,7 +83,7 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
 
     private fun update(weatherData: OPWeatherProvider.WeatherData) {
         runOnUiWorkerThread {
-            val weather = OmegaSmartspaceController.WeatherData(
+            val weather = OmegaSmartSpaceController.WeatherData(
                 getConditionIcon(weatherData),
                 Temperature(weatherData.temperature, getTemperatureUnit(weatherData)),
                 forecastIntent = Intent().setClassName(
@@ -159,7 +158,8 @@ class OnePlusWeatherDataProvider(controller: OmegaSmartspaceController) :
     companion object {
 
         fun isAvailable(context: Context): Boolean {
-            return Launcher.getLauncher(context).packageManager.isAppEnabled(
+            return PackageManagerHelper.isAppEnabled(
+                context.packageManager,
                 OPWeatherProvider.WEATHER_PACKAGE_NAME,
                 0
             )

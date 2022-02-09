@@ -26,16 +26,15 @@ import android.util.Log
 import androidx.annotation.Keep
 import com.android.launcher3.R
 import com.android.launcher3.Utilities.drawableToBitmap
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.util.formatTime
 import com.saggitt.omega.util.runOnMainThread
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 @Keep
-class AlarmEventProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.DataProvider(controller) {
+class AlarmEventProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller) {
 
     private val handlerThread by lazy { HandlerThread("") }
     private val handler by lazy { Handler(handlerThread.looper) }
@@ -55,21 +54,21 @@ class AlarmEventProvider(controller: OmegaSmartspaceController) :
             )
         ) {
             val alarmClock = alarmManager.nextAlarmClock!!
-            val string: MutableList<OmegaSmartspaceController.Line> = ArrayList();
+            val string: MutableList<OmegaSmartSpaceController.Line> = ArrayList();
             string.add(
-                OmegaSmartspaceController.Line(
+                OmegaSmartSpaceController.Line(
                     controller.context.getString(R.string.resuable_text_alarm)
                 )
             )
             val calendarTrigerTime = Calendar.getInstance()
             calendarTrigerTime.timeInMillis = alarmClock.triggerTime
             string.add(
-                OmegaSmartspaceController.Line(
+                OmegaSmartSpaceController.Line(
                     formatTime(calendarTrigerTime, controller.context)
                 )
             )
             updateData(
-                null, OmegaSmartspaceController.CardData(
+                null, OmegaSmartSpaceController.CardData(
                     drawableToBitmap(controller.context.getDrawable(R.drawable.ic_alarm_on_black_24dp)),
                     string, true
                 )

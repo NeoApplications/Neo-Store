@@ -48,10 +48,10 @@ import com.google.android.apps.nexuslauncher.graphics.IcuDateTextView;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.smartspace.OmegaSmartspaceController;
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData;
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.WeatherData;
-import com.saggitt.omega.smartspace.SmartspacePreferencesShortcut;
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController;
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.CardData;
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.WeatherData;
+import com.saggitt.omega.smartspace.SmartSpacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListener, ValueAnimator.AnimatorUpdateListener,
-        View.OnClickListener, View.OnLongClickListener, Runnable, OmegaSmartspaceController.Listener {
+        View.OnClickListener, View.OnLongClickListener, Runnable, OmegaSmartSpaceController.Listener {
     private TextView mSubtitleWeatherText;
     private final TextPaint dB;
     private TextView mTitleText;
@@ -90,7 +90,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     private final boolean mEnableShadow;
     private final Handler mHandler;
 
-    private final OmegaSmartspaceController mController;
+    private final OmegaSmartSpaceController mController;
     private boolean mFinishedInflate;
     private boolean mWeatherAvailable;
     private final OmegaPreferences mPrefs;
@@ -222,8 +222,8 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
             /*if (getParent() instanceof SmartspacePreview) {
                 setupIfNeeded();
             } else {*/
-            List<OmegaSmartspaceController.Line> lines = new ArrayList<>();
-            lines.add(new OmegaSmartspaceController.Line(getContext().getString(R.string.smartspace_setup_text)));
+            List<OmegaSmartSpaceController.Line> lines = new ArrayList<>();
+            lines.add(new OmegaSmartSpaceController.Line(getContext().getString(R.string.smartspace_setup_text)));
             card = new CardData(null, lines, v -> setupIfNeeded(), false);
             // }
         }
@@ -477,7 +477,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         rectF.top = 0.0f;
         rectF.bottom = ((float) rect.bottom) - tmp;
         OmegaUtilsKt.openPopupMenu(this, rectF,
-                new SmartspacePreferencesShortcut(getContext(), StatsLogManager.LauncherRankingEvent.UNKNOWN));
+                new SmartSpacePreferencesShortcut(getContext(), StatsLogManager.LauncherRankingEvent.UNKNOWN));
         return true;
     }
 

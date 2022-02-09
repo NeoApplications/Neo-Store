@@ -27,15 +27,15 @@ import android.text.format.DateFormat
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.*
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.*
 import com.saggitt.omega.util.runOnMainThread
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 
 @SuppressLint("MissingPermission")
-class CalendarEventProvider(controller: OmegaSmartspaceController) :
+class CalendarEventProvider(controller: OmegaSmartSpaceController) :
     PeriodicDataProvider(controller) {
 
     override val requiredPermissions = listOf(android.Manifest.permission.READ_CALENDAR)

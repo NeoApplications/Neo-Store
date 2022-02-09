@@ -27,10 +27,9 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.OnboardingPrefs.HOME_BOUNCE_SEEN
 import com.saggitt.omega.preferences.views.PreferencesActivity
 
-// TODO: add event for after installing a new Icon Pack with apply activity as intent
-class OnboardingProvider(controller: OmegaSmartspaceController) :
-        OmegaSmartspaceController.DataProvider(controller),
-        SharedPreferences.OnSharedPreferenceChangeListener {
+class OnboardingProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val deviceKeys = arrayOf(PREF_HAS_OPENED_SETTINGS)
     private val prefKeys = arrayOf(HOME_BOUNCE_SEEN)
@@ -64,19 +63,31 @@ class OnboardingProvider(controller: OmegaSmartspaceController) :
 
     private fun update() {
         val card = when {
-            !prefs.getBoolean(HOME_BOUNCE_SEEN, false) -> OmegaSmartspaceController.CardData(
-                    lines = listOf(OmegaSmartspaceController.Line(context, R.string.onboarding_swipe_up)))
-            !devicePrefs.getBoolean(PREF_HAS_OPENED_SETTINGS, false) -> OmegaSmartspaceController.CardData(
-                    icon = null,
-                    title = context.getString(
-                            R.string.onbording_settings_title,
-                            context.getString(R.string.derived_app_name)),
-                    subtitle = context.getString(R.string.onbording_settings_summary),
-                    pendingIntent = PendingIntent.getActivity(
-                            context,
-                            0,
-                            Intent(context, PreferencesActivity::class.java),
-                            0))
+            !prefs.getBoolean(HOME_BOUNCE_SEEN, false) -> OmegaSmartSpaceController.CardData(
+                lines = listOf(
+                    OmegaSmartSpaceController.Line(
+                        context,
+                        R.string.onboarding_swipe_up
+                    )
+                )
+            )
+            !devicePrefs.getBoolean(
+                PREF_HAS_OPENED_SETTINGS,
+                false
+            ) -> OmegaSmartSpaceController.CardData(
+                icon = null,
+                title = context.getString(
+                    R.string.onbording_settings_title,
+                    context.getString(R.string.derived_app_name)
+                ),
+                subtitle = context.getString(R.string.onbording_settings_summary),
+                pendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    Intent(context, PreferencesActivity::class.java),
+                    0
+                )
+            )
             else -> null
         }
         updateData(null, card)

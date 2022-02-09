@@ -8,7 +8,7 @@ import com.android.launcher3.logging.StatsLogManager.EventEnum
 import com.android.launcher3.views.OptionsPopupView.OptionItem
 import com.saggitt.omega.preferences.views.PreferencesActivity
 
-class SmartspacePreferencesShortcut(context: Context, eventId: EventEnum?) : OptionItem(
+class SmartSpacePreferencesShortcut(context: Context, eventId: EventEnum?) : OptionItem(
     context.getString(R.string.customize),
     context.getDrawable(R.drawable.ic_smartspace_preferences),
     eventId,

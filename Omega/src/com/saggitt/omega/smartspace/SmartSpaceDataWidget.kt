@@ -46,8 +46,8 @@ import com.saggitt.omega.omegaApp
 import com.saggitt.omega.util.*
 
 @Keep
-class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.DataProvider(controller) {
+class SmartSpaceDataWidget(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller) {
 
     private val prefs = Utilities.getOmegaPrefs(context)
     private val smartspaceWidgetHost = SmartspaceWidgetHost()
@@ -156,7 +156,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
             val ttl =
                 title.text.toString() + if (subtitle2 != null) subtitle.text.toString() else ""
             val sub = subtitle2 ?: subtitle
-            OmegaSmartspaceController.CardData(
+            OmegaSmartSpaceController.CardData(
                 cardIcon, ttl, title.ellipsize,
                 sub.text.toString(), sub.ellipsize,
                 pendingIntent = pendingIntent
@@ -170,7 +170,7 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
     private fun parseWeatherData(
         weatherIcon: Bitmap?,
         temperatureText: TextView?
-    ): OmegaSmartspaceController.WeatherData? {
+    ): OmegaSmartSpaceController.WeatherData? {
         val temperature = temperatureText?.text?.toString()
         return parseWeatherData(weatherIcon, temperature, getPendingIntent(temperatureText))
     }
@@ -277,13 +277,13 @@ class SmartspaceDataWidget(controller: OmegaSmartspaceController) :
             weatherIcon: Bitmap?,
             temperature: String?,
             intent: PendingIntent? = null
-        ): OmegaSmartspaceController.WeatherData? {
+        ): OmegaSmartSpaceController.WeatherData? {
             return if (weatherIcon != null && temperature != null) {
                 try {
                     val value = temperature.substring(
                         0,
                         temperature.indexOfFirst { (it < '0' || it > '9') && it != '-' }).toInt()
-                    OmegaSmartspaceController.WeatherData(
+                    OmegaSmartSpaceController.WeatherData(
                         weatherIcon, Temperature(
                             value, when {
                                 temperature.contains("C") -> Temperature.Unit.Celsius

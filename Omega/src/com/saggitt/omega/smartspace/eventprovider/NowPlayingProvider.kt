@@ -22,14 +22,14 @@ import androidx.annotation.Keep
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
-import com.saggitt.omega.smartspace.OmegaSmartspaceController
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.CardData
-import com.saggitt.omega.smartspace.OmegaSmartspaceController.Line
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.CardData
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.Line
 import com.saggitt.omega.util.loadSmallIcon
 
 @Keep
-class NowPlayingProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.NotificationBasedDataProvider(controller) {
+class NowPlayingProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.NotificationBasedDataProvider(controller) {
 
     private val media = MediaListener(context, this::reload)
     private val defaultIcon =

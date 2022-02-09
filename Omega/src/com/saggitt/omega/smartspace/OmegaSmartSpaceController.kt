@@ -40,7 +40,6 @@ import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.notification.NotificationListener
-import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.NOTIFICATION_BADGING
 import com.saggitt.omega.preferences.views.PreferencesActivity
@@ -51,12 +50,12 @@ import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
 import com.saggitt.omega.util.*
 import java.util.concurrent.TimeUnit
 
-class OmegaSmartspaceController(val context: Context) {
+class OmegaSmartSpaceController(val context: Context) {
 
     private var weatherData: WeatherData? = null
     private var cardData: CardData? = null
     private val listeners = ArrayList<Listener>()
-    private val weatherProviderPref =Utilities.getOmegaPrefs(context)::weatherProvider
+    private val weatherProviderPref = Utilities.getOmegaPrefs(context)::weatherProvider
     private val eventProvidersPref = context.omegaPrefs.eventProviders
     private var weatherDataProvider = BlankDataProvider(this) as DataProvider
     private val eventDataProviders = mutableListOf<DataProvider>()
@@ -254,7 +253,7 @@ class OmegaSmartspaceController(val context: Context) {
 
     private fun createDataProvider(className: String): DataProvider {
         return try {
-            (Class.forName(className).getConstructor(OmegaSmartspaceController::class.java)
+            (Class.forName(className).getConstructor(OmegaSmartSpaceController::class.java)
                 .newInstance(this) as DataProvider)
         } catch (t: Throwable) {
             Log.d("SmartspaceController", "couldn't create provider", t)
@@ -262,7 +261,7 @@ class OmegaSmartspaceController(val context: Context) {
         }
     }
 
-    abstract class DataProvider(val controller: OmegaSmartspaceController) {
+    abstract class DataProvider(val controller: OmegaSmartSpaceController) {
         var listening = false
             private set
 
@@ -355,7 +354,7 @@ class OmegaSmartspaceController(val context: Context) {
         }
     }
 
-    abstract class PeriodicDataProvider(controller: OmegaSmartspaceController) :
+    abstract class PeriodicDataProvider(controller: OmegaSmartSpaceController) :
         DataProvider(controller) {
 
         private val handlerThread =
@@ -407,7 +406,7 @@ class OmegaSmartspaceController(val context: Context) {
         }
     }
 
-    abstract class NotificationBasedDataProvider(controller: OmegaSmartspaceController) :
+    abstract class NotificationBasedDataProvider(controller: OmegaSmartSpaceController) :
         DataProvider(controller) {
 
         override fun startSetup(onFinish: (Boolean) -> Unit) {
@@ -592,7 +591,7 @@ class OmegaSmartspaceController(val context: Context) {
 
         private val displayNames = mapOf(
             Pair(BlankDataProvider::class.java.name, R.string.title_disabled),
-            Pair(SmartspaceDataWidget::class.java.name, R.string.google_app),
+            Pair(SmartSpaceDataWidget::class.java.name, R.string.google_app),
             Pair(PEWeatherDataProvider::class.java.name, R.string.weather_provider_pe),
             Pair(
                 OnePlusWeatherDataProvider::class.java.name,
@@ -622,8 +621,8 @@ class OmegaSmartspaceController(val context: Context) {
 }
 
 @Keep
-class BlankDataProvider(controller: OmegaSmartspaceController) :
-    OmegaSmartspaceController.DataProvider(controller) {
+class BlankDataProvider(controller: OmegaSmartSpaceController) :
+    OmegaSmartSpaceController.DataProvider(controller) {
 
     override fun startListening() {
         super.startListening()

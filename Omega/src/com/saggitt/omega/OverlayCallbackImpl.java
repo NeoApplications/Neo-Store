@@ -122,7 +122,7 @@ public class OverlayCallbackImpl
         }
     }
 
-    public void registerSmartspaceView(SmartSpaceView smartspace) {
+    public void registerSmartSpaceView(SmartSpaceView smartspace) {
         mSmartSpaceViews.add(smartspace);
     }
 

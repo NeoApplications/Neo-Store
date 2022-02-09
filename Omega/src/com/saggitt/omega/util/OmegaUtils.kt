@@ -318,12 +318,6 @@ fun Button.applyColor(color: Int) {
     }
 }
 
-fun CheckedTextView.applyAccent() {
-    val tintList = ColorStateList.valueOf(context.getColorAccent())
-    compoundDrawableTintList = tintList
-    backgroundTintList = tintList
-}
-
 fun String.toTitleCase(): String = splitToSequence(" ").map {
     it.replaceFirstChar { ch ->
         if (ch.isLowerCase()) ch.titlecase(
