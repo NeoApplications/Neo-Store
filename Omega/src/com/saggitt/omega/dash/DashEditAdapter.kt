@@ -66,7 +66,11 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
                 R.layout.adapter_item_with_icon,
                 ::DashItemHolder
             )
-            TYPE_DIVIDER -> createHolder(parent, R.layout.event_providers_divider, ::DividerHolder)
+            TYPE_DIVIDER -> createHolder(
+                parent,
+                R.layout.event_providers_divider_item,
+                ::DividerHolder
+            )
             else -> throw IllegalArgumentException(
                 "type must be either TYPE_TEXT, " +
                         "TYPE_PACK, TYPE_DIVIDER or TYPE_DOWNLOAD"
