@@ -67,8 +67,6 @@
             android:title="@string/title_smartspace_widget_provider"
             app:iconSpaceReserved="false" />
 
-
-        <!--
         <androidx.preference.ListPreference
             android:defaultValue="metric"
             android:dependency="pref_smartspace_widget_provider"
@@ -77,7 +75,12 @@
             android:key="pref_weather_units"
             android:summary="%s"
             android:title="@string/title_smartspace_weather_units"
-            app:iconSpaceReserved="false" /> -->
+            app:iconSpaceReserved="false" />
 
+        <com.saggitt.omega.preferences.custom.EventProvidersPreference
+            android:dependency="pref_use_pill_qsb"
+            android:key="pref_smartspace_event_providers"
+            android:title="@string/title_smartspace_event_providers"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>
