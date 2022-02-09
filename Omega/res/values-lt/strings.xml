@@ -143,7 +143,6 @@
     <string name="label_voice_search">Paieška balsu</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Atstatyti į numatytuosius</string>
-    <string name="enabled_icon_packs">Įjungta</string>
     <string name="drag_to_enable_packs">Vilkite aukštyn, kad įjungtumėte</string>
     <string name="drag_to_disable_packs">Vilkite žemyn, kad išjungtumėte</string>
     <string name="dash_device_settings_summary">Atidaryti įrenginio nustatymus</string>

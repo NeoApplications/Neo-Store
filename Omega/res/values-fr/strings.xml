@@ -34,7 +34,6 @@
     <string name="label_voice_search">Recherche vocale</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Réinitialiser les valeurs par défaut</string>
-    <string name="enabled_icon_packs">Actif</string>
     <string name="drag_to_enable_packs">Glisser vers le haut pour désactiver</string>
     <string name="drag_to_disable_packs">Glisser vers le bas pour activer</string>
     <string name="wallpaper_pick">Sélectionner un fond d\'écran</string>

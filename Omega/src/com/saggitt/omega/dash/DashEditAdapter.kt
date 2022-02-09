@@ -177,7 +177,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
 
     class HeaderHolder(itemView: View) : Holder(itemView) {
         init {
-            itemView.findViewById<TextView>(android.R.id.text1).setText(R.string.enabled_icon_packs)
+            itemView.findViewById<TextView>(android.R.id.text1).setText(R.string.enabled_events)
         }
     }
 

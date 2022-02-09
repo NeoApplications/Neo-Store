@@ -398,6 +398,5 @@
     <string name="label_voice_search">Ricerca vocale</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Ripristina predefinito</string>
-    <string name="enabled_icon_packs">Attivo</string>
     <string name="drag_to_disable_packs">Trascina in basso per disattivare</string>
 </resources>

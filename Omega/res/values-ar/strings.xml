@@ -256,7 +256,6 @@
     <string name="label_voice_search">البحث الصوتي</string>
     <string name="automatic_short">تلقائي</string>
     <string name="reset_to_default">إعادة التعيين إلى الوضع الافتراضي</string>
-    <string name="enabled_icon_packs">ممكن</string>
     <string name="drag_to_enable_packs">اسحب لأعلى للإيقاف</string>
     <string name="drag_to_disable_packs">اسحب لأسفل للتشغيل</string>
     <string name="dash_device_settings_summary">افتح إعدادات الجهاز</string>

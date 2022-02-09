@@ -187,7 +187,7 @@ class SmartSpaceEventProvidersAdapter(private val context: Context) :
 
         init {
             itemView.findViewById<TextView>(android.R.id.text1).apply {
-                setText(R.string.enabled_icon_packs)
+                setText(R.string.enabled_events)
                 setTextColor(context.omegaPrefs.accentColor)
             }
         }

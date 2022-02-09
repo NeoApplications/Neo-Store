@@ -83,7 +83,6 @@
     <string name="label_voice_search">Stemmesøk</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Tilbakestill til forvalg</string>
-    <string name="enabled_icon_packs">Påskrudd</string>
     <string name="drag_to_enable_packs">Dra oppover for å skru på</string>
     <string name="drag_to_disable_packs">Dra nedover for å skru av</string>
     <string name="content_storage_permission_required">Innvilg lagringstilgang for å sette bakgrunnsbilde.</string>

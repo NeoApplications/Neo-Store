@@ -62,7 +62,6 @@
     <string name="customize">Özelleştir</string>
     <string name="label_voice_search">Sesli arama</string>
     <string name="automatic_short">Otomatik</string>
-    <string name="enabled_icon_packs">Açık</string>
     <string name="dash_device_settings_summary">Aygıt Ayarlarını Aç</string>
     <string name="dash_volume_summary">Aygıt ses seçicisini göster</string>
     <string name="dash_launcher_settings_summary">Başlatıcı ayarlarını göster</string>

@@ -245,7 +245,6 @@
     <string name="label_voice_search">Sprachsuche</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Auf Standard zurücksetzen</string>
-    <string name="enabled_icon_packs">Aktiviert</string>
     <string name="drag_to_enable_packs">Nach oben ziehen, um zu aktivieren</string>
     <string name="drag_to_disable_packs">Nach unten ziehen zum deaktivieren</string>
     <string name="wallpaper_pick">Bildschirmhintergrund auswählen</string>

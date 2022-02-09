@@ -48,7 +48,6 @@
     <string name="label_voice_search">Голосовой поиск</string>
     <string name="automatic_short">Авто</string>
     <string name="reset_to_default">Восстановление значений по умолчанию</string>
-    <string name="enabled_icon_packs">Включено</string>
     <string name="drag_to_enable_packs">Перетащите вверх, чтобы включить</string>
     <string name="drag_to_disable_packs">Потяните вниз, чтобы отключить</string>
     <string name="wallpaper_pick">Выбрать обои</string>

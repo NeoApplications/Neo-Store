@@ -285,7 +285,6 @@
     <string name="dash_launch_app_title">Lanzar aplicación</string>
     <string name="dash_mobile_network_title">Redes Móbiles</string>
     <string name="dash_manage_apps_summary">Abrir el administrador de aplicaciones</string>
-    <string name="enabled_icon_packs">Habilitar</string>
     <string name="label_voice_search">Búsqueda por voz</string>
     <string name="tab_color">Color del Tab</string>
     <string name="tab_hide_from_main">Ocultar del tab principal</string>
