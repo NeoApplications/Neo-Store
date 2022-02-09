@@ -225,6 +225,19 @@ public class SmartSpaceCardView {
         return substitute(true, s);
     }
 
+    public boolean isExpired() {
+        return System.currentTimeMillis() > getExpiration();
+    }
+
+    public long getExpiration() {
+        ExpiryCriteria expiryCriteria = mSmartSpaceCard.getExpiryCriteria();
+        if (expiryCriteria != null) {
+            return expiryCriteria.getExpirationTimeMillis();
+        }
+
+        return 0;
+    }
+
     long getMillisToEvent(final FormatParam formatParam) {
         long timeToEvent;
         if (formatParam.getFormatParamArgs() == SOMETHING2) {
@@ -235,20 +248,6 @@ public class SmartSpaceCardView {
         return Math.abs(System.currentTimeMillis() - timeToEvent);
     }
 
-    public boolean isExpired() {
-        return System.currentTimeMillis() > getExpiration();
-    }
-
-    public long getExpiration() {
-        SmartSpaceCard smartspaceCard = mSmartSpaceCard;
-        if (smartspaceCard != null) {
-            ExpiryCriteria expiryCriteria = smartspaceCard.getExpiryCriteria();
-            if (expiryCriteria != null) {
-                return expiryCriteria.getExpirationTimeMillis();
-            }
-        }
-        return 0;
-    }
 
     public void performCardAction(View view) {
         if (this.mSmartSpaceCard.getTapAction() == null) {
@@ -279,35 +278,6 @@ public class SmartSpaceCardView {
     public boolean hasMessage() {
         Message message = getMessage();
         return message != null && (hasParams(message.getTitle()) || hasParams(message.getSubtitle()));
-    }
-
-    public TextUtils.TruncateAt cx(final boolean b) {
-        final Message ch = getMessage();
-        if (ch != null) {
-            int n = 0;
-            if (b && ch.getTitle() != null) {
-                n = ch.getTitle().getTruncateLocation();
-            } else if (!b && ch.getSubtitle() != null) {
-                n = ch.getSubtitle().getTruncateLocation();
-            }
-            switch (n) {
-                case 1: {
-                    return TextUtils.TruncateAt.START;
-                }
-                case 2: {
-                    return TextUtils.TruncateAt.MIDDLE;
-                }
-            }
-        }
-        return TextUtils.TruncateAt.END;
-    }
-
-    public String cy() {
-        return substitute(false);
-    }
-
-    public boolean cz() {
-        return mIsGrayIconScale;
     }
 
     public Bitmap getIcon() {
