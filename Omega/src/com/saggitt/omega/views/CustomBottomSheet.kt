@@ -32,14 +32,8 @@ import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragment
 import androidx.preference.SwitchPreference
-import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherSettings
-import com.android.launcher3.R
-import com.android.launcher3.Utilities
-import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.model.data.FolderInfo
-import com.android.launcher3.model.data.ItemInfo
-import com.android.launcher3.model.data.ItemInfoWithIcon
+import com.android.launcher3.*
+import com.android.launcher3.model.data.*
 import com.android.launcher3.touch.SingleAxisSwipeDetector
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageManagerHelper
@@ -65,16 +59,39 @@ class CustomBottomSheet @JvmOverloads constructor(
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
         mItemInfo = itemInfo
+        val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
             itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
-        var allowTitleEdit = true
+        var allowTitleEdit = false
         if (itemInfo is ItemInfoWithIcon) {
             val icon = findViewById<ImageView>(R.id.icon)
             icon.setImageBitmap(itemInfo.bitmap.icon)
-
+            allowTitleEdit = true
         }
+        if (itemInfo is WorkspaceItemInfo) {
+            allowTitleEdit = true
+        }
+        if (allowTitleEdit) {
+
+            val appTitle = prefs.customAppName[componentKey] ?: itemInfo.title.toString()
+            val previousTitle = prefs.customAppName[componentKey]
+            if (mPreviousTitle == null) mPreviousTitle = ""
+            mEditTitle = findViewById(R.id.edit_title)
+
+            mEditTitle?.let {
+                if (!previousTitle.isNullOrEmpty())
+                    it.hint = previousTitle
+                else
+                    it.hint = appTitle
+
+                it.setText(mPreviousTitle)
+                it.visibility = VISIBLE
+            }
+            title.visibility = GONE
+        }
+
     }
 
     override fun hasSeenEducationTip(): Boolean {
@@ -121,14 +138,18 @@ class CustomBottomSheet @JvmOverloads constructor(
         if (pf != null) {
             mFragmentManager.beginTransaction().remove(pf).commitAllowingStateLoss()
         }
+
+        val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
         if (mEditTitle != null) {
             var newTitle: String? = mEditTitle!!.text.toString()
             if (newTitle != mPreviousTitle) {
                 if (newTitle == "") newTitle = null
-                /*mInfoProvider!!.setTitle(
-                    mItemInfo, newTitle,
-                    mLauncher.model.getWriter(false, true)
-                )*/
+                prefs.customAppName[componentKey] = newTitle
+                val las = LauncherAppState.getInstance(context)
+                las.iconCache.updateIconsForPkg(
+                    componentKey.componentName.packageName,
+                    componentKey.user
+                )
                 if (mItemInfo is ItemInfoWithIcon)
                     prefs.reloadApps
             }

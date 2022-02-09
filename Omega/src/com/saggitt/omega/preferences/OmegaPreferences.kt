@@ -25,6 +25,8 @@ import android.util.Log
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
+import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.*
@@ -44,6 +46,7 @@ import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.reflect.KProperty
@@ -142,6 +145,14 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
         get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
 
     val saveScrollPosition by BooleanPref(PREFS_KEEP_SCROLL_STATE, false, doNothing)
+
+    val customAppName =
+        object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
+            override fun flattenKey(key: ComponentKey) = key.toString()
+            override fun unflattenKey(key: String) = makeComponentKey(context, key)
+            override fun flattenValue(value: String) = value
+            override fun unflattenValue(value: String) = value
+        }
 
     // THEME
     var launcherTheme by StringIntPref(
@@ -337,6 +348,61 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     }
 
     /*Base Preferences*/
+
+    abstract inner class MutableMapPref<K, V>(
+        private val prefKey: String,
+        onChange: () -> Unit = doNothing
+    ) {
+        private val valueMap = HashMap<K, V>()
+
+        init {
+            val obj = JSONObject(sharedPrefs.getString(prefKey, "{}"))
+            obj.keys().forEach {
+                valueMap[unflattenKey(it)] = unflattenValue(obj.getString(it))
+            }
+            if (onChange !== doNothing) {
+                onChangeMap[prefKey] = onChange
+            }
+        }
+
+        fun toMap() = HashMap<K, V>(valueMap)
+
+        open fun flattenKey(key: K) = key.toString()
+
+        abstract fun unflattenKey(key: String): K
+
+        open fun flattenValue(value: V) = value.toString()
+
+        abstract fun unflattenValue(value: String): V
+
+        operator fun set(key: K, value: V?) {
+            if (value != null) {
+                valueMap[key] = value
+            } else {
+                valueMap.remove(key)
+            }
+            saveChanges()
+        }
+
+        private fun saveChanges() {
+            val obj = JSONObject()
+            valueMap.entries.forEach { obj.put(flattenKey(it.key), flattenValue(it.value)) }
+            @SuppressLint("CommitPrefEdits") val editor =
+                if (bulkEditing) editor!! else sharedPrefs.edit()
+            editor.putString(prefKey, obj.toString())
+            if (!bulkEditing) commitOrApply(editor, blockingEditing)
+        }
+
+        operator fun get(key: K): V? {
+            return valueMap[key]
+        }
+
+        fun clear() {
+            valueMap.clear()
+            saveChanges()
+        }
+    }
+
     abstract inner class PrefDelegate<T : Any>(
         val key: String,
         val defaultValue: T,

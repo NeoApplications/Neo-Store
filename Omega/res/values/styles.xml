@@ -290,8 +290,6 @@
         <item name="appWidgetPadding">16dp</item>
     </style>
 
-
-
     <style name="SmartspaceTextHeadline">
         <item name="android:textColor">?attr/workspaceTextColor</item>
         <item name="android:letterSpacing">@dimen/smartspaceLetterSpacing</item>
