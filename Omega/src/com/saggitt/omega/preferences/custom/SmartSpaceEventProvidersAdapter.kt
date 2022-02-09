@@ -64,7 +64,7 @@ class SmartSpaceEventProvidersAdapter(private val context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return when (viewType) {
-            TYPE_HEADER -> createHolder(parent, R.layout.adapter_text_item, ::HeaderHolder)
+            TYPE_HEADER -> createHolder(parent, R.layout.adapter_item_text, ::HeaderHolder)
             TYPE_ITEM -> createHolder(parent, R.layout.event_provider_dialog_item, ::ProviderHolder)
             TYPE_DIVIDER -> createHolder(
                 parent,

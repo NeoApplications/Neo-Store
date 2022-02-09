@@ -60,8 +60,12 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return when (viewType) {
-            TYPE_HEADER -> createHolder(parent, R.layout.icon_pack_text_item, ::HeaderHolder)
-            TYPE_DASH_ITEM -> createHolder(parent, R.layout.icon_pack_dialog_item, ::DashItemHolder)
+            TYPE_HEADER -> createHolder(parent, R.layout.adapter_item_text, ::HeaderHolder)
+            TYPE_DASH_ITEM -> createHolder(
+                parent,
+                R.layout.adapter_item_with_icon,
+                ::DashItemHolder
+            )
             TYPE_DIVIDER -> createHolder(parent, R.layout.event_providers_divider, ::DividerHolder)
             else -> throw IllegalArgumentException(
                 "type must be either TYPE_TEXT, " +
