@@ -430,4 +430,5 @@
     <string name="title_app_categorization_enable">تمكين فئات التطبيقات</string>
     <string name="web_search_metager">Metager (ويب)</string>
     <string name="web_search_searx">سيركس (ويب)</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
 </resources>
