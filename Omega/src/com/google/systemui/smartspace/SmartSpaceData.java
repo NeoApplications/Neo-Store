@@ -15,14 +15,16 @@ public class SmartSpaceData {
     }
 
     public long getExpiresAtMillis() {
+
+        final long currentTimeMillis = System.currentTimeMillis();
         if (hasCurrent() && hasWeather()) {
-            return Math.min(mCurrentCard.getExpiration(), mWeatherCard.getExpiration());
+            return Math.min(mCurrentCard.getExpiration(), mWeatherCard.getExpiration()) - currentTimeMillis;
         }
         if (hasCurrent()) {
-            return mCurrentCard.getExpiration();
+            return mCurrentCard.getExpiration() - currentTimeMillis;
         }
         if (hasWeather()) {
-            return mWeatherCard.getExpiration();
+            return mWeatherCard.getExpiration() - currentTimeMillis;
         }
         return 0;
     }
