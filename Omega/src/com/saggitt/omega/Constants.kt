@@ -1,6 +1,5 @@
 package com.saggitt.omega
 
-
 // DESKTOP PREFS
 const val PREFS_DESKTOP_ICON_SCALE = "pref_home_icon_scale"
 const val PREFS_DESKTOP_HIDE_LABEL = "pref_hide_app_label"
@@ -75,6 +74,13 @@ const val PREFS_GESTURE_SWIPE_UP = "pref_gesture_swipe_up"
 const val PREFS_GESTURE_SWIPE_UP_DOCK = "pref_gesture_dock_swipe_up"
 const val PREFS_GESTURE_ASSISTANT = "pref_gesture_launch_assistant"
 
+//SMARTSPACE PREFS
+const val PREFS_SMARTSPACE_ENABLE = "enable_smartspace"
+const val PREFS_SMARTSPACE_DATE = "pref_smartspace_date"
+const val PREFS_SMARTSPACE_TIME = "pref_smartspace_time"
+const val PREFS_SMARTSPACE_TIME_ABOVE = "pref_smartspace_time_above"
+const val PREF_PILL_QSB = "pref_use_pill_qsb"
+const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
 
 // ADVANCED PREFS
 const val PREFS_LANGUAGE = "pref_language"
@@ -91,7 +97,6 @@ const val PREFS_KILL = "kill"
 // EXTRA PREFS
 const val PREFS_FEED_PROVIDER = "pref_feedProvider"
 const val PREFS_FEED_PROVIDER_ALLOW_ALL = "pref_feedProviderAllowAll"
-const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
 const val PREFS_TORCH = "pref_torch"
 const val PREFS_DESKTOP_POPUP_EDIT = "desktop_popup_edit"
 const val PREFS_DESKTOP_POPUP_REMOVE = "desktop_popup_remove"

@@ -222,12 +222,12 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val ignoreFeedWhitelist by BooleanPref(PREFS_FEED_PROVIDER_ALLOW_ALL, true, restart)
 
     // SMARTSPACE
-    var usePillQsb by BooleanPref("pref_use_pill_qsb", false, recreate)
-    val enableSmartspace by BooleanPref("enable_smartspace", false, recreate)
-    val smartspaceTime by BooleanPref("pref_smartspace_time", false, recreate)
-    val smartspaceDate by BooleanPref("pref_smartspace_date", true, recreate)
-    val smartspaceTimeAbove by BooleanPref("pref_smartspace_time_above", false, recreate)
-    val smartspaceTime24H by BooleanPref("pref_smartspace_time_24_h", false, recreate)
+    var usePillQsb by BooleanPref(PREF_PILL_QSB, false, recreate)
+    val enableSmartspace by BooleanPref(PREFS_SMARTSPACE_ENABLE, false, recreate)
+    val smartspaceTime by BooleanPref(PREFS_SMARTSPACE_TIME, false, recreate)
+    val smartspaceDate by BooleanPref(PREFS_SMARTSPACE_DATE, true, recreate)
+    val smartspaceTimeAbove by BooleanPref(PREFS_SMARTSPACE_TIME_ABOVE, false, recreate)
+    val smartspaceTime24H by BooleanPref(PREFS_TIME_24H, false, recreate)
     val weatherUnit by StringBasedPref(
         "pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
         Temperature.Companion::unitFromString, Temperature.Companion::unitToString
