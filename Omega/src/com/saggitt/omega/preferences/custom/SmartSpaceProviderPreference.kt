@@ -29,30 +29,17 @@ import com.saggitt.omega.smartspace.SmartSpaceDataWidget
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
-import com.saggitt.omega.util.buildEntries
 
 class SmartSpaceProviderPreference(context: Context, attrs: AttributeSet?) :
     ListPreference(context, attrs), OmegaPreferences.OnPreferenceChangeListener {
 
     private val prefs = Utilities.getOmegaPrefs(context)
-    private val forWeather by lazy { key == "pref_smartspace_widget_provider" }
-
+    private val mProviders = getWeatherProviders()
     init {
-        buildEntries {
-            getProviders().forEach {
-                addEntry(OmegaSmartSpaceController.getDisplayName(it), it)
-            }
-        }
-    }
 
-    override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any?) {
-        super.onSetInitialValue(defaultValue)
-    }
-
-    private fun getProviders(): List<String> {
-        return if (forWeather) getWeatherProviders() else SmartSpaceEventProvidersAdapter.getEventProviders(
-            context
-        )
+        entries =
+            mProviders.map { OmegaSmartSpaceController.getDisplayName(context, it) }.toTypedArray()
+        entryValues = mProviders.map { it }.toTypedArray()
     }
 
     private fun getWeatherProviders(): List<String> {
