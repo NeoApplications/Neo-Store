@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
+  ~  Copyright (c) 2021   Omega Launcher Team
   ~
   ~  This program is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as
@@ -49,6 +49,13 @@
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_theme"
             android:title="@string/title__general_theme" />
+
+        <Preference
+            android:fragment="com.saggitt.omega.preferences.views.PrefsWidgetFragment"
+            android:icon="@drawable/ic_widgets"
+            android:layout="@layout/home_preference"
+            android:summary="@string/summary__general_smartspace"
+            android:title="@string/title__general_smartspace" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -74,6 +81,7 @@
         app:allowDividerAbove="false">
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PrefsAdvancedFragment"
+            android:key="pref_show_smartspace"
             android:icon="@drawable/ic_more_horiz"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_advanced"

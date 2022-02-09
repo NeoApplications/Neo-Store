@@ -43,6 +43,7 @@ import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.settings.SettingsDragLayer
+import com.saggitt.omega.smartspace.FeedBridge
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
@@ -186,6 +187,10 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
             findPreference<Preference>(PREFS_DEV_PREFS_SHOW)?.apply {
                 isVisible = Utilities.getOmegaPrefs(context).developerOptionsEnabled
+            }
+
+            findPreference<Preference>("pref_show_smartspace")?.apply {
+                isVisible = FeedBridge.getInstance(context).isInstalled()
             }
         }
 

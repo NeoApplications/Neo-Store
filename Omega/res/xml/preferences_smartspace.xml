@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
+  ~  Copyright (c) 2021   Omega Launcher Team
   ~
   ~  This program is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as
@@ -18,5 +18,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="enable_smartspace"
+        android:title="@string/title_smartspace"
+        app:iconSpaceReserved="false" />
 
+
+    <PreferenceCategory android:title="@string/category__behavior_weather">
+
+        <!--
+        <androidx.preference.ListPreference
+            android:defaultValue="metric"
+            android:dependency="pref_smartspace_widget_provider"
+            android:entries="@array/unitsTexts"
+            android:entryValues="@array/unitsValues"
+            android:key="pref_weather_units"
+            android:summary="%s"
+            android:title="@string/title_smartspace_weather_units"
+            app:iconSpaceReserved="false" /> -->
+
+    </PreferenceCategory>
 </PreferenceScreen>
