@@ -24,6 +24,40 @@
         android:title="@string/title_smartspace"
         app:iconSpaceReserved="false" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="pref_use_pill_qsb"
+        android:key="pref_smartspace_date"
+        android:title="@string/title_smartspace_date"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_use_pill_qsb"
+        android:key="pref_smartspace_time"
+        android:title="@string/title_smartspace_time"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_smartspace_time"
+        android:key="pref_smartspace_time_above"
+        android:title="@string/title_smartspace_time_above"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_smartspace_time"
+        android:key="pref_smartspace_time_24_h"
+        android:title="@string/title_smartspace_time_24_h"
+        app:iconSpaceReserved="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:disableDependentsState="true"
+        android:key="pref_use_pill_qsb"
+        android:title="@string/title_use_pill_qsb"
+        app:iconSpaceReserved="false" />
 
     <PreferenceCategory android:title="@string/category__behavior_weather">
 
