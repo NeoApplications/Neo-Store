@@ -59,11 +59,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListener, ValueAnimator.AnimatorUpdateListener,
         View.OnClickListener, View.OnLongClickListener, Runnable, OmegaSmartSpaceController.Listener {
     private TextView mSubtitleWeatherText;
-    private final TextPaint dB;
+    private final TextPaint textPaint;
     private TextView mTitleText;
     private ViewGroup mTitleWeatherContent;
     private ImageView mTitleWeatherIcon;
@@ -73,8 +74,8 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     private IcuDateTextView mClockView;
     private IcuDateTextView mClockAboveView;
     private ViewGroup mSmartspaceContent;
-    private final SmartSpaceController dp;
-    private SmartSpaceData dq;
+    private final SmartSpaceController smartSpaceController;
+    private SmartSpaceData smartSpaceData;
     private BubbleTextView dr;
     private boolean ds;
     private boolean mDoubleLine;
@@ -140,13 +141,13 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
         mWeatherClickListener = mController::openWeather;
 
-        dp = SmartSpaceController.get(context);
+        smartSpaceController = SmartSpaceController.get(context);
         mHandler = new Handler();
         dH = ColorStateList.valueOf(Themes.getAttrColor(getContext(), R.attr.workspaceTextColor));
-        ds = dp.cY();
+        ds = smartSpaceController.cY();
         mSmartspaceBackgroundRes = R.drawable.bg_smartspace;
-        dB = new TextPaint();
-        dB.setTextSize((float) getResources().getDimensionPixelSize(R.dimen.smartspace_title_size));
+        textPaint = new TextPaint();
+        textPaint.setTextSize((float) getResources().getDimensionPixelSize(R.dimen.smartspace_title_size));
         mEnableShadow = !Themes.getAttrBoolean(context, R.attr.isWorkspaceDarkText);
 
         Resources res = getResources();
@@ -238,7 +239,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         setOnLongClickListener(co());
         mWeatherAvailable = weather != null;
         if (mDoubleLine) {
-            loadDoubleLine(weather, card);
+            loadDoubleLine(weather, Objects.requireNonNull(card));
         } else {
             loadSingleLine(weather, card);
         }
@@ -363,9 +364,10 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
     private String cn() {
         final boolean b = true;
-        final SmartSpaceCardView dp = dq.mWeatherCard;
-        return dp.cC(TextUtils.ellipsize(dp.cB(b), dB, getWidth() - getPaddingLeft()
-                - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) - dB.measureText(dp.cA(b)), TextUtils.TruncateAt.END).toString());
+        final SmartSpaceCardView cardView = smartSpaceData.mWeatherCard;
+        return cardView.cC(TextUtils.ellipsize(cardView.cB(b), textPaint, getWidth() - getPaddingLeft()
+                - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) -
+                textPaint.measureText(cardView.substitute(b)), TextUtils.TruncateAt.END).toString());
     }
 
     private OnLongClickListener co() {
@@ -383,9 +385,9 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     public void onGsaChanged() {
-        ds = dp.cY();
-        if (dq != null) {
-            onSmartSpaceUpdated(dq);
+        ds = smartSpaceController.cY();
+        if (smartSpaceData != null) {
+            onSmartSpaceUpdated(smartSpaceData);
         } else {
             Log.d("SmartspaceView", "onGsaChanged but no data present");
         }
@@ -393,7 +395,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
     @Override
     public void onSmartSpaceUpdated(@NonNull SmartSpaceData dq2) {
-        dq = dq2;
+        smartSpaceData = dq2;
         boolean visible = mSmartspaceContent.getVisibility() == View.VISIBLE;
         if (!visible) {
             mSmartspaceContent.setVisibility(View.VISIBLE);
@@ -413,8 +415,8 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     public void onClick(final View view) {
-        if (dq != null && dq.hasWeather()) {
-            dq.mWeatherCard.performCardAction(view);
+        if (smartSpaceData != null && smartSpaceData.hasWeather()) {
+            smartSpaceData.mWeatherCard.performCardAction(view);
         }
     }
 
@@ -442,9 +444,9 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
             mController.requestUpdate(this);
     }
 
-    protected void onLayout(final boolean b, final int n, final int n2, final int n3, final int n4) {
-        super.onLayout(b, n, n2, n3, n4);
-        if (dq != null && dq.hasWeather() && dq.mWeatherCard.hasMessage()) {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (smartSpaceData != null && smartSpaceData.hasWeather() && smartSpaceData.mWeatherCard.hasMessage()) {
             final String cn = cn();
             if (!cn.contentEquals(mTitleText.getText())) {
                 mTitleText.setText(cn);

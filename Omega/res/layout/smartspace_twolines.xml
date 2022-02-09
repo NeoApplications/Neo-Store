@@ -48,8 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:maxLines="1"
         android:textColor="?workspaceTextColor"
+        android:text="@string/derived_app_name"
         android:textSize="@dimen/smartspace_title_size" />
 
     <LinearLayout

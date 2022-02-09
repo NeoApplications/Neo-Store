@@ -205,22 +205,6 @@ public class SmartSpaceCardView {
         return bitmap2;
     }
 
-    public String cA(final boolean b) {
-        return substitute(b, "");
-    }
-
-    public String cB(final boolean b) {
-        int i = 0;
-        final FormatParam[] co = getFormattedText(b).getFormatParamList().toArray(new FormatParam[0]);
-        while (i < co.length) {
-            if (co[i].getTruncateLocation() != 0) {
-                return co[i].getText();
-            }
-            ++i;
-        }
-        return "";
-    }
-
     public String cC(final String s) {
         return substitute(true, s);
     }
@@ -238,7 +222,7 @@ public class SmartSpaceCardView {
         return 0;
     }
 
-    long getMillisToEvent(final FormatParam formatParam) {
+    public long getMillisToEvent(final FormatParam formatParam) {
         long timeToEvent;
         if (formatParam.getFormatParamArgs() == SOMETHING2) {
             timeToEvent = mSmartSpaceCard.getEventTimeMillis() + mSmartSpaceCard.getEventDurationMillis();
@@ -247,7 +231,6 @@ public class SmartSpaceCardView {
         }
         return Math.abs(System.currentTimeMillis() - timeToEvent);
     }
-
 
     public void performCardAction(View view) {
         if (this.mSmartSpaceCard.getTapAction() == null) {
@@ -312,11 +295,23 @@ public class SmartSpaceCardView {
         return null;
     }
 
-    private String substitute(final boolean b) {
+    public String substitute(boolean b) {
         return substitute(b, null);
     }
 
-    private String substitute(final boolean b, final String str) {
+    public String cB(final boolean b) {
+        int i = 0;
+        final FormatParam[] co = getFormattedText(b).getFormatParamList().toArray(new FormatParam[0]);
+        while (i < co.length) {
+            if (co[i].getTruncateLocation() != 0) {
+                return co[i].getText();
+            }
+            ++i;
+        }
+        return "";
+    }
+
+    private String substitute(boolean b, final String str) {
         FormattedText formattedText = getFormattedText(b);
         if (formattedText != null) {
             String str2 = formattedText.getText();
