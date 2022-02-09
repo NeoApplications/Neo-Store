@@ -3,8 +3,6 @@ package com.google.systemui.smartspace;
 import static com.android.launcher3.uioverrides.DejankBinderTracker.isMainThread;
 import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
-import android.app.AlarmManager;
-import android.app.AlarmManager.OnAlarmListener;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +13,7 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.util.Log;
 
+import com.android.launcher3.Alarm;
 import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
 import com.saggitt.omega.smartspace.FeedBridge;
@@ -42,14 +41,12 @@ public class SmartSpaceController implements Handler.Callback {
     private final Handler mUiHandler;
     private final Handler mWorker;
 
-
     private final ArrayList<SmartSpaceUpdateListener> mListeners = new ArrayList<>();
     public int mCurrentUserId;
-    private final AlarmManager mAlarmManager;
-    private boolean mAlarmRegistered;
-    private final OnAlarmListener mExpireAlarmAction = () -> onExpire(false);
     private boolean mHidePrivateData;
     private final Handler mBackgroundHandler;
+
+    private final Alarm mAlarm;
 
     public SmartSpaceController(Context context) {
         mContext = context;
@@ -63,13 +60,13 @@ public class SmartSpaceController implements Handler.Callback {
         mBackgroundHandler = new Handler(handlerThread.getLooper());
 
         mData = new SmartSpaceData();
-        mAlarmManager = context.getSystemService(AlarmManager.class);
 
-        dd();
+        (mAlarm = new Alarm()).setOnAlarmListener(alarm -> onExpire());
+        updateGsa();
         mContext.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                dd();
+                updateGsa();
             }
         }, ActionIntentFilter.googleInstance(
                 Intent.ACTION_PACKAGE_ADDED,
@@ -90,32 +87,29 @@ public class SmartSpaceController implements Handler.Callback {
             if (newCardInfo.getUserId() != mCurrentUserId) {
                 return;
             }
-            mBackgroundHandler.post(new Runnable() {
-                @Override
-                public final void run() {
-                    final CardWrapper wrapper = newCardInfo.toWrapper(mContext);
-                    if (!mHidePrivateData) {
-                        ProtoStore protoStore = mProtoStore;
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("smartspace_");
-                        sb.append(mCurrentUserId);
-                        sb.append("_");
-                        sb.append(newCardInfo.isPrimary());
-                        //TODO Revisar el Uso de MessageNano
-                        //protoStore.store(wrapper, sb.toString());
-                    }
-                    mUiHandler.post(() -> {
-                        SmartSpaceCardView smartSpaceCard = newCardInfo.shouldDiscard() ? null :
-                                SmartSpaceCardView.fromWrapper(mContext, wrapper, newCardInfo.isPrimary());
-                        if (newCardInfo.isPrimary()) {
-                            mData.mCurrentCard = smartSpaceCard;
-                        } else {
-                            mData.mWeatherCard = smartSpaceCard;
-                        }
-                        mData.handleExpire();
-                        update();
-                    });
+            mBackgroundHandler.post(() -> {
+                final CardWrapper wrapper = newCardInfo.toWrapper(mContext);
+                if (!mHidePrivateData) {
+                    ProtoStore protoStore = mProtoStore;
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("smartspace_");
+                    sb.append(mCurrentUserId);
+                    sb.append("_");
+                    sb.append(newCardInfo.isPrimary());
+                    //TODO Revisar el Uso de MessageNano
+                    //protoStore.store(wrapper, sb.toString());
                 }
+                mUiHandler.post(() -> {
+                    SmartSpaceCardView smartSpaceCard = newCardInfo.shouldDiscard() ? null :
+                            SmartSpaceCardView.fromWrapper(mContext, wrapper, newCardInfo.isPrimary());
+                    if (newCardInfo.isPrimary()) {
+                        mData.mCurrentCard = smartSpaceCard;
+                    } else {
+                        mData.mWeatherCard = smartSpaceCard;
+                    }
+                    mData.handleExpire();
+                    update();
+                });
             });
         }
     }
@@ -155,12 +149,18 @@ public class SmartSpaceController implements Handler.Callback {
         mListeners.remove(smartSpaceUpdateListener);
     }
 
-    private void onExpire(boolean z) {
-        isMainThread();
-        mAlarmRegistered = false;
-        if (mData.handleExpire() || z) {
-            update();
-            mContext.sendBroadcast(new Intent("com.google.android.systemui.smartspace.EXPIRE_EVENT")
+    private void onExpire() {
+        boolean hasWeather = mData.hasWeather();
+        boolean hasCurrent = mData.hasCurrent();
+        mData.handleExpire();
+
+        if (hasWeather && !mData.hasWeather()) {
+            df(null, SmartSpaceController.Store.WEATHER);
+        }
+
+        if (hasCurrent && !mData.hasCurrent()) {
+            df(null, SmartSpaceController.Store.CURRENT);
+            mContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.EXPIRE_EVENT")
                     .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
@@ -187,33 +187,18 @@ public class SmartSpaceController implements Handler.Callback {
         protoStore2.store(null, sb2);
     }
 
-    private void onGsaChanged() {
-        Log.d("SmartSpaceController", "onGsaChanged");
-        mContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.ENABLE_UPDATE")
-                .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-        ArrayList<SmartSpaceUpdateListener> arrayList = new ArrayList<>(mListeners);
-        for (int i = 0; i < arrayList.size(); i++) {
-            arrayList.get(i).onGsaChanged();
-        }
-    }
-
     private void update() {
-        if (mAlarmRegistered) {
-            mAlarmManager.cancel(mExpireAlarmAction);
-            mAlarmRegistered = false;
-        }
+        mAlarm.cancelAlarm();
+
         long expiresAtMillis = mData.getExpiresAtMillis();
+
         if (expiresAtMillis > 0) {
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP, expiresAtMillis, "SmartSpace", mExpireAlarmAction, mUiHandler);
-            mAlarmRegistered = true;
+            mAlarm.setAlarm(expiresAtMillis);
         }
 
-        ArrayList<SmartSpaceUpdateListener> arrayList = new ArrayList<>(mListeners);
-        int size = arrayList.size();
-        for (int i = 0; i < size; i++) {
-            arrayList.get(i).onSmartSpaceUpdated(mData);
+        ArrayList<SmartSpaceUpdateListener> listeners = new ArrayList<>(mListeners);
+        for (SmartSpaceUpdateListener listener : listeners) {
+            listener.onSmartSpaceUpdated(mData);
         }
     }
 
@@ -268,16 +253,24 @@ public class SmartSpaceController implements Handler.Callback {
     }
 
 
-    private void dd() {
-        if (mListeners != null) {
-            //smartSpaceUpdateListener.onGsaChanged();
+    private void updateGsa() {
+        ArrayList<SmartSpaceUpdateListener> listeners = new ArrayList<>(mListeners);
+        for (SmartSpaceUpdateListener listener : listeners) {
+            listener.onGsaChanged();
         }
         onGsaChanged();
     }
 
 
-    private void df(NewCardInfo newCardInfo, SmartSpaceController.Store SmartspaceControllerStore) {
-        Message.obtain(mWorker, 2, SmartspaceControllerStore.ordinal(), 0, newCardInfo).sendToTarget();
+    private void onGsaChanged() {
+        Log.d("SmartSpaceController", "onGsaChanged");
+        mContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.ENABLE_UPDATE")
+                .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    private void df(NewCardInfo newCardInfo, SmartSpaceController.Store controller) {
+        Message.obtain(mWorker, 2, controller.ordinal(), 0, newCardInfo).sendToTarget();
     }
 
 
