@@ -73,6 +73,9 @@ public interface LauncherOverlayManager extends Application.ActivityLifecycleCal
     default void registerSmartSpaceView(SmartSpaceView smartspace) {
     }
 
+    default void unRegisterSmartSpaceView(SmartSpaceView smartspace) {
+    }
+
     @Override
     default void onActivityStopped(Activity activity) {
     }

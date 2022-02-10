@@ -199,6 +199,9 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         defaultOverlay.registerSmartSpaceView(smartspace)
     }
 
+    fun unRegisterSmartspaceView(smartspace: SmartSpaceView) {
+        defaultOverlay.unRegisterSmartSpaceView(smartspace)
+    }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         if (key == "pref_hideStatusBar") {

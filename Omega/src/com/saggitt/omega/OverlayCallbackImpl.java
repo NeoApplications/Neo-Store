@@ -77,6 +77,7 @@ public class OverlayCallbackImpl
     @Override
     public void onDetachedFromWindow() {
         mClient.onDetachedFromWindow();
+
     }
 
     @Override
@@ -124,6 +125,10 @@ public class OverlayCallbackImpl
 
     public void registerSmartSpaceView(SmartSpaceView smartspace) {
         mSmartSpaceViews.add(smartspace);
+    }
+
+    public void unRegisterSmartSpaceView(SmartSpaceView smartspace) {
+        mSmartSpaceViews.remove(smartspace);
     }
 
     @Override

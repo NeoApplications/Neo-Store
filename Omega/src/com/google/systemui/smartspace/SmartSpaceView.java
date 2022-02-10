@@ -424,6 +424,15 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         super.onDetachedFromWindow();
         if (mController != null)
             mController.removeListener(this);
+
+        try {
+            Launcher launcher = Launcher.getLauncher(getContext());
+            if (launcher instanceof OmegaLauncher) {
+                ((OmegaLauncher) launcher).unRegisterSmartspaceView(this);
+            }
+        } catch (IllegalArgumentException ignored) {
+
+        }
     }
 
     protected void onFinishInflate() {
