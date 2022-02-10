@@ -26,6 +26,7 @@ import android.os.Looper
 import androidx.annotation.Keep
 import com.android.launcher3.R
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController
+import com.saggitt.omega.smartspace.OmegaSmartSpaceController.*
 import com.saggitt.omega.util.dayOfYear
 import com.saggitt.omega.util.hourOfDay
 import java.util.*
@@ -34,7 +35,7 @@ import kotlin.random.Random
 
 @Keep
 class PersonalityProvider(controller: OmegaSmartSpaceController) :
-    OmegaSmartSpaceController.DataProvider(controller) {
+    DataProvider(controller) {
     private val updateInterval = 60 * 1000
     private val timeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
@@ -42,16 +43,16 @@ class PersonalityProvider(controller: OmegaSmartSpaceController) :
         }
     }
 
-    var time: Calendar = currentTime()
-    var randomIndex = 0
-    val isMorning get() = time.hourOfDay in 5 until 9
-    val isEvening get() = time.hourOfDay in 19 until 21
-    val isNight get() = time.hourOfDay in 22 until 24 || time.hourOfDay in 0 until 4
-    val morningGreeting: String
+    private var time: Calendar = currentTime()
+    private var randomIndex = 0
+    private val isMorning get() = time.hourOfDay in 5 until 9
+    private val isEvening get() = time.hourOfDay in 19 until 21
+    private val isNight get() = time.hourOfDay in 22 until 24 || time.hourOfDay in 0 until 4
+    private val morningGreeting: String
         get() = morningStrings[randomIndex % morningStrings.size]
-    val eveningGreeting: String
+    private val eveningGreeting: String
         get() = eveningStrings[randomIndex % eveningStrings.size]
-    val nightGreeting: String
+    private val nightGreeting: String
         get() = nightStrings[randomIndex % nightStrings.size]
 
     private val morningStrings =
@@ -92,17 +93,20 @@ class PersonalityProvider(controller: OmegaSmartSpaceController) :
         handler.removeCallbacks(onUpdateRunnable)
     }
 
-    private fun getEventCard(): OmegaSmartSpaceController.CardData? {
-        val lines = mutableListOf<OmegaSmartSpaceController.Line>()
+    private fun getEventCard(): CardData? {
+        val lines = mutableListOf<Line>()
         when {
-            isMorning -> lines.add(OmegaSmartSpaceController.Line(morningGreeting))
-            isEvening -> lines.add(OmegaSmartSpaceController.Line(eveningGreeting))
-            isNight -> lines.add(OmegaSmartSpaceController.Line(nightGreeting))
+            isMorning -> lines.add(Line(morningGreeting))
+            isEvening -> lines.add(Line(eveningGreeting))
+            isNight -> lines.add(Line(nightGreeting))
             else -> return null
         }
-        return OmegaSmartSpaceController.CardData(
+        return CardData(
             lines = lines,
-            forceSingleLine = true
+            forceSingleLine = true,
+            onClickListener = {
+                updateData(null, null)
+            }
         )
     }
 }
