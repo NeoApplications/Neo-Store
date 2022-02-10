@@ -422,4 +422,6 @@
     <string name="summary_app_categorize">Sekmeler veya Klasörler arasında seçim yapın</string>
     <string name="title_app_categorization_enable">Uygulama kategorilerini etkinleştir</string>
     <string name="summary_app_categorization_enable">Sekmeler veya klasörler oluşturun</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="enabled_events">Etkin</string>
 </resources>

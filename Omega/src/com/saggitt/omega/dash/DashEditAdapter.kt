@@ -186,7 +186,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
 
         val icon: ImageView = itemView.findViewById(android.R.id.icon)
         val title: TextView = itemView.findViewById(android.R.id.title)
-        val summary: TextView = itemView.findViewById(R.id.summary)
+        val summary: TextView = itemView.findViewById(android.R.id.summary)
         private val dragHandle: View = itemView.findViewById(R.id.drag_handle)
         private val dashItem
             get() = adapterItems[bindingAdapterPosition] as? ProviderItem

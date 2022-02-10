@@ -420,4 +420,6 @@
     <string name="summary_app_categorization_enable">创建标签页或文件夹</string>
     <string name="summary_app_categorize">选择选项卡或文件夹</string>
     <string name="title_app_categorization_enable">启用应用类别</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="enabled_events">已启用</string>
 </resources>
