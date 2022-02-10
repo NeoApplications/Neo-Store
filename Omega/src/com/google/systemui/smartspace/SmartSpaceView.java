@@ -69,7 +69,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     private ViewGroup mTitleWeatherContent;
     private ImageView mTitleWeatherIcon;
     private DoubleShadowTextView mTitleWeatherText;
-    private final ColorStateList dH;
+    private final ColorStateList workspaceTextColor;
     private final int mSmartspaceBackgroundRes;
     private IcuDateTextView mClockView;
     private IcuDateTextView mClockAboveView;
@@ -143,7 +143,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
 
         smartSpaceController = SmartSpaceController.get(context);
         mHandler = new Handler();
-        dH = ColorStateList.valueOf(Themes.getAttrColor(getContext(), R.attr.workspaceTextColor));
+        workspaceTextColor = ColorStateList.valueOf(Themes.getAttrColor(getContext(), R.attr.workspaceTextColor));
         ds = smartSpaceController.cY();
         mSmartspaceBackgroundRes = R.drawable.bg_smartspace;
         textPaint = new TextPaint();
@@ -252,7 +252,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         mTitleText.setEllipsize(card.getTitleEllipsize());
         mSubtitleText.setText(card.getSubtitle());
         mSubtitleText.setEllipsize(card.getSubtitleEllipsize());
-        mSubtitleIcon.setImageTintList(dH);
+        mSubtitleIcon.setImageTintList(workspaceTextColor);
         mSubtitleIcon.setImageBitmap(card.getIcon());
         bindWeather(weather, mSubtitleWeatherContent, mSubtitleWeatherText, mSubtitleWeatherIcon);
         bindClockAbove(false);
@@ -273,7 +273,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
             Bitmap icon = card.getIcon();
             if (icon != null) {
                 mSubtitleIcon.setVisibility(View.VISIBLE);
-                mSubtitleIcon.setImageTintList(dH);
+                mSubtitleIcon.setImageTintList(workspaceTextColor);
                 mSubtitleIcon.setImageBitmap(icon);
                 mSubtitleIcon.setOnClickListener(mEventClickListener);
             } else {
@@ -363,8 +363,8 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     private String cn() {
-        final boolean b = true;
-        final SmartSpaceCardView cardView = smartSpaceData.mWeatherCard;
+        boolean b = true;
+        SmartSpaceCardView cardView = smartSpaceData.mWeatherCard;
         return cardView.cC(TextUtils.ellipsize(cardView.cB(b), textPaint, getWidth() - getPaddingLeft()
                 - getPaddingRight() - getResources().getDimensionPixelSize(R.dimen.smartspace_horizontal_padding) -
                 textPaint.measureText(cardView.substitute(b)), TextUtils.TruncateAt.END).toString());

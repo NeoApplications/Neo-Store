@@ -119,22 +119,6 @@ public class SmartSpaceCardView {
         return builder.build();
     }
 
-    private String getDurationText(FormatParam formatParam) {
-        final Resources res = mContext.getResources();
-        int minutesToEvent = getMinutesToEvent(formatParam);
-        if (minutesToEvent >= 60) {
-            int hours = minutesToEvent / 60;
-            int minutes = minutesToEvent % 60;
-            String hoursString = res.getQuantityString(R.plurals.smartspace_hours, hours, hours);
-            if (minutes <= 0) {
-                return hoursString;
-            }
-            String minutesString = res.getQuantityString(R.plurals.smartspace_minutes, minutes, minutes);
-            return res.getString(R.string.smartspace_hours_mins, hoursString, minutesString);
-        }
-        return res.getQuantityString(R.plurals.smartspace_minutes, minutesToEvent, minutesToEvent);
-    }
-
     private FormattedText getFormattedText(final boolean b) {
         final Message message = getMessage();
         if (message != null) {
@@ -154,10 +138,9 @@ public class SmartSpaceCardView {
     }
 
     private String[] getTextArgs(final FormatParam[] formatParamArr, final String s) {
-        int i;
-        String[] array2;
+        String[] array2 = new String[formatParamArr.length];
         String cr;
-        for (i = 0, array2 = new String[formatParamArr.length]; i < array2.length; ++i) {
+        for (int i = 0; i < array2.length; ++i) {
             switch (formatParamArr[i].getFormatParamArgs()) {
 
                 case SOMETHING1:
@@ -189,30 +172,6 @@ public class SmartSpaceCardView {
         return array2;
     }
 
-    private boolean hasParams(FormattedText formattedText) {
-        if (!(formattedText == null || formattedText.getText() == null)) {
-            FormatParam[] formatParamArr = formattedText.getFormatParamList().toArray(new FormatParam[0]);
-            return formatParamArr.length > 0;
-        }
-        return false;
-    }
-
-    private static Bitmap cP(final Bitmap bitmap, final int n) {
-        final Paint paint = new Paint();
-        paint.setColorFilter(new PorterDuffColorFilter(n, PorterDuff.Mode.SRC_IN));
-        final Bitmap bitmap2 = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        new Canvas(bitmap2).drawBitmap(bitmap, 0.0f, 0.0f, paint);
-        return bitmap2;
-    }
-
-    public String cC(final String s) {
-        return substitute(true, s);
-    }
-
-    public boolean isExpired() {
-        return System.currentTimeMillis() > getExpiration();
-    }
-
     public long getExpiration() {
         ExpiryCriteria expiryCriteria = mSmartSpaceCard.getExpiryCriteria();
         if (expiryCriteria != null) {
@@ -230,6 +189,10 @@ public class SmartSpaceCardView {
             timeToEvent = mSmartSpaceCard.getEventDurationMillis();
         }
         return Math.abs(System.currentTimeMillis() - timeToEvent);
+    }
+
+    public void setIcon(Bitmap bitmap) {
+        mIcon = bitmap;
     }
 
     public void performCardAction(View view) {
@@ -258,32 +221,44 @@ public class SmartSpaceCardView {
         }
     }
 
+    private boolean hasParams(FormattedText formattedText) {
+        if (!(formattedText == null || formattedText.getText() == null)) {
+            FormatParam[] formatParamArr = formattedText.getFormatParamList().toArray(new FormatParam[0]);
+            return formatParamArr.length > 0;
+        }
+        return false;
+    }
+
+    public boolean isExpired() {
+        return System.currentTimeMillis() > getExpiration();
+    }
+
     public boolean hasMessage() {
         Message message = getMessage();
         return message != null && (hasParams(message.getTitle()) || hasParams(message.getSubtitle()));
+    }
+
+    private static Bitmap cP(final Bitmap bitmap, int n) {
+        final Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(n, PorterDuff.Mode.SRC_IN));
+        final Bitmap bitmap2 = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        new Canvas(bitmap2).drawBitmap(bitmap, 0.0f, 0.0f, paint);
+        return bitmap2;
     }
 
     public Bitmap getIcon() {
         return mIcon;
     }
 
-    public void setIcon(Bitmap bitmap) {
-        mIcon = bitmap;
-    }
-
     public Intent getIntent() {
         return mIntent;
     }
 
-    public String getTitle() {
-        return substitute(true);
-    }
-
     private Message getMessage() {
         final long currentTimeMillis = System.currentTimeMillis();
-        final long cd = mSmartSpaceCard.getEventTimeMillis();
+        final long eventTimeMillis = mSmartSpaceCard.getEventTimeMillis();
         final long n = mSmartSpaceCard.getEventTimeMillis() + mSmartSpaceCard.getEventDurationMillis();
-        if (currentTimeMillis < cd && mSmartSpaceCard.getPreEvent() != null) {
+        if (currentTimeMillis < eventTimeMillis && mSmartSpaceCard.getPreEvent() != null) {
             return mSmartSpaceCard.getPreEvent();
         }
         if (currentTimeMillis > n && mSmartSpaceCard.getPostEvent() != null) {
@@ -295,11 +270,39 @@ public class SmartSpaceCardView {
         return null;
     }
 
+    private String getDurationText(FormatParam formatParam) {
+        final Resources res = mContext.getResources();
+        int minutesToEvent = getMinutesToEvent(formatParam);
+        if (minutesToEvent >= 60) {
+            int hours = minutesToEvent / 60;
+            int minutes = minutesToEvent % 60;
+            String hoursString = res.getQuantityString(R.plurals.smartspace_hours, hours, hours);
+            if (minutes <= 0) {
+                return hoursString;
+            }
+            String minutesString = res.getQuantityString(R.plurals.smartspace_minutes, minutes, minutes);
+            return res.getString(R.string.smartspace_hours_mins, hoursString, minutesString);
+        }
+        return res.getQuantityString(R.plurals.smartspace_minutes, minutesToEvent, minutesToEvent);
+    }
+
+    public String cC(final String s) {
+        return substitute(true, s);
+    }
+
+    public String getTitle() {
+        return substitute(true);
+    }
+
     public String substitute(boolean b) {
         return substitute(b, null);
     }
 
-    public String cB(final boolean b) {
+    public String ca(boolean b) {
+        return substitute(b, "");
+    }
+
+    public String cB(boolean b) {
         int i = 0;
         final FormatParam[] co = getFormattedText(b).getFormatParamList().toArray(new FormatParam[0]);
         while (i < co.length) {
@@ -328,6 +331,10 @@ public class SmartSpaceCardView {
     @NonNull
     @Override
     public String toString() {
-        return "title:" + this.getTitle() + " expires:" + getExpiration() + " published:" + mPublishTime + " gsaVersion:" + mGsaVersionCode + " gsaUpdateTime: " + mGsaUpdateTime;
+        return "title:" + getTitle() +
+                " expires:" + getExpiration() +
+                " published:" + mPublishTime +
+                " gsaVersion:" + mGsaVersionCode +
+                " gsaUpdateTime: " + mGsaUpdateTime;
     }
 }
