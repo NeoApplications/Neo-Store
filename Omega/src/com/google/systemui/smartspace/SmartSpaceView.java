@@ -53,6 +53,7 @@ import com.saggitt.omega.smartspace.OmegaSmartSpaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController.WeatherData;
 import com.saggitt.omega.smartspace.SmartSpacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.views.SmartSpacePreview;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -220,13 +221,13 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     @Override
     public void onDataUpdated(@Nullable WeatherData weather, @Nullable CardData card) {
         if (mController.getRequiresSetup()) {
-            /*if (getParent() instanceof SmartspacePreview) {
+            if (getParent() instanceof SmartSpacePreview) {
                 setupIfNeeded();
-            } else {*/
-            List<OmegaSmartSpaceController.Line> lines = new ArrayList<>();
-            lines.add(new OmegaSmartSpaceController.Line(getContext().getString(R.string.smartspace_setup_text)));
-            card = new CardData(null, lines, v -> setupIfNeeded(), false);
-            // }
+            } else {
+                List<OmegaSmartSpaceController.Line> lines = new ArrayList<>();
+                lines.add(new OmegaSmartSpaceController.Line(getContext().getString(R.string.smartspace_setup_text)));
+                card = new CardData(null, lines, v -> setupIfNeeded(), false);
+            }
         }
 
         mEventClickListener = card != null ? card.getOnClickListener() : null;
@@ -424,15 +425,6 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
         super.onDetachedFromWindow();
         if (mController != null)
             mController.removeListener(this);
-
-        try {
-            Launcher launcher = Launcher.getLauncher(getContext());
-            if (launcher instanceof OmegaLauncher) {
-                ((OmegaLauncher) launcher).unRegisterSmartspaceView(this);
-            }
-        } catch (IllegalArgumentException ignored) {
-
-        }
     }
 
     protected void onFinishInflate() {

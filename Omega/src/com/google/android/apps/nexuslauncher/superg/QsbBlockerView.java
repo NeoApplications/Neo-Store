@@ -37,6 +37,7 @@ public class QsbBlockerView extends FrameLayout implements OmegaSmartSpaceContro
     private final OmegaSmartSpaceController mController;
     private int mState = 0;
     private View mView;
+    private BubbleTextView mDummyBubbleTextView;
 
     private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

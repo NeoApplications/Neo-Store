@@ -62,7 +62,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="smartspace_horizontal_padding">56dp</dimen>
     <dimen name="smartspace_title_sep_width">1dp</dimen>
     <dimen name="smartspace_title_weather_icon_size">24dp</dimen>
-    <dimen name="smartspace_preview_height">100dp</dimen>
+    <dimen name="smartspace_preview_height">150dp</dimen>
     <dimen name="smartspace_preview_widget_margin">24dp</dimen>
     <dimen name="smartspaceAmbientShadowBlur">1.5dp</dimen>
     <dimen name="smartspaceKeyShadowBlur">2dp</dimen>

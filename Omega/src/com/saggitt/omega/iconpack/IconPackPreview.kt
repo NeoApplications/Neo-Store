@@ -164,8 +164,9 @@ class IconPackPreview @JvmOverloads constructor(
         invalidate()
     }
 
-    private class PreviewContext(base: Context) : ContextThemeWrapper(
-            base, ThemeOverride.Launcher().getTheme(base)), ActivityContext {
+    class PreviewContext(base: Context) : ContextThemeWrapper(
+        base, ThemeOverride.Launcher().getTheme(base)
+    ), ActivityContext {
 
         val idp = LauncherAppState.getIDP(this)!!
         val dp get() = idp.getDeviceProfile(this)!!

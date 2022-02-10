@@ -18,6 +18,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.saggitt.omega.preferences.custom.PreviewPreference
+        android:key="pref_smartspace_preview"
+        app:previewLayout="@layout/smartspace_preview" />
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="enable_smartspace"
