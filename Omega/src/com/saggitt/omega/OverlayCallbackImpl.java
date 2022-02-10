@@ -127,10 +127,6 @@ public class OverlayCallbackImpl
         mSmartSpaceViews.add(smartspace);
     }
 
-    public void unRegisterSmartSpaceView(SmartSpaceView smartspace) {
-        mSmartSpaceViews.remove(smartspace);
-    }
-
     @Override
     public void onActivityStopped(Activity activity) {
         mClient.onStop();
