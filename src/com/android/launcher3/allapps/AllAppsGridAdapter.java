@@ -176,6 +176,7 @@ public class AllAppsGridAdapter extends
             item.position = pos;
             item.sectionName = sectionName;
             item.folderItem = new DrawerFolderItem(folderInfo);
+            item.appIndex = folderIndex;
             return item;
         }
 
