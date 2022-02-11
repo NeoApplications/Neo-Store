@@ -49,7 +49,9 @@ public interface SearchUiManager {
      * @return the edit text object
      */
     @Nullable
-    ExtendedEditText getEditText();
+    default ExtendedEditText getEditText() {
+        return null;
+    }
 
     /**
      * sets highlight result's title

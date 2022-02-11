@@ -64,6 +64,10 @@ public class OverlayCallbackImpl
                 (prefs.getEnableMinus() ? 1 : 0) | 2 | 4 | 8));
     }
 
+    public LauncherClient getClient() {
+        return mClient;
+    }
+
     @Override
     public void onDeviceProvideChanged() {
         mClient.redraw();

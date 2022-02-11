@@ -69,19 +69,21 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="smartspaceKeyShadowOffset">0.5dp</dimen>
     <dimen name="smartspaceLetterSpacing">0.02</dimen>
 
-    <dimen name="qsb_radius_square">8dp</dimen>
-    <dimen name="qsb_radius_squircle">16dp</dimen>
-
     <dimen name="all_apps_scrim_blur">4dp</dimen>
 
     <!-- Pixel 1 -->
-    <dimen name="qsb_overlap_margin">0dp</dimen>
     <dimen name="qsb_button_height">56dp</dimen>
     <dimen name="qsb_button_elevation">3dp</dimen>
-    <dimen name="qsb_touch_extension">20dp</dimen>
-    <dimen name="qsb_shadow_blur_radius">1dp</dimen>
-    <dimen name="qsb_key_shadow_offset">1dp</dimen>
     <dimen name="qsb_connector_gradient_end_padding">20dp</dimen>
+    <dimen name="qsb_key_shadow_offset">1dp</dimen>
+    <dimen name="qsb_mic_width">56dp</dimen>
     <dimen name="qsb_min_width_with_mic">124dp</dimen>
     <dimen name="qsb_min_width_portrait">96dp</dimen>
+    <dimen name="qsb_overlap_margin">0dp</dimen>
+    <dimen name="qsb_radius_square">8dp</dimen>
+    <dimen name="qsb_radius_squircle">16dp</dimen>
+    <dimen name="qsb_shadow_blur_radius">1dp</dimen>
+    <dimen name="qsb_shadow_margin">4dp</dimen>
+    <dimen name="qsb_touch_extension">20dp</dimen>
+    <dimen name="qsb_widget_height">56dp</dimen>
 </resources>

@@ -115,7 +115,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private float mHeaderTop;
     private WorkModeSwitch mWorkModeSwitch;
 
-
     private SpannableStringBuilder mSearchQueryBuilder = null;
 
     protected boolean mUsingTabs;

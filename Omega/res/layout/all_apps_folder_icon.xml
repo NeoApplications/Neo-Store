@@ -31,7 +31,7 @@
         android:id="@+id/folder_icon_name"
         style="@style/BaseIcon.AllApps"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="top"
         android:focusable="false"
         app:iconDisplay="all_apps" />

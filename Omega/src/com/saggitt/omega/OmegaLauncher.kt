@@ -37,6 +37,7 @@ import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
+import com.google.android.libraries.gsa.launcherclient.LauncherClient
 import com.google.systemui.smartspace.SmartSpaceView
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
@@ -197,6 +198,10 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     fun registerSmartspaceView(smartspace: SmartSpaceView) {
         defaultOverlay.registerSmartSpaceView(smartspace)
+    }
+
+    fun getGoogleNow(): LauncherClient? {
+        return defaultOverlay.client
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {

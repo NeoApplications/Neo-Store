@@ -25,6 +25,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.Launcher.getLauncher
 import com.android.launcher3.R
 import com.saggitt.omega.getOmegaLauncher
+import com.saggitt.omega.iconpack.IconPackPreview
 import com.saggitt.omega.search.SearchProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.isAppEnabled
@@ -39,9 +40,6 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
         get() = context.packageManager.isAppEnabled(Config.GOOGLE_QSB, 0)
     override val supportsFeed = true
 
-    /*override val settingsIntent: Intent
-        get() = Intent("com.google.android.apps.gsa.nowoverlayservice.PIXEL_DOODLE_QSB_SETTINGS")
-            .setPackage(Config.GOOGLE_QSB).addFlags(FLAG_ACTIVITY_NEW_TASK)*/
     override val packageName: String
         get() = Config.GOOGLE_QSB
     override val isBroadcast: Boolean
@@ -62,17 +60,18 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
             )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
-        val launcher = getLauncher(context).getOmegaLauncher()
-        /*if (launcher.getGoogleNow() != null) {
+        val themedContext = IconPackPreview.PreviewContext(context)
+        val launcher = getLauncher(themedContext).getOmegaLauncher()
+        if (launcher.getGoogleNow() != null) {
             launcher.getGoogleNow()!!.showOverlay(true)
-        } else {*/
-        callback(
+        } else {
+            callback(
                 Intent(Intent.ACTION_MAIN).setClassName(
-                        Config.GOOGLE_QSB,
-                        "${Config.GOOGLE_QSB}.SearchActivity"
+                    Config.GOOGLE_QSB,
+                    "${Config.GOOGLE_QSB}.SearchActivity"
                 )
-        )
-        //}
+            )
+        }
     }
 
     override val icon: Drawable
