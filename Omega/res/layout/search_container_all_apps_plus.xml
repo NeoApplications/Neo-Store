@@ -32,7 +32,7 @@
         android:layout_marginTop="-6.0dip"
         android:layout_marginBottom="-6.0dip"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_google" />
+        app:srcCompat="@drawable/ic_super_g_color" />
 
     <FrameLayout
         android:id="@+id/mic_frame"
