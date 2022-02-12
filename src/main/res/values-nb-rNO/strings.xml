@@ -182,4 +182,5 @@
     <string name="install_after_sync">Installer oppgraderinger automatisk</string>
     <string name="prefs_updated_apps">Antall oppdaterte programmer å vise</string>
     <string name="prefs_new_apps">Antall nye programmer å vise</string>
+    <string name="new_repository">Ny pakkebrønn</string>
 </resources>
