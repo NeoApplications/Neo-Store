@@ -24,6 +24,7 @@ Available in:
 - Simplified Chinese
 - Spanish
 - Turkish
+- Ukrainian
 
 A direct adaptation/modification of Foxy-Droid
 
