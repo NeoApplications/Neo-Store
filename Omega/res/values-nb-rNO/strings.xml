@@ -419,4 +419,10 @@
     <string name="summary_white_only_treatment">Fargelegg bakgrunner for tilpasningsdyktige ikoner.</string>
     <string name="web_search_searx">Searx (vev)</string>
     <string name="web_search_metager">Metager (vev)</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="enabled_events">Påskrudd</string>
+    <string name="cat_desktop_grid">Rutenett og visning</string>
+    <string name="summary_app_categorize">Velg mellom faner og mapper</string>
+    <string name="title_app_categorization_enable">Skru på programkategorier</string>
+    <string name="summary_app_categorization_enable">Opprett faner eller mapper</string>
 </resources>
