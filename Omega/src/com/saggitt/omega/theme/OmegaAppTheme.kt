@@ -44,21 +44,21 @@ object OmegaTheme {
 }
 
 private val darkColorPalette = OmegaColors(
-        surface = Grey900,
-        border = Grey100,
-        primary = IndigoA100,
-        textPrimary = Grey100,
-        textSecondary = Grey200,
-        dividerLine = Grey600
+    surface = Grey900,
+    border = Grey700,
+    primary = IndigoA100,
+    textPrimary = Grey100,
+    textSecondary = Grey200,
+    dividerLine = Grey600
 )
 
 private val lightColorPalette = OmegaColors(
-        surface = Grey50,
-        border = Grey300,
-        primary = IndigoA700,
-        textPrimary = Grey700,
-        textSecondary = Grey600,
-        dividerLine = Grey300
+    surface = Grey50,
+    border = Grey100,
+    primary = IndigoA700,
+    textPrimary = Grey700,
+    textSecondary = Grey600,
+    dividerLine = Grey300
 )
 
 @Stable
