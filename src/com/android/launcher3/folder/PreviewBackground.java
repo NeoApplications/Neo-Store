@@ -51,8 +51,8 @@ import com.android.launcher3.views.ActivityContext;
  */
 public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
 
-    private static final boolean DRAW_SHADOW = false;
-    private static final boolean DRAW_STROKE = true;
+    private static final boolean DRAW_SHADOW = true;
+    private static final boolean DRAW_STROKE = false;
 
     private static final int CONSUMPTION_ANIMATION_DURATION = 100;
 
