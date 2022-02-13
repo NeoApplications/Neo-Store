@@ -20,11 +20,35 @@ package com.saggitt.omega.search
 
 import android.content.Context
 import android.util.AttributeSet
+import com.android.launcher3.DeviceProfile
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager {
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val requestedWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        val idp = LauncherAppState.getIDP(mContext)!!
+        val dp: DeviceProfile = idp.getDeviceProfile(mContext)
+        val cellWidth = DeviceProfile.calculateCellWidth(
+            requestedWidth,
+            dp.cellLayoutBorderSpacingPx,
+            dp.numShownAllAppsColumns
+        )
+        val width = requestedWidth - (cellWidth - Math.round(dp.allAppsIconSizePx * 0.92f))
+        setMeasuredDimension(width, height)
+
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
+            if (child != null) {
+                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0)
+            }
+        }
+    }
 
     override fun initializeSearch(appsView: AllAppsContainerView) {
     }

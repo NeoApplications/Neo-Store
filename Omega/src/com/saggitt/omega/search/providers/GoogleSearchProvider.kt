@@ -22,10 +22,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
 import androidx.core.content.res.ResourcesCompat
-import com.android.launcher3.Launcher.getLauncher
 import com.android.launcher3.R
-import com.saggitt.omega.getOmegaLauncher
-import com.saggitt.omega.iconpack.IconPackPreview
 import com.saggitt.omega.search.SearchProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.isAppEnabled
@@ -60,18 +57,15 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
             )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
-        val themedContext = IconPackPreview.PreviewContext(context)
-        val launcher = getLauncher(themedContext).getOmegaLauncher()
-        if (launcher.getGoogleNow() != null) {
-            launcher.getGoogleNow()!!.showOverlay(true)
-        } else {
-            callback(
+
+
+        callback(
                 Intent(Intent.ACTION_MAIN).setClassName(
                     Config.GOOGLE_QSB,
                     "${Config.GOOGLE_QSB}.SearchActivity"
                 )
             )
-        }
+
     }
 
     override val icon: Drawable

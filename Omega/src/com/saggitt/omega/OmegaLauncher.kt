@@ -26,7 +26,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -217,9 +216,12 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     companion object {
         var showFolderNotificationCount = false
+
+        @JvmStatic
+        fun getLauncher(context: Context): OmegaLauncher {
+            return context as? OmegaLauncher
+                ?: (context as ContextWrapper).baseContext as? OmegaLauncher
+                ?: LauncherAppState.getInstance(context).launcher as OmegaLauncher
+        }
     }
 }
-
-fun Launcher.getOmegaLauncher(): OmegaLauncher = this as? OmegaLauncher
-    ?: (this as ContextWrapper).baseContext as? OmegaLauncher
-    ?: LauncherAppState.getInstance(this).launcher as OmegaLauncher

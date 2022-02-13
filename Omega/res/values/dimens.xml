@@ -86,5 +86,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="qsb_touch_extension">20dp</dimen>
     <dimen name="qsb_g_icon_marginStart">16dp</dimen>
     <dimen name="qsb_widget_height">56dp</dimen>
-    <dimen name="qsb_icon_padding">10dp</dimen>
+    <dimen name="qsb_icon_padding">8dp</dimen>
 </resources>

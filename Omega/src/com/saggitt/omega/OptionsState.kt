@@ -35,7 +35,7 @@ class OptionsState(id: Int) :
 
         val scale = grid.workspaceOptionsShrinkFactor
         if (grid.isVerticalBarLayout) {
-            val optionsView = launcher.getOmegaLauncher().optionsView
+            val optionsView = OmegaLauncher.getLauncher(launcher).optionsView
 
             val wsHeightWithoutInsets = ws.height - grid.insets.top - grid.insets.bottom
             val desiredCenter = wsHeightWithoutInsets * 0.5f * scale

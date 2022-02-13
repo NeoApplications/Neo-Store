@@ -21,10 +21,9 @@ package com.saggitt.omega.search
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.android.launcher3.Launcher.getLauncher
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.anim.AnimatorListeners
-import com.saggitt.omega.getOmegaLauncher
 import com.saggitt.omega.util.OkHttpClientBuilder
 import com.saggitt.omega.util.openURLinBrowser
 import com.saggitt.omega.util.toArrayList
@@ -44,7 +43,7 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
     protected abstract val suggestionsUrl: String?
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
-        val launcher = getLauncher(context).getOmegaLauncher()
+        val launcher = Launcher.getLauncher(context)
         launcher.stateManager.goToState(
                 LauncherState.ALL_APPS,
                 true,
