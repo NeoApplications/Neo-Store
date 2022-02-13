@@ -28,7 +28,7 @@
     android:contentDescription="@string/label_search">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/engine_logo"
+        android:id="@+id/search_engine_logo"
         android:layout_width="@dimen/qsb_mic_width"
         android:layout_height="match_parent"
         android:layout_gravity="start|center"
@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end|center"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:paddingStart="6dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
