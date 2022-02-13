@@ -2,7 +2,7 @@
 <resources>
     <string name="address">Osoite</string>
     <string name="all_applications">Kaikki sovellukset</string>
-    <string name="all_applications_up_to_date">Kaikki sovelluksesi ovat ajan tasalla</string>
+    <string name="all_applications_up_to_date">Kaikki sovellukset ovat ajan tasalla</string>
     <string name="already_exists">Jo olemassa</string>
     <string name="always">Aina</string>
     <string name="amoled">Musta</string>
@@ -10,7 +10,7 @@
     <string name="application">Sovellus</string>
     <string name="action_failed">Toiminto epäonnistui</string>
     <string name="add_repository">Lisää tietovarasto</string>
-    <string name="application_not_found">Tätä sovellusta ei löytynyt</string>
+    <string name="application_not_found">Sovellusta ei löytynyt</string>
     <string name="author_email">Kehittäjän sähköposti</string>
     <string name="author_website">Kehittäjän verkkosivusto</string>
     <string name="available">Saatavilla</string>
@@ -54,7 +54,7 @@
     <string name="incompatible_older_DESC">Tämä versio on vanhempi kuin laitteeseesi asennettu versio. Poista se ensin.</string>
     <string name="incompatible_version">Yhteensopimaton versio</string>
     <string name="incompatible_versions">Yhteensopimattomat versiot</string>
-    <string name="incompatible_versions_summary">Näytä sovellusversiot, jotka eivät ole yhteensopivia laitteen kanssa</string>
+    <string name="incompatible_versions_summary">Näytä versiot, jotka eivät ole yhteensopivia laitteen kanssa</string>
     <string name="incompatible_with_FORMAT">Yhteensopimaton kohteen %s kanssa</string>
     <string name="install">Asenna</string>
     <string name="install_types">Asennustyypit</string>
@@ -73,7 +73,7 @@
     <string name="link_copied_to_clipboard">Linkki kopioitu leikepöydälle</string>
     <string name="links">Linkit</string>
     <string name="list_animation">Lista-animaatiot</string>
-    <string name="list_animation_description">Näytä listan animaatio pääsivulla</string>
+    <string name="list_animation_description">Animoi lista pääsivulla</string>
     <string name="merging_FORMAT">Yhdistäminen %s</string>
     <string name="name">Nimi</string>
     <string name="network_error_DESC">Verkkovirhe.</string>
@@ -133,7 +133,7 @@
     <string name="upstream_source_code_is_not_free">Alkuperäinen lähdekoodi ei ole vapaa</string>
     <string name="website">Verkkosivut</string>
     <string name="whats_new">Mitä uutta</string>
-    <string name="waiting_to_start_download">Odotetaan latauksen aloittamista…</string>
+    <string name="waiting_to_start_download">Latausta aloitetaan…</string>
     <string name="username_missing">Käyttäjätunnus puuttuu</string>
     <string name="username">Käyttäjänimi</string>
     <string name="signature_FORMAT">Allekirjoitus %s</string>
@@ -177,4 +177,10 @@
     <string name="latest">Uusimmat</string>
     <string name="sort_filter">Lajittele ja suodata</string>
     <string name="new_applications">Uudet sovellukset</string>
+    <string name="prefs_updated_apps">Näytettävä päivitettyjen sovellusten määrä</string>
+    <string name="prefs_new_apps">Näytettävä uusien sovellusten määrä</string>
+    <string name="new_repository">Uusi tietovarasto</string>
+    <string name="only_on_wifi_and_battery">Vain Wi-Fiin yhdistettynä ja latauksessa</string>
+    <string name="install_after_sync">Asenna päivitykset automaattisesti</string>
+    <string name="install_after_sync_summary">Asenna sovelluspäivitykset automaattisesti tietovarastojen synkronoinnin jälkeen</string>
 </resources>
