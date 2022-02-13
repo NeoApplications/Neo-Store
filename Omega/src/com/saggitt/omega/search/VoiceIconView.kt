@@ -19,20 +19,20 @@
 package com.saggitt.omega.search
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
-import com.android.launcher3.allapps.AllAppsContainerView
-import com.android.launcher3.allapps.SearchUiManager
+import androidx.appcompat.widget.AppCompatImageView
+import com.android.launcher3.qsb.QsbContainerView
 
-class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
-    AbstractQsbLayout(context, attrs), SearchUiManager {
+class VoiceIconView(context: Context, attrs: AttributeSet?) : AppCompatImageView(context, attrs) {
 
-    override fun initializeSearch(appsView: AllAppsContainerView) {
+    init {
+        scaleType = ScaleType.CENTER
+        setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_VOICE_COMMAND).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setPackage(QsbContainerView.getSearchWidgetPackageName(context))
+            context.startActivity(intent)
+        }
     }
-
-    override fun resetSearch() {
-    }
-
-    override fun startSearch() {
-    }
-
 }

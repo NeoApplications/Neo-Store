@@ -66,11 +66,11 @@ class SFinderSearchProvider(context: Context) : SearchProvider(context) {
                 }
 
     override val voiceIcon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!
-                .mutate()
-                .apply {
-                    setTint(Utilities.getOmegaPrefs(context).accentColor)
-                }
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic, null)!!
+            .mutate()
+            .apply {
+                setTint(Utilities.getOmegaPrefs(context).accentColor)
+            }
 
     companion object {
         const val PACKAGE = "com.samsung.android.app.galaxyfinder"

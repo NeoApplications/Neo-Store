@@ -49,6 +49,10 @@
     <color name="qsb_connector">#fff2f2f2</color>
     <color name="qsb_background">#ffffffff</color>
     <color name="qsb_connector_gradient_end_color">#66ffffff</color>
+    <color name="qsb_primary">#7B6E96</color>
+    <color name="qsb_secondary">#303030</color>
+    <color name="qsb_tertiary">#757575</color>
+    <color name="qsb_quaternary">#303030</color>
 
     <!-- Red -->
     <color name="red_50">#ffffebee</color>

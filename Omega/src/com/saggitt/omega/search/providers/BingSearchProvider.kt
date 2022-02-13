@@ -73,11 +73,11 @@ class BingSearchProvider(context: Context) : SearchProvider(context) {
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_bing, null)!!
 
     override val voiceIcon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!
-                .mutate()
-                .apply {
-                    setTint(Color.rgb(0x00, 0x89, 0x7B))
-                }
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic, null)!!
+            .mutate()
+            .apply {
+                setTint(Color.rgb(0x00, 0x89, 0x7B))
+            }
 
     override val assistantIcon: Drawable?
         get() = ResourcesCompat.getDrawable(

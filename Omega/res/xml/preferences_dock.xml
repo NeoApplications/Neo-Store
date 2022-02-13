@@ -58,4 +58,11 @@
         app:minValue="0.70"
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
+
+    <SwitchPreference
+        android:key="pref_dock_search"
+        android:title="@string/title_dock_search"
+        android:summary="@string/summary_dock_search"
+        android:defaultValue="false"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

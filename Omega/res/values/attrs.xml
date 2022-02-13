@@ -115,6 +115,7 @@
     <attr name="gIcon" format="reference" />
     <attr name="micIcon" format="reference" />
 
+    <attr name="qsbFillColor" format="color" />
     <declare-styleable name="PreviewPreference">
         <attr name="previewLayout" format="float" />
     </declare-styleable>

@@ -121,6 +121,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     val dockBackground by BooleanPref(PREFS_DOCK_BACKGROUND, false, restart)
     val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, restart)
     var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, restart)
+    var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
 
     // DRAWER
     var sortMode by StringIntPref(PREFS_SORT, 0, restart)

@@ -32,6 +32,7 @@
         <item name="folderIconBorderColor">@color/settings_background_light_8dp</item>
 
         <item name="allAppsInterimScrimAlpha">46</item>
+        <item name="qsbFillColor">#f0f0f0</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark">
@@ -48,6 +49,7 @@
         <item name="folderIconBorderColor">#FF80868B</item>
 
         <item name="allAppsInterimScrimAlpha">102</item>
+        <item name="qsbFillColor">@color/settings_background_black</item>
     </style>
 
     <style name="AppTheme.Black" parent="AppTheme.Dark">
@@ -65,6 +67,7 @@
         <item name="allAppsNavBarScrimColor">#80000000</item>
         <item name="folderFillColor">#DD000000</item>
         <item name="folderIconBorderColor">#FF000000</item>
+        <item name="qsbFillColor">@color/settings_background_black</item>
     </style>
 
     <style name="SettingsTheme.Light" parent="Theme.Material3.Light.NoActionBar">

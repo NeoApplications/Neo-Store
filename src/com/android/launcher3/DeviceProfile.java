@@ -335,16 +335,24 @@ public class DeviceProfile {
                 isTwoPanels ? inv.numDatabaseAllAppsColumns : inv.numAllAppsColumns;
         hotseatBarSizeExtraSpacePx = 0;
         hotseatBarTopPaddingPx =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_top_padding);
+                res.getDimensionPixelSize(prefs.getDockSearchBar()
+                        ? R.dimen.dynamic_grid_hotseat_top_padding_widget
+                        : R.dimen.dynamic_grid_hotseat_top_padding);
         hotseatBarBottomPaddingPx = (isTallDevice ? 0
-                : res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_bottom_non_tall_padding))
-                + res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_bottom_padding);
+                : res.getDimensionPixelSize(prefs.getDockSearchBar()
+                ? R.dimen.dynamic_grid_hotseat_bottom_non_tall_padding_widget
+                : R.dimen.dynamic_grid_hotseat_bottom_non_tall_padding))
+                + res.getDimensionPixelSize(prefs.getDockSearchBar() ?
+                R.dimen.dynamic_grid_hotseat_bottom_padding_widget
+                : R.dimen.dynamic_grid_hotseat_bottom_padding);
         hotseatBarSidePaddingEndPx =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_side_padding);
         // Add a bit of space between nav bar and hotseat in vertical bar layout.
         hotseatBarSidePaddingStartPx = isVerticalBarLayout() ? workspacePageIndicatorHeight : 0;
         hotseatExtraVerticalSize =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_hotseat_extra_vertical_size);
+                res.getDimensionPixelSize(prefs.getDockSearchBar()
+                        ? R.dimen.dynamic_grid_hotseat_extra_vertical_size_widget
+                        : R.dimen.dynamic_grid_hotseat_extra_vertical_size);
         updateHotseatIconSize(pxFromDp(inv.iconSize, mMetrics, 1f));
 
         qsbBottomMarginOriginalPx = isScalableGrid

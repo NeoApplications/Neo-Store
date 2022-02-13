@@ -44,9 +44,9 @@ class BaiduSearchProvider(context: Context) : SearchProvider(context) {
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_baidu, null)!!
 
     override val voiceIcon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!
-                .mutate()
-                .apply {
-                    setTint(Color.rgb(0x2d, 0x03, 0xe4))
-                }
+        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic, null)!!
+            .mutate()
+            .apply {
+                setTint(Color.rgb(0x2d, 0x03, 0xe4))
+            }
 }

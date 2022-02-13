@@ -102,6 +102,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.Config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -938,6 +939,11 @@ public final class Utilities {
         return OmegaPreferences.Companion.getInstance(context);
     }
 
+    public static boolean showQSB(Context context) {
+        return PackageManagerHelper.isAppEnabled(context.getPackageManager(), Config.GOOGLE_QSB, 0)
+                && getOmegaPrefs(context).getDockSearchBar();
+    }
+
     /**
      * Creates a new component key from an encoded component key string in the form of
      * [flattenedComponentString#userId].  If the userId is not present, then it defaults
@@ -949,8 +955,6 @@ public final class Utilities {
         int userDelimiterIndex = componentKeyStr.indexOf("#");
         if (userDelimiterIndex != -1) {
             String componentStr = componentKeyStr.substring(0, userDelimiterIndex);
-            //Log.e("MakeComponents", componentKeyStr);
-            //long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 12, componentKeyStr.length() - 1));
             long componentUser = Long.parseLong(componentKeyStr.substring(userDelimiterIndex + 1, componentKeyStr.length()));
             componentName = ComponentName.unflattenFromString(componentStr);
             user = Utilities.notNullOrDefault(UserCache.INSTANCE.get(context)

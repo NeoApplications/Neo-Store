@@ -77,6 +77,11 @@
     <string name="title_disabled">Off</string>
     <string name="dock_search_value" translatable="false">%1$s %2$s</string>
     <string name="num_hotseat_icons_pref_title">Icon Count</string>
+    <string name="title_dock_search">Dock search bar</string>
+    <string name="summary_dock_search">Show in the bottom dock</string>
+    <string name="label_search">Search</string>
+    <string name="label_lens" translatable="false">Google Lens</string>
+
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
     <string name="title__drawer_all_apps">Show "All Apps" label</string>

@@ -39,6 +39,11 @@
     <dimen name="dynamic_grid_hotseat_extra_vertical_size">34dp</dimen>
     <dimen name="dynamic_grid_hotseat_side_padding">0dp</dimen>
 
+    <dimen name="dynamic_grid_hotseat_top_padding_widget">0dp</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_padding_widget">60dp</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_non_tall_padding_widget">15dp</dimen>
+    <dimen name="dynamic_grid_hotseat_extra_vertical_size_widget">24dp</dimen>
+
     <!-- Scalable Grid -->
     <dimen name="scalable_grid_left_right_margin">22dp</dimen>
     <dimen name="scalable_grid_qsb_bottom_margin">42dp</dimen>
