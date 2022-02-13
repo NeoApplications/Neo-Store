@@ -25,6 +25,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
 import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
@@ -38,6 +39,7 @@ import com.saggitt.omega.dash.DashBottomSheet
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.ui.SelectAppActivity
+import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.util.getIcon
 import com.saggitt.omega.util.omegaPrefs
 import org.json.JSONObject
@@ -112,7 +114,6 @@ class OpenDashGestureHandler(context: Context, config: JSONObject?) :
     }
 }
 
-/* TODO restore search providers
 @Keep
 class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
     GestureHandler(context, config) {
@@ -135,7 +136,6 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
         }
     }
 }
-*/
 
 @Keep
 class StartAppSearchGestureHandler(context: Context, config: JSONObject?) :

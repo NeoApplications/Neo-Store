@@ -23,8 +23,8 @@ import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.touch.SwipeDetector
 import com.android.launcher3.util.TouchController
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
-import com.saggitt.omega.getOmegaLauncher
 import java.lang.reflect.InvocationTargetException
 import kotlin.math.abs
 
@@ -42,7 +42,7 @@ class VerticalSwipeGestureController(private val launcher: Launcher) : TouchCont
     private val triggerVelocity = 2.25f
     private val notificationsCloseVelocity = 0.35f
 
-    private val controller by lazy { launcher.getOmegaLauncher().gestureController }
+    private val controller by lazy { OmegaLauncher.getLauncher(launcher).gestureController }
     private val gesture by lazy { controller.verticalSwipeGesture }
     private val detector by lazy { SwipeDetector(launcher, this, SwipeDetector.VERTICAL) }
     private var noIntercept = false
