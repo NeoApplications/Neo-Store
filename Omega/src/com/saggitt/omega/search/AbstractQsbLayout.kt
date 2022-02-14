@@ -163,7 +163,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         when (key) {
             "opa_enabled",
             "opa_assistant",
-            "pref_searchbarRadius" ->
+            ->
                 reloadPreferences(sharedPreferences)
         }
     }
@@ -192,6 +192,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         drawPill(mShadowHelper, bitmap, canvas)
     }
 
+    /* Draw search bar background */
     private fun drawPill(helper: NinePatchDrawHelper, bitmap: Bitmap?, canvas: Canvas?) {
         val shadowDimens: Int = getShadowDimens(bitmap!!)
         val left = paddingLeft - shadowDimens
