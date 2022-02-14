@@ -23,8 +23,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.*
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -33,10 +34,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import com.android.launcher3.R
-import com.android.launcher3.ResourceUtils
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.graphics.IconShape
+import com.android.launcher3.graphics.NinePatchDrawHelper
+import com.android.launcher3.icons.ShadowGenerator.Builder
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
 import kotlin.math.round
@@ -48,7 +49,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     protected var prefs: OmegaPreferences = Utilities.getOmegaPrefs(mContext)
     protected var controller = SearchProviderController.getInstance(getContext())
     protected var searchProvider: SearchProvider = controller.searchProvider
-    private var mRadius = -1.0f
     private var mShowAssistant = false
     protected var mIsRtl = Utilities.isRtl(resources)
 
@@ -57,13 +57,13 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     private var lensIconView: ImageView? = null
     private var mShadowMargin = 0
 
-    var micStrokeWidth = 0f
-    protected var mMicStrokePaint: Paint? = null
+    protected var mAllAppsShadowBitmap: Bitmap? = null
+    protected var mClearBitmap: Bitmap? = null
+    protected var mAllAppsBgColor = Color.WHITE
+    var mShadowHelper = NinePatchDrawHelper();
 
     init {
         mShadowMargin = resources.getDimensionPixelSize(R.dimen.qsb_shadow_margin);
-        mMicStrokePaint = Paint(1);
-        mMicStrokePaint?.setColor(Color.WHITE);
     }
 
     override fun onFinishInflate() {
@@ -164,9 +164,79 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         }
     }
 
+    override fun draw(canvas: Canvas) {
+        ensureAllAppsShadowBitmap();
+        drawShadow(mAllAppsShadowBitmap, canvas);
+        super.draw(canvas)
+    }
+
+    private fun ensureAllAppsShadowBitmap() {
+        if (mAllAppsShadowBitmap == null) {
+            mAllAppsShadowBitmap = createShadowBitmap(mAllAppsBgColor, true)
+            mClearBitmap = null
+            if (Color.alpha(mAllAppsBgColor) != 255) {
+                mClearBitmap = createShadowBitmap(-0x1000000, false)
+            }
+        }
+    }
+
+    private fun drawShadow(bitmap: Bitmap?, canvas: Canvas?) {
+        drawPill(mShadowHelper, bitmap, canvas)
+    }
+
+    private fun drawPill(helper: NinePatchDrawHelper, bitmap: Bitmap?, canvas: Canvas?) {
+        val shadowDimens: Int = getShadowDimens(bitmap!!)
+        val left = paddingLeft - shadowDimens
+        val top = paddingTop - (bitmap.height - getHeightWithoutPadding()) / 2
+        val right = width - paddingRight + shadowDimens
+        helper.draw(bitmap, canvas, left.toFloat(), top.toFloat(), right.toFloat())
+    }
+
+    private fun getShadowDimens(bitmap: Bitmap): Int {
+        return (bitmap.width - (getHeightWithoutPadding() + 20)) / 2
+    }
+
+    private fun createShadowBitmap(bgColor: Int, withShadow: Boolean): Bitmap {
+        val f =
+            LauncherAppState.getInstance(context).invariantDeviceProfile.iconBitmapSize.toFloat()
+        return createShadowBitmap(0.010416667f * f, f * 0.020833334f, bgColor, withShadow)
+    }
+
+    private fun createShadowBitmap(
+        shadowBlur: Float,
+        keyShadowDistance: Float,
+        color: Int,
+        withShadow: Boolean
+    ): Bitmap {
+        val height = getHeightWithoutPadding()
+        val builder = Builder(color)
+        builder.shadowBlur = shadowBlur
+        builder.keyShadowDistance = keyShadowDistance
+        if (!withShadow) {
+            builder.ambientShadowAlpha = 0
+        }
+        builder.keyShadowAlpha = builder.ambientShadowAlpha
+        val pill: Bitmap = if (getCornerRadius() < 0) {
+            val edgeRadius = IconShape.getShape().getAttrValue(R.attr.qsbEdgeRadius)
+            if (edgeRadius != null) {
+                builder.createPill(
+                    height + 20, height,
+                    edgeRadius.getDimension(resources.displayMetrics)
+                )
+            } else {
+                builder.createPill(height + 20, height)
+            }
+        } else {
+            builder.createPill(height + 20, height, getCornerRadius())
+        }
+        return if (Utilities.ATLEAST_P) {
+            pill.copy(Bitmap.Config.HARDWARE, false)
+        } else pill
+    }
+
     /*
     * Create the search background when clicked
-    * */
+    */
     private fun addOrUpdateSearchRipple() {
         val insetDrawable: InsetDrawable = createRipple().mutate() as InsetDrawable
         background = insetDrawable
@@ -200,6 +270,19 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         lensIconView?.requestLayout()
     }
 
+    /*
+     * Get the search width
+     */
+    open fun getMeasuredWidth(width: Int, dp: DeviceProfile): Int {
+        val leftRightPadding = (dp.desiredWorkspaceLeftRightMarginPx
+                + dp.cellLayoutPaddingLeftRightPx)
+        return width - leftRightPadding * 2
+    }
+
+    protected open fun getHeightWithoutPadding(): Int {
+        return height - paddingTop - paddingBottom
+    }
+
     private fun createRipple(): InsetDrawable {
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
@@ -224,7 +307,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             searchLogoView?.setImageDrawable(getIcon())
             micIconView?.visibility = View.VISIBLE
             micIconView?.setImageDrawable(getMicIcon())
-            mRadius = getCornerRadius()
 
             invalidate()
         }
