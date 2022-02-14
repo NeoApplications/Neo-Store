@@ -40,8 +40,9 @@ import com.android.launcher3.graphics.NinePatchDrawHelper
 import com.android.launcher3.icons.ShadowGenerator.Builder
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.getColorAttr
+import com.saggitt.omega.util.tintDrawable
 import kotlin.math.round
-
 
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -55,15 +56,14 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     private var micIconView: ImageView? = null
     private var searchLogoView: ImageView? = null
     private var lensIconView: ImageView? = null
-    private var mShadowMargin = 0
 
-    protected var mAllAppsShadowBitmap: Bitmap? = null
-    protected var mClearBitmap: Bitmap? = null
-    protected var mAllAppsBgColor = Color.WHITE
-    var mShadowHelper = NinePatchDrawHelper();
+    private var mAllAppsShadowBitmap: Bitmap? = null
+    private var mClearBitmap: Bitmap? = null
+    private var mAllAppsBgColor = Color.WHITE
+    private var mShadowHelper = NinePatchDrawHelper()
 
     init {
-        mShadowMargin = resources.getDimensionPixelSize(R.dimen.qsb_shadow_margin);
+        mAllAppsBgColor = mContext.getColorAttr(R.attr.qsbFillColor)
     }
 
     override fun onFinishInflate() {
@@ -90,7 +90,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         micIconView = findViewById<AppCompatImageView?>(R.id.mic_icon).apply {
             if (searchProvider.supportsVoiceSearch) {
                 if (searchProvider.supportsAssistant) {
-                    setImageDrawable(searchProvider.assistantIcon)
+                    val micIcon: Drawable? = searchProvider.assistantIcon
+                    micIcon?.setTint(prefs.accentColor)
+                    setImageDrawable(micIcon)
                     setOnClickListener {
                         searchProvider.startAssistant { intent -> mContext.startActivity(intent) }
                     }
@@ -117,23 +119,24 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                         Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
             )
 
-            if (searchProvider.packageName == Config.GOOGLE_QSB && mContext.packageManager.resolveActivity(
-                    lensIntent,
-                    0
-                ) != null
-            ) {
-                setImageResource(R.drawable.ic_lens_color)
+            visibility =
+                if (searchProvider.packageName == Config.GOOGLE_QSB && mContext.packageManager.resolveActivity(
+                        lensIntent,
+                        0
+                    ) != null
+                ) {
+                    setImageResource(R.drawable.ic_lens_color)
 
-                setOnClickListener {
-                    mContext.startActivity(lensIntent)
-                }
-                visibility = View.VISIBLE
+                    setOnClickListener {
+                        mContext.startActivity(lensIntent)
+                    }
+                    View.VISIBLE
             } else {
-                visibility = View.GONE
+                    View.GONE
             }
         }
 
-        setOnClickListener { view: View? ->
+        setOnClickListener {
             mContext.startActivity(
                 Intent("android.search.action.GLOBAL_SEARCH").addFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK or
@@ -165,8 +168,8 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     }
 
     override fun draw(canvas: Canvas) {
-        ensureAllAppsShadowBitmap();
-        drawShadow(mAllAppsShadowBitmap, canvas);
+        ensureAllAppsShadowBitmap()
+        drawShadow(mAllAppsShadowBitmap, canvas)
         super.draw(canvas)
     }
 
@@ -247,7 +250,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         searchLogoView?.apply {
             val searchIconRipple: RippleDrawable =
                 oldRipple.constantState!!.newDrawable().mutate() as RippleDrawable
-            searchIconRipple.setLayerInset(0, 0, 2, 0, 2);
+            searchIconRipple.setLayerInset(0, 0, 2, 0, 2)
             background = searchIconRipple
             setPadding(8, 8, 8, 8)
         }
@@ -255,7 +258,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         micIconView?.apply {
             val micIconRipple: RippleDrawable =
                 oldRipple.constantState!!.newDrawable().mutate() as RippleDrawable
-            micIconRipple.setLayerInset(0, 0, 2, 0, 2);
+            micIconRipple.setLayerInset(0, 0, 2, 0, 2)
             background = micIconRipple
             setPadding(12, 12, 12, 12)
         }
@@ -263,7 +266,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         lensIconView?.apply {
             val lensIconRipple: RippleDrawable =
                 oldRipple.constantState!!.newDrawable().mutate() as RippleDrawable
-            lensIconRipple.setLayerInset(0, 0, 2, 0, 2);
+            lensIconRipple.setLayerInset(0, 0, 2, 0, 2)
             background = lensIconRipple
             setPadding(12, 12, 12, 12)
         }
@@ -306,6 +309,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true)
             searchLogoView?.setImageDrawable(getIcon())
             micIconView?.visibility = View.VISIBLE
+            micIconView?.tintDrawable(prefs.accentColor)
             micIconView?.setImageDrawable(getMicIcon())
 
             invalidate()

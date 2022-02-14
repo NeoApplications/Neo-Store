@@ -84,7 +84,7 @@ val Context.launcherAppState get() = LauncherAppState.getInstance(this)
 
 @ColorInt
 fun Context.getColorAccent(): Int {
-    return getColorAttr(android.R.attr.colorAccent)
+    return getColorAttr(R.attr.colorAccent)
 }
 
 fun AlertDialog.applyAccent() {
