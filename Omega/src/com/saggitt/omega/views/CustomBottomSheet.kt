@@ -59,7 +59,7 @@ class CustomBottomSheet @JvmOverloads constructor(
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
         mItemInfo = itemInfo
-        val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
+
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
@@ -73,8 +73,8 @@ class CustomBottomSheet @JvmOverloads constructor(
         if (itemInfo is WorkspaceItemInfo) {
             allowTitleEdit = true
         }
-        if (allowTitleEdit) {
-
+        if (allowTitleEdit && mItemInfo !is FolderInfo) {
+            val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
             val appTitle = prefs.customAppName[componentKey] ?: itemInfo.title.toString()
             val previousTitle = prefs.customAppName[componentKey]
             if (mPreviousTitle == null) mPreviousTitle = ""
@@ -139,8 +139,8 @@ class CustomBottomSheet @JvmOverloads constructor(
             mFragmentManager.beginTransaction().remove(pf).commitAllowingStateLoss()
         }
 
-        val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
-        if (mEditTitle != null) {
+        if (mEditTitle != null && mItemInfo !is FolderInfo) {
+            val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
             var newTitle: String? = mEditTitle!!.text.toString()
             if (newTitle != mPreviousTitle) {
                 if (newTitle == "") newTitle = null
