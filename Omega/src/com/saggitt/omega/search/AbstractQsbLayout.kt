@@ -311,11 +311,17 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     private fun reloadPreferences(sharedPreferences: SharedPreferences) {
         post {
             searchProvider = SearchProviderController.getInstance(mContext).searchProvider
+            val providerSupported =
+                searchProvider.supportsAssistant || searchProvider.supportsVoiceSearch
+            val showMic = sharedPreferences.getBoolean("opa_enabled", true) && providerSupported
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true)
             searchLogoView?.setImageDrawable(getIcon())
-            micIconView?.visibility = View.VISIBLE
-            micIconView?.setImageDrawable(getMicIcon())
-
+            if (showMic || mShowAssistant) {
+                micIconView?.visibility = View.VISIBLE
+                micIconView?.setImageDrawable(getMicIcon())
+            } else {
+                micIconView?.visibility = View.GONE
+            }
             invalidate()
         }
     }
