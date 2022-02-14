@@ -186,4 +186,5 @@
     <string name="prefs_updated_apps">Number of updated apps to show</string>
     <string name="prefs_new_apps">Number of new apps to show</string>
     <string name="new_repository">New repository</string>
+    <string name="default_tab">Default Tab</string>
 </resources>
