@@ -22,6 +22,15 @@
         android:key="pref_global_search_provider"
         android:title="@string/title_search_provider" />
 
+    <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
+        android:key="pref_searchbar_radius"
+        android:title="@string/title__search_bar_radius"
+        app:defaultSeekbarValue="-1.0"
+        app:maxValue="24"
+        app:minValue="0.0"
+        app:steps="24"
+        app:summaryFormat="%.0fdp" />
+
     <PreferenceCategory android:title="@string/app_categorization_folders">
         <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
             android:key="pref_folder_radius"
