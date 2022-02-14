@@ -41,11 +41,11 @@ import com.android.launcher3.icons.ShadowGenerator.Builder
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
-import com.saggitt.omega.util.tintDrawable
 import kotlin.math.round
 
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
-    FrameLayout(context, attrs), SharedPreferences.OnSharedPreferenceChangeListener {
+    FrameLayout(context, attrs), SearchProviderController.OnProviderChangeListener,
+    SharedPreferences.OnSharedPreferenceChangeListener {
     var mContext: Context = context
     protected var prefs: OmegaPreferences = Utilities.getOmegaPrefs(mContext)
     protected var controller = SearchProviderController.getInstance(getContext())
@@ -149,13 +149,14 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         getDevicePreferences().registerOnSharedPreferenceChangeListener(this)
-
+        SearchProviderController.getInstance(mContext).addOnProviderChangeListener(this)
         addOrUpdateSearchRipple()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         getDevicePreferences().unregisterOnSharedPreferenceChangeListener(this)
+        SearchProviderController.getInstance(mContext).removeOnProviderChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
@@ -165,6 +166,10 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             "pref_searchbarRadius" ->
                 reloadPreferences(sharedPreferences)
         }
+    }
+
+    override fun onSearchProviderChanged() {
+        reloadPreferences(Utilities.getPrefs(mContext))
     }
 
     override fun draw(canvas: Canvas) {
@@ -309,7 +314,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true)
             searchLogoView?.setImageDrawable(getIcon())
             micIconView?.visibility = View.VISIBLE
-            micIconView?.tintDrawable(prefs.accentColor)
             micIconView?.setImageDrawable(getMicIcon())
 
             invalidate()
