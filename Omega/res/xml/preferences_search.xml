@@ -56,5 +56,23 @@
             app:minValue="0.0"
             app:steps="24"
             app:summaryFormat="%.0fdp" />
+
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:key="pref_folder_columns"
+            android:title="@string/folder_columns"
+            android:defaultValue="4"
+            app:maxValue="5"
+            app:minValue="2"
+            app:steps="4"
+            app:summaryFormat="%.0f" />
+
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:key="pref_folder_rows"
+            android:title="@string/folder_rows"
+            android:defaultValue="4"
+            app:maxValue="5"
+            app:minValue="2"
+            app:steps="4"
+            app:summaryFormat="%.0f" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -154,6 +154,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         Themes.getAttrColor(context, R.attr.folderFillColor),
         restart
     )
+    val folderColumns by FloatPref("pref_folder_columns", 4f, reloadIcons)
+    val folderRows by FloatPref("pref_folder_rows", 4f, reloadIcons)
 
     // GESTURES & NOTIFICATION
     val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, restart)

@@ -38,8 +38,8 @@ class DeviceProfileOverrides(context: Context) {
             numRows = defaultGrid.numRows,
             numColumns = defaultGrid.numColumns,
             numAllAppsColumns = defaultGrid.numColumns,
-            numFolderRows = defaultGrid.numRows,
-            numFolderColumns = defaultGrid.numColumns,
+            numFolderRows = prefs.folderRows.toInt(),
+            numFolderColumns = prefs.folderColumns.toInt(),
 
             iconSizeFactor = prefs.desktopIconScale,
             enableIconText = !prefs.hideAppLabels,
