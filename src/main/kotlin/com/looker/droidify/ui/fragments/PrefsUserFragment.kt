@@ -37,6 +37,13 @@ class PrefsUserFragment : PrefsNavFragmentX() {
                     is Preferences.Theme.Amoled -> getString(R.string.amoled)
                 }
             }
+            addEnumeration(Preferences.Key.DefaultTab, getString(R.string.default_tab)) {
+                when (it) {
+                    is Preferences.DefaultTab.Explore -> getString(R.string.explore)
+                    is Preferences.DefaultTab.Latest -> getString(R.string.latest)
+                    is Preferences.DefaultTab.Installed -> getString(R.string.installed)
+                }
+            }
             addSwitch(
                 Preferences.Key.ListAnimation, getString(R.string.list_animation),
                 getString(R.string.list_animation_description)

@@ -35,6 +35,7 @@ object Preferences {
         Key.RootPermission,
         Key.SortOrder,
         Key.Theme,
+        Key.DefaultTab,
         Key.UpdateNotify,
         Key.UpdateUnstable
     ).map { Pair(it.name, it) }.toMap()
@@ -169,6 +170,12 @@ object Preferences {
             )
         )
 
+        object DefaultTab : Key<Preferences.DefaultTab>(
+            "default_tab", Value.EnumerationValue(
+                Preferences.DefaultTab.Explore
+            )
+        )
+
         object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
         object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
     }
@@ -234,6 +241,25 @@ object Preferences {
 
         object Amoled : Theme("amoled") {
             override fun getResId(configuration: Configuration): Int = R.style.Theme_Main_Amoled
+        }
+    }
+
+    sealed class DefaultTab(override val valueString: String) : Enumeration<DefaultTab> {
+        override val values: List<DefaultTab>
+            get() = listOf(Explore, Latest, Installed)
+
+        abstract fun getResId(configuration: Configuration): Int
+
+        object Explore : DefaultTab("explore") {
+            override fun getResId(configuration: Configuration): Int = R.id.exploreTab
+        }
+
+        object Latest : DefaultTab("latest") {
+            override fun getResId(configuration: Configuration): Int = R.id.latestTab
+        }
+
+        object Installed : DefaultTab("installed") {
+            override fun getResId(configuration: Configuration): Int = R.id.installedTab
         }
     }
 

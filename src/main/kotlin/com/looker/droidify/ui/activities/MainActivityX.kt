@@ -68,9 +68,11 @@ class MainActivityX : AppCompatActivity() {
         get() = (application as MainApplication).db
 
     var currentTheme by Delegates.notNull<Int>()
+    var currentTab by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
+        currentTab = Preferences[Preferences.Key.DefaultTab].getResId(resources.configuration)
         setTheme(currentTheme)
         super.onCreate(savedInstanceState)
         binding = ActivityMainXBinding.inflate(layoutInflater)
@@ -79,20 +81,7 @@ class MainActivityX : AppCompatActivity() {
         binding.lifecycleOwner = this
         toolbar = binding.toolbar
 
-        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
-            handleIntent(intent)
-        }
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-    }
-
-    override fun onStart() {
-        super.onStart()
         setSupportActionBar(toolbar)
-        if (Android.sdk(28) && !Android.Device.isHuaweiEmui) {
-            toolbar.menu.setGroupDividerEnabled(true)
-        }
-        toolbar.isFocusableInTouchMode = true
-        toolbar.title = getString(R.string.application_name)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment
@@ -103,6 +92,21 @@ class MainActivityX : AppCompatActivity() {
             setOf(R.id.exploreTab, R.id.latestTab, R.id.installedTab)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.bottomNavigation.selectedItemId = currentTab
+
+        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+            handleIntent(intent)
+        }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (Android.sdk(28) && !Android.Device.isHuaweiEmui) {
+            toolbar.menu.setGroupDividerEnabled(true)
+        }
+        toolbar.isFocusableInTouchMode = true
+        toolbar.title = getString(R.string.application_name)
 
         supportFragmentManager.addFragmentOnAttachListener { _, _ ->
             hideKeyboard()
