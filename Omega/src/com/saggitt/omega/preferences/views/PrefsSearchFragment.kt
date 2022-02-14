@@ -18,7 +18,44 @@
 
 package com.saggitt.omega.preferences.views
 
+import android.os.Bundle
+import android.view.View
+import androidx.preference.Preference
 import com.android.launcher3.R
+import com.saggitt.omega.search.SearchProvider
+import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.search.WebSearchProvider
 
 class PrefsSearchFragment :
-    BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search)
+    BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search),
+    SearchProviderController.OnProviderChangeListener {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        SearchProviderController.getInstance(requireContext()).addOnProviderChangeListener(this)
+        reloadPreferences()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SearchProviderController.getInstance(requireContext()).removeOnProviderChangeListener(this)
+    }
+
+    override fun onSearchProviderChanged() {
+        reloadPreferences()
+    }
+
+    private fun reloadPreferences() {
+        findPreference<Preference>("opa_enabled")?.apply {
+            val provider: SearchProvider =
+                SearchProviderController.getInstance(requireContext()).searchProvider
+            isEnabled = provider !is WebSearchProvider
+        }
+
+        findPreference<Preference>("opa_assistant")?.apply {
+            val provider: SearchProvider =
+                SearchProviderController.getInstance(requireContext()).searchProvider
+            isEnabled = provider !is WebSearchProvider
+        }
+    }
+}

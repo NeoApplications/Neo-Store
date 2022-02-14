@@ -180,7 +180,7 @@ class OmegaPreferences(val context: Context) : SharedPreferences.OnSharedPrefere
     var forceShapeless by BooleanPref(PREFS_FORCE_SHAPELESS, false, doNothing)
 
     // SEARCH & FOLDER
-    var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f)
+    var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f, recreate)
     var allAppsGlobalSearch by BooleanPref("pref_allAppsGlobalSearch", true, doNothing)
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
