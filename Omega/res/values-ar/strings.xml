@@ -432,4 +432,9 @@
     <string name="web_search_searx">سيركس (ويب)</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="enabled_events">تمكين</string>
+    <string name="title_dock_search">شريط البحث في Dock</string>
+    <string name="summary_dock_search">عرض في الشريط السفلي</string>
+    <string name="label_search">ابحث</string>
+    <string name="folder_columns">أعمدة المجلد</string>
+    <string name="folder_rows">صفوف المجلد</string>
 </resources>
