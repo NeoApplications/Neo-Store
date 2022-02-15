@@ -187,4 +187,5 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="prefs_updated_apps">عدد التطبيقات المحدثة التي يجب عرضها</string>
     <string name="new_repository">مستودع جديد</string>
+    <string name="default_tab">التبويب الافتراضي</string>
 </resources>
