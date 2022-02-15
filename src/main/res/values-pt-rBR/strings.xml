@@ -73,7 +73,7 @@
     <string name="invalid_username_format">Formato de nome do usuário inválido</string>
     <string name="launch">Abrir</string>
     <string name="license">Licença</string>
-    <string name="license_FORMAT">%s licença</string>
+    <string name="license_FORMAT">Licença %s</string>
     <string name="light">Claro</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="links">Links</string>
@@ -186,4 +186,5 @@
     <string name="prefs_updated_apps">Número de aplicativos atualizados a serem exibidos</string>
     <string name="prefs_new_apps">Número de novos aplicativos a serem exibidos</string>
     <string name="new_repository">Novo repositório</string>
+    <string name="default_tab">Aba padrão</string>
 </resources>
