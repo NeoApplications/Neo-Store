@@ -182,4 +182,5 @@
     <string name="prefs_updated_apps">要显示的已更新程序数</string>
     <string name="prefs_new_apps">要显示的新程序数</string>
     <string name="new_repository">新仓库</string>
+    <string name="default_tab">默认标签页</string>
 </resources>
