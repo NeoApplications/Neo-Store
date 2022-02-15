@@ -422,4 +422,8 @@
     <string name="title_app_categorization_enable">启用应用类别</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="enabled_events">已启用</string>
+    <string name="summary_dock_search">在底部快捷启动栏中显示</string>
+    <string name="label_search">搜索</string>
+    <string name="folder_columns">文件夹列</string>
+    <string name="folder_rows">文件夹行</string>
 </resources>
