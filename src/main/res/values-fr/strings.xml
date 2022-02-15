@@ -183,4 +183,5 @@
     <string name="prefs_new_apps">Nombre de nouvelles applications à afficher</string>
     <string name="prefs_updated_apps">Nombre d\'applications mises à jour à afficher</string>
     <string name="new_repository">Nouveau dépôt</string>
+    <string name="default_tab">Onglet par défaut</string>
 </resources>
