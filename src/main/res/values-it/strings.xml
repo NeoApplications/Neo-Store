@@ -186,4 +186,5 @@
     <string name="prefs_updated_apps">Numero di app aggiornate da mostrare</string>
     <string name="prefs_new_apps">Numero di nuove applicazioni da mostrare</string>
     <string name="new_repository">Nuovo repository</string>
+    <string name="default_tab">Scheda predefinita</string>
 </resources>
