@@ -424,4 +424,7 @@
     <string name="summary_app_categorization_enable">Sekmeler veya klasörler oluşturun</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="enabled_events">Etkin</string>
+    <string name="title_dock_search">Alt panel arama çubuğu</string>
+    <string name="summary_dock_search">Alt panelde göster</string>
+    <string name="label_search">Ara</string>
 </resources>
