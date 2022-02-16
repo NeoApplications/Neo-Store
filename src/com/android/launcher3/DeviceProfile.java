@@ -685,10 +685,6 @@ public class DeviceProfile {
         // Folder icon
         folderIconSizePx = IconNormalizer.getNormalizedCircleSize(iconSizePx);
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
-
-        //TODO enable grid GridCustomizationsProvider
-        //iconSizePx *= prefs.getDesktopIconScale();
-        //allAppsIconSizePx *= prefs.getAllAppsIconScale();
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {
