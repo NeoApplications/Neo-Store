@@ -21,7 +21,7 @@
     <solid android:color="?settingsBackground" />
     <stroke
         android:width="0.5dp"
-        android:color="@color/grey_300" />
+        android:color="@color/grey_800" />
     <corners
         android:bottomLeftRadius="16dp"
         android:bottomRightRadius="16dp"
