@@ -1,0 +1,12 @@
+<ul>
+  <li>Ekle: Brave web araması</li>
+  <li>Ekle: Geri tuşu hareketi tercihi</li>
+  <li>Ekle: Ana sayfa hareketi tercihi</li>
+  <li>Ekle: Masaüstü Modu</li>
+  <li>Düzelt: Açık tema için widget seçicideki metin rengi</li>
+  <li>Düzelt: Gizli uygulamaları ara</li>
+  <li>Düzelt: Kapak modunda klasör simgesi</li>
+  <li>Akıllı alan widget'ını geri yükle</li>
+  <li>Uyarlanabilir saat simgesini geri yükle (Google)</li>
+  <li>Uyarlanabilir takvim simgesini geri yükle (Google)</li>
+</ul>

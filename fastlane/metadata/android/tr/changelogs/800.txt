@@ -1,0 +1,12 @@
+* Android-11.0.0_r31'i birleştir
+* Ekle: Boş ekran tercihini koru
+* Ekle: Sekmeler için renk seçici
+* Ekle: Ek çizgi denetimleri
+* Ekle: Dash özelleştirme
+* Ekle: QuickSwitch desteği
+* Ekle: FiveSecs KLWP
+* Ekle: Searx sağlayıcı
+* Ekle: Uyku asistanı
+* Ekle: Uygulamaları dikey listele(Deneysel)
+* Düzelt: Uzun ekranlarda alt panel boyutu
+* Düzelt: Google Asistan'ı açarken çökme
