@@ -44,7 +44,7 @@ val DarkOnError = Color(0xFF680003)
 val DarkOnErrorContainer = Color(0xFFFFDAD4)
 val DarkBackground = Color(0xFF191C1A)
 val DarkOnBackground = Color(0xFFE1E3DE)
-val DarkSurface = Color(0xFF191C1A)
+val DarkSurface = Color(0xFF2C2C2C)
 val DarkOnSurface = Color(0xFFE1E3DE)
 val DarkSurfaceVariant = Color(0xFF414942)
 val DarkOnSurfaceVariant = Color(0xFFC0C9C0)
@@ -52,6 +52,10 @@ val DarkOutline = Color(0xFF8A938A)
 val DarkInversePrimary = Color(0xFFE1E3DE)
 val DarkInverseSurface = Color(0xFF191C1A)
 val DarkInverseOnSurface = Color(0xFF006D3E)
+
+// Black Theme
+val BlackBackground = Color(0xFF000000)
+val BlackSurface = Color(0xFF191C1A)
 
 val Seed = Color(0xFF51DF93)
 

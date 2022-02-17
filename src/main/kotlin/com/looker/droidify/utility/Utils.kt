@@ -8,8 +8,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.DiffUtil
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.BuildConfig
@@ -194,21 +192,17 @@ fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
     return outputStream.toByteArray()
 }
 
-val PRODUCT_ASYNC_DIFFER_CONFIG
-    get() = AsyncDifferConfig.Builder(object :
-        DiffUtil.ItemCallback<com.looker.droidify.database.entity.Product>() {
-        override fun areItemsTheSame(
-            oldItem: com.looker.droidify.database.entity.Product,
-            newItem: com.looker.droidify.database.entity.Product
-        ): Boolean {
-            return oldItem.repository_id == newItem.repository_id
-                    && oldItem.package_name == newItem.package_name
-        }
+val isDarkTheme: Boolean
+    get() = when (Preferences[Preferences.Key.Theme]) {
+        is Preferences.Theme.Light -> false
+        is Preferences.Theme.Dark -> true
+        is Preferences.Theme.Amoled -> true
+        else -> false
+    }
 
-        override fun areContentsTheSame(
-            oldItem: com.looker.droidify.database.entity.Product,
-            newItem: com.looker.droidify.database.entity.Product
-        ): Boolean {
-            return oldItem.item == newItem.item
-        }
-    }).build()
+val isBlackTheme: Boolean
+    get() = when (Preferences[Preferences.Key.Theme]) {
+        is Preferences.Theme.Amoled -> true
+        is Preferences.Theme.AmoledSystem -> true
+        else -> false
+    }
