@@ -19,30 +19,6 @@ abstract class MainNavFragmentX : BaseNavFragment() {
 
     open fun onBackPressed(): Boolean = false
 
-    internal fun setSearchQuery(searchQuery: String) {
-        viewModel.setSearchQuery(searchQuery) {
-            if (view != null) {
-                //viewModel.fillList(source)
-            }
-        }
-    }
-
-    internal fun setSection(section: Section) {
-        viewModel.setSection(section) {
-            if (view != null) {
-                //viewModel.fillList(source)
-            }
-        }
-    }
-
-    internal fun setOrder(order: Order) {
-        viewModel.setOrder(order) {
-            if (view != null) {
-                //viewModel.fillList(source)
-            }
-        }
-    }
-
     protected fun launchFragment(fragment: Fragment): Boolean {
         requireActivity().supportFragmentManager
             .beginTransaction()

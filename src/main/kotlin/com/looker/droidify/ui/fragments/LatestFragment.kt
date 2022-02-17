@@ -53,11 +53,9 @@ class LatestFragment : MainNavFragmentX() {
                     }
                 ) {
                     Scaffold { _ ->
-                        ProductsVerticalRecycler(it, repositories) {
-                            it.let {
-                                AppSheetX(it.packageName)
-                                    .showNow(parentFragmentManager, "Product ${it.packageName}")
-                            }
+                        ProductsVerticalRecycler(it, repositories) { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
                         }
                     }
                 }
@@ -73,11 +71,9 @@ class LatestFragment : MainNavFragmentX() {
                     }
                 ) {
                     MdcTheme {
-                        ProductsHorizontalRecycler(it, repositories) {
-                            it.let {
-                                AppSheetX(it.packageName)
-                                    .showNow(parentFragmentManager, "Product ${it.packageName}")
-                            }
+                        ProductsHorizontalRecycler(it, repositories) { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
                         }
                     }
                 }

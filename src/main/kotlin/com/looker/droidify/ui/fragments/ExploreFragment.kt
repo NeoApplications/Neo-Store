@@ -55,11 +55,9 @@ class ExploreFragment : MainNavFragmentX() {
                     }
                 ) {
                     Scaffold { _ ->
-                        ProductsVerticalRecycler(it, repositories) {
-                            it.let {
-                                AppSheetX(it.packageName)
-                                    .showNow(parentFragmentManager, "Product ${it.packageName}")
-                            }
+                        ProductsVerticalRecycler(it, repositories) { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
                         }
                     }
                 }
