@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
@@ -21,32 +20,44 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.looker.droidify.R
+import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.network.CoilDownloader
+import com.looker.droidify.ui.compose.theme.AppTheme
 
-@Preview
 @Composable
 fun ProductRow(
-    name: String = "Droid-ify",
-    version: String = "69",
-    summary: String = "A great F-Droid client",
-    onUserClick: (String) -> Unit = {}
+    item: ProductItem,
+    repo: Repository? = null,
+    onUserClick: (ProductItem) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
-            .clickable(onClick = { onUserClick(name) })
             .padding(4.dp)
             .fillMaxWidth()
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(8.dp))
+            .clip(shape = RoundedCornerShape(8.dp))
+            .clickable(onClick = { onUserClick(item) })
             .padding(8.dp)
     ) {
+        // TODO: Fix the issue where coil doesn't fallback to the palceholder
         val imagePainter =
-            painterResource(id = R.drawable.ic_launcher_foreground)
-//            rememberImagePainter(CoilDownloader.createIconUri(item.packageName, item.icon, item.metadataIcon, repo.address, repo.authentication))
+            if (repo != null) rememberImagePainter(
+                CoilDownloader.createIconUri(
+                    item.packageName,
+                    item.icon,
+                    item.metadataIcon,
+                    repo.address,
+                    repo.authentication
+                ), builder = { placeholder(R.drawable.ic_application_default) }
+            ) else painterResource(id = R.drawable.ic_application_default)
         Image(
             painter = imagePainter,
             modifier = Modifier
                 .requiredSize(56.dp)
-                .clip(shape = CircleShape),
+                .clip(shape = RoundedCornerShape(8.dp)),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -64,24 +75,26 @@ fun ProductRow(
                 contentAlignment = Alignment.TopEnd
             ) {
                 Text(
-                    text = name,
+                    text = item.name,
                     modifier = Modifier
                         .align(Alignment.CenterStart),
                     fontWeight = FontWeight.Bold,
                     softWrap = true,
+                    overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1
                 )
                 Text(
-                    text = version,
+                    text = item.version,
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
+                    overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body2
                 )
             }
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     modifier = Modifier.fillMaxHeight(),
-                    text = summary,
+                    text = item.summary,
                     style = MaterialTheme.typography.body2
                 )
             }
@@ -90,36 +103,45 @@ fun ProductRow(
     }
 }
 
-@Preview
 @Composable
 fun ProductColumn(
-    name: String = "Droid-iy",
-    version: String = "69",
-    onUserClick: (String) -> Unit = {}
+    item: ProductItem,
+    repo: Repository? = null,
+    onUserClick: (ProductItem) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
-            .clickable(onClick = { onUserClick(name) })
             .padding(4.dp)
             .requiredSize(72.dp, 96.dp)
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(8.dp))
+            .clip(shape = RoundedCornerShape(8.dp))
+            .clickable(onClick = { onUserClick(item) })
             .padding(4.dp)
     ) {
-        val imagePainter =
-            painterResource(id = R.drawable.ic_launcher_foreground)
-//            rememberImagePainter(CoilDownloader.createIconUri(item.packageName, item.icon, item.metadataIcon, repo.address, repo.authentication))
+        // TODO: Fix the issue where coil doesn't fallback to the palceholder
+        val imagePainter = if (repo != null)
+            rememberImagePainter(
+                CoilDownloader.createIconUri(
+                    item.packageName,
+                    item.icon,
+                    item.metadataIcon,
+                    repo.address,
+                    repo.authentication
+                ), builder = { placeholder(R.drawable.ic_application_default) }
+            )
+        else painterResource(id = R.drawable.ic_application_default)
         Image(
             painter = imagePainter,
             modifier = Modifier
                 .requiredSize(56.dp)
-                .clip(shape = CircleShape)
+                .clip(shape = RoundedCornerShape(8.dp))
                 .align(Alignment.CenterHorizontally),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
 
         Text(
-            text = name,
+            text = item.name,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             fontWeight = FontWeight.Bold,
@@ -129,7 +151,7 @@ fun ProductColumn(
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = version,
+                text = item.version,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.overline,
@@ -138,5 +160,37 @@ fun ProductColumn(
             )
         }
 
+    }
+}
+
+@Preview
+@Composable
+fun ProductColumnPreview() {
+    AppTheme(darkTheme = false) {
+        ProductColumn(ProductItem())
+    }
+}
+
+@Preview
+@Composable
+fun ProductColumnDarkPreview() {
+    AppTheme(darkTheme = true) {
+        ProductColumn(ProductItem())
+    }
+}
+
+@Preview
+@Composable
+fun ProductRowPreview() {
+    AppTheme(darkTheme = false) {
+        ProductRow(ProductItem())
+    }
+}
+
+@Preview
+@Composable
+fun ProductRowDarkPreview() {
+    AppTheme(darkTheme = true) {
+        ProductRow(ProductItem())
     }
 }

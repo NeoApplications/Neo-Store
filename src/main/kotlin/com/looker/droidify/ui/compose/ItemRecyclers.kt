@@ -1,6 +1,5 @@
 package com.looker.droidify.ui.compose
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,32 +7,38 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Product
+import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.ProductItem
 
 @Composable
-fun ProductsVerticalRecycler(productsList: List<Product>) {
+fun ProductsVerticalRecycler(
+    productsList: List<Product>,
+    repositories: Map<Long, Repository>,
+    onUserClick: (ProductItem) -> Unit = {}
+) {
     LazyColumn(
         verticalArrangement = spacedBy(2.dp)
     ) {
-        items(productsList) { product: Product ->
-            product.item?.let { item ->
-                ProductRow(item.name, item.version, item.summary, onUserClick = {
-                    Log.d(this.toString(), "You clicked $it")
-                })
+        items(productsList) { product ->
+            product.item.let { item ->
+                ProductRow(item, repositories[item.repositoryId], onUserClick)
             }
         }
     }
 }
 
 @Composable
-fun ProductsHorizontalRecycler(productsList: List<Product>) {
+fun ProductsHorizontalRecycler(
+    productsList: List<Product>,
+    repositories: Map<Long, Repository>,
+    onUserClick: (ProductItem) -> Unit = {}
+) {
     LazyRow(
         horizontalArrangement = spacedBy(2.dp)
     ) {
-        items(productsList) { product: Product ->
-            product.item?.let { item ->
-                ProductColumn(item.name, item.version, onUserClick = {
-                    Log.d(this.toString(), "You clicked $it")
-                })
+        items(productsList) { product ->
+            product.item.let { item ->
+                ProductColumn(item, repositories[item.repositoryId], onUserClick)
             }
         }
     }
