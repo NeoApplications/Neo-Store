@@ -90,7 +90,7 @@ class MainNavFragmentViewModelX(
         }
     }
 
-    fun setSection(newOrder: Order) {
+    fun setOrder(newOrder: Order) {
         viewModelScope.launch {
             if (newOrder != order.value) {
                 order.value = newOrder
@@ -98,7 +98,7 @@ class MainNavFragmentViewModelX(
         }
     }
 
-    fun setSection(newSearchQuery: String) {
+    fun setSearchQuery(newSearchQuery: String) {
         viewModelScope.launch {
             if (newSearchQuery != searchQuery.value) {
                 searchQuery.value = newSearchQuery
