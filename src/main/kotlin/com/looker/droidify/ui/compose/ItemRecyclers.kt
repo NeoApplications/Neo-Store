@@ -12,14 +12,14 @@ import com.looker.droidify.entity.ProductItem
 
 @Composable
 fun ProductsVerticalRecycler(
-    productsList: List<Product>,
+    productsList: List<Product>?,
     repositories: Map<Long, Repository>,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
     LazyColumn(
         verticalArrangement = spacedBy(2.dp)
     ) {
-        items(productsList) { product ->
+        items(productsList ?: emptyList()) { product ->
             product.item.let { item ->
                 ProductRow(item, repositories[item.repositoryId], onUserClick)
             }
@@ -29,14 +29,14 @@ fun ProductsVerticalRecycler(
 
 @Composable
 fun ProductsHorizontalRecycler(
-    productsList: List<Product>,
+    productsList: List<Product>?,
     repositories: Map<Long, Repository>,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
     LazyRow(
         horizontalArrangement = spacedBy(2.dp)
     ) {
-        items(productsList) { product ->
+        items(productsList ?: emptyList()) { product ->
             product.item.let { item ->
                 ProductColumn(item, repositories[item.repositoryId], onUserClick)
             }
