@@ -88,6 +88,16 @@ interface ProductDao : BaseDao<Product> {
     )
 
     @RawQuery(observedEntities = [Product::class])
+    fun queryLiveList(query: SupportSQLiteQuery): LiveData<List<Product>>
+
+    fun queryLiveList(
+        installed: Boolean, updates: Boolean, searchQuery: String,
+        section: Section, order: Order, numberOfItems: Int = 0
+    ): LiveData<List<Product>> = queryLiveList(
+        buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
+    )
+
+    @RawQuery(observedEntities = [Product::class])
     fun queryList(
         query: SupportSQLiteQuery
     ): DataSource.Factory<Int, Product>
