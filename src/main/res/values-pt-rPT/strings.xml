@@ -1,2 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="incompatible_api_DESC_FORMAT">O seu %1$s (versão de API %2$d) não é suportada. %3$s</string>
+    <string name="incompatible_api_max_DESC_FORMAT">A versão máxima da API é %d.</string>
+    <string name="incompatible_older_DESC">Esta versão é anterior à que tem instalada no seu dispositivo. Desinstale essa primeiro.</string>
+    <string name="incompatible_features_DESC">Funcionalidades em falta.</string>
+    <string name="amoled">Preto</string>
+    <string name="anti_features">Anti-funcionalidades</string>
+    <string name="application">Aplicação</string>
+    <string name="application_not_found">Não foi possível encontrar essa aplicação</string>
+    <string name="connecting">A ligar…</string>
+    <string name="edit_repository">Editar repositório</string>
+    <string name="compiled_for_debugging">Compilado para depuração</string>
+    <string name="checking_repository">A verificar repositório…</string>
+    <string name="confirmation">Confirmação</string>
+    <string name="dark">Escuro</string>
+    <string name="downloading_FORMAT">A descarregar %s…</string>
+    <string name="contains_non_free_media">Contém multimédia não-livre</string>
+    <string name="ignore_this_update">Ignorar esta versão</string>
+    <string name="credits">Créditos</string>
+    <string name="delete">Eliminar</string>
+    <string name="action_failed">A ação falhou</string>
+    <string name="add_repository">Adicionar repositório</string>
+    <string name="address">Endereço</string>
+    <string name="all_applications">Todas as aplicações</string>
+    <string name="all_applications_up_to_date">Todas as aplicações em dia</string>
+    <string name="already_exists">Já existe</string>
+    <string name="always">Sempre</string>
+    <string name="author_email">Correio electrónico do autor</string>
+    <string name="author_website">Website do autor</string>
+    <string name="available">Disponível</string>
+    <string name="cancel">Cancelar</string>
+    <string name="cant_edit_sync_DESC">Não é possível editar repositórios a sincronizar…</string>
+    <string name="changelog">Registo de alterações</string>
+    <string name="changes">Alterações</string>
+    <string name="could_not_download_FORMAT">Não foi possível descarregar %s</string>
+    <string name="could_not_sync_FORMAT">Não foi possível sincronizar %s</string>
+    <string name="could_not_validate_FORMAT">Não foi possível validar %s</string>
+    <string name="delete_repository_DESC">Eliminar o repositório\?</string>
+    <string name="description">Descrição</string>
+    <string name="details">Detalhes</string>
+    <string name="donate">Doar</string>
+    <string name="downloaded_FORMAT">%s descarregada</string>
+    <string name="downloading">A descarregar</string>
+    <string name="file_format_error_DESC">Formato de ficheiro inválido</string>
+    <string name="has_advertising">Contém publicidades</string>
+    <string name="has_non_free_dependencies">Contém dependências não-livres</string>
+    <string name="has_security_vulnerabilities">Contém vulnerabilidades de segurança</string>
+    <string name="http_error_DESC">Resposta do servidor inválida</string>
+    <string name="ignore_all_updates">Ignorar todas as versões novas</string>
+    <string name="incompatible_api_min_DESC_FORMAT">A versão mínima da API é %d.</string>
+</resources>
