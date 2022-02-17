@@ -15,8 +15,7 @@
  ~ You should have received a copy of the GNU Affero General Public License
  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -26,21 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:clipToPadding="false">
+            android:nestedScrollingEnabled="true"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/primaryComposeRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_app_vertical_x" />
-        </androidx.core.widget.NestedScrollView>
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 </layout>
 

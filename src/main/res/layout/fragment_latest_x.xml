@@ -16,64 +16,38 @@
  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="8dp">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/updatedBar"
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textNew"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/modeBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="14dp"
+            android:text="@string/new_applications" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginVertical="14dp"
-                android:text="@string/new_applications"
-                app:layout_constraintBottom_toTopOf="@id/newRecycler"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/newRecycler"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:scrollbars="none"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textNew"
-                tools:listitem="@layout/item_app_horiz_x" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/secondaryComposeRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/modeBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/shape_margin_medium"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/updatedBar">
+            android:orientation="horizontal">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textLatest"
@@ -100,25 +74,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollLayout"
-            android:layout_width="0dp"
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/primaryComposeRecycler"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:clipToPadding="false"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/modeBar">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/updatedRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_app_vertical_x" />
-        </androidx.core.widget.NestedScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/modeBar" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
 
