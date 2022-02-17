@@ -67,6 +67,7 @@ class MainNavFragmentViewModelX(
     val secondaryProducts = MediatorLiveData<List<Product>>()
 
     val repositories = MediatorLiveData<List<Repository>>()
+    val categories = MediatorLiveData<List<String>>()
 
     init {
         primaryProducts.addSource(
@@ -78,6 +79,7 @@ class MainNavFragmentViewModelX(
             secondaryProducts::setValue
         )
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
+        categories.addSource(db.categoryDao.allNamesLive, categories::setValue)
     }
 
     fun setSection(newSection: Section) {

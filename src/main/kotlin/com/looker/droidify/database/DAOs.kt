@@ -226,6 +226,15 @@ interface CategoryDao : BaseDao<Category> {
     )
     val allNames: List<String>
 
+    @get:Query(
+        """SELECT DISTINCT category.name
+        FROM category AS category
+        JOIN repository AS repository
+        ON category.repository_id = repository._id
+        WHERE repository.enabled != 0"""
+    )
+    val allNamesLive: LiveData<List<String>>
+
     @Query("DELETE FROM category WHERE repository_id = :id")
     fun deleteById(id: Long): Int
 }
