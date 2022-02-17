@@ -4,10 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.looker.droidify.database.entity.Product
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Scaffold
+import com.google.android.material.chip.Chip
+import com.looker.droidify.R
+import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentExploreXBinding
+import com.looker.droidify.entity.Section
+import com.looker.droidify.ui.compose.ProductsVerticalRecycler
+import com.looker.droidify.ui.compose.theme.AppTheme
+import com.looker.droidify.utility.isDarkTheme
+
 
 // TODO add chips bar to navigate categories
 class ExploreFragment : MainNavFragmentX() {
@@ -36,6 +44,26 @@ class ExploreFragment : MainNavFragmentX() {
     override fun setupLayout() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }
+        }
+        viewModel.primaryProducts.observe(viewLifecycleOwner) {
+            binding.primaryComposeRecycler.setContent {
+                AppTheme(
+                    darkTheme = when (Preferences[Preferences.Key.Theme]) {
+                        is Preferences.Theme.System -> isSystemInDarkTheme()
+                        is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                        else -> isDarkTheme
+                    }
+                ) {
+                    Scaffold { _ ->
+                        ProductsVerticalRecycler(it, repositories) {
+                            it.let {
+                                AppSheetX(it.packageName)
+                                    .showNow(parentFragmentManager, "Product ${it.packageName}")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
