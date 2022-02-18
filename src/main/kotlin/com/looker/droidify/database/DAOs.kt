@@ -97,18 +97,6 @@ interface ProductDao : BaseDao<Product> {
         buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
     )
 
-    @RawQuery(observedEntities = [Product::class])
-    fun queryList(
-        query: SupportSQLiteQuery
-    ): DataSource.Factory<Int, Product>
-
-    fun queryList(
-        installed: Boolean, updates: Boolean, searchQuery: String,
-        section: Section, order: Order, numberOfItems: Int = 0
-    ): DataSource.Factory<Int, Product> = queryList(
-        buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
-    )
-
     // TODO add an UpdateCategory argument
     fun buildProductQuery(
         installed: Boolean, updates: Boolean, searchQuery: String,
