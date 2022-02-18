@@ -31,6 +31,7 @@
         <item name="android:statusBarColor">@color/md_theme_light_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="chipStyle">@style/Theme.Chip.Category</item>
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
@@ -69,6 +70,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
         <item name="android:statusBarColor">@color/grey_dark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="chipStyle">@style/Theme.Chip.Category</item>
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
@@ -107,6 +109,7 @@
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
         <item name="android:statusBarColor">@color/md_theme_dark_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="chipStyle">@style/Theme.Chip.Category</item>
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
@@ -138,6 +141,13 @@
         <item name="android:background">@drawable/appbar_background</item>
         <item name="layout_collapseMode">pin</item>
         <item name="android:backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <style name="Theme.Chip.Category" parent="Widget.Material3.Chip.Suggestion">
+        <item name="android:backgroundTint">@color/selector_chip_background</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+        <item name="android:textColor">@color/selector_item_icon</item>
+        <item name="chipStrokeWidth">0dp</item>
     </style>
 
     <style name="Theme.BottomNavigation" parent="Widget.Material3.BottomNavigationView">

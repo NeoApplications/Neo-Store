@@ -63,5 +63,16 @@ class ExploreFragment : MainNavFragmentX() {
                 }
             }
         }
+        viewModel.categories.observe(viewLifecycleOwner) {
+            binding.categories.removeAllViews()
+            binding.categories.addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                setText(R.string.all_applications)
+            })
+            it.forEach {
+                binding.categories.addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                    text = it
+                })
+            }
+        }
     }
 }
