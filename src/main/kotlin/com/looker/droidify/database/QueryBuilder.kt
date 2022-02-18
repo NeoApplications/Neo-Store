@@ -9,7 +9,7 @@ class QueryBuilder {
     }
 
     private val builder = StringBuilder()
-    private val arguments = mutableListOf<String>()
+    val arguments = mutableListOf<String>()
 
     operator fun plusAssign(query: String) {
         if (builder.isNotEmpty()) {

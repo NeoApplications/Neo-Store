@@ -200,7 +200,7 @@ interface ProductDao : BaseDao<Product> {
         }::class
         builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
 
-        return SimpleSQLiteQuery(builder.build())
+        return SimpleSQLiteQuery(builder.build(),builder.arguments.toTypedArray())
     }
 }
 
