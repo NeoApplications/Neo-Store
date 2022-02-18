@@ -128,7 +128,7 @@ interface ProductDao : BaseDao<Product> {
         product.${ROW_COMPATIBLE} != 0 AND product.${ROW_VERSION_CODE} >
         COALESCE(installed.${ROW_VERSION_CODE}, 0xffffffff) AND $signatureMatches)
         AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
-        product.${ROW_ICON}, product.${ROW_METADATA_ICON}, product.${ROW_RELEASES},"""
+        product.${ROW_ICON}, product.${ROW_METADATA_ICON}, product.${ROW_RELEASES}, product.${ROW_CATEGORIES},"""
 
         // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
@@ -294,6 +294,7 @@ interface ProductTempDao : BaseDao<ProductTemp> {
                     icon = it.icon
                     metadataIcon = it.metadataIcon
                     releases = it.releases
+                    categories = it.categories
                 }
             })
             it.categories.forEach { category ->

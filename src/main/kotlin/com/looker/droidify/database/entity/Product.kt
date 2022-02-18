@@ -20,6 +20,7 @@ open class Product {
     var icon = ""
     var metadataIcon = ""
     var releases: List<Release> = emptyList()
+    var categories: List<String> = emptyList()
 
     // TODO Remove in next iteration
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
