@@ -102,7 +102,6 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.util.Config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -937,11 +936,6 @@ public final class Utilities {
 
     public static OmegaPreferences getOmegaPrefs(Context context) {
         return OmegaPreferences.Companion.getInstance(context);
-    }
-
-    public static boolean showQSB(Context context) {
-        return PackageManagerHelper.isAppEnabled(context.getPackageManager(), Config.GOOGLE_QSB, 0)
-                && getOmegaPrefs(context).getDockSearchBar();
     }
 
     /**

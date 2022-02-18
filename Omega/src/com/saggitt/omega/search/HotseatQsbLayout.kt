@@ -19,13 +19,63 @@
 package com.saggitt.omega.search
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityOptionsCompat
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.saggitt.omega.util.Config
 
 
 class HotseatQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs) {
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        findViewById<AppCompatImageView?>(R.id.search_engine_logo).apply {
+            setOnClickListener {
+                if (searchProvider.supportsFeed) {
+                    searchProvider.startFeed { intent ->
+                        mContext.startActivity(intent)
+                    }
+                } else {
+                    controller.searchProvider.startSearch { intent: Intent? ->
+                        context.startActivity(
+                            intent
+                            //intent, ActivityOptionsCompat.makeClipRevealAnimation(this, 0, 0, width, height).toBundle()
+                        )
+                    }
+                }
+            }
+        }
+        setOnClickListener {
+            startHotseatSearch()
+        }
+    }
+
+    private fun startHotseatSearch() {
+        val controller = SearchProviderController.getInstance(mContext)
+        val provider = controller.searchProvider
+
+        if (provider.packageName == Config.GOOGLE_QSB) {
+            mContext.startActivity(
+                Intent("android.search.action.GLOBAL_SEARCH").addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                ).setPackage(searchProvider.packageName)
+            )
+        } else {
+            controller.searchProvider.startSearch { intent: Intent? ->
+                context.startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeClipRevealAnimation(this, 0, 0, width, height)
+                        .toBundle()
+                )
+            }
+        }
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

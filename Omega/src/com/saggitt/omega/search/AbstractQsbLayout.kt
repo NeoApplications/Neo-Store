@@ -135,15 +135,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                     View.GONE
             }
         }
-
-        setOnClickListener {
-            mContext.startActivity(
-                Intent("android.search.action.GLOBAL_SEARCH").addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-                ).setPackage(searchProvider.packageName)
-            )
-        }
     }
 
     override fun onAttachedToWindow() {

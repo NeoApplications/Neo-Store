@@ -19,6 +19,7 @@
 package com.saggitt.omega.search
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
@@ -27,6 +28,18 @@ import com.android.launcher3.allapps.SearchUiManager
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager {
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        setOnClickListener {
+            mContext.startActivity(
+                Intent("android.search.action.GLOBAL_SEARCH").addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                ).setPackage(searchProvider.packageName)
+            )
+        }
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
