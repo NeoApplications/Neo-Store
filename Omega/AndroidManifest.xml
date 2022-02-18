@@ -80,8 +80,13 @@
                 <category android:name="android.intent.category.LAUNCHER_APP" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="com.android.launcher3.grid.control"
+                android:value="${packageName}.grid_control" />
+
+            <meta-data
+                android:name="com.android.launcher3.themedicon.option"
                 android:value="${packageName}.grid_control" />
         </activity>
 
