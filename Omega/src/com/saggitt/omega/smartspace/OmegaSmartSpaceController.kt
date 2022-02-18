@@ -42,7 +42,6 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.notification.NotificationListener
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.NOTIFICATION_BADGING
-import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.smartspace.eventprovider.*
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
@@ -417,28 +416,16 @@ class OmegaSmartSpaceController(val context: Context) {
 
             val context = controller.context
             val providerName = getDisplayName(this::class.java.name)
-            val intent: Intent
-            val msg: String
-            if (Utilities.ATLEAST_OREO) {
-                intent = Intent(context, PreferencesActivity::class.java)
-                    .putExtra(":settings:fragment_args_key", "pref_icon_badging")
-                    .putExtra("title", context.getString(R.string.title__general_desktop))
-                    .putExtra("content_res_id", R.xml.preferences_gestures)
-                msg = context.getString(
-                    R.string.event_provider_missing_notification_dots,
-                    context.getString(providerName)
-                )
-            } else {
-                val cn = ComponentName(context, NotificationListener::class.java)
-                intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(":settings:fragment_args_key", cn.flattenToString())
-                msg = context.getString(
-                    R.string.event_provider_missing_notification_access,
-                    context.getString(providerName),
-                    context.getString(R.string.derived_app_name)
-                )
-            }
+            val cn = ComponentName(context, NotificationListener::class.java)
+            val intent: Intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(":settings:fragment_args_key", cn.flattenToString())
+
+            val msg: String = context.getString(
+                R.string.event_provider_missing_notification_dots,
+                context.getString(providerName)
+            )
+
             BlankActivity.startActivityWithDialog(
                 context, intent, 1030,
                 context.getString(R.string.title_missing_notification_access),
