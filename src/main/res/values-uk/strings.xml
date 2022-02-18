@@ -185,4 +185,5 @@
     <string name="prefs_updated_apps">Кількість оновлених програм для показу</string>
     <string name="prefs_new_apps">Кількість нових програм для показу</string>
     <string name="new_repository">Новий репозиторій</string>
+    <string name="default_tab">Вкладка за замовчуванням</string>
 </resources>
