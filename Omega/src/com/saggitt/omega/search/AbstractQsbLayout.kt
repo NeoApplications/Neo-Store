@@ -121,7 +121,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             )
 
             visibility =
-                if (searchProvider.packageName == Config.GOOGLE_QSB && mContext.packageManager.resolveActivity(
+                if (searchProvider.packageName == Config.GOOGLE_QSB
+                    && searchProvider !is WebSearchProvider
+                    && mContext.packageManager.resolveActivity(
                         lensIntent,
                         0
                     ) != null
