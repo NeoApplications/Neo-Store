@@ -66,6 +66,8 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
     }
 
+    abstract fun startSearch(str: String?)
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -131,9 +133,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                         mContext.startActivity(lensIntent)
                     }
                     View.VISIBLE
-            } else {
+                } else {
                     View.GONE
-            }
+                }
         }
 
         setOnClickListener {

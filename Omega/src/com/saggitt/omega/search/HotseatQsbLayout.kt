@@ -19,14 +19,17 @@
 package com.saggitt.omega.search
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
+import androidx.core.app.ActivityOptionsCompat
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
-
+import kotlin.math.roundToInt
 
 class HotseatQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs) {
 
+    // TODO refresh layout when icons' form preference is changed
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val requestedWidth = MeasureSpec.getSize(widthMeasureSpec)
@@ -38,7 +41,7 @@ class HotseatQsbLayout(context: Context, attrs: AttributeSet? = null) :
             dp.cellLayoutBorderSpacingPx,
             dp.numShownHotseatIcons
         )
-        val width = requestedWidth - (cellWidth - Math.round(dp.iconSizePx * 0.92f))
+        val width = requestedWidth - (cellWidth - (dp.iconSizePx * 0.92f).roundToInt())
         setMeasuredDimension(width, height)
 
         for (i in 0 until childCount) {
@@ -46,6 +49,18 @@ class HotseatQsbLayout(context: Context, attrs: AttributeSet? = null) :
             if (child != null) {
                 measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0)
             }
+        }
+    }
+
+    override fun startSearch(str: String?) {
+        val controller = SearchProviderController
+            .getInstance(context)
+        controller.searchProvider.startSearch { intent: Intent? ->
+            //getLauncher(context).openQsb()
+            context.startActivity(
+                intent, ActivityOptionsCompat
+                    .makeClipRevealAnimation(this, 0, 0, width, height).toBundle()
+            )
         }
     }
 }

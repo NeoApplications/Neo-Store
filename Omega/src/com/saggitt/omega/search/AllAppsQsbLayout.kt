@@ -19,11 +19,13 @@
 package com.saggitt.omega.search
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
+import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager {
@@ -57,6 +59,16 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun startSearch() {
+        post { startSearch("") }
     }
 
+    override fun startSearch(str: String?) {
+        startDrawerSearch(str)
+    }
+
+    private fun startDrawerSearch(str: String?) {
+        SearchProviderController.getInstance(mContext).searchProvider.startSearch { intent: Intent? ->
+            getLauncher(context).startActivity(intent)
+        }
+    }
 }
