@@ -63,7 +63,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     private var mShadowHelper = NinePatchDrawHelper()
 
     init {
-        mAllAppsBgColor = mContext.getColorAttr(R.attr.qsbFillColor)
+        mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
     }
 
     override fun onFinishInflate() {
