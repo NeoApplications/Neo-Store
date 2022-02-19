@@ -30,6 +30,9 @@ import com.android.launcher3.ExtendedEditText;
 import com.android.launcher3.search.SearchAlgorithm;
 import com.android.launcher3.search.SearchCallback;
 import com.android.launcher3.widget.model.WidgetsListBaseEntry;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
 
@@ -103,6 +106,16 @@ public class WidgetsSearchBarController implements TextWatcher,
     public void clearSearchResult() {
         // Any existing search session will be cancelled by setting text to empty.
         mInput.setText("");
+    }
+
+    @Override
+    public boolean onSubmitSearch(String query) {
+        SearchProvider provider = SearchProviderController.Companion.getInstance(mCancelButton.getContext()).getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            ((WebSearchProvider) provider).openResults(query);
+            return true;
+        }
+        return false;
     }
 
     /**

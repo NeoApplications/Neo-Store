@@ -42,5 +42,12 @@ public interface SearchCallback<T> {
      * Called when the search results should be cleared.
      */
     void clearSearchResult();
+
+    /**
+     * Called when the user presses enter/search on their keyboard
+     *
+     * @return whether the event was handled
+     */
+    boolean onSubmitSearch(String query);
 }
 

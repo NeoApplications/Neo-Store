@@ -224,6 +224,17 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         mAppsView.onClearSearchResult();
     }
 
+    @Override
+    public boolean onSubmitSearch(String query) {
+        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            ((WebSearchProvider) provider).openResults(query);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void notifyResultChanged() {
         mAppsView.onSearchResultsChanged();
     }
