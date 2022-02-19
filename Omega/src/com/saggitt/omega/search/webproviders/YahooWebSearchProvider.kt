@@ -22,10 +22,11 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 
-class YahooWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class YahooWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_yahoo
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_yahoo, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://search.yahoo.com/search?q=%s"

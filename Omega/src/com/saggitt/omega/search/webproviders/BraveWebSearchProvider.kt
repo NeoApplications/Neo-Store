@@ -25,8 +25,10 @@ import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 
 class BraveWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_brave
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_brave, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://search.brave.com/search?q=%s"

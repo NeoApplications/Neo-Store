@@ -43,6 +43,7 @@ public interface SearchUiManager {
     default void preDispatchKeyEvent(KeyEvent keyEvent) {
     }
 
+    void startSearch(String str);
     void startSearch();
 
     /**

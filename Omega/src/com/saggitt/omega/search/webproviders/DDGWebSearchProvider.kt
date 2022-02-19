@@ -22,10 +22,11 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 
-class DDGWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class DDGWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_ddg
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_ddg, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://duckduckgo.com/?q=%s"

@@ -29,6 +29,7 @@ abstract class SearchProvider(protected val context: Context) {
 
     abstract val packageName: String
     abstract val icon: Drawable
+    abstract val iconRes: Int
     open val voiceIcon: Drawable?
         get() = if (supportsVoiceSearch)
             throw RuntimeException("Voice search supported but not implemented")

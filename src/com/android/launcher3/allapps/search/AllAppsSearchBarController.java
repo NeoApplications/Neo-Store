@@ -126,7 +126,8 @@ public class AllAppsSearchBarController
             mLauncher.getStatsLogManager().logger()
                     .log(LAUNCHER_ALLAPPS_FOCUSED_ITEM_SELECTED_WITH_IME);
             // selectFocusedView should return SearchTargetEvent that is passed onto onClick
-            return Launcher.getLauncher(mLauncher).getAppsView().launchHighlightedItem();
+            //return Launcher.getLauncher(mLauncher).getAppsView().launchHighlightedItem();
+            return mCallback.onSubmitSearch(v.getText().toString());
         }
         return false;
     }

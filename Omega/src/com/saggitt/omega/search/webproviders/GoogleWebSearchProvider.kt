@@ -23,10 +23,11 @@ import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 import com.saggitt.omega.util.locale
 
-class GoogleWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class GoogleWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_super_g_color
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_super_g_color, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://www.google.com/search?q=%s"

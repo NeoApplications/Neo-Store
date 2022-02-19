@@ -30,10 +30,11 @@ class QwantSearchProvider(context: Context) : FirefoxSearchProvider(context) {
     override val name = context.getString(R.string.search_provider_qwant)
     override val packageName = "com.qwant.liberty"
 
+    override val iconRes: Int
+        get() = R.drawable.ic_qwant
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qwant, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
-    override fun getPackage(context: Context) = listOf(
-            "com.qwant.liberty"
-    ).firstOrNull { context.packageManager.isAppEnabled(it, 0) }
+    override fun getPackage(context: Context) = listOf("com.qwant.liberty")
+        .firstOrNull { context.packageManager.isAppEnabled(it, 0) }
 }

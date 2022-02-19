@@ -23,10 +23,11 @@ import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 import com.saggitt.omega.util.locale
 
-class SearxWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class SearxWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_searx_search
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_searx_search, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://searx.info/search?q=%s&categories=general&language=${context.locale.language}"

@@ -25,6 +25,9 @@ import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
+import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
+import com.saggitt.omega.util.shouldUseDrawerSearch
+import kotlin.math.roundToInt
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager {
@@ -52,7 +55,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
             dp.cellLayoutBorderSpacingPx,
             dp.numShownAllAppsColumns
         )
-        val width = requestedWidth - (cellWidth - Math.round(dp.allAppsIconSizePx * 0.92f))
+        val width = requestedWidth - (cellWidth - (dp.allAppsIconSizePx * 0.92f).roundToInt())
         setMeasuredDimension(width, height)
 
         for (i in 0 until childCount) {
@@ -70,6 +73,20 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun startSearch() {
+        post { startSearch("") }
     }
 
+    override fun startSearch(str: String?) {
+        val provider = SearchProviderController.getInstance(mContext).searchProvider
+        if (context.shouldUseDrawerSearch(provider)) {
+            startDrawerSearch(str)
+        } else {
+            provider.startSearch { intent: Intent? ->
+                getLauncher(context).startActivity(intent)
+            }
+        }
+    }
+
+    private fun startDrawerSearch(str: String?) {
+    }
 }

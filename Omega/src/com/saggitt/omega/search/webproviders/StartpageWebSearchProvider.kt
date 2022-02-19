@@ -22,10 +22,11 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
 
-class StartpageWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class StartpageWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_startpage_search
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_startpage_search, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val packageName: String
         get() = "https://www.startpage.com/rvd/search?query=%s&language=auto"

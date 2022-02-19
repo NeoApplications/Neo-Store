@@ -40,14 +40,16 @@ open class EdgeSearchProvider(context: Context) : SearchProvider(context) {
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
         callback(
-                Intent(Intent.ACTION_MAIN)
-                        .setClassName(
-                                packageName,
-                                "com.microsoft.ruby.Main"
-                        )
+            Intent(Intent.ACTION_MAIN)
+                .setClassName(
+                    packageName,
+                    "com.microsoft.ruby.Main"
+                )
         )
     }
 
+    override val iconRes: Int
+        get() = R.drawable.ic_edge
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_edge, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 }

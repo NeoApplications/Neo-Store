@@ -39,25 +39,27 @@ class GoogleGoSearchProvider(context: Context) : SearchProvider(context) {
         get() = context.packageManager.isAppEnabled(packageName, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent("$packageName.SEARCH").putExtra("showKeyboard", true)
-                            .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName)
-            )
+        callback(
+            Intent("$packageName.SEARCH").putExtra("showKeyboard", true)
+                .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName)
+        )
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent("$packageName.SEARCH").putExtra("openMic", true)
-                            .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName)
-            )
+        callback(
+            Intent("$packageName.SEARCH").putExtra("openMic", true)
+                .putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true).setPackage(packageName)
+        )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent("$packageName.SEARCH").putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true)
-                            .setPackage(packageName)
-            )
+        callback(
+            Intent("$packageName.SEARCH").putExtra("$packageName.SKIP_BYPASS_AND_ONBOARDING", true)
+                .setPackage(packageName)
+        )
 
+    override val iconRes: Int
+        get() = R.drawable.ic_super_g_color
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_qsb_logo, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val voiceIcon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!
