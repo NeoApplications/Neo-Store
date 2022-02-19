@@ -29,6 +29,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,9 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +79,9 @@ public class AllAppsGridAdapter extends
 
     // Drawer folders
     public static final int VIEW_TYPE_FOLDER = 1 << 6;
+
+    // Web search suggestions
+    public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -124,6 +131,11 @@ public class AllAppsGridAdapter extends
 
         // The associated folder for the folder
         public DrawerFolderItem folderItem = null;
+
+        /**
+         * Search suggestion-only properties
+         */
+        public String suggestion;
 
         /**
          * Factory method for AppIcon AdapterItem
@@ -177,6 +189,14 @@ public class AllAppsGridAdapter extends
             item.sectionName = sectionName;
             item.folderItem = new DrawerFolderItem(folderInfo);
             item.appIndex = folderIndex;
+            return item;
+        }
+
+        public static AdapterItem asSearchSuggestion(int pos, String suggestion) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = VIEW_TYPE_SEARCH_SUGGESTION;
+            item.position = pos;
+            item.suggestion = suggestion;
             return item;
         }
 
@@ -402,6 +422,9 @@ public class AllAppsGridAdapter extends
                         mLauncher.getDeviceProfile().allAppsCellHeightPx);
                 layout.setLayoutParams(lp);
                 return new ViewHolder(layout);
+
+            case VIEW_TYPE_SEARCH_SUGGESTION:
+                return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(viewType);
                 if (adapterProvider != null) {
@@ -450,6 +473,21 @@ public class AllAppsGridAdapter extends
                 folderIcon.verifyHighRes();
                 break;
 
+            case VIEW_TYPE_SEARCH_SUGGESTION:
+                container = (ViewGroup) holder.itemView;
+                TextView textView = container.findViewById(R.id.suggestion);
+                String suggestion = mApps.getAdapterItems().get(position).suggestion;
+                textView.setText(suggestion);
+
+                SearchProvider provider = getSearchProvider();
+                ((ImageView) container.findViewById(android.R.id.icon)).setImageDrawable(provider.getIcon());
+                container.setOnClickListener(v -> {
+                    if (provider instanceof WebSearchProvider) {
+                        ((WebSearchProvider) provider).openResults(suggestion);
+                    }
+                });
+                break;
+
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(holder.getItemViewType());
                 if (adapterProvider != null) {
@@ -485,5 +523,9 @@ public class AllAppsGridAdapter extends
         return Arrays.stream(mAdapterProviders).filter(
                 adapterProvider -> adapterProvider.isViewSupported(viewType)).findFirst().orElse(
                 null);
+    }
+
+    private SearchProvider getSearchProvider() {
+        return SearchProviderController.Companion.getInstance(mLauncher).getSearchProvider();
     }
 }

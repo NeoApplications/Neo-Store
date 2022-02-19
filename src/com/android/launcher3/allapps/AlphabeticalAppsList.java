@@ -65,6 +65,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
     private final OmegaPreferences prefs;
 
+    private List<String> mSearchSuggestions;
 
     private final BaseDraggingActivity mLauncher;
 
@@ -257,7 +258,17 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
      * Returns whether there are no filtered results.
      */
     public boolean hasNoFilteredResults() {
-        return (mSearchResults != null) && mAccessibilityResultsCount == 0;
+        return (mSearchResults != null)
+                && mAccessibilityResultsCount == 0
+                && (mSearchSuggestions != null)
+                && mSearchSuggestions.isEmpty();
+    }
+
+    /**
+     * Returns whether there are suggestions.
+     */
+    public boolean hasSuggestions() {
+        return mSearchSuggestions != null && !mSearchSuggestions.isEmpty();
     }
 
     /**
@@ -268,6 +279,16 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             mSearchResults = results;
             updateAdapterItems();
             return true;
+        }
+        return false;
+    }
+
+    public boolean setSearchSuggestions(List<String> suggestions) {
+        if (mSearchSuggestions != suggestions) {
+            boolean same = mSearchSuggestions != null && mSearchSuggestions.equals(suggestions);
+            mSearchSuggestions = suggestions;
+            onAppsUpdated();
+            return !same;
         }
         return false;
     }
@@ -307,6 +328,13 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
         // Recreate the filtered and sectioned apps (for convenience for the grid layout) from the
         // ordered set of sections
+
+        // Search suggestions should be all the way to the top
+        if (hasFilter() && hasSuggestions()) {
+            for (String suggestion : mSearchSuggestions) {
+                mAdapterItems.add(AdapterItem.asSearchSuggestion(position++, suggestion));
+            }
+        }
 
         if (!hasFilter()) {
             mAccessibilityResultsCount = mApps.size();

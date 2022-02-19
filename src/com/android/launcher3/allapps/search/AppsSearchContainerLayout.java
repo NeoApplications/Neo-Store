@@ -43,6 +43,7 @@ import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.search.SearchCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Layout to contain the All-apps search UI.
@@ -169,7 +170,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
     }
 
     @Override
-    public void onSearchResult(String query, ArrayList<AdapterItem> items) {
+    public void onSearchResult(String query, ArrayList<AdapterItem> items, List<String> suggestions) {
         if (items != null) {
             mApps.setSearchResults(items);
             notifyResultChanged();

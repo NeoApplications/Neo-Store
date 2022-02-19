@@ -16,6 +16,7 @@
 package com.android.launcher3.search;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An interface for receiving search results.
@@ -29,7 +30,7 @@ public interface SearchCallback<T> {
      *
      * @param items list of search results
      */
-    void onSearchResult(String query, ArrayList<T> items);
+    void onSearchResult(String query, ArrayList<T> items, List<String> suggestions);
 
     /**
      * Called when the search from secondary source is complete.

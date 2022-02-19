@@ -31,8 +31,12 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.search.SearchAlgorithm;
 import com.android.launcher3.search.SearchCallback;
 import com.android.launcher3.search.StringMatcherUtility;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,10 +48,12 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
 
     private final LauncherAppState mAppState;
     private final Handler mResultHandler;
+    private final Context mContext;
 
     public DefaultAppSearchAlgorithm(Context context) {
         mAppState = LauncherAppState.getInstance(context);
         mResultHandler = new Handler(MAIN_EXECUTOR.getLooper());
+        mContext = context;
     }
 
     @Override
@@ -63,7 +69,8 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
             @Override
             public void execute(LauncherAppState app, BgDataModel dataModel, AllAppsList apps) {
                 ArrayList<AdapterItem> result = getTitleMatchResult(apps.data, query);
-                mResultHandler.post(() -> callback.onSearchResult(query, result));
+                final List<String> suggestions = getSuggestions(query);
+                mResultHandler.post(() -> callback.onSearchResult(query, result, suggestions));
             }
         });
     }
@@ -91,5 +98,14 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
             }
         }
         return result;
+    }
+
+    private List<String> getSuggestions(String query) {
+        SearchProvider provider = SearchProviderController.Companion
+                .getInstance(mContext).getSearchProvider();
+        if (provider instanceof WebSearchProvider) {
+            return ((WebSearchProvider) provider).getSuggestions(query);
+        } else
+            return Collections.emptyList();
     }
 }

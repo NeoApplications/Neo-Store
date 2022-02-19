@@ -35,6 +35,7 @@ import com.saggitt.omega.search.SearchProviderController;
 import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for a search bar with an edit text and a cancel button.
@@ -90,7 +91,7 @@ public class WidgetsSearchBarController implements TextWatcher,
     }
 
     @Override
-    public void onSearchResult(String query, ArrayList<WidgetsListBaseEntry> items) {
+    public void onSearchResult(String query, ArrayList<WidgetsListBaseEntry> items, List<String> suggestions) {
         if (DEBUG) {
             Log.d(TAG, "onSearchResult query: " + query + " items: " + items);
         }

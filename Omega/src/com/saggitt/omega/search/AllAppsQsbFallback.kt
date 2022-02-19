@@ -108,11 +108,20 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
     override fun startSearch() {
     }
 
-    override fun onSearchResult(query: String?, items: ArrayList<AdapterItem?>?) {
+    override fun onSearchResult(
+        query: String?,
+        items: java.util.ArrayList<AdapterItem>?,
+        suggestions: MutableList<String>?
+    ) {
         if (items != null) {
             mApps!!.setSearchResults(items)
-            notifyResultChanged()
-            mAppsView!!.setLastSearchQuery(query)
+        }
+        if (suggestions != null) {
+            mApps!!.setSearchSuggestions(suggestions);
+        }
+        if (mApps != null || suggestions != null) {
+            notifyResultChanged();
+            mAppsView!!.setLastSearchQuery(query);
         }
     }
 
@@ -124,7 +133,7 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun clearSearchResult() {
-        if (mApps!!.setSearchResults(null)) {
+        if (mApps!!.setSearchResults(null) || mApps!!.setSearchSuggestions(null)) {
             notifyResultChanged()
         }
 
