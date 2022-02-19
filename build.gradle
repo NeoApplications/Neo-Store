@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0-alpha01'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.18"
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
     }
@@ -218,17 +218,17 @@ dependencies {
     implementation "com.mikepenz:fastadapter-extensions-diff:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0"
     implementation 'com.github.otakuhqz.colorpickerx:colorpickerx:1.4.6'
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.4"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.4'
     implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
-    implementation 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
+    implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
 
     //Compose
-    implementation "androidx.compose.ui:ui:1.0.5"
-    implementation "androidx.compose.ui:ui-tooling:1.0.5"
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.0.5'
-    implementation "androidx.compose.compiler:compiler:1.0.5"
-    implementation "androidx.compose.material:material:1.0.5"
+    implementation "androidx.compose.ui:ui:1.1.0"
+    implementation "androidx.compose.ui:ui-tooling:1.1.0"
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.1.0'
+    implementation "androidx.compose.compiler:compiler:1.1.0"
+    implementation "androidx.compose.material:material:1.1.0"
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "io.coil-kt:coil-compose:1.4.0"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.19.0"

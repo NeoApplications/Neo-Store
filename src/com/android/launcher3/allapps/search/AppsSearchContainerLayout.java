@@ -18,8 +18,8 @@ package com.android.launcher3.allapps.search;
 import static android.view.View.MeasureSpec.EXACTLY;
 import static android.view.View.MeasureSpec.getSize;
 import static android.view.View.MeasureSpec.makeMeasureSpec;
-import static com.android.launcher3.Utilities.prefixTextWithIcon;
 import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
+import static com.saggitt.omega.util.OmegaUtilsKt.shouldUseDrawerSearch;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -35,6 +35,7 @@ import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.ExtendedEditText;
 import com.android.launcher3.Insettable;
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
@@ -42,8 +43,13 @@ import com.android.launcher3.allapps.AllAppsStore;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.search.SearchCallback;
+import com.saggitt.omega.search.SearchProvider;
+import com.saggitt.omega.search.SearchProviderController;
+import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
+
+import kotlin.Unit;
 
 /**
  * Layout to contain the All-apps search UI.
@@ -167,6 +173,25 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public void startSearch() {
+        startSearch("");
+    }
+
+    @Override
+    public void startSearch(String str) {
+        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
+        if (shouldUseDrawerSearch(getContext(), provider)) {
+            startDrawerSearch(str);
+        } else {
+            provider.startSearch(intent -> {
+                Launcher.getLauncher(getContext()).startActivity(intent);
+                return Unit.INSTANCE;
+            });
+        }
+    }
+
+    private void startDrawerSearch(String str) {
+        setText(str);
+        showKeyboard();
     }
 
     @Override
