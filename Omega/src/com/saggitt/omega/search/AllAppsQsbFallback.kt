@@ -117,11 +117,11 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
             mApps!!.setSearchResults(items)
         }
         if (suggestions != null) {
-            mApps!!.setSearchSuggestions(suggestions);
+            mApps!!.setSearchSuggestions(suggestions)
         }
         if (mApps != null || suggestions != null) {
-            notifyResultChanged();
-            mAppsView!!.setLastSearchQuery(query);
+            notifyResultChanged()
+            mAppsView!!.setLastSearchQuery(query)
         }
     }
 
