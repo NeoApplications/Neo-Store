@@ -29,7 +29,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import com.android.launcher3.BaseDraggingActivity
 import com.android.launcher3.ExtendedEditText
 import com.android.launcher3.Insettable
-import com.android.launcher3.R
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem
 import com.android.launcher3.allapps.AllAppsStore
@@ -49,11 +48,9 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
     private val mSearchQueryBuilder: SpannableStringBuilder = SpannableStringBuilder()
     private val searchProvider: SearchProvider =
         SearchProviderController.getInstance(getContext()).searchProvider
-    private val mContentOverlap =
-        context.resources.getDimensionPixelSize(R.dimen.all_apps_search_bar_field_height) / 2
 
     var mApps: AlphabeticalAppsList? = null
-    var mAppsView: AllAppsContainerView? = null
+    private var mAppsView: AllAppsContainerView? = null
     var allAppsQsbLayout: AllAppsQsbLayout? = null
 
     init {
@@ -101,7 +98,7 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
                     this, mSearchQueryBuilder,
                     event.keyCode, event
                 )
-                if (gotKey && mSearchQueryBuilder.length > 0) {
+                if (gotKey && mSearchQueryBuilder.isNotEmpty()) {
                     mSearchBarController.focusSearchField()
                 }
             }
