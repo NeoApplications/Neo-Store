@@ -26,7 +26,7 @@
     <string name="could_not_sync_FORMAT">Ei voitu synkronoida kohdetta %s</string>
     <string name="credits">Tekijät</string>
     <string name="cancel">Peruuta</string>
-    <string name="cant_edit_sync_DESC">Tietovarastoa ei voida muokata, koska sen synkronointi on käynnissä.</string>
+    <string name="cant_edit_sync_DESC">Juuri synkronoitavia tietovarastoja ei voida muokata…</string>
     <string name="changelog">Muutosloki</string>
     <string name="changes">Muutokset</string>
     <string name="checking_repository">Tarkistetaan tietovarastoa…</string>
@@ -183,4 +183,5 @@
     <string name="only_on_wifi_and_battery">Vain Wi-Fiin yhdistettynä ja latauksessa</string>
     <string name="install_after_sync">Asenna päivitykset automaattisesti</string>
     <string name="install_after_sync_summary">Asenna sovelluspäivitykset automaattisesti tietovarastojen synkronoinnin jälkeen</string>
+    <string name="default_tab">Oletusvälilehti</string>
 </resources>
