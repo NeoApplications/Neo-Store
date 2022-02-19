@@ -45,16 +45,15 @@ class AppsSearchProvider(context: Context) : SearchProvider(context) {
     override fun startSearch(callback: (intent: Intent) -> Unit) {
         val launcher = LauncherAppState.getInstanceNoCreate().launcher
         launcher.stateManager.goToState(
-                LauncherState.ALL_APPS,
-                true,
-                AnimatorListeners.forEndCallback(Runnable { launcher.appsView.searchUiManager.startSearch() })
+            LauncherState.ALL_APPS,
+            true,
+            AnimatorListeners.forEndCallback(Runnable { launcher.appsView.searchUiManager.startSearch() })
         )
     }
 
+    override val iconRes: Int
+        get() = R.drawable.ic_search
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_search, null)!!
-                .mutate()
-                .apply {
-                    setTint(prefs.accentColor)
-                }
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
+            .mutate().apply { setTint(prefs.accentColor) }
 }

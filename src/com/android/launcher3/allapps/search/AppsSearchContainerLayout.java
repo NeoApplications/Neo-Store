@@ -64,6 +64,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     private AlphabeticalAppsList mApps;
     private AllAppsContainerView mAppsView;
+    private SearchProvider searchProvider;
 
     // The amount of pixels to shift down and overlap with the rest of the content.
     private final int mContentOverlap;
@@ -82,6 +83,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         mLauncher = BaseDraggingActivity.fromContext(context);
         mSearchBarController = new AllAppsSearchBarController();
 
+        searchProvider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
         mSearchQueryBuilder = new SpannableStringBuilder();
         Selection.setSelection(mSearchQueryBuilder, 0);
 
@@ -131,6 +133,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         setTranslationX(shift);
 
         offsetTopAndBottom(mContentOverlap);
+        setCompoundDrawablesRelativeWithIntrinsicBounds(searchProvider.getIconRes(), 0, 0, 0);
     }
 
     @Override
@@ -178,11 +181,10 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public void startSearch(String str) {
-        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-        if (shouldUseDrawerSearch(getContext(), provider)) {
+        if (shouldUseDrawerSearch(getContext(), searchProvider)) {
             startDrawerSearch(str);
         } else {
-            provider.startSearch(intent -> {
+            searchProvider.startSearch(intent -> {
                 Launcher.getLauncher(getContext()).startActivity(intent);
                 return Unit.INSTANCE;
             });
@@ -226,9 +228,8 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public boolean onSubmitSearch(String query) {
-        SearchProvider provider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-        if (provider instanceof WebSearchProvider) {
-            ((WebSearchProvider) provider).openResults(query);
+        if (searchProvider instanceof WebSearchProvider) {
+            ((WebSearchProvider) searchProvider).openResults(query);
             return true;
         } else {
             return false;

@@ -43,33 +43,35 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
         get() = true
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent().setClassName(Config.GOOGLE_QSB, "${Config.GOOGLE_QSB}.SearchActivity"))
+        callback(Intent().setClassName(Config.GOOGLE_QSB, "${Config.GOOGLE_QSB}.SearchActivity"))
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent("android.intent.action.VOICE_ASSIST").addFlags(268468224)
-                            .setPackage(Config.GOOGLE_QSB)
-            )
+        callback(
+            Intent("android.intent.action.VOICE_ASSIST").addFlags(268468224)
+                .setPackage(Config.GOOGLE_QSB)
+        )
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent(Intent.ACTION_VOICE_COMMAND).addFlags(268468224).setPackage(Config.GOOGLE_QSB)
-            )
+        callback(
+            Intent(Intent.ACTION_VOICE_COMMAND).addFlags(268468224).setPackage(Config.GOOGLE_QSB)
+        )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
 
 
         callback(
-                Intent(Intent.ACTION_MAIN).setClassName(
-                    Config.GOOGLE_QSB,
-                    "${Config.GOOGLE_QSB}.SearchActivity"
-                )
+            Intent(Intent.ACTION_MAIN).setClassName(
+                Config.GOOGLE_QSB,
+                "${Config.GOOGLE_QSB}.SearchActivity"
             )
+        )
 
     }
 
+    override val iconRes: Int
+        get() = R.drawable.ic_super_g_color
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_super_g_color, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val voiceIcon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic_color, null)!!

@@ -49,41 +49,40 @@ class BingSearchProvider(context: Context) : SearchProvider(context) {
         get() = context.packageManager.isAppEnabled(PACKAGE, 0)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) = callback(
-            Intent().setClassName(
-                    PACKAGE,
-                    "com.microsoft.clients.bing.widget.WidgetSearchActivity"
-            ).setPackage(PACKAGE)
+        Intent().setClassName(
+            PACKAGE,
+            "com.microsoft.clients.bing.widget.WidgetSearchActivity"
+        ).setPackage(PACKAGE)
     )
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-            callback(Intent(Intent.ACTION_SEARCH_LONG_PRESS).setPackage(PACKAGE))
+        callback(Intent(Intent.ACTION_SEARCH_LONG_PRESS).setPackage(PACKAGE))
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) = callback(
-            if (cortanaInstalled) {
-                Intent().setClassName(
-                        PACKAGE_CORTANA,
-                        "com.microsoft.bing.dss.assist.AssistProxyActivity"
-                ).setPackage(PACKAGE_CORTANA)
-            } else {
-                Intent(Intent.ACTION_ASSIST).setPackage(PACKAGE_ALEXA)
-            }
+        if (cortanaInstalled) {
+            Intent().setClassName(
+                PACKAGE_CORTANA,
+                "com.microsoft.bing.dss.assist.AssistProxyActivity"
+            ).setPackage(PACKAGE_CORTANA)
+        } else {
+            Intent(Intent.ACTION_ASSIST).setPackage(PACKAGE_ALEXA)
+        }
     )
 
+    override val iconRes: Int
+        get() = R.drawable.ic_bing
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_bing, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     override val voiceIcon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic, null)!!
-            .mutate()
-            .apply {
-                setTint(Color.rgb(0x00, 0x89, 0x7B))
-            }
+            .mutate().apply { setTint(Color.rgb(0x00, 0x89, 0x7B)) }
 
     override val assistantIcon: Drawable?
         get() = ResourcesCompat.getDrawable(
-                context.resources,
-                if (cortanaInstalled) R.drawable.ic_cortana
-                else R.drawable.ic_alexa, null
+            context.resources,
+            if (cortanaInstalled) R.drawable.ic_cortana
+            else R.drawable.ic_alexa, null
         )!!
 
     companion object {

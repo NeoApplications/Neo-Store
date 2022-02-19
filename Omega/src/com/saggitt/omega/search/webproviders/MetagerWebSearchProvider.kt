@@ -24,10 +24,11 @@ import com.saggitt.omega.search.WebSearchProvider
 import com.saggitt.omega.util.locale
 import java.util.*
 
-class MetagerWebSearchProvider(context: Context) :
-        WebSearchProvider(context) {
+class MetagerWebSearchProvider(context: Context) : WebSearchProvider(context) {
+    override val iconRes: Int
+        get() = R.drawable.ic_metager_search
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_metager_search, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     // Metager is only available in English, Spanish and German
     val lang

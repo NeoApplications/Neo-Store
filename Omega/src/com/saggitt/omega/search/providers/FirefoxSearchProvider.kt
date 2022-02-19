@@ -39,25 +39,26 @@ open class FirefoxSearchProvider(context: Context) : SearchProvider(context) {
         get() = getPackage(context) != null
 
     override fun startSearch(callback: (intent: Intent) -> Unit) =
-            callback(
-                    Intent(Intent.ACTION_ASSIST).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .setPackage(getPackage(context))
-            )
+        callback(
+            Intent(Intent.ACTION_ASSIST).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .setPackage(getPackage(context))
+        )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) = callback(
-            Intent()
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage(getPackage(context))
+        Intent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setPackage(getPackage(context))
     )
 
+    override val iconRes: Int
+        get() = R.drawable.ic_firefox
     override val icon: Drawable
-        get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_firefox, null)!!
+        get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
 
     open fun getPackage(context: Context) = listOf(
-            "org.mozilla.firefox",
-            "org.mozilla.fennec_fdroid",
-            "org.mozilla.firefox_beta",
-            "org.mozilla.fennec_aurora",
-            "org.mozilla.focus",
-            "org.mozilla.fenix"
+        "org.mozilla.firefox",
+        "org.mozilla.fennec_fdroid",
+        "org.mozilla.firefox_beta",
+        "org.mozilla.fennec_aurora",
+        "org.mozilla.focus",
+        "org.mozilla.fenix"
     ).firstOrNull { context.packageManager.isAppEnabled(it, 0) }
 }
