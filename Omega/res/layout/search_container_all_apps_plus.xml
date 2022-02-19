@@ -21,10 +21,10 @@
     android:id="@+id/search_container_all_apps"
     android:layout_width="match_parent"
     android:layout_height="@dimen/qsb_widget_height"
+    android:layout_gravity="center|top"
+    android:layout_centerHorizontal="true"
     android:translationY="30dp"
     android:elevation="1dp"
-    android:background="@drawable/bg_google_qsb"
-    android:backgroundTint="@color/hotseat_qsb_bg_color"
     android:contentDescription="@string/label_search">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -32,18 +32,14 @@
         android:layout_width="@dimen/qsb_mic_width"
         android:layout_height="match_parent"
         android:layout_gravity="start|center"
-        android:layout_marginTop="-6.0dip"
-        android:layout_marginBottom="-6.0dip"
         android:scaleType="center"
+        android:padding="@dimen/qsb_icon_padding"
         tools:srcCompat="@drawable/ic_super_g_color" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end|center"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:paddingStart="6dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         tools:ignore="RtlSymmetry">
@@ -52,26 +48,25 @@
             android:id="@+id/mic_icon"
             android:layout_width="@dimen/qsb_mic_width"
             android:layout_height="match_parent"
-            android:layout_marginStart="-6dp"
             android:background="@drawable/pill_ripple"
             android:clickable="true"
             android:contentDescription="@string/label_voice_search"
-            android:scaleType="fitCenter"
-            android:focusable="false"
+            android:layout_gravity="start|center"
             android:padding="@dimen/qsb_icon_padding"
+            android:scaleType="center"
             tools:src="@drawable/ic_mic_color" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/lens_icon"
             android:layout_width="@dimen/qsb_mic_width"
             android:layout_height="match_parent"
-            android:layout_marginStart="-6dp"
             android:background="@drawable/pill_ripple"
             android:clickable="true"
             android:contentDescription="@string/label_lens"
             android:focusable="false"
+            android:layout_gravity="start|center"
             android:padding="@dimen/qsb_icon_padding"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             android:visibility="gone"
             tools:src="@drawable/ic_lens_color"
             tools:visibility="visible" />

@@ -19,7 +19,6 @@ import static android.view.View.MeasureSpec.EXACTLY;
 import static android.view.View.MeasureSpec.getSize;
 import static android.view.View.MeasureSpec.makeMeasureSpec;
 import static com.android.launcher3.icons.IconNormalizer.ICON_VISIBLE_AREA_FACTOR;
-import static com.saggitt.omega.util.OmegaUtilsKt.shouldUseDrawerSearch;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -35,7 +34,6 @@ import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.ExtendedEditText;
 import com.android.launcher3.Insettable;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
@@ -43,20 +41,15 @@ import com.android.launcher3.allapps.AllAppsStore;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.search.SearchCallback;
-import com.saggitt.omega.search.SearchProvider;
-import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
-
-import kotlin.Unit;
 
 /**
  * Layout to contain the All-apps search UI.
  */
 public class AppsSearchContainerLayout extends ExtendedEditText
         implements SearchUiManager, SearchCallback<AdapterItem>,
-        AllAppsStore.OnUpdateListener, Insettable, SearchProviderController.OnProviderChangeListener {
+        AllAppsStore.OnUpdateListener, Insettable {
 
     private final BaseDraggingActivity mLauncher;
     private final AllAppsSearchBarController mSearchBarController;
@@ -64,7 +57,6 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     private AlphabeticalAppsList mApps;
     private AllAppsContainerView mAppsView;
-    private SearchProvider searchProvider;
 
     // The amount of pixels to shift down and overlap with the rest of the content.
     private final int mContentOverlap;
@@ -83,7 +75,6 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         mLauncher = BaseDraggingActivity.fromContext(context);
         mSearchBarController = new AllAppsSearchBarController();
 
-        searchProvider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
         mSearchQueryBuilder = new SpannableStringBuilder();
         Selection.setSelection(mSearchQueryBuilder, 0);
 
@@ -95,14 +86,12 @@ public class AppsSearchContainerLayout extends ExtendedEditText
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mAppsView.getAppsStore().addUpdateListener(this);
-        SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mAppsView.getAppsStore().removeUpdateListener(this);
-        SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
     }
 
     @Override
@@ -135,13 +124,6 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         setTranslationX(shift);
 
         offsetTopAndBottom(mContentOverlap);
-        setCompoundDrawablesRelativeWithIntrinsicBounds(searchProvider.getIconRes(), 0, 0, 0);
-    }
-
-    @Override
-    public void onSearchProviderChanged() {
-        searchProvider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
-        setCompoundDrawablesRelativeWithIntrinsicBounds(searchProvider.getIconRes(), 0, 0, 0);
     }
 
     @Override
@@ -184,24 +166,6 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public void startSearch() {
-        startSearch("");
-    }
-
-    @Override
-    public void startSearch(String str) {
-        if (shouldUseDrawerSearch(getContext(), searchProvider)) {
-            startDrawerSearch(str);
-        } else {
-            searchProvider.startSearch(intent -> {
-                Launcher.getLauncher(getContext()).startActivity(intent);
-                return Unit.INSTANCE;
-            });
-        }
-    }
-
-    private void startDrawerSearch(String str) {
-        setText(str);
-        showKeyboard();
     }
 
     @Override
@@ -236,12 +200,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public boolean onSubmitSearch(String query) {
-        if (searchProvider instanceof WebSearchProvider) {
-            ((WebSearchProvider) searchProvider).openResults(query);
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     private void notifyResultChanged() {

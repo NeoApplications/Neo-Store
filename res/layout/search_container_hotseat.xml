@@ -38,8 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end|center"
-        android:paddingStart="4dp"
-        android:paddingEnd="2dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         tools:ignore="RtlSymmetry">
@@ -48,13 +46,13 @@
             android:id="@+id/mic_icon"
             android:layout_width="@dimen/qsb_mic_width"
             android:layout_height="match_parent"
-            android:layout_marginStart="0dp"
             android:background="@drawable/pill_ripple"
             android:clickable="true"
             android:contentDescription="@string/label_voice_search"
-            android:scaleType="fitCenter"
+            android:layout_gravity="start|center"
+            android:padding="@dimen/qsb_icon_padding"
+            android:scaleType="center"
             android:focusable="false"
-            android:padding="12dp"
             tools:src="@drawable/ic_mic_color" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -65,8 +63,9 @@
             android:clickable="true"
             android:contentDescription="@string/label_lens"
             android:focusable="false"
-            android:padding="12dp"
-            android:scaleType="fitCenter"
+            android:layout_gravity="start|center"
+            android:padding="@dimen/qsb_icon_padding"
+            android:scaleType="center"
             android:visibility="gone"
             tools:src="@drawable/ic_lens_color"
             tools:visibility="visible" />

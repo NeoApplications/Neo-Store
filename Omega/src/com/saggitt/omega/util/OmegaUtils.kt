@@ -67,9 +67,6 @@ import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
 import com.android.systemui.shared.system.QuickStepContract
-import com.saggitt.omega.search.SearchProvider
-import com.saggitt.omega.search.WebSearchProvider
-import com.saggitt.omega.search.providers.AppsSearchProvider
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -645,8 +642,3 @@ fun PackageManager.isAppEnabled(packageName: String?, flags: Int): Boolean {
         false
     }
 }
-
-fun Context.shouldUseDrawerSearch(provider: SearchProvider) =
-    !Utilities.getOmegaPrefs(this).allAppsGlobalSearch
-            || provider is AppsSearchProvider
-            || provider is WebSearchProvider

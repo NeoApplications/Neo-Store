@@ -23,26 +23,21 @@ import android.content.Intent
 import android.util.AttributeSet
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
-import com.saggitt.omega.util.shouldUseDrawerSearch
+import com.saggitt.omega.search.providers.AppsSearchProvider
 import kotlin.math.roundToInt
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager {
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        setOnClickListener {
-            mContext.startActivity(
-                Intent("android.search.action.GLOBAL_SEARCH").addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-                ).setPackage(searchProvider.packageName)
-            )
-        }
-    }
+    private val mUseFallbackSearch = false
+    var removeFallback = false
+
+    private var mFallback: AllAppsQsbFallback? = null
+    private lateinit var mAppsView: AllAppsContainerView
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -66,10 +61,16 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    override fun initializeSearch(appsView: AllAppsContainerView) {
+    override fun initializeSearch(allAppsContainerView: AllAppsContainerView) {
+        mAppsView = allAppsContainerView
     }
 
     override fun resetSearch() {
+        if (mUseFallbackSearch) {
+            resetFallbackView()
+        } else if (!removeFallback) {
+            removeFallbackView()
+        }
     }
 
     override fun startSearch() {
@@ -78,7 +79,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     override fun startSearch(str: String?) {
         val provider = SearchProviderController.getInstance(mContext).searchProvider
-        if (context.shouldUseDrawerSearch(provider)) {
+        if (shouldUseFallbackSearch(provider)) {
             startDrawerSearch(str)
         } else {
             provider.startSearch { intent: Intent? ->
@@ -87,6 +88,45 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun startDrawerSearch(str: String?) {
+    private fun startDrawerSearch(query: String?) {
+        ensureFallbackView();
+        mFallback?.setText(query);
+        mFallback?.showKeyboard();
     }
+
+    private fun ensureFallbackView() {
+        if (mFallback == null) {
+            setOnClickListener(null)
+            mFallback = getLauncher().layoutInflater
+                .inflate(
+                    R.layout.search_container_all_apps_fallback,
+                    this,
+                    false
+                ) as AllAppsQsbFallback
+            val allAppsContainerView: AllAppsContainerView = mAppsView
+            mFallback!!.allAppsQsbLayout = this
+            mFallback!!.initializeSearch(allAppsContainerView)
+            addView(mFallback)
+        }
+    }
+
+    private fun resetFallbackView() {
+        if (mFallback != null) {
+            mFallback!!.reset()
+            mFallback!!.clearSearchResult()
+        }
+    }
+
+    private fun removeFallbackView() {
+        if (mFallback != null) {
+            mFallback!!.clearSearchResult()
+            removeView(mFallback)
+            mFallback = null
+        }
+    }
+
+    private fun shouldUseFallbackSearch(provider: SearchProvider) =
+        !prefs.allAppsGlobalSearch
+                || provider is AppsSearchProvider
+                || provider is WebSearchProvider
 }

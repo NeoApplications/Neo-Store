@@ -33,15 +33,19 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.android.launcher3.*
 import com.android.launcher3.graphics.IconShape
 import com.android.launcher3.graphics.NinePatchDrawHelper
 import com.android.launcher3.icons.ShadowGenerator.Builder
+import com.android.launcher3.views.ActivityContext
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
+
 
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs), SearchProviderController.OnProviderChangeListener,
@@ -52,6 +56,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     protected var searchProvider: SearchProvider = controller.searchProvider
     private var mShowAssistant = false
     protected var mIsRtl = Utilities.isRtl(resources)
+    private var mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
+    private var mShadowHelper = NinePatchDrawHelper()
+    protected var mActivity: ActivityContext? = ActivityContext.lookupContext(context);
 
     private var micIconView: ImageView? = null
     private var searchLogoView: ImageView? = null
@@ -59,14 +66,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     private var mAllAppsShadowBitmap: Bitmap? = null
     private var mClearBitmap: Bitmap? = null
-    private var mAllAppsBgColor = Color.WHITE
-    private var mShadowHelper = NinePatchDrawHelper()
-
-    init {
-        mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
-    }
-
-    abstract fun startSearch(str: String?)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -79,12 +78,13 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                         mContext.startActivity(intent)
                     }
                 } else {
-                    mContext.startActivity(
-                        Intent("android.search.action.GLOBAL_SEARCH").addFlags(
-                            Intent.FLAG_ACTIVITY_NEW_TASK or
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        ).setPackage(searchProvider.packageName)
-                    )
+                    controller.searchProvider.startSearch { intent: Intent? ->
+                        context.startActivity(
+                            intent,
+                            ActivityOptionsCompat.makeClipRevealAnimation(this, 0, 0, width, height)
+                                .toBundle()
+                        )
+                    }
                 }
             }
         }
@@ -137,6 +137,18 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                     View.GONE
                 }
         }
+
+        setOnClickListener {
+            val provider = controller.searchProvider
+            provider.startSearch { intent: Intent? ->
+                mContext.startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeClipRevealAnimation(this, 0, 0, width, height)
+                        .toBundle()
+                )
+            }
+
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -152,6 +164,14 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         SearchProviderController.getInstance(mContext).removeOnProviderChangeListener(this)
     }
 
+    override fun draw(canvas: Canvas) {
+        ensureAllAppsShadowBitmap()
+        drawShadow(mAllAppsShadowBitmap, canvas)
+        super.draw(canvas)
+    }
+
+    abstract fun startSearch(str: String?)
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when (key) {
             "opa_enabled",
@@ -163,12 +183,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     override fun onSearchProviderChanged() {
         reloadPreferences(Utilities.getPrefs(mContext))
-    }
-
-    override fun draw(canvas: Canvas) {
-        ensureAllAppsShadowBitmap()
-        drawShadow(mAllAppsShadowBitmap, canvas)
-        super.draw(canvas)
     }
 
     private fun ensureAllAppsShadowBitmap() {
@@ -237,7 +251,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     }
 
     /*
-    * Create the search background when clicked
+    * Create the searchbar background when clicked
     */
     private fun addOrUpdateSearchRipple() {
         val insetDrawable: InsetDrawable = createRipple().mutate() as InsetDrawable
@@ -273,7 +287,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     }
 
     /*
-     * Get the search width
+     * Get the searchbar width
      */
     open fun getMeasuredWidth(width: Int, dp: DeviceProfile): Int {
         val leftRightPadding = (dp.desiredWorkspaceLeftRightMarginPx
@@ -350,4 +364,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         return searchProvider.getIcon(true)
     }
 
+    open fun getLauncher(): OmegaLauncher {
+        return mActivity as OmegaLauncher
+    }
 }
