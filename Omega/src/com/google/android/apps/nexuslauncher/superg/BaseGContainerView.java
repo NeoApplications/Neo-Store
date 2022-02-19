@@ -25,7 +25,8 @@ import com.android.launcher3.Utilities;
 import com.saggitt.omega.search.SearchProvider;
 import com.saggitt.omega.search.SearchProviderController;
 
-public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseGContainerView extends FrameLayout implements View.OnClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener, SearchProviderController.OnProviderChangeListener {
     private static final String TEXT_ASSIST = "com.google.android.googlequicksearchbox.TEXT_ASSIST";
 
     private ObjectAnimator mObjectAnimator;
@@ -76,6 +77,13 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         applyOpaPreference();
         applyMinusOnePreference();
         applyVisibility();
+        SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        SearchProviderController.Companion.getInstance(getContext()).removeOnProviderChangeListener(this);
     }
 
     private void applyMinusOnePreference() {
@@ -234,6 +242,11 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
         if ("pref_globalSearchProvider".equals(s)) {
             loadIcon();
         }
+    }
+
+    @Override
+    public void onSearchProviderChanged() {
+        loadIcon();
     }
 
     private void loadIcon() {

@@ -56,7 +56,7 @@ import kotlin.Unit;
  */
 public class AppsSearchContainerLayout extends ExtendedEditText
         implements SearchUiManager, SearchCallback<AdapterItem>,
-        AllAppsStore.OnUpdateListener, Insettable {
+        AllAppsStore.OnUpdateListener, Insettable, SearchProviderController.OnProviderChangeListener {
 
     private final BaseDraggingActivity mLauncher;
     private final AllAppsSearchBarController mSearchBarController;
@@ -95,12 +95,14 @@ public class AppsSearchContainerLayout extends ExtendedEditText
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mAppsView.getAppsStore().addUpdateListener(this);
+        SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mAppsView.getAppsStore().removeUpdateListener(this);
+        SearchProviderController.Companion.getInstance(getContext()).addOnProviderChangeListener(this);
     }
 
     @Override
@@ -133,6 +135,12 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         setTranslationX(shift);
 
         offsetTopAndBottom(mContentOverlap);
+        setCompoundDrawablesRelativeWithIntrinsicBounds(searchProvider.getIconRes(), 0, 0, 0);
+    }
+
+    @Override
+    public void onSearchProviderChanged() {
+        searchProvider = SearchProviderController.Companion.getInstance(getContext()).getSearchProvider();
         setCompoundDrawablesRelativeWithIntrinsicBounds(searchProvider.getIconRes(), 0, 0, 0);
     }
 
