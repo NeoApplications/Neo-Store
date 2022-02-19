@@ -46,7 +46,6 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
 
-
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs), SearchProviderController.OnProviderChangeListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -58,7 +57,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     protected var mIsRtl = Utilities.isRtl(resources)
     private var mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
     private var mShadowHelper = NinePatchDrawHelper()
-    protected var mActivity: ActivityContext? = ActivityContext.lookupContext(context);
+    protected var mActivity: ActivityContext? = ActivityContext.lookupContext(context)
 
     private var micIconView: ImageView? = null
     private var searchLogoView: ImageView? = null

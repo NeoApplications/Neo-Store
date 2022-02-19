@@ -89,14 +89,13 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun startDrawerSearch(query: String?) {
-        ensureFallbackView();
-        mFallback?.setText(query);
-        mFallback?.showKeyboard();
+        ensureFallbackView()
+        mFallback?.setText(query)
+        mFallback?.showKeyboard()
     }
 
     private fun ensureFallbackView() {
         if (mFallback == null) {
-            setOnClickListener(null)
             mFallback = getLauncher().layoutInflater
                 .inflate(
                     R.layout.search_container_all_apps_fallback,
