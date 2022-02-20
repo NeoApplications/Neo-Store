@@ -3,7 +3,10 @@ package com.looker.droidify.index
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.entity.Author
+import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.json.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
@@ -123,7 +126,7 @@ object IndexV1Parser {
         var categories = emptyList<String>()
         var antiFeatures = emptyList<String>()
         val licenses = mutableListOf<String>()
-        val donates = mutableListOf<Product.Donate>()
+        val donates = mutableListOf<Donate>()
         val localizedMap = mutableMapOf<String, Localized>()
         forEachKey { it ->
             when {
@@ -147,11 +150,11 @@ object IndexV1Parser {
                 it.array("antiFeatures") -> antiFeatures = collectDistinctNotEmptyStrings()
                 it.string("license") -> licenses += valueAsString.split(',')
                     .filter { it.isNotEmpty() }
-                it.string("donate") -> donates += Product.Donate.Regular(valueAsString)
-                it.string("bitcoin") -> donates += Product.Donate.Bitcoin(valueAsString)
-                it.string("flattrID") -> donates += Product.Donate.Flattr(valueAsString)
-                it.string("liberapayID") -> donates += Product.Donate.Liberapay(valueAsString)
-                it.string("openCollective") -> donates += Product.Donate.OpenCollective(
+                it.string("donate") -> donates += Donate.Regular(valueAsString)
+                it.string("bitcoin") -> donates += Donate.Bitcoin(valueAsString)
+                it.string("flattrID") -> donates += Donate.Flattr(valueAsString)
+                it.string("liberapayID") -> donates += Donate.Liberapay(valueAsString)
+                it.string("openCollective") -> donates += Donate.OpenCollective(
                     valueAsString
                 )
                 it.dictionary("localized") -> forEachKey { keyToken ->
@@ -206,23 +209,11 @@ object IndexV1Parser {
         val screenshots = screenshotPairs
             ?.let { (key, screenshots) ->
                 screenshots.phone.asSequence()
-                    .map { Product.Screenshot(key, Product.Screenshot.Type.PHONE, it) } +
+                    .map { Screenshot(key, Screenshot.Type.PHONE, it) } +
                         screenshots.smallTablet.asSequence()
-                            .map {
-                                Product.Screenshot(
-                                    key,
-                                    Product.Screenshot.Type.SMALL_TABLET,
-                                    it
-                                )
-                            } +
+                            .map { Screenshot(key, Screenshot.Type.SMALL_TABLET, it) } +
                         screenshots.largeTablet.asSequence()
-                            .map {
-                                Product.Screenshot(
-                                    key,
-                                    Product.Screenshot.Type.LARGE_TABLET,
-                                    it
-                                )
-                            }
+                            .map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) }
             }
             .orEmpty().toList()
         return Product(
@@ -234,7 +225,7 @@ object IndexV1Parser {
             whatsNew,
             icon,
             metadataIcon,
-            Product.Author(authorName, authorEmail, authorWeb),
+            Author(authorName, authorEmail, authorWeb),
             source,
             changelog,
             web,

@@ -11,7 +11,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.looker.droidify.R
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.graphics.PaddingDrawable
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
@@ -19,7 +19,7 @@ import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.resources.sizeScaled
 import com.looker.droidify.widget.StableRecyclerAdapter
 
-class ScreenshotsAdapter(private val onClick: (Product.Screenshot) -> Unit) :
+class ScreenshotsAdapter(private val onClick: (Screenshot) -> Unit) :
     StableRecyclerAdapter<ScreenshotsAdapter.ViewType, RecyclerView.ViewHolder>() {
     enum class ViewType { SCREENSHOT }
 
@@ -68,7 +68,7 @@ class ScreenshotsAdapter(private val onClick: (Product.Screenshot) -> Unit) :
     fun setScreenshots(
         repository: Repository,
         packageName: String,
-        screenshots: List<Product.Screenshot>
+        screenshots: List<Screenshot>
     ) {
         items.clear()
         items += screenshots.map { Item.ScreenshotItem(repository, packageName, it) }
@@ -132,7 +132,7 @@ class ScreenshotsAdapter(private val onClick: (Product.Screenshot) -> Unit) :
         class ScreenshotItem(
             val repository: Repository,
             val packageName: String,
-            val screenshot: Product.Screenshot,
+            val screenshot: Screenshot,
         ) : Item() {
             override val descriptor: String
                 get() = "screenshot.${repository.id}.${screenshot.identifier}"

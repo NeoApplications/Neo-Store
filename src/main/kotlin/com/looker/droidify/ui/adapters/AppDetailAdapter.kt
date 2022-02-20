@@ -48,6 +48,7 @@ import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.ScreenshotsAdapter
 import com.looker.droidify.utility.KParcelable
@@ -76,7 +77,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         fun onActionClick(action: Action)
         fun onPreferenceChanged(preference: ProductPreference)
         fun onPermissionsClick(group: String?, permissions: List<String>)
-        fun onScreenshotClick(screenshot: Product.Screenshot)
+        fun onScreenshotClick(screenshot: Screenshot)
         fun onReleaseClick(release: Release)
         fun onUriClick(uri: Uri, shouldConfirm: Boolean): Boolean
     }
@@ -150,7 +151,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         }
 
         class ScreenshotItem(
-            val screenshots: List<Product.Screenshot>,
+            val screenshots: List<Screenshot>,
             val packageName: String,
             val repository: Repository,
         ) : Item() {
@@ -234,36 +235,36 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                 }
             }
 
-            class Donate(val donate: Product.Donate) : LinkItem() {
+            class Donate(val donate: com.looker.droidify.entity.Donate) : LinkItem() {
                 override val descriptor: String
                     get() = "link.donate.$donate"
 
                 override val iconResId: Int
                     get() = when (donate) {
-                        is Product.Donate.Regular -> R.drawable.ic_donate_regular
-                        is Product.Donate.Bitcoin -> R.drawable.ic_donate_bitcoin
-                        is Product.Donate.Litecoin -> R.drawable.ic_donate_litecoin
-                        is Product.Donate.Flattr -> R.drawable.ic_donate_flattr
-                        is Product.Donate.Liberapay -> R.drawable.ic_donate_liberapay
-                        is Product.Donate.OpenCollective -> R.drawable.ic_donate_opencollective
+                        is com.looker.droidify.entity.Donate.Regular -> R.drawable.ic_donate_regular
+                        is com.looker.droidify.entity.Donate.Bitcoin -> R.drawable.ic_donate_bitcoin
+                        is com.looker.droidify.entity.Donate.Litecoin -> R.drawable.ic_donate_litecoin
+                        is com.looker.droidify.entity.Donate.Flattr -> R.drawable.ic_donate_flattr
+                        is com.looker.droidify.entity.Donate.Liberapay -> R.drawable.ic_donate_liberapay
+                        is com.looker.droidify.entity.Donate.OpenCollective -> R.drawable.ic_donate_opencollective
                     }
 
                 override fun getTitle(context: Context): String = when (donate) {
-                    is Product.Donate.Regular -> context.getString(R.string.website)
-                    is Product.Donate.Bitcoin -> "Bitcoin"
-                    is Product.Donate.Litecoin -> "Litecoin"
-                    is Product.Donate.Flattr -> "Flattr"
-                    is Product.Donate.Liberapay -> "Liberapay"
-                    is Product.Donate.OpenCollective -> "Open Collective"
+                    is com.looker.droidify.entity.Donate.Regular -> context.getString(R.string.website)
+                    is com.looker.droidify.entity.Donate.Bitcoin -> "Bitcoin"
+                    is com.looker.droidify.entity.Donate.Litecoin -> "Litecoin"
+                    is com.looker.droidify.entity.Donate.Flattr -> "Flattr"
+                    is com.looker.droidify.entity.Donate.Liberapay -> "Liberapay"
+                    is com.looker.droidify.entity.Donate.OpenCollective -> "Open Collective"
                 }
 
                 override val uri: Uri? = when (donate) {
-                    is Product.Donate.Regular -> Uri.parse(donate.url)
-                    is Product.Donate.Bitcoin -> Uri.parse("bitcoin:${donate.address}")
-                    is Product.Donate.Litecoin -> Uri.parse("litecoin:${donate.address}")
-                    is Product.Donate.Flattr -> Uri.parse("https://flattr.com/thing/${donate.id}")
-                    is Product.Donate.Liberapay -> Uri.parse("https://liberapay.com/~${donate.id}")
-                    is Product.Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
+                    is com.looker.droidify.entity.Donate.Regular -> Uri.parse(donate.url)
+                    is com.looker.droidify.entity.Donate.Bitcoin -> Uri.parse("bitcoin:${donate.address}")
+                    is com.looker.droidify.entity.Donate.Litecoin -> Uri.parse("litecoin:${donate.address}")
+                    is com.looker.droidify.entity.Donate.Flattr -> Uri.parse("https://flattr.com/thing/${donate.id}")
+                    is com.looker.droidify.entity.Donate.Liberapay -> Uri.parse("https://liberapay.com/~${donate.id}")
+                    is com.looker.droidify.entity.Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
                 }
             }
         }

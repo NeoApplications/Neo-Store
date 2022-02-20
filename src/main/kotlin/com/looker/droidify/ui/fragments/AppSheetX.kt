@@ -23,6 +23,7 @@ import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.SheetAppXBinding
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.screen.ScreenshotsFragment
@@ -385,7 +386,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
         )
     }
 
-    override fun onScreenshotClick(screenshot: Product.Screenshot) {
+    override fun onScreenshotClick(screenshot: Screenshot) {
         val pair = productRepos.asSequence()
             .map { it ->
                 Pair(

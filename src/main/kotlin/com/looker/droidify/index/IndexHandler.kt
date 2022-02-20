@@ -1,6 +1,8 @@
 package com.looker.droidify.index
 
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.entity.Author
+import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.Product
 import com.looker.droidify.utility.extension.android.Android
 import org.xml.sax.Attributes
@@ -36,17 +38,17 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         fun onProduct(product: Product)
     }
 
-    internal object DonateComparator : Comparator<Product.Donate> {
+    internal object DonateComparator : Comparator<Donate> {
         private val classes = listOf(
-            Product.Donate.Regular::class,
-            Product.Donate.Bitcoin::class,
-            Product.Donate.Litecoin::class,
-            Product.Donate.Flattr::class,
-            Product.Donate.Liberapay::class,
-            Product.Donate.OpenCollective::class
+            Donate.Regular::class,
+            Donate.Bitcoin::class,
+            Donate.Litecoin::class,
+            Donate.Flattr::class,
+            Donate.Liberapay::class,
+            Donate.OpenCollective::class
         )
 
-        override fun compare(donate1: Product.Donate, donate2: Product.Donate): Int {
+        override fun compare(donate1: Donate, donate2: Donate): Int {
             val index1 = classes.indexOf(donate1::class)
             val index2 = classes.indexOf(donate2::class)
             return when {
@@ -84,7 +86,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         val categories = linkedSetOf<String>()
         val antiFeatures = linkedSetOf<String>()
         val licenses = mutableListOf<String>()
-        val donates = mutableListOf<Product.Donate>()
+        val donates = mutableListOf<Donate>()
         val releases = mutableListOf<Release>()
 
         fun build(): Product {
@@ -97,7 +99,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
                 "",
                 icon,
                 "",
-                Product.Author(authorName, authorEmail, ""),
+                Author(authorName, authorEmail, ""),
                 source,
                 changelog,
                 web,
@@ -318,12 +320,12 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
                         .filter { it.isNotEmpty() }
                     "license" -> productBuilder.licenses += content.split(',')
                         .filter { it.isNotEmpty() }
-                    "donate" -> productBuilder.donates += Product.Donate.Regular(content)
-                    "bitcoin" -> productBuilder.donates += Product.Donate.Bitcoin(content)
-                    "litecoin" -> productBuilder.donates += Product.Donate.Litecoin(content)
-                    "flattr" -> productBuilder.donates += Product.Donate.Flattr(content)
-                    "liberapay" -> productBuilder.donates += Product.Donate.Liberapay(content)
-                    "openCollective" -> productBuilder.donates += Product.Donate.OpenCollective(
+                    "donate" -> productBuilder.donates += Donate.Regular(content)
+                    "bitcoin" -> productBuilder.donates += Donate.Bitcoin(content)
+                    "litecoin" -> productBuilder.donates += Donate.Litecoin(content)
+                    "flattr" -> productBuilder.donates += Donate.Flattr(content)
+                    "liberapay" -> productBuilder.donates += Donate.Liberapay(content)
+                    "openCollective" -> productBuilder.donates += Donate.OpenCollective(
                         content
                     )
                 }

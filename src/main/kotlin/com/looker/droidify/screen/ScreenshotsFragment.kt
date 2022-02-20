@@ -21,7 +21,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.looker.droidify.R
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.graphics.PaddingDrawable
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.RxUtils
@@ -211,12 +211,12 @@ class ScreenshotsFragment() : DialogFragment() {
         }
 
         private var repository: Repository? = null
-        private var screenshots = emptyList<Product.Screenshot>()
+        private var screenshots = emptyList<Screenshot>()
 
         fun update(
             viewPager: ViewPager2,
             repository: Repository?,
-            screenshots: List<Product.Screenshot>,
+            screenshots: List<Screenshot>,
         ) {
             this.repository = repository
             this.screenshots = screenshots

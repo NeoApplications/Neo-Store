@@ -21,6 +21,7 @@ import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.screen.ScreenFragment
@@ -507,7 +508,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
         )
     }
 
-    override fun onScreenshotClick(screenshot: Product.Screenshot) {
+    override fun onScreenshotClick(screenshot: Screenshot) {
         val pair = products.asSequence()
             .map { it ->
                 Pair(

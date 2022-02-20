@@ -32,28 +32,6 @@ data class Product(
     val screenshots: List<Screenshot>,
     val releases: List<Release>,
 ) {
-    data class Author(val name: String, val email: String, val web: String)
-
-    sealed class Donate {
-        data class Regular(val url: String) : Donate()
-        data class Bitcoin(val address: String) : Donate()
-        data class Litecoin(val address: String) : Donate()
-        data class Flattr(val id: String) : Donate()
-        data class Liberapay(val id: String) : Donate()
-        data class OpenCollective(val id: String) : Donate()
-    }
-
-    class Screenshot(val locale: String, val type: Type, val path: String) {
-        enum class Type(val jsonName: String) {
-            PHONE("phone"),
-            SMALL_TABLET("smallTablet"),
-            LARGE_TABLET("largeTablet")
-        }
-
-        val identifier: String
-            get() = "$locale.${type.name}.$path"
-    }
-
     // Same releases with different signatures
     val selectedReleases: List<Release>
         get() = releases.filter { it.selected }

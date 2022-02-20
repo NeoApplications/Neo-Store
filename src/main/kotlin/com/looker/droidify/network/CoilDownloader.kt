@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import okhttp3.Cache
 import okhttp3.Call
@@ -92,7 +92,7 @@ object CoilDownloader {
     fun createScreenshotUri(
         repository: Repository,
         packageName: String,
-        screenshot: Product.Screenshot,
+        screenshot: Screenshot,
     ): Uri {
         return Uri.Builder().scheme("https").authority(HOST_SCREENSHOT)
             .appendQueryParameter(QUERY_ADDRESS, repository.address)
@@ -101,9 +101,9 @@ object CoilDownloader {
             .appendQueryParameter(QUERY_LOCALE, screenshot.locale)
             .appendQueryParameter(
                 QUERY_DEVICE, when (screenshot.type) {
-                    Product.Screenshot.Type.PHONE -> "phoneScreenshots"
-                    Product.Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
-                    Product.Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
+                    Screenshot.Type.PHONE -> "phoneScreenshots"
+                    Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
+                    Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
                 }
             )
             .appendQueryParameter(QUERY_SCREENSHOT, screenshot.path)
