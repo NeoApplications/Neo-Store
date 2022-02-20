@@ -130,9 +130,9 @@ data class Product(
         generator.writeArray("screenshots") {
             screenshots.forEach {
                 writeDictionary {
-                    writeStringField("locale", it.locale)
-                    writeStringField("type", it.type.jsonName)
-                    writeStringField("path", it.path)
+                    it.serialize(
+                        this
+                    )
                 }
             }
         }
@@ -199,46 +199,10 @@ data class Product(
                     it.array("categories") -> categories = collectNotNullStrings()
                     it.array("antiFeatures") -> antiFeatures = collectNotNullStrings()
                     it.array("licenses") -> licenses = collectNotNullStrings()
-                    it.array("donates") -> donates = collectNotNull(JsonToken.START_OBJECT) {
-                        var type = ""
-                        var url = ""
-                        var address = ""
-                        var id = ""
-                        forEachKey {
-                            when {
-                                it.string("type") -> type = valueAsString
-                                it.string("url") -> url = valueAsString
-                                it.string("address") -> address = valueAsString
-                                it.string("id") -> id = valueAsString
-                                else -> skipChildren()
-                            }
-                        }
-                        when (type) {
-                            "" -> Donate.Regular(url)
-                            "bitcoin" -> Donate.Bitcoin(address)
-                            "litecoin" -> Donate.Litecoin(address)
-                            "flattr" -> Donate.Flattr(id)
-                            "liberapay" -> Donate.Liberapay(id)
-                            "openCollective" -> Donate.OpenCollective(id)
-                            else -> null
-                        }
-                    }
+                    it.array("donates") -> donates =
+                        collectNotNull(JsonToken.START_OBJECT, Donate::deserialize)
                     it.array("screenshots") -> screenshots =
-                        collectNotNull(JsonToken.START_OBJECT) {
-                            var locale = ""
-                            var type = ""
-                            var path = ""
-                            forEachKey {
-                                when {
-                                    it.string("locale") -> locale = valueAsString
-                                    it.string("type") -> type = valueAsString
-                                    it.string("path") -> path = valueAsString
-                                    else -> skipChildren()
-                                }
-                            }
-                            Screenshot.Type.values().find { it.jsonName == type }
-                                ?.let { Screenshot(locale, it, path) }
-                        }
+                        collectNotNull(JsonToken.START_OBJECT, Screenshot::deserialize)
                     it.array("releases") -> releases =
                         collectNotNull(JsonToken.START_OBJECT, Release.Companion::deserialize)
                     else -> skipChildren()

@@ -2,7 +2,9 @@ package com.looker.droidify.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.entity.Screenshot
 
 @Entity(tableName = "product", primaryKeys = ["repository_id", "package_name"])
 open class Product {
@@ -21,6 +23,10 @@ open class Product {
     var metadataIcon = ""
     var releases: List<Release> = emptyList()
     var categories: List<String> = emptyList()
+    var antiFeatures: List<String> = emptyList()
+    var licenses: List<String> = emptyList()
+    var donates: List<Donate> = emptyList()
+    var screenshots: List<Screenshot> = emptyList()
 
     // TODO Remove in next iteration
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)

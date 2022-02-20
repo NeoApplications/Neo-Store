@@ -109,14 +109,15 @@ interface ProductDao : BaseDao<Product> {
         product.${ROW_SIGNATURES} != ''"""
 
         // Select the return fields
-        builder += """SELECT product.rowid AS _id, product.${ROW_REPOSITORY_ID},
-        product.${ROW_PACKAGE_NAME}, product.${ROW_NAME},
-        product.${ROW_SUMMARY}, installed.${ROW_VERSION},
-        (COALESCE(lock.${ROW_VERSION_CODE}, -1) NOT IN (0, product.${ROW_VERSION_CODE}) AND
-        product.${ROW_COMPATIBLE} != 0 AND product.${ROW_VERSION_CODE} >
-        COALESCE(installed.${ROW_VERSION_CODE}, 0xffffffff) AND $signatureMatches)
-        AS ${ROW_CAN_UPDATE}, product.${ROW_COMPATIBLE},
-        product.${ROW_ICON}, product.${ROW_METADATA_ICON}, product.${ROW_RELEASES}, product.${ROW_CATEGORIES},"""
+        builder += """SELECT product.rowid AS _id, product.$ROW_REPOSITORY_ID,
+        product.$ROW_PACKAGE_NAME, product.$ROW_NAME,
+        product.$ROW_SUMMARY, installed.$ROW_VERSION,
+        (COALESCE(lock.$ROW_VERSION_CODE, -1) NOT IN (0, product.$ROW_VERSION_CODE) AND
+        product.$ROW_COMPATIBLE != 0 AND product.$ROW_VERSION_CODE >
+        COALESCE(installed.$ROW_VERSION_CODE, 0xffffffff) AND $signatureMatches)
+        AS $ROW_CAN_UPDATE, product.$ROW_COMPATIBLE, product.$ROW_ICON,
+        product.$ROW_METADATA_ICON, product.$ROW_RELEASES, product.$ROW_CATEGORIES,
+        product.$ROW_ANTIFEATURES, product.$ROW_LICENSES, product.$ROW_DONATES, product.$ROW_SCREENSHOTS,"""
 
         // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
@@ -283,6 +284,10 @@ interface ProductTempDao : BaseDao<ProductTemp> {
                     metadataIcon = it.metadataIcon
                     releases = it.releases
                     categories = it.categories
+                    antiFeatures = it.antiFeatures
+                    licenses = it.licenses
+                    donates = it.donates
+                    screenshots = it.screenshots
                 }
             })
             it.categories.forEach { category ->

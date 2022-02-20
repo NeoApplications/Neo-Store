@@ -3,6 +3,8 @@ package com.looker.droidify.database
 import androidx.room.TypeConverter
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Release.Companion.deserializeIncompatibilities
+import com.looker.droidify.entity.Donate
+import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.utility.extension.json.writeDictionary
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
@@ -73,4 +75,34 @@ object Converters {
                 }
             }
         }
+
+    @TypeConverter
+    @JvmStatic
+    fun toScreenshots(byteArray: ByteArray): List<Screenshot> {
+        val string = byteArray.toString()
+        return if (string == "") emptyList()
+        else string.split(",").mapNotNull { byteArray.jsonParse { Screenshot.deserialize(it) } }
+    }
+
+    @JvmName("screenshotsToByteArray")
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(screenshots: List<Screenshot>) = jsonGenerate {
+        screenshots.forEach { item -> item.serialize(it) }.toString().toByteArray()
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toDonates(byteArray: ByteArray): List<Donate> {
+        val string = byteArray.toString()
+        return if (string == "") emptyList()
+        else string.split(",").mapNotNull { byteArray.jsonParse { Donate.deserialize(it) } }
+    }
+
+    @JvmName("donatesToByteArray")
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(donates: List<Donate>) = jsonGenerate {
+        donates.forEach { item -> item.serialize(it) }.toString().toByteArray()
+    }
 }
