@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Scaffold
 import com.google.android.material.composethemeadapter.MdcTheme
+import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentInstalledXBinding
@@ -78,6 +79,23 @@ class InstalledFragment : MainNavFragmentX() {
                     }
                 }
             }
+        }
+        binding.buttonUpdated.setOnClickListener {
+            binding.secondaryComposeRecycler.visibility =
+                when (binding.secondaryComposeRecycler.visibility) {
+                    View.VISIBLE -> {
+                        binding.buttonUpdated.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0, 0, R.drawable.ic_arrow_down, 0
+                        )
+                        View.GONE
+                    }
+                    else -> {
+                        binding.buttonUpdated.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0, 0, R.drawable.ic_arrow_up, 0
+                        )
+                        View.VISIBLE
+                    }
+                }
         }
     }
 }
