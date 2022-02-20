@@ -35,6 +35,7 @@
     <dimen name="all_apps_tabs_side_padding">12dp</dimen>
     <dimen name="button_corner_radius">4dp</dimen>
     <dimen name="dynamic_grid_drawer_additional_padding">30dp</dimen>
+    <dimen name="all_apps_search_vertical_offset">20dp</dimen>
 
     <!-- Setting Search -->
     <dimen name="large_title_height">16dp</dimen>
@@ -88,4 +89,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="qsb_g_icon_marginStart">16dp</dimen>
     <dimen name="qsb_widget_height">56dp</dimen>
     <dimen name="qsb_icon_padding">8dp</dimen>
+    <dimen name="qsb_margin_top_adjusting">12dp</dimen>
 </resources>

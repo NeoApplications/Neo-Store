@@ -21,9 +21,9 @@
     android:id="@+id/search_container_all_apps"
     android:layout_width="match_parent"
     android:layout_height="@dimen/qsb_widget_height"
-    android:layout_gravity="center|top"
+    android:gravity="center_vertical"
+    android:layout_gravity="top|center_horizontal"
     android:layout_centerHorizontal="true"
-    android:translationY="30dp"
     android:elevation="1dp"
     android:contentDescription="@string/label_search">
 

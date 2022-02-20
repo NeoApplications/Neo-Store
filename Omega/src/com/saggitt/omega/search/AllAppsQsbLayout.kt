@@ -41,10 +41,13 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     var removeFallback = false
     private val mVerticalOffset =
         resources.getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset)
-    private val mTopAdjusting = resources.getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting)
 
     private var mFallback: AllAppsQsbFallback? = null
     private lateinit var mAppsView: AllAppsContainerView
+
+    init {
+        visibility = (if (prefs.allAppsSearch) View.VISIBLE else View.GONE)
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // Update the width to match the grid padding
@@ -78,7 +81,12 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         val shift = expectedLeft - left
         translationX = shift.toFloat()
 
-        offsetTopAndBottom(mVerticalOffset - mTopAdjusting)
+        var containerTopMargin = 0
+        if (!prefs.allAppsSearch) {
+            val mlp = layoutParams as MarginLayoutParams
+            containerTopMargin = -(mlp.topMargin + mlp.height)
+        }
+        offsetTopAndBottom(mVerticalOffset - containerTopMargin)
     }
 
     override fun setInsets(insets: Rect?) {

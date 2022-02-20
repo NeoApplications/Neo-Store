@@ -15,8 +15,9 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="Drawer">
 
     <PreferenceCategory android:title="@string/cat_drawer_icons">
         <com.saggitt.omega.preferences.custom.SeekbarPreference
@@ -80,6 +81,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/title_all_apps_search">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_all_apps_search"
+            android:title="@string/title_all_apps_search"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="pref_protected_apps"
@@ -91,4 +102,4 @@
         android:summary="@string/summary__drawer_hide_apps"
         android:title="@string/title__drawer_hide_apps"
         app:iconSpaceReserved="false" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

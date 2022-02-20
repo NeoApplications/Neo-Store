@@ -86,7 +86,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
 
     // DRAWER
-
     val allAppsSearch by BooleanPref("pref_all_apps_search", true, recreate)
     var sortMode by StringIntPref(PREFS_SORT, 0, restart)
     var hiddenAppSet by StringSetPref(PREFS_HIDDEN_SET, setOf(), reloadApps)
