@@ -1,7 +1,6 @@
 package com.looker.droidify.database
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
@@ -9,6 +8,7 @@ import com.looker.droidify.*
 import com.looker.droidify.database.entity.*
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
+import com.looker.droidify.ui.fragments.Request
 
 interface BaseDao<T> {
     @Insert
@@ -79,6 +79,15 @@ interface ProductDao : BaseDao<Product> {
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>
 
+    fun queryObject(request: Request): List<Product> = queryObject(
+        request.installed,
+        request.updates,
+        request.searchQuery,
+        request.section,
+        request.order,
+        request.numberOfItems
+    )
+
     @Transaction
     fun queryObject(
         installed: Boolean, updates: Boolean, searchQuery: String,
@@ -90,11 +99,15 @@ interface ProductDao : BaseDao<Product> {
     @RawQuery(observedEntities = [Product::class])
     fun queryLiveList(query: SupportSQLiteQuery): LiveData<List<Product>>
 
-    fun queryLiveList(
-        installed: Boolean, updates: Boolean, searchQuery: String,
-        section: Section, order: Order, numberOfItems: Int = 0
-    ): LiveData<List<Product>> = queryLiveList(
-        buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
+    fun queryLiveList(request: Request): LiveData<List<Product>> = queryLiveList(
+        buildProductQuery(
+            request.installed,
+            request.updates,
+            request.searchQuery,
+            request.section,
+            request.order,
+            request.numberOfItems
+        )
     )
 
     // TODO add an UpdateCategory argument
@@ -189,7 +202,7 @@ interface ProductDao : BaseDao<Product> {
         }::class
         builder += "product.${ROW_NAME} COLLATE LOCALIZED ASC${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
 
-        return SimpleSQLiteQuery(builder.build(),builder.arguments.toTypedArray())
+        return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
     }
 }
 

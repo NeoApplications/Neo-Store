@@ -9,14 +9,15 @@ import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainNavFragmentViewModelX(
     val db: DatabaseX,
     primarySource: Source,
     secondarySource: Source
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val order = MutableLiveData(Order.LAST_UPDATE)
     private val sections = MutableLiveData<Section>(Section.All)
@@ -61,7 +62,7 @@ class MainNavFragmentViewModelX(
         }
     }
 
-    private var primaryRequest = request(primarySource)
+    private var primaryRequest = MediatorLiveData<Request>()
     val primaryProducts = MediatorLiveData<List<Product>>()
     private var secondaryRequest = request(secondarySource)
     val secondaryProducts = MediatorLiveData<List<Product>>()
@@ -71,15 +72,31 @@ class MainNavFragmentViewModelX(
 
     init {
         primaryProducts.addSource(
-            productsListMediator(primaryRequest),
+            db.productDao.queryLiveList(primaryRequest.value ?: request(primarySource)),
             primaryProducts::setValue
         )
         secondaryProducts.addSource(
-            productsListMediator(secondaryRequest),
+            db.productDao.queryLiveList(secondaryRequest),
             secondaryProducts::setValue
         )
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
         categories.addSource(db.categoryDao.allNamesLive, categories::setValue)
+        listOf(sections, order, searchQuery).forEach {
+            primaryRequest.addSource(it) {
+                primaryRequest.value = request(primarySource)
+            }
+        }
+        primaryProducts.addSource(primaryRequest) { request ->
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    primaryProducts.postValue(
+                        db.productDao.queryObject(
+                            request
+                        )
+                    )
+                }
+            }
+        }
     }
 
     fun setSection(newSection: Section) {
@@ -105,15 +122,6 @@ class MainNavFragmentViewModelX(
             }
         }
     }
-
-    private fun productsListMediator(request: Request) = db.productDao.queryLiveList(
-        installed = request.installed,
-        updates = request.updates,
-        searchQuery = request.searchQuery,
-        section = request.section,
-        order = request.order,
-        numberOfItems = request.numberOfItems
-    )
 
     class Factory(
         val db: DatabaseX,

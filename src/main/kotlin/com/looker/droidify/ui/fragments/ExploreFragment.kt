@@ -74,5 +74,15 @@ class ExploreFragment : MainNavFragmentX() {
                 })
             }
         }
+        binding.categories.setOnCheckedChangeListener { group, checkedId ->
+            group.findViewById<Chip>(checkedId).let {
+                viewModel.setSection(
+                    if (it.text.equals(getString(R.string.all_applications)))
+                        Section.All
+                    else
+                        Section.Category(it.text.toString())
+                )
+            }
+        }
     }
 }
