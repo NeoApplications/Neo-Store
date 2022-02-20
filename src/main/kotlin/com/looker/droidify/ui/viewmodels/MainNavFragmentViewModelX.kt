@@ -19,9 +19,12 @@ class MainNavFragmentViewModelX(
     secondarySource: Source
 ) : ViewModel() {
 
-    private val order = MutableLiveData(Order.LAST_UPDATE)
-    private val sections = MutableLiveData<Section>(Section.All)
-    private val searchQuery = MutableLiveData("")
+    var order = MutableLiveData(Order.LAST_UPDATE)
+        private set
+    var sections = MutableLiveData<Section>(Section.All)
+        private set
+    var searchQuery = MutableLiveData("")
+        private set
 
     fun request(source: Source): Request {
         var mSearchQuery = ""

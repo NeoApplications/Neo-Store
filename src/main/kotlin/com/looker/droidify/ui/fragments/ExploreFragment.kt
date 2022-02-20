@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Scaffold
+import androidx.core.view.children
 import com.google.android.material.chip.Chip
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
+import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Section
@@ -64,14 +66,23 @@ class ExploreFragment : MainNavFragmentX() {
             }
         }
         viewModel.categories.observe(viewLifecycleOwner) {
-            binding.categories.removeAllViews()
-            binding.categories.addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
-                setText(R.string.all_applications)
-            })
-            it.forEach {
-                binding.categories.addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
-                    text = it
+            binding.categories.apply {
+                removeAllViews()
+                addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                    setText(R.string.all_applications)
+                    id = R.id.SHOW_ALL
                 })
+                it.forEach {
+                    addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                        text = it
+                    })
+                }
+                val selectedSection = viewModel.sections.value
+                check(
+                    children.filterNotNull()
+                        .find { it is Chip && selectedSection is Category && it.text == selectedSection.name }?.id
+                        ?: R.id.SHOW_ALL
+                )
             }
         }
         binding.categories.setOnCheckedChangeListener { group, checkedId ->
