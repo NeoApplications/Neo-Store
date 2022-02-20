@@ -20,45 +20,71 @@ package com.saggitt.omega.search
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.View
 import com.android.launcher3.DeviceProfile
+import com.android.launcher3.Insettable
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
+import com.android.launcher3.icons.IconNormalizer
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
 import com.saggitt.omega.search.providers.AppsSearchProvider
 import kotlin.math.roundToInt
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
-    AbstractQsbLayout(context, attrs), SearchUiManager {
+    AbstractQsbLayout(context, attrs), SearchUiManager, Insettable {
 
     private val mUseFallbackSearch = false
     var removeFallback = false
+    private val mVerticalOffset =
+        resources.getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset)
+    private val mTopAdjusting = resources.getDimensionPixelSize(R.dimen.qsb_margin_top_adjusting)
 
     private var mFallback: AllAppsQsbFallback? = null
     private lateinit var mAppsView: AllAppsContainerView
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val requestedWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val height = MeasureSpec.getSize(heightMeasureSpec)
+        // Update the width to match the grid padding
         val idp = LauncherAppState.getIDP(mContext)!!
         val dp: DeviceProfile = idp.getDeviceProfile(mContext)
-        val cellWidth = DeviceProfile.calculateCellWidth(
-            requestedWidth,
-            dp.cellLayoutBorderSpacingPx,
-            dp.numShownAllAppsColumns
-        )
-        val width = requestedWidth - (cellWidth - (dp.allAppsIconSizePx * 0.92f).roundToInt())
-        setMeasuredDimension(width, height)
+        val myRequestedWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val rowWidth = (myRequestedWidth - mAppsView.activeRecyclerView.paddingLeft
+                - mAppsView.activeRecyclerView.paddingRight)
 
-        for (i in 0 until childCount) {
-            val child = getChildAt(i)
-            if (child != null) {
-                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0)
-            }
-        }
+        val cellWidth = DeviceProfile.calculateCellWidth(
+            rowWidth, dp.cellLayoutBorderSpacingPx,
+            dp.numShownHotseatIcons
+        )
+        val iconVisibleSize = (IconNormalizer.ICON_VISIBLE_AREA_FACTOR * dp.iconSizePx).roundToInt()
+        val iconPadding = cellWidth - iconVisibleSize
+
+        val myWidth = rowWidth - iconPadding + paddingLeft + paddingRight
+        super.onMeasure(
+            MeasureSpec.makeMeasureSpec(myWidth, MeasureSpec.EXACTLY),
+            heightMeasureSpec
+        )
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        // Shift the widget horizontally so that its centered in the parent (b/63428078)
+        val parent = parent as View
+        val availableWidth = parent.width - parent.paddingLeft - parent.paddingRight
+        val myWidth = right - left
+        val expectedLeft = parent.paddingLeft + (availableWidth - myWidth) / 2
+        val shift = expectedLeft - left
+        translationX = shift.toFloat()
+
+        offsetTopAndBottom(mVerticalOffset - mTopAdjusting)
+    }
+
+    override fun setInsets(insets: Rect?) {
+        val mlp = layoutParams as MarginLayoutParams
+        mlp.topMargin = insets!!.top
+        requestLayout()
     }
 
     override fun initializeSearch(allAppsContainerView: AllAppsContainerView) {
