@@ -51,7 +51,10 @@ fun ProductRow(
                     item.metadataIcon,
                     repo.address,
                     repo.authentication
-                ), builder = { placeholder(R.drawable.ic_application_default) }
+                ), builder = {
+                    placeholder(R.drawable.ic_application_default)
+                    error(R.drawable.ic_application_default)
+                }
             ) else painterResource(id = R.drawable.ic_application_default)
         Image(
             painter = imagePainter,
@@ -127,7 +130,10 @@ fun ProductColumn(
                     item.metadataIcon,
                     repo.address,
                     repo.authentication
-                ), builder = { placeholder(R.drawable.ic_application_default) }
+                ), builder = {
+                    placeholder(R.drawable.ic_application_default)
+                    error(R.drawable.ic_application_default)
+                }
             )
         else painterResource(id = R.drawable.ic_application_default)
         Image(
