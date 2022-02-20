@@ -55,7 +55,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     protected var searchProvider: SearchProvider = controller.searchProvider
     private var mShowAssistant = false
     protected var mIsRtl = Utilities.isRtl(resources)
-    private var mAllAppsBgColor = mContext.getColorAttr(R.attr.allAppsScrimColor)
+    private var mAllAppsBgColor = mContext.getColorAttr(R.attr.popupColorPrimary)
     private var mShadowHelper = NinePatchDrawHelper()
     protected var mActivity: ActivityContext? = ActivityContext.lookupContext(context)
 
