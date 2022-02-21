@@ -53,14 +53,14 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     protected var prefs: OmegaPreferences = Utilities.getOmegaPrefs(mContext)
     protected var controller = SearchProviderController.getInstance(getContext())
     protected var searchProvider: SearchProvider = controller.searchProvider
-    private var mShowAssistant = false
+    var mShowAssistant = false
     protected var mIsRtl = Utilities.isRtl(resources)
     private var mAllAppsBgColor = mContext.getColorAttr(R.attr.popupColorPrimary)
     private var mShadowHelper = NinePatchDrawHelper()
     protected var mActivity: ActivityContext? = ActivityContext.lookupContext(context)
 
-    private var micIconView: ImageView? = null
-    private var searchLogoView: ImageView? = null
+    var micIconView: ImageView? = null
+    var searchLogoView: ImageView? = null
     private var lensIconView: ImageView? = null
 
     private var mAllAppsShadowBitmap: Bitmap? = null
@@ -91,9 +91,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         micIconView = findViewById<AppCompatImageView?>(R.id.mic_icon).apply {
             if (searchProvider.supportsVoiceSearch) {
                 if (searchProvider.supportsAssistant) {
-                    val micIcon: Drawable? = searchProvider.assistantIcon
-                    micIcon?.setTint(prefs.accentColor)
-                    setImageDrawable(micIcon)
+                    val assistantIcon: Drawable? = searchProvider.assistantIcon
+                    assistantIcon?.setTint(prefs.accentColor)
+                    setImageDrawable(assistantIcon)
                     setOnClickListener {
                         searchProvider.startAssistant { intent -> mContext.startActivity(intent) }
                     }
@@ -276,7 +276,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             background = micIconRipple
             setPadding(12, 12, 12, 12)
         }
-
         lensIconView?.apply {
             val lensIconRipple: RippleDrawable =
                 oldRipple.constantState!!.newDrawable().mutate() as RippleDrawable
@@ -304,20 +303,20 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         shape.cornerRadius = getCornerRadius()
-        shape.setColor(ContextCompat.getColor(context, R.color.colorAccent))
+        shape.setColor(ContextCompat.getColor(mContext, R.color.colorAccent))
         val rippleColor: ColorStateList =
-            ContextCompat.getColorStateList(context, R.color.focused_background)!!
+            ContextCompat.getColorStateList(mContext, R.color.focused_background)!!
         val ripple = RippleDrawable(rippleColor, null, shape)
         return InsetDrawable(ripple, resources.getDimensionPixelSize(R.dimen.qsb_shadow_margin))
     }
 
     protected fun getDevicePreferences(): SharedPreferences {
-        val devicePrefs = Utilities.getPrefs(context)
+        val devicePrefs = Utilities.getPrefs(mContext)
         reloadPreferences(devicePrefs)
         return devicePrefs
     }
 
-    private fun reloadPreferences(sharedPreferences: SharedPreferences) {
+    fun reloadPreferences(sharedPreferences: SharedPreferences) {
         post {
             searchProvider = SearchProviderController.getInstance(mContext).searchProvider
             val providerSupported =
@@ -345,23 +344,18 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         return edgeRadius?.getDimension(context.resources.displayMetrics) ?: defaultRadius
     }
 
-    private fun getMicIcon(): Drawable? {
-        return if (prefs.allAppsGlobalSearch) {
-            if (searchProvider.supportsAssistant && mShowAssistant) {
-                searchProvider.getAssistantIcon(true)
-            } else if (searchProvider.supportsVoiceSearch) {
-                searchProvider.getVoiceIcon(true)
-            } else {
-                micIconView?.visibility = GONE
-                ColorDrawable(Color.TRANSPARENT)
-            }
+    open fun getMicIcon(): Drawable? {
+        return if (searchProvider.supportsAssistant && mShowAssistant) {
+            searchProvider.getAssistantIcon(true)
+        } else if (searchProvider.supportsVoiceSearch) {
+            searchProvider.getVoiceIcon(true)
         } else {
             micIconView?.visibility = GONE
             ColorDrawable(Color.TRANSPARENT)
         }
     }
 
-    protected fun getIcon(): Drawable {
+    open fun getIcon(): Drawable {
         return searchProvider.getIcon(true)
     }
 

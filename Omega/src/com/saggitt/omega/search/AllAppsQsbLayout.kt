@@ -20,9 +20,15 @@ package com.saggitt.omega.search
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
+import androidx.core.app.ActivityOptionsCompat
 import com.android.launcher3.DeviceProfile
 import com.android.launcher3.Insettable
 import com.android.launcher3.LauncherAppState
@@ -37,8 +43,8 @@ import kotlin.math.roundToInt
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager, Insettable {
 
-    private val mUseFallbackSearch = false
-    var removeFallback = false
+    private var mUseFallbackSearch = false
+    var mDoNotRemoveFallback = false
     private val mVerticalOffset =
         resources.getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset)
 
@@ -47,6 +53,37 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     init {
         visibility = (if (prefs.allAppsSearch) View.VISIBLE else View.GONE)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        findViewById<ImageView?>(R.id.mic_icon).apply {
+            if (!prefs.allAppsGlobalSearch) {
+                visibility = View.GONE
+            }
+        }
+
+        findViewById<ImageView?>(R.id.lens_icon).apply {
+            if (!prefs.allAppsGlobalSearch) {
+                visibility = View.GONE
+            }
+        }
+
+        setOnClickListener {
+            val provider = controller.searchProvider
+            if (prefs.allAppsGlobalSearch) {
+                provider.startSearch { intent: Intent? ->
+                    mContext.startActivity(
+                        intent,
+                        ActivityOptionsCompat.makeClipRevealAnimation(this, 0, 0, width, height)
+                            .toBundle()
+                    )
+                }
+            } else {
+                searchFallback("")
+            }
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -89,7 +126,39 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         offsetTopAndBottom(mVerticalOffset - containerTopMargin)
     }
 
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        super.onSharedPreferenceChanged(sharedPreferences, key)
+        if (key == "pref_all_apps_global_search") {
+            reloadPreferences(sharedPreferences)
+        }
+    }
+
+    override fun getMicIcon(): Drawable? {
+        return if (prefs.allAppsGlobalSearch) {
+            if (searchProvider.supportsAssistant && mShowAssistant) {
+                searchProvider.getAssistantIcon(true)
+            } else if (searchProvider.supportsVoiceSearch) {
+                searchProvider.getVoiceIcon(true)
+            } else {
+                micIconView?.visibility = View.GONE
+                ColorDrawable(Color.TRANSPARENT)
+            }
+        } else {
+            micIconView?.visibility = View.GONE
+            ColorDrawable(Color.TRANSPARENT)
+        }
+    }
+
+    override fun getIcon(): Drawable {
+        return if (prefs.allAppsGlobalSearch) {
+            super.getIcon()
+        } else {
+            AppsSearchProvider(mContext).getIcon(true)
+        }
+    }
+
     override fun setInsets(insets: Rect?) {
+        removeFallBack()
         val mlp = layoutParams as MarginLayoutParams
         mlp.topMargin = insets!!.top
         requestLayout()
@@ -102,7 +171,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     override fun resetSearch() {
         if (mUseFallbackSearch) {
             resetFallbackView()
-        } else if (!removeFallback) {
+        } else if (!mDoNotRemoveFallback) {
             removeFallbackView()
         }
     }
@@ -114,7 +183,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     override fun startSearch(str: String?) {
         val provider = SearchProviderController.getInstance(mContext).searchProvider
         if (shouldUseFallbackSearch(provider)) {
-            startDrawerSearch(str)
+            searchFallback(str)
         } else {
             provider.startSearch { intent: Intent? ->
                 getLauncher(context).startActivity(intent)
@@ -122,7 +191,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun startDrawerSearch(query: String?) {
+    private fun searchFallback(query: String?) {
         ensureFallbackView()
         mFallback?.setText(query)
         mFallback?.showKeyboard()
@@ -147,6 +216,13 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         if (mFallback != null) {
             mFallback!!.reset()
             mFallback!!.clearSearchResult()
+        }
+    }
+
+    private fun removeFallBack() {
+        if (mUseFallbackSearch) {
+            removeFallbackView()
+            mUseFallbackSearch = false
         }
     }
 

@@ -89,6 +89,15 @@
             android:title="@string/title_all_apps_search"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="pref_all_apps_search"
+            android:disableDependentsState="true"
+            android:key="pref_all_apps_global_search"
+            android:summary="@string/summary_all_apps_google_search"
+            android:title="@string/title_all_apps_google_search"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <SwitchPreference

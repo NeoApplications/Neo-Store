@@ -23,6 +23,7 @@ import android.os.Handler;
 import androidx.annotation.AnyThread;
 
 import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.model.AllAppsList;
 import com.android.launcher3.model.BaseModelUpdateTask;
@@ -101,6 +102,9 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
     }
 
     private List<String> getSuggestions(String query) {
+        if (!Utilities.getOmegaPrefs(mContext).getAllAppsGlobalSearch()) {
+            return Collections.emptyList();
+        }
         SearchProvider provider = SearchProviderController.Companion
                 .getInstance(mContext).getSearchProvider();
         if (provider instanceof WebSearchProvider) {

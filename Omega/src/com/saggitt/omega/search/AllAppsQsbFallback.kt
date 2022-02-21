@@ -141,9 +141,9 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
         mSearchQueryBuilder.clear()
         mSearchQueryBuilder.clearSpans()
         Selection.setSelection(mSearchQueryBuilder, 0)
-        allAppsQsbLayout!!.removeFallback = true
+        allAppsQsbLayout!!.mDoNotRemoveFallback = true
         mAppsView!!.onClearSearchResult()
-        allAppsQsbLayout!!.removeFallback = false
+        allAppsQsbLayout!!.mDoNotRemoveFallback = false
     }
 
     override fun onSubmitSearch(query: String?): Boolean {

@@ -87,6 +87,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     // DRAWER
     val allAppsSearch by BooleanPref("pref_all_apps_search", true, recreate)
+    var allAppsGlobalSearch by BooleanPref("pref_all_apps_global_search", true, doNothing)
     var sortMode by StringIntPref(PREFS_SORT, 0, restart)
     var hiddenAppSet by StringSetPref(PREFS_HIDDEN_SET, setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(PREFS_HIDDEN_PREDICTION_SET, setOf(), doNothing)
@@ -144,7 +145,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     // SEARCH & FOLDER
     var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f, recreate)
-    var allAppsGlobalSearch by BooleanPref("pref_allAppsGlobalSearch", true, doNothing)
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
