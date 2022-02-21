@@ -168,7 +168,7 @@
         <item quantity="one">%d aplicación tiene una versión nueva.</item>
         <item quantity="other">%d aplicaciones tienen versiones nuevas.</item>
     </plurals>
-    <string name="prefs_language_title">Lengua</string>
+    <string name="prefs_language_title">Idioma</string>
     <string name="prefs_personalization">Personalización</string>
     <string name="show_less">Mostrar menos</string>
     <string name="latest">Recientes</string>
