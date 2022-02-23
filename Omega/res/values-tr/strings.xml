@@ -427,4 +427,6 @@
     <string name="title_dock_search">Alt panel arama çubuğu</string>
     <string name="summary_dock_search">Alt panelde göster</string>
     <string name="label_search">Ara</string>
+    <string name="folder_rows">Klasör Satırları</string>
+    <string name="folder_columns">Klasör Sütunları</string>
 </resources>
