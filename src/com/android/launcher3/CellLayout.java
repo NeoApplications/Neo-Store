@@ -2648,7 +2648,9 @@ public class CellLayout extends ViewGroup {
         if (x < mCountX && y < mCountY) {
             return mOccupied.cells[x][y];
         } else {
-            throw new RuntimeException("Position exceeds the bound of this CellLayout");
+            return false;
+            // TODO manage changing grid sizes better
+            // throw new RuntimeException("Position exceeds the bound of this CellLayout");
         }
     }
 
