@@ -326,6 +326,9 @@ public class InvariantDeviceProfile {
         isScalable = closestProfile.isScalable;
         devicePaddingId = closestProfile.devicePaddingId;
 
+        numRowsOriginal = closestProfile.numRows;
+        numColumnsOriginal = closestProfile.numColumns;
+
         mExtraAttrs = closestProfile.extraAttrs;
 
         iconSize = displayOption.iconSize;
