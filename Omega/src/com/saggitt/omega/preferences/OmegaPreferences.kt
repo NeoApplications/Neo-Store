@@ -20,6 +20,7 @@ package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
@@ -31,6 +32,7 @@ import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
+import com.saggitt.omega.preferences.custom.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.smartspace.SmartSpaceDataWidget
 import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
@@ -56,6 +58,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     }
 
     // DESKTOP
+    private var gridSizeDelegate = ResettableLazy {
+        GridSize2D(
+            this, PREFS_ROWS, PREFS_COLUMNS,
+            LauncherAppState.getIDP(context), recreate
+        )
+    }
+    val gridSize by gridSizeDelegate
     val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadIcons)
     val usePopupMenuView by BooleanPref(PREFS_DESKTOP_POPUP_MENU, true, doNothing)
     var dashProviders = StringListPref(

@@ -20,6 +20,12 @@
 
     <PreferenceCategory android:title="@string/cat_drawer_icons">
 
+        <com.saggitt.omega.preferences.custom.GridSizePreference
+            android:key="pref_desktop_grid_size"
+            android:persistent="true"
+            android:title="@string/title__desktop_grid_size"
+            app:iconSpaceReserved="false" />
+
         <com.saggitt.omega.preferences.custom.SeekbarPreference
             android:key="pref_home_icon_scale"
             android:title="@string/title__desktop_icon_size"

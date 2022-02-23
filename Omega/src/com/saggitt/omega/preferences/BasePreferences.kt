@@ -162,6 +162,24 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
+    inner class ResettableLazy<out T : Any>(private val create: () -> T) {
+        private var initialized = false
+        private var currentValue: T? = null
+
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+            if (!initialized) {
+                currentValue = create()
+                initialized = true
+            }
+            return currentValue!!
+        }
+
+        fun resetValue() {
+            initialized = false
+            currentValue = null
+        }
+    }
+
     abstract inner class PrefDelegate<T : Any>(
         val key: String,
         val defaultValue: T,

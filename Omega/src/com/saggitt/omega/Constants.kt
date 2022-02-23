@@ -1,6 +1,7 @@
 package com.saggitt.omega
 
 // DESKTOP PREFS
+const val PREFS_DESKTOP_GRID_SIZE = "pref_desktop_grid_size"
 const val PREFS_DESKTOP_ICON_SCALE = "pref_home_icon_scale"
 const val PREFS_DESKTOP_HIDE_LABEL = "pref_hide_app_label"
 const val PREFS_DESKTOP_ICON_LABEL_TWOLINES = "pref_icon_labels_two_lines"
@@ -95,6 +96,8 @@ const val PREFS_DEBUG_MODE = "pref_showDebugInfo"
 const val PREFS_KILL = "kill"
 
 // EXTRA PREFS
+const val PREFS_ROWS = "numRows"
+const val PREFS_COLUMNS = "numColumns"
 const val PREFS_FEED_PROVIDER = "pref_feedProvider"
 const val PREFS_FEED_PROVIDER_ALLOW_ALL = "pref_feedProviderAllowAll"
 const val PREFS_TORCH = "pref_torch"

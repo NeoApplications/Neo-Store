@@ -24,33 +24,30 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
 import com.saggitt.omega.preferences.custom.EventProvidersPreference
+import com.saggitt.omega.preferences.custom.GridSizePreference
 import com.saggitt.omega.smartspace.EventProvidersFragment
 
 abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) :
     PreferenceFragmentCompat() {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) =
         setPreferencesFromResource(layoutId, rootKey)
-    }
+
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         val f: DialogFragment
         parentFragmentManager.let {
             f = when (preference) {
-                is CustomDialogPreference -> {
-                    PreferenceDialogFragment.newInstance(preference)
-                }
-
-                is EventProvidersPreference -> {
-                    EventProvidersFragment.newInstance(preference.key)
-                }
+                is GridSizePreference -> GridSizeDialogFragment.newInstance(preference.key)
+                is CustomDialogPreference -> PreferenceDialogFragment.newInstance(preference)
+                is EventProvidersPreference -> EventProvidersFragment.newInstance(preference.key)
                 else -> {
                     super.onDisplayPreferenceDialog(preference)
                     return
                 }
             }
             f.setTargetFragment(this, 0)
-            f.show(it, "android.support.v7.preference.PreferenceFragment.DIALOG")
+            f.show(it, f::class.java.name)
         }
     }
 
