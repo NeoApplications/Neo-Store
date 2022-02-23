@@ -179,4 +179,8 @@
     <string name="explore">探索</string>
     <string name="install_after_sync">アップデートを自動的にインストール</string>
     <string name="install_after_sync_summary">リポジトリの同期後、アプリのアップデートを自動的にインストール</string>
+    <string name="prefs_new_apps">表示する新しいアプリの数</string>
+    <string name="prefs_updated_apps">表示するアップデートされたアプリの数</string>
+    <string name="new_repository">新しいリポジトリ</string>
+    <string name="default_tab">規定のタブ</string>
 </resources>
