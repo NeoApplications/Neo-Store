@@ -69,12 +69,14 @@ import com.android.launcher3.views.OptionsPopupView
 import com.android.systemui.shared.system.QuickStepContract
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.reflect.Field
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
 import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty
 
 // TODO break into specialised files/classes
 
@@ -97,6 +99,18 @@ fun AlertDialog.applyAccent() {
     buttons.forEach {
         it?.setTextColor(color)
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+class JavaField<T>(
+    private val targetObject: Any,
+    fieldName: String,
+    targetClass: Class<*> = targetObject::class.java
+) {
+    private val field: Field = targetClass.getDeclaredField(fieldName).apply { isAccessible = true }
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T = field.get(targetObject) as T
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
+        field.set(targetObject, value)
 }
 
 fun <T, A> ensureOnMainThread(creator: (A) -> T): (A) -> T {
