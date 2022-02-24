@@ -85,6 +85,6 @@ public class SuperGContainerView extends BaseGContainerView {
     protected void applyQsbColor() {
         super.applyQsbColor();
         float radius = OmegaUtilsKt.dpToPx(100);
-        mQsbView.setBackground(OmegaUtilsKt.createRipplePill(getContext(), getColorAttr(getContext(), R.attr.allAppsScrimColor), radius));
+        mQsbView.setBackground(OmegaUtilsKt.createRipplePill(getContext(), getColorAttr(getContext(), R.attr.popupColorPrimary), radius));
     }
 }

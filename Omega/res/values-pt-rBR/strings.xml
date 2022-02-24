@@ -113,7 +113,7 @@
     <string name="smartspace_setup_text">Toque para configurar</string>
     <string name="smartspace_add_to_home">Adicionar ao Desktop</string>
     <string name="smartspace_preferences">Preferências</string>
-    <string name="msg_minus_one_on_left">À esquerda da tela inicial principal</string>
+    <string name="pref_shelf_summary">À esquerda da tela inicial principal</string>
     <string name="category__behavior_weather">Clima</string>
     <string name="title_smartspace_event_providers">Fontes de eventos</string>
     <string name="title_smartspace_weather_units">Unidade de temperatura</string>

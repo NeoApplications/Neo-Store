@@ -126,7 +126,7 @@
     <string name="title__notification_background">Merknadsbakgrunnsfarge</string>
     <string name="title__notification_count">Vis merkandsantall</string>
     <string name="smartspace_preferences">Innstillinger</string>
-    <string name="msg_minus_one_on_left">Til venstre for hovedhjemmeskjermen</string>
+    <string name="pref_shelf_summary">Til venstre for hovedhjemmeskjermen</string>
     <string name="title_show_google_app">Vis Google-program</string>
     <string name="icon_shape_override_progress">Bruker ikonformsendringer</string>
     <string name="get_more_icon_packs">Last ned ny ikonpakke</string>

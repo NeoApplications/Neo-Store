@@ -287,7 +287,7 @@
     <string name="backup_homescreen">Ana ekran</string>
     <string name="backup_pref_summary">Ana ekranı kaydedin, yedekleri geri yükleyin</string>
     <string name="home_widget">Bir Bakışta</string>
-    <string name="msg_minus_one_on_left">Ana ekranın solunda</string>
+    <string name="pref_shelf_summary">Ana ekranın solunda</string>
     <string name="gesture_press_home">Ana ekran düğmesine dokunma</string>
     <string name="icon_shape_override_label_location">Ana ekranda</string>
     <string name="title__advanced_setting_search">Ayarlar aramasını göster</string>
@@ -427,4 +427,6 @@
     <string name="title_dock_search">Alt panel arama çubuğu</string>
     <string name="summary_dock_search">Alt panelde göster</string>
     <string name="label_search">Ara</string>
+    <string name="folder_rows">Klasör Satırları</string>
+    <string name="folder_columns">Klasör Sütunları</string>
 </resources>
