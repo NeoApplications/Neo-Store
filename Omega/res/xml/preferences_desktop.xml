@@ -63,7 +63,6 @@
             android:title="@string/title_desktop_icon_popup_menu"
             app:content="@xml/desktop_icon_popup"
             app:iconSpaceReserved="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/cat_desktop_grid">
@@ -114,29 +113,57 @@
             android:key="pref_keepEmptyScreens"
             android:title="@string/title_desktop_keep_empty"
             app:iconSpaceReserved="false" />
-
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/app_categorization_folders">
+        <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
+            android:key="pref_folder_radius"
+            android:title="@string/folder_radius"
+            app:defaultSeekbarValue="-1.0"
+            app:maxValue="24"
+            app:minValue="0.0"
+            app:steps="24"
+            app:summaryFormat="%.0fdp" />
 
-    <SwitchPreference
-        android:defaultValue="falser"
-        android:key="pref_hideStatusBar"
-        android:persistent="true"
-        android:title="@string/title_desktop_hide_statusbar"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:defaultValue="4"
+            android:key="pref_folder_columns"
+            android:title="@string/folder_columns"
+            app:maxValue="5"
+            app:minValue="2"
+            app:steps="4"
+            app:summaryFormat="%.0f" />
 
-    <Preference
-        android:fragment="com.saggitt.omega.dash.DashFragment"
-        android:key="pref_dash_providers"
-        android:summary="@string/edit_dash_summary"
-        android:title="@string/edit_dash"
-        app:iconSpaceReserved="false" />
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:defaultValue="4"
+            android:key="pref_folder_rows"
+            android:title="@string/folder_rows"
+            app:maxValue="5"
+            app:minValue="2"
+            app:steps="4"
+            app:summaryFormat="%.0f" />
+    </PreferenceCategory>
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_enable_shelf"
-        android:summary="@string/pref_shelf_summary"
-        android:title="@string/title_show_google_app"
-        app:iconSpaceReserved="false" />
+    <PreferenceCategory android:title="@string/pref_category__others">
+        <SwitchPreference
+            android:defaultValue="falser"
+            android:key="pref_hideStatusBar"
+            android:persistent="true"
+            android:title="@string/title_desktop_hide_statusbar"
+            app:iconSpaceReserved="false" />
 
+        <Preference
+            android:fragment="com.saggitt.omega.dash.DashFragment"
+            android:key="pref_dash_providers"
+            android:summary="@string/edit_dash_summary"
+            android:title="@string/edit_dash"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_enable_shelf"
+            android:summary="@string/pref_shelf_summary"
+            android:title="@string/title_show_google_app"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

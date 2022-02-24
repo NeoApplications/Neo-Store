@@ -64,6 +64,7 @@
             app:content="@xml/drawer_icon_popup"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/cat_drawer_grid">
         <com.saggitt.omega.preferences.custom.SortAppsPreference
             android:defaultValue="0"
@@ -73,12 +74,11 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
-            android:title="@string/title_app_categorize"
-            android:summary="@string/summary_app_categorize"
             android:fragment="com.saggitt.omega.preferences.views.AppCategorizationFragment"
             android:key="pref_categorization"
+            android:summary="@string/summary_app_categorize"
+            android:title="@string/title_app_categorize"
             app:iconSpaceReserved="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_all_apps_search">
@@ -97,18 +97,19 @@
             android:summary="@string/summary_all_apps_google_search"
             android:title="@string/title_all_apps_google_search"
             app:iconSpaceReserved="false" />
-
     </PreferenceCategory>
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_protected_apps"
-        app:iconSpaceReserved="false"
-        app:title="@string/enable_protected_apps" />
+    <PreferenceCategory android:title="@string/pref_category__others">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_protected_apps"
+            app:iconSpaceReserved="false"
+            app:title="@string/enable_protected_apps" />
 
-    <Preference
-        android:key="pref_trust_apps"
-        android:summary="@string/summary__drawer_hide_apps"
-        android:title="@string/title__drawer_hide_apps"
-        app:iconSpaceReserved="false" />
+        <Preference
+            android:key="pref_trust_apps"
+            android:summary="@string/summary__drawer_hide_apps"
+            android:title="@string/title__drawer_hide_apps"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

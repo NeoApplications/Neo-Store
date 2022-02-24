@@ -46,33 +46,4 @@
         app:minValue="0.0"
         app:steps="24"
         app:summaryFormat="%.0fdp" />
-
-    <PreferenceCategory android:title="@string/app_categorization_folders">
-        <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
-            android:key="pref_folder_radius"
-            android:title="@string/folder_radius"
-            app:defaultSeekbarValue="-1.0"
-            app:maxValue="24"
-            app:minValue="0.0"
-            app:steps="24"
-            app:summaryFormat="%.0fdp" />
-
-        <com.saggitt.omega.preferences.custom.SeekbarPreference
-            android:key="pref_folder_columns"
-            android:title="@string/folder_columns"
-            android:defaultValue="4"
-            app:maxValue="5"
-            app:minValue="2"
-            app:steps="4"
-            app:summaryFormat="%.0f" />
-
-        <com.saggitt.omega.preferences.custom.SeekbarPreference
-            android:key="pref_folder_rows"
-            android:title="@string/folder_rows"
-            android:defaultValue="4"
-            app:maxValue="5"
-            app:minValue="2"
-            app:steps="4"
-            app:summaryFormat="%.0f" />
-    </PreferenceCategory>
 </PreferenceScreen>
