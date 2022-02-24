@@ -35,8 +35,8 @@ class DeviceProfileOverrides(context: Context) {
             defaultGrid: InvariantDeviceProfile.GridOption,
         ) : this(
             numHotseatColumns = defaultGrid.numColumns,
-            numRows = defaultGrid.numRows,
-            numColumns = defaultGrid.numColumns,
+            numRows = prefs.workspaceRows.get(defaultGrid),
+            numColumns = prefs.workspaceColumns.get(defaultGrid),
             numAllAppsColumns = defaultGrid.numColumns,
             numFolderRows = prefs.folderRows.toInt(),
             numFolderColumns = prefs.folderColumns.toInt(),
