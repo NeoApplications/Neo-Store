@@ -224,7 +224,8 @@ interface CategoryDao : BaseDao<Category> {
         FROM category AS category
         JOIN repository AS repository
         ON category.repository_id = repository._id
-        WHERE repository.enabled != 0"""
+        WHERE repository.enabled != 0
+        ORDER BY category.name"""
     )
     val allNames: List<String>
 
@@ -233,7 +234,8 @@ interface CategoryDao : BaseDao<Category> {
         FROM category AS category
         JOIN repository AS repository
         ON category.repository_id = repository._id
-        WHERE repository.enabled != 0"""
+        WHERE repository.enabled != 0
+        ORDER BY category.name"""
     )
     val allNamesLive: LiveData<List<String>>
 
