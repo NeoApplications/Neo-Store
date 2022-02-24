@@ -69,7 +69,7 @@
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>
     <string name="title__notification_count">Mostrar cuenta de notificaciones</string>
     <string name="smartspace_preferences">Preferencias</string>
-    <string name="msg_minus_one_on_left">A la izquierda de la pantalla principal</string>
+    <string name="pref_shelf_summary">A la izquierda de la pantalla principal</string>
     <string name="title_smartspace_feed_theme">Tema del Feed</string>
     <string name="color_presets">Predeterminados</string>
     <string name="icon_shape_override_label_location">en la pantalla de inicio</string>

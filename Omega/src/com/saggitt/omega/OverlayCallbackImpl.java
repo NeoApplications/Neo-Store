@@ -61,7 +61,7 @@ public class OverlayCallbackImpl
 
         mLauncher = launcher;
         mClient = new LauncherClient(mLauncher, this, new StaticInteger(
-                (prefs.getEnableMinus() ? 1 : 0) | 2 | 4 | 8));
+                (prefs.getEnableShelf() ? 1 : 0) | 2 | 4 | 8));
     }
 
     public LauncherClient getClient() {

@@ -79,7 +79,7 @@
     <string name="title__folder_badge_count">Afficher le badge de notifications</string>
     <string name="title__notification_count">Afficher le nombre de notifications</string>
     <string name="smartspace_preferences">Préférences</string>
-    <string name="msg_minus_one_on_left">À gauche de l\'écran d\'accueil</string>
+    <string name="pref_shelf_summary">À gauche de l\'écran d\'accueil</string>
     <string name="title_show_google_app">Afficher l\'application Google</string>
     <string name="icon_shape_override_progress">Application des modifications</string>
     <string name="get_more_icon_packs">Télécharger un nouveau pack d\'icônes</string>

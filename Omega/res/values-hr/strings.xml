@@ -149,7 +149,7 @@
     <string name="name_provider_alarm_events">Predstojeći alarmi</string>
     <string name="smartspace_widget_provider_not_found">Nabavi Google program.</string>
     <string name="smartspace_provider_calendar">Kalendarski događaji</string>
-    <string name="msg_minus_one_on_left">Lijevo od glavnog početnog ekrana</string>
+    <string name="pref_shelf_summary">Lijevo od glavnog početnog ekrana</string>
     <string name="home_widget">Na prvi pogled</string>
     <string name="event_provider_missing_notification_access">Isključi obavijesti od <xliff:g example="My App" id="name">„%2$s” za korištenje </xliff:g><xliff:g example="My Provider" id="providerName">„%1$s”.</xliff:g></string>
     <string name="event_provider_missing_notification_dots">Uključi točke obavijesti za korištenje <xliff:g example="My Provider" id="providerName">„%1$s”</xliff:g>.</string>

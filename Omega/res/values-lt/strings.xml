@@ -110,7 +110,7 @@
     <string name="home_widget">Vienu žvilgsniu</string>
     <string name="name_provider_alarm_events">Artėjantys žadintuvo signalai</string>
     <string name="resuable_text_alarm">Žadintuvas</string>
-    <string name="msg_minus_one_on_left">Į kairę nuo pagrindinio ekrano</string>
+    <string name="pref_shelf_summary">Į kairę nuo pagrindinio ekrano</string>
     <string name="title_smartspace_feed_theme">Sklaidos kanalo tema</string>
     <string name="title_show_google_app">Rodyti Google app</string>
     <string name="title_white_only_treatment">Pakeisti baltus fonus</string>

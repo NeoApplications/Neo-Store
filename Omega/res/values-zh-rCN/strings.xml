@@ -161,7 +161,7 @@
     <string name="smartspace_setup_text">点击以设置</string>
     <string name="smartspace_add_to_home">添加到桌面</string>
     <string name="smartspace_preferences">首选项</string>
-    <string name="msg_minus_one_on_left">在主屏幕的左侧</string>
+    <string name="pref_shelf_summary">在主屏幕的左侧</string>
     <string name="category__behavior_weather">天气</string>
     <string name="title_smartspace_event_providers">时间来源</string>
     <string name="title_smartspace_weather_units">温度单位</string>

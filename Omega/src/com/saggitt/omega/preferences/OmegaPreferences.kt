@@ -73,7 +73,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     val lockDesktop by BooleanPref(PREFS_DESKTOP_LOCK, false, reloadAll)
     val hideStatusBar by BooleanPref(PREFS_STATUSBAR_HIDE, false, doNothing)
-    val enableMinus by BooleanPref(PREFS_ENABLE_MINUS, false, restart)
+    val enableShelf by BooleanPref(PREFS_ENABLE_SHELF, false, restart)
     var allowEmptyScreens by BooleanPref(PREFS_EMPTY_SCREENS, false)
     val hideAppLabels by BooleanPref(PREFS_DESKTOP_HIDE_LABEL, false, reloadApps)
     val desktopTextScale by FloatPref(PREFS_DESKTOP_ICON_TEXT_SCALE, 1f, reloadApps)
