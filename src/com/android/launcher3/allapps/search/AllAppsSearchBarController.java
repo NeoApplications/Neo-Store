@@ -31,7 +31,6 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.ExtendedEditText;
-import com.android.launcher3.Launcher;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.config.FeatureFlags;
