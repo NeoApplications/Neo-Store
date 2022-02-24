@@ -86,18 +86,18 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
 
     // DOCK
-    var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, restart)
-    val dockIconScale by FloatPref(PREFS_DOCK_ICON_SCALE, 1f, restart)
+    var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, recreate)
+    val dockIconScale by FloatPref(PREFS_DOCK_ICON_SCALE, 1f, recreate)
     var dockScale by FloatPref(PREFS_DOCK_SCALE, 1f, restart)
-    val dockBackground by BooleanPref(PREFS_DOCK_BACKGROUND, false, restart)
-    val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, restart)
-    var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, restart)
+    val dockBackground by BooleanPref(PREFS_DOCK_BACKGROUND, false, recreate)
+    val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, recreate)
+    var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, recreate)
     var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
 
     // DRAWER
     val allAppsSearch by BooleanPref("pref_all_apps_search", true, recreate)
     var allAppsGlobalSearch by BooleanPref("pref_all_apps_global_search", true, doNothing)
-    var sortMode by StringIntPref(PREFS_SORT, 0, restart)
+    var sortMode by StringIntPref(PREFS_SORT, 0, recreate)
     var hiddenAppSet by StringSetPref(PREFS_HIDDEN_SET, setOf(), reloadApps)
     var hiddenPredictionAppSet by StringSetPref(PREFS_HIDDEN_PREDICTION_SET, setOf(), doNothing)
     var protectedAppsSet by StringSetPref(PREFS_PROTECTED_SET, setOf(), reloadApps)
@@ -157,27 +157,27 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
-    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, restart)
-    val customFolderBackground by BooleanPref(PREFS_FOLDER_BACKGROUND_CUSTOM, false, restart)
-    val folderBackground by IntPref(
+    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, restart) // TODO add
+    val customFolderBackground by BooleanPref(PREFS_FOLDER_BACKGROUND_CUSTOM, false, restart) // TODO add
+    val folderBackground by IntPref( // TODO add
         PREFS_FOLDER_BACKGROUND,
         Themes.getAttrColor(context, R.attr.folderFillColor),
         restart
     )
-    val folderColumns by FloatPref("pref_folder_columns", 4f, reloadIcons)
-    val folderRows by FloatPref("pref_folder_rows", 4f, reloadIcons)
+    val folderColumns by FloatPref("pref_folder_columns", 4f, reloadIcons) // TODO add
+    val folderRows by FloatPref("pref_folder_rows", 4f, reloadIcons) // TODO add
 
     // GESTURES & NOTIFICATION
-    val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, restart)
+    val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, recreate)
     val notificationCustomColor: Boolean by BooleanPref(
         PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
         false,
-        restart
+        recreate
     )
     val notificationBackground by IntPref(
         PREFS_NOTIFICATION_BACKGROUND,
         R.color.notification_background,
-        restart
+        recreate
     )
     val folderBadgeCount by BooleanPref(PREFS_NOTIFICATION_COUNT_FOLDER, true, recreate)
 
@@ -194,13 +194,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var launchAssistantGesture by StringPref(PREFS_GESTURE_ASSISTANT, "", restart)
 
     // ADVANCED
-    var language by StringPref(PREFS_LANGUAGE, "", restart)
+    var language by StringPref(PREFS_LANGUAGE, "", recreate)
     var firstRun by BooleanPref(PREFS_FIRST_RUN, true)
 
     // DEVELOPER PREFERENCES
-    var developerOptionsEnabled by BooleanPref(PREFS_DEV_PREFS_SHOW, false, restart)
-    var desktopModeEnabled by BooleanPref(PREFS_DESKTOP_MODE, true, restart)
-    private val lowPerformanceMode by BooleanPref(PREFS_LOW_PREFORMANCE, false, restart)
+    var developerOptionsEnabled by BooleanPref(PREFS_DEV_PREFS_SHOW, false, recreate)
+    var desktopModeEnabled by BooleanPref(PREFS_DESKTOP_MODE, true, recreate)
+    private val lowPerformanceMode by BooleanPref(PREFS_LOW_PREFORMANCE, false, restart) // TODO Add
     val enablePhysics get() = !lowPerformanceMode
     val showDebugInfo by BooleanPref(PREFS_DEBUG_MODE, true, doNothing)
 
