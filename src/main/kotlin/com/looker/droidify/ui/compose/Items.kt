@@ -1,30 +1,25 @@
 package com.looker.droidify.ui.compose
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import com.looker.droidify.R
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
+import com.looker.droidify.ui.compose.components.NetworkImage
 import com.looker.droidify.ui.compose.theme.AppTheme
 
 @Composable
@@ -33,36 +28,31 @@ fun ProductRow(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
+
+    val imageData by remember {
+        mutableStateOf(
+            CoilDownloader.createIconUri(
+                item.packageName,
+                item.icon,
+                item.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            )
+        )
+    }
+
     Row(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(8.dp))
+            .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
             .clip(shape = RoundedCornerShape(8.dp))
             .clickable(onClick = { onUserClick(item) })
             .padding(8.dp)
     ) {
-        // TODO: Fix the issue where coil doesn't fallback to the palceholder
-        val imagePainter =
-            if (repo != null) rememberImagePainter(
-                CoilDownloader.createIconUri(
-                    item.packageName,
-                    item.icon,
-                    item.metadataIcon,
-                    repo.address,
-                    repo.authentication
-                ), builder = {
-                    placeholder(R.drawable.ic_application_default)
-                    error(R.drawable.ic_application_default)
-                }
-            ) else painterResource(id = R.drawable.ic_application_default)
-        Image(
-            painter = imagePainter,
-            modifier = Modifier
-                .requiredSize(56.dp)
-                .clip(shape = RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop,
-            contentDescription = null
+        NetworkImage(
+            modifier = Modifier.size(56.dp),
+            data = imageData
         )
 
         Column(
@@ -84,24 +74,23 @@ fun ProductRow(
                     fontWeight = FontWeight.Bold,
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = item.version,
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     modifier = Modifier.fillMaxHeight(),
                     text = item.summary,
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
-
         }
     }
 }
@@ -112,60 +101,49 @@ fun ProductColumn(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
+
+    val imageData by remember {
+        mutableStateOf(
+            CoilDownloader.createIconUri(
+                item.packageName,
+                item.icon,
+                item.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            )
+        )
+    }
+
     Column(
         modifier = Modifier
             .padding(4.dp)
             .requiredSize(72.dp, 96.dp)
-            .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(8.dp))
+            .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
             .clip(shape = RoundedCornerShape(8.dp))
             .clickable(onClick = { onUserClick(item) })
-            .padding(4.dp)
+            .padding(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // TODO: Fix the issue where coil doesn't fallback to the palceholder
-        val imagePainter = if (repo != null)
-            rememberImagePainter(
-                CoilDownloader.createIconUri(
-                    item.packageName,
-                    item.icon,
-                    item.metadataIcon,
-                    repo.address,
-                    repo.authentication
-                ), builder = {
-                    placeholder(R.drawable.ic_application_default)
-                    error(R.drawable.ic_application_default)
-                }
-            )
-        else painterResource(id = R.drawable.ic_application_default)
-        Image(
-            painter = imagePainter,
-            modifier = Modifier
-                .requiredSize(56.dp)
-                .clip(shape = RoundedCornerShape(8.dp))
-                .align(Alignment.CenterHorizontally),
-            contentScale = ContentScale.Crop,
-            contentDescription = null
+        NetworkImage(
+            modifier = Modifier.size(56.dp),
+            data = imageData
         )
 
         Text(
             text = item.name,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.bodyLarge,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 text = item.version,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.overline,
+                style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
         }
-
     }
 }
 

@@ -145,7 +145,7 @@ object CoilDownloader {
 
     fun createIconUri(
         packageName: String, icon: String, metadataIcon: String,
-        address: String, auth: String
+        address: String?, auth: String?
     ): Uri = Uri.Builder().scheme("https").authority(HOST_ICON)
         .appendQueryParameter(QUERY_ADDRESS, address)
         .appendQueryParameter(QUERY_AUTHENTICATION, auth)

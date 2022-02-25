@@ -58,4 +58,3 @@ val BlackBackground = Color(0xFF000000)
 val BlackSurface = Color(0xFF191C1A)
 
 val Seed = Color(0xFF51DF93)
-
