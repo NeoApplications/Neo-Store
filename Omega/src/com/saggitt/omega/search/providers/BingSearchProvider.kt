@@ -51,7 +51,7 @@ class BingSearchProvider(context: Context) : SearchProvider(context) {
     override fun startSearch(callback: (intent: Intent) -> Unit) = callback(
         Intent().setClassName(
             PACKAGE,
-            "com.microsoft.clients.bing.widget.WidgetSearchActivity"
+            "com.microsoft.sapphire.app.main.SplashActivity"
         ).setPackage(PACKAGE)
     )
 

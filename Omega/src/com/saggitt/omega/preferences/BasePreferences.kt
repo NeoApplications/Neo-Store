@@ -283,6 +283,42 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
+    inner class IdpIntPref(
+        key: String,
+        private val selectDefaultValue: InvariantDeviceProfile.GridOption.() -> Int,
+        onChange: () -> Unit = doNothing
+    ) : IntPref(key, -1, onChange) {
+
+        override fun onGetValue(): Int {
+            error("unsupported")
+        }
+
+        override fun onSetValue(value: Int) {
+            error("unsupported")
+        }
+
+        fun defaultValue(defaultGrid: InvariantDeviceProfile.GridOption): Int {
+            return selectDefaultValue(defaultGrid)
+        }
+
+        fun get(defaultGrid: InvariantDeviceProfile.GridOption): Int {
+            val value = super.onGetValue()
+            return if (value == -1 || value == -0) {
+                selectDefaultValue(defaultGrid)
+            } else {
+                value
+            }
+        }
+
+        fun set(newValue: Int, defaultGrid: InvariantDeviceProfile.GridOption) {
+            if (newValue == selectDefaultValue(defaultGrid)) {
+                super.onSetValue(-1)
+            } else {
+                super.onSetValue(newValue)
+            }
+        }
+    }
+
     open inner class AlphaPref(
         key: String,
         defaultValue: Int = 0,

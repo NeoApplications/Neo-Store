@@ -205,7 +205,6 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverla
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
 import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.OmegaLauncher;
-import com.saggitt.omega.preferences.OmegaPreferences;
 import com.saggitt.omega.util.Config;
 
 import java.io.FileDescriptor;
@@ -430,9 +429,6 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
         LauncherAppState app = LauncherAppState.getInstance(this);
         app.setLauncher(this);
-
-        OmegaPreferences prefs = Utilities.getOmegaPrefs(this);
-        prefs.getGridSize();
 
         mOldConfig = new Configuration(getResources().getConfiguration());
         mModel = app.getModel();

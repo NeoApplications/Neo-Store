@@ -65,6 +65,9 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val gridSize by gridSizeDelegate
+    val workspaceColumns = IdpIntPref("pref_${PREFS_COLUMNS}", { numColumns }, reloadIcons)
+    val workspaceRows = IdpIntPref("pref_${PREFS_ROWS}", { numRows }, reloadIcons)
+
     val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadIcons)
     val usePopupMenuView by BooleanPref(PREFS_DESKTOP_POPUP_MENU, true, doNothing)
     var dashProviders = StringListPref(
