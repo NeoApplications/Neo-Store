@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Parcel
 import android.text.SpannableStringBuilder
 import android.text.format.DateFormat
+import android.text.method.LinkMovementMethod
 import android.text.style.*
 import android.text.util.Linkify
 import android.view.Gravity
@@ -60,7 +61,6 @@ import com.looker.droidify.utility.extension.text.formatSize
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.looker.droidify.utility.extension.text.trimAfter
 import com.looker.droidify.utility.extension.text.trimBefore
-import com.looker.droidify.widget.ClickableMovementMethod
 import com.looker.droidify.widget.StableRecyclerAdapter
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
@@ -419,7 +419,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
             itemView as MaterialTextView
             itemView.setTextSizeScaled(15)
             itemView.resources.sizeScaled(16).let { itemView.setPadding(it, it, it, it) }
-            itemView.movementMethod = ClickableMovementMethod
+            itemView.movementMethod = LinkMovementMethod()
             itemView.layoutParams = RecyclerView.LayoutParams(
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT
