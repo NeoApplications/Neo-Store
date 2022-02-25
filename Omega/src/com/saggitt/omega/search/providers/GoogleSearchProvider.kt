@@ -57,12 +57,12 @@ class GoogleSearchProvider(context: Context) : SearchProvider(context) {
         )
 
     override fun startFeed(callback: (intent: Intent) -> Unit) {
-    callback(
-        Intent(Intent.ACTION_MAIN).setClassName(
-            Config.GOOGLE_QSB,
-            "${Config.GOOGLE_QSB}.SearchActivity"
+        callback(
+            Intent(Intent.ACTION_MAIN).setClassName(
+                Config.GOOGLE_QSB,
+                "${Config.GOOGLE_QSB}.SearchActivity"
+            )
         )
-    )
     }
 
     override val iconRes: Int

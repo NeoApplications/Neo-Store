@@ -56,7 +56,10 @@ class BingSearchProvider(context: Context) : SearchProvider(context) {
     )
 
     override fun startVoiceSearch(callback: (intent: Intent) -> Unit) =
-        callback(Intent(Intent.ACTION_SEARCH_LONG_PRESS).setPackage(PACKAGE))
+        callback(
+            Intent().setClassName(PACKAGE, "com.microsoft.clients.bing.voice.VoiceActivity")
+                .setPackage(PACKAGE)
+        )
 
     override fun startAssistant(callback: (intent: Intent) -> Unit) = callback(
         if (cortanaInstalled) {
