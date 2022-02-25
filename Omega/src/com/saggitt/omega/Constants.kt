@@ -7,12 +7,17 @@ const val PREFS_DESKTOP_HIDE_LABEL = "pref_hide_app_label"
 const val PREFS_DESKTOP_ICON_LABEL_TWOLINES = "pref_icon_labels_two_lines"
 const val PREFS_DESKTOP_ICON_TEXT_SCALE = "pref_icon_text_scale"
 const val PREFS_DESKTOP_POPUP_MENU = "pref_desktopUsePopupMenuView"
-const val PREFS_ENABLE_SHELF = "pref_enable_shelf"
 const val PREFS_DESKTOP_LOCK = "pref_lockDesktop"
 const val PREFS_WIDGETS_FULL_WIDTH = "pref_full_width_widgets"
 const val PREFS_EMPTY_SCREENS = "pref_keepEmptyScreens"
+const val PREFS_FOLDER_RADIUS = "pref_folder_radius"
+const val PREFS_FOLDER_COLUMNS = "pref_folder_columns"
+const val PREFS_FOLDER_ROWS = "pref_folder_rows"
+const val PREFS_FOLDER_BACKGROUND = "pref_folder_background"
+const val PREFS_FOLDER_BACKGROUND_CUSTOM = "pref_custom_folder_background"
 const val PREFS_STATUSBAR_HIDE = "pref_hideStatusBar"
 const val PREFS_DASH_PROVIDERS = "pref_dash_providers"
+const val PREFS_ENABLE_SHELF = "pref_enable_shelf"
 
 // DOCK PREFS
 const val PREFS_DOCK_HIDE = "pref_hideHotseat"
@@ -55,9 +60,6 @@ const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
 const val PREFS_SEARCH_SETTINGS = "pref_settings_search"
-const val PREFS_FOLDER_RADIUS = "pref_folder_radius"
-const val PREFS_FOLDER_BACKGROUND = "pref_folder_background"
-const val PREFS_FOLDER_BACKGROUND_CUSTOM = "pref_custom_folder_background"
 
 // GESTURES PREFS
 const val PREFS_NOTIFICATION_COUNT = "pref_notification_count"

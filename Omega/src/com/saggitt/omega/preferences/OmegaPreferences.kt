@@ -87,6 +87,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         reloadApps
     )
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
+    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, recreate) // TODO add
+    val customFolderBackground by BooleanPref(
+        PREFS_FOLDER_BACKGROUND_CUSTOM,
+        false,
+        recreate
+    ) // TODO add
+    val folderBackground by IntPref( // TODO add
+        PREFS_FOLDER_BACKGROUND,
+        Themes.getAttrColor(context, R.attr.folderFillColor),
+        restart
+    )
+    val folderColumns by FloatPref(PREFS_FOLDER_COLUMNS, 4f, reloadIcons) // TODO add
+    val folderRows by FloatPref(PREFS_FOLDER_ROWS, 4f, reloadIcons) // TODO add
 
     // DOCK
     var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, recreate)
@@ -160,15 +173,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
-    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, restart) // TODO add
-    val customFolderBackground by BooleanPref(PREFS_FOLDER_BACKGROUND_CUSTOM, false, restart) // TODO add
-    val folderBackground by IntPref( // TODO add
-        PREFS_FOLDER_BACKGROUND,
-        Themes.getAttrColor(context, R.attr.folderFillColor),
-        restart
-    )
-    val folderColumns by FloatPref("pref_folder_columns", 4f, reloadIcons) // TODO add
-    val folderRows by FloatPref("pref_folder_rows", 4f, reloadIcons) // TODO add
 
     // GESTURES & NOTIFICATION
     val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, recreate)

@@ -75,12 +75,12 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         theme.applyStyle(
             resources.getIdentifier(
                 Integer.toHexString(currentAccent),
-                    "style",
-                    packageName
+                "style",
+                packageName
             ), true
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
-                && !Utilities.hasStoragePermission(this)
+            && !Utilities.hasStoragePermission(this)
         ) Utilities.requestStoragePermission(this)
 
         super.onCreate(savedInstanceState)

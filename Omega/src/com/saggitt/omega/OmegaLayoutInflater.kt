@@ -26,11 +26,17 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import org.xmlpull.v1.XmlPullParser
 
-class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) : LayoutInflater(original, newContext) {
+class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) :
+    LayoutInflater(original, newContext) {
 
     fun installFactory(delegate: AppCompatDelegate) {
         factory2 = object : Factory2 {
-            override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
+            override fun onCreateView(
+                parent: View?,
+                name: String,
+                context: Context,
+                attrs: AttributeSet
+            ): View? {
                 val view = onCreateViewImpl(parent, name, context, attrs)
                 if (view != null) {
                     onViewCreated(view, attrs)
@@ -38,11 +44,18 @@ class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) : Layou
                 return view
             }
 
-            private fun onCreateViewImpl(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
+            private fun onCreateViewImpl(
+                parent: View?,
+                name: String,
+                context: Context,
+                attrs: AttributeSet
+            ): View? {
                 if (name == "android.support.v7.widget.DialogTitle") {
-                    return (Class.forName(name).getConstructor(Context::class.java,
-                            AttributeSet::class.java)
-                            .newInstance(context, attrs) as TextView)
+                    return (Class.forName(name).getConstructor(
+                        Context::class.java,
+                        AttributeSet::class.java
+                    )
+                        .newInstance(context, attrs) as TextView)
                 }
                 return delegate.createView(parent, name, context, attrs)
             }
@@ -105,7 +118,12 @@ class OmegaLayoutInflater(original: LayoutInflater, newContext: Context) : Layou
     companion object {
 
         @JvmStatic
-        private val sClassPrefixList = arrayOf("android.widget.", "android.webkit.", "android.app.", "androidx.cardview.widget.")
+        private val sClassPrefixList = arrayOf(
+            "android.widget.",
+            "android.webkit.",
+            "android.app.",
+            "androidx.cardview.widget."
+        )
     }
 }
 
