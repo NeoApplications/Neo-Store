@@ -104,6 +104,7 @@
         android:defaultValue="false"
         android:key="pref_protected_apps"
         app:iconSpaceReserved="false"
+        app:allowDividerAbove="true"
         app:title="@string/enable_protected_apps" />
 
     <Preference

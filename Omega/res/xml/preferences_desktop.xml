@@ -117,12 +117,12 @@
 
     </PreferenceCategory>
 
-
     <SwitchPreference
         android:defaultValue="falser"
         android:key="pref_hideStatusBar"
         android:persistent="true"
         android:title="@string/title_desktop_hide_statusbar"
+        app:allowDividerAbove="true"
         app:iconSpaceReserved="false" />
 
     <Preference
