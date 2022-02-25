@@ -6,22 +6,27 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.looker.droidify.R
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
+import com.looker.droidify.ui.compose.components.ExpandableCard
 import com.looker.droidify.ui.compose.components.NetworkImage
 import com.looker.droidify.ui.compose.theme.AppTheme
-import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @Composable
 fun ProductRow(
@@ -29,7 +34,6 @@ fun ProductRow(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
-
     val imageData by remember(item, repo) {
         mutableStateOf(
             CoilDownloader.createIconUri(
@@ -42,57 +46,51 @@ fun ProductRow(
         )
     }
 
-    Row(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(LocalShapes.current.large)
-            )
-            .clickable(onClick = { onUserClick(item) })
-            .padding(8.dp)
+    ExpandableCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        onClick = { onUserClick(item) },
+        expandedContent = { ExpandedItemContent(item = item) }
     ) {
-        NetworkImage(
-            modifier = Modifier.size(56.dp),
-            data = imageData
-        )
-
-        Column(
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .align(Alignment.CenterVertically)
-                .requiredHeight(56.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f),
-                contentAlignment = Alignment.TopEnd
+            NetworkImage(
+                modifier = Modifier.size(56.dp),
+                data = imageData
+            )
+
+            Column(
+                modifier = Modifier.requiredHeight(56.dp)
             ) {
-                Text(
-                    text = item.name,
+                Box(
                     modifier = Modifier
-                        .align(Alignment.CenterStart),
-                    fontWeight = FontWeight.Bold,
-                    softWrap = true,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = item.version,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd),
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    modifier = Modifier.fillMaxHeight(),
-                    text = item.summary,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.6f),
+                ) {
+                    Text(
+                        text = item.name,
+                        modifier = Modifier.align(Alignment.CenterStart),
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = item.version,
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(
+                        modifier = Modifier.fillMaxHeight(),
+                        text = item.summary,
+                        style = MaterialTheme.typography.bodySmall,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -120,9 +118,9 @@ fun ProductColumn(
     Column(
         modifier = Modifier
             .padding(4.dp)
-            .requiredSize(72.dp, 96.dp)
-            .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
+            .sizeIn(minWidth = 72.dp, minHeight = 96.dp, maxWidth = 110.dp)
             .clip(shape = RoundedCornerShape(8.dp))
+            .background(color = MaterialTheme.colorScheme.surface)
             .clickable(onClick = { onUserClick(item) })
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -134,8 +132,7 @@ fun ProductColumn(
 
         Text(
             text = item.name,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
@@ -146,6 +143,44 @@ fun ProductColumn(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
+        }
+    }
+}
+
+@Composable
+fun ExpandedItemContent(
+    modifier: Modifier = Modifier,
+    item: ProductItem,
+    favourite: Boolean = false,
+    onFavourite: (ProductItem) -> Unit = {},
+    onInstallClicked: (ProductItem) -> Unit = {}
+) {
+    Box(contentAlignment = Alignment.CenterEnd) {
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { onFavourite(item) }) {
+                Icon(
+                    imageVector = if (favourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = "Add to Favourite",
+                    tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
+                )
+            }
+            FilledTonalButton(
+                colors = buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                onClick = { onInstallClicked(item) }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_download),
+                    contentDescription = "Add to Favourite"
+                )
+                Text(text = "Install")
+            }
         }
     }
 }

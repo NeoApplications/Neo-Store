@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Product
@@ -16,12 +18,14 @@ fun ProductsVerticalRecycler(
     repositories: Map<Long, Repository>,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
-    LazyColumn(
-        verticalArrangement = spacedBy(2.dp)
-    ) {
-        items(productsList ?: emptyList()) { product ->
-            product.item.let { item ->
-                ProductRow(item, repositories[item.repositoryId], onUserClick)
+    Surface(color = MaterialTheme.colorScheme.background){
+        LazyColumn(
+            verticalArrangement = spacedBy(2.dp)
+        ) {
+            items(productsList ?: emptyList()) { product ->
+                product.item.let { item ->
+                    ProductRow(item, repositories[item.repositoryId], onUserClick)
+                }
             }
         }
     }
