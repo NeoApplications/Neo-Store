@@ -21,6 +21,7 @@ import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.ui.compose.components.NetworkImage
 import com.looker.droidify.ui.compose.theme.AppTheme
+import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @Composable
 fun ProductRow(
@@ -29,7 +30,7 @@ fun ProductRow(
     onUserClick: (ProductItem) -> Unit = {}
 ) {
 
-    val imageData by remember {
+    val imageData by remember(item, repo) {
         mutableStateOf(
             CoilDownloader.createIconUri(
                 item.packageName,
@@ -45,8 +46,10 @@ fun ProductRow(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
-            .clip(shape = RoundedCornerShape(8.dp))
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(LocalShapes.current.large)
+            )
             .clickable(onClick = { onUserClick(item) })
             .padding(8.dp)
     ) {
@@ -102,7 +105,7 @@ fun ProductColumn(
     onUserClick: (ProductItem) -> Unit = {}
 ) {
 
-    val imageData by remember {
+    val imageData by remember(item, repo) {
         mutableStateOf(
             CoilDownloader.createIconUri(
                 item.packageName,
