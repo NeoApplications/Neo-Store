@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
@@ -71,4 +72,10 @@ fun ProductCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
+}
+
+@Preview
+@Composable
+fun ProductCardPreview() {
+    ProductCard(ProductItem())
 }

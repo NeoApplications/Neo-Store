@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.database.entity.Repository
@@ -127,4 +128,10 @@ fun ExpandedItemContent(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ProductsListItemPreview() {
+    ProductsListItem(ProductItem())
 }
