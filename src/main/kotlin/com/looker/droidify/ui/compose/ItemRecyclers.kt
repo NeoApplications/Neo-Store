@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
+import com.looker.droidify.ui.compose.components.ProductCard
+import com.looker.droidify.ui.compose.components.ProductsListItem
 
 @Composable
 fun ProductsVerticalRecycler(
@@ -18,13 +20,13 @@ fun ProductsVerticalRecycler(
     repositories: Map<Long, Repository>,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
-    Surface(color = MaterialTheme.colorScheme.background){
+    Surface(color = MaterialTheme.colorScheme.background) {
         LazyColumn(
             verticalArrangement = spacedBy(2.dp)
         ) {
             items(productsList ?: emptyList()) { product ->
                 product.item.let { item ->
-                    ProductRow(item, repositories[item.repositoryId], onUserClick)
+                    ProductsListItem(item, repositories[item.repositoryId], onUserClick)
                 }
             }
         }
@@ -42,7 +44,7 @@ fun ProductsHorizontalRecycler(
     ) {
         items(productsList ?: emptyList()) { product ->
             product.item.let { item ->
-                ProductColumn(item, repositories[item.repositoryId], onUserClick)
+                ProductCard(item, repositories[item.repositoryId], onUserClick)
             }
         }
     }

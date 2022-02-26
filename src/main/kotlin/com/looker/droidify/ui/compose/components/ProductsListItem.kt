@@ -1,9 +1,6 @@
-package com.looker.droidify.ui.compose
+package com.looker.droidify.ui.compose.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -15,22 +12,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
-import com.looker.droidify.ui.compose.components.ExpandableCard
-import com.looker.droidify.ui.compose.components.NetworkImage
-import com.looker.droidify.ui.compose.theme.AppTheme
+import com.looker.droidify.ui.compose.utils.ExpandableCard
+import com.looker.droidify.ui.compose.utils.NetworkImage
 
 @Composable
-fun ProductRow(
+fun ProductsListItem(
     item: ProductItem,
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {}
@@ -98,59 +92,6 @@ fun ProductRow(
 }
 
 @Composable
-fun ProductColumn(
-    item: ProductItem,
-    repo: Repository? = null,
-    onUserClick: (ProductItem) -> Unit = {}
-) {
-
-    val imageData by remember(item, repo) {
-        mutableStateOf(
-            CoilDownloader.createIconUri(
-                item.packageName,
-                item.icon,
-                item.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            )
-        )
-    }
-
-    Column(
-        modifier = Modifier
-            .padding(4.dp)
-            .requiredSize(80.dp, 116.dp)
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(color = MaterialTheme.colorScheme.surface)
-            .clickable(onClick = { onUserClick(item) }),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        NetworkImage(
-            modifier = Modifier.size(64.dp),
-            data = imageData
-        )
-
-        Text(
-            modifier = Modifier.padding(4.dp, 2.dp),
-            text = item.name,
-            style = MaterialTheme.typography.bodySmall,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            modifier = Modifier.padding(4.dp, 1.dp),
-            text = item.version,
-            style = MaterialTheme.typography.labelSmall,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
 fun ExpandedItemContent(
     modifier: Modifier = Modifier,
     item: ProductItem,
@@ -185,37 +126,5 @@ fun ExpandedItemContent(
                 Text(text = "Install")
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun ProductColumnPreview() {
-    AppTheme(darkTheme = false) {
-        ProductColumn(ProductItem())
-    }
-}
-
-@Preview
-@Composable
-fun ProductColumnDarkPreview() {
-    AppTheme(darkTheme = true) {
-        ProductColumn(ProductItem())
-    }
-}
-
-@Preview
-@Composable
-fun ProductRowPreview() {
-    AppTheme(darkTheme = false) {
-        ProductRow(ProductItem())
-    }
-}
-
-@Preview
-@Composable
-fun ProductRowDarkPreview() {
-    AppTheme(darkTheme = true) {
-        ProductRow(ProductItem())
     }
 }

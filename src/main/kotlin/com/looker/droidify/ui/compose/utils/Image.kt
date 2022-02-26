@@ -1,4 +1,4 @@
-package com.looker.droidify.ui.compose.components
+package com.looker.droidify.ui.compose.utils
 
 import android.net.Uri
 import androidx.compose.foundation.Image
