@@ -13,6 +13,7 @@ import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.ui.compose.components.ProductCard
 import com.looker.droidify.ui.compose.components.ProductsListItem
+import com.looker.droidify.ui.compose.components.RepositoryItem
 
 @Composable
 fun ProductsVerticalRecycler(
@@ -45,6 +46,23 @@ fun ProductsHorizontalRecycler(
         items(productsList ?: emptyList()) { product ->
             product.item.let { item ->
                 ProductCard(item, repositories[item.repositoryId], onUserClick)
+            }
+        }
+    }
+}
+
+@Composable
+fun RepositoriesRecycler(
+    repositoriesList: List<Repository>?,
+    onClick: (Repository) -> Unit = {},
+    onLongClick: (Repository) -> Unit = {}
+) {
+    Surface(color = MaterialTheme.colorScheme.background) {
+        LazyColumn(
+            verticalArrangement = spacedBy(2.dp)
+        ) {
+            items(repositoriesList ?: emptyList()) { repo ->
+                RepositoryItem(repository = repo, onClick = onClick, onLongClick = onLongClick)
             }
         }
     }
