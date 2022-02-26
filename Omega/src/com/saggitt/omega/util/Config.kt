@@ -77,6 +77,10 @@ class Config(val context: Context) {
         const val SORT_MOST_USED = 2
         const val SORT_BY_COLOR = 3
 
+        //APP DRAWER LAYOUT MODE
+        const val DRAWER_VERTICAL = 0
+        const val DRAWER_PAGED = 1
+
         val ICON_INTENTS = arrayOf(
             Intent("com.novalauncher.THEME"),
             Intent("org.adw.launcher.THEMES"),

@@ -17,6 +17,15 @@
   -->
 
 <resources>
+
+    <string-array name="values_layout_mode" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="entries_layout_mode">
+        <item>@string/title_drawer_vertical</item>
+        <item>@string/title_drawer_paged</item>
+    </string-array>
     <string-array name="themes" translatable="false">
         <item>@string/theme_auto</item>
         <item>@string/theme_auto_night_mode</item>

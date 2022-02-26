@@ -136,6 +136,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     val saveScrollPosition by BooleanPref(PREFS_KEEP_SCROLL_STATE, false, doNothing)
 
+    val drawerLayout by StringIntPref("pref_drawer_layout", 0, recreate)
+
     val customAppName =
         object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
             override fun flattenKey(key: ComponentKey) = key.toString()
