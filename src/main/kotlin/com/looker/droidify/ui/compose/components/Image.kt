@@ -30,8 +30,8 @@ fun NetworkImage(
 ) {
     Box(modifier) {
         val painter = rememberImagePainter(data = data) {
-            placeholder(R.drawable.ic_application_default)
-            error(R.drawable.ic_application_default)
+            placeholder(R.drawable.ic_placeholder)
+            error(R.drawable.ic_placeholder)
         }
 
         Image(
