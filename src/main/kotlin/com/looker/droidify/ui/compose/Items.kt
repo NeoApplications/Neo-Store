@@ -47,7 +47,7 @@ fun ProductRow(
     }
 
     ExpandableCard(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
         onClick = { onUserClick(item) },
         expandedContent = { ExpandedItemContent(item = item) }
     ) {
@@ -57,17 +57,17 @@ fun ProductRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             NetworkImage(
-                modifier = Modifier.size(56.dp),
+                modifier = Modifier.size(64.dp),
                 data = imageData
             )
 
             Column(
-                modifier = Modifier.requiredHeight(56.dp)
+                modifier = Modifier.requiredHeight(64.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.6f),
+                        .fillMaxHeight(0.4f),
                 ) {
                     Text(
                         text = item.name,
@@ -88,7 +88,8 @@ fun ProductRow(
                         modifier = Modifier.fillMaxHeight(),
                         text = item.summary,
                         style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2
                     )
                 }
             }
@@ -118,19 +119,20 @@ fun ProductColumn(
     Column(
         modifier = Modifier
             .padding(4.dp)
-            .sizeIn(minWidth = 72.dp, minHeight = 96.dp, maxWidth = 110.dp)
+            .requiredSize(80.dp, 116.dp)
             .clip(shape = RoundedCornerShape(8.dp))
             .background(color = MaterialTheme.colorScheme.surface)
-            .clickable(onClick = { onUserClick(item) })
-            .padding(4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .clickable(onClick = { onUserClick(item) }),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         NetworkImage(
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier.size(64.dp),
             data = imageData
         )
 
         Text(
+            modifier = Modifier.padding(4.dp, 2.dp),
             text = item.name,
             style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
@@ -138,6 +140,7 @@ fun ProductColumn(
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
+                modifier = Modifier.padding(4.dp, 1.dp),
                 text = item.version,
                 style = MaterialTheme.typography.labelSmall,
                 overflow = TextOverflow.Ellipsis,
