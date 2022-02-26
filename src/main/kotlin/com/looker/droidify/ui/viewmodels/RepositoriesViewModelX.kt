@@ -26,7 +26,7 @@ class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun addNewRepository() {
-        withContext(Dispatchers.IO) { db.repositoryDao.insert(newRepository()) }
+        withContext(Dispatchers.IO) { db.repositoryDao.insert(newRepository(address = "new.Repository")) }
     }
 
     class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
