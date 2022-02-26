@@ -142,12 +142,6 @@ dependencies {
     // Material3
     implementation 'com.google.android.material:material:1.6.0-alpha03'
 
-    // FastAdapter
-    implementation("com.mikepenz:fastadapter:5.6.0")
-    implementation("com.mikepenz:fastadapter-extensions-diff:5.6.0")
-    implementation("com.mikepenz:fastadapter-extensions-binding:5.6.0")
-    implementation("com.mikepenz:fastadapter-extensions-paged:5.6.0")
-
     // Coil
     implementation 'io.coil-kt:coil:1.4.0'
     implementation "io.coil-kt:coil-compose:1.4.0"
