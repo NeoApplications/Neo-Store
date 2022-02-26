@@ -396,7 +396,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     searchQuery = "",
                                     section = Section.All,
                                     order = Order.NAME
-                                ).mapNotNull { it.item }
+                                ).map { it.item }
                         }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
