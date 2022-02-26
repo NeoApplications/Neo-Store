@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,27 +28,29 @@ import com.looker.droidify.ui.compose.theme.LocalShapes
 fun RepositoryItem(
     modifier: Modifier = Modifier,
     repository: Repository,
-    onClick: () -> Unit,
-    onLongClick: (() -> Unit) = {}
+    onClick: (Repository) -> Unit = {},
+    onLongClick: (Repository) -> Unit = {}
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (repository.enabled) MaterialTheme.colorScheme.surfaceVariant
+        targetValue = if (repository.enabled) MaterialTheme.colorScheme.primaryContainer
         else MaterialTheme.colorScheme.background
     )
 
     Surface(
         modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp)
             .fillMaxWidth()
+            .clip(RoundedCornerShape(LocalShapes.current.large))
             .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
+                onClick = { onClick(repository) },
+                onLongClick = { onLongClick(repository) }
             ),
         color = backgroundColor,
         shape = RoundedCornerShape(LocalShapes.current.large)
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = 8.dp,
+                horizontal = 12.dp,
                 vertical = 16.dp
             ),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -75,20 +77,21 @@ private fun RepositoryItemText(
     repositoryDescription: String?
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(0.9f),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
             text = repositoryName,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
+            maxLines = 1
         )
         repositoryDescription?.let {
             Text(
                 text = it,
                 style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
             )
         }
     }
