@@ -15,8 +15,7 @@
  ~ You should have received a copy of the GNU Affero General Public License
  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -26,37 +25,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:clipToPadding="false">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_repository"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="64dp"
+                android:layout_margin="@dimen/shape_margin_medium"
+                android:drawableEnd="@drawable/ic_add"
+                android:drawableTint="?colorPrimary"
+                android:text="@string/add_repository" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/add_repository"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_margin="@dimen/shape_margin_medium"
-                    android:drawableEnd="@drawable/ic_add"
-                    android:drawableTint="?colorPrimary"
-                    android:text="@string/add_repository" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    tools:listitem="@layout/item_repository_x" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.core.widget.NestedScrollView>
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/reposRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 </layout>
 
