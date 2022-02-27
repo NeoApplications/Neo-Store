@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Scaffold
 import com.google.android.material.composethemeadapter.MdcTheme
@@ -15,6 +16,7 @@ import com.looker.droidify.ui.compose.ProductsHorizontalRecycler
 import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.theme.AppTheme
 import com.looker.droidify.utility.isDarkTheme
+import com.looker.droidify.widget.FocusSearchView
 
 class InstalledFragment : MainNavFragmentX() {
 
@@ -96,6 +98,22 @@ class InstalledFragment : MainNavFragmentX() {
                         View.VISIBLE
                     }
                 }
+        }
+        mainActivityX.menuSetup.observe(viewLifecycleOwner) {
+            if (it != null) {
+                val searchView =
+                    mainActivityX.toolbar.menu.findItem(R.id.toolbar_search).actionView as FocusSearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (isResumed) viewModel.setSearchQuery(newText.orEmpty())
+                        return true
+                    }
+                })
+            }
         }
     }
 }

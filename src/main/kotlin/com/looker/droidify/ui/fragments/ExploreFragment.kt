@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Scaffold
 import androidx.core.view.children
@@ -17,9 +18,8 @@ import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.theme.AppTheme
 import com.looker.droidify.utility.isDarkTheme
+import com.looker.droidify.widget.FocusSearchView
 
-
-// TODO add chips bar to navigate categories
 class ExploreFragment : MainNavFragmentX() {
 
     private lateinit var binding: FragmentExploreXBinding
@@ -93,6 +93,22 @@ class ExploreFragment : MainNavFragmentX() {
                     else
                         Section.Category(it.text.toString())
                 )
+            }
+        }
+        mainActivityX.menuSetup.observe(viewLifecycleOwner) {
+            if (it != null) {
+                val searchView =
+                    mainActivityX.toolbar.menu.findItem(R.id.toolbar_search).actionView as FocusSearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (isResumed) viewModel.setSearchQuery(newText.orEmpty())
+                        return true
+                    }
+                })
             }
         }
     }

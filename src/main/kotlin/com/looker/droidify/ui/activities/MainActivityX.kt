@@ -3,11 +3,13 @@ package com.looker.droidify.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,7 +25,6 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.databinding.ActivityMainXBinding
 import com.looker.droidify.installer.AppInstaller
-import com.looker.droidify.screen.*
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.fragments.MainNavFragmentX
@@ -52,6 +53,7 @@ class MainActivityX : AppCompatActivity() {
     lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel: MainActivityViewModelX by viewModels()
+    val menuSetup = MutableLiveData<Boolean>()
 
     private val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
         navController.currentDestination?.let {
@@ -126,6 +128,7 @@ class MainActivityX : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        menuSetup.value = true
         return super.onCreateOptionsMenu(menu)
     }
 
