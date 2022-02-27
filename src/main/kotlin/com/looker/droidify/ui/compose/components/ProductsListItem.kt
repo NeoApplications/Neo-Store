@@ -60,27 +60,33 @@ fun ProductsListItem(
             Column(
                 modifier = Modifier.requiredHeight(64.dp)
             ) {
-                Box(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.4f),
                 ) {
                     Text(
                         text = item.name,
-                        modifier = Modifier.align(Alignment.CenterStart),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f),
                         softWrap = true,
                         overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
                         text = item.version,
-                        modifier = Modifier.align(Alignment.CenterEnd),
+                        modifier = Modifier.align(Alignment.CenterVertically),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodySmall
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
                 Text(
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
                     text = item.summary,
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
@@ -122,7 +128,7 @@ fun ExpandedItemContent(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_download),
-                    contentDescription = "Add to Favourite"
+                    contentDescription = "Install"
                 )
                 Text(text = "Install")
             }
