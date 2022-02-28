@@ -26,22 +26,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:clipToPadding="false">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_app_info_x" />
-        </androidx.core.widget.NestedScrollView>
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_app_info_x" />
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 </layout>
 
