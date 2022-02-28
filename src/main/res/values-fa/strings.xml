@@ -33,7 +33,7 @@
     </plurals>
     <string name="number_of_applications">تعداد برنامه</string>
     <string name="notify_about_updates_summary">نمایش یک اعلان وقتی نسخه‌هایی جدید موجود است</string>
-    <string name="all_applications">همهٔ برنامه‌ها</string>
+    <string name="all_applications">همه برنامه‌ها</string>
     <string name="action_failed">عمل ناموفق بود</string>
     <string name="already_exists">در حال حاضر موجود است</string>
     <string name="anti_features">پادویژگی‌ها</string>
@@ -103,7 +103,7 @@
     <string name="versions">نسخه‌ها</string>
     <string name="website">تارنما</string>
     <string name="whats_new">تازه‌ها</string>
-    <string name="waiting_to_start_download">صبر برای شروع دریافت…</string>
+    <string name="waiting_to_start_download">آغاز دریافت…</string>
     <string name="version_FORMAT">نسخهٔ %s</string>
     <string name="version">نسخه</string>
     <string name="validation_index_error_DESC">فهرست قابل صحبت‌سنجی نیست.</string>
@@ -134,7 +134,7 @@
     <string name="has_security_vulnerabilities">دارای آسیب پذیری‌های امنیتی</string>
     <string name="http_proxy">پراکسی HTTP</string>
     <string name="add_repository">افزودن مخزن</string>
-    <string name="all_applications_up_to_date">همهٔ برنامه‌های شما به‌روز هستند</string>
+    <string name="all_applications_up_to_date">همه برنامه‌های شما به‌روز هستند</string>
     <string name="file_format_error_DESC">قالب پروندهٔ نامعتبر.</string>
     <string name="incompatible_older_DESC">این نسخه قدیمی تر از نسخه ای است که روی دستگاه شما نصب شده است. ابتدا آن را حذف کنید.</string>
     <string name="incompatible_version">نسخهٔ ناسازگار</string>
@@ -178,4 +178,5 @@
     <string name="http_error_DESC">پاسخ نادرست سرور.</string>
     <string name="incompatible_with_FORMAT">ناسازگار با %s</string>
     <string name="only_on_wifi_and_battery">فقط در وای‌فای و به برق وصل‌شده</string>
+    <string name="install_after_sync">نصب خودکار بروزرسانی‌ها</string>
 </resources>
