@@ -337,7 +337,6 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         val status = itemView.findViewById<MaterialTextView>(R.id.status)!!
         val progress = itemView.findViewById<LinearProgressIndicator>(R.id.progress)!!
 
-        val progressIcon: Drawable
         val defaultIcon: Drawable
 
         val actionTintNormal = action.context.getColorFromAttr(R.attr.colorPrimary)
@@ -347,9 +346,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
 
         init {
             action.height = itemView.resources.sizeScaled(48)
-            val (progressIcon, defaultIcon) = Utils.getDefaultApplicationIcons(icon.context)
-            this.progressIcon = progressIcon
-            this.defaultIcon = defaultIcon
+            this.defaultIcon = Utils.getDefaultApplicationIcon(icon.context)
         }
 
         val targetBlock = itemView.findViewById<LinearLayoutCompat>(R.id.sdk_block)!!
@@ -1078,7 +1075,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                             item.product.icon, item.product.metadataIcon, item.repository
                         )
                     ) {
-                        placeholder(holder.progressIcon)
+                        placeholder(holder.defaultIcon)
                         error(holder.defaultIcon)
                     }
                     holder.name.text = item.product.name

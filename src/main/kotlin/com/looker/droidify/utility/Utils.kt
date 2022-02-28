@@ -25,7 +25,6 @@ import com.looker.droidify.utility.extension.android.versionCodeCompat
 import com.looker.droidify.utility.extension.json.Json
 import com.looker.droidify.utility.extension.json.parseDictionary
 import com.looker.droidify.utility.extension.json.writeDictionary
-import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
 import com.topjohnwu.superuser.Shell
@@ -37,23 +36,13 @@ import java.security.cert.CertificateEncodingException
 import java.util.*
 
 object Utils {
-    private fun createDefaultApplicationIcon(context: Context, tintAttrResId: Int): Drawable {
-        return context.getDrawableCompat(R.drawable.ic_application_default).mutate()
-            .apply { setTintList(context.getColorFromAttr(tintAttrResId)) }
-    }
-
     fun PackageInfo.toInstalledItem(): Installed {
         val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
         return Installed(packageName, versionName.orEmpty(), versionCodeCompat, signatureString)
     }
 
-    fun getDefaultApplicationIcons(context: Context): Pair<Drawable, Drawable> {
-        val progressIcon: Drawable =
-            createDefaultApplicationIcon(context, android.R.attr.textColorSecondary)
-        val defaultIcon: Drawable =
-            createDefaultApplicationIcon(context, R.attr.colorAccent)
-        return Pair(progressIcon, defaultIcon)
-    }
+    fun getDefaultApplicationIcon(context: Context): Drawable =
+        context.getDrawableCompat(R.drawable.ic_placeholder)
 
     fun getToolbarIcon(context: Context, resId: Int): Drawable {
         return context.getDrawableCompat(resId).mutate()
