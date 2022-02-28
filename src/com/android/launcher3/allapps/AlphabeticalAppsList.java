@@ -70,7 +70,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private final BaseDraggingActivity mLauncher;
 
     // The set of apps from the system
-    private final List<AppInfo> mApps = new ArrayList<>();
+    public final List<AppInfo> mApps = new ArrayList<>();
     private final AllAppsStore mAllAppsStore;
 
     // The number of results in current adapter

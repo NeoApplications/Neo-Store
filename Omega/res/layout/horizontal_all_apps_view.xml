@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ This file is part of Omega Launcher
+  ~ Copyright (c) 2022   Omega Launcher Team
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/search_container_all_apps">
+
+    <com.saggitt.omega.allapps.HorizontalViewPagerLayout
+        android:id="@+id/all_apps_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/all_apps_pager_bottom" />
+
+    <com.android.launcher3.pageindicators.PageIndicatorDots
+        android:id="@+id/all_apps_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/indicator_height"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/all_apps_pager_indicator_bottom" />
+</merge>
