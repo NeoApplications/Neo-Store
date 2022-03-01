@@ -82,11 +82,11 @@ private fun RepositoryItemText(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = repositoryName,
+            text = repositoryName.trim(),
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1
         )
-        repositoryDescription?.let {
+        repositoryDescription?.trim()?.let {
             Text(
                 text = it,
                 style = MaterialTheme.typography.bodyMedium,
