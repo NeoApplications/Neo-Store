@@ -1,13 +1,20 @@
 package com.looker.droidify.ui.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.looker.droidify.R
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
@@ -21,15 +28,9 @@ fun ProductsVerticalRecycler(
     repositories: Map<Long, Repository>,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        LazyColumn(
-            verticalArrangement = spacedBy(2.dp)
-        ) {
-            items(productsList ?: emptyList()) { product ->
-                product.item.let { item ->
-                    ProductsListItem(item, repositories[item.repositoryId], onUserClick)
-                }
-            }
+    VerticalItemList(list = productsList) {
+        it.item.let { item ->
+            ProductsListItem(item, repositories[item.repositoryId], onUserClick)
         }
     }
 }
@@ -51,19 +52,36 @@ fun ProductsHorizontalRecycler(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RepositoriesRecycler(
     repositoriesList: List<Repository>?,
     onClick: (Repository) -> Unit = {},
     onLongClick: (Repository) -> Unit = {}
 ) {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        LazyColumn(
-            verticalArrangement = spacedBy(2.dp)
-        ) {
-            items(repositoriesList ?: emptyList()) { repo ->
-                RepositoryItem(repository = repo, onClick = onClick, onLongClick = onLongClick)
+    VerticalItemList(list = repositoriesList, itemKey = { it.id }) {
+        RepositoryItem(
+            modifier = Modifier.animateItemPlacement(),
+            repository = it,
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    }
+}
+
+@Composable
+fun <T> VerticalItemList(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    list: List<T>?,
+    itemKey: ((T) -> Any)? = null,
+    itemContent: @Composable LazyItemScope.(T) -> Unit
+) {
+    Surface(modifier = modifier, color = backgroundColor) {
+        if (list != null) {
+            LazyColumn(verticalArrangement = spacedBy(4.dp)) {
+                items(items = list, key = itemKey, itemContent = itemContent)
             }
-        }
+        } else Text(text = stringResource(id = R.string.no_applications_available))
     }
 }
