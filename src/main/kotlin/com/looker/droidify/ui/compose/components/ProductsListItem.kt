@@ -53,12 +53,12 @@ fun ProductsListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             NetworkImage(
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(56.dp),
                 data = imageData
             )
 
             Column(
-                modifier = Modifier.requiredHeight(64.dp)
+                modifier = Modifier.wrapContentHeight()
             ) {
                 Row(
                     modifier = Modifier
