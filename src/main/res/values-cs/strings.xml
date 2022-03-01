@@ -184,4 +184,5 @@
     <string name="install_after_sync_summary">Automaticky instalovat aktualizace aplikací po synchronizaci repozitářů</string>
     <string name="prefs_new_apps">Počet nových aplikací k zobrazení</string>
     <string name="new_repository">Nový repozitář</string>
+    <string name="default_tab">Výchozí karta</string>
 </resources>
