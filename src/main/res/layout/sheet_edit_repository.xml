@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -102,7 +102,7 @@
                     android:backgroundTint="?colorPrimary"
                     android:text="@string/save"
                     android:textColor="?colorSurface" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 </layout>

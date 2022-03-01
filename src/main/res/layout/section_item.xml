@@ -6,7 +6,7 @@
 
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -28,5 +28,5 @@
             android:src="@drawable/ic_arrow_down"
             tools:ignore="ContentDescription" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 </layout>

@@ -22,12 +22,12 @@
                 android:layout_height="match_parent"
                 android:padding="12dp">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/address_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -48,9 +48,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/name_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -71,10 +71,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/description_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,9 +95,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/updated_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -118,9 +118,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/apps_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -141,10 +141,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/fingerprint_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,9 +165,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textSize="16sp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -192,8 +192,8 @@
                             android:backgroundTint="?colorPrimary"
                             android:text="@string/edit_repository"
                             android:textColor="?colorSurface" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
+                </LinearLayout>
             </com.google.android.material.circularreveal.CircularRevealFrameLayout>
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>

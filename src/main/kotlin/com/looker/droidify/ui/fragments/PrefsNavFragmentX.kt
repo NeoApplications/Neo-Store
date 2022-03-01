@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
@@ -119,7 +119,7 @@ abstract class PrefsNavFragmentX : Fragment() {
         }
     }
 
-    protected fun LinearLayoutCompat.addText(title: String, summary: String, url: String) {
+    protected fun LinearLayout.addText(title: String, summary: String, url: String) {
         val text = MaterialTextView(context)
         val subText = MaterialTextView(context)
         text.text = title
@@ -132,21 +132,21 @@ abstract class PrefsNavFragmentX : Fragment() {
         }
         addView(
             text,
-            LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         addView(
             subText,
-            LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         text.setOnClickListener { openURI(url.toUri()) }
         subText.setOnClickListener { openURI(url.toUri()) }
     }
 
-    protected inline fun LinearLayoutCompat.addCategory(
+    protected inline fun LinearLayout.addCategory(
         title: String,
-        callback: LinearLayoutCompat.() -> Unit,
+        callback: LinearLayout.() -> Unit,
     ) {
         val text = MaterialTextView(context)
         text.typeface = TypefaceExtra.medium
@@ -156,13 +156,13 @@ abstract class PrefsNavFragmentX : Fragment() {
         resources.sizeScaled(16).let { text.setPadding(it, it, it, 0) }
         addView(
             text,
-            LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         callback()
     }
 
-    protected fun <T> LinearLayoutCompat.addPreference(
+    protected fun <T> LinearLayout.addPreference(
         key: Preferences.Key<T>, title: String,
         summaryProvider: () -> String, dialogProvider: ((Context) -> AlertDialog)?,
     ): Preference<T> {
@@ -172,7 +172,7 @@ abstract class PrefsNavFragmentX : Fragment() {
         return preference
     }
 
-    protected fun LinearLayoutCompat.addSwitch(
+    protected fun LinearLayout.addSwitch(
         key: Preferences.Key<Boolean>,
         title: String,
         summary: String,
@@ -183,7 +183,7 @@ abstract class PrefsNavFragmentX : Fragment() {
         preference.setCallback { preference.check.isChecked = Preferences[key] }
     }
 
-    protected fun <T> LinearLayoutCompat.addEdit(
+    protected fun <T> LinearLayout.addEdit(
         key: Preferences.Key<T>, title: String, valueToString: (T) -> String,
         stringToValue: (String) -> T?, configureEdit: (TextInputEditText) -> Unit,
     ) {
@@ -219,11 +219,11 @@ abstract class PrefsNavFragmentX : Fragment() {
         }
     }
 
-    protected fun LinearLayoutCompat.addEditString(key: Preferences.Key<String>, title: String) {
+    protected fun LinearLayout.addEditString(key: Preferences.Key<String>, title: String) {
         addEdit(key, title, { it }, { it }, { })
     }
 
-    protected fun LinearLayoutCompat.addEditInt(
+    protected fun LinearLayout.addEditInt(
         key: Preferences.Key<Int>,
         title: String,
         range: IntRange?,
@@ -239,7 +239,7 @@ abstract class PrefsNavFragmentX : Fragment() {
         }
     }
 
-    protected fun <T : Preferences.Enumeration<T>> LinearLayoutCompat.addEnumeration(
+    protected fun <T : Preferences.Enumeration<T>> LinearLayout.addEnumeration(
         key: Preferences.Key<T>,
         title: String,
         valueToString: (T) -> String,
@@ -260,7 +260,7 @@ abstract class PrefsNavFragmentX : Fragment() {
         }
     }
 
-    protected fun <T> LinearLayoutCompat.addList(
+    protected fun <T> LinearLayout.addList(
         key: Preferences.Key<T>,
         title: String,
         values: List<T>,

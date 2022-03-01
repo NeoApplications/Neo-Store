@@ -6,7 +6,7 @@
 
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:id="@+id/section_change"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -50,9 +50,9 @@
                     android:src="@drawable/ic_arrow_down"
                     tools:ignore="ContentDescription" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
         </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 </layout>

@@ -1,7 +1,7 @@
 package com.looker.droidify.ui.fragments
 
 import android.view.ViewGroup
-import androidx.appcompat.widget.LinearLayoutCompat
+import android.widget.LinearLayout
 import com.google.android.material.circularreveal.CircularRevealFrameLayout
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
@@ -12,8 +12,8 @@ import com.looker.droidify.utility.Utils.translateLocale
 class PrefsUserFragment : PrefsNavFragmentX() {
 
     override fun setupPrefs(scrollLayout: CircularRevealFrameLayout) {
-        val preferences = LinearLayoutCompat(scrollLayout.context)
-        preferences.orientation = LinearLayoutCompat.VERTICAL
+        val preferences = LinearLayout(scrollLayout.context)
+        preferences.orientation = LinearLayout.VERTICAL
         scrollLayout.addView(
             preferences,
             ViewGroup.LayoutParams.MATCH_PARENT,
