@@ -29,10 +29,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
-import com.android.launcher3.DeviceProfile
-import com.android.launcher3.Insettable
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
+import androidx.recyclerview.widget.RecyclerView
+import com.android.launcher3.*
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
@@ -166,6 +164,15 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     override fun initializeSearch(allAppsContainerView: AllAppsContainerView) {
         mAppsView = allAppsContainerView
+        mAppsView.addElevationController(object : RecyclerView.OnScrollListener() {
+            val initialElevation = mFallback?.elevation
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val currentScrollY = (recyclerView as BaseRecyclerView).currentScrollY
+                val elevationScale = Utilities.boundToRange(currentScrollY / 255f, 0f, 1f)
+                mFallback?.elevation = initialElevation!! + elevationScale * initialElevation
+            }
+        })
     }
 
     override fun resetSearch() {

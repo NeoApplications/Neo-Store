@@ -232,8 +232,6 @@ public class FloatingHeaderView extends LinearLayout implements
 
         mTabsHidden = tabsHidden;
         mTabLayout.setVisibility(tabsHidden ? View.GONE : View.VISIBLE);
-        //mMainRV = setupRV(mMainRV, mAH[AllAppsContainerView.AdapterHolder.MAIN].recyclerView);
-        //mWorkRV = setupRV(mWorkRV, mAH[AllAppsContainerView.AdapterHolder.WORK].recyclerView);
 
         for (AllAppsRecyclerView recyclerView : mRVs) {
             recyclerView.removeOnScrollListener(mOnScrollListener);
@@ -246,7 +244,6 @@ public class FloatingHeaderView extends LinearLayout implements
         }
         mParent = (ViewGroup) mRVs.get(0).getParent();
         setCurrentActive(Math.min(mActiveRV, mRVs.size() - 1));
-        //setMainActive(mMainRVActive || mWorkRV == null);
         reset(false);
     }
 
