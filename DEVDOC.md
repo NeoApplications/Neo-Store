@@ -11,34 +11,34 @@
 - [x] Theming
 
 - [ ] Gestures
-  
-   - [x] All except swipe ups
-  
-   - [ ] Swipe ups
 
-- [ ] Sorting
-  
-   - [x] Alphabetical
-  
-   - [x] By Usage
+  - [x] All except swipe ups
 
-- [ ] Dock
-  
-   - [x] Theming
-  
-   - [ ] Search bar
+  - [X] Swipe ups
 
-- [ ] Desktop
-  
-   - [x] Size and naming
-  
-   - [x] Allow rotation
-  
-   - [ ] Apply pref directly
+- [X] Sorting
+
+  - [x] Alphabetical
+
+  - [x] By Usage
+
+- [X] Dock
+
+  - [x] Theming
+
+  - [X] Search bar
+
+- [X] Desktop
+
+  - [x] Size and naming
+
+  - [x] Allow rotation
+
+  - [X] Apply pref directly
 
 - [x] Get Widgets working
 
-- [ ] Search engines
+- [X] Search engines
 
 - [ ] Edit app's icons
 
@@ -46,34 +46,34 @@
 
 - [ ] Folder cover mode
 
-- [ ] Categories
-  
-   - [ ] Tabs
-  
-   - [ ] Folders
+- [X] Categories
+
+  - [X] Tabs
+
+  - [X] Folders
 
 - [ ] Backup & restore
-  
-   - [ ] Allow
+
+  - [ ] Allow
 
 ## Low Priority/ Future nice-to-haves
 
 - [ ] Omega Widgets
 
 - [ ] Different drawer layouts
-  
-   - [ ] Linear Horizontal
-  
-   - [ ] Paged Vertical
 
-- [ ] Add custom search provider
+  - [ ] Linear Horizontal
 
-- [ ] Categories
-  
-   - [ ] Tabs & Folders
+  - [ ] Paged Vertical
+
+- [X] Add custom search provider
+
+- [X] Categories
+
+  - [X] Tabs & Folders
 
 - [ ] Backup & restore
-  
-   - [ ] Backward compatibility?
+
+  - [ ] Backward compatibility?
 
 - [ ] Simpler coloring themes
