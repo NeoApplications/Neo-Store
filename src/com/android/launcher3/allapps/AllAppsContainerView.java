@@ -48,6 +48,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,7 @@ import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.DeviceProfile.OnDeviceProfileChangeListener;
 import com.android.launcher3.DragSource;
 import com.android.launcher3.DropTarget.DragObject;
+import com.android.launcher3.ExtendedEditText;
 import com.android.launcher3.Insettable;
 import com.android.launcher3.InsettableFrameLayout;
 import com.android.launcher3.R;
@@ -71,10 +73,17 @@ import com.android.launcher3.views.RecyclerViewFastScroller;
 import com.android.launcher3.views.ScrimView;
 import com.android.launcher3.views.SpringRelativeLayout;
 import com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip;
+import com.saggitt.omega.allapps.AllAppViewPagerAdapter;
 import com.saggitt.omega.allapps.AllAppsTabItem;
 import com.saggitt.omega.allapps.AllAppsTabs;
 import com.saggitt.omega.allapps.AllAppsTabsController;
+import com.saggitt.omega.allapps.HorizontalAllAppsView;
+import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.OmegaUtilsKt;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * The all apps view container.
@@ -135,6 +144,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private int mHeaderColor;
     private int mTabsProtectionAlpha;
     private AllAppsTabsController mTabsController;
+    private OmegaPreferences prefs;
+    public AllAppsPagedView mHorizontalViewPager;
+    public int mCurrentPage;
 
     public AllAppsContainerView(Context context) {
         this(context, null);
@@ -148,6 +160,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         super(context, attrs, defStyleAttr);
 
         mLauncher = BaseDraggingActivity.fromContext(context);
+        prefs = Utilities.getOmegaPrefs(context);
 
         mScrimColor = Themes.getAttrColor(context, R.attr.allAppsScrimColor);
         mHeaderThreshold = getResources().getDimensionPixelSize(
@@ -162,6 +175,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
         AllAppsTabs allAppsTabs = new AllAppsTabs(context);
         mTabsController = new AllAppsTabsController(allAppsTabs, this);
+
         createHolders();
 
         mWorkAdapterProvider = new WorkAdapterProvider(mLauncher, () -> {
@@ -176,6 +190,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mNavBarScrimPaint.setColor(Themes.getAttrColor(context, R.attr.allAppsNavBarScrimColor));
 
         mAllAppsStore.addUpdateListener(this::onAppsUpdated);
+    }
+
+    private boolean isPagedView(){
+        return prefs.getDrawerLayout() == Config.DRAWER_PAGED;
     }
 
     @Override
@@ -335,6 +353,14 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return false;
     }
 
+
+    public View getCurrentView() {
+        if (!isPagedView()) {
+            return getActiveRecyclerView();
+        } else{
+            return getActiveHorizontalView();}
+    }
+
     public String getDescription() {
         @StringRes int descriptionRes;
         if (mUsingTabs) {
@@ -350,12 +376,20 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return getContext().getString(descriptionRes);
     }
 
+    public HorizontalAllAppsView getActiveHorizontalView() {
+        if (mHorizontalViewPager.getNextPage() == 0) {
+            return mAH[0].horizontalAllAppView;
+        }
+        return mAH[1].horizontalAllAppView;
+    }
+
     public AllAppsRecyclerView getActiveRecyclerView() {
         if (!mUsingTabs || mViewPager.getNextPage() == 0) {
-            return mAH[AdapterHolder.MAIN].recyclerView;
-        } else {
-            return mAH[AdapterHolder.WORK].recyclerView;
-        }
+               return mAH[AdapterHolder.MAIN].recyclerView;
+           } else {
+               return mAH[AdapterHolder.WORK].recyclerView;
+           }
+
     }
 
     public LayoutInflater getLayoutInflater() {
@@ -398,7 +432,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         });
 
         mHeader = findViewById(R.id.all_apps_header);
-        rebindAdapters(mUsingTabs, true /* force */);
+
+        rebindAdapters(mUsingTabs, true);
         mSearchContainer = findViewById(R.id.search_container_all_apps);
         mSearchUiManager = (SearchUiManager) mSearchContainer;
         mSearchUiManager.initializeSearch(this);
@@ -425,11 +460,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         int leftRightPadding = grid.desiredWorkspaceLeftRightMarginPx
                 + grid.cellLayoutPaddingLeftRightPx;
 
-        /*for (int i = 0; i < mAH.length; i++) {
-            mAH[i].padding.bottom = insets.bottom;
-            mAH[i].padding.left = mAH[i].padding.right = leftRightPadding;
-            mAH[i].applyPadding();
-        }*/
         mTabsController.setPadding(leftRightPadding, insets.bottom);
 
         ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
@@ -482,6 +512,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
 
         int currentTab = mViewPager != null ? mViewPager.getNextPage() : 0;
+        mCurrentPage = mHorizontalViewPager != null ? mHorizontalViewPager.getNextPage() : 0;
+
         mTabsController.unregisterIconContainers(mAllAppsStore);
 
         createHolders();
@@ -490,46 +522,28 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
         if (mTabsController.getTabs().getHasWorkApps())
             setupWorkToggle();
-
-        //mAllAppsStore.unregisterIconContainer(mAH[AdapterHolder.MAIN].recyclerView);
-        //mAllAppsStore.unregisterIconContainer(mAH[AdapterHolder.WORK].recyclerView);
-
-        if (mUsingTabs) {
-            //mAH[AdapterHolder.MAIN].setup(mViewPager.getChildAt(0), mPersonalMatcher);
-            ///mAH[AdapterHolder.WORK].setup(mViewPager.getChildAt(1), mWorkMatcher);
-            //mAH[AdapterHolder.WORK].recyclerView.setId(R.id.apps_list_view_work);
-            /*mViewPager.getPageIndicator().setActiveMarker(AdapterHolder.MAIN);
-            findViewById(R.id.tab_personal)
-                    .setOnClickListener((View view) -> {
-                        if (mViewPager.snapToPage(AdapterHolder.MAIN)) {
-                            mLauncher.getStatsLogManager().logger()
-                                    .log(LAUNCHER_ALLAPPS_TAP_ON_PERSONAL_TAB);
-                        }
-                    });
-            findViewById(R.id.tab_work)
-                    .setOnClickListener((View view) -> {
-                        if (mViewPager.snapToPage(AdapterHolder.WORK)) {
-                            mLauncher.getStatsLogManager().logger()
-                                    .log(LAUNCHER_ALLAPPS_TAP_ON_WORK_TAB);
-                        }
-                    });
-            onActivePageChanged(mViewPager.getNextPage());*/
-
-            mTabsController.setup(mViewPager);
-            AllAppsTabItem tabStrip = findViewById(R.id.tabs);
-            tabStrip.inflateButtons(mTabsController.getTabs());
-            if (currentTab == 0) {
-                tabStrip.setScroll(0, 1);
-            }
-            onTabChanged(currentTab);
-        } else {
-            mTabsController.setup((View) findViewById(R.id.apps_list_view));
-            AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
-            if (recyclerView != null) {
-                OmegaUtilsKt.runOnAttached(recyclerView, () ->
-                        recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor()));
+        if(isPagedView()){
+            mTabsController.setup(mHorizontalViewPager, mHorizontalViewPager.getPageCount());
+        } else{
+            if (mUsingTabs) {
+                mTabsController.setup(mViewPager);
+                AllAppsTabItem tabStrip = findViewById(R.id.tabs);
+                tabStrip.inflateButtons(mTabsController.getTabs());
+                if (currentTab == 0) {
+                    tabStrip.setScroll(0, 1);
+                }
+                onTabChanged(currentTab);
+                mViewPager.setVisibility(View.VISIBLE);
+            } else{
+                mTabsController.setup((View)findViewById(R.id.apps_list_view));
+                AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
+                if (recyclerView != null) {
+                    OmegaUtilsKt.runOnAttached(recyclerView, () ->
+                            recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor()));
+                }
             }
         }
+
         setupHeader();
 
         mTabsController.registerIconContainers(mAllAppsStore);
@@ -546,9 +560,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             this.addView(mWorkModeSwitch);
             mWorkModeSwitch.setInsets(mInsets);
             mWorkModeSwitch.post(() -> {
-                for (int i = 0; i < mAH.length; i++) {
-                    if (mAH[i].mIsWork) {
-                        mAH[i].applyPadding();
+                for (AdapterHolder adapterHolder : mAH) {
+                    if (adapterHolder.mIsWork) {
+                        adapterHolder.applyPadding();
                     }
                 }
 
@@ -566,33 +580,52 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private void replaceRVContainer(boolean showTabs) {
-        for (int i = 0; i < mAH.length; i++) {
-            AllAppsRecyclerView rv = mAH[i].recyclerView;
+        for (AdapterHolder adapterHolder : mAH) {
+            AllAppsRecyclerView rv = adapterHolder.recyclerView;
             if (rv != null) {
                 rv.setLayoutManager(null);
                 rv.setAdapter(null);
             }
         }
-        View oldView = getRecyclerViewContainer();
+
+        View oldView;
+        int layout;
+        if(isPagedView()){
+            oldView = getHorizontalViewContainer();
+            layout = R.layout.all_apps_horizontal_view_layout;
+        }else{
+            oldView = getRecyclerViewContainer();
+            layout = showTabs ? R.layout.all_apps_tabs : R.layout.all_apps_rv_layout;
+        }
+
         int index = indexOfChild(oldView);
         removeView(oldView);
-        int layout = showTabs ? R.layout.all_apps_tabs : R.layout.all_apps_rv_layout;
         View newView = getLayoutInflater().inflate(layout, this, false);
         addView(newView, index);
         if (TestProtocol.sDebugTracing) {
             Log.d(TestProtocol.WORK_PROFILE_REMOVED, "should show tabs:" + showTabs,
                     new Exception());
         }
-        if (showTabs) {
-            mViewPager = (AllAppsPagedView) newView;
-            mViewPager.addTabs(mTabsController.getTabsCount());
-            mViewPager.initParentViews(this);
-            mViewPager.getPageIndicator().setOnActivePageChangedListener(this);
-            //setupWorkToggle();
-        } else {
-            mViewPager = null;
-            removeWorkToggle();
+        if(isPagedView()){
+            mHorizontalViewPager = (AllAppsPagedView) newView;
+            mHorizontalViewPager.initParentViews(this);
+        }else{
+            if (showTabs) {
+                mViewPager = (AllAppsPagedView) newView;
+                mViewPager.addTabs(mTabsController.getTabsCount());
+                mViewPager.initParentViews(this);
+                mViewPager.getPageIndicator().setOnActivePageChangedListener(this);
+                //setupWorkToggle();
+            } else {
+                mViewPager = null;
+                removeWorkToggle();
+            }
         }
+    }
+
+    public View getHorizontalViewContainer() {
+        AllAppsPagedView allAppsPagedView = mHorizontalViewPager;
+        return allAppsPagedView != null ? allAppsPagedView : findViewById(R.id.horizontal_all_apps_view_container);
     }
 
     public View getRecyclerViewContainer() {
@@ -607,7 +640,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mAH[pos].recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
             mTabsController.bindButtons(findViewById(R.id.tabs), mViewPager);
         }
-        reset(true /* animate */, true);
+        reset(true, true);
+
     }
 
     @Override
@@ -657,7 +691,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     public View getContentView() {
-        return mViewPager == null ? getActiveRecyclerView() : mViewPager;
+        AllAppsPagedView allAppsPagedView = mViewPager;
+        return allAppsPagedView == null ? getCurrentView() : allAppsPagedView;
     }
 
     public int getCurrentPage() {
@@ -685,16 +720,16 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mHeader.setVisibility(View.VISIBLE);
         mHeader.setup(mAH, !mUsingTabs);
         int padding = mHeader.getMaxTranslation();
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].padding.top = padding;
-            mAH[i].applyPadding();
+        for (AdapterHolder adapterHolder : mAH) {
+            adapterHolder.padding.top = padding;
+            adapterHolder.applyPadding();
         }
         mHeaderTop = mHeader.getTop();
     }
 
     public void setLastSearchQuery(String query) {
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].adapter.setLastSearchQuery(query);
+        for (AdapterHolder adapterHolder : mAH) {
+            adapterHolder.adapter.setLastSearchQuery(query);
         }
 
         if (mUsingTabs) {
@@ -713,16 +748,16 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     public void onSearchResultsChanged() {
-        for (int i = 0; i < mAH.length; i++) {
-            if (mAH[i].recyclerView != null) {
-                mAH[i].recyclerView.onSearchResultsChanged();
+        for (AdapterHolder adapterHolder : mAH) {
+            if (adapterHolder.recyclerView != null) {
+                adapterHolder.recyclerView.onSearchResultsChanged();
             }
         }
     }
 
     public void setRecyclerViewVerticalFadingEdgeEnabled(boolean enabled) {
-        for (int i = 0; i < mAH.length; i++) {
-            mAH[i].applyVerticalFadingEdgeEnabled(enabled);
+        for (AdapterHolder adapterHolder : mAH) {
+            adapterHolder.applyVerticalFadingEdgeEnabled(enabled);
         }
     }
 
@@ -812,8 +847,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         private View mOverlay;
 
         boolean mWorkDisabled;
+        public HorizontalAllAppsView horizontalAllAppView;
+        public AllAppViewPagerAdapter horizontalAdapter;
 
-        AdapterHolder(boolean isWork) {
+        public AdapterHolder(boolean isWork) {
             mIsWork = isWork;
             appsList = new AlphabeticalAppsList(mLauncher, mAllAppsStore,
                     isWork ? mWorkAdapterProvider : null);
@@ -822,31 +859,43 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     isWork ? new BaseAdapterProvider[]{mSearchAdapterProvider, mWorkAdapterProvider}
                             : new BaseAdapterProvider[]{mSearchAdapterProvider};
 
-            adapter = new AllAppsGridAdapter(mLauncher, getLayoutInflater(), appsList,
-                    adapterProviders);
+            adapter = new AllAppsGridAdapter(mLauncher, getLayoutInflater(), appsList, adapterProviders);
             appsList.setAdapter(adapter);
             layoutManager = adapter.getLayoutManager();
+            horizontalAdapter = new AllAppViewPagerAdapter(mLauncher);
+            appsList.horizontalAdapter = horizontalAdapter;
         }
 
         public void setup(@NonNull View rv, @Nullable ItemInfoMatcher matcher) {
             mInfoMatcher = matcher;
             appsList.updateItemFilter(matcher);
-            recyclerView = (AllAppsRecyclerView) rv;
-            recyclerView.setEdgeEffectFactory(createEdgeEffectFactory());
-            recyclerView.setApps(appsList, mUsingTabs);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setHasFixedSize(true);
-            // No animations will occur when changes occur to the items in this RecyclerView.
-            recyclerView.setItemAnimator(null);
-            recyclerView.addOnScrollListener(mScrollListener);
-            FocusedItemDecorator focusedItemDecorator = new FocusedItemDecorator(recyclerView);
-            recyclerView.addItemDecoration(focusedItemDecorator);
-            adapter.setIconFocusListener(focusedItemDecorator.getFocusListener());
-            applyVerticalFadingEdgeEnabled(verticalFadingEdge);
+            if(isPagedView()){
+                horizontalAllAppView = (HorizontalAllAppsView) rv;
+                horizontalAllAppView.setData(appsList, horizontalAdapter);
+                horizontalAllAppView.setVisibility(View.VISIBLE);
+
+            }else{
+                recyclerView = (AllAppsRecyclerView) rv;
+                recyclerView.setEdgeEffectFactory(createEdgeEffectFactory());
+
+                recyclerView.setApps(appsList, mUsingTabs);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+                recyclerView.addOnScrollListener(mScrollListener);
+                recyclerView.setHasFixedSize(true);
+                // No animations will occur when changes occur to the items in this RecyclerView.
+                recyclerView.setItemAnimator(null);
+                FocusedItemDecorator focusedItemDecorator = new FocusedItemDecorator(recyclerView);
+                recyclerView.addItemDecoration(focusedItemDecorator);
+                adapter.setIconFocusListener(focusedItemDecorator.getFocusListener());
+                applyVerticalFadingEdgeEnabled(verticalFadingEdge);
+            }
+
             applyPadding();
-            if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
-                recyclerView.addItemDecoration(mSearchAdapterProvider.getDecorator());
+            if(!isPagedView()){
+                if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
+                    recyclerView.addItemDecoration(mSearchAdapterProvider.getDecorator());
+                }
             }
         }
 
@@ -881,18 +930,17 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     protected void updateHeaderScroll(int scrolledOffset) {
 
-        /*
         float prog = Utilities.boundToRange((float) scrolledOffset / mHeaderThreshold, 0f, 1f);
         int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
         int headerColor = ColorUtils.setAlphaComponent(viewBG,
                 (int) (getSearchView().getAlpha() * 255));
-                int tabsAlpha = mHeader.getPeripheralProtectionHeight() == 0 ? 0
+        int tabsAlpha = mHeader.getPeripheralProtectionHeight() == 0 ? 0
                 : (int) (Utilities.boundToRange(
-                        (scrolledOffset + mHeader.mSnappedScrolledY) / mHeaderThreshold, 0f, 1f)
-                        * 255);
+                (scrolledOffset + mHeader.mSnappedScrolledY) / mHeaderThreshold, 0f, 1f)
+                * 255);
         if (headerColor != mHeaderColor || mTabsProtectionAlpha != tabsAlpha) {
             mHeaderColor = headerColor;
-             mTabsProtectionAlpha = tabsAlpha;
+            mTabsProtectionAlpha = tabsAlpha;
             invalidateHeader();
 
         }
@@ -905,14 +953,14 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 bgVisible = false;
             }
             editText.setBackgroundVisibility(bgVisible, 1 - prog);
-                */
 
+
+        }
     }
-
-    /**
+    /*
      * redraws header protection
      */
-    public void invalidateHeader() {
+    public void invalidateHeader(){
         if (mScrimView != null && mHeader.isHeaderProtectionSupported()) {
             mScrimView.invalidate();
         }

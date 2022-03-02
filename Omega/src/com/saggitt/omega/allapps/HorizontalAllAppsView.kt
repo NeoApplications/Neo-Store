@@ -27,17 +27,15 @@ import com.android.launcher3.allapps.AllAppsPagedView
 import com.android.launcher3.allapps.AlphabeticalAppsList
 import com.android.launcher3.pageindicators.PageIndicatorDots
 
-abstract class HorizontalAllAppsView(context: Context, attrs: AttributeSet? = null) :
+class HorizontalAllAppsView(context: Context, attrs: AttributeSet? = null) :
     AllAppsPagedView(context, attrs) {
 
     lateinit var mPagerAdapter: AllAppViewPagerAdapter
     private var mViewPager: AllAppsPagedView
-    private var mViewPagerLayout: HorizontalViewPagerLayout
+    private var mViewPagerLayout: HorizontalViewPagerLayout = findViewById(R.id.all_apps_pager)
     var mIndicator: PageIndicatorDots
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.horizontal_all_apps_view, this)
-        mViewPagerLayout = findViewById(R.id.all_apps_pager)
         mViewPager = mViewPagerLayout.getViewPager()
         mViewPager.overScrollMode = 0
         mIndicator = findViewById(R.id.all_apps_indicator)

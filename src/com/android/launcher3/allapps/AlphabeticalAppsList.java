@@ -34,6 +34,7 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
+import com.saggitt.omega.allapps.AllAppViewPagerAdapter;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.AppCountInfo;
 import com.saggitt.omega.allapps.AppUsageComparator;
@@ -88,6 +89,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private final int mNumAppsPerRow;
     private int mNumAppRowsInAdapter;
     private ItemInfoMatcher mItemFilter;
+    public AllAppViewPagerAdapter horizontalAdapter;
 
     public AlphabeticalAppsList(Context context, AllAppsStore appsStore,
                                 WorkAdapterProvider adapterProvider) {
@@ -488,6 +490,13 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     public void updateAdapterItems() {
         refillAdapterItems();
         refreshRecyclerView();
+    }
+
+    public final void refreshHorizontalView() {
+        AllAppViewPagerAdapter allAppViewPagerAdapter = horizontalAdapter;
+        if (allAppViewPagerAdapter != null) {
+            allAppViewPagerAdapter.setData(this);
+        }
     }
 
     private void refreshRecyclerView() {

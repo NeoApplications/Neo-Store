@@ -72,6 +72,14 @@ class AllAppsTabsController(val tabs: AllAppsTabs, private val container: AllApp
         holders[0].setup(view, null)
     }
 
+    fun setup(pagedView: AllAppsPagedView, pagesCount: Int) {
+        holders.forEach { it.recyclerView = null }
+        for (i in 0 until pagesCount) {
+            holders[i].setIsWork(false)
+            holders[i].setup(pagedView.getChildAt(i), null)
+        }
+    }
+
     fun bindButtons(buttonsContainer: ViewGroup, pagedView: AllAppsPagedView) {
         buttonsContainer.forEachChildIndexed { view, i ->
             view.setOnClickListener { pagedView.snapToPage(i) }

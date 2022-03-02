@@ -42,21 +42,14 @@ class HorizontalViewPagerLayout(context: Context, attrs: AttributeSet? = null) :
     private var mMotionBeginY = 0f
     var mTouchSlop = 0
     var mViewPager: AllAppsPagedView
+    private val mContext = context
 
     init {
         val layoutParams = LayoutParams(-1, -1)
-        mViewPager = AllAppsPagedView(context)
+        mViewPager = AllAppsPagedView(mContext)
         addView(mViewPager, layoutParams)
-        mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
+        mTouchSlop = ViewConfiguration.get(mContext).scaledTouchSlop
         getOvScrollParam().mFriction = 0.14f
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        findViewById<PageIndicatorDots>(R.id.all_apps_indicator).apply {
-            backgroundTintList =
-                ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
-        }
     }
 
     override fun onInterceptTouchEvent(motionEvent: MotionEvent): Boolean {

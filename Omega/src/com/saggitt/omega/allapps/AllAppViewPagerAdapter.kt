@@ -26,7 +26,7 @@ import com.android.launcher3.pageindicators.PageIndicatorDots
 class AllAppViewPagerAdapter(val context: Context) {
     private var mPageCount = 1
     private var mShowAnimation = false
-    private var mNumColums = 0
+    private var mNumColumns = 0
     private var mNumRows = 0
 
     var mIndicator: PageIndicatorDots? = null
@@ -39,13 +39,13 @@ class AllAppViewPagerAdapter(val context: Context) {
     fun setData(alphabeticalAppsList: AlphabeticalAppsList, showAnimation: Boolean) {
         appsItem = alphabeticalAppsList
         mShowAnimation = showAnimation
-        mNumColums = LauncherAppState.getIDP(context).numAllAppsColumns
+        mNumColumns = LauncherAppState.getIDP(context).numAllAppsColumns
         mNumRows = 6 //TODO Agregar al IDP la opcion de Filas
 
         if (mNumRows != 0) {
 
             val totalApps = alphabeticalAppsList.mApps.size
-            val appsPerPage = mNumColums * mNumRows
+            val appsPerPage = mNumColumns * mNumRows
             mPageCount = (totalApps / appsPerPage) + (if (totalApps % appsPerPage > 0) 1 else 0)
         }
     }
