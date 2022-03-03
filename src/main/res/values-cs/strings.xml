@@ -38,7 +38,7 @@
     <string name="downloading_FORMAT">Stahování %s…</string>
     <string name="edit_repository">Upravit repozitář</string>
     <string name="file_format_error_DESC">Neplatný formát souboru.</string>
-    <string name="fingerprint">Otisk prstu</string>
+    <string name="fingerprint">Otisk</string>
     <string name="has_advertising">Obsahuje reklamy</string>
     <string name="has_non_free_dependencies">Obsahuje nesvobodné závislosti</string>
     <string name="has_security_vulnerabilities">Obsahuje bezpečnostní slabiny</string>
@@ -77,7 +77,7 @@
     <string name="list_animation">Animace seznamu</string>
     <string name="install">Instalovat</string>
     <string name="invalid_address">Neplatná adresa</string>
-    <string name="invalid_fingerprint_format">Neplatný formát otisku prstu</string>
+    <string name="invalid_fingerprint_format">Neplatný formát otisku</string>
     <string name="link_copied_to_clipboard">Odkaz zkopírován do schránky</string>
     <string name="install_types">Typy instalací</string>
     <string name="links">Odkazy</string>
