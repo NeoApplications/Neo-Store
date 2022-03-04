@@ -114,7 +114,7 @@
     <string name="proxy_host">Proxy sağlayıcısı</string>
     <string name="proxy_port">Vekil bağlantı noktası</string>
     <string name="proxy_type">Proxy türü</string>
-    <string name="recently_updated">Son güncelleme</string>
+    <string name="recently_updated">Son güncellenenler</string>
     <string name="repositories">Depolar</string>
     <string name="repository">Depo</string>
     <string name="repository_not_used_DESC">Bu depo henüz kullanılmadı. İçindeki uygulamaları görüntülemek için etkinleştirin.</string>
@@ -167,7 +167,7 @@
     <string name="version_FORMAT">Sürüm %s</string>
     <string name="versions">Sürümler</string>
     <string name="waiting_to_start_download">İndirme başlatılıyor…</string>
-    <string name="whats_new">Ne var ne yok</string>
+    <string name="whats_new">Yeni uygulamalar</string>
     <string name="website">Web sitesi</string>
     <string name="prefs_language_title">Dil</string>
     <string name="prefs_personalization">Kişiselleştirme</string>
