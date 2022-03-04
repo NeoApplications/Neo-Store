@@ -86,13 +86,14 @@ class ExploreFragment : MainNavFragmentX() {
                 val selectedSection = viewModel.sections.value
                 check(
                     children.filterNotNull()
-                        .find { it is Chip && selectedSection is Category && it.text == selectedSection.name }?.id
-                        ?: R.id.SHOW_ALL
+                        .find { child ->
+                            child is Chip && selectedSection is Category && child.text == selectedSection.name
+                        }?.id ?: R.id.SHOW_ALL
                 )
             }
         }
-        binding.categories.setOnCheckedChangeListener { group, checkedId ->
-            group.findViewById<Chip>(checkedId).let {
+        binding.categories.setOnCheckedStateChangeListener { group, checkedIds ->
+            group.findViewById<Chip>(checkedIds[0]).let {
                 viewModel.setSection(
                     if (it.text.equals(getString(R.string.all_applications)))
                         Section.All
