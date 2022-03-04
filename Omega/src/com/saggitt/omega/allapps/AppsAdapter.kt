@@ -21,7 +21,6 @@ package com.saggitt.omega.allapps
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
-import android.content.pm.LauncherApps
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -35,10 +34,10 @@ import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
+import com.saggitt.omega.util.Config
 import java.util.*
 import java.util.Comparator.comparing
 
@@ -79,7 +78,9 @@ open class AppsAdapter(
     }
 
     protected open fun loadAppsList() {
-        apps.addAll(getAppsList(context)
+        val config = Config(context)
+
+        apps.addAll(config.getAppsList(filter)
             .map { App(context, it) }
             .sortedWith(comparator))
         MAIN_EXECUTOR.handler.postAtFrontOfQueue(::onAppsListLoaded)
@@ -96,18 +97,6 @@ open class AppsAdapter(
 
     open fun onClickApp(position: Int, holder: AppHolder) {
         callback?.onAppSelected(apps[position])
-    }
-
-    private fun getAppsList(context: Context): List<LauncherActivityInfo> {
-        val apps = ArrayList<LauncherActivityInfo>()
-        val profiles = UserCache.INSTANCE.get(context).userProfiles
-        val launcherApps = context.getSystemService(LauncherApps::class.java)
-        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
-        return if (filter != null) {
-            apps.filter { filter.shouldShowApp(it.componentName, it.user) }
-        } else {
-            apps
-        }
     }
 
     class App(context: Context, val info: LauncherActivityInfo) {

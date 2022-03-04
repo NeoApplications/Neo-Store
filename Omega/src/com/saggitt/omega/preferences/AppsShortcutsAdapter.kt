@@ -40,10 +40,10 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.pm.UserCache
 import com.android.launcher3.shortcuts.ShortcutRequest
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.makeBasicHandler
 import java.util.*
@@ -99,8 +99,10 @@ open class AppsShortcutsAdapter(
     }
 
     protected open fun loadAppsList() {
-        val apps = getAppsList(context)
-                .sortedBy { it.label.toString().lowercase(Locale.getDefault()) }
+        val config = Config(context)
+
+        val apps = config.getAppsList(filter)
+            .sortedBy { it.label.toString().lowercase(Locale.getDefault()) }
             .map { AppItem(context, it) }
         handler.postAtFrontOfQueue { onAppsListLoaded(apps) }
     }
@@ -136,18 +138,6 @@ open class AppsShortcutsAdapter(
             items = newItems
             val diffResult = DiffUtil.calculateDiff(DiffCallback(oldItems, newItems))
             diffResult.dispatchUpdatesTo(this)
-        }
-    }
-
-    private fun getAppsList(context: Context): List<LauncherActivityInfo> {
-        val apps = ArrayList<LauncherActivityInfo>()
-        val profiles = UserCache.INSTANCE.get(context).userProfiles
-        val launcherApps = context.getSystemService(LauncherApps::class.java)
-        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
-        return if (filter != null) {
-            apps.filter { filter.shouldShowApp(it.componentName, it.user) }
-        } else {
-            apps
         }
     }
 
