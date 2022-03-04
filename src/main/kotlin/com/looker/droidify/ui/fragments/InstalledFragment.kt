@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentInstalledXBinding
 import com.looker.droidify.ui.compose.ProductsHorizontalRecycler
@@ -98,6 +99,11 @@ class InstalledFragment : MainNavFragmentX() {
                         View.VISIBLE
                     }
                 }
+        }
+        binding.buttonUpdateAll.setOnClickListener {
+            viewModel.secondaryProducts.value?.let {
+                mainActivityX.syncConnection.binder?.updateApps(it.map(Product::item))
+            }
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {

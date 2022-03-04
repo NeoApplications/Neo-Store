@@ -102,6 +102,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             }
         }
 
+        fun updateApps(prodcts: List<ProductItem>) = batchUpdate(prodcts)
+
         fun sync(request: SyncRequest) {
             GlobalScope.launch {
                 val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList()
@@ -406,7 +408,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             handleNextTask(false)
                             if (result.isNotEmpty()) {
                                 if (Preferences[Preferences.Key.InstallAfterSync])
-                                    runAutoUpdate(result)
+                                    batchUpdate(result)
                                 if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
                                     updateNotificationBlockerFragment?.get()?.isAdded == true
                                 )
@@ -436,7 +438,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @param productItems a list of apps pending updates
      * @see SyncService.displayUpdatesNotification
      */
-    private fun runAutoUpdate(productItems: List<ProductItem>) {
+    private fun batchUpdate(productItems: List<ProductItem>) {
         if (Preferences[Preferences.Key.InstallAfterSync]) GlobalScope.launch {
             // run startUpdate on every item
             productItems.map { productItem ->

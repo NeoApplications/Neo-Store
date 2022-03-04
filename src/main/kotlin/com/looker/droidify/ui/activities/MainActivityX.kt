@@ -55,7 +55,7 @@ class MainActivityX : AppCompatActivity() {
     private val viewModel: MainActivityViewModelX by viewModels()
     val menuSetup = MutableLiveData<Boolean>()
 
-    private val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
+    val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
         navController.currentDestination?.let {
             val source = Source.values()[when (it.id) {
                 R.id.latestTab -> 1
