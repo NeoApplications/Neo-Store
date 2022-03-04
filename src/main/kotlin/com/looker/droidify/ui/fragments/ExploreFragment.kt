@@ -68,12 +68,12 @@ class ExploreFragment : MainNavFragmentX() {
         viewModel.categories.observe(viewLifecycleOwner) {
             binding.categories.apply {
                 removeAllViews()
-                addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                addView(Chip(requireContext(), null, R.attr.categoryChipStyle).apply {
                     setText(R.string.all_applications)
                     id = R.id.SHOW_ALL
                 })
                 it.forEach {
-                    addView(Chip(requireContext(), null, R.attr.chipStyle).apply {
+                    addView(Chip(requireContext(), null, R.attr.categoryChipStyle).apply {
                         text = it
                     })
                 }
