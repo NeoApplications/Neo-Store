@@ -387,7 +387,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     }
 
     override fun onScreenshotClick(screenshot: Screenshot) {
-        val pair = productRepos.asSequence()
+        /*val pair = productRepos.asSequence()
             .map { it ->
                 Pair(
                     it.second,
@@ -402,7 +402,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                     childFragmentManager
                 )
             }
-        }
+        }*/
     }
 
     override fun onReleaseClick(release: Release) {
