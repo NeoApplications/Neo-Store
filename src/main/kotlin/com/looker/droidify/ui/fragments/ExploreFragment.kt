@@ -72,7 +72,7 @@ class ExploreFragment : MainNavFragmentX() {
                     setText(R.string.all_applications)
                     id = R.id.SHOW_ALL
                 })
-                it.forEach {
+                it.sorted().forEach {
                     addView(Chip(requireContext(), null, R.attr.categoryChipStyle).apply {
                         text = it
                     })
