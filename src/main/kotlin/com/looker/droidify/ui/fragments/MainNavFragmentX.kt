@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import com.looker.droidify.R
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
+import com.looker.droidify.entity.UpdateCategory
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.ui.viewmodels.MainNavFragmentViewModelX
 
@@ -44,6 +45,7 @@ sealed class Request {
     internal abstract val searchQuery: String
     internal abstract val section: Section
     internal abstract val order: Order
+    internal abstract val updateCategory: UpdateCategory
     internal open val numberOfItems: Int = 0
 
     data class ProductsAll(
@@ -56,6 +58,8 @@ sealed class Request {
             get() = false
         override val updates: Boolean
             get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.ALL
     }
 
     data class ProductsInstalled(
@@ -68,6 +72,8 @@ sealed class Request {
             get() = true
         override val updates: Boolean
             get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.ALL
     }
 
     data class ProductsUpdates(
@@ -80,6 +86,8 @@ sealed class Request {
             get() = true
         override val updates: Boolean
             get() = true
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.ALL
     }
 
     data class ProductsUpdated(
@@ -92,6 +100,8 @@ sealed class Request {
             get() = false
         override val updates: Boolean
             get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.UPDATED
     }
 
     data class ProductsNew(
@@ -104,5 +114,7 @@ sealed class Request {
             get() = false
         override val updates: Boolean
             get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.NEW
     }
 }
