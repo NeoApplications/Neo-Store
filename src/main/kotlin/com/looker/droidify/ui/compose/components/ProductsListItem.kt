@@ -28,7 +28,9 @@ import com.looker.droidify.ui.compose.utils.NetworkImage
 fun ProductsListItem(
     item: ProductItem,
     repo: Repository? = null,
-    onUserClick: (ProductItem) -> Unit = {}
+    onUserClick: (ProductItem) -> Unit = {},
+    onFavouriteClick: (ProductItem) -> Unit = {},
+    onInstallClick: (ProductItem) -> Unit = {}
 ) {
     val imageData by remember(item, repo) {
         mutableStateOf(
@@ -45,7 +47,13 @@ fun ProductsListItem(
     ExpandableCard(
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
         onClick = { onUserClick(item) },
-        expandedContent = { ExpandedItemContent(item = item) }
+        expandedContent = {
+            ExpandedItemContent(
+                item = item,
+                onFavourite = onFavouriteClick,
+                onInstallClicked = onInstallClick
+            )
+        }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

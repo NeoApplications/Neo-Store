@@ -57,10 +57,16 @@ class ExploreFragment : MainNavFragmentX() {
                     }
                 ) {
                     Scaffold { _ ->
-                        ProductsVerticalRecycler(it, repositories) { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
-                        }
+                        ProductsVerticalRecycler(it, repositories,
+                            onUserClick = { item ->
+                                AppSheetX(item.packageName)
+                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            },
+                            onFavouriteClick = {},
+                            onInstallClick = {
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                            }
+                        )
                     }
                 }
             }
