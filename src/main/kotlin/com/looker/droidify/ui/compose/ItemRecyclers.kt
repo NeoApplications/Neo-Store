@@ -84,7 +84,7 @@ fun <T> VerticalItemList(
         modifier = modifier
             .fillMaxSize()
             .background(backgroundColor),
-        contentAlignment = Alignment.Center
+        contentAlignment = if (list.isNullOrEmpty()) Alignment.Center else Alignment.TopStart
     ) {
         if (!list.isNullOrEmpty()) {
             LazyColumn(verticalArrangement = spacedBy(4.dp)) {
