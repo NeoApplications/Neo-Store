@@ -23,12 +23,14 @@ import static com.android.launcher3.logger.LauncherAtom.Attribute.MANUAL_LABEL;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.SUGGESTED_LABEL;
 
 import android.os.Process;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
+import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderNameInfos;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.logger.LauncherAtom.Attribute;
@@ -37,6 +39,7 @@ import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.util.ContentWriter;
+import com.saggitt.omega.folder.FirstItemProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +71,8 @@ public class FolderInfo extends ItemInfo {
     public static final int FLAG_MULTI_PAGE_ANIMATION = 0x00000004;
 
     public static final int FLAG_MANUAL_FOLDER_NAME = 0x00000008;
+
+    public static final int FLAG_COVER_MODE = 0x00000016;
 
     /**
      * Different states of folder label.
@@ -105,6 +110,7 @@ public class FolderInfo extends ItemInfo {
     public ArrayList<WorkspaceItemInfo> contents = new ArrayList<>();
 
     private ArrayList<FolderListener> mListeners = new ArrayList<>();
+    private FirstItemProvider firstItemProvider = new FirstItemProvider(this);
 
     public FolderInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_FOLDER;
@@ -203,6 +209,29 @@ public class FolderInfo extends ItemInfo {
         }
         if (writer != null && oldOptions != options) {
             writer.updateItemInDatabase(this);
+        }
+    }
+
+    public boolean isCoverMode() {
+        return hasOption(FLAG_COVER_MODE);
+    }
+
+    public void setCoverMode(boolean enable, ModelWriter modelWriter) {
+        setOption(FLAG_COVER_MODE, enable, modelWriter);
+    }
+
+    public WorkspaceItemInfo getCoverInfo() {
+        return firstItemProvider.getFirstItem();
+    }
+
+    public CharSequence getIconTitle(Folder folder) {
+        if (!TextUtils.equals(folder.getDefaultFolderName(), title)) {
+            return title;
+        } else if (isCoverMode()) {
+            WorkspaceItemInfo info = getCoverInfo();
+            return info.title;
+        } else {
+            return folder.getDefaultFolderName();
         }
     }
 

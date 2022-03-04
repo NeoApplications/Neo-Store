@@ -1681,6 +1681,10 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         return true;
     }
 
+    public String getDefaultFolderName() {
+        return mFolderName.getText().toString();
+    }
+
     /**
      * Alternative to using {@link #getClipToOutline()} as it only works with derivatives of
      * rounded rect.

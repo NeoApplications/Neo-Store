@@ -19,6 +19,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
         android:defaultValue="false"
+        android:key="pref_cover_mode"
+        android:title="@string/folder_cover_mode" />
+
+    <SwitchPreference
+        android:defaultValue="false"
         android:key="pref_app_hide"
         android:title="@string/hide_app" />
 

@@ -38,6 +38,9 @@ import com.android.launcher3.touch.SingleAxisSwipeDetector
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageManagerHelper
 import com.android.launcher3.widget.WidgetsBottomSheet
+import com.saggitt.omega.PREFS_APP_HIDE
+import com.saggitt.omega.PREFS_APP_SHOW_IN_TABS
+import com.saggitt.omega.PREFS_FOLDER_COVER_MODE
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.custom.MultiSelectTabPreference
@@ -183,6 +186,7 @@ class CustomBottomSheet @JvmOverloads constructor(
 
         private var mTabsPref: MultiSelectTabPreference? = null
         private lateinit var prefs: OmegaPreferences
+        private var mPrefCoverMode: SwitchPreference? = null
         private var mKey: ComponentKey? = null
         private lateinit var itemInfo: ItemInfo
         private var setForceOpen: Runnable? = null
@@ -212,8 +216,9 @@ class CustomBottomSheet @JvmOverloads constructor(
             if (itemInfo !is FolderInfo) {
                 mKey = ComponentKey(itemInfo.targetComponent, itemInfo.user)
             }
-            val mPrefHide = findPreference<SwitchPreference>(PREF_HIDE)
-            mTabsPref = findPreference("pref_show_in_tabs")
+            val mPrefHide = findPreference<SwitchPreference>(PREFS_APP_HIDE)
+            mPrefCoverMode = findPreference(PREFS_FOLDER_COVER_MODE)
+            mTabsPref = findPreference(PREFS_APP_SHOW_IN_TABS)
             if (isApp) {
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
                 mPrefHide.onPreferenceChangeListener = this
@@ -235,9 +240,14 @@ class CustomBottomSheet @JvmOverloads constructor(
                 versionPref!!.onPreferenceClickListener = this
                 componentPref.summary = mKey.toString()
                 versionPref.summary =
-                        PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
+                    PackageManagerHelper(context).getPackageVersion(mKey!!.componentName.packageName)
             } else {
                 preferenceScreen.removePreference(preferenceScreen.findPreference("debug")!!)
+            }
+            if (itemInfo is FolderInfo) {
+                mPrefCoverMode?.isChecked = (itemInfo as FolderInfo).isCoverMode
+            } else {
+                mPrefCoverMode?.let { preferenceScreen.removePreference(it) }
             }
         }
 
@@ -246,16 +256,25 @@ class CustomBottomSheet @JvmOverloads constructor(
             if (mTabsPref!!.edited) {
                 prefs.drawerTabs.saveToJson()
             }
+            if (itemInfo is FolderInfo) {
+                val folderInfo = itemInfo as FolderInfo
+                val coverEnabled = mPrefCoverMode!!.isChecked
+                if (folderInfo.isCoverMode != coverEnabled) {
+                    val launcher = Launcher.getLauncher(activity)
+                    folderInfo.setCoverMode(coverEnabled, launcher.modelWriter)
+                    folderInfo.onIconChanged()
+                }
+            }
         }
 
         override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
             val enabled = newValue as Boolean
             val launcher = Launcher.getLauncher(activity)
             when (preference.key) {
-                PREF_HIDE -> CustomAppFilter.setComponentNameState(
-                        launcher,
-                        mKey.toString(),
-                        enabled
+                PREFS_APP_HIDE -> CustomAppFilter.setComponentNameState(
+                    launcher,
+                    mKey.toString(),
+                    enabled
                 )
             }
             return true
@@ -279,10 +298,6 @@ class CustomBottomSheet @JvmOverloads constructor(
                 }
             }
             return true
-        }
-
-        companion object {
-            private const val PREF_HIDE = "pref_app_hide"
         }
     }
 
