@@ -59,7 +59,7 @@ class MainNavFragmentViewModelX(
             Source.NEW -> Request.ProductsNew(
                 mSearchQuery,
                 mSections,
-                Order.LAST_UPDATE,
+                Order.DATE_ADDED,
                 Preferences[Preferences.Key.NewApps]
             )
         }

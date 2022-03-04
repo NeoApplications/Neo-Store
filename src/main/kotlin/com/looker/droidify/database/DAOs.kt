@@ -202,6 +202,12 @@ interface ProductDao : BaseDao<Product> {
             builder += """AND $ROW_MATCH_RANK > 0"""
         }
 
+        when (updateCategory) {
+            UpdateCategory.ALL -> Unit
+            UpdateCategory.NEW -> builder += """AND product.${ROW_ADDED} = product.${ROW_UPDATED}"""
+            UpdateCategory.UPDATED -> builder += """AND product.${ROW_ADDED} < product.${ROW_UPDATED}"""
+        }
+
         // Sum up all products with the same package name
         builder += "GROUP BY product.${ROW_PACKAGE_NAME} HAVING 1"
 
