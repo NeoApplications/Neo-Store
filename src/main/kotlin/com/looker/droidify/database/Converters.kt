@@ -18,9 +18,10 @@ object Converters {
         else string.split(",")
     }
 
+    @JvmName("stringListToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toString(list: List<String>): ByteArray = list.toString().toByteArray()
+    fun toByteArray(list: List<String>): ByteArray = list.toString().toByteArray()
 
     @TypeConverter
     @JvmStatic

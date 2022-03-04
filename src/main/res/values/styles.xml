@@ -147,7 +147,6 @@
         <item name="android:backgroundTint">@color/selector_chip_background</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
         <item name="android:textColor">@color/selector_item_icon</item>
-        <item name="chipStrokeWidth">0dp</item>
     </style>
 
     <style name="Theme.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
