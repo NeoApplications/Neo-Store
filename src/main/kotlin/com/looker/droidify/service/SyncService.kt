@@ -102,7 +102,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             }
         }
 
-        fun updateApps(prodcts: List<ProductItem>) = batchUpdate(prodcts)
+        fun updateApps(products: List<ProductItem>) = batchUpdate(products)
+        fun installApps(products: List<ProductItem>) = batchUpdate(products, true)
 
         fun sync(request: SyncRequest) {
             GlobalScope.launch {
@@ -438,32 +439,32 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @param productItems a list of apps pending updates
      * @see SyncService.displayUpdatesNotification
      */
-    private fun batchUpdate(productItems: List<ProductItem>) {
+    private fun batchUpdate(productItems: List<ProductItem>, install: Boolean = false) {
         if (Preferences[Preferences.Key.InstallAfterSync]) GlobalScope.launch {
             // run startUpdate on every item
             productItems.map { productItem ->
-                Pair(
+                Triple(
+                    productItem.packageName,
                     db.installedDao.get(productItem.packageName),
                     db.repositoryDao.get(productItem.repositoryId)
                 )
             }
-                .filter { pair -> pair.first != null && pair.second != null }
+                .filter { pair -> (install || pair.second != null) && pair.third != null }
                 .forEach { installedRepository ->
                     run {
                         // Redundant !! as linter doesn't recognise the above filter's effects
-                        val installedItem = installedRepository.first!!
-                        val repository = installedRepository.second!!
+                        val packageName = installedRepository.first
+                        val installedItem = installedRepository.second
+                        val repository = installedRepository.third!!
 
-                        val productRepository = db.productDao.get(
-                            installedItem.package_name
-                        )
+                        val productRepository = db.productDao.get(packageName)
                             .filter { product -> product?.repository_id == repository.id }
                             .map { product -> Pair(product?.data!!, repository) }
 
                         scope.launch {
                             Utils.startUpdate(
-                                installedItem.package_name,
-                                installedRepository.first,
+                                packageName,
+                                installedItem,
                                 productRepository,
                                 downloadConnection
                             )
