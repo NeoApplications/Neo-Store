@@ -8,6 +8,7 @@ import com.looker.droidify.*
 import com.looker.droidify.database.entity.*
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
+import com.looker.droidify.entity.UpdateCategory
 import com.looker.droidify.ui.fragments.Request
 
 interface BaseDao<T> {
@@ -80,20 +81,32 @@ interface ProductDao : BaseDao<Product> {
     fun queryObject(query: SupportSQLiteQuery): List<Product>
 
     fun queryObject(request: Request): List<Product> = queryObject(
-        request.installed,
-        request.updates,
-        request.searchQuery,
-        request.section,
-        request.order,
-        request.numberOfItems
+        buildProductQuery(
+            request.installed,
+            request.updates,
+            request.searchQuery,
+            request.section,
+            request.order,
+            request.numberOfItems,
+            request.updateCategory
+        )
     )
 
     @Transaction
     fun queryObject(
         installed: Boolean, updates: Boolean, searchQuery: String,
-        section: Section, order: Order, numberOfItems: Int = 0
+        section: Section, order: Order, numberOfItems: Int = 0,
+        updateCategory: UpdateCategory = UpdateCategory.ALL
     ): List<Product> = queryObject(
-        buildProductQuery(installed, updates, searchQuery, section, order, numberOfItems)
+        buildProductQuery(
+            installed,
+            updates,
+            searchQuery,
+            section,
+            order,
+            numberOfItems,
+            updateCategory
+        )
     )
 
     @RawQuery(observedEntities = [Product::class])
@@ -106,14 +119,19 @@ interface ProductDao : BaseDao<Product> {
             request.searchQuery,
             request.section,
             request.order,
-            request.numberOfItems
+            request.numberOfItems,
+            request.updateCategory
         )
     )
 
-    // TODO add an UpdateCategory argument
     fun buildProductQuery(
-        installed: Boolean, updates: Boolean, searchQuery: String,
-        section: Section, order: Order, numberOfItems: Int = 0
+        installed: Boolean,
+        updates: Boolean,
+        searchQuery: String,
+        section: Section,
+        order: Order,
+        numberOfItems: Int = 0,
+        updateCategory: UpdateCategory = UpdateCategory.ALL
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
