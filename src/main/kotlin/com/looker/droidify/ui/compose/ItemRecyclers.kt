@@ -98,6 +98,9 @@ fun <T> VerticalItemList(
             LazyColumn(verticalArrangement = spacedBy(4.dp)) {
                 items(items = list, key = itemKey, itemContent = itemContent)
             }
-        } else Text(text = stringResource(id = R.string.no_applications_available))
+        } else Text(
+            text = stringResource(id = R.string.no_applications_available),
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
