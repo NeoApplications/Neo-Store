@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -53,6 +54,7 @@ fun ProductsHorizontalRecycler(
     onUserClick: (ProductItem) -> Unit = {}
 ) {
     LazyRow(
+        contentPadding = PaddingValues(horizontal = 8.dp),
         horizontalArrangement = spacedBy(2.dp)
     ) {
         items(productsList ?: emptyList()) { product ->
