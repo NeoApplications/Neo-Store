@@ -26,7 +26,6 @@ import com.looker.droidify.graphics.PaddingDrawable
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.extension.android.Android
-import com.looker.droidify.utility.extension.resources.clear
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.resources.sizeScaled
@@ -255,22 +254,18 @@ class ScreenshotsFragment() : DialogFragment() {
             holder as ViewHolder
             val screenshot = screenshots[position]
             val (width, height) = size
-            if (width > 0 && height > 0) {
-                repository?.let {
-                    holder.image.load(
-                        CoilDownloader.createScreenshotUri(
-                            it,
-                            packageName,
-                            screenshot
-                        )
-                    ) {
-                        placeholder(holder.placeholder)
-                        error(holder.placeholder)
-                        size(width, height)
-                    }
+            repository?.let {
+                holder.image.load(
+                    CoilDownloader.createScreenshotUri(
+                        it,
+                        packageName,
+                        screenshot
+                    )
+                ) {
+                    placeholder(holder.placeholder)
+                    error(holder.placeholder)
+                    size(width, height)
                 }
-            } else {
-                holder.image.clear()
             }
         }
     }

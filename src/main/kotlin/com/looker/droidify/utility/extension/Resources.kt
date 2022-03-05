@@ -15,8 +15,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import coil.util.CoilUtils
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.roundToInt
 
@@ -67,8 +65,4 @@ fun MaterialTextView.setTextSizeScaled(size: Int) {
 
 fun ViewGroup.inflate(layoutResId: Int): View {
     return LayoutInflater.from(context).inflate(layoutResId, this, false)
-}
-
-fun ShapeableImageView.clear() {
-    CoilUtils.clear(this)
 }
