@@ -22,24 +22,41 @@ import static com.android.launcher3.logger.LauncherAtom.Attribute.EMPTY_LABEL;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.MANUAL_LABEL;
 import static com.android.launcher3.logger.LauncherAtom.Attribute.SUGGESTED_LABEL;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Process;
 import android.text.TextUtils;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
+import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.folder.Folder;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.FolderNameInfos;
+import com.android.launcher3.icons.BitmapRenderer;
+import com.android.launcher3.icons.FastBitmapDrawable;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.logger.LauncherAtom.Attribute;
-import com.android.launcher3.logger.LauncherAtom.FolderIcon;
 import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.model.ModelWriter;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ContentWriter;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.folder.FirstItemProvider;
+import com.saggitt.omega.iconpack.CustomIconEntry;
+import com.saggitt.omega.iconpack.IconPack;
+import com.saggitt.omega.iconpack.IconPackProvider;
+import com.saggitt.omega.item.CustomInfoProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,8 +126,11 @@ public class FolderInfo extends ItemInfo {
      */
     public ArrayList<WorkspaceItemInfo> contents = new ArrayList<>();
 
+    public String swipeUpAction;
     private ArrayList<FolderListener> mListeners = new ArrayList<>();
     private FirstItemProvider firstItemProvider = new FirstItemProvider(this);
+    private Drawable cached;
+    private String cachedIcon;
 
     public FolderInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_FOLDER;
@@ -224,6 +244,11 @@ public class FolderInfo extends ItemInfo {
         return firstItemProvider.getFirstItem();
     }
 
+    public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
+        swipeUpAction = action;
+        ModelWriter.modifyItemInDatabase(context, this, null, swipeUpAction, null, null, false, true);
+    }
+
     public CharSequence getIconTitle(Folder folder) {
         if (!TextUtils.equals(folder.getDefaultFolderName(), title)) {
             return title;
@@ -233,6 +258,10 @@ public class FolderInfo extends ItemInfo {
         } else {
             return folder.getDefaultFolderName();
         }
+    }
+
+    public ComponentKey toComponentKey() {
+        return new ComponentKey(new ComponentName("com.saggitt.omega.folder", String.valueOf(id)), Process.myUserHandle());
     }
 
     /**
@@ -251,8 +280,7 @@ public class FolderInfo extends ItemInfo {
 
     @Override
     public LauncherAtom.ItemInfo buildProto(FolderInfo fInfo) {
-        FolderIcon.Builder folderIcon = FolderIcon.newBuilder()
-                .setCardinality(contents.size());
+        LauncherAtom.FolderIcon.Builder folderIcon = LauncherAtom.FolderIcon.newBuilder().setCardinality(contents.size());
         if (LabelState.SUGGESTED.equals(getLabelState())) {
             folderIcon.setLabelInfo(title.toString());
         }
@@ -407,8 +435,68 @@ public class FolderInfo extends ItemInfo {
         return LauncherAtom.ToState.TO_STATE_UNSPECIFIED;
     }
 
-    public boolean useIconMode() {
-        return false;
+    public boolean useIconMode(Context context) {
+        return isCoverMode() || hasCustomIcon(context);
     }
 
+    private boolean hasCustomIcon(Context context) {
+        Launcher launcher = OmegaLauncher.getLauncher(context);
+        return getIconInternal(launcher) != null;
+    }
+
+    public boolean usingCustomIcon(Context context) {
+        return !isCoverMode() && hasCustomIcon(context);
+    }
+
+    private Drawable getIconInternal(Launcher launcher) {
+        CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
+        CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
+        if (entry != null) {
+            entry.getIcon();
+            if (!entry.getIcon().equals(cachedIcon)) {
+                IconPack pack = IconPackProvider.Companion.getInstance(launcher)
+                        .getIconPack(entry.getPackPackageName(), false, true);
+                if (pack != null) {
+                    cached = pack.getIcon(entry, launcher.getDeviceProfile().inv.fillResIconDpi);
+                    cachedIcon = entry.getIcon();
+                }
+            }
+            if (cached != null) {
+                return cached.mutate();
+            }
+        }
+        return null;
+    }
+
+    public Drawable getIcon(Context context) {
+        Launcher launcher = Launcher.getLauncher(context);
+        Drawable icn = getIconInternal(launcher);
+        if (icn != null) return icn;
+        if (isCoverMode()) return getCoverInfo().newIcon(context);
+        return getFolderIcon(launcher);
+    }
+
+    public Drawable getDefaultIcon(Launcher launcher) {
+        if (isCoverMode()) {
+            return new FastBitmapDrawable(getCoverInfo().bitmap);
+        } else {
+            return getFolderIcon(launcher);
+        }
+    }
+
+    public Drawable getFolderIcon(Launcher launcher) {
+        int iconSize = launcher.getDeviceProfile().iconSizePx;
+        FrameLayout dummy = new FrameLayout(launcher, null);
+        FolderIcon icon = FolderIcon.inflateIcon(R.layout.folder_icon, launcher, dummy, this);
+        icon.isCustomIcon = false;
+        icon.getFolderBackground().setStartOpacity(1f);
+        Bitmap b = BitmapRenderer.createHardwareBitmap(iconSize, iconSize, out -> {
+            out.translate(iconSize / 2f, 0);
+            // TODO: make folder icons more visible in front of the bottom sheet
+            // out.drawColor(Color.RED);
+            icon.draw(out);
+        });
+        icon.unbind();
+        return new BitmapDrawable(launcher.getResources(), b);
+    }
 }

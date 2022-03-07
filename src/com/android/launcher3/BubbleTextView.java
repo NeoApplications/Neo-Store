@@ -52,6 +52,7 @@ import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.graphics.IconPalette;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.graphics.PreloadIconDrawable;
+import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.DotRenderer;
 import com.android.launcher3.icons.FastBitmapDrawable;
 import com.android.launcher3.icons.IconCache.ItemInfoUpdateReceiver;
@@ -66,6 +67,10 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
+import com.saggitt.omega.gestures.BlankGestureHandler;
+import com.saggitt.omega.gestures.GestureController;
+import com.saggitt.omega.gestures.GestureHandler;
+import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.text.NumberFormat;
@@ -157,6 +162,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
     private HandlerRunnable mIconLoadRequest;
 
     private boolean mEnableIconUpdateAnimation = false;
+
+    private GestureHandler mSwipeUpHandler;
 
     public BubbleTextView(Context context) {
         this(context, null, 0);
@@ -292,13 +299,31 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
         }
     }
 
+    public void applyPromiseState(boolean promiseStateChanged) {
+        if (getTag() instanceof WorkspaceItemInfo) {
+            WorkspaceItemInfo info = (WorkspaceItemInfo) getTag();
+            final boolean isPromise = info.hasPromiseIconUi();
+
+            PreloadIconDrawable preloadDrawable = applyProgressLevel();
+            if (preloadDrawable != null && promiseStateChanged) {
+                preloadDrawable.maybePerformFinishedAnimation();
+            }
+        }
+    }
+
     @UiThread
     public void applyFromWorkspaceItem(WorkspaceItemInfo info, boolean promiseStateChanged) {
+        setDownloadStateContentDescription(info, info.getProgressLevel());
         applyIconAndLabel(info);
+        applySwipeUpAction(info);
         setTag(info);
         applyLoadingState(promiseStateChanged);
         applyDotState(info, false /* animate */);
-        setDownloadStateContentDescription(info, info.getProgressLevel());
+        if (promiseStateChanged || (info.hasPromiseIconUi())) {
+            applyPromiseState(promiseStateChanged);
+        }
+
+        applyDotState(info, false /* animate */);
     }
 
     @UiThread
@@ -359,6 +384,30 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
             setContentDescription(info.isDisabled()
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
                     : info.contentDescription);
+        }
+    }
+
+
+    public void applyIcon(ItemInfoWithIcon info) {
+        FastBitmapDrawable iconDrawable = info.newIcon(getContext());
+        mDotParams.color = IconPalette.getMutedColor(info.bitmap.color, 0.54f);
+        setIcon(iconDrawable);
+    }
+
+    public void applyIcon(BitmapInfo info) {
+        FastBitmapDrawable iconDrawable = new FastBitmapDrawable(info);
+        mDotParams.color = IconPalette.getMutedColor(info.color, 0.54f);
+
+        setIcon(iconDrawable);
+    }
+
+    private void applySwipeUpAction(WorkspaceItemInfo info) {
+        GestureHandler handler = GestureController.Companion.createGestureHandler(
+                getContext(), info.swipeUpAction, new BlankGestureHandler(getContext(), null));
+        if (handler instanceof BlankGestureHandler) {
+            mSwipeUpHandler = null;
+        } else {
+            mSwipeUpHandler = new ViewSwipeUpGestureHandler(this, handler);
         }
     }
 
@@ -924,5 +973,10 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
         } else {
             setCompoundDrawables(null, newIcon, null, null);
         }
+    }
+
+    public void clearIcon() {
+        mIcon = null;
+        setCompoundDrawables(null, null, null, null);
     }
 }

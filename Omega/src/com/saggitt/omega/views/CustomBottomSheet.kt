@@ -18,10 +18,12 @@
 
 package com.saggitt.omega.views
 
+import android.app.Activity
 import android.app.FragmentManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -42,6 +44,11 @@ import com.saggitt.omega.PREFS_APP_HIDE
 import com.saggitt.omega.PREFS_APP_SHOW_IN_TABS
 import com.saggitt.omega.PREFS_FOLDER_COVER_MODE
 import com.saggitt.omega.allapps.CustomAppFilter
+import com.saggitt.omega.gestures.BlankGestureHandler
+import com.saggitt.omega.gestures.GestureHandler
+import com.saggitt.omega.gestures.OmegaShortcutActivity.Companion.REQUEST_CODE
+import com.saggitt.omega.gestures.ui.LauncherGesturePreference
+import com.saggitt.omega.item.CustomInfoProvider
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.custom.MultiSelectTabPreference
 
@@ -184,14 +191,18 @@ class CustomBottomSheet @JvmOverloads constructor(
     class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
 
+        private var mSwipeUpPref: LauncherGesturePreference? = null
         private var mTabsPref: MultiSelectTabPreference? = null
         private lateinit var prefs: OmegaPreferences
         private var mPrefCoverMode: SwitchPreference? = null
         private var mKey: ComponentKey? = null
         private lateinit var itemInfo: ItemInfo
+        private var previousHandler: GestureHandler? = null
+        private var selectedHandler: GestureHandler? = null
         private var setForceOpen: Runnable? = null
         private var unsetForceOpen: Runnable? = null
         private var reopen: Runnable? = null
+        private var mProvider: CustomInfoProvider<ItemInfo>? = null
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.app_edit_prefs, rootKey)
@@ -253,6 +264,13 @@ class CustomBottomSheet @JvmOverloads constructor(
 
         override fun onDetach() {
             super.onDetach()
+            if (mProvider != null && selectedHandler != null) {
+                val stringValue = selectedHandler.toString()
+                val provider = CustomInfoProvider.forItem<ItemInfo>(
+                    activity, itemInfo
+                )
+                provider?.setSwipeUpAction(itemInfo, stringValue)
+            }
             if (mTabsPref!!.edited) {
                 prefs.drawerTabs.saveToJson()
             }
@@ -264,6 +282,45 @@ class CustomBottomSheet @JvmOverloads constructor(
                     folderInfo.setCoverMode(coverEnabled, launcher.modelWriter)
                     folderInfo.onIconChanged()
                 }
+            }
+        }
+
+        private fun onSelectHandler(handler: GestureHandler) {
+            previousHandler = selectedHandler
+            selectedHandler = handler
+            if (handler.configIntent != null) {
+                setForceOpen!!.run()
+                startActivityForResult(handler.configIntent, REQUEST_CODE)
+            } else {
+                updatePref()
+            }
+        }
+
+        @Deprecated("")
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+            if (requestCode == REQUEST_CODE) {
+                if (resultCode == Activity.RESULT_OK) {
+                    selectedHandler!!.onConfigResult(data)
+                    updatePref()
+                } else {
+                    selectedHandler = previousHandler
+                }
+                reopen!!.run()
+            } else {
+                unsetForceOpen!!.run()
+            }
+        }
+
+        private fun updatePref() {
+            if (mProvider != null && selectedHandler != null) {
+                setForceOpen!!.run()
+                val stringValue: String? = if (selectedHandler is BlankGestureHandler) {
+                    null
+                } else {
+                    selectedHandler.toString()
+                }
+                mSwipeUpPref!!.value = stringValue
+                unsetForceOpen!!.run()
             }
         }
 

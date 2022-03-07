@@ -23,16 +23,18 @@ import android.util.AttributeSet
 import androidx.preference.Preference
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.saggitt.omega.PREFS_ICON_PACK
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.preferences.OmegaPreferences
 
-class IconPackPreference(context: Context, attrs: AttributeSet? = null) : Preference(context, attrs),
-        OmegaPreferences.OnPreferenceChangeListener {
+class IconPackPreference(context: Context, attrs: AttributeSet? = null) :
+    Preference(context, attrs),
+    OmegaPreferences.OnPreferenceChangeListener {
     private val prefs = Utilities.getOmegaPrefs(context)
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
     private val current
         get() = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
-                ?: packs[0]
+            ?: packs[0]
 
     init {
         layoutResource = R.layout.preference_preview_icon
@@ -41,12 +43,12 @@ class IconPackPreference(context: Context, attrs: AttributeSet? = null) : Prefer
 
     override fun onAttached() {
         super.onAttached()
-        prefs.addOnPreferenceChangeListener("pref_icon_pack_package", this)
+        prefs.addOnPreferenceChangeListener(PREFS_ICON_PACK, this)
     }
 
     override fun onDetached() {
         super.onDetached()
-        prefs.removeOnPreferenceChangeListener("pref_icon_pack_package", this)
+        prefs.removeOnPreferenceChangeListener(PREFS_ICON_PACK, this)
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {

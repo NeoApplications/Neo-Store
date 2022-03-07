@@ -1,6 +1,7 @@
 package com.saggitt.omega.iconpack
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
@@ -24,6 +25,22 @@ class IconPackProvider(private val context: Context) {
                 null
             }
         }
+    }
+
+    private fun getIconPackInternal(
+        name: String,
+        put: Boolean = true,
+        load: Boolean = false
+    ): IconPack? {
+        //if (name == defaultPack.packPackageName) return defaultPack
+        //if (name == uriPack.packPackageName) return uriPack
+        return if (isPackProvider(context, name)) {
+            iconPacks[name]?.apply { if (load) loadBlocking() }
+        } else null
+    }
+
+    fun getIconPack(name: String, put: Boolean = true, load: Boolean = false): IconPack? {
+        return getIconPackInternal(name, put, load)
     }
 
     fun getIconPackList(): List<IconPackInfo> {
@@ -52,6 +69,24 @@ class IconPackProvider(private val context: Context) {
     companion object {
         @JvmField
         val INSTANCE = MainThreadInitializedObject(::IconPackProvider)
+
+        fun getInstance(context: Context): IconPackProvider {
+            if (INSTANCE == null) {
+                INSTANCE[context] = IconPackProvider(context.applicationContext)
+            }
+            return INSTANCE[context]!!
+        }
+
+        internal fun isPackProvider(context: Context, packageName: String?): Boolean {
+            if (packageName != null && packageName.isNotEmpty()) {
+                return Config.ICON_INTENTS.firstOrNull {
+                    context.packageManager.queryIntentActivities(
+                        Intent(it).setPackage(packageName), PackageManager.GET_META_DATA
+                    ).iterator().hasNext()
+                } != null
+            }
+            return false
+        }
     }
 }
 

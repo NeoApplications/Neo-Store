@@ -64,6 +64,7 @@ import com.android.launcher3.dragndrop.BaseItemDragListener;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.dragndrop.DragView;
 import com.android.launcher3.dragndrop.DraggableView;
+import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.DotRenderer;
 import com.android.launcher3.logger.LauncherAtom.FromState;
 import com.android.launcher3.logger.LauncherAtom.ToState;
@@ -74,6 +75,7 @@ import com.android.launcher3.model.data.FolderInfo;
 import com.android.launcher3.model.data.FolderInfo.FolderListener;
 import com.android.launcher3.model.data.FolderInfo.LabelState;
 import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.touch.ItemClickHandler;
 import com.android.launcher3.util.Executors;
@@ -82,8 +84,15 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.IconLabelDotView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.gestures.BlankGestureHandler;
+import com.saggitt.omega.gestures.GestureController;
+import com.saggitt.omega.gestures.GestureHandler;
+import com.saggitt.omega.gestures.RunnableGestureHandler;
+import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +152,12 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     private final PointF mTranslationForReorderPreview = new PointF(0, 0);
     private float mScaleForReorderBounce = 1f;
 
-    private static final Property<FolderIcon, Float> DOT_SCALE_PROPERTY
+    private GestureHandler mSwipeUpHandler;
+
+    public boolean isCustomIcon = false;
+    private boolean mIsTextVisible = true;
+
+    public static final Property<FolderIcon, Float> DOT_SCALE_PROPERTY
             = new Property<FolderIcon, Float>(Float.TYPE, "dotScale") {
         @Override
         public Float get(FolderIcon folderIcon) {
@@ -174,14 +188,18 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         mDotParams = new DotRenderer.DrawParams();
     }
 
-    public static <T extends Context & ActivityContext> FolderIcon inflateFolderAndIcon(int resId,
-                                                                                        T activityContext, ViewGroup group, FolderInfo folderInfo) {
+    public static <T extends Context & ActivityContext> FolderIcon inflateFolderAndIcon(
+            int resId, T activityContext, ViewGroup group, FolderInfo folderInfo
+    ) {
         Folder folder = Folder.fromXml(activityContext);
+        folder.setDragController(activityContext.getDragController());
 
         FolderIcon icon = inflateIcon(resId, activityContext, group, folderInfo);
         folder.setFolderIcon(icon);
         folder.bind(folderInfo);
         icon.setFolder(folder);
+
+        folder.onIconChanged();
         return icon;
     }
 
@@ -207,12 +225,15 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         if (folderInfo instanceof DrawerFolderInfo) {
             lp.topMargin = grid.allAppsIconSizePx + grid.allAppsIconDrawablePaddingPx;
             icon.mBackground = new PreviewBackground(true);
+            ((DrawerFolderInfo) folderInfo).getAppsStore().registerFolderIcon(icon);
         } else {
             lp.topMargin = grid.iconSizePx + grid.iconDrawablePaddingPx;
         }
 
         icon.setTag(folderInfo);
-        icon.setOnClickListener(ItemClickHandler.INSTANCE);
+        icon.applySwipeUpAction(folderInfo);
+        icon.setOnClickListener(folderInfo.isCoverMode() ?
+                ItemClickHandler.FOLDER_COVER_INSTANCE : ItemClickHandler.INSTANCE);
         icon.mInfo = folderInfo;
         icon.mActivity = activity;
         icon.mDotRenderer = grid.mDotRendererWorkSpace;
@@ -234,6 +255,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
         folderInfo.addListener(icon);
         return icon;
+    }
+
+    public void unbind() {
+        if (mInfo != null) {
+            mInfo.removeListener(this);
+            mInfo.removeListener(mFolder);
+            mInfo = null;
+        }
     }
 
     public void animateBgShadowAndStroke() {
@@ -312,7 +341,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     public void performCreateAnimation(final WorkspaceItemInfo destInfo, final View destView,
                                        final WorkspaceItemInfo srcInfo, final DragObject d, Rect dstRect,
                                        float scaleRelativeToDragLayer) {
-        final DragView srcView = d.dragView;
         prepareCreateAnimation(destView);
         addItem(destInfo);
         // This will animate the first item from it's position as an icon into its
@@ -389,13 +417,10 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                     removeItem(item, false);
                 }
             }
+            if (!itemAdded) mInfo.add(item, index, true);
 
-            if (!itemAdded) {
-                mInfo.add(item, index, true);
-            }
-            if (isInAppDrawer()) {
-                return;
-            }
+            if (isInAppDrawer()) return;
+
             int[] center = new int[2];
             float scale = getLocalCenterForIndex(index, numItemsInPreview, center);
             center[0] = Math.round(scaleRelativeToDragLayer * center[0]);
@@ -618,12 +643,9 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         super.dispatchDraw(canvas);
 
         if (!mBackgroundIsVisible) return;
-
         mPreviewItemManager.recomputePreviewDrawingParams();
-
-        if (!mBackground.drawingDelegated()) {
-            mBackground.drawBackground(canvas);
-        }
+        if (!mBackground.drawingDelegated() && !isCustomIcon) mBackground.drawBackground(canvas);
+        if (isCustomIcon) return;
 
         if (mCurrentPreviewItems.isEmpty() && !mAnimating) return;
 
@@ -706,7 +728,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!mInfo.useIconMode() && isInAppDrawer()) {
+        if (!mInfo.useIconMode(getContext()) && isInAppDrawer()) {
             DeviceProfile grid = mActivity.getDeviceProfile();
             int drawablePadding = grid.allAppsIconDrawablePaddingPx;
 
@@ -723,12 +745,57 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     @Override
     public void onItemsChanged(boolean animate) {
-        if (mInfo.isCoverMode()) {
+        if (isCoverMode()) {
             onIconChanged();
             mFolderName.setText(mInfo.getIconTitle(getFolder()));
         }
         updatePreviewItems(animate);
         invalidate();
+        requestLayout();
+    }
+
+    @Override
+    public void onIconChanged() {
+        applySwipeUpAction(mInfo);
+        setOnClickListener(mInfo.isCoverMode() ?
+                ItemClickHandler.FOLDER_COVER_INSTANCE : ItemClickHandler.INSTANCE);
+
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFolderName.getLayoutParams();
+        DeviceProfile grid = mActivity.getDeviceProfile();
+        mFolderName.setTag(null);
+
+        if (mInfo.useIconMode(getContext())) {
+            lp.topMargin = 0;
+            if (isInAppDrawer()) {
+                mFolderName.setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
+            } else {
+                mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
+            }
+            isCustomIcon = true;
+            if (mInfo.isCoverMode()) {
+                ItemInfoWithIcon coverInfo = mInfo.getCoverInfo();
+                mFolderName.setTag(coverInfo);
+                mFolderName.applyIcon(coverInfo);
+                applyCoverDotState(coverInfo, false);
+            } else {
+                BitmapInfo info = BitmapInfo.fromBitmap(
+                        Utilities.drawableToBitmap(mInfo.getIcon(getContext())));
+                mFolderName.applyIcon(info);
+                mFolderName.applyDotState(mInfo, false);
+            }
+            mBackground.setStartOpacity(0f);
+        } else {
+            isCustomIcon = false;
+            if (isInAppDrawer()) {
+                lp.topMargin = grid.allAppsIconSizePx + grid.allAppsIconDrawablePaddingPx;
+            } else {
+                lp.topMargin = grid.iconSizePx + grid.iconDrawablePaddingPx;
+            }
+            mFolderName.applyDotState(mInfo, false);
+            mFolderName.clearIcon();
+            mBackground.setStartOpacity(1f);
+        }
+        mFolderName.setText(mInfo.getIconTitle(getFolder()));
         requestLayout();
     }
 
@@ -769,6 +836,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public void onTitleChanged(CharSequence title) {
         mFolderName.setText(title);
+        applySwipeUpAction(mInfo);
         setContentDescription(getAccessiblityTitle(title));
     }
 
@@ -784,7 +852,27 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         super.onTouchEvent(event);
         mLongPressHelper.onTouchEvent(event);
         // Keep receiving the rest of the events
+
+        Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+        if (launcher instanceof OmegaLauncher && mSwipeUpHandler != null) {
+            ((OmegaLauncher) launcher).getGestureController()
+                    .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());
+        }
         return true;
+    }
+
+    private void applySwipeUpAction(FolderInfo info) {
+        if (info.isCoverMode()) {
+            mSwipeUpHandler = new RunnableGestureHandler(getContext(), () -> ItemClickHandler.INSTANCE.onClick(this));
+        } else {
+            mSwipeUpHandler = GestureController.Companion.createGestureHandler(
+                    getContext(), info.swipeUpAction, new BlankGestureHandler(getContext(), null));
+        }
+        if (mSwipeUpHandler instanceof BlankGestureHandler) {
+            mSwipeUpHandler = null;
+        } else {
+            mSwipeUpHandler = new ViewSwipeUpGestureHandler(this, mSwipeUpHandler);
+        }
     }
 
     /**
@@ -915,6 +1003,18 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         return mInfo instanceof DrawerFolderInfo;
     }
 
+    public boolean isCoverMode() {
+        return mInfo.isCoverMode();
+    }
+
+    public WorkspaceItemInfo getCoverInfo() {
+        return mInfo.getCoverInfo();
+    }
+
+    public void applyCoverDotState(ItemInfo itemInfo, boolean animate) {
+        mFolderName.applyDotState(itemInfo, animate);
+    }
+
     public void updateIconDots(Predicate<PackageUserKey> updatedBadges, PackageUserKey tmpKey) {
         FolderDotInfo folderDotInfo = new FolderDotInfo();
         for (WorkspaceItemInfo si : mInfo.contents) {
@@ -922,12 +1022,12 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         }
         setDotInfo(folderDotInfo);
 
-        /*if (isCoverMode()) {
+        if (isCoverMode()) {
             WorkspaceItemInfo coverInfo = getCoverInfo();
             if (tmpKey.updateFromItemInfo(coverInfo) &&
                     updatedBadges.test(tmpKey)) {
                 applyCoverDotState(coverInfo, true);
             }
-        }*/
+        }
     }
 }

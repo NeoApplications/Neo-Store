@@ -288,7 +288,7 @@ public class LauncherSettings {
 
         /**
          * The profile id of the item in the cell.
-         * <P>
+         * <p>
          * Type: INTEGER
          * </P>
          */
@@ -332,6 +332,14 @@ public class LauncherSettings {
          */
         public static final String APPWIDGET_SOURCE = "appWidgetSource";
 
+        public static final String TITLE_ALIAS = "titleAlias";
+
+        public static final String SWIPE_UP_ACTION = "swipeUpAction";
+
+        public static final String CUSTOM_ICON = "customIcon";
+
+        public static final String CUSTOM_ICON_ENTRY = "customIconEntry";
+
         public static void addTableToDb(SQLiteDatabase db, long myProfileId, boolean optional) {
             addTableToDb(db, myProfileId, optional, TABLE_NAME);
         }
@@ -341,25 +349,29 @@ public class LauncherSettings {
             String ifNotExists = optional ? " IF NOT EXISTS " : "";
             db.execSQL("CREATE TABLE " + ifNotExists + tableName + " (" +
                     "_id INTEGER PRIMARY KEY," +
-                    "title TEXT," +
-                    "intent TEXT," +
-                    "container INTEGER," +
-                    "screen INTEGER," +
-                    "cellX INTEGER," +
-                    "cellY INTEGER," +
-                    "spanX INTEGER," +
-                    "spanY INTEGER," +
-                    "itemType INTEGER," +
-                    "appWidgetId INTEGER NOT NULL DEFAULT -1," +
-                    "iconPackage TEXT," +
-                    "iconResource TEXT," +
-                    "icon BLOB," +
-                    "appWidgetProvider TEXT," +
-                    "modified INTEGER NOT NULL DEFAULT 0," +
-                    "restored INTEGER NOT NULL DEFAULT 0," +
-                    "profileId INTEGER DEFAULT " + myProfileId + "," +
-                    "rank INTEGER NOT NULL DEFAULT 0," +
-                    "options INTEGER NOT NULL DEFAULT 0," +
+                    TITLE + " TEXT," +
+                    INTENT + " TEXT," +
+                    CONTAINER + " INTEGER," +
+                    SCREEN + " INTEGER," +
+                    CELLX + " INTEGER," +
+                    CELLY + " INTEGER," +
+                    SPANX + " INTEGER," +
+                    SPANY + " INTEGER," +
+                    ITEM_TYPE + " INTEGER," +
+                    APPWIDGET_ID + " INTEGER NOT NULL DEFAULT -1," +
+                    ICON_PACKAGE + " TEXT," +
+                    ICON_RESOURCE + " TEXT," +
+                    ICON + " BLOB," +
+                    CUSTOM_ICON + " BLOB," +
+                    CUSTOM_ICON_ENTRY + " TEXT," +
+                    TITLE_ALIAS + " TEXT," +
+                    SWIPE_UP_ACTION + " TEXT," +
+                    APPWIDGET_PROVIDER + " TEXT," +
+                    MODIFIED + " INTEGER NOT NULL DEFAULT 0," +
+                    RESTORED + " INTEGER NOT NULL DEFAULT 0," +
+                    PROFILE_ID + " INTEGER DEFAULT " + myProfileId + "," +
+                    RANK + " INTEGER NOT NULL DEFAULT 0," +
+                    OPTIONS + " INTEGER NOT NULL DEFAULT 0," +
                     APPWIDGET_SOURCE + " INTEGER NOT NULL DEFAULT " + CONTAINER_UNKNOWN +
                     ");");
         }

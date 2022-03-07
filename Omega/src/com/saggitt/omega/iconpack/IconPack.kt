@@ -56,6 +56,11 @@ class IconPack(
     fun getCalendars(): MutableSet<ComponentName> = calendarMap.keys
     fun getClocks(): MutableSet<ComponentName> = clockMap.keys
 
+    open fun getIcon(entry: CustomIconEntry, iconDpi: Int): Drawable? {
+        // TODO implement it
+        return null
+    }
+
     fun getIcon(iconEntry: IconEntry, iconDpi: Int): Drawable? {
         val id = getDrawableId(iconEntry.name)
         if (id == 0) return null

@@ -21,6 +21,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import com.android.launcher3.icons.IconCache;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.uioverrides.ApiWrapper;
 import com.android.launcher3.util.ContentWriter;
+import com.saggitt.omega.iconpack.CustomIconEntry;
 
 import java.util.Arrays;
 
@@ -85,6 +87,11 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     public CharSequence disabledMessage;
 
     public int status;
+
+    public CharSequence customTitle;
+    public Bitmap customIcon;
+    public CustomIconEntry customIconEntry;
+    public String swipeUpAction;
 
     /**
      * A set of person's Id associated with the WorkspaceItemInfo, this is only used if the item
@@ -211,5 +218,14 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     @Override
     public ItemInfoWithIcon clone() {
         return new WorkspaceItemInfo(this);
+    }
+
+    public void onLoadCustomizations(
+            String titleAlias, String swipeUpAction, CustomIconEntry customIcon, Bitmap icon
+    ) {
+        customTitle = titleAlias;
+        customIconEntry = customIcon;
+        this.customIcon = icon;
+        this.swipeUpAction = swipeUpAction;
     }
 }
