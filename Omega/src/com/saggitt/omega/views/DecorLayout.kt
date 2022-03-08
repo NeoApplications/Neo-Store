@@ -17,10 +17,8 @@
 
 package com.saggitt.omega.views
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.os.Environment
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -28,36 +26,23 @@ import com.android.launcher3.Insettable
 import com.android.launcher3.InsettableFrameLayout
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.google.android.material.snackbar.Snackbar
 import com.saggitt.omega.blur.BlurDrawable
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.util.getBooleanAttr
 import com.saggitt.omega.util.getColorAttr
-import com.saggitt.omega.util.getDimenAttr
 import com.saggitt.omega.util.parents
-import java.io.File
 
-@SuppressLint("ViewConstructor")
 class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
-        View.OnClickListener, BlurWallpaperProvider.Listener {
-
-    private var tapCount = 0
-
+    BlurWallpaperProvider.Listener {
     private val contentFrame: View
 
     private val shouldDrawBackground by lazy { context.getBooleanAttr(android.R.attr.windowShowWallpaper) }
     private val settingsBackground by lazy { context.getColorAttr(R.attr.settingsBackground) }
 
-    private val contentTop
-        get() = when {
-            else -> context.getDimenAttr(R.attr.actionBarSize)
-        }
-
     init {
         LayoutInflater.from(context).inflate(R.layout.decor_layout, this)
 
         contentFrame = findViewById(android.R.id.content)
-
         onEnabledChanged()
 
         if (shouldDrawBackground) {
@@ -82,28 +67,6 @@ class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
     override fun draw(canvas: Canvas) {
         if (shouldDrawBackground) canvas.drawColor(settingsBackground)
         super.draw(canvas)
-    }
-
-    override fun onClick(v: View?) {
-        if (tapCount == 6 && allowDevOptions()) {
-            Utilities.getOmegaPrefs(context).developerOptionsEnabled = true
-            Snackbar.make(
-                    findViewById(R.id.content),
-                    R.string.developer_options_enabled,
-                    Snackbar.LENGTH_LONG).show()
-            tapCount++
-        } else if (tapCount < 6) {
-            tapCount++
-        }
-    }
-
-    private fun allowDevOptions(): Boolean {
-        return try {
-            File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOCUMENTS), "Omega/dev").exists()
-        } catch (e: SecurityException) {
-            false
-        }
     }
 
     override fun onAttachedToWindow() {
@@ -142,11 +105,14 @@ class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
 
         override fun setInsets(insets: Rect) {
             decorLayout?.also {
-                setInsetsInternal(Rect(
+                setInsetsInternal(
+                    Rect(
                         insets.left,
-                        insets.top + it.contentTop,
+                        insets.top,
                         insets.right,
-                        insets.bottom))
+                        insets.bottom
+                    )
+                )
             } ?: setInsetsInternal(insets)
         }
 
@@ -166,32 +132,35 @@ class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
 
         private fun computeClip() {
             contentRect.set(
-                    selfRect.left + insetsRect.left,
-                    selfRect.top + insetsRect.top,
-                    selfRect.right - insetsRect.right,
-                    selfRect.bottom - insetsRect.bottom
+                selfRect.left + insetsRect.left,
+                selfRect.top + insetsRect.top,
+                selfRect.right - insetsRect.right,
+                selfRect.bottom - insetsRect.bottom
             )
 
             dividerPath.reset()
             when {
                 isNavBarToRightEdge() -> dividerPath.addRect(
-                        contentRect.right,
-                        selfRect.top,
-                        contentRect.right + dividerSize,
-                        selfRect.bottom,
-                        Path.Direction.CW)
+                    contentRect.right,
+                    selfRect.top,
+                    contentRect.right + dividerSize,
+                    selfRect.bottom,
+                    Path.Direction.CW
+                )
                 isNavBarToLeftEdge() -> dividerPath.addRect(
-                        contentRect.left - dividerSize,
-                        selfRect.top,
-                        contentRect.left,
-                        selfRect.bottom,
-                        Path.Direction.CW)
+                    contentRect.left - dividerSize,
+                    selfRect.top,
+                    contentRect.left,
+                    selfRect.bottom,
+                    Path.Direction.CW
+                )
                 else -> dividerPath.addRect(
-                        selfRect.left,
-                        contentRect.bottom,
-                        selfRect.right,
-                        contentRect.bottom + dividerSize,
-                        Path.Direction.CW)
+                    selfRect.left,
+                    contentRect.bottom,
+                    selfRect.right,
+                    contentRect.bottom + dividerSize,
+                    Path.Direction.CW
+                )
             }
 
             contentPath.reset()
@@ -239,7 +208,8 @@ class DecorLayout(context: Context) : InsettableFrameLayout(context, null),
         }
     }
 
-    class FrontScrimView(context: Context, attrs: AttributeSet?) : View(context, attrs), Insettable {
+    class FrontScrimView(context: Context, attrs: AttributeSet?) : View(context, attrs),
+        Insettable {
 
         private val parent by lazy { parents.first { it is ContentFrameLayout } as ContentFrameLayout }
 

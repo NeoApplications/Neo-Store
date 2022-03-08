@@ -15,7 +15,7 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.settings
+package com.saggitt.omega.views
 
 import android.content.Context
 import android.graphics.Canvas
@@ -27,10 +27,9 @@ import com.android.launcher3.InsettableFrameLayout
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.TouchController
 import com.saggitt.omega.util.forEachChildReversed
-import com.saggitt.omega.views.SettingsBottomSheet
-import com.saggitt.omega.views.ViewScrim
 
-class SettingsDragLayer(context: Context, attrs: AttributeSet?) : InsettableFrameLayout(context, attrs) {
+class SettingsDragLayer(context: Context, attrs: AttributeSet? = null) :
+    InsettableFrameLayout(context, attrs) {
 
     private val mTmpXY = FloatArray(2)
     private val mHitRect = Rect()

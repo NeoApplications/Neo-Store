@@ -31,8 +31,7 @@ abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) 
     PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) =
-        setPreferencesFromResource(layoutId, rootKey)
-
+        setPreferencesFromResource(layoutId, null)
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         val f: DialogFragment

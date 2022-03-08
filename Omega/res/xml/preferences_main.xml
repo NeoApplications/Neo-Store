@@ -81,7 +81,6 @@
         app:allowDividerAbove="false">
         <Preference
             android:fragment="com.saggitt.omega.preferences.views.PrefsAdvancedFragment"
-            android:key="pref_show_smartspace"
             android:icon="@drawable/ic_more_horiz"
             android:layout="@layout/home_preference"
             android:summary="@string/summary__general_advanced"
