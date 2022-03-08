@@ -66,18 +66,28 @@ class CustomBottomSheet @JvmOverloads constructor(
     private val mFragmentManager: FragmentManager = mLauncher.fragmentManager
     private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
+    private var mInfoProvider: CustomInfoProvider<ItemInfo>? = null
+
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
         mItemInfo = itemInfo
+        if (mItemInfo is FolderInfo) {
+            mInfoProvider = CustomInfoProvider.forItem(context, mItemInfo)
+        }
 
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
             itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
         var allowTitleEdit = false
-        if (itemInfo is ItemInfoWithIcon) {
+        if (itemInfo is ItemInfoWithIcon || (mInfoProvider != null && mInfoProvider!!.supportsIcon())) {
             val icon = findViewById<ImageView>(R.id.icon)
-            icon.setImageBitmap(itemInfo.bitmap.icon)
+
+            if (itemInfo is ItemInfoWithIcon) {
+                icon.setImageBitmap(itemInfo.bitmap.icon)
+            } else if (itemInfo is FolderInfo) {
+                icon.setImageDrawable(itemInfo.getIcon(mLauncher))
+            }
             allowTitleEdit = true
         }
         if (itemInfo is WorkspaceItemInfo) {
