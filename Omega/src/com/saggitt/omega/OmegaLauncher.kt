@@ -87,7 +87,7 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
-        mOverlayManager = OverlayCallbackImpl(this)
+        mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.folderBadgeCount
         if (prefs.customWindowCorner) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true

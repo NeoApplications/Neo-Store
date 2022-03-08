@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.os.ResultReceiver
 import android.view.*
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
@@ -38,19 +39,19 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.PreferencesActivityBinding
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.OmegaLayoutInflater
 import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
+import com.saggitt.omega.PREFS_SMARTSPACE_SHOW
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.groups.DrawerTabs
-import com.saggitt.omega.settings.SettingsDragLayer
 import com.saggitt.omega.smartspace.FeedBridge
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.getBooleanAttr
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.recreateAnimated
 import com.saggitt.omega.views.DecorLayout
-
+import com.saggitt.omega.views.SettingsDragLayer
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
     override var currentTheme = 0
@@ -60,9 +61,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
     private var paused = false
     val dragLayer by lazy { SettingsDragLayer(this, null) }
     private val decorLayout by lazy { DecorLayout(this) }
-    private val customLayoutInflater by lazy {
-        OmegaLayoutInflater(super.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater, this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
@@ -79,6 +77,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 packageName
             ), true
         )
+
         super.onCreate(savedInstanceState)
         dragLayer.addView(
             decorLayout, InsettableFrameLayout.LayoutParams(
@@ -88,11 +87,14 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         super.setContentView(dragLayer)
 
         binding = PreferencesActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.actionBar)
+        setFullScreen()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, getSettingFragment()).commit()
-        setContentView(binding.root)
-        setSupportActionBar(binding.actionBar)
+
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 binding.actionBar.setNavigationOnClickListener { super.onBackPressed() }
@@ -105,6 +107,32 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
 
         DEFAULT_HOME = resolveDefaultHome()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val view = findViewById<LinearLayout>(R.id.parent_view)
+        val params: InsettableFrameLayout.LayoutParams =
+            view.layoutParams as InsettableFrameLayout.LayoutParams
+        params.width = LinearLayout.LayoutParams.MATCH_PARENT
+        params.height = LinearLayout.LayoutParams.MATCH_PARENT
+        view.layoutParams = params
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setFullScreen() {
+        var flags = window.decorView.systemUiVisibility
+        val useLightBars = getBooleanAttr(R.attr.useLightSystemBars)
+        flags = Utilities.setFlag(flags, View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, useLightBars)
+        if (Utilities.ATLEAST_OREO) {
+            flags = Utilities.setFlag(flags, View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR, useLightBars)
+        }
+
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.decorView.systemUiVisibility = flags
     }
 
     private fun getSettingFragment(): Fragment {
@@ -149,14 +177,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         contentParent.addView(v, lp)
     }
 
-    override fun getSystemService(name: String): Any? {
-        if (name == Context.LAYOUT_INFLATER_SERVICE) {
-            return customLayoutInflater
-        }
-        return super.getSystemService(name)
-    }
-
-
     private fun resolveDefaultHome(): String? {
         val homeIntent: Intent = Intent(Intent.ACTION_MAIN)
             .addCategory(Intent.CATEGORY_HOME)
@@ -180,6 +200,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
     class PrefsMainFragment : PreferenceFragmentCompat() {
         private var mShowDevOptions = false
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
@@ -189,7 +210,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
                 isVisible = Utilities.getOmegaPrefs(context).developerOptionsEnabled
             }
 
-            findPreference<Preference>("pref_show_smartspace")?.apply {
+            findPreference<Preference>(PREFS_SMARTSPACE_SHOW)?.apply {
                 isVisible = FeedBridge.getInstance(context).isInstalled()
             }
         }
@@ -302,3 +323,4 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
     }
 }
+
