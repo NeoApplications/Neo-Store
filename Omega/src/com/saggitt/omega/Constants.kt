@@ -1,7 +1,6 @@
 package com.saggitt.omega
 
 // DESKTOP PREFS
-const val PREFS_DESKTOP_GRID_SIZE = "pref_desktop_grid_size"
 const val PREFS_DESKTOP_ICON_SCALE = "pref_home_icon_scale"
 const val PREFS_DESKTOP_HIDE_LABEL = "pref_hide_app_label"
 const val PREFS_DESKTOP_ICON_LABEL_TWOLINES = "pref_icon_labels_two_lines"
@@ -59,7 +58,6 @@ const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
 
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
-const val PREFS_SEARCH_SETTINGS = "pref_settings_search"
 
 // GESTURES PREFS
 const val PREFS_NOTIFICATION_COUNT = "pref_notification_count"
@@ -78,6 +76,7 @@ const val PREFS_GESTURE_SWIPE_UP_DOCK = "pref_gesture_dock_swipe_up"
 const val PREFS_GESTURE_ASSISTANT = "pref_gesture_launch_assistant"
 
 //SMARTSPACE PREFS
+const val PREFS_SMARTSPACE_SHOW = "pref_show_smartspace"
 const val PREFS_SMARTSPACE_ENABLE = "enable_smartspace"
 const val PREFS_SMARTSPACE_DATE = "pref_smartspace_date"
 const val PREFS_SMARTSPACE_TIME = "pref_smartspace_time"
@@ -88,6 +87,8 @@ const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
 // ADVANCED PREFS
 const val PREFS_LANGUAGE = "pref_language"
 const val PREFS_FIRST_RUN = "pref_first_run"
+const val PREFS_RESTORE_SUCCESS = "pref_restore_success"
+const val PREFS_RECENT_BACKUP = "pref_recent_backups"
 
 // DEVELOPER PREFS
 const val PREFS_DEV_PREFS_SHOW = "pref_showDevOptions"

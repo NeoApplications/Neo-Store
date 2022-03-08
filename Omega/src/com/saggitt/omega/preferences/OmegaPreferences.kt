@@ -20,8 +20,10 @@ package com.saggitt.omega.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
@@ -205,6 +207,12 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     // ADVANCED
     var language by StringPref(PREFS_LANGUAGE, "", recreate)
     var firstRun by BooleanPref(PREFS_FIRST_RUN, true)
+    var restoreSuccess by BooleanPref(PREFS_RESTORE_SUCCESS, false)
+    val recentBackups = object : MutableListPref<Uri>(
+        Utilities.getDevicePrefs(context), PREFS_RECENT_BACKUP
+    ) {
+        override fun unflattenValue(value: String) = Uri.parse(value)
+    }
 
     // DEVELOPER PREFERENCES
     var developerOptionsEnabled by BooleanPref(PREFS_DEV_PREFS_SHOW, false, recreate)
@@ -291,6 +299,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     interface MutableListPrefChangeListener {
         fun onListPrefChanged(key: String)
+    }
+
+    fun beginBlockingEdit() {
+        blockingEditing = true
+    }
+
+    fun endBlockingEdit() {
+        blockingEditing = false
+    }
+
+    inline fun blockingEdit(body: OmegaPreferences.() -> Unit) {
+        beginBlockingEdit()
+        body(this)
+        endBlockingEdit()
     }
 
     companion object {

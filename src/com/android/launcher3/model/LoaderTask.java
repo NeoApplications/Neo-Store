@@ -63,6 +63,7 @@ import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderGridOrganizer;
 import com.android.launcher3.folder.FolderNameInfos;
 import com.android.launcher3.folder.FolderNameProvider;
+import com.android.launcher3.graphics.LauncherPreviewRenderer;
 import com.android.launcher3.icons.ComponentWithLabelAndIcon;
 import com.android.launcher3.icons.ComponentWithLabelAndIcon.ComponentWithIconCachingLogic;
 import com.android.launcher3.icons.IconCache;
@@ -92,6 +93,7 @@ import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.OmegaAppKt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -337,6 +339,10 @@ public class LoaderTask implements Runnable {
                 : !GridSizeMigrationTask.migrateGridIfNeeded(context))) {
             // Migration failed. Clear workspace.
             clearDb = true;
+        }
+
+        if (!(context instanceof LauncherPreviewRenderer.PreviewContext)) {
+            OmegaAppKt.getOmegaApp(context).cleanUpDatabases();
         }
 
         if (clearDb) {

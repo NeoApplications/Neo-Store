@@ -12,7 +12,6 @@
     <permission
         android:name="${packageName}.permission.HOTSEAT_EDU"
         tools:node="remove" />
-
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -30,10 +29,18 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:name="com.saggitt.omega.OmegaApp"
@@ -173,7 +180,6 @@
             </intent-filter>
         </receiver>
 
-
         <service
             android:name="com.saggitt.omega.OmegaAccessibilityService"
             android:exported="true"
@@ -183,6 +189,7 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
+
         <service
             android:name="com.android.launcher3.uioverrides.WallpaperManagerCompat$ColorExtractionService"
             android:exported="false"
@@ -209,6 +216,7 @@
                 <action android:name="com.google.android.systemui.OPA_ENABLED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name="com.google.systemui.smartspace.SmartSpaceBroadcastReceiver"
             android:exported="false">
@@ -220,6 +228,7 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
+
         <meta-data
             android:name="com.samsung.android.non_immersive"
             android:value="true" />

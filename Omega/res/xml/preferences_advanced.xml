@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  This file is part of Omega Launcher
-  ~  Copyright (c) 2021   Saul Henriquez
+  ~ This file is part of Omega Launcher
+  ~ Copyright (c) 2022   Omega Launcher Team
   ~
-  ~  This program is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as
-  ~  published by the Free Software Foundation, either version 3 of the
-  ~  License, or (at your option) any later version.
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
   ~
-  ~  This program is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
   ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.saggitt.omega.preferences.custom.LanguagePreference
         android:defaultValue=""
         android:icon="@drawable/ic_language"
         android:key="pref_language"
-        android:summary="@string/summary__advanced_language"
-        android:title="@string/title__advanced_language" />
+        android:title="@string/title__advanced_language"
+        android:summary="@string/summary__advanced_language" />
+
+    <Preference
+        android:icon="@drawable/ic_import_export"
+        android:key="pref_backup"
+        android:title="@string/backups"
+        android:summary="@string/backup_pref_summary"
+        android:fragment="com.saggitt.omega.backup.BackupListFragment" />
 
 </PreferenceScreen>
