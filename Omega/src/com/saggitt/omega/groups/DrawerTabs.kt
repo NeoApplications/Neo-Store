@@ -99,7 +99,6 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
     }
 
     override fun onGroupsChanged(changeCallback: OmegaPreferencesChangeCallback) {
-        //TODO revisar codigo para tabs
         changeCallback.launcher.allAppsController.appsView.reloadTabs()
     }
 
