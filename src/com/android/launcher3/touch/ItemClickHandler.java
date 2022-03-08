@@ -77,6 +77,7 @@ public class ItemClickHandler {
      * Instance used for click handling on items
      */
     public static final OnClickListener INSTANCE = ItemClickHandler::onClick;
+    public static final OnClickListener FOLDER_COVER_INSTANCE = ItemClickHandler::onClickFolderCover;
 
     private static void onClick(View v) {
         // Make sure that rogue clicks don't get through while allapps is launching, or after the
@@ -105,6 +106,22 @@ public class ItemClickHandler {
             }
         } else if (tag instanceof SearchActionItemInfo) {
             onClickSearchAction(launcher, (SearchActionItemInfo) tag);
+        }
+    }
+
+    private static void onClickFolderCover(View v) {
+        if (v.getWindowToken() == null) {
+            return;
+        }
+
+        Launcher launcher = Launcher.getLauncher(v.getContext());
+        if (!launcher.getWorkspace().isFinishedSwitchingState()) {
+            return;
+        }
+
+        Object tag = v.getTag();
+        if (tag instanceof FolderInfo) {
+            onClickAppShortcut(v, ((FolderInfo) tag).getCoverInfo(), launcher);
         }
     }
 
@@ -158,7 +175,7 @@ public class ItemClickHandler {
     }
 
     private static void onClickPendingAppItem(View v, Launcher launcher, String packageName,
-            boolean downloadStarted) {
+                                              boolean downloadStarted) {
         if (downloadStarted) {
             // If the download has started, simply direct to the market app.
             startMarketIntentForPackage(v, launcher, packageName);

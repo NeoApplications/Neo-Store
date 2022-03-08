@@ -95,49 +95,46 @@ public class LauncherDelegate {
 
     void replaceFolderWithFinalItem(Folder folder) {
         // Add the last remaining child to the workspace in place of the folder
-        Runnable onCompleteRunnable = new Runnable() {
-            @Override
-            public void run() {
-                int itemCount = folder.getItemCount();
-                FolderInfo info = folder.mInfo;
-                if (itemCount <= 1) {
-                    View newIcon = null;
-                    WorkspaceItemInfo finalItem = null;
+        Runnable onCompleteRunnable = () -> {
+            int itemCount = folder.getItemCount();
+            FolderInfo info = folder.mInfo;
+            if (itemCount <= 1) {
+                View newIcon = null;
+                WorkspaceItemInfo finalItem = null;
 
-                    if (itemCount == 1) {
-                        // Move the item from the folder to the workspace, in the position of the
-                        // folder
-                        CellLayout cellLayout = mLauncher.getCellLayout(info.container,
-                                info.screenId);
-                        finalItem = info.contents.remove(0);
-                        newIcon = mLauncher.createShortcut(cellLayout, finalItem);
-                        mLauncher.getModelWriter().addOrMoveItemInDatabase(finalItem,
-                                info.container, info.screenId, info.cellX, info.cellY);
-                    }
+                if (itemCount == 1) {
+                    // Move the item from the folder to the workspace, in the position of the
+                    // folder
+                    CellLayout cellLayout = mLauncher.getCellLayout(info.container,
+                            info.screenId);
+                    finalItem = info.contents.remove(0);
+                    newIcon = mLauncher.createShortcut(cellLayout, finalItem);
+                    mLauncher.getModelWriter().addOrMoveItemInDatabase(finalItem,
+                            info.container, info.screenId, info.cellX, info.cellY);
+                }
 
-                    // Remove the folder
-                    mLauncher.removeItem(folder.mFolderIcon, info, true /* deleteFromDb */);
-                    if (folder.mFolderIcon instanceof DropTarget) {
-                        folder.mDragController.removeDropTarget((DropTarget) folder.mFolderIcon);
-                    }
+                // Remove the folder
+                mLauncher.removeItem(folder.mFolderIcon, info, true /* deleteFromDb */);
+                if (folder.mFolderIcon instanceof DropTarget) {
+                    folder.mDragController.removeDropTarget((DropTarget) folder.mFolderIcon);
+                }
 
-                    if (newIcon != null) {
-                        // We add the child after removing the folder to prevent both from existing
-                        // at the same time in the CellLayout.  We need to add the new item with
-                        // addInScreenFromBind() to ensure that hotseat items are placed correctly.
-                        mLauncher.getWorkspace().addInScreenFromBind(newIcon, info);
+                if (newIcon != null) {
+                    // We add the child after removing the folder to prevent both from existing
+                    // at the same time in the CellLayout.  We need to add the new item with
+                    // addInScreenFromBind() to ensure that hotseat items are placed correctly.
+                    mLauncher.getWorkspace().addInScreenFromBind(newIcon, info);
 
-                        // Focus the newly created child
-                        newIcon.requestFocus();
-                    }
-                    if (finalItem != null) {
-                        StatsLogger logger = mLauncher.getStatsLogManager().logger()
-                                .withItemInfo(finalItem);
-                        ((Optional<InstanceId>) folder.mDragController.getLogInstanceId())
-                                .map(logger::withInstanceId)
-                                .orElse(logger)
-                                .log(LAUNCHER_FOLDER_CONVERTED_TO_ICON);
-                    }
+                    // Focus the newly created child
+                    newIcon.requestFocus();
+                }
+                if (finalItem != null) {
+                    StatsLogger logger = mLauncher.getStatsLogManager().logger()
+                            .withItemInfo(finalItem);
+                    ((Optional<InstanceId>) folder.mDragController.getLogInstanceId())
+                            .map(logger::withInstanceId)
+                            .orElse(logger)
+                            .log(LAUNCHER_FOLDER_CONVERTED_TO_ICON);
                 }
             }
         };

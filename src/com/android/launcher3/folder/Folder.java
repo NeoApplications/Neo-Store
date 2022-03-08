@@ -694,6 +694,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         updateTextViewFocus();
 
         mIsOpen = true;
+        if (mFolderIcon.isCustomIcon) {
+            mFolderIcon.mFolderName.setIconVisible(false);
+        }
 
         BaseDragLayer dragLayer = mActivityContext.getDragLayer();
         // Just verify that the folder hasn't already been added to the DragLayer.
@@ -790,7 +793,9 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     @Override
     protected void handleClose(boolean animate) {
         mIsOpen = false;
-
+        if (mFolderIcon.isCustomIcon) {
+            mFolderIcon.mFolderName.setIconVisible(true);
+        }
         if (!animate && mCurrentAnimator != null && mCurrentAnimator.isRunning()) {
             mCurrentAnimator.cancel();
         }
@@ -1461,6 +1466,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     @Override
     public void onItemsChanged(boolean animate) {
         updateTextViewFocus();
+        invalidate();
+        requestLayout();
     }
 
     @Override
@@ -1679,6 +1686,10 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     @Override
     public boolean canInterceptEventsInSystemGestureRegion() {
         return true;
+    }
+
+    public String getDefaultFolderName() {
+        return mFolderName.getText().toString();
     }
 
     /**

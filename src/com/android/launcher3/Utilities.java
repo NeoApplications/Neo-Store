@@ -90,6 +90,7 @@ import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.FastBitmapDrawable;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.icons.ShortcutCachingLogic;
+import com.android.launcher3.model.data.FolderInfo;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.pm.ShortcutConfigActivityInfo;
@@ -160,6 +161,7 @@ public final class Utilities {
     public static final boolean IS_DEBUG_DEVICE =
             Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
                     Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
+
     /**
      * Returns true if theme is dark.
      */
@@ -678,7 +680,8 @@ public final class Utilities {
     public static void unregisterReceiverSafely(Context context, BroadcastReceiver receiver) {
         try {
             context.unregisterReceiver(receiver);
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     /**
@@ -704,8 +707,8 @@ public final class Utilities {
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
             return activityInfo == null ? null : LauncherAppState.getInstance(launcher)
-                    .getIconProvider().getIcon(
-                            activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);
+                    .getIconProvider()
+                    .getIcon(activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =
@@ -724,6 +727,10 @@ public final class Utilities {
                         appState.getInvariantDeviceProfile().fillResIconDpi);
             }
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
+            FolderInfo folderInfo = (FolderInfo) info;
+            if (folderInfo.isCoverMode()) {
+                return getFullDrawable(launcher, folderInfo.getCoverInfo(), width, height, outObj);
+            }
             FolderAdaptiveIcon icon = FolderAdaptiveIcon.createFolderAdaptiveIcon(
                     launcher, info.id, new Point(width, height));
             if (icon == null) {
@@ -762,6 +769,8 @@ public final class Utilities {
             return new InsetDrawable(new FastBitmapDrawable(badge),
                     insetFraction, insetFraction, 0, 0);
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_FOLDER) {
+            FolderInfo folderInfo = (FolderInfo) info;
+            if (folderInfo.isCoverMode()) return getBadge(launcher, folderInfo.getCoverInfo(), obj);
             return ((FolderAdaptiveIcon) obj).getBadge();
         } else {
             return launcher.getPackageManager()
