@@ -90,7 +90,7 @@ class FlowerpotTabs(manager: AppGroupsManager) :
                 return context.resources.getQuantityString(R.plurals.tab_apps_count, size, size)
             }
 
-        public fun getMatches(): Set<ComponentKey> {
+        fun getMatches(): Set<ComponentKey> {
             pot.ensureLoaded()
             return pot.apps.matches
         }
