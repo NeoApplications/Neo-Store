@@ -22,7 +22,6 @@ import android.content.ContextWrapper
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -88,6 +87,7 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
+        mOverlayManager = OverlayCallbackImpl(this)
         showFolderNotificationCount = prefs.folderBadgeCount
         if (prefs.customWindowCorner) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
@@ -97,6 +97,7 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         /*CREATE DB TO HANDLE APPS COUNT*/
         val db = DbHelper(this)
         db.close()
+
     }
 
     override fun getSupportedShortcuts(): Stream<SystemShortcut.Factory<*>> {
@@ -148,25 +149,13 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     override fun onThemeChanged() = recreate()
 
-
     fun shouldRecreate() = !sRestart
 
     override fun getDefaultOverlay(): LauncherOverlayManager {
-        return OverlayCallbackImpl(this)
-    }
-
-    private val customLayoutInflater by lazy {
-        OmegaLayoutInflater(
-            super.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater,
-            this
-        )
-    }
-
-    override fun getSystemService(name: String): Any? {
-        if (name == Context.LAYOUT_INFLATER_SERVICE) {
-            return customLayoutInflater
+        if (mOverlayManager == null) {
+            mOverlayManager = OverlayCallbackImpl(this)
         }
-        return super.getSystemService(name)
+        return mOverlayManager
     }
 
     inline fun prepareDummyView(view: View, crossinline callback: (View) -> Unit) {

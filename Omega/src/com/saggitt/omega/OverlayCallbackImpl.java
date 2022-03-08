@@ -81,7 +81,6 @@ public class OverlayCallbackImpl
     @Override
     public void onDetachedFromWindow() {
         mClient.onDetachedFromWindow();
-
     }
 
     @Override
