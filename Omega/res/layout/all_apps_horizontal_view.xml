@@ -21,21 +21,8 @@
     android:id="@+id/horizontal_all_apps_view_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/all_apps_search_header_container"
+    android:layout_below="@id/search_container_all_apps"
+    android:layout_gravity="center_horizontal|top"
     android:layout_marginTop="@dimen/all_apps_horizontal_margin_top"
-    launcher:pageIndicator="@+id/tabs">
-
-    <com.saggitt.omega.allapps.HorizontalViewPagerLayout
-        android:id="@+id/all_apps_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/all_apps_pager_bottom" />
-
-    <com.android.launcher3.pageindicators.PageIndicatorDots
-        android:id="@+id/all_apps_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/indicator_height"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/all_apps_pager_indicator_bottom" />
-
-</com.saggitt.omega.allapps.HorizontalAllAppsView>
+    android:layout_marginBottom="@dimen/all_apps_pager_bottom"
+    launcher:pageIndicator="@+id/tabs" />

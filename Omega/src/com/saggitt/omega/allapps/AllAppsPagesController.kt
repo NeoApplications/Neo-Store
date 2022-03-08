@@ -18,27 +18,19 @@
 
 package com.saggitt.omega.allapps
 
-import android.view.View
-import android.view.ViewGroup
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.AllAppsPagedView
 import com.android.launcher3.allapps.AllAppsStore
-import com.saggitt.omega.util.forEachChildIndexed
 
-typealias AdapterHolders = Array<AllAppsContainerView.AdapterHolder>
-
-class AllAppsTabsController(val tabs: AllAppsTabs, private val container: AllAppsContainerView) {
-
-    val tabsCount get() = tabs.count
-    val shouldShowTabs get() = tabsCount > 1
-
+class AllAppsPagesController(val pages: AllAppsPages, private val container: AllAppsContainerView) {
     private var holders = mutableListOf<AllAppsContainerView.AdapterHolder>()
+    val pagesCount get() = pages.count
 
     private var horizontalPadding = 0
     private var bottomPadding = 0
 
     fun createHolders(): AdapterHolders {
-        while (holders.size < tabsCount) {
+        while (holders.size < pagesCount) {
             holders.add(container.createHolder(false).apply {
                 padding.bottom = bottomPadding
                 padding.left = horizontalPadding
@@ -46,10 +38,6 @@ class AllAppsTabsController(val tabs: AllAppsTabs, private val container: AllApp
             })
         }
         return holders.toTypedArray()
-    }
-
-    fun reloadTabs() {
-        tabs.reloadTabs()
     }
 
     fun registerIconContainers(allAppsStore: AllAppsStore) {
@@ -61,20 +49,9 @@ class AllAppsTabsController(val tabs: AllAppsTabs, private val container: AllApp
     }
 
     fun setup(pagedView: AllAppsPagedView) {
-        tabs.forEachIndexed { index, tab ->
-            holders[index].setIsWork(tab.isWork)
-            holders[index].setup(pagedView.getChildAt(index), tab.matcher)
-        }
-    }
-
-    fun setup(view: View) {
-        holders.forEach { it.recyclerView = null }
-        holders[0].setup(view, null)
-    }
-
-    fun bindButtons(buttonsContainer: ViewGroup, pagedView: AllAppsPagedView) {
-        buttonsContainer.forEachChildIndexed { view, i ->
-            view.setOnClickListener { pagedView.snapToPage(i) }
+        pages.forEachIndexed { index, page ->
+            holders[index].setIsWork(page.isWork)
+            holders[index].setup(pagedView.getChildAt(index), page.matcher)
         }
     }
 

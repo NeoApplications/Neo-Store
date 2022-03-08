@@ -73,17 +73,14 @@ import com.android.launcher3.views.RecyclerViewFastScroller;
 import com.android.launcher3.views.ScrimView;
 import com.android.launcher3.views.SpringRelativeLayout;
 import com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip;
-import com.saggitt.omega.allapps.AllAppViewPagerAdapter;
+import com.saggitt.omega.allapps.AllAppsPages;
+import com.saggitt.omega.allapps.AllAppsPagesController;
 import com.saggitt.omega.allapps.AllAppsTabItem;
 import com.saggitt.omega.allapps.AllAppsTabs;
 import com.saggitt.omega.allapps.AllAppsTabsController;
-import com.saggitt.omega.allapps.HorizontalAllAppsView;
 import com.saggitt.omega.preferences.OmegaPreferences;
 import com.saggitt.omega.util.Config;
 import com.saggitt.omega.util.OmegaUtilsKt;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * The all apps view container.
@@ -144,9 +141,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private int mHeaderColor;
     private int mTabsProtectionAlpha;
     private AllAppsTabsController mTabsController;
+    private AllAppsPagesController mPagesController;
     private OmegaPreferences prefs;
-    public AllAppsPagedView mHorizontalViewPager;
     public int mCurrentPage;
+    public AllAppsPagedView mHorizontalViewPager;
 
     public AllAppsContainerView(Context context) {
         this(context, null);
@@ -176,6 +174,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         AllAppsTabs allAppsTabs = new AllAppsTabs(context);
         mTabsController = new AllAppsTabsController(allAppsTabs, this);
 
+        AllAppsPages allAppsPages = new AllAppsPages(context);
+        mPagesController = new AllAppsPagesController(allAppsPages, this);
         createHolders();
 
         mWorkAdapterProvider = new WorkAdapterProvider(mLauncher, () -> {
@@ -239,7 +239,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private void createHolders() {
-        mAH = mTabsController.createHolders();
+        if (isPagedView()) {
+            mAH = mPagesController.createHolders();
+        } else {
+            mAH = mTabsController.createHolders();
+        }
     }
 
     public AllAppsStore getAppsStore() {
@@ -353,14 +357,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return false;
     }
 
-
-    public View getCurrentView() {
-        if (!isPagedView()) {
-            return getActiveRecyclerView();
-        } else{
-            return getActiveHorizontalView();}
-    }
-
     public String getDescription() {
         @StringRes int descriptionRes;
         if (mUsingTabs) {
@@ -376,20 +372,15 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         return getContext().getString(descriptionRes);
     }
 
-    public HorizontalAllAppsView getActiveHorizontalView() {
-        if (mHorizontalViewPager.getNextPage() == 0) {
-            return mAH[0].horizontalAllAppView;
-        }
-        return mAH[1].horizontalAllAppView;
-    }
-
     public AllAppsRecyclerView getActiveRecyclerView() {
-        if (!mUsingTabs || mViewPager.getNextPage() == 0) {
-               return mAH[AdapterHolder.MAIN].recyclerView;
-           } else {
-               return mAH[AdapterHolder.WORK].recyclerView;
-           }
-
+        if (mViewPager != null) {
+            if (!mUsingTabs || mViewPager.getNextPage() == 0) {
+                return mAH[AdapterHolder.MAIN].recyclerView;
+            } else {
+                return mAH[AdapterHolder.WORK].recyclerView;
+            }
+        }
+        return mAH[AdapterHolder.MAIN].recyclerView;
     }
 
     public LayoutInflater getLayoutInflater() {
@@ -461,6 +452,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 + grid.cellLayoutPaddingLeftRightPx;
 
         mTabsController.setPadding(leftRightPadding, insets.bottom);
+        mPagesController.setPadding(leftRightPadding, insets.bottom);
 
         ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) getLayoutParams();
         mlp.leftMargin = insets.left;
@@ -512,19 +504,21 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
 
         int currentTab = mViewPager != null ? mViewPager.getNextPage() : 0;
-        mCurrentPage = mHorizontalViewPager != null ? mHorizontalViewPager.getNextPage() : 0;
 
         mTabsController.unregisterIconContainers(mAllAppsStore);
+        mPagesController.unregisterIconContainers(mAllAppsStore);
 
         createHolders();
         replaceRVContainer(showTabs);
         mUsingTabs = showTabs;
 
-        if (mTabsController.getTabs().getHasWorkApps())
+        if (mTabsController.getTabs().getHasWorkApps()) {
             setupWorkToggle();
-        if(isPagedView()){
-            mTabsController.setup(mHorizontalViewPager, mHorizontalViewPager.getPageCount());
-        } else{
+        }
+
+        if (isPagedView()) {
+            mPagesController.setup(mHorizontalViewPager);
+        } else {
             if (mUsingTabs) {
                 mTabsController.setup(mViewPager);
                 AllAppsTabItem tabStrip = findViewById(R.id.tabs);
@@ -533,9 +527,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     tabStrip.setScroll(0, 1);
                 }
                 onTabChanged(currentTab);
-                mViewPager.setVisibility(View.VISIBLE);
-            } else{
-                mTabsController.setup((View)findViewById(R.id.apps_list_view));
+            } else {
+                mTabsController.setup((View) findViewById(R.id.apps_list_view));
                 AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
                 if (recyclerView != null) {
                     OmegaUtilsKt.runOnAttached(recyclerView, () ->
@@ -543,12 +536,18 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 }
             }
         }
-
         setupHeader();
 
+        mPagesController.registerIconContainers(mAllAppsStore);
         mTabsController.registerIconContainers(mAllAppsStore);
-        if (mViewPager != null) {
-            mViewPager.snapToPage(Math.min(mTabsController.getTabsCount() - 1, currentTab), 0);
+        if (isPagedView()) {
+            if (mHorizontalViewPager != null) {
+                mHorizontalViewPager.snapToPage(Math.min(mPagesController.getPagesCount() - 1, currentTab), 0);
+            }
+        } else {
+            if (mViewPager != null) {
+                mViewPager.snapToPage(Math.min(mTabsController.getTabsCount() - 1, currentTab), 0);
+            }
         }
     }
 
@@ -588,14 +587,14 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             }
         }
 
-        View oldView;
+        View oldView = getRecyclerViewContainer();
         int layout;
-        if(isPagedView()){
-            oldView = getHorizontalViewContainer();
-            layout = R.layout.all_apps_horizontal_view_layout;
-        }else{
-            oldView = getRecyclerViewContainer();
-            layout = showTabs ? R.layout.all_apps_tabs : R.layout.all_apps_rv_layout;
+        if (isPagedView()) {
+            layout = R.layout.all_apps_horizontal_view;
+        } else if (showTabs) {
+            layout = R.layout.all_apps_tabs;
+        } else {
+            layout = R.layout.all_apps_rv_layout;
         }
 
         int index = indexOfChild(oldView);
@@ -606,9 +605,12 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             Log.d(TestProtocol.WORK_PROFILE_REMOVED, "should show tabs:" + showTabs,
                     new Exception());
         }
-        if(isPagedView()){
+        if(isPagedView()) {
             mHorizontalViewPager = (AllAppsPagedView) newView;
+            mHorizontalViewPager.addTabs(mPagesController.getPagesCount());
             mHorizontalViewPager.initParentViews(this);
+            mHorizontalViewPager.getPageIndicator().setOnActivePageChangedListener(this);
+            removeWorkToggle();
         }else{
             if (showTabs) {
                 mViewPager = (AllAppsPagedView) newView;
@@ -618,18 +620,19 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 //setupWorkToggle();
             } else {
                 mViewPager = null;
+                mHorizontalViewPager = null;
                 removeWorkToggle();
             }
         }
     }
 
-    public View getHorizontalViewContainer() {
-        AllAppsPagedView allAppsPagedView = mHorizontalViewPager;
-        return allAppsPagedView != null ? allAppsPagedView : findViewById(R.id.horizontal_all_apps_view_container);
-    }
-
     public View getRecyclerViewContainer() {
-        return mViewPager != null ? mViewPager : findViewById(R.id.apps_list_view);
+        if (mViewPager != null)
+            return mViewPager;
+        else if (mHorizontalViewPager != null)
+            return mHorizontalViewPager;
+        else
+            return findViewById(R.id.apps_list_view);
     }
 
     public void onTabChanged(int pos) {
@@ -641,7 +644,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mTabsController.bindButtons(findViewById(R.id.tabs), mViewPager);
         }
         reset(true, true);
-
     }
 
     @Override
@@ -691,8 +693,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     public View getContentView() {
-        AllAppsPagedView allAppsPagedView = mViewPager;
-        return allAppsPagedView == null ? getCurrentView() : allAppsPagedView;
+        if (isPagedView())
+            return mHorizontalViewPager;
+        else
+            return mViewPager;
     }
 
     public int getCurrentPage() {
@@ -847,8 +851,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         private View mOverlay;
 
         boolean mWorkDisabled;
-        public HorizontalAllAppsView horizontalAllAppView;
-        public AllAppViewPagerAdapter horizontalAdapter;
 
         public AdapterHolder(boolean isWork) {
             mIsWork = isWork;
@@ -862,40 +864,29 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             adapter = new AllAppsGridAdapter(mLauncher, getLayoutInflater(), appsList, adapterProviders);
             appsList.setAdapter(adapter);
             layoutManager = adapter.getLayoutManager();
-            horizontalAdapter = new AllAppViewPagerAdapter(mLauncher);
-            appsList.horizontalAdapter = horizontalAdapter;
         }
 
         public void setup(@NonNull View rv, @Nullable ItemInfoMatcher matcher) {
             mInfoMatcher = matcher;
-            appsList.updateItemFilter(matcher);
-            if(isPagedView()){
-                horizontalAllAppView = (HorizontalAllAppsView) rv;
-                horizontalAllAppView.setData(appsList, horizontalAdapter);
-                horizontalAllAppView.setVisibility(View.VISIBLE);
+            appsList.updateItemFilter(mInfoMatcher);
+            recyclerView = (AllAppsRecyclerView) rv;
+            recyclerView.setEdgeEffectFactory(createEdgeEffectFactory());
 
-            }else{
-                recyclerView = (AllAppsRecyclerView) rv;
-                recyclerView.setEdgeEffectFactory(createEdgeEffectFactory());
-
-                recyclerView.setApps(appsList, mUsingTabs);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
-                recyclerView.addOnScrollListener(mScrollListener);
-                recyclerView.setHasFixedSize(true);
-                // No animations will occur when changes occur to the items in this RecyclerView.
-                recyclerView.setItemAnimator(null);
-                FocusedItemDecorator focusedItemDecorator = new FocusedItemDecorator(recyclerView);
-                recyclerView.addItemDecoration(focusedItemDecorator);
-                adapter.setIconFocusListener(focusedItemDecorator.getFocusListener());
-                applyVerticalFadingEdgeEnabled(verticalFadingEdge);
-            }
+            recyclerView.setApps(appsList);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(mScrollListener);
+            recyclerView.setHasFixedSize(true);
+            // No animations will occur when changes occur to the items in this RecyclerView.
+            recyclerView.setItemAnimator(null);
+            FocusedItemDecorator focusedItemDecorator = new FocusedItemDecorator(recyclerView);
+            recyclerView.addItemDecoration(focusedItemDecorator);
+            adapter.setIconFocusListener(focusedItemDecorator.getFocusListener());
+            applyVerticalFadingEdgeEnabled(verticalFadingEdge);
 
             applyPadding();
-            if(!isPagedView()){
-                if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
-                    recyclerView.addItemDecoration(mSearchAdapterProvider.getDecorator());
-                }
+            if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
+                recyclerView.addItemDecoration(mSearchAdapterProvider.getDecorator());
             }
         }
 

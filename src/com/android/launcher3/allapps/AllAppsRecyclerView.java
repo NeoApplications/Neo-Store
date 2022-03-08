@@ -93,14 +93,14 @@ public class AllAppsRecyclerView extends BaseRecyclerView {
         Resources res = getResources();
         mEmptySearchBackgroundTopOffset = res.getDimensionPixelSize(
                 R.dimen.all_apps_empty_search_bg_top_offset);
-        mNumAppsPerRow = LauncherAppState.getIDP(context).numColumns;
+        mNumAppsPerRow = LauncherAppState.getIDP(context).numAllAppsColumns;
         //mFastScrollHelper = new AllAppsFastScrollHelper(this);
     }
 
     /**
      * Sets the list of apps in this view, used to determine the fastscroll position.
      */
-    public void setApps(AlphabeticalAppsList apps, boolean usingTabs) {
+    public void setApps(AlphabeticalAppsList apps) {
         mApps = apps;
         mFastScrollHelper = new AllAppsFastScrollHelper(this, apps);
     }

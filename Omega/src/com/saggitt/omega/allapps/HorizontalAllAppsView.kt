@@ -20,46 +20,9 @@ package com.saggitt.omega.allapps
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.LayoutDirection
-import android.view.LayoutInflater
-import com.android.launcher3.R
 import com.android.launcher3.allapps.AllAppsPagedView
-import com.android.launcher3.allapps.AlphabeticalAppsList
-import com.android.launcher3.pageindicators.PageIndicatorDots
 
 class HorizontalAllAppsView(context: Context, attrs: AttributeSet? = null) :
     AllAppsPagedView(context, attrs) {
-
-    lateinit var mPagerAdapter: AllAppViewPagerAdapter
-    private var mViewPager: AllAppsPagedView
-    private var mViewPagerLayout: HorizontalViewPagerLayout = findViewById(R.id.all_apps_pager)
-    var mIndicator: PageIndicatorDots
-
-    init {
-        mViewPager = mViewPagerLayout.getViewPager()
-        mViewPager.overScrollMode = 0
-        mIndicator = findViewById(R.id.all_apps_indicator)
-    }
-
-    fun getViewPager(): AllAppsPagedView {
-        return mViewPager
-    }
-
-    fun isRtl(): Boolean {
-        return layoutDirection == LayoutDirection.RTL
-    }
-
-    fun setData(
-        alphabeticalAppsList: AlphabeticalAppsList, allAppViewPagerAdapter: AllAppViewPagerAdapter?
-    ) {
-        mPagerAdapter = allAppViewPagerAdapter!!
-        mPagerAdapter.setIndicator(mIndicator)
-        mPagerAdapter.setData(alphabeticalAppsList)
-        mIndicator.setMarkersCount(mPagerAdapter.getCount())
-    }
-
-    fun swipeToPage(page: Int) {
-        mViewPager.snapToPage(page)
-    }
 
 }
