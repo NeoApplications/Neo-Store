@@ -429,4 +429,8 @@
     <string name="label_search">Ara</string>
     <string name="folder_rows">Klasör Satırları</string>
     <string name="folder_columns">Klasör Sütunları</string>
+    <string name="backup_create_new">Yeni yedekleme oluştur</string>
+    <string name="backup_delete_failed">Bir şeyler yanlış gitti</string>
+    <string name="permission_denied">Okuma izni reddedildi!</string>
+    <string name="backup_name">Yedekleme adı</string>
 </resources>
