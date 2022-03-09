@@ -1,7 +1,6 @@
 package com.looker.droidify.ui.compose.utils
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -34,8 +32,9 @@ fun ExpandableCard(
     mainContent: @Composable () -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
-    val cardElevation by animateDpAsState(targetValue = if (expanded) 12.dp else 0.dp)
-    val background by animateColorAsState(targetValue = backgroundColor)
+    val background by animateColorAsState(
+        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceVariant else backgroundColor
+    )
 
     Surface(
         modifier = Modifier
@@ -45,7 +44,6 @@ fun ExpandableCard(
                 onClick = onClick,
                 onLongClick = { expanded = !expanded }
             ),
-        tonalElevation = cardElevation,
         color = background
     ) {
         Box(modifier = modifier, contentAlignment = Alignment.CenterStart) {
