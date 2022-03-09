@@ -437,4 +437,8 @@
     <string name="label_search">ابحث</string>
     <string name="folder_columns">أعمدة المجلد</string>
     <string name="folder_rows">صفوف المجلد</string>
+    <string name="backup_create_new">إنشاء نسخة احتياطية جديدة</string>
+    <string name="backup_delete_failed">حدث خطأ ما</string>
+    <string name="backup_name">اسم النسخة الاحتياطية</string>
+    <string name="permission_denied">تم رفض إذن القراءة!</string>
 </resources>
