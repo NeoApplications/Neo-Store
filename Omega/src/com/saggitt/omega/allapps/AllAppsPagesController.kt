@@ -51,7 +51,7 @@ class AllAppsPagesController(val pages: AllAppsPages, private val container: All
     fun setup(pagedView: AllAppsPagedView) {
         pages.forEachIndexed { index, page ->
             holders[index].setIsWork(page.isWork)
-            holders[index].setup(pagedView.getChildAt(index), page.matcher)
+            holders[index].setup(pagedView.getChildAt(index), page.filter.matcher)
         }
     }
 

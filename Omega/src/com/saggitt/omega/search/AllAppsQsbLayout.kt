@@ -36,6 +36,7 @@ import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
 import com.saggitt.omega.search.providers.AppsSearchProvider
+import com.saggitt.omega.util.Config
 import kotlin.math.roundToInt
 
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
@@ -170,7 +171,8 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val currentScrollY = (recyclerView as BaseRecyclerView).currentScrollY
                 val elevationScale = Utilities.boundToRange(currentScrollY / 255f, 0f, 1f)
-                mFallback?.elevation = initialElevation!! + elevationScale * initialElevation
+                if (prefs.drawerLayout != Config.DRAWER_PAGED)
+                    mFallback?.elevation = initialElevation!! + elevationScale * initialElevation
             }
         })
     }

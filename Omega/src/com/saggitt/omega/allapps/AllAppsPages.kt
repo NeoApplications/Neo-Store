@@ -20,13 +20,12 @@ package com.saggitt.omega.allapps
 
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
-import android.util.Log
 import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
-import com.android.launcher3.util.ItemInfoMatcher
+import com.saggitt.omega.groups.CustomFilter
 import com.saggitt.omega.util.Config
-import java.util.*
 
 class AllAppsPages(
     val context: Context
@@ -36,48 +35,41 @@ class AllAppsPages(
     private val idp = LauncherAppState.getIDP(context)
     private var mNumRows = idp.numRows // TODO change to allApps Row instead of desktop row
     private var mNumColumns = idp.numAllAppsColumns
-    private var appList = listOf<LauncherActivityInfo>()
-    private var componentList = listOf<ComponentKey>()
+    private var activityInfoList = listOf<LauncherActivityInfo>()
+    private var appList = ArrayList<AppInfo>()
     private val config = Config(context)
-    private val addedApps = mutableSetOf<ComponentKey>()
 
     init {
-        appList = (config.getAppsList(AppFilter()) as ArrayList<LauncherActivityInfo>)
-            .sortedBy { it.label.toString().lowercase(Locale.getDefault()) }
+        activityInfoList = config.getAppsList(AppFilter()).sortedBy { it.label.toString() }
 
-        componentList = appList.map { ComponentKey(it.componentName, it.user) }
+        activityInfoList.map {
+            appList.add(AppInfo(it, it.user, false))
+        }
         reloadPages()
     }
 
     private fun reloadPages() {
         pages.clear()
         val appsPerPage = mNumColumns * mNumRows
-        var pageCount =
-            (componentList.size / appsPerPage) + if (componentList.size % appsPerPage <= 0) 0 else 1
+        var pageCount = (appList.size / appsPerPage) + if (appList.size % appsPerPage <= 0) 0 else 1
         if (pageCount == 0) {
             pageCount++
         }
 
         var initialApp = 0 * appsPerPage
-        var endApp = initialApp + appsPerPage - 1
+        var endApp = initialApp + appsPerPage
         for (page in 0 until pageCount) {
-            if (endApp > componentList.lastIndex) {
-                endApp = componentList.lastIndex
+            if (endApp > appList.lastIndex) {
+                endApp = appList.lastIndex + 1
             }
 
-            addedApps.clear()
+            val addedApps = HashSet<ComponentKey>()
             for (appIndex in initialApp until endApp) {
-                addedApps.add(componentList[appIndex])
+                addedApps.add(appList[appIndex].toComponentKey())
             }
 
-            pages.add(Page(false, createMatcher(addedApps)))
-            Log.d("AllAppsPages", "Pagina Numero " + page)
-            addedApps.map {
-                Log.d("AllAppsPages", "Application " + it.componentName)
-            }
-            Log.d("AllAppsPages", "\n\n\n")
-            addedApps.clear()
-            initialApp = ((page + 1) * appsPerPage) - 1
+            pages.add(Page(false, CustomFilter(context, addedApps)))
+            initialApp = ((page + 1) * appsPerPage)
             endApp = initialApp + appsPerPage
         }
         count = pages.size
@@ -89,20 +81,8 @@ class AllAppsPages(
 
     operator fun get(index: Int) = pages[index]
 
-    private fun createMatcher(
-        components: Set<ComponentKey>
-    ): ItemInfoMatcher {
-        return ItemInfoMatcher { info, cn ->
-            Log.d(
-                "AllAppsPages",
-                "Matcher " + !components.contains(ComponentKey(info.targetComponent, info.user))
-            )
-            !components.contains(ComponentKey(info.targetComponent, info.user))
-        }
-    }
-
     class Page(
         val isWork: Boolean = false,
-        val matcher: ItemInfoMatcher
+        val filter: CustomFilter
     )
 }

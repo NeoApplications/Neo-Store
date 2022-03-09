@@ -63,7 +63,7 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
         mDividerPaint.color = Themes.getAttrColor(context, android.R.attr.colorControlHighlight)
         mDividerPaint.strokeWidth = resources.getDimensionPixelSize(R.dimen.all_apps_divider_height).toFloat()
 
-        mIsRtl = Utilities.isRtl(resources);
+        mIsRtl = Utilities.isRtl(resources)
     }
 
     override fun updateTabTextColor(pos: Int) {

@@ -23,6 +23,5 @@
     android:layout_height="match_parent"
     android:layout_below="@id/search_container_all_apps"
     android:layout_gravity="center_horizontal|top"
-    android:layout_marginTop="@dimen/all_apps_horizontal_margin_top"
     android:layout_marginBottom="@dimen/all_apps_pager_bottom"
     launcher:pageIndicator="@+id/tabs" />
