@@ -426,4 +426,8 @@
     <string name="label_search">搜索</string>
     <string name="folder_columns">文件夹列</string>
     <string name="folder_rows">文件夹行</string>
+    <string name="backup_name">备份名称</string>
+    <string name="permission_denied">读取权限被拒！</string>
+    <string name="backup_create_new">创建新备份</string>
+    <string name="backup_delete_failed">出错了</string>
 </resources>
