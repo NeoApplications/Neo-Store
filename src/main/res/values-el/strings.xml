@@ -42,13 +42,13 @@
     <string name="http_error_DESC">Μη έγκυρη απόκριση διακομιστή.</string>
     <string name="http_proxy">HTTP διακομιστής μεσολάβησης</string>
     <string name="ignore_all_updates">Αγνόηση όλων των ενημερώσεων</string>
-    <string name="ignore_this_update">Αγνόηση αυτής της ενημέρωσης</string>
-    <string name="incompatible_api_max_DESC_FORMAT">Η μέγιστη έκδοση API είναι %d.</string>
+    <string name="ignore_this_update">Αγνόηση αυτής της έκδοσης</string>
+    <string name="incompatible_api_max_DESC_FORMAT">Η μεγίστη έκδοση API είναι %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">Η ελάχιστη έκδοση API είναι %d.</string>
     <string name="incompatible_features_DESC">Missing features.</string>
     <string name="incompatible_version">Ασύμβατη έκδοση</string>
     <string name="incompatible_versions">Ασύμβατες εκδόσεις</string>
-    <string name="incompatible_versions_summary">Εμφάνιση εκδόσεων εφαρμογών ασύμβατων με τη συσκευή</string>
+    <string name="incompatible_versions_summary">Εμφάνιση των ασύμβατων εκδόσεων με τη συσκευή</string>
     <string name="incompatible_with_FORMAT">Ασύμβατο με %s</string>
     <string name="install">Εγκατάσταση</string>
     <string name="install_types">Τύποι Εγκατάστασης</string>
@@ -70,17 +70,17 @@
     <string name="name">Όνομα</string>
     <string name="network_error_DESC">Σφάλμα δικτύου.</string>
     <string name="never">Ποτέ</string>
-    <string name="new_updates_available">Νέες διαθέσιμες ενημερώσεις</string>
+    <string name="new_updates_available">Νέες διαθέσιμες εκδόσεις</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d νέα ενημέρωση.</item>
-        <item quantity="other">%d νέες ενημερώσεις.</item>
+        <item quantity="one">%d εφαρμογή έχει νέα έκδοση.</item>
+        <item quantity="other">%d εφαρμογές με νέες εκδόσεις.</item>
     </plurals>
     <string name="no_applications_available">Δεν υπάρχουν διαθέσιμες εφαρμογές</string>
     <string name="no_applications_installed">Δεν υπάρχουν εγκατεστημένες εφαρμογές</string>
-    <string name="no_description_available_DESC">Δεν υπάρχει διαθέσιμη περιγραφή.</string>
-    <string name="no_matching_applications_found">Δε βρέθηκαν αντίστοιχες εφαρμογές</string>
+    <string name="no_description_available_DESC">Δεν υπάρχει περιγραφή.</string>
+    <string name="no_matching_applications_found">Δεν ήταν δυνατή η εύρεση τέτοιων εφαρμογών</string>
     <string name="no_proxy">Κανένας διακομιστής μεσολάβησης</string>
-    <string name="notify_about_updates">Ειδοποίηση για ενημερώσεις</string>
+    <string name="notify_about_updates">Ειδοποίηση για νέες εκδόσεις εφαρμογών</string>
     <string name="notify_about_updates_summary">Εμφάνιση ειδοποίησης όταν υπάρχουν διαθέσιμες ενημερώσεις</string>
     <string name="number_of_applications">Αριθμός εφαρμογών</string>
     <string name="ok">Εντάξει</string>
@@ -167,7 +167,7 @@
     <string name="tracks_or_reports_your_activity">Καταγράφει ή αναφέρει τη δραστηριότητά σας</string>
     <string name="validation_index_error_DESC">Αδυναμία επαλήθευσης δείκτη.</string>
     <string name="root_permission_description">Επιτρέψτε την άδεια root για σιωπηλή εγκατάσταση</string>
-    <string name="amoled">Amoled</string>
+    <string name="amoled">Μαύρο</string>
     <string name="prefs_personalization">Εξατομίκευση</string>
     <string name="prefs_language_title">Γλώσσα</string>
 </resources>
