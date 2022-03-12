@@ -34,7 +34,7 @@ import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.theme.ThemeManager
-import com.wind.hiddenapi.bypass.HiddenApiBypass
+import com.wind.storm.easybypass.EasyBypass
 import java.io.File
 
 class OmegaApp : Application() {
@@ -56,7 +56,7 @@ class OmegaApp : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HiddenApiBypass.startBypass();
+            EasyBypass.bypassHiddenApiRestriction()
         }
     }
 
