@@ -166,13 +166,15 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     override fun initializeSearch(allAppsContainerView: AllAppsContainerView) {
         mAppsView = allAppsContainerView
         mAppsView.addElevationController(object : RecyclerView.OnScrollListener() {
-            val initialElevation = mFallback?.elevation
-
+            var initialElevation = 1f
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (mFallback != null) {
+                    initialElevation = mFallback!!.elevation
+                }
                 val currentScrollY = (recyclerView as BaseRecyclerView).currentScrollY
                 val elevationScale = Utilities.boundToRange(currentScrollY / 255f, 0f, 1f)
                 if (prefs.drawerLayout != Config.DRAWER_PAGED)
-                    mFallback?.elevation = initialElevation!! + elevationScale * initialElevation
+                    mFallback?.elevation = initialElevation + elevationScale * initialElevation
             }
         })
     }
