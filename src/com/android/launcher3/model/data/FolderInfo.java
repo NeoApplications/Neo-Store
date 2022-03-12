@@ -167,6 +167,13 @@ public class FolderInfo extends ItemInfo {
         removeAll(Collections.singletonList(item), animate);
     }
 
+    public void setTitle(CharSequence title) {
+        this.title = title;
+        for (int i = 0; i < mListeners.size(); i++) {
+            mListeners.get(i).onTitleChanged(title);
+        }
+    }
+
     /**
      * Remove all matching app or shortcut. Does not change the DB.
      */
@@ -205,6 +212,8 @@ public class FolderInfo extends ItemInfo {
         void onRemove(List<WorkspaceItemInfo> item);
 
         void onItemsChanged(boolean animate);
+
+        void onTitleChanged(CharSequence title);
 
         default void onIconChanged() {
             // do nothing
@@ -254,6 +263,9 @@ public class FolderInfo extends ItemInfo {
             return title;
         } else if (isCoverMode()) {
             WorkspaceItemInfo info = getCoverInfo();
+            if (info.customTitle != null) {
+                return info.customTitle;
+            }
             return info.title;
         } else {
             return folder.getDefaultFolderName();

@@ -272,8 +272,11 @@ public class FloatingIconView extends FrameLayout implements
             // Force the progress bar to display.
             drawable = btvIcon;
         } else {
-            int width = (int) pos.width();
-            int height = (int) pos.height();
+            boolean isFolderIcon = originalView instanceof FolderIcon;
+
+            int width = isFolderIcon ? originalView.getWidth() : (int) pos.width();
+            int height = isFolderIcon ? originalView.getHeight() : (int) pos.height();
+
             if (supportsAdaptiveIcons) {
                 drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
                 if (drawable instanceof AdaptiveIconDrawable) {

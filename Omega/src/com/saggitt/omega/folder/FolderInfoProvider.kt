@@ -66,6 +66,10 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
         info.setSwipeUpAction(context, action)
     }
 
+    fun isDisabled(): Boolean {
+        return false
+    }
+
     override fun getSwipeUpAction(info: FolderInfo): String? = info.swipeUpAction
 
     companion object : SingletonHolder<FolderInfoProvider, Context>(

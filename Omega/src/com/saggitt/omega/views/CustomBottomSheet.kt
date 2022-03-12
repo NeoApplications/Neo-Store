@@ -70,6 +70,7 @@ class CustomBottomSheet @JvmOverloads constructor(
 
     override fun populateAndShow(itemInfo: ItemInfo) {
         super.populateAndShow(itemInfo)
+
         mItemInfo = itemInfo
         if (mItemInfo is FolderInfo) {
             mInfoProvider = CustomInfoProvider.forItem(context, mItemInfo)
@@ -204,7 +205,7 @@ class CustomBottomSheet @JvmOverloads constructor(
         private var mSwipeUpPref: LauncherGesturePreference? = null
         private var mTabsPref: MultiSelectTabPreference? = null
         private lateinit var prefs: OmegaPreferences
-        private var mPrefCoverMode: SwitchPreference? = null
+        private lateinit var mPrefCoverMode: SwitchPreference
         private var mKey: ComponentKey? = null
         private lateinit var itemInfo: ItemInfo
         private var previousHandler: GestureHandler? = null
@@ -238,7 +239,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                 mKey = ComponentKey(itemInfo.targetComponent, itemInfo.user)
             }
             val mPrefHide = findPreference<SwitchPreference>(PREFS_APP_HIDE)
-            mPrefCoverMode = findPreference(PREFS_FOLDER_COVER_MODE)
+            mPrefCoverMode = findPreference(PREFS_FOLDER_COVER_MODE)!!
             mTabsPref = findPreference(PREFS_APP_SHOW_IN_TABS)
             if (isApp) {
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)

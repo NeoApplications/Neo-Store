@@ -98,7 +98,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-
 /**
  * An icon that can appear on in the workspace representing an {@link Folder}.
  */
@@ -642,14 +641,29 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
 
-        if (!mBackgroundIsVisible) return;
-        mPreviewItemManager.recomputePreviewDrawingParams();
-        if (!mBackground.drawingDelegated() && !isCustomIcon) mBackground.drawBackground(canvas);
+        if (mBackgroundIsVisible) {
+            mPreviewItemManager.recomputePreviewDrawingParams();
+
+            if (!mBackground.drawingDelegated() && !isCustomIcon) {
+                mBackground.drawBackground(canvas);
+            }
+        } else if (!isCustomIcon || mInfo.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT)
+            return;
+
         if (isCustomIcon) return;
+
+        mPreviewItemManager.recomputePreviewDrawingParams();
+
+        if (!mBackground.drawingDelegated()) {
+            mBackground.drawBackground(canvas);
+        }
 
         if (mCurrentPreviewItems.isEmpty() && !mAnimating) return;
 
+        final int saveCount = canvas.save();
+        canvas.clipPath(mBackground.getClipPath());
         mPreviewItemManager.draw(canvas);
+        canvas.restoreToCount(saveCount);
 
         if (!mBackground.drawingDelegated()) {
             mBackground.drawBackgroundStroke(canvas);
@@ -682,15 +696,12 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void setTextVisible(boolean visible) {
-        if (visible) {
-            mFolderName.setVisibility(VISIBLE);
-        } else {
-            mFolderName.setVisibility(INVISIBLE);
-        }
+        mIsTextVisible = visible;
+        mFolderName.setTextVisibility(visible);
     }
 
     public boolean getTextVisible() {
-        return mFolderName.getVisibility() == VISIBLE;
+        return mIsTextVisible;
     }
 
     /**
@@ -742,7 +753,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
     @Override
     public void onItemsChanged(boolean animate) {
         if (isCoverMode()) {
@@ -757,7 +767,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     @Override
     public void onIconChanged() {
         applySwipeUpAction(mInfo);
-        setOnClickListener(mInfo.isCoverMode() ?
+        setOnClickListener(isCoverMode() ?
                 ItemClickHandler.FOLDER_COVER_INSTANCE : ItemClickHandler.INSTANCE);
 
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFolderName.getLayoutParams();
@@ -772,7 +782,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             }
             isCustomIcon = true;
-            if (mInfo.isCoverMode()) {
+            if (isCoverMode()) {
                 ItemInfoWithIcon coverInfo = mInfo.getCoverInfo();
                 mFolderName.setTag(coverInfo);
                 mFolderName.applyIcon(coverInfo);
@@ -835,7 +845,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     }
 
     public void onTitleChanged(CharSequence title) {
-        mFolderName.setText(title);
+        mFolderName.setText(mInfo.getIconTitle(getFolder()));
         applySwipeUpAction(mInfo);
         setContentDescription(getAccessiblityTitle(title));
     }
@@ -1005,6 +1015,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     public boolean isCoverMode() {
         return mInfo.isCoverMode();
+    }
+
+    public void clearPressedBackground() {
+        setStayPressed(false);
+    }
+
+    public void setStayPressed(boolean stayPressed) {
+        mFolderName.setStayPressed(stayPressed);
     }
 
     public WorkspaceItemInfo getCoverInfo() {

@@ -4,7 +4,7 @@
 
 - [ ] Port the features back from 0.8.2
 
-- [ ] Restructure settings (less complex and sharper separation)
+- [X] Restructure settings (less complex and sharper separation)
 
 ## Progress on 0.9.0/1.0.0
 
@@ -52,9 +52,7 @@
 
   - [X] Folders
 
-- [ ] Backup & restore
-
-  - [ ] Allow
+- [X] Backup & restore
 
 ## Low Priority/ Future nice-to-haves
 
@@ -72,7 +70,7 @@
 
   - [X] Tabs & Folders
 
-- [ ] Backup & restore
+- [X] Backup & restore
 
   - [ ] Backward compatibility?
 

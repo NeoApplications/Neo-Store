@@ -1461,6 +1461,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     + "View: " + child + "  tag: " + child.getTag();
             throw new IllegalStateException(msg);
         }
+
+        if (child instanceof FolderIcon && ((FolderIcon) child).isCoverMode()) {
+            child.setVisibility(View.VISIBLE);
+            child = ((FolderIcon) child).getFolderName();
+        }
+
         beginDragShared(child, null, source, (ItemInfo) dragObject,
                 new DragPreviewProvider(child), options);
     }
@@ -1486,6 +1492,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (child instanceof BubbleTextView) {
             BubbleTextView icon = (BubbleTextView) child;
             icon.clearPressedBackground();
+        } else if (child instanceof FolderIcon) {
+            ((FolderIcon) child).clearPressedBackground();
         }
 
         mOutlineProvider = previewProvider;
@@ -1518,7 +1526,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             dragLayerY += dragRect.top;
             dragVisualizeOffset = new Point(-halfPadding, halfPadding);
         }
-
 
         if (child.getParent() instanceof ShortcutAndWidgetContainer) {
             mDragSourceInternal = (ShortcutAndWidgetContainer) child.getParent();
@@ -3176,6 +3183,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 shortcut.applyFromWorkspaceItem(si, si.isPromise() != oldPromiseState);
             } else if (info instanceof FolderInfo && v instanceof FolderIcon) {
                 ((FolderIcon) v).updatePreviewItems(updates::contains);
+                ((FolderInfo) info).itemsChanged(false);
             }
 
             // Iterate all items
@@ -3186,6 +3194,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         Folder openFolder = Folder.getOpen(mLauncher);
         if (openFolder != null) {
             openFolder.iterateOverItems(op);
+            openFolder.onItemsChanged(false);
         }
     }
 

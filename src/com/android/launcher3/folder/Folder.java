@@ -427,6 +427,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
             Log.d(TAG, "onBackKey newTitle=" + newTitle);
         }
         mInfo.setTitle(newTitle, mLauncherDelegate.getModelWriter());
+        mLauncher.getModelWriter().updateItemInDatabase(mInfo);
+
         mFolderIcon.onTitleChanged(newTitle);
 
         if (TextUtils.isEmpty(mInfo.title)) {
@@ -1459,6 +1461,10 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         }
     }
 
+    @Override
+    public void onTitleChanged(CharSequence title) {
+    }
+
     private View getViewForInfo(final WorkspaceItemInfo item) {
         return mContent.iterateOverItems((info, view) -> info == item);
     }
@@ -1468,11 +1474,6 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         updateTextViewFocus();
         invalidate();
         requestLayout();
-    }
-
-    @Override
-    public void onIconChanged() {
-        FolderListener.super.onIconChanged();
     }
 
     /**

@@ -49,15 +49,11 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
         TODO("not implemented")
     }
 
-    open fun supportsBadgeVisible(info: T) = false
-
     companion object {
 
         @Suppress("UNCHECKED_CAST")
         fun <T : ItemInfo> forItem(context: Context, info: ItemInfo?): CustomInfoProvider<T>? {
             return when (info) {
-                //is AppInfo -> AppInfoProvider.getInstance(context)
-                //is WorkspaceItemInfo -> ShortcutInfoProvider.getInstance(context)
                 is FolderInfo -> FolderInfoProvider.getInstance(context)
                 else -> null
             } as CustomInfoProvider<T>?

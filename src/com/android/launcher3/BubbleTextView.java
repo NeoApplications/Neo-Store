@@ -71,6 +71,7 @@ import com.saggitt.omega.gestures.BlankGestureHandler;
 import com.saggitt.omega.gestures.GestureController;
 import com.saggitt.omega.gestures.GestureHandler;
 import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
+import com.saggitt.omega.item.CustomInfoProvider;
 import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.text.NumberFormat;
@@ -379,7 +380,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
 
     @UiThread
     private void applyLabel(ItemInfoWithIcon info) {
-        setText(info.title);
+        setText(getTitle(info));
         if (info.contentDescription != null) {
             setContentDescription(info.isDisabled()
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
@@ -408,6 +409,15 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
             mSwipeUpHandler = null;
         } else {
             mSwipeUpHandler = new ViewSwipeUpGestureHandler(this, handler);
+        }
+    }
+
+    private CharSequence getTitle(ItemInfo info) {
+        CustomInfoProvider<ItemInfo> customInfoProvider = CustomInfoProvider.Companion.forItem(getContext(), info);
+        if (customInfoProvider != null) {
+            return customInfoProvider.getTitle(info);
+        } else {
+            return info.title;
         }
     }
 
@@ -468,7 +478,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
                 || x > getWidth() - getPaddingRight();
     }
 
-    void setStayPressed(boolean stayPressed) {
+    public void setStayPressed(boolean stayPressed) {
         mStayPressed = stayPressed;
         refreshDrawableState();
     }
