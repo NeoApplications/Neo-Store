@@ -55,6 +55,7 @@ import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragOptions;
 import com.android.launcher3.dragndrop.DragView;
 import com.android.launcher3.dragndrop.DraggableView;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
@@ -410,10 +411,10 @@ public class PopupContainerWithArrow<T extends StatefulActivity<LauncherState>>
                 if (mIsAboveIcon) {
                     // Hide only the icon, keep the text visible.
                     mOriginalIcon.setIconVisible(false);
-                    mOriginalIcon.setVisibility(VISIBLE);
+                    setOriginalIconVisibility(VISIBLE);
                 } else {
                     // Hide both the icon and text.
-                    mOriginalIcon.setVisibility(INVISIBLE);
+                    setOriginalIconVisibility(INVISIBLE);
                 }
             }
 
@@ -422,17 +423,27 @@ public class PopupContainerWithArrow<T extends StatefulActivity<LauncherState>>
                 mOriginalIcon.setIconVisible(true);
                 if (dragStarted) {
                     // Make sure we keep the original icon hidden while it is being dragged.
-                    mOriginalIcon.setVisibility(INVISIBLE);
+                    setOriginalIconVisibility(INVISIBLE);
                 } else {
                     // TODO: add WW logging if want to add logging for long press on popup
                     //  container.
                     //  mLauncher.getUserEventDispatcher().logDeepShortcutsOpen(mOriginalIcon);
                     if (!mIsAboveIcon) {
                         // Show the icon but keep the text hidden.
-                        mOriginalIcon.setVisibility(VISIBLE);
+                        setOriginalIconVisibility(VISIBLE);
                         mOriginalIcon.setTextVisibility(false);
                     }
                 }
+            }
+
+            private void setOriginalIconVisibility(int visibility) {
+                View target;
+                if (mOriginalIcon.getParent() instanceof FolderIcon) {
+                    target = (View) mOriginalIcon.getParent();
+                } else {
+                    target = mOriginalIcon;
+                }
+                target.setVisibility(visibility);
             }
         };
     }
