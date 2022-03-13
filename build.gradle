@@ -42,14 +42,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.google.protobuf'
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     def name = "0.9.0"
     def code = 317
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 32
         applicationId 'com.saggitt.omega'
 
         versionName name
