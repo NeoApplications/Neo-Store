@@ -29,7 +29,7 @@ allprojects {
         }
         gradle.projectsEvaluated {
             tasks.withType(JavaCompile) {
-                options.bootstrapClasspath = files([frameworkJar] + (options.bootstrapClasspath.files as Iterable<File>))
+                options.bootstrapClasspath = files([frameworkJar] + (options.bootstrapClasspath?.files as Iterable<File>))
             }
         }
     }
