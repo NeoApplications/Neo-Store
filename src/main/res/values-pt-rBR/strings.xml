@@ -159,7 +159,7 @@
     <string name="unstable_updates">Atualizações instáveis</string>
     <string name="unstable_updates_summary">Sugerir instalar versões instáveis</string>
     <string name="unverified">Não verificado</string>
-    <string name="update">Atualização</string>
+    <string name="update">Atualizar</string>
     <string name="updates">Atualizações</string>
     <string name="upstream_source_code_is_not_free">O código-fonte upstream não é gratuito</string>
     <string name="username">Nome de usuário</string>
@@ -183,8 +183,8 @@
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e Plugado</string>
     <string name="install_after_sync">Instalar atualizações automaticamente</string>
     <string name="install_after_sync_summary">Instalar automaticamente as atualizações dos aplicativos após sincronizar os repositórios</string>
-    <string name="prefs_updated_apps">Número de aplicativos atualizados a serem exibidos</string>
-    <string name="prefs_new_apps">Número de novos aplicativos a serem exibidos</string>
+    <string name="prefs_updated_apps">Número de aplicativos atualizados para mostrar</string>
+    <string name="prefs_new_apps">Número de novos aplicativos para mostrar</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
 </resources>
