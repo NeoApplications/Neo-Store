@@ -617,7 +617,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 mViewPager.addTabs(mTabsController.getTabsCount());
                 mViewPager.initParentViews(this);
                 mViewPager.getPageIndicator().setOnActivePageChangedListener(this);
-                //setupWorkToggle();
+                setupWorkToggle();
             } else {
                 mViewPager = null;
                 mHorizontalViewPager = null;
