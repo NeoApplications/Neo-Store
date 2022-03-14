@@ -20,9 +20,7 @@ package com.saggitt.omega.allapps
 
 import android.animation.ArgbEvaluator
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Path
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -35,15 +33,12 @@ import com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip
 import com.saggitt.omega.groups.DrawerGroupBottomSheet.Companion.editTab
 import com.saggitt.omega.views.ColoredButton
 import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.min
 
 class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidingTabStrip(context, attrs) {
 
     private var mSelectedIndicatorPaint: Paint
     private var mDividerPaint: Paint
 
-    private var mSelectedIndicatorHeight = 0
     private var mIndicatorLeft = -1
     private var mIndicatorRight = -1
     private var mScrollOffset = 0f
@@ -52,13 +47,10 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
     private var mIsRtl = false
 
     private val mArgbEvaluator: ArgbEvaluator = ArgbEvaluator()
-    private val mIndicatorPath: Path = Path()
 
     init {
-        mSelectedIndicatorHeight = resources.getDimensionPixelSize(R.dimen.all_apps_tabs_indicator_height)
         mSelectedIndicatorPaint = Paint()
-        mSelectedIndicatorPaint.color = Themes.getAttrColor(context, android.R.attr.colorAccent);
-
+        mSelectedIndicatorPaint.color = Themes.getAttrColor(context, android.R.attr.colorAccent)
         mDividerPaint = Paint()
         mDividerPaint.color = Themes.getAttrColor(context, android.R.attr.colorControlHighlight)
         mDividerPaint.strokeWidth = resources.getDimensionPixelSize(R.dimen.all_apps_divider_height).toFloat()
@@ -189,27 +181,6 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
         scrollView.scrollTo(boundedScroll, 0)
     }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        val y = height - mDividerPaint.strokeWidth
-        canvas.drawLine(paddingLeft.toFloat(), y, (width - paddingRight).toFloat(), y, mDividerPaint)
-        drawIndicator(canvas, mIndicatorLeft, height - mSelectedIndicatorHeight,
-                mIndicatorRight, height, mSelectedIndicatorPaint)
-    }
-
-    private fun drawIndicator(canvas: Canvas, l: Int, t: Int, r: Int, b: Int, paint: Paint) {
-        val left: Int = max(l, paddingLeft)
-        val right: Int = min(r, width - paddingRight)
-        paint.isAntiAlias = true
-        mIndicatorPath.reset()
-        mIndicatorPath.moveTo(left.toFloat(), b.toFloat())
-        mIndicatorPath.quadTo(left.toFloat(), left.toFloat(), (left + mSelectedIndicatorHeight).toFloat(), t.toFloat())
-        mIndicatorPath.lineTo((right - mSelectedIndicatorHeight).toFloat(), t.toFloat())
-        mIndicatorPath.quadTo(right.toFloat(), t.toFloat(), right.toFloat(), b.toFloat())
-        mIndicatorPath.lineTo(right.toFloat(), b.toFloat())
-        canvas.drawPath(mIndicatorPath, paint)
-    }
-
     override fun setScroll(currentScroll: Int, totalScroll: Int) {
         val scrollOffset = currentScroll.toFloat() / totalScroll
         updateIndicatorPosition(scrollOffset)
@@ -239,5 +210,4 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
         updateIndicatorPosition()
         invalidate()
     }
-
 }
