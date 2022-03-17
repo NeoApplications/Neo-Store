@@ -183,4 +183,5 @@
     <string name="prefs_updated_apps">Número de aplicaciones actualizadas para mostrar</string>
     <string name="prefs_new_apps">Número de nuevas aplicaciones para mostrar</string>
     <string name="new_repository">Repositorio nuevo</string>
+    <string name="default_tab">Pestaña por defecto</string>
 </resources>
