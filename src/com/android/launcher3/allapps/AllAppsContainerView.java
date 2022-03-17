@@ -121,16 +121,15 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private float mHeaderTop;
     private WorkModeSwitch mWorkModeSwitch;
 
-    private SpannableStringBuilder mSearchQueryBuilder = null;
+    private final SpannableStringBuilder mSearchQueryBuilder;
 
     protected boolean mUsingTabs;
     private boolean mIsSearching;
-    private boolean mHasWorkApps;
 
     protected RecyclerViewFastScroller mTouchHandler;
     protected final Point mFastScrollerOffset = new Point();
 
-    private Rect mInsets = new Rect();
+    private final Rect mInsets = new Rect();
 
     private SearchAdapterProvider mSearchAdapterProvider;
     private WorkAdapterProvider mWorkAdapterProvider;
@@ -140,9 +139,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private ScrimView mScrimView;
     private int mHeaderColor;
     private int mTabsProtectionAlpha;
-    private AllAppsTabsController mTabsController;
-    private AllAppsPagesController mPagesController;
-    private OmegaPreferences prefs;
+    private final AllAppsTabsController mTabsController;
+    private final AllAppsPagesController mPagesController;
+    private final OmegaPreferences prefs;
     public int mCurrentPage;
     public AllAppsPagedView mHorizontalViewPager;
 
@@ -279,8 +278,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 }
             }
 
-            rebindAdapters(mHasWorkApps);
-            if (mHasWorkApps && mWorkModeSwitch != null) {
+            rebindAdapters(hasWorkApps);
+            if (hasWorkApps && mWorkModeSwitch != null) {
                 resetWorkProfile();
             }
             AllAppsTabs allAppsTabs = mTabsController.getTabs();
@@ -617,7 +616,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 mViewPager.addTabs(mTabsController.getTabsCount());
                 mViewPager.initParentViews(this);
                 mViewPager.getPageIndicator().setOnActivePageChangedListener(this);
-                setupWorkToggle();
+                if (mTabsController.getTabs().getHasWorkApps()) {
+                    setupWorkToggle();
+                }
             } else {
                 mViewPager = null;
                 mHorizontalViewPager = null;
