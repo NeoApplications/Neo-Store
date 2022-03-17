@@ -94,10 +94,6 @@ There's also a [devloper's document](DEVDOC.md), where the maintainer and collab
 
 ## *FAQ*
 
-#### Q: Google Feed not working!
-
-**A:** Make sure the Google App is installed. If the app is installed, make sure the feed is enabled by clicking <code>Settings> Home Widget > Show Google App</code>. If the app is installed and enabled, try restarting the Launcher and if still does not work, restart the phone.
-
 ## *Credits*
 
 #### Thanks to The LawnchairLauncher team for the great work on Lawnchair.
