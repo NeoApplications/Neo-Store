@@ -20,14 +20,14 @@
     <string name="default_folder_name">Nuova cartella</string>
     <string name="title__general_notifications">Gesti e notifiche</string>
     <string name="title__general_advanced">Impostazioni avanzate</string>
-    <string name="title__general_search">Cerca</string>
+    <string name="title__general_search">Ricerca e Cartelle</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
     <string name="title__desktop_grid_size">Dimensione griglia</string>
     <string name="title__desktop_icon_size">Grandezza dell\'icona</string>
     <string name="title_desktop_full_width_widgets">Widget a piena larghezza</string>
     <string name="allow_rotation_blocked_desc">L\'impostazione attuale del display non permette la rotazione</string>
-    <string name="pref_category__interfaces">Interfaccia</string>
+    <string name="pref_category__interfaces">Interfaccia Utente</string>
     <string name="pref_category__others">Altro</string>
     <string name="pref_category__inputs">Gesti e ricerca</string>
     <string name="summary__general_about">Ulteriori informazioni su Omega Launcher</string>
@@ -45,7 +45,7 @@
     <string name="title__general_desktop">Desktop</string>
     <string name="trust_apps_no_lock_error">Imposta una schermata di blocco sicura per limitare l\'accesso alle app</string>
     <string name="title_desktop_lock_desktop">Blocca Desktop</string>
-    <string name="title_desktop_overlap_placement">Consenti sovrapposizioni</string>
+    <string name="title_desktop_overlap_placement">Consenti widget sovrapposti</string>
     <string name="title__desktop_hide_icon_labels">Nascondi etichette nella home</string>
     <string name="pref_category__incubating">Incubazione</string>
     <string name="title__about_donate">Donazioni</string>
@@ -320,7 +320,7 @@
     <string name="hide_app_selected">  nascosto</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Nascosto</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="selected_count">%1$d selezionato</string>
     <string name="add_new_tab">Aggiungi</string>
