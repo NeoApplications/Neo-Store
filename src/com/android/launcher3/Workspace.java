@@ -3194,7 +3194,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         Folder openFolder = Folder.getOpen(mLauncher);
         if (openFolder != null) {
             openFolder.iterateOverItems(op);
-            openFolder.onItemsChanged(false);
         }
     }
 

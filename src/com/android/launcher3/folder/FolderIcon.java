@@ -197,8 +197,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         folder.setFolderIcon(icon);
         folder.bind(folderInfo);
         icon.setFolder(folder);
-
-        folder.onIconChanged();
+        icon.onIconChanged();
         return icon;
     }
 
@@ -230,9 +229,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         }
 
         icon.setTag(folderInfo);
-        icon.applySwipeUpAction(folderInfo);
-        icon.setOnClickListener(folderInfo.isCoverMode() ?
-                ItemClickHandler.FOLDER_COVER_INSTANCE : ItemClickHandler.INSTANCE);
         icon.mInfo = folderInfo;
         icon.mActivity = activity;
         icon.mDotRenderer = grid.mDotRendererWorkSpace;
@@ -470,6 +466,8 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     private void showFinalView(int finalIndex, final WorkspaceItemInfo item,
                                FolderNameInfos nameInfos, InstanceId instanceId) {
         postDelayed(() -> {
+            mPreviewItemManager.hidePreviewItem(finalIndex, false);
+            mFolder.showItem(item);
             setLabelSuggestion(nameInfos, instanceId);
             invalidate();
         }, DROP_IN_ANIMATION_DURATION);
@@ -755,7 +753,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
     @Override
     public void onItemsChanged(boolean animate) {
-        if (isCoverMode()) {
+        if (mInfo.isCoverMode()) {
             onIconChanged();
             mFolderName.setText(mInfo.getIconTitle(getFolder()));
         }
@@ -767,7 +765,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     @Override
     public void onIconChanged() {
         applySwipeUpAction(mInfo);
-        setOnClickListener(isCoverMode() ?
+        setOnClickListener(mInfo.isCoverMode() ?
                 ItemClickHandler.FOLDER_COVER_INSTANCE : ItemClickHandler.INSTANCE);
 
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFolderName.getLayoutParams();
@@ -782,7 +780,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
                 mFolderName.setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
             }
             isCustomIcon = true;
-            if (isCoverMode()) {
+            if (mInfo.isCoverMode()) {
                 ItemInfoWithIcon coverInfo = mInfo.getCoverInfo();
                 mFolderName.setTag(coverInfo);
                 mFolderName.applyIcon(coverInfo);
@@ -1040,7 +1038,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         }
         setDotInfo(folderDotInfo);
 
-        if (isCoverMode()) {
+        if (mInfo.isCoverMode()) {
             WorkspaceItemInfo coverInfo = getCoverInfo();
             if (tmpKey.updateFromItemInfo(coverInfo) &&
                     updatedBadges.test(tmpKey)) {
