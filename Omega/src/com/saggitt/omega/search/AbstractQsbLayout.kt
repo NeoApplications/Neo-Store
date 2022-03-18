@@ -27,6 +27,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.*
+import android.net.Uri
+import android.os.Bundle
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -45,6 +48,7 @@ import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
+
 
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs), SearchProviderController.OnProviderChangeListener,
@@ -110,27 +114,31 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         }
 
         lensIconView = findViewById<ImageView?>(R.id.lens_icon).apply {
-            val lensIntent = Intent.makeMainActivity(
-                ComponentName(
-                    Config.LENS_PACKAGE,
-                    Config.LENS_ACTIVITY
-                )
-            ).addFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-            )
 
             visibility =
                 if (searchProvider.packageName == Config.GOOGLE_QSB
                     && searchProvider !is WebSearchProvider
-                    && mContext.packageManager.resolveActivity(
-                        lensIntent,
-                        0
-                    ) != null
                 ) {
                     setImageResource(R.drawable.ic_lens_color)
 
                     setOnClickListener {
+                        val lensIntent = Intent()
+                        val bundle = Bundle()
+                        bundle.putString("caller_package", Config.GOOGLE_QSB)
+                        bundle.putLong(
+                            "start_activity_time_nanos",
+                            SystemClock.elapsedRealtimeNanos()
+                        )
+                        lensIntent.setComponent(
+                            ComponentName(
+                                Config.GOOGLE_QSB,
+                                Config.LENS_ACTIVITY
+                            )
+                        )
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .setPackage(Config.GOOGLE_QSB)
+                            .setData(Uri.parse(Config.LENS_URI))
+                            .putExtra("lens_activity_params", bundle)
                         mContext.startActivity(lensIntent)
                     }
                     View.VISIBLE

@@ -83,8 +83,8 @@ class Config(val context: Context) {
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
 
         const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
-        const val LENS_PACKAGE = "com.google.ar.lens"
-        const val LENS_ACTIVITY = "com.google.vr.apps.ornament.app.lens.LensLauncherActivity"
+        const val LENS_URI = "google://lens"
+        const val LENS_ACTIVITY = "com.google.android.apps.lens.MainActivity"
 
         //APP DRAWER SORT MODE
         const val SORT_AZ = 0
