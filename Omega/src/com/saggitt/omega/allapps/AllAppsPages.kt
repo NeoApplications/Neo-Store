@@ -56,8 +56,8 @@ class AllAppsPages(
             pageCount++
         }
 
-        var initialApp = 0 * appsPerPage
-        var endApp = initialApp + appsPerPage
+        var initialApp = 0
+        var endApp = appsPerPage
         for (page in 0 until pageCount) {
             if (endApp > appList.lastIndex) {
                 endApp = appList.lastIndex + 1
