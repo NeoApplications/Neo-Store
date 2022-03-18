@@ -173,6 +173,11 @@ public class AppsSearchContainerLayout extends ExtendedEditText
     public void onSearchResult(String query, ArrayList<AdapterItem> items, List<String> suggestions) {
         if (items != null) {
             mApps.setSearchResults(items);
+        }
+        if (suggestions != null) {
+            mApps.setSearchSuggestions(suggestions);
+        }
+        if (items != null || suggestions != null) {
             notifyResultChanged();
             mAppsView.setLastSearchQuery(query);
         }
@@ -188,7 +193,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
 
     @Override
     public void clearSearchResult() {
-        if (mApps.setSearchResults(null)) {
+        if (mApps.setSearchResults(null) || mApps.setSearchSuggestions(null)) {
             notifyResultChanged();
         }
 

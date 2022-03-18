@@ -147,9 +147,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         // Recompose the set of adapter items from the current set of apps
-        if (mSearchResults == null) {
-            updateAdapterItems();
-        }
+        updateAdapterItems();
     }
 
     public void updateItemFilter(ItemInfoMatcher itemFilter) {
@@ -285,10 +283,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
 
     public boolean setSearchSuggestions(List<String> suggestions) {
         if (mSearchSuggestions != suggestions) {
-            boolean same = mSearchSuggestions != null && mSearchSuggestions.equals(suggestions);
             mSearchSuggestions = suggestions;
             onAppsUpdated();
-            return !same;
+            return true;
         }
         return false;
     }

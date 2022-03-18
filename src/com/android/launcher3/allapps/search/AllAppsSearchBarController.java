@@ -115,7 +115,7 @@ public class AllAppsSearchBarController
         }
         // If play store continues auto updating an app, we want to show partial result.
         mSearchAlgorithm.cancel(false);
-        mSearchAlgorithm.doSearch(mQuery, mCallback);
+        mSearchAlgorithm.doSearch(mQuery, mTextConversions, mCallback);
     }
 
     @Override
