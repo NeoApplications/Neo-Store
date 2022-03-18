@@ -32,7 +32,8 @@
     <color name="settings_background_black_8dp">@color/grey_900</color>
 
     <color name="ic_allapps_background">@color/grey_50</color>
-    <color name="ic_launcher_background">#0F111A</color>
+    <color name="ic_launcher_background">#F3FBFF</color>
+    <color name="ic_launcher_background_debug">#0F111A</color>
     <color name="ic_launcher_foreground">#0988d1</color>
 
     <color name="system_accent2_50">#ffedeeff</color>
