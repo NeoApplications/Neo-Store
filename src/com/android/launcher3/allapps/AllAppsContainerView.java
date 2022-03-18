@@ -830,6 +830,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 mHeaderPaint.setAlpha((int) (getAlpha() * mTabsProtectionAlpha));
                 canvas.drawRect(0, bottom, canvas.getWidth(), bottom + tabsHeight, mHeaderPaint);
             }
+            if (FeatureFlags.ENABLE_DEVICE_SEARCH.get() && getTranslationY() == 0) {
+                if (mSearchUiManager.getEditText() != null) {
+                    mSearchUiManager.getEditText().setBackground(null);
+                }
+            }
         }
     }
 
@@ -921,7 +926,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
 
     protected void updateHeaderScroll(int scrolledOffset) {
-
         float prog = Utilities.boundToRange((float) scrolledOffset / mHeaderThreshold, 0f, 1f);
         int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
         int headerColor = ColorUtils.setAlphaComponent(viewBG,
@@ -945,8 +949,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 bgVisible = false;
             }
             editText.setBackgroundVisibility(bgVisible, 1 - prog);
-
-
         }
     }
     /*
