@@ -113,6 +113,9 @@
     <string name="summary_search_hidden_apps">Show hidden shortcuts in results.</string>
     <string name="summary_all_apps_google_search">Find web results and apps</string>
     <string name="summary__drawer_hide_apps">Hide app from the app drawer</string>
+    <string name="summary_app_categorization_enable">Create tabs or folders</string>
+    <string name="summary_all_apps_search">Show search bar</string>
+    <string name="summary_app_suggestions">For all apps and Home screen</string>
     <string name="title_disable_suggestions_prompt">Turn off app suggestions</string>
     <string name="msg_disable_suggestions_prompt">"Usage data will be deleted."</string>
     <string name="label_turn_off_suggestions">Disable</string>
@@ -127,7 +130,6 @@
     <string name="cat_drawer_icons">Icons</string>
     <string name="pref_appcategorization_flowerpot_title">App Category</string>
     <string name="title_app_categorization_enable">Enable apps categories</string>
-    <string name="summary_app_categorization_enable">Create tabs or folders</string>
     <string name="pref_appcategorization_style_text">Style</string>
     <string name="app_categorization_folders">Folders</string>
     <string name="pref_appcategorization_folders_summary">Tap to open popup.</string>

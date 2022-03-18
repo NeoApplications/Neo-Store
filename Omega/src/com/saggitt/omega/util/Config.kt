@@ -85,6 +85,7 @@ class Config(val context: Context) {
         const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
         const val LENS_URI = "google://lens"
         const val LENS_ACTIVITY = "com.google.android.apps.lens.MainActivity"
+        const val DPS_PACKAGE = "com.google.android.as"
 
         //APP DRAWER SORT MODE
         const val SORT_AZ = 0

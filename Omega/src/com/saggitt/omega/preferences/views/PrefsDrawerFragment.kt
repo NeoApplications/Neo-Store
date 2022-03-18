@@ -18,6 +18,8 @@
 
 package com.saggitt.omega.preferences.views
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.preference.Preference
@@ -71,6 +73,19 @@ class PrefsDrawerFragment :
                 }
                 false
             }
+        }
+
+        findPreference<Preference>("pref_suggestions")?.apply {
+            isVisible = false
+            //isVisible = isDspEnabled(context)
+        }
+    }
+
+    private fun isDspEnabled(context: Context): Boolean {
+        return try {
+            context.packageManager.getApplicationInfo(Config.DPS_PACKAGE, 0).enabled
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 }
