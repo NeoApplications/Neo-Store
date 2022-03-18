@@ -57,13 +57,21 @@ android {
             minifyEnabled = false
             shrinkResources = false
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            resValue "string", "application_name", "Droid-ify-Debug"
+            versionNameSuffix = "-alpha1"
+            resValue "string", "application_name", "Neo Store-Debug"
+            manifestPlaceholders = [
+                    appIcon     : "@mipmap/ic_launcher_debug",
+                    appIconRound: "@mipmap/ic_launcher_round_debug"
+            ]
         }
         release {
             minifyEnabled = true
             shrinkResources = true
-            resValue "string", "application_name", "Droid-ify"
+            resValue "string", "application_name", "Neo Store"
+            manifestPlaceholders = [
+                    appIcon     : "@mipmap/ic_launcher",
+                    appIconRound: "@mipmap/ic_launcher_round"
+            ]
         }
         all {
             crunchPngs = false
@@ -155,13 +163,6 @@ dependencies {
     // Coroutines / Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
-
-    // Paging
-    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
-
-    // Room
-    implementation 'androidx.room:room-runtime:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
     implementation 'androidx.room:room-rxjava3:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'

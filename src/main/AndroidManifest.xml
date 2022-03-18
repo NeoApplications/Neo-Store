@@ -15,7 +15,8 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="${appIcon}"
+        android:roundIcon="${appIconRound}"
         android:label="@string/application_name"
         android:supportsRtl="true"
         android:theme="@style/MainTheme"

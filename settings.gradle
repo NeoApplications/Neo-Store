@@ -13,4 +13,4 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "Droidify"
+rootProject.name = "Neo Store"
