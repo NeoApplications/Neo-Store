@@ -433,4 +433,6 @@
     <string name="backup_delete_failed">Bir şeyler yanlış gitti</string>
     <string name="permission_denied">Okuma izni reddedildi!</string>
     <string name="backup_name">Yedekleme adı</string>
+    <string name="summary_all_apps_search">Arama çubuğunu göster</string>
+    <string name="summary_app_suggestions">Tüm uygulamalar ve Ana ekran için</string>
 </resources>
