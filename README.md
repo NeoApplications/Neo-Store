@@ -1,6 +1,8 @@
-# Omega Launcher
+# Neo Launcher <img title="" src="./fastlane/metadata/android/en-US/images/icon.png" align="left" width="64">
 
 **Free and Open Source Launcher**
+
+![](neo_banner.png)
 
 ## *Installation & Download*
 
