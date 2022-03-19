@@ -53,7 +53,7 @@ open class OpenDrawerGestureHandler(context: Context, config: JSONObject?) :
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
             context,
-            R.mipmap.ic_allapps_adaptive
+            R.drawable.ic_apps
         )
     }
     override val requiresForeground = true
@@ -131,7 +131,7 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
                 }
                 context.startActivity(it)
             } catch (e: Exception) {
-                Log.e(this::class.java.name, "Failed to start global search", e)
+                Log.e("LauncherGestureHandler", "Failed to start global search", e)
             }
         }
     }
@@ -170,14 +170,10 @@ class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         controller.launcher.startActivity(
             Intent(Intent.ACTION_MAIN).setClassName(
-                PACKAGE,
-                "$PACKAGE.SearchActivity"
+                Config.GOOGLE_QSB,
+                "$Config.GOOGLE_QSB.SearchActivity"
             )
         )
-    }
-
-    companion object {
-        private const val PACKAGE = "com.google.android.googlequicksearchbox"
     }
 }
 
