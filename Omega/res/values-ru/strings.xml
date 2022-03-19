@@ -371,4 +371,21 @@
     <string name="enable_protected_apps">Включить защищенные приложения</string>
     <string name="disable_protected_apps_message">Отключить защищенные приложения, требующие аутентификации</string>
     <string name="theme_auto_night_mode_black">Система (черная)</string>
+    <string name="about_community">Сообщество</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="pref_desktop_mode">Режим рабочего стола</string>
+    <string name="action_overlay">Открыть Google Feed</string>
+    <string name="fonts_global_font">Шрифт</string>
+    <string name="dash_wifi">Wi-Fi</string>
+    <string name="smartspace_provider_bridge">Rootless Pixel Bridge</string>
+    <string name="fonts_change_global_font">Изменить</string>
+    <string name="about_channel">Канал</string>
+    <string name="about_open_source">Библиотеки с открытым исходным кодом</string>
+    <string name="dash_auto_rotation">Автоповорот</string>
+    <string name="dash_location">Местоположение</string>
+    <string name="app_widget_name">Виджет часов</string>
+    <string name="pref_desktop_mode_summary">Активировать режим рабочего стола Android</string>
+    <string name="pref_desktop_mode_settings">Настройки режима рабочего стола</string>
+    <string name="backup_delete_failed">Что-то пошло не так</string>
+    <string name="backup_name">Имя резервной копии</string>
 </resources>
