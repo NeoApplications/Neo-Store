@@ -362,4 +362,13 @@
     <string name="folder_custom_background">Применить свой цвет фона для папок</string>
     <string name="folder_background">Цвет фона папок</string>
     <string name="folder_radius">Радиус для углов папок</string>
+    <string name="disable_protected_apps">Отключить защищенные приложения</string>
+    <string name="label_search">Поиск</string>
+    <string name="title_app_categorization_enable">Включить категории приложений</string>
+    <string name="summary_all_apps_search">Показать строку поиска</string>
+    <string name="summary_app_suggestions">Для всех приложений и главного экрана</string>
+    <string name="trust_apps_manager_name">Скрытые и защищенные приложения</string>
+    <string name="enable_protected_apps">Включить защищенные приложения</string>
+    <string name="disable_protected_apps_message">Отключить защищенные приложения, требующие аутентификации</string>
+    <string name="theme_auto_night_mode_black">Система (черная)</string>
 </resources>
