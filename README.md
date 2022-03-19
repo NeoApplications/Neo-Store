@@ -26,7 +26,7 @@ Our builds are available on:
 
 ## *Community*
 
-You can join our Telegram group to make suggestions, ask questions, receive news and chat. [Here is the invitation link](https://t.me/omegalauncher_group).
+You can join [our Telegram group](https://t.me/neo_launcher) to make suggestions, ask questions, receive news and chat.
 
 ## *App features:*
 
