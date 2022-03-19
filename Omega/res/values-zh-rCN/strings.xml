@@ -430,4 +430,6 @@
     <string name="permission_denied">读取权限被拒！</string>
     <string name="backup_create_new">创建新备份</string>
     <string name="backup_delete_failed">出错了</string>
+    <string name="summary_app_suggestions">为所有应用和主屏幕</string>
+    <string name="summary_all_apps_search">显示搜索栏</string>
 </resources>
