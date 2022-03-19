@@ -59,6 +59,12 @@
         app:summaryFormat="%.0f%%"
         app:summaryMultiplier="100" />
 
+    <com.saggitt.omega.preferences.custom.DockGridPreference
+        android:key="pref_dock_grid_size"
+        android:title="@string/title__dock_hotseat_icons"
+        android:defaultValue="5"
+        app:iconSpaceReserved="false" />
+
     <SwitchPreference
         android:key="pref_dock_search"
         android:title="@string/title_dock_search"

@@ -99,6 +99,12 @@ public class InvariantDeviceProfile {
     public int numColumnsOriginal;
 
     /**
+     * Number of icons inside the hotseat area.
+     */
+    public int numHotseatIcons;
+    public int numHotseatIconsOriginal;
+
+    /**
      * Number of icons per row and column in the folder.
      */
     public int numFolderRows;
@@ -320,6 +326,8 @@ public class InvariantDeviceProfile {
         closestProfile = displayOption.grid;
         numRows = closestProfile.numRows;
         numColumns = closestProfile.numColumns;
+        numHotseatIcons = closestProfile.numHotseatIcons;
+        numHotseatIconsOriginal = closestProfile.numHotseatIcons;
         dbFile = closestProfile.dbFile;
         defaultLayoutId = closestProfile.defaultLayoutId;
         demoModeLayoutId = closestProfile.demoModeLayoutId;
@@ -653,7 +661,8 @@ public class InvariantDeviceProfile {
 
         public final int numAllAppsColumns;
         private final int numDatabaseAllAppsColumns;
-        private final int numHotseatIcons;
+        public final int numHotseatIcons;
+        public final int numHotseatIconsOriginal;
         private final int numDatabaseHotseatIcons;
 
         private final String dbFile;
@@ -686,6 +695,7 @@ public class InvariantDeviceProfile {
 
             numHotseatIcons = a.getInt(
                     R.styleable.GridDisplayOption_numHotseatIcons, numColumns);
+            numHotseatIconsOriginal = numHotseatIcons;
             numDatabaseHotseatIcons = a.getInt(
                     R.styleable.GridDisplayOption_numExtendedHotseatIcons, 2 * numHotseatIcons);
 

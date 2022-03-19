@@ -34,7 +34,7 @@ class DeviceProfileOverrides(context: Context) {
             prefs: OmegaPreferences,
             defaultGrid: InvariantDeviceProfile.GridOption,
         ) : this(
-            numHotseatColumns = defaultGrid.numColumns,
+            numHotseatColumns = prefs.numHotseatIcons.get(defaultGrid),
             numRows = prefs.workspaceRows.get(defaultGrid),
             numColumns = prefs.workspaceColumns.get(defaultGrid),
             numAllAppsColumns = prefs.numAllAppsColumns.get(defaultGrid),

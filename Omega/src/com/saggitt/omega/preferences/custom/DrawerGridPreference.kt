@@ -24,3 +24,6 @@ import com.android.launcher3.Utilities
 
 class DrawerGridPreference(context: Context, attrs: AttributeSet?) :
     SingleGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).drawerGridSize)
+
+class DockGridPreference(context: Context, attrs: AttributeSet?) :
+    SingleGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).dockGridSize)

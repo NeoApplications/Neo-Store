@@ -113,6 +113,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, recreate)
     var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, recreate)
     var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
+    private val dockGridSizeDelegate = ResettableLazy {
+        GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), recreate)
+    }
+    val dockGridSize by dockGridSizeDelegate
+    val numHotseatIcons = IdpIntPref("pref_numHotseatIcons", { numHotseatIcons }, reloadGrid)
 
     // DRAWER
     val allAppsSearch by BooleanPref("pref_all_apps_search", true, recreate)
