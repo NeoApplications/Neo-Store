@@ -35,6 +35,7 @@ import com.saggitt.omega.iconpack.CustomIconEntry
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
+import com.saggitt.omega.preferences.custom.GridSize
 import com.saggitt.omega.preferences.custom.GridSize2D
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.smartspace.SmartSpaceDataWidget
@@ -68,10 +69,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val gridSize by gridSizeDelegate
-    val workspaceColumns = IdpIntPref("pref_${PREFS_COLUMNS}", { numColumns }, reloadIcons)
-    val workspaceRows = IdpIntPref("pref_${PREFS_ROWS}", { numRows }, reloadIcons)
+    val workspaceColumns = IdpIntPref("pref_${PREFS_COLUMNS}", { numColumns }, reloadGrid)
+    val workspaceRows = IdpIntPref("pref_${PREFS_ROWS}", { numRows }, reloadGrid)
 
-    val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadIcons)
+    val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadGrid)
     val usePopupMenuView by BooleanPref(PREFS_DESKTOP_POPUP_MENU, true, doNothing)
     var dashProviders = StringListPref(
         PREFS_DASH_PROVIDERS,
@@ -101,8 +102,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         Themes.getAttrColor(context, R.attr.folderFillColor),
         restart
     )
-    val folderColumns by FloatPref(PREFS_FOLDER_COLUMNS, 4f, reloadIcons) // TODO add
-    val folderRows by FloatPref(PREFS_FOLDER_ROWS, 4f, reloadIcons) // TODO add
+    val folderColumns by FloatPref(PREFS_FOLDER_COLUMNS, 4f, reloadGrid) // TODO add
+    val folderRows by FloatPref(PREFS_FOLDER_ROWS, 4f, reloadGrid) // TODO add
 
     // DOCK
     var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, recreate)
@@ -140,6 +141,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val saveScrollPosition by BooleanPref(PREFS_KEEP_SCROLL_STATE, false, doNothing)
 
     val drawerLayout by StringIntPref("pref_drawer_layout", 0, recreate)
+    private val drawerGridSizeDelegate = ResettableLazy {
+        GridSize(
+            this,
+            "numAllAppsColumns",
+            LauncherAppState.getIDP(context),
+            recreate
+        )
+    }
+    val drawerGridSize by drawerGridSizeDelegate
+
+    val numAllAppsColumns = IdpIntPref("pref_numAllAppsColumns", { numAllAppsColumns }, reloadGrid)
 
     val customAppName =
         object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {

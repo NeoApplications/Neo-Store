@@ -41,14 +41,18 @@ abstract class BasePreferences(context: Context) :
     private var onChangeCallback: OmegaPreferencesChangeCallback? = null
 
     val doNothing = { }
-    val restart = { restart() }
+
+    val restart = {
+        restart()
+    }
     val reloadApps = { reloadApps() }
     val reloadAll = { reloadAll() }
     val updateBlur = { updateBlur() }
     val recreate = { recreate() }
 
-    val idp get() = InvariantDeviceProfile.INSTANCE.get(mContext)
+    val idp: InvariantDeviceProfile get() = InvariantDeviceProfile.INSTANCE.get(mContext)
     val reloadIcons = { idp.onPreferencesChanged(context) }
+    val reloadGrid: () -> Unit = { idp.onPreferencesChanged(context) }
 
     private fun createPreferences(): SharedPreferences {
         val dir = mContext.cacheDir.parent

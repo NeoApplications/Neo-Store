@@ -134,6 +134,7 @@ public class InvariantDeviceProfile {
      * Number of columns in the all apps list.
      */
     public int numAllAppsColumns;
+    public int numAllAppsColumnsOriginal;
     public int numDatabaseAllAppsColumns;
 
     /**
@@ -176,6 +177,7 @@ public class InvariantDeviceProfile {
         numShownHotseatIcons = p.numShownHotseatIcons;
         numDatabaseHotseatIcons = p.numDatabaseHotseatIcons;
         numAllAppsColumns = p.numAllAppsColumns;
+        numAllAppsColumnsOriginal = p.numAllAppsColumns;
         numDatabaseAllAppsColumns = p.numDatabaseAllAppsColumns;
         isScalable = p.isScalable;
         devicePaddingId = p.devicePaddingId;
@@ -347,6 +349,7 @@ public class InvariantDeviceProfile {
                 ? closestProfile.numDatabaseHotseatIcons : closestProfile.numHotseatIcons;
 
         numAllAppsColumns = closestProfile.numAllAppsColumns;
+        numAllAppsColumnsOriginal = closestProfile.numAllAppsColumns;
         numDatabaseAllAppsColumns = isSplitDisplay
                 ? closestProfile.numDatabaseAllAppsColumns : closestProfile.numAllAppsColumns;
 
@@ -648,7 +651,7 @@ public class InvariantDeviceProfile {
         private final int numFolderRows;
         private final int numFolderColumns;
 
-        private final int numAllAppsColumns;
+        public final int numAllAppsColumns;
         private final int numDatabaseAllAppsColumns;
         private final int numHotseatIcons;
         private final int numDatabaseHotseatIcons;

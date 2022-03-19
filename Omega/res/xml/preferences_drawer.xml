@@ -66,6 +66,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/cat_drawer_grid">
+
+        <com.saggitt.omega.preferences.custom.DrawerGridPreference
+            android:key="pref_drawer_grid_size"
+            android:title="@string/title__drawer_columns"
+            android:defaultValue="5"
+            app:iconSpaceReserved="false" />
+
         <com.saggitt.omega.preferences.custom.SortAppsPreference
             android:defaultValue="0"
             android:key="pref_sortMode"
