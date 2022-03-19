@@ -40,6 +40,7 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.ui.SelectAppActivity
 import com.saggitt.omega.search.SearchProviderController
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getIcon
 import com.saggitt.omega.util.omegaPrefs
 import org.json.JSONObject
