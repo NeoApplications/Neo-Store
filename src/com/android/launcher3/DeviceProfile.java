@@ -136,6 +136,7 @@ public class DeviceProfile {
     public int folderLabelTextSizePx;
     public int folderIconSizePx;
     public int folderIconOffsetYPx;
+    public int allAppsFolderIconOffsetYPx;
 
     // Folder content
     public int folderCellLayoutBorderSpacingPx;
@@ -685,6 +686,9 @@ public class DeviceProfile {
         // Folder icon
         folderIconSizePx = IconNormalizer.getNormalizedCircleSize(iconSizePx);
         folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
+
+        int AllAppsFolderIconSizePx = IconNormalizer.getNormalizedCircleSize(allAppsIconSizePx);
+        allAppsFolderIconOffsetYPx = (allAppsIconSizePx - AllAppsFolderIconSizePx) / 2;
     }
 
     private void updateAvailableFolderCellDimensions(Resources res) {

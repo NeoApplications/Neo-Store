@@ -28,8 +28,14 @@ class DrawerFolderItem(private val info: DrawerFolderInfo) {
 
     fun getFolderIcon(launcher: Launcher, container: ViewGroup): FolderIcon {
         if (icon == null) {
-            icon = FolderIcon.inflateFolderAndIcon(R.layout.all_apps_folder_icon, launcher,
-                    container, info)
+            icon = FolderIcon.inflateFolderAndIcon(
+                R.layout.all_apps_folder_icon,
+                launcher,
+                container,
+                info
+            )
+            // Ensure the all apps icon height matches the workspace icons in portrait mode.
+            icon!!.layoutParams.height = launcher.deviceProfile.allAppsCellHeightPx + 5
         }
         return icon!!.apply {
             (parent as? ViewGroup)?.removeView(this)

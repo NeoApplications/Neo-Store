@@ -951,6 +951,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
         DeviceProfile grid = mActivity.getDeviceProfile();
         switch (display) {
             case DISPLAY_ALL_APPS:
+            case DISPLAY_DRAWER_FOLDER:
                 return grid.allAppsIconSizePx;
             case DISPLAY_WORKSPACE:
             case DISPLAY_FOLDER:
