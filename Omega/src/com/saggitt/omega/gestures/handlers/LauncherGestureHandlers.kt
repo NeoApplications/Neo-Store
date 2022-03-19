@@ -30,7 +30,6 @@ import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.android.launcher3.anim.AnimatorListeners
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.widget.picker.WidgetsFullSheet
@@ -68,11 +67,7 @@ open class OpenDrawerGestureHandler(context: Context, config: JSONObject?) :
     }
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
-        controller.launcher.stateManager.goToState(
-            LauncherState.ALL_APPS,
-            true,
-            AnimatorListeners.forEndCallback(getOnCompleteRunnable(controller))
-        )
+        controller.launcher.stateManager.goToState(LauncherState.ALL_APPS)
     }
 
     open fun getOnCompleteRunnable(controller: GestureController): Runnable? {
