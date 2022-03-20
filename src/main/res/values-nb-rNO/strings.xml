@@ -7,11 +7,11 @@
     <string name="author_website">Utviklerens nettside</string>
     <string name="changelog">Endringslogg</string>
     <string name="cant_edit_sync_DESC">Kan ikke redigere pakkebrønner som synkroniseres …</string>
-    <string name="checking_repository">Sjekker pakkebrønn</string>
+    <string name="checking_repository">Sjekker pakkebrønn…</string>
     <string name="compiled_for_debugging">Kompilert for avlusing</string>
     <string name="confirmation">Bekreftelse</string>
     <string name="could_not_download_FORMAT">Kunne ikke laste ned %s</string>
-    <string name="connecting">Kobler til</string>
+    <string name="connecting">Kobler til…</string>
     <string name="contains_non_free_media">Inneholder ufri media</string>
     <string name="delete_repository_DESC">Vil du slette pakkebrønnen\?</string>
     <string name="downloaded_FORMAT">Lastet ned %s</string>
@@ -51,7 +51,7 @@
     <string name="permissions">Tilganger</string>
     <string name="plus_more_FORMAT">+%d til</string>
     <string name="settings">Innstillinger</string>
-    <string name="processing_FORMAT">Behandler %1$s</string>
+    <string name="processing_FORMAT">Behandler %1$s…</string>
     <string name="promotes_non_free_network_services">Promoterer ufrie nettverkstjenester</string>
     <string name="provided_by_FORMAT">Tilbudt av %s</string>
     <string name="proxy_host">Mellomtjenervert</string>
@@ -94,12 +94,12 @@
     <string name="version_FORMAT">Versjon %s</string>
     <string name="waiting_to_start_download">Starter nedlasting …</string>
     <string name="action_failed">Handlingen mislyktes</string>
-    <string name="all_applications_up_to_date">Alt er av nyeste dato</string>
+    <string name="all_applications_up_to_date">Alle apps er oppdatert</string>
     <string name="launch">Kjør</string>
     <string name="notify_about_updates_summary">Vis en merknad når nye versjoner er tilgjengelig</string>
     <string name="add_repository">Legg til pakkebrønn</string>
     <string name="credits">Bidragsytere</string>
-    <string name="downloading_FORMAT">Laster ned %s</string>
+    <string name="downloading_FORMAT">Laster ned %s…</string>
     <string name="network_error_DESC">Nettverksfeil.</string>
     <string name="no_proxy">Ingen mellomtjener</string>
     <string name="only_on_wifi">Kun på Wi-Fi</string>
@@ -125,7 +125,7 @@
     <string name="project_website">Prosjektnettside</string>
     <string name="unknown">Ukjent</string>
     <string name="username_missing">Brukernavn mangler</string>
-    <string name="all_applications">Alle</string>
+    <string name="all_applications">Alle Apper</string>
     <string name="bug_tracker">Feilsporer</string>
     <string name="cancel">Avbryt</string>
     <string name="install">Installer</string>
@@ -178,9 +178,10 @@
     <string name="sort_filter">Sorter og filtrer</string>
     <string name="new_applications">Nye programmer</string>
     <string name="only_on_wifi_and_battery">Kun på Wi-Fi tilkoblet lader</string>
-    <string name="install_after_sync_summary">Installerer programoppgraderinger automatisk etter synkronisering av pakkebrønner</string>
-    <string name="install_after_sync">Installer oppgraderinger automatisk</string>
+    <string name="install_after_sync_summary">Installer automatisk appoppdateringer etter synkronisering av repositorier</string>
+    <string name="install_after_sync">Installer oppdateringer automatisk</string>
     <string name="prefs_updated_apps">Antall oppdaterte programmer å vise</string>
     <string name="prefs_new_apps">Antall nye programmer å vise</string>
     <string name="new_repository">Ny pakkebrønn</string>
+    <string name="default_tab">Standard Fane</string>
 </resources>
