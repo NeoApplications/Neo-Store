@@ -182,4 +182,6 @@
     <string name="install_after_sync_summary">Alkalmazásfrissítések automatikus telepítése a tárolók szinkronizálása után</string>
     <string name="prefs_updated_apps">Megjelenítendő frissített alkalmazások száma</string>
     <string name="prefs_new_apps">Megjelenítendő új alkalmazások száma</string>
+    <string name="new_repository">Új tárolóhely</string>
+    <string name="default_tab">Alapértelmezett lap</string>
 </resources>
