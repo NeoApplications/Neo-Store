@@ -74,7 +74,7 @@
     <string name="links">Linkit</string>
     <string name="list_animation">Lista-animaatiot</string>
     <string name="list_animation_description">Animoi lista pääsivulla</string>
-    <string name="merging_FORMAT">Yhdistäminen %s</string>
+    <string name="merging_FORMAT">Yhdistetään %s</string>
     <string name="name">Nimi</string>
     <string name="network_error_DESC">Verkkovirhe.</string>
     <string name="never">Ei koskaan</string>
@@ -109,7 +109,7 @@
     <string name="permissions">Käyttöoikeudet</string>
     <string name="plus_more_FORMAT">+%d lisää</string>
     <string name="settings">Asetukset</string>
-    <string name="processing_FORMAT">Käsitellään kohdetta %1$s…</string>
+    <string name="processing_FORMAT">Käsittely %1$s…</string>
     <string name="project_website">Verkkosivusto</string>
     <string name="promotes_non_free_network_services">Edistää ei-vapaita verkkopalveluja</string>
     <string name="search">Haku</string>
@@ -177,7 +177,7 @@
     <string name="latest">Uusimmat</string>
     <string name="sort_filter">Lajittele ja suodata</string>
     <string name="new_applications">Uudet sovellukset</string>
-    <string name="prefs_updated_apps">Näytettävä päivitettyjen sovellusten määrä</string>
+    <string name="prefs_updated_apps">Näytettävien päivitettyjen sovellusten määrä</string>
     <string name="prefs_new_apps">Näytettävä uusien sovellusten määrä</string>
     <string name="new_repository">Uusi tietovarasto</string>
     <string name="only_on_wifi_and_battery">Vain Wi-Fiin yhdistettynä ja latauksessa</string>
