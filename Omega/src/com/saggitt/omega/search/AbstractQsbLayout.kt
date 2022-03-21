@@ -49,7 +49,6 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
 
-
 abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs), SearchProviderController.OnProviderChangeListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -96,7 +95,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             if (searchProvider.supportsVoiceSearch) {
                 if (searchProvider.supportsAssistant) {
                     val assistantIcon: Drawable? = searchProvider.assistantIcon
-                    assistantIcon?.setTint(prefs.accentColor)
                     setImageDrawable(assistantIcon)
                     setOnClickListener {
                         searchProvider.startAssistant { intent -> mContext.startActivity(intent) }
