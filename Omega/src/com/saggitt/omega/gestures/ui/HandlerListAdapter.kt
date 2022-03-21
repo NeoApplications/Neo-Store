@@ -50,7 +50,6 @@ class HandlerListAdapter(
 
         val text = itemView.findViewById<CheckedTextView>(android.R.id.text1)!!.apply {
             setOnClickListener(this@Holder)
-            // TODO applyAccent()
         }
 
         override fun onClick(v: View) {

@@ -19,10 +19,8 @@ package com.saggitt.omega.gestures.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
 import com.android.launcher3.util.ActivityTracker
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.gestures.BlankGestureHandler
@@ -32,10 +30,7 @@ import com.saggitt.omega.gestures.OmegaShortcutActivity
 
 class RunHandlerActivity : AppCompatActivity() {
     private val fallback by lazy { BlankGestureHandler(this, null) }
-    private val launcher
-        get() = (LauncherAppState.getInstance(this).launcher as? OmegaLauncher)
-    private val controller
-        get() = launcher?.gestureController
+    private val launcher = OmegaLauncher.getLauncher(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,22 +49,20 @@ class RunHandlerActivity : AppCompatActivity() {
                             .setPackage(packageName)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     RunHandlerActivityTracker(handler).addToIntent(homeIntent)
+                    Log.d("RunHandlerActivity", "Abriendo actividad...")
                     startActivity(homeIntent)
                 } else {
                     triggerGesture(handler)
                 }
             }
         } else if (intent.action == Intent.ACTION_ASSIST || intent.action == Intent.ACTION_SEARCH_LONG_PRESS) {
-            controller?.onLaunchAssistant()
+            launcher.gestureController.onLaunchAssistant()
         }
         finish()
     }
 
-    private fun triggerGesture(handler: GestureHandler) = if (controller != null) {
-        handler.onGestureTrigger(controller!!)
-    } else {
-        Toast.makeText(this.applicationContext, R.string.failed, Toast.LENGTH_LONG).show()
-    }
+    private fun triggerGesture(handler: GestureHandler) =
+        handler.onGestureTrigger(launcher.gestureController)
 
     class RunHandlerActivityTracker(private val handler: GestureHandler) :
         ActivityTracker.SchedulerCallback<OmegaLauncher> {

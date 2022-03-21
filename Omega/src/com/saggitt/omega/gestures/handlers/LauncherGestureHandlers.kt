@@ -56,7 +56,7 @@ open class OpenDrawerGestureHandler(context: Context, config: JSONObject?) :
             R.drawable.ic_apps
         )
     }
-    override val requiresForeground = true
+    override val requiresForeground = false
 
     private fun getNameRes(): Int {
         return if (SysUINavigationMode.INSTANCE.get(context).mode == SysUINavigationMode.Mode.NO_BUTTON) {
@@ -90,7 +90,7 @@ class OpenWidgetsGestureHandler(context: Context, config: JSONObject?) :
             R.drawable.ic_widget
         )
     }
-    override val requiresForeground = true
+    override val requiresForeground = false
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         WidgetsFullSheet.show(controller.launcher, true)
@@ -117,7 +117,7 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
     private val searchProvider get() = SearchProviderController.getInstance(context).searchProvider
     override val displayName: String = context.getString(R.string.action_global_search)
     override val icon: Drawable? by lazy { searchProvider.icon }
-    override val requiresForeground = true
+    override val requiresForeground = false
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         searchProvider.startSearch {
@@ -138,6 +138,7 @@ class StartAppSearchGestureHandler(context: Context, config: JSONObject?) :
     OpenDrawerGestureHandler(context, config) {
 
     override val displayName: String = context.getString(R.string.action_app_search)
+    override val requiresForeground = false
     override val iconResource: Intent.ShortcutIconResource
             by lazy {
                 Intent.ShortcutIconResource.fromContext(
@@ -327,9 +328,10 @@ class OpenOverviewGestureHandler(context: Context, config: JSONObject?) :
             R.drawable.ic_drag_handle
         )
     }
-    override val requiresForeground = true
+    override val requiresForeground = false
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
+        Log.d("OpenOverviewGestureHandler", "onGestureTrigger from $view")
         if (context.omegaPrefs.usePopupMenuView) {
             OptionsPopupView.showDefaultOptions(
                 controller.launcher,
