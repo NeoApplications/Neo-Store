@@ -66,7 +66,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "OmegaLauncher_v${variant.versionName}_build_${variant.versionCode}.apk"
+            outputFileName = "NeoLauncher_v${variant.versionName}_build_${variant.versionCode}.apk"
         }
         resValue("string", "launcher_component", "${applicationId}/com.saggitt.omega.OmegaLauncher")
     }
