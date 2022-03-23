@@ -20,7 +20,6 @@
     android:height="38dp"
     android:viewportWidth="32"
     android:viewportHeight="32">
-
     <path
         android:fillAlpha="0.20"
         android:fillColor="?colorAccent"

@@ -64,11 +64,11 @@ fun ItemLink(
         )
         Spacer(modifier = Modifier.requiredHeight(4.dp))
         Text(
-                text = label,
-                style = MaterialTheme.typography.body2,
-                color = OmegaTheme.colors.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+            text = label,
+            style = MaterialTheme.typography.body2,
+            color = OmegaTheme.colors.textPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

@@ -49,21 +49,21 @@ fun ContributorRow(
     val context = LocalContext.current
 
     PreferenceItem(
-            title = {
-                Text(text = contributorName, color = OmegaTheme.colors.textPrimary)
+        title = {
+            Text(text = contributorName, color = OmegaTheme.colors.textPrimary)
+        },
+        modifier = Modifier
+            .clickable {
+                val webpage = Uri.parse(url)
+                val intent = Intent(Intent.ACTION_VIEW, webpage)
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                }
             },
-            modifier = Modifier
-                    .clickable {
-                        val webpage = Uri.parse(url)
-                        val intent = Intent(Intent.ACTION_VIEW, webpage)
-                        if (intent.resolveActivity(context.packageManager) != null) {
-                            context.startActivity(intent)
-                        }
-                    },
-            description = {
-                Text(
+        description = {
+            Text(
                 text = contributorRole,
-                        color = OmegaTheme.colors.textSecondary
+                color = OmegaTheme.colors.textSecondary
             )
         },
         startWidget = {
