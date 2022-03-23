@@ -39,8 +39,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="end|center"
         android:clipToPadding="false"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
         android:orientation="horizontal"
         tools:ignore="RtlSymmetry">
 
