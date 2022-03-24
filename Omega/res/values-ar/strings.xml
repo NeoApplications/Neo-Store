@@ -441,4 +441,6 @@
     <string name="backup_delete_failed">حدث خطأ ما</string>
     <string name="backup_name">اسم النسخة الاحتياطية</string>
     <string name="permission_denied">تم رفض إذن القراءة!</string>
+    <string name="summary_all_apps_search">إظهار شريط البحث</string>
+    <string name="summary_app_suggestions">لجميع التطبيقات والشاشة الرئيسية</string>
 </resources>
