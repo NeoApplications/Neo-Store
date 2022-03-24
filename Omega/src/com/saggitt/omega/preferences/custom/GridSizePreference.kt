@@ -10,7 +10,7 @@ import com.saggitt.omega.util.JavaField
 
 class GridSizePreference(context: Context, attrs: AttributeSet?) :
     DialogPreference(context, attrs) {
-    val gridSize = Utilities.getOmegaPrefs(context).gridSize
+    val gridSize = Utilities.getOmegaPrefs(context).desktopGridSize
     val defaultSize by lazy { Pair(gridSize.numRowsOriginal, gridSize.numColumnsOriginal) }
 
     init {

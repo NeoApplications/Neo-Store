@@ -62,13 +62,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     }
 
     // DESKTOP
-    private var gridSizeDelegate = ResettableLazy {
+    private var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
             this, PREFS_ROWS, PREFS_COLUMNS,
-            LauncherAppState.getIDP(context), recreate
+            LauncherAppState.getIDP(context), reloadIcons
         )
     }
-    val gridSize by gridSizeDelegate
+    val desktopGridSize by desktopGridSizeDelegate
     val workspaceColumns = IdpIntPref("pref_${PREFS_COLUMNS}", { numColumns }, reloadGrid)
     val workspaceRows = IdpIntPref("pref_${PREFS_ROWS}", { numRows }, reloadGrid)
 
@@ -114,7 +114,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, recreate)
     var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
     private val dockGridSizeDelegate = ResettableLazy {
-        GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), recreate)
+        GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), reloadIcons)
     }
     val dockGridSize by dockGridSizeDelegate
     val numHotseatIcons = IdpIntPref("pref_numHotseatIcons", { numHotseatIcons }, reloadGrid)
@@ -147,12 +147,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     val drawerLayout by StringIntPref("pref_drawer_layout", 0, recreate)
     private val drawerGridSizeDelegate = ResettableLazy {
-        GridSize(
-            this,
-            "numAllAppsColumns",
-            LauncherAppState.getIDP(context),
-            recreate
-        )
+        GridSize(this, "numAllAppsColumns", LauncherAppState.getIDP(context), reloadIcons)
     }
     val drawerGridSize by drawerGridSizeDelegate
 

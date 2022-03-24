@@ -21,6 +21,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 
 abstract class SingleGridSizePreference(
     context: Context,
@@ -49,3 +50,9 @@ abstract class SingleGridSizePreference(
 
     override fun getDialogLayoutResource() = R.layout.preference_grid_size
 }
+
+class DrawerGridPreference(context: Context, attrs: AttributeSet?) :
+    SingleGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).drawerGridSize)
+
+class DockGridPreference(context: Context, attrs: AttributeSet?) :
+    SingleGridSizePreference(context, attrs, Utilities.getOmegaPrefs(context).dockGridSize)
