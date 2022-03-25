@@ -255,7 +255,7 @@ private val links = listOf(
     Link(
         iconResId = R.drawable.ic_github,
         labelResId = R.string.about_source,
-        url = "https://github.com/otakuhqz/Omega"
+        url = "https://github.com/NeoApplications/Neo-Launcher"
     ),
     Link(
         iconResId = R.drawable.ic_channel,
@@ -274,7 +274,7 @@ private val contributors = listOf(
         name = R.string.author,
         descriptionRes = R.string.author_role,
         photoUrl = "https://avatars.githubusercontent.com/u/6044050",
-        webpage = "https://github.com/otakuhqz"
+        webpage = "https://github.com/saulhdev"
     ),
     TeamMember(
         name = R.string.contributor1,
