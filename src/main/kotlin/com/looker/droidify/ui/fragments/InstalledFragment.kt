@@ -56,7 +56,7 @@ class InstalledFragment : MainNavFragmentX() {
                     }
                 ) {
                     Scaffold { _ ->
-                        ProductsVerticalRecycler(it, repositories,
+                        ProductsVerticalRecycler(it.sortedBy(Product::name), repositories,
                             onUserClick = { item ->
                                 AppSheetX(item.packageName)
                                     .showNow(parentFragmentManager, "Product ${item.packageName}")
