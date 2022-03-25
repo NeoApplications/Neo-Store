@@ -119,7 +119,7 @@ object Utils {
     fun Context.setLanguage(): Configuration {
         var setLocalCode = Preferences[Preferences.Key.Language]
         if (setLocalCode == PREFS_LANGUAGE_DEFAULT) {
-            setLocalCode = Locale.getDefault().language
+            setLocalCode = Locale.getDefault().toString()
         }
         val config = resources.configuration
         val sysLocale = if (Android.sdk(24)) config.locales[0] else config.locale
