@@ -18,15 +18,15 @@
 
 package com.saggitt.omega.util
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
-import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.RectF
@@ -44,13 +44,10 @@ import android.util.Property
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
@@ -58,12 +55,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
-import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
-import com.android.systemui.shared.system.QuickStepContract
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
@@ -76,19 +70,6 @@ import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
 // TODO break into specialised files/classes
-
-fun AlertDialog.applyAccent() {
-    val color = Utilities.getOmegaPrefs(context).accentColor
-    val buttons = listOf(
-        getButton(DialogInterface.BUTTON_NEGATIVE),
-        getButton(DialogInterface.BUTTON_NEUTRAL),
-        getButton(DialogInterface.BUTTON_POSITIVE)
-    )
-    buttons.forEach {
-        it?.setTextColor(color)
-    }
-}
-
 @Suppress("UNCHECKED_CAST")
 class JavaField<T>(
     private val targetObject: Any,
@@ -148,7 +129,6 @@ fun openPopupMenu(view: View, rect: RectF?, vararg items: OptionsPopupView.Optio
     )
 }
 
-
 fun createRipplePill(context: Context, color: Int, radius: Float): Drawable {
     return RippleDrawable(
         ContextCompat.getColorStateList(context, R.color.focused_background)!!,
@@ -182,7 +162,6 @@ fun runOnThread(handler: Handler, r: () -> Unit) {
     }
 }
 
-
 inline fun <T> Iterable<T>.safeForEach(action: (T) -> Unit) {
     val tmp = ArrayList<T>()
     tmp.addAll(this)
@@ -195,20 +174,6 @@ var View.isVisible: Boolean
         visibility = if (value) View.VISIBLE else View.GONE
     }
 
-fun ImageView.tintDrawable(color: Int) {
-    val drawable = drawable.mutate()
-    drawable.setTint(color)
-    setImageDrawable(drawable)
-}
-
-fun GradientDrawable.getCornerRadiiCompat(): FloatArray? {
-    return try {
-        cornerRadii
-    } catch (e: NullPointerException) {
-        null
-    }
-}
-
 inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
     val count = childCount
     for (i in (0 until count).reversed()) {
@@ -218,60 +183,6 @@ inline fun ViewGroup.forEachChildReversedIndexed(action: (View, Int) -> Unit) {
 
 inline fun ViewGroup.forEachChildReversed(action: (View) -> Unit) {
     forEachChildReversedIndexed { view, _ -> action(view) }
-}
-
-@SuppressLint("PrivateResource")
-fun Switch.applyColor(color: Int) {
-    val colorForeground = Themes.getAttrColor(context, android.R.attr.colorForeground)
-    val alphaDisabled = Themes.getAlpha(context, android.R.attr.disabledAlpha)
-    val switchThumbNormal =
-        context.resources.getColor(
-            R.color.switch_thumb_normal_material_light,
-            null
-        )
-    val switchThumbDisabled =
-        context.resources.getColor(
-            R.color.switch_thumb_disabled_material_light,
-            null
-        )
-    val thstateList = ColorStateList(
-        arrayOf(
-            intArrayOf(-android.R.attr.state_enabled),
-            intArrayOf(android.R.attr.state_checked),
-            intArrayOf()
-        ),
-        intArrayOf(
-            switchThumbDisabled,
-            color,
-            switchThumbNormal
-        )
-    )
-    val trstateList = ColorStateList(
-        arrayOf(
-            intArrayOf(-android.R.attr.state_enabled),
-            intArrayOf(android.R.attr.state_checked),
-            intArrayOf()
-        ),
-        intArrayOf(
-            ColorUtils.setAlphaComponent(colorForeground, alphaDisabled),
-            color,
-            colorForeground
-        )
-    )
-    DrawableCompat.setTintList(thumbDrawable, thstateList)
-    DrawableCompat.setTintList(trackDrawable, trstateList)
-}
-
-fun Button.applyColor(color: Int) {
-    val rippleColor = ColorStateList.valueOf(ColorUtils.setAlphaComponent(color, 31))
-    background?.let {
-        (it as RippleDrawable).setColor(rippleColor)
-        DrawableCompat.setTint(background, color)
-    }
-    val tintList = ColorStateList.valueOf(color)
-    if (this is RadioButton) {
-        buttonTintList = tintList
-    }
 }
 
 fun String.toTitleCase(): String = splitToSequence(" ").map {
@@ -339,7 +250,6 @@ fun StatusBarNotification.loadSmallIcon(context: Context): Drawable? {
 
 operator fun PreferenceGroup.get(index: Int): Preference = getPreference(index)
 
-val Configuration.usingNightMode get() = uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
 fun Int.hasFlags(vararg flags: Int): Boolean {
     return flags.all { hasFlag(it) }
@@ -362,7 +272,6 @@ fun Int.setFlag(flag: Int, value: Boolean): Int {
         removeFlag(flag)
     }
 }
-
 
 inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
     val count = childCount
@@ -392,9 +301,7 @@ fun View.runOnAttached(runnable: Runnable) {
 
 fun Float.ceilToInt() = ceil(this).toInt()
 
-val Int.luminance get() = ColorUtils.calculateLuminance(this)
 
-val Int.isDark get() = luminance < 0.5f
 
 fun dpToPx(size: Float): Float {
     return TypedValue.applyDimension(
@@ -407,7 +314,6 @@ fun dpToPx(size: Float): Float {
 fun pxToDp(size: Float): Float {
     return size / dpToPx(1f)
 }
-
 
 fun JSONObject.asMap() = JSONMap(this)
 fun JSONObject.getNullable(key: String): Any? {
@@ -430,21 +336,6 @@ fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
 
 val Long.Companion.random get() = Random.nextLong()
 
-fun getWindowCornerRadius(context: Context): Float {
-    val prefs = Utilities.getOmegaPrefs(context)
-    if (prefs.customWindowCorner) {
-        return prefs.windowCornerRadius
-    }
-    return QuickStepContract.getWindowCornerRadius(context.resources)
-}
-
-fun supportsRoundedCornersOnWindows(context: Context): Boolean {
-    val pref = Utilities.getOmegaPrefs(context)
-    if (!Utilities.ATLEAST_R || pref.customWindowCorner) {
-        return true
-    }
-    return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)
-}
 
 val ViewGroup.recursiveChildren: Sequence<View>
     get() = children.flatMap {

@@ -52,7 +52,7 @@ import com.android.quickstep.SysUINavigationMode.Mode;
 import com.android.quickstep.util.MotionPauseDetector;
 import com.android.quickstep.util.NavBarPosition;
 import com.android.quickstep.util.TriggerSwipeUpTouchTracker;
-import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.ThemeExtensionsKt;
 
 /**
  * Utility class to handle Home and Assistant gestures.
@@ -122,7 +122,7 @@ public class NavBarGestureHandler implements OnTouchListener,
         mAssistantGestureDetector = new GestureDetector(context, new AssistantGestureListener());
         int assistantWidth = resources.getDimensionPixelSize(R.dimen.gestures_assistant_width);
         final float assistantHeight = Math.max(mBottomGestureHeight,
-                OmegaUtilsKt.getWindowCornerRadius(context));
+                ThemeExtensionsKt.getWindowCornerRadius(context));
         mAssistantLeftRegion.bottom = mAssistantRightRegion.bottom = mDisplaySize.y;
         mAssistantLeftRegion.top = mAssistantRightRegion.top = mDisplaySize.y - assistantHeight;
         mAssistantLeftRegion.left = 0;

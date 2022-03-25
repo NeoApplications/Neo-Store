@@ -20,13 +20,13 @@ import android.content.res.Resources;
 
 import com.android.launcher3.R;
 import com.android.launcher3.util.Themes;
-import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.ThemeExtensionsKt;
 
 public class TaskCornerRadius {
 
     public static float get(Context context) {
         Resources resources = context.getResources();
-        if (!OmegaUtilsKt.supportsRoundedCornersOnWindows(context)) {
+        if (!ThemeExtensionsKt.supportsRoundedCornersOnWindows(context)) {
             return resources.getDimension(R.dimen.task_corner_radius_small);
         }
 

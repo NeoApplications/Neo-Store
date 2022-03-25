@@ -35,7 +35,7 @@ import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.quickstep.util.RecentsOrientedState;
 import com.android.systemui.shared.system.TaskStackChangeListener;
 import com.android.systemui.shared.system.TaskStackChangeListeners;
-import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.ThemeExtensionsKt;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -146,7 +146,7 @@ public class RotationTouchHelper implements
         mDisplayId = mDisplayController.getInfo().id;
 
         mOrientationTouchTransformer = new OrientationTouchTransformer(resources, mMode,
-                () -> OmegaUtilsKt.getWindowCornerRadius(mContext));
+                () -> ThemeExtensionsKt.getWindowCornerRadius(mContext));
 
         // Register for navigation mode changes
         SysUINavigationMode.Mode newMode = mSysUiNavMode.addModeChangeListener(this);
