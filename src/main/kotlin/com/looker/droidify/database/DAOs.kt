@@ -280,6 +280,9 @@ interface InstalledDao : BaseDao<Installed> {
 
     @Query("DELETE FROM memory_installed WHERE package_name = :packageName")
     fun delete(packageName: String)
+
+    @Query("DELETE FROM memory_installed")
+    fun emptyTable()
 }
 
 @Dao

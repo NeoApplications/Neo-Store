@@ -66,6 +66,7 @@ class MainApplication : Application(), ImageLoaderFactory {
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem() }
         CoroutineScope(Dispatchers.Default).launch {
+            db.installedDao.emptyTable()
             db.installedDao.put(*installedItems.toTypedArray())
         }
     }
