@@ -31,9 +31,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.R
-import com.android.launcher3.util.Themes
 import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.theme.OmegaAppTheme
+import com.saggitt.omega.util.Config
 
 @ExperimentalCoilApi
 class AboutFragment : Fragment() {
@@ -42,11 +42,11 @@ class AboutFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val themeColor = Config.getCurrentTheme(requireContext())
 
-        val isDark = Themes.getAttrBoolean(requireActivity(), R.attr.isMainColorDark)
         return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
             findViewById<ComposeView>(R.id.base_compose_view).setContent {
-                OmegaAppTheme(isDark) {
+                OmegaAppTheme(themeColor) {
                     AboutNavController(requireActivity())
                 }
             }

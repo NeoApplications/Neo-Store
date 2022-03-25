@@ -59,6 +59,7 @@ import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.OmegaTheme
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.recreate
 
 class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -70,8 +71,9 @@ class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
         binding = FragmentIconPackBinding.inflate(inflater, container, false)
         binding.installedPacks.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            val themeColor = Config.getCurrentTheme(requireContext())
             setContent {
-                OmegaAppTheme {
+                OmegaAppTheme(themeColor) {
                     IconPackList()
                 }
             }

@@ -45,7 +45,7 @@
         <item>18</item> <!-- 10010 -->
         <item>0</item>  <!-- 00000 -->
         <item>1</item>  <!-- 00001 -->
-        <item>3</item>  <!-- 00011 -->
+        <item>2</item>  <!-- 00010 -->
     </string-array>
 
     <integer-array name="theme_colors">

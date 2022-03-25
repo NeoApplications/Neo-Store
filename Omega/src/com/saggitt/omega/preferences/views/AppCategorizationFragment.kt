@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.FragmentAppCategorizationBinding
-import com.android.launcher3.util.Themes
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFoldersAdapter
 import com.saggitt.omega.groups.DrawerTabsAdapter
@@ -39,6 +38,7 @@ import com.saggitt.omega.groups.ui.AppCategorizationItem
 import com.saggitt.omega.groups.ui.AppGroupsAdapter
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.theme.OmegaAppTheme
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.applyColor
 
 class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChangeListener {
@@ -72,11 +72,11 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     ): View {
         binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
 
-        val isDark = Themes.getAttrBoolean(mContext, R.attr.isMainColorDark)
+        val themeColor = Config.getCurrentTheme(requireContext())
         binding.categorizationType.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                OmegaAppTheme(isDark) {
+                OmegaAppTheme(themeColor) {
                     AppCategorizationItem()
                 }
             }

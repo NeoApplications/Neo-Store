@@ -18,18 +18,28 @@
 
 package com.saggitt.omega.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import com.saggitt.omega.util.Config
 
 // TODO create working themes parallel to the xml ones
 @Composable
 fun OmegaAppTheme(
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    themeColor: Int = Config.THEME_LIGHT,
     content: @Composable () -> Unit
 ) {
-    val colors = if (isDarkTheme) darkColorPalette else lightColorPalette
+    val colors = when (themeColor) {
+        Config.THEME_BLACK -> {
+            blackColorPalette
+        }
+        Config.THEME_DARK -> {
+            darkColorPalette
+        }
+        else -> {
+            lightColorPalette
+        }
+    }
     ProvideOmegaColors(colors) {
         MaterialTheme(
             content = content
@@ -61,14 +71,23 @@ private val lightColorPalette = OmegaColors(
     dividerLine = Grey300
 )
 
+private val blackColorPalette = OmegaColors(
+    surface = Black,
+    border = Grey900,
+    primary = IndigoA100,
+    textPrimary = Grey100,
+    textSecondary = Grey200,
+    dividerLine = Grey600
+)
+
 @Stable
 class OmegaColors(
-        surface: Color,
-        border: Color,
-        primary: Color,
-        textPrimary: Color,
-        textSecondary: Color,
-        dividerLine: Color
+    surface: Color,
+    border: Color,
+    primary: Color,
+    textPrimary: Color,
+    textSecondary: Color,
+    dividerLine: Color
 ) {
     var surface by mutableStateOf(surface)
         private set

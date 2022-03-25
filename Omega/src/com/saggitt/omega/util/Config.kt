@@ -41,6 +41,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.allapps.CustomAppFilter
+import com.saggitt.omega.theme.ThemeManager
 import java.util.*
 
 class Config(val context: Context) {
@@ -96,6 +97,11 @@ class Config(val context: Context) {
         //APP DRAWER LAYOUT MODE
         const val DRAWER_VERTICAL = 0
         const val DRAWER_PAGED = 1
+
+        //COMPOSE THEME COLORS
+        const val THEME_LIGHT = 0
+        const val THEME_DARK = 1
+        const val THEME_BLACK = 2
 
         val ICON_INTENTS = arrayOf(
             Intent("com.novalauncher.THEME"),
@@ -218,15 +224,23 @@ class Config(val context: Context) {
             val appFilter = CustomAppFilter(context)
             val predefined = PLACE_HOLDERS
                     .filter { PackageManagerHelper(context).isAppInstalled(it, user) }
-                    .mapNotNull { launcherApps.getActivityList(it, user).firstOrNull() }
-                    .asSequence()
+                .mapNotNull { launcherApps.getActivityList(it, user).firstOrNull() }
+                .asSequence()
             val randomized = launcherApps.getActivityList(null, Process.myUserHandle())
-                    .asSequence()
+                .asSequence()
             return (predefined + randomized)
-                    .filter { appFilter.shouldShowApp(it.componentName, it.user) }
-                    .take(20)
-                    .map { AppInfo(it, it.user, false) }
-                    .toList()
+                .filter { appFilter.shouldShowApp(it.componentName, it.user) }
+                .take(20)
+                .map { AppInfo(it, it.user, false) }
+                .toList()
         }
+
+        fun getCurrentTheme(context: Context): Int {
+            val theme = Utilities.getOmegaPrefs(context).launcherTheme
+            return if (ThemeManager.isDark(theme)) THEME_DARK
+            else if (ThemeManager.isBlack(theme)) THEME_BLACK
+            else THEME_LIGHT
+        }
+
     }
 }
