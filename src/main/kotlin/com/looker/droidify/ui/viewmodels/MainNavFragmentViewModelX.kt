@@ -32,7 +32,7 @@ class MainNavFragmentViewModelX(
         var mOrder: Order = Order.NAME
         sections.value?.let { if (source.sections) mSections = it }
         order.value?.let { if (source.order) mOrder = it }
-        searchQuery.value?.let { if (source.sections) mSearchQuery = it }
+        searchQuery.value?.let { mSearchQuery = it }
         return when (source) {
             Source.AVAILABLE -> Request.ProductsAll(
                 mSearchQuery,
