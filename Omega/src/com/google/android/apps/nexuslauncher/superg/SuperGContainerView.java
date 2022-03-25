@@ -1,6 +1,6 @@
 package com.google.android.apps.nexuslauncher.superg;
 
-import static com.saggitt.omega.util.OmegaUtilsKt.getColorAttr;
+import static com.saggitt.omega.util.ContextExtensionsKt.getColorAttr;
 
 import android.content.Context;
 import android.content.Intent;

@@ -32,7 +32,6 @@ import com.android.launcher3.R
 import com.android.launcher3.util.Executors
 import com.saggitt.omega.dash.actionprovider.*
 import com.saggitt.omega.dash.controlprovider.*
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
@@ -237,7 +236,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         val text: TextView = itemView.findViewById(android.R.id.text1)
 
         init {
-            text.setTextColor(text.context.getColorAccent())
+            text.setTextColor(text.context.omegaPrefs.accentColor)
         }
 
         override fun bind(item: Item) {

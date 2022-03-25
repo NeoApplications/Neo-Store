@@ -31,7 +31,6 @@ import com.android.launcher3.R
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.smartspace.eventprovider.*
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
@@ -185,7 +184,7 @@ class EventProvidersAdapter(private val context: Context) :
         init {
             itemView.findViewById<TextView>(android.R.id.text1).apply {
                 setText(R.string.enabled_events)
-                setTextColor(context.getColorAccent())
+                setTextColor(context.omegaPrefs.accentColor)
             }
         }
     }
@@ -243,7 +242,7 @@ class EventProvidersAdapter(private val context: Context) :
         val text: TextView = itemView.findViewById(android.R.id.text1)
 
         init {
-            text.setTextColor(text.context.getColorAccent())
+            text.setTextColor(text.context.omegaPrefs.accentColor)
         }
 
         override fun bind(item: Item) {

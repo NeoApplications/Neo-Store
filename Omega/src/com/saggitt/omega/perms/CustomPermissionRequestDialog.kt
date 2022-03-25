@@ -29,8 +29,8 @@ import com.saggitt.omega.omegaApp
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.applyAccent
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
+import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
 
 class CustomPermissionRequestDialog private constructor(
@@ -101,7 +101,7 @@ class CustomPermissionRequestDialog private constructor(
             val binding = PermRequestDialogBinding.inflate(LayoutInflater.from(context))
             binding.message.setText(string)
             binding.icon.setImageResource(icn)
-            binding.icon.tintDrawable(context.getColorAccent())
+            binding.icon.tintDrawable(context.omegaPrefs.accentColor)
             binding.iconInfo.isVisible = explanation != null
             if (explanation != null) {
                 binding.textExplanation.setText(explanation)

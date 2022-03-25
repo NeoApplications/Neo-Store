@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.saggitt.omega.groups.AppGroups
 import com.saggitt.omega.groups.DrawerGroupBottomSheet
-import com.saggitt.omega.util.getColorAccent
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
@@ -45,7 +44,7 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     protected val manager = context.omegaPrefs.appGroupsManager
     protected val items = ArrayList<Item>()
-    protected val accent = context.getColorAccent()
+    protected val accent = context.omegaPrefs.accentColor
     protected abstract val groupsModel: AppGroups<T>
     protected abstract val headerText: Int
 

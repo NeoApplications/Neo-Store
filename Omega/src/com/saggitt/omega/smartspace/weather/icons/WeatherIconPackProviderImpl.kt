@@ -25,7 +25,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.android.launcher3.R
-import com.saggitt.omega.util.getColorAccent
+import com.saggitt.omega.util.omegaPrefs
 
 // See: https://github.com/DvTonder/Sample_icon_set
 class WeatherIconPackProviderImpl(
@@ -34,7 +34,7 @@ class WeatherIconPackProviderImpl(
     private val pack: WeatherIconManager.WeatherIconPack
 ) : WeatherIconManager.IconProvider {
     private val res = context.packageManager.getResourcesForApplication(pkgName)
-    private val tintColor get() = context.getColorAccent()
+    private val tintColor get() = context.omegaPrefs.accentColor
 
     override fun getIcon(which: WeatherIconManager.Icon, night: Boolean): Bitmap {
         val resId = res.getIdentifier(getResName(which, night), "drawable", pkgName)

@@ -407,7 +407,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
                     if (value == null) {
-                        value = context.getColorAccent()
+                        value = context.omegaPrefs.accentColor
                     }
                     colorPicker.setDefaultColorButton(value!!)
                     colorPicker.positiveButton.applyColor(context.omegaPrefs.accentColor)

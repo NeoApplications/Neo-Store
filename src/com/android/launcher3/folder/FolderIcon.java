@@ -92,7 +92,7 @@ import com.saggitt.omega.gestures.RunnableGestureHandler;
 import com.saggitt.omega.gestures.handlers.ViewSwipeUpGestureHandler;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.ContextExtensionsKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -861,7 +861,7 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         mLongPressHelper.onTouchEvent(event);
         // Keep receiving the rest of the events
 
-        Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+        Launcher launcher = ContextExtensionsKt.getLauncherOrNull(getContext());
         if (launcher instanceof OmegaLauncher && mSwipeUpHandler != null) {
             ((OmegaLauncher) launcher).getGestureController()
                     .setSwipeUpOverride(mSwipeUpHandler, event.getDownTime());

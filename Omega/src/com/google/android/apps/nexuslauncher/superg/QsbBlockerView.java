@@ -25,6 +25,7 @@ import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController.WeatherData;
 import com.saggitt.omega.smartspace.SmartSpacePreferencesShortcut;
+import com.saggitt.omega.util.ContextExtensionsKt;
 import com.saggitt.omega.util.OmegaUtilsKt;
 
 import org.jetbrains.annotations.Nullable;
@@ -67,7 +68,7 @@ public class QsbBlockerView extends FrameLayout implements OmegaSmartSpaceContro
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mView != null && mState == 2) {
-            Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+            Launcher launcher = ContextExtensionsKt.getLauncherOrNull(getContext());
             int size;
             if (launcher != null) {
                 DeviceProfile deviceProfile = launcher.getDeviceProfile();

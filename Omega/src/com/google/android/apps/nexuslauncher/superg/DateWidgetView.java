@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
-import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.ContextExtensionsKt;
 
 import java.util.Locale;
 
@@ -54,7 +54,7 @@ public class DateWidgetView extends LinearLayout implements TextWatcher {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Launcher launcher = OmegaUtilsKt.getLauncherOrNull(getContext());
+        Launcher launcher = ContextExtensionsKt.getLauncherOrNull(getContext());
         int marginEnd;
         if (launcher != null) {
             DeviceProfile deviceProfile = Launcher.getLauncher(getContext()).getDeviceProfile();
