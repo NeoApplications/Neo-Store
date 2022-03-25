@@ -123,7 +123,7 @@ object Utils {
         }
         val config = resources.configuration
         val sysLocale = if (Android.sdk(24)) config.locales[0] else config.locale
-        if (setLocalCode != sysLocale.language || setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
+        if (setLocalCode != sysLocale.toString() || setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
             val newLocale = getLocaleOfCode(setLocalCode)
             Locale.setDefault(newLocale)
             config.setLocale(newLocale)
@@ -155,6 +155,10 @@ object Utils {
         localeCode.contains("-r") -> Locale(
             localeCode.substring(0, 2),
             localeCode.substring(4)
+        )
+        localeCode.contains("_") -> Locale(
+            localeCode.substring(0, 2),
+            localeCode.substring(3)
         )
         else -> Locale(localeCode)
     }
