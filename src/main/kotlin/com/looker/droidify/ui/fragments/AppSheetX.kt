@@ -26,7 +26,6 @@ import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
-import com.looker.droidify.screen.ScreenshotsFragment
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.ui.activities.MainActivityX
@@ -115,10 +114,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                     false
                 }
                 val launcherActivities =
-                    if (packageName == requireContext().packageName) {
-                        // Don't allow to launch self
-                        emptyList()
-                    } else {
+                    if (packageName != context?.packageName && context != null) {
                         val packageManager = requireContext().packageManager
                         packageManager
                             .queryIntentActivities(
@@ -144,6 +140,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                                 }
                             }
                             .toList()
+                    } else {
+                        // Don't allow to launch self
+                        emptyList()
                     }
                 Installed(it, isSystem, launcherActivities)
             }
