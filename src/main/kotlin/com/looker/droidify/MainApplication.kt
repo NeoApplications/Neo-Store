@@ -16,6 +16,7 @@ import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.service.Connection
+import com.looker.droidify.service.PackageChangeReciever
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils.setLanguage
@@ -23,7 +24,6 @@ import com.looker.droidify.utility.Utils.toInstalledItem
 import com.looker.droidify.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -54,36 +54,14 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun listenApplications() {
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val packageName =
-                    intent.data?.let { if (it.scheme == "package") it.schemeSpecificPart else null }
-                if (packageName != null) {
-                    when (intent.action.orEmpty()) {
-                        Intent.ACTION_PACKAGE_ADDED,
-                        Intent.ACTION_PACKAGE_REMOVED,
-                        -> {
-                            val packageInfo = try {
-                                packageManager.getPackageInfo(
-                                    packageName,
-                                    Android.PackageManager.signaturesFlag
-                                )
-                            } catch (e: Exception) {
-                                null
-                            }
-                            GlobalScope.launch {
-                                if (packageInfo != null) db.installedDao.put(packageInfo.toInstalledItem())
-                                else db.installedDao.delete(packageName)
-                            }
-                        }
-                    }
-                }
+        registerReceiver(
+            PackageChangeReciever(),
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addDataScheme("package")
             }
-        }, IntentFilter().apply {
-            addAction(Intent.ACTION_PACKAGE_ADDED)
-            addAction(Intent.ACTION_PACKAGE_REMOVED)
-            addDataScheme("package")
-        })
+        )
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem() }
