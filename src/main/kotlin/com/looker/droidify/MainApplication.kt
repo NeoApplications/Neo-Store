@@ -16,7 +16,7 @@ import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.service.Connection
-import com.looker.droidify.service.PackageChangeReciever
+import com.looker.droidify.service.PackageChangedReceiver
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils.setLanguage
@@ -55,10 +55,11 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun listenApplications() {
         registerReceiver(
-            PackageChangeReciever(),
+            PackageChangedReceiver(),
             IntentFilter().apply {
                 addAction(Intent.ACTION_PACKAGE_ADDED)
                 addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
                 addDataScheme("package")
             }
         )

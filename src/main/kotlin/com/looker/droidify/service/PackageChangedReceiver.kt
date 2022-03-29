@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PackageChangeReciever : BroadcastReceiver() {
+class PackageChangedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val db = DatabaseX.getInstance(context)
         val packageName =
@@ -19,6 +19,7 @@ class PackageChangeReciever : BroadcastReceiver() {
             when (intent.action.orEmpty()) {
                 Intent.ACTION_PACKAGE_ADDED,
                 Intent.ACTION_PACKAGE_REMOVED,
+                Intent.ACTION_PACKAGE_REPLACED
                 -> {
                     val packageInfo = try {
                         context.packageManager.getPackageInfo(
@@ -29,7 +30,7 @@ class PackageChangeReciever : BroadcastReceiver() {
                         null
                     }
                     GlobalScope.launch(Dispatchers.IO) {
-                        if (packageInfo != null) db.installedDao.put(packageInfo.toInstalledItem())
+                        if (packageInfo != null) db.installedDao.insertReplace(packageInfo.toInstalledItem())
                         else db.installedDao.delete(packageName)
                     }
                 }
