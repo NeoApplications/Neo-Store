@@ -99,6 +99,15 @@ class MainNavFragmentViewModelX(
                 }
             }
         }
+        if (secondarySource == Source.UPDATES) {
+            secondaryProducts.addSource(db.installedDao.allLive) {
+                viewModelScope.launch {
+                    withContext(Dispatchers.IO) {
+                        secondaryProducts.postValue(db.productDao.queryObject(secondaryRequest))
+                    }
+                }
+            }
+        }
     }
 
     fun setSection(newSection: Section) {

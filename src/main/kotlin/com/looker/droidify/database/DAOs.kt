@@ -272,6 +272,9 @@ interface InstalledDao : BaseDao<Installed> {
         installed.forEach { insertReplace(it) }
     }
 
+    @get:Query("SELECT * FROM memory_installed")
+    val allLive: LiveData<List<Installed>>
+
     @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
     fun get(packageName: String): Installed?
 
