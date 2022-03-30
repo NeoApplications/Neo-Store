@@ -6,4 +6,21 @@
     <string name="title__general_dock">Doc</string>
     <string name="title__general_desktop">Desktop</string>
     <string name="title__general_about">Despre</string>
+    <string name="summary__general_drawer">Personalizare sertar</string>
+    <string name="title_desktop_full_width_widgets">Widgeturi cu lățime completă</string>
+    <string name="summary__general_desktop">Personalizare desktop</string>
+    <string name="summary__general_smartspace">Dată, oră, widget acasă</string>
+    <string name="summary__general_notifications">Număr insignă, culoarea insignei, gesturi</string>
+    <string name="summary__general_advanced">Limbă, copie de rezervă, setare căutare</string>
+    <string name="pref_category__interfaces">Interfață utilizator</string>
+    <string name="pref_category__others">Altele</string>
+    <string name="pref_category__inputs">Gesturi și căutare</string>
+    <string name="title__general_notifications">Gesturi și notificări</string>
+    <string name="default_folder_name">Dosar nou</string>
+    <string name="title__general_smartspace">Widget Acasă</string>
+    <string name="title__general_advanced">Setari avansate</string>
+    <string name="summary__general_theme">Schimbare culori, pachet de pictograme, formă pictograme</string>
+    <string name="title__desktop_grid_size">Dimensiunea grilei</string>
+    <string name="title__desktop_icon_size">Dimensiune pictograme</string>
+    <string name="allow_rotation_blocked_desc">Setarea curentă de afișare nu permite rotirea</string>
 </resources>
