@@ -285,8 +285,8 @@
     </plurals>
     <plurals name="hidden_apps_count">
         <item quantity="one">Skriveno: %1$d</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="few"/>
+        <item quantity="other"/>
     </plurals>
     <string name="trust_apps_no_lock_error">Postavi sigurno zaključavanje ekrana za ograničavanje pristupa programima</string>
     <string name="trust_apps_manager_name">Skriveni i zaštićeni programi</string>
@@ -431,4 +431,10 @@
     <string name="smartspace_preferences">Osobitosti</string>
     <string name="summary_white_only_treatment">Oboji sve pozadine prilagodljivih ikona.</string>
     <string name="backup_location">Mjesto</string>
+    <string name="backup_create_new">Stvori novu sigurnosnu kopiju</string>
+    <string name="backup_name">Ime sigurnosne kopije</string>
+    <string name="summary_all_apps_search">Prikaži traku pretrage</string>
+    <string name="backup_delete_failed">Dogodila se greška</string>
+    <string name="summary_app_suggestions">Za sve programe i početni ekran</string>
+    <string name="permission_denied">Dozvola za čitanje je odbijena!</string>
 </resources>
