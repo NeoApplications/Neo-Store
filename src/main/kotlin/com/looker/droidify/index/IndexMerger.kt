@@ -2,14 +2,12 @@ package com.looker.droidify.index
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.Converters.toByteArray
+import com.looker.droidify.database.Converters.toReleases
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Product
 import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.execWithResult
-import com.looker.droidify.utility.extension.json.Json
-import com.looker.droidify.utility.extension.json.collectNotNull
-import com.looker.droidify.utility.extension.json.writeDictionary
 import java.io.ByteArrayOutputStream
 import java.io.Closeable
 import java.io.File
@@ -28,8 +26,7 @@ class IndexMerger(file: File) : Closeable {
     fun addProducts(products: List<Product>) {
         for (product in products) {
             val outputStream = ByteArrayOutputStream()
-            Json.factory.createGenerator(outputStream)
-                .use { it.writeDictionary(product::serialize) }
+            outputStream.write(product.toJSON().toByteArray())
             db.insert("product", null, ContentValues().apply {
                 put("package_name", product.packageName)
                 put("description", product.description)
@@ -42,13 +39,7 @@ class IndexMerger(file: File) : Closeable {
         for (pair in pairs) {
             val (packageName, releases) = pair
             val outputStream = ByteArrayOutputStream()
-            Json.factory.createGenerator(outputStream).use {
-                it.writeStartArray()
-                for (release in releases) {
-                    it.writeDictionary(release::serialize)
-                }
-                it.writeEndArray()
-            }
+            outputStream.write(toByteArray(releases))
             db.insert("releases", null, ContentValues().apply {
                 put("package_name", packageName)
                 put("data", outputStream.toByteArray())
@@ -72,22 +63,11 @@ class IndexMerger(file: File) : Closeable {
             ?.use { it ->
                 it.asSequence().map {
                     val description = it.getString(0)
-                    val product = Json.factory.createParser(it.getBlob(1)).use {
-                        it.nextToken()
-                        Product.deserialize(it).apply {
-                            this.repositoryId = repositoryId
-                            this.description = description
-                        }
+                    val product = Product.fromJson(String(it.getBlob(1))).apply {
+                        this.repositoryId = repositoryId
+                        this.description = description
                     }
-                    val releases = it.getBlob(2)?.let {
-                        Json.factory.createParser(it).use {
-                            it.nextToken()
-                            it.collectNotNull(
-                                JsonToken.START_OBJECT,
-                                Release.Companion::deserialize
-                            )
-                        }
-                    }.orEmpty()
+                    val releases = it.getBlob(2)?.let { toReleases(it) }.orEmpty()
                     product.copy(releases = releases)
                 }.windowed(windowSize, windowSize, true)
                     .forEach { products -> callback(products, it.count) }

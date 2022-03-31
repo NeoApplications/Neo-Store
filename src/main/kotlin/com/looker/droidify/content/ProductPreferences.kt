@@ -5,9 +5,6 @@ import android.content.SharedPreferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Lock
 import com.looker.droidify.entity.ProductPreference
-import com.looker.droidify.utility.extension.json.Json
-import com.looker.droidify.utility.extension.json.parseDictionary
-import com.looker.droidify.utility.extension.json.writeDictionary
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -52,8 +49,7 @@ object ProductPreferences {
     operator fun get(packageName: String): ProductPreference {
         return if (preferences.contains(packageName)) {
             try {
-                Json.factory.createParser(preferences.getString(packageName, "{}"))
-                    .use { it.parseDictionary(ProductPreference.Companion::deserialize) }
+                ProductPreference.fromJson(preferences.getString(packageName, "{}") ?: "{}")
             } catch (e: Exception) {
                 e.printStackTrace()
                 defaultProductPreference
@@ -66,10 +62,7 @@ object ProductPreferences {
     operator fun set(packageName: String, productPreference: ProductPreference) {
         val oldProductPreference = this[packageName]
         preferences.edit().putString(packageName, ByteArrayOutputStream()
-            .apply {
-                Json.factory.createGenerator(this)
-                    .use { it.writeDictionary(productPreference::serialize) }
-            }
+            .apply { write(productPreference.toJSON().toByteArray()) }
             .toByteArray().toString(Charset.defaultCharset())).apply()
         if (oldProductPreference.ignoreUpdates != productPreference.ignoreUpdates ||
             oldProductPreference.ignoreVersionCode != productPreference.ignoreVersionCode
