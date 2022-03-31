@@ -2,14 +2,9 @@ package com.looker.droidify.database
 
 import androidx.room.TypeConverter
 import com.looker.droidify.database.entity.Release
-import com.looker.droidify.database.entity.Release.Companion.deserializeIncompatibilities
 import com.looker.droidify.entity.Donate
+import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Screenshot
-import com.looker.droidify.utility.extension.json.collectList
-import com.looker.droidify.utility.extension.json.writeDictionary
-import com.looker.droidify.utility.extension.json.writeList
-import com.looker.droidify.utility.jsonGenerate
-import com.looker.droidify.utility.jsonParse
 
 object Converters {
     @TypeConverter
@@ -27,84 +22,62 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toProduct(byteArray: ByteArray) =
-        byteArray.jsonParse { com.looker.droidify.entity.Product.deserialize(it) }
+    fun toProduct(byteArray: ByteArray) = Product.fromJson(String(byteArray))
 
     @TypeConverter
     @JvmStatic
-    fun toByteArray(product: com.looker.droidify.entity.Product) = jsonGenerate(product::serialize)
+    fun toByteArray(product: Product) = product.toJSON().toByteArray()
 
     @TypeConverter
     @JvmStatic
-    fun toReleases(byteArray: ByteArray): List<Release> = byteArray.jsonParse {
-        it.collectList("releases") { Release.deserialize(it) }
-    }
+    fun toReleases(byteArray: ByteArray): List<Release> =
+        if (String(byteArray) == "") emptyList()
+        else String(byteArray).split(";").map { Release.fromJson(it) }
 
     @JvmName("releasesToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toByteArray(releases: List<Release>) = jsonGenerate { generator ->
-        generator.writeList("releases", releases) { serialize(generator) }
-    }
+    fun toByteArray(releases: List<Release>) =
+        if (releases.isNotEmpty()) releases.joinToString(";") { it.toJSON() }.toByteArray()
+        else "".toByteArray()
 
     @TypeConverter
     @JvmStatic
-    fun toIncompatibilities(byteArray: ByteArray) =
-        byteArray.jsonParse { it.deserializeIncompatibilities() }
+    fun toIncompatibilities(byteArray: ByteArray): List<Release.Incompatibility> =
+        if (String(byteArray) == "") emptyList()
+        else String(byteArray).split(";").map { Release.Incompatibility.fromJson(it) }
 
     @JvmName("incompatibilitiesToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toByteArray(list: List<Release.Incompatibility>) =
-        jsonGenerate { generator ->
-            list.forEach {
-                generator.writeDictionary {
-                    when (it) {
-                        is Release.Incompatibility.MinSdk -> {
-                            writeStringField("type", "minSdk")
-                        }
-                        is Release.Incompatibility.MaxSdk -> {
-                            writeStringField("type", "maxSdk")
-                        }
-                        is Release.Incompatibility.Platform -> {
-                            writeStringField("type", "platform")
-                        }
-                        is Release.Incompatibility.Feature -> {
-                            writeStringField("type", "feature")
-                            writeStringField("feature", it.feature)
-                        }
-                    }::class
-                }
-            }
-        }
+    fun toByteArray(incompatibilities: List<Release.Incompatibility>) =
+        if (incompatibilities.isNotEmpty())
+            incompatibilities.joinToString(";") { it.toJSON() }.toByteArray()
+        else "".toByteArray()
 
     @TypeConverter
     @JvmStatic
-    fun toScreenshots(byteArray: ByteArray): List<Screenshot> {
-        val string = byteArray.toString()
-        return if (string == "") emptyList()
-        else string.split(",").mapNotNull { byteArray.jsonParse { Screenshot.deserialize(it) } }
-    }
+    fun toScreenshots(byteArray: ByteArray): List<Screenshot> =
+        if (String(byteArray) == "") emptyList()
+        else String(byteArray).split(";").map { Screenshot.fromJson(it) }
 
     @JvmName("screenshotsToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toByteArray(screenshots: List<Screenshot>) = jsonGenerate {
-        screenshots.forEach { item -> item.serialize(it) }.toString().toByteArray()
-    }
+    fun toByteArray(screenshots: List<Screenshot>) =
+        if (screenshots.isNotEmpty()) screenshots.joinToString(";") { it.toJSON() }.toByteArray()
+        else "".toByteArray()
 
     @TypeConverter
     @JvmStatic
-    fun toDonates(byteArray: ByteArray): List<Donate> {
-        val string = byteArray.toString()
-        return if (string == "") emptyList()
-        else string.split(",").mapNotNull { byteArray.jsonParse { Donate.deserialize(it) } }
-    }
+    fun toDonates(byteArray: ByteArray): List<Donate> =
+        if (String(byteArray) == "") emptyList()
+        else String(byteArray).split(";").map { Donate.fromJson(it) }
 
     @JvmName("donatesToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toByteArray(donates: List<Donate>) = jsonGenerate {
-        donates.forEach { item -> item.serialize(it) }.toString().toByteArray()
-    }
+    fun toByteArray(donates: List<Donate>) =
+        if (donates.isNotEmpty()) donates.joinToString(";") { it.toJSON() }.toByteArray()
+        else "".toByteArray()
 }
