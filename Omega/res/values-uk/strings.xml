@@ -19,4 +19,5 @@
     <string name="title__general_smartspace">Домашній віджет</string>
     <string name="title__general_advanced">Розширені налаштування</string>
     <string name="summary__general_smartspace">Дата, час, домашній віджет</string>
+    <string name="title__general_about">Про програму</string>
 </resources>
