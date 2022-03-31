@@ -5,7 +5,9 @@ import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Release.Companion.deserializeIncompatibilities
 import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.Screenshot
+import com.looker.droidify.utility.extension.json.collectList
 import com.looker.droidify.utility.extension.json.writeDictionary
+import com.looker.droidify.utility.extension.json.writeList
 import com.looker.droidify.utility.jsonGenerate
 import com.looker.droidify.utility.jsonParse
 
@@ -34,17 +36,16 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toReleases(byteArray: ByteArray): List<Release> {
-        val string = byteArray.toString()
-        return if (string == "") emptyList()
-        else string.split(",").map { byteArray.jsonParse { Release.deserialize(it) } }
+    fun toReleases(byteArray: ByteArray): List<Release> = byteArray.jsonParse {
+        it.collectList("releases") { Release.deserialize(it) }
     }
 
     @JvmName("releasesToByteArray")
     @TypeConverter
     @JvmStatic
-    fun toByteArray(releases: List<Release>) =
-        jsonGenerate { releases.forEach { item -> item.serialize(it) }.toString().toByteArray() }
+    fun toByteArray(releases: List<Release>) = jsonGenerate { generator ->
+        generator.writeList("releases", releases) { serialize(generator) }
+    }
 
     @TypeConverter
     @JvmStatic
