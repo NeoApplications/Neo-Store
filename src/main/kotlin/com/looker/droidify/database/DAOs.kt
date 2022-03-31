@@ -148,7 +148,7 @@ interface ProductDao : BaseDao<Product> {
         COALESCE(installed.$ROW_VERSION_CODE, 0xffffffff) AND $signatureMatches)
         AS $ROW_CAN_UPDATE, product.$ROW_COMPATIBLE, product.$ROW_ICON,
         product.$ROW_METADATA_ICON, product.$ROW_RELEASES, product.$ROW_CATEGORIES,
-        product.$ROW_ANTIFEATURES, product.$ROW_LICENSES, product.$ROW_DONATES, product.$ROW_SCREENSHOTS,"""
+        product.$ROW_ANTIFEATURES, product.$ROW_LICENSES, product.$ROW_DONATES, product.$ROW_SCREENSHOTS, product.$ROW_DATA,"""
 
         // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
