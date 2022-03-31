@@ -81,6 +81,22 @@ fun JsonParser.collectDistinctNotEmptyStrings(): List<String> {
     return collectNotNullStrings().asSequence().filter { it.isNotEmpty() }.distinct().toList()
 }
 
+fun <T> JsonParser.collectList(arrayName: String, callback: JsonParser.() -> T?): MutableList<T> {
+    val list = mutableListOf<T>()
+    forEachKey {
+        when {
+            it.array(arrayName) ->
+                list.addAll(
+                    collectNotNull(JsonToken.START_OBJECT) {
+                        callback()
+                    }
+                )
+            else -> skipChildren()
+        }
+    }
+    return list
+}
+
 inline fun <T> JsonParser.parseDictionary(callback: JsonParser.() -> T): T {
     if (nextToken() == JsonToken.START_OBJECT) {
         val result = callback()
@@ -103,4 +119,10 @@ inline fun JsonGenerator.writeArray(fieldName: String, callback: JsonGenerator.(
     writeArrayFieldStart(fieldName)
     callback()
     writeEndArray()
+}
+
+inline fun <T> JsonGenerator.writeList(listName: String, list: List<T>, callback: T.() -> Unit) {
+    writeArray(listName) {
+        list.forEach { writeDictionary { it.callback() } }
+    }
 }
