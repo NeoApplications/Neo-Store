@@ -8,8 +8,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
@@ -22,14 +20,10 @@ import com.looker.droidify.service.DownloadService
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.singleSignature
 import com.looker.droidify.utility.extension.android.versionCodeCompat
-import com.looker.droidify.utility.extension.json.Json
-import com.looker.droidify.utility.extension.json.parseDictionary
-import com.looker.droidify.utility.extension.json.writeDictionary
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -173,16 +167,6 @@ object Utils {
         return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
     }
 
-}
-
-fun <T> ByteArray.jsonParse(callback: (JsonParser) -> T): T {
-    return Json.factory.createParser(this).use { it.parseDictionary(callback) }
-}
-
-fun jsonGenerate(callback: (JsonGenerator) -> Unit): ByteArray {
-    val outputStream = ByteArrayOutputStream()
-    Json.factory.createGenerator(outputStream).use { it.writeDictionary(callback) }
-    return outputStream.toByteArray()
 }
 
 val isDarkTheme: Boolean

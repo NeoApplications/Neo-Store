@@ -2,7 +2,10 @@
 
 package com.looker.droidify.utility.extension.json
 
-import com.fasterxml.jackson.core.*
+import com.fasterxml.jackson.core.JsonFactory
+import com.fasterxml.jackson.core.JsonParseException
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.JsonToken
 
 object Json {
     val factory = JsonFactory()
@@ -79,50 +82,4 @@ fun JsonParser.collectNotNullStrings(): List<String> {
 
 fun JsonParser.collectDistinctNotEmptyStrings(): List<String> {
     return collectNotNullStrings().asSequence().filter { it.isNotEmpty() }.distinct().toList()
-}
-
-fun <T> JsonParser.collectList(arrayName: String, callback: JsonParser.() -> T?): MutableList<T> {
-    val list = mutableListOf<T>()
-    forEachKey {
-        when {
-            it.array(arrayName) ->
-                list.addAll(
-                    collectNotNull(JsonToken.START_OBJECT) {
-                        callback()
-                    }
-                )
-            else -> skipChildren()
-        }
-    }
-    return list
-}
-
-inline fun <T> JsonParser.parseDictionary(callback: JsonParser.() -> T): T {
-    if (nextToken() == JsonToken.START_OBJECT) {
-        val result = callback()
-        if (nextToken() != null) {
-            illegal()
-        }
-        return result
-    } else {
-        illegal()
-    }
-}
-
-inline fun JsonGenerator.writeDictionary(callback: JsonGenerator.() -> Unit) {
-    writeStartObject()
-    callback()
-    writeEndObject()
-}
-
-inline fun JsonGenerator.writeArray(fieldName: String, callback: JsonGenerator.() -> Unit) {
-    writeArrayFieldStart(fieldName)
-    callback()
-    writeEndArray()
-}
-
-inline fun <T> JsonGenerator.writeList(listName: String, list: List<T>, callback: T.() -> Unit) {
-    writeArray(listName) {
-        list.forEach { writeDictionary { it.callback() } }
-    }
 }
