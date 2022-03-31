@@ -8,9 +8,14 @@ import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.utility.extension.json.collectNotNullStrings
 import com.looker.droidify.utility.extension.json.forEachKey
 import com.looker.droidify.utility.extension.json.writeArray
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.net.URL
 
 @Entity
+@Serializable
 data class Repository(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
@@ -73,6 +78,7 @@ data class Repository(
         generator.writeNumberField("timestamp", timestamp)
         generator.writeStringField("authentication", authentication)
     }
+    fun toJSON() = Json.encodeToString(this)
 
     companion object {
         fun deserialize(parser: JsonParser): Repository {
@@ -112,6 +118,7 @@ data class Repository(
                 lastModified, entityTag, updated, timestamp, authentication
             )
         }
+        fun fromJson(json: String) = Json.decodeFromString<Repository>(json)
 
         fun newRepository(
             address: String = "",

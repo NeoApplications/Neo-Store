@@ -6,9 +6,14 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.looker.droidify.utility.extension.json.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 // TODO make a Room entity
 @Entity(primaryKeys = ["packageName", "versionCode", "signature"])
+@Serializable
 data class Release(
     val packageName: String,
     val selected: Boolean,
@@ -35,11 +40,25 @@ data class Release(
     val platforms: List<String>,
     val incompatibilities: List<Incompatibility>,
 ) {
+    @Serializable
     sealed class Incompatibility {
+        @Serializable
         object MinSdk : Incompatibility()
+
+        @Serializable
         object MaxSdk : Incompatibility()
+
+        @Serializable
         object Platform : Incompatibility()
+
+        @Serializable
         data class Feature(val feature: String) : Incompatibility()
+
+        fun toJSON() = Json.encodeToString(this)
+
+        companion object {
+            fun fromJson(json: String) = Json.decodeFromString<Incompatibility>(json)
+        }
     }
 
     val identifier: String
@@ -81,6 +100,7 @@ data class Release(
             incompatibilities.forEach { serializeIncompatibility(it) }
         }
     }
+    fun toJSON() = Json.encodeToString(this)
 
     companion object {
         fun deserialize(parser: JsonParser): Release {
@@ -203,5 +223,6 @@ data class Release(
                     }
                 }::class
             }
+        fun fromJson(json: String) = Json.decodeFromString<Release>(json)
     }
 }

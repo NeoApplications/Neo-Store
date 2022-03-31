@@ -3,7 +3,12 @@ package com.looker.droidify.entity
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.looker.droidify.utility.extension.json.forEachKey
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
+@Serializable
 data class ProductPreference(val ignoreUpdates: Boolean, val ignoreVersionCode: Long) {
     fun shouldIgnoreUpdate(versionCode: Long): Boolean {
         return ignoreUpdates || ignoreVersionCode == versionCode
@@ -13,6 +18,7 @@ data class ProductPreference(val ignoreUpdates: Boolean, val ignoreVersionCode: 
         generator.writeBooleanField("ignoreUpdates", ignoreUpdates)
         generator.writeNumberField("ignoreVersionCode", ignoreVersionCode)
     }
+    fun toJSON() = Json.encodeToString(this)
 
     companion object {
         fun deserialize(parser: JsonParser): ProductPreference {
@@ -27,5 +33,6 @@ data class ProductPreference(val ignoreUpdates: Boolean, val ignoreVersionCode: 
             }
             return ProductPreference(ignoreUpdates, ignoreVersionCode)
         }
+        fun fromJson(json: String) = Json.decodeFromString<ProductPreference>(json)
     }
 }

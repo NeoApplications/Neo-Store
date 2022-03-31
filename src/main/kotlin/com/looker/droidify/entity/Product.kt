@@ -7,7 +7,12 @@ import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.utility.extension.json.*
 import com.looker.droidify.utility.extension.text.nullIfEmpty
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
+@Serializable
 data class Product(
     var repositoryId: Long,
     val packageName: String,
@@ -138,8 +143,11 @@ data class Product(
         }
         generator.writeArray("releases") { releases.forEach { writeDictionary { it.serialize(this) } } }
     }
+    fun toJSON() = Json.encodeToString(this)
 
     companion object {
+        fun fromJson(json: String) = Json.decodeFromString<Product>(json)
+
         fun <T> findSuggested(
             products: List<T>,
             installed: Installed?,
