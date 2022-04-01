@@ -22,7 +22,7 @@
     <string name="has_security_vulnerabilities">Har sikkerhetssårbarheter</string>
     <string name="http_error_DESC">Ugyldig tjenersvar.</string>
     <string name="ignore_all_updates">Ignorer alle nye versjoner</string>
-    <string name="ignore_this_update">Ignorer denne versjon</string>
+    <string name="ignore_this_update">Ignorer denne versjonen</string>
     <string name="incompatible_api_DESC_FORMAT">Din %1$s (API-versjon %2$d) støttes ikke. %3$s</string>
     <string name="incompatible_api_max_DESC_FORMAT">Maksimal API-versjon er %d.</string>
     <string name="incompatible_older_DESC">Denne versjonen er eldre enn den som er installert på enheten din. Avinstaller den først.</string>
