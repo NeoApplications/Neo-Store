@@ -106,7 +106,6 @@ class MainActivityX : AppCompatActivity() {
             toolbar.menu.setGroupDividerEnabled(true)
         }
         toolbar.isFocusableInTouchMode = true
-        toolbar.title = getString(R.string.application_name)
 
         supportFragmentManager.addFragmentOnAttachListener { _, _ ->
             hideKeyboard()

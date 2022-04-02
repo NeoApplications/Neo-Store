@@ -10,50 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
+            style="?attr/appBarLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/fragment_content"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
-                style="?attr/appBarLayoutStyle"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="?attr/toolbarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?actionBarSize"
+                app:title="@string/settings" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
-                    style="?attr/collapsingToolbarLayoutLargeStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-                    app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-
-                    <com.google.android.material.appbar.MaterialToolbar
-                        android:id="@+id/toolbar"
-                        style="?attr/toolbarStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="?actionBarSize" />
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_content"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:navGraph="@navigation/navigation_graph_prefs" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_content"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+            app:navGraph="@navigation/navigation_graph_prefs" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coordinator"
+            app:layout_constraintTop_toBottomOf="@id/fragment_content"
             app:menu="@menu/navigation_menu_prefs" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -78,7 +78,6 @@ class PrefsActivityX : AppCompatActivity() {
         super.onStart()
         setSupportActionBar(toolbar)
         toolbar.isFocusableInTouchMode = true
-        binding.collapsingToolbar.title = getString(R.string.settings)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment
