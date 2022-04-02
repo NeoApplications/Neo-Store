@@ -35,13 +35,12 @@
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Theme.Toolbar</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="textInputStyle">@style/Theme.EditText</item>
         <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Theme.AppBarLayout</item>
+        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
         <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
@@ -74,13 +73,12 @@
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Theme.Toolbar</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="textInputStyle">@style/Theme.EditText</item>
         <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Theme.AppBarLayout</item>
+        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
         <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
@@ -113,34 +111,13 @@
 
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Theme.Toolbar</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="textInputStyle">@style/Theme.EditText</item>
         <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Theme.AppBarLayout</item>
+        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
         <item name="materialCardViewStyle">@style/Theme.Card</item>
         <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/Theme.CollapsingToolbar</item>
         <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
-    </style>
-
-    <style name="Theme.AppBarLayout" parent="Widget.Material3.AppBarLayout">
-        <item name="android:background">@drawable/appbar_background</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
-        <item name="android:fitsSystemWindows">true</item>
-    </style>
-
-    <style name="Theme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <item name="titleCollapseMode">scale</item>
-        <item name="expandedTitleMarginStart">32dp</item>
-        <item name="contentScrim">@android:color/transparent</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
-        <item name="expandedTitleTextAppearance">?textAppearanceHeadlineLarge</item>
-    </style>
-
-    <style name="Theme.Toolbar" parent="Widget.Material3.Toolbar.Surface">
-        <item name="android:background">@drawable/appbar_background</item>
-        <item name="layout_collapseMode">pin</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
     </style>
 
     <style name="Theme.Chip.Category" parent="Widget.Material3.Chip.Suggestion.Elevated">
