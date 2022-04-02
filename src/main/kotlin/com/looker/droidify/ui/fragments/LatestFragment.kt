@@ -93,12 +93,15 @@ class LatestFragment : MainNavFragmentX() {
                 val searchView =
                     mainActivityX.toolbar.menu.findItem(R.id.toolbar_search).actionView as FocusSearchView
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        if (isResumed && query != viewModel.searchQuery.value)
+                            viewModel.setSearchQuery(query)
                         return true
                     }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        if (isResumed) viewModel.setSearchQuery(newText.orEmpty())
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        if (isResumed && newText != viewModel.searchQuery.value)
+                            viewModel.setSearchQuery(newText)
                         return true
                     }
                 })
