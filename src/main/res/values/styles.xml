@@ -176,6 +176,22 @@
         <item name="cardCornerRadius">@dimen/shape_large_corner</item>
     </style>
 
+    <style name="Theme.Button.Circular" parent="Widget.Material3.Button.Icon">
+        <item name="iconSize">24dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="cardCornerRadius">50dp</item>
+        <item name="android:insetLeft">4dp</item>
+        <item name="android:insetRight">4dp</item>
+    </style>
+
+    <style name="Theme.Button.Elevated.Circular" parent="Widget.Material3.Button.ElevatedButton.Icon">
+        <item name="iconSize">24dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="cardCornerRadius">50dp</item>
+        <item name="android:insetLeft">4dp</item>
+        <item name="android:insetRight">4dp</item>
+    </style>
+
     <style name="Shape.Small" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerSize">@dimen/shape_small_corner</item>
     </style>
