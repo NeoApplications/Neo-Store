@@ -58,8 +58,19 @@ android {
             minifyEnabled = false
             shrinkResources = false
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-alpha1"
+            versionNameSuffix = "-alpha2"
             resValue "string", "application_name", "Neo Store-Debug"
+            manifestPlaceholders = [
+                    appIcon     : "@mipmap/ic_launcher_debug",
+                    appIconRound: "@mipmap/ic_launcher_round_debug"
+            ]
+        }
+        neo {
+            minifyEnabled = false
+            shrinkResources = false
+            applicationIdSuffix = ".neo"
+            versionNameSuffix = "-alpha2"
+            resValue "string", "application_name", "Neo Store-alpha"
             manifestPlaceholders = [
                     appIcon     : "@mipmap/ic_launcher_debug",
                     appIconRound: "@mipmap/ic_launcher_round_debug"
