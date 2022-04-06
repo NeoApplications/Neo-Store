@@ -23,13 +23,6 @@ object TypefaceExtra {
     val light = Typeface.create("sans-serif-light", Typeface.NORMAL)!!
 }
 
-val Number.toPx
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
-
 fun Context.getColorFromAttr(@AttrRes attrResId: Int): ColorStateList {
     val typedArray = obtainStyledAttributes(intArrayOf(attrResId))
     val (colorStateList, resId) = try {

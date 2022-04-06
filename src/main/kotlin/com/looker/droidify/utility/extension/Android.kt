@@ -14,10 +14,6 @@ fun Cursor.asSequence(): Sequence<Cursor> {
     return generateSequence { if (moveToNext()) this else null }
 }
 
-fun Cursor.firstOrNull(): Cursor? {
-    return if (moveToFirst()) this else null
-}
-
 fun SQLiteDatabase.execWithResult(sql: String) {
     rawQuery(sql, null).use { it.count }
 }
