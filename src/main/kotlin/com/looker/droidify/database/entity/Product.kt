@@ -47,18 +47,18 @@ open class Product {
     val versionCode: Long
         get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
 
-    val item: ProductItem
-        get() = ProductItem(
-            repository_id,
-            package_name,
+    fun toItem(installed: Installed? = null): ProductItem =
+        ProductItem(
+            repositoryId,
+            packageName,
             name,
             summary,
             icon,
             metadataIcon,
             version,
             "",
-            compatible != 0,
-            false,
+            compatible,
+            canUpdate(installed),
             0
         )
 }

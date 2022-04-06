@@ -35,7 +35,7 @@ fun ProductsVerticalRecycler(
     onInstallClick: (ProductItem) -> Unit = {}
 ) {
     VerticalItemList(list = productsList) {
-        it.item.let { item ->
+        it.toItem().let { item ->
             ProductsListItem(
                 item,
                 repositories[item.repositoryId],
@@ -58,7 +58,7 @@ fun ProductsHorizontalRecycler(
         horizontalArrangement = spacedBy(2.dp)
     ) {
         items(productsList ?: emptyList()) { product ->
-            product.item.let { item ->
+            product.toItem().let { item ->
                 ProductCard(item, repositories[item.repositoryId], onUserClick)
             }
         }

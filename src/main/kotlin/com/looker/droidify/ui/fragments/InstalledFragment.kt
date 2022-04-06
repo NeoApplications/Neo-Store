@@ -108,7 +108,7 @@ class InstalledFragment : MainNavFragmentX() {
         }
         binding.buttonUpdateAll.setOnClickListener {
             viewModel.secondaryProducts.value?.let {
-                mainActivityX.syncConnection.binder?.updateApps(it.map(Product::item))
+                mainActivityX.syncConnection.binder?.updateApps(it.map(Product::toItem))
             }
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
