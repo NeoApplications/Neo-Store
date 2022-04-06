@@ -26,6 +26,7 @@ import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.screen.MessageDialog
+import com.looker.droidify.screen.ScreenshotsFragment
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.ui.activities.MainActivityX
@@ -388,7 +389,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     }
 
     override fun onScreenshotClick(screenshot: Screenshot) {
-        /*val pair = productRepos.asSequence()
+        val pair = productRepos.asSequence()
             .map { it ->
                 Pair(
                     it.second,
@@ -403,7 +404,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                     childFragmentManager
                 )
             }
-        }*/
+        }
     }
 
     override fun onReleaseClick(release: Release) {
