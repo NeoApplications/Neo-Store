@@ -538,7 +538,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                     )
                 ).show(childFragmentManager)
             }
-            installedItem != null && installedItem.version_code > release.versionCode -> {
+            installedItem != null && installedItem.versionCode > release.versionCode -> {
                 MessageDialog(MessageDialog.Message.ReleaseOlder).show(childFragmentManager)
             }
             installedItem != null && installedItem.signature != release.signature -> {

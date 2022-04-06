@@ -62,19 +62,19 @@ interface RepositoryDao : BaseDao<Repository> {
 
 @Dao
 interface ProductDao : BaseDao<Product> {
-    @Query("SELECT COUNT(*) FROM product WHERE repository_id = :id")
+    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
     fun countForRepository(id: Long): Long
 
-    @Query("SELECT COUNT(*) FROM product WHERE repository_id = :id")
+    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
     fun countForRepositoryLive(id: Long): LiveData<Long>
 
-    @Query("SELECT * FROM product WHERE package_name = :packageName")
+    @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun get(packageName: String): List<Product?>
 
-    @Query("SELECT * FROM product WHERE package_name = :packageName")
+    @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun getLive(packageName: String): LiveData<List<Product?>>
 
-    @Query("DELETE FROM product WHERE repository_id = :id")
+    @Query("DELETE FROM product WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
 
     @RawQuery
@@ -244,24 +244,24 @@ interface ReleaseDao : BaseDao<Release> {
 @Dao
 interface CategoryDao : BaseDao<Category> {
     @get:Query(
-        """SELECT DISTINCT category.name
+        """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
-        ON category.repository_id = repository._id
+        ON category.repositoryId = repository._id
         WHERE repository.enabled != 0"""
     )
     val allNames: List<String>
 
     @get:Query(
-        """SELECT DISTINCT category.name
+        """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
-        ON category.repository_id = repository._id
+        ON category.repositoryId = repository._id
         WHERE repository.enabled != 0"""
     )
     val allNamesLive: LiveData<List<String>>
 
-    @Query("DELETE FROM category WHERE repository_id = :id")
+    @Query("DELETE FROM category WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
 }
 
@@ -275,13 +275,13 @@ interface InstalledDao : BaseDao<Installed> {
     @get:Query("SELECT * FROM memory_installed")
     val allLive: LiveData<List<Installed>>
 
-    @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
+    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun get(packageName: String): Installed?
 
-    @Query("SELECT * FROM memory_installed WHERE package_name = :packageName")
+    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun getLive(packageName: String): LiveData<Installed?>
 
-    @Query("DELETE FROM memory_installed WHERE package_name = :packageName")
+    @Query("DELETE FROM memory_installed WHERE packageName = :packageName")
     fun delete(packageName: String)
 
     @Query("DELETE FROM memory_installed")
@@ -290,7 +290,7 @@ interface InstalledDao : BaseDao<Installed> {
 
 @Dao
 interface LockDao : BaseDao<Lock> {
-    @Query("DELETE FROM memory_lock WHERE package_name = :packageName")
+    @Query("DELETE FROM memory_lock WHERE packageName = :packageName")
     fun delete(packageName: String)
 }
 
@@ -335,9 +335,9 @@ interface ProductTempDao : BaseDao<ProductTemp> {
             })
             it.categories.forEach { category ->
                 insertCategory(CategoryTemp().apply {
-                    repository_id = it.repositoryId
-                    package_name = it.packageName
-                    name = category
+                    repositoryId = it.repositoryId
+                    packageName = it.packageName
+                    label = category
                 })
             }
         }

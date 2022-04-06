@@ -87,7 +87,7 @@ class ExploreFragment : MainNavFragmentX() {
                 check(
                     children.filterNotNull()
                         .find { child ->
-                            child is Chip && selectedSection is Category && child.text == selectedSection.name
+                            child is Chip && selectedSection is Category && child.text == selectedSection.label
                         }?.id ?: R.id.SHOW_ALL
                 )
             }

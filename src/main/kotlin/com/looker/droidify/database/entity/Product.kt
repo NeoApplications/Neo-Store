@@ -6,27 +6,27 @@ import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Screenshot
 
-@Entity(tableName = "product", primaryKeys = ["repository_id", "package_name"])
 open class Product {
-    var repository_id = 0L
-    var package_name = ""
 
     var name = ""
     var summary = ""
     var description = ""
     var added = 0L
     var updated = 0L
-    var version_code = 0L
     var signatures = ""
     var compatible = 0
     var icon = ""
     var metadataIcon = ""
+@Entity(tableName = "product", primaryKeys = ["repositoryId", "packageName"])
+    var repositoryId: Long,
+    var packageName: String
     var releases: List<Release> = emptyList()
     var categories: List<String> = emptyList()
     var antiFeatures: List<String> = emptyList()
     var licenses: List<String> = emptyList()
     var donates: List<Donate> = emptyList()
     var screenshots: List<Screenshot> = emptyList()
+    var versionCode: Long = 0L
 
     // TODO Remove in next iteration
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
@@ -43,9 +43,6 @@ open class Product {
 
     val version: String
         get() = displayRelease?.version.orEmpty()
-
-    val versionCode: Long
-        get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
 
     fun toItem(installed: Installed? = null): ProductItem =
         ProductItem(

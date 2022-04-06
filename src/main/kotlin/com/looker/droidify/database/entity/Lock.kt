@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "memory_lock")
 data class Lock(
     @PrimaryKey
-    var package_name: String = "",
-    var version_code: Long = 0L
+    var packageName: String = "",
+    var versionCode: Long = 0L
 )

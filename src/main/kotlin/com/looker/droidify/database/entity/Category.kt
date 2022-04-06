@@ -2,11 +2,11 @@ package com.looker.droidify.database.entity
 
 import androidx.room.Entity
 
-@Entity(tableName = "category", primaryKeys = ["repository_id", "package_name", "name"])
+@Entity(tableName = "category", primaryKeys = ["repositoryId", "packageName", "label"])
 open class Category {
-    var repository_id: Long = 0
-    var package_name = ""
-    var name = ""
+    var repositoryId: Long = 0
+    var packageName = ""
+    var label = ""
 }
 
 @Entity(tableName = "temporary_category")

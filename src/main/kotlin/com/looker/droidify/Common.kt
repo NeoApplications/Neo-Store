@@ -10,14 +10,14 @@ const val NOTIFICATION_ID_UPDATES = 2
 const val NOTIFICATION_ID_DOWNLOADING = 3
 const val NOTIFICATION_ID_INSTALLER = 4
 
-const val ROW_REPOSITORY_ID = "repository_id"
-const val ROW_PACKAGE_NAME = "package_name"
+const val ROW_REPOSITORY_ID = "repositoryId"
+const val ROW_PACKAGE_NAME = "packageName"
 const val ROW_NAME = "name"
 const val ROW_SUMMARY = "summary"
 const val ROW_DESCRIPTION = "description"
 const val ROW_ADDED = "added"
 const val ROW_UPDATED = "updated"
-const val ROW_VERSION_CODE = "version_code"
+const val ROW_VERSION_CODE = "versionCode"
 const val ROW_SIGNATURES = "signatures"
 const val ROW_COMPATIBLE = "compatible"
 const val ROW_ICON = "icon"
