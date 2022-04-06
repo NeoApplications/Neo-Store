@@ -11,9 +11,9 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toStringList(byteArray: ByteArray): List<String> {
-        val string = byteArray.toString()
+        val string = String(byteArray)
         return if (string == "") emptyList()
-        else string.split(",")
+        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty)
     }
 
     @JvmName("stringListToByteArray")
