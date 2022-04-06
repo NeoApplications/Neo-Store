@@ -1,9 +1,10 @@
 package com.looker.droidify.database
 
 import androidx.room.TypeConverter
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.entity.Author
 import com.looker.droidify.entity.Donate
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Screenshot
 
 object Converters {
@@ -27,6 +28,14 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toByteArray(product: Product) = product.toJSON().toByteArray()
+
+    @TypeConverter
+    @JvmStatic
+    fun toAuthor(byteArray: ByteArray) = Author.fromJson(String(byteArray))
+
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(author: Author) = author.toJSON().toByteArray()
 
     @TypeConverter
     @JvmStatic

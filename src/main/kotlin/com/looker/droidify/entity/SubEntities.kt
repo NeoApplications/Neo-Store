@@ -6,7 +6,13 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-data class Author(val name: String, val email: String, val web: String)
+data class Author(val name: String = "", val email: String = "", val web: String = "") {
+    fun toJSON() = Json.encodeToString(this)
+
+    companion object {
+        fun fromJson(json: String) = Json.decodeFromString<Author>(json)
+    }
+}
 
 @Serializable
 sealed class Donate {

@@ -148,7 +148,7 @@ interface ProductDao : BaseDao<Product> {
         COALESCE(installed.$ROW_VERSION_CODE, 0xffffffff) AND $signatureMatches)
         AS $ROW_CAN_UPDATE, product.$ROW_COMPATIBLE, product.$ROW_ICON,
         product.$ROW_METADATA_ICON, product.$ROW_RELEASES, product.$ROW_CATEGORIES,
-        product.$ROW_ANTIFEATURES, product.$ROW_LICENSES, product.$ROW_DONATES, product.$ROW_SCREENSHOTS, product.$ROW_DATA,"""
+        product.$ROW_ANTIFEATURES, product.$ROW_LICENSES, product.$ROW_DONATES, product.$ROW_SCREENSHOTS,"""
 
         // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
@@ -306,33 +306,9 @@ interface ProductTempDao : BaseDao<ProductTemp> {
     fun insertCategory(vararg product: CategoryTemp)
 
     @Transaction
-    fun putTemporary(products: List<com.looker.droidify.entity.Product>) {
+    fun putTemporary(products: List<Product>) {
         products.forEach {
-            val signatures = it.signatures.joinToString { ".$it" }
-                .let { if (it.isNotEmpty()) "$it." else "" }
-            insert(it.let {
-                ProductTemp().apply {
-                    repository_id = it.repositoryId
-                    package_name = it.packageName
-                    name = it.name
-                    summary = it.summary
-                    description = it.description
-                    added = it.added
-                    updated = it.updated
-                    version_code = it.versionCode
-                    this.signatures = signatures
-                    compatible = if (it.compatible) 1 else 0
-                    data = it
-                    icon = it.icon
-                    metadataIcon = it.metadataIcon
-                    releases = it.releases
-                    categories = it.categories
-                    antiFeatures = it.antiFeatures
-                    licenses = it.licenses
-                    donates = it.donates
-                    screenshots = it.screenshots
-                }
-            })
+            insert(it.let { it.asProductTemp() })
             it.categories.forEach { category ->
                 insertCategory(CategoryTemp().apply {
                     repositoryId = it.repositoryId
