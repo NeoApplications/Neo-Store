@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
@@ -36,6 +36,7 @@ import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.trimAfter
+import com.looker.droidify.utility.findSuggestedProduct
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -142,7 +143,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {
-                    screenActivity.db.productDao.get(packageName).mapNotNull { it?.data }
+                    screenActivity.db.productDao.get(packageName).filterNotNull()
                 }
             }
             .flatMapSingle { products ->
@@ -272,8 +273,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
     private suspend fun updateButtons(preference: ProductPreference) =
         withContext(Dispatchers.Default) {
             val installed = installed
-            val product =
-                Product.findSuggested(products, installed?.data) { it.first }?.first
+            val product = findSuggestedProduct(products, installed?.data) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall = product != null && installed == null && compatible

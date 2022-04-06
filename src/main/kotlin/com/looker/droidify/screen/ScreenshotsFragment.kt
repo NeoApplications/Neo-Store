@@ -136,7 +136,7 @@ class ScreenshotsFragment() : DialogFragment() {
             .observeOn(Schedulers.io())
             .flatMapSingle {
                 RxUtils.querySingle {
-                    db.productDao.get(packageName).mapNotNull { it?.data }
+                    db.productDao.get(packageName).filterNotNull()
                 }
             }
             .map { it ->

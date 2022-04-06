@@ -44,9 +44,9 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.network.CoilDownloader
@@ -60,6 +60,7 @@ import com.looker.droidify.utility.extension.text.formatSize
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.looker.droidify.utility.extension.text.trimAfter
 import com.looker.droidify.utility.extension.text.trimBefore
+import com.looker.droidify.utility.findSuggestedProduct
 import com.looker.droidify.widget.StableRecyclerAdapter
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
@@ -554,7 +555,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         context: Context, packageName: String,
         products: List<Pair<Product, Repository>>, installed: Installed?,
     ) {
-        val productRepository = Product.findSuggested(products, installed) { it.first }
+        val productRepository = findSuggestedProduct(products, installed) { it.first }
         items.clear()
 
         if (productRepository != null) {

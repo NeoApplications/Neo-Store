@@ -458,8 +458,9 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         val repository = installedRepository.third!!
 
                         val productRepository = db.productDao.get(packageName)
-                            .map { product -> Pair(product?.data!!, repository) }
+                            .filterNotNull()
                             .filter { product -> product.repositoryId == repository.id }
+                            .map { product -> Pair(product, repository) }
 
                         scope.launch {
                             Utils.startUpdate(

@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.SheetAppXBinding
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
@@ -34,6 +34,7 @@ import com.looker.droidify.ui.viewmodels.AppViewModelX
 import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.Android
+import com.looker.droidify.utility.findSuggestedProduct
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
@@ -153,7 +154,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
             if (it.isNotEmpty() && products.isNotEmpty()) updateSheet()
         }
         viewModel.products.observe(viewLifecycleOwner) {
-            products = it.mapNotNull { it?.trueData }
+            products = it.filterNotNull()
             viewModel.repositories.value?.let { repos ->
                 if (repos.isNotEmpty() && products.isNotEmpty()) updateSheet()
             }
@@ -203,8 +204,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     private suspend fun updateButtons(preference: ProductPreference) =
         withContext(Dispatchers.Default) {
             val installed = installed
-            val product =
-                Product.findSuggested(productRepos, installed?.data) { it.first }?.first
+            val product = findSuggestedProduct(productRepos, installed?.data) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall = product != null && installed == null && compatible

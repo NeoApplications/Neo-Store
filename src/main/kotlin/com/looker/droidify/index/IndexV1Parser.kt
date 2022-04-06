@@ -2,10 +2,10 @@ package com.looker.droidify.index
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Author
 import com.looker.droidify.entity.Donate
-import com.looker.droidify.entity.Product
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.json.*
@@ -217,28 +217,28 @@ object IndexV1Parser {
             }
             .orEmpty().toList()
         return Product(
-            repositoryId,
-            packageName,
-            name,
-            summary,
-            description,
-            whatsNew,
-            icon,
-            metadataIcon,
-            Author(authorName, authorEmail, authorWeb),
-            source,
-            changelog,
-            web,
-            tracker,
-            added,
-            updated,
-            suggestedVersionCode,
-            categories,
-            antiFeatures,
-            licenses,
-            donates.sortedWith(IndexHandler.DonateComparator),
-            screenshots,
-            emptyList()
+            repositoryId = repositoryId,
+            packageName = packageName,
+            name = name,
+            summary = summary,
+            description = description,
+            added = added,
+            updated = updated,
+            icon = icon,
+            metadataIcon = metadataIcon,
+            releases = emptyList(),
+            categories = categories,
+            antiFeatures = antiFeatures,
+            licenses = licenses,
+            donates = donates.sortedWith(IndexHandler.DonateComparator),
+            screenshots = screenshots,
+            suggestedVersionCode = suggestedVersionCode,
+            author = Author(authorName, authorEmail, authorWeb),
+            source = source,
+            web = web,
+            tracker = tracker,
+            changelog = changelog,
+            whatsNew = whatsNew
         )
     }
 

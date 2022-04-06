@@ -1,9 +1,9 @@
 package com.looker.droidify.index
 
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Author
 import com.looker.droidify.entity.Donate
-import com.looker.droidify.entity.Product
 import com.looker.droidify.utility.extension.android.Android
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
@@ -89,32 +89,30 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         val donates = mutableListOf<Donate>()
         val releases = mutableListOf<Release>()
 
-        fun build(): Product {
-            return Product(
-                repositoryId,
-                packageName,
-                name,
-                summary,
-                description,
-                "",
-                icon,
-                "",
-                Author(authorName, authorEmail, ""),
-                source,
-                changelog,
-                web,
-                tracker,
-                added,
-                updated,
-                suggestedVersionCode,
-                categories.toList(),
-                antiFeatures.toList(),
-                licenses,
-                donates.sortedWith(DonateComparator),
-                emptyList(),
-                releases
-            )
-        }
+        fun build(): Product = Product(
+            repositoryId = repositoryId,
+            packageName = packageName,
+            name = name,
+            summary = summary,
+            description = description,
+            added = added,
+            updated = updated,
+            icon = icon,
+            metadataIcon = "",
+            releases = releases,
+            categories = categories.toList(),
+            antiFeatures = antiFeatures.toList(),
+            licenses = licenses,
+            donates = donates.sortedWith(DonateComparator),
+            screenshots = emptyList(),
+            suggestedVersionCode = suggestedVersionCode,
+            author = Author(authorName, authorEmail, ""),
+            source = source,
+            web = web,
+            tracker = tracker,
+            changelog = changelog,
+            whatsNew = ""
+        )
     }
 
     private class ReleaseBuilder {

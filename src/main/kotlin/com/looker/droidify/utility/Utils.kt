@@ -13,8 +13,8 @@ import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Product
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.utility.extension.android.Android
@@ -84,7 +84,7 @@ object Utils {
         products: List<Pair<Product, Repository>>,
         downloadConnection: Connection<DownloadService.Binder, DownloadService>,
     ) {
-        val productRepository = Product.findSuggested(products, installed) { it.first }
+        val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
             .filter { installed == null || installed.signature == it.signature }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
@@ -167,6 +167,17 @@ object Utils {
         return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
     }
 
+}
+
+fun <T> findSuggestedProduct(
+    products: List<T>,
+    installed: Installed?,
+    extract: (T) -> Product,
+): T? {
+    return products.maxWithOrNull(compareBy({
+        extract(it).compatible &&
+                (installed == null || installed.signature in extract(it).signatures)
+    }, { extract(it).versionCode }))
 }
 
 val isDarkTheme: Boolean

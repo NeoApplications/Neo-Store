@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.looker.droidify.database.Converters.toByteArray
 import com.looker.droidify.database.Converters.toReleases
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
-import com.looker.droidify.entity.Product
 import com.looker.droidify.utility.extension.android.asSequence
 import com.looker.droidify.utility.extension.android.execWithResult
 import java.io.ByteArrayOutputStream
@@ -67,8 +67,11 @@ class IndexMerger(file: File) : Closeable {
                         this.repositoryId = repositoryId
                         this.description = description
                     }
-                    val releases = it.getBlob(2)?.let { toReleases(it) }.orEmpty()
-                    product.copy(releases = releases)
+                    val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
+                    product.apply {
+                        this.releases = releases
+                        refreshVariables()
+                    }
                 }.windowed(windowSize, windowSize, true)
                     .forEach { products -> callback(products, it.count) }
             }
