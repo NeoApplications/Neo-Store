@@ -337,6 +337,8 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         val name = itemView.findViewById<MaterialTextView>(R.id.name)!!
         val packageName = itemView.findViewById<MaterialTextView>(R.id.package_name)!!
         val action = itemView.findViewById<MaterialButton>(R.id.action)!!
+        val secondaryAction = itemView.findViewById<MaterialButton>(R.id.secondary_action)!!
+        val info = itemView.findViewById<MaterialButton>(R.id.info)!!
         val statusLayout = itemView.findViewById<View>(R.id.status_layout)!!
         val status = itemView.findViewById<MaterialTextView>(R.id.status)!!
         val progress = itemView.findViewById<LinearProgressIndicator>(R.id.progress)!!
@@ -877,12 +879,29 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
     }
 
     private var action: Action? = null
+    private var secondaryAction: Action? = null
 
     fun setAction(action: Action?) {
         if (this.action != action) {
             val translate = this.action == null || action == null ||
                     this.action == Action.CANCEL || action == Action.CANCEL
             this.action = action
+            val index = items.indexOfFirst { it is Item.AppInfoItem }
+            if (index >= 0) {
+                if (translate) {
+                    notifyItemChanged(index)
+                } else {
+                    notifyItemChanged(index, Payload.REFRESH)
+                }
+            }
+        }
+    }
+
+    fun setSecondaryAction(action: Action?) {
+        if (this.secondaryAction != action) {
+            val translate = this.secondaryAction == null || action == null ||
+                    this.secondaryAction == Action.CANCEL || action == Action.CANCEL
+            this.secondaryAction = action
             val index = items.indexOfFirst { it is Item.AppInfoItem }
             if (index >= 0) {
                 if (translate) {
@@ -929,7 +948,15 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
     ): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.APP_INFO -> AppInfoViewHolder(parent.inflate(R.layout.item_app_info_x)).apply {
-                action.setOnClickListener { this@AppDetailAdapter.action?.let(callbacks::onActionClick) }
+                action.setOnClickListener {
+                    this@AppDetailAdapter.action?.let(callbacks::onActionClick)
+                }
+                secondaryAction.setOnClickListener {
+                    this@AppDetailAdapter.secondaryAction?.let(callbacks::onActionClick)
+                }
+                info.setOnClickListener {
+                    AppDetailAdapter.Action.DETAILS?.let(callbacks::onActionClick)
+                }
             }
             ViewType.SCREENSHOT -> ScreenShotViewHolder(parent.context)
             ViewType.SWITCH -> SwitchViewHolder(parent.inflate(R.layout.switch_item)).apply {
@@ -1106,6 +1133,14 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                         iconTint = if (action == Action.CANCEL) holder.actionTintOnCancel
                         else holder.actionTintOnNormal
                     }
+                    val secondaryAction = secondaryAction
+                    holder.secondaryAction.apply {
+                        visibility = if (secondaryAction == null) View.GONE else View.VISIBLE
+                        if (secondaryAction != null) {
+                            icon = context.getDrawable(secondaryAction.iconResId)
+                        }
+                    }
+                    holder.info.visibility = if (installed == null) View.GONE else View.VISIBLE
                 }
                 if (updateAll || updateStatus) {
                     val status = status

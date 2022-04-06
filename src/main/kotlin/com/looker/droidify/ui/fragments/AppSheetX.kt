@@ -251,23 +251,25 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 canUpdate -> Action.UPDATE
                 canLaunch -> Action.LAUNCH
                 canInstall -> Action.INSTALL
-                installed != null -> Action.DETAILS
                 canShare -> Action.SHARE
+                else -> null
+            }
+            val secondaryAction = when {
+                primaryAction != Action.SHARE && canShare -> Action.SHARE
+                primaryAction != Action.LAUNCH && canLaunch -> Action.LAUNCH
+                installed != null && canUninstall -> Action.UNINSTALL
                 else -> null
             }
 
             launch(Dispatchers.Main) {
                 val adapterAction =
                     if (downloading) AppDetailAdapter.Action.CANCEL else primaryAction?.adapterAction
-                (binding.recyclerView.adapter as? AppDetailAdapter)?.setAction(adapterAction)
-                for (action in sequenceOf(
-                    Action.INSTALL,
-                    Action.SHARE,
-                    Action.UPDATE,
-                    Action.UNINSTALL
-                )) {
-                    //toolbar.menu.findItem(action.id).isEnabled = !downloading
-                }
+                val adapterSecondaryAction =
+                    if (downloading) null else secondaryAction?.adapterAction
+                (binding.recyclerView.adapter as? AppDetailAdapter)
+                    ?.setAction(adapterAction)
+                (binding.recyclerView.adapter as? AppDetailAdapter)
+                    ?.setSecondaryAction(adapterSecondaryAction)
             }
             launch { this@AppSheetX.actions = Pair(actions, primaryAction) }
         }
