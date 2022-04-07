@@ -36,7 +36,7 @@ fun ProductCard(
                 item.metadataIcon,
                 repo?.address,
                 repo?.authentication
-            )
+            ).toString()
         )
     }
 

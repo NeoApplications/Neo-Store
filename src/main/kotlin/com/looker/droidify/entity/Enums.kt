@@ -13,3 +13,10 @@ enum class UpdateCategory(val id: Int) {
     UPDATED(1),
     NEW(2)
 }
+
+enum class InstallState {
+    INSTALL,
+    INSTALLING,
+    INSTALLED,
+    PENDING
+}

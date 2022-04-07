@@ -40,7 +40,7 @@ fun ProductsListItem(
                 item.metadataIcon,
                 repo?.address,
                 repo?.authentication
-            )
+            ).toString()
         )
     }
 
