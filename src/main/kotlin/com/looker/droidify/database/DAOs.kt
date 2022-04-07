@@ -190,7 +190,7 @@ interface ProductDao : BaseDao<Product> {
 
         // Filter only the selected repository/category
         if (section is Section.Category) {
-            builder += "AND category.${ROW_NAME} = ?"
+            builder += "AND category.${ROW_LABEL} = ?"
             builder %= section.name
         } else if (section is Section.Repository) {
             builder += "AND product.${ROW_REPOSITORY_ID} = ?"

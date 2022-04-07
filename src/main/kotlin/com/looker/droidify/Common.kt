@@ -13,6 +13,7 @@ const val NOTIFICATION_ID_INSTALLER = 4
 const val ROW_REPOSITORY_ID = "repositoryId"
 const val ROW_PACKAGE_NAME = "packageName"
 const val ROW_NAME = "name"
+const val ROW_LABEL = "label"
 const val ROW_SUMMARY = "summary"
 const val ROW_DESCRIPTION = "description"
 const val ROW_ADDED = "added"
