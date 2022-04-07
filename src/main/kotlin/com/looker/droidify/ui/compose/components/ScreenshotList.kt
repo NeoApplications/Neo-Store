@@ -36,7 +36,7 @@ fun ScreenshotList(
                     .wrapContentWidth()
                     .requiredHeight(120.dp)
                     .clickable { onScreenShotClick(it) },
-                data = it.path.toUri(),
+                data = it.path,
                 shape = RoundedCornerShape(LocalShapes.current.large)
             )
         }
