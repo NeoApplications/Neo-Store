@@ -135,8 +135,9 @@ interface ProductDao : BaseDao<Product> {
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
+        // TODO improve signature matching logic
         val signatureMatches = """$TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL AND
-        $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%.' || $TABLE_INSTALLED.$ROW_SIGNATURE || '.%') AND
+        $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%') AND
         $TABLE_PRODUCT.$ROW_SIGNATURES != ''"""
 
         // Select the return fields
