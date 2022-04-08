@@ -23,14 +23,6 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toProduct(byteArray: ByteArray) = Product.fromJson(String(byteArray))
-
-    @TypeConverter
-    @JvmStatic
-    fun toByteArray(product: Product) = product.toJSON().toByteArray()
-
-    @TypeConverter
-    @JvmStatic
     fun toAuthor(byteArray: ByteArray) = Author.fromJson(String(byteArray))
 
     @TypeConverter
