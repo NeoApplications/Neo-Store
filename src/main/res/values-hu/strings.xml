@@ -184,4 +184,5 @@
     <string name="prefs_new_apps">Megjelenítendő új alkalmazások száma</string>
     <string name="new_repository">Új tárolóhely</string>
     <string name="default_tab">Alapértelmezett lap</string>
+    <string name="pending">Függőben</string>
 </resources>
