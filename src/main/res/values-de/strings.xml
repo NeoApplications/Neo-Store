@@ -184,4 +184,6 @@
     <string name="prefs_new_apps">Anzahl der neu anzuzeigenden Anwendungen</string>
     <string name="new_repository">Neue Paketquelle</string>
     <string name="default_tab">Standard-Registerkarte</string>
+    <string name="installing">Installation</string>
+    <string name="pending">Verfügbar</string>
 </resources>
