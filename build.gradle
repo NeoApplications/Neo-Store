@@ -50,7 +50,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.2.0-alpha05"
+        kotlinCompilerExtensionVersion "1.2.0-alpha07"
     }
 
     buildTypes {
@@ -141,8 +141,8 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
-    implementation 'androidx.activity:activity-ktx:1.4.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.0-alpha04'
+    implementation 'androidx.activity:activity-ktx:1.6.0-alpha01'
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.0-alpha03"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.0-alpha03"
@@ -174,7 +174,7 @@ dependencies {
     implementation 'org.jetbrains:markdown:0.3.1'
 
     // Coroutines / Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha05'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
 
@@ -185,15 +185,15 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.2'
 
     // Compose
-    implementation "androidx.compose.runtime:runtime:1.2.0-alpha06"
-    implementation "androidx.compose.ui:ui:1.2.0-alpha06"
-    implementation "androidx.compose.ui:ui-tooling:1.2.0-alpha06"
-    implementation "androidx.compose.foundation:foundation:1.2.0-alpha06"
-    implementation "androidx.compose.runtime:runtime-livedata:1.2.0-alpha06"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha08"
-    implementation "androidx.compose.material:material:1.2.0-alpha06"
-    implementation "androidx.compose.animation:animation:1.2.0-alpha06"
-    implementation "androidx.compose.material:material-icons-extended:1.2.0-alpha06"
+    implementation "androidx.compose.runtime:runtime:1.2.0-alpha07"
+    implementation "androidx.compose.ui:ui:1.2.0-alpha07"
+    implementation "androidx.compose.ui:ui-tooling:1.2.0-alpha07"
+    implementation "androidx.compose.foundation:foundation:1.2.0-alpha07"
+    implementation "androidx.compose.runtime:runtime-livedata:1.2.0-alpha07"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha09"
+    implementation "androidx.compose.material:material:1.2.0-alpha07"
+    implementation "androidx.compose.animation:animation:1.2.0-alpha07"
+    implementation "androidx.compose.material:material-icons-extended:1.2.0-alpha07"
     implementation "com.google.android.material:compose-theme-adapter:1.1.6"
 }
 
