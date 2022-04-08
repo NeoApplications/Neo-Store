@@ -187,4 +187,6 @@
     <string name="prefs_new_apps">Количество новых приложений для показа</string>
     <string name="new_repository">Новый репозиторий</string>
     <string name="default_tab">Вкладка по умолчанию</string>
+    <string name="installing">Установка</string>
+    <string name="pending">Ожидается</string>
 </resources>
