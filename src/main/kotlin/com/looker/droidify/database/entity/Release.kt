@@ -2,13 +2,20 @@ package com.looker.droidify.database.entity
 
 import android.net.Uri
 import androidx.room.Entity
+import com.looker.droidify.ROW_PACKAGE_NAME
+import com.looker.droidify.ROW_SIGNATURE
+import com.looker.droidify.ROW_VERSION_CODE
+import com.looker.droidify.TABLE_RELEASE_NAME
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // TODO make a Room entity
-@Entity(primaryKeys = ["packageName", "versionCode", "signature"])
+@Entity(
+    tableName = TABLE_RELEASE_NAME,
+    primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE]
+)
 @Serializable
 data class Release(
     val packageName: String,

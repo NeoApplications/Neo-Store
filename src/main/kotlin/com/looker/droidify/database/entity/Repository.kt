@@ -3,17 +3,19 @@ package com.looker.droidify.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.looker.droidify.ROW_ID
+import com.looker.droidify.TABLE_REPOSITORY_NAME
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URL
 
-@Entity
+@Entity(tableName = TABLE_REPOSITORY_NAME)
 @Serializable
 data class Repository(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
+    @ColumnInfo(name = ROW_ID)
     var id: Long = 0,
     var address: String = "",
     var mirrors: List<String> = emptyList(),

@@ -2,8 +2,9 @@ package com.looker.droidify.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.looker.droidify.TABLE_LOCK_NAME
 
-@Entity(tableName = "memory_lock")
+@Entity(tableName = TABLE_LOCK_NAME)
 data class Lock(
     @PrimaryKey
     var packageName: String = "",

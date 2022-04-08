@@ -10,9 +10,23 @@ const val NOTIFICATION_ID_UPDATES = 2
 const val NOTIFICATION_ID_DOWNLOADING = 3
 const val NOTIFICATION_ID_INSTALLER = 4
 
+const val TABLE_CATEGORY = "category"
+const val TABLE_CATEGORY_NAME = "category"
+const val TABLE_CATEGORY_TEMP_NAME = "temporary_category"
+const val TABLE_INSTALLED = "installed"
+const val TABLE_INSTALLED_NAME = "memory_installed"
+const val TABLE_LOCK = "lock"
+const val TABLE_LOCK_NAME = "memory_lock"
+const val TABLE_PRODUCT = "product"
+const val TABLE_PRODUCT_NAME = "product"
+const val TABLE_PRODUCT_TEMP_NAME = "temporary_product"
+const val TABLE_RELEASE = "release"
+const val TABLE_RELEASE_NAME = "release"
+const val TABLE_REPOSITORY = "repository"
+const val TABLE_REPOSITORY_NAME = "repository"
+
 const val ROW_REPOSITORY_ID = "repositoryId"
 const val ROW_PACKAGE_NAME = "packageName"
-const val ROW_NAME = "name"
 const val ROW_LABEL = "label"
 const val ROW_SUMMARY = "summary"
 const val ROW_DESCRIPTION = "description"
@@ -33,14 +47,8 @@ const val ROW_VERSION = "version"
 const val ROW_SIGNATURE = "signature"
 const val ROW_ID = "_id"
 const val ROW_ENABLED = "enabled"
-const val ROW_DELETED = "deleted"
 const val ROW_CAN_UPDATE = "can_update"
 const val ROW_MATCH_RANK = "match_rank"
-const val ROW_REPOSITORY_NAME = "repository"
-const val ROW_PRODUCT_NAME = "product"
-const val ROW_CATEGORY_NAME = "category"
-const val ROW_INSTALLED_NAME = "memory_installed"
-const val ROW_LOCK_NAME = "memory_lock"
 
 const val JOB_ID_SYNC = 1
 

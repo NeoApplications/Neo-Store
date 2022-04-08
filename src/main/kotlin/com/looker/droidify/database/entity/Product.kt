@@ -1,6 +1,10 @@
 package com.looker.droidify.database.entity
 
 import androidx.room.Entity
+import com.looker.droidify.ROW_PACKAGE_NAME
+import com.looker.droidify.ROW_REPOSITORY_ID
+import com.looker.droidify.TABLE_PRODUCT_NAME
+import com.looker.droidify.TABLE_PRODUCT_TEMP_NAME
 import com.looker.droidify.entity.Author
 import com.looker.droidify.entity.Donate
 import com.looker.droidify.entity.ProductItem
@@ -12,7 +16,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // TODO Add Product Extras to handle favorite lists etc..
-@Entity(tableName = "product", primaryKeys = ["repositoryId", "packageName"])
+@Entity(tableName = TABLE_PRODUCT_NAME, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
 @Serializable
 open class Product(
     var repositoryId: Long,
@@ -131,7 +135,7 @@ open class Product(
     }
 }
 
-@Entity(tableName = "temporary_product")
+@Entity(tableName = TABLE_PRODUCT_TEMP_NAME)
 class ProductTemp(
     repositoryId: Long,
     packageName: String,
