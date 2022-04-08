@@ -186,4 +186,6 @@
     <string name="install_after_sync_summary">Instaluj aplikacje automatycznie po synchronizacji repozytoriów</string>
     <string name="new_repository">Nowe repozytorium</string>
     <string name="default_tab">Karta domyślna</string>
+    <string name="pending">Oczekujące</string>
+    <string name="installing">Instalacja</string>
 </resources>
