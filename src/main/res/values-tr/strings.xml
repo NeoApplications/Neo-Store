@@ -185,4 +185,6 @@
     <string name="prefs_new_apps">Gösterilecek yeni uygulama sayısı</string>
     <string name="new_repository">Yeni depo</string>
     <string name="default_tab">Öntanımlı Sekme</string>
+    <string name="installing">Kuruluyor</string>
+    <string name="pending">Bekliyor</string>
 </resources>
