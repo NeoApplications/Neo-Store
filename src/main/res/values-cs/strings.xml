@@ -185,4 +185,6 @@
     <string name="prefs_new_apps">Počet nových aplikací k zobrazení</string>
     <string name="new_repository">Nový repozitář</string>
     <string name="default_tab">Výchozí karta</string>
+    <string name="installing">Instalace</string>
+    <string name="pending">Čekající</string>
 </resources>
