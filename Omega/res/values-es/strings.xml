@@ -16,7 +16,7 @@
     <string name="title__drawer_categorization">Categorías</string>
     <string name="title__sort_mode">Ordenar App</string>
     <string name="title__sort_alphabetical_az">Alfabético A→Z</string>
-    <string name="title__sort_alphabetical_za">Alfabético Z→A</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
     <string name="title__sort_last_installed">Fecha de Instalacion</string>
     <string name="title__sort_most_used">Más usados</string>
     <string name="title__sort_by_color">Por Color</string>
@@ -73,15 +73,15 @@
     <string name="title_smartspace_feed_theme">Tema del Feed</string>
     <string name="color_presets">Predeterminados</string>
     <string name="icon_shape_override_label_location">en la pantalla de inicio</string>
-    <string name="get_more_icon_packs">Descargar un nuevo pack de iconos</string>
-    <string name="icon_pack">Pack de Iconos</string>
+    <string name="get_more_icon_packs">Descargar un nuevo paquete de iconos</string>
+    <string name="icon_pack">Paquete de Iconos</string>
     <string name="title_default">Predeterminado</string>
     <string name="theme_use_dark_text">Usar texto oscuro</string>
     <string name="theme_dark_dark_text">Oscuro con texto oscuro</string>
     <string name="theme_dark_text">Claro con texto oscuro</string>
-    <string name="theme_with_dark_text">Texto oscuro</string>
+    <string name="theme_with_dark_text">texto oscuro</string>
     <string name="theme_light">Claro</string>
-    <string name="hide_app_reset">Restablecer apps ocultas</string>
+    <string name="hide_app_reset">Reiniciar aplicaciones ocultas</string>
     <string name="hide_app_selected"> oculto</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Ocultas</item>
@@ -107,7 +107,7 @@
     <string name="title__dock_colored_icons">Iconos a colores</string>
     <string name="grid_size_height">Alto</string>
     <string name="theme_auto_night_mode">Sistema</string>
-    <string name="theme_auto">Seguir wallpaper</string>
+    <string name="theme_auto">Seguir fondo de pantalla</string>
     <string name="hotseat_show_page_indicator">Mostrar indicador de página</string>
     <string name="title_opacity">Opacidad</string>
     <string name="title__dock_show_arrow">Mostrar flecha</string>
@@ -161,15 +161,15 @@
     <string name="smartspace_setup_text">Toca para configurar</string>
     <string name="smartspace_add_to_home">Agregar al escritorio</string>
     <string name="category__behavior_weather">Clima</string>
-    <string name="title_smartspace_event_providers">Fuente de eventos</string>
+    <string name="title_smartspace_event_providers">Origen de eventos</string>
     <string name="title_smartspace_weather_units">Unidad de temperatura</string>
-    <string name="title_smartspace_widget_provider">Fuente de clima</string>
+    <string name="title_smartspace_widget_provider">Origen del clima</string>
     <string name="title_smartspace_time_above">Mostrar reloj grande</string>
     <string name="title_smartspace_time_24_h">Usar formato de 24 horas</string>
     <string name="title_smartspace_date">Mostrar fecha</string>
     <string name="title_smartspace_time">Mostrar hora</string>
     <string name="title_white_only_treatment">Reemplazar fondo blanco</string>
-    <string name="reset_custom_icons">Remover iconos personalizados</string>
+    <string name="reset_custom_icons">Retirar iconos personalizados</string>
     <string name="import_icon">Importar icono</string>
     <string name="icon_pack_applied_toast">%s aplicado</string>
     <string name="icon_shape_corner_round">Redondeado</string>
@@ -179,7 +179,7 @@
     <string name="icon_shape_circle">Circular</string>
     <string name="icon_shape_square">Cuadrado</string>
     <string name="icon_shape_system_default">Sistema</string>
-    <string name="title__theme_accent_color">Color de contraste</string>
+    <string name="title__theme_accent_color">Color de énfasis</string>
     <string name="action_global_search">Abrir búsqueda global</string>
     <string name="personality_provider">Saludos</string>
     <string name="smartspace_hours_mins">%1$s %2$s</string>
@@ -190,7 +190,7 @@
     <string name="icon_shape_top_right">Superior derecha</string>
     <string name="icon_shape_squircle">Ardilla</string>
     <string name="icon_shape_override_label">Cambiar la forma de los iconos</string>
-    <string name="title__theme_icon_shape">Cambiar la forma de los iconos</string>
+    <string name="title__theme_icon_shape">Cambiar la silueta de los iconos</string>
     <string name="title_search_hidden_apps">Encuentra accesos directos ocultos</string>
     <string name="title__drawer_hide_apps">Atajos de Aplicaciones ocultas</string>
     <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
@@ -200,11 +200,11 @@
     <string name="summary__general_notifications">Contador de notificaciones, color de notificaciones, gestos</string>
     <string name="summary__general_drawer">Personaliza tu cajón</string>
     <string name="summary__general_dock">Iconos del Dock, barra de búsqueda</string>
-    <string name="title_theme_icon_packs">Paquete de Iconos</string>
+    <string name="title_theme_icon_packs">Paquetes de Iconos</string>
     <string name="add_new_tab">Agregar</string>
     <string name="summary__drawer_hide_apps">Ocultar aplicación del Drawer</string>
     <string name="theme_dark_theme_mode_follow_daylight">Seguir la luz del día</string>
-    <string name="theme_based">Establecido por el tema</string>
+    <string name="theme_based">Fijar por tema</string>
     <string name="summary__theme_blur">Desenfocar los fondos de página</string>
     <string name="title__theme_blur_radius">Intensidad del desenfoque</string>
     <string name="title__theme_blur">Difuminar</string>
@@ -212,7 +212,7 @@
     <string name="needs_usage_access">Se necesita acceso a datos de uso</string>
     <string name="pref_appcategorization_flowerpot_summary">Elegir los atajos automáticamente.</string>
     <string name="tab_type_custom_desc">Elegir los atajos manualmente.</string>
-    <string name="pref_appcategorization_tabs_summary">Deslizar para moverse entre grupos.</string>
+    <string name="pref_appcategorization_tabs_summary">Deslizar entre grupos.</string>
     <string name="pref_appcategorization_folders_summary">Pulsar para abrir emergente.</string>
     <string name="cat_drawer_icons">Iconos</string>
     <string name="cat_drawer_grid">Cuadrícula</string>
@@ -222,13 +222,13 @@
     <string name="zen_mode_enabled">No molestar está habilitado.</string>
     <string name="name_provider_alarm_events">Próximas alarmas</string>
     <string name="smartspace_in_time">en %1$s</string>
-    <string name="title_legacy_treatment">Crear iconos adaptivos</string>
-    <string name="title_colored_backgrounds">Fondo de colores</string>
+    <string name="title_legacy_treatment">Crear iconos adaptativos</string>
+    <string name="title_colored_backgrounds">Fondo coloreado</string>
     <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
-    <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no se puede deshacer.</string>
-    <string name="import_as_adaptive">Como Icono adaptativo</string>
-    <string name="open_image_picker">Abrir selector de imagen</string>
-    <string name="icon_pack_external_picker">Abrir selector externo</string>
+    <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no puede ser deshecho.</string>
+    <string name="import_as_adaptive">Como icono adaptativo</string>
+    <string name="open_image_picker">Abrir recogedor de imagen</string>
+    <string name="icon_pack_external_picker">Abrir recogedor externo</string>
     <string name="icon_shape_corner_cut">Cortar</string>
     <string name="icon_shape_override_progress">Aplicando cambios de forma de Icono</string>
     <string name="menu_icon_shape">Icono Personalizado</string>
@@ -271,7 +271,7 @@
     <string name="backup_remove_from_recents">Remover de la lista</string>
     <string name="backup_invalid">No disponible</string>
     <string name="no_recent_backups">No hay respaldos recientes</string>
-    <string name="dialog_message_change_sort">¿Cambiar el orden a alfabético\?</string>
+    <string name="dialog_message_change_sort">¿Cambiar orden a alfabético\?</string>
     <string name="icu_abbrev_time">HH:mm</string>
     <string name="icu_abbrev_time_12h">hh:mm aa</string>
     <string name="icu_abbrev_date">dd MMMM</string>
@@ -301,7 +301,7 @@
     <string name="default_tab_name">Pestaña nueva</string>
     <string name="tabs_manage">Administrar</string>
     <string name="tab_manage_apps">Administrar aplicaciones</string>
-    <string name="title_force_shapeless">Forzar iconos sin forma</string>
+    <string name="title_force_shapeless">Forzar iconos desformes</string>
     <string name="title_drawer_layout">Modo de diseño</string>
     <string name="about_translators_group">Contribuidores y Traductores</string>
     <string name="backup_contents">Contenido de respaldo</string>
@@ -310,7 +310,7 @@
     <string name="protected_app_reset">Restablece apps protegidas</string>
     <string name="theme_auto_night_mode_black">Sistema (Negro)</string>
     <string name="summary_force_shapeless">Intente utilizar iconos heredados para todas las apps.</string>
-    <string name="title_smartspace">Mostrar Smartspace</string>
+    <string name="title_smartspace">Mostrar Espacio Inteligente</string>
     <string name="units_newton">Newton</string>
     <string name="summary__search_show_as_assistant_summary">Abrir Asistente en vez de Búsqueda Vocal</string>
     <string name="summary_colored_backgrounds">Para iconos adaptados al fondo.</string>
@@ -319,7 +319,7 @@
     <string name="about_community">Comunidad</string>
     <string name="dash_torch_summary">Enciende o apaga la luz flash.</string>
     <string name="folder_cover_mode">Utilizar Modo Cobertura</string>
-    <string name="action_open_overview">Mostrar Pompa de Escritorio</string>
+    <string name="action_open_overview">Mostrar Burbuja de Escritorio</string>
     <string name="title__search_bar_radius">Radio de Esquina</string>
     <string name="folder_background">Color del fondo de carpeta</string>
     <string name="summary__dev_restart">Puede ser ayuda si algunas opciones no están aplicadas apropiadamente</string>
@@ -345,7 +345,7 @@
     <string name="title_storage_permission_required">Acceso al Almacenaje Necesario</string>
     <string name="content_storage_permission_required">Concede acceso al almacenaje para fijar un tapiz de fondo.</string>
     <string name="uninstall_failed">No pudo desinstalar la app</string>
-    <string name="event_provider_missing_notification_dots">Activar puntos de notificación para utilizar <xliff:g example="My Proveider" id="providerName">«%1$s»</xliff:g>.</string>
+    <string name="event_provider_missing_notification_dots">Encender en puntos notificados para utilizar <xliff:g example="Mi Proveedor" id="providerName">“%1$s”</xliff:g>.</string>
     <string name="units_delisle">Delisle</string>
     <string name="disable_protected_apps_message">Apagar apps protegidas requiriendo autenticación</string>
     <string name="summary_dock_search">Mostrar en el suelo del dock</string>
@@ -353,10 +353,10 @@
     <string name="enable_protected_apps">Activar aplicaciones protegidas</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Seguir la luz del día (Oscura)</string>
     <string name="full_wday_month_day_no_year">d/MMMM/EEEE</string>
-    <string name="action_open_drawer">Abre cajón app</string>
+    <string name="action_open_drawer">Abrir cajón de app</string>
     <string name="onboarding_swipe_up">Cambiar para abrir el cajón.</string>
     <string name="weather_provider_pe">Experiencia Pixelar</string>
-    <string name="weather_provider_oneplus_weather">Meteorólogo OnePlus</string>
+    <string name="weather_provider_oneplus_weather">Meteorología Agregada</string>
     <string name="units_rakine">Puntuación</string>
     <string name="units_romer">Rømer</string>
     <string name="units_reaumur">Réaumur</string>
@@ -381,8 +381,8 @@
     <string name="summary_white_only_treatment">Color del fondo para todos los Iconos Adaptables.</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="smartspace_provider_bridge">Puente pixelar sin raíz</string>
-    <string name="onbording_settings_summary">Tocar y mantener en el Escritorio.</string>
-    <string name="weather_provider_testing">Depuración</string>
+    <string name="onbording_settings_summary">Tocar y conservar sobre el Escritorio.</string>
+    <string name="weather_provider_testing">Depurar</string>
     <string name="action_sleep_timeout">Dormir utilizando espera de pantalla</string>
     <string name="error_no_browser">Instala una app para abrir las primeras URL</string>
     <string name="folder_radius">Radio de esquina de carpeta</string>
@@ -428,4 +428,10 @@
     <string name="cat_desktop_grid">Rejilla y Disposición</string>
     <string name="title_app_categorization_enable">Habilitar categorías de apps</string>
     <string name="summary_app_categorization_enable">Crear lengüetas o carpetas</string>
+    <string name="summary_all_apps_search">Muestra barra de búsqueda</string>
+    <string name="permission_denied">Permiso denegado para lectura</string>
+    <string name="backup_name">Nombre del respaldo</string>
+    <string name="backup_create_new">Crea un respaldo nuevo</string>
+    <string name="backup_delete_failed">Algo fue mal</string>
+    <string name="summary_app_suggestions">Para todas las apps y pantallas Inicio</string>
 </resources>
