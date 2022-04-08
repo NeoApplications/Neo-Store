@@ -187,4 +187,6 @@
     <string name="prefs_new_apps">Numero di nuove applicazioni da mostrare</string>
     <string name="new_repository">Nuovo repository</string>
     <string name="default_tab">Scheda predefinita</string>
+    <string name="pending">In attesa</string>
+    <string name="installing">Installando</string>
 </resources>
