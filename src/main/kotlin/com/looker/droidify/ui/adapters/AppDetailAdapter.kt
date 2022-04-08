@@ -148,7 +148,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
             val product: Product
         ) : Item() {
             override val descriptor: String
-                get() = "app_info.${product.name}"
+                get() = "app_info.${product.label}"
 
             override val viewType: ViewType
                 get() = ViewType.APP_INFO
@@ -645,7 +645,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
             }
 
             val description = formatHtml(productRepository.first.description).apply {
-                if (productRepository.first.let { it.summary.isNotEmpty() && it.name != it.summary }) {
+                if (productRepository.first.let { it.summary.isNotEmpty() && it.label != it.summary }) {
                     if (isNotEmpty()) {
                         insert(0, "\n\n")
                     }
@@ -1111,7 +1111,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                         placeholder(holder.defaultIcon)
                         error(holder.defaultIcon)
                     }
-                    holder.name.text = item.product.name
+                    holder.name.text = item.product.label
                     holder.packageName.apply {
                         text = item.product.packageName
                     }

@@ -348,7 +348,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                 ?.let { (it.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 } == true
             launch {
                 collapsingToolbar.title =
-                    if (showPackageName) products[0].first.name.trimAfter(' ', 2)
+                    if (showPackageName) products[0].first.label.trimAfter(' ', 2)
                     else getString(R.string.application)
             }
         }
@@ -465,7 +465,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                 } else Unit
             }
             AppDetailAdapter.Action.SHARE -> {
-                shareIntent(packageName, products[0].first.name)
+                shareIntent(packageName, products[0].first.label)
             }
         }::class
     }
@@ -552,7 +552,7 @@ class AppDetailFragment() : ScreenFragment(), AppDetailAdapter.Callbacks {
                         .firstOrNull()
                 if (productRepository != null) {
                     downloadConnection.binder?.enqueue(
-                        packageName, productRepository.first.name,
+                        packageName, productRepository.first.label,
                         productRepository.second, release
                     )
                 }

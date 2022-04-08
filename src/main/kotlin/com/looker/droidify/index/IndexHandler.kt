@@ -92,7 +92,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         fun build(): Product = Product(
             repositoryId = repositoryId,
             packageName = packageName,
-            name = name,
+            label = name,
             summary = summary,
             description = description,
             added = added,

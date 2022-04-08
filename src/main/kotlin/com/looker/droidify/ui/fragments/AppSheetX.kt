@@ -345,7 +345,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 } else Unit
             }
             AppDetailAdapter.Action.SHARE -> {
-                shareIntent(packageName, productRepos[0].first.name)
+                shareIntent(packageName, productRepos[0].first.label)
             }
         }::class
     }
@@ -433,7 +433,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                         .firstOrNull()
                 if (productRepository != null) {
                     downloadConnection.binder?.enqueue(
-                        packageName, productRepository.first.name,
+                        packageName, productRepository.first.label,
                         productRepository.second, release
                     )
                 }

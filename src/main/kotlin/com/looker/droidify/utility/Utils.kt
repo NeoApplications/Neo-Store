@@ -102,7 +102,7 @@ object Utils {
             if (productRepository != null && it != null && binder != null) {
                 binder.enqueue(
                     packageName,
-                    productRepository.first.name,
+                    productRepository.first.label,
                     productRepository.second,
                     it
                 )
