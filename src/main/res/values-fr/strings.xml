@@ -184,4 +184,6 @@
     <string name="prefs_updated_apps">Nombre d\'applications mises à jour à afficher</string>
     <string name="new_repository">Nouveau dépôt</string>
     <string name="default_tab">Onglet par défaut</string>
+    <string name="pending">En attente</string>
+    <string name="installing">Installation</string>
 </resources>
