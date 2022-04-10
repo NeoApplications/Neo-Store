@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Category
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Section
@@ -48,28 +49,7 @@ class ExploreFragment : MainNavFragmentX() {
             repositories = it.associateBy { repo -> repo.id }
         }
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            binding.primaryComposeRecycler.setContent {
-                AppTheme(
-                    darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
-                        is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
-                        else -> isDarkTheme
-                    }
-                ) {
-                    Scaffold { _ ->
-                        ProductsVerticalRecycler(it, repositories,
-                            onUserClick = { item ->
-                                AppSheetX(item.packageName)
-                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
-                            },
-                            onFavouriteClick = {},
-                            onInstallClick = {
-                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
-                            }
-                        )
-                    }
-                }
-            }
+            redrawPage(it)
         }
         viewModel.categories.observe(viewLifecycleOwner) {
             binding.categories.apply {
@@ -119,6 +99,31 @@ class ExploreFragment : MainNavFragmentX() {
                         return true
                     }
                 })
+            }
+        }
+    }
+
+    private fun redrawPage(products: List<Product>?, categories: List<String> = emptyList()) {
+        binding.primaryComposeRecycler.setContent {
+            AppTheme(
+                darkTheme = when (Preferences[Preferences.Key.Theme]) {
+                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                    else -> isDarkTheme
+                }
+            ) {
+                Scaffold { _ ->
+                    ProductsVerticalRecycler(products, repositories,
+                        onUserClick = { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                        },
+                        onFavouriteClick = {},
+                        onInstallClick = {
+                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
+                    )
+                }
             }
         }
     }
