@@ -3,11 +3,19 @@ package com.looker.droidify.utility
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
@@ -194,3 +202,27 @@ val isBlackTheme: Boolean
         is Preferences.Theme.AmoledSystem -> true
         else -> false
     }
+
+fun Context.showBatteryOptimizationDialog() {
+    AlertDialog.Builder(this)
+        .setTitle(R.string.ignore_battery_optimization_title)
+        .setMessage(R.string.ignore_battery_optimization_message)
+        .setPositiveButton(R.string.dialog_approve) { dialog: DialogInterface?, _: Int ->
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+            intent.data = Uri.parse("package:" + this.packageName)
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(
+                    this,
+                    R.string.ignore_battery_optimization_not_supported,
+                    Toast.LENGTH_LONG
+                ).show()
+                Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization] = true
+            }
+        }
+        .setNeutralButton(R.string.dialog_refuse) { _: DialogInterface?, _: Int ->
+            Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization] = true
+        }
+        .show()
+}

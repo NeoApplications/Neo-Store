@@ -37,7 +37,8 @@ object Preferences {
         Key.Theme,
         Key.DefaultTab,
         Key.UpdateNotify,
-        Key.UpdateUnstable
+        Key.UpdateUnstable,
+        Key.IgnoreIgnoreBatteryOptimization
     ).map { Pair(it.name, it) }.toMap()
 
     fun init(context: Context) {
@@ -178,6 +179,9 @@ object Preferences {
 
         object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
         object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
+
+        object IgnoreIgnoreBatteryOptimization :
+            Key<Boolean>("ignore_ignore_battery_optimization", Value.BooleanValue(false))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
