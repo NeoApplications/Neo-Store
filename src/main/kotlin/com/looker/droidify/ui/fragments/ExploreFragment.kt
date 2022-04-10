@@ -52,35 +52,6 @@ class ExploreFragment : MainNavFragmentX() {
             redrawPage(it)
         }
         viewModel.categories.observe(viewLifecycleOwner) {
-            binding.categories.apply {
-                removeAllViews()
-                addView(Chip(requireContext(), null, R.attr.categoryChipStyle).apply {
-                    setText(R.string.all_applications)
-                    id = R.id.SHOW_ALL
-                })
-                it.sorted().forEach {
-                    addView(Chip(requireContext(), null, R.attr.categoryChipStyle).apply {
-                        text = it
-                    })
-                }
-                val selectedSection = viewModel.sections.value
-                check(
-                    children.filterNotNull()
-                        .find { child ->
-                            child is Chip && selectedSection is Category && child.text == selectedSection.label
-                        }?.id ?: R.id.SHOW_ALL
-                )
-            }
-        }
-        binding.categories.setOnCheckedStateChangeListener { group, checkedIds ->
-            group.findViewById<Chip>(checkedIds[0]).let {
-                viewModel.setSection(
-                    if (it.text.equals(getString(R.string.all_applications)))
-                        Section.All
-                    else
-                        Section.Category(it.text.toString())
-                )
-            }
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {
