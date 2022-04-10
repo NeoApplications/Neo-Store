@@ -37,6 +37,7 @@ import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
 
+// TODO maybe replace by using WorkManager instead?
 class DownloadService : ConnectionService<DownloadService.Binder>() {
     companion object {
         private const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"

@@ -48,9 +48,6 @@ class ExploreFragment : MainNavFragmentX() {
         return binding.root
     }
 
-    override fun setupAdapters() {
-    }
-
     override fun setupLayout() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }

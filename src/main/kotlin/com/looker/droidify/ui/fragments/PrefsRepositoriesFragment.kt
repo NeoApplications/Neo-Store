@@ -43,12 +43,9 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         return binding.root
     }
 
-    override fun setupAdapters() {
+    override fun setupLayout() {
         syncConnection.bind(requireContext())
         binding.addRepository.setOnClickListener { viewModel.addRepository() }
-    }
-
-    override fun setupLayout() {
         viewModel.repositories.observe(requireActivity()) {
             binding.reposRecycler.setContent {
                 AppTheme(

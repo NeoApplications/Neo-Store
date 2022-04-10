@@ -28,12 +28,13 @@ fun ProductCard(
     onUserClick: (ProductItem) -> Unit = {}
 ) {
 
-    val imageData by remember(item, repo) {
+    val product by remember(item) { mutableStateOf(item) }
+    val imageData by remember(product, repo) {
         mutableStateOf(
             CoilDownloader.createIconUri(
-                item.packageName,
-                item.icon,
-                item.metadataIcon,
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
                 repo?.address,
                 repo?.authentication
             ).toString()
@@ -46,7 +47,7 @@ fun ProductCard(
             .requiredSize(80.dp, 116.dp)
             .clip(shape = RoundedCornerShape(8.dp))
             .background(color = MaterialTheme.colorScheme.surface)
-            .clickable(onClick = { onUserClick(item) }),
+            .clickable(onClick = { onUserClick(product) }),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -57,7 +58,7 @@ fun ProductCard(
 
         Text(
             modifier = Modifier.padding(4.dp, 2.dp),
-            text = item.name,
+            text = product.name,
             style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -65,7 +66,7 @@ fun ProductCard(
         )
         Text(
             modifier = Modifier.padding(4.dp, 1.dp),
-            text = item.version,
+            text = product.version,
             style = MaterialTheme.typography.labelSmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,

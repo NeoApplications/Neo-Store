@@ -27,7 +27,8 @@ fun ChipRow(
 ) {
     LazyRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
         items(list) {
             Chip(
@@ -38,7 +39,7 @@ fun ChipRow(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = ChipDefaults.ContentOpacity)
+                    color = chipColors.contentColor(enabled = true).value
                 )
             }
         }

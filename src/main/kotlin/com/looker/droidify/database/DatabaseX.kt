@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
         Category::class,
         CategoryTemp::class,
         Installed::class,
-        Lock::class
+        Ignored::class
     ], version = 6
 )
 @TypeConverters(Converters::class)

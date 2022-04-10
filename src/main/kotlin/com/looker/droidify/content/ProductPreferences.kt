@@ -3,7 +3,7 @@ package com.looker.droidify.content
 import android.content.Context
 import android.content.SharedPreferences
 import com.looker.droidify.database.DatabaseX
-import com.looker.droidify.database.entity.Lock
+import com.looker.droidify.database.entity.Ignored
 import com.looker.droidify.entity.ProductPreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,13 +27,13 @@ object ProductPreferences {
             db.lockDao.insert(*preferences.all.keys
                 .mapNotNull { pName ->
                     this@ProductPreferences[pName].databaseVersionCode?.let {
-                        Lock(pName, it)
+                        Ignored(pName, it)
                     }
                 }
                 .toTypedArray()
             )
             subject.collect { (packageName, versionCode) ->
-                if (versionCode != null) db.lockDao.insert(Lock(packageName, versionCode))
+                if (versionCode != null) db.lockDao.insert(Ignored(packageName, versionCode))
                 else db.lockDao.delete(packageName)
             }
         }
