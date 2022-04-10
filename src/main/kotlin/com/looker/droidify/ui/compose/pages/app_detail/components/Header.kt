@@ -1,5 +1,6 @@
 package com.looker.droidify.ui.compose.pages.app_detail.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,8 +49,12 @@ fun Header(
                 appSize = appSize,
                 appDev = appDev
             )
-            DownloadProgress(totalSize = 69420)
+
             var buttonState by remember { mutableStateOf<ButtonStates>(Connecting) }
+
+            AnimatedVisibility(visible = buttonState is Cancelable) {
+                DownloadProgress(totalSize = 69420)
+            }
 
             InstallButton(buttonState = buttonState) {
                 buttonState = when (it) {
