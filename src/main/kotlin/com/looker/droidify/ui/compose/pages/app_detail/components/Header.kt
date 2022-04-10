@@ -7,15 +7,16 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
+import com.looker.droidify.ui.compose.components.InstallButton
 import com.looker.droidify.ui.compose.theme.LocalShapes
-import com.looker.droidify.ui.compose.utils.NetworkImage
+import com.looker.droidify.ui.compose.utils.*
 import com.looker.droidify.utility.extension.text.formatSize
 
 @Composable
@@ -48,6 +49,18 @@ fun Header(
                 appDev = appDev
             )
             DownloadProgress(totalSize = 69420)
+            var buttonState by remember { mutableStateOf<ButtonStates>(Connecting) }
+
+            InstallButton(buttonState = buttonState) {
+                buttonState = when (it) {
+                    Connecting -> Download
+                    Download -> Downloading
+                    Downloading -> Install
+                    Install -> Installing
+                    Installing -> Launch
+                    Launch -> Connecting
+                }
+            }
         }
     }
 }
