@@ -8,22 +8,30 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Screenshot
+import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.ui.compose.theme.LocalShapes
 import com.looker.droidify.ui.compose.utils.NetworkImage
+
+data class ScreenshotItem(
+    val screenShot: Screenshot,
+    val repository: Repository,
+    val packageName: String
+)
+
+fun Screenshot.toScreenshotItem(packageName: String, repository: Repository) =
+    ScreenshotItem(this, repository, packageName)
 
 @Composable
 fun ScreenshotList(
     modifier: Modifier = Modifier,
-    screenShots: List<Screenshot>,
-    onScreenShotClick: (Screenshot) -> Unit
+    screenShots: List<ScreenshotItem>,
+    onScreenShotClick: (Screenshot) -> Unit = {}
 ) {
     val screenShotList by remember { mutableStateOf(screenShots) }
     LazyRow(
@@ -31,13 +39,24 @@ fun ScreenshotList(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(screenShotList) {
+
+            var image by remember { mutableStateOf<String?>(null) }
+
+            SideEffect {
+                image = CoilDownloader.createScreenshotUri(
+                    it.repository,
+                    it.packageName,
+                    it.screenShot
+                ).toString()
+            }
+
             NetworkImage(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .requiredHeight(120.dp)
-                    .clickable { onScreenShotClick(it) },
-                data = it.path,
-                shape = RoundedCornerShape(LocalShapes.current.large)
+                    .requiredHeight(300.dp)
+                    .clip(RoundedCornerShape(LocalShapes.current.large))
+                    .clickable { onScreenShotClick(it.screenShot) },
+                data = image
             )
         }
     }
