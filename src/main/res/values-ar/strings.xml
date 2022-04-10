@@ -188,4 +188,6 @@
     <string name="prefs_updated_apps">عدد التطبيقات المحدثة التي يجب عرضها</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="installing">التثبيت</string>
 </resources>
