@@ -5,19 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Scaffold
-import androidx.core.view.children
-import com.google.android.material.chip.Chip
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentExploreXBinding
 import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.theme.AppTheme
+import com.looker.droidify.ui.compose.utils.SelectableChipRow
 import com.looker.droidify.utility.isDarkTheme
 import com.looker.droidify.widget.FocusSearchView
 
@@ -49,9 +56,10 @@ class ExploreFragment : MainNavFragmentX() {
             repositories = it.associateBy { repo -> repo.id }
         }
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            redrawPage(it)
+            redrawPage(it, viewModel.categories.value ?: emptyList())
         }
         viewModel.categories.observe(viewLifecycleOwner) {
+            redrawPage(viewModel.primaryProducts.value, it)
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -74,6 +82,7 @@ class ExploreFragment : MainNavFragmentX() {
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
     private fun redrawPage(products: List<Product>?, categories: List<String> = emptyList()) {
         binding.primaryComposeRecycler.setContent {
             AppTheme(
@@ -84,16 +93,39 @@ class ExploreFragment : MainNavFragmentX() {
                 }
             ) {
                 Scaffold { _ ->
-                    ProductsVerticalRecycler(products, repositories,
-                        onUserClick = { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
-                        },
-                        onFavouriteClick = {},
-                        onInstallClick = {
-                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                    Column(
+                        Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                    ) {
+                        SelectableChipRow(
+                            list = listOf(
+                                stringResource(id = R.string.all_applications),
+                                *categories.sorted().toTypedArray()
+                            )
+                        ) {
+                            viewModel.setSection(
+                                when (it) {
+                                    getString(R.string.all_applications) -> Section.All
+                                    else -> Section.Category(it)
+                                }
+                            )
                         }
-                    )
+                        ProductsVerticalRecycler(products,
+                            repositories,
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            onUserClick = { item ->
+                                AppSheetX(item.packageName)
+                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            },
+                            onFavouriteClick = {},
+                            onInstallClick = {
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                            }
+                        )
+                    }
                 }
             }
         }
