@@ -3,11 +3,10 @@ package com.looker.droidify.ui.compose.pages.app_detail.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material.icons.rounded.Launch
-import androidx.compose.material3.*
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
-import com.looker.droidify.entity.InstallState
 import com.looker.droidify.ui.compose.theme.LocalShapes
 import com.looker.droidify.ui.compose.utils.NetworkImage
 import com.looker.droidify.utility.extension.text.formatSize
@@ -50,7 +48,6 @@ fun Header(
                 appDev = appDev
             )
             DownloadProgress(totalSize = 69420)
-            InstallButton(installState = InstallState.PENDING)
         }
     }
 }
@@ -149,38 +146,10 @@ fun DownloadProgress(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
-        Text(text = totalSize.div(downloading).toLong().formatSize() + "/" + totalSize.formatSize())
-        Spacer(modifier = Modifier.height(8.dp))
-        LinearProgressIndicator(progress = downloading)
-    }
-}
-
-@Composable
-fun InstallButton(
-    modifier: Modifier = Modifier,
-    installState: InstallState,
-    onClick: () -> Unit = {}
-) {
-    Button(
-        modifier = modifier,
-        onClick = onClick
-    ) {
-        Icon(
-            imageVector = when (installState) {
-                InstallState.INSTALLING -> Icons.Rounded.Close
-                InstallState.INSTALLED -> Icons.Rounded.Launch
-                InstallState.PENDING -> Icons.Rounded.Close
-                InstallState.INSTALL -> Icons.Rounded.Download
-            },
-            contentDescription = null
-        )
         Text(
-            text = when (installState) {
-                InstallState.INSTALLING -> stringResource(id = R.string.installing)
-                InstallState.INSTALLED -> stringResource(id = R.string.launch)
-                InstallState.PENDING -> stringResource(id = R.string.pending)
-                InstallState.INSTALL -> stringResource(id = R.string.install)
-            }
+            text = totalSize.times(downloading).toLong().formatSize() + "/" + totalSize.formatSize()
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), progress = downloading)
     }
 }
