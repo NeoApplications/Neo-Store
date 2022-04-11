@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.looker.droidify.R
-import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @Composable
 fun NetworkImage(
@@ -27,7 +25,7 @@ fun NetworkImage(
     data: String?,
     contentScale: ContentScale = ContentScale.Crop,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    shape: Shape = RoundedCornerShape(LocalShapes.current.medium)
+    shape: Shape = MaterialTheme.shapes.medium
 ) {
     SubcomposeAsyncImage(
         modifier = modifier.clip(shape),

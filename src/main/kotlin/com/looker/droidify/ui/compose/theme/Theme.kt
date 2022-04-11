@@ -5,7 +5,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import com.looker.droidify.utility.isBlackTheme
 
 @Composable
@@ -14,17 +13,14 @@ fun AppTheme(
     blackTheme: Boolean = isBlackTheme,
     content: @Composable () -> Unit
 ) {
-
-    CompositionLocalProvider(LocalShapes provides ShapeSize()) {
-        MaterialTheme(
-            colorScheme = when {
-                darkTheme && blackTheme -> BlackColors
-                darkTheme -> DarkColors
-                else -> LightColors
-            },
-            content = content
-        )
-    }
+    MaterialTheme(
+        colorScheme = when {
+            darkTheme && blackTheme -> BlackColors
+            darkTheme -> DarkColors
+            else -> LightColors
+        },
+        content = content
+    )
 }
 
 private val LightColors = lightColorScheme(

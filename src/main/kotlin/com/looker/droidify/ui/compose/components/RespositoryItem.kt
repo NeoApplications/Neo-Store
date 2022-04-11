@@ -5,7 +5,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,13 +38,13 @@ fun RepositoryItem(
         modifier = modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(LocalShapes.current.large))
+            .clip(MaterialTheme.shapes.large)
             .combinedClickable(
                 onClick = { onClick(repository) },
                 onLongClick = { onLongClick(repository) }
             ),
         color = backgroundColor,
-        shape = RoundedCornerShape(LocalShapes.current.large)
+        shape = MaterialTheme.shapes.large
     ) {
         Row(
             modifier = Modifier.padding(

@@ -6,7 +6,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import com.looker.droidify.ui.compose.theme.LocalShapes
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,7 +24,7 @@ fun ExpandableCard(
     modifier: Modifier = Modifier,
     preExpanded: Boolean = false,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
-    shape: CornerBasedShape = RoundedCornerShape(LocalShapes.current.large),
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
     onClick: () -> Unit = {},
     expandedContent: @Composable () -> Unit = {},
     mainContent: @Composable () -> Unit

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.network.CoilDownloader
-import com.looker.droidify.ui.compose.theme.LocalShapes
 import com.looker.droidify.ui.compose.utils.NetworkImage
 
 data class ScreenshotItem(
@@ -54,7 +53,7 @@ fun ScreenshotList(
                 modifier = Modifier
                     .wrapContentWidth()
                     .requiredHeight(300.dp)
-                    .clip(RoundedCornerShape(LocalShapes.current.large))
+                    .clip(MaterialTheme.shapes.large)
                     .clickable { onScreenShotClick(it.screenShot) },
                 data = image
             )

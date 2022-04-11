@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.ui.compose.components.InstallButton
-import com.looker.droidify.ui.compose.theme.LocalShapes
 import com.looker.droidify.ui.compose.utils.*
 import com.looker.droidify.utility.extension.text.formatSize
 
@@ -32,7 +31,7 @@ fun Header(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(LocalShapes.current.large)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
