@@ -32,12 +32,13 @@ fun ProductsListItem(
     onFavouriteClick: (ProductItem) -> Unit = {},
     onInstallClick: (ProductItem) -> Unit = {}
 ) {
-    val imageData by remember(item, repo) {
+    val product by remember(item) { mutableStateOf(item) }
+    val imageData by remember(product, repo) {
         mutableStateOf(
             CoilDownloader.createIconUri(
-                item.packageName,
-                item.icon,
-                item.metadataIcon,
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
                 repo?.address,
                 repo?.authentication
             ).toString()
@@ -46,10 +47,10 @@ fun ProductsListItem(
 
     ExpandableCard(
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
-        onClick = { onUserClick(item) },
+        onClick = { onUserClick(product) },
         expandedContent = {
             ExpandedItemContent(
-                item = item,
+                item = product,
                 onFavourite = onFavouriteClick,
                 onInstallClicked = onInstallClick
             )
@@ -74,7 +75,7 @@ fun ProductsListItem(
                         .fillMaxHeight(0.4f),
                 ) {
                     Text(
-                        text = item.name,
+                        text = product.name,
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .weight(1f),
@@ -84,8 +85,8 @@ fun ProductsListItem(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = item.version,
                         modifier = Modifier.align(Alignment.CenterVertically),
+                        text = product.version,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
@@ -95,7 +96,7 @@ fun ProductsListItem(
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth(),
-                    text = item.summary,
+                    text = product.summary,
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,

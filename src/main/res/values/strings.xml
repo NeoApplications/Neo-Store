@@ -189,4 +189,9 @@
     <string name="default_tab">Default Tab</string>
     <string name="pending">Pending</string>
     <string name="installing">Installing</string>
+    <string name="ignore_battery_optimization_title">Ignore Battery Optimization</string>
+    <string name="ignore_battery_optimization_message">Starting Android 12 there\'s restrictions on running foreground services causing the app to crash on downloads. To prevent this, you should turn off the battery optimization</string>
+    <string name="ignore_battery_optimization_not_supported">The device doesn\'t support ignoring battery optimizations!</string>
+    <string name="dialog_refuse">Don\'t need it</string>
+    <string name="dialog_approve">Let\'s do it!</string>
 </resources>

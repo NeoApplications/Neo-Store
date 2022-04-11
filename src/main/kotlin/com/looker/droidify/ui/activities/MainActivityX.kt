@@ -3,6 +3,7 @@ package com.looker.droidify.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PowerManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -31,6 +32,7 @@ import com.looker.droidify.ui.fragments.Source
 import com.looker.droidify.ui.viewmodels.MainActivityViewModelX
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.nullIfEmpty
+import com.looker.droidify.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -52,6 +54,7 @@ class MainActivityX : AppCompatActivity() {
     lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel: MainActivityViewModelX by viewModels()
+    private lateinit var powerManager: PowerManager
     val menuSetup = MutableLiveData<Boolean>()
 
     val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
@@ -95,6 +98,7 @@ class MainActivityX : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.selectedItemId = currentTab
 
+        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
             handleIntent(intent)
         }
@@ -117,6 +121,8 @@ class MainActivityX : AppCompatActivity() {
         super.onResume()
         if (currentTheme != Preferences[Preferences.Key.Theme].getResId(resources.configuration))
             recreate()
+        if (!powerManager.isIgnoringBatteryOptimizations(this.packageName) && !Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization])
+            showBatteryOptimizationDialog()
     }
 
     override fun onSupportNavigateUp(): Boolean {

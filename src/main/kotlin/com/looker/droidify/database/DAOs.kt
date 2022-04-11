@@ -144,7 +144,7 @@ interface ProductDao : BaseDao<Product> {
         builder += """SELECT $TABLE_PRODUCT.rowid AS $ROW_ID, $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
         $TABLE_PRODUCT.$ROW_PACKAGE_NAME, $TABLE_PRODUCT.$ROW_LABEL,
         $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION, 
-        (COALESCE($TABLE_LOCK.$ROW_VERSION_CODE, -1) NOT IN (0, $TABLE_PRODUCT.$ROW_VERSION_CODE) AND
+        (COALESCE($TABLE_IGNORED.$ROW_VERSION_CODE, -1) NOT IN (0, $TABLE_PRODUCT.$ROW_VERSION_CODE) AND
         $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
         $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
         $signatureMatches) AS $ROW_CAN_UPDATE, $TABLE_PRODUCT.$ROW_ICON,
@@ -173,8 +173,8 @@ interface ProductDao : BaseDao<Product> {
         ON $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID"""
 
         // Merge the matching locks
-        builder += """LEFT JOIN $TABLE_LOCK_NAME AS $TABLE_LOCK
-        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_LOCK.$ROW_PACKAGE_NAME"""
+        builder += """LEFT JOIN $TABLE_IGNORED_NAME AS $TABLE_IGNORED
+        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_IGNORED.$ROW_PACKAGE_NAME"""
 
         // Merge the matching installed
         if (!installed && !updates) builder += "LEFT"
@@ -291,7 +291,7 @@ interface InstalledDao : BaseDao<Installed> {
 }
 
 @Dao
-interface LockDao : BaseDao<Lock> {
+interface LockDao : BaseDao<Ignored> {
     @Query("DELETE FROM memory_lock WHERE packageName = :packageName")
     fun delete(packageName: String)
 }
