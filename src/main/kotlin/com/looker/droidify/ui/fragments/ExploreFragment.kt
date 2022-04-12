@@ -52,6 +52,7 @@ class ExploreFragment : MainNavFragmentX() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }
         }
+        viewModel.installed.observe(viewLifecycleOwner) {}
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
             redrawPage(it, viewModel.categories.value ?: emptyList())
         }

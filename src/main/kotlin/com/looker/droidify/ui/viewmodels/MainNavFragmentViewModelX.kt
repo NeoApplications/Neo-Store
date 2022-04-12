@@ -3,6 +3,7 @@ package com.looker.droidify.ui.viewmodels
 import androidx.lifecycle.*
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.Order
@@ -71,6 +72,7 @@ class MainNavFragmentViewModelX(
 
     val repositories = MediatorLiveData<List<Repository>>()
     val categories = MediatorLiveData<List<String>>()
+    val installed = MediatorLiveData<List<Installed>>()
 
     init {
         primaryProducts.addSource(
@@ -99,14 +101,20 @@ class MainNavFragmentViewModelX(
                 }
             }
         }
-        if (secondarySource == Source.UPDATES) {
-            secondaryProducts.addSource(db.installedDao.allLive) {
+        installed.addSource(db.installedDao.allLive) {
+            if (primarySource == Source.INSTALLED && secondarySource == Source.UPDATES) {
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         secondaryProducts.postValue(db.productDao.queryObject(secondaryRequest))
+                        primaryProducts.postValue(
+                            db.productDao.queryObject(
+                                primaryRequest.value ?: request(primarySource)
+                            )
+                        )
                     }
                 }
             }
+            installed.postValue(it)
         }
     }
 

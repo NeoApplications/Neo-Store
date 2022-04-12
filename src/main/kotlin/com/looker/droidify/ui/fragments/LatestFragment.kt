@@ -43,6 +43,7 @@ class LatestFragment : MainNavFragmentX() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }
         }
+        viewModel.installed.observe(viewLifecycleOwner) {}
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
             binding.primaryComposeRecycler.setContent {
                 AppTheme(
