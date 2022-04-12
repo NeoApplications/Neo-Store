@@ -5,11 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import com.google.android.material.composethemeadapter.MdcTheme
+import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Product
@@ -48,9 +55,10 @@ class LatestFragment : MainNavFragmentX() {
         }
         viewModel.installed.observe(viewLifecycleOwner) {}
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            redrawPage(it)
+            redrawPage(it, viewModel.secondaryProducts.value)
         }
         viewModel.secondaryProducts.observe(viewLifecycleOwner) {
+            redrawPage(viewModel.primaryProducts.value, it)
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -74,7 +82,7 @@ class LatestFragment : MainNavFragmentX() {
     }
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-    private fun redrawPage(products: List<Product>?) {
+    private fun redrawPage(primaryList: List<Product>?, secondaryList: List<Product>?) {
         binding.primaryComposeRecycler.setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
@@ -84,16 +92,58 @@ class LatestFragment : MainNavFragmentX() {
                 }
             ) {
                 Scaffold { _ ->
-                    ProductsVerticalRecycler(products, repositories,
-                        onUserClick = { item ->
+                    Column(
+                        Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.new_applications),
+                            modifier = Modifier.padding(8.dp)
+                        )
+                        ProductsHorizontalRecycler(secondaryList, repositories) { item ->
                             AppSheetX(item.packageName)
                                 .showNow(parentFragmentManager, "Product ${item.packageName}")
-                        },
-                        onFavouriteClick = {},
-                        onInstallClick = {
-                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
                         }
-                    )
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.recently_updated),
+                                modifier = Modifier.weight(1f),
+                            )
+                            Chip(
+                                shape = MaterialTheme.shapes.medium,
+                                colors = ChipDefaults.chipColors(
+                                    backgroundColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                ),
+                                onClick = { } // TODO add sort & filter
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = R.drawable.ic_sort),
+                                    contentDescription = stringResource(id = R.string.sort_filter)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = stringResource(id = R.string.sort_filter))
+                            }
+                        }
+                        ProductsVerticalRecycler(primaryList, repositories,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            onUserClick = { item ->
+                                AppSheetX(item.packageName)
+                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            },
+                            onFavouriteClick = {},
+                            onInstallClick = {
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                            }
+                        )
+                    }
                 }
             }
         }
