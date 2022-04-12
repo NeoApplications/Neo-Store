@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -74,12 +77,11 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                 }
             ) {
                 Scaffold {
-                    Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.Absolute.spacedBy(4.dp)
-                    ) {
+                    Column {
                         OutlinedButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth(),
                             contentPadding = PaddingValues(12.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = MaterialTheme.colorScheme.primary,
