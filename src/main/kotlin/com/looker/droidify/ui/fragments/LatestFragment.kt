@@ -51,22 +51,6 @@ class LatestFragment : MainNavFragmentX() {
             redrawPage(it)
         }
         viewModel.secondaryProducts.observe(viewLifecycleOwner) {
-            binding.secondaryComposeRecycler.setContent {
-                AppTheme(
-                    darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
-                        is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
-                        else -> isDarkTheme
-                    }
-                ) {
-                    MdcTheme {
-                        ProductsHorizontalRecycler(it, repositories) { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
-                        }
-                    }
-                }
-            }
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {
