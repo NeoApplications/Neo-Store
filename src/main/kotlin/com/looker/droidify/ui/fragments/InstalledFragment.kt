@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
@@ -45,28 +47,7 @@ class InstalledFragment : MainNavFragmentX() {
         }
         viewModel.installed.observe(viewLifecycleOwner) {}
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            binding.primaryComposeRecycler.setContent {
-                AppTheme(
-                    darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
-                        is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
-                        else -> isDarkTheme
-                    }
-                ) {
-                    Scaffold { _ ->
-                        ProductsVerticalRecycler(it.sortedBy(Product::label), repositories,
-                            onUserClick = { item ->
-                                AppSheetX(item.packageName)
-                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
-                            },
-                            onFavouriteClick = {},
-                            onInstallClick = {
-                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
-                            }
-                        )
-                    }
-                }
-            }
+            redrawPage(it)
         }
         viewModel.secondaryProducts.observe(viewLifecycleOwner) {
             binding.updatedBar.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
@@ -126,6 +107,32 @@ class InstalledFragment : MainNavFragmentX() {
                         return true
                     }
                 })
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+    private fun redrawPage(products: List<Product>?) {
+        binding.primaryComposeRecycler.setContent {
+            AppTheme(
+                darkTheme = when (Preferences[Preferences.Key.Theme]) {
+                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                    else -> isDarkTheme
+                }
+            ) {
+                Scaffold { _ ->
+                    ProductsVerticalRecycler(products?.sortedBy(Product::label), repositories,
+                        onUserClick = { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                        },
+                        onFavouriteClick = {},
+                        onInstallClick = {
+                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
+                    )
+                }
             }
         }
     }
