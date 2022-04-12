@@ -5,11 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import com.google.android.material.composethemeadapter.MdcTheme
+import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Product
@@ -47,9 +60,10 @@ class InstalledFragment : MainNavFragmentX() {
         }
         viewModel.installed.observe(viewLifecycleOwner) {}
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            redrawPage(it)
+            redrawPage(it, viewModel.secondaryProducts.value)
         }
         viewModel.secondaryProducts.observe(viewLifecycleOwner) {
+            redrawPage(viewModel.primaryProducts.value, it)
         }
         mainActivityX.menuSetup.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -72,8 +86,8 @@ class InstalledFragment : MainNavFragmentX() {
         }
     }
 
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-    private fun redrawPage(products: List<Product>?) {
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+    private fun redrawPage(primaryList: List<Product>?, secondaryList: List<Product>?) {
         binding.primaryComposeRecycler.setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
@@ -83,16 +97,118 @@ class InstalledFragment : MainNavFragmentX() {
                 }
             ) {
                 Scaffold { _ ->
-                    ProductsVerticalRecycler(products?.sortedBy(Product::label), repositories,
-                        onUserClick = { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
-                        },
-                        onFavouriteClick = {},
-                        onInstallClick = {
-                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                    var updatesVisible by remember(secondaryList) { mutableStateOf(true) }
+
+                    Column(
+                        Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                    ) {
+                        AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
+                            Column {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    ElevatedButton(
+                                        colors = ButtonDefaults.elevatedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.primary
+                                        ),
+                                        onClick = { updatesVisible = !updatesVisible }
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(start = 4.dp),
+                                            text = stringResource(id = R.string.updates),
+                                            textAlign = TextAlign.Center,
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Icon(
+                                            modifier = Modifier.size(18.dp),
+                                            painter = painterResource(id = if (updatesVisible) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
+                                            contentDescription = stringResource(id = R.string.updates)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    Chip(
+                                        shape = MaterialTheme.shapes.medium,
+                                        colors = ChipDefaults.chipColors(
+                                            backgroundColor = MaterialTheme.colorScheme.surface,
+                                            contentColor = MaterialTheme.colorScheme.onSurface,
+                                        ),
+                                        onClick = {
+                                            viewModel.secondaryProducts.value?.let {
+                                                mainActivityX.syncConnection.binder?.updateApps(
+                                                    it.map(
+                                                        Product::toItem
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(18.dp),
+                                            painter = painterResource(id = R.drawable.ic_download),
+                                            contentDescription = stringResource(id = R.string.update_all)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(text = stringResource(id = R.string.update_all))
+                                    }
+                                }
+                                AnimatedVisibility(visible = updatesVisible) {
+                                    ProductsHorizontalRecycler(
+                                        secondaryList,
+                                        repositories
+                                    ) { item ->
+                                        AppSheetX(item.packageName)
+                                            .showNow(
+                                                parentFragmentManager,
+                                                "Product ${item.packageName}"
+                                            )
+                                    }
+                                }
+                            }
                         }
-                    )
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.installed_applications),
+                                modifier = Modifier.weight(1f),
+                            )
+                            Chip(
+                                shape = MaterialTheme.shapes.medium,
+                                colors = ChipDefaults.chipColors(
+                                    backgroundColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                ),
+                                onClick = { } // TODO add sort & filter
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = R.drawable.ic_sort),
+                                    contentDescription = stringResource(id = R.string.sort_filter)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = stringResource(id = R.string.sort_filter))
+                            }
+                        }
+                        ProductsVerticalRecycler(primaryList?.sortedBy(Product::label),
+                            repositories,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            onUserClick = { item ->
+                                AppSheetX(item.packageName)
+                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            },
+                            onFavouriteClick = {},
+                            onInstallClick = {
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                            }
+                        )
+                    }
                 }
             }
         }
