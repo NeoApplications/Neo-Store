@@ -1,16 +1,16 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
-        google()
         mavenCentral()
+        google()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        google()
+        maven(url = "https://jitpack.io")
     }
 }
 rootProject.name = "Neo Store"
