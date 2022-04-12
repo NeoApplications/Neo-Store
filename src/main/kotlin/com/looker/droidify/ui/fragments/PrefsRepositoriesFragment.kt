@@ -5,9 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
+import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentRepositoriesXBinding
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
@@ -45,19 +53,54 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
 
     override fun setupLayout() {
         syncConnection.bind(requireContext())
-        binding.addRepository.setOnClickListener { viewModel.addRepository() }
         viewModel.repositories.observe(requireActivity()) {
-            binding.reposRecycler.setContent {
-                AppTheme(
-                    darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
-                        is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
-                        else -> isDarkTheme
-                    }
-                ) {
-                    Scaffold { _ ->
+            redrawPage(it)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        syncConnection.unbind(requireContext())
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun redrawPage(repos: List<Repository>) {
+        binding.reposRecycler.setContent {
+            AppTheme(
+                darkTheme = when (Preferences[Preferences.Key.Theme]) {
+                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                    else -> isDarkTheme
+                }
+            ) {
+                Scaffold {
+                    Column(
+                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.Absolute.spacedBy(4.dp)
+                    ) {
+                        OutlinedButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(12.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.primary,
+                                containerColor = MaterialTheme.colorScheme.background
+                            ),
+                            onClick = { viewModel.addRepository() }
+                        ) {
+                            Text(
+                                modifier = Modifier.weight(1f),
+                                text = stringResource(id = R.string.add_repository),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_add),
+                                contentDescription = stringResource(id = R.string.add_repository)
+                            )
+                        }
+
                         RepositoriesRecycler(
-                            repositoriesList = it.sortedBy { repo -> !repo.enabled },
+                            repositoriesList = repos.sortedBy { repo -> !repo.enabled },
                             onClick = { repo ->
                                 repo.enabled = !repo.enabled
                                 GlobalScope.launch(Dispatchers.IO) {
@@ -72,10 +115,5 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        syncConnection.unbind(requireContext())
     }
 }
