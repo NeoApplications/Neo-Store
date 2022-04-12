@@ -16,7 +16,7 @@ import androidx.fragment.app.viewModels
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.databinding.FragmentRepositoriesXBinding
+import com.looker.droidify.databinding.FragmentComposeBinding
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.PrefsActivityX
@@ -29,7 +29,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PrefsRepositoriesFragment : BaseNavFragment() {
-    private lateinit var binding: FragmentRepositoriesXBinding
+    private lateinit var binding: FragmentComposeBinding
     val viewModel: RepositoriesViewModelX by viewModels {
         RepositoriesViewModelX.Factory(prefsActivityX.db)
     }
@@ -45,7 +45,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         savedInstanceState: Bundle?,
     ): View {
         super.onCreate(savedInstanceState)
-        binding = FragmentRepositoriesXBinding.inflate(inflater, container, false)
+        binding = FragmentComposeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
 
         return binding.root
@@ -65,7 +65,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     fun redrawPage(repos: List<Repository>) {
-        binding.reposRecycler.setContent {
+        binding.composeView.setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
                     is Preferences.Theme.System -> isSystemInDarkTheme()

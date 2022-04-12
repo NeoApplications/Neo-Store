@@ -20,7 +20,7 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.databinding.FragmentExploreXBinding
+import com.looker.droidify.databinding.FragmentComposeBinding
 import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.theme.AppTheme
@@ -30,7 +30,7 @@ import com.looker.droidify.widget.FocusSearchView
 
 class ExploreFragment : MainNavFragmentX() {
 
-    private lateinit var binding: FragmentExploreXBinding
+    private lateinit var binding: FragmentComposeBinding
 
     override val primarySource = Source.AVAILABLE
     override val secondarySource = Source.AVAILABLE
@@ -43,7 +43,7 @@ class ExploreFragment : MainNavFragmentX() {
         savedInstanceState: Bundle?,
     ): View {
         super.onCreate(savedInstanceState)
-        binding = FragmentExploreXBinding.inflate(inflater, container, false)
+        binding = FragmentComposeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -82,7 +82,7 @@ class ExploreFragment : MainNavFragmentX() {
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
     private fun redrawPage(products: List<Product>?, categories: List<String> = emptyList()) {
-        binding.primaryComposeRecycler.setContent {
+        binding.composeView.setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
                     is Preferences.Theme.System -> isSystemInDarkTheme()
