@@ -186,4 +186,9 @@
     <string name="default_tab">Onglet par défaut</string>
     <string name="pending">En attente</string>
     <string name="installing">Installation</string>
+    <string name="dialog_refuse">Je n\'en ai pas besoin</string>
+    <string name="ignore_battery_optimization_not_supported">L\'appareil ne permet pas d\'ignorer les optimisations de la batterie !</string>
+    <string name="ignore_battery_optimization_message">À partir d\'Android 12, il y a des restrictions sur l\'exécution des services en avant-plan, ce qui entraîne le plantage de l\'application lors des téléchargements. Pour éviter cela, vous devez désactiver l\'optimisation de la batterie</string>
+    <string name="ignore_battery_optimization_title">Ignorer l\'optimisation de la batterie</string>
+    <string name="dialog_approve">C\'est parti !</string>
 </resources>
