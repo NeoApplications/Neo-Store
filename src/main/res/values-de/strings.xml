@@ -186,4 +186,9 @@
     <string name="default_tab">Standard-Registerkarte</string>
     <string name="installing">Installation</string>
     <string name="pending">Verfügbar</string>
+    <string name="dialog_refuse">Brauche ich nicht</string>
+    <string name="ignore_battery_optimization_not_supported">Das Gerät unterstützt das Ignorieren von Akku-Optimierungen nicht!</string>
+    <string name="ignore_battery_optimization_title">Akku-Optimierung ignorieren</string>
+    <string name="ignore_battery_optimization_message">Ab Android 12 gibt es Einschränkungen bei der Ausführung von Diensten im Vordergrund, die dazu führen, dass die Anwendung beim Herunterladen abstürzt. Um dies zu verhindern, sollten Sie die Batterieoptimierung deaktivieren</string>
+    <string name="dialog_approve">Los!</string>
 </resources>
