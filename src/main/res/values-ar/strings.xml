@@ -190,4 +190,9 @@
     <string name="default_tab">التبويب الافتراضي</string>
     <string name="pending">قيد الانتظار</string>
     <string name="installing">التثبيت</string>
+    <string name="ignore_battery_optimization_title">تجاهل تحسين البطارية</string>
+    <string name="ignore_battery_optimization_message">بدءا من Android 12 ، هناك قيود على تشغيل الخدمات الأمامية مما يتسبب في تعطل التطبيق عند التنزيلات. لمنع ذلك ، يجب عليك إيقاف تشغيل تحسين البطارية</string>
+    <string name="dialog_approve">لنفعلها!</string>
+    <string name="ignore_battery_optimization_not_supported">لا يدعم الجهاز تجاهل تحسينات البطارية!</string>
+    <string name="dialog_refuse">لا أحتاجها</string>
 </resources>
