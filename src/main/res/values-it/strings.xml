@@ -189,4 +189,9 @@
     <string name="default_tab">Scheda predefinita</string>
     <string name="pending">In attesa</string>
     <string name="installing">Installando</string>
+    <string name="ignore_battery_optimization_not_supported">Il dispositivo non supporta l\'ignorare le ottimizzazioni della batteria!</string>
+    <string name="dialog_approve">Facciamolo!</string>
+    <string name="ignore_battery_optimization_title">Ignora l\'ottimizzazione della batteria</string>
+    <string name="ignore_battery_optimization_message">A partire da Android 12 ci\'s restrizioni sull\'esecuzione di servizi in primo piano che causano il crash dell\'app sugli scaricamenti. Per evitare questo, si dovrebbe disattivare l\'ottimizzazione della batteria</string>
+    <string name="dialog_refuse">Non ne ho bisogno</string>
 </resources>
