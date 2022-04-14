@@ -188,4 +188,9 @@
     <string name="default_tab">Вкладка за замовчуванням</string>
     <string name="pending">Очікується</string>
     <string name="installing">Встановлення</string>
+    <string name="ignore_battery_optimization_title">Ігнорувати економію заряду батареї</string>
+    <string name="dialog_approve">Давайте!</string>
+    <string name="dialog_refuse">Це не потрібно</string>
+    <string name="ignore_battery_optimization_not_supported">Цей пристрій не підтримує ігнорування економії заряду батареї!</string>
+    <string name="ignore_battery_optimization_message">Починаючи з Android 12, з\'явилися обмеження для запущених у фоні сервісів, що провокує вильоти додатку під час завантажень. Щоб запобігти цьому, вимкніть економію заряду батареї</string>
 </resources>
