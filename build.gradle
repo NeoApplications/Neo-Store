@@ -175,8 +175,8 @@ dependencies {
 
     // Coroutines / Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha06'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
     // Room
     implementation 'androidx.room:room-runtime:2.4.2'
