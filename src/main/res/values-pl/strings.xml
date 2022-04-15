@@ -188,4 +188,6 @@
     <string name="default_tab">Karta domyślna</string>
     <string name="pending">Oczekujące</string>
     <string name="installing">Instalacja</string>
+    <string name="ignore_battery_optimization_not_supported">Urządzenie nie obsługuje ignorowania optymalizacji baterii!</string>
+    <string name="ignore_battery_optimization_title">Ignoruj optymalizację baterii</string>
 </resources>
