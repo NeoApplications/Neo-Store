@@ -19,6 +19,7 @@
 package com.saggitt.omega.util
 
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
@@ -80,6 +81,19 @@ val Context.hasStoragePermission
 fun Context.checkLocationAccess(): Boolean {
     return Utilities.hasPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ||
             Utilities.hasPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+}
+
+fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
+    try {
+        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+        info.requestedPermissions.forEachIndexed { index, s ->
+            if (s == permissionName) {
+                return info.requestedPermissionsFlags[index].hasFlag(PackageInfo.REQUESTED_PERMISSION_GRANTED)
+            }
+        }
+    } catch (_: PackageManager.NameNotFoundException) {
+    }
+    return false
 }
 
 val Context.locale: Locale

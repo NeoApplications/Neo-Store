@@ -163,7 +163,7 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="pref_enable_shelf"
+            android:key="pref_enable_minus_one"
             android:summary="@string/pref_shelf_summary"
             android:title="@string/title_show_google_app"
             app:iconSpaceReserved="false" />

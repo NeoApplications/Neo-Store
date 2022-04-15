@@ -16,7 +16,7 @@ import android.util.Log;
 import com.android.launcher3.Alarm;
 import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
-import com.saggitt.omega.smartspace.FeedBridge;
+import com.saggitt.omega.util.Config;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -161,7 +161,7 @@ public class SmartSpaceController implements Handler.Callback {
         if (hasCurrent && !mData.hasCurrent()) {
             df(null, SmartSpaceController.Store.CURRENT);
             mContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.EXPIRE_EVENT")
-                    .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
+                    .setPackage(Config.GOOGLE_QSB)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
     }
@@ -244,11 +244,9 @@ public class SmartSpaceController implements Handler.Callback {
         return true;
     }
 
-    ///NOT WORKED
-
     private Intent db() {
         return new Intent("com.google.android.apps.gsa.smartspace.SETTINGS")
-                .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
+                .setPackage(Config.GOOGLE_QSB)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -265,7 +263,7 @@ public class SmartSpaceController implements Handler.Callback {
     private void onGsaChanged() {
         Log.d("SmartSpaceController", "onGsaChanged");
         mContext.sendBroadcast(new Intent("com.google.android.apps.gsa.smartspace.ENABLE_UPDATE")
-                .setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace())
+                .setPackage(Config.GOOGLE_QSB)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

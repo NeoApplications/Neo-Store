@@ -16,7 +16,6 @@ const val PREFS_FOLDER_BACKGROUND = "pref_folder_background"
 const val PREFS_FOLDER_BACKGROUND_CUSTOM = "pref_custom_folder_background"
 const val PREFS_STATUSBAR_HIDE = "pref_hideStatusBar"
 const val PREFS_DASH_PROVIDERS = "pref_dash_providers"
-const val PREFS_ENABLE_SHELF = "pref_enable_shelf"
 
 // DOCK PREFS
 const val PREFS_DOCK_HIDE = "pref_hideHotseat"

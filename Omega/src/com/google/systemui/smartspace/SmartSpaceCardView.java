@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -31,7 +30,6 @@ import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.S
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText;
 import com.google.android.systemui.smartspace.SmartspaceProto.SmartSpaceUpdate.SmartSpaceCard.Message.FormattedText.FormatParam;
 import com.google.protobuf.ByteString;
-import com.saggitt.omega.smartspace.FeedBridge;
 
 public class SmartSpaceCardView {
     private final SmartSpaceCard mSmartSpaceCard;
@@ -71,7 +69,7 @@ public class SmartSpaceCardView {
                 if (bitmap != null) {
                     ShadowGenerator shadowGenerator = new ShadowGenerator(
                             ResourceUtils.pxFromDp(48, context.getResources().getDisplayMetrics()));
-                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                     shadowGenerator.recreateIcon(bitmap, new Canvas(newBitmap));
                     bitmap = newBitmap;
                 }
@@ -206,7 +204,7 @@ public class SmartSpaceCardView {
             case ACTION1: {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setSourceBounds(launcher.getViewBounds(view));
-                intent.setPackage(FeedBridge.Companion.getInstance(mContext).resolveSmartspace());
+                intent.setPackage(com.saggitt.omega.util.Config.GOOGLE_QSB);
                 view.getContext().sendBroadcast(intent);
                 break;
             }

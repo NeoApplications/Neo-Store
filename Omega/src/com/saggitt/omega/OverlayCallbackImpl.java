@@ -19,18 +19,16 @@
 package com.saggitt.omega;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.launcher3.Launcher;
 import com.android.launcher3.Utilities;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
-import com.google.android.libraries.gsa.launcherclient.ISerializableScrollCallback;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 import com.google.android.libraries.gsa.launcherclient.LauncherClientCallbacks;
-import com.google.android.libraries.gsa.launcherclient.StaticInteger;
 import com.google.systemui.smartspace.SmartSpaceView;
-import com.saggitt.omega.preferences.OmegaPreferences;
 
 import java.util.Collections;
 import java.util.Set;
@@ -45,23 +43,21 @@ import java.util.WeakHashMap;
  */
 public class OverlayCallbackImpl
         implements LauncherOverlay, LauncherClientCallbacks, LauncherOverlayManager,
-        ISerializableScrollCallback {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
-    final static String PREF_PERSIST_FLAGS = "pref_persistent_flags";
+    private static final String KEY_ENABLE_MINUS_ONE = "pref_enable_minus_one";
     public final LauncherClient mClient;
     private final Launcher mLauncher;
-    boolean mFlagsChanged = false;
     private LauncherOverlayCallbacks mLauncherOverlayCallbacks;
     private boolean mWasOverlayAttached = false;
-    private int mFlags;
     private final Set<SmartSpaceView> mSmartSpaceViews = Collections.newSetFromMap(new WeakHashMap<>());
 
     public OverlayCallbackImpl(Launcher launcher) {
-        OmegaPreferences prefs = Utilities.getOmegaPrefs(launcher);
+        SharedPreferences prefs = Utilities.getPrefs(launcher);
 
         mLauncher = launcher;
-        mClient = new LauncherClient(mLauncher, this, new StaticInteger(
-                (prefs.getEnableShelf() ? 1 : 0) | 2 | 4 | 8));
+        mClient = new LauncherClient(mLauncher, this, getClientOptions(prefs));
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     public LauncherClient getClient() {
@@ -70,7 +66,7 @@ public class OverlayCallbackImpl
 
     @Override
     public void onDeviceProvideChanged() {
-        mClient.redraw();
+        mClient.reattachOverlay();
     }
 
     @Override
@@ -142,7 +138,14 @@ public class OverlayCallbackImpl
     @Override
     public void onActivityDestroyed(Activity activity) {
         mClient.onDestroy();
-        mClient.mDestroyed = true;
+        mLauncher.getSharedPrefs().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (KEY_ENABLE_MINUS_ONE.equals(key)) {
+            mClient.setClientOptions(getClientOptions(prefs));
+        }
     }
 
     @Override
@@ -154,11 +157,6 @@ public class OverlayCallbackImpl
 
     @Override
     public void onServiceStateChanged(boolean overlayAttached, boolean hotwordActive) {
-        this.onServiceStateChanged(overlayAttached);
-    }
-
-    @Override
-    public void onServiceStateChanged(boolean overlayAttached) {
         if (overlayAttached != mWasOverlayAttached) {
             mWasOverlayAttached = overlayAttached;
             mLauncher.setLauncherOverlay(overlayAttached ? this : null);
@@ -167,17 +165,17 @@ public class OverlayCallbackImpl
 
     @Override
     public void onScrollInteractionBegin() {
-        mClient.startScroll();
+        mClient.startMove();
     }
 
     @Override
     public void onScrollInteractionEnd() {
-        mClient.endScroll();
+        mClient.endMove();
     }
 
     @Override
     public void onScrollChange(float progress, boolean rtl) {
-        mClient.setScroll(progress);
+        mClient.updateMove(progress);
     }
 
     @Override
@@ -185,13 +183,11 @@ public class OverlayCallbackImpl
         mLauncherOverlayCallbacks = callbacks;
     }
 
-    @Override
-    public void setPersistentFlags(int flags) {
-        flags &= (8 | 16);
-        if (flags != mFlags) {
-            mFlagsChanged = true;
-            mFlags = flags;
-            Utilities.getDevicePrefs(mLauncher).edit().putInt(PREF_PERSIST_FLAGS, flags).apply();
-        }
+    private LauncherClient.ClientOptions getClientOptions(SharedPreferences prefs) {
+        return new LauncherClient.ClientOptions(
+                prefs.getBoolean(KEY_ENABLE_MINUS_ONE, true),
+                true, /* enableHotword */
+                true /* enablePrewarming */
+        );
     }
 }

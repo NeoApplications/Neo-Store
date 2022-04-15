@@ -43,13 +43,9 @@ import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
 import com.saggitt.omega.PREFS_SMARTSPACE_SHOW
 import com.saggitt.omega.changeDefaultHome
 import com.saggitt.omega.groups.DrawerTabs
-import com.saggitt.omega.smartspace.FeedBridge
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
-import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.getBooleanAttr
-import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.recreateAnimated
+import com.saggitt.omega.util.*
 import com.saggitt.omega.views.DecorLayout
 import com.saggitt.omega.views.SettingsDragLayer
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
@@ -211,7 +207,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             }
 
             findPreference<Preference>(PREFS_SMARTSPACE_SHOW)?.apply {
-                isVisible = FeedBridge.getInstance(context).isInstalled()
+                isVisible = context.packageManager.isAppEnabled(Config.GOOGLE_QSB, 0)
             }
         }
 

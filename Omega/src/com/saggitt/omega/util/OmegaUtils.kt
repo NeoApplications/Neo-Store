@@ -24,7 +24,6 @@ import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.res.Resources
@@ -48,7 +47,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
@@ -105,19 +103,6 @@ fun makeBasicHandler(preferMyLooper: Boolean = false, callback: Handler.Callback
         Handler(Looper.myLooper() ?: Looper.getMainLooper(), callback)
     else
         Handler(Looper.getMainLooper(), callback)
-
-fun Context.checkPackagePermission(packageName: String, permissionName: String): Boolean {
-    try {
-        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-        info.requestedPermissions.forEachIndexed { index, s ->
-            if (s == permissionName) {
-                return info.requestedPermissionsFlags[index].hasFlag(REQUESTED_PERMISSION_GRANTED)
-            }
-        }
-    } catch (_: NameNotFoundException) {
-    }
-    return false
-}
 
 fun openPopupMenu(view: View, rect: RectF?, vararg items: OptionsPopupView.OptionItem) {
     val launcher = Launcher.getLauncher(view.context)
@@ -335,14 +320,6 @@ fun <E> MutableSet<E>.addOrRemove(obj: E, exists: Boolean): Boolean {
 }
 
 val Long.Companion.random get() = Random.nextLong()
-
-
-val ViewGroup.recursiveChildren: Sequence<View>
-    get() = children.flatMap {
-        if (it is ViewGroup) {
-            it.recursiveChildren + sequenceOf(it)
-        } else sequenceOf(it)
-    }
 
 class KFloatPropertyCompat(private val property: KMutableProperty0<Float>, name: String) :
     FloatPropertyCompat<Any>(name) {
