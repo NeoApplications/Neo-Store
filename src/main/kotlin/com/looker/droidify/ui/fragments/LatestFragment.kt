@@ -1,16 +1,32 @@
 package com.looker.droidify.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,8 +37,13 @@ import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.FragmentComposeBinding
+import com.looker.droidify.service.SyncService
+import com.looker.droidify.ui.activities.PrefsActivityX
 import com.looker.droidify.ui.compose.ProductsHorizontalRecycler
 import com.looker.droidify.ui.compose.ProductsVerticalRecycler
+import com.looker.droidify.ui.compose.components.ExpandableSearchAction
+import com.looker.droidify.ui.compose.components.TopBar
+import com.looker.droidify.ui.compose.components.TopBarAction
 import com.looker.droidify.ui.compose.theme.AppTheme
 import com.looker.droidify.utility.isDarkTheme
 
@@ -51,7 +72,10 @@ class LatestFragment : MainNavFragmentX() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }
         }
-        viewModel.installed.observe(viewLifecycleOwner) {}
+        viewModel.installed.observe(viewLifecycleOwner) {
+            // Avoid the compiler using the same class as observer
+            Log.d(this::class.java.canonicalName, this.toString())
+        }
         viewModel.primaryProducts.observe(viewLifecycleOwner) {
             redrawPage(it, viewModel.secondaryProducts.value)
         }
@@ -70,7 +94,29 @@ class LatestFragment : MainNavFragmentX() {
                     else -> isDarkTheme
                 }
             ) {
-                Scaffold { _ ->
+                Scaffold(
+                    // TODO add the topBar to the activity instead of the fragments
+                    topBar = {
+                        TopBar(title = stringResource(id = R.string.application_name)) {
+                            ExpandableSearchAction(
+                                query = viewModel.searchQuery.value.orEmpty(),
+                                onClose = {
+                                    viewModel.searchQuery.value = ""
+                                },
+                                onQueryChanged = { query ->
+                                    if (isResumed && query != viewModel.searchQuery.value)
+                                        viewModel.setSearchQuery(query)
+                                }
+                            )
+                            TopBarAction(icon = Icons.Rounded.Sync) {
+                                mainActivityX.syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+                            }
+                            TopBarAction(icon = Icons.Rounded.Settings) {
+                                startActivity(Intent(context, PrefsActivityX::class.java))
+                            }
+                        }
+                    }
+                ) { _ ->
                     Column(
                         Modifier
                             .background(MaterialTheme.colorScheme.background)
