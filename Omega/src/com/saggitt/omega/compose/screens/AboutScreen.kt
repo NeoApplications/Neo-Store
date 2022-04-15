@@ -260,12 +260,12 @@ private val links = listOf(
     Link(
         iconResId = R.drawable.ic_channel,
         labelResId = R.string.about_channel,
-        url = "https://t.me/omegalauncher"
+        url = "https://t.me/neo_applications"
     ),
     Link(
         iconResId = R.drawable.ic_community,
         labelResId = R.string.about_community,
-        url = "https://t.me/omegalauncher_group"
+        url = "https://t.me/neo_launcher"
     )
 )
 
