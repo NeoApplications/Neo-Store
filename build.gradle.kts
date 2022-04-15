@@ -165,8 +165,8 @@ dependencies {
     implementation("com.google.android.material:material:1.6.0-beta01")
 
     // Coil
-    implementation("io.coil-kt:coil:2.0.0-rc02")
-    implementation("io.coil-kt:coil-compose:2.0.0-rc02")
+    implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.6")
@@ -189,8 +189,8 @@ dependencies {
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha06")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
     // Room
     implementation("androidx.room:room-runtime:2.4.2")
