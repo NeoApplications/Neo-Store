@@ -10,23 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_layout"
-            style="?attr/appBarLayoutStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/fragment_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                style="?attr/toolbarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:menu="@menu/menu_main"
-                app:title="@string/application_name" />
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_content"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -35,7 +18,7 @@
             app:defaultNavHost="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-            app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+            app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/navigation_graph_main" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

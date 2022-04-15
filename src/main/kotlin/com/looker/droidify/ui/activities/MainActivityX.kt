@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PowerManager
 import android.view.Menu
-import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.MaterialToolbar
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.ContextWrapperX
 import com.looker.droidify.MainApplication
@@ -30,7 +25,6 @@ import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.fragments.MainNavFragmentX
 import com.looker.droidify.ui.fragments.Source
 import com.looker.droidify.ui.viewmodels.MainActivityViewModelX
-import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.looker.droidify.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.launch
@@ -50,8 +44,6 @@ class MainActivityX : AppCompatActivity() {
     }
 
     lateinit var binding: ActivityMainXBinding
-    lateinit var toolbar: MaterialToolbar
-    lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val viewModel: MainActivityViewModelX by viewModels()
     private lateinit var powerManager: PowerManager
@@ -83,19 +75,12 @@ class MainActivityX : AppCompatActivity() {
 
         setContentView(binding.root)
         binding.lifecycleOwner = this
-        toolbar = binding.toolbar
-
-        setSupportActionBar(toolbar)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment
         navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.exploreTab, R.id.latestTab, R.id.installedTab)
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.selectedItemId = currentTab
 
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -106,10 +91,6 @@ class MainActivityX : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Android.sdk(28) && !Android.Device.isHuaweiEmui) {
-            toolbar.menu.setGroupDividerEnabled(true)
-        }
-        toolbar.isFocusableInTouchMode = true
 
         supportFragmentManager.addFragmentOnAttachListener { _, _ ->
             hideKeyboard()
@@ -126,7 +107,7 @@ class MainActivityX : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
+        return navController.navigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -138,14 +119,6 @@ class MainActivityX : AppCompatActivity() {
     private fun hideKeyboard() {
         (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
             ?.hideSoftInputFromWindow((currentFocus ?: window.decorView).windowToken, 0)
-    }
-
-    fun syncManual(item: MenuItem) {
-        syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
-    }
-
-    fun navigateSettings(item: MenuItem) {
-        navigateSettings()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -220,10 +193,6 @@ class MainActivityX : AppCompatActivity() {
     internal fun navigateProduct(packageName: String) {
         // TODO
     }
-
-    private fun navigateSettings() = startActivity(
-        Intent(applicationContext, PrefsActivityX::class.java)
-    )
 
     private fun updateUpdateNotificationBlocker(activeSource: Source) {
         val blockerFragment = if (activeSource == Source.UPDATES) {
