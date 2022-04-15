@@ -30,12 +30,12 @@ import com.looker.droidify.ui.compose.components.RepositoryItem
 fun ProductsVerticalRecycler(
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     onInstallClick: (ProductItem) -> Unit = {}
 ) {
-    VerticalItemList(list = productsList, modifier = modifier.fillMaxSize()) {
+    VerticalItemList(list = productsList, modifier = modifier) {
         it.toItem().let { item ->
             ProductsListItem(
                 item,
