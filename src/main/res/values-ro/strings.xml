@@ -185,4 +185,11 @@
     <string name="prefs_language_title">Limbă</string>
     <string name="new_repository">Depozit nou</string>
     <string name="default_tab">Fila implicită</string>
+    <string name="pending">În așteptare</string>
+    <string name="installing">Se instalează</string>
+    <string name="ignore_battery_optimization_title">Ignoră optimizarea bateriei</string>
+    <string name="ignore_battery_optimization_message">Începând cu Android 12, există restricții privind rularea serviciilor în prim-plan, ceea ce face ca aplicația să se blocheze la descărcări. Pentru a preveni acest lucru, ar trebui să dezactivați optimizarea bateriei</string>
+    <string name="ignore_battery_optimization_not_supported">Dispozitivul nu acceptă ignorarea optimizărilor bateriei!</string>
+    <string name="dialog_refuse">Nu este nevoie</string>
+    <string name="dialog_approve">Hai s-o facem!</string>
 </resources>
