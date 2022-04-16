@@ -187,4 +187,9 @@
     <string name="default_tab">Výchozí karta</string>
     <string name="installing">Instalace</string>
     <string name="pending">Čekající</string>
+    <string name="ignore_battery_optimization_title">Ignorovat optimalizaci baterie</string>
+    <string name="ignore_battery_optimization_message">Počínaje Androidem 12 je omezeno spouštění služeb na popředí, což způsobuje pád aplikace při stahování. Abyste tomu zabránili, měli byste vypnout optimalizaci baterie</string>
+    <string name="ignore_battery_optimization_not_supported">Toto zařízení nepodporuje ignorování optimalizace baterie!</string>
+    <string name="dialog_refuse">Nepotřebuju to</string>
+    <string name="dialog_approve">Jdeme na to!</string>
 </resources>
