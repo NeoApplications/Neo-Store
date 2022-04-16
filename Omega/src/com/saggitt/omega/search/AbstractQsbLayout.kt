@@ -330,7 +330,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             val showMic = sharedPreferences.getBoolean("opa_enabled", true) && providerSupported
             mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true)
             searchLogoView?.setImageDrawable(getIcon())
-            if (showMic || mShowAssistant) {
+            if (showMic) {
                 micIconView?.visibility = View.VISIBLE
                 micIconView?.setImageDrawable(getMicIcon())
             } else {

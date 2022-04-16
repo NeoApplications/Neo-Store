@@ -52,7 +52,7 @@
             android:clickable="true"
             android:contentDescription="@string/label_voice_search"
             android:layout_gravity="start|center"
-            android:padding="@dimen/qsb_icon_padding"
+            android:padding="12dp"
             android:scaleType="fitCenter"
             tools:src="@drawable/ic_mic_color" />
 
