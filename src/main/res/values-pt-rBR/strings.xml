@@ -189,4 +189,9 @@
     <string name="default_tab">Aba padrão</string>
     <string name="pending">Pendente</string>
     <string name="installing">Instalando</string>
+    <string name="ignore_battery_optimization_message">A partir do Android 12, há restrições na execução de serviços em primeiro plano, fazendo com que o aplicativo falhe nos downloads. Para evitar isso, você deve desativar a otimização da bateria</string>
+    <string name="ignore_battery_optimization_title">Ignorar Otimização de Bateria</string>
+    <string name="ignore_battery_optimization_not_supported">O dispositivo não suporta ignorar otimizações de bateria!</string>
+    <string name="dialog_refuse">Não precisa disso</string>
+    <string name="dialog_approve">Vamos fazê-lo!</string>
 </resources>
