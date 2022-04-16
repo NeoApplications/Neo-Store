@@ -39,11 +39,11 @@
     <string name="installed">Installiert</string>
     <string name="incompatible_versions_summary">Mit dem Gerät inkompatible Anwendungsversionen anzeigen</string>
     <string name="install_types">Installationstypen</string>
-    <string name="install">installieren</string>
+    <string name="install">Installieren</string>
     <string name="integrity_check_error_DESC">Die Vollständigkeit konnte nicht überprüft werden.</string>
     <string name="invalid_metadata_error_DESC">Ungültige Metadaten.</string>
     <string name="invalid_signature_error_DESC">Ungültige Signatur.</string>
-    <string name="launch">Start</string>
+    <string name="launch">Starten</string>
     <string name="light">Hell</string>
     <string name="list_animation_description">Listenanimation auf der Hauptseite anzeigen</string>
     <string name="new_updates_available">Neue Versionen von Anwendungen verfügbar</string>
