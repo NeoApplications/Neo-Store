@@ -186,6 +186,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     // SEARCH & FOLDER
     var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f, recreate)
+    var showLensIcon by BooleanPref("show_lens_icon", true, recreate)
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }

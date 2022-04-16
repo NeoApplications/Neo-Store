@@ -116,6 +116,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             visibility =
                 if (searchProvider.packageName == Config.GOOGLE_QSB
                     && searchProvider !is WebSearchProvider
+                    && prefs.showLensIcon
                 ) {
                     setImageResource(R.drawable.ic_lens_color)
 
@@ -183,6 +184,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         when (key) {
             "opa_enabled",
             "opa_assistant",
+            "show_lens_icon",
             ->
                 reloadPreferences(sharedPreferences)
         }

@@ -25,6 +25,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.search.SearchProvider
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.search.WebSearchProvider
+import com.saggitt.omega.util.Config
 
 class PrefsSearchFragment :
     BasePreferenceFragment(R.xml.preferences_search, R.string.title__general_search),
@@ -56,6 +57,12 @@ class PrefsSearchFragment :
             val provider: SearchProvider =
                 SearchProviderController.getInstance(requireContext()).searchProvider
             isEnabled = provider !is WebSearchProvider
+        }
+
+        findPreference<Preference>("show_lens_icon")?.apply {
+            val provider: SearchProvider =
+                SearchProviderController.getInstance(requireContext()).searchProvider
+            isEnabled = provider.packageName == Config.GOOGLE_QSB
         }
     }
 }
