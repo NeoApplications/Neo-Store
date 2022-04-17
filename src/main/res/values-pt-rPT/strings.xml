@@ -42,11 +42,11 @@
     <string name="donate">Doar</string>
     <string name="downloaded_FORMAT">%s descarregada</string>
     <string name="downloading">A descarregar</string>
-    <string name="file_format_error_DESC">Formato de ficheiro inválido</string>
+    <string name="file_format_error_DESC">Formato de ficheiro inválido.</string>
     <string name="has_advertising">Contém publicidades</string>
     <string name="has_non_free_dependencies">Contém dependências não-livres</string>
     <string name="has_security_vulnerabilities">Contém vulnerabilidades de segurança</string>
-    <string name="http_error_DESC">Resposta do servidor inválida</string>
+    <string name="http_error_DESC">Resposta do servidor inválida.</string>
     <string name="ignore_all_updates">Ignorar todas as versões novas</string>
     <string name="incompatible_api_min_DESC_FORMAT">A versão mínima da API é %d.</string>
     <string name="size">Tamanho</string>
@@ -184,4 +184,11 @@
     <string name="install_after_sync_summary">Instalar atualizações automaticamente após a sincronização dos repositórios</string>
     <string name="invalid_permissions_error_DESC">Permissões inválidas.</string>
     <string name="default_tab">Separador padrão</string>
+    <string name="pending">Pendente</string>
+    <string name="installing">A instalar</string>
+    <string name="ignore_battery_optimization_title">Ignorar a Otimização de Bateria</string>
+    <string name="ignore_battery_optimization_message">"A partir do Android 12, há restrições na execução de serviços em primeiro plano, fazendo com que a  aplicação falhe nas transferências. Para evitar isso, deve desativar a otimização da bateria"</string>
+    <string name="ignore_battery_optimization_not_supported">O dispositivo não suporta ignorar otimizações de bateria!</string>
+    <string name="dialog_refuse">Não preciso</string>
+    <string name="dialog_approve">Vamos a isso!</string>
 </resources>
