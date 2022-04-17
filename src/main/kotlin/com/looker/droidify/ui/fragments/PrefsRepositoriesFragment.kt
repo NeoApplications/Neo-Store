@@ -59,6 +59,13 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         viewModel.repositories.observe(requireActivity()) {
             redrawPage(it)
         }
+        viewModel.toLaunch.observe(viewLifecycleOwner) {
+            if (it?.first == true) {
+                EditRepositorySheetX(it.second)
+                    .showNow(parentFragmentManager, "Repository ${it.second}")
+                viewModel.emptyToLaunch()
+            }
+        }
     }
 
     override fun onDestroyView() {

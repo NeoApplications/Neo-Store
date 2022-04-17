@@ -14,19 +14,26 @@ import kotlinx.coroutines.withContext
 class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
 
     val repositories = MediatorLiveData<List<Repository>>()
+    val toLaunch = MediatorLiveData<Pair<Boolean, Long>?>()
 
     init {
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
+        toLaunch.value = null
     }
 
     fun addRepository() {
         viewModelScope.launch {
-            addNewRepository()
+            toLaunch.value = Pair(true, addNewRepository())
         }
     }
 
-    private suspend fun addNewRepository() {
-        withContext(Dispatchers.IO) { db.repositoryDao.insert(newRepository(address = "new.Repository")) }
+    private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
+        db.repositoryDao.insert(newRepository(address = "new.Repository"))
+        db.repositoryDao.latestAddedId()
+    }
+
+    fun emptyToLaunch() {
+        toLaunch.value = null
     }
 
     class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
