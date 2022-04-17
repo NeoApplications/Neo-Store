@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
+import com.looker.droidify.RepoManager
 import com.looker.droidify.databinding.SheetEditRepositoryBinding
 import com.looker.droidify.network.Downloader
 import com.looker.droidify.screen.MessageDialog
@@ -32,6 +33,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -43,7 +45,7 @@ import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.min
 
-class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment() {
+class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
     private lateinit var binding: SheetEditRepositoryBinding
     val viewModel: RepositoryViewModelX by viewModels {
         RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
@@ -425,6 +427,13 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment() {
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .create()
+        }
+    }
+
+    override fun onDeleteConfirm() {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (syncConnection.binder?.deleteRepository(repositoryId) == true)
+                dismissAllowingStateLoss()
         }
     }
 }

@@ -55,3 +55,7 @@ const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
 
 const val EXTRA_REPOSITORY_ID = "repositoryId"
+
+interface RepoManager {
+    fun onDeleteConfirm()
+}

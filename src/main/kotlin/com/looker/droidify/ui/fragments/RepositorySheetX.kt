@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
+import com.looker.droidify.RepoManager
 import com.looker.droidify.databinding.SheetRepositoryBinding
 import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.service.Connection
@@ -23,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class RepositorySheetX() : FullscreenBottomSheetDialogFragment() {
+class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
     private lateinit var binding: SheetRepositoryBinding
     val viewModel: RepositoryViewModelX by viewModels {
         RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
@@ -138,7 +139,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment() {
         }
     }
 
-    internal fun onDeleteConfirm() {
+    override fun onDeleteConfirm() {
         GlobalScope.launch(Dispatchers.IO) {
             if (syncConnection.binder?.deleteRepository(repositoryId) == true)
                 dismissAllowingStateLoss()
