@@ -19,6 +19,7 @@
     <string name="derived_app_name" translatable="false">Neo Launcher</string>
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
+    <string name="app_id" translatable="false">Package</string>
     <string name="default_folder_name">New Folder</string>
 
     <!-- PREFERENCES GENERAL -->

@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,6 +45,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.saggitt.omega.compose.components.ContributorRow
 import com.saggitt.omega.compose.components.ItemLink
@@ -101,12 +103,18 @@ fun AboutScreen(navController: NavController) {
                 fontFamily = kaushanScript,
                 fontWeight = FontWeight.Normal,
                 fontSize = 30.sp,
-                color = OmegaTheme.colors.primary
+                color = Color(Utilities.getOmegaPrefs(context).accentColor)
             )
 
             Text(
                 text = stringResource(id = R.string.app_version) + ": "
                         + BuildConfig.VERSION_NAME + " ( Build " + BuildConfig.VERSION_CODE + " )",
+                fontWeight = FontWeight.Normal,
+                fontSize = 13.sp,
+                color = OmegaTheme.colors.textPrimary
+            )
+            Text(
+                text = stringResource(id = R.string.app_id) + ": " + BuildConfig.APPLICATION_ID,
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
                 color = OmegaTheme.colors.textPrimary
