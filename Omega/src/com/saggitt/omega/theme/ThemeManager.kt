@@ -198,7 +198,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE or THEME_FOLLOW_DAYLIGHT
         const val THEME_DARK_MASK = THEME_DARK or THEME_AUTO_MASK
 
-        fun isDark(flags: Int) = (flags and THEME_DARK) != 0
+        fun isDark(flags: Int) = (flags and THEME_DARK_MASK) != 0
         fun isBlack(flags: Int) = (flags and THEME_USE_BLACK) != 0
 
         fun getDefaultTheme(): Int {
