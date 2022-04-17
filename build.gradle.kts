@@ -67,7 +67,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-alpha3"
+            versionNameSuffix = "-alpha4"
             resValue("string", "application_name", "Neo Store-Debug")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
@@ -76,7 +76,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
-            versionNameSuffix = "-alpha3"
+            versionNameSuffix = "-alpha4"
             resValue("string", "application_name", "Neo Store-alpha")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
