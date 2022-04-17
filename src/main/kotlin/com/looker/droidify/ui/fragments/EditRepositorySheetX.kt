@@ -133,6 +133,10 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
 
         viewModel.repo.observe(viewLifecycleOwner) { updateSheet() }
         binding.save.setOnClickListener { onSaveRepositoryClick() }
+        binding.delete.setOnClickListener {
+            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm)
+                .show(childFragmentManager)
+        }
 
         GlobalScope.launch {
             val list = viewModel.db.repositoryDao.all
