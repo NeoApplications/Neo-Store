@@ -156,14 +156,14 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.5.0-alpha05")
-    implementation("androidx.activity:activity-ktx:1.5.0-alpha05")
-    implementation("androidx.activity:activity-compose:1.5.0-alpha05")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha01")
+    implementation("androidx.activity:activity-compose:1.6.0-alpha01")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-alpha04")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.0-alpha04")
 
     // Material3
-    implementation("com.google.android.material:material:1.6.0-beta01")
+    implementation("com.google.android.material:material:1.7.0-alpha01")
 
     // Coil
     implementation("io.coil-kt:coil:2.0.0-rc03")
