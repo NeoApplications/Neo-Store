@@ -425,4 +425,15 @@
     <string name="summary_app_categorize">Velg mellom faner og mapper</string>
     <string name="title_app_categorization_enable">Skru på programkategorier</string>
     <string name="summary_app_categorization_enable">Opprett faner eller mapper</string>
+    <string name="summary_app_suggestions">For alle programmer og hjemmeskjermen</string>
+    <string name="backup_name">Sikkerhetskopinavn</string>
+    <string name="folder_rows">Mapperader</string>
+    <string name="folder_columns">Mappekolonner</string>
+    <string name="summary_all_apps_search">Vis søkefelt</string>
+    <string name="backup_delete_failed">Noe gikk galt</string>
+    <string name="backup_create_new">Opprett ny sikkerhetskopi</string>
+    <string name="permission_denied">Lesetilgang nektet.</string>
+    <string name="summary_dock_search">Vis i bunn-dokk</string>
+    <string name="label_search">Søk</string>
+    <string name="title_dock_search">Søkefelt i dokk</string>
 </resources>
