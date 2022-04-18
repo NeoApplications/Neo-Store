@@ -236,9 +236,8 @@ class Config(val context: Context) {
         }
 
         fun getCurrentTheme(context: Context): Int {
-            val theme = Utilities.getOmegaPrefs(context).launcherTheme
-            return if (ThemeManager.isDark(theme)) THEME_DARK
-            else if (ThemeManager.isBlack(theme)) THEME_BLACK
+            return if (ThemeManager(context).themeIsDark) THEME_DARK
+            else if (ThemeManager(context).themeIsBlack) THEME_BLACK
             else THEME_LIGHT
         }
 

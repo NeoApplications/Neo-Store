@@ -78,6 +78,9 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             }
         }
 
+    var themeIsDark = false
+    var themeIsBlack = false
+
     init {
         updateTheme()
         wallpaperColorInfo.addOnChangeListener(this)
@@ -115,13 +118,15 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
     fun updateTheme() {
         val theme = updateTwilightState(prefs.launcherTheme)
         val isBlack = isBlack(theme)
-
         val isDark = when {
             theme.hasFlag(THEME_FOLLOW_NIGHT_MODE) -> usingNightMode
             theme.hasFlag(THEME_FOLLOW_WALLPAPER) -> wallpaperColorInfo.isDark
             theme.hasFlag(THEME_FOLLOW_DAYLIGHT) -> isDuringNight
             else -> theme.hasFlag(THEME_DARK)
         }
+
+        themeIsBlack = isBlack
+        themeIsDark = isDark
 
         var newFlags = 0
         if (isDark) newFlags = newFlags or THEME_DARK

@@ -59,7 +59,6 @@ class AboutFragment : Fragment() {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun AboutNavController(mActivity: FragmentActivity) {
     val navController = rememberNavController()
