@@ -184,4 +184,11 @@
     <string name="prefs_new_apps">Antall nye programmer å vise</string>
     <string name="new_repository">Ny pakkebrønn</string>
     <string name="default_tab">Standard Fane</string>
+    <string name="pending">Ventende</string>
+    <string name="installing">Installerer</string>
+    <string name="ignore_battery_optimization_title">Ignorer batterioptimalisering</string>
+    <string name="dialog_approve">OK</string>
+    <string name="ignore_battery_optimization_not_supported">Enheten har ikke støtte for å slå av batterioptimalisering.</string>
+    <string name="dialog_refuse">Trenger det ikke</string>
+    <string name="ignore_battery_optimization_message">Skru av batterioptimalisering for å forhindre at programmet krasjer på Android 12 og høyere</string>
 </resources>
