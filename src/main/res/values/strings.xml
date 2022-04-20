@@ -183,14 +183,14 @@
     <string name="new_applications">New apps</string>
     <string name="install_after_sync">Auto-install</string>
     <string name="install_after_sync_summary">Installs new versions of installed new apps when found</string>
-    <string name="prefs_updated_apps">Number of updated apps to show</string>
+    <string name="prefs_updated_apps">Number of non-new apps to show</string>
     <string name="prefs_new_apps">Number of new apps to show</string>
     <string name="new_repository">New repository</string>
     <string name="default_tab">Default tab</string>
     <string name="pending">Pending</string>
     <string name="installing">Installing</string>
     <string name="ignore_battery_optimization_title">Battery Optimization</string>
-    <string name="ignore_battery_optimization_message">Battery optimization crashes the app on Android 12+</string>
+    <string name="ignore_battery_optimization_message">Battery optimization crashes the app, especially on Android 12+</string>
     <string name="ignore_battery_optimization_not_supported">Your Android installation does not support turning off battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string>
