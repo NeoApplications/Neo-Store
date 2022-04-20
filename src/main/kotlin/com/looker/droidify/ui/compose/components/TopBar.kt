@@ -137,9 +137,7 @@ fun ExpandedSearchView(
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(textFieldFocusRequester),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-            ),
+            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
