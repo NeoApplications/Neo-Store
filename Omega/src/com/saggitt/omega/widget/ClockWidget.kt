@@ -37,9 +37,13 @@ class ClockWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         widgetId: Int
     ) {
-        widgetViewCreator = ClockWidgetCreator(context)
+        widgetViewCreator = ClockWidgetCreator(context, widgetId)
         val views: RemoteViews = widgetViewCreator!!.createWidgetRemoteView()
-        appWidgetManager.updateAppWidget(widgetId, views)
+        try {
+            appWidgetManager.updateAppWidget(widgetId, views)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray?) {

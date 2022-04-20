@@ -19,26 +19,31 @@
 package com.saggitt.omega.widget
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
+import android.view.View
 import android.widget.RemoteViews
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import java.util.*
 
-class ClockWidgetCreator(context: Context) {
-    private val mContext: Context = context
-    private val dateFormat = "EEE, MMM d"
+class ClockWidgetCreator(val context: Context, val widgetId: Int) {
+    private var dateFormat = "EEE, MMM d"
     private val timeFormat = "k:mm"
     private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
     fun createWidgetRemoteView(): RemoteViews {
-        val views = RemoteViews(mContext.packageName, R.layout.clock_widget)
+        val views = RemoteViews(context.packageName, R.layout.clock_widget_double_line)
 
-        //set clock and date format
-        views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat)
+        //Configure the clock
+        if (prefs.smartspaceTime) {
+            views.setViewVisibility(R.id.appwidget_clock, View.VISIBLE)
+            views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat)
+        } else {
+            views.setViewVisibility(R.id.appwidget_clock, View.GONE)
+            views.setViewVisibility(R.id.timezones_container, View.GONE)
+        }
 
-        if (Utilities.ATLEAST_R)
-            views.setCharSequence(R.id.appwidget_date, "setFormat24Hour", dateFormat)
-        else
-            views.setCharSequence(R.id.appwidget_date, "setFormat12Hour", dateFormat)
+        views.setTextViewText(R.id.appwidget_date, getFormattedDate())
 
         return views
     }
@@ -48,5 +53,13 @@ class ClockWidgetCreator(context: Context) {
             "setFormat24Hour"
         else
             "setFormat12Hour"
+    }
+
+    private fun getFormattedDate(): String {
+        val now = Calendar.getInstance().apply {
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return SimpleDateFormat(dateFormat, Locale.getDefault()).format(now.time)
     }
 }
