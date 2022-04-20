@@ -2,11 +2,13 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
+val composeVersion = "1.2.0-alpha08"
+
 plugins {
     id("com.android.application").version("7.1.3")
     kotlin("android").version("1.6.10")
-    kotlin("kapt").version("1.6.10")
-    kotlin("plugin.serialization").version("1.6.10")
+    kotlin("kapt").version("1.6.20")
+    kotlin("plugin.serialization").version("1.6.20")
 }
 
 apply(plugin = "com.android.application")
@@ -59,7 +61,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0-alpha07"
+        kotlinCompilerExtensionVersion = composeVersion
     }
 
     buildTypes {
@@ -152,15 +154,15 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.0-alpha05")
-    implementation("androidx.activity:activity-ktx:1.5.0-alpha05")
-    implementation("androidx.activity:activity-compose:1.5.0-alpha05")
+    implementation("androidx.fragment:fragment-ktx:1.5.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.5.0-beta01")
+    implementation("androidx.activity:activity-compose:1.5.0-beta01")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-alpha04")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-alpha04")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-beta01")
 
     // Material3
     implementation("com.google.android.material:material:1.7.0-alpha01")
@@ -176,8 +178,6 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.1.4")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 
-    implementation("me.zhanghai.android.fastscroll:library:1.1.7")
-
     // LibSu
     implementation("com.github.topjohnwu.libsu:core:3.2.1")
 
@@ -189,7 +189,7 @@ dependencies {
     implementation("org.jetbrains:markdown:0.3.1")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha06")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
@@ -200,19 +200,19 @@ dependencies {
     kapt("androidx.room:room-compiler:2.4.2")
 
     // Compose
-    implementation("androidx.compose.runtime:runtime:1.2.0-alpha07")
-    implementation("androidx.compose.ui:ui:1.2.0-alpha07")
-    implementation("androidx.compose.foundation:foundation:1.2.0-alpha07")
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha07")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha09")
-    implementation("androidx.compose.material:material:1.2.0-alpha07")
-    implementation("androidx.compose.animation:animation:1.2.0-alpha07")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha07")
+    implementation("androidx.compose.runtime:runtime:$composeVersion")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
+    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.animation:animation:$composeVersion")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter:1.1.6")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.6")
 
-    debugImplementation ("androidx.compose.ui:ui-tooling:1.2.0-alpha07")
-    debugImplementation ("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha07")
+    debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
+    debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
