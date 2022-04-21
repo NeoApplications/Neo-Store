@@ -46,4 +46,11 @@
     <string name="promotes_non_free_software">Bevordert niet-vrije software</string>
     <string name="delete_repository_DESC">Het archief verwijderen\?</string>
     <string name="incompatible_versions_summary">Toon versies die niet compatibel zijn met het toestel</string>
+    <string name="bug_tracker">Fouten lijst</string>
+    <string name="connecting">Verbinden…</string>
+    <string name="contains_non_free_media">Bevat betaalde media</string>
+    <string name="could_not_download_FORMAT">Kon niet downloaden%s</string>
+    <string name="dark">Donker</string>
+    <string name="delete">Verwijder</string>
+    <string name="description">Beschrijving</string>
 </resources>
