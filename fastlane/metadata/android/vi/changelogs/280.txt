@@ -1,0 +1,12 @@
+<ul>
+  <li>Thêm: Tìm kiếm trên Brave</li>
+  <li>Thêm: Nhấn tùy chọn cử chỉ trở lại</li>
+  <li>Thêm: Nhấn tùy chọn cử chỉ Home</li>
+  <li>Thêm: Chế độ Desktop</li>
+  <li>Sửa: Màu văn bản trên bộ chọn tiện ích cho chủ đề ánh sáng</li>
+  <li>Sửa: Tìm kiếm ứng dụng ẩn</li>
+  <li>Sửa: Biểu tượng thư mục ở chế độ cover</li>
+  <li>Khôi phục tiện ích smartspace</li>
+  <li>Khôi phục biểu tượng đồng hồ thích ứng (Google)</li>
+  <li>Khôi phục biểu tượng lịch thích ứng (Google)</li>
+</ul>
