@@ -53,4 +53,22 @@
     <string name="dark">Donker</string>
     <string name="delete">Verwijder</string>
     <string name="description">Beschrijving</string>
+    <string name="details">Details</string>
+    <string name="donate">Doneren</string>
+    <string name="downloaded_FORMAT">Gedownload %s</string>
+    <string name="downloading">Aan het downloaden</string>
+    <string name="downloading_FORMAT">Aan het downloaden %s…</string>
+    <string name="edit_repository">Archief bewerken</string>
+    <string name="file_format_error_DESC">Ongeldig bestands formaat.</string>
+    <string name="fingerprint">Vingerafdruk</string>
+    <string name="has_advertising">Bevat advertenties</string>
+    <string name="http_error_DESC">Ongeldige server reactie.</string>
+    <string name="http_proxy">HTTP proxy</string>
+    <string name="ignore_all_updates">Negeer alle nieuwe versies</string>
+    <string name="ignore_this_update">Negeer deze versie</string>
+    <string name="incompatible_api_DESC_FORMAT">Jouw %1$s (API versie %2$d) word niet ondersteund. %3$s</string>
+    <string name="incompatible_api_max_DESC_FORMAT">De maximale API versie is %d.</string>
+    <string name="incompatible_features_DESC">Missende functies.</string>
+    <string name="incompatible_older_DESC">Deze versie is ouder dan die op dit apparaat. Verwijder die eerst.</string>
+    <string name="incompatible_signature_DESC">Deze versie is getekend met een ander certifikaat dan die op dit apparaat geinstalleerd is. Verwijder het eerst.</string>
 </resources>
