@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.android.launcher3.BaseActivity;
+import com.android.launcher3.BuildConfig;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -533,6 +534,18 @@ public class WidgetsListAdapter extends Adapter<ViewHolder> implements OnHeaderC
 
         @Override
         public int compare(WidgetsListBaseEntry a, WidgetsListBaseEntry b) {
+            boolean leftIsLC = a.mPkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
+            boolean rightIsLc = b.mPkgItem.packageName.equals(BuildConfig.APPLICATION_ID);
+            if (leftIsLC || rightIsLc) {
+                if (leftIsLC && rightIsLc) {
+                    return 0;
+                }
+                if (leftIsLC) {
+                    return -1;
+                }
+                return 1;
+            }
+
             int i = mComparator.compare(a.mPkgItem.title.toString(), b.mPkgItem.title.toString());
             if (i != 0) {
                 return i;
