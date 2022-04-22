@@ -18,12 +18,16 @@
 
 package com.saggitt.omega.widget
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
+import android.provider.AlarmClock
 import android.view.View
 import android.widget.RemoteViews
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.saggitt.omega.smartspace.SmartSpaceDataWidget
 import java.util.*
 
 class ClockWidgetCreator(val context: Context, val widgetId: Int) {
@@ -31,19 +35,61 @@ class ClockWidgetCreator(val context: Context, val widgetId: Int) {
     private val timeFormat = "k:mm"
     private val prefs by lazy { Utilities.getOmegaPrefs(context) }
 
-    fun createWidgetRemoteView(): RemoteViews {
+    fun createWidgetRemoteView(appWidgetId: Int): RemoteViews {
         val views = RemoteViews(context.packageName, R.layout.clock_widget_double_line)
 
-        //Configure the clock
+        // Clock
         if (prefs.smartspaceTime) {
             views.setViewVisibility(R.id.appwidget_clock, View.VISIBLE)
             views.setCharSequence(R.id.appwidget_clock, getTimeFormat(), timeFormat)
+
+            val clockIntent = PendingIntent.getActivity(
+                context,
+                widgetId,
+                Intent(AlarmClock.ACTION_SHOW_ALARMS).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                },
+                0
+            )
+            views.setOnClickPendingIntent(R.id.appwidget_clock, clockIntent)
+
+
         } else {
             views.setViewVisibility(R.id.appwidget_clock, View.GONE)
             views.setViewVisibility(R.id.timezones_container, View.GONE)
         }
 
+        // Calendar
+        val calendarIntent = PendingIntent.getActivity(
+            context,
+            widgetId,
+            WidgetIntents.getCalendarIntent(),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        views.setOnClickPendingIntent(R.id.appwidget_date, calendarIntent)
         views.setTextViewText(R.id.appwidget_date, getFormattedDate())
+
+        // Weather
+        val intent = Intent(context, WeatherClickListenerReceiver::class.java)
+        intent.action = "com.saggitt.omega.ACTION_OPEN_WEATHER_INTENT"
+        val weatherIntent = PendingIntent.getBroadcast(context, widgetId, intent, 0)
+
+        if (prefs.weatherProvider == SmartSpaceDataWidget::class.java.name) {
+            //TODO: Change to visible when there is a weather provider
+            views.setViewVisibility(R.id.weather_container, View.GONE)
+            views.setOnClickPendingIntent(R.id.title_weather_icon, weatherIntent)
+            views.setOnClickPendingIntent(R.id.title_weather_text, weatherIntent)
+        } else {
+            views.setViewVisibility(R.id.weather_container, View.GONE)
+        }
+
+        val refreshIntent = PendingIntent.getActivity(
+            context,
+            appWidgetId,
+            WidgetIntents.getWidgetUpdateIntent(context),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        views.setOnClickPendingIntent(R.id.main_layout, refreshIntent)
 
         return views
     }

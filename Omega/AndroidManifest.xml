@@ -205,7 +205,7 @@
             android:process=":wallpaper_chooser" />
 
         <receiver
-            android:name="com.saggitt.omega.widget.ClockWidget"
+            android:name="com.saggitt.omega.widget.ClockWidgetProvider"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -214,6 +214,15 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/clock_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name="com.saggitt.omega.widget.WeatherClickListenerReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.saggitt.omega.ACTION_OPEN_WEATHER_INTENT" />
+            </intent-filter>
         </receiver>
 
         <receiver

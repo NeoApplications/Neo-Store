@@ -25,7 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 
-class ClockWidget : AppWidgetProvider() {
+class ClockWidgetProvider : AppWidgetProvider() {
     var widgetViewCreator: ClockWidgetCreator? = null
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -38,7 +38,7 @@ class ClockWidget : AppWidgetProvider() {
         widgetId: Int
     ) {
         widgetViewCreator = ClockWidgetCreator(context, widgetId)
-        val views: RemoteViews = widgetViewCreator!!.createWidgetRemoteView()
+        val views: RemoteViews = widgetViewCreator!!.createWidgetRemoteView(widgetId)
         try {
             appWidgetManager.updateAppWidget(widgetId, views)
         } catch (ex: Exception) {
@@ -63,7 +63,7 @@ class ClockWidget : AppWidgetProvider() {
         // Get all ids
         val thisWidget = ComponentName(
             context,
-            ClockWidget::class.java
+            ClockWidgetProvider::class.java
         )
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
