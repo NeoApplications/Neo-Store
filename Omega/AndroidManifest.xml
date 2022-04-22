@@ -165,14 +165,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/SettingsTheme.Light" />
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/SettingsTheme.Light" />
-
-
         <!-- DT2S using device admin -->
         <receiver
             android:description="@string/dt2s_admin_hint"

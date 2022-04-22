@@ -18,7 +18,6 @@
 
 package com.saggitt.omega.compose.screens
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.annotation.DrawableRes
@@ -46,7 +45,6 @@ import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.saggitt.omega.compose.components.ContributorRow
 import com.saggitt.omega.compose.components.ItemLink
 import com.saggitt.omega.compose.components.PreferenceGroup
@@ -57,7 +55,7 @@ import com.saggitt.omega.theme.kaushanScript
 
 @ExperimentalCoilApi
 @Composable
-fun AboutScreen(navController: NavController) {
+fun AboutMainScreen(navController: NavController) {
 
     val context = LocalContext.current
     Column(
@@ -207,20 +205,61 @@ fun AboutScreen(navController: NavController) {
             PreferenceItem(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.about_open_source),
+                        text = stringResource(id = R.string.category__about_licenses),
                         color = OmegaTheme.colors.textPrimary
                     )
                 },
-
                 modifier = Modifier
                     .clickable {
-                        val intent = Intent(context, OssLicensesMenuActivity::class.java)
-                        context.startActivity(intent)
+                        navController.navigate(
+                            Routes.License.route
+                        )
+
                     },
                 startWidget = {
                     ResourcesCompat.getDrawable(
                         LocalContext.current.resources,
-                        R.drawable.ic_code,
+                        R.drawable.ic_copyright,
+                        LocalContext.current.theme
+                    )?.let { drawable ->
+                        val bitmap = Bitmap.createBitmap(
+                            drawable.intrinsicWidth,
+                            drawable.intrinsicHeight,
+                            Bitmap.Config.ARGB_8888
+                        )
+                        val canvas = Canvas(bitmap)
+                        drawable.setBounds(0, 0, canvas.width, canvas.height)
+                        drawable.draw(canvas)
+                        Image(
+                            bitmap = bitmap.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(32.dp)
+                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
+                        )
+                    }
+                }
+            )
+
+            PreferenceItem(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.title__about_changelog),
+                        color = OmegaTheme.colors.textPrimary
+                    )
+                },
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(
+                            Routes.Changelog.route
+                        )
+
+                    },
+                startWidget = {
+                    ResourcesCompat.getDrawable(
+                        LocalContext.current.resources,
+                        R.drawable.ic_list,
                         LocalContext.current.theme
                     )?.let { drawable ->
                         val bitmap = Bitmap.createBitmap(

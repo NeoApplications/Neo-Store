@@ -1,6 +1,6 @@
 /*
- * This file is part of Omega Launcher
- * Copyright (c) 2022   Omega Launcher Team
+ * This file is part of Neo Launcher
+ * Copyright (c) 2022   Neo Launcher Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -18,6 +18,11 @@
 
 package com.saggitt.omega.compose.screens
 
+import android.graphics.Bitmap
+import android.util.Base64
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -31,9 +36,70 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.theme.OmegaTheme
+
+@Composable
+fun LicenseScreen(isDark: Boolean) {
+    ComposableWebView(url = "file:///android_asset/license.htm", isDark = isDark)
+}
+
+@Composable
+fun ChangelogScreen(isDark: Boolean) {
+    ComposableWebView(url = "file:///android_asset/changelog.htm", isDark = isDark)
+}
+
+@Composable
+fun ComposableWebView(url: String, isDark: Boolean) {
+    val cssFile = if (isDark) {
+        "about_dark.css"
+    } else {
+        "about_light.css"
+    }
+
+    var webView: WebView? = null
+    AndroidView(
+
+        factory = { context ->
+            WebView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = object : WebViewClient() {
+                    override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+
+                    }
+                }
+
+                loadUrl(url)
+                settings.javaScriptEnabled = true
+
+                val inputStream = context.assets.open(cssFile)
+                val buffer = ByteArray(inputStream.available())
+                inputStream.read(buffer)
+                inputStream.close()
+                val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
+                webView!!.loadUrl(
+                    "javascript:(function() {" +
+                            "var parent = document.getElementsByTagName('head').item(0);" +
+                            "var style = document.createElement('style');" +
+                            "style.type = 'text/css';" +
+                            // Tell the browser to BASE64-decode the string into your script !!!
+                            "style.innerHTML = window.atob('" + encoded + "');" +
+                            "parent.appendChild(style);" +
+                            "})()"
+                )
+                settings.javaScriptEnabled = false
+                webView = this
+            }
+        }, update = {
+            webView = it
+        })
+
+}
 
 @Composable
 fun TranslatorsScreen() {

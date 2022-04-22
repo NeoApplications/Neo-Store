@@ -34,6 +34,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.isDark
 
 @ExperimentalCoilApi
 class AboutFragment : Fragment() {
@@ -47,7 +48,7 @@ class AboutFragment : Fragment() {
         return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
             findViewById<ComposeView>(R.id.base_compose_view).setContent {
                 OmegaAppTheme(themeColor) {
-                    AboutNavController(requireActivity())
+                    AboutNavController(requireActivity(), themeColor)
                 }
             }
         }
@@ -59,17 +60,26 @@ class AboutFragment : Fragment() {
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
-fun AboutNavController(mActivity: FragmentActivity) {
+fun AboutNavController(mActivity: FragmentActivity, theme: Int = 0) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Routes.MainScreen.route) {
         composable(route = Routes.MainScreen.route) {
             mActivity.title = mActivity.getString(R.string.title__general_about)
-            AboutScreen(navController = navController)
+            AboutMainScreen(navController = navController)
         }
         composable(route = Routes.Translators.route) {
             mActivity.title = mActivity.getString(R.string.about_translators)
             TranslatorsScreen()
+        }
+        composable(route = Routes.License.route) {
+            mActivity.title = mActivity.getString(R.string.category__about_licenses)
+            LicenseScreen(theme.isDark)
+        }
+        composable(route = Routes.Changelog.route) {
+            mActivity.title = mActivity.getString(R.string.title__about_changelog)
+            ChangelogScreen(theme.isDark)
         }
     }
 }
