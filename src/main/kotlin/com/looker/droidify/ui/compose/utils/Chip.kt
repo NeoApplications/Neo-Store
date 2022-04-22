@@ -1,87 +1,136 @@
 package com.looker.droidify.ui.compose.utils
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun ChipRow(
-    modifier: Modifier = Modifier,
-    list: List<String>,
-    chipColors: ChipColors = ChipDefaults.chipColors(
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.primary.copy(alpha = ChipDefaults.ContentOpacity),
-    ),
-    shapes: Shape = RoundedCornerShape(50),
-    onClick: (String) -> Unit
+private enum class SelectionState { Unselected, Selected }
+
+private class CategoryChipTransition(
+    cornerRadius: State<Dp>,
+    contentColor: State<Color>,
+    checkScale: State<Float>
 ) {
-    LazyRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp)
+    val cornerRadius by cornerRadius
+    val contentColor by contentColor
+    val checkScale by checkScale
+}
+
+@Composable
+private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
+    val transition = updateTransition(
+        targetState = if (selected) SelectionState.Selected else SelectionState.Unselected,
+        label = "chip_transition"
+    )
+    val corerRadius = transition.animateDp(label = "chip_corner") { state ->
+        when (state) {
+            SelectionState.Unselected -> 10.dp
+            SelectionState.Selected -> 28.dp
+        }
+    }
+    val contentColor = transition.animateColor(label = "chip_content_alpha") { state ->
+        when (state) {
+            SelectionState.Unselected -> MaterialTheme.colorScheme.surface
+            SelectionState.Selected -> MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
+        }
+    }
+    val checkScale = transition.animateFloat(label = "chip_check_scale") { state ->
+        when (state) {
+            SelectionState.Unselected -> 0.6f
+            SelectionState.Selected -> 1f
+        }
+    }
+    return remember(transition) {
+        CategoryChipTransition(corerRadius, contentColor, checkScale)
+    }
+}
+
+@Composable
+fun CategoryChip(
+    category: String,
+    isSelected: Boolean = false,
+    onSelected: (Boolean) -> Unit = {}
+) {
+    val categoryChipTransitionState = categoryChipTransition(selected = isSelected)
+
+    Surface(
+        modifier = Modifier
+            .graphicsLayer {
+                shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius)
+                clip = true
+            },
+        color = categoryChipTransitionState.contentColor
     ) {
-        items(list) {
-            Chip(
-                shape = shapes,
-                colors = chipColors,
-                onClick = { onClick(it) }
-            ) {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = chipColors.contentColor(enabled = true).value
+        Row(
+            modifier = Modifier
+                .toggleable(value = isSelected, onValueChange = onSelected)
+                .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnimatedVisibility(visible = isSelected) {
+                Icon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .graphicsLayer {
+                            scaleX = categoryChipTransitionState.checkScale
+                            scaleY = categoryChipTransitionState.checkScale
+                        }
                 )
             }
+            Text(
+                text = category,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SelectableChipRow(
     modifier: Modifier = Modifier,
     list: List<String>,
-    chipColors: SelectableChipColors = ChipDefaults.filterChipColors(
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        selectedBackgroundColor = MaterialTheme.colorScheme.primary,
-        selectedContentColor = MaterialTheme.colorScheme.onPrimary
-    ),
-    shapes: Shape = RoundedCornerShape(50),
     onClick: (String) -> Unit
 ) {
     var selected by remember { mutableStateOf(list[0]) }
 
     LazyRow(
-        modifier = modifier,
+        modifier = modifier.height(54.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
-        items(list) {
-            FilterChip(
-                shape = shapes,
-                colors = chipColors,
-                selected = it == selected,
-                onClick = {
-                    onClick(it)
-                    selected = it
+        items(list) { category ->
+            CategoryChip(
+                category = category,
+                isSelected = category == selected,
+                onSelected = {
+                    selected = category
+                    onClick(selected)
                 }
-            ) {
-                Text(
-                    text = it,
-                    color = chipColors.contentColor(enabled = true, selected = it == selected).value
-                )
-            }
+            )
         }
     }
 }
