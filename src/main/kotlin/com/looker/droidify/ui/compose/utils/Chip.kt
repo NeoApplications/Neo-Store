@@ -2,9 +2,7 @@ package com.looker.droidify.ui.compose.utils
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -54,7 +52,10 @@ private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
             SelectionState.Selected -> MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
         }
     }
-    val checkScale = transition.animateFloat(label = "chip_check_scale") { state ->
+    val checkScale = transition.animateFloat(
+        label = "chip_check_scale",
+        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow) }
+    ) { state ->
         when (state) {
             SelectionState.Unselected -> 0.6f
             SelectionState.Selected -> 1f

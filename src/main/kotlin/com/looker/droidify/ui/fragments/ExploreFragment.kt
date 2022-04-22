@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Sync
@@ -65,15 +64,14 @@ class ExploreFragment : MainNavFragmentX() {
             // Avoid the compiler using the same class as observer
             Log.d(this::class.java.canonicalName, this.toString())
         }
-        viewModel.primaryProducts.observe(viewLifecycleOwner) {
-            redrawPage(it, viewModel.categories.value ?: emptyList())
-        }
-        viewModel.categories.observe(viewLifecycleOwner) {
-            redrawPage(viewModel.primaryProducts.value, it)
+        viewModel.primaryProducts.observe(viewLifecycleOwner) { products ->
+            viewModel.categories.observe(viewLifecycleOwner) { categories ->
+                redrawPage(products, categories)
+            }
         }
     }
 
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     private fun redrawPage(products: List<Product>?, categories: List<String> = emptyList()) {
         binding.composeView.setContent {
             AppTheme(
@@ -125,7 +123,8 @@ class ExploreFragment : MainNavFragmentX() {
                                 }
                             )
                         }
-                        ProductsVerticalRecycler(products,
+                        ProductsVerticalRecycler(
+                            products,
                             repositories,
                             Modifier
                                 .fillMaxWidth()
