@@ -190,6 +190,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
         SearchProviderController.getInstance(context).onSearchProviderChanged()
     }
+    val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
+    val fuzzySearch by BooleanPref("pref_fuzzy_search", true)
 
     // GESTURES & NOTIFICATION
     val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, recreate)

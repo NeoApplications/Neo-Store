@@ -35,7 +35,6 @@ import com.android.launcher3.allapps.AllAppsStore
 import com.android.launcher3.allapps.AlphabeticalAppsList
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.allapps.search.AllAppsSearchBarController
-import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
 import com.android.launcher3.search.SearchCallback
 
 class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
@@ -71,7 +70,7 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
         mApps = appsView.apps
         mAppsView = appsView
         mSearchBarController.initialize(
-            DefaultAppSearchAlgorithm(mLauncher),
+            CustomAppSearchAlgorithm(mLauncher),
             this, mLauncher, this
         )
     }

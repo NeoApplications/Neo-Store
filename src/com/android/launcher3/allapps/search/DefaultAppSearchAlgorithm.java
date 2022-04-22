@@ -23,7 +23,6 @@ import android.os.Handler;
 import androidx.annotation.AnyThread;
 
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.model.AllAppsList;
 import com.android.launcher3.model.BaseModelUpdateTask;
@@ -32,12 +31,8 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.search.SearchAlgorithm;
 import com.android.launcher3.search.SearchCallback;
 import com.android.launcher3.search.StringMatcherUtility;
-import com.saggitt.omega.search.SearchProvider;
-import com.saggitt.omega.search.SearchProviderController;
-import com.saggitt.omega.search.WebSearchProvider;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,16 +40,14 @@ import java.util.List;
  */
 public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
 
-    private static final int MAX_RESULTS_COUNT = 5;
+    public static final int MAX_RESULTS_COUNT = 5;
 
-    private final LauncherAppState mAppState;
-    private final Handler mResultHandler;
-    private final Context mContext;
+    public final LauncherAppState mAppState;
+    public final Handler mResultHandler;
 
     public DefaultAppSearchAlgorithm(Context context) {
         mAppState = LauncherAppState.getInstance(context);
         mResultHandler = new Handler(MAIN_EXECUTOR.getLooper());
-        mContext = context;
     }
 
     @Override
@@ -70,17 +63,20 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
             @Override
             public void execute(LauncherAppState app, BgDataModel dataModel, AllAppsList apps) {
                 ArrayList<AdapterItem> result = getTitleMatchResult(apps.data, query);
-                final List<String> suggestions = getSuggestions(query);
-                mResultHandler.post(() -> callback.onSearchResult(query, result, suggestions));
+                mResultHandler.post(() -> callback.onSearchResult(query, result, null));
             }
         });
+    }
+
+    public ArrayList<AdapterItem> getResult(List<AppInfo> apps, String query) {
+        return getTitleMatchResult(apps, query);
     }
 
     /**
      * Filters {@link AppInfo}s matching specified query
      */
     @AnyThread
-    public static ArrayList<AdapterItem> getTitleMatchResult(List<AppInfo> apps, String query) {
+    public ArrayList<AdapterItem> getTitleMatchResult(List<AppInfo> apps, String query) {
         // Do an intersection of the words in the query and each title, and filter out all the
         // apps that don't match all of the words in the query.
         final String queryTextLower = query.toLowerCase();
@@ -98,18 +94,7 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm<AdapterItem> {
                 resultCount++;
             }
         }
-        return result;
-    }
 
-    private List<String> getSuggestions(String query) {
-        if (!Utilities.getOmegaPrefs(mContext).getAllAppsGlobalSearch()) {
-            return Collections.emptyList();
-        }
-        SearchProvider provider = SearchProviderController.Companion
-                .getInstance(mContext).getSearchProvider();
-        if (provider instanceof WebSearchProvider) {
-            return ((WebSearchProvider) provider).getSuggestions(query);
-        } else
-            return Collections.emptyList();
+        return result;
     }
 }

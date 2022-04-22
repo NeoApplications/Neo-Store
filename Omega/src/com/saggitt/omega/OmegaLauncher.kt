@@ -19,6 +19,8 @@ package com.saggitt.omega
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -28,8 +30,12 @@ import android.view.WindowManager
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
+import com.android.launcher3.util.ComponentKey
+import com.android.launcher3.util.Executors.MODEL_EXECUTOR
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
@@ -63,6 +69,8 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
     private val prefCallback = OmegaPreferencesChangeCallback(this)
     val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
+    val hiddenApps = ArrayList<AppInfo>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
@@ -87,6 +95,9 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
+        //Load hidden apps to use with hidden apps preference
+        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.hiddenAppSet) }
+
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.folderBadgeCount
         if (prefs.customWindowCorner) {
@@ -98,6 +109,25 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         val db = DbHelper(this)
         db.close()
 
+    }
+
+    private fun loadHiddenApps(hiddenAppsSet: Set<String>) {
+
+        val apps = ArrayList<LauncherActivityInfo>()
+        val iconCache = LauncherAppState.getInstance(this).iconCache
+        val profiles = UserCache.INSTANCE.get(this).userProfiles
+        val launcherApps: LauncherApps = applicationContext.getSystemService(
+            LauncherApps::class.java
+        )
+        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
+        for (info in apps) {
+            val key = ComponentKey(info.componentName, info.user);
+            if (hiddenAppsSet.contains(key.toString())) {
+                val appInfo = AppInfo(info, info.user, false)
+                iconCache.getTitleAndIcon(appInfo, false)
+                hiddenApps.add(appInfo)
+            }
+        }
     }
 
     override fun getSupportedShortcuts(): Stream<SystemShortcut.Factory<*>> {

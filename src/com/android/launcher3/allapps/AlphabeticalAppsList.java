@@ -34,6 +34,7 @@ import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
+import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.allapps.AppColorComparator;
 import com.saggitt.omega.allapps.AppCountInfo;
 import com.saggitt.omega.allapps.AppUsageComparator;
@@ -363,9 +364,9 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
             }
 
             Set<ComponentKey> folderFilters = getFolderFilteredApps();
-            for (AppInfo info : mApps) {
+            for (AppInfo info : getFiltersAppInfos()) {
 
-                if (folderFilters.contains(info.toComponentKey())) {
+                if (!hasFilter() && folderFilters.contains(info.toComponentKey())) {
                     continue;
                 }
 
@@ -455,6 +456,29 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                     break;
             }
         }
+    }
+
+    private List<AppInfo> getFiltersAppInfos() {
+        if (mSearchResults == null) {
+            return mApps;
+        }
+        ArrayList<AppInfo> result = new ArrayList<>();
+        for (AdapterItem app : mSearchResults) {
+            AppInfo match = mAllAppsStore.getApp(app.appInfo.toComponentKey());
+            if (match != null) {
+                result.add(match);
+            } else {
+                //Add hidden apps to search results when the preference is enabled
+                ArrayList<AppInfo> apps = OmegaLauncher.getLauncher(mLauncher.getApplicationContext()).getHiddenApps();
+                for (AppInfo info : apps) {
+                    if (info.componentName.getPackageName().equals(app.appInfo.componentName.getPackageName())) {
+                        result.add(info);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     private List<DrawerFolderInfo> getFolderInfos() {

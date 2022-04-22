@@ -41,6 +41,7 @@ import com.android.launcher3.allapps.AllAppsStore;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
 import com.android.launcher3.allapps.SearchUiManager;
 import com.android.launcher3.search.SearchCallback;
+import com.saggitt.omega.search.CustomAppSearchAlgorithm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,7 @@ public class AppsSearchContainerLayout extends ExtendedEditText
         mApps = appsView.getApps();
         mAppsView = appsView;
         mSearchBarController.initialize(
-                new DefaultAppSearchAlgorithm(mLauncher),
+                new CustomAppSearchAlgorithm(mLauncher),
                 this, mLauncher, this);
     }
 

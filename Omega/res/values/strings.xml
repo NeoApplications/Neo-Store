@@ -109,6 +109,8 @@
     <string name="title_all_apps_google_search">Global search</string>
     <string name="title_all_apps_keep_scroll_state">Remember Position</string>
     <string name="title_search_hidden_apps">Find Hidden Shortcuts</string>
+    <string name="title_fuzzy_search">Fuzzy Search</string>
+    <string name="summary_fuzzy_search">Approximate matching for app searches.</string>
     <string name="title_app_categorize">Categorize Apps</string>
     <string name="summary_app_categorize">Choose between Tabs or Folders</string>
     <string name="summary_search_hidden_apps">Show hidden shortcuts in results.</string>
