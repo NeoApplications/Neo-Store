@@ -19,7 +19,6 @@
 package com.saggitt.omega.compose.screens
 
 import android.graphics.Bitmap
-import android.util.Base64
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -70,29 +69,11 @@ fun ComposableWebView(url: String, isDark: Boolean) {
                 )
                 webViewClient = object : WebViewClient() {
                     override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
-
                     }
                 }
 
                 loadUrl(url)
-                settings.javaScriptEnabled = true
 
-                val inputStream = context.assets.open(cssFile)
-                val buffer = ByteArray(inputStream.available())
-                inputStream.read(buffer)
-                inputStream.close()
-                val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
-                webView!!.loadUrl(
-                    "javascript:(function() {" +
-                            "var parent = document.getElementsByTagName('head').item(0);" +
-                            "var style = document.createElement('style');" +
-                            "style.type = 'text/css';" +
-                            // Tell the browser to BASE64-decode the string into your script !!!
-                            "style.innerHTML = window.atob('" + encoded + "');" +
-                            "parent.appendChild(style);" +
-                            "})()"
-                )
-                settings.javaScriptEnabled = false
                 webView = this
             }
         }, update = {
