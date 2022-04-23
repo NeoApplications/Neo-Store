@@ -6,7 +6,7 @@ val composeVersion = "1.2.0-alpha08"
 
 plugins {
     id("com.android.application").version("7.1.3")
-    kotlin("android").version("1.6.10")
+    kotlin("android").version("1.6.20")
     kotlin("kapt").version("1.6.20")
     kotlin("plugin.serialization").version("1.6.20")
 }
