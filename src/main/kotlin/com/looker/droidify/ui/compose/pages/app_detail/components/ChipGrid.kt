@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import com.looker.droidify.ui.compose.utils.CustomChip
 import com.looker.droidify.ui.compose.utils.StaggeredGrid
 
+// TODO: Convert Permissions and AntiFeatures to Custom Interface
+
 @Composable
 fun PermissionGrid(
     modifier: Modifier = Modifier,
