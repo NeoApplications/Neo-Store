@@ -32,8 +32,8 @@ import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.components.ExpandableSearchAction
 import com.looker.droidify.ui.compose.components.TopBar
 import com.looker.droidify.ui.compose.components.TopBarAction
+import com.looker.droidify.ui.compose.pages.home.components.CategoryChipList
 import com.looker.droidify.ui.compose.theme.AppTheme
-import com.looker.droidify.ui.compose.utils.SelectableChipRow
 import com.looker.droidify.utility.isDarkTheme
 
 class ExploreFragment : MainNavFragmentX() {
@@ -110,7 +110,7 @@ class ExploreFragment : MainNavFragmentX() {
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {
-                        SelectableChipRow(
+                        CategoryChipList(
                             list = listOf(
                                 stringResource(id = R.string.all_applications),
                                 *categories.sorted().toTypedArray()
