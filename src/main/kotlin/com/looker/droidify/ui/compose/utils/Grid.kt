@@ -8,7 +8,7 @@ import kotlin.math.max
 @Composable
 fun StaggeredGrid(
     modifier: Modifier = Modifier,
-    rows: Int = 3,
+    rows: Int = 2,
     content: @Composable () -> Unit
 ) {
     Layout(
