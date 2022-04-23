@@ -21,7 +21,7 @@ fun ReleaseItemPreview() {
 @Preview
 @Composable
 fun CustomChipPrev() {
-    AppTheme(blackTheme = false) {
+    AppTheme(blackTheme = false, darkTheme = true) {
         CustomChip(text = "Test Chip")
     }
 }

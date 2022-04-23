@@ -7,7 +7,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,6 @@ fun CustomChip(
     modifier: Modifier = Modifier,
     text: String,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = contentColorFor(backgroundColor = containerColor),
     borderColor: Color = MaterialTheme.colorScheme.primary,
     borderWidth: Dp = 1.dp,
     onClick: (String) -> Unit = {}
@@ -36,11 +34,10 @@ fun CustomChip(
         ),
         colors = chipColors(
             backgroundColor = containerColor.copy(0.1f)
-                .compositeOver(MaterialTheme.colorScheme.background),
-            contentColor = contentColor
+                .compositeOver(MaterialTheme.colorScheme.background)
         ),
         onClick = { onClick(text) }
     ) {
-        Text(text = text)
+        Text(text = text, color = borderColor)
     }
 }
