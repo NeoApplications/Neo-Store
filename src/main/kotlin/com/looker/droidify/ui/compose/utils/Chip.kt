@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -30,11 +29,13 @@ fun CustomChip(
         shape = Shapes.Full,
         border = BorderStroke(
             width = borderWidth,
-            color = borderColor.copy(0.5f).compositeOver(MaterialTheme.colorScheme.surface)
+            color = borderColor.compositeOverBackground(
+                alpha = 0.5f,
+                MaterialTheme.colorScheme.surface
+            )
         ),
         colors = chipColors(
-            backgroundColor = containerColor.copy(0.1f)
-                .compositeOver(MaterialTheme.colorScheme.background)
+            backgroundColor = containerColor.compositeOverBackground(alpha = 0.1f)
         ),
         onClick = { onClick(text) }
     ) {
