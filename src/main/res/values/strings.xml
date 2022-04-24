@@ -11,8 +11,8 @@
     <string name="anti_features">Anti-features</string>
     <string name="application">Application</string>
     <string name="application_not_found">Could not find that app</string>
-    <string name="author_email">Author e-mail</string>
-    <string name="author_website">Author website</string>
+    <string name="author_email">Author\'s e-mail</string>
+    <string name="author_website">Author\'s website</string>
     <string name="available">Available</string>
     <string name="bug_tracker">Bug tracker</string>
     <string name="cancel">Cancel</string>
