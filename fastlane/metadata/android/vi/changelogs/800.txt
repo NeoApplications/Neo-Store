@@ -1,0 +1,12 @@
+* Hợp nhất android-11.0.0_r31
+* Thêm: Giữ tùy chọn màn hình trống
+* Thêm: Bộ chọn màu cho các tab
+* Thêm: điều khiển dấu gạch ngang bổ sung
+* Thêm: Tùy chỉnh Dash
+* Thêm: Hỗ trợ QuickSwitch
+* Thêm: FiveSecs KLWP
+* Thêm: Nhà cung cấp Searx
+* Thêm: Trợ lý giấc ngủ
+* Thêm: Ứng dụng danh sách dọc (Thực nghiệm)
+* Sửa: Kích thước đế trên màn hình dài
+* Sửa: Sự cố khi mở Trợ lý Google
