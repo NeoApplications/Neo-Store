@@ -45,7 +45,7 @@ fun ProductsListItem(
     }
 
     ExpandableCard(
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+        modifier = Modifier.padding(8.dp),
         onClick = { onUserClick(product) },
         expandedContent = {
             ExpandedItemContent(
