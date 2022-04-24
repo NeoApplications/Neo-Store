@@ -14,6 +14,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 // TODO: Rename
+
+/**
+ * Basically a OutlineChip without spamming "ExperimentalMaterialApi"
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomChip(

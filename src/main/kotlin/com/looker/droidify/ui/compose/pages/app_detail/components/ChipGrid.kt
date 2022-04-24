@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.ui.compose.utils.CustomChip
@@ -30,11 +29,7 @@ fun AntiFeaturesGrid(
     modifier: Modifier = Modifier,
     antiFeatures: List<String>
 ) {
-    val scrollState = rememberScrollState()
-    LaunchedEffect(Unit) {
-        scrollState.animateScrollTo(4)
-    }
-    StaggeredGrid(modifier = modifier.horizontalScroll(scrollState)) {
+    StaggeredGrid(modifier = modifier.horizontalScroll(rememberScrollState())) {
         antiFeatures.forEach {
             CustomChip(
                 modifier = Modifier.padding(horizontal = 2.dp),
