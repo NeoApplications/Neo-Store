@@ -34,8 +34,9 @@ import com.android.systemui.shared.system.QuickStepContract
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController
 import com.saggitt.omega.theme.ThemeManager
-import com.wind.storm.easybypass.EasyBypass
+import org.chickenhook.restrictionbypass.Unseal
 import java.io.File
+
 
 class OmegaApp : Application() {
     private val TAG = "OmegaApp"
@@ -56,7 +57,13 @@ class OmegaApp : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            EasyBypass.bypassHiddenApiRestriction()
+            try {
+                Unseal.unseal()
+                Log.i(TAG, "Unseal success!")
+            } catch (e: Exception) {
+                Log.e(TAG, "Unseal fail!")
+                e.printStackTrace()
+            }
         }
     }
 
