@@ -10,7 +10,7 @@
     <string name="amoled">Zwart</string>
     <string name="anti_features">Antifuncties</string>
     <string name="application">Aanwending</string>
-    <string name="author_website">Website van auteur</string>
+    <string name="author_website">Auteurs\' website</string>
     <string name="available">Beschikbaar</string>
     <string name="compiled_for_debugging">Gecompileerd voor debugging</string>
     <string name="confirmation">Bevestiging</string>
@@ -22,7 +22,7 @@
     <string name="whats_new">Wat is nieuw</string>
     <string name="website">Webside</string>
     <string name="application_not_found">Kon die app niet vinden</string>
-    <string name="author_email">E-mail van de auteur</string>
+    <string name="author_email">Auteurs\' email</string>
     <string name="versions">Versies</string>
     <string name="updates">Bijwerkingen</string>
     <string name="cancel">Annuleer</string>
@@ -46,10 +46,10 @@
     <string name="promotes_non_free_software">Bevordert niet-vrije software</string>
     <string name="delete_repository_DESC">Het archief verwijderen\?</string>
     <string name="incompatible_versions_summary">Toon versies die niet compatibel zijn met het toestel</string>
-    <string name="bug_tracker">Fouten lijst</string>
+    <string name="bug_tracker">Bug melder</string>
     <string name="connecting">Verbinden…</string>
     <string name="contains_non_free_media">Bevat betaalde media</string>
-    <string name="could_not_download_FORMAT">Kon niet downloaden%s</string>
+    <string name="could_not_download_FORMAT">Downloaden mislukt %s</string>
     <string name="dark">Donker</string>
     <string name="delete">Verwijder</string>
     <string name="description">Beschrijving</string>
@@ -62,7 +62,7 @@
     <string name="file_format_error_DESC">Ongeldig bestands formaat.</string>
     <string name="fingerprint">Vingerafdruk</string>
     <string name="has_advertising">Bevat advertenties</string>
-    <string name="http_error_DESC">Ongeldige server reactie.</string>
+    <string name="http_error_DESC">Ongeldig server antwoord.</string>
     <string name="http_proxy">HTTP proxy</string>
     <string name="ignore_all_updates">Negeer alle nieuwe versies</string>
     <string name="ignore_this_update">Negeer deze versie</string>
@@ -71,4 +71,7 @@
     <string name="incompatible_features_DESC">Missende functies.</string>
     <string name="incompatible_older_DESC">Deze versie is ouder dan die op dit apparaat. Verwijder die eerst.</string>
     <string name="incompatible_signature_DESC">Deze versie is getekend met een ander certifikaat dan die op dit apparaat geinstalleerd is. Verwijder het eerst.</string>
+    <string name="could_not_sync_FORMAT">synchroniseren mislukt %s</string>
+    <string name="could_not_validate_FORMAT">Kon niet valideren %s</string>
+    <string name="incompatible_api_min_DESC_FORMAT">De minimale API versie is %d.</string>
 </resources>
