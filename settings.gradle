@@ -5,7 +5,6 @@ include ':searchuilib'
 project(':searchuilib').projectDir = new File(rootDir, 'platform_frameworks_libs_systemui/searchuilib')
 
 include ':SystemUIShared'
-project(':searchuilib').projectDir = new File(rootDir, 'SystemUIShared')
 
 include ':CompatLib'
 include ':CompatLibVR'
