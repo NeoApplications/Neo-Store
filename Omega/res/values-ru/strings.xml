@@ -388,4 +388,17 @@
     <string name="pref_desktop_mode_settings">Настройки режима рабочего стола</string>
     <string name="backup_delete_failed">Что-то пошло не так</string>
     <string name="backup_name">Имя резервной копии</string>
+    <string name="title_separate_work_apps">Вторая вкладка для рабочих приложений</string>
+    <string name="protected_app_reset">Перезагрузить защищённые приложения</string>
+    <string name="pref_category__incubating">В разработке</string>
+    <string name="title_theme_customize_icons">Форма иконок</string>
+    <string name="summary_colored_backgrounds">Для фона адаптивных иконок.</string>
+    <string name="title_dock_search">Панель поиска</string>
+    <string name="summary_dock_search">Показать под панелью</string>
+    <string name="summary_app_categorize">Выбрать между вкладками или папками</string>
+    <string name="cat_desktop_grid">Сетка</string>
+    <string name="summary_app_categorization_enable">Создать вкладку или папку</string>
+    <string name="summary_force_shapeless">Попробовать использовать устаревшие значки для всех приложений.</string>
+    <string name="trust_apps_no_lock_error">Установите защиту на экране блокировки, чтобы ограничить доступ к приложению</string>
+    <string name="summary_legacy_treatment">Создание адаптивных иконок для всех ярлыков.</string>
 </resources>
