@@ -15,7 +15,7 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.folder
+package com.saggitt.omega.override
 
 import android.content.Context
 import com.android.launcher3.R
@@ -23,7 +23,6 @@ import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
 import com.saggitt.omega.iconpack.CustomIconEntry
-import com.saggitt.omega.item.CustomInfoProvider
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.omegaPrefs
