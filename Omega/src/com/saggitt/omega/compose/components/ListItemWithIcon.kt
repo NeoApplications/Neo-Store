@@ -41,7 +41,7 @@ import com.saggitt.omega.util.addIf
 fun ListItemWithIcon(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    description: @Composable () -> Unit = {},
+    description: @Composable () -> Unit,
     startIcon: (@Composable () -> Unit)? = null,
     endCheckbox: (@Composable () -> Unit)? = null,
     isEnabled: Boolean = true,
