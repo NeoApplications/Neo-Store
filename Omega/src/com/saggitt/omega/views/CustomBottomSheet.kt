@@ -26,6 +26,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.EditText
 import android.widget.ImageView
@@ -40,6 +41,7 @@ import com.android.launcher3.touch.SingleAxisSwipeDetector
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageManagerHelper
 import com.android.launcher3.widget.WidgetsBottomSheet
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.PREFS_APP_HIDE
 import com.saggitt.omega.PREFS_APP_SHOW_IN_TABS
 import com.saggitt.omega.PREFS_FOLDER_COVER_MODE
@@ -48,7 +50,7 @@ import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.OmegaShortcutActivity.Companion.REQUEST_CODE
 import com.saggitt.omega.gestures.ui.LauncherGesturePreference
-import com.saggitt.omega.item.CustomInfoProvider
+import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.custom.MultiSelectTabPreference
 
@@ -72,35 +74,51 @@ class CustomBottomSheet @JvmOverloads constructor(
         super.populateAndShow(itemInfo)
 
         mItemInfo = itemInfo
-        if (mItemInfo is FolderInfo) {
-            mInfoProvider = CustomInfoProvider.forItem(context, mItemInfo)
-        }
+        mInfoProvider = CustomInfoProvider.forItem(context, mItemInfo)
 
         val title = findViewById<TextView>(R.id.title)
         title.text = itemInfo.title
         (mFragmentManager.findFragmentById(R.id.sheet_prefs) as PrefsFragment).loadForApp(
             itemInfo, { setForceOpen() }, { unsetForceOpen() }) { reopen() }
-        var allowTitleEdit = false
-        if (itemInfo is ItemInfoWithIcon || (mInfoProvider != null && mInfoProvider!!.supportsIcon())) {
+        var allowTitleEdit = true
+        if (itemInfo is ItemInfoWithIcon || mInfoProvider!!.supportsIcon()) {
             val icon = findViewById<ImageView>(R.id.icon)
-
-            if (itemInfo is ItemInfoWithIcon) {
+            if (itemInfo is WorkspaceItemInfo && itemInfo.customIcon != null) {
+                icon.setImageBitmap(itemInfo.customIcon)
+            } else if (itemInfo is ItemInfoWithIcon) {
                 icon.setImageBitmap(itemInfo.bitmap.icon)
             } else if (itemInfo is FolderInfo) {
                 icon.setImageDrawable(itemInfo.getIcon(mLauncher))
+                // Drawer folder
+                if (itemInfo.container == ItemInfo.NO_ID) {
+                    allowTitleEdit = false
+                }
             }
-            allowTitleEdit = true
+
+            Log.d("CustomBottomSheet", "Provider is null: ${mInfoProvider == null}")
+            if (mInfoProvider != null) {
+                val launcher = OmegaLauncher.getLauncher(context)
+                icon.setOnClickListener {
+                    val editItem: ItemInfo? =
+                        if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
+                            (mItemInfo as FolderInfo).coverInfo
+                        } else {
+                            mItemInfo
+                        }
+                    val editProvider = CustomInfoProvider.forItem<ItemInfo>(context, editItem)
+                    if (editProvider != null) {
+                        launcher.startEditIcon(editItem!!, editProvider)
+                    }
+                }
+            }
         }
-        if (itemInfo is WorkspaceItemInfo) {
-            allowTitleEdit = true
-        }
-        if (allowTitleEdit && mItemInfo !is FolderInfo) {
+
+        if (mInfoProvider != null && allowTitleEdit) {
             val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
             val appTitle = prefs.customAppName[componentKey] ?: itemInfo.title.toString()
             val previousTitle = prefs.customAppName[componentKey]
             if (mPreviousTitle == null) mPreviousTitle = ""
             mEditTitle = findViewById(R.id.edit_title)
-
             mEditTitle?.let {
                 if (!previousTitle.isNullOrEmpty())
                     it.hint = previousTitle
@@ -112,7 +130,6 @@ class CustomBottomSheet @JvmOverloads constructor(
             }
             title.visibility = GONE
         }
-
     }
 
     override fun hasSeenEducationTip(): Boolean {
@@ -215,6 +232,7 @@ class CustomBottomSheet @JvmOverloads constructor(
         private var reopen: Runnable? = null
         private var mProvider: CustomInfoProvider<ItemInfo>? = null
 
+        @Deprecated("Deprecated in Java")
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.app_edit_prefs, rootKey)
         }
@@ -254,7 +272,15 @@ class CustomBottomSheet @JvmOverloads constructor(
                 mTabsPref!!.activity = activity
                 mTabsPref!!.updateSummary()
             }
-
+            if (mProvider != null && mProvider!!.supportsSwipeUp(itemInfo)) {
+                val previousSwipeUpAction = mProvider!!.getSwipeUpAction(itemInfo)
+                mSwipeUpPref!!.value = previousSwipeUpAction
+                mSwipeUpPref!!.onSelectHandler = { gestureHandler: GestureHandler ->
+                    onSelectHandler(gestureHandler)
+                }
+            } else {
+                preferenceScreen.removePreference(mSwipeUpPref as Preference)
+            }
             if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
                 val componentPref = preferenceScreen.findPreference<Preference>("componentName")
                 val versionPref = preferenceScreen.findPreference<Preference>("versionName")
@@ -267,12 +293,13 @@ class CustomBottomSheet @JvmOverloads constructor(
                 preferenceScreen.removePreference(preferenceScreen.findPreference("debug")!!)
             }
             if (itemInfo is FolderInfo) {
-                mPrefCoverMode?.isChecked = (itemInfo as FolderInfo).isCoverMode
+                mPrefCoverMode.isChecked = (itemInfo as FolderInfo).isCoverMode
             } else {
-                mPrefCoverMode?.let { preferenceScreen.removePreference(it) }
+                mPrefCoverMode.let { preferenceScreen.removePreference(it) }
             }
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onDetach() {
             super.onDetach()
             if (mProvider != null && selectedHandler != null) {
@@ -287,7 +314,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             }
             if (itemInfo is FolderInfo) {
                 val folderInfo = itemInfo as FolderInfo
-                val coverEnabled = mPrefCoverMode!!.isChecked
+                val coverEnabled = mPrefCoverMode.isChecked
                 if (folderInfo.isCoverMode != coverEnabled) {
                     val launcher = Launcher.getLauncher(activity)
                     folderInfo.setCoverMode(coverEnabled, launcher.modelWriter)

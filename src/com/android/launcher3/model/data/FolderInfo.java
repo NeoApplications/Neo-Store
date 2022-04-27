@@ -56,7 +56,7 @@ import com.saggitt.omega.folder.FirstItemProvider;
 import com.saggitt.omega.iconpack.CustomIconEntry;
 import com.saggitt.omega.iconpack.IconPack;
 import com.saggitt.omega.iconpack.IconPackProvider;
-import com.saggitt.omega.item.CustomInfoProvider;
+import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
