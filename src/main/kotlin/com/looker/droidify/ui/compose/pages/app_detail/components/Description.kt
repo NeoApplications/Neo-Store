@@ -17,6 +17,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/*
+* Annotate String in this way https://stackoverflow.com/questions/65567412/jetpack-compose-text-hyperlink-some-section-of-the-text/69549929#69549929
+* */
 @Composable
 fun Description(
     modifier: Modifier = Modifier,
