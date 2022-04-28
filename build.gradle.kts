@@ -172,7 +172,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
     // OkHttps
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.6")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
 
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.4")
@@ -208,8 +208,8 @@ dependencies {
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter:1.1.6")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.6")
+    implementation("com.google.android.material:compose-theme-adapter:1.1.7")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.7")
 
     debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
