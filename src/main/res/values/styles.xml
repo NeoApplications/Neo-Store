@@ -19,6 +19,7 @@
         <item name="colorOnError">@color/md_theme_light_onError</item>
         <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
         <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="backgroundColor">@color/md_theme_light_background</item>
         <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
         <item name="colorSurface">@color/md_theme_light_surface</item>
         <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
@@ -33,6 +34,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
 
+        <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
@@ -58,6 +60,7 @@
         <item name="colorOnError">@color/md_theme_dark_onError</item>
         <item name="colorOnErrorContainer">@color/md_theme_dark_onErrorContainer</item>
         <item name="android:colorBackground">@color/md_theme_dark_background</item>
+        <item name="backgroundColor">@color/md_theme_dark_background</item>
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
         <item name="colorSurface">@color/grey_dark</item>
         <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
@@ -71,6 +74,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
 
+        <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
@@ -104,11 +108,13 @@
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
         <item name="android:colorBackground">@color/pitch_black</item>
+        <item name="backgroundColor">@color/pitch_black</item>
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
         <item name="android:statusBarColor">@color/md_theme_dark_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
 
+        <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
         <item name="tabStyle">@style/Theme.Tab</item>
         <item name="switchStyle">@style/Theme.Switch</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
@@ -190,6 +196,16 @@
         <item name="cardCornerRadius">50dp</item>
         <item name="android:insetLeft">4dp</item>
         <item name="android:insetRight">4dp</item>
+    </style>
+
+    <style name="Theme.Design.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Sheet.Bottom.Style</item>
+    </style>
+
+    <style name="Sheet.Bottom.Style" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?backgroundColor</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="behavior_fitToContents">true</item>
     </style>
 
     <style name="Shape.Small" parent="ShapeAppearance.Material3.SmallComponent">
