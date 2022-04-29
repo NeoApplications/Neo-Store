@@ -89,8 +89,10 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                     else -> isDarkTheme
                 }
             ) {
-                Scaffold {
-                    Column {
+                Scaffold { padding ->
+                    Column(
+                        modifier = Modifier.padding(padding)
+                    ) {
                         OutlinedButton(
                             modifier = Modifier
                                 .padding(8.dp)

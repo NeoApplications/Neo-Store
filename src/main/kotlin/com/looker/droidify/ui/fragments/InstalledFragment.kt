@@ -123,11 +123,12 @@ class InstalledFragment : MainNavFragmentX() {
                             }
                         }
                     }
-                ) { _ ->
+                ) { padding ->
                     var updatesVisible by remember(secondaryList) { mutableStateOf(true) }
 
                     Column(
                         Modifier
+                            .padding(padding)
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {

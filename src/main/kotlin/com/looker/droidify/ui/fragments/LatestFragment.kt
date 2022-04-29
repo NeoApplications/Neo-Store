@@ -116,9 +116,10 @@ class LatestFragment : MainNavFragmentX() {
                             }
                         }
                     }
-                ) { _ ->
+                ) { padding ->
                     Column(
                         Modifier
+                            .padding(padding)
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {
