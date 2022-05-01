@@ -188,4 +188,8 @@
     <string name="installing">Kuruluyor</string>
     <string name="pending">Bekliyor</string>
     <string name="ignore_battery_optimization_title">Pil Optimizasyonunu Yoksay</string>
+    <string name="ignore_battery_optimization_not_supported">Cihazınız pil optimizasyonunu yok saymayı desteklemiyor!</string>
+    <string name="ignore_battery_optimization_message">Android 12\'den itibaren ön plan servislerini çalıştırmada kısıtlama var, uygulamanın indirilenlerde çökmesine sebebiyet veriyor. Bunu önlemek için pil optimizasyonlarını kapatmalısınız</string>
+    <string name="dialog_refuse">Buna ihtiyacınız yok</string>
+    <string name="dialog_approve">Bunu yapalım!</string>
 </resources>
