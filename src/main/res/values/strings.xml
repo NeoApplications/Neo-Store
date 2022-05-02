@@ -29,8 +29,8 @@
     <string name="could_not_validate_FORMAT">Could not validate %s</string>
     <string name="credits">Contributors</string>
     <string name="dark">Dark</string>
-    <string name="delete">Remove</string>
-    <string name="delete_repository_DESC">Stop connecting to this repository?</string>
+    <string name="delete">Delete</string>
+    <string name="delete_repository_DESC">Stop looking for apps from this repository?</string>
     <string name="description">Description</string>
     <string name="details">Details</string>
     <string name="donate">Donate</string>
@@ -182,7 +182,7 @@
     <string name="sort_filter">Sort and filter</string>
     <string name="new_applications">New apps</string>
     <string name="install_after_sync">Auto-install</string>
-    <string name="install_after_sync_summary">Installs new versions of installed new apps when found</string>
+    <string name="install_after_sync_summary">Install all new versions after looking through repositories for new apps</string>
     <string name="prefs_updated_apps">Number of non-new apps to show</string>
     <string name="prefs_new_apps">Number of new apps to show</string>
     <string name="new_repository">New repository</string>
@@ -190,7 +190,7 @@
     <string name="pending">Pending</string>
     <string name="installing">Installing</string>
     <string name="ignore_battery_optimization_title">Battery Optimization</string>
-    <string name="ignore_battery_optimization_message">Battery optimization crashes the app, especially on Android 12+</string>
+    <string name="ignore_battery_optimization_message">The app behaves better without battery optimization, and prevents crashing on Android 12+</string>
     <string name="ignore_battery_optimization_not_supported">Your Android installation does not support turning off battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string>
