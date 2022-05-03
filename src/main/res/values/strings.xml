@@ -117,7 +117,7 @@
     <string name="proxy_host">Host</string>
     <string name="proxy_port">Port</string>
     <string name="proxy_type">Type</string>
-    <string name="recently_updated">Recently synced</string>
+    <string name="recently_updated">New</string>
     <string name="repositories">Repositories</string>
     <string name="repository">Repository</string>
     <string name="repository_not_used_DESC">This repository has not been used yet.\nConnect to it to view the apps in it.</string>
@@ -160,8 +160,8 @@
     <string name="unstable_updates">Unstable updates</string>
     <string name="unstable_updates_summary">Suggest installing unstable versions</string>
     <string name="unverified">Unverified</string>
-    <string name="update">Upgrade</string>
-    <string name="updates">Upgrades</string>
+    <string name="update">New</string>
+    <string name="updates">New</string>
     <string name="upstream_source_code_is_not_free">The upstream source code is not libre</string>
     <string name="username">Username</string>
     <string name="username_missing">Username missing</string>
@@ -183,7 +183,7 @@
     <string name="new_applications">New apps</string>
     <string name="install_after_sync">Auto-install</string>
     <string name="install_after_sync_summary">Install all new versions after looking through repositories for new apps</string>
-    <string name="prefs_updated_apps">Number of non-new apps to show</string>
+    <string name="prefs_updated_apps">Number of apps with new versions to show</string>
     <string name="prefs_new_apps">Number of new apps to show</string>
     <string name="new_repository">New repository</string>
     <string name="default_tab">Default tab</string>
