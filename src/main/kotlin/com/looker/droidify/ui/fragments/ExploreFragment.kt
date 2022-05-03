@@ -18,13 +18,15 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.databinding.FragmentComposeBinding
 import com.looker.droidify.entity.Section
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.PrefsActivityX
@@ -38,8 +40,6 @@ import com.looker.droidify.utility.isDarkTheme
 
 class ExploreFragment : MainNavFragmentX() {
 
-    private lateinit var binding: FragmentComposeBinding
-
     override val primarySource = Source.AVAILABLE
     override val secondarySource = Source.AVAILABLE
 
@@ -51,9 +51,9 @@ class ExploreFragment : MainNavFragmentX() {
         savedInstanceState: Bundle?,
     ): View {
         super.onCreate(savedInstanceState)
-        binding = FragmentComposeBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
-        return binding.root
+        return ComposeView(requireContext()).apply {
+            setContent { ExplorePage() }
+        }
     }
 
     override fun setupLayout() {
@@ -64,81 +64,79 @@ class ExploreFragment : MainNavFragmentX() {
             // Avoid the compiler using the same class as observer
             Log.d(this::class.java.canonicalName, this.toString())
         }
-        viewModel.primaryProducts.observe(viewLifecycleOwner) { products ->
-            viewModel.categories.observe(viewLifecycleOwner) { categories ->
-                redrawPage(products, categories)
-            }
-        }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
-    private fun redrawPage(products: List<Product>?, categories: List<String> = emptyList()) {
-        binding.composeView.setContent {
-            AppTheme(
-                darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                    is Preferences.Theme.System -> isSystemInDarkTheme()
-                    is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
-                    else -> isDarkTheme
-                }
-            ) {
-                Scaffold(
-                    // TODO add the topBar to the activity instead of the fragments
-                    topBar = {
-                        TopBar(title = stringResource(id = R.string.application_name)) {
-                            ExpandableSearchAction(
-                                query = viewModel.searchQuery.value.orEmpty(),
-                                onClose = {
-                                    viewModel.searchQuery.value = ""
-                                },
-                                onQueryChanged = { query ->
-                                    if (isResumed && query != viewModel.searchQuery.value)
-                                        viewModel.setSearchQuery(query)
-                                }
-                            )
-                            TopBarAction(icon = Icons.Rounded.Sync) {
-                                mainActivityX.syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+    @Composable
+    private fun ExplorePage() {
+        val products by viewModel.primaryProducts.observeAsState(null)
+        val categories by viewModel.categories.observeAsState(emptyList())
+        val searchQuery by viewModel.searchQuery.observeAsState("")
+
+        AppTheme(
+            darkTheme = when (Preferences[Preferences.Key.Theme]) {
+                is Preferences.Theme.System -> isSystemInDarkTheme()
+                is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                else -> isDarkTheme
+            }
+        ) {
+            Scaffold(
+                // TODO add the topBar to the activity instead of the fragments
+                topBar = {
+                    TopBar(title = stringResource(id = R.string.application_name)) {
+                        ExpandableSearchAction(
+                            query = searchQuery.orEmpty(),
+                            onClose = {
+                                viewModel.setSearchQuery("")
+                            },
+                            onQueryChanged = { query ->
+                                if (isResumed && query != searchQuery)
+                                    viewModel.setSearchQuery(query)
                             }
-                            TopBarAction(icon = Icons.Rounded.Settings) {
-                                startActivity(Intent(context, PrefsActivityX::class.java))
-                            }
+                        )
+                        TopBarAction(icon = Icons.Rounded.Sync) {
+                            mainActivityX.syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+                        }
+                        TopBarAction(icon = Icons.Rounded.Settings) {
+                            startActivity(Intent(context, PrefsActivityX::class.java))
                         }
                     }
-                ) { padding ->
-                    Column(
-                        Modifier
-                            .padding(padding)
-                            .background(MaterialTheme.colorScheme.background)
-                            .fillMaxSize()
+                }
+            ) { padding ->
+                Column(
+                    Modifier
+                        .padding(padding)
+                        .background(MaterialTheme.colorScheme.background)
+                        .fillMaxSize()
+                ) {
+                    CategoryChipList(
+                        list = listOf(
+                            stringResource(id = R.string.all_applications),
+                            *categories.sorted().toTypedArray()
+                        )
                     ) {
-                        CategoryChipList(
-                            list = listOf(
-                                stringResource(id = R.string.all_applications),
-                                *categories.sorted().toTypedArray()
-                            )
-                        ) {
-                            viewModel.setSection(
-                                when (it) {
-                                    getString(R.string.all_applications) -> Section.All
-                                    else -> Section.Category(it)
-                                }
-                            )
-                        }
-                        ProductsVerticalRecycler(
-                            products,
-                            repositories,
-                            Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                            onUserClick = { item ->
-                                AppSheetX(item.packageName)
-                                    .showNow(parentFragmentManager, "Product ${item.packageName}")
-                            },
-                            onFavouriteClick = {},
-                            onInstallClick = {
-                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        viewModel.setSection(
+                            when (it) {
+                                getString(R.string.all_applications) -> Section.All
+                                else -> Section.Category(it)
                             }
                         )
                     }
+                    ProductsVerticalRecycler(
+                        products,
+                        repositories,
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        onUserClick = { item ->
+                            AppSheetX(item.packageName)
+                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                        },
+                        onFavouriteClick = {},
+                        onInstallClick = {
+                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
+                    )
                 }
             }
         }
