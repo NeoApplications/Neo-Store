@@ -106,11 +106,11 @@ class InstalledFragment : MainNavFragmentX() {
                         ExpandableSearchAction(
                             query = searchQuery.orEmpty(),
                             onClose = {
-                                viewModel.setSearchQuery("")
+                                viewModel.searchQuery.postValue("")
                             },
                             onQueryChanged = { query ->
                                 if (isResumed && query != searchQuery)
-                                    viewModel.setSearchQuery(query)
+                                    viewModel.searchQuery.postValue(query)
                             }
                         )
                         TopBarAction(icon = Icons.Rounded.Sync) {
