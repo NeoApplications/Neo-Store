@@ -185,7 +185,7 @@
     <string name="prefs_new_apps">Gösterilecek yeni uygulama sayısı</string>
     <string name="new_repository">Yeni depo</string>
     <string name="default_tab">Öntanımlı Sekme</string>
-    <string name="installing">Kuruluyor</string>
+    <string name="installing">Yükleniyor</string>
     <string name="pending">Bekliyor</string>
     <string name="ignore_battery_optimization_title">Pil Optimizasyonunu Yoksay</string>
     <string name="ignore_battery_optimization_not_supported">Cihazınız pil optimizasyonunu yok saymayı desteklemiyor!</string>
