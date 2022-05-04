@@ -129,30 +129,6 @@ class MainNavFragmentViewModelX(
         }
     }
 
-    fun setSection(newSection: Section) {
-        viewModelScope.launch {
-            if (newSection != sections.value) {
-                sections.value = newSection
-            }
-        }
-    }
-
-    fun setOrder(newOrder: Order) {
-        viewModelScope.launch {
-            if (newOrder != order.value) {
-                order.value = newOrder
-            }
-        }
-    }
-
-    fun setSearchQuery(newSearchQuery: String) {
-        viewModelScope.launch {
-            if (newSearchQuery != searchQuery.value) {
-                searchQuery.value = newSearchQuery
-            }
-        }
-    }
-
     class Factory(
         val db: DatabaseX,
         private val primarySource: Source,

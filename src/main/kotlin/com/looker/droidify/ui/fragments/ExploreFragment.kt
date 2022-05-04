@@ -115,7 +115,7 @@ class ExploreFragment : MainNavFragmentX() {
                             *categories.sorted().toTypedArray()
                         )
                     ) {
-                        viewModel.setSection(
+                        viewModel.sections.postValue(
                             when (it) {
                                 getString(R.string.all_applications) -> Section.All
                                 else -> Section.Category(it)
