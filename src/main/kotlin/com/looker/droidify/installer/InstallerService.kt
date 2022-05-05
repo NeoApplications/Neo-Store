@@ -3,7 +3,6 @@ package com.looker.droidify.installer
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
@@ -11,6 +10,7 @@ import android.net.Uri
 import android.os.IBinder
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
 import com.looker.droidify.NOTIFICATION_CHANNEL_INSTALLER
 import com.looker.droidify.NOTIFICATION_ID_INSTALLER
 import com.looker.droidify.R
@@ -24,7 +24,7 @@ import com.looker.droidify.utility.extension.resources.getColorFromAttr
  * Runs during or after a PackageInstaller session in order to handle completion, failure, or
  * interruptions requiring user intervention, such as the package installer prompt.
  */
-class InstallerService : Service() {
+class InstallerService : LifecycleService() {
     companion object {
         const val KEY_ACTION = "installerAction"
         const val KEY_APP_NAME = "appName"
@@ -45,8 +45,9 @@ class InstallerService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
 
         // only trigger a prompt if in foreground, otherwise make notification
         if (Utils.inForeground() && status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
@@ -74,22 +75,22 @@ class InstallerService : Service() {
      *
      * @param intent provided by PackageInstaller to the callback service/activity.
      */
-    private fun notifyStatus(intent: Intent) {
+    private fun notifyStatus(intent: Intent?) {
         // unpack from intent
-        val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
-        val sessionId = intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1)
+        val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+        val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0
 
         // get package information from session
         val sessionInstaller = this.packageManager.packageInstaller
         val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
 
         val name =
-            session?.appPackageName ?: intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
-        val message = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
-        val installerAction = intent.getStringExtra(KEY_ACTION)
+            session?.appPackageName ?: intent?.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
+        val message = intent?.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
+        val installerAction = intent?.getStringExtra(KEY_ACTION)
 
         // get application name for notifications
-        val appLabel = session?.appLabel ?: intent.getStringExtra(KEY_APP_NAME)
+        val appLabel = session?.appLabel ?: intent?.getStringExtra(KEY_APP_NAME)
         ?: try {
             if (name != null) packageManager.getApplicationLabel(
                 packageManager.getApplicationInfo(
@@ -161,7 +162,8 @@ class InstallerService : Service() {
         }
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
