@@ -120,7 +120,7 @@
     <string name="repository_not_used_DESC">Bu depo henüz kullanılmadı. İçindeki uygulamaları görüntülemek için etkinleştirin.</string>
     <string name="repository_unsigned_DESC">İmzalanmamış. Uygulama listesi doğrulanamadı. İmzalanmamış depolardan uygulama indirirken dikkatli olun.</string>
     <string name="requires_FORMAT">%s gerektirir</string>
-    <string name="root_permission">Sessiz Yükleme</string>
+    <string name="root_permission">Etkileşimsiz kurulum</string>
     <string name="root_permission_description">Etkileşimsiz yüklemeler için root kullan</string>
     <string name="save">Kaydet</string>
     <string name="saving_details">Ayrıntılar kaydediliyor…</string>
