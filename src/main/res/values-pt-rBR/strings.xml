@@ -194,4 +194,6 @@
     <string name="ignore_battery_optimization_not_supported">O dispositivo não suporta ignorar otimizações de bateria!</string>
     <string name="dialog_refuse">Não precisa disso</string>
     <string name="dialog_approve">Vamos fazê-lo!</string>
+    <string name="root_session_installer_description">O instalador de sessão é um pouco menos eficiente que o antigo, mas evita problemas com aplicativos instalados no Android +13.</string>
+    <string name="root_session_installer">Usar o instalador de sessão root</string>
 </resources>
