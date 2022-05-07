@@ -36,6 +36,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             get() = String.format(
                 ROOT_INSTALL_PACKAGE,
                 absolutePath,
+                BuildConfig.APPLICATION_ID,
                 getCurrentUserState,
                 length()
             )
