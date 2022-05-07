@@ -51,6 +51,10 @@ class PrefsUpdatesFragment : PrefsNavFragmentX() {
                 Preferences.Key.RootPermission, getString(R.string.root_permission),
                 getString(R.string.root_permission_description)
             )
+            addSwitch(
+                Preferences.Key.RootSessionInstaller, getString(R.string.root_session_installer),
+                getString(R.string.root_session_installer_description)
+            )
         }
     }
 }
