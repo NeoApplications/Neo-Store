@@ -190,4 +190,6 @@
     <string name="ignore_battery_optimization_not_supported">此设备不支持忽略电池优化！</string>
     <string name="dialog_refuse">不需要</string>
     <string name="dialog_approve">让我们开始吧！</string>
+    <string name="root_session_installer_description">会话安装程序的性能比传统安装程序稍差，但避免了在 Android 13+ 中安装应用程序出现问题。</string>
+    <string name="root_session_installer">使用root会话安装程序</string>
 </resources>
