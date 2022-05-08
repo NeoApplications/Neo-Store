@@ -23,12 +23,18 @@ import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,6 +55,7 @@ fun ItemLink(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .height(72.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable {
                 val webpage = Uri.parse(url)
                 val intent = Intent(Intent.ACTION_VIEW, webpage)
@@ -65,7 +72,7 @@ fun ItemLink(
         Spacer(modifier = Modifier.requiredHeight(4.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.bodyMedium,
             color = OmegaTheme.colors.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

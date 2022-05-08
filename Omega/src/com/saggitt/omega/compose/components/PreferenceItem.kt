@@ -18,8 +18,16 @@
 
 package com.saggitt.omega.compose.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -69,19 +77,18 @@ fun PreferenceItem(
                 modifier = Modifier
                     .weight(1f)
                     .addIf(!enabled) {
-                        alpha(ContentAlpha.disabled)
+                        alpha(0.3f)
                     }
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colors.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.subtitle1
+                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
+                    LocalTextStyle provides MaterialTheme.typography.titleMedium
                 ) {
                     title()
                 }
                 CompositionLocalProvider(
-                    LocalContentAlpha provides ContentAlpha.medium,
-                    LocalContentColor provides MaterialTheme.colors.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.body2
+                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
+                    LocalTextStyle provides MaterialTheme.typography.bodyMedium
                 ) {
                     description()
                 }

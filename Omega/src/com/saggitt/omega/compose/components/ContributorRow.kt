@@ -25,8 +25,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,7 +78,7 @@ fun ContributorRow(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(32.dp)
-                    .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12F))
             )
         },
         showDivider = showDivider

@@ -19,9 +19,18 @@
 package com.saggitt.omega.compose.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -38,7 +47,6 @@ fun PreferenceGroup(
     PreferenceGroupHeading(heading)
     val columnModifier = Modifier
     CompositionLocalProvider(
-        LocalContentAlpha provides ContentAlpha.medium,
         LocalContentColor provides OmegaTheme.colors.primary
     ) {
 
@@ -70,12 +78,11 @@ fun PreferenceGroupHeading(
                 .fillMaxWidth()
         ) {
             CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.medium,
-                LocalContentColor provides MaterialTheme.colors.onBackground
+                LocalContentColor provides MaterialTheme.colorScheme.onBackground
             ) {
                 Text(
                     text = heading,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = OmegaTheme.colors.textPrimary
