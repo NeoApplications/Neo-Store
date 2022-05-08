@@ -30,8 +30,37 @@ val Grey600 = Color(0xff555555)
 val Grey700 = Color(0xff434343)
 val Grey800 = Color(0xff262626)
 val Grey900 = Color(0xff212121)
-
 val Black = Color(0xff000000)
 
-val IndigoA100 = Color(0xFF8c9eff)
-val IndigoA700 = Color(0xFF304ffe)
+// Light Theme
+val LightBackground = Color(0xFFFFFFFF)
+val LightOnBackground = Color(0xFF000000)
+val LightSurface = Color(0xFFE9ECEF)
+val LightOnSurface = Color(0xFF191C1A)
+val LightPrimary = Color(0xFFFF1744)
+val LightOnPrimary = Color(0xFF434343)
+val LightSurfaceVariant = Color(0xFFE9ECEF)
+val LightOnSurfaceVariant = Color(0xFF555555) // use for secondary text
+val LightOutline = Color(0xff212121)
+
+// Dark Theme
+val DarkBackground = Color(0xFF212121)
+val DarkOnBackground = Color(0xFFFFFFFF)
+val DarkSurface = Color(0xff262626)
+val DarkOnSurface = Color(0xFFE9ECEF)
+val DarkPrimary = Color(0xFFFF1744)
+val DarkOnPrimary = Color(0xffE9E9E9)
+val DarkSurfaceVariant = Color(0xFF323639)
+val DarkOnSurfaceVariant = Color(0xFFD9D9D9) // use for secondary text
+val DarkOutline = Color(0xFFE9E9E9)
+
+// Black Theme
+val BlackBackground = Color(0xFF000000)
+val BlackOnBackground = Color(0xFFFFFFFF)
+val BlackSurface = Color(0xFF212121)
+val BlackOnSurface = Color(0xFFE9ECEF)
+val BlackPrimary = Color(0xFFFF1744)
+val BlackOnPrimary = Color(0xFFE9E9E9)
+val BlackSurfaceVariant = Color(0xFF323639)
+val BlackOnSurfaceVariant = Color(0xFFD9D9D9) // use for secondary text
+val BlackOutline = Color(0xFFE9E9E9)
