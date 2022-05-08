@@ -73,7 +73,7 @@ fun AppCategorizationOptions() {
             shape = MaterialTheme.shapes.medium,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             tonalElevation = 2.dp,
-            color = MaterialTheme.colorScheme.background,
+            color = if (prefs.appGroupsManager.categorizationType == AppGroupsManager.CategorizationType.Folders) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
             onClick = {
                 prefs.appGroupsManager.categorizationType =
                     AppGroupsManager.CategorizationType.Folders
@@ -132,7 +132,7 @@ fun AppCategorizationOptions() {
             shape = MaterialTheme.shapes.medium,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             tonalElevation = 2.dp,
-            color = MaterialTheme.colorScheme.background,
+            color = if (prefs.appGroupsManager.categorizationType == AppGroupsManager.CategorizationType.Tabs) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
             onClick = {
                 prefs.appGroupsManager.categorizationType =
                     AppGroupsManager.CategorizationType.Tabs
