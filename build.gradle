@@ -114,11 +114,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     packagingOptions {
-        pickFirst '**/libeasyBypass.so'
-        // if this is used in a sdk project:
-        //exclude '**/libeasyBypass.so'
+        jniLibs {
+            pickFirsts += ['**/libeasyBypass.so']
+        }
     }
 
     // The flavor dimensions for build variants (e.g. aospWithQuickstep, aospWithoutQuickstep)
