@@ -191,4 +191,6 @@
     <string name="ignore_battery_optimization_message">À partir d\'Android 12, il y a des restrictions sur l\'exécution des services en avant-plan, ce qui entraîne le plantage de l\'application lors des téléchargements. Pour éviter cela, vous devez désactiver l\'optimisation de la batterie</string>
     <string name="ignore_battery_optimization_title">Ignorer l\'optimisation de la batterie</string>
     <string name="dialog_approve">C\'est parti !</string>
+    <string name="root_session_installer">Utiliser l\'installateur de session root</string>
+    <string name="root_session_installer_description">L\'installateur de session est un peu moins performant, mais évite les problèmes avec les applications installées dans Android +13.</string>
 </resources>
