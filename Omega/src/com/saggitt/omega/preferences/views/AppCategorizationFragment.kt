@@ -66,9 +66,9 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     private val drawerFoldersAdapter by lazy { DrawerFoldersAdapter(mContext) }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
 
