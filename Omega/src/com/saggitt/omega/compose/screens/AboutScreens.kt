@@ -33,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -111,14 +110,12 @@ fun TranslatorsScreen() {
                     Text(
                         text = translators[i + 1],
                         style = MaterialTheme.typography.headlineLarge,
-                        fontSize = 16.sp,
                         color = OmegaTheme.colors.textPrimary,
                     )
 
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 12.sp,
                         color = OmegaTheme.colors.textSecondary
                     )
 
@@ -132,7 +129,6 @@ fun TranslatorsScreen() {
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 12.sp,
                         color = OmegaTheme.colors.textSecondary
                     )
                 }
