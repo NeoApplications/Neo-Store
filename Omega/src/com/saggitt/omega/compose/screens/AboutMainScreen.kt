@@ -22,12 +22,24 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -173,28 +186,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_language,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_language),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
         }
@@ -217,28 +216,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_copyright,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_copyright),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
 
@@ -257,28 +242,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_list,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_list),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
         }
