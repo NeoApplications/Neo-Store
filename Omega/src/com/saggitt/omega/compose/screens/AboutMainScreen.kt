@@ -44,7 +44,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -57,7 +56,6 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.ContributorRow
 import com.saggitt.omega.compose.components.ItemLink
 import com.saggitt.omega.compose.components.PreferenceGroup
@@ -113,7 +111,7 @@ fun AboutMainScreen(navController: NavController) {
                 fontFamily = kaushanScript,
                 fontWeight = FontWeight.Normal,
                 fontSize = 30.sp,
-                color = Color(Utilities.getOmegaPrefs(context).accentColor)
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(

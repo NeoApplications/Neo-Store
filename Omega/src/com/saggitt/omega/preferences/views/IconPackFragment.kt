@@ -115,7 +115,7 @@ fun IconPackList() {
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
 
     val colors = RadioButtonDefaults.colors(
-        selectedColor = Color(prefs.accentColor),
+        selectedColor = MaterialTheme.colorScheme.primary,
         unselectedColor = Color.Gray
     )
 
