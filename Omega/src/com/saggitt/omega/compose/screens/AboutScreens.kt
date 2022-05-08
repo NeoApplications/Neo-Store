@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun LicenseScreen(isDark: Boolean) {
@@ -109,14 +108,14 @@ fun TranslatorsScreen() {
                 ) {
                     Text(
                         text = translators[i + 1],
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = OmegaTheme.colors.textPrimary,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
 
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = OmegaTheme.colors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                 }
@@ -129,7 +128,7 @@ fun TranslatorsScreen() {
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = OmegaTheme.colors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

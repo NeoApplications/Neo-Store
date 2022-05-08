@@ -63,7 +63,6 @@ import com.saggitt.omega.compose.components.ItemLink
 import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.theme.kaushanScript
 
 @ExperimentalCoilApi
@@ -122,13 +121,13 @@ fun AboutMainScreen(navController: NavController) {
                         + BuildConfig.VERSION_NAME + " ( Build " + BuildConfig.VERSION_CODE + " )",
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
-                color = OmegaTheme.colors.textPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = stringResource(id = R.string.app_id) + ": " + BuildConfig.APPLICATION_ID,
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
-                color = OmegaTheme.colors.textPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -175,7 +174,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.about_translators),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier
@@ -205,7 +204,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.category__about_licenses),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier
@@ -231,7 +230,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.title__about_changelog),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier

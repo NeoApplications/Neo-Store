@@ -34,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.saggitt.omega.theme.OmegaTheme
 
 // TODO fix background coloring
 @ExperimentalCoilApi
@@ -50,7 +49,7 @@ fun ContributorRow(
 
     PreferenceItem(
         title = {
-            Text(text = contributorName, color = OmegaTheme.colors.textPrimary)
+            Text(text = contributorName)
         },
         modifier = Modifier
             .clickable {
@@ -63,7 +62,7 @@ fun ContributorRow(
         description = {
             Text(
                 text = contributorRole,
-                color = OmegaTheme.colors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         startWidget = {

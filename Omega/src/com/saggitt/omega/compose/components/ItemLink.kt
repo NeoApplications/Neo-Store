@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun ItemLink(
@@ -73,7 +72,7 @@ fun ItemLink(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = OmegaTheme.colors.textPrimary,
+            color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )

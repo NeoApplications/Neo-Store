@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.groups.AppGroupsManager
-import com.saggitt.omega.theme.OmegaTheme
 
 // TODO convert to single items
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,9 +71,9 @@ fun AppCategorizationOptions() {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            border = BorderStroke(1.dp, OmegaTheme.colors.border),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             tonalElevation = 2.dp,
-            color = OmegaTheme.colors.surface,
+            color = MaterialTheme.colorScheme.background,
             onClick = {
                 prefs.appGroupsManager.categorizationType =
                     AppGroupsManager.CategorizationType.Folders
@@ -92,13 +91,13 @@ fun AppCategorizationOptions() {
                         text = stringResource(R.string.app_categorization_folders),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = stringResource(R.string.pref_appcategorization_folders_summary),
                         style = MaterialTheme.typography.headlineLarge,
                         fontSize = 14.sp,
-                        color = OmegaTheme.colors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 if (prefs.appGroupsManager.categorizationType != AppGroupsManager.CategorizationType.Tabs) {
@@ -131,9 +130,9 @@ fun AppCategorizationOptions() {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            border = BorderStroke(1.dp, OmegaTheme.colors.border),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             tonalElevation = 2.dp,
-            color = OmegaTheme.colors.surface,
+            color = MaterialTheme.colorScheme.background,
             onClick = {
                 prefs.appGroupsManager.categorizationType =
                     AppGroupsManager.CategorizationType.Tabs
@@ -151,13 +150,13 @@ fun AppCategorizationOptions() {
                         text = stringResource(R.string.app_categorization_tabs),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
                         text = stringResource(R.string.pref_appcategorization_tabs_summary),
                         style = MaterialTheme.typography.headlineLarge,
                         fontSize = 14.sp,
-                        color = OmegaTheme.colors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 

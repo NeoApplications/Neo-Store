@@ -59,7 +59,6 @@ import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.theme.OmegaAppTheme
-import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.recreate
 
@@ -128,14 +127,17 @@ fun IconPackList() {
         LazyColumn {
             itemsIndexed(packs) { _, item ->
                 ListItemWithIcon(
-                    title = { Text(text = item.name, color = OmegaTheme.colors.textPrimary) },
+                    title = { Text(text = item.name, color = MaterialTheme.colorScheme.onPrimary) },
                     modifier = Modifier.clickable {
                         prefs.iconPackPackage = item.packageName
                         onOptionSelected(item.packageName)
                     },
                     description = {
                         if (prefs.showDebugInfo)
-                            Text(text = item.packageName, color = OmegaTheme.colors.textSecondary)
+                            Text(
+                                text = item.packageName,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                     },
                     startIcon = {
                         Image(
@@ -168,7 +170,7 @@ fun IconPackList() {
             title = {
                 Text(
                     text = stringResource(id = R.string.get_more_icon_packs),
-                    color = OmegaTheme.colors.textPrimary
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             },
             modifier = Modifier

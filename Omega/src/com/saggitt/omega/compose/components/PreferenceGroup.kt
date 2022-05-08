@@ -37,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun PreferenceGroup(
@@ -47,13 +46,13 @@ fun PreferenceGroup(
     PreferenceGroupHeading(heading)
     val columnModifier = Modifier
     CompositionLocalProvider(
-        LocalContentColor provides OmegaTheme.colors.primary
+        LocalContentColor provides MaterialTheme.colorScheme.primary
     ) {
 
         Surface(
             shape = RoundedCornerShape(16.dp),
-            border = BorderStroke(1.dp, OmegaTheme.colors.border),
-            color = OmegaTheme.colors.surface
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = columnModifier) {
                 content()
@@ -85,7 +84,7 @@ fun PreferenceGroupHeading(
                     style = MaterialTheme.typography.headlineMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = OmegaTheme.colors.textPrimary
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
