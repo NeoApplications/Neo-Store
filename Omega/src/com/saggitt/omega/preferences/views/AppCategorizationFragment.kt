@@ -72,11 +72,10 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     ): View {
         binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
 
-        val themeColor = Config.getCurrentTheme(requireContext())
         binding.categorizationType.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                OmegaAppTheme(themeColor) {
+                OmegaAppTheme {
                     AppCategorizationOptions()
                 }
             }

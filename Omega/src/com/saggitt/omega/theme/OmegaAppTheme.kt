@@ -31,11 +31,10 @@ import com.saggitt.omega.util.omegaPrefs
 // TODO migrate the color palettes to Material3
 @Composable
 fun OmegaAppTheme(
-    themeColor: Int = Config.THEME_LIGHT,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = when (themeColor) {
+        colorScheme = when (Config.getCurrentTheme(LocalContext.current)) {
             Config.THEME_BLACK -> {
                 OmegaBlackColors
             }
