@@ -40,7 +40,7 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: new File(rootProject.projectDir, 'prebuilts/libs'), include: 'wm_shell-aidls.jar')
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20'
     implementation project(':CompatLib')
     implementation project(':CompatLibVR')
     implementation project(':CompatLibVS')
