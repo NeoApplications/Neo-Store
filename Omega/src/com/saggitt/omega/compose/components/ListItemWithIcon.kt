@@ -95,7 +95,7 @@ fun ListItemWithIcon(
             ) {
                 CompositionLocalProvider(
                     LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.headlineLarge
+                    LocalTextStyle provides MaterialTheme.typography.titleLarge
                 ) {
                     title()
                 }
