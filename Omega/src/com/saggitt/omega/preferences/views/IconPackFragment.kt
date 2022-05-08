@@ -33,10 +33,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -106,6 +107,7 @@ class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun IconPackList() {
@@ -143,7 +145,7 @@ fun IconPackList() {
                                         .clip(CircleShape)
                                         .size(36.dp)
                                         .background(
-                                            MaterialTheme.colors.onBackground.copy(alpha = 0.12F)
+                                            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F)
                                         )
                             )
                         },
