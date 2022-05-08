@@ -194,4 +194,6 @@
     <string name="ignore_battery_optimization_title">Ignora l\'ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">A partire da Android 12 ci\'s restrizioni sull\'esecuzione di servizi in primo piano che causano il crash dell\'app sugli scaricamenti. Per evitare questo, si dovrebbe disattivare l\'ottimizzazione della batteria</string>
     <string name="dialog_refuse">Non ne ho bisogno</string>
+    <string name="root_session_installer">Usa l\'installatore della sessione root</string>
+    <string name="root_session_installer_description">L\'installatore di sessione è un po\' meno performante di quello legacy, ma evita i problemi con le app installate in Android +13.</string>
 </resources>
