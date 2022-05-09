@@ -192,4 +192,6 @@
     <string name="ignore_battery_optimization_message">Android 12\'den itibaren ön plan servislerini çalıştırmada kısıtlama var, uygulamanın indirilenlerde çökmesine sebebiyet veriyor. Bunu önlemek için pil optimizasyonlarını kapatmalısınız</string>
     <string name="dialog_refuse">Buna ihtiyacınız yok</string>
     <string name="dialog_approve">Bunu yapalım!</string>
+    <string name="root_session_installer">Yönetici oturum yükleyicisini kullan</string>
+    <string name="root_session_installer_description">Oturum yükleyici, eski sürümden daha az performanslıdır, ancak Android +13\'te yüklü uygulamalarla ilgili sorunları önler.</string>
 </resources>
