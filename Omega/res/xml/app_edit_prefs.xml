@@ -22,6 +22,11 @@
         android:key="pref_cover_mode"
         android:title="@string/folder_cover_mode" />
 
+    <com.saggitt.omega.gestures.ui.LauncherGesturePreference
+        android:dependency="pref_cover_mode"
+        android:key="pref_swipe_up_gesture"
+        android:title="@string/gesture_swipe_up" />
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="pref_app_hide"
