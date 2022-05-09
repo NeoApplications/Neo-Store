@@ -114,17 +114,11 @@ class CustomBottomSheet @JvmOverloads constructor(
         }
 
         if (mInfoProvider != null && allowTitleEdit) {
-            val componentKey = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
-            val appTitle = prefs.customAppName[componentKey] ?: itemInfo.title.toString()
-            val previousTitle = prefs.customAppName[componentKey]
+            mPreviousTitle = mInfoProvider!!.getCustomTitle(mItemInfo)
             if (mPreviousTitle == null) mPreviousTitle = ""
             mEditTitle = findViewById(R.id.edit_title)
             mEditTitle?.let {
-                if (!previousTitle.isNullOrEmpty())
-                    it.hint = previousTitle
-                else
-                    it.hint = appTitle
-
+                it.hint = mInfoProvider!!.getDefaultTitle(mItemInfo)
                 it.setText(mPreviousTitle)
                 it.visibility = VISIBLE
             }
@@ -191,7 +185,16 @@ class CustomBottomSheet @JvmOverloads constructor(
                 if (mItemInfo is ItemInfoWithIcon)
                     prefs.reloadApps
             }
+        } else {
+            var newTitle: String? = mEditTitle!!.text.toString()
+            if (newTitle != mPreviousTitle) {
+                if (newTitle == "") newTitle = null
+                mItemInfo.setTitle(newTitle, mLauncher.modelWriter)
+            }
+            mLauncher.modelWriter.updateItemInDatabase(mItemInfo)
+            (mItemInfo as FolderInfo).onIconChanged()
         }
+
         super.onDetachedFromWindow()
     }
 
@@ -258,6 +261,7 @@ class CustomBottomSheet @JvmOverloads constructor(
             }
             val mPrefHide = findPreference<SwitchPreference>(PREFS_APP_HIDE)
             mPrefCoverMode = findPreference(PREFS_FOLDER_COVER_MODE)!!
+            mSwipeUpPref = screen.findPreference("pref_swipe_up_gesture")
             mTabsPref = findPreference(PREFS_APP_SHOW_IN_TABS)
             if (isApp) {
                 mPrefHide!!.isChecked = CustomAppFilter.isHiddenApp(context, mKey)
@@ -279,7 +283,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                     onSelectHandler(gestureHandler)
                 }
             } else {
-                preferenceScreen.removePreference(mSwipeUpPref as Preference)
+                preferenceScreen.removePreference(mSwipeUpPref!! as Preference)
             }
             if (prefs.showDebugInfo && mKey != null && mKey!!.componentName != null) {
                 val componentPref = preferenceScreen.findPreference<Preference>("componentName")
