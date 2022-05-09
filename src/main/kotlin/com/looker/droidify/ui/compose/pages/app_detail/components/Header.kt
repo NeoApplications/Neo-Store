@@ -4,10 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +49,7 @@ fun Header(
             var buttonState by remember { mutableStateOf<ButtonStates>(Connecting) }
 
             AnimatedVisibility(visible = buttonState is Cancelable) {
-                DownloadProgress(totalSize = 69420)
+                DownloadProgress(modifier = Modifier.padding(horizontal = 12.dp), totalSize = 69420)
             }
 
             InstallButton(buttonState = buttonState) {
@@ -167,6 +164,11 @@ fun DownloadProgress(
             text = totalSize.times(downloading).toLong().formatSize() + "/" + totalSize.formatSize()
         )
         Spacer(modifier = Modifier.height(8.dp))
-        LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), progress = downloading)
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(Shapes.Full),
+            progress = downloading
+        )
     }
 }

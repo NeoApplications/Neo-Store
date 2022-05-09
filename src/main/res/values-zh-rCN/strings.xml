@@ -185,4 +185,11 @@
     <string name="default_tab">默认标签页</string>
     <string name="pending">待定</string>
     <string name="installing">安装</string>
+    <string name="ignore_battery_optimization_title">忽略电池优化</string>
+    <string name="ignore_battery_optimization_message">从 Android 12 开始，对运行前台服务的限制会导致应用在下载时崩溃。 为防止这种情况，您应该关闭电池优化</string>
+    <string name="ignore_battery_optimization_not_supported">此设备不支持忽略电池优化！</string>
+    <string name="dialog_refuse">不需要</string>
+    <string name="dialog_approve">让我们开始吧！</string>
+    <string name="root_session_installer_description">会话安装程序的性能比传统安装程序稍差，但避免了在 Android 13+ 中安装应用程序出现问题。</string>
+    <string name="root_session_installer">使用root会话安装程序</string>
 </resources>

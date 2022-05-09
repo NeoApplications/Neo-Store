@@ -107,7 +107,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
 
     override fun setupLayout() {
         // TODO simplify observing and updating
-        viewModel.installedItem.observe(requireActivity()) {
+        viewModel.installedItem.observe(viewLifecycleOwner) {
             installed = it?.let {
                 val isSystem = try {
                     ((requireContext().packageManager.getApplicationInfo(packageName, 0).flags)

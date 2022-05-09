@@ -29,7 +29,12 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.databinding.FragmentPrefsBinding
 import com.looker.droidify.databinding.PreferenceItemBinding
-import com.looker.droidify.utility.extension.resources.*
+import com.looker.droidify.utility.Utils
+import com.looker.droidify.utility.extension.resources.TypefaceExtra
+import com.looker.droidify.utility.extension.resources.getColorFromAttr
+import com.looker.droidify.utility.extension.resources.inflate
+import com.looker.droidify.utility.extension.resources.setTextSizeScaled
+import com.looker.droidify.utility.extension.resources.sizeScaled
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.launch
 
@@ -108,11 +113,12 @@ abstract class PrefsNavFragmentX : Fragment() {
             preferences[Preferences.Key.ProxyHost]?.setEnabled(enabled)
             preferences[Preferences.Key.ProxyPort]?.setEnabled(enabled)
         }
-        if (key == Preferences.Key.RootPermission) {
+        if (key == null || key == Preferences.Key.RootPermission) {
             preferences[Preferences.Key.RootPermission]?.setEnabled(
                 Shell.getCachedShell()?.isRoot
                     ?: Shell.getShell().isRoot
             )
+            preferences[Preferences.Key.RootSessionInstaller]?.setEnabled(Utils.rootInstallerEnabled)
         }
         if (key == Preferences.Key.Theme) {
             requireActivity().recreate()

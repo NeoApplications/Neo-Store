@@ -1,6 +1,10 @@
 package com.looker.droidify.ui.viewmodels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Installed
@@ -10,6 +14,7 @@ import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
 import com.looker.droidify.ui.fragments.Request
 import com.looker.droidify.ui.fragments.Source
+import com.looker.droidify.utility.extension.ManageableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,6 +24,7 @@ class MainNavFragmentViewModelX(
     primarySource: Source,
     secondarySource: Source
 ) : ViewModel() {
+    // TODO add better sort/filter fields
 
     var order = MutableLiveData(Order.LAST_UPDATE)
         private set
@@ -66,7 +72,7 @@ class MainNavFragmentViewModelX(
     }
 
     private var primaryRequest = MediatorLiveData<Request>()
-    val primaryProducts = MediatorLiveData<List<Product>>()
+    val primaryProducts = ManageableLiveData<List<Product>>()
     private var secondaryRequest = request(secondarySource)
     val secondaryProducts = MediatorLiveData<List<Product>>()
 
@@ -76,9 +82,10 @@ class MainNavFragmentViewModelX(
 
     init {
         primaryProducts.addSource(
-            db.productDao.queryLiveList(primaryRequest.value ?: request(primarySource)),
-            primaryProducts::setValue
-        )
+            db.productDao.queryLiveList(primaryRequest.value ?: request(primarySource))
+        ) {
+            primaryProducts.updateValue(it, System.currentTimeMillis())
+        }
         secondaryProducts.addSource(
             db.productDao.queryLiveList(secondaryRequest),
             secondaryProducts::setValue
@@ -87,58 +94,38 @@ class MainNavFragmentViewModelX(
         categories.addSource(db.categoryDao.allNamesLive, categories::setValue)
         listOf(sections, order, searchQuery).forEach {
             primaryRequest.addSource(it) {
-                primaryRequest.value = request(primarySource)
+                val newRequest = request(primarySource)
+                if (primaryRequest.value != newRequest)
+                    primaryRequest.value = newRequest
             }
         }
         primaryProducts.addSource(primaryRequest) { request ->
+            val updateTime = System.currentTimeMillis()
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    primaryProducts.postValue(
-                        db.productDao.queryObject(
-                            request
-                        )
+                    primaryProducts.updateValue(
+                        db.productDao.queryObject(request),
+                        updateTime
                     )
                 }
             }
         }
         installed.addSource(db.installedDao.allLive) {
             if (primarySource == Source.INSTALLED && secondarySource == Source.UPDATES) {
+                val updateTime = System.currentTimeMillis()
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         secondaryProducts.postValue(db.productDao.queryObject(secondaryRequest))
-                        primaryProducts.postValue(
+                        primaryProducts.updateValue(
                             db.productDao.queryObject(
                                 primaryRequest.value ?: request(primarySource)
-                            )
+                            ),
+                            updateTime
                         )
                     }
                 }
             }
             installed.postValue(it)
-        }
-    }
-
-    fun setSection(newSection: Section) {
-        viewModelScope.launch {
-            if (newSection != sections.value) {
-                sections.value = newSection
-            }
-        }
-    }
-
-    fun setOrder(newOrder: Order) {
-        viewModelScope.launch {
-            if (newOrder != order.value) {
-                order.value = newOrder
-            }
-        }
-    }
-
-    fun setSearchQuery(newSearchQuery: String) {
-        viewModelScope.launch {
-            if (newSearchQuery != searchQuery.value) {
-                searchQuery.value = newSearchQuery
-            }
         }
     }
 

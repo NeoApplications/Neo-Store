@@ -1,22 +1,18 @@
 package com.looker.droidify.ui.compose.utils
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
+import coil.compose.AsyncImage
 import com.looker.droidify.R
 
 @Composable
@@ -24,24 +20,14 @@ fun NetworkImage(
     modifier: Modifier = Modifier,
     data: String?,
     contentScale: ContentScale = ContentScale.Crop,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = MaterialTheme.shapes.medium
 ) {
-    SubcomposeAsyncImage(
+    AsyncImage(
         modifier = modifier.clip(shape),
         model = data,
         contentDescription = null,
         contentScale = contentScale,
-        loading = {
-            Spacer(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(backgroundColor)
-            )
-        },
-        error = {
-            SubcomposeAsyncImageContent(painter = painterResource(id = R.drawable.ic_placeholder))
-        }
+        error = painterResource(id = R.drawable.ic_placeholder)
     )
 }
 

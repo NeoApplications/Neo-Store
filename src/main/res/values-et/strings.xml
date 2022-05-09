@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all_applications_up_to_date">Kõik rakendused on värskendatud</string>
+    <string name="already_exists">Juba olemas</string>
+    <string name="application_not_found">Rakendust ei leitud</string>
+    <string name="author_email">Autori meiliaadress</string>
+    <string name="author_website">Autori veebilehekülg</string>
+    <string name="available">Saadaval</string>
+    <string name="cancel">Tühista</string>
+    <string name="changes">Muudatused</string>
+    <string name="confirmation">Kinnitus</string>
+    <string name="connecting">Ühendamine…</string>
+    <string name="could_not_download_FORMAT">%s allalaadimine ebaõnnestus</string>
+    <string name="could_not_validate_FORMAT">%s valideerimine ebaõnnestus</string>
+    <string name="credits">Autorid</string>
+    <string name="dark">Tume</string>
+    <string name="delete">Kustuta</string>
+    <string name="details">Detailid</string>
+    <string name="donate">Anneta</string>
+    <string name="downloaded_FORMAT">%s alla laaditud</string>
+    <string name="downloading">Allalaadimine</string>
+    <string name="downloading_FORMAT">%s allalaadimine…</string>
+    <string name="file_format_error_DESC">Sobimatu failiformaat.</string>
+    <string name="ignore_all_updates">Ignoreeri kõiki uuendusi</string>
+    <string name="ignore_this_update">Ignoreeri seda versiooni</string>
+    <string name="incompatible_older_DESC">See versioon on vanem kui Teie seadmesse installitu. Installige see kõigepealt maha.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Teie %1$s platvormi ei toetata. Toetatavad platvormid: %2$s.</string>
+    <string name="incompatible_api_DESC_FORMAT">Teie %1$s (API versioon %2$d) ei toetata. %3$s</string>
+    <string name="all_applications">Kõik rakendused</string>
+    <string name="address">Aadress</string>
+    <string name="always">Alati</string>
+    <string name="amoled">Must</string>
+    <string name="description">Kirjeldus</string>
+    <string name="fingerprint">Sõrmejälg</string>
+    <string name="has_advertising">Sisaldab reklaami</string>
+</resources>

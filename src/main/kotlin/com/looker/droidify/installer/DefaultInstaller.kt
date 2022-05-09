@@ -21,12 +21,10 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
     companion object {
         val flags = if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE else 0
-        val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL)
-    }
-
-    init {
-        if (Android.sdk(31)) {
-            sessionParams.setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+        val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
+            if (Android.sdk(31)) {
+                this.setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+            }
         }
     }
 
@@ -56,8 +54,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
             .forEach { session ->
                 try {
                     sessionInstaller.abandonSession(session.sessionId)
-                }
-                catch (_: SecurityException) {
+                } catch (_: SecurityException) {
                     Log.w(
                         "DefaultInstaller",
                         "Attempted to abandon a session we do not own."

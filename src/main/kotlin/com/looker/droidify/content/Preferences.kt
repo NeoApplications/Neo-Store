@@ -33,6 +33,7 @@ object Preferences {
         Key.ProxyPort,
         Key.ProxyType,
         Key.RootPermission,
+        Key.RootSessionInstaller,
         Key.SortOrder,
         Key.Theme,
         Key.DefaultTab,
@@ -158,6 +159,7 @@ object Preferences {
         )
 
         object RootPermission : Key<Boolean>("root_permission", Value.BooleanValue(false))
+        object RootSessionInstaller : Key<Boolean>("root_session_installer", Value.BooleanValue(false))
 
         object SortOrder : Key<Preferences.SortOrder>(
             "sort_order",

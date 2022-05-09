@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="address">Adress</string>
+    <string name="all_applications">Alla appar</string>
+    <string name="all_applications_up_to_date">Alla appar är uppdaterade</string>
+    <string name="already_exists">Existerar redan</string>
+    <string name="always">Alltid</string>
+    <string name="amoled">Svart</string>
+    <string name="anti_features">Antifunktioner</string>
+    <string name="application">Ansökan</string>
+    <string name="author_email">Författarens e-post</string>
+    <string name="author_website">Författarens hemsida</string>
+    <string name="available">Tillgänglig</string>
+    <string name="bug_tracker">Felsökare</string>
+    <string name="cancel">Avbryt</string>
+    <string name="cant_edit_sync_DESC">Det går inte att redigera synkade arkiv…</string>
+    <string name="changelog">Ändringslogg</string>
+    <string name="compiled_for_debugging">Sammanställd för felsökning</string>
+    <string name="confirmation">Bekräftelser</string>
+    <string name="connecting">Ansluter…</string>
+    <string name="contains_non_free_media">Innehåller icke-fria media</string>
+    <string name="could_not_download_FORMAT">Kunde inte ladda ner %s</string>
+    <string name="could_not_sync_FORMAT">Det gick inte att synkronisera %s</string>
+    <string name="action_failed">Åtgärden misslyckades</string>
+    <string name="add_repository">Lägg till arkiv</string>
+    <string name="application_not_found">Det gick inte att hitta den appen</string>
+    <string name="changes">Ändringar</string>
+    <string name="checking_repository">Kontrollerar arkivet…</string>
+</resources>
