@@ -9,8 +9,6 @@ data class CustomIconEntry(
     val arg: String? = null
 ) {
 
-    fun toPackString(): String = packPackageName
-
     override fun toString(): String = "$packPackageName|${icon}|${arg ?: ""}"
 
     companion object {
