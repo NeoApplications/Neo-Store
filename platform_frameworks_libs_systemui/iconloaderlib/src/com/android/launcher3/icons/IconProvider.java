@@ -66,10 +66,10 @@ public class IconProvider {
     public static final int CONFIG_ICON_MASK_RES_ID = Resources.getSystem().getIdentifier(
             "config_icon_mask", "string", "android");
 
-    private static final String TAG_ICON = "icon";
-    private static final String ATTR_PACKAGE = "package";
+    public static final String TAG_ICON = "icon";
+    public static final String ATTR_PACKAGE = "package";
     protected static final String ATTR_COMPONENT = "component";
-    private static final String ATTR_DRAWABLE = "drawable";
+    public static final String ATTR_DRAWABLE = "drawable";
 
     private static final String TAG = "IconProvider";
     private static final boolean DEBUG = false;
@@ -77,19 +77,19 @@ public class IconProvider {
     private static final String ICON_METADATA_KEY_PREFIX = ".dynamic_icons";
 
     private static final String SYSTEM_STATE_SEPARATOR = " ";
-    private static final String THEMED_ICON_MAP_FILE = "grayscale_icon_map";
+    public static final String THEMED_ICON_MAP_FILE = "grayscale_icon_map";
 
-    private static final Map<String, ThemeData> DISABLED_MAP = Collections.emptyMap();
+    public static final Map<String, ThemeData> DISABLED_MAP = Collections.emptyMap();
 
     private Map<String, ThemeData> mThemedIconMap;
 
     private final Context mContext;
-    private final ComponentName mCalendar;
-    private final ComponentName mClock;
+    public final ComponentName mCalendar;
+    public final ComponentName mClock;
 
-    static final int ICON_TYPE_DEFAULT = 0;
-    static final int ICON_TYPE_CALENDAR = 1;
-    static final int ICON_TYPE_CLOCK = 2;
+    public static final int ICON_TYPE_DEFAULT = 0;
+    public static final int ICON_TYPE_CALENDAR = 1;
+    public static final int ICON_TYPE_CLOCK = 2;
 
     public IconProvider(Context context) {
         this(context, false);
@@ -230,7 +230,7 @@ public class IconProvider {
                         String pkg = parser.getAttributeValue(null, ATTR_PACKAGE);
                         int iconId = parser.getAttributeResourceValue(null, ATTR_DRAWABLE, 0);
                         if (iconId != 0 && !TextUtils.isEmpty(pkg)) {
-                            map.put(pkg, new ThemeData(res, iconId));
+                            map.put(pkg, new ThemeData(res, mContext.getPackageName(), iconId));
                         }
                     }
                 }
