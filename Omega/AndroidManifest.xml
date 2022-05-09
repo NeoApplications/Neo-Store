@@ -125,6 +125,12 @@
             android:exported="true"
             android:theme="@style/Theme.Transparent" />
 
+        <!-- Icon picker -->
+        <activity
+            android:name="com.saggitt.omega.iconpack.EditIconActivity"
+            android:taskAffinity="${applicationId}.tasks.EDIT_ICON"
+            android:theme="@style/SettingsTheme.Light" />
+
         <!-- Actions -->
         <activity
             android:name="com.saggitt.omega.gestures.OmegaShortcutActivity"
