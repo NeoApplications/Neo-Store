@@ -323,7 +323,7 @@
     <string name="action_open_overview">Mostrar bolha da área de trabalho</string>
     <string name="title_dock_two_row">Exibir a segunda linha</string>
     <string name="title_desktop_keep_empty">Permitir páginas vazias</string>
-    <string name="title_desktop_overlap_placement">Permitir sobreposições</string>
+    <string name="title_desktop_overlap_placement">Permitir sobreposições de widgets</string>
     <string name="tab_color">Cor da aba</string>
     <string name="tab_hide_from_main">Ocultar da aba principal</string>
     <string name="tab_bottom_sheet_save">Salvar</string>
@@ -419,4 +419,5 @@
     <string name="summary_force_shapeless">Tentar usar ícones legados para todos os apps.</string>
     <string name="summary_legacy_treatment">Criar ícones adaptáveis para todos os atalhos.</string>
     <string name="summary_white_only_treatment">Colorir os fundos de todos os ícones adaptáveis.</string>
+    <string name="title_dock_search">Barra de pesquisa do dock</string>
 </resources>
