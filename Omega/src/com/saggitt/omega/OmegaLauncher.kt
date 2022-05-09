@@ -17,11 +17,15 @@
  */
 package com.saggitt.omega
 
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -31,6 +35,9 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.AppInfo
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.ItemInfo
+import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
@@ -44,12 +51,16 @@ import com.farmerbb.taskbar.lib.Taskbar
 import com.google.android.libraries.gsa.launcherclient.LauncherClient
 import com.google.systemui.smartspace.SmartSpaceView
 import com.saggitt.omega.gestures.GestureController
+import com.saggitt.omega.iconpack.CustomIconEntry
+import com.saggitt.omega.iconpack.EditIconActivity
+import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
@@ -72,6 +83,10 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
     val hiddenApps = ArrayList<AppInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
+            && !Utilities.hasStoragePermission(this)
+        ) Utilities.requestStoragePermission(this)
+
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         currentAccent = prefs.accentColor
@@ -86,9 +101,6 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
                 packageName
             ), true
         )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
-            && !Utilities.hasStoragePermission(this)
-        ) Utilities.requestStoragePermission(this)
 
         super.onCreate(savedInstanceState)
 
@@ -188,6 +200,52 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         return mOverlayManager
     }
 
+    fun startEditIcon(itemInfo: ItemInfo, infoProvider: CustomInfoProvider<ItemInfo>) {
+
+        val component: ComponentKey? = when (itemInfo) {
+            is AppInfo -> itemInfo.toComponentKey()
+            is WorkspaceItemInfo -> itemInfo.targetComponent?.let {
+                ComponentKey(it, itemInfo.user)
+            }
+            is FolderInfo -> itemInfo.toComponentKey()
+            else -> null
+        }
+
+        currentEditIcon = when (itemInfo) {
+            is AppInfo -> BitmapDrawable(this.resources, itemInfo.bitmap.icon)
+            is WorkspaceItemInfo -> BitmapDrawable(this.resources, itemInfo.bitmap.icon)
+            is FolderInfo -> itemInfo.getDefaultIcon(this)
+            else -> null
+        }
+        currentEditInfo = itemInfo
+        val intent = EditIconActivity.newIntent(
+            this,
+            infoProvider.getTitle(itemInfo),
+            itemInfo is FolderInfo,
+            component
+        )
+        val flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        BlankActivity.startActivityForResult(
+            this,
+            intent,
+            CODE_EDIT_ICON,
+            flags
+        ) { resultCode, data ->
+            handleEditIconResult(resultCode, data)
+        }
+    }
+
+    private fun handleEditIconResult(resultCode: Int, data: Bundle?) {
+        if (resultCode == Activity.RESULT_OK) {
+            val itemInfo = currentEditInfo ?: return
+            val entryString = data?.getString(EditIconActivity.EXTRA_ENTRY)
+            val customIconEntry =
+                entryString?.let { CustomIconEntry.fromString(it) }
+            CustomInfoProvider.forItem<ItemInfo>(this, itemInfo)?.setIcon(itemInfo, customIconEntry)
+        }
+    }
+
     inline fun prepareDummyView(view: View, crossinline callback: (View) -> Unit) {
         val rect = Rect()
         dragLayer.getViewRectRelativeToSelf(view, rect)
@@ -235,6 +293,8 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     companion object {
         var showFolderNotificationCount = false
+        var currentEditInfo: ItemInfo? = null
+        var currentEditIcon: Drawable? = null
 
         @JvmStatic
         fun getLauncher(context: Context): OmegaLauncher {

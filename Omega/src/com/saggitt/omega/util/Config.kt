@@ -82,6 +82,7 @@ class Config(val context: Context) {
         //PERMISSION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
+        const val CODE_EDIT_ICON = 100
 
         const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
         const val LENS_URI = "google://lens"

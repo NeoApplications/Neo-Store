@@ -15,7 +15,7 @@ import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.util.concurrent.Semaphore
 
-class IconPack(
+open class IconPack(
     private val context: Context,
     private val packPackageName: String,
     private val packResources: Resources
@@ -24,7 +24,7 @@ class IconPack(
     private val deferredLoad: Deferred<Unit>
 
     private val componentMap = mutableMapOf<ComponentName, IconEntry>()
-    private val calendarMap = mutableMapOf<ComponentName, CalendarIconEntry>()
+    private val calendarMap = mutableMapOf<ComponentName, IconEntry>()
     private val clockMap = mutableMapOf<ComponentName, IconEntry>()
     private val clockMetas = mutableMapOf<IconEntry, ClockMetadata>()
 
@@ -100,9 +100,11 @@ class IconPack(
                             val parsed = ComponentName.unflattenFromString(componentName)
                             if (parsed != null) {
                                 if (isCalendar) {
-                                    calendarMap[parsed] = CalendarIconEntry(this, drawableName)
+                                    calendarMap[parsed] =
+                                        IconEntry(packPackageName, drawableName, IconType.Calendar)
                                 } else {
-                                    componentMap[parsed] = IconEntry(this, drawableName)
+                                    componentMap[parsed] =
+                                        IconEntry(packPackageName, drawableName, IconType.Normal)
                                 }
                             }
                         }
@@ -111,7 +113,11 @@ class IconPack(
                         val drawableName = parseXml["drawable"]
                         if (drawableName != null) {
                             if (parseXml is XmlResourceParser) {
-                                clockMetas[IconEntry(this, drawableName)] = ClockMetadata(
+                                clockMetas[IconEntry(
+                                    packPackageName,
+                                    drawableName,
+                                    IconType.Normal
+                                )] = ClockMetadata(
                                     parseXml.getAttributeIntValue(null, "hourLayerIndex", -1),
                                     parseXml.getAttributeIntValue(null, "minuteLayerIndex", -1),
                                     parseXml.getAttributeIntValue(null, "secondLayerIndex", -1),

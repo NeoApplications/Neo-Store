@@ -25,15 +25,19 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.icons.IconCache;
+import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.uioverrides.ApiWrapper;
 import com.android.launcher3.util.ContentWriter;
 import com.saggitt.omega.iconpack.CustomIconEntry;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -220,6 +224,15 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         return new WorkspaceItemInfo(this);
     }
 
+    private void updateDatabase(Context context, boolean updateIcon, boolean reload) {
+        if (updateIcon)
+            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
+                    , customIconEntry, customIcon, true, reload);
+        else
+            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
+                    , null, null, false, reload);
+    }
+
     public void onLoadCustomizations(
             String titleAlias, String swipeUpAction, CustomIconEntry customIcon, Bitmap icon
     ) {
@@ -227,5 +240,20 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
         customIconEntry = customIcon;
         this.customIcon = icon;
         this.swipeUpAction = swipeUpAction;
+    }
+
+    public void setIconEntry(@NotNull Context context, @Nullable CustomIconEntry iconEntry) {
+        customIconEntry = iconEntry;
+        updateDatabase(context, true, false);
+    }
+
+    public void setIcon(@NotNull Context context, @Nullable Bitmap icon) {
+        customIcon = icon;
+        updateDatabase(context, true, true);
+    }
+
+    public void setSwipeUpAction(@NotNull Context context, @Nullable String action) {
+        swipeUpAction = action;
+        updateDatabase(context, false, true);
     }
 }
