@@ -112,7 +112,7 @@
     <string name="signature_FORMAT">Podpis %s</string>
     <string name="signed_using_unsafe_algorithm">Podepsáno pomocí nezabezpečeného algoritmu</string>
     <string name="skip">Přeskočit</string>
-    <string name="socks_proxy">SOCKS proxy</string>
+    <string name="socks_proxy">Proxy SOCKS</string>
     <string name="sorting_order">Pořadí řazení</string>
     <string name="source_code">Zdrojový kód</string>
     <string name="sync_repositories_automatically">Automaticky synchronizovat repozitáře</string>
@@ -192,4 +192,6 @@
     <string name="ignore_battery_optimization_not_supported">Toto zařízení nepodporuje ignorování optimalizace baterie!</string>
     <string name="dialog_refuse">Nepotřebuju to</string>
     <string name="dialog_approve">Jdeme na to!</string>
+    <string name="root_session_installer">Použít root instalátor relace</string>
+    <string name="root_session_installer_description">Instalátor relace je trochu méně výkonný než původní, ale zabrání problémům s nainstalovanými aplikacemi v systému Android +13.</string>
 </resources>
