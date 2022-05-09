@@ -31,9 +31,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,8 +46,6 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.theme.OmegaAppTheme
-import com.saggitt.omega.theme.OmegaTheme
-import com.saggitt.omega.util.Config
 
 class EditIconActivity : AppCompatActivity() {
 
@@ -64,10 +62,9 @@ class EditIconActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val themeColor = Config.getCurrentTheme(this)
         val app = intent.getStringExtra(EXTRA_TITLE)
         setContent {
-            OmegaAppTheme(themeColor) {
+            OmegaAppTheme() {
                 EditIconScreen(app!!, component!!, packs, isFolder)
             }
         }
@@ -135,7 +132,7 @@ fun EditIconScreen(
 
             //Vertical Divider
             Divider(
-                color = OmegaTheme.colors.border,
+                color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = 16.dp, end = 16.dp)
@@ -179,7 +176,7 @@ fun EditIconScreen(
 
         //Divider
         Divider(
-            color = OmegaTheme.colors.border,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
@@ -192,7 +189,7 @@ fun EditIconScreen(
                 title = {
                     Text(
                         text = it.name,
-                        color = OmegaTheme.colors.textPrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 16.sp
                     )
                 },
@@ -210,7 +207,7 @@ fun EditIconScreen(
                             .clip(CircleShape)
                             .size(44.dp)
                             .background(
-                                MaterialTheme.colors.onBackground.copy(alpha = 0.12F)
+                                MaterialTheme.colorScheme.background.copy(alpha = 0.12F)
                             )
                     )
                 },
@@ -222,7 +219,7 @@ fun EditIconScreen(
 
         //Divider
         Divider(
-            color = OmegaTheme.colors.border,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
