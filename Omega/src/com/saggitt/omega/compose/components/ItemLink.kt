@@ -24,16 +24,16 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun ItemLink(
@@ -49,6 +49,7 @@ fun ItemLink(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .height(72.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable {
                 val webpage = Uri.parse(url)
                 val intent = Intent(Intent.ACTION_VIEW, webpage)
@@ -65,8 +66,8 @@ fun ItemLink(
         Spacer(modifier = Modifier.requiredHeight(4.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.body2,
-            color = OmegaTheme.colors.textPrimary,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )

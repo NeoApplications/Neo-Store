@@ -26,19 +26,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun LicenseScreen(isDark: Boolean) {
@@ -108,20 +105,17 @@ fun TranslatorsScreen() {
                 Column(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
-                        .clip(shape = MaterialTheme.shapes.large)
                 ) {
                     Text(
                         text = translators[i + 1],
-                        style = MaterialTheme.typography.subtitle1,
-                        fontSize = 16.sp,
-                        color = OmegaTheme.colors.textPrimary,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
 
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
-                        style = MaterialTheme.typography.body2,
-                        fontSize = 12.sp,
-                        color = OmegaTheme.colors.textSecondary
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                 }
@@ -129,14 +123,12 @@ fun TranslatorsScreen() {
                 Column(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
-                        .clip(shape = MaterialTheme.shapes.large)
                 ) {
 
                     Text(
                         text = translators[i] + " <" + translators[i + 2] + ">",
-                        style = MaterialTheme.typography.body2,
-                        fontSize = 12.sp,
-                        color = OmegaTheme.colors.textSecondary
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

@@ -34,11 +34,10 @@ import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFoldersAdapter
 import com.saggitt.omega.groups.DrawerTabsAdapter
 import com.saggitt.omega.groups.FlowerpotTabsAdapter
-import com.saggitt.omega.groups.ui.AppCategorizationItem
+import com.saggitt.omega.groups.ui.AppCategorizationOptions
 import com.saggitt.omega.groups.ui.AppGroupsAdapter
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.theme.OmegaAppTheme
-import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.applyColor
 
 class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChangeListener {
@@ -66,18 +65,17 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
     private val drawerFoldersAdapter by lazy { DrawerFoldersAdapter(mContext) }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentAppCategorizationBinding.inflate(inflater, container, false)
 
-        val themeColor = Config.getCurrentTheme(requireContext())
         binding.categorizationType.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                OmegaAppTheme(themeColor) {
-                    AppCategorizationItem()
+                OmegaAppTheme {
+                    AppCategorizationOptions()
                 }
             }
         }

@@ -18,123 +18,72 @@
 
 package com.saggitt.omega.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.omegaPrefs
 
 // TODO create working themes parallel to the xml ones
+// TODO migrate the color palettes to Material3
 @Composable
 fun OmegaAppTheme(
-    themeColor: Int = Config.THEME_LIGHT,
     content: @Composable () -> Unit
 ) {
-    val colors = when (themeColor) {
-        Config.THEME_BLACK -> {
-            blackColorPalette
-        }
-        Config.THEME_DARK -> {
-            darkColorPalette
-        }
-        else -> {
-            lightColorPalette
-        }
-    }
-    ProvideOmegaColors(colors) {
-        MaterialTheme(
-            content = content
-        )
-    }
-}
-
-object OmegaTheme {
-    val colors: OmegaColors
-        @Composable
-        get() = localOmegaColors.current
-}
-
-private val darkColorPalette = OmegaColors(
-    surface = Grey900,
-    border = Grey700,
-    primary = IndigoA100,
-    textPrimary = Grey100,
-    textSecondary = Grey200,
-    dividerLine = Grey600
-)
-
-private val lightColorPalette = OmegaColors(
-    surface = Grey50,
-    border = Grey100,
-    primary = IndigoA700,
-    textPrimary = Grey700,
-    textSecondary = Grey600,
-    dividerLine = Grey300
-)
-
-private val blackColorPalette = OmegaColors(
-    surface = Black,
-    border = Grey900,
-    primary = IndigoA100,
-    textPrimary = Grey100,
-    textSecondary = Grey200,
-    dividerLine = Grey600
-)
-
-@Stable
-class OmegaColors(
-    surface: Color,
-    border: Color,
-    primary: Color,
-    textPrimary: Color,
-    textSecondary: Color,
-    dividerLine: Color
-) {
-    var surface by mutableStateOf(surface)
-        private set
-    var border by mutableStateOf(border)
-        private set
-    var primary by mutableStateOf(primary)
-        private set
-    var textPrimary by mutableStateOf(textPrimary)
-        private set
-    var textSecondary by mutableStateOf(textSecondary)
-        private set
-    var dividerLine by mutableStateOf(dividerLine)
-        private set
-
-    fun update(other: OmegaColors) {
-        surface = other.surface
-        border = other.border
-        primary = other.primary
-        textPrimary = other.textPrimary
-        textSecondary = other.textSecondary
-        dividerLine = other.dividerLine
-    }
-
-    fun copy(): OmegaColors = OmegaColors(
-            surface = surface,
-            border = border,
-            primary = primary,
-            textPrimary = textPrimary,
-            textSecondary = textSecondary,
-            dividerLine = dividerLine
+    MaterialTheme(
+        colorScheme = when (Config.getCurrentTheme(LocalContext.current)) {
+            Config.THEME_BLACK -> {
+                OmegaBlackColors
+            }
+            Config.THEME_DARK -> {
+                OmegaDarkColors
+            }
+            else -> {
+                OmegaLightColors
+            }
+        }.copy(
+            primary = Color(LocalContext.current.omegaPrefs.accentColor),
+            surfaceTint = Color(LocalContext.current.omegaPrefs.accentColor)
+        ),
+        content = content
     )
 }
 
-@Composable
-fun ProvideOmegaColors(
-    colors: OmegaColors,
-    content: @Composable () -> Unit
-) {
-    val colorPalette = remember {
-        // Explicitly creating a new object here so we don't mutate the initial [colors]
-        // provided, and overwrite the values set in it.
-        colors.copy()
-    }
-    colorPalette.update(colors)
-    CompositionLocalProvider(localOmegaColors provides colorPalette, content = content)
-}
+private val OmegaLightColors = lightColorScheme(
+    background = LightBackground,
+    onBackground = LightOnBackground,
+    surface = LightSurface,
+    onSurface = LightOnSurface,
+    primary = LightPrimary,
+    onPrimary = LightOnPrimary,
+    surfaceVariant = LightSurfaceVariant,
+    onSurfaceVariant = LightOnSurfaceVariant,
+    outline = LightOutline
+)
 
-private val localOmegaColors = staticCompositionLocalOf<OmegaColors> {
-    error("No Custom Colors provided")
-}
+private val OmegaDarkColors = darkColorScheme(
+    background = DarkBackground,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
+    primary = DarkPrimary,
+    onPrimary = DarkOnPrimary,
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = DarkOnSurfaceVariant,
+    outline = DarkOutline
+)
+
+private val OmegaBlackColors = darkColorScheme(
+    background = BlackBackground,
+    onBackground = BlackOnBackground,
+    surface = BlackSurface,
+    onSurface = BlackOnSurface,
+    primary = BlackPrimary,
+    onPrimary = BlackOnPrimary,
+    surfaceVariant = BlackSurfaceVariant,
+    onSurfaceVariant = BlackOnSurfaceVariant,
+    outline = BlackOutline
+)

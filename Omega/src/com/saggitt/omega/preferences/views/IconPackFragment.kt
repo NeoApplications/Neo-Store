@@ -33,10 +33,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,8 +59,6 @@ import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.theme.OmegaAppTheme
-import com.saggitt.omega.theme.OmegaTheme
-import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.recreate
 
 class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -71,9 +70,8 @@ class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
         binding = FragmentIconPackBinding.inflate(inflater, container, false)
         binding.installedPacks.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            val themeColor = Config.getCurrentTheme(requireContext())
             setContent {
-                OmegaAppTheme(themeColor) {
+                OmegaAppTheme {
                     IconPackList()
                 }
             }
@@ -106,6 +104,7 @@ class IconPackFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun IconPackList() {
@@ -114,8 +113,8 @@ fun IconPackList() {
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
 
     val colors = RadioButtonDefaults.colors(
-            selectedColor = Color(prefs.accentColor),
-            unselectedColor = Color.Gray
+        selectedColor = MaterialTheme.colorScheme.primary,
+        unselectedColor = Color.Gray
     )
 
     val (selectedOption, onOptionSelected) = remember {
@@ -126,67 +125,74 @@ fun IconPackList() {
         LazyColumn {
             itemsIndexed(packs) { _, item ->
                 ListItemWithIcon(
-                        title = { Text(text = item.name, color = OmegaTheme.colors.textPrimary) },
-                        modifier = Modifier.clickable {
-                            prefs.iconPackPackage = item.packageName
-                            onOptionSelected(item.packageName)
-                        },
-                        description = {
-                            if (prefs.showDebugInfo)
-                                Text(text = item.packageName, color = OmegaTheme.colors.textSecondary)
-                        },
-                        startIcon = {
-                            Image(
-                                    painter = rememberDrawablePainter(drawable = item.icon),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .clip(CircleShape)
-                                        .size(36.dp)
-                                        .background(
-                                            MaterialTheme.colors.onBackground.copy(alpha = 0.12F)
-                                        )
+                    title = { Text(text = item.name, color = MaterialTheme.colorScheme.onPrimary) },
+                    modifier = Modifier.clickable {
+                        prefs.iconPackPackage = item.packageName
+                        onOptionSelected(item.packageName)
+                    },
+                    description = {
+                        if (prefs.showDebugInfo)
+                            Text(
+                                text = item.packageName,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                        },
-                        endCheckbox = {
-                            RadioButton(
-                                    selected = (item.packageName == selectedOption),
-                                    onClick = {
-                                        prefs.iconPackPackage = item.packageName
-                                        onOptionSelected(item.packageName)
-                                    },
-                                    colors = colors
-                            )
-                        },
-                        verticalPadding = 8.dp
+                    },
+                    startIcon = {
+                        Image(
+                            painter = rememberDrawablePainter(drawable = item.icon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(36.dp)
+                                .background(
+                                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F)
+                                )
+                        )
+                    },
+                    endCheckbox = {
+                        RadioButton(
+                            selected = (item.packageName == selectedOption),
+                            onClick = {
+                                prefs.iconPackPackage = item.packageName
+                                onOptionSelected(item.packageName)
+                            },
+                            colors = colors
+                        )
+                    },
+                    verticalPadding = 8.dp
                 )
             }
         }
 
         PreferenceItem(
-                title = {
-                    Text(text = stringResource(id = R.string.get_more_icon_packs), color = OmegaTheme.colors.textPrimary)
-                },
-                modifier = Modifier
-                        .clickable {
-                            val intent = Intent.parseUri(context.getString(R.string.market_search_intent), 0)
-                            intent.data = intent.data!!.buildUpon()
-                                    .appendQueryParameter("q", context.getString(R.string.icon_pack)).build()
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            title = {
+                Text(
+                    text = stringResource(id = R.string.get_more_icon_packs),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            },
+            modifier = Modifier
+                .clickable {
+                    val intent =
+                        Intent.parseUri(context.getString(R.string.market_search_intent), 0)
+                    intent.data = intent.data!!.buildUpon()
+                        .appendQueryParameter("q", context.getString(R.string.icon_pack)).build()
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-                            if (intent.resolveActivity(context.packageManager) != null)
-                                context.startActivity(intent)
-                            else Toast.makeText(context, R.string.no_store_found, Toast.LENGTH_LONG)
-                                    .show()
-                        },
-                startWidget = {
-                    Image(
-                            painter = painterResource(id = R.drawable.ic_add),
-                            contentDescription = "",
-                            modifier = Modifier
-                                    .size(44.dp)
-                    )
+                    if (intent.resolveActivity(context.packageManager) != null)
+                        context.startActivity(intent)
+                    else Toast.makeText(context, R.string.no_store_found, Toast.LENGTH_LONG)
+                        .show()
                 },
-                showDivider = true
+            startWidget = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(44.dp)
+                )
+            },
+            showDivider = true
         )
     }
 }

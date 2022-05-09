@@ -47,7 +47,7 @@ class AboutFragment : Fragment() {
 
         return inflater.inflate(R.layout.base_compose_fragment, container, false).apply {
             findViewById<ComposeView>(R.id.base_compose_view).setContent {
-                OmegaAppTheme(themeColor) {
+                OmegaAppTheme {
                     AboutNavController(requireActivity(), themeColor)
                 }
             }

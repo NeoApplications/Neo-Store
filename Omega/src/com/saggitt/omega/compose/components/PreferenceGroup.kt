@@ -21,14 +21,16 @@ package com.saggitt.omega.compose.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.saggitt.omega.theme.OmegaTheme
 
 @Composable
 fun PreferenceGroup(
@@ -38,14 +40,13 @@ fun PreferenceGroup(
     PreferenceGroupHeading(heading)
     val columnModifier = Modifier
     CompositionLocalProvider(
-        LocalContentAlpha provides ContentAlpha.medium,
-        LocalContentColor provides OmegaTheme.colors.primary
+        LocalContentColor provides MaterialTheme.colorScheme.primary
     ) {
 
         Surface(
             shape = RoundedCornerShape(16.dp),
-            border = BorderStroke(1.dp, OmegaTheme.colors.border),
-            color = OmegaTheme.colors.surface
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = columnModifier) {
                 content()
@@ -70,15 +71,14 @@ fun PreferenceGroupHeading(
                 .fillMaxWidth()
         ) {
             CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.medium,
-                LocalContentColor provides MaterialTheme.colors.onBackground
+                LocalContentColor provides MaterialTheme.colorScheme.onBackground
             ) {
                 Text(
                     text = heading,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = OmegaTheme.colors.textPrimary
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }

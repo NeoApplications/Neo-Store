@@ -26,15 +26,15 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,13 +44,11 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.ContributorRow
 import com.saggitt.omega.compose.components.ItemLink
 import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.PreferenceItem
 import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.theme.OmegaTheme
 import com.saggitt.omega.theme.kaushanScript
 
 @ExperimentalCoilApi
@@ -101,7 +99,7 @@ fun AboutMainScreen(navController: NavController) {
                 fontFamily = kaushanScript,
                 fontWeight = FontWeight.Normal,
                 fontSize = 30.sp,
-                color = Color(Utilities.getOmegaPrefs(context).accentColor)
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
@@ -109,13 +107,13 @@ fun AboutMainScreen(navController: NavController) {
                         + BuildConfig.VERSION_NAME + " ( Build " + BuildConfig.VERSION_CODE + " )",
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
-                color = OmegaTheme.colors.textPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = stringResource(id = R.string.app_id) + ": " + BuildConfig.APPLICATION_ID,
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
-                color = OmegaTheme.colors.textPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -162,7 +160,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.about_translators),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier
@@ -173,28 +171,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_language,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_language),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
         }
@@ -206,7 +190,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.category__about_licenses),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier
@@ -217,28 +201,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_copyright,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_copyright),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
 
@@ -246,7 +216,7 @@ fun AboutMainScreen(navController: NavController) {
                 title = {
                     Text(
                         text = stringResource(id = R.string.title__about_changelog),
-                        color = OmegaTheme.colors.textPrimary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier
@@ -257,28 +227,14 @@ fun AboutMainScreen(navController: NavController) {
 
                     },
                 startWidget = {
-                    ResourcesCompat.getDrawable(
-                        LocalContext.current.resources,
-                        R.drawable.ic_list,
-                        LocalContext.current.theme
-                    )?.let { drawable ->
-                        val bitmap = Bitmap.createBitmap(
-                            drawable.intrinsicWidth,
-                            drawable.intrinsicHeight,
-                            Bitmap.Config.ARGB_8888
-                        )
-                        val canvas = Canvas(bitmap)
-                        drawable.setBounds(0, 0, canvas.width, canvas.height)
-                        drawable.draw(canvas)
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(32.dp)
-                                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.12F))
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_list),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
+                    )
                 }
             )
         }
