@@ -56,7 +56,7 @@ android {
     compileSdk 32
 
     def name = "0.9.0"
-    def code = 320
+    def code = 321
 
     defaultConfig {
         minSdkVersion 26
@@ -193,7 +193,6 @@ android {
 
         omega {
             res.srcDirs = ['Omega/res']
-            aidl.srcDirs = ['Omega/aidl']
             java.srcDirs = ['Omega/src', 'Omega/src_ui_overrides']
             manifest.srcFile "Omega/AndroidManifest.xml"
         }
