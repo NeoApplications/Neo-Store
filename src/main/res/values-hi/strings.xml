@@ -97,4 +97,31 @@
         <item quantity="one">%d ऐप का नया संस्करण है।</item>
         <item quantity="other">%d ऐप्स के नए संस्करण है।</item>
     </plurals>
+    <string name="repository_not_used_DESC">इस भंडार का अभी तक उपयोग नहीं किया गया है। इसमें मौजूद ऐप्स देखने के लिए इसे ऑन करें।</string>
+    <string name="open_DESC_FORMAT">खुला %s\?</string>
+    <string name="other">अन्य</string>
+    <string name="parsing_index_error_DESC">अनुक्रमणिका फ़ाइल को पार्स नहीं कर सका।</string>
+    <string name="password">पासवर्ड</string>
+    <string name="password_missing">पासवर्ड गायब</string>
+    <string name="permissions">अनुमतियां</string>
+    <string name="plus_more_FORMAT">+%d अधिक</string>
+    <string name="settings">सेटिंग</string>
+    <string name="processing_FORMAT">%1$s संसाधित किया जा रहा है…</string>
+    <string name="project_website">परियोजना वेबसाइट</string>
+    <string name="promotes_non_free_network_services">गैर-मुक्त नेटवर्क सेवाओं को बढ़ावा देता है</string>
+    <string name="provided_by_FORMAT">%s . द्वारा प्रदान किया गया</string>
+    <string name="proxy">प्रतिनिधि</string>
+    <string name="proxy_type">प्रॉक्सी प्रकार</string>
+    <string name="repositories">डेटा संग्रह स्थान</string>
+    <string name="repository">कोष</string>
+    <string name="root_permission">साइलेंट इंस्टाल</string>
+    <string name="save">सुरक्षित रखना</string>
+    <string name="saving_details">विवरण सहेजा जा रहा है…</string>
+    <string name="promotes_non_free_software">गैर-मुक्त सॉफ़्टवेयर को बढ़ावा देता है</string>
+    <string name="proxy_port">प्रॉक्सी पोर्ट</string>
+    <string name="recently_updated">हाल ही में अद्यतित</string>
+    <string name="repository_unsigned_DESC">अहस्ताक्षरित। ऐप्लिकेशन सूची सत्यापित नहीं की जा सकी. अहस्ताक्षरित रिपॉजिटरी से ऐप्स डाउनलोड करने में सावधानी बरतें।</string>
+    <string name="root_permission_description">बिना इंटरेक्शन के इंस्टॉल के लिए रूट का उपयोग करें</string>
+    <string name="proxy_host">छद्म मेजबान</string>
+    <string name="requires_FORMAT">%s . की आवश्यकता है</string>
 </resources>
