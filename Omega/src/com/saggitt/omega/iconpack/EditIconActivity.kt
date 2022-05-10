@@ -22,12 +22,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,8 +61,8 @@ class EditIconActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val app = intent.getStringExtra(EXTRA_TITLE)
         setContent {
-            OmegaAppTheme() {
-                EditIconScreen(app!!, component!!, packs, isFolder)
+            OmegaAppTheme {
+                EditIconScreen(app, component, packs, isFolder)
             }
         }
 
@@ -96,18 +93,16 @@ class EditIconActivity : AppCompatActivity() {
     }
 }
 
-
 @Composable
 fun EditIconScreen(
-    appName: String,
-    component: ComponentKey,
+    title: String?,
+    component: ComponentKey?,
     iconPacks: List<IconPackInfo>,
     isFolder: Boolean
 ) {
-
     Column {
         Text(
-            text = appName,
+            text = title ?: "",
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
@@ -115,12 +110,15 @@ fun EditIconScreen(
             textAlign = TextAlign.Center
         )
 
+        val scrollState = rememberScrollState()
+
         Row(
             modifier = Modifier
                 .padding(24.dp)
                 .fillMaxWidth()
                 .height(60.dp)
                 .clip(RoundedCornerShape(8f))
+                .horizontalScroll(scrollState)
 
         ) {
             //Original Icon
@@ -142,30 +140,30 @@ fun EditIconScreen(
             //Package Icons
             val iconDpi = LocalContext.current.resources.configuration.densityDpi
             val ip = IconPackProvider.INSTANCE.get(LocalContext.current)
-            if (isFolder) {
-            } else {
-                iconPacks.forEach {
-                    Log.d("EditIconActivity", "Name " + it.name + " Package " + it.packageName)
-                    //val pack:IconPack? = ip.getIconPack(Utilities.getOmegaPrefs(LocalContext.current).iconPackPackage)
-
-                    if (it.packageName == "") {
-                        return@forEach
-                    }
-                    val pack: IconPack? = ip.getIconPack(it.packageName)
-
-                    if (pack != null) {
+            iconPacks.forEach {
+                if (it.packageName == "") {
+                    Image(
+                        painter = rememberDrawablePainter(drawable = OmegaLauncher.currentEditIcon),
+                        contentDescription = null,
+                        modifier = Modifier.requiredSize(60.dp)
+                    )
+                    return@forEach
+                }
+                val pack: IconPack? = ip.getIconPack(it.packageName)
+                if (pack != null) {
+                    val iconEntry = pack.getIcon(component!!.componentName)
+                    if (iconEntry != null) {
                         val mIcon: Drawable? = ip.getDrawable(
-                            pack?.getIcon(component.componentName)!!,
+                            iconEntry,
                             iconDpi,
                             component.user
                         )
-
                         if (mIcon != null) {
                             Image(
                                 painter = rememberDrawablePainter(drawable = mIcon),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .requiredSize(56.dp)
+                                    .requiredSize(60.dp)
                                     .padding(start = 8.dp, end = 8.dp)
                             )
                         }
@@ -189,7 +187,7 @@ fun EditIconScreen(
                 title = {
                     Text(
                         text = it.name,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontSize = 16.sp
                     )
                 },
@@ -215,7 +213,6 @@ fun EditIconScreen(
                 verticalPadding = 8.dp
             )
         }
-
 
         //Divider
         Divider(
