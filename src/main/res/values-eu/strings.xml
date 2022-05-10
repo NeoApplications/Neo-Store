@@ -33,4 +33,5 @@
     <string name="bug_tracker">Akatsen jarraipena</string>
     <string name="available">Eskuragarri</string>
     <string name="changes">Aldaketak</string>
+    <string name="contains_non_free_media">Baliabide ez-libreak ditu</string>
 </resources>
