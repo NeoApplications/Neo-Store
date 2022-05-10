@@ -193,4 +193,6 @@
     <string name="dialog_refuse">Це не потрібно</string>
     <string name="ignore_battery_optimization_not_supported">Цей пристрій не підтримує ігнорування економії заряду батареї!</string>
     <string name="ignore_battery_optimization_message">Починаючи з Android 12, з\'явилися обмеження для запущених у фоні сервісів, що провокує вильоти додатку під час завантажень. Щоб запобігти цьому, вимкніть економію заряду батареї</string>
+    <string name="root_session_installer">Використати root session установник</string>
+    <string name="root_session_installer_description">Session установник трохи менш продуктивний, ніж застарілий, але дозволяє уникнути проблем із встановленими програмами в Android +13.</string>
 </resources>
