@@ -191,4 +191,5 @@
     <string name="ignore_battery_optimization_title">Akku-Optimierung ignorieren</string>
     <string name="ignore_battery_optimization_message">Ab Android 12 gibt es Einschränkungen bei der Ausführung von Diensten im Vordergrund, die dazu führen, dass die Anwendung beim Herunterladen abstürzt. Um dies zu verhindern, sollten Sie die Batterieoptimierung deaktivieren</string>
     <string name="dialog_approve">Los!</string>
+    <string name="root_session_installer">benutz root-session Installateur</string>
 </resources>
