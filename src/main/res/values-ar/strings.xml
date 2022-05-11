@@ -195,4 +195,6 @@
     <string name="dialog_approve">لنفعلها!</string>
     <string name="ignore_battery_optimization_not_supported">لا يدعم الجهاز تجاهل تحسينات البطارية!</string>
     <string name="dialog_refuse">لا أحتاجها</string>
+    <string name="root_session_installer">استخدام مثبت جلسة الجذر</string>
+    <string name="root_session_installer_description">يعد مثبِّت الجلسة أقل أداءً قليلاً من المثبت القديم ، ولكنه يتجنب المشكلات المتعلقة بالتطبيقات المثبتة في Android +13.</string>
 </resources>
