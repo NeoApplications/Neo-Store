@@ -5,10 +5,10 @@ import java.util.*
 val composeVersion = "1.2.0-alpha08"
 
 plugins {
-    kotlin("android").version("1.6.20")
-    kotlin("kapt").version("1.6.20")
-    kotlin("plugin.serialization").version("1.6.20")
     id("com.android.application").version("7.2.0")
+    kotlin("android").version("1.6.21")
+    kotlin("kapt").version("1.6.21")
+    kotlin("plugin.serialization").version("1.6.21")
 }
 
 apply(plugin = "com.android.application")
@@ -154,7 +154,7 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.5.0-beta01")
