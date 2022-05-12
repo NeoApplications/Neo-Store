@@ -27,10 +27,10 @@
     <string name="could_not_download_FORMAT">Não foi possível baixar %s</string>
     <string name="could_not_sync_FORMAT">Não foi possível sincronizar %s</string>
     <string name="could_not_validate_FORMAT">Não foi possível validar %s</string>
-    <string name="credits">Créditos</string>
+    <string name="credits">Contribuintes</string>
     <string name="dark">Escuro</string>
     <string name="delete">Excluir</string>
-    <string name="delete_repository_DESC">Eliminar o repositório\?</string>
+    <string name="delete_repository_DESC">Eliminar este repositório\?</string>
     <string name="description">Descrição</string>
     <string name="details">Detalhes</string>
     <string name="donate">Doar</string>
@@ -55,8 +55,8 @@
     Desinstale a primeiro.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Sua %1$s plataforma não é suportada.
     Plataformas suportadas: %2$s.</string>
-    <string name="incompatible_signature_DESC">Esta versão é assinada com um certificado diferente do que está
-    instalado no seu dispositivo. Desinstale-a primeiro.</string>
+    <string name="incompatible_signature_DESC">Esta versão é assinada com um certificado diferente daquele instalado no seu dispositivo.
+\nDesinstale-a primeiro.</string>
     <string name="incompatible_version">Versão incompatível</string>
     <string name="incompatible_versions">Versões incompatíveis</string>
     <string name="incompatible_versions_summary">Mostrar versões incompatíveis com o dispositivo</string>
@@ -79,7 +79,7 @@
     <string name="links">Links</string>
     <string name="list_animation">Animação da lista</string>
     <string name="list_animation_description">Animar lista na página principal</string>
-    <string name="merging_FORMAT">Incorporando %s</string>
+    <string name="merging_FORMAT">Mesclando %s…</string>
     <string name="name">Nome</string>
     <string name="network_error_DESC">Erro da rede.</string>
     <string name="never">Nunca</string>
@@ -113,16 +113,18 @@
     <string name="promotes_non_free_software">Promove software não livre</string>
     <string name="provided_by_FORMAT">Disponibilizado por %s</string>
     <string name="proxy">Proxy</string>
-    <string name="proxy_host">Servidor de Proxy</string>
-    <string name="proxy_port">Porta de Proxy</string>
-    <string name="proxy_type">Tipo de Proxy</string>
+    <string name="proxy_host">Host</string>
+    <string name="proxy_port">Porta</string>
+    <string name="proxy_type">Tipo</string>
     <string name="recently_updated">Atualização recente</string>
     <string name="repositories">Repositórios</string>
     <string name="repository">Repositório</string>
-    <string name="repository_not_used_DESC">Este repositório ainda não foi usado. Ative-o para visualizar os aplicativos nele.</string>
-    <string name="repository_unsigned_DESC">Sem assinatura. Não foi possível verificar a lista de aplicativos. Tenha cuidado ao baixar aplicativos de repositórios não assinados.</string>
+    <string name="repository_not_used_DESC">Este repositório ainda não foi usado.
+\nConecte-se a ele para ver os aplicativos nele.</string>
+    <string name="repository_unsigned_DESC">Não foi possível verificar a lista de aplicativos não assinados.
+\nTenha cuidado ao baixar aplicativos de repositórios não assinados.</string>
     <string name="requires_FORMAT">Requer %s</string>
-    <string name="root_permission">Instalação Silenciosa</string>
+    <string name="root_permission">Instalação silenciosa</string>
     <string name="root_permission_description">Usar root para instalações sem interação</string>
     <string name="save">Salvar</string>
     <string name="saving_details">Salvando detalhes…</string>
@@ -161,39 +163,39 @@
     <string name="unverified">Não verificado</string>
     <string name="update">Atualizar</string>
     <string name="updates">Atualizações</string>
-    <string name="upstream_source_code_is_not_free">O código-fonte upstream não é gratuito</string>
+    <string name="upstream_source_code_is_not_free">O código-fonte upstream não é livre</string>
     <string name="username">Nome de usuário</string>
     <string name="username_missing">Falta o nome de usuário</string>
     <string name="validation_index_error_DESC">Não foi possível validar o índice.</string>
     <string name="version">Versão</string>
     <string name="version_FORMAT">Versão %s</string>
     <string name="versions">Versões</string>
-    <string name="waiting_to_start_download">Iniciando download…</string>
+    <string name="waiting_to_start_download">Baixando…</string>
     <string name="whats_new">O que há de novo</string>
     <string name="website">Página web</string>
     <string name="prefs_language_title">Idioma</string>
     <string name="prefs_personalization">Personalização</string>
-    <string name="show_less">Mostrar Menos</string>
-    <string name="update_all">Atualizar tudo</string>
-    <string name="sort_filter">Ordenar e Filtrar</string>
+    <string name="show_less">Mostrar menos</string>
+    <string name="update_all">Instalar tudo</string>
+    <string name="sort_filter">Ordenar e filtrar</string>
     <string name="new_applications">Novos aplicativos</string>
     <string name="latest">Mais recente</string>
     <string name="explore">Explorar</string>
-    <string name="installed_applications">Aplicativos instalados</string>
-    <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e Plugado</string>
-    <string name="install_after_sync">Instalar atualizações automaticamente</string>
-    <string name="install_after_sync_summary">Instalar automaticamente as atualizações dos aplicativos após sincronizar os repositórios</string>
-    <string name="prefs_updated_apps">Número de aplicativos atualizados para mostrar</string>
-    <string name="prefs_new_apps">Número de novos aplicativos para mostrar</string>
+    <string name="installed_applications">Instalado</string>
+    <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
+    <string name="install_after_sync">Atualização automática</string>
+    <string name="install_after_sync_summary">Instale todas as novas versões depois de procurar nos repositórios por novos aplicativos</string>
+    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"atualizados recentemente\"</string>
+    <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
     <string name="pending">Pendente</string>
     <string name="installing">Instalando</string>
-    <string name="ignore_battery_optimization_message">A partir do Android 12, há restrições na execução de serviços em primeiro plano, fazendo com que o aplicativo falhe nos downloads. Para evitar isso, você deve desativar a otimização da bateria</string>
-    <string name="ignore_battery_optimization_title">Ignorar Otimização de Bateria</string>
-    <string name="ignore_battery_optimization_not_supported">O dispositivo não suporta ignorar otimizações de bateria!</string>
-    <string name="dialog_refuse">Não precisa disso</string>
-    <string name="dialog_approve">Vamos fazê-lo!</string>
+    <string name="ignore_battery_optimization_message">O aplicativo se comporta melhor sem otimização de bateria e evita travamentos no Android 12+</string>
+    <string name="ignore_battery_optimization_title">Otimização de Bateria</string>
+    <string name="ignore_battery_optimization_not_supported">Sua instalação do Android não suporta a desativação da otimização da bateria.</string>
+    <string name="dialog_refuse">Manter</string>
+    <string name="dialog_approve">Desligar</string>
     <string name="root_session_installer_description">O instalador de sessão é um pouco menos eficiente que o antigo, mas evita problemas com aplicativos instalados no Android +13.</string>
     <string name="root_session_installer">Usar o instalador de sessão root</string>
 </resources>
