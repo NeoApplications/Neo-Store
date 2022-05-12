@@ -5,10 +5,10 @@ import java.util.*
 val composeVersion = "1.2.0-alpha08"
 
 plugins {
-    id("com.android.application").version("7.1.3")
     kotlin("android").version("1.6.20")
     kotlin("kapt").version("1.6.20")
     kotlin("plugin.serialization").version("1.6.20")
+    id("com.android.application").version("7.2.0")
 }
 
 apply(plugin = "com.android.application")
