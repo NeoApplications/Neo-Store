@@ -19,7 +19,7 @@
     <string name="open_DESC_FORMAT">باز کردن %s؟</string>
     <string name="prefs_personalization">شخصی‌سازی</string>
     <string name="no_matching_applications_found">چنین برنامه‌ای پیدا نشد</string>
-    <string name="author_email">رایانامهٔ نویسنده</string>
+    <string name="author_email">ایمیل نویسنده</string>
     <string name="syncing_FORMAT">هماهنگ‌سازی %s…</string>
     <string name="saving_details">ذخیرهٔ جزئیات…</string>
     <string name="repository_unsigned_DESC">امضا نشده. نمی‌توان امنیت برنامه‌ها را صحت‌سنجی کرد. مراقب نصب برنامه از مخازن امضانشده باشید.</string>
@@ -34,12 +34,12 @@
     <string name="number_of_applications">تعداد برنامه‌ها</string>
     <string name="notify_about_updates_summary">نمایش یک اعلان وقتی نسخه‌هایی جدید موجود است</string>
     <string name="all_applications">همهٔ برنامه‌ها</string>
-    <string name="action_failed">عمل ناموفق بود</string>
-    <string name="already_exists">در حال حاضر موجود است</string>
-    <string name="anti_features">پادویژگی‌ها</string>
+    <string name="action_failed">عملیات ناموفق بود</string>
+    <string name="already_exists">از قبل وجود داشته است</string>
+    <string name="anti_features">پاد ویژگی‌ها</string>
     <string name="application_not_found">برنامه پیدا نشد</string>
-    <string name="author_website">تارنمای نویسنده</string>
-    <string name="available">موجود</string>
+    <string name="author_website">سایت نویسنده</string>
+    <string name="available">موجود است</string>
     <string name="bug_tracker">باگ‌ترکر</string>
     <string name="cant_edit_sync_DESC">نمی‌توان مخزنی که در حال هماهنگ‌سازی است را ویرایش کرد…</string>
     <string name="project_website">تارنمای پروژه</string>
@@ -184,4 +184,13 @@
     <string name="prefs_new_apps">تعداد برنامه‌های جدید برای نمایش</string>
     <string name="default_tab">سربرگ پیشفرض</string>
     <string name="install_after_sync_summary">نصب خودکار بروزرسانی‌ها بعد از هماهنگ شدن مخازن</string>
+    <string name="pending">انتظار، عملیات دیگری در حال انجام است</string>
+    <string name="installing">در حال نصب</string>
+    <string name="ignore_battery_optimization_not_supported">دستگاه شما \"در نظر نگرفتن بهینه سازی باتری\" را پشتیبانی نمی کند!</string>
+    <string name="dialog_refuse">به این نیاز نیست</string>
+    <string name="dialog_approve">انجامش دهیم!</string>
+    <string name="root_session_installer">از نصب کننده ی جلسه ی روت (root session installer) استفاده کنید</string>
+    <string name="root_session_installer_description">‏این جلسه ی نصب کننده (session installer) کمی کند تر از legacy installer است، ولی از مشکلات با برنامه های نصب شده در اندروید ۱۳ و بالاتر جلوگیری می کند.</string>
+    <string name="ignore_battery_optimization_title">نادیده گرفتن بهینه سازی باتری</string>
+    <string name="ignore_battery_optimization_message">از اندروید ۱۲ و بعد، برای سرویس های پیش زمینه محدودیت هایی وجود دارد که باعث مشکلات با دانلود های این برنامه پبش آید. برای جلوگیری از این مشکل، شما باید بهینه سازی باتری را خاموش کنید</string>
 </resources>
