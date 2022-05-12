@@ -411,7 +411,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 if (Preferences[Preferences.Key.InstallAfterSync])
                                     batchUpdate(result)
                                 if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
-                                    updateNotificationBlockerFragment?.get()?.isAdded == true
+                                    updateNotificationBlockerFragment?.get()?.isAdded != true
                                 )
                                     displayUpdatesNotification(result)
                             }
