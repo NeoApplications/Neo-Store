@@ -182,15 +182,8 @@ class InstalledFragment : MainNavFragmentX() {
                                 }
                             }
                             AnimatedVisibility(visible = updatesVisible) {
-                                ProductsHorizontalRecycler(
-                                    secondaryList,
-                                    repositories
-                                ) { item ->
-                                    AppSheetX(item.packageName)
-                                        .showNow(
-                                            parentFragmentManager,
-                                            "Product ${item.packageName}"
-                                        )
+                                ProductsHorizontalRecycler(secondaryList, repositories) { item ->
+                                    mainActivityX.navigateProduct(item.packageName)
                                 }
                             }
                         }
@@ -226,8 +219,7 @@ class InstalledFragment : MainNavFragmentX() {
                             .fillMaxWidth()
                             .weight(1f),
                         onUserClick = { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            mainActivityX.navigateProduct(item.packageName)
                         },
                         onFavouriteClick = {},
                         onInstallClick = {

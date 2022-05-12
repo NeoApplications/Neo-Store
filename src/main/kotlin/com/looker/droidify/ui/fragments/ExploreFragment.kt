@@ -129,8 +129,7 @@ class ExploreFragment : MainNavFragmentX() {
                             .fillMaxWidth()
                             .weight(1f),
                         onUserClick = { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            mainActivityX.navigateProduct(item.packageName)
                         },
                         onFavouriteClick = {},
                         onInstallClick = {

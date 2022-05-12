@@ -125,8 +125,7 @@ class LatestFragment : MainNavFragmentX() {
                         modifier = Modifier.padding(8.dp)
                     )
                     ProductsHorizontalRecycler(secondaryList, repositories) { item ->
-                        AppSheetX(item.packageName)
-                            .showNow(parentFragmentManager, "Product ${item.packageName}")
+                        mainActivityX.navigateProduct(item.packageName)
                     }
                     Row(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -158,8 +157,7 @@ class LatestFragment : MainNavFragmentX() {
                             .fillMaxWidth()
                             .weight(1f),
                         onUserClick = { item ->
-                            AppSheetX(item.packageName)
-                                .showNow(parentFragmentManager, "Product ${item.packageName}")
+                            mainActivityX.navigateProduct(item.packageName)
                         },
                         onFavouriteClick = {},
                         onInstallClick = {
