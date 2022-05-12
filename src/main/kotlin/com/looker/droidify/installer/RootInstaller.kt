@@ -105,7 +105,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                         val found = sessionIdMatcher.find()
 
                         if (found) {
-                            val sessionId = sessionIdMatcher.group(1).toInt()
+                            val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
                             Shell.su(cacheFile.sessionInstallWrite(sessionId))
                                 .submit {
                                     Shell.su(sessionInstallCommit(sessionId)).exec()
