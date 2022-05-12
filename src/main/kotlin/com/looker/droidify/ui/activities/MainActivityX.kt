@@ -22,6 +22,7 @@ import com.looker.droidify.databinding.ActivityMainXBinding
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
+import com.looker.droidify.ui.fragments.AppSheetX
 import com.looker.droidify.ui.fragments.MainNavFragmentX
 import com.looker.droidify.ui.fragments.Source
 import com.looker.droidify.ui.viewmodels.MainActivityViewModelX
@@ -191,7 +192,8 @@ class MainActivityX : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) {
-        // TODO
+        AppSheetX(packageName)
+            .showNow(supportFragmentManager, "Product $packageName")
     }
 
     private fun updateUpdateNotificationBlocker(activeSource: Source) {
