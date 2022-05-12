@@ -29,6 +29,7 @@ android {
     }
 
     addFrameworkJar('framework-12.jar')
+    namespace 'app.lawnchair.compatlib'
 }
 
 dependencies {
