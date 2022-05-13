@@ -6,6 +6,7 @@ import android.content.Intent
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.utility.Utils.toInstalledItem
 import com.looker.droidify.utility.extension.android.Android
+import com.looker.droidify.utility.getLaunchActivities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -29,8 +30,10 @@ class PackageChangedReceiver : BroadcastReceiver() {
                     } catch (e: Exception) {
                         null
                     }
+                    val launcherActivities = context.packageManager.getLaunchActivities(packageName)
                     GlobalScope.launch(Dispatchers.IO) {
-                        if (packageInfo != null) db.installedDao.insertReplace(packageInfo.toInstalledItem())
+                        if (packageInfo != null) db.installedDao
+                            .insertReplace(packageInfo.toInstalledItem(launcherActivities))
                         else db.installedDao.delete(packageName)
                     }
                 }

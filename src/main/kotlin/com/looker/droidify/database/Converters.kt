@@ -23,6 +23,23 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
+    fun toPairStringList(byteArray: ByteArray): List<Pair<String, String>> {
+        val string = String(byteArray)
+        return if (string == "") emptyList()
+        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty).map {
+            val pairs = it.split("|")
+            Pair(pairs[0], pairs[1])
+        }
+    }
+
+    @JvmName("pairStringListToByteArray")
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(list: List<Pair<String, String>>): ByteArray =
+        list.map { it.toList().joinToString("|") }.toString().toByteArray()
+
+    @TypeConverter
+    @JvmStatic
     fun toAuthor(byteArray: ByteArray) = Author.fromJson(String(byteArray))
 
     @TypeConverter

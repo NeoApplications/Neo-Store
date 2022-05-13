@@ -7,7 +7,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -37,9 +39,16 @@ import java.security.cert.CertificateEncodingException
 import java.util.*
 
 object Utils {
-    fun PackageInfo.toInstalledItem(): Installed {
+    fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
         val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
-        return Installed(packageName, versionName.orEmpty(), versionCodeCompat, signatureString)
+        return Installed(
+            packageName,
+            versionName.orEmpty(),
+            versionCodeCompat,
+            signatureString,
+            applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == ApplicationInfo.FLAG_SYSTEM,
+            launcherActivities
+        )
     }
 
     fun getDefaultApplicationIcon(context: Context): Drawable =
@@ -224,4 +233,25 @@ fun Context.showBatteryOptimizationDialog() {
             Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization] = true
         }
         .show()
+}
+
+fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, String>> =
+    queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0)
+        .mapNotNull { resolveInfo -> resolveInfo.activityInfo }
+        .filter { activityInfo -> activityInfo.packageName == packageName }
+        .mapNotNull { activityInfo ->
+            val label = try {
+                activityInfo.loadLabel(this).toString()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+            label?.let { labelName ->
+                Pair(
+                    activityInfo.name,
+                    labelName
+                )
+            }
+        }
+        .toList()
 }

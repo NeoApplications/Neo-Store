@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
         CategoryTemp::class,
         Installed::class,
         Ignored::class
-    ], version = 6
+    ], version = 7
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {

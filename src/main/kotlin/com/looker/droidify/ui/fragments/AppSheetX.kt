@@ -1,9 +1,7 @@
 package com.looker.droidify.ui.fragments
 
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.R
 import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
@@ -108,46 +107,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     override fun setupLayout() {
         // TODO simplify observing and updating
         viewModel.installedItem.observe(viewLifecycleOwner) {
-            installed = it?.let {
-                val isSystem = try {
-                    ((requireContext().packageManager.getApplicationInfo(packageName, 0).flags)
-                            and ApplicationInfo.FLAG_SYSTEM) != 0
-                } catch (e: Exception) {
-                    false
-                }
-                val launcherActivities =
-                    if (packageName != context?.packageName && context != null) {
-                        val packageManager = requireContext().packageManager
-                        packageManager
-                            .queryIntentActivities(
-                                Intent(Intent.ACTION_MAIN).addCategory(
-                                    Intent.CATEGORY_LAUNCHER
-                                ), 0
-                            )
-                            .asSequence()
-                            .mapNotNull { resolveInfo -> resolveInfo.activityInfo }
-                            .filter { activityInfo -> activityInfo.packageName == packageName }
-                            .mapNotNull { activityInfo ->
-                                val label = try {
-                                    activityInfo.loadLabel(packageManager).toString()
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                    null
-                                }
-                                label?.let { labelName ->
-                                    Pair(
-                                        activityInfo.name,
-                                        labelName
-                                    )
-                                }
-                            }
-                            .toList()
-                    } else {
-                        // Don't allow to launch self
-                        emptyList()
-                    }
-                Installed(it, isSystem, launcherActivities)
-            }
+            installed = it
             updateSheet()
         }
 
@@ -175,7 +135,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 binding.recyclerView.context,
                 packageName,
                 this,
-                installed?.data
+                installed
             )
             lifecycleScope.launch {
                 updateButtons()
@@ -205,12 +165,12 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     private suspend fun updateButtons(preference: ProductPreference) =
         withContext(Dispatchers.Default) {
             val installed = installed
-            val product = findSuggestedProduct(productRepos, installed?.data) { it.first }?.first
+            val product = findSuggestedProduct(productRepos, installed) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall = product != null && installed == null && compatible
             val canUpdate =
-                product != null && compatible && product.canUpdate(installed?.data) &&
+                product != null && compatible && product.canUpdate(installed) &&
                         !preference.shouldIgnoreUpdate(product.versionCode)
             val canUninstall = product != null && installed != null && !installed.isSystem
             val canLaunch =
@@ -303,7 +263,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
             AppDetailAdapter.Action.INSTALL,
             AppDetailAdapter.Action.UPDATE,
             -> {
-                val installedItem = installed?.data
+                val installedItem = installed
                 lifecycleScope.launch {
                     startUpdate(
                         packageName,
@@ -408,7 +368,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
     }
 
     override fun onReleaseClick(release: Release) {
-        val installedItem = installed?.data
+        val installedItem = installed
         when {
             release.incompatibilities.isNotEmpty() -> {
                 MessageDialog(
@@ -494,9 +454,4 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
         UNINSTALL(5, AppDetailAdapter.Action.UNINSTALL),
         SHARE(6, AppDetailAdapter.Action.SHARE)
     }
-
-    private class Installed(
-        val data: com.looker.droidify.database.entity.Installed, val isSystem: Boolean,
-        val launcherActivities: List<Pair<String, String>>,
-    )
 }

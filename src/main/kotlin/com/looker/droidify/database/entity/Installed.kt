@@ -10,5 +10,7 @@ data class Installed(
     var packageName: String = "",
     var version: String = "",
     var versionCode: Long = 0L,
-    var signature: String = ""
+    var signature: String = "",
+    var isSystem: Boolean = false,
+    val launcherActivities: List<Pair<String, String>> = emptyList()
 )

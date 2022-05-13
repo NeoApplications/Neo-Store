@@ -68,9 +68,29 @@ class MainApplication : Application(), ImageLoaderFactory {
                 addDataScheme("package")
             }
         )
+        val launcherActivitiesMap =
+            packageManager
+                .queryIntentActivities(
+                    Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                    0
+                )
+                .mapNotNull { resolveInfo -> resolveInfo.activityInfo }
+                .groupBy { it.packageName }
+                .mapNotNull { (packageName, activityInfos) ->
+                    val aiNameLabels = activityInfos.mapNotNull {
+                        val label = try {
+                            it.loadLabel(packageManager).toString()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                        label?.let { label -> Pair(it.name, label) }
+                    }
+                    Pair(packageName, aiNameLabels)
+                }.toMap()
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
-            .map { it.toInstalledItem() }
+            .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
         CoroutineScope(Dispatchers.Default).launch {
             db.installedDao.emptyTable()
             db.installedDao.put(*installedItems.toTypedArray())
