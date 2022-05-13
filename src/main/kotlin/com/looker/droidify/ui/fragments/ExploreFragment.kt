@@ -71,6 +71,7 @@ class ExploreFragment : MainNavFragmentX() {
     private fun ExplorePage() {
         val products by viewModel.primaryProducts.observeAsState(null)
         val categories by viewModel.categories.observeAsState(emptyList())
+        val installedList by viewModel.installed.observeAsState(null)
         val searchQuery by viewModel.searchQuery.observeAsState("")
 
         AppTheme(
@@ -134,6 +135,7 @@ class ExploreFragment : MainNavFragmentX() {
                         onFavouriteClick = {},
                         onInstallClick = {
                             mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        getInstalled = { installedList?.get(it.packageName) },
                         }
                     )
                 }

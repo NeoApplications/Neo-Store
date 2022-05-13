@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
@@ -34,6 +35,7 @@ fun ProductsVerticalRecycler(
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     onInstallClick: (ProductItem) -> Unit = {}
+    getInstalled: (ProductItem) -> Installed? = {null},
 ) {
     VerticalItemList(list = productsList, modifier = modifier) {
         it.toItem().let { item ->
@@ -43,6 +45,7 @@ fun ProductsVerticalRecycler(
                 onUserClick,
                 onFavouriteClick,
                 onInstallClick
+                getInstalled.invoke(item),
             )
         }
     }

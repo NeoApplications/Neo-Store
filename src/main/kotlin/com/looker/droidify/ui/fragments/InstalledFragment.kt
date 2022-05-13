@@ -90,6 +90,7 @@ class InstalledFragment : MainNavFragmentX() {
     private fun InstalledPage() {
         val primaryList by viewModel.primaryProducts.observeAsState(null)
         val secondaryList by viewModel.secondaryProducts.observeAsState(null)
+        val installedList by viewModel.installed.observeAsState(null)
         val searchQuery by viewModel.searchQuery.observeAsState("")
 
         AppTheme(
@@ -224,6 +225,7 @@ class InstalledFragment : MainNavFragmentX() {
                         onFavouriteClick = {},
                         onInstallClick = {
                             mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        getInstalled = { installedList?.get(it.packageName) },
                         }
                     )
                 }

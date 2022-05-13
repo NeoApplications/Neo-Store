@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
+import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
@@ -43,6 +44,7 @@ fun ProductsListItem(
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     onInstallClick: (ProductItem) -> Unit = {}
+    installed: Installed? = null,
 ) {
     val product by remember(item) { mutableStateOf(item) }
     val imageData by remember(product, repo) {
@@ -63,6 +65,7 @@ fun ProductsListItem(
         expandedContent = {
             ExpandedItemContent(
                 item = product,
+                installed = installed,
                 onFavourite = onFavouriteClick,
                 onInstallClicked = onInstallClick
             )
@@ -123,6 +126,7 @@ fun ProductsListItem(
 fun ExpandedItemContent(
     modifier: Modifier = Modifier,
     item: ProductItem,
+    installed: Installed? = null,
     favourite: Boolean = false,
     onFavourite: (ProductItem) -> Unit = {},
     onInstallClicked: (ProductItem) -> Unit = {}

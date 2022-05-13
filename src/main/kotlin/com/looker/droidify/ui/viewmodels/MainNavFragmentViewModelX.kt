@@ -78,7 +78,7 @@ class MainNavFragmentViewModelX(
 
     val repositories = MediatorLiveData<List<Repository>>()
     val categories = MediatorLiveData<List<String>>()
-    val installed = MediatorLiveData<List<Installed>>()
+    val installed = MediatorLiveData<Map<String, Installed>>()
 
     init {
         primaryProducts.addSource(
@@ -125,7 +125,7 @@ class MainNavFragmentViewModelX(
                     }
                 }
             }
-            installed.postValue(it)
+            installed.postValue(it.associateBy { it.packageName })
         }
     }
 
