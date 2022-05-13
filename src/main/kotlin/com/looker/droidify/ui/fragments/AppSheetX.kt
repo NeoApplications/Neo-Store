@@ -23,6 +23,7 @@ import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.findSuggestedProduct
+import com.looker.droidify.utility.onLaunchClick
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
@@ -262,16 +263,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 }
                 Unit
             }
-                val launcherActivities = installed?.launcherActivities.orEmpty()
-                if (launcherActivities.size >= 2) {
-                    LaunchDialog(launcherActivities).show(
-                        childFragmentManager,
-                        LaunchDialog::class.java.name
-                    )
-                } else {
-                    launcherActivities.firstOrNull()?.let { startLauncherActivity(it.first) }
-                }
             Action.LAUNCH -> {
+                installed?.let { requireContext().onLaunchClick(it, childFragmentManager) }
                 Unit
             }
             Action.DETAILS -> {

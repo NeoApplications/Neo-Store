@@ -18,6 +18,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
 import com.looker.droidify.R
@@ -256,6 +257,16 @@ fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, S
             }
         }
         .toList()
+
+fun Context.onLaunchClick(installed: Installed, fragmentManager: FragmentManager) {
+    if (installed.launcherActivities.size >= 2) {
+        LaunchDialog(installed.packageName, installed.launcherActivities)
+            .show(fragmentManager, LaunchDialog::class.java.name)
+    } else {
+        installed.launcherActivities.firstOrNull()
+            ?.let { startLauncherActivity(installed.packageName, it.first) }
+    }
+}
 
 fun Context.startLauncherActivity(packageName: String, name: String) {
     try {
