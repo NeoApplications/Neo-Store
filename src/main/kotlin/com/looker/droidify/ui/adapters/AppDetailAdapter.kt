@@ -15,7 +15,12 @@ import android.net.Uri
 import android.os.Parcel
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
-import android.text.style.*
+import android.text.style.BulletSpan
+import android.text.style.ClickableSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.ReplacementSpan
+import android.text.style.TypefaceSpan
+import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.Gravity
 import android.view.MotionEvent
@@ -54,7 +59,12 @@ import com.looker.droidify.utility.KParcelable
 import com.looker.droidify.utility.PackageItemResolver
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
-import com.looker.droidify.utility.extension.resources.*
+import com.looker.droidify.utility.extension.resources.TypefaceExtra
+import com.looker.droidify.utility.extension.resources.getColorFromAttr
+import com.looker.droidify.utility.extension.resources.getDrawableCompat
+import com.looker.droidify.utility.extension.resources.inflate
+import com.looker.droidify.utility.extension.resources.setTextSizeScaled
+import com.looker.droidify.utility.extension.resources.sizeScaled
 import com.looker.droidify.utility.extension.text.formatSize
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.looker.droidify.utility.extension.text.trimAfter

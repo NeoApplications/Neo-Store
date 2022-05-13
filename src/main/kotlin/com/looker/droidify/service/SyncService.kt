@@ -12,7 +12,12 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
-import com.looker.droidify.*
+import com.looker.droidify.BuildConfig
+import com.looker.droidify.NOTIFICATION_CHANNEL_SYNCING
+import com.looker.droidify.NOTIFICATION_CHANNEL_UPDATES
+import com.looker.droidify.NOTIFICATION_ID_SYNCING
+import com.looker.droidify.NOTIFICATION_ID_UPDATES
+import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Repository
@@ -30,8 +35,16 @@ import com.looker.droidify.utility.extension.text.formatSize
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 

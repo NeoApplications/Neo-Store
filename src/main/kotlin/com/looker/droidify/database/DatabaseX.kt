@@ -5,7 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.looker.droidify.database.entity.*
+import com.looker.droidify.database.entity.Category
+import com.looker.droidify.database.entity.CategoryTemp
+import com.looker.droidify.database.entity.Ignored
+import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Product
+import com.looker.droidify.database.entity.ProductTemp
+import com.looker.droidify.database.entity.Release
+import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.database.entity.Repository.Companion.defaultRepositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

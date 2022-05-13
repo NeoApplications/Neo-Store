@@ -1,7 +1,6 @@
 package com.looker.droidify.database
 
 import androidx.room.TypeConverter
-import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.Author
 import com.looker.droidify.entity.Donate
