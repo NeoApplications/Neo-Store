@@ -5,6 +5,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Installed
+import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.SheetAppXBinding
