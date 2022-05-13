@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -254,4 +255,16 @@ fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, S
             }
         }
         .toList()
+
+fun Context.startLauncherActivity(packageName: String, name: String) {
+    try {
+        startActivity(
+            Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_LAUNCHER)
+                .setComponent(ComponentName(packageName, name))
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

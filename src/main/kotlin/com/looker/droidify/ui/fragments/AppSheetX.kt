@@ -5,19 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.looker.droidify.R
-import com.looker.droidify.content.ProductPreferences
-import com.looker.droidify.database.entity.Installed
-import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.SheetAppXBinding
@@ -309,19 +296,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 shareIntent(packageName, productRepos[0].first.label)
             }
         }::class
-    }
-
-    private fun startLauncherActivity(name: String) {
-        try {
-            startActivity(
-                Intent(Intent.ACTION_MAIN)
-                    .addCategory(Intent.CATEGORY_LAUNCHER)
-                    .setComponent(ComponentName(packageName, name))
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     private fun shareIntent(packageName: String, appName: String) {
