@@ -22,7 +22,7 @@ android {
         applicationId = "com.looker.droidify"
         minSdk = 23
         targetSdk = 32
-        versionCode = 903
+        versionCode = 905
         versionName = "0.9.0"
         vectorDrawables.useSupportLibrary = true
 
@@ -69,7 +69,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-alpha4"
+            versionNameSuffix = "-beta1"
             resValue("string", "application_name", "Neo Store-Debug")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
@@ -78,7 +78,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
-            versionNameSuffix = "-alpha4"
+            versionNameSuffix = "-beta1"
             resValue("string", "application_name", "Neo Store-alpha")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
