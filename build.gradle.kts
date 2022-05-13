@@ -16,6 +16,7 @@ apply(plugin = "kotlin-android")
 apply(plugin = "kotlin-kapt")
 
 android {
+    namespace = "com.looker.droidify"
     compileSdk = 32
 
     defaultConfig {
@@ -157,12 +158,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.0-beta01")
+    implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha03")
     implementation("androidx.activity:activity-compose:1.6.0-alpha03")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-beta01")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc01")
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
@@ -190,7 +191,7 @@ dependencies {
     implementation("org.jetbrains:markdown:0.3.1")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
