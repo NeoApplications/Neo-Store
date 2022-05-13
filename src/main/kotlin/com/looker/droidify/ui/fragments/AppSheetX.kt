@@ -390,31 +390,4 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
             }
         }
     }
-
-    class LaunchDialog() : DialogFragment() {
-        companion object {
-            private const val EXTRA_NAMES = "names"
-            private const val EXTRA_LABELS = "labels"
-        }
-
-        constructor(launcherActivities: List<Pair<String, String>>) : this() {
-            arguments = Bundle().apply {
-                putStringArrayList(EXTRA_NAMES, ArrayList(launcherActivities.map { it.first }))
-                putStringArrayList(EXTRA_LABELS, ArrayList(launcherActivities.map { it.second }))
-            }
-        }
-
-        override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
-            val names = requireArguments().getStringArrayList(EXTRA_NAMES)!!
-            val labels = requireArguments().getStringArrayList(EXTRA_LABELS)!!
-            return MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.launch)
-                .setItems(labels.toTypedArray()) { _, position ->
-                    (parentFragment as AppSheetX)
-                        .startLauncherActivity(names[position])
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-        }
-    }
 }
