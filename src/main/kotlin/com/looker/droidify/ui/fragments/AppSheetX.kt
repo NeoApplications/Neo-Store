@@ -21,6 +21,7 @@ import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.databinding.SheetAppXBinding
+import com.looker.droidify.entity.Action
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
@@ -224,9 +225,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
 
             launch(Dispatchers.Main) {
                 val adapterAction =
-                    if (downloading) AppDetailAdapter.Action.CANCEL else primaryAction?.adapterAction
+                    if (downloading) Action.CANCEL else primaryAction
                 val adapterSecondaryAction =
-                    if (downloading) null else secondaryAction?.adapterAction
+                    if (downloading) null else secondaryAction
                 (binding.recyclerView.adapter as? AppDetailAdapter)
                     ?.setAction(adapterAction)
                 (binding.recyclerView.adapter as? AppDetailAdapter)
@@ -258,10 +259,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
         }
     }
 
-    override fun onActionClick(action: AppDetailAdapter.Action) {
+    override fun onActionClick(action: Action) {
         when (action) {
-            AppDetailAdapter.Action.INSTALL,
-            AppDetailAdapter.Action.UPDATE,
+            Action.INSTALL,
+            Action.UPDATE,
             -> {
                 val installedItem = installed
                 lifecycleScope.launch {
@@ -274,7 +275,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 }
                 Unit
             }
-            AppDetailAdapter.Action.LAUNCH -> {
                 val launcherActivities = installed?.launcherActivities.orEmpty()
                 if (launcherActivities.size >= 2) {
                     LaunchDialog(launcherActivities).show(
@@ -284,27 +284,28 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 } else {
                     launcherActivities.firstOrNull()?.let { startLauncherActivity(it.first) }
                 }
+            Action.LAUNCH -> {
                 Unit
             }
-            AppDetailAdapter.Action.DETAILS -> {
+            Action.DETAILS -> {
                 startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.parse("package:$packageName"))
                 )
             }
-            AppDetailAdapter.Action.UNINSTALL -> {
+            Action.UNINSTALL -> {
                 lifecycleScope.launch {
                     AppInstaller.getInstance(context)?.defaultInstaller?.uninstall(packageName)
                 }
                 Unit
             }
-            AppDetailAdapter.Action.CANCEL -> {
+            Action.CANCEL -> {
                 val binder = downloadConnection.binder
                 if (downloading && binder != null) {
                     binder.cancel(packageName)
                 } else Unit
             }
-            AppDetailAdapter.Action.SHARE -> {
+            Action.SHARE -> {
                 shareIntent(packageName, productRepos[0].first.label)
             }
         }::class
@@ -441,17 +442,5 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), AppDetailAdapter.Call
                 .setNegativeButton(R.string.cancel, null)
                 .create()
         }
-    }
-
-    private enum class Action(
-        val id: Int,
-        val adapterAction: AppDetailAdapter.Action,
-    ) {
-        INSTALL(1, AppDetailAdapter.Action.INSTALL),
-        UPDATE(2, AppDetailAdapter.Action.UPDATE),
-        LAUNCH(3, AppDetailAdapter.Action.LAUNCH),
-        DETAILS(4, AppDetailAdapter.Action.DETAILS),
-        UNINSTALL(5, AppDetailAdapter.Action.UNINSTALL),
-        SHARE(6, AppDetailAdapter.Action.SHARE)
     }
 }

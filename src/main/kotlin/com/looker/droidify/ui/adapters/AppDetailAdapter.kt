@@ -22,8 +22,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
@@ -47,6 +45,7 @@ import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.Action
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.network.CoilDownloader
@@ -84,16 +83,6 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
         fun onScreenshotClick(screenshot: Screenshot)
         fun onReleaseClick(release: Release)
         fun onUriClick(uri: Uri, shouldConfirm: Boolean): Boolean
-    }
-
-    enum class Action(@StringRes val titleResId: Int, @DrawableRes val iconResId: Int) {
-        INSTALL(R.string.install, R.drawable.ic_download),
-        UPDATE(R.string.update, R.drawable.ic_download),
-        LAUNCH(R.string.launch, R.drawable.ic_launch),
-        DETAILS(R.string.details, R.drawable.ic_tune),
-        UNINSTALL(R.string.uninstall, R.drawable.ic_delete),
-        CANCEL(R.string.cancel, R.drawable.ic_cancel),
-        SHARE(R.string.share, R.drawable.ic_share)
     }
 
     sealed class Status {
@@ -955,7 +944,7 @@ class AppDetailAdapter(private val callbacks: Callbacks) :
                     this@AppDetailAdapter.secondaryAction?.let(callbacks::onActionClick)
                 }
                 info.setOnClickListener {
-                    AppDetailAdapter.Action.DETAILS?.let(callbacks::onActionClick)
+                    Action.DETAILS?.let(callbacks::onActionClick)
                 }
             }
             ViewType.SCREENSHOT -> ScreenShotViewHolder(parent.context)
