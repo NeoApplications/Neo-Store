@@ -26,7 +26,7 @@
     <string name="could_not_download_FORMAT">Nepodařilo se stáhnout %s</string>
     <string name="could_not_sync_FORMAT">Nepodařilo se synchronizovat %s</string>
     <string name="could_not_validate_FORMAT">Nepodařilo se ověřit %s</string>
-    <string name="credits">O aplikaci</string>
+    <string name="credits">Přispěvatelé</string>
     <string name="dark">Tmavý</string>
     <string name="delete">Odstranit</string>
     <string name="delete_repository_DESC">Odstranit tento repozitář\?</string>
@@ -59,7 +59,7 @@
     <string name="license_FORMAT">%s licence</string>
     <string name="light">Světlý</string>
     <string name="list_animation_description">Animovat seznam na hlavní stránce</string>
-    <string name="merging_FORMAT">Sloučení %s</string>
+    <string name="merging_FORMAT">Slučování %s…</string>
     <string name="name">Název</string>
     <string name="network_error_DESC">Chyba sítě.</string>
     <string name="never">Nikdy</string>
@@ -68,7 +68,8 @@
     <string name="incompatible_api_DESC_FORMAT">Vaše %1$s (verze API %2$d) není podporováno. %3$s</string>
     <string name="incompatible_versions">Nekompatibilní verze</string>
     <string name="integrity_check_error_DESC">Nepodařilo se zkontrolovat integritu.</string>
-    <string name="incompatible_signature_DESC">Tato verze je podepsána jiným certifikátem, než který je nainstalován ve vašem zařízení. Nejprve jej odinstalujte.</string>
+    <string name="incompatible_signature_DESC">Tato verze je podepsána jiným certifikátem, než který je nainstalován ve vašem zařízení.
+\nNejprve jej odinstalujte.</string>
     <string name="invalid_permissions_error_DESC">Neplatná oprávnění.</string>
     <string name="incompatible_versions_summary">Zobrazit verze nekompatibilní se zařízením</string>
     <string name="incompatible_with_FORMAT">Nekompatibilní s %s</string>
@@ -86,24 +87,26 @@
         <item quantity="few">%d aplikací ma novou verzi.</item>
         <item quantity="other">%d aplikací má novou verzi.</item>
     </plurals>
-    <string name="prefs_updated_apps">Počet aktualizovaných aplikací, které se zobrazí</string>
+    <string name="prefs_updated_apps">Počet aplikací, které se mají zobrazit v kategorii \"nedávno aktualizované\"</string>
     <string name="no_applications_installed">Žádné nainstalované aplikace</string>
     <string name="no_description_available_DESC">Žádný popis.</string>
     <string name="no_matching_applications_found">Žádné takové aplikace se nepodařilo najít</string>
     <string name="notify_about_updates">Upozorňovat na nové verze aplikací</string>
-    <string name="repository_unsigned_DESC">Nepodepsané. Seznam aplikací se nepodařilo ověřit. Buďte opatrní při stahování aplikací z nepodepsaných repozitářů.</string>
+    <string name="repository_unsigned_DESC">Nepodařilo se ověřit seznam nepodepsaných aplikací.
+\nBuďte opatrní při stahování aplikací z nepodepsaných repozitářů.</string>
     <string name="processing_FORMAT">Zpracování %1$s…</string>
     <string name="parsing_index_error_DESC">Nepodařilo se parsovat indexový soubor.</string>
     <string name="promotes_non_free_network_services">Propaguje nesvobodné síťové služby</string>
     <string name="provided_by_FORMAT">Poskytuje %s</string>
     <string name="proxy">Proxy</string>
-    <string name="proxy_host">Proxy host</string>
-    <string name="proxy_port">Proxy port</string>
-    <string name="proxy_type">Typ proxy</string>
+    <string name="proxy_host">Hostitel</string>
+    <string name="proxy_port">Port</string>
+    <string name="proxy_type">Typ</string>
     <string name="recently_updated">Nedávno aktualizované</string>
     <string name="repositories">Repozitáře</string>
     <string name="repository">Repozitář</string>
-    <string name="repository_not_used_DESC">Tento repozitář dosud nebyl použit. Zapněte jej, chcete-li zobrazit aplikace v něm.</string>
+    <string name="repository_not_used_DESC">Tento repozitář dosud nebyl použit.
+\nChcete-li zobrazit aplikace v něm, připojte se k němu.</string>
     <string name="root_permission_description">Použít root pro instalace bez interakce</string>
     <string name="save">Uložit</string>
     <string name="requires_FORMAT">Vyžaduje %s</string>
@@ -130,18 +133,18 @@
     <string name="unverified">Neověřené</string>
     <string name="username">Uživatelské jméno</string>
     <string name="updates">Aktualizace</string>
-    <string name="upstream_source_code_is_not_free">Originální zdrojový kód není svobodný</string>
+    <string name="upstream_source_code_is_not_free">Původní zdrojový kód není svobodný</string>
     <string name="versions">Verze</string>
     <string name="update">Aktualizovat</string>
-    <string name="waiting_to_start_download">Zahájení stahování…</string>
+    <string name="waiting_to_start_download">Stahování…</string>
     <string name="whats_new">Co je nového</string>
     <string name="website">Webové stránky</string>
     <string name="prefs_language_title">Jazyk</string>
     <string name="prefs_personalization">Personalizace</string>
     <string name="explore">Prozkoumat</string>
     <string name="sort_filter">Řazení a filtrování</string>
-    <string name="update_all">Aktualizovat vše</string>
-    <string name="installed_applications">Nainstalované aplikace</string>
+    <string name="update_all">Nainstalovat vše</string>
+    <string name="installed_applications">Nainstalováno</string>
     <string name="no_applications_available">Žádné dostupné aplikace</string>
     <string name="no_proxy">Žádný proxy</string>
     <string name="notify_about_updates_summary">Zobrazit oznámení o dostupnosti nových verzí</string>
@@ -175,23 +178,23 @@
     <string name="project_website">Webové stránky projektu</string>
     <string name="show_older_versions">Zobrazit starší verze</string>
     <string name="show_less">Zobrazit méně</string>
-    <string name="only_on_wifi_and_battery">Pouze na síti Wi-Fi a nabíjení</string>
+    <string name="only_on_wifi_and_battery">Pouze na síti Wi-Fi a při nabíjení</string>
     <string name="unstable_updates">Nestabilní aktualizace</string>
     <string name="version">Verze</string>
     <string name="latest">Nejnovější</string>
     <string name="version_FORMAT">Verze %s</string>
-    <string name="install_after_sync">Automatická instalace aktualizací</string>
-    <string name="install_after_sync_summary">Automaticky instalovat aktualizace aplikací po synchronizaci repozitářů</string>
-    <string name="prefs_new_apps">Počet nových aplikací k zobrazení</string>
+    <string name="install_after_sync">Automatické aktualizace</string>
+    <string name="install_after_sync_summary">Nainstalovat všechny nové verze po vyhledání nových aplikací v repozitářích</string>
+    <string name="prefs_new_apps">Počet aplikací, které se mají zobrazit v kategorii \"nové aplikace\"</string>
     <string name="new_repository">Nový repozitář</string>
     <string name="default_tab">Výchozí karta</string>
     <string name="installing">Instalace</string>
     <string name="pending">Čekající</string>
-    <string name="ignore_battery_optimization_title">Ignorovat optimalizaci baterie</string>
-    <string name="ignore_battery_optimization_message">Počínaje Androidem 12 je omezeno spouštění služeb na popředí, což způsobuje pád aplikace při stahování. Abyste tomu zabránili, měli byste vypnout optimalizaci baterie</string>
-    <string name="ignore_battery_optimization_not_supported">Toto zařízení nepodporuje ignorování optimalizace baterie!</string>
-    <string name="dialog_refuse">Nepotřebuju to</string>
-    <string name="dialog_approve">Jdeme na to!</string>
+    <string name="ignore_battery_optimization_title">Optimalizace baterie</string>
+    <string name="ignore_battery_optimization_message">Vypnutí optimalizace baterie pro tuto aplikaci jí umožňuje fungovat lépe a zabraňuje pádům na Android 12+</string>
+    <string name="ignore_battery_optimization_not_supported">Vaše instalace systému Android nepodporuje vypnutí optimalizace baterie.</string>
+    <string name="dialog_refuse">Ponechat</string>
+    <string name="dialog_approve">Vypnout</string>
     <string name="root_session_installer">Použít root instalátor relace</string>
     <string name="root_session_installer_description">Instalátor relace je trochu méně výkonný než původní, ale zabrání problémům s nainstalovanými aplikacemi v systému Android +13.</string>
 </resources>
