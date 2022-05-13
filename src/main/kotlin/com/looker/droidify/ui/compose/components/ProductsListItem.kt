@@ -1,5 +1,6 @@
 package com.looker.droidify.ui.compose.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,11 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.looker.droidify.R
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.Action
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.ui.compose.utils.ExpandableCard
@@ -43,8 +45,8 @@ fun ProductsListItem(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
-    onInstallClick: (ProductItem) -> Unit = {}
     installed: Installed? = null,
+    onActionClick: (ProductItem) -> Unit = {}
 ) {
     val product by remember(item) { mutableStateOf(item) }
     val imageData by remember(product, repo) {
@@ -67,7 +69,7 @@ fun ProductsListItem(
                 item = product,
                 installed = installed,
                 onFavourite = onFavouriteClick,
-                onInstallClicked = onInstallClick
+                onActionClicked = onActionClick
             )
         }
     ) {
@@ -129,7 +131,7 @@ fun ExpandedItemContent(
     installed: Installed? = null,
     favourite: Boolean = false,
     onFavourite: (ProductItem) -> Unit = {},
-    onInstallClicked: (ProductItem) -> Unit = {}
+    onActionClicked: (ProductItem) -> Unit = {}
 ) {
     Box(contentAlignment = Alignment.CenterEnd) {
         Row(
@@ -144,18 +146,24 @@ fun ExpandedItemContent(
                     tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                 )
             }
-            FilledTonalButton(
-                colors = buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                onClick = { onInstallClicked(item) }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_download),
-                    contentDescription = "Install"
-                )
-                Text(text = "Install")
+            AnimatedVisibility(visible = installed == null || installed.launcherActivities.isNotEmpty()) {
+                FilledTonalButton(
+                    colors = buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    onClick = { onActionClicked(item) }
+                ) {
+                    val action = when {
+                        installed != null -> Action.LAUNCH
+                        else -> Action.INSTALL
+                    }
+                    Icon(
+                        painter = painterResource(id = action.iconResId),
+                        contentDescription = stringResource(id = action.titleResId)
+                    )
+                    Text(text = stringResource(id = action.titleResId))
+                }
             }
         }
     }

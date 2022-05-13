@@ -37,6 +37,7 @@ import com.looker.droidify.ui.compose.components.TopBarAction
 import com.looker.droidify.ui.compose.pages.home.components.CategoryChipList
 import com.looker.droidify.ui.compose.theme.AppTheme
 import com.looker.droidify.utility.isDarkTheme
+import com.looker.droidify.utility.onLaunchClick
 
 class ExploreFragment : MainNavFragmentX() {
 
@@ -133,9 +134,13 @@ class ExploreFragment : MainNavFragmentX() {
                             mainActivityX.navigateProduct(item.packageName)
                         },
                         onFavouriteClick = {},
-                        onInstallClick = {
-                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
                         getInstalled = { installedList?.get(it.packageName) },
+                        onActionClick = { item ->
+                            val installed = installedList?.get(item.packageName)
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                requireContext().onLaunchClick(installed, childFragmentManager)
+                            else
+                                mainActivityX.syncConnection.binder?.installApps(listOf(item))
                         }
                     )
                 }
