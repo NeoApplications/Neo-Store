@@ -39,7 +39,7 @@
     <string name="donate">Lahjoita</string>
     <string name="details">Tiedot</string>
     <string name="description">Kuvaus</string>
-    <string name="delete_repository_DESC">Poistetaanko tietovarasto\?</string>
+    <string name="delete_repository_DESC">Poistetaanko tämä tietovarasto\?</string>
     <string name="has_advertising">Sisältää mainontaa</string>
     <string name="has_non_free_dependencies">Ei-vapaita riippuvuuksia</string>
     <string name="has_security_vulnerabilities">Tietoturvassa on haavoittuvuuksia</string>
@@ -88,9 +88,9 @@
     <string name="no_description_available_DESC">Kuvausta ei ole saatavilla.</string>
     <string name="no_matching_applications_found">Haulla ei löytynyt sovelluksia</string>
     <string name="provided_by_FORMAT">Toimittanut %s</string>
-    <string name="proxy_host">Välityspalvelimen osoite</string>
-    <string name="proxy_port">Välityspalvelimen portti</string>
-    <string name="proxy_type">Välityspalvelimen tyyppi</string>
+    <string name="proxy_host">Isäntä</string>
+    <string name="proxy_port">Portti</string>
+    <string name="proxy_type">Tyyppi</string>
     <string name="recently_updated">Äskettäin päivitetty</string>
     <string name="repositories">Tietovarastot</string>
     <string name="repository">Tietovarasto</string>
@@ -133,7 +133,7 @@
     <string name="upstream_source_code_is_not_free">Alkuperäinen lähdekoodi ei ole vapaa</string>
     <string name="website">Verkkosivut</string>
     <string name="whats_new">Mitä uutta</string>
-    <string name="waiting_to_start_download">Latausta aloitetaan…</string>
+    <string name="waiting_to_start_download">Ladataan…</string>
     <string name="username_missing">Käyttäjätunnus puuttuu</string>
     <string name="username">Käyttäjänimi</string>
     <string name="signature_FORMAT">Allekirjoitus %s</string>
@@ -156,14 +156,16 @@
     <string name="system">Järjestelmä</string>
     <string name="update">Päivitys</string>
     <string name="updates">Päivitykset</string>
-    <string name="promotes_non_free_software">Edistää ei-vapaita ohjelmia</string>
-    <string name="repository_not_used_DESC">Tätä tietovarastoa ei ole vielä käytetty. Ota se käyttöön nähdäksesi siinä olevat sovellukset.</string>
+    <string name="promotes_non_free_software">Edistää ei-vapaita ohjelmistoja</string>
+    <string name="repository_not_used_DESC">Tätä tietovarastoa ei ole vielä käytetty.
+\nYhdistä siihen nähdäksesi sen sisältämät sovellukset.</string>
     <string name="proxy">Välityspalvelin</string>
-    <string name="repository_unsigned_DESC">Allekirjoittamaton. Sovellusluetteloa ei voitu varmistaa. Ole varovainen ladatessasi sovelluksia allekirjoittamattomista tietovarastoista.</string>
+    <string name="repository_unsigned_DESC">Allekirjoittamatonta sovellusluetteloa ei voitu varmistaa. Ole varovainen ladatessasi sovelluksia allekirjoittamattomista tietovarastoista.</string>
     <string name="version_FORMAT">Versio %s</string>
     <string name="validation_index_error_DESC">Indeksiä ei voitu validoida.</string>
     <string name="unstable_updates_summary">Ehdota epävakaiden versioiden asentamista</string>
-    <string name="incompatible_signature_DESC">Tämä versio on allekirjoitettu eri varmenteella kuin laitteellesi asennettu versio. Poista se ensin.</string>
+    <string name="incompatible_signature_DESC">Tämä versio on allekirjoitettu eri varmenteella kuin laitteellesi asennettu versio.
+\nPoista se ensin.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Alustasi %1$s ei ole tuettu. Tuetut alustat: %2$s.</string>
     <string name="versions">Versiot</string>
     <string name="version">Versio</string>
@@ -171,8 +173,8 @@
     <string name="prefs_personalization">Mukauttaminen</string>
     <string name="prefs_language_title">Kieli</string>
     <string name="show_less">Näytä vähemmän</string>
-    <string name="installed_applications">Asennetut sovellukset</string>
-    <string name="update_all">Päivitä kaikki</string>
+    <string name="installed_applications">Asennetut</string>
+    <string name="update_all">Asenna kaikki</string>
     <string name="explore">Tutustu</string>
     <string name="latest">Uusimmat</string>
     <string name="sort_filter">Lajittele ja suodata</string>
@@ -180,10 +182,17 @@
     <string name="prefs_updated_apps">Näytettävien päivitettyjen sovellusten määrä</string>
     <string name="prefs_new_apps">Näytettävä uusien sovellusten määrä</string>
     <string name="new_repository">Uusi tietovarasto</string>
-    <string name="only_on_wifi_and_battery">Vain Wi-Fiin yhdistettynä ja latauksessa</string>
-    <string name="install_after_sync">Asenna päivitykset automaattisesti</string>
-    <string name="install_after_sync_summary">Asenna sovelluspäivitykset automaattisesti tietovarastojen synkronoinnin jälkeen</string>
+    <string name="only_on_wifi_and_battery">Vain, kun laite on latauksessa ja yhdistettynä Wi-Fiin</string>
+    <string name="install_after_sync">Päivitä automaattisesti</string>
+    <string name="install_after_sync_summary">Asenna kaikki uudet versiot, kun tietovarastot on päivitetty</string>
     <string name="default_tab">Oletusvälilehti</string>
     <string name="pending">Vireillä</string>
     <string name="installing">Asennus</string>
+    <string name="ignore_battery_optimization_title">Akun optimointi</string>
+    <string name="root_session_installer">Käytä root-sessioasentajaa</string>
+    <string name="root_session_installer_description">Sessioasentaja on hieman tehottomampi kuin perinteinen, mutta ehkäisee ongelmia, kun käytössä on Android 13+.</string>
+    <string name="ignore_battery_optimization_message">Sovellus toimii paremmin ilman akun optimointia eikä kaatuile, kun käytössä on Android 12+</string>
+    <string name="ignore_battery_optimization_not_supported">Android-asennuksesi ei tue akun optimoinnin kytkemistä pois päältä.</string>
+    <string name="dialog_refuse">Pidä</string>
+    <string name="dialog_approve">Kytke pois</string>
 </resources>
