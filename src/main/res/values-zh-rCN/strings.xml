@@ -95,7 +95,7 @@
     <string name="number_of_applications">应用数量</string>
     <string name="ok">好的</string>
     <string name="only_compatible_with_FORMAT">仅与 %s 兼容</string>
-    <string name="only_on_wifi">仅连到 Wi-Fi 时</string>
+    <string name="only_on_wifi">仅在连接 Wi-Fi 时</string>
     <string name="open_DESC_FORMAT">打开 %s？</string>
     <string name="other">其他</string>
     <string name="parsing_index_error_DESC">无法解析索引文件。</string>
