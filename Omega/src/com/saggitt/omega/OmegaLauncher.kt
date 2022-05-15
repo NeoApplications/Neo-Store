@@ -28,10 +28,21 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.compose.compiler.plugins.kotlin.EmptyFunctionMetrics.packageName
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.LauncherRootView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.AppInfo
@@ -64,11 +75,13 @@ import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
-class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
-    OmegaPreferences.OnPreferenceChangeListener {
+class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwner,
+    ThemeManager.ThemeableActivity, OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
+    private val lifecycleRegistry = LifecycleRegistry(this)
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
 
     override var currentTheme = 0
     override var currentAccent = 0
@@ -102,7 +115,9 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
             ), true
         )
 
+        savedStateRegistryController.performRestore(savedInstanceState)
         super.onCreate(savedInstanceState)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
@@ -153,8 +168,14 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
+
     override fun onResume() {
         super.onResume()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         if (currentAccent != prefs.accentColor || currentTheme != themeOverride.getTheme(this)) onThemeChanged()
         restartIfPending()
         paused = false
@@ -162,7 +183,37 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
 
     override fun onPause() {
         super.onPause()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         paused = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+
+        prefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
+        prefs.unregisterCallback()
+        if (sRestart) {
+            sRestart = false
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        savedStateRegistryController.performSave(outState)
+    }
+
+    override fun setupViews() {
+        super.setupViews()
+        findViewById<LauncherRootView>(R.id.launcher).let {
+            ViewTreeLifecycleOwner.set(it, this)
+            it.setViewTreeSavedStateRegistryOwner(this)
+        }
     }
 
     private fun restartIfPending() {
@@ -176,16 +227,6 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
             sRestart = true
         } else {
             Utilities.restartLauncher(this)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        prefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
-        prefs.unregisterCallback()
-        if (sRestart) {
-            sRestart = false
         }
     }
 
@@ -302,5 +343,12 @@ class OmegaLauncher : QuickstepLauncher(), ThemeManager.ThemeableActivity,
                 ?: (context as ContextWrapper).baseContext as? OmegaLauncher
                 ?: LauncherAppState.getInstance(context).launcher as OmegaLauncher
         }
+    }
+
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
     }
 }

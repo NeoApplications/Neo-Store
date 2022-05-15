@@ -1,7 +1,15 @@
 package com.saggitt.omega.compose.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -17,6 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
+
+// TODO include padding in the items to insure real block-ratio
 
 @Composable
 fun ControlDashItem(
@@ -40,7 +50,7 @@ fun ControlDashItem(
     ) {
         Icon(
             modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxHeight(0.6f)
                 .aspectRatio(1f),
             painter = icon,
             contentDescription = description
@@ -54,7 +64,7 @@ fun ControlDashItem(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            if (isExtendable) Image(
+            if (isExtendable) Icon(
                 painter = painterResource(id = R.drawable.ic_explore),
                 contentDescription = description
             )
@@ -93,7 +103,7 @@ fun ActionDashItem(
     ) {
         Icon(
             modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxHeight(0.7f)
                 .aspectRatio(1f),
             painter = icon,
             contentDescription = description
@@ -127,7 +137,7 @@ fun CardButton(
             .padding(4.dp)
             .aspectRatio(ratio),
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background,
+            containerColor = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
             contentColor = if (enabled) MaterialTheme.colorScheme.background else tint
         ),
         contentPadding = PaddingValues(8.dp),

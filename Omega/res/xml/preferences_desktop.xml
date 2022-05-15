@@ -154,6 +154,15 @@
             android:title="@string/title_desktop_hide_statusbar"
             app:iconSpaceReserved="false" />
 
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:defaultValue="6"
+            android:key="pref_dash_linesize"
+            android:title="@string/dash_linesize"
+            app:maxValue="6"
+            app:minValue="4"
+            app:steps="2"
+            app:summaryFormat="%.0f" />
+
         <Preference
             android:fragment="com.saggitt.omega.dash.DashFragment"
             android:key="pref_dash_providers"

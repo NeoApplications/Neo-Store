@@ -429,4 +429,5 @@
     <string name="title_override_corner_radius">Override window corner radius</string>
     <string name="title_override_corner_radius_value">Global corner radius</string>
     <string name="no_store_found">No store found!</string>
+    <string name="dash_linesize">Dash line size</string>
 </resources>

@@ -129,7 +129,7 @@ open class BaseBottomSheet @JvmOverloads constructor(
                         return view.paddingBottom
                     }
                 }
-        private const val DEFAULT_CLOSE_DURATION = 200
+        const val DEFAULT_CLOSE_DURATION = 200
         fun inflate(launcher: Launcher): BaseBottomSheet {
             return launcher.layoutInflater
                     .inflate(R.layout.base_bottom_sheet, launcher.dragLayer, false) as BaseBottomSheet
