@@ -172,7 +172,7 @@
     <string name="website">网站</string>
     <string name="prefs_language_title">语言</string>
     <string name="prefs_personalization">个性化</string>
-    <string name="show_less">显示较少程序</string>
+    <string name="show_less">折叠</string>
     <string name="latest">最新</string>
     <string name="sort_filter">排序和过滤</string>
     <string name="explore">探索</string>
