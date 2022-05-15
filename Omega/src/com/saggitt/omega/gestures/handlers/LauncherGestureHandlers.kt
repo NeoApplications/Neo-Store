@@ -34,7 +34,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.widget.picker.WidgetsFullSheet
 import com.android.quickstep.SysUINavigationMode
-import com.saggitt.omega.dash.DashBottomSheet
+import com.saggitt.omega.dash.DashSheet
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
 import com.saggitt.omega.gestures.ui.SelectAppActivity
@@ -106,7 +106,7 @@ class OpenDashGestureHandler(context: Context, config: JSONObject?) :
     override val requiresForeground = true
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
-        DashBottomSheet.show(controller.launcher, true)
+        DashSheet.show(controller.launcher, true)
     }
 }
 
