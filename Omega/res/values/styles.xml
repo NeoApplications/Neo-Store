@@ -182,8 +182,8 @@
         <item name="bottomSheetStyle">@style/SettingsTheme.BottomSheet</item>
     </style>
 
-    <style name="SettingsTheme.BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/top_round_rect_primary</item>
+    <style name="SettingsTheme.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?backgroundColor</item>
     </style>
 
     <style name="SettingsTheme.Button" parent="Widget.AppCompat.Button">
