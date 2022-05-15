@@ -129,7 +129,7 @@
     <string name="search">搜索</string>
     <string name="select_mirror">选择一个镜像</string>
     <string name="share">分享</string>
-    <string name="show_more">显示更多</string>
+    <string name="show_more">展开更多内容</string>
     <string name="show_older_versions">显示旧版本</string>
     <string name="signature_FORMAT">签名 %s</string>
     <string name="signed_using_unsafe_algorithm">使用不安全的算法签名</string>
