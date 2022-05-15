@@ -23,8 +23,6 @@ import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.compose.components.BaseComposeBottomSheet
 import com.saggitt.omega.theme.OmegaAppTheme
 
-const val DASH_LINE_DEFAULT = 6 // 2-6
-
 class DashSheet(val context: Context) {
 
     companion object {

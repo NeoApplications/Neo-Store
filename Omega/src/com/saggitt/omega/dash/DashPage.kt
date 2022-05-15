@@ -30,17 +30,18 @@ fun DashPage() {
     val allControlItems = DashEditAdapter.getDashControlProviders(context)
     val activeDashProviders = prefs.dashProviders.getAll()
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    val lineSize = prefs.dashLineSize.toInt()
 
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(DASH_LINE_DEFAULT), // TODO Add to prefs
+        columns = GridCells.Fixed(lineSize), // TODO Add to prefs
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(4.dp)
     ) {
-        if (activeDashProviders.contains("2")) item(span = { GridItemSpan(DASH_LINE_DEFAULT) }) { // TODO abstract DashProviders to Constants
+        if (activeDashProviders.contains("2")) item(span = { GridItemSpan(lineSize) }) { // TODO abstract DashProviders to Constants
             MusicBar(
-                ratio = DASH_LINE_DEFAULT.toFloat(),
+                ratio = lineSize.toFloat(),
                 audioManager = musicManager,
             )
         }
