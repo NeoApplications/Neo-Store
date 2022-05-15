@@ -90,7 +90,7 @@
     <string name="no_description_available_DESC">无描述。</string>
     <string name="no_matching_applications_found">找不到任何这样的应用</string>
     <string name="no_proxy">无代理</string>
-    <string name="notify_about_updates">通知应用新版本</string>
+    <string name="notify_about_updates">应用更新通知</string>
     <string name="notify_about_updates_summary">有新版本可用时显示通知</string>
     <string name="number_of_applications">应用数量</string>
     <string name="ok">好的</string>
@@ -122,7 +122,7 @@
 \n从未签名的存储库下载应用时要小心。</string>
     <string name="requires_FORMAT">需要 %s</string>
     <string name="root_permission">静默安装</string>
-    <string name="root_permission_description">允许 Root 权限以进行无交互安装</string>
+    <string name="root_permission_description">使用 Root 权限进行静默安装</string>
     <string name="save">保存</string>
     <string name="saving_details">保存详情中…</string>
     <string name="screenshots">截图</string>
