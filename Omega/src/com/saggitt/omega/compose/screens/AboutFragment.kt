@@ -64,8 +64,8 @@ class AboutFragment : Fragment() {
 @Composable
 fun AboutNavController(mActivity: FragmentActivity, theme: Int = 0) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.MainScreen.route) {
-        composable(route = Routes.MainScreen.route) {
+    NavHost(navController = navController, startDestination = Routes.AboutMainScreen.route) {
+        composable(route = Routes.AboutMainScreen.route) {
             mActivity.title = mActivity.getString(R.string.title__general_about)
             AboutMainScreen(navController = navController)
         }

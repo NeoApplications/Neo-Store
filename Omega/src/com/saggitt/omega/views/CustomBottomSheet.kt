@@ -95,10 +95,9 @@ class CustomBottomSheet @JvmOverloads constructor(
                 }
             }
 
-            Log.d("CustomBottomSheet", "Provider is null: ${mInfoProvider == null}")
             if (mInfoProvider != null) {
                 val launcher = OmegaLauncher.getLauncher(context)
-                icon.setOnClickListener {
+                icon.setOnLongClickListener {
                     val editItem: ItemInfo? =
                         if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
                             (mItemInfo as FolderInfo).coverInfo
@@ -109,6 +108,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                     if (editProvider != null) {
                         launcher.startEditIcon(editItem!!, editProvider)
                     }
+                    true
                 }
             }
         }

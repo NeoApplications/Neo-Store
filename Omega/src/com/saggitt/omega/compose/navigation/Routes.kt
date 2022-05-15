@@ -19,8 +19,11 @@
 package com.saggitt.omega.compose.navigation
 
 sealed class Routes(val route: String) {
-    object MainScreen : Routes("about")
+    object AboutMainScreen : Routes("about")
     object Translators : Routes("about/translators")
     object Changelog : Routes("about/changelog")
     object License : Routes("about/license")
+
+    object EditIconMainScreen : Routes("edit_icon")
+    object IconListScreen : Routes("edit_icon/icon_picker")
 }

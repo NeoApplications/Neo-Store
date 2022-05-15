@@ -85,7 +85,7 @@ class AppInfoProvider(context: Context) : CustomInfoProvider<AppInfo>(context) {
         return getCustomIconEntry(getComponentKey(app))
     }
 
-    fun getCustomIconEntry(key: ComponentKey): CustomIconEntry? {
+    private fun getCustomIconEntry(key: ComponentKey): CustomIconEntry? {
         return prefs.customAppIcon[key]
     }
 
