@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.0'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.18"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
     }
 }
 
@@ -114,7 +114,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.2.0-alpha08"
+        kotlinCompilerExtensionVersion "1.2.0-beta01"
     }
 
     kotlinOptions {
@@ -212,13 +212,13 @@ dependencies {
     implementation project(':searchuilib')
 
     //UI
-    implementation "androidx.activity:activity-ktx:1.4.0"
-    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation "androidx.appcompat:appcompat:1.6.0-alpha03"
     implementation "androidx.constraintlayout:constraintlayout:2.1.3"
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
-    implementation "androidx.activity:activity-ktx:1.4.0"
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation "androidx.activity:activity-ktx:1.6.0-alpha03"
+    implementation 'androidx.fragment:fragment-ktx:1.5.0-rc01'
+    implementation 'androidx.savedstate:savedstate-ktx:1.2.0-rc01'
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "com.google.android.material:material:1.7.0-alpha01"
@@ -238,22 +238,22 @@ dependencies {
     implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21"
     implementation 'me.xdrop:fuzzywuzzy:1.4.0'
     implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
 
     //Compose
-    implementation 'androidx.compose.compiler:compiler:1.2.0-alpha08'
-    implementation 'androidx.compose.runtime:runtime:1.2.0-alpha08'
-    implementation 'androidx.compose.ui:ui:1.2.0-alpha08'
-    implementation 'androidx.compose.ui:ui-tooling:1.2.0-alpha08'
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.2.0-alpha08'
-    implementation 'androidx.compose.foundation:foundation:1.2.0-alpha08'
-    implementation 'androidx.compose.material3:material3:1.0.0-alpha10'
-    implementation "com.google.android.material:compose-theme-adapter:1.1.7"
+    implementation 'androidx.compose.compiler:compiler:1.2.0-beta01'
+    implementation 'androidx.compose.runtime:runtime:1.2.0-beta01'
+    implementation 'androidx.compose.ui:ui:1.2.0-beta01'
+    implementation 'androidx.compose.ui:ui-tooling:1.2.0-beta01'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.2.0-beta01'
+    implementation 'androidx.compose.foundation:foundation:1.2.0-beta01'
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha11'
+    implementation "com.google.android.material:compose-theme-adapter-3:1.0.8"
     implementation "androidx.navigation:navigation-compose:2.4.2"
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation "io.coil-kt:coil-compose:1.4.0"
+    implementation "io.coil-kt:coil-compose:2.0.0"
     implementation 'com.google.accompanist:accompanist-flowlayout:0.24.7-alpha'
     implementation "com.google.accompanist:accompanist-navigation-animation:0.19.0"
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha'
@@ -277,9 +277,6 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-core:4.5.1'
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
     androidTestImplementation "androidx.annotation:annotation:1.3.0"
 }
 
