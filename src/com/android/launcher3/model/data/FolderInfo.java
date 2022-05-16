@@ -151,6 +151,7 @@ public class FolderInfo extends ItemInfo {
      */
     public void add(WorkspaceItemInfo item, int rank, boolean animate) {
         rank = Utilities.boundToRange(rank, 0, contents.size());
+        item.rank = rank;
         contents.add(rank, item);
         for (int i = 0; i < mListeners.size(); i++) {
             mListeners.get(i).onAdd(item, rank);
