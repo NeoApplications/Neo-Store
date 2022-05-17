@@ -16,7 +16,7 @@
     <string name="summary__general_smartspace">Päivämäärä, aika, kotiwidget</string>
     <string name="summary__general_notifications">Ilmoitusten laskuri, ilmoitusten väri, eleet</string>
     <string name="summary__general_advanced">Kieli, varmuuskopiointi, asetusten haku</string>
-    <string name="summary__general_about">Lisätietoja Omega Launcherista</string>
+    <string name="summary__general_about">Lisätietoja Neo Launcherista</string>
     <string name="pref_category__interfaces">Käyttöliittymä</string>
     <string name="pref_category__inputs">Eleet ja haku</string>
     <string name="pref_category__others">Muut</string>

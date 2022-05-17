@@ -9,7 +9,7 @@
     <string name="summary__general_theme">色の変更、アイコンパック、アイコンの形</string>
     <string name="summary__general_search">検索プロバイダー、スタイル、アイコン</string>
     <string name="summary__general_advanced">言語、バックアップ、設定の検索</string>
-    <string name="summary__general_about">Omega Launcherについて</string>
+    <string name="summary__general_about">Neo Launcherについて</string>
     <string name="pref_category__inputs">ジェスチャーと検索</string>
     <string name="pref_category__others">その他</string>
     <string name="title_desktop_full_width_widgets">最大幅のウィジェット</string>

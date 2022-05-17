@@ -40,7 +40,7 @@
     <string name="summary__general_smartspace">Date, time, home widget</string>
     <string name="summary__general_notifications">Badge count, badge color, gestures</string>
     <string name="summary__general_advanced">Language, back up, setting search</string>
-    <string name="summary__general_about">More about Omega Launcher</string>
+    <string name="summary__general_about">More about Neo Launcher</string>
     <string name="pref_category__interfaces">User Interface</string>
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>

@@ -291,7 +291,7 @@
     <string name="title_desktop_full_width_widgets">Виджеты на всю ширину</string>
     <string name="allow_rotation_blocked_desc">Текущая настройка экрана не допускает вращения</string>
     <string name="pref_category__others">Другое</string>
-    <string name="summary__general_about">Больше информации об Omega Launcher</string>
+    <string name="summary__general_about">Больше информации об Neo Launcher</string>
     <string name="summary__general_advanced">Язык, резервное копирование, поиск</string>
     <string name="summary__general_smartspace">Дата, время, домашний виджет</string>
     <string name="summary__general_search">Провайдер поиска, стиль, иконки</string>

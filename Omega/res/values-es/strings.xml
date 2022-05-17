@@ -63,7 +63,7 @@
     <string name="allow_rotation_blocked_desc">La configuración actual no permite la rotación de pantalla</string>
     <string name="pref_category__inputs">Gestos y Búsqueda</string>
     <string name="pref_category__interfaces">Interfaz de usuario</string>
-    <string name="summary__general_about">Mas acerca de Omega Launcher</string>
+    <string name="summary__general_about">Mas acerca de Neo Launcher</string>
     <string name="summary__general_advanced">Idioma, respaldo, búsqueda de preferencias</string>
     <string name="summary__general_smartspace">Fecha, Hora, widget inicio</string>
     <string name="summary__general_theme">Cambiar colores, pack de iconos, forma de icono</string>

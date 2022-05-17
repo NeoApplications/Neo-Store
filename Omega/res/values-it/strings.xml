@@ -30,7 +30,7 @@
     <string name="pref_category__interfaces">Interfaccia Utente</string>
     <string name="pref_category__others">Altro</string>
     <string name="pref_category__inputs">Gesti e ricerca</string>
-    <string name="summary__general_about">Ulteriori informazioni su Omega Launcher</string>
+    <string name="summary__general_about">Ulteriori informazioni su Neo Launcher</string>
     <string name="summary__general_advanced">Lingua, back up, impostazioni di ricerca</string>
     <string name="summary__general_notifications">Conteggio dei badge, colore dei badge, gesti</string>
     <string name="summary__general_smartspace">Data, ora, widget nella home</string>
