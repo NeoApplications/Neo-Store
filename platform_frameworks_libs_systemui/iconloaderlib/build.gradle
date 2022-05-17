@@ -9,6 +9,12 @@ android {
         targetSdkVersion 31
     }
 
+    buildTypes {
+        neo {
+            minifyEnabled false
+        }
+    }
+
     sourceSets {
         main {
             java.srcDirs = ['src', 'src_full_lib']

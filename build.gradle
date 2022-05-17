@@ -88,6 +88,14 @@ android {
                     appIconRound: "@mipmap/ic_launcher_round_debug"
             ]
         }
+        neo {
+            minifyEnabled false
+            applicationIdSuffix ".neo"
+            manifestPlaceholders = [
+                    appIcon     : "@mipmap/ic_launcher_debug",
+                    appIconRound: "@mipmap/ic_launcher_round_debug"
+            ]
+        }
 
         release {
             minifyEnabled false
