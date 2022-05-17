@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.saggitt.omega.compose.objects.MusicControlItem
 
+// Make the each button a ControlDashProvider??
 @Composable
 fun MusicBar(
     ratio: Float,

@@ -196,7 +196,9 @@ class BackupListFragment : Fragment(), BackupListAdapter.Callbacks {
                         takeFlags
                     )
                     val uri = resultData.data
-                    if (!prefs.recentBackups.contains(uri!!)) {
+                    if (!prefs.recentBackups.contains(uri!!) ||
+                        !adapter.toUriList().contains(uri)
+                    ) {
                         adapter.addItem(BackupFile(requireContext(), uri))
                         saveChanges()
                     }
