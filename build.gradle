@@ -56,7 +56,7 @@ android {
     compileSdk 32
 
     def name = "0.9.0"
-    def code = 321
+    def code = 905
 
     defaultConfig {
         minSdkVersion 26
@@ -82,6 +82,7 @@ android {
         debug {
             minifyEnabled false
             applicationIdSuffix ".alpha"
+            versionNameSuffix "-alpha5"
             manifestPlaceholders = [
                     appIcon     : "@mipmap/ic_launcher_debug",
                     appIconRound: "@mipmap/ic_launcher_round_debug"
@@ -90,6 +91,7 @@ android {
 
         release {
             minifyEnabled false
+            versionNameSuffix "-alpha5"
             proguardFiles "proguard-android-optimize.txt", "proguard.flags"
             manifestPlaceholders = [
                     appIcon     : "@mipmap/ic_launcher",
