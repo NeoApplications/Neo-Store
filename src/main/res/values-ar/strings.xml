@@ -14,7 +14,7 @@
     <string name="author_email">بريد المطور</string>
     <string name="dark">داكن</string>
     <string name="delete">حذف</string>
-    <string name="delete_repository_DESC">هل انت متأكد من حذف المستودع؟</string>
+    <string name="delete_repository_DESC">هل تريد حذف هذا المستودع؟</string>
     <string name="description">الوصف</string>
     <string name="details">التفاصيل</string>
     <string name="donate">التبرع</string>
@@ -27,7 +27,8 @@
     <string name="incompatible_older_DESC">هذا الإصدار اقدم من ذلك المثبت على جهازك. قم بإلغاء تثبيته أولاً.</string>
     <string name="incompatible_features_DESC">مميزات مفقودة.</string>
     <string name="incompatible_platforms_DESC_FORMAT">النظام الأساسي%1$s الخاص بك غير مدعوم. الأنظمة الأساسية المدعومة: %2$s.</string>
-    <string name="incompatible_signature_DESC">هذا الإصدار موقّع بشهادة مختلفة عن تلك المثبتة على جهازك. قم بإلغاء تثبيت تلك أولاً.</string>
+    <string name="incompatible_signature_DESC">هذا الإصدار موقّع بشهادة مختلفة عن تلك المثبتة على جهازك.
+\nقم بإلغاء تثبيت تلك أولاً.</string>
     <string name="incompatible_version">إصدار غير متوفق</string>
     <string name="incompatible_with_FORMAT">غير متوافق مع %s</string>
     <string name="install">تثبيت</string>
@@ -55,7 +56,8 @@
     <string name="no_applications_available">لا توجد تطبيقات متاحة</string>
     <string name="recently_updated">تم تحديثه مؤخرا</string>
     <string name="repositories">المستودعات</string>
-    <string name="repository_unsigned_DESC">غير موقع. تعذر التحقق من قائمة التطبيقات. كن حذرا عند تنزيل التطبيقات من مستودعات غير موقعة.</string>
+    <string name="repository_unsigned_DESC">تعذر التحقق من قائمة التطبيقات غير الموقعة.
+\nكن حذرا في تنزيل التطبيقات من المستودعات غير الموقعة.</string>
     <string name="requires_FORMAT">يتطلب %s</string>
     <string name="root_permission">تثبيت صامت</string>
     <string name="root_permission_description">استخدام الجذر للتثبيت الصامت</string>
@@ -76,11 +78,11 @@
     <string name="tracks_or_reports_your_activity">يتعقب أو يرفق نشاطك</string>
     <string name="version_FORMAT">الإصدار %s</string>
     <string name="prefs_language_title">اللغة</string>
-    <string name="installed_applications">التطبيقات المثبتة</string>
-    <string name="sort_filter">فرز وتصفية</string>
+    <string name="installed_applications">المثبتة</string>
+    <string name="sort_filter">الفرز والتصفية</string>
     <string name="new_applications">تطبيقات جديدة</string>
-    <string name="install_after_sync">تثبيت التحديثات تلقائيا</string>
-    <string name="prefs_new_apps">عدد التطبيقات الجديدة التي يجب عرضها</string>
+    <string name="install_after_sync">التحديث التلقائي</string>
+    <string name="prefs_new_apps">عدد التطبيقات التي سيتم عرضها ضمن \"التطبيقات الجديدة\"</string>
     <string name="author_website">موقع المطور الإلكتروني</string>
     <string name="available">متوفر</string>
     <string name="bug_tracker">متعقب العلل</string>
@@ -96,7 +98,7 @@
     <string name="could_not_download_FORMAT">تعذر تنزيل %s</string>
     <string name="could_not_sync_FORMAT">تعذر مزامنة %s</string>
     <string name="could_not_validate_FORMAT">تعذر التحقق من %s</string>
-    <string name="credits">شكر</string>
+    <string name="credits">المساهمون</string>
     <string name="downloaded_FORMAT">تم تحميل %s</string>
     <string name="file_format_error_DESC">صيغة ملف غير صالحة.</string>
     <string name="fingerprint">البصمة</string>
@@ -113,7 +115,7 @@
     <string name="invalid_username_format">صيغة أسم المستخدم خاطئة</string>
     <string name="launch">تشغيل</string>
     <string name="list_animation_description">تأثيرات القائمة على الصفحة الرئيسية</string>
-    <string name="merging_FORMAT">دمج %s</string>
+    <string name="merging_FORMAT">دمج %s…</string>
     <string name="name">الاسم</string>
     <string name="network_error_DESC">خطاء في الشبكة.</string>
     <string name="never">أبدا</string>
@@ -143,11 +145,12 @@
     <string name="promotes_non_free_software">يروج لبرمجيات غير حرة</string>
     <string name="provided_by_FORMAT">مقدم بواسطة %s</string>
     <string name="proxy">بروكسي</string>
-    <string name="proxy_host">مضيف البروكسي</string>
-    <string name="proxy_port">منفذ البروكسي</string>
-    <string name="proxy_type">نوع البروكسي</string>
+    <string name="proxy_host">المضيف</string>
+    <string name="proxy_port">المنفذ</string>
+    <string name="proxy_type">النوع</string>
     <string name="repository">المستودع</string>
-    <string name="repository_not_used_DESC">هذا المتستودع لم يستخدم بعد. قم بتمكينه لعرض التطبيقات التي يحتوي عليها.</string>
+    <string name="repository_not_used_DESC">لم يتم استخدام هذا المستودع بعد.
+\nاتصل به لعرض التطبيقات الموجودة فيه.</string>
     <string name="saving_details">جارى حفظ التفاصيل…</string>
     <string name="screenshots">صور الشاشة</string>
     <string name="search">بحث</string>
@@ -170,7 +173,7 @@
     <string name="unverified">لم يتم التحقق منها</string>
     <string name="update">تحديث</string>
     <string name="updates">تحديثات</string>
-    <string name="upstream_source_code_is_not_free">الكود المصدرى ليس حرا</string>
+    <string name="upstream_source_code_is_not_free">شفرة المصدر الأولية ليست حرة</string>
     <string name="username">اسم المستخدم</string>
     <string name="username_missing">اسم المستخدم مفقود</string>
     <string name="validation_index_error_DESC">تعذر التحقق من صحة الفهرس.</string>
@@ -183,18 +186,18 @@
     <string name="show_less">عرض أقل</string>
     <string name="latest">آخر</string>
     <string name="explore">استكشف</string>
-    <string name="update_all">تحديث الكل</string>
-    <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
-    <string name="prefs_updated_apps">عدد التطبيقات المحدثة التي يجب عرضها</string>
+    <string name="update_all">تثبيت الكل</string>
+    <string name="install_after_sync_summary">تثبيت جميع الإصدارات الجديدة بعد البحث في المستودعات للتطبيقات الجديدة</string>
+    <string name="prefs_updated_apps">عدد التطبيقات التي سيتم عرضها ضمن \"تم التحديث مؤخرا\"</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
     <string name="pending">قيد الانتظار</string>
     <string name="installing">التثبيت</string>
-    <string name="ignore_battery_optimization_title">تجاهل تحسين البطارية</string>
-    <string name="ignore_battery_optimization_message">بدءا من Android 12 ، هناك قيود على تشغيل الخدمات الأمامية مما يتسبب في تعطل التطبيق عند التنزيلات. لمنع ذلك ، يجب عليك إيقاف تشغيل تحسين البطارية</string>
-    <string name="dialog_approve">لنفعلها!</string>
-    <string name="ignore_battery_optimization_not_supported">لا يدعم الجهاز تجاهل تحسينات البطارية!</string>
-    <string name="dialog_refuse">لا أحتاجها</string>
+    <string name="ignore_battery_optimization_title">تحسين البطارية</string>
+    <string name="ignore_battery_optimization_message">يتصرف التطبيق بشكل أفضل دون تحسين البطارية ، ويمنع التعطل على Android 12+</string>
+    <string name="dialog_approve">إيقاف تشغيل</string>
+    <string name="ignore_battery_optimization_not_supported">لا يدعم تثبيت Android إيقاف تشغيل تحسين البطارية.</string>
+    <string name="dialog_refuse">يحفظ</string>
     <string name="root_session_installer">استخدام مثبت جلسة الجذر</string>
     <string name="root_session_installer_description">يعد مثبِّت الجلسة أقل أداءً قليلاً من المثبت القديم ، ولكنه يتجنب المشكلات المتعلقة بالتطبيقات المثبتة في Android +13.</string>
 </resources>
