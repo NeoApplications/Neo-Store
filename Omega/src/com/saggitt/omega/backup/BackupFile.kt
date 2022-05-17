@@ -122,7 +122,6 @@ class BackupFile(context: Context, val uri: Uri) {
     fun restore(contents: Int): Boolean {
         try {
             val contextWrapper = ContextWrapper(mContext)
-            val dbFile = contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB)
             val dbFile2 = contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2)
             val dir = contextWrapper.cacheDir.parent
             val settingsFile =
@@ -139,8 +138,9 @@ class BackupFile(context: Context, val uri: Uri) {
                     entry = zipIs.nextEntry
                     if (entry == null) break
                     Log.d(TAG, "Found entry ${entry.name}")
-                    val file = if (entry.name == dbFile.name) {
+                    val file = if (entry.name.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM))) {
                         if (contents and INCLUDE_HOME_SCREEN == 0) continue
+                        val dbFile = contextWrapper.getDatabasePath(entry.name)
                         dbFile
                     } else if (entry.name == dbFile2.name) {
                         if (contents and INCLUDE_HOME_SCREEN == 0) continue
@@ -329,13 +329,9 @@ class BackupFile(context: Context, val uri: Uri) {
             val contextWrapper = ContextWrapper(context)
             val files: MutableList<File> = ArrayList()
             if (contents or INCLUDE_HOME_SCREEN != 0) {
-                val dbFiles = contextWrapper.databaseList()
-                for (db in dbFiles) {
-                    if (db.contains("launcher")) {
-                        files.add(contextWrapper.getDatabasePath(db))
-                    }
-
-                }
+                contextWrapper.databaseList()
+                    .filter { it.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM)) }
+                    .forEach { files.add(contextWrapper.getDatabasePath(it)) }
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.WIDGET_PREVIEWS_DB))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB))
