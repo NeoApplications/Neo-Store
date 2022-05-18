@@ -190,9 +190,9 @@
     <string name="installing">Установка</string>
     <string name="pending">Ожидается</string>
     <string name="ignore_battery_optimization_not_supported">Это устройство не поддерживает игнорирование экономии заряда батареи!</string>
-    <string name="dialog_refuse">Это не нужно</string>
+    <string name="dialog_refuse">Оставить</string>
     <string name="dialog_approve">Давайте!</string>
-    <string name="ignore_battery_optimization_title">Игнорировать экономию заряда батареи</string>
+    <string name="ignore_battery_optimization_title">Экономию заряда батареи</string>
     <string name="ignore_battery_optimization_message">Начиная с Android 12, появились ограничения для запущенных в фоне сервисов, что провоцирует вылеты приложения во время загрузок. Чтобы предотвратить это, отключите экономию заряда батареи</string>
     <string name="root_session_installer">Использовать root session установщик</string>
     <string name="root_session_installer_description">Session установщик немного менее производителен, чем устаревший, но позволяет избежать проблем с установленными приложениями в Android +13.</string>
