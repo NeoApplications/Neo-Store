@@ -34,10 +34,7 @@ import com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound
 import com.android.launcher3.icons.ShadowGenerator
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.preferences.OmegaPreferences
-import com.saggitt.omega.util.dpToPx
-import com.saggitt.omega.util.getWindowCornerRadius
-import com.saggitt.omega.util.isVisible
-import com.saggitt.omega.util.runOnMainThread
+import com.saggitt.omega.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -98,15 +95,17 @@ class CustomHotseat @JvmOverloads constructor(
         }
     }
 
+    private val hotseatDisabled = context.omegaPrefs.dockHide
+
     init {
-        if (prefs.dockHide) {
+        if (hotseatDisabled) {
             super.setVisibility(View.GONE)
         }
         setWillNotDraw(!bgEnabled || launcher.useVerticalBarLayout())
     }
 
     override fun setVisibility(visibility: Int) {
-        if (!prefs.dockHide) {
+        if (!hotseatDisabled) {
             super.setVisibility(visibility)
         }
     }

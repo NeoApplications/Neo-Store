@@ -264,8 +264,8 @@ public class DeviceProfile {
             taskbarSize = res.getDimensionPixelSize(R.dimen.taskbar_size);
             WindowInsets windowInsets =
                     context.createWindowContext(
-                            context.getSystemService(DisplayManager.class).getDisplay(mInfo.id),
-                            TYPE_APPLICATION, null)
+                                    context.getSystemService(DisplayManager.class).getDisplay(mInfo.id),
+                                    TYPE_APPLICATION, null)
                             .getSystemService(WindowManager.class)
                             .getCurrentWindowMetrics().getWindowInsets();
             nonOverlappingTaskbarInset = taskbarSize - windowInsets.getSystemWindowInsetBottom();
@@ -469,13 +469,17 @@ public class DeviceProfile {
     private void updateHotseatIconSize(int hotseatIconSizePx) {
         // Ensure there is enough space for folder icons, which have a slightly larger radius.
         hotseatCellHeightPx = (int) Math.ceil(hotseatIconSizePx * ICON_OVERLAP_FACTOR);
-        if (isVerticalBarLayout()) {
-            hotseatBarSizePx = hotseatIconSizePx + hotseatBarSidePaddingStartPx
-                    + hotseatBarSidePaddingEndPx;
+        if (prefs.getDockHide()) {
+            hotseatBarSizePx = 0;
         } else {
-            hotseatBarSizePx = hotseatIconSizePx + hotseatBarTopPaddingPx
-                    + hotseatBarBottomPaddingPx + (isScalableGrid ? 0 : hotseatExtraVerticalSize)
-                    + hotseatBarSizeExtraSpacePx;
+            if (isVerticalBarLayout()) {
+                hotseatBarSizePx = hotseatIconSizePx + hotseatBarSidePaddingStartPx
+                        + hotseatBarSidePaddingEndPx;
+            } else {
+                hotseatBarSizePx = hotseatIconSizePx + hotseatBarTopPaddingPx
+                        + hotseatBarBottomPaddingPx + (isScalableGrid ? 0 : hotseatExtraVerticalSize)
+                        + hotseatBarSizeExtraSpacePx;
+            }
         }
     }
 
@@ -620,7 +624,6 @@ public class DeviceProfile {
         // Icon scale should never exceed 1, otherwise pixellation may occur.
         iconScale = Math.min(1f, scale);
         cellScaleToFit = scale;
-
 
         // Workspace
         final boolean isVerticalLayout = isVerticalBarLayout();
