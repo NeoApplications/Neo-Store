@@ -1,0 +1,12 @@
+* Une android-11.0.0_r31
+* Añade: mantiene preferencia de pantalla vacía
+* Añade: selector de color para lengüetas
+* Añade: controles guion adicionales
+* Añade: personalización guion
+* Añade: admite QuickSwitch
+* Añade: FiveSecs KLWP
+* Añade: proveedor Searx
+* Añade: asistencia dormir
+* Añade: listado vertical de apps (experimental)
+* Repara: tamaño muelle en pantallas largas
+* Repara: Crash when opening Google Assistant
