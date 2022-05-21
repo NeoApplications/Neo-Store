@@ -116,9 +116,9 @@ public class TaskKeyLruCache<V> {
             mMaxSize = maxSize;
         }
 
-        /*@Override
-        protected boolean removeEldestEntry(Entry<Integer, TaskKeyLruCache.Entry<V>> eldest) {
+        @Override
+        protected boolean removeEldestEntry(LinkedHashMap.Entry<Integer, TaskKeyLruCache.Entry<V>> eldest) {
             return size() > mMaxSize;
-        }*/
+        }
     }
 }
