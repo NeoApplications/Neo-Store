@@ -122,6 +122,11 @@ class CustomIconProvider @JvmOverloads constructor(
                         R.drawable.themed_icon_static_clock
                     )
                 }
+                packageName == mCalendar.packageName -> {
+                    // calendar app, apply the dynamic calendar icon
+                    themeData = getThemeData(mCalendar.packageName, "")
+                    iconType = ICON_TYPE_CALENDAR
+                }
                 else -> {
                     // regular icon
                     themeData = getThemeData(componentName)
