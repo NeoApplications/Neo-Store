@@ -18,8 +18,11 @@
 
 package com.saggitt.omega.compose.screens
 
-import android.graphics.Bitmap
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.util.Base64
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
@@ -34,8 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import java.io.InputStream
 
 @Composable
 fun LicenseScreen(isDark: Boolean) {
@@ -54,28 +60,63 @@ fun ComposableWebView(url: String, isDark: Boolean) {
     } else {
         "about_light.css"
     }
-
-    var webView: WebView? = null
     AndroidView(
-
         factory = { context ->
             WebView(context).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
+
                 webViewClient = object : WebViewClient() {
-                    override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+                    override fun onPageFinished(view: WebView, url: String) {
+                        if (url.startsWith("file:///android_asset")) {
+                            // Inject CSS when page is done loading
+                            try {
+                                settings.javaScriptEnabled = true
+                                val inputStream: InputStream = context.assets.open(cssFile)
+                                val buffer = ByteArray(inputStream.available())
+                                inputStream.read(buffer)
+                                inputStream.close()
+                                val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
+                                loadUrl(
+                                    "javascript:(function() { " +
+                                            "var head  = document.getElementsByTagName('head')[0];" +
+                                            "var style = document.createElement('style');" +
+                                            "style.type = 'text/css';" +
+                                            "style.innerHTML =  window.atob('" + encoded + "');" +
+                                            "head.appendChild(style);" +
+                                            "})()"
+                                )
+                                settings.javaScriptEnabled = false
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                        super.onPageFinished(view, url)
+                    }
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView,
+                        request: WebResourceRequest
+                    ): Boolean {
+                        if (url.contains("file://")) {
+                            view.loadUrl(url)
+                        } else {
+                            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                            try {
+                                startActivity(context, intent, null)
+                            } catch (e: ActivityNotFoundException) {
+                                view.loadUrl(url)
+                            }
+                        }
+                        return true
                     }
                 }
-
-                loadUrl(url)
-
-                webView = this
             }
-        }, update = {
-            webView = it
-        })
+        },
+        update = { webView -> webView.loadUrl(url) }
+    )
 
 }
 

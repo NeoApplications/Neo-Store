@@ -2,13 +2,25 @@ html,body{
 color:#fafafa;
 background:#303030;}
 
-a:link {color: #ff7d00;}
-a:visited {color: #ffca7d;}
+a:link {
+color: #ff7d00;
+text-decoration: none;
+}
+a:visited {
+color: #ffca7d;
+text-decoration: none;
+}
 
+hr{
+    border: none;
+    height: 1px;
+    color: #FFFFFF;
+    background-color: #FFFFFF;
+}
 .license .name{
     font-weight:bold;
-    color:#1e1e1e;
-    font-size: 16px;
+    color:#FFFFFF;
+    font-size: 20px;
     margin-bottom: 0px;
     padding-bottom: 0px;
 }
@@ -17,11 +29,11 @@ a:visited {color: #ffca7d;}
     margin-top: 1px;
     margin-bottom: 0px;
     padding-bottom: 0px;
-    color: #4f4f4f;
+    color: #FFFFFF;
 }
 .license .source{
     margin-top: 1px;
-    color: #4f4f4f;
+    color: #FFFFFF;
 }
 
 .topButton {
