@@ -235,7 +235,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var desktopModeEnabled by BooleanPref(PREFS_DESKTOP_MODE, true, recreate)
     private val lowPerformanceMode by BooleanPref(PREFS_LOW_PREFORMANCE, false, restart) // TODO Add
     val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref(PREFS_DEBUG_MODE, true, doNothing)
+    val showDebugInfo by BooleanPref(PREFS_DEBUG_MODE, false, doNothing)
 
     // FEED
     var feedProvider by StringPref(PREFS_FEED_PROVIDER, "", restart)
