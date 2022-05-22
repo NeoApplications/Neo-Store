@@ -36,7 +36,6 @@ class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(c
         setWillNotDraw(false)
         mContent = LinearLayout(context).apply {
             addView(container)
-            setPadding(8, 8, 8, 8) // Is it needed?
         }
     }
 
@@ -72,7 +71,7 @@ class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(c
             return
         }
         mIsOpen = true
-        setupNavBarColor() //
+        setupNavBarColor()
         mOpenCloseAnimator.setValues(
             PropertyValuesHolder.ofFloat(TRANSLATION_SHIFT, TRANSLATION_SHIFT_OPENED)
         )
