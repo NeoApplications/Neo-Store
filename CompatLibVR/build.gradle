@@ -36,6 +36,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.core:core-ktx:${ANDROID_X_VERSION}"
     implementation project(':CompatLib')
 }
