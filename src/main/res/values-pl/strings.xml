@@ -83,7 +83,7 @@
     <string name="bug_tracker">Śledzenie błędów</string>
     <string name="incompatible_api_max_DESC_FORMAT">Maksymalna wersja API to %d.</string>
     <string name="application_not_found">Nie znaleziono aplikacji</string>
-    <string name="author_email">Adres e-mail autora</string>
+    <string name="author_email">E-mail autora</string>
     <string name="author_website">Strona internetowa autora</string>
     <string name="description">Opis</string>
     <string name="no_applications_installed">Brak zainstalowanych aplikacji</string>
@@ -97,7 +97,7 @@
     <string name="incompatible_platforms_DESC_FORMAT">Twoja platforma %1$s nie jest obsługiwana. Obsługiwane platformy: %2$s.</string>
     <string name="light">Jasny</string>
     <string name="list_animation">Animacje listy</string>
-    <string name="merging_FORMAT">Łączenie %s</string>
+    <string name="merging_FORMAT">Scalanie %s</string>
     <string name="no_applications_available">Brak dostępnych aplikacji</string>
     <string name="no_matching_applications_found">Nie znaleziono pasujących aplikacji</string>
     <string name="changes">Zmiany</string>
@@ -106,9 +106,9 @@
     <string name="confirmation">Potwierdzenie</string>
     <string name="could_not_download_FORMAT">Nie można pobrać %s</string>
     <string name="could_not_validate_FORMAT">Nie można zatwierdzić %s</string>
-    <string name="credits">Kredyty</string>
+    <string name="credits">Współtwórcy</string>
     <string name="delete">Usuń</string>
-    <string name="delete_repository_DESC">Czy na pewno chcesz usunąć repozytorium\?</string>
+    <string name="delete_repository_DESC">Usunąć to repozytorium\?</string>
     <string name="details">Szczegóły</string>
     <string name="incompatible_signature_DESC">Wybrana wersja jest związana z innym certyfikatem niż ten, który jest zainstalowany na Twoim urządzeniu. Najpierw odinstaluj ten certyfikat.</string>
     <string name="invalid_username_format">Nieprawidłowy format nazwy użytkownika</string>
@@ -141,7 +141,7 @@
     <string name="integrity_check_error_DESC">Nie można sprawdzić spójności.</string>
     <string name="signature_FORMAT">Sygnatura %s</string>
     <string name="share">Udostępnij</string>
-    <string name="repository_not_used_DESC">To repozytorium nie było jeszcze używane. Włącz je, by zobaczyć uwzględnione aplikacje.</string>
+    <string name="repository_not_used_DESC">To repozytorium nie jest używane. Włącz je, by zobaczyć uwzględnione aplikacje.</string>
     <string name="ok">OK</string>
     <string name="invalid_permissions_error_DESC">Nieprawidłowe uprawnienia.</string>
     <string name="incompatible_versions">Niezgodne wersje</string>
@@ -176,7 +176,7 @@
     <string name="prefs_new_apps">Liczba nowych aplikacji do pokazania</string>
     <string name="installed_applications">Zainstalowane aplikacje</string>
     <string name="update_all">Aktualizuj wszystko</string>
-    <string name="only_on_wifi_and_battery">Tylko przez Wi-Fi i przewód</string>
+    <string name="only_on_wifi_and_battery">Tylko przez Wi-Fi i ładowanie</string>
     <string name="show_less">Pokaż mniej</string>
     <string name="latest">Najnowsze</string>
     <string name="explore">Odkrywaj</string>
