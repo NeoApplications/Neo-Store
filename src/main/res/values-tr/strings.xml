@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_failed">Eylem başarısız oldu</string>
-    <string name="add_repository">Yeni depo ekle</string>nm
+    <string name="add_repository">Depo ekle</string>nm
     <string name="address">Depo adresi</string>
     <string name="all_applications">Tüm Uygulamalar</string>
     <string name="all_applications_up_to_date">Tüm uygulamalar güncel</string>
@@ -17,7 +17,7 @@
     <string name="bug_tracker">Hata izleme</string>
     <string name="cancel">İptal et</string>
     <string name="cant_edit_sync_DESC">Eşzamanlanan depolar düzenlenemiyor…</string>
-    <string name="changelog">Değişim Günlüğü</string>
+    <string name="changelog">Değişim günlüğü</string>
     <string name="changes">Değişiklikler</string>
     <string name="checking_repository">Depo denetleniyor…</string>
     <string name="compiled_for_debugging">Hata ayıklama için derlendi</string>
@@ -193,7 +193,7 @@
     <string name="ignore_battery_optimization_not_supported">Android kurulumunuz pil optimizasyonunu kapatmayı desteklemiyor.</string>
     <string name="ignore_battery_optimization_message">Uygulama pil optimizasyonu olmadan daha iyi çalışır ve Android 12+ sürümünde çökmeyi önler</string>
     <string name="dialog_refuse">Sakla</string>
-    <string name="dialog_approve">Bunu yapalım!</string>
+    <string name="dialog_approve">Kapat</string>
     <string name="root_session_installer">Yönetici oturum yükleyicisini kullan</string>
     <string name="root_session_installer_description">Oturum yükleyici, eski sürümden daha az performanslıdır, ancak Android +13\'te yüklü uygulamalarla ilgili sorunları önler.</string>
 </resources>
