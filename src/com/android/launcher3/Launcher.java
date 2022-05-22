@@ -205,6 +205,7 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverla
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlayCallbacks;
 import com.saggitt.omega.OmegaApp;
 import com.saggitt.omega.OmegaLauncher;
+import com.saggitt.omega.OverlayCallbackImpl;
 import com.saggitt.omega.util.Config;
 
 import java.io.FileDescriptor;
@@ -514,7 +515,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
     }
 
     protected LauncherOverlayManager getDefaultOverlay() {
-        return new LauncherOverlayManager() { };
+        return new OverlayCallbackImpl(this);
     }
 
     protected OnboardingPrefs createOnboardingPrefs(SharedPreferences sharedPrefs) {
