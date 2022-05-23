@@ -63,4 +63,7 @@
     <string name="title__desktop_icon_size">גודל אייקון</string>
     <string name="summary__general_search">מנוע חיפוש, עיצוב, אייקונים</string>
     <string name="title__general_search">חיפוש</string>
+    <string name="title__general_notifications">מחוות והתראות</string>
+    <string name="title__general_smartspace">ווידג׳טים של דף הבית</string>
+    <string name="summary__general_desktop">להתאים אישית שולחן עבודה שלך</string>
 </resources>
