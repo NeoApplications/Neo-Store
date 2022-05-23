@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -29,7 +28,7 @@ fun SearchBarUI(
     val searchBarHeight = 56.dp
     val innerPadding = remember { MutablePaddingValues() }
     val searchBarVerticalMargin = 8.dp
-    val statusBarHeight = with(LocalDensity.current) { WindowInsets.statusBars.getTop(this).toDp() }
+    val statusBarHeight = 26.dp
     val contentShift = statusBarHeight + searchBarVerticalMargin + searchBarHeight / 2
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
@@ -37,7 +36,6 @@ fun SearchBarUI(
         topBar = {
             Surface(
                 modifier = Modifier
-                    .statusBarsPadding()
                     .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top))
                     .padding(horizontal = 16.dp, vertical = searchBarVerticalMargin)
                     .height(searchBarHeight),
