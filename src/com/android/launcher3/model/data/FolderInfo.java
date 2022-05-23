@@ -467,8 +467,8 @@ public class FolderInfo extends ItemInfo {
         if (entry != null) {
             entry.getIcon();
             if (!entry.getIcon().equals(cachedIcon)) {
-                IconPack pack = IconPackProvider.Companion.getInstance(launcher)
-                        .getIconPack(entry.getPackPackageName(), false, true);
+                IconPack pack = IconPackProvider.INSTANCE.get(launcher)
+                        .getIconPackOrSystem(entry.getPackPackageName());
                 if (pack != null) {
                     cached = pack.getIcon(entry, launcher.getDeviceProfile().inv.fillResIconDpi);
                     cachedIcon = entry.getIcon();

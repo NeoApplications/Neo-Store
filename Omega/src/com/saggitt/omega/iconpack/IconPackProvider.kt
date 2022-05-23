@@ -1,7 +1,6 @@
 package com.saggitt.omega.iconpack
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -17,38 +16,24 @@ import com.saggitt.omega.util.Config
 
 class IconPackProvider(private val context: Context) {
     private val iconPacks = mutableMapOf<String, IconPack?>()
+    private val systemIconPack = SystemIconPack(context)
     val systemIcon = CustomAdaptiveIconDrawable.wrapNonNull(
         ContextCompat.getDrawable(context, R.mipmap.ic_launcher)!!
     )
 
-    fun getIconPack(packageName: String): IconPack? {
-        if (packageName == "") {
-            return null
-        }
+    fun getIconPackOrSystem(packageName: String): IconPack? {
+        if (packageName == "") return systemIconPack
+        return getIconPack(packageName)
+    }
+
+    private fun getIconPack(packageName: String): IconPack? {
         return iconPacks.getOrPut(packageName) {
             try {
-                val packResources = context.packageManager.getResourcesForApplication(packageName)
-                IconPack(context, packageName, packResources)
+                CustomIconPack(context, packageName)
             } catch (e: PackageManager.NameNotFoundException) {
                 null
             }
         }
-    }
-
-    private fun getIconPackInternal(
-        name: String,
-        put: Boolean = true,
-        load: Boolean = false
-    ): IconPack? {
-        //if (name == defaultPack.packPackageName) return defaultPack
-        //if (name == uriPack.packPackageName) return uriPack
-        return if (isPackProvider(context, name)) {
-            iconPacks[name]?.apply { if (load) loadBlocking() }
-        } else null
-    }
-
-    fun getIconPack(name: String, put: Boolean = true, load: Boolean = false): IconPack? {
-        return getIconPackInternal(name, put, load)
     }
 
     fun getIconPackList(): List<IconPackInfo> {
@@ -64,10 +49,8 @@ class IconPackProvider(private val context: Context) {
                     CustomAdaptiveIconDrawable.wrapNonNull(info.loadIcon(pm))
                 )
             }
-
         val defaultIconPack =
             IconPackInfo(context.getString(R.string.icon_pack_default), "", systemIcon)
-
         return listOf(defaultIconPack) + iconPacks.sortedBy { it.name }
     }
 
@@ -93,32 +76,9 @@ class IconPackProvider(private val context: Context) {
         return drawable
     }
 
-    private fun getIconPackOrSystem(packageName: String): IconPack? {
-        if (packageName == "") return null
-        return getIconPack(packageName)
-    }
-
     companion object {
         @JvmField
         val INSTANCE = MainThreadInitializedObject(::IconPackProvider)
-
-        fun getInstance(context: Context): IconPackProvider {
-            if (INSTANCE == null) {
-                INSTANCE[context] = IconPackProvider(context.applicationContext)
-            }
-            return INSTANCE[context]!!
-        }
-
-        internal fun isPackProvider(context: Context, packageName: String?): Boolean {
-            if (packageName != null && packageName.isNotEmpty()) {
-                return Config.ICON_INTENTS.firstOrNull {
-                    context.packageManager.queryIntentActivities(
-                        Intent(it).setPackage(packageName), PackageManager.GET_META_DATA
-                    ).iterator().hasNext()
-                } != null
-            }
-            return false
-        }
     }
 }
 

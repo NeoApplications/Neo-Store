@@ -18,53 +18,29 @@
 
 package com.saggitt.omega.iconpack
 
-import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.android.launcher3.R
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.android.launcher3.util.ComponentKey
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import com.saggitt.omega.OmegaLauncher
-import com.saggitt.omega.compose.components.ListItemWithIcon
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.compose.screens.*
-import com.saggitt.omega.data.IconOverrideRepository
-import com.saggitt.omega.data.IconPickerItem
-import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
+import com.saggitt.omega.compose.screens.EditIconScreen
+import com.saggitt.omega.compose.screens.IconListScreen
 import com.saggitt.omega.theme.OmegaAppTheme
-import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.isDark
-import kotlinx.coroutines.launch
 
 class EditIconActivity : AppCompatActivity() {
 
-    val packs = IconPackProvider.INSTANCE.get(this).getIconPackList()
     private val isFolder by lazy { intent.getBooleanExtra(EXTRA_FOLDER, false) }
     private val component by lazy {
         if (intent.hasExtra(EXTRA_COMPONENT)) {
@@ -75,15 +51,16 @@ class EditIconActivity : AppCompatActivity() {
         } else null
     }
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val app = intent.getStringExtra(EXTRA_TITLE)
         setContent {
             OmegaAppTheme {
-                IconEditNavController(this, app, component, packs, isFolder)
+                val navController = rememberAnimatedNavController()
+                IconEditNavController(this, app, component, isFolder, navController)
             }
         }
-
     }
 
     companion object {
@@ -111,23 +88,46 @@ class EditIconActivity : AppCompatActivity() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun IconEditNavController(
     mActivity: AppCompatActivity,
-    appInfo:String?,
-    componentKey:ComponentKey?,
-    iconPacks:List<IconPackInfo>,
-    isFolder: Boolean=false){
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.EditIconMainScreen.route) {
-        composable(route = Routes.EditIconMainScreen.route) {
-            mActivity.title = appInfo
-            EditIconScreen(mActivity, appInfo, componentKey, iconPacks, isFolder, navController = navController)
-        }
+    appInfo: String?,
+    componentKey: ComponentKey?,
+    isFolder: Boolean = false,
+    navController: NavHostController
+) {
+    CompositionLocalProvider(
+        LocalNavController provides navController
+    ) {
+        AnimatedNavHost(
+            navController = navController,
+            startDestination = Routes.EditIconMainScreen.route
+        ) {
+            composable(route = Routes.EditIconMainScreen.route) {
+                mActivity.title = appInfo
+                EditIconScreen(
+                    mActivity,
+                    appInfo,
+                    componentKey,
+                    isFolder,
+                    navController = navController
+                )
+            }
 
-        composable(route = Routes.IconListScreen.route) {
-            IconListScreen()
+            composable(
+                route = Routes.IconListScreen.route,
+                arguments = listOf(
+                    navArgument("iconPackName") {
+                        defaultValue = ""
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString("iconPackName")?.let {
+                    IconListScreen(it)
+                }
+            }
         }
     }
-
 }

@@ -37,15 +37,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.compose.components.ListItemWithIcon
-import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
 import com.saggitt.omega.iconpack.IconPack
-import com.saggitt.omega.iconpack.IconPackInfo
 import com.saggitt.omega.iconpack.IconPackProvider
 
 @Composable
@@ -53,10 +50,11 @@ fun EditIconScreen(
     activity: Activity,
     title: String?,
     component: ComponentKey?,
-    iconPacks: List<IconPackInfo>,
     isFolder: Boolean,
     navController: NavController
 ) {
+    val context = LocalContext.current
+    val iconPacks = IconPackProvider.INSTANCE.get(context).getIconPackList()
     Column {
         Text(
             text = title ?: "",
@@ -85,7 +83,6 @@ fun EditIconScreen(
                 modifier = Modifier.requiredSize(60.dp)
             )
 
-            //Vertical Divider
             Divider(
                 color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier
@@ -97,48 +94,45 @@ fun EditIconScreen(
             //Package Icons
             val iconDpi = LocalContext.current.resources.configuration.densityDpi
             val ip = IconPackProvider.INSTANCE.get(LocalContext.current)
-            iconPacks.forEach {
-                if (it.packageName == "") {
-                    Image(
-                        painter = rememberDrawablePainter(drawable = OmegaLauncher.currentEditIcon),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .requiredSize(64.dp)
-                            .padding(start = 4.dp, end = 8.dp)
-                    )
-                    return@forEach
-                }
-                val pack: IconPack? = ip.getIconPack(it.packageName)
-                if (pack != null) {
-                    pack.loadBlocking()
-                    val iconEntry = pack.getIcon(component!!.componentName)
-                    if (iconEntry != null) {
-                        val mIcon: Drawable? = ip.getDrawable(
-                            iconEntry,
-                            iconDpi,
-                            component.user
-                        )
-                        if (mIcon != null) {
-                            Image(
-                                painter = rememberDrawablePainter(drawable = mIcon),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .requiredSize(64.dp)
-                                    .padding(start = 8.dp, end = 8.dp)
-                                    .clickable {
-                                        val customEntry = iconEntry.toCustomEntry()
-                                        val entryString = customEntry.toString()
-                                        activity.setResult(RESULT_OK, Intent().putExtra(EXTRA_ENTRY, entryString))
-                                        activity.finish()
-                                    }
+
+            if (isFolder) {
+                //TODO: Add support for custom folder icons
+            } else {
+                iconPacks.forEach {
+                    val pack: IconPack? = ip.getIconPackOrSystem(it.packageName)
+                    if (pack != null) {
+                        pack.loadBlocking()
+                        val iconEntry = pack.getIcon(component!!.componentName)
+                        if (iconEntry != null) {
+                            val mIcon: Drawable? = ip.getDrawable(
+                                iconEntry,
+                                iconDpi,
+                                component.user
                             )
+                            if (mIcon != null) {
+                                Image(
+                                    painter = rememberDrawablePainter(drawable = mIcon),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .requiredSize(64.dp)
+                                        .padding(start = 8.dp, end = 8.dp)
+                                        .clickable {
+                                            val customEntry = iconEntry.toCustomEntry()
+                                            val entryString = customEntry.toString()
+                                            activity.setResult(
+                                                RESULT_OK,
+                                                Intent().putExtra(EXTRA_ENTRY, entryString)
+                                            )
+                                            activity.finish()
+                                        }
+                                )
+                            }
                         }
                     }
                 }
             }
         }
 
-        //Divider
         Divider(
             color = MaterialTheme.colorScheme.outline,
             modifier = Modifier
@@ -159,9 +153,11 @@ fun EditIconScreen(
                 },
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(
-                            Routes.IconListScreen.route
-                        )
+                        if (it.packageName == "") {
+                            navController.navigate("uri=android-app://androidx.navigation//icon_picker")
+                        } else {
+                            navController.navigate("uri=android-app://androidx.navigation//icon_picker?iconPackName=${it.packageName}")
+                        }
                     }
                     .padding(start = 16.dp),
                 description = {},

@@ -240,6 +240,8 @@
     <string name="preview_app_youtube" translatable="false">Youtube</string>
     <string name="preview_app_newpipe" translatable="false">NewPipe</string>
     <string name="preview_app_signal" translatable="false">Signal</string>
+    <string name="icon_picker_default_category">Icons</string>
+    <string name="icon_picker_load_failed">Couldn’t load more icons.</string>
 
     <!-- PREFERENCES SMARTSPACE -->
     <string name="title_show_google_app">Show Google app</string>

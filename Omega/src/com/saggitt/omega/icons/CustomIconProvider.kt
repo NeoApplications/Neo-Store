@@ -56,7 +56,7 @@ class CustomIconProvider @JvmOverloads constructor(
     private val mContext = context
     private val iconPackProvider = IconPackProvider.INSTANCE.get(context)
     private val overrideRepo = IconOverrideRepository.INSTANCE.get(context)
-    private val iconPack get() = iconPackProvider.getIconPack(prefs.iconPackPackage)
+    private val iconPack get() = iconPackProvider.getIconPackOrSystem(prefs.iconPackPackage)
 
     private var _themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>? = null
     private val themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>
@@ -183,7 +183,7 @@ class CustomIconProvider @JvmOverloads constructor(
 
         private fun recreateCalendarAndClockChangeReceiver() {
             val iconPack =
-                IconPackProvider.INSTANCE.get(context).getIconPack(iconPackPref)
+                IconPackProvider.INSTANCE.get(context).getIconPackOrSystem(iconPackPref)
             calendarAndClockChangeReceiver = if (iconPack != null) {
                 CalendarAndClockChangeReceiver(context, handler, iconPack, callback)
             } else {

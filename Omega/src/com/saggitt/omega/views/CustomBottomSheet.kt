@@ -26,7 +26,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.EditText
 import android.widget.ImageView
@@ -97,7 +96,7 @@ class CustomBottomSheet @JvmOverloads constructor(
 
             if (mInfoProvider != null) {
                 val launcher = OmegaLauncher.getLauncher(context)
-                icon.setOnLongClickListener {
+                icon.setOnClickListener {
                     val editItem: ItemInfo? =
                         if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
                             (mItemInfo as FolderInfo).coverInfo
@@ -108,7 +107,6 @@ class CustomBottomSheet @JvmOverloads constructor(
                     if (editProvider != null) {
                         launcher.startEditIcon(editItem!!, editProvider)
                     }
-                    true
                 }
             }
         }

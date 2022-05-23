@@ -25,5 +25,6 @@ sealed class Routes(val route: String) {
     object License : Routes("about/license")
 
     object EditIconMainScreen : Routes("edit_icon")
-    object IconListScreen : Routes("edit_icon/icon_picker")
+    object IconListScreen :
+        Routes("uri=android-app://androidx.navigation//icon_picker?iconPackName={iconPackName}")
 }

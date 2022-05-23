@@ -267,7 +267,7 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.0.0"
     implementation 'com.google.accompanist:accompanist-flowlayout:0.24.7-alpha'
     implementation "com.google.accompanist:accompanist-insets-ui:0.24.7-alpha"
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.19.0"
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.24.8-beta"
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha'
     implementation 'com.google.accompanist:accompanist-drawablepainter:0.24.7-alpha'
 
