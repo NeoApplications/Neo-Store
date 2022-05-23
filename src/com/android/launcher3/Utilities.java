@@ -699,8 +699,8 @@ public final class Utilities {
         return icon;
     }
 
-    private static Drawable loadFullDrawableWithoutTheme(Launcher launcher, ItemInfo info,
-                                                         int width, int height, Object[] outObj) {
+    public static Drawable loadFullDrawableWithoutTheme(Launcher launcher, ItemInfo info,
+                                                        int width, int height, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);
         if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             LauncherActivityInfo activityInfo = launcher.getSystemService(LauncherApps.class)
