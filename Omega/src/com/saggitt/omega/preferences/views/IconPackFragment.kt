@@ -33,11 +33,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -186,10 +182,10 @@ fun IconPackList() {
                 },
             startWidget = {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_add),
+                    painter = painterResource(id = R.drawable.ic_download),
                     contentDescription = "",
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(36.dp)
                 )
             },
             showDivider = true
