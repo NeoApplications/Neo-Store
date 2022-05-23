@@ -1,9 +1,9 @@
 package com.saggitt.omega.compose.navigation
 
 import androidx.compose.runtime.*
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
-val LocalNavController = staticCompositionLocalOf<NavController> {
+val LocalNavController = staticCompositionLocalOf<NavHostController> {
     error("CompositionLocal LocalNavController not present")
 }
 
@@ -14,7 +14,6 @@ fun <T> resultSender(): (T) -> Unit {
         navController.previousBackStackEntry
             ?.savedStateHandle
             ?.set("result", item)
-        navController.popBackStack()
         navController.popBackStack()
         Unit
     }

@@ -158,7 +158,6 @@ fun IconListScreen(
     }
 }
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IconPickerGrid(
