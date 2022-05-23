@@ -131,6 +131,11 @@
             android:taskAffinity="${applicationId}.tasks.EDIT_ICON"
             android:theme="@style/SettingsTheme.Light" />
 
+        <!-- Icon picker -->
+        <activity
+            android:name="com.saggitt.omega.compose.ComposeActivity"
+            android:theme="@style/SettingsTheme.Light" />
+
         <!-- Actions -->
         <activity
             android:name="com.saggitt.omega.gestures.OmegaShortcutActivity"
