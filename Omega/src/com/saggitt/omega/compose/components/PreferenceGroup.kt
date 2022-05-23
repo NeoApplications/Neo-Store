@@ -18,9 +18,11 @@
 
 package com.saggitt.omega.compose.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -79,6 +81,25 @@ fun PreferenceGroupHeading(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PreferenceGroupDescription(description: String? = null, showDescription: Boolean = true) {
+    description?.let {
+        AnimatedVisibility(
+            visible = showDescription,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Row(modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp)) {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
                 )
             }
         }
