@@ -24,7 +24,7 @@ object ProductPreferences {
         db = DatabaseX.getInstance(context)
         preferences = context.getSharedPreferences("product_preferences", Context.MODE_PRIVATE)
         CoroutineScope(Dispatchers.Default).launch {
-            db.lockDao.insert(*preferences.all.keys
+            db.lockDao.insertReplace(*preferences.all.keys
                 .mapNotNull { pName ->
                     this@ProductPreferences[pName].databaseVersionCode?.let {
                         Ignored(pName, it)
