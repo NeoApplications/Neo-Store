@@ -10,12 +10,12 @@ import com.looker.droidify.database.entity.Repository
 
 class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
 
-    val products = MediatorLiveData<List<Product?>>()
+    val products = MediatorLiveData<List<Product>>()
     val repositories = MediatorLiveData<List<Repository>>()
     val installedItem = MediatorLiveData<Installed?>()
 
     init {
-        products.addSource(db.productDao.getLive(packageName), products::setValue)
+        products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
         installedItem.addSource(db.installedDao.getLive(packageName), installedItem::setValue)
     }
