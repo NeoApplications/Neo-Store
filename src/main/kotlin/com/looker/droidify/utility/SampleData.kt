@@ -1,6 +1,7 @@
 package com.looker.droidify.utility
 
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.database.entity.Repository
 
 object SampleData {
     val demoRelease = Release(
@@ -28,5 +29,21 @@ object SampleData {
         features = listOf(),
         platforms = listOf(),
         incompatibilities = listOf()
+    )
+    val demoRepository = Repository(
+        0,
+        "https://f-droid.org/repo",
+        emptyList(),
+        "F-Droid",
+        "The official F-Droid Free Software repository. " +
+                "Everything in this repository is always built from the source code.",
+        21,
+        true,
+        "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB",
+        "",
+        "",
+        0L,
+        0L,
+        ""
     )
 }
