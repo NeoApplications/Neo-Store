@@ -1,11 +1,13 @@
 package com.looker.droidify.entity
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.looker.droidify.R
 
-enum class Order(val titleResId: Int) {
-    NAME(R.string.name),
-    DATE_ADDED(R.string.whats_new),
-    LAST_UPDATE(R.string.recently_updated)
+enum class Order(@StringRes val titleResId: Int, @DrawableRes val iconResId: Int) {
+    NAME(R.string.name,R.drawable.ic_placeholder),
+    DATE_ADDED(R.string.whats_new,R.drawable.ic_placeholder),
+    LAST_UPDATE(R.string.recently_updated,R.drawable.ic_placeholder)
 }
 
 enum class UpdateCategory(val id: Int) {
