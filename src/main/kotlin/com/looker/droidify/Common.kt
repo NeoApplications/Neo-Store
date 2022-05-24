@@ -49,6 +49,10 @@ const val ROW_ENABLED = "enabled"
 const val ROW_CAN_UPDATE = "can_update"
 const val ROW_MATCH_RANK = "match_rank"
 
+const val RELEASE_STATE_NONE = 0
+const val RELEASE_STATE_SUGGESTED = 1
+const val RELEASE_STATE_INSTALLED = 2
+
 const val JOB_ID_SYNC = 1
 
 const val PREFS_LANGUAGE = "languages"
