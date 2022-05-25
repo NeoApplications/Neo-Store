@@ -79,7 +79,6 @@ class OmegaShortcuts {
             } else if (launcher.isInState(LauncherState.NORMAL)) {
                 if (prefs.desktopPopupEdit && !prefs.lockDesktop) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    //CustomBottomSheet.show(launcher, mItemInfo)
                     BaseComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
                             icon = icon,
