@@ -171,7 +171,6 @@ fun AppTabDialogUI(
                                 tab.contents.value().addOrRemove(componentKey, selectedItems[index])
                             }
                             tabs.hashCode()
-                            prefs.appGroupsManager.drawerTabs.setGroups(tabs)
                             prefs.appGroupsManager.drawerTabs.saveToJson()
                             openDialogCustom.value = false
                         },
