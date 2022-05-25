@@ -61,7 +61,7 @@
     <string name="permissions">Berechtigungen</string>
     <string name="plus_more_FORMAT">+%d mehr</string>
     <string name="settings">Einstellungen</string>
-    <string name="processing_FORMAT">%1$s verarbeitet…</string>
+    <string name="processing_FORMAT">Verarbeitung von %1$s…</string>
     <string name="promotes_non_free_software">Bewirbt unfreie Software</string>
     <string name="proxy">Proxy</string>
     <string name="repositories">Paketquellen</string>
@@ -168,7 +168,7 @@
     <string name="select_mirror">Wähle einen Spiegelserver</string>
     <string name="list_animation">Animationen anzeigen</string>
     <string name="links">Webseiten</string>
-    <string name="merging_FORMAT">%s zusammengeführt…</string>
+    <string name="merging_FORMAT">Zusammenführung von %s…</string>
     <string name="name">Name</string>
     <string name="upstream_source_code_is_not_free">Der Ursprungs-Quellcode ist unfrei</string>
     <string name="prefs_language_title">Sprache</string>
@@ -189,10 +189,10 @@
     <string name="default_tab">Standard-Registerkarte</string>
     <string name="installing">Installation</string>
     <string name="pending">Verfügbar</string>
-    <string name="dialog_refuse">Brauche ich nicht</string>
+    <string name="dialog_refuse">Behalten</string>
     <string name="ignore_battery_optimization_not_supported">Dein Android-Betriebssystem erlaubt kein Abschalten von Akkulaufzeitverbesserungen.</string>
     <string name="ignore_battery_optimization_title">Akkulaufzeitverbesserung</string>
-    <string name="ignore_battery_optimization_message">Ab Android 12 gibt es Einschränkungen bei der Ausführung von Diensten im Vordergrund, die dazu führen, dass die Anwendung beim Herunterladen abstürzt. Um dies zu verhindern, sollten Sie die Batterieoptimierung deaktivieren</string>
+    <string name="ignore_battery_optimization_message">Die App verhält sich besser ohne Batterieoptimierung und verhindert Abstürze unter Android 12+</string>
     <string name="dialog_approve">Ausschalten</string>
     <string name="root_session_installer">benutz root-session Installateur</string>
     <string name="root_session_installer_description">Dieser Anwendungsinstallateur ist weniger leistungsfähig als der ursprüngliche, dafür werden Probleme ab Android 13 umgangen.</string>
