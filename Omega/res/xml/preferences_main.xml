@@ -94,7 +94,6 @@
             android:title="@string/developer_options_title" />
 
         <Preference
-            android:fragment="com.saggitt.omega.compose.screens.AboutFragment"
             android:icon="@drawable/ic_info"
             android:key="pref_about"
             android:layout="@layout/home_preference"

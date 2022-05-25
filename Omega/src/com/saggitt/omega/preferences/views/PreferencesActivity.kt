@@ -42,12 +42,17 @@ import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
 import com.saggitt.omega.PREFS_SMARTSPACE_SHOW
 import com.saggitt.omega.changeDefaultHome
+import com.saggitt.omega.compose.ComposeActivity
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.*
 import com.saggitt.omega.views.DecorLayout
 import com.saggitt.omega.views.SettingsDragLayer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var binding: PreferencesActivityBinding
     override var currentTheme = 0
@@ -208,6 +213,18 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
             findPreference<Preference>(PREFS_SMARTSPACE_SHOW)?.apply {
                 isVisible = context.packageManager.isAppEnabled(Config.GOOGLE_QSB, 0)
+            }
+            findPreference<Preference>("pref_about")?.setOnPreferenceClickListener {
+                val scope = CoroutineScope(Dispatchers.Main)
+                scope.launch {
+                    requireContext().startActivity(
+                        ComposeActivity.createIntent(
+                            requireContext(),
+                            "about/"
+                        )
+                    )
+                }
+                true
             }
         }
 
