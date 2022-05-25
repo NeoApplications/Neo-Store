@@ -21,22 +21,28 @@ package com.saggitt.omega.compose
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.saggitt.omega.compose.navigation.DefaultComposeView
 import com.saggitt.omega.theme.OmegaAppTheme
 
 /*
     Blank activity to handle Compose calls
  */
 class ComposeActivity : AppCompatActivity() {
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             OmegaAppTheme {
-
+                val navController = rememberAnimatedNavController()
+                DefaultComposeView(navController)
             }
         }
     }
@@ -44,7 +50,8 @@ class ComposeActivity : AppCompatActivity() {
     companion object {
 
         fun createIntent(context: Context, destination: String): Intent {
-            val uri = "android-app://androidx.navigation/$destination".toUri()
+            val uri = "android-app://androidx.navigation//$destination".toUri()
+            Log.d("ComposeActivity", "Creating intent for $uri")
             return Intent(Intent.ACTION_VIEW, uri, context, ComposeActivity::class.java)
         }
     }
