@@ -45,7 +45,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
@@ -358,13 +357,6 @@ fun <T, U : Comparable<U>> Comparator<T>.then(extractKey: (T) -> U): Comparator<
         if (res != 0) res else extractKey(o1).compareTo(extractKey(o2))
     }
 }
-
-/*Compose*/
-inline fun Modifier.addIf(
-    condition: Boolean,
-    crossinline factory: Modifier.() -> Modifier
-): Modifier =
-    if (condition) factory() else this
 
 fun Fragment.recreate() {
     parentFragmentManager
