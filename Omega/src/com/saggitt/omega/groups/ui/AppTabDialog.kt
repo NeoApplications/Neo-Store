@@ -66,9 +66,9 @@ fun AppTabDialogUI(
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
 
-    var radius = 16.dp.value
+    var radius = 16.dp
     if (prefs.customWindowCorner) {
-        radius = prefs.windowCornerRadius
+        radius = prefs.windowCornerRadius.dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
 
@@ -94,11 +94,11 @@ fun AppTabDialogUI(
                     var isSelected by rememberSaveable { mutableStateOf(selectedItems[index]) }
                     Row(
                             modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        isSelected = !isSelected
-                                        selectedItems[index] = isSelected
-                                    },
+                                .fillMaxWidth()
+                                .clickable {
+                                    isSelected = !isSelected
+                                    selectedItems[index] = isSelected
+                                },
                             verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
@@ -119,9 +119,9 @@ fun AppTabDialogUI(
 
             //Button Rows
             Row(
-                    Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 OutlinedButton(
                         shape = RoundedCornerShape(cornerRadius),
