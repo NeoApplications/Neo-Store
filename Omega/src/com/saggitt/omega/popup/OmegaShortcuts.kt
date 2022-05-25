@@ -21,20 +21,24 @@ package com.saggitt.omega.popup
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import com.android.launcher3.*
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+import com.android.launcher3.icons.BitmapInfo
 import com.android.launcher3.model.data.*
 import com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES
 import com.android.launcher3.popup.SystemShortcut
+import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaLauncher
+import com.saggitt.omega.compose.components.BaseComposeBottomSheet
+import com.saggitt.omega.icons.CustomizeIconSheet
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.hasFlags
-import com.saggitt.omega.views.CustomBottomSheet
 import java.net.URISyntaxException
 
 class OmegaShortcuts {
@@ -47,18 +51,43 @@ class OmegaShortcuts {
         R.string.action_preferences, launcher, itemInfo
     ) {
 
-        private var prefs: OmegaPreferences = Utilities.getOmegaPrefs(launcher)
-
+        val prefs: OmegaPreferences = Utilities.getOmegaPrefs(launcher)
         override fun onClick(v: View?) {
+            val outObj = Array<Any?>(1) { null }
+            val key = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
+            val appInfo = launcher.appsView.appsStore.getApp(key)!!
+            var icon = Utilities.loadFullDrawableWithoutTheme(launcher, appInfo, 0, 0, outObj)
+            if (mItemInfo.screenId != NO_ID && icon is BitmapInfo.Extender) {
+                icon = icon.getThemedDrawable(launcher)
+            }
+
+            val launcherActivityInfo = outObj[0] as LauncherActivityInfo
+            val defaultTitle = launcherActivityInfo.label.toString()
+
             if (launcher.isInState(LauncherState.ALL_APPS)) {
                 if (prefs.drawerPopupEdit) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    CustomBottomSheet.show(launcher, mItemInfo)
+                    BaseComposeBottomSheet.show(launcher, true) {
+                        CustomizeIconSheet(
+                            icon = icon,
+                            defaultTitle = defaultTitle,
+                            componentKey = key,
+                            onClose = { close(true) }
+                        )
+                    }
                 }
             } else if (launcher.isInState(LauncherState.NORMAL)) {
                 if (prefs.desktopPopupEdit && !prefs.lockDesktop) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    CustomBottomSheet.show(launcher, mItemInfo)
+                    //CustomBottomSheet.show(launcher, mItemInfo)
+                    BaseComposeBottomSheet.show(launcher, true) {
+                        CustomizeIconSheet(
+                            icon = icon,
+                            defaultTitle = defaultTitle,
+                            componentKey = key,
+                            onClose = { close(true) }
+                        )
+                    }
                 }
             }
         }
