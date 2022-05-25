@@ -456,6 +456,7 @@
     <string name="search_menu">Find settings</string>
     <string name="failed">Something went wrong.</string>
     <string name="developer_options_title">Developer Options</string>
+    <string name="debug_options_title">Debug information</string>
     <string name="title__dev_show_Dev">Show in Settings</string>
     <string name="title__dev_show_debug_info">Show debug info</string>
     <string name="title_feed_provider">Feed Provider</string>
@@ -487,6 +488,7 @@
     <string name="contributor_role" translatable="false">Contributor</string>
     <string name="title_storage_permission_required">Storage Access Needed</string>
     <string name="content_storage_permission_required">Grant access to storage to set a wallpaper.</string>
+    <string name="accessibility_undo">Undo</string>
     <!-- DASH -->
     <string name="edit_dash">Edit Dash</string>
     <string name="wallpaper_pick">Pick Wallpaper</string>
@@ -537,6 +539,7 @@
     <string name="none">None</string>
     <string name="name">Name</string>
     <string name="apps_label">Apps</string>
+    <string name="app_name">App name</string>
     <string name="custom">Custom</string>
     <string name="default_tab_name">New tab</string>
     <string name="tabs_manage">Manage</string>
