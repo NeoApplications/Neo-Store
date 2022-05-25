@@ -154,6 +154,12 @@
             android:title="@string/title_desktop_hide_statusbar"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_lock_desktop"
+            android:title="@string/title_desktop_lock_desktop"
+            app:iconSpaceReserved="false" />
+
         <com.saggitt.omega.preferences.custom.SeekbarPreference
             android:defaultValue="6"
             android:key="pref_dash_linesize"
