@@ -1,15 +1,34 @@
 package com.looker.droidify.ui.compose.pages.app_detail.components
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,18 +36,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
+import com.looker.droidify.RELEASE_STATE_INSTALLED
+import com.looker.droidify.RELEASE_STATE_NONE
+import com.looker.droidify.RELEASE_STATE_SUGGESTED
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.text.formatSize
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 @Composable
 fun ReleaseItem(
     modifier: Modifier = Modifier,
-    isSuggested: Boolean = false,
-    isInstalled: Boolean = false,
     release: Release,
+    repository: Repository,
+    releaseState: Int = RELEASE_STATE_NONE,
     onDownloadClick: (Release) -> Unit = {}
 ) {
     val currentRelease by remember { mutableStateOf(release) }
+    val isInstalled = releaseState == RELEASE_STATE_INSTALLED
+    val isSuggested = releaseState == RELEASE_STATE_SUGGESTED
     val highlight by animateDpAsState(targetValue = if (isSuggested or isInstalled) 8.dp else 0.dp)
 
     Surface(
@@ -40,6 +71,7 @@ fun ReleaseItem(
     ) {
         ReleaseItemContent(
             release = currentRelease,
+            repository = repository,
             isSuggested = isSuggested,
             isInstalled = isInstalled,
             onDownloadClick = onDownloadClick
@@ -50,9 +82,10 @@ fun ReleaseItem(
 @Composable
 fun ReleaseItemContent(
     modifier: Modifier = Modifier,
+    release: Release,
+    repository: Repository,
     isSuggested: Boolean = false,
     isInstalled: Boolean = false,
-    release: Release,
     onDownloadClick: (Release) -> Unit = {}
 ) {
     Row(
@@ -66,15 +99,22 @@ fun ReleaseItemContent(
                 contentDescription = "Download this version"
             )
         }
-        Box(
+        Column(
             modifier = modifier
-                .height(74.dp)
-                .fillMaxWidth()
+                .height(76.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
         ) {
             ReleaseTitleWithBadge(
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.weight(1f, true),
                 version = release.version,
-                repository = release.targetSdkVersion.toString()
+                added = if (Android.sdk(Build.VERSION_CODES.O)) {
+                    LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(release.added),
+                        TimeZone.getDefault().toZoneId()
+                    ).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+                } else ""
             ) {
                 AnimatedVisibility(
                     visible = isSuggested or isInstalled,
@@ -84,7 +124,7 @@ fun ReleaseItemContent(
                     val badgeText = remember { mutableStateOf(R.string.suggested) }
                     LaunchedEffect(isInstalled, isSuggested) {
                         badgeText.value =
-                            if (isSuggested && isInstalled) R.string.installed else R.string.suggested
+                            if (isInstalled) R.string.installed else R.string.suggested
                     }
                     ReleaseBadge(
                         modifier = Modifier.padding(top = 8.dp),
@@ -92,11 +132,12 @@ fun ReleaseItemContent(
                     )
                 }
             }
-            ReleaseItemEndText(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                title = release.added.toString(),
-                subtitle = release.size.formatSize()
+            ReleaseItemBottomText(
+                modifier = Modifier.weight(1.2f, true),
+                repository = repository.name,
+                size = release.size.formatSize()
             )
+            Spacer(modifier = Modifier.width(Dp.Hairline))
         }
     }
 }
@@ -105,45 +146,38 @@ fun ReleaseItemContent(
 fun ReleaseTitleWithBadge(
     modifier: Modifier = Modifier,
     version: String,
-    repository: String,
+    added: String,
     badges: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.Bottom
     ) {
-        Column(
-            modifier = modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Spacer(modifier = Modifier.width(Dp.Hairline))
-            Text(text = version, style = MaterialTheme.typography.titleMedium)
-            Text(
-                text = stringResource(id = R.string.provided_by_FORMAT, repository),
-                style = MaterialTheme.typography.labelMedium
-            )
-            Spacer(modifier = Modifier.width(Dp.Hairline))
-        }
+        Text(text = version, style = MaterialTheme.typography.titleMedium)
         badges()
+        Spacer(Modifier.weight(1f))
+        Text(text = added, style = MaterialTheme.typography.bodySmall)
     }
 }
 
 @Composable
-fun ReleaseItemEndText(
+fun ReleaseItemBottomText(
     modifier: Modifier = Modifier,
-    title: String,
-    subtitle: String
+    repository: String,
+    size: String
 ) {
-    Column(
-        modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.Start
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(Dp.Hairline))
-        Text(text = title, style = MaterialTheme.typography.bodySmall)
-        Text(text = subtitle, style = MaterialTheme.typography.labelSmall)
-        Spacer(modifier = Modifier.width(Dp.Hairline))
+        Text(
+            text = stringResource(id = R.string.provided_by_FORMAT, repository),
+            style = MaterialTheme.typography.labelMedium
+        )
+        Spacer(Modifier.weight(1f))
+        Text(text = size, style = MaterialTheme.typography.labelSmall)
     }
 }
 
@@ -157,9 +191,9 @@ fun ReleaseBadge(
     Surface(
         modifier = modifier
             .background(color, Shapes.Full)
-            .padding(8.dp),
+            .padding(6.dp, 2.dp),
         color = color
     ) {
-        Text(text = text, color = onColor)
+        Text(text = text, color = onColor, style = MaterialTheme.typography.labelMedium)
     }
 }

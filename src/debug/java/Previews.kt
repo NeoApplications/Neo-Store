@@ -13,7 +13,8 @@ import com.looker.droidify.utility.SampleData
 fun ReleaseItemPreview() {
     AppTheme(blackTheme = false) {
         ReleaseItem(
-            release = SampleData.demoRelease
+            release = SampleData.demoRelease,
+            repository = SampleData.demoRepository
         )
     }
 }
