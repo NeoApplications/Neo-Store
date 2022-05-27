@@ -20,11 +20,9 @@ package com.saggitt.omega.compose.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,9 +32,9 @@ import com.saggitt.omega.util.addIf
 
 @Composable
 fun PreferenceItem(
-    title: @Composable () -> Unit,
+    title: String,
     modifier: Modifier = Modifier,
-    description: @Composable () -> Unit = {},
+    summary: String = "",
     startWidget: (@Composable () -> Unit)? = null,
     endWidget: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
@@ -75,17 +73,16 @@ fun PreferenceItem(
                         alpha(0.3f)
                     }
             ) {
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.titleMedium
-                ) {
-                    title()
-                }
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.bodyMedium
-                ) {
-                    description()
+                Text(
+                    text = title,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                if (summary.isNotEmpty()) {
+                    Text(
+                        text = summary,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F)
+                    )
                 }
             }
             endWidget?.let {

@@ -161,12 +161,7 @@ fun IconPackList() {
         }
 
         PreferenceItem(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.get_more_icon_packs),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            },
+            title = stringResource(id = R.string.get_more_icon_packs),
             modifier = Modifier
                 .clickable {
                     val intent =

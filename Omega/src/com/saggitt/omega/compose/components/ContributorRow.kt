@@ -26,7 +26,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 
-// TODO fix background coloring
 @ExperimentalCoilApi
 @Composable
 fun ContributorRow(
@@ -48,9 +46,7 @@ fun ContributorRow(
     val context = LocalContext.current
 
     PreferenceItem(
-        title = {
-            Text(text = contributorName)
-        },
+        title = contributorName,
         modifier = Modifier
             .clickable {
                 val webpage = Uri.parse(url)
@@ -59,12 +55,7 @@ fun ContributorRow(
                     context.startActivity(intent)
                 }
             },
-        description = {
-            Text(
-                text = contributorRole,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        },
+        summary = contributorRole,
         startWidget = {
             Image(
                 painter = rememberImagePainter(
