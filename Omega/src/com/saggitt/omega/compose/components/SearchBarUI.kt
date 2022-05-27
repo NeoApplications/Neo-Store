@@ -54,7 +54,7 @@ fun SearchBarUI(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.label_search)
+                            contentDescription = stringResource(id = R.string.gesture_press_back)
                         )
                     }
                     Row(
