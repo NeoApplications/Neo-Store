@@ -270,6 +270,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:0.24.9-beta"
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta'
     implementation 'com.google.accompanist:accompanist-drawablepainter:0.24.9-beta'
+    implementation "io.github.fornewid:material-motion-compose-core:0.8.4"
 
     //Room Components
     implementation "androidx.room:room-runtime:2.4.2"
