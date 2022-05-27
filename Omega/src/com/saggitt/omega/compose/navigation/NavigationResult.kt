@@ -1,11 +1,6 @@
 package com.saggitt.omega.compose.navigation
 
 import androidx.compose.runtime.*
-import androidx.navigation.NavHostController
-
-val LocalNavController = staticCompositionLocalOf<NavHostController> {
-    error("CompositionLocal LocalNavController not present")
-}
 
 @Composable
 fun <T> resultSender(): (T) -> Unit {
