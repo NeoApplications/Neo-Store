@@ -17,22 +17,24 @@
  */
 package com.saggitt.omega
 
-import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Bundle
-import android.os.PersistableBundle
+import android.os.*
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.compose.compiler.plugins.kotlin.EmptyFunctionMetrics.packageName
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -46,9 +48,6 @@ import com.android.launcher3.LauncherRootView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.model.data.FolderInfo
-import com.android.launcher3.model.data.ItemInfo
-import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
@@ -59,29 +58,27 @@ import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
-import com.google.android.libraries.gsa.launcherclient.LauncherClient
 import com.google.systemui.smartspace.SmartSpaceView
 import com.saggitt.omega.gestures.GestureController
-import com.saggitt.omega.iconpack.CustomIconEntry
-import com.saggitt.omega.iconpack.EditIconActivity
-import com.saggitt.omega.override.CustomInfoProvider
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.Config.Companion.CODE_EDIT_ICON
 import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwner,
-    ThemeManager.ThemeableActivity, OmegaPreferences.OnPreferenceChangeListener {
+    ActivityResultRegistryOwner, ThemeManager.ThemeableActivity,
+    OmegaPreferences.OnPreferenceChangeListener {
     val gestureController by lazy { GestureController(this) }
     val dummyView by lazy { findViewById<View>(R.id.dummy_view)!! }
     val optionsView by lazy { findViewById<OptionsPopupView>(R.id.options_view)!! }
     private val lifecycleRegistry = LifecycleRegistry(this)
     private val savedStateRegistryController = SavedStateRegistryController.create(this)
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
 
     override var currentTheme = 0
     override var currentAccent = 0
@@ -94,6 +91,76 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     val hiddenApps = ArrayList<AppInfo>()
+
+    private val activityResultRegistry = object : ActivityResultRegistry() {
+        override fun <I : Any?, O : Any?> onLaunch(
+            requestCode: Int,
+            contract: ActivityResultContract<I, O>,
+            input: I,
+            options: ActivityOptionsCompat?
+        ) {
+            val activity = this@OmegaLauncher
+
+            // Immediate result path
+            val synchronousResult = contract.getSynchronousResult(activity, input)
+            if (synchronousResult != null) {
+                Handler(Looper.getMainLooper()).post {
+                    dispatchResult(
+                        requestCode,
+                        synchronousResult.value
+                    )
+                }
+                return
+            }
+
+            // Start activity path
+            val intent = contract.createIntent(activity, input)
+            var optionsBundle: Bundle? = null
+            // If there are any extras, we should defensively set the classLoader
+            if (intent.extras != null && intent.extras!!.classLoader == null) {
+                intent.setExtrasClassLoader(activity.classLoader)
+            }
+            if (intent.hasExtra(StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE)) {
+                optionsBundle =
+                    intent.getBundleExtra(StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE)
+                intent.removeExtra(StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE)
+            } else if (options != null) {
+                optionsBundle = options.toBundle()
+            }
+            if (RequestMultiplePermissions.ACTION_REQUEST_PERMISSIONS == intent.action) {
+                // requestPermissions path
+                var permissions =
+                    intent.getStringArrayExtra(RequestMultiplePermissions.EXTRA_PERMISSIONS)
+                if (permissions == null) {
+                    permissions = arrayOfNulls(0)
+                }
+                ActivityCompat.requestPermissions(activity, permissions, requestCode)
+            } else if (StartIntentSenderForResult.ACTION_INTENT_SENDER_REQUEST == intent.action) {
+                val request: IntentSenderRequest =
+                    intent.getParcelableExtra(StartIntentSenderForResult.EXTRA_INTENT_SENDER_REQUEST)!!
+                try {
+                    // startIntentSenderForResult path
+                    ActivityCompat.startIntentSenderForResult(
+                        activity, request.intentSender,
+                        requestCode, request.fillInIntent, request.flagsMask,
+                        request.flagsValues, 0, optionsBundle
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    Handler(Looper.getMainLooper()).post {
+                        dispatchResult(
+                            requestCode, RESULT_CANCELED,
+                            Intent()
+                                .setAction(StartIntentSenderForResult.ACTION_INTENT_SENDER_REQUEST)
+                                .putExtra(StartIntentSenderForResult.EXTRA_SEND_INTENT_EXCEPTION, e)
+                        )
+                    }
+                }
+            } else {
+                // startActivityForResult path
+                ActivityCompat.startActivityForResult(activity, intent, requestCode, optionsBundle)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
@@ -148,7 +215,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         )
         profiles.forEach { apps += launcherApps.getActivityList(null, it) }
         for (info in apps) {
-            val key = ComponentKey(info.componentName, info.user);
+            val key = ComponentKey(info.componentName, info.user)
             if (hiddenAppsSet.contains(key.toString())) {
                 val appInfo = AppInfo(info, info.user, false)
                 iconCache.getTitleAndIcon(appInfo, false)
@@ -234,57 +301,15 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
     fun shouldRecreate() = !sRestart
 
+    override fun getActivityResultRegistry(): ActivityResultRegistry {
+        return activityResultRegistry
+    }
+
     override fun getDefaultOverlay(): LauncherOverlayManager {
         if (mOverlayManager == null) {
             mOverlayManager = OverlayCallbackImpl(this)
         }
         return mOverlayManager
-    }
-
-    fun startEditIcon(itemInfo: ItemInfo, infoProvider: CustomInfoProvider<ItemInfo>) {
-
-        val component: ComponentKey? = when (itemInfo) {
-            is AppInfo -> itemInfo.toComponentKey()
-            is WorkspaceItemInfo -> itemInfo.targetComponent?.let {
-                ComponentKey(it, itemInfo.user)
-            }
-            is FolderInfo -> itemInfo.toComponentKey()
-            else -> null
-        }
-
-        currentEditIcon = when (itemInfo) {
-            is AppInfo -> BitmapDrawable(this.resources, itemInfo.bitmap.icon)
-            is WorkspaceItemInfo -> BitmapDrawable(this.resources, itemInfo.bitmap.icon)
-            is FolderInfo -> itemInfo.getDefaultIcon(this)
-            else -> null
-        }
-        currentEditInfo = itemInfo
-        val intent = EditIconActivity.newIntent(
-            this,
-            infoProvider.getTitle(itemInfo),
-            itemInfo is FolderInfo,
-            component
-        )
-        val flags =
-            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        BlankActivity.startActivityForResult(
-            this,
-            intent,
-            CODE_EDIT_ICON,
-            flags
-        ) { resultCode, data ->
-            handleEditIconResult(resultCode, data)
-        }
-    }
-
-    private fun handleEditIconResult(resultCode: Int, data: Bundle?) {
-        if (resultCode == Activity.RESULT_OK) {
-            val itemInfo = currentEditInfo ?: return
-            val entryString = data?.getString(EditIconActivity.EXTRA_ENTRY)
-            val customIconEntry =
-                entryString?.let { CustomIconEntry.fromString(it) }
-            CustomInfoProvider.forItem<ItemInfo>(this, itemInfo)?.setIcon(itemInfo, customIconEntry)
-        }
     }
 
     inline fun prepareDummyView(view: View, crossinline callback: (View) -> Unit) {
@@ -317,10 +342,6 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         defaultOverlay.registerSmartSpaceView(smartspace)
     }
 
-    fun getGoogleNow(): LauncherClient? {
-        return defaultOverlay.client
-    }
-
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         if (key == "pref_hideStatusBar") {
             if (prefs.hideStatusBar) {
@@ -332,10 +353,12 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         Taskbar.setEnabled(this, prefs.desktopModeEnabled)
     }
 
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
+    }
+
     companion object {
         var showFolderNotificationCount = false
-        var currentEditInfo: ItemInfo? = null
-        var currentEditIcon: Drawable? = null
 
         @JvmStatic
         fun getLauncher(context: Context): OmegaLauncher {
@@ -343,12 +366,5 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
                 ?: (context as ContextWrapper).baseContext as? OmegaLauncher
                 ?: LauncherAppState.getInstance(context).launcher as OmegaLauncher
         }
-    }
-
-    override val savedStateRegistry: SavedStateRegistry
-        get() = savedStateRegistryController.savedStateRegistry
-
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
     }
 }
