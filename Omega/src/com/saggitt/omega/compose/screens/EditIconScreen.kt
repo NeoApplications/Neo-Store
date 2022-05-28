@@ -18,10 +18,10 @@
 
 package com.saggitt.omega.compose.screens
 
-import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -30,34 +30,65 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabRowDefaults.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.core.content.getSystemService
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import com.saggitt.omega.OmegaLauncher
+import com.google.accompanist.navigation.animation.composable
 import com.saggitt.omega.compose.components.ListItemWithIcon
-import com.saggitt.omega.iconpack.EditIconActivity.Companion.EXTRA_ENTRY
+import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
 
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.editIconGraph(route: String) {
+    preferenceGraph(route, { }) { subRoute ->
+        composable(
+            route = subRoute("{packageName}/{nameAndUser}"),
+            arguments = listOf(
+                navArgument("packageName") { type = NavType.StringType },
+                navArgument("nameAndUser") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val args = backStackEntry.arguments!!
+            val packageName = args.getString("packageName")
+            val nameAndUser = args.getString("nameAndUser")
+            val key = ComponentKey.fromString("$packageName/$nameAndUser")!!
+            EditIconScreen(key)
+        }
+    }
+}
+
+
 @Composable
 fun EditIconScreen(
-    activity: Activity,
-    title: String?,
-    component: ComponentKey?,
-    isFolder: Boolean,
-    navController: NavController
+    componentKey: ComponentKey
 ) {
     val context = LocalContext.current
     val iconPacks = IconPackProvider.INSTANCE.get(context).getIconPackList()
+    val isFolder = componentKey.componentName.packageName.contains("com.saggitt.omega.folder")
+    lateinit var originalIcon: Drawable
+
+    val title = remember(componentKey) {
+        val launcherApps = context.getSystemService<LauncherApps>()!!
+        val intent = Intent().setComponent(componentKey.componentName)
+        val activity = launcherApps.resolveActivity(intent, componentKey.user)
+        originalIcon = activity.getIcon(context.resources.displayMetrics.densityDpi)
+        activity.label.toString()
+    }
+
     Column {
         Text(
-            text = title ?: "",
+            text = title,
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
@@ -78,7 +109,7 @@ fun EditIconScreen(
         ) {
             //Original Icon
             Image(
-                painter = rememberDrawablePainter(drawable = OmegaLauncher.currentEditIcon),
+                painter = rememberDrawablePainter(drawable = originalIcon),
                 contentDescription = null,
                 modifier = Modifier.requiredSize(60.dp)
             )
@@ -102,12 +133,12 @@ fun EditIconScreen(
                     val pack: IconPack? = ip.getIconPackOrSystem(it.packageName)
                     if (pack != null) {
                         pack.loadBlocking()
-                        val iconEntry = pack.getIcon(component!!.componentName)
+                        val iconEntry = pack.getIcon(componentKey.componentName)
                         if (iconEntry != null) {
                             val mIcon: Drawable? = ip.getDrawable(
                                 iconEntry,
                                 iconDpi,
-                                component.user
+                                componentKey.user
                             )
                             if (mIcon != null) {
                                 Image(
@@ -117,13 +148,7 @@ fun EditIconScreen(
                                         .requiredSize(64.dp)
                                         .padding(start = 8.dp, end = 8.dp)
                                         .clickable {
-                                            val customEntry = iconEntry.toCustomEntry()
-                                            val entryString = customEntry.toString()
-                                            activity.setResult(
-                                                RESULT_OK,
-                                                Intent().putExtra(EXTRA_ENTRY, entryString)
-                                            )
-                                            activity.finish()
+                                            //TODO: Add on icon click action
                                         }
                                 )
                             }
@@ -154,9 +179,9 @@ fun EditIconScreen(
                 modifier = Modifier
                     .clickable {
                         if (it.packageName == "") {
-                            navController.navigate("uri=android-app://androidx.navigation//icon_picker")
+                            //navController.navigate("/${Routes.ICON_PICKER}/")
                         } else {
-                            navController.navigate("uri=android-app://androidx.navigation//icon_picker?iconPackName=${it.packageName}")
+                            ///navController.navigate("/${Routes.ICON_PICKER}/${it.packageName}/")
                         }
                     }
                     .padding(start = 16.dp),

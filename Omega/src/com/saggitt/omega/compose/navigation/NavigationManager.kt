@@ -22,77 +22,6 @@ import com.saggitt.omega.compose.screens.editIconGraph
 import com.saggitt.omega.compose.screens.iconPickerGraph
 import soup.compose.material.motion.materialSharedAxisX
 
-/*
-sealed class Routes(val route: String) {
-    object BlankScreen : Routes("android-app://androidx.navigation/")
-    object AboutScreen : Routes("android-app://androidx.navigation/about")
-    object Translators : Routes("android-app://androidx.navigation/about/translators")
-    object Changelog : Routes("android-app://androidx.navigation/about/changelog")
-    object License : Routes("android-app://androidx.navigation/about/license")
-
-    object EditIconMainScreen : Routes("edit_icon")
-    object IconListScreen :
-        Routes("icon_picker?iconPackName={iconPackName}")
-}
-
-val LocalNavController = staticCompositionLocalOf<NavController> {
-    error("CompositionLocal LocalNavController not present")
-}
-
-@OptIn(ExperimentalAnimationApi::class, ExperimentalCoilApi::class)
-@Composable
-fun NavigationManager(mActivity: AppCompatActivity, navController: NavHostController, theme: Int = 0){
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val motionSpec = materialSharedAxisX()
-    val density = LocalDensity.current
-    CompositionLocalProvider(
-        LocalNavController provides navController
-    ) {
-        AnimatedNavHost(
-            navController = navController,
-            startDestination = Routes.AboutScreen.route,
-            enterTransition = { motionSpec.enter.transition(!isRtl, density) },
-            exitTransition = { motionSpec.exit.transition(!isRtl, density) },
-            popEnterTransition = { motionSpec.enter.transition(isRtl, density) },
-            popExitTransition = { motionSpec.exit.transition(isRtl, density) },
-        ){
-            composable(route = Routes.AboutScreen.route) {
-                mActivity.title = mActivity.getString(R.string.title__general_about)
-                AboutScreen(navController)
-            }
-            composable(route = Routes.Translators.route) {
-                mActivity.title = mActivity.getString(R.string.about_translators)
-                TranslatorsScreen()
-            }
-            composable(route = Routes.License.route) {
-                mActivity.title = mActivity.getString(R.string.title__about_changelog)
-                LicenseScreen(theme.isDark)
-            }
-            composable(route = Routes.Changelog.route) {
-                mActivity.title = mActivity.getString(R.string.category__about_licenses)
-                ChangelogScreen(theme.isDark)
-            }
-
-            composable(route = Routes.BlankScreen.route) {
-                BlankScreen()
-            }
-        }
-    }
-}
-
-@Composable
-fun BlankScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight()
-            .padding(top = 26.dp, bottom = 45.dp)
-
-    ) {
-    }
-}
-*/
-
 object Routes {
     const val ABOUT = "about"
     const val EDIT_ICON = "edit_icon"
@@ -128,7 +57,6 @@ fun DefaultComposeView(navController: NavHostController) {
         }
     }
 }
-
 
 @Composable
 fun BlankScreen() {

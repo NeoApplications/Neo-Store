@@ -22,6 +22,7 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import android.os.Process
+import android.util.Log
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,11 +44,16 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.android.launcher3.R
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import com.saggitt.omega.compose.components.*
 import com.saggitt.omega.compose.navigation.resultSender
+import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.CustomIconPack
 import com.saggitt.omega.iconpack.IconPack
@@ -57,10 +63,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
+fun NavGraphBuilder.iconPickerGraph(route: String) {
+    preferenceGraph(route, {
+        IconListScreen(iconPackName = "")
+    }) { subRoute ->
+        Log.d("NavigationManager", "route about  ${subRoute}")
+        composable(
+            route = subRoute("{iconPackName}"),
+            arguments = listOf(
+                navArgument("iconPackName") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val args = backStackEntry.arguments!!
+            val packageName = args.getString("iconPackName")!!
+            IconListScreen(packageName)
+        }
+    }
+}
+
 /*
 * List Icons from a given IconPack
 * */
-
 @Composable
 fun IconListScreen(
     iconPackName: String
