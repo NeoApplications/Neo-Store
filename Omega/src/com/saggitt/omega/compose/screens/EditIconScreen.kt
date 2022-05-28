@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.compose.screens
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
@@ -31,6 +32,7 @@ import androidx.compose.material3.TabRowDefaults.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -46,11 +48,16 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.OnResult
 import com.saggitt.omega.compose.navigation.Routes
+import com.saggitt.omega.compose.navigation.resultSender
 import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.preferences.subRoute
+import com.saggitt.omega.data.IconOverrideRepository
+import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.editIconGraph(route: String) {
@@ -79,7 +86,7 @@ fun EditIconScreen(
     val iconPacks = IconPackProvider.INSTANCE.get(context).getIconPackList()
     val isFolder = componentKey.componentName.packageName.contains("com.saggitt.omega.folder")
     val navController = LocalNavController.current
-
+    val onClickItem = resultSender<IconPickerItem>()
     val launcherApps = context.getSystemService<LauncherApps>()!!
     val intent = Intent().setComponent(componentKey.componentName)
     val activity = launcherApps.resolveActivity(intent, componentKey.user)
@@ -87,6 +94,18 @@ fun EditIconScreen(
 
     val title = remember(componentKey) {
         activity.label.toString()
+    }
+
+    val scope = rememberCoroutineScope()
+    val repo = IconOverrideRepository.INSTANCE.get(context)
+    OnResult<IconPickerItem> { item ->
+        scope.launch {
+            repo.setOverride(componentKey, item)
+            (context as Activity).let {
+                it.setResult(Activity.RESULT_OK)
+                it.finish()
+            }
+        }
     }
 
     Column(modifier = Modifier.padding(top = 30.dp)) {
@@ -150,7 +169,16 @@ fun EditIconScreen(
                                         .requiredSize(64.dp)
                                         .padding(start = 8.dp, end = 8.dp)
                                         .clickable {
-                                            //TODO: Add on icon click action
+                                            val iconPickerItem = IconPickerItem(
+                                                pack.packPackageName,
+                                                iconEntry.name,
+                                                iconEntry.name,
+                                                iconEntry.type
+                                            )
+                                            scope.launch {
+                                                repo.setOverride(componentKey, iconPickerItem)
+                                                (context as Activity).finish()
+                                            }
                                         }
                                 )
                             }

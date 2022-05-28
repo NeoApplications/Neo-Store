@@ -121,63 +121,64 @@ fun IconListScreen(
                 ?: return@rememberLauncherForActivityResult
             onClickItem(entry)
         }
-
-    SearchBarUI(
-        searchInput = {
-            SearchTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                modifier = Modifier.fillMaxSize(),
-                placeholder = {
-                    Text(
-                        text = iconPack.label,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
-                    )
-                },
-                singleLine = true
-            )
-        },
-        actions = {
-            if (pickerComponent != null) {
-                OverflowMenu {
-                    DropdownMenuItem(
-                        onClick = {
-                            val intent = Intent("com.novalauncher.THEME")
-                                .addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
-                                .setComponent(pickerComponent)
-                            pickerLauncher.launch(intent)
-                            hideMenu()
-                        },
-                        text = { Text(text = stringResource(id = R.string.icon_pack_external_picker)) }
-                    )
+    Column(modifier = Modifier.padding(top = 26.dp, bottom = 45.dp)) {
+        SearchBarUI(
+            searchInput = {
+                SearchTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    modifier = Modifier.fillMaxSize(),
+                    placeholder = {
+                        Text(
+                            text = iconPack.label,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium),
+                        )
+                    },
+                    singleLine = true
+                )
+            },
+            actions = {
+                if (pickerComponent != null) {
+                    OverflowMenu {
+                        DropdownMenuItem(
+                            onClick = {
+                                val intent = Intent("com.novalauncher.THEME")
+                                    .addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+                                    .setComponent(pickerComponent)
+                                pickerLauncher.launch(intent)
+                                hideMenu()
+                            },
+                            text = { Text(text = stringResource(id = R.string.icon_pack_external_picker)) }
+                        )
+                    }
                 }
             }
-        }
-    ) {
-        val scaffoldPadding = LocalScaffoldPadding.current
-        val innerPadding = remember { MutablePaddingValues() }
-        val layoutDirection = LocalLayoutDirection.current
-        innerPadding.left = scaffoldPadding.calculateLeftPadding(layoutDirection)
-        innerPadding.right = scaffoldPadding.calculateRightPadding(layoutDirection)
-        innerPadding.bottom = scaffoldPadding.calculateBottomPadding()
+        ) {
+            val scaffoldPadding = LocalScaffoldPadding.current
+            val innerPadding = remember { MutablePaddingValues() }
+            val layoutDirection = LocalLayoutDirection.current
+            innerPadding.left = scaffoldPadding.calculateLeftPadding(layoutDirection)
+            innerPadding.right = scaffoldPadding.calculateRightPadding(layoutDirection)
+            innerPadding.bottom = scaffoldPadding.calculateBottomPadding()
 
-        val topPadding = scaffoldPadding.calculateTopPadding()
+            val topPadding = scaffoldPadding.calculateTopPadding()
 
-        CompositionLocalProvider(LocalScaffoldPadding provides innerPadding) {
-            IconPickerGrid(
-                iconPack = iconPack,
-                searchQuery = searchQuery,
-                onClickItem = onClickItem,
+            CompositionLocalProvider(LocalScaffoldPadding provides innerPadding) {
+                IconPickerGrid(
+                    iconPack = iconPack,
+                    searchQuery = searchQuery,
+                    onClickItem = onClickItem,
+                    modifier = Modifier
+                        .padding(top = topPadding)
+                )
+            }
+            Spacer(
                 modifier = Modifier
-                    .padding(top = topPadding)
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxWidth()
+                    .height(topPadding)
             )
         }
-        Spacer(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxWidth()
-                .height(topPadding)
-        )
     }
 }
 
