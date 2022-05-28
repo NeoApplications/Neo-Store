@@ -70,7 +70,7 @@ fun CustomizeIconSheet(
         }
 
     val openEditIcon = {
-        val destination = "edit_icon/$componentKey"
+        val destination = "edit_icon/$componentKey/"
         request.launch(ComposeActivity.createIntent(context, destination))
     }
 
