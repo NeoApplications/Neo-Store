@@ -105,7 +105,7 @@ class CustomBottomSheet @JvmOverloads constructor(
                         }
                     val editProvider = CustomInfoProvider.forItem<ItemInfo>(context, editItem)
                     if (editProvider != null) {
-                        launcher.startEditIcon(editItem!!, editProvider)
+                        //launcher.startEditIcon(editItem!!, editProvider)
                     }
                 }
             }
