@@ -45,7 +45,10 @@ import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
 import com.saggitt.omega.compose.components.ListItemWithIcon
+import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.preferences.preferenceGraph
+import com.saggitt.omega.compose.preferences.subRoute
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
 
@@ -68,7 +71,6 @@ fun NavGraphBuilder.editIconGraph(route: String) {
     }
 }
 
-
 @Composable
 fun EditIconScreen(
     componentKey: ComponentKey
@@ -76,21 +78,21 @@ fun EditIconScreen(
     val context = LocalContext.current
     val iconPacks = IconPackProvider.INSTANCE.get(context).getIconPackList()
     val isFolder = componentKey.componentName.packageName.contains("com.saggitt.omega.folder")
-    lateinit var originalIcon: Drawable
+    val navController = LocalNavController.current
+
+    val launcherApps = context.getSystemService<LauncherApps>()!!
+    val intent = Intent().setComponent(componentKey.componentName)
+    val activity = launcherApps.resolveActivity(intent, componentKey.user)
+    val originalIcon: Drawable = activity.getIcon(context.resources.displayMetrics.densityDpi)
 
     val title = remember(componentKey) {
-        val launcherApps = context.getSystemService<LauncherApps>()!!
-        val intent = Intent().setComponent(componentKey.componentName)
-        val activity = launcherApps.resolveActivity(intent, componentKey.user)
-        originalIcon = activity.getIcon(context.resources.displayMetrics.densityDpi)
         activity.label.toString()
     }
 
-    Column {
+    Column(modifier = Modifier.padding(top = 30.dp)) {
         Text(
             text = title,
             modifier = Modifier
-                .padding(start = 24.dp)
                 .fillMaxWidth(),
             fontSize = 24.sp,
             textAlign = TextAlign.Center
@@ -168,6 +170,7 @@ fun EditIconScreen(
 
         //Icon Packs
         iconPacks.forEach {
+            val route = subRoute(name = "/${Routes.ICON_PICKER}/${it.packageName}")
             ListItemWithIcon(
                 title = {
                     Text(
@@ -179,9 +182,9 @@ fun EditIconScreen(
                 modifier = Modifier
                     .clickable {
                         if (it.packageName == "") {
-                            //navController.navigate("/${Routes.ICON_PICKER}/")
+                            navController.navigate("/${Routes.ICON_PICKER}/")
                         } else {
-                            ///navController.navigate("/${Routes.ICON_PICKER}/${it.packageName}/")
+                            navController.navigate("/${Routes.ICON_PICKER}/${it.packageName}/")
                         }
                     }
                     .padding(start = 16.dp),
