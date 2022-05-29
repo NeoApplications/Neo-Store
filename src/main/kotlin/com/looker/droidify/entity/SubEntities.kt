@@ -74,16 +74,6 @@ class Screenshot(val locale: String, val type: Type, val path: String) {
     }
 }
 
-enum class Action(@StringRes val titleResId: Int, @DrawableRes val iconResId: Int) {
-    INSTALL(R.string.install, R.drawable.ic_download),
-    UPDATE(R.string.update, R.drawable.ic_download),
-    LAUNCH(R.string.launch, R.drawable.ic_launch),
-    DETAILS(R.string.details, R.drawable.ic_tune),
-    UNINSTALL(R.string.uninstall, R.drawable.ic_delete),
-    CANCEL(R.string.cancel, R.drawable.ic_cancel),
-    SHARE(R.string.share, R.drawable.ic_share)
-}
-
 enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     ADS("Ads", R.string.has_advertising),
     DEBUGGABLE("ApplicationDebuggable", R.string.compiled_for_debugging),

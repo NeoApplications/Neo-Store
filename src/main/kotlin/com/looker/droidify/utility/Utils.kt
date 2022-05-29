@@ -14,11 +14,31 @@ import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BulletSpan
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.URLSpan
+import android.text.style.UnderlineSpan
+import android.text.util.Linkify
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.core.text.HtmlCompat
+import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.FragmentManager
 import com.looker.droidify.BuildConfig
 import com.looker.droidify.PREFS_LANGUAGE_DEFAULT
@@ -32,6 +52,7 @@ import com.looker.droidify.entity.LinkType
 import com.looker.droidify.entity.PermissionsType
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
+import com.looker.droidify.ui.compose.utils.Callbacks
 import com.looker.droidify.ui.dialog.LaunchDialog
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.singleSignature
@@ -41,6 +62,7 @@ import com.looker.droidify.utility.extension.text.hex
 import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.lang.ref.WeakReference
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -401,4 +423,97 @@ fun List<PermissionInfo>.getLabels(context: Context): List<String> {
         }
     }
     return labels.sortedBy { it.first }.map { it.second }
+}
+
+
+// TODO move to a new file
+
+private class LinkSpan(private val url: String, callbacks: Callbacks) :
+    ClickableSpan() {
+    private val callbacksReference = WeakReference(callbacks)
+
+    override fun onClick(view: View) {
+        val callbacks = callbacksReference.get()
+        val uri = try {
+            Uri.parse(url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+        if (callbacks != null && uri != null) {
+            callbacks.onUriClick(uri, true)
+        }
+    }
+}
+
+fun formatHtml(text: String, callbacks: Callbacks): SpannableStringBuilder {
+    val html = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    val builder = run {
+        val builder = SpannableStringBuilder(html)
+        val last = builder.indexOfLast { it != '\n' }
+        val first = builder.indexOfFirst { it != '\n' }
+        if (last >= 0) {
+            builder.delete(last + 1, builder.length)
+        }
+        if (first in 1 until last) {
+            builder.delete(0, first - 1)
+        }
+        generateSequence(builder) {
+            val index = it.indexOf("\n\n\n")
+            if (index >= 0) it.delete(index, index + 1) else null
+        }.last()
+    }
+    LinkifyCompat.addLinks(builder, Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES)
+    val urlSpans = builder.getSpans(0, builder.length, URLSpan::class.java).orEmpty()
+    for (span in urlSpans) {
+        val start = builder.getSpanStart(span)
+        val end = builder.getSpanEnd(span)
+        val flags = builder.getSpanFlags(span)
+        builder.removeSpan(span)
+        builder.setSpan(LinkSpan(span.url, callbacks), start, end, flags)
+    }
+    val bulletSpans = builder.getSpans(0, builder.length, BulletSpan::class.java).orEmpty()
+        .asSequence().map { Pair(it, builder.getSpanStart(it)) }
+        .sortedByDescending { it.second }
+    for (spanPair in bulletSpans) {
+        val (span, start) = spanPair
+        builder.removeSpan(span)
+        builder.insert(start, "\u2022 ")
+    }
+    return builder
+}
+
+/**
+ * Converts a [Spanned] into an [AnnotatedString] trying to keep as much formatting as possible.
+ * Source: https://stackoverflow.com/questions/66494838/android-compose-how-to-use-html-tags-in-a-text-view
+ */
+fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
+    val spanned = this@toAnnotatedString
+    append(spanned.toString())
+    getSpans(0, spanned.length, Any::class.java).forEach { span ->
+        val start = getSpanStart(span)
+        val end = getSpanEnd(span)
+        when (span) {
+            is StyleSpan -> when (span.style) {
+                Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
+                Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
+                Typeface.BOLD_ITALIC -> addStyle(
+                    SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic
+                    ), start, end
+                )
+            }
+            is UnderlineSpan -> addStyle(
+                SpanStyle(textDecoration = TextDecoration.Underline),
+                start,
+                end
+            )
+            is ForegroundColorSpan -> addStyle(
+                SpanStyle(color = Color(span.foregroundColor)),
+                start,
+                end
+            )
+        }
+    }
 }
