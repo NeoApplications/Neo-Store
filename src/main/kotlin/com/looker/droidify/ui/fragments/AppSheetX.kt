@@ -11,20 +11,42 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.looker.droidify.R
+import com.looker.droidify.RELEASE_STATE_INSTALLED
+import com.looker.droidify.RELEASE_STATE_NONE
+import com.looker.droidify.RELEASE_STATE_SUGGESTED
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.entity.AntiFeature
 import com.looker.droidify.entity.Cancelable
 import com.looker.droidify.entity.Connecting
 import com.looker.droidify.entity.Details
+import com.looker.droidify.entity.DonateType
 import com.looker.droidify.entity.Install
 import com.looker.droidify.entity.Launch
 import com.looker.droidify.entity.PackageState
@@ -35,18 +57,31 @@ import com.looker.droidify.entity.Share
 import com.looker.droidify.entity.Uninstall
 import com.looker.droidify.entity.Update
 import com.looker.droidify.installer.AppInstaller
+import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.MessageDialog
 import com.looker.droidify.screen.ScreenshotsFragment
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.ui.activities.MainActivityX
+import com.looker.droidify.ui.compose.components.ScreenshotItem
+import com.looker.droidify.ui.compose.components.ScreenshotList
+import com.looker.droidify.ui.compose.components.SwitchPreference
+import com.looker.droidify.ui.compose.pages.app_detail.components.AppInfoHeader
+import com.looker.droidify.ui.compose.pages.app_detail.components.HtmlTextBlock
+import com.looker.droidify.ui.compose.pages.app_detail.components.LinkItem
+import com.looker.droidify.ui.compose.pages.app_detail.components.PermissionsItem
+import com.looker.droidify.ui.compose.pages.app_detail.components.ReleaseItem
+import com.looker.droidify.ui.compose.pages.app_detail.components.TopBarHeader
 import com.looker.droidify.ui.compose.theme.AppTheme
 import com.looker.droidify.ui.compose.utils.Callbacks
 import com.looker.droidify.ui.viewmodels.AppViewModelX
 import com.looker.droidify.utility.Utils.rootInstallerEnabled
 import com.looker.droidify.utility.Utils.startUpdate
 import com.looker.droidify.utility.extension.android.Android
+import com.looker.droidify.utility.extension.text.formatSize
 import com.looker.droidify.utility.findSuggestedProduct
+import com.looker.droidify.utility.generateLinks
+import com.looker.droidify.utility.generatePermissionGroups
 import com.looker.droidify.utility.isDarkTheme
 import com.looker.droidify.utility.onLaunchClick
 import kotlinx.coroutines.Dispatchers
@@ -384,6 +419,238 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun AppSheet() {
+        val incompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val installed by viewModel.installedItem.observeAsState()
+        val products by viewModel.products.observeAsState()
+        val repos by viewModel.repositories.observeAsState()
+        val packageState by viewModel.state.observeAsState(if (installed == null) Install else Launch)
+        val actions by viewModel.actions.observeAsState() // TODO add rest actions to UI
+        val secondaryAction by viewModel.secondaryAction.observeAsState() // TODO add secondaryAction
+        val productRepos = products?.mapNotNull { product ->
+            repos?.firstOrNull { it.id == product.repositoryId }
+                ?.let { Pair(product, it) }
+        } ?: emptyList()
+        viewModel.productRepos = productRepos
+        val suggestedProductRepo = findSuggestedProduct(productRepos, installed) { it.first }
+        val compatibleReleasePairs = productRepos.asSequence()
+            .flatMap { (product, repository) ->
+                product.releases.asSequence()
+                    .filter { incompatible || it.incompatibilities.isEmpty() }
+                    .map { Pair(it, repository) }
+            }
+            .toList()
+        val releaseItems = compatibleReleasePairs.asSequence()
+            .map { (release, repository) ->
+                Triple(
+                    release,
+                    repository,
+                    when {
+                        installed?.versionCode == release.versionCode && installed?.signature == release.signature -> RELEASE_STATE_INSTALLED
+                        release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id -> RELEASE_STATE_SUGGESTED
+                        else -> RELEASE_STATE_NONE
+                    }
+                )
+            }
+            .sortedByDescending { it.first.versionCode }
+            .toList()
 
+        val imageData by remember(suggestedProductRepo) {
+            mutableStateOf(
+                suggestedProductRepo?.let {
+                    CoilDownloader.createIconUri(
+                        it.first.packageName,
+                        it.first.icon,
+                        it.first.metadataIcon,
+                        it.second.address,
+                        it.second.authentication
+                    ).toString()
+                }
+            )
+        }
+        suggestedProductRepo?.let { (product, repo) ->
+            Scaffold(
+                // TODO add the topBar to the activity instead of the fragments
+                topBar = {
+                    TopBarHeader(
+                        appName = product.label,
+                        packageName = product.packageName,
+                        icon = imageData,
+                        state = packageState
+                    )
+                }
+            ) { paddingValues ->
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(paddingValues),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(8.dp)
+                ) {
+                    item {
+                        AppInfoHeader(
+                            versionCode = product.versionCode.toString(),
+                            appSize = product.displayRelease?.size?.formatSize().orEmpty(),
+                            appDev = product.author.name.replaceFirstChar { it.titlecase() },
+                            state = packageState,
+                            secondaryAction = secondaryAction,
+                            onSource = {
+                                product.source.let { link ->
+                                    if (link.isNotEmpty()) {
+                                        requireContext().startActivity(
+                                            Intent(Intent.ACTION_VIEW, link.toUri())
+                                        )
+                                    }
+                                }
+                            },
+                            onSourceLong = {
+                                product.source.let { link ->
+                                    if (link.isNotEmpty()) {
+                                        copyLinkToClipboard(
+                                            requireActivity().window.decorView.rootView,
+                                            link
+                                        )
+                                    }
+                                }
+                            },
+                            onAction = { onActionClick(packageState) },
+                            onSecondaryAction = { onActionClick(secondaryAction) }
+                        )
+                    }
+                    item {
+                        AnimatedVisibility(visible = product.canUpdate(installed)) {
+                            SwitchPreference(text = stringResource(id = R.string.ignore_this_update),
+                                initSelected = ProductPreferences[product.packageName].ignoreVersionCode == product.versionCode,
+                                onCheckedChanged = {
+                                    ProductPreferences[product.packageName].let {
+                                        it.copy(
+                                            ignoreVersionCode =
+                                            if (it.ignoreVersionCode == product.versionCode) 0 else product.versionCode
+                                        )
+                                    }
+                                })
+                        }
+                    }
+                    item {
+                        AnimatedVisibility(visible = installed != null) {
+                            SwitchPreference(text = stringResource(id = R.string.ignore_all_updates),
+                                initSelected = ProductPreferences[product.packageName].ignoreVersionCode == product.versionCode,
+                                onCheckedChanged = {
+                                    ProductPreferences[product.packageName].let {
+                                        it.copy(
+                                            ignoreUpdates = !it.ignoreUpdates
+                                        )
+                                    }
+                                })
+                        }
+                    }
+                    item {
+                        ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
+                            ScreenshotItem(
+                                screenShot = it,
+                                repository = repo,
+                                packageName = product.packageName
+                            )
+                        }) {
+                            onScreenshotClick(it)
+                        }
+                    }
+                    item {
+                        // TODO add markdown parsing
+                        if (product.description.isNotEmpty()) HtmlTextBlock(description = product.description)
+                    }
+                    item {
+                        val links = product.generateLinks(requireContext())
+                        if (links.isNotEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.links),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            links.forEach { link ->
+                                LinkItem(
+                                    linkType = link,
+                                    onClick = { it?.let { onUriClick(it, true) } },
+                                    onLongClick = { link ->
+                                        copyLinkToClipboard(
+                                            requireActivity().window.decorView.rootView,
+                                            link.toString()
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        if (product.donates.isNotEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.donate),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            product.donates.forEach {
+                                LinkItem(linkType = DonateType(it, requireContext()),
+                                    onClick = { link ->
+                                        link?.let { onUriClick(it, true) }
+                                    },
+                                    onLongClick = { link ->
+                                        copyLinkToClipboard(
+                                            requireActivity().window.decorView.rootView,
+                                            link.toString()
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        product.displayRelease?.generatePermissionGroups(requireContext())
+                            ?.let { list ->
+                                Text(
+                                    text = stringResource(id = R.string.permissions),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                list.forEach { p ->
+                                    PermissionsItem(permissionsType = p) { group, permissions ->
+                                        onPermissionsClick(group, permissions)
+                                    }
+                                }
+                            }
+                    }
+                    item {
+                        if (product.antiFeatures.isNotEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.anti_features),
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = product.antiFeatures.map { af ->
+                                    val titleId =
+                                        AntiFeature.values().find { it.key == af }?.titleResId
+                                    if (titleId != null) stringResource(id = titleId)
+                                    else stringResource(id = R.string.unknown_FORMAT, af)
+                                }
+                                    .joinToString(separator = "\n") { "\u2022 $it" }
+                            )
+                        }
+                    }
+                    item {
+                        if (product.whatsNew.isNotEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.changes),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            HtmlTextBlock(description = product.whatsNew)
+                        }
+                    }
+
+                    items(items = releaseItems) {
+                        ReleaseItem(
+                            release = it.first,
+                            repository = it.second,
+                            releaseState = it.third
+                        ) { release ->
+                            onReleaseClick(release)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
