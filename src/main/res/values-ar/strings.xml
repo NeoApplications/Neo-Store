@@ -33,7 +33,7 @@
     <string name="incompatible_with_FORMAT">غير متوافق مع %s</string>
     <string name="install">تثبيت</string>
     <string name="install_types">طرق التثبيت</string>
-    <string name="installed">مثبت</string>
+    <string name="installed">مثبته</string>
     <string name="integrity_check_error_DESC">لا يمكن التحقق من النزاهة.</string>
     <string name="invalid_address">عنوان خاطئ</string>
     <string name="invalid_fingerprint_format">صيغة البصمة خاطئة</string>
@@ -184,7 +184,7 @@
     <string name="website">الموقع الإلكتروني</string>
     <string name="prefs_personalization">التفضيلات</string>
     <string name="show_less">عرض أقل</string>
-    <string name="latest">آخر</string>
+    <string name="latest">المحدثة مؤخرا</string>
     <string name="explore">استكشف</string>
     <string name="update_all">تثبيت الكل</string>
     <string name="install_after_sync_summary">تثبيت جميع الإصدارات الجديدة بعد البحث في المستودعات للتطبيقات الجديدة</string>

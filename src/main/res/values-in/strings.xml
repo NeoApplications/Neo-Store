@@ -79,7 +79,7 @@
     <string name="address">Alamat</string>
     <string name="already_exists">Sudah ada</string>
     <string name="amoled">Hitam</string>
-    <string name="application_not_found">Tidak dapat menemukan aplikasi itu</string>
+    <string name="application_not_found">Tidak dapat menemukan aplikasi</string>
     <string name="application">Aplikasi</string>
     <string name="confirmation">Konfirmasi</string>
     <string name="could_not_download_FORMAT">Tidak dapat mengunduh %s</string>
