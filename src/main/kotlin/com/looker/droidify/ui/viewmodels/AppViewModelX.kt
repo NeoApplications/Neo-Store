@@ -1,18 +1,29 @@
 package com.looker.droidify.ui.viewmodels
 
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.PackageState
 
 class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     val products = MediatorLiveData<List<Product>>()
     val repositories = MediatorLiveData<List<Repository>>()
     val installedItem = MediatorLiveData<Installed?>()
+    val _productRepos = MutableLiveData<List<Pair<Product, Repository>>>()
+    var productRepos: List<Pair<Product, Repository>>
+        get() = _productRepos.value ?: emptyList()
+        set(value) {
+            _productRepos.value = value
+        }
+    val state = MutableLiveData<PackageState>()
+    val actions = MutableLiveData<Set<PackageState>>()
+    val secondaryAction = MutableLiveData<PackageState>()
 
     init {
         products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }
