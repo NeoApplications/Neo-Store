@@ -108,7 +108,7 @@ fun EditIconScreen(
         }
     }
 
-    Column(modifier = Modifier.padding(top = 30.dp)) {
+    Column(modifier = Modifier.padding(top = 42.dp)) {
         Text(
             text = title,
             modifier = Modifier
