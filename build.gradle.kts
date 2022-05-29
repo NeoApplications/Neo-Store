@@ -167,7 +167,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
-    implementation("com.google.android.material:material:1.7.0-alpha01")
+    implementation("com.google.android.material:material:1.7.0-alpha02")
 
     // Coil
     implementation("io.coil-kt:coil:2.1.0")
@@ -193,8 +193,8 @@ dependencies {
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
 
     // Room
     implementation("androidx.room:room-runtime:2.4.2")
