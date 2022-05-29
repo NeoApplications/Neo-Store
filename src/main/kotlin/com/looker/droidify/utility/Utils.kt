@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PermissionInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -25,7 +26,10 @@ import com.looker.droidify.R
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
+import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
+import com.looker.droidify.entity.LinkType
+import com.looker.droidify.entity.PermissionsType
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.ui.dialog.LaunchDialog
@@ -34,6 +38,7 @@ import com.looker.droidify.utility.extension.android.singleSignature
 import com.looker.droidify.utility.extension.android.versionCodeCompat
 import com.looker.droidify.utility.extension.resources.getDrawableCompat
 import com.looker.droidify.utility.extension.text.hex
+import com.looker.droidify.utility.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.security.MessageDigest
@@ -279,4 +284,121 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun Product.generateLinks(context: Context): List<LinkType> {
+    val links = mutableListOf<LinkType>()
+    if (author.name.isNotEmpty() || author.web.isNotEmpty()) {
+        links.add(
+            LinkType(
+                iconResId = R.drawable.ic_person,
+                title = author.name,
+                link = author.web.nullIfEmpty()?.let(Uri::parse)
+            )
+        )
+    }
+    author.email.nullIfEmpty()?.let {
+        links.add(
+            LinkType(
+                R.drawable.ic_email,
+                context.getString(R.string.author_email),
+                Uri.parse("mailto:$it")
+            )
+        )
+    }
+    links.addAll(licenses.map {
+        LinkType(
+            R.drawable.ic_copyright,
+            it,
+            Uri.parse("https://spdx.org/licenses/$it.html")
+        )
+    })
+    tracker.nullIfEmpty()
+        ?.let {
+            links.add(
+                LinkType(
+                    R.drawable.ic_bug_report,
+                    context.getString(R.string.bug_tracker),
+                    Uri.parse(it)
+                )
+            )
+        }
+    changelog.nullIfEmpty()?.let {
+        links.add(
+            LinkType(
+                R.drawable.ic_history,
+                context.getString(R.string.changelog),
+                Uri.parse(it)
+            )
+        )
+    }
+    web.nullIfEmpty()
+        ?.let {
+            links.add(
+                LinkType(
+                    R.drawable.ic_public,
+                    context.getString(R.string.project_website),
+                    Uri.parse(it)
+                )
+            )
+        }
+    return links
+}
+
+fun Release.generatePermissionGroups(context: Context): List<PermissionsType> {
+    val permissionGroups = mutableListOf<PermissionsType>()
+    val packageManager = context.packageManager
+    val permissions = permissions
+        .asSequence().mapNotNull {
+            try {
+                packageManager.getPermissionInfo(it, 0)
+            } catch (e: Exception) {
+                null
+            }
+        }
+        .groupBy(PackageItemResolver::getPermissionGroup)
+        .asSequence().map { (group, permissionInfo) ->
+            val permissionGroupInfo = try {
+                group?.let { packageManager.getPermissionGroupInfo(it, 0) }
+            } catch (e: Exception) {
+                null
+            }
+            Pair(permissionGroupInfo, permissionInfo)
+        }
+        .groupBy({ it.first }, { it.second })
+    if (permissions.isNotEmpty()) {
+        permissionGroups.addAll(permissions.asSequence().filter { it.key != null }
+            .map { PermissionsType(it.key, it.value.flatten()) })
+        permissions.asSequence().find { it.key == null }
+            ?.let { permissionGroups.add(PermissionsType(null, it.value.flatten())) }
+    }
+    return permissionGroups
+}
+
+fun List<PermissionInfo>.getLabels(context: Context): List<String> {
+    val localCache = PackageItemResolver.LocalCache()
+
+    val labels = map { permission ->
+        val labelFromPackage =
+            PackageItemResolver.loadLabel(context, localCache, permission)
+        val label = labelFromPackage ?: run {
+            val prefixes =
+                listOf("android.permission.", "com.android.browser.permission.")
+            prefixes.find { permission.name.startsWith(it) }?.let { it ->
+                val transform = permission.name.substring(it.length)
+                if (transform.matches("[A-Z_]+".toRegex())) {
+                    transform.split("_")
+                        .joinToString(separator = " ") { it.lowercase(Locale.US) }
+                } else {
+                    null
+                }
+            }
+        }
+        if (label == null) {
+            Pair(false, permission.name)
+        } else {
+            Pair(true, label.first().uppercaseChar() + label.substring(1, label.length))
+        }
+    }
+    return labels.sortedBy { it.first }.map { it.second }
 }
