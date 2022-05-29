@@ -27,13 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Action
+import com.looker.droidify.entity.Install
+import com.looker.droidify.entity.Launch
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.ui.compose.utils.ExpandableCard
@@ -155,14 +155,14 @@ fun ExpandedItemContent(
                     onClick = { onActionClicked(item) }
                 ) {
                     val action = when {
-                        installed != null -> Action.LAUNCH
-                        else -> Action.INSTALL
+                        installed != null -> Launch
+                        else -> Install
                     }
                     Icon(
-                        painter = painterResource(id = action.iconResId),
-                        contentDescription = stringResource(id = action.titleResId)
+                        imageVector = action.icon,
+                        contentDescription = stringResource(id = action.textId)
                     )
-                    Text(text = stringResource(id = action.titleResId))
+                    Text(text = stringResource(id = action.textId))
                 }
             }
         }
