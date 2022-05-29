@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-beta01"
+val composeVersion = "1.2.0-beta02"
 
 plugins {
     id("com.android.application").version("7.2.0")
@@ -156,10 +156,10 @@ dependencies {
 
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.8.0-rc02")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha03")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
     implementation("androidx.activity:activity-compose:1.6.0-alpha03")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc01")
@@ -170,8 +170,8 @@ dependencies {
     implementation("com.google.android.material:material:1.7.0-alpha01")
 
     // Coil
-    implementation("io.coil-kt:coil:2.0.0")
-    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("io.coil-kt:coil:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
@@ -184,7 +184,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:3.2.1")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.13.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.13.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     // Markdown
@@ -206,11 +206,11 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.8")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.10")
 
     debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
