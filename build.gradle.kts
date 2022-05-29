@@ -5,7 +5,7 @@ import java.util.*
 val composeVersion = "1.2.0-beta02"
 
 plugins {
-    id("com.android.application").version("7.2.0")
+    id("com.android.application").version("7.2.1")
     kotlin("android").version("1.6.21")
     kotlin("kapt").version("1.6.21")
     kotlin("plugin.serialization").version("1.6.21")
