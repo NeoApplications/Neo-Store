@@ -2,12 +2,6 @@ package com.looker.droidify.ui.compose.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,19 +32,20 @@ fun MainActionButton(
     ) {
         AnimatedContent(
             targetState = packageState,
-            transitionSpec = {
-                //when (targetState) {
-                /*is Cancelable -> {
-                    slideInVertically { height -> height } + fadeIn() with
-                            slideOutVertically { height -> -height } + fadeOut()
-                }*/
-                //is ButtonWork -> {
-                (slideInVertically { height -> -height } + fadeIn() with
-                        slideOutVertically { height -> height } + fadeOut())
-                    //}
-                    //}
+            // TODO Fix redrawing changing state 
+            /*transitionSpec = {
+                when (targetState) {
+                    is Cancelable -> {
+                        slideInVertically { height -> height } + fadeIn() with
+                                slideOutVertically { height -> -height } + fadeOut()
+                    }
+                    is ButtonWork -> {
+                        (slideInVertically { height -> -height } + fadeIn() with
+                                slideOutVertically { height -> height } + fadeOut())
+                    }
+                }
                     .using(SizeTransform(clip = false))
-            }
+            }*/
         ) {
             Row(
                 Modifier
