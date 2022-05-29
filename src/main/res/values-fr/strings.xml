@@ -196,4 +196,5 @@
     <string name="dialog_approve">Désactiver</string>
     <string name="root_session_installer">Utiliser l\'installateur de session root</string>
     <string name="root_session_installer_description">L\'installateur de session est un peu moins performant, mais évite les problèmes avec les applications installées dans Android +13.</string>
+    <string name="not_safe_for_work">NSFW (peut contenir du contenu dérangeant)</string>
 </resources>
