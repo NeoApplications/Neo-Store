@@ -122,15 +122,17 @@ class IconPackPreview @JvmOverloads constructor(
         if (!iconsLoaded || !isAttachedToWindow) return
 
         workspace.removeAllViews()
-        workspace.setGridSize(columns, 1)
-        workspace.setPadding(leftPadding,
-                verticalPadding,
-                rightPadding,
-                verticalPadding)
+        workspace.setGridSize(columns, 2)
+        workspace.setPadding(
+            leftPadding,
+            verticalPadding,
+            rightPadding,
+            verticalPadding
+        )
 
-        val apps = columns * 1
+        val apps = columns * 2
         var cellY = 0
-        var cellX = 0
+        var cellX: Int
 
         previewApps.take(apps).forEachIndexed { index, info ->
             if ((index + 1) > columns) {
