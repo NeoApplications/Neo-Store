@@ -32,7 +32,7 @@ class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) 
     }
 
     companion object {
-        fun setComponentNameState(context: Context?, comp: String, hidden: Boolean) {
+        fun setComponentNameState(context: Context, comp: String, hidden: Boolean) {
             val hiddenApps = getHiddenApps(context)
             while (hiddenApps.contains(comp)) {
                 hiddenApps.remove(comp)
@@ -43,16 +43,15 @@ class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) 
             setHiddenApps(context, hiddenApps)
         }
 
-        fun isHiddenApp(context: Context?, key: ComponentKey?): Boolean {
+        fun isHiddenApp(context: Context, key: ComponentKey?): Boolean {
             return getHiddenApps(context).contains(key.toString())
         }
 
-        // This can't be null anyway
-        fun getHiddenApps(context: Context?): MutableSet<String> {
+        private fun getHiddenApps(context: Context): MutableSet<String> {
             return HashSet(Utilities.getOmegaPrefs(context).hiddenAppSet)
         }
 
-        fun setHiddenApps(context: Context?, hiddenApps: Set<String>?) {
+        fun setHiddenApps(context: Context, hiddenApps: Set<String>?) {
             Utilities.getOmegaPrefs(context).hiddenAppSet = hiddenApps!!
         }
     }
