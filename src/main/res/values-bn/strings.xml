@@ -117,4 +117,20 @@
     <string name="dialog_refuse">রাখো</string>
     <string name="dialog_approve">বন্ধ করো</string>
     <string name="ignore_battery_optimization_title">ব্যাটারি যত্ন</string>
+    <plurals name="new_updates_DESC_FORMAT">
+        <item quantity="one">%dটি অ্যাপের নতুন সংস্করণ আছে।</item>
+        <item quantity="other">%dটি অ্যাপের নতুন সংস্করণ আছে।</item>
+    </plurals>
+    <string name="all_applications_up_to_date">সব অ্যাপ হালনাগাদকৃত</string>
+    <string name="application_not_found">এই অ্যাপ পাওয়া যায়নি</string>
+    <string name="cant_edit_sync_DESC">হালনাগাদরত ভাণ্ডার সম্পাদনা করা যাবে না…</string>
+    <string name="checking_repository">ভাণ্ডার দেখা হচ্ছে…</string>
+    <string name="compiled_for_debugging">সমস্যা সমাধানের(ডিবাগ) জন্য তৈরি করা হয়েছে</string>
+    <string name="contains_non_free_media">অমুক্ত মিডিয়া আছে</string>
+    <string name="could_not_download_FORMAT">%s নামানো যায়নি</string>
+    <string name="could_not_sync_FORMAT">%s হালনাগাদ করা যায়নি</string>
+    <string name="could_not_validate_FORMAT">%s যাচাই করা যায়নি</string>
+    <string name="incompatible_api_min_DESC_FORMAT">সর্বনিম্ন এপিআই সংস্করণ %d।</string>
+    <string name="incompatible_versions_summary">এই যন্ত্রের সাথে অসামঞ্জস্যপূর্ণ সংস্করণ দেখাও</string>
+    <string name="delete_repository_DESC">এই ভাণ্ডার মুছবে\?</string>
 </resources>
