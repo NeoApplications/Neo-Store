@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -142,6 +143,8 @@ fun CustomizeIconView(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
+        val focusRequester = FocusRequester()
+        val isFocused = remember { mutableStateOf(false) }
         OutlinedTextField(
             value = title,
             onValueChange = onTitleChange,
@@ -164,7 +167,9 @@ fun CustomizeIconView(
                 unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12F),
                 textColor = MaterialTheme.colorScheme.onSurface
             ),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
             keyboardActions = KeyboardActions(onDone = {
                 keyboardController?.hide()
             }),
@@ -177,6 +182,7 @@ fun CustomizeIconView(
 
         PreferenceGroup {
             if (!componentKey.componentName.equals("com.saggitt.omega.folder")) {
+                val scope = rememberCoroutineScope()
                 SwitchPreference(
                     title = stringResource(R.string.hide_app),
                     isChecked = CustomAppFilter.isHiddenApp(context, componentKey),

@@ -2,6 +2,7 @@ package com.saggitt.omega.compose.components
 
 import android.animation.PropertyValuesHolder
 import android.content.Context
+import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -25,7 +26,8 @@ import com.android.launcher3.views.BaseDragLayer
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.views.BaseBottomSheet
 
-class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(context, null, 0) {
+class ComposeBottomSheet(context: Context, attrs: AttributeSet? = null) :
+    AbstractSlideInView<Launcher>(context, attrs, 0) {
 
     private val container = ComposeView(context)
     private val mLauncher = Launcher.getLauncher(context)
@@ -36,12 +38,13 @@ class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(c
                 .apply { ignoreInsets = true }
         gravity = Gravity.BOTTOM
         setWillNotDraw(false)
+
         mContent = LinearLayout(context).apply {
             addView(container)
         }
     }
 
-    fun setContent(content: @Composable BaseComposeBottomSheet.() -> Unit) {
+    fun setContent(content: @Composable ComposeBottomSheet.() -> Unit) {
         container.setContent {
             OmegaAppTheme {
                 Box(
@@ -54,7 +57,7 @@ class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(c
                         .wrapContentHeight()
                         .fillMaxWidth()
                 ) {
-                    content(this@BaseComposeBottomSheet)
+                    content(this@ComposeBottomSheet)
                 }
             }
         }
@@ -108,9 +111,9 @@ class BaseComposeBottomSheet(context: Context) : AbstractSlideInView<Launcher>(c
         fun show(
             context: Context,
             animate: Boolean = true,
-            content: @Composable BaseComposeBottomSheet.() -> Unit
+            content: @Composable ComposeBottomSheet.() -> Unit
         ) {
-            val bottomSheet = BaseComposeBottomSheet(context)
+            val bottomSheet = ComposeBottomSheet(context)
             bottomSheet.setContent(content)
             bottomSheet.show(animate)
         }

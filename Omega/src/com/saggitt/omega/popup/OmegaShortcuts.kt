@@ -34,7 +34,7 @@ import com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaLauncher
-import com.saggitt.omega.compose.components.BaseComposeBottomSheet
+import com.saggitt.omega.compose.components.ComposeBottomSheet
 import com.saggitt.omega.icons.CustomizeIconSheet
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.hasFlag
@@ -67,7 +67,7 @@ class OmegaShortcuts {
             if (launcher.isInState(LauncherState.ALL_APPS)) {
                 if (prefs.drawerPopupEdit) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    BaseComposeBottomSheet.show(launcher, true) {
+                    ComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
                             icon = icon,
                             defaultTitle = defaultTitle,
@@ -79,7 +79,7 @@ class OmegaShortcuts {
             } else if (launcher.isInState(LauncherState.NORMAL)) {
                 if (prefs.desktopPopupEdit && !prefs.lockDesktop) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
-                    BaseComposeBottomSheet.show(launcher, true) {
+                    ComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
                             icon = icon,
                             defaultTitle = defaultTitle,
