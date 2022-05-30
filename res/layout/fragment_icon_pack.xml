@@ -25,7 +25,7 @@
     <com.saggitt.omega.iconpack.IconPackPreview
         android:id="@+id/icon_pack_preview"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="300dp">
 
         <com.android.launcher3.CellLayout
             android:id="@+id/workspace"
