@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,12 +34,13 @@ fun PermissionsItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.large)
             .clickable {
                 onClick(
                     permissionsType.group?.name,
                     permissionsType.permissions.map { it.name })
             }
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp, horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top
     ) {

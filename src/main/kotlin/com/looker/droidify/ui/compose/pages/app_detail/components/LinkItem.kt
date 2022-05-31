@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,10 +35,11 @@ fun LinkItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.large)
             .combinedClickable(
                 onClick = { onClick(linkType.link) },
                 onLongClick = { onLongClick(linkType.link) })
-            .padding(vertical = 8.dp),
+            .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
