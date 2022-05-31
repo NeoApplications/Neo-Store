@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +54,6 @@ import androidx.navigation.NavGraphBuilder
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.*
 import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.preferences.subRoute
@@ -78,7 +76,9 @@ fun NavGraphBuilder.licenseGraph(route: String) {
 }
 
 fun NavGraphBuilder.translatorsGraph(route: String) {
-    preferenceGraph(route, { TranslatorsScreen() })
+    preferenceGraph(
+        route,
+        { TranslatorsScreen(Config.getCurrentTheme(LocalContext.current).isDark) })
 }
 
 fun NavGraphBuilder.changelogGraph(route: String) {
@@ -355,63 +355,11 @@ fun ComposableWebView(url: String, isDark: Boolean) {
 }
 
 @Composable
-fun TranslatorsScreen() {
+fun TranslatorsScreen(isDark: Boolean) {
     ViewWithActionBar(
-        title = stringResource(R.string.about_open_source),
+        title = stringResource(R.string.about_translators),
     ) {
-        val translators: List<String> =
-            (Utilities.readTextfileFromRawRes(R.raw.translators, LocalContext.current, "", "")
-                .trim() + "\n\n").split("\n")
-        val translatorsSize = translators.size - 2
-        val languages: ArrayList<String> = arrayListOf()
-
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(top = 82.dp, start = 16.dp, end = 16.dp)
-        ) {
-            for (i in 0..translatorsSize step 4) {
-                if (languages.size > 0 && !languages.contains(translators[i + 1])) {
-                    Divider(
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 16.dp)
-                    )
-                }
-                if (!languages.contains(translators[i + 1])) {
-                    languages.add(translators[i + 1])
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
-                    ) {
-                        Text(
-                            text = translators[i + 1],
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                        )
-
-                        Text(
-                            text = translators[i] + " <" + translators[i + 2] + ">",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
-                    ) {
-
-                        Text(
-                            text = translators[i] + " <" + translators[i + 2] + ">",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.requiredHeight(50.dp))
-        }
+        ComposableWebView(url = "file:///android_asset/translators.htm", isDark = isDark)
+        Spacer(modifier = Modifier.requiredHeight(50.dp))
     }
 }
