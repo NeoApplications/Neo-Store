@@ -12,7 +12,7 @@ object Converters {
     fun toStringList(byteArray: ByteArray): List<String> {
         val string = String(byteArray)
         return if (string == "") emptyList()
-        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty)
+        else string.removeSurrounding("[", "]").split(", ").filter(String::isNotEmpty)
     }
 
     @JvmName("stringListToByteArray")
