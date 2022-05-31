@@ -238,7 +238,7 @@
     <string name="allow">Autoriser</string>
     <string name="permission_iplocate_twilight_explanation">Autoriser l\'accès à votre emplacement approximatif \? Cela aura pour effet un meilleur calcul de l\'heure de la journée.</string>
     <string name="permission_iplocate">Emplacement approximatif</string>
-    <string name="event_provider_missing_notification_dots">Activer les notifications dots pour utiliser <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</string>
+    <string name="event_provider_missing_notification_dots">Nécessite d\'activer les points de notification <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>.</string>
     <string name="event_provider_missing_notification_access">Activer les notifications depuis <xliff:g example="My App" id="name">“%2$s” pour utiliser </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s”.</xliff:g></string>
     <string name="battery_low">Batterie faible</string>
     <string name="battery_full">Chargé</string>
@@ -323,7 +323,7 @@
     <string name="title_theme_icon_packs">Packs d\'icône</string>
     <string name="title_text_color">Couleur du texte</string>
     <string name="title_drawer_enable_background">Utiliser une couleur d\'arrière-plan personnalisée</string>
-    <string name="msg_missing_usage_access">Activer l\'usage des accès pour <xliff:g example="My App" id="name">%1$s</xliff:g> afficher les suggestions d\'applications</string>
+    <string name="msg_missing_usage_access">Activer l\'accès aux données d\'utilisation pour <xliff:g example="My App" id="name">%1$s</xliff:g> pour afficher les suggestions d\'applications</string>
     <string name="feed_widget">Widget</string>
     <string name="feed_add_widget">Ajouter Un Widget</string>
     <string name="action_open_widgets">Ouvrir Le Tiroir Widget</string>
@@ -413,11 +413,30 @@
     <string name="disable_protected_apps_message">Désactiver les applications protégées nécessite une authentification</string>
     <string name="title_drawer_layout">Mise en page</string>
     <string name="title_drawer_vertical">Vertical</string>
-    <string name="folder_name_format">Dossier : <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="folder_name_format">Dossier : <xliff:g example="Jeux" id="name">%1$s</xliff:g></string>
     <string name="title_theme_customize_icons">Personnaliser les icônes</string>
     <string name="summary_force_shapeless">Essayer d\'utiliser les anciennes icônes pour toutes les apps.</string>
     <string name="dash_media_player_description">Afficher ou masquer les contrôles du lecteur audio</string>
     <string name="summary_white_only_treatment">Colorer tous les arrière-plans des Adaptive Icons.</string>
     <string name="summary_colored_backgrounds">Pour les arrière-plans prévus pour Adaptive Icons.</string>
     <string name="summary_legacy_treatment">Créer des Adaptive Icons pour tous les raccourcis.</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="summary_all_apps_search">Afficher la barre de recherche</string>
+    <string name="summary_app_suggestions">Pour toutes les apps et l\'écran d\'accueil</string>
+    <string name="title_dock_search">Barre de recherche du dock</string>
+    <string name="summary_dock_search">Afficher en bas du dock</string>
+    <string name="label_search">Rechercher</string>
+    <string name="folder_rows">Lignes de répertoire</string>
+    <string name="folder_columns">Colonnes de répertoire</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
+    <string name="backup_delete_failed">Quelque chose n\'a pas marché</string>
+    <string name="backup_name">Nom de la sauvegarde</string>
+    <string name="backup_create_new">Créer une nouvelle sauvegarde</string>
+    <string name="permission_denied">Autorisation de lecture refusée !</string>
+    <string name="enabled_events">Activé</string>
+    <string name="summary_app_categorize">Choisir entre Onglets et Répertoires</string>
+    <string name="summary_app_categorization_enable">Créer des onglets ou répertoires</string>
+    <string name="cat_desktop_grid">Grille et disposition</string>
+    <string name="title_app_categorization_enable">Activer les catégories d\'apps</string>
 </resources>
