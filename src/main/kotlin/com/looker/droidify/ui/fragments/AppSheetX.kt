@@ -48,6 +48,7 @@ import com.looker.droidify.entity.Cancelable
 import com.looker.droidify.entity.Connecting
 import com.looker.droidify.entity.Details
 import com.looker.droidify.entity.DonateType
+import com.looker.droidify.entity.Downloading
 import com.looker.droidify.entity.Install
 import com.looker.droidify.entity.Launch
 import com.looker.droidify.entity.PackageState
@@ -245,23 +246,23 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             }
         }
 
-    private suspend fun updateDownloadState(state: DownloadService.State?) {
-        val status = when (state) {
+    private suspend fun updateDownloadState(downloadState: DownloadService.State?) {
+        val packageState = when (downloadState) {
             is DownloadService.State.Pending -> Pending
             is DownloadService.State.Connecting -> Connecting
-            is DownloadService.State.Downloading -> com.looker.droidify.entity.Downloading(
-                state.read,
-                state.total
+            is DownloadService.State.Downloading -> Downloading(
+                downloadState.read,
+                downloadState.total
             )
             else -> null
         }
-        val downloading = status is Cancelable
+        val downloading = packageState is Cancelable
         this.downloading = downloading
-        viewModel.state.value = state
+        viewModel.state.value = packageState
         updateButtons()
-        if (state is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
+        if (downloadState is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
             withContext(Dispatchers.Default) {
-                AppInstaller.getInstance(context)?.defaultInstaller?.install(state.release.cacheFileName)
+                AppInstaller.getInstance(context)?.defaultInstaller?.install(downloadState.release.cacheFileName)
             }
         }
     }
