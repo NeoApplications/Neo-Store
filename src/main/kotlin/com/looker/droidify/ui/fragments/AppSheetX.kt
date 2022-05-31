@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +64,7 @@ import com.looker.droidify.screen.ScreenshotsFragment
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.DownloadService
 import com.looker.droidify.ui.activities.MainActivityX
+import com.looker.droidify.ui.compose.components.ExpandableBlock
 import com.looker.droidify.ui.compose.components.ScreenshotItem
 import com.looker.droidify.ui.compose.components.ScreenshotList
 import com.looker.droidify.ui.compose.components.SwitchPreference
@@ -562,42 +562,46 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     item {
                         val links = product.generateLinks(requireContext())
                         if (links.isNotEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.links),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            links.forEach { link ->
-                                LinkItem(
-                                    linkType = link,
-                                    onClick = { it?.let { onUriClick(it, true) } },
-                                    onLongClick = { link ->
-                                        copyLinkToClipboard(
-                                            requireActivity().window.decorView.rootView,
-                                            link.toString()
-                                        )
-                                    }
-                                )
+                            ExpandableBlock(
+                                heading = stringResource(id = R.string.links),
+                                positive = true,
+                                preExpanded = true
+                            ) {
+                                links.forEach { link ->
+                                    LinkItem(
+                                        linkType = link,
+                                        onClick = { it?.let { onUriClick(it, true) } },
+                                        onLongClick = { link ->
+                                            copyLinkToClipboard(
+                                                requireActivity().window.decorView.rootView,
+                                                link.toString()
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
                     item {
                         if (product.donates.isNotEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.donate),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            product.donates.forEach {
-                                LinkItem(linkType = DonateType(it, requireContext()),
-                                    onClick = { link ->
-                                        link?.let { onUriClick(it, true) }
-                                    },
-                                    onLongClick = { link ->
-                                        copyLinkToClipboard(
-                                            requireActivity().window.decorView.rootView,
-                                            link.toString()
-                                        )
-                                    }
-                                )
+                            ExpandableBlock(
+                                heading = stringResource(id = R.string.donate),
+                                positive = true,
+                                preExpanded = false
+                            ) {
+                                product.donates.forEach {
+                                    LinkItem(linkType = DonateType(it, requireContext()),
+                                        onClick = { link ->
+                                            link?.let { onUriClick(it, true) }
+                                        },
+                                        onLongClick = { link ->
+                                            copyLinkToClipboard(
+                                                requireActivity().window.decorView.rootView,
+                                                link.toString()
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
@@ -630,28 +634,32 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     }
                     item {
                         if (product.antiFeatures.isNotEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.anti_features),
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                            Text(
-                                text = product.antiFeatures.map { af ->
-                                    val titleId =
-                                        AntiFeature.values().find { it.key == af }?.titleResId
-                                    if (titleId != null) stringResource(id = titleId)
-                                    else stringResource(id = R.string.unknown_FORMAT, af)
-                                }
-                                    .joinToString(separator = "\n") { "\u2022 $it" }
-                            )
+                            ExpandableBlock(
+                                heading = stringResource(id = R.string.anti_features),
+                                positive = false,
+                                preExpanded = false
+                            ) {
+                                Text(
+                                    text = product.antiFeatures.map { af ->
+                                        val titleId =
+                                            AntiFeature.values().find { it.key == af }?.titleResId
+                                        if (titleId != null) stringResource(id = titleId)
+                                        else stringResource(id = R.string.unknown_FORMAT, af)
+                                    }
+                                        .joinToString(separator = "\n") { "\u2022 $it" }
+                                )
+                            }
                         }
                     }
                     item {
                         if (product.whatsNew.isNotEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.changes),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            HtmlTextBlock(description = product.whatsNew)
+                            ExpandableBlock(
+                                heading = stringResource(id = R.string.changes),
+                                positive = true,
+                                preExpanded = true
+                            ) {
+                                HtmlTextBlock(description = product.whatsNew)
+                            }
                         }
                     }
 
