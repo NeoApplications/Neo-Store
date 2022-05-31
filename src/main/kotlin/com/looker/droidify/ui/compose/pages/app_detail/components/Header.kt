@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.entity.Cancelable
+import com.looker.droidify.entity.Downloading
 import com.looker.droidify.entity.Install
 import com.looker.droidify.entity.PackageState
 import com.looker.droidify.ui.compose.components.MainActionButton
@@ -121,7 +122,7 @@ fun TopBarHeader(
                 DownloadProgress(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     totalSize = 69420,
-                    isIndeterminate = if (state is Cancelable) state.isIndeterminate else true
+                    isIndeterminate = state !is Downloading,
                 )
             }
         }

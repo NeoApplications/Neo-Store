@@ -96,17 +96,15 @@ sealed interface PackageState {
 
 sealed class Cancelable(
     @StringRes override val textId: Int,
-    override val icon: ImageVector = Icons.Rounded.Close,
-    val isIndeterminate: Boolean
+    override val icon: ImageVector = Icons.Rounded.Close
 ) : PackageState
 
-object Pending : Cancelable(R.string.pending, isIndeterminate = true)
-object Connecting : Cancelable(R.string.connecting, isIndeterminate = true)
-class Downloading(downloaded: Long, total: Long?) :
-    Cancelable(R.string.downloading, isIndeterminate = true)
+object Pending : Cancelable(R.string.pending)
+object Connecting : Cancelable(R.string.connecting)
+class Downloading(val downloaded: Long, val total: Long?) :
+    Cancelable(R.string.downloading)
 
-class Installing(isIndeterminate: Boolean) :
-    Cancelable(R.string.installing, isIndeterminate = isIndeterminate)
+object Installing : Cancelable(R.string.installing)
 
 sealed class ButtonWork(
     @StringRes override val textId: Int,
