@@ -121,8 +121,9 @@ fun TopBarHeader(
             AnimatedVisibility(visible = state is Cancelable) {
                 DownloadProgress(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    totalSize = 69420,
+                    totalSize = if (state is Downloading) state.total ?: 1L else 1L,
                     isIndeterminate = state !is Downloading,
+                    downloaded = if (state is Downloading) state.downloaded else 0L,
                 )
             }
         }
@@ -194,8 +195,8 @@ fun HeaderExtrasCard(
 @Composable
 fun DownloadProgress(
     modifier: Modifier = Modifier,
-    downloading: Float = 0f,
     totalSize: Long,
+    downloaded: Long?,
     isIndeterminate: Boolean
 ) {
     Column(
@@ -210,15 +211,14 @@ fun DownloadProgress(
             )
         } else {
             Text(
-                text = totalSize.times(downloading).toLong()
-                    .formatSize() + "/" + totalSize.formatSize()
+                text = "${downloaded?.formatSize()}/${totalSize.formatSize()}"
             )
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(Shapes.Full),
-                progress = downloading
+                progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
             )
         }
     }
