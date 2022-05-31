@@ -35,7 +35,7 @@ fun HtmlTextBlock(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var isExpanded by remember { mutableStateOf(false) }
         Surface(
@@ -49,6 +49,7 @@ fun HtmlTextBlock(
             )
             HtmlText(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(16.dp)
                     .animateContentSize(),
                 text = description,
