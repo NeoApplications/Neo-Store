@@ -106,6 +106,7 @@
     <string name="password">Password</string>
     <string name="password_missing">Password missing</string>
     <string name="permissions">Permissions</string>
+    <string name="no_permissions_identified">No requested permissions identified</string>
     <string name="plus_more_FORMAT">+%d more</string>
     <string name="settings">Settings</string>
     <string name="processing_FORMAT">Processing %1$s…</string>

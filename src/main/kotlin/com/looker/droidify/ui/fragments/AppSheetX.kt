@@ -15,6 +15,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -602,13 +604,26 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     item {
                         product.displayRelease?.generatePermissionGroups(requireContext())
                             ?.let { list ->
-                                Text(
-                                    text = stringResource(id = R.string.permissions),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                list.forEach { p ->
-                                    PermissionsItem(permissionsType = p) { group, permissions ->
-                                        onPermissionsClick(group, permissions)
+                                ExpandableBlock(
+                                    heading = stringResource(id = R.string.permissions),
+                                    positive = true,
+                                    preExpanded = false
+                                ) {
+                                    if (list.isNotEmpty()) {
+                                        list.forEach { p ->
+                                            PermissionsItem(permissionsType = p) { group, permissions ->
+                                                onPermissionsClick(group, permissions)
+                                            }
+                                        }
+                                    } else {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(8.dp),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Text(text = stringResource(id = R.string.no_permissions_identified))
+                                        }
                                     }
                                 }
                             }
