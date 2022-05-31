@@ -257,8 +257,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
         val downloading = status is Cancelable
         this.downloading = downloading
+        viewModel.state.value = state
         updateButtons()
-        viewModel.state.value = status
         if (state is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
             withContext(Dispatchers.Default) {
                 AppInstaller.getInstance(context)?.defaultInstaller?.install(state.release.cacheFileName)
