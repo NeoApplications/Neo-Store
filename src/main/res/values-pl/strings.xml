@@ -198,4 +198,5 @@
     <string name="dialog_approve">Wyłącz</string>
     <string name="root_session_installer">Użyj instalatora sesji root</string>
     <string name="root_session_installer_description">Instalator sesji jest nieco mniej wydajny niż starszy, ale pozwala uniknąć problemów z zainstalowanymi aplikacjami w systemie Android +13.</string>
+    <string name="not_safe_for_work">NSFW (może zawierać niepokojące treści)</string>
 </resources>
