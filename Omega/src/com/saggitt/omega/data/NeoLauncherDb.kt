@@ -22,21 +22,34 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.android.launcher3.util.MainThreadInitializedObject
 
-@Database(entities = [IconOverride::class], version = 1)
+@Database(
+    entities = [IconOverride::class, AppTracker::class],
+    version = 2
+)
 @TypeConverters(Converters::class)
 abstract class NeoLauncherDb : RoomDatabase() {
 
     abstract fun iconOverrideDao(): IconOverrideDao
+    abstract fun appTrackerDao(): AppTrackerDao
 
     companion object {
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE apptracker (packageName TEXT not Null, count INTEGER not Null, PRIMARY KEY(packageName));")
+            }
+        }
 
         val INSTANCE = MainThreadInitializedObject { context ->
             Room.databaseBuilder(
                 context,
                 NeoLauncherDb::class.java, "NeoLauncher.db"
-            ).build()
+            ).addMigrations(MIGRATION_1_2)
+                .build()
         }
     }
 }
