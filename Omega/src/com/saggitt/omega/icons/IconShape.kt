@@ -295,6 +295,21 @@ open class IconShape(
         override fun toString() = "cylinder"
     }
 
+    object Cupertino : IconShape(
+        IconCornerShape.cupertino,
+        IconCornerShape.cupertino,
+        IconCornerShape.cupertino,
+        IconCornerShape.cupertino,
+        1f, 1f, 1f, 1f
+    ) {
+
+        override val windowTransitionRadius = .45f
+
+        override fun toString(): String {
+            return "cupertino"
+        }
+    }
+
     companion object {
 
         fun fromString(value: String): IconShape? {
@@ -307,6 +322,7 @@ open class IconShape(
                 "sammy" -> Sammy
                 "teardrop" -> Teardrop
                 "cylinder" -> Cylinder
+                "cupertino" -> Cupertino
                 "" -> null
                 else -> try {
                     parseCustomShape(value)

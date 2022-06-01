@@ -33,6 +33,7 @@ class ShapeModel(val shapeName: String, var isSelected: Boolean) {
             "sammy" -> AppCompatResources.getDrawable(context, R.drawable.shape_squircle)
             "teardrop" -> AppCompatResources.getDrawable(context, R.drawable.shape_teardrop)
             "cylinder" -> AppCompatResources.getDrawable(context, R.drawable.shape_cylinder)
+            "cupertino" -> AppCompatResources.getDrawable(context, R.drawable.shape_cupertino)
             else -> AppCompatResources.getDrawable(context, R.drawable.ic_style)
         }
     }
