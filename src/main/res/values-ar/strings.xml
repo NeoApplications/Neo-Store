@@ -200,4 +200,5 @@
     <string name="dialog_refuse">يحفظ</string>
     <string name="root_session_installer">استخدام مثبت جلسة الجذر</string>
     <string name="root_session_installer_description">يعد مثبِّت الجلسة أقل أداءً قليلاً من المثبت القديم ، ولكنه يتجنب المشكلات المتعلقة بالتطبيقات المثبتة في Android +13.</string>
+    <string name="not_safe_for_work">NSFW (قد تحتوي على محتوى مزعج او غير اخلاقي)</string>
 </resources>
