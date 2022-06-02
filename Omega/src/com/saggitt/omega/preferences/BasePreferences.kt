@@ -90,10 +90,6 @@ abstract class BasePreferences(context: Context) :
         onChangeCallback?.reloadAll()
     }
 
-    fun reloadDrawer() {
-        onChangeCallback?.reloadDrawer()
-    }
-
     fun restart() {
         onChangeCallback?.restart()
     }

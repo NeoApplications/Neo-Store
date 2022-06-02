@@ -18,8 +18,7 @@
 
 package com.saggitt.omega.preferences
 
-import android.content.Context.USER_SERVICE
-import android.os.UserManager
+import com.android.launcher3.LauncherAppState
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.blur.BlurWallpaperProvider
 import com.saggitt.omega.omegaApp
@@ -30,20 +29,13 @@ class OmegaPreferencesChangeCallback(val launcher: OmegaLauncher) {
     }
 
     fun reloadApps() {
-        (launcher.applicationContext.getSystemService(
-                USER_SERVICE
-        ) as UserManager).userProfiles.forEach {
-            launcher.model.onPackagesReload(it)
-        }
+        val las = LauncherAppState.getInstance(launcher.applicationContext)
+        val idp = las.invariantDeviceProfile
+        idp.onPreferencesChanged(launcher.applicationContext)
     }
 
     fun reloadAll() {
         launcher.model.forceReload()
-    }
-
-    fun reloadDrawer() {
-        //TODO Recargar los iconos
-        //launcher.appsView.appsLists.forEach { it.reset() }
     }
 
     fun restart() {

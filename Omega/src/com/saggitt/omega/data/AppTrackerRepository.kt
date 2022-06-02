@@ -23,16 +23,23 @@ import android.content.Context
 import com.android.launcher3.util.MainThreadInitializedObject
 import kotlinx.coroutines.*
 
-class AppTrackerRepository(private val context: Context) {
+class AppTrackerRepository(context: Context) {
     private val scope = CoroutineScope(Dispatchers.IO) + CoroutineName("AppTrackerRepository")
     private val dao = NeoLauncherDb.INSTANCE.get(context).appTrackerDao()
 
-    fun getAppsCount(): List<AppTracker> {
-        var result: List<AppTracker> = listOf()
+    var appCountList: List<AppTracker> = listOf()
+
+    init {
         scope.launch {
-            result = dao.getAppCount()
+            appCountList = dao.getAppCount()
         }
-        return result
+    }
+
+    fun getAppsCount(): List<AppTracker> {
+        scope.launch {
+            appCountList = dao.getAppCount()
+        }
+        return appCountList
     }
 
     fun updateAppCount(packageName: String) {

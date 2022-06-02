@@ -27,22 +27,21 @@ import androidx.room.Query
 @Dao
 interface AppTrackerDao {
 
-    @Query("SELECT * FROM apptracker ")
+    @Query("SELECT * FROM apptracker")
     fun getAppCount(): List<AppTracker>
 
     @Query("DELETE FROM apptracker WHERE packageName = :packageName")
     suspend fun deleteAppCount(packageName: String)
 
     @Query("SELECT count FROM apptracker WHERE packageName = :packageName")
-    suspend fun getAppCount(packageName: String): Int
+    fun getAppCount(packageName: String): Int
 
     @Query("SELECT EXISTS(SELECT * FROM apptracker WHERE packageName = :packageName)")
     fun appExist(packageName: String): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(appTracker: AppTracker)
+    fun insert(appTracker: AppTracker)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(appTracker: AppTracker)
-
+    fun update(appTracker: AppTracker)
 }

@@ -21,6 +21,7 @@ package com.saggitt.omega.allapps
 import android.content.ComponentName
 import android.content.Context
 import android.os.UserHandle
+import android.util.Log
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 
@@ -33,12 +34,14 @@ class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) 
 
     companion object {
         fun setComponentNameState(context: Context, comp: String, hidden: Boolean) {
+            Log.d("CustomAppFilter", "Adding $comp to hidden apps")
             val hiddenApps = getHiddenApps(context)
             while (hiddenApps.contains(comp)) {
                 hiddenApps.remove(comp)
             }
             if (hidden) {
                 hiddenApps.add(comp)
+                Log.d("CustomAppFilter", "Added $comp to hidden apps")
             }
             setHiddenApps(context, hiddenApps)
         }

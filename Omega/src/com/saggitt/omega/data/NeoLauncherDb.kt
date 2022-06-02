@@ -28,7 +28,8 @@ import com.android.launcher3.util.MainThreadInitializedObject
 
 @Database(
     entities = [IconOverride::class, AppTracker::class],
-    version = 2
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class NeoLauncherDb : RoomDatabase() {
@@ -40,7 +41,7 @@ abstract class NeoLauncherDb : RoomDatabase() {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE apptracker (packageName TEXT not Null, count INTEGER not Null, PRIMARY KEY(packageName));")
+                database.execSQL("CREATE TABLE AppTracker (packageName TEXT not Null, count INTEGER not Null, PRIMARY KEY(packageName))")
             }
         }
 

@@ -35,6 +35,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -66,7 +67,6 @@ import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.DbHelper
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwner,
@@ -91,6 +91,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     val hiddenApps = ArrayList<AppInfo>()
+    private val insetsController by lazy { WindowInsetsControllerCompat(window, rootView) }
 
     private val activityResultRegistry = object : ActivityResultRegistry() {
         override fun <I : Any?, O : Any?> onLaunch(
@@ -198,11 +199,6 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
             QuickStepContract.sCustomCornerRadius = prefs.windowCornerRadius
         }
-
-        /*CREATE DB TO HANDLE APPS COUNT*/
-        val db = DbHelper(this)
-        db.close()
-
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {

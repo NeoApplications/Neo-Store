@@ -40,11 +40,13 @@ import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.hasFlags
 import java.net.URISyntaxException
+import com.android.launcher3.model.data.AppInfo as ModelAppInfo
 
 class OmegaShortcuts {
 
     class Customize(
         private val launcher: OmegaLauncher,
+        private val appInfo: ModelAppInfo,
         itemInfo: ItemInfo
     ) : SystemShortcut<OmegaLauncher>(
         R.drawable.ic_edit_no_shadow,
@@ -54,8 +56,6 @@ class OmegaShortcuts {
         val prefs: OmegaPreferences = Utilities.getOmegaPrefs(launcher)
         override fun onClick(v: View?) {
             val outObj = Array<Any?>(1) { null }
-            val key = ComponentKey(mItemInfo.targetComponent, mItemInfo.user)
-            val appInfo = launcher.appsView.appsStore.getApp(key)!!
             var icon = Utilities.loadFullDrawableWithoutTheme(launcher, appInfo, 0, 0, outObj)
             if (mItemInfo.screenId != NO_ID && icon is BitmapInfo.Extender) {
                 icon = icon.getThemedDrawable(launcher)
@@ -71,7 +71,7 @@ class OmegaShortcuts {
                         CustomizeIconSheet(
                             icon = icon,
                             defaultTitle = defaultTitle,
-                            componentKey = key,
+                            componentKey = appInfo.toComponentKey(),
                             onClose = { close(true) }
                         )
                     }
@@ -83,7 +83,7 @@ class OmegaShortcuts {
                         CustomizeIconSheet(
                             icon = icon,
                             defaultTitle = defaultTitle,
-                            componentKey = key,
+                            componentKey = appInfo.toComponentKey(),
                             onClose = { close(true) }
                         )
                     }
@@ -156,7 +156,16 @@ class OmegaShortcuts {
 
     companion object {
         val CUSTOMIZE = SystemShortcut.Factory<OmegaLauncher> { activity, itemInfo ->
-            if (itemInfo.itemType == ITEM_TYPE_APPLICATION) Customize(activity, itemInfo) else null
+            getAppInfo(activity, itemInfo)?.let {
+                Customize(activity, it, itemInfo)
+            }
+        }
+
+        private fun getAppInfo(launcher: OmegaLauncher, itemInfo: ItemInfo): ModelAppInfo? {
+            if (itemInfo is ModelAppInfo) return itemInfo
+            if (itemInfo.itemType != ITEM_TYPE_APPLICATION) return null
+            val key = ComponentKey(itemInfo.targetComponent, itemInfo.user)
+            return launcher.appsView.appsStore.getApp(key)
         }
 
         val APP_REMOVE = SystemShortcut.Factory<OmegaLauncher> { launcher, itemInfo ->

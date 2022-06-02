@@ -52,5 +52,5 @@ data class IconPickerItem(
 @Entity
 data class AppTracker(
     @PrimaryKey val packageName: String,
-    var count: Int
+    val count: Int
 )

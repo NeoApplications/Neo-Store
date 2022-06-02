@@ -54,7 +54,7 @@ class DrawerFolders(manager: AppGroupsManager) :
 
     override fun onGroupsChanged(changeCallback: OmegaPreferencesChangeCallback) {
         // TODO: reload after icon cache is ready to ensure high res folder previews
-        changeCallback.reloadDrawer()
+        changeCallback.reloadApps()
     }
 
     fun getFolderInfos(apps: AlphabeticalAppsList, modelWriter: ModelWriter) =

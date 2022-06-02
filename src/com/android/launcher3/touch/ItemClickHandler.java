@@ -63,8 +63,8 @@ import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.PendingAppWidgetHostView;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetManagerHelper;
+import com.saggitt.omega.data.AppTrackerRepository;
 import com.saggitt.omega.util.Config;
-import com.saggitt.omega.util.DbHelper;
 
 /**
  * Class for handling clicks on workspace and all-apps items
@@ -95,11 +95,10 @@ public class ItemClickHandler {
                 onClickFolderIcon(v);
             }
         } else if (tag instanceof AppInfo) {
-            startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher);
-            if (Utilities.getOmegaPrefs(v.getContext()).getSortMode() == Config.SORT_MOST_USED) {
-                Utilities.getOmegaPrefs(v.getContext()).reloadApps();
-                Log.d(TAG, "Sort Mode Most Used");
+            if (Utilities.getOmegaPrefs(launcher).getSortMode() == Config.SORT_MOST_USED) {
+                Utilities.getOmegaPrefs(launcher).reloadApps();
             }
+            startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher);
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v, launcher);
@@ -346,12 +345,12 @@ public class ItemClickHandler {
             FloatingIconView.fetchIcon(launcher, v, item, true /* isOpening */);
         }
         if (item instanceof AppInfo) {
-            DbHelper db = new DbHelper(launcher.getApplicationContext());
-            db.updateAppCount(((AppInfo) item).componentName.getPackageName());
+            AppTrackerRepository repository = AppTrackerRepository.Companion.getINSTANCE().get(launcher.getApplicationContext());
+            repository.updateAppCount(((AppInfo) item).componentName.getPackageName());
+
             isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
                     ((AppInfo) item).toComponentKey()) &&
                     Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
-            db.close();
         }
 
         if (isProtected && Utilities.ATLEAST_R) {

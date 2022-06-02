@@ -36,11 +36,11 @@ import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.LabelComparator;
 import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.allapps.AppColorComparator;
-import com.saggitt.omega.allapps.AppCountInfo;
 import com.saggitt.omega.allapps.AppUsageComparator;
+import com.saggitt.omega.data.AppTracker;
+import com.saggitt.omega.data.AppTrackerRepository;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.util.DbHelper;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -179,9 +179,8 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
                 break;
 
             case SORT_MOST_USED:
-                DbHelper db = new DbHelper(mLauncher.getApplicationContext());
-                List<AppCountInfo> appsCounter = db.getAppsCount();
-                db.close();
+                AppTrackerRepository repository = AppTrackerRepository.Companion.getINSTANCE().get(mLauncher);
+                List<AppTracker> appsCounter = repository.getAppsCount();
                 AppUsageComparator mostUsedComparator = new AppUsageComparator(appsCounter);
                 mApps.sort(mostUsedComparator);
                 break;
