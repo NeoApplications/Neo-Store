@@ -434,4 +434,5 @@
     <string name="backup_create_new">Crea un respaldo nuevo</string>
     <string name="backup_delete_failed">Algo fue mal</string>
     <string name="summary_app_suggestions">Para todas las apps y pantallas Inicio</string>
+    <string name="home_widget">At a Glance</string>
 </resources>
