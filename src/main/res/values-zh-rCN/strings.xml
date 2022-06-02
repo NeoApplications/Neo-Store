@@ -196,4 +196,5 @@
     <string name="root_session_installer_description">会话安装程序的性能比传统安装程序稍差，但避免了在 Android 13+ 中安装应用程序时出现问题。</string>
     <string name="root_session_installer">使用root会话安装程序</string>
     <string name="not_safe_for_work">NSFW (可能包含令人不安的内容）</string>
+    <string name="no_permissions_identified">没有请求的权限标识</string>
 </resources>
