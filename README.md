@@ -14,6 +14,9 @@
 
 ![](neo_banner.png)
 
+## :thought_balloon: Community
+You can join [our Telegram group](https://t.me/neo_android_store) to make suggestions, try alpha and beta versions, ask questions, get news and chat.
+
 ## :book: Features
 
 * :art: Material F-Droid style
