@@ -17,8 +17,7 @@
 */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.launcher3">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--
     The manifest defines the common entries that should be present in any derivative of Launcher3.
@@ -53,25 +52,25 @@
     -->
     <permission
         android:name="${packageName}.permission.READ_SETTINGS"
-        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="signatureOrSystem"
+        android:description="@string/permdesc_read_settings"
         android:label="@string/permlab_read_settings"
-        android:description="@string/permdesc_read_settings"/>
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="signatureOrSystem" />
     <permission
         android:name="${packageName}.permission.WRITE_SETTINGS"
-        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="signatureOrSystem"
+        android:description="@string/permdesc_write_settings"
         android:label="@string/permlab_write_settings"
-        android:description="@string/permdesc_write_settings"/>
+        android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+        android:protectionLevel="signatureOrSystem" />
 
     <uses-permission android:name="${packageName}.permission.READ_SETTINGS" />
     <uses-permission android:name="${packageName}.permission.WRITE_SETTINGS" />
 
     <application
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
-        android:fullBackupOnly="true"
         android:backupInForeground="true"
         android:fullBackupContent="@xml/backupscheme"
+        android:fullBackupOnly="true"
         android:hardwareAccelerated="true"
         android:label="@string/derived_app_name"
         android:largeHeap="@bool/config_largeHeap"

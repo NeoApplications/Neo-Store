@@ -17,8 +17,7 @@
 */
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.launcher3">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"

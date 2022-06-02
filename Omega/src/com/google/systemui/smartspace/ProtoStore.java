@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.android.systemui.smartspace.SmartspaceProto.CardWrapper;
-import com.google.protobuf.nano.MessageNano;
+import com.google.protobuf.MessageLite;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,12 +18,12 @@ public class ProtoStore {
         mContext = context.getApplicationContext();
     }
 
-    public void store(MessageNano messageNano, String name) {
+    public void store(MessageLite messageNano, String name) {
         try {
             FileOutputStream openFileOutput = mContext.openFileOutput(name, 0);
             if (messageNano != null) {
                 try {
-                    openFileOutput.write(MessageNano.toByteArray(messageNano));
+                    openFileOutput.write(messageNano.toByteArray());
                 } catch (Throwable th) {
                     if (openFileOutput != null) {
                         openFileOutput.close();
@@ -47,7 +47,7 @@ public class ProtoStore {
         }
     }
 
-    public <T extends MessageNano> boolean load(String name, CardWrapper wrapper) {
+    public <T extends MessageLite> boolean load(String name, CardWrapper wrapper) {
         File fileStreamPath = mContext.getFileStreamPath(name);
         try {
             FileInputStream fileInputStream = new FileInputStream(fileStreamPath);
