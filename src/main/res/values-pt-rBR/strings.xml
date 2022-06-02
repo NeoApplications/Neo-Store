@@ -199,4 +199,5 @@
     <string name="root_session_installer_description">O instalador de sessão é um pouco menos eficiente que o antigo, mas evita problemas com aplicativos instalados no Android +13.</string>
     <string name="root_session_installer">Usar o instalador de sessão root</string>
     <string name="not_safe_for_work">NSFW (pode conter conteúdo perturbador)</string>
+    <string name="no_permissions_identified">Nenhuma permissão solicitada identificada</string>
 </resources>
