@@ -2,7 +2,7 @@
 
 ### A quick material F-Droid client
 
-[![GithHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat)](https://github.com/NeoApplications/Neo-Store/stargazers)
+[![GitHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat)](https://github.com/NeoApplications/Neo-Store/stargazers)
 [![GitHub License](https://img.shields.io/github/license/NeoApplications/Neo-Store)](https://github.com/NeoApplications/Neo-Store/blob/master/COPYING)
 [![GitHub All Releases](https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg)](https://github.com/NeoApplications/Neo-Store/releases/)
 [![GitHub release](https://img.shields.io/github/v/release/NeoApplications/Neo-Store?display_name=tag)](https://github.com/NeoApplications/Neo-Store/releases/latest)
