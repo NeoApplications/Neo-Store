@@ -17,18 +17,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.looker.droidify.entity.PackageState
+import com.looker.droidify.entity.ActionState
+import com.looker.droidify.entity.ComponentState
+import com.looker.droidify.entity.DownloadState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainActionButton(
     modifier: Modifier = Modifier,
-    packageState: PackageState,
-    onClick: (PackageState) -> Unit
+    actionState: ActionState,
+    downloadState: DownloadState?,
+    onClick: (ComponentState) -> Unit
 ) {
     ElevatedButton(
         modifier = modifier,
-        onClick = { onClick(packageState) }
+        onClick = { onClick(actionState) }
     ) {
         AnimatedContent(
             targetState = packageState,
@@ -66,7 +69,7 @@ fun MainActionButton(
 @Composable
 fun SecondaryActionButton(
     modifier: Modifier = Modifier,
-    packageState: PackageState?,
+    packageState: ComponentState?,
     onClick: () -> Unit
 ) {
     packageState?.let {

@@ -89,34 +89,37 @@ enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     NSFW("NSFW", R.string.not_safe_for_work)
 }
 
-sealed interface PackageState {
+sealed interface ComponentState {
     val icon: ImageVector
     val textId: Int
 }
 
-sealed class Cancelable(
+sealed class DownloadState(
     @StringRes override val textId: Int,
     override val icon: ImageVector = Icons.Rounded.Close
-) : PackageState
+) : ComponentState {
 
-object Pending : Cancelable(R.string.pending)
-object Connecting : Cancelable(R.string.connecting)
-class Downloading(val downloaded: Long, val total: Long?) :
-    Cancelable(R.string.downloading)
+    object Pending : DownloadState(R.string.pending)
+    object Connecting : DownloadState(R.string.connecting)
+    class Downloading(val downloaded: Long, val total: Long?) :
+        DownloadState(R.string.downloading)
 
-object Installing : Cancelable(R.string.installing)
+    object Installing : DownloadState(R.string.installing)
+}
 
-sealed class ButtonWork(
+sealed class ActionState(
     @StringRes override val textId: Int,
     override val icon: ImageVector = Icons.Rounded.Download
-) : PackageState
+) : ComponentState {
 
-object Install : ButtonWork(R.string.install, Icons.Rounded.Download)
-object Update : ButtonWork(R.string.update, Icons.Rounded.Download)
-object Uninstall : ButtonWork(R.string.uninstall, Icons.Rounded.Delete)
-object Launch : ButtonWork(R.string.launch, Icons.Rounded.Launch)
-object Details : ButtonWork(R.string.details, Icons.Rounded.Tune)
-object Share : ButtonWork(R.string.share, Icons.Rounded.Share)
+    object Install : ActionState(R.string.install, Icons.Rounded.Download)
+    object Update : ActionState(R.string.update, Icons.Rounded.Download)
+    object Uninstall : ActionState(R.string.uninstall, Icons.Rounded.Delete)
+    object Launch : ActionState(R.string.launch, Icons.Rounded.Launch)
+    object Details : ActionState(R.string.details, Icons.Rounded.Tune)
+    object Share : ActionState(R.string.share, Icons.Rounded.Share)
+    class Cancel(@StringRes stateId: Int) : ActionState(stateId, Icons.Rounded.Close)
+}
 
 open class LinkType(
     @DrawableRes val iconResId: Int,

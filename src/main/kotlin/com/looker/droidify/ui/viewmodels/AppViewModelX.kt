@@ -8,7 +8,8 @@ import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.PackageState
+import com.looker.droidify.entity.ActionState
+import com.looker.droidify.entity.DownloadState
 
 class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
 
@@ -21,9 +22,10 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
         set(value) {
             _productRepos.value = value
         }
-    val state = MutableLiveData<PackageState>()
-    val actions = MutableLiveData<Set<PackageState>>()
-    val secondaryAction = MutableLiveData<PackageState>()
+    val downloadState = MutableLiveData<DownloadState>()
+    val mainAction = MutableLiveData<ActionState>()
+    val actions = MutableLiveData<Set<ActionState>>()
+    val secondaryAction = MutableLiveData<ActionState>()
 
     init {
         products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }

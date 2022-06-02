@@ -26,10 +26,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
-import com.looker.droidify.entity.Cancelable
-import com.looker.droidify.entity.Downloading
-import com.looker.droidify.entity.Install
-import com.looker.droidify.entity.PackageState
+import com.looker.droidify.entity.ActionState
+import com.looker.droidify.entity.ComponentState
+import com.looker.droidify.entity.DownloadState
 import com.looker.droidify.ui.compose.components.MainActionButton
 import com.looker.droidify.ui.compose.components.SecondaryActionButton
 import com.looker.droidify.ui.compose.utils.NetworkImage
@@ -41,8 +40,9 @@ fun AppInfoHeader(
     versionCode: String,
     appSize: String,
     appDev: String,
-    state: PackageState? = Install,
-    secondaryAction: PackageState? = null,
+    mainAction: ActionState? = ActionState.Install,
+    downloadState: DownloadState?,
+    secondaryAction: ComponentState? = null,
     onSource: () -> Unit = { },
     onSourceLong: () -> Unit = { },
     onAction: () -> Unit = { },
@@ -73,10 +73,12 @@ fun AppInfoHeader(
                 })
                 MainActionButton(
                     modifier = Modifier.weight(1f),
-                    packageState = state ?: Install,
+                    actionState = mainAction ?: ActionState.Install,
+                    downloadState = downloadState,
                     onClick = {
                         onAction()
-                    })
+                    }
+                )
             }
         }
     }
@@ -88,7 +90,7 @@ fun TopBarHeader(
     icon: String? = null,
     appName: String,
     packageName: String,
-    state: PackageState? = Install,
+    state: DownloadState? = null,
     actions: @Composable () -> Unit = {}
 ) {
     Surface(
@@ -118,12 +120,12 @@ fun TopBarHeader(
                 Box { actions() }
             }
 
-            AnimatedVisibility(visible = state is Cancelable) {
+            AnimatedVisibility(visible = state is DownloadState) {
                 DownloadProgress(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    totalSize = if (state is Downloading) state.total ?: 1L else 1L,
-                    isIndeterminate = state !is Downloading,
-                    downloaded = if (state is Downloading) state.downloaded else 0L,
+                    totalSize = if (state is DownloadState.Downloading) state.total ?: 1L else 1L,
+                    isIndeterminate = state !is DownloadState.Downloading,
+                    downloaded = if (state is DownloadState.Downloading) state.downloaded else 0L,
                 )
             }
         }

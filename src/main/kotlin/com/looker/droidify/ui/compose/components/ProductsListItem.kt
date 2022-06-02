@@ -32,8 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
-import com.looker.droidify.entity.Install
-import com.looker.droidify.entity.Launch
+import com.looker.droidify.entity.ActionState
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.ui.compose.utils.ExpandableCard
@@ -155,8 +154,8 @@ fun ExpandedItemContent(
                     onClick = { onActionClicked(item) }
                 ) {
                     val action = when {
-                        installed != null -> Launch
-                        else -> Install
+                        installed != null -> ActionState.Launch
+                        else -> ActionState.Install
                     }
                     Icon(
                         imageVector = action.icon,
