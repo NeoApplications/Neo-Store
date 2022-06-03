@@ -43,21 +43,12 @@ import com.looker.droidify.RELEASE_STATE_SUGGESTED
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.entity.Release
+import com.looker.droidify.entity.ActionState
 import com.looker.droidify.entity.AntiFeature
-import com.looker.droidify.entity.Cancelable
-import com.looker.droidify.entity.Connecting
-import com.looker.droidify.entity.Details
 import com.looker.droidify.entity.DonateType
-import com.looker.droidify.entity.Downloading
-import com.looker.droidify.entity.Install
-import com.looker.droidify.entity.Launch
-import com.looker.droidify.entity.PackageState
-import com.looker.droidify.entity.Pending
+import com.looker.droidify.entity.DownloadState
 import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
-import com.looker.droidify.entity.Share
-import com.looker.droidify.entity.Uninstall
-import com.looker.droidify.entity.Update
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.CoilDownloader
 import com.looker.droidify.screen.MessageDialog
@@ -116,7 +107,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     val packageName: String
         get() = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
 
-    private var downloading = false
     private val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
         binder.stateSubject
             .filter { it.packageName == packageName }
@@ -190,75 +180,76 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 product != null && installed != null && installed.launcherActivities.isNotEmpty()
             val canShare = product != null && productRepos[0].second.name == "F-Droid"
 
-            val actions = mutableSetOf<PackageState>()
+            val actions = mutableSetOf<ActionState>()
             launch {
                 if (canInstall) {
-                    actions += Install
+                    actions += ActionState.Install
                 }
             }
             launch {
                 if (canUpdate) {
-                    actions += Update
+                    actions += ActionState.Update
                 }
             }
             launch {
                 if (canLaunch) {
-                    actions += Launch
+                    actions += ActionState.Launch
                 }
             }
             launch {
                 if (installed != null) {
-                    actions += Details
+                    actions += ActionState.Details
                 }
             }
             launch {
                 if (canUninstall) {
-                    actions += Uninstall
+                    actions += ActionState.Uninstall
                 }
             }
             launch {
                 if (canShare) {
-                    actions += Share
+                    actions += ActionState.Share
                 }
             }
+            // TODO prioritize actions set and choose the first for main others for extra actions
             val primaryAction = when {
-                canUpdate -> Update
-                canLaunch -> Launch
-                canInstall -> Install
-                canShare -> Share
+                canUpdate -> ActionState.Update
+                canLaunch -> ActionState.Launch
+                canInstall -> ActionState.Install
+                canShare -> ActionState.Share
                 else -> null
             }
             val secondaryAction = when {
-                primaryAction != Share && canShare -> Share
-                primaryAction != Launch && canLaunch -> Launch
-                installed != null && canUninstall -> Uninstall
+                primaryAction != ActionState.Share && canShare -> ActionState.Share
+                primaryAction != ActionState.Launch && canLaunch -> ActionState.Launch
+                installed != null && canUninstall -> ActionState.Uninstall
                 else -> null
             }
 
             withContext(Dispatchers.Main) {
                 viewModel.actions.value = actions
-                if (!downloading) {
-                    viewModel.state.value = primaryAction
-                    viewModel.secondaryAction.value = secondaryAction
-                } else {
-                    viewModel.secondaryAction.value = null
-                }
+
+                if (viewModel.downloadState.value != null && viewModel.mainAction.value?.textId != viewModel.downloadState.value?.textId)
+                    viewModel.downloadState.value?.let {
+                        viewModel.mainAction.value = ActionState.Cancel(it.textId)
+                    }
+                else if (viewModel.downloadState.value == null) // && viewModel.mainAction.value != primaryAction)
+                    viewModel.mainAction.value = primaryAction
+                viewModel.secondaryAction.value = secondaryAction
             }
         }
 
     private suspend fun updateDownloadState(downloadState: DownloadService.State?) {
-        val packageState = when (downloadState) {
-            is DownloadService.State.Pending -> Pending
-            is DownloadService.State.Connecting -> Connecting
-            is DownloadService.State.Downloading -> Downloading(
+        val state = when (downloadState) {
+            is DownloadService.State.Pending -> DownloadState.Pending
+            is DownloadService.State.Connecting -> DownloadState.Connecting
+            is DownloadService.State.Downloading -> DownloadState.Downloading(
                 downloadState.read,
                 downloadState.total
             )
             else -> null
         }
-        val downloading = packageState is Cancelable
-        this.downloading = downloading
-        viewModel.state.value = packageState
+        viewModel.downloadState.value = state
         updateButtons()
         if (downloadState is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
             withContext(Dispatchers.Default) {
@@ -267,11 +258,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    override fun onActionClick(action: PackageState?) {
+    override fun onActionClick(action: ActionState?) {
         val productRepos = viewModel.productRepos
         when (action) {
-            Install,
-            Update,
+            ActionState.Install,
+            ActionState.Update,
             -> {
                 val installedItem = viewModel.installedItem.value
                 lifecycleScope.launch {
@@ -284,7 +275,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 }
                 Unit
             }
-            Launch -> {
+            ActionState.Launch -> {
                 viewModel.installedItem.value?.let {
                     requireContext().onLaunchClick(
                         it,
@@ -293,25 +284,26 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 }
                 Unit
             }
-            Details -> {
+            ActionState.Details -> {
                 startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.parse("package:$packageName"))
                 )
             }
-            Uninstall -> {
+            ActionState.Uninstall -> {
                 lifecycleScope.launch {
                     AppInstaller.getInstance(context)?.defaultInstaller?.uninstall(packageName)
                 }
                 Unit
             }
-            is Cancelable -> {
+            is ActionState.Cancel -> {
+                // TODO fix cancel, send a cancel intent maybe?
                 val binder = downloadConnection.binder
-                if (downloading && binder != null) {
+                if (viewModel.downloadState.value != null && binder != null) {
                     binder.cancel(packageName)
                 } else Unit
             }
-            Share -> {
+            ActionState.Share -> {
                 shareIntent(packageName, productRepos[0].first.label)
             }
             else -> Unit
@@ -426,9 +418,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val installed by viewModel.installedItem.observeAsState()
         val products by viewModel.products.observeAsState()
         val repos by viewModel.repositories.observeAsState()
-        val packageState by viewModel.state.observeAsState(if (installed == null) Install else Launch)
+        val downloadState by viewModel.downloadState.observeAsState(null)
+        val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
         val actions by viewModel.actions.observeAsState() // TODO add rest actions to UI
-        val secondaryAction by viewModel.secondaryAction.observeAsState() // TODO add secondaryAction
+        val secondaryAction by viewModel.secondaryAction.observeAsState()
         val productRepos = products?.mapNotNull { product ->
             repos?.firstOrNull { it.id == product.repositoryId }
                 ?.let { Pair(product, it) }
@@ -478,7 +471,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         appName = product.label,
                         packageName = product.packageName,
                         icon = imageData,
-                        state = packageState
+                        state = downloadState
                     )
                 }
             ) { paddingValues ->
@@ -493,7 +486,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             versionCode = product.versionCode.toString(),
                             appSize = product.displayRelease?.size?.formatSize().orEmpty(),
                             appDev = product.author.name.replaceFirstChar { it.titlecase() },
-                            state = packageState,
+                            mainAction = mainAction,
                             secondaryAction = secondaryAction,
                             onSource = {
                                 product.source.let { link ->
@@ -514,7 +507,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     }
                                 }
                             },
-                            onAction = { onActionClick(packageState) },
+                            onAction = { onActionClick(mainAction) },
                             onSecondaryAction = { onActionClick(secondaryAction) }
                         )
                     }
