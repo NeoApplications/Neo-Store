@@ -179,4 +179,6 @@
     <string name="tracks_or_reports_your_activity">তোমার ক্রিয়া অনুসরণ ও প্রতিবেৃন করে</string>
     <string name="validation_index_error_DESC">তালিকা যাচাই করা যায়নি।</string>
     <string name="has_non_free_dependencies">অমুক্ত নির্ভরতা আছে</string>
+    <string name="only_compatible_with_FORMAT">শুধুমাত্র %s এর সাথে সামঞ্জস্যপূর্ণ</string>
+    <string name="promotes_non_free_network_services">অমুক্ত নেটওয়ার্ক সেবা প্রচার করে</string>
 </resources>
