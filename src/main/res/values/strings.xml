@@ -197,4 +197,5 @@
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string><string name="root_session_installer">Use root session installer</string>
     <string name="root_session_installer_description">The session installer is a bit less performant that the legacy one, but avoids issues with installed apps in Android +13.</string>
+    <string name="no_action_possible">No Action Possible</string>
 </resources>

@@ -119,6 +119,7 @@ sealed class ActionState(
     object Details : ActionState(R.string.details, Icons.Rounded.Tune)
     object Share : ActionState(R.string.share, Icons.Rounded.Share)
     class Cancel(@StringRes stateId: Int) : ActionState(stateId, Icons.Rounded.Close)
+    object NoAction : ActionState(R.string.no_action_possible, Icons.Rounded.Close)
 }
 
 open class LinkType(
