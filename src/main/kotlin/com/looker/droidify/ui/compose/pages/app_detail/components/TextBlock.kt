@@ -58,7 +58,7 @@ fun HtmlTextBlock(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        if (description.length >= 500) {
+        if (description.length >= 290) {
             FilledTonalButton(onClick = { isExpanded = !isExpanded }) {
                 Text(text = stringResource(id = if (isExpanded) R.string.show_less else R.string.show_more))
             }
