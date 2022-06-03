@@ -40,8 +40,7 @@ fun AppInfoHeader(
     versionCode: String,
     appSize: String,
     appDev: String,
-    mainAction: ActionState? = ActionState.Install,
-    downloadState: DownloadState?,
+    mainAction: ActionState?,
     secondaryAction: ComponentState? = null,
     onSource: () -> Unit = { },
     onSourceLong: () -> Unit = { },
@@ -73,8 +72,7 @@ fun AppInfoHeader(
                 })
                 MainActionButton(
                     modifier = Modifier.weight(1f),
-                    actionState = mainAction ?: ActionState.Install,
-                    downloadState = downloadState,
+                    actionState = mainAction ?: ActionState.NoAction,
                     onClick = {
                         onAction()
                     }
