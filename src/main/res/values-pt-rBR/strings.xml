@@ -200,4 +200,5 @@
     <string name="root_session_installer">Usar o instalador de sessão root</string>
     <string name="not_safe_for_work">NSFW (pode conter conteúdo perturbador)</string>
     <string name="no_permissions_identified">Nenhuma permissão solicitada identificada</string>
+    <string name="no_action_possible">Nenhuma Ação Possível</string>
 </resources>
