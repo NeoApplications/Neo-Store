@@ -198,4 +198,7 @@
     <string name="dialog_refuse">Mantieni</string>
     <string name="root_session_installer">Usa l\'installatore della sessione root</string>
     <string name="root_session_installer_description">L\'installatore di sessione è un po\' meno performante di quello legacy, ma evita i problemi con le app installate in Android +13.</string>
+    <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
+    <string name="not_safe_for_work">NFSW (potrebbe contenere contenuti inquietanti)</string>
+    <string name="no_action_possible">Nessuna Azione Possibile</string>
 </resources>
