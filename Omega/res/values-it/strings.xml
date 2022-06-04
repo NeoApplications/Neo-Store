@@ -30,13 +30,13 @@
     <string name="pref_category__interfaces">Interfaccia Utente</string>
     <string name="pref_category__others">Altro</string>
     <string name="pref_category__inputs">Gesti e ricerca</string>
-    <string name="summary__general_about">Ulteriori informazioni su Omega Launcher</string>
+    <string name="summary__general_about">Di più su Omega Launcher</string>
     <string name="summary__general_advanced">Lingua, back up, impostazioni di ricerca</string>
     <string name="summary__general_notifications">Conteggio dei badge, colore dei badge, gesti</string>
     <string name="summary__general_smartspace">Data, ora, widget nella home</string>
     <string name="summary__general_search">Provider di ricerca, stile, icone</string>
     <string name="summary__general_theme">Cambia colori, pacchetto icone, forma icone</string>
-    <string name="summary__general_drawer">Personalizza la lista delle applicazioni</string>
+    <string name="summary__general_drawer">Personalizza la tua lista delle applicazioni</string>
     <string name="summary__general_dock">Applicazioni più importanti, barra di ricerca</string>
     <string name="summary__general_desktop">Personalizza il tuo desktop</string>
     <string name="title__general_smartspace">Widget della home</string>
@@ -353,8 +353,8 @@
     <string name="title_all_apps_search">Barra di Ricerca del Cassetto</string>
     <string name="title__sort_by_color">Per Colore</string>
     <string name="title__sort_most_used">Più Usate</string>
-    <string name="title__sort_alphabetical_za">Alfabetico ZA</string>
-    <string name="title__sort_alphabetical_az">Alfabetico AZ</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
     <string name="title_drawer_enable_background">Usa colore sfondo personalizzato</string>
     <string name="title__drawer_columns">Numero di colonne</string>
     <string name="title__drawer_icon_popup_menu">Bolla Scorciatoie</string>
@@ -399,4 +399,10 @@
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Ripristina predefinito</string>
     <string name="drag_to_disable_packs">Trascina in basso per disattivare</string>
+    <string name="summary_dock_search">Mostra nella dock in basso</string>
+    <string name="label_search">Ricerca</string>
+    <string name="summary_app_categorization_enable">Crea schede o cartelle</string>
+    <string name="summary_app_categorize">Scegli tra Schede o Cartelle</string>
+    <string name="title_dock_search">Dock barra di ricerca</string>
+    <string name="summary_all_apps_search">Mostra barra di ricerca</string>
 </resources>
