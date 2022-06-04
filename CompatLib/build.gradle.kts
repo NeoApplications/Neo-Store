@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application").version("7.2.1")
+    id("com.android.library")
     kotlin("android").version("1.6.21")
 }
 
@@ -12,7 +12,7 @@ android {
         targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles.add("consumer-rules.pro")
+        consumerProguardFiles.add(file("consumer-rules.pro"))
     }
 
     buildTypes {
