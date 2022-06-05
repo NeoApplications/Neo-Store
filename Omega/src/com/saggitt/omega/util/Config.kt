@@ -41,7 +41,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.allapps.CustomAppFilter
-import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.theme.ThemeOverride
 import java.util.*
 
 class Config(val context: Context) {
@@ -237,9 +237,14 @@ class Config(val context: Context) {
         }
 
         fun getCurrentTheme(context: Context): Int {
-            return if (ThemeManager(context).themeIsDark) THEME_DARK
-            else if (ThemeManager(context).themeIsBlack) THEME_BLACK
-            else THEME_LIGHT
+            val themeSet = ThemeOverride.Settings()
+            var currentTheme = THEME_LIGHT
+            if (themeSet.getTheme(context) == R.style.SettingsTheme_Dark) {
+                currentTheme = THEME_DARK
+            } else if (themeSet.getTheme(context) == R.style.SettingsTheme_Black) {
+                currentTheme = THEME_BLACK
+            }
+            return currentTheme
         }
 
     }
