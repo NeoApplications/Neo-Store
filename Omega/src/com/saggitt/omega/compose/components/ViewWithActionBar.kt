@@ -21,13 +21,11 @@ package com.saggitt.omega.compose.components
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
@@ -55,7 +53,6 @@ fun ViewWithActionBar(
                         )
                     }
                 },
-                modifier = Modifier.padding(top = 26.dp),
                 backgroundColor = MaterialTheme.colorScheme.background,
                 elevation = 0.dp
             )
