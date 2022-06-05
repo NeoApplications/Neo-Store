@@ -50,7 +50,6 @@ import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.compose.navigation.OnResult
 import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.compose.navigation.resultSender
 import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.preferences.subRoute
 import com.saggitt.omega.data.IconOverrideRepository
@@ -86,7 +85,6 @@ fun EditIconScreen(
     val iconPacks = IconPackProvider.INSTANCE.get(context).getIconPackList()
     val isFolder = componentKey.componentName.packageName.contains("com.saggitt.omega.folder")
     val navController = LocalNavController.current
-    val onClickItem = resultSender<IconPickerItem>()
     val launcherApps = context.getSystemService<LauncherApps>()!!
     val intent = Intent().setComponent(componentKey.componentName)
     val activity = launcherApps.resolveActivity(intent, componentKey.user)
@@ -108,11 +106,19 @@ fun EditIconScreen(
         }
     }
 
-    Column(modifier = Modifier.padding(top = 42.dp)) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxHeight()
+            .fillMaxWidth()
+
+    ) {
         Text(
             text = title,
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 24.sp,
             textAlign = TextAlign.Center
         )
