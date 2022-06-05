@@ -30,6 +30,7 @@ import android.webkit.WebViewClient
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,7 +60,6 @@ import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.preferences.subRoute
 import com.saggitt.omega.theme.kaushanScript
 import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.isDark
 import java.io.InputStream
 
 @OptIn(ExperimentalCoilApi::class)
@@ -72,17 +72,17 @@ fun NavGraphBuilder.aboutGraph(route: String) {
 }
 
 fun NavGraphBuilder.licenseGraph(route: String) {
-    preferenceGraph(route, { LicenseScreen(Config.getCurrentTheme(LocalContext.current).isDark) })
+    preferenceGraph(route, { LicenseScreen() })
 }
 
 fun NavGraphBuilder.translatorsGraph(route: String) {
     preferenceGraph(
         route,
-        { TranslatorsScreen(Config.getCurrentTheme(LocalContext.current).isDark) })
+        { TranslatorsScreen() })
 }
 
 fun NavGraphBuilder.changelogGraph(route: String) {
-    preferenceGraph(route, { ChangelogScreen(Config.getCurrentTheme(LocalContext.current).isDark) })
+    preferenceGraph(route, { ChangelogScreen() })
 }
 
 @ExperimentalCoilApi
@@ -93,8 +93,9 @@ fun AboutScreen() {
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 82.dp, start = 16.dp, end = 16.dp)
-                .verticalScroll(rememberScrollState()),
+                .padding(top = 64.dp, start = 16.dp, end = 16.dp)
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colorScheme.background),
 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -215,8 +216,7 @@ fun AboutScreen() {
                     icon = R.drawable.ic_list
                 )
             }
-
-            Spacer(modifier = Modifier.requiredHeight(50.dp))
+            Spacer(modifier = Modifier.requiredHeight(8.dp))
         }
     }
 }
@@ -268,30 +268,31 @@ private val contributors = listOf(
 )
 
 @Composable
-fun LicenseScreen(isDark: Boolean) {
+fun LicenseScreen() {
     ViewWithActionBar(
         title = stringResource(R.string.about_open_source),
     ) {
-        ComposableWebView(url = "file:///android_asset/license.htm", isDark = isDark)
+        ComposableWebView(url = "file:///android_asset/license.htm")
     }
 }
 
 @Composable
-fun ChangelogScreen(isDark: Boolean) {
+fun ChangelogScreen() {
     ViewWithActionBar(
         title = stringResource(R.string.title__about_changelog),
     ) {
-        ComposableWebView(url = "file:///android_asset/changelog.htm", isDark = isDark)
+        ComposableWebView(url = "file:///android_asset/changelog.htm")
         Spacer(modifier = Modifier.requiredHeight(50.dp))
     }
 }
 
 @Composable
-fun ComposableWebView(url: String, isDark: Boolean) {
-    val cssFile = if (isDark) {
-        "about_dark.css"
-    } else {
-        "about_light.css"
+fun ComposableWebView(url: String) {
+
+    val cssFile = when (Config.getCurrentTheme(LocalContext.current)) {
+        Config.THEME_BLACK -> "black.css"
+        Config.THEME_DARK -> "dark.css"
+        else -> "light.css"
     }
     AndroidView(
         factory = { context ->
@@ -347,19 +348,16 @@ fun ComposableWebView(url: String, isDark: Boolean) {
                 }
             }
         },
-        update = { webView -> webView.loadUrl(url) },
-        modifier = Modifier
-            .padding(top = 82.dp, bottom = 45.dp)
+        update = { webView -> webView.loadUrl(url) }
     )
-
 }
 
 @Composable
-fun TranslatorsScreen(isDark: Boolean) {
+fun TranslatorsScreen() {
     ViewWithActionBar(
         title = stringResource(R.string.about_translators),
     ) {
-        ComposableWebView(url = "file:///android_asset/translators.htm", isDark = isDark)
+        ComposableWebView(url = "file:///android_asset/translators.htm")
         Spacer(modifier = Modifier.requiredHeight(50.dp))
     }
 }
