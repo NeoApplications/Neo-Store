@@ -121,7 +121,7 @@ fun IconListScreen(
                 ?: return@rememberLauncherForActivityResult
             onClickItem(entry)
         }
-    Column(modifier = Modifier.padding(top = 26.dp, bottom = 45.dp)) {
+    Column() {
         SearchBarUI(
             searchInput = {
                 SearchTextField(
