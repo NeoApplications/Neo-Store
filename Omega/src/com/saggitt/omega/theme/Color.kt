@@ -20,18 +20,6 @@ package com.saggitt.omega.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Grey50 = Color(0xfffdfdfd)
-val Grey100 = Color(0xffe9e9e9)
-val Grey200 = Color(0xffd9d9d9)
-val Grey300 = Color(0xffc4c4c4)
-val Grey400 = Color(0xff9d9d9d)
-val Grey500 = Color(0xff7b7b7b)
-val Grey600 = Color(0xff555555)
-val Grey700 = Color(0xff434343)
-val Grey800 = Color(0xff262626)
-val Grey900 = Color(0xff212121)
-val Black = Color(0xff000000)
-
 // Light Theme
 val LightBackground = Color(0xFFFFFFFF)
 val LightOnBackground = Color(0xFF000000)
