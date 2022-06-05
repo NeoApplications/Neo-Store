@@ -1,0 +1,3 @@
+<p>Il tuo launcher libero con molte funzionalità intelligenti.</p>
+<br>
+<p>Stato: Beta</p>
