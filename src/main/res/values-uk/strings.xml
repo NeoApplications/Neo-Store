@@ -199,4 +199,6 @@
     <string name="root_session_installer">Використати root session установник</string>
     <string name="root_session_installer_description">Session установник трохи менш продуктивний, ніж застарілий, але дозволяє уникнути проблем із встановленими програмами в Android +13.</string>
     <string name="not_safe_for_work">NSFW (може містити непристойні матеріали)</string>
+    <string name="no_action_possible">Дії неможливі</string>
+    <string name="no_permissions_identified">Запрошені дозволи не виявлено</string>
 </resources>
