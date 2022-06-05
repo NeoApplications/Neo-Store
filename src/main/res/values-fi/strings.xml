@@ -195,4 +195,7 @@
     <string name="ignore_battery_optimization_not_supported">Android-asennuksesi ei tue akun optimoinnin kytkemistä pois päältä.</string>
     <string name="dialog_refuse">Pidä</string>
     <string name="dialog_approve">Kytke pois</string>
+    <string name="not_safe_for_work">NSFW (saattaa sisältää häiritsevää sisältöä)</string>
+    <string name="no_permissions_identified">Pyydettyjä lupia ei ole tunnistettu</string>
+    <string name="no_action_possible">Ei mahdollisia toimia</string>
 </resources>
