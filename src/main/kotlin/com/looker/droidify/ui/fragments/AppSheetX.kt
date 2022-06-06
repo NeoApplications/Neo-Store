@@ -556,9 +556,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         // TODO add markdown parsing
                         if (product.description.isNotEmpty()) HtmlTextBlock(description = product.description)
                     }
-                    item {
-                        val links = product.generateLinks(requireContext())
-                        if (links.isNotEmpty()) {
+                    val links = product.generateLinks(requireContext())
+                    if (links.isNotEmpty()) {
+                        item {
                             ExpandableBlock(
                                 heading = stringResource(id = R.string.links),
                                 positive = true,
@@ -579,8 +579,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             }
                         }
                     }
-                    item {
-                        if (product.donates.isNotEmpty()) {
+                    if (product.donates.isNotEmpty()) {
+                        item {
                             ExpandableBlock(
                                 heading = stringResource(id = R.string.donate),
                                 positive = true,
@@ -629,8 +629,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 }
                             }
                     }
-                    item {
-                        if (product.antiFeatures.isNotEmpty()) {
+                    if (product.antiFeatures.isNotEmpty()) {
+                        item {
                             ExpandableBlock(
                                 heading = stringResource(id = R.string.anti_features),
                                 positive = false,
@@ -649,8 +649,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             }
                         }
                     }
-                    item {
-                        if (product.whatsNew.isNotEmpty()) {
+                    if (product.whatsNew.isNotEmpty()) {
+                        item {
                             ExpandableBlock(
                                 heading = stringResource(id = R.string.changes),
                                 positive = true,
