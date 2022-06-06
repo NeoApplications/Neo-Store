@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,9 +38,9 @@ import com.saggitt.omega.util.addIf
 
 @Composable
 fun ListItemWithIcon(
-    title: @Composable () -> Unit,
+    title: String,
     modifier: Modifier = Modifier,
-    description: @Composable () -> Unit,
+    summary: String = "",
     startIcon: (@Composable () -> Unit)? = null,
     endCheckbox: (@Composable () -> Unit)? = null,
     isEnabled: Boolean = true,
@@ -81,17 +80,16 @@ fun ListItemWithIcon(
                         alpha(0.3f)
                     }
             ) {
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.titleMedium
-                ) {
-                    title()
-                }
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-                    LocalTextStyle provides MaterialTheme.typography.bodyMedium
-                ) {
-                    description()
+                Text(
+                    text = title,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                if (summary.isNotEmpty()) {
+                    Text(
+                        text = summary,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F)
+                    )
                 }
             }
 
@@ -110,9 +108,9 @@ fun ListItemWithIcon(
 @Composable
 fun PreviewListItemWithIcon() {
     ListItemWithIcon(
-        title = { Text(text = "System Iconpack") },
+        title = "System Iconpack",
         modifier = Modifier.clickable { },
-        description = { Text(text = "com.saggitt.iconpack") },
+        summary = "com.saggitt.iconpack",
         startIcon = {
             Image(
                 painterResource(id = R.drawable.ic_github),

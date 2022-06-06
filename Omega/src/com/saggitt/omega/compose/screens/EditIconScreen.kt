@@ -206,13 +206,7 @@ fun EditIconScreen(
         iconPacks.forEach {
             val route = subRoute(name = "/${Routes.ICON_PICKER}/${it.packageName}")
             ListItemWithIcon(
-                title = {
-                    Text(
-                        text = it.name,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = 16.sp
-                    )
-                },
+                title = it.name,
                 modifier = Modifier
                     .clickable {
                         if (it.packageName == "") {
@@ -222,7 +216,6 @@ fun EditIconScreen(
                         }
                     }
                     .padding(start = 16.dp),
-                description = {},
                 startIcon = {
                     Image(
                         painter = rememberDrawablePainter(drawable = it.icon),

@@ -33,7 +33,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -121,17 +124,15 @@ fun IconPackList() {
         LazyColumn {
             itemsIndexed(packs) { _, item ->
                 ListItemWithIcon(
-                    title = { Text(text = item.name, color = MaterialTheme.colorScheme.onPrimary) },
+                    title = item.name,
                     modifier = Modifier.clickable {
                         prefs.iconPackPackage = item.packageName
                         onOptionSelected(item.packageName)
                     },
-                    description = {
-                        if (prefs.showDebugInfo)
-                            Text(
-                                text = item.packageName,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    summary = if (prefs.showDebugInfo) {
+                        item.packageName
+                    } else {
+                        ""
                     },
                     startIcon = {
                         Image(
