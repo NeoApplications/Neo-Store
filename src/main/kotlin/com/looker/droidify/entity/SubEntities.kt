@@ -7,6 +7,8 @@ import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
@@ -120,6 +122,8 @@ sealed class ActionState(
     object Share : ActionState(R.string.share, Icons.Rounded.Share)
     class Cancel(@StringRes stateId: Int) : ActionState(stateId, Icons.Rounded.Close)
     object NoAction : ActionState(R.string.no_action_possible, Icons.Rounded.Close)
+    object Expand : ActionState(R.string.show_more, Icons.Rounded.ArrowDropDown)
+    object Retract : ActionState(R.string.show_less, Icons.Rounded.ArrowDropUp)
 }
 
 open class LinkType(
