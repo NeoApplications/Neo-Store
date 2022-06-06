@@ -637,6 +637,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 preExpanded = false
                             ) {
                                 Text(
+                                    modifier = Modifier.padding(8.dp),
                                     text = product.antiFeatures.map { af ->
                                         val titleId =
                                             AntiFeature.values().find { it.key == af }?.titleResId
