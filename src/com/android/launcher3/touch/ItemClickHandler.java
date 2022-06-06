@@ -57,6 +57,7 @@ import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pm.InstallSessionHelper;
 import com.android.launcher3.testing.TestLogging;
 import com.android.launcher3.testing.TestProtocol;
+import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.FloatingIconView;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
@@ -335,10 +336,10 @@ public class ItemClickHandler {
                 // web ui. This only works though if the package isn't set
                 intent = new Intent(intent);
                 intent.setPackage(null);
-                isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
-                        ((AppInfo) item).toComponentKey()) &&
-                        Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
             }
+            isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
+                    new ComponentKey(si.getTargetComponent(), si.user)) &&
+                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
         }
         if (v != null && launcher.supportsAdaptiveIconAnimation(v)) {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
