@@ -20,6 +20,10 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
 import com.looker.droidify.entity.ActionState
-import com.looker.droidify.entity.ComponentState
 import com.looker.droidify.entity.DownloadState
 import com.looker.droidify.ui.compose.components.MainActionButton
 import com.looker.droidify.ui.compose.components.SecondaryActionButton
@@ -41,12 +44,14 @@ fun AppInfoHeader(
     appSize: String,
     appDev: String,
     mainAction: ActionState?,
-    secondaryAction: ComponentState? = null,
+    secondaryAction: ActionState? = null,
+    possibleActions: Set<ActionState>,
     onSource: () -> Unit = { },
     onSourceLong: () -> Unit = { },
-    onAction: () -> Unit = { },
-    onSecondaryAction: () -> Unit = { }
+    onAction: (ActionState?) -> Unit = { }
 ) {
+    var isExpanded by remember { mutableStateOf(false) }
+
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large
@@ -67,16 +72,33 @@ fun AppInfoHeader(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                SecondaryActionButton(packageState = secondaryAction, onClick = {
-                    onSecondaryAction()
-                })
+                if (possibleActions.size == 1) {
+                    SecondaryActionButton(packageState = secondaryAction, onClick = {
+                        onAction(secondaryAction)
+                    })
+                } else if (possibleActions.size > 1) {
+                    SecondaryActionButton(
+                        packageState = if (isExpanded) ActionState.Retract else ActionState.Expand,
+                        onClick = {
+                            isExpanded = !isExpanded
+                        })
+                }
                 MainActionButton(
                     modifier = Modifier.weight(1f),
                     actionState = mainAction ?: ActionState.NoAction,
                     onClick = {
-                        onAction()
+                        onAction(mainAction)
                     }
                 )
+            }
+            AnimatedVisibility(visible = isExpanded) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    possibleActions.forEach {
+                        SecondaryActionButton(packageState = it) {
+                            onAction(it)
+                        }
+                    }
+                }
             }
         }
     }

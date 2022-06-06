@@ -488,6 +488,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             appDev = product.author.name.replaceFirstChar { it.titlecase() },
                             mainAction = mainAction,
                             secondaryAction = secondaryAction,
+                            possibleActions = actions?.filter { it != mainAction }?.toSet()
+                                ?: emptySet(),
                             onSource = {
                                 product.source.let { link ->
                                     if (link.isNotEmpty()) {
@@ -507,8 +509,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     }
                                 }
                             },
-                            onAction = { onActionClick(mainAction) },
-                            onSecondaryAction = { onActionClick(secondaryAction) }
+                            onAction = { onActionClick(it) }
                         )
                     }
                     item {
