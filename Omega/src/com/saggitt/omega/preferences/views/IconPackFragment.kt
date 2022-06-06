@@ -25,13 +25,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -119,48 +115,46 @@ fun IconPackList() {
     val (selectedOption, onOptionSelected) = remember {
         mutableStateOf(prefs.iconPackPackage)
     }
-    Column {
 
-        LazyColumn {
-            itemsIndexed(packs) { _, item ->
-                ListItemWithIcon(
-                    title = item.name,
-                    modifier = Modifier.clickable {
-                        prefs.iconPackPackage = item.packageName
-                        onOptionSelected(item.packageName)
-                    },
-                    summary = if (prefs.showDebugInfo) {
-                        item.packageName
-                    } else {
-                        ""
-                    },
-                    startIcon = {
-                        Image(
-                            painter = rememberDrawablePainter(drawable = item.icon),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(36.dp)
-                                .background(
-                                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F)
-                                )
-                        )
-                    },
-                    endCheckbox = {
-                        RadioButton(
-                            selected = (item.packageName == selectedOption),
-                            onClick = {
-                                prefs.iconPackPackage = item.packageName
-                                onOptionSelected(item.packageName)
-                            },
-                            colors = colors
-                        )
-                    },
-                    verticalPadding = 8.dp
-                )
-            }
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
+        packs.forEachIndexed { _, item ->
+            ListItemWithIcon(
+                title = item.name,
+                modifier = Modifier.clickable {
+                    prefs.iconPackPackage = item.packageName
+                    onOptionSelected(item.packageName)
+                },
+                summary = if (prefs.showDebugInfo) {
+                    item.packageName
+                } else {
+                    ""
+                },
+                startIcon = {
+                    Image(
+                        painter = rememberDrawablePainter(drawable = item.icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(36.dp)
+                            .background(
+                                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F)
+                            )
+                    )
+                },
+                endCheckbox = {
+                    RadioButton(
+                        selected = (item.packageName == selectedOption),
+                        onClick = {
+                            prefs.iconPackPackage = item.packageName
+                            onOptionSelected(item.packageName)
+                        },
+                        colors = colors
+                    )
+                },
+                verticalPadding = 8.dp
+            )
         }
-
         PreferenceItem(
             title = stringResource(id = R.string.get_more_icon_packs),
             modifier = Modifier
