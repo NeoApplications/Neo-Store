@@ -198,4 +198,5 @@
     <string name="install_after_sync_summary">Alle nieuwe versies installeren na het doorzoeken van repositories op nieuwe apps</string>
     <string name="ignore_battery_optimization_title">Batterijoptimalisatie</string>
     <string name="dialog_refuse">Behouden</string>
+    <string name="no_action_possible">Geen actie mogelijk</string>
 </resources>
