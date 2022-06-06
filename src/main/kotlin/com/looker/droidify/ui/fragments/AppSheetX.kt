@@ -655,7 +655,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 positive = true,
                                 preExpanded = true
                             ) {
-                                HtmlTextBlock(description = product.whatsNew)
+                                HtmlTextBlock(
+                                    description = product.whatsNew,
+                                    isExpandable = false
+                                )
                             }
                         }
                     }

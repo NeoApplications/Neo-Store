@@ -31,7 +31,8 @@ import de.charlex.compose.HtmlText
 @Composable
 fun HtmlTextBlock(
     modifier: Modifier = Modifier,
-    description: String
+    description: String,
+    isExpandable: Boolean = true
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -58,7 +59,7 @@ fun HtmlTextBlock(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        if (description.length >= 290) {
+        if (description.length >= 290 && isExpandable) {
             FilledTonalButton(onClick = { isExpanded = !isExpanded }) {
                 Text(text = stringResource(id = if (isExpanded) R.string.show_less else R.string.show_more))
             }
