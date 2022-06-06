@@ -538,15 +538,17 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 })
                         }
                     }
-                    item {
-                        ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
-                            ScreenshotItem(
-                                screenShot = it,
-                                repository = repo,
-                                packageName = product.packageName
-                            )
-                        }) {
-                            onScreenshotClick(it)
+                    if (Preferences[Preferences.Key.ShowScreenshots]) {
+                        item {
+                            ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
+                                ScreenshotItem(
+                                    screenShot = it,
+                                    repository = repo,
+                                    packageName = product.packageName
+                                )
+                            }) {
+                                onScreenshotClick(it)
+                            }
                         }
                     }
                     item {

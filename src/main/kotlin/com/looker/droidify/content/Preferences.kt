@@ -27,6 +27,7 @@ object Preferences {
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
         Key.ListAnimation,
+        Key.ShowScreenshots,
         Key.UpdatedApps,
         Key.NewApps,
         Key.ProxyHost,
@@ -148,6 +149,9 @@ object Preferences {
         object ListAnimation :
             Key<Boolean>("list_animation", Value.BooleanValue(false))
 
+        object ShowScreenshots :
+            Key<Boolean>("show_screenshots", Value.BooleanValue(true))
+
         object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         object NewApps : Key<Int>("new_apps", Value.IntValue(20))
 
@@ -159,7 +163,8 @@ object Preferences {
         )
 
         object RootPermission : Key<Boolean>("root_permission", Value.BooleanValue(false))
-        object RootSessionInstaller : Key<Boolean>("root_session_installer", Value.BooleanValue(false))
+        object RootSessionInstaller :
+            Key<Boolean>("root_session_installer", Value.BooleanValue(false))
 
         object SortOrder : Key<Preferences.SortOrder>(
             "sort_order",
