@@ -2,7 +2,7 @@
 <resources>
     <string name="action_failed">فشلت العملية</string>
     <string name="address">العناوين</string>
-    <string name="all_applications">كل التطبيقات</string>
+    <string name="all_applications">جميع التطبيقات</string>
     <string name="always">دائما</string>
     <string name="amoled">أموليد (أسود)</string>
     <string name="all_applications_up_to_date">جميع التطبيقات محدثة</string>
@@ -33,8 +33,8 @@
     <string name="incompatible_with_FORMAT">غير متوافق مع %s</string>
     <string name="install">تثبيت</string>
     <string name="install_types">طرق التثبيت</string>
-    <string name="installed">مثبته</string>
-    <string name="integrity_check_error_DESC">لا يمكن التحقق من النزاهة.</string>
+    <string name="installed">المثبته</string>
+    <string name="integrity_check_error_DESC">لا يمكن التحقق من سلامة الملف.</string>
     <string name="invalid_address">عنوان خاطئ</string>
     <string name="invalid_fingerprint_format">صيغة البصمة خاطئة</string>
     <string name="invalid_metadata_error_DESC">بيانات وصفية خاطئة.</string>
@@ -114,7 +114,7 @@
     <string name="invalid_signature_error_DESC">توقيع خاطئ.</string>
     <string name="invalid_username_format">صيغة أسم المستخدم خاطئة</string>
     <string name="launch">تشغيل</string>
-    <string name="list_animation_description">تأثيرات القائمة على الصفحة الرئيسية</string>
+    <string name="list_animation_description">تأثيرات القائمة على صفحة التطبيق الرئيسية</string>
     <string name="merging_FORMAT">دمج %s…</string>
     <string name="name">الاسم</string>
     <string name="network_error_DESC">خطاء في الشبكة.</string>
@@ -195,11 +195,12 @@
     <string name="installing">التثبيت</string>
     <string name="ignore_battery_optimization_title">تحسين البطارية</string>
     <string name="ignore_battery_optimization_message">يتصرف التطبيق بشكل أفضل دون تحسين البطارية ، ويمنع التعطل على Android 12+</string>
-    <string name="dialog_approve">إيقاف تشغيل</string>
+    <string name="dialog_approve">إيقاف تشغيل توفير البطارية</string>
     <string name="ignore_battery_optimization_not_supported">لا يدعم تثبيت Android إيقاف تشغيل تحسين البطارية.</string>
-    <string name="dialog_refuse">يحفظ</string>
+    <string name="dialog_refuse">أبقه كما هو</string>
     <string name="root_session_installer">استخدام مثبت جلسة الجذر</string>
     <string name="root_session_installer_description">يعد مثبِّت الجلسة أقل أداءً قليلاً من المثبت القديم ، ولكنه يتجنب المشكلات المتعلقة بالتطبيقات المثبتة في Android +13.</string>
     <string name="not_safe_for_work">NSFW (قد تحتوي على محتوى مزعج او غير اخلاقي)</string>
     <string name="no_permissions_identified">لم يتم التعرف على الصلاحيات المطلوبة</string>
+    <string name="no_action_possible">لا يوجد إجراء ممكن</string>
 </resources>
