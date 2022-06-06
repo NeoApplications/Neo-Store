@@ -33,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.launcher3.R
 import com.saggitt.omega.util.addIf
 
@@ -88,7 +89,9 @@ fun ListItemWithIcon(
                 if (summary.isNotEmpty()) {
                     Text(
                         text = summary,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F)
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 13.sp
                     )
                 }
             }
