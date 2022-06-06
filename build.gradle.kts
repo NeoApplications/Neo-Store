@@ -2,7 +2,8 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-beta02"
+val composeVersion = "1.2.0-beta03"
+val roomVersion = "2.4.2"
 
 plugins {
     id("com.android.application").version("7.2.1")
@@ -156,7 +157,7 @@ dependencies {
 
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
-    implementation("androidx.core:core-ktx:1.8.0-rc02")
+    implementation("androidx.core:core-ktx:1.9.0-alpha04")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
@@ -177,7 +178,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
 
     // RxJava
-    implementation("io.reactivex.rxjava3:rxjava:3.1.4")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 
     // LibSu
@@ -197,17 +198,17 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
 
     // Room
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    implementation("androidx.room:room-rxjava3:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-rxjava3:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     // Compose
     implementation("androidx.compose.runtime:runtime:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
