@@ -199,4 +199,6 @@
     <string name="not_safe_for_work">NSFW (peut contenir du contenu dérangeant)</string>
     <string name="no_permissions_identified">Aucune autorisation requise identifiée</string>
     <string name="no_action_possible">Aucune action possible</string>
+    <string name="show_screenshots">Afficher les captures d\'écran</string>
+    <string name="show_screenshots_description">Afficher ou non les captures d\'écran dans la fiche d\'application.</string>
 </resources>
