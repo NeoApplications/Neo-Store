@@ -1,35 +1,16 @@
 package com.looker.droidify.ui.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.looker.droidify.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,20 +23,22 @@ fun ExpandableBlock(
     content: @Composable ColumnScope.() -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
+    val backgroundColor by animateColorAsState(
+        targetValue = if (expanded) MaterialTheme.colorScheme.surface
+        else MaterialTheme.colorScheme.background
+    )
 
     Surface(
         modifier = Modifier.animateContentSize(),
         shape = MaterialTheme.shapes.large,
         onClick = { expanded = !expanded },
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        color = MaterialTheme.colorScheme.background
+        color = backgroundColor,
+        tonalElevation = 8.dp
     ) {
         Column(modifier = modifier) {
             ExpandableBlockHeader(heading, positive)
-            AnimatedVisibility(
-                visible = expanded
-            ) {
-                Column {
+            AnimatedVisibility(visible = expanded) {
+                Column(Modifier.padding(bottom = 16.dp)) {
                     content()
                 }
             }
@@ -73,22 +56,18 @@ fun ExpandableBlockHeader(
     Spacer(modifier = Modifier.requiredHeight(spacerHeight.dp))
     if (heading != null) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .height(36.dp)
-                .padding(horizontal = 10.dp)
-                .fillMaxWidth()
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             CompositionLocalProvider(
-                LocalContentColor provides if (positive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                LocalContentColor provides if (positive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
             ) {
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = heading,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleSmall,
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_down),
