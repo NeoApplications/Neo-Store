@@ -201,4 +201,6 @@
     <string name="not_safe_for_work">NSFW (pode conter conteúdo perturbador)</string>
     <string name="no_permissions_identified">Nenhuma permissão solicitada identificada</string>
     <string name="no_action_possible">Nenhuma Ação Possível</string>
+    <string name="show_screenshots_description">Se as capturas de tela devem ser exibidas na planilha do aplicativo ou não.</string>
+    <string name="show_screenshots">Mostrar capturas de tela</string>
 </resources>
