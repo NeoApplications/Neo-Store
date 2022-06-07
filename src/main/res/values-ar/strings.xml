@@ -203,4 +203,6 @@
     <string name="not_safe_for_work">NSFW (قد تحتوي على محتوى مزعج او غير اخلاقي)</string>
     <string name="no_permissions_identified">لم يتم التعرف على الصلاحيات المطلوبة</string>
     <string name="no_action_possible">لا يوجد إجراء ممكن</string>
+    <string name="show_screenshots">عرض لقطات الشاشة</string>
+    <string name="show_screenshots_description">سواء لإظهار لقطات الشاشة في قائمة التطبيق أم لا.</string>
 </resources>
