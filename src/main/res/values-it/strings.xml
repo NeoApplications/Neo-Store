@@ -201,4 +201,6 @@
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
     <string name="not_safe_for_work">NFSW (potrebbe contenere contenuti inquietanti)</string>
     <string name="no_action_possible">Nessuna Azione Possibile</string>
+    <string name="show_screenshots">Mostra screenshots</string>
+    <string name="show_screenshots_description">Indica se mostrare o meno gli screenshots nella pagina dell\'app.</string>
 </resources>
