@@ -200,7 +200,7 @@
     <string name="root_session_installer_description">L\'installatore di sessione è un po\' meno performante di quello legacy, ma evita i problemi con le app installate in Android +13.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
     <string name="not_safe_for_work">NSFW (potrebbe contenere contenuti sensibili)</string>
-    <string name="no_action_possible">Nessuna Azione Possibile</string>
-    <string name="show_screenshots">Mostra screenshots</string>
-    <string name="show_screenshots_description">Indica se mostrare o meno gli screenshots nella pagina dell\'app.</string>
+    <string name="no_action_possible">Nessuna azione possibile</string>
+    <string name="show_screenshots">Mostra catture schermata</string>
+    <string name="show_screenshots_description">Indica se mostrare o meno le catture schermata nella pagina dell\'app.</string>
 </resources>
