@@ -200,4 +200,6 @@
     <string name="not_safe_for_work">NSFW (může obsahovat nevhodný obsah)</string>
     <string name="no_permissions_identified">Nebyla zjištěna žádná požadovaná oprávnění</string>
     <string name="no_action_possible">Není možná žádná akce</string>
+    <string name="show_screenshots">Zobrazit snímky obrazovky</string>
+    <string name="show_screenshots_description">Zda se mají v listu aplikace zobrazovat snímky obrazovky, nebo ne.</string>
 </resources>
