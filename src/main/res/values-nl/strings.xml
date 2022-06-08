@@ -199,4 +199,6 @@
     <string name="ignore_battery_optimization_title">Batterijoptimalisatie</string>
     <string name="dialog_refuse">Behouden</string>
     <string name="no_action_possible">Geen actie mogelijk</string>
+    <string name="show_screenshots">Schermafdrukken tonen</string>
+    <string name="show_screenshots_description">Of schermafdrukken op app-pagina\'s getoond moeten worden.</string>
 </resources>
