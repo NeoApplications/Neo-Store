@@ -2,10 +2,10 @@
 
 ### A quick material F-Droid client.
 
-[![GitHub repo stars](https://img.shields.io/github/stars/Iamlooker/Droid-ify?style=flat)](https://github.com/Iamlooker/Droid-ify/stargazers)
-[![GitHub License](https://img.shields.io/github/license/Iamlooker/Droid-ify)](https://github.com/Iamlooker/Droid-ify/blob/master/COPYING)
-[![GitHub All Releases](https://img.shields.io/github/downloads/Iamlooker/Droid-ify/total.svg)](https://github.com/Iamlooker/Droid-ify/releases/)
-[![GitHub release](https://img.shields.io/github/v/release/Iamlooker/Droid-ify?display_name=tag)](https://github.com/Iamlooker/Droid-ify/releases/latest)
+[![GitHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat)](https://github.com/NeoApplications/Neo-Store/stargazers)
+[![GitHub License](https://img.shields.io/github/license/NeoApplications/Neo-Store)](https://github.com/NeoApplications/Neo-Store/blob/master/COPYING)
+[![GitHub All Releases](https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg)](https://github.com/NeoApplications/Neo-Store/releases/)
+[![GitHub release](https://img.shields.io/github/v/release/NeoApplications/Neo-Store?display_name=tag)](https://github.com/NeoApplications/Neo-Store/releases/latest)
 [![Small translation badge](https://hosted.weblate.org/widgets/droidify/-/localization/svg-badge.svg)](https://hosted.weblate.org/engage/droidify/?utm_source=widget)
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyDroid" width="38%" align="center">](https://android.izzysoft.de/repo/apk/com.looker.droidify)
@@ -23,17 +23,17 @@
 
 ## :framed_picture: Screenshots
 
-### :sun_with_face: Light
+### :sun_with_face: Light theme
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="500" align="center"/> |
 |:---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
 
-### :last_quarter_moon_with_face: Dark
+### :last_quarter_moon_with_face: Dark theme
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="500" align="center"/> |
 |:--------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------:|
 
-### :waxing_crescent_moon: Black
+### :waxing_crescent_moon: Black theme
 
 | <img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="500" align="center"/> |
 |:----------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
@@ -71,4 +71,4 @@ You can always add other languages.
 
 [GPLv3+](/COPYING). \
 Direct adaptation/modification of [Foxy-Droid](https://github.com/kitsunyan/foxy-droid/) \
-Copyright © 2020–2022 [Iamlooker](https://github.com/Iamlooker) and [contributors](https://github.com/Iamlooker/Droid-ify/graphs/contributors).
+Copyright © 2020–2022 [Iamlooker](https://github.com/Iamlooker) and [contributors](https://github.com/NeoApplications/Neo-Store/graphs/contributors).
