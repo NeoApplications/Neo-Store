@@ -50,6 +50,7 @@ object DownloaderX {
             clients[clientConfiguration] ?: run {
                 val client = this.client
                     .newBuilder()
+                    .fastFallback(true)
                     .connectTimeout(30L, SECONDS)
                     .readTimeout(15L, SECONDS)
                     .writeTimeout(15L, SECONDS)
