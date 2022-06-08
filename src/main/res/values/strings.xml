@@ -164,7 +164,7 @@
     <string name="update">Update</string>
     <string name="updates">Updates</string>
     <string name="upstream_source_code_is_not_free">The upstream source code is not libre</string>
-    <string name="not_safe_for_work">Deemed censorable by F-Droid</string>
+    <string name="not_safe_for_work">Censorable (may contain disturbing content)</string>
     <string name="username">Username</string>
     <string name="username_missing">Username missing</string>
     <string name="validation_index_error_DESC">Could not validate index.</string>
@@ -183,7 +183,7 @@
     <string name="installed_applications">Installed</string>
     <string name="sort_filter">Sort and filter</string>
     <string name="new_applications">New apps</string>
-    <string name="install_after_sync">Auto-install</string>
+    <string name="install_after_sync">Auto-update</string>
     <string name="install_after_sync_summary">Install all new versions after looking through repositories for new apps.</string>
     <string name="prefs_updated_apps">Number of apps to show in \"Recently updated\"</string>
     <string name="prefs_new_apps">Number of apps to show in \"New apps\"</string>
@@ -195,9 +195,9 @@
     <string name="ignore_battery_optimization_message">The app behaves better without battery optimization, and prevents crashing on Android 12+.</string>
     <string name="ignore_battery_optimization_not_supported">Your Android installation does not support turning off battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
-    <string name="dialog_approve">Turn off</string><string name="root_session_installer">Install with root access</string>
+    <string name="dialog_approve">Turn off</string><string name="root_session_installer">Use root session installer<</string>
     <string name="root_session_installer_description">Slower, but avoids issues with installed apps on Android 13+.</string>
     <string name="no_action_possible">No Action Possible</string>
     <string name="show_screenshots">Show screenshots</string>
-    <string name="show_screenshots_description">Displays images of the app in notifications.</string>
+    <string name="show_screenshots_description">Display screenshots in the app page.</string>
 </resources>
