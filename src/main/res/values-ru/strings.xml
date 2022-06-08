@@ -202,4 +202,6 @@
     <string name="not_safe_for_work">NSFW (может содержать непристойные материалы)</string>
     <string name="no_permissions_identified">Запрашиваемые разрешения не обнаружены</string>
     <string name="no_action_possible">Действия невозможны</string>
+    <string name="show_screenshots">Показывать скриншоты</string>
+    <string name="show_screenshots_description">Показывать ли скриншоты в листе приложения или нет.</string>
 </resources>
