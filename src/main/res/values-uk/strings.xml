@@ -201,4 +201,5 @@
     <string name="not_safe_for_work">NSFW (може містити непристойні матеріали)</string>
     <string name="no_action_possible">Дії неможливі</string>
     <string name="no_permissions_identified">Запрошені дозволи не виявлено</string>
+    <string name="show_screenshots">Показувати скріншоти</string>
 </resources>
