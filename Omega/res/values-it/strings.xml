@@ -400,7 +400,7 @@
     <string name="reset_to_default">Ripristina predefinito</string>
     <string name="drag_to_disable_packs">Trascina in basso per attivare</string>
     <string name="summary_dock_search">Mostra nella dock in basso</string>
-    <string name="label_search">Ricerca</string>
+    <string name="label_search">Cerca</string>
     <string name="summary_app_categorization_enable">Crea schede o cartelle</string>
     <string name="summary_app_categorize">Scegli tra Schede o Cartelle</string>
     <string name="title_dock_search">Dock barra di ricerca</string>
