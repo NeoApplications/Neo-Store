@@ -52,7 +52,7 @@
             android:clickable="true"
             android:contentDescription="@string/label_voice_search"
             android:layout_gravity="start|center"
-            android:padding="12dp"
+            android:padding="8dp"
             android:scaleType="fitCenter"
             tools:src="@drawable/ic_mic_color" />
 
@@ -66,7 +66,7 @@
             android:focusable="false"
             android:layout_gravity="start|center"
             android:padding="@dimen/qsb_icon_padding"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             android:visibility="gone"
             tools:src="@drawable/ic_lens_color"
             tools:visibility="visible" />
