@@ -24,8 +24,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.android.launcher3.LauncherAppState;
@@ -43,7 +41,9 @@ import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.util.ContentWriter;
+import com.android.launcher3.util.Executors;
 import com.android.launcher3.util.ItemInfoMatcher;
+import com.android.launcher3.util.LooperExecutor;
 import com.android.launcher3.widget.LauncherAppWidgetHost;
 import com.saggitt.omega.iconpack.CustomIconEntry;
 
@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -66,7 +65,7 @@ public class ModelWriter {
     private final Context mContext;
     private final LauncherModel mModel;
     private final BgDataModel mBgDataModel;
-    private final Handler mUiHandler;
+    private final LooperExecutor mUiExecutor;
 
     private final boolean mHasVerticalHotseat;
     private final boolean mVerifyChanges;
@@ -82,7 +81,7 @@ public class ModelWriter {
         mBgDataModel = dataModel;
         mHasVerticalHotseat = hasVerticalHotseat;
         mVerifyChanges = verifyChanges;
-        mUiHandler = new Handler(Looper.getMainLooper());
+        mUiExecutor = Executors.MAIN_EXECUTOR;
     }
 
     private void updateItemInfoProps(
@@ -199,8 +198,7 @@ public class ModelWriter {
         updateItemInfoProps(item, container, screenId, cellX, cellY);
         item.spanX = spanX;
         item.spanY = spanY;
-
-        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, () ->
+        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, () ->
                 new ContentWriter(mContext)
                         .put(Favorites.CONTAINER, item.container)
                         .put(Favorites.CELLX, item.cellX)
@@ -238,7 +236,7 @@ public class ModelWriter {
      * Update an item to the database in a specified container.
      */
     public void updateItemInDatabase(ItemInfo item) {
-        ((Executor) MODEL_EXECUTOR).execute(new UpdateItemRunnable(item, () -> {
+        MODEL_EXECUTOR.execute(new UpdateItemRunnable(item, () -> {
             ContentWriter writer = new ContentWriter(mContext);
             item.onAddToDatabase(writer);
             return writer;
@@ -258,7 +256,7 @@ public class ModelWriter {
 
         ModelVerifier verifier = new ModelVerifier();
         final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-        ((Executor) MODEL_EXECUTOR).execute(() -> {
+        MODEL_EXECUTOR.execute(() -> {
             // Write the item on background thread, as some properties might have been updated in
             // the background.
             final ContentWriter writer = new ContentWriter(mContext);
@@ -367,14 +365,14 @@ public class ModelWriter {
         if (mPreparingToUndo) {
             mDeleteRunnables.add(r);
         } else {
-            ((Executor) MODEL_EXECUTOR).execute(r);
+            MODEL_EXECUTOR.execute(r);
         }
     }
 
     public void commitDelete() {
         mPreparingToUndo = false;
         for (Runnable runnable : mDeleteRunnables) {
-            ((Executor) MODEL_EXECUTOR).execute(runnable);
+            MODEL_EXECUTOR.execute(runnable);
         }
         mDeleteRunnables.clear();
     }
@@ -510,7 +508,7 @@ public class ModelWriter {
 
             int executeId = mBgDataModel.lastBindId;
 
-            mUiHandler.post(() -> {
+            mUiExecutor.post(() -> {
                 int currentId = mBgDataModel.lastBindId;
                 if (currentId > executeId) {
                     // Model was already bound after job was executed.
