@@ -35,7 +35,7 @@ android {
     compileSdk = 32
 
     val name = "0.9.0"
-    val code = 913
+    val code = 914
 
     defaultConfig {
         minSdk = 26
@@ -66,22 +66,22 @@ android {
     buildTypes {
         named("debug") {
             isMinifyEnabled = false
-            applicationIdSuffix = ".alpha"
-            versionNameSuffix = "-beta1"
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-beta2"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
         create("neo") {
             isMinifyEnabled = false
             applicationIdSuffix = ".neo"
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = "-beta2"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
 
         named("release") {
             isMinifyEnabled = false
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = "-beta2"
             setProguardFiles(listOf("proguard-android-optimize.txt", "proguard.flags"))
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round"
