@@ -22,7 +22,7 @@ public class LauncherFiles {
     public static final String LAUNCHER_3_BY_3_DB = "launcher_3_by_3.db";
     public static final String LAUNCHER_2_BY_2_DB = "launcher_2_by_2.db";
     public static final String BACKUP_DB = "backup.db";
-    public static final String SHARED_PREFERENCES_KEY = "com.saggitt.omega.alpha_preferences";
+    public static final String SHARED_PREFERENCES_KEY = BuildConfig.APPLICATION_ID + "_preferences";
     public static final String OLD_SHARED_PREFERENCES_KEY = "com.android.launcher3.prefs";
     public static final String MANAGED_USER_PREFERENCES_KEY =
             "com.android.launcher3.managedusers.prefs";

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 val composeVersion = "1.2.0-beta02"
+val accompanistVersion = "0.24.10-beta"
+val roomVersion = "2.4.2"
 
 plugins {
     id("com.android.application").version("7.2.1")
@@ -33,7 +35,7 @@ android {
     compileSdk = 32
 
     val name = "0.9.0"
-    val code = 913
+    val code = 914
 
     defaultConfig {
         minSdk = 26
@@ -64,22 +66,22 @@ android {
     buildTypes {
         named("debug") {
             isMinifyEnabled = false
-            applicationIdSuffix = ".alpha"
-            versionNameSuffix = "-beta1"
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-beta2"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
         create("neo") {
             isMinifyEnabled = false
             applicationIdSuffix = ".neo"
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = "-beta2"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
 
         named("release") {
             isMinifyEnabled = false
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = "-beta2"
             setProguardFiles(listOf("proguard-android-optimize.txt", "proguard.flags"))
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round"
@@ -204,7 +206,7 @@ dependencies {
     //UI
     implementation("androidx.appcompat:appcompat:1.6.0-alpha04")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
@@ -239,21 +241,21 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:${composeVersion}")
     implementation("androidx.compose.foundation:foundation:${composeVersion}")
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.10")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
     implementation("androidx.navigation:navigation-compose:2.4.2")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-insets-ui:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.24.9-beta")
+    implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-insets-ui:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
 
     //Room Components
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     // Recents lib dependency
     "withQuickstepImplementation"(project(":SystemUIShared"))

@@ -235,7 +235,7 @@ public class BgDataModel {
                             Log.e(TAG, msg);
                         }
                     } else {
-                        findOrMakeFolder(item.container).add((WorkspaceItemInfo) item, false);
+                        findOrMakeFolder(item.container).add((WorkspaceItemInfo) item, item.rank,false);
                     }
 
                 }
