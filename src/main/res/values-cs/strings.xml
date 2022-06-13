@@ -71,7 +71,7 @@
     <string name="incompatible_signature_DESC">Tato verze je podepsána jiným certifikátem, než který je nainstalován ve vašem zařízení.
 \nNejprve jej odinstalujte.</string>
     <string name="invalid_permissions_error_DESC">Neplatná oprávnění.</string>
-    <string name="incompatible_versions_summary">Zobrazit verze nekompatibilní se zařízením</string>
+    <string name="incompatible_versions_summary">Zobrazit verze nekompatibilní se zařízením.</string>
     <string name="incompatible_with_FORMAT">Nekompatibilní s %s</string>
     <string name="incompatible_older_DESC">Tato verze je starší než verze nainstalovaná ve vašem zařízení. Nejprve ji odinstalujte.</string>
     <string name="invalid_metadata_error_DESC">Neplatná metadata.</string>
@@ -87,7 +87,7 @@
         <item quantity="few">%d aplikací ma novou verzi.</item>
         <item quantity="other">%d aplikací má novou verzi.</item>
     </plurals>
-    <string name="prefs_updated_apps">Počet aplikací, které se mají zobrazit v kategorii \"nedávno aktualizované\"</string>
+    <string name="prefs_updated_apps">Počet aplikací, které se mají zobrazit v kategorii \"Nedávno aktualizované\"</string>
     <string name="no_applications_installed">Žádné nainstalované aplikace</string>
     <string name="no_description_available_DESC">Žádný popis.</string>
     <string name="no_matching_applications_found">Žádné takové aplikace se nepodařilo najít</string>
@@ -129,7 +129,7 @@
     <string name="unknown_error_DESC">Neznámá chyba.</string>
     <string name="unknown_FORMAT">Neznámý: %s</string>
     <string name="unsigned">Nepodepsaný</string>
-    <string name="unstable_updates_summary">Navrhovat instalaci nestabilních verzí</string>
+    <string name="unstable_updates_summary">Navrhovat instalaci nestabilních verzí.</string>
     <string name="unverified">Neověřené</string>
     <string name="username">Uživatelské jméno</string>
     <string name="updates">Aktualizace</string>
@@ -147,7 +147,7 @@
     <string name="installed_applications">Nainstalováno</string>
     <string name="no_applications_available">Žádné dostupné aplikace</string>
     <string name="no_proxy">Žádný proxy</string>
-    <string name="notify_about_updates_summary">Zobrazit oznámení o dostupnosti nových verzí</string>
+    <string name="notify_about_updates_summary">Zobrazit oznámení o dostupnosti nových verzí.</string>
     <string name="only_compatible_with_FORMAT">Kompatibilní pouze s %s</string>
     <string name="only_on_wifi">Pouze na síti Wi-Fi</string>
     <string name="open_DESC_FORMAT">Otevřít %s\?</string>
@@ -184,22 +184,22 @@
     <string name="latest">Nejnovější</string>
     <string name="version_FORMAT">Verze %s</string>
     <string name="install_after_sync">Automatické aktualizace</string>
-    <string name="install_after_sync_summary">Nainstalovat všechny nové verze po vyhledání nových aplikací v repozitářích</string>
-    <string name="prefs_new_apps">Počet aplikací, které se mají zobrazit v kategorii \"nové aplikace\"</string>
+    <string name="install_after_sync_summary">Nainstalovat všechny nové verze po vyhledání nových aplikací v repozitářích.</string>
+    <string name="prefs_new_apps">Počet aplikací, které se mají zobrazit v kategorii \"Nové aplikace\"</string>
     <string name="new_repository">Nový repozitář</string>
     <string name="default_tab">Výchozí karta</string>
     <string name="installing">Instalace</string>
     <string name="pending">Čekající</string>
     <string name="ignore_battery_optimization_title">Optimalizace baterie</string>
-    <string name="ignore_battery_optimization_message">Vypnutí optimalizace baterie pro tuto aplikaci jí umožňuje fungovat lépe a zabraňuje pádům na Android 12+</string>
+    <string name="ignore_battery_optimization_message">Vypnutí optimalizace baterie pro tuto aplikaci jí umožňuje fungovat lépe a zabraňuje pádům na Android 12+.</string>
     <string name="ignore_battery_optimization_not_supported">Vaše instalace systému Android nepodporuje vypnutí optimalizace baterie.</string>
     <string name="dialog_refuse">Ponechat</string>
     <string name="dialog_approve">Vypnout</string>
     <string name="root_session_installer">Použít root instalátor relace</string>
-    <string name="root_session_installer_description">Instalátor relace je trochu méně výkonný než původní, ale zabrání problémům s nainstalovanými aplikacemi v systému Android +13.</string>
-    <string name="not_safe_for_work">NSFW (může obsahovat nevhodný obsah)</string>
+    <string name="root_session_installer_description">Pomalejší, ale zabrání problémům s nainstalovanými aplikacemi v systému Android 13+.</string>
+    <string name="not_safe_for_work">Cenzurovatelné (může obsahovat nevhodný obsah)</string>
     <string name="no_permissions_identified">Nebyla zjištěna žádná požadovaná oprávnění</string>
     <string name="no_action_possible">Není možná žádná akce</string>
     <string name="show_screenshots">Zobrazit snímky obrazovky</string>
-    <string name="show_screenshots_description">Zda se mají v listu aplikace zobrazovat snímky obrazovky, nebo ne.</string>
+    <string name="show_screenshots_description">Zobrazit screenshoty na stránce aplikace.</string>
 </resources>
