@@ -59,7 +59,7 @@
 \nDesinstale-a primeiro.</string>
     <string name="incompatible_version">Versão incompatível</string>
     <string name="incompatible_versions">Versões incompatíveis</string>
-    <string name="incompatible_versions_summary">Mostrar versões incompatíveis com o dispositivo</string>
+    <string name="incompatible_versions_summary">Mostrar versões incompatíveis com o dispositivo.</string>
     <string name="incompatible_with_FORMAT">Incompatível com %s</string>
     <string name="install">Instalar</string>
     <string name="install_types">Tipos de instalação</string>
@@ -94,7 +94,7 @@
     <string name="no_matching_applications_found">Não foi possível encontrar nenhum desses aplicativos</string>
     <string name="no_proxy">Sem proxy</string>
     <string name="notify_about_updates">Notificar sobre novas versões de aplicativos</string>
-    <string name="notify_about_updates_summary">Mostrar uma notificação quando novas versões estiverem disponíveis</string>
+    <string name="notify_about_updates_summary">Mostrar uma notificação quando novas versões estiverem disponíveis.</string>
     <string name="number_of_applications">Número de aplicativos</string>
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Somente compatível com %s</string>
@@ -159,7 +159,7 @@
     <string name="unknown_FORMAT">Desconhecido: %s</string>
     <string name="unsigned">Sem assinatura</string>
     <string name="unstable_updates">Atualizações instáveis</string>
-    <string name="unstable_updates_summary">Sugerir instalar versões instáveis</string>
+    <string name="unstable_updates_summary">Sugerir instalar versões instáveis.</string>
     <string name="unverified">Não verificado</string>
     <string name="update">Atualizar</string>
     <string name="updates">Atualizações</string>
@@ -184,23 +184,23 @@
     <string name="installed_applications">Instalado</string>
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
     <string name="install_after_sync">Atualização automática</string>
-    <string name="install_after_sync_summary">Instale todas as novas versões depois de procurar nos repositórios por novos aplicativos</string>
-    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"atualizados recentemente\"</string>
-    <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"novos aplicativos\"</string>
+    <string name="install_after_sync_summary">Instale todas as novas versões depois de procurar nos repositórios por novos aplicativos.</string>
+    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\"</string>
+    <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"Novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
     <string name="pending">Pendente</string>
     <string name="installing">Instalando</string>
-    <string name="ignore_battery_optimization_message">O aplicativo se comporta melhor sem otimização de bateria e evita travamentos no Android 12+</string>
+    <string name="ignore_battery_optimization_message">O aplicativo se comporta melhor sem otimização de bateria e evita travamentos no Android 12+.</string>
     <string name="ignore_battery_optimization_title">Otimização de Bateria</string>
     <string name="ignore_battery_optimization_not_supported">Sua instalação do Android não suporta a desativação da otimização da bateria.</string>
     <string name="dialog_refuse">Manter</string>
     <string name="dialog_approve">Desligar</string>
-    <string name="root_session_installer_description">O instalador de sessão é um pouco menos eficiente que o antigo, mas evita problemas com aplicativos instalados no Android +13.</string>
+    <string name="root_session_installer_description">Mais lento, mas evita problemas com aplicativos instalados no Android 13+.</string>
     <string name="root_session_installer">Usar o instalador de sessão root</string>
-    <string name="not_safe_for_work">NSFW (pode conter conteúdo perturbador)</string>
+    <string name="not_safe_for_work">Censurável (pode conter conteúdo perturbador)</string>
     <string name="no_permissions_identified">Nenhuma permissão solicitada identificada</string>
     <string name="no_action_possible">Nenhuma Ação Possível</string>
-    <string name="show_screenshots_description">Se as capturas de tela devem ser exibidas na planilha do aplicativo ou não.</string>
+    <string name="show_screenshots_description">Exibir capturas de tela na página do aplicativo.</string>
     <string name="show_screenshots">Mostrar capturas de tela</string>
 </resources>
