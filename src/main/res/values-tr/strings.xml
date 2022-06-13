@@ -196,4 +196,8 @@
     <string name="dialog_approve">Kapat</string>
     <string name="root_session_installer">Yönetici oturum yükleyicisini kullan</string>
     <string name="root_session_installer_description">Oturum yükleyici, eski sürümden daha az performanslıdır, ancak Android +13\'te yüklü uygulamalarla ilgili sorunları önler.</string>
+    <string name="not_safe_for_work">Sansürlenebilir (rahatsız edici içerik içerebilir)</string>
+    <string name="no_permissions_identified">İstenen izinler tanımlanmadı</string>
+    <string name="show_screenshots">Ekran görüntülerini göster</string>
+    <string name="show_screenshots_description">Ekran görüntülerini uygulama sayfasında görüntüleyin.</string>
 </resources>
