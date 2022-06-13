@@ -57,7 +57,7 @@
 \n请先卸载你已有的版本。</string>
     <string name="incompatible_version">版本不兼容</string>
     <string name="incompatible_versions">版本不兼容</string>
-    <string name="incompatible_versions_summary">显示与设备不兼容的版本</string>
+    <string name="incompatible_versions_summary">显示与设备不兼容的版本。</string>
     <string name="incompatible_with_FORMAT">与 %s 不兼容</string>
     <string name="install">安装</string>
     <string name="install_types">安装类型</string>
@@ -91,7 +91,7 @@
     <string name="no_matching_applications_found">找不到任何这样的应用</string>
     <string name="no_proxy">无代理</string>
     <string name="notify_about_updates">应用更新通知</string>
-    <string name="notify_about_updates_summary">有新版本可用时显示通知</string>
+    <string name="notify_about_updates_summary">有新版本可用时显示通知。</string>
     <string name="number_of_applications">应用数量</string>
     <string name="ok">好的</string>
     <string name="only_compatible_with_FORMAT">仅与 %s 兼容</string>
@@ -156,7 +156,7 @@
     <string name="unknown_FORMAT">未知： %s</string>
     <string name="unsigned">未签名</string>
     <string name="unstable_updates">不稳定的更新</string>
-    <string name="unstable_updates_summary">建议安装不稳定的版本</string>
+    <string name="unstable_updates_summary">建议安装不稳定的版本。</string>
     <string name="unverified">未验证</string>
     <string name="update">更新</string>
     <string name="updates">更新</string>
@@ -181,7 +181,7 @@
     <string name="installed_applications">已安装</string>
     <string name="only_on_wifi_and_battery">仅在使用Wi-Fi且同时充电的情况下</string>
     <string name="install_after_sync">自动更新</string>
-    <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本</string>
+    <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本。</string>
     <string name="prefs_updated_apps">在“最近更新”下显示的应用数量</string>
     <string name="prefs_new_apps">在“新应用”下显示的应用数量</string>
     <string name="new_repository">新仓库</string>
