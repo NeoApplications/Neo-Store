@@ -14,7 +14,7 @@
     <string name="available">Διαθέσιμα</string>
     <string name="bug_tracker">Ινχηλάτης προβλημάτων</string>
     <string name="cancel">Ακύρωση</string>
-    <string name="cant_edit_sync_DESC">Δεν μπορείτε να τροποποιήσετε το αποθετήριο καθώς συγχρονίζεται αυτή τη στιγμή.</string>
+    <string name="cant_edit_sync_DESC">Δεν μπορείτε να τροποποιήσετε το αποθετήριο καθώς συγχρονίζεται αυτή τη στιγμή…</string>
     <string name="changelog">Κατάλογος αλλαγών</string>
     <string name="changes">Αλλαγές</string>
     <string name="checking_repository">Έλεγχος αποθετηρίου…</string>
@@ -45,10 +45,10 @@
     <string name="ignore_this_update">Αγνόηση αυτής της έκδοσης</string>
     <string name="incompatible_api_max_DESC_FORMAT">Η μεγίστη έκδοση API είναι %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">Η ελάχιστη έκδοση API είναι %d.</string>
-    <string name="incompatible_features_DESC">Missing features.</string>
+    <string name="incompatible_features_DESC">Ελλιπής λειτουργίες.</string>
     <string name="incompatible_version">Ασύμβατη έκδοση</string>
     <string name="incompatible_versions">Ασύμβατες εκδόσεις</string>
-    <string name="incompatible_versions_summary">Εμφάνιση των ασύμβατων εκδόσεων με τη συσκευή</string>
+    <string name="incompatible_versions_summary">Εμφάνιση των ασύμβατων εκδόσεων με τη συσκευή.</string>
     <string name="incompatible_with_FORMAT">Ασύμβατο με %s</string>
     <string name="install">Εγκατάσταση</string>
     <string name="install_types">Τύποι Εγκατάστασης</string>
@@ -66,7 +66,7 @@
     <string name="links">Σύνδεσμοι</string>
     <string name="list_animation">Κινήσεις Λίστας</string>
     <string name="list_animation_description">Εμφάνιση κινήσεων λίστας στην αρχική σελίδα</string>
-    <string name="merging_FORMAT">Merging %s</string>
+    <string name="merging_FORMAT">Ένωση %s…</string>
     <string name="name">Όνομα</string>
     <string name="network_error_DESC">Σφάλμα δικτύου.</string>
     <string name="never">Ποτέ</string>
@@ -81,7 +81,7 @@
     <string name="no_matching_applications_found">Δεν ήταν δυνατή η εύρεση τέτοιων εφαρμογών</string>
     <string name="no_proxy">Κανένας διακομιστής μεσολάβησης</string>
     <string name="notify_about_updates">Ειδοποίηση για νέες εκδόσεις εφαρμογών</string>
-    <string name="notify_about_updates_summary">Εμφάνιση ειδοποίησης όταν υπάρχουν διαθέσιμες ενημερώσεις</string>
+    <string name="notify_about_updates_summary">Εμφάνιση ειδοποίησης όταν υπάρχουν διαθέσιμες ενημερώσεις.</string>
     <string name="number_of_applications">Αριθμός εφαρμογών</string>
     <string name="ok">Εντάξει</string>
     <string name="only_compatible_with_FORMAT">Συμβατό μόνο με %s</string>
@@ -100,12 +100,13 @@
     <string name="provided_by_FORMAT">Παρέχεται από %s</string>
     <string name="proxy">Διακομιστής μεσολάβησης</string>
     <string name="plus_more_FORMAT">+%d περισσότερα</string>
-    <string name="proxy_host">Proxy host</string>
+    <string name="proxy_host">Διακομιστής Μεσολάβησης</string>
     <string name="proxy_port">Θύρα διακομιστή μεσολάβησης</string>
     <string name="proxy_type">Τύπος διακομιστή μεσολάβησης</string>
     <string name="repositories">Αποθετήρια</string>
     <string name="repository">Αποθετήριο</string>
-    <string name="repository_unsigned_DESC">Μη υπογεγραμμένο. Αδυναμία επαλήθευσης της λίστας εφαρμογών. Προσέχετε όταν κατεβάζετε εφαρμογές από μη υπογεγραμμένα αποθετήρια.</string>
+    <string name="repository_unsigned_DESC">Μη υπογεγραμμένο. Αδυναμία επαλήθευσης της λίστας εφαρμογών.
+\nΠροσέχετε όταν κατεβάζετε εφαρμογές από μη υπογεγραμμένα αποθετήρια.</string>
     <string name="requires_FORMAT">Απαιτεί %s</string>
     <string name="root_permission">Σιωπηλή Εγκατάσταση</string>
     <string name="save">Αποθήκευση</string>
@@ -136,7 +137,7 @@
     <string name="unknown_error_DESC">Άγνωστο σφάλμα.</string>
     <string name="unknown_FORMAT">Άγνωστο: %s</string>
     <string name="unstable_updates">Ασταθείς ενημερώσεις</string>
-    <string name="unstable_updates_summary">Πρόταση για εγκατάσταση ασταθών εκδόσεων</string>
+    <string name="unstable_updates_summary">Πρόταση για εγκατάσταση ασταθών εκδόσεων.</string>
     <string name="update">Ενημέρωση</string>
     <string name="updates">Ενημερώσεις</string>
     <string name="unsigned">Μη υπογεγραμμένο</string>
@@ -145,7 +146,7 @@
     <string name="recently_updated">Πρόσφατα ενημερωμένα</string>
     <string name="target">Στόχος</string>
     <string name="whats_new">Τι νέο υπάρχει</string>
-    <string name="upstream_source_code_is_not_free">Upstream source code is not free</string>
+    <string name="upstream_source_code_is_not_free">Ο πηγαίως κώδικας δεν είναι ελεύθερος</string>
     <string name="username">Όνομα χρήστη</string>
     <string name="username_missing">Απουσία ονόματος χρήστη</string>
     <string name="version">Έκδοση</string>
@@ -158,16 +159,46 @@
     <string name="incompatible_older_DESC">Αυτή η έκδοση είναι παλαιότερη από αυτήν που είναι εγκατεστημένη στη συσκευή σας. Απεγκαταστήστε εκείνη πρώτα.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Η %1$s πλατφόρμα σας δεν υποστηρίζεται. Υποστηριζόμενες πλατφόρμες: %2$s.</string>
     <string name="action_failed">Η ενέργεια απέτυχε</string>
-    <string name="incompatible_signature_DESC">Αυτή η έκδοση είναι υπογεγραμμένη με ένα διαφορετικό πιστοποιητικό από αυτή που είναι εγκατεστημένη στη συσκευή σας. Απεγκαταστήστε εκείνη πρώτα.</string>
+    <string name="incompatible_signature_DESC">Αυτή η έκδοση είναι υπογεγραμμένη με ένα διαφορετικό πιστοποιητικό από αυτή που είναι εγκατεστημένη στη συσκευή σας.
+\nΑπεγκαταστήστε εκείνη πρώτα.</string>
     <string name="integrity_check_error_DESC">Αδυναμία ελέγχου ακεραιότητας.</string>
     <string name="invalid_signature_error_DESC">Μη έγκυρη υπογραφή.</string>
-    <string name="repository_not_used_DESC">Αυτό το αποθετήριο δεν έχει χρησιμοποιηθεί ακόμα. Χρειάζεται να το ενεργοποιήσετε για να δείτε τις εφαρμογές που παρέχει.</string>
+    <string name="repository_not_used_DESC">Αυτό το αποθετήριο δεν έχει χρησιμοποιηθεί ακόμα.
+\nΧρειάζεται να το ενεργοποιήσετε για να δείτε τις εφαρμογές που παρέχει.</string>
     <string name="signed_using_unsafe_algorithm">Έχει υπογραφεί χρησιμοποιώντας έναν μη ασφαλή αλγόριθμο</string>
     <string name="socks_proxy">SOCKS διακομιστής μεσολάβησης</string>
     <string name="tracks_or_reports_your_activity">Καταγράφει ή αναφέρει τη δραστηριότητά σας</string>
     <string name="validation_index_error_DESC">Αδυναμία επαλήθευσης δείκτη.</string>
-    <string name="root_permission_description">Επιτρέψτε την άδεια root για σιωπηλή εγκατάσταση</string>
+    <string name="root_permission_description">Επιτρέψτε την άδεια διαχειριστή για σιωπηλή εγκατάσταση</string>
     <string name="amoled">Μαύρο</string>
     <string name="prefs_personalization">Εξατομίκευση</string>
     <string name="prefs_language_title">Γλώσσα</string>
+    <string name="explore">Εξερεύνησε</string>
+    <string name="sort_filter">Ταξινόμηση και φιλτράρισμα</string>
+    <string name="new_applications">Νέες εφαρμογές</string>
+    <string name="pending">Εν αναμονή</string>
+    <string name="installing">Εγκαθίσταται</string>
+    <string name="only_on_wifi_and_battery">Μόνο σε WiFi και ενώ φορτίζει</string>
+    <string name="prefs_updated_apps">Αριθμός εφαρμογών που θα φανεί στα &lt;&lt;ενημερώθηκαν πρόσφατα&gt;&gt;</string>
+    <string name="prefs_new_apps">Αριθμός εφαρμογών που θα φανούν στις &lt;&lt;Νέες εφαρμογές&gt;&gt;</string>
+    <string name="not_safe_for_work">Λογοκριμένο (ίσως περιέχει δυσάρεστο περιεχόμενο)</string>
+    <string name="show_less">Δείξε λιγότερα</string>
+    <string name="latest">Τελευταία</string>
+    <string name="installed_applications">Εγκατεστημένα</string>
+    <string name="install_after_sync_summary">Εγκατέστησε τις καινούργιες εκδόσεις εφόσον ελεγχθούν τα αποθετήρια για νέες εφαρμογές.</string>
+    <string name="new_repository">Νέο αποθετήριο</string>
+    <string name="ignore_battery_optimization_title">Βελτιστοποίηση μπαταρίας</string>
+    <string name="ignore_battery_optimization_message">Η εφαρμογή λειτουργεί καλύτερα χωρίς την βελτιστοποίηση μπαταρίας και αποτρέπει σφάλματα στις εκδόσεις Android 12+.</string>
+    <string name="ignore_battery_optimization_not_supported">Η έκδοση Android σας δεν υποστηρίζει την απενεργοποίηση της βελτιστοποίησης μπαταρίας.</string>
+    <string name="dialog_refuse">Διατήρησε</string>
+    <string name="dialog_approve">Απενεργοποίηση</string>
+    <string name="root_session_installer">Χρησιμοποίησε δικαιώματα διαχειριστή σε συνεδρία εγκατάστασης</string>
+    <string name="root_session_installer_description">Πιο αργό, αλλά αποτρέπει προβλήματα με εγκατεστημένες εφαρμογές σε εκδόσεις Android 13+.</string>
+    <string name="update_all">Εγκατάσταση όλων</string>
+    <string name="default_tab">Προεπιλεγμένη καρτέλα</string>
+    <string name="install_after_sync">Αυτόματες ενημερώσεις</string>
+    <string name="no_permissions_identified">Δεν βρέθηκα ζητούμενες άδειες</string>
+    <string name="no_action_possible">Καμία δυνατή ενέργεια</string>
+    <string name="show_screenshots">Εμφάνιση στιγμιότυπων</string>
+    <string name="show_screenshots_description">Εμφάνισε στιγμιότυπα στην σελίδα εφαρμογής.</string>
 </resources>
