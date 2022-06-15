@@ -23,7 +23,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         val flags = if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE else 0
         val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
             if (Android.sdk(31)) {
-                this.setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+                setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
             }
         }
     }
