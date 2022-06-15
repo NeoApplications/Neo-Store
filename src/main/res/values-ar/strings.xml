@@ -82,7 +82,7 @@
     <string name="sort_filter">الفرز والتصفية</string>
     <string name="new_applications">تطبيقات جديدة</string>
     <string name="install_after_sync">التحديث التلقائي</string>
-    <string name="prefs_new_apps">عدد التطبيقات التي سيتم عرضها ضمن \"التطبيقات الجديدة\"</string>
+    <string name="prefs_new_apps">عدد التطبيقات التي سيتم عرضها في \"التطبيقات الجديدة\"</string>
     <string name="author_website">موقع المطور الإلكتروني</string>
     <string name="available">متوفر</string>
     <string name="bug_tracker">متعقب العلل</string>
@@ -110,7 +110,7 @@
     <string name="incompatible_api_max_DESC_FORMAT">الحد الأقصى لإصدار API هو %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">الحد الأدنى لإصدار API هو %d.</string>
     <string name="incompatible_versions">إصدارات غير متوافقه</string>
-    <string name="incompatible_versions_summary">إظهار إصدارات غير متوافقة مع الجهاز</string>
+    <string name="incompatible_versions_summary">إظهار الإصدارات غير المتوافقة مع الجهاز.</string>
     <string name="invalid_signature_error_DESC">توقيع خاطئ.</string>
     <string name="invalid_username_format">صيغة أسم المستخدم خاطئة</string>
     <string name="launch">تشغيل</string>
@@ -125,7 +125,7 @@
     <string name="no_matching_applications_found">لم يتم العثور على تطبيق مشابه</string>
     <string name="no_proxy">بدون بروكسي</string>
     <string name="notify_about_updates">تنبيه (إشعار) حول التحديثات</string>
-    <string name="notify_about_updates_summary">عرض تنبيه عند توفر تحديثات جديدة</string>
+    <string name="notify_about_updates_summary">عرض تنبيه عند توفر تحديثات جديدة.</string>
     <string name="number_of_applications">عدد التطبيقات</string>
     <string name="ok">حسناً</string>
     <string name="only_compatible_with_FORMAT">متوافق فقط مع %s</string>
@@ -169,7 +169,7 @@
     <string name="unknown_FORMAT">غير معروف %s</string>
     <string name="unsigned">لم يتم توقيعه</string>
     <string name="unstable_updates">تحديثات غير مستقرة</string>
-    <string name="unstable_updates_summary">اقتراح تثبيت التطبيقات غير المستقرة</string>
+    <string name="unstable_updates_summary">اقتراح تثبيت التطبيقات غير المستقرة.</string>
     <string name="unverified">لم يتم التحقق منها</string>
     <string name="update">تحديث</string>
     <string name="updates">تحديثات</string>
@@ -187,22 +187,22 @@
     <string name="latest">المحدثة مؤخرا</string>
     <string name="explore">استكشف</string>
     <string name="update_all">تثبيت الكل</string>
-    <string name="install_after_sync_summary">تثبيت جميع الإصدارات الجديدة بعد البحث في المستودعات للتطبيقات الجديدة</string>
-    <string name="prefs_updated_apps">عدد التطبيقات التي سيتم عرضها ضمن \"تم التحديث مؤخرا\"</string>
+    <string name="install_after_sync_summary">تثبيت جميع الإصدارات الجديدة بعد البحث في المستودعات للتطبيقات الجديدة.</string>
+    <string name="prefs_updated_apps">عدد التطبيقات المراد عرضها في \"تم التحديث مؤخرًا\"</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
     <string name="pending">قيد الانتظار</string>
     <string name="installing">التثبيت</string>
     <string name="ignore_battery_optimization_title">تحسين البطارية</string>
-    <string name="ignore_battery_optimization_message">يتصرف التطبيق بشكل أفضل دون تحسين البطارية ، ويمنع التعطل على Android 12+</string>
+    <string name="ignore_battery_optimization_message">يتصرف التطبيق بشكل أفضل دون تحسين البطارية ، ويمنع التعطل على Android 12+.</string>
     <string name="dialog_approve">إيقاف تشغيل توفير البطارية</string>
     <string name="ignore_battery_optimization_not_supported">لا يدعم تثبيت Android إيقاف تشغيل تحسين البطارية.</string>
     <string name="dialog_refuse">أبقه كما هو</string>
     <string name="root_session_installer">استخدام مثبت جلسة الجذر</string>
-    <string name="root_session_installer_description">يعد مثبِّت الجلسة أقل أداءً قليلاً من المثبت القديم ، ولكنه يتجنب المشكلات المتعلقة بالتطبيقات المثبتة في Android +13.</string>
-    <string name="not_safe_for_work">NSFW (قد تحتوي على محتوى مزعج او غير اخلاقي)</string>
+    <string name="root_session_installer_description">أبطأ ، ولكن يتجنب المشكلات المتعلقة بالتطبيقات المثبتة على Android 13 والإصدارات الأحدث.</string>
+    <string name="not_safe_for_work">خاضع للرقابة (قد يحتوي على محتوى مزعج)</string>
     <string name="no_permissions_identified">لم يتم التعرف على الصلاحيات المطلوبة</string>
     <string name="no_action_possible">لا يوجد إجراء ممكن</string>
     <string name="show_screenshots">عرض لقطات الشاشة</string>
-    <string name="show_screenshots_description">سواء لإظهار لقطات الشاشة في قائمة التطبيق أم لا.</string>
+    <string name="show_screenshots_description">عرض لقطات الشاشة في صفحة التطبيق.</string>
 </resources>
