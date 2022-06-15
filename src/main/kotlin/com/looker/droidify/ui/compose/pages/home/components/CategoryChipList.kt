@@ -103,7 +103,8 @@ fun CategoryChip(
                 shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius)
                 clip = true
             },
-        color = categoryChipTransitionState.contentColor
+        color = categoryChipTransitionState.contentColor,
+        tonalElevation = 8.dp
     ) {
         Row(
             modifier = Modifier

@@ -1,29 +1,14 @@
 package com.looker.droidify.ui.compose.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -38,22 +23,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
+import com.looker.droidify.ui.compose.theme.surfaceColorAtElevation
 import com.looker.droidify.ui.compose.utils.HorizontalExpandingVisibility
-
 
 @Composable
 fun TopBar(
     title: String,
     actions: @Composable (RowScope.() -> Unit)
 ) {
-    TopAppBar(
+    SmallTopAppBar(
         modifier = Modifier.wrapContentHeight(),
         title = {
             Text(text = title, style = MaterialTheme.typography.headlineSmall)
         },
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        elevation = 0.dp,
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
+        ),
         actions = actions
     )
 }
@@ -66,12 +51,10 @@ fun ExpandableSearchAction(
     onClose: () -> Unit,
     onQueryChanged: (String) -> Unit
 ) {
-    val (expanded, onExpanded) = remember {
-        mutableStateOf(expanded)
-    }
+    val (isExpanded, onExpanded) = remember { mutableStateOf(expanded) }
 
     HorizontalExpandingVisibility(
-        expanded = expanded,
+        expanded = isExpanded,
         expandedView = {
             ExpandedSearchView(
                 query = query,
@@ -83,7 +66,6 @@ fun ExpandableSearchAction(
         },
         collapsedView = {
             CollapsedSearchView(
-                modifier = modifier,
                 onExpanded = onExpanded
             )
         }
@@ -92,7 +74,6 @@ fun ExpandableSearchAction(
 
 @Composable
 fun CollapsedSearchView(
-    modifier: Modifier = Modifier,
     onExpanded: (Boolean) -> Unit
 ) {
     TopBarAction(

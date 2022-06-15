@@ -54,7 +54,8 @@ fun AppInfoHeader(
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.large,
+        tonalElevation = 8.dp
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -85,7 +86,7 @@ fun AppInfoHeader(
                 }
                 MainActionButton(
                     modifier = Modifier.weight(1f),
-                    actionState = mainAction ?: ActionState.NoAction,
+                    actionState = mainAction ?: ActionState.Install,
                     onClick = {
                         onAction(mainAction)
                     }
@@ -117,7 +118,8 @@ fun TopBarHeader(
         modifier = modifier
             .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 0.dp)
             .fillMaxWidth(),
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.large,
+        tonalElevation = 8.dp
     ) {
         Column {
             Row(

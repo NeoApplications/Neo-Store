@@ -1,8 +1,8 @@
 package com.looker.droidify.ui.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,17 +23,16 @@ fun ExpandableBlock(
     content: @Composable ColumnScope.() -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
-    val backgroundColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.surface
-        else MaterialTheme.colorScheme.background
+    val tonalElevation by animateDpAsState(
+        targetValue = if (expanded) 8.dp
+        else 0.dp
     )
 
     Surface(
         modifier = Modifier.animateContentSize(),
         shape = MaterialTheme.shapes.large,
         onClick = { expanded = !expanded },
-        color = backgroundColor,
-        tonalElevation = 8.dp
+        tonalElevation = tonalElevation
     ) {
         Column(modifier = modifier) {
             ExpandableBlockHeader(heading, positive)

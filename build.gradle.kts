@@ -158,7 +158,7 @@ dependencies {
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
     implementation("androidx.core:core-ktx:1.9.0-alpha04")
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
     implementation("androidx.activity:activity-compose:1.6.0-alpha03")
@@ -209,10 +209,9 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
-    implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.10")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
 
     debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")

@@ -1,12 +1,8 @@
 package com.looker.droidify.ui.compose.utils
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults.chipColors
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +14,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Basically a OutlineChip without spamming "ExperimentalMaterialApi"
  */
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CustomChip(
     modifier: Modifier = Modifier,
@@ -28,21 +24,10 @@ fun CustomChip(
     borderWidth: Dp = 1.dp,
     onClick: (String) -> Unit = {}
 ) {
-    Chip(
+    ElevatedAssistChip(
         modifier = modifier,
         shape = Shapes.Full,
-        border = BorderStroke(
-            width = borderWidth,
-            color = borderColor.compositeOverBackground(
-                alpha = 0.5f,
-                MaterialTheme.colorScheme.surface
-            )
-        ),
-        colors = chipColors(
-            backgroundColor = containerColor.compositeOverBackground(alpha = 0.1f)
-        ),
-        onClick = { onClick(text) }
-    ) {
-        Text(text = text, color = borderColor)
-    }
+        onClick = { onClick(text) },
+        label = { Text(text = text, color = borderColor) }
+    )
 }

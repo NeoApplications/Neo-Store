@@ -8,25 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Sync
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -78,7 +64,7 @@ class LatestFragment : MainNavFragmentX() {
         }
     }
 
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun LatestPage() {
         val primaryList by viewModel.primaryProducts.observeAsState(null)
@@ -137,22 +123,24 @@ class LatestFragment : MainNavFragmentX() {
                             text = stringResource(id = R.string.recently_updated),
                             modifier = Modifier.weight(1f),
                         )
-                        Chip(
+                        SuggestionChip(
                             shape = MaterialTheme.shapes.medium,
-                            colors = ChipDefaults.chipColors(
-                                backgroundColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
+                            colors = SuggestionChipDefaults.suggestionChipColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                labelColor = MaterialTheme.colorScheme.onSurface,
                             ),
-                            onClick = { } // TODO add sort & filter
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                painter = painterResource(id = R.drawable.ic_sort),
-                                contentDescription = stringResource(id = R.string.sort_filter)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = stringResource(id = R.string.sort_filter))
-                        }
+                            onClick = { }, // TODO add sort & filter
+                            icon = {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = R.drawable.ic_sort),
+                                    contentDescription = stringResource(id = R.string.sort_filter)
+                                )
+                            },
+                            label = {
+                                Text(text = stringResource(id = R.string.sort_filter))
+                            }
+                        )
                     }
                     ProductsVerticalRecycler(primaryList, repositories,
                         modifier = Modifier
