@@ -37,7 +37,7 @@
     <string name="incompatible_features_DESC">Fehlende Funktionen.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Deine %1$s-Plattform wird nicht unterstützt. Unterstützte Plattformen: %2$s.</string>
     <string name="installed">Installiert</string>
-    <string name="incompatible_versions_summary">Mit dem Gerät inkompatible Anwendungsversionen anzeigen</string>
+    <string name="incompatible_versions_summary">Mit dem Gerät inkompatible Anwendungsversionen anzeigen.</string>
     <string name="install_types">Installationstypen</string>
     <string name="install">Installieren</string>
     <string name="integrity_check_error_DESC">Die Intaktheit konnte nicht überprüft werden.</string>
@@ -101,7 +101,7 @@
     <string name="repository">Paketquelle</string>
     <string name="parsing_index_error_DESC">Die Indexdatei konnte nicht verarbeitet werden.</string>
     <string name="password">Passwort</string>
-    <string name="notify_about_updates_summary">Eine Benachrichtigung anzeigen, wenn neue Versionen verfügbar sind</string>
+    <string name="notify_about_updates_summary">Eine Benachrichtigung anzeigen, wenn neue Versionen verfügbar sind.</string>
     <string name="provided_by_FORMAT">Bereitgestellt von %s</string>
     <string name="source_code_no_longer_available">Quellcode nicht mehr verfügbar</string>
     <string name="invalid_username_format">Ungültiges Benutzernamenformat</string>
@@ -149,7 +149,7 @@
     <string name="incompatible_api_min_DESC_FORMAT">Die minimale API-Version ist %d.</string>
     <string name="repository_unsigned_DESC">Die unsignierte Anwendungsliste konnte nicht verifiziert werden.
 \nBeim Herunterladen von Anwendungen aus nicht signierten Paketquellen ist Vorsicht geboten.</string>
-    <string name="unstable_updates_summary">Installation von instabilen Versionen vorschlagen</string>
+    <string name="unstable_updates_summary">Installation von instabilen Versionen vorschlagen.</string>
     <string name="unstable_updates">Instabile Aktualisierungen</string>
     <string name="root_permission_description">Root für Installationen ohne Interaktion verwenden</string>
     <string name="proxy_host">Hauptcomputer</string>
@@ -182,9 +182,9 @@
     <string name="update_all">Alle aktualisieren</string>
     <string name="only_on_wifi_and_battery">Nur mit WLAN und Stromversorgung</string>
     <string name="install_after_sync">Automatisch aktualisieren</string>
-    <string name="install_after_sync_summary">Alle Anwendungen aktualisieren nachdem die Paketquellen geprüft wurden</string>
-    <string name="prefs_updated_apps">Anzahl der unter \"Kürzlich aktualisiert\" angezeigten Anwendungen</string>
-    <string name="prefs_new_apps">Anzahl der unter \"Neue Anwendungen\" angezeigten Anwendungen</string>
+    <string name="install_after_sync_summary">Alle Anwendungen aktualisieren nachdem die Paketquellen geprüft wurden.</string>
+    <string name="prefs_updated_apps">Anzahl der unter „Kürzlich aktualisiert“ angezeigten Anwendungen</string>
+    <string name="prefs_new_apps">Anzahl der unter „Neue Anwendungen“ angezeigten Anwendungen</string>
     <string name="new_repository">Neue Paketquelle</string>
     <string name="default_tab">Standard-Registerkarte</string>
     <string name="installing">Installation</string>
@@ -192,11 +192,13 @@
     <string name="dialog_refuse">Behalten</string>
     <string name="ignore_battery_optimization_not_supported">Dein Android-Betriebssystem erlaubt kein Abschalten von Akkulaufzeitverbesserungen.</string>
     <string name="ignore_battery_optimization_title">Akkulaufzeitverbesserung</string>
-    <string name="ignore_battery_optimization_message">Die App verhält sich besser ohne Batterieoptimierung und verhindert Abstürze unter Android 12+</string>
+    <string name="ignore_battery_optimization_message">Die Anwendung verhält sich ohne Batterieoptimierung besser und verhindert Abstürze unter Android 12+.</string>
     <string name="dialog_approve">Ausschalten</string>
     <string name="root_session_installer">benutz root-session Installateur</string>
-    <string name="root_session_installer_description">Dieser Anwendungsinstallateur ist weniger leistungsfähig als der ursprüngliche, dafür werden Probleme ab Android 13 umgangen.</string>
-    <string name="not_safe_for_work">NSFW (kann verstörende Inhalte enthalten)</string>
+    <string name="root_session_installer_description">Langsamer, vermeidet aber Probleme mit installierten Apps auf Android 13+.</string>
+    <string name="not_safe_for_work">Zensierbar (kann verstörende Inhalte enthalten)</string>
     <string name="no_permissions_identified">Keine beantragten Genehmigungen identifiziert</string>
     <string name="no_action_possible">Keine Aktion möglich</string>
+    <string name="show_screenshots">Bildschirmfotos anzeigen</string>
+    <string name="show_screenshots_description">Bildschirmfotos auf der App-Seite anzeigen.</string>
 </resources>
