@@ -128,7 +128,7 @@ public class FolderInfo extends ItemInfo {
 
     public String swipeUpAction;
     private ArrayList<FolderListener> mListeners = new ArrayList<>();
-    private FirstItemProvider firstItemProvider = new FirstItemProvider(this);
+    public FirstItemProvider firstItemProvider = new FirstItemProvider(this);
     private Drawable cached;
     private String cachedIcon;
 
@@ -151,7 +151,6 @@ public class FolderInfo extends ItemInfo {
      */
     public void add(WorkspaceItemInfo item, int rank, boolean animate) {
         rank = Utilities.boundToRange(rank, 0, contents.size());
-        item.rank = rank;
         contents.add(rank, item);
         for (int i = 0; i < mListeners.size(); i++) {
             mListeners.get(i).onAdd(item, rank);
@@ -260,16 +259,19 @@ public class FolderInfo extends ItemInfo {
     }
 
     public CharSequence getIconTitle(Folder folder) {
-        if (!TextUtils.equals(folder.getDefaultFolderName(), title)) {
-            return title;
-        } else if (isCoverMode()) {
+        if(!isCoverMode()){
+            if (!TextUtils.equals(folder.getDefaultFolderName(), title)) {
+                return title;
+            }else {
+                return folder.getDefaultFolderName();
+            }
+        }
+        else{
             WorkspaceItemInfo info = getCoverInfo();
             if (info.customTitle != null) {
                 return info.customTitle;
             }
             return info.title;
-        } else {
-            return folder.getDefaultFolderName();
         }
     }
 
@@ -487,14 +489,6 @@ public class FolderInfo extends ItemInfo {
         if (icn != null) return icn;
         if (isCoverMode()) return getCoverInfo().newIcon(context);
         return getFolderIcon(launcher);
-    }
-
-    public Drawable getDefaultIcon(Launcher launcher) {
-        if (isCoverMode()) {
-            return new FastBitmapDrawable(getCoverInfo().bitmap);
-        } else {
-            return getFolderIcon(launcher);
-        }
     }
 
     public Drawable getFolderIcon(Launcher launcher) {

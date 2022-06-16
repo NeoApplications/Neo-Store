@@ -796,6 +796,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     protected void handleClose(boolean animate) {
         mIsOpen = false;
         if (mFolderIcon.isCustomIcon) {
+            mInfo.itemsChanged(true);
             mFolderIcon.mFolderName.setIconVisible(true);
         }
         if (!animate && mCurrentAnimator != null && mCurrentAnimator.isRunning()) {

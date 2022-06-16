@@ -755,7 +755,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
     public void onItemsChanged(boolean animate) {
         if (mInfo.isCoverMode()) {
             onIconChanged();
-            mFolderName.setText(mInfo.getIconTitle(getFolder()));
         }
         updatePreviewItems(animate);
         invalidate();
