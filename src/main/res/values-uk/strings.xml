@@ -52,7 +52,7 @@
     <string name="incompatible_older_DESC">Поточна версія старіша за встановлену на вашому пристрої. Спершу видаліть встановлену.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Ваша %1$s платформа не підтримується. Платформи, що підтримуються: %2$s.</string>
     <string name="incompatible_version">Несумісна версія</string>
-    <string name="incompatible_versions_summary">Показати версії, що не сумісні з цим пристроєм</string>
+    <string name="incompatible_versions_summary">Показати версії, що не сумісні з цим пристроєм.</string>
     <string name="incompatible_with_FORMAT">Несумісно з %s</string>
     <string name="install">Встановити</string>
     <string name="install_types">Типи встановлення</string>
@@ -73,7 +73,7 @@
     <string name="no_description_available_DESC">Опис відсутній.</string>
     <string name="no_proxy">Без проксі</string>
     <string name="notify_about_updates">Повідомляти про нові версії додатків</string>
-    <string name="notify_about_updates_summary">Відображати повідомлення про доступність нових версій</string>
+    <string name="notify_about_updates_summary">Відображати повідомлення про доступність нових версій.</string>
     <string name="number_of_applications">Кількість додатків</string>
     <string name="ok">ОК</string>
     <string name="only_on_wifi">Лише по Wi-Fi</string>
@@ -129,7 +129,7 @@
     <string name="unknown_FORMAT">Невідомо: %s</string>
     <string name="unsigned">Не підписаний</string>
     <string name="unstable_updates">Нестабільне оновлення</string>
-    <string name="unstable_updates_summary">Пропонувати встановити нестабільні версії</string>
+    <string name="unstable_updates_summary">Пропонувати встановити нестабільні версії.</string>
     <string name="unverified">Не перевірений</string>
     <string name="update">Оновити</string>
     <string name="updates">Оновлення</string>
@@ -184,9 +184,9 @@
     <string name="sort_filter">Сортувати та фільтрувати</string>
     <string name="only_on_wifi_and_battery">Тільки при Wi-Fi та підключенні до мережі</string>
     <string name="install_after_sync">Автооновлення</string>
-    <string name="install_after_sync_summary">Встановлюйте усі нові версії після перевірки репозиторіїв на наявність нових додатків</string>
-    <string name="prefs_updated_apps">Кількість програм, що відображаються в розділі \"Нещодавно оновлені\"</string>
-    <string name="prefs_new_apps">Кількість програм для показу в розділі \"Нові додатки\"</string>
+    <string name="install_after_sync_summary">Встановлюйте усі нові версії після перевірки репозиторіїв на наявність нових додатків.</string>
+    <string name="prefs_updated_apps">Кількість додатків для відображення в \"Нещодавно оновлені\"</string>
+    <string name="prefs_new_apps">Кількість додатків для відображення в \"Нові програми\"</string>
     <string name="new_repository">Новий репозиторій</string>
     <string name="default_tab">Вкладка за замовчуванням</string>
     <string name="pending">Очікується</string>
@@ -195,11 +195,12 @@
     <string name="dialog_approve">Вимкнути</string>
     <string name="dialog_refuse">Залишити</string>
     <string name="ignore_battery_optimization_not_supported">Ваша версія Android не підтримує вимкнення економії заряду батареї.</string>
-    <string name="ignore_battery_optimization_message">Додаток поводиться себе краще без включеної економії заряду батареї, запобігаючи вильоту на Android 12+</string>
+    <string name="ignore_battery_optimization_message">Додаток поводиться себе краще без включеної економії заряду батареї, запобігаючи вильоту на Android 12+.</string>
     <string name="root_session_installer">Використати root session установник</string>
-    <string name="root_session_installer_description">Session установник трохи менш продуктивний, ніж застарілий, але дозволяє уникнути проблем із встановленими програмами в Android +13.</string>
-    <string name="not_safe_for_work">NSFW (може містити непристойні матеріали)</string>
+    <string name="root_session_installer_description">Повільніше, але дозволяє уникнути проблем із встановленими програмами на Android 13+.</string>
+    <string name="not_safe_for_work">Цензура (може містити непристойні матеріали)</string>
     <string name="no_action_possible">Дії неможливі</string>
     <string name="no_permissions_identified">Запрошені дозволи не виявлено</string>
     <string name="show_screenshots">Показувати скріншоти</string>
+    <string name="show_screenshots_description">Відображати скріншоти на сторінці додатку.</string>
 </resources>
