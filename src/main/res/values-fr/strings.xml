@@ -103,7 +103,7 @@
     <string name="themes">Thèmes</string>
     <string name="light">Clair</string>
     <string name="incompatible_versions">Versions incompatibles</string>
-    <string name="incompatible_versions_summary">Afficher les versions incompatibles avec l\'appareil</string>
+    <string name="incompatible_versions_summary">Afficher les versions incompatibles avec l\'appareil.</string>
     <string name="license">Licence</string>
     <string name="password">Mot de passe</string>
     <string name="has_security_vulnerabilities">Présente des failles de sécurité</string>
@@ -114,7 +114,7 @@
     <string name="http_proxy">Proxy HTTP</string>
     <string name="incompatible_features_DESC">Fonctionnalités manquantes.</string>
     <string name="incompatible_older_DESC">Cette version est plus ancienne que celle qui est installée sur votre appareil. Désinstallez-la d\'abord.</string>
-    <string name="notify_about_updates_summary">Afficher une notification quand de nouvelles versions sont disponibles</string>
+    <string name="notify_about_updates_summary">Afficher une notification quand de nouvelles versions sont disponibles.</string>
     <string name="repository_not_used_DESC">Ce dépôt n’a pas encore été utilisé.
 \nConnectez-vous-y pour voir les applis qu’il contient.</string>
     <string name="no_applications_installed">Aucune appli installée</string>
@@ -170,7 +170,7 @@
     <string name="list_animation_description">Animer la liste sur la page principale</string>
     <string name="sorting_order">Ordre de tri</string>
     <string name="requires_FORMAT">Requiert %s</string>
-    <string name="unstable_updates_summary">Suggérer l\'installation de versions instables</string>
+    <string name="unstable_updates_summary">Suggérer l\'installation de versions instables.</string>
     <string name="prefs_language_title">Langue</string>
     <string name="prefs_personalization">Personnalisation</string>
     <string name="show_less">Afficher moins</string>
@@ -182,23 +182,23 @@
     <string name="update_all">Tout installer</string>
     <string name="only_on_wifi_and_battery">Uniquement en Wi-Fi et branché</string>
     <string name="install_after_sync">Mises à jour automatiques</string>
-    <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applis</string>
-    <string name="prefs_new_apps">Nombre d’applis à afficher sous « nouvelles applis »</string>
-    <string name="prefs_updated_apps">Nombre d’applis à afficher sous « récemment mises à jour »</string>
+    <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applis.</string>
+    <string name="prefs_new_apps">Nombre d’applis à afficher dans « Nouvelles applis »</string>
+    <string name="prefs_updated_apps">Nombre d’applis à afficher dans « Récemment mises à jour »</string>
     <string name="new_repository">Nouveau dépôt</string>
     <string name="default_tab">Onglet par défaut</string>
     <string name="pending">En attente</string>
     <string name="installing">Installation</string>
     <string name="dialog_refuse">Garder</string>
     <string name="ignore_battery_optimization_not_supported">Votre installation d’Android ne prend pas en charge la désactivation de l’optimisation de la batterie.</string>
-    <string name="ignore_battery_optimization_message">L’appli se comporte mieux sans l’optimisation de la batterie, et empêche le plantage à partir d’Android 12</string>
+    <string name="ignore_battery_optimization_message">L’appli se comporte mieux sans l’optimisation de la batterie, et empêche le plantage à partir d’Android 12.</string>
     <string name="ignore_battery_optimization_title">Optimisation de la batterie</string>
     <string name="dialog_approve">Désactiver</string>
     <string name="root_session_installer">Utiliser l\'installateur de session root</string>
-    <string name="root_session_installer_description">L\'installateur de session est un peu moins performant, mais évite les problèmes avec les applications installées dans Android +13.</string>
-    <string name="not_safe_for_work">NSFW (peut contenir du contenu dérangeant)</string>
+    <string name="root_session_installer_description">Plus lent, mais évite les problèmes avec les applications installées sur Android 13+.</string>
+    <string name="not_safe_for_work">Censurable (peut contenir du contenu dérangeant)</string>
     <string name="no_permissions_identified">Aucune autorisation requise identifiée</string>
     <string name="no_action_possible">Aucune action possible</string>
     <string name="show_screenshots">Afficher les captures d\'écran</string>
-    <string name="show_screenshots_description">Afficher ou non les captures d\'écran dans la fiche d\'application.</string>
+    <string name="show_screenshots_description">Afficher les captures d\'écran dans la page de l\'application.</string>
 </resources>
