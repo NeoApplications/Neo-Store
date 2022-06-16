@@ -58,7 +58,7 @@
 \nСначала удалите его.</string>
     <string name="incompatible_version">Несовместимая версия</string>
     <string name="incompatible_versions">Несовместимые версии</string>
-    <string name="incompatible_versions_summary">Показать версии, несовместимые с устройством</string>
+    <string name="incompatible_versions_summary">Показать версии, несовместимые с устройством.</string>
     <string name="incompatible_with_FORMAT">Несовместимо с %s</string>
     <string name="install">Установить</string>
     <string name="install_types">Типы установки</string>
@@ -95,7 +95,7 @@
     <string name="no_matching_applications_found">Не удалось найти ни одного подобного приложения</string>
     <string name="no_proxy">Без прокси</string>
     <string name="notify_about_updates">Уведомлять о новых версиях приложений</string>
-    <string name="notify_about_updates_summary">Отображать уведомление о доступности новых версий</string>
+    <string name="notify_about_updates_summary">Отображать уведомление о доступности новых версий.</string>
     <string name="number_of_applications">Количество приложений</string>
     <string name="ok">ОК</string>
     <string name="only_compatible_with_FORMAT">Совместимо только с %s</string>
@@ -160,7 +160,7 @@
     <string name="unknown_FORMAT">Неизвестно: %s</string>
     <string name="unsigned">Неподписанный</string>
     <string name="unstable_updates">Нестабильные обновления</string>
-    <string name="unstable_updates_summary">Предлагать установить нестабильные версии</string>
+    <string name="unstable_updates_summary">Предлагать установить нестабильные версии.</string>
     <string name="unverified">Непроверенный</string>
     <string name="update">Обновить</string>
     <string name="updates">Обновления</string>
@@ -185,9 +185,9 @@
     <string name="sort_filter">Сортировать и фильтровать</string>
     <string name="only_on_wifi_and_battery">Только при Wi-Fi и подключении к сети</string>
     <string name="install_after_sync">Автообновление</string>
-    <string name="install_after_sync_summary">Устанавливайте все новые версии после проверки репозиториев на наличие новых приложений</string>
-    <string name="prefs_updated_apps">Количество приложений, отображаемых в разделе \"Недавно обновленные\"</string>
-    <string name="prefs_new_apps">Количество приложений для показа в разделе \"новые приложения\"</string>
+    <string name="install_after_sync_summary">Устанавливайте все новые версии после проверки репозиториев на наличие новых приложений.</string>
+    <string name="prefs_updated_apps">Количество приложений для отображения в \"Недавно обновленные\"</string>
+    <string name="prefs_new_apps">Количество приложений для отображения в \"Новые приложения\"</string>
     <string name="new_repository">Новый репозиторий</string>
     <string name="default_tab">Вкладка по умолчанию</string>
     <string name="installing">Установка</string>
@@ -196,12 +196,12 @@
     <string name="dialog_refuse">Оставить</string>
     <string name="dialog_approve">Выключить</string>
     <string name="ignore_battery_optimization_title">Экономию заряда батареи</string>
-    <string name="ignore_battery_optimization_message">Приложение ведёт себя лучше без включённой экономии заряда батареи, предотвращая вылеты на Android 12+</string>
+    <string name="ignore_battery_optimization_message">Приложение ведёт себя лучше без включённой экономии заряда батареи, предотвращая вылеты на Android 12+.</string>
     <string name="root_session_installer">Использовать root session установщик</string>
-    <string name="root_session_installer_description">Session установщик немного менее производителен, чем устаревший, но позволяет избежать проблем с установленными приложениями в Android +13.</string>
-    <string name="not_safe_for_work">NSFW (может содержать непристойные материалы)</string>
+    <string name="root_session_installer_description">Медленнее, но позволяет избежать проблем с установленными приложениями на Android 13+.</string>
+    <string name="not_safe_for_work">Цензура (может содержать непристойные материалы)</string>
     <string name="no_permissions_identified">Запрашиваемые разрешения не обнаружены</string>
     <string name="no_action_possible">Действия невозможны</string>
     <string name="show_screenshots">Показывать скриншоты</string>
-    <string name="show_screenshots_description">Показывать ли скриншоты в листе приложения или нет.</string>
+    <string name="show_screenshots_description">Отображать скриншоты на странице приложения.</string>
 </resources>
