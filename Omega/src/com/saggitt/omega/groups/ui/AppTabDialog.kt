@@ -132,9 +132,9 @@ fun AppTabDialogUI(
                                     context.resources.getString(R.string.title__drawer_categorization)
                             )
                         },
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.45f)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                         colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.15f),
+                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                                 contentColor = MaterialTheme.colorScheme.surface
                         )
                 ) {
@@ -175,9 +175,9 @@ fun AppTabDialogUI(
                             openDialogCustom.value = false
                         },
                         modifier = Modifier.padding(start = 16.dp),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.45f)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                         colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.15f),
+                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                                 contentColor = MaterialTheme.colorScheme.surface
                         )
                 ) {
