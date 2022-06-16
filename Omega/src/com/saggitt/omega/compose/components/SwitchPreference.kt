@@ -42,7 +42,7 @@ fun SwitchPreference(
     modifier: Modifier = Modifier,
     summary: String = "",
     startIcon: (@Composable () -> Unit)? = null,
-    onCheckedChange: ((Boolean) -> Unit)? = null,
+    onCheckedChange: ((Boolean) -> Unit),
     isChecked: Boolean = false,
     isEnabled: Boolean = true,
     showDivider: Boolean = false,
@@ -56,7 +56,7 @@ fun SwitchPreference(
     Column(
         modifier = Modifier.clickable(enabled = isEnabled) {
             checkedState.value = !checkedState.value
-            onCheckedChange?.invoke(checkedState.value)
+            onCheckedChange.invoke(checkedState.value)
         }
     ) {
         if (showDivider) {
@@ -105,7 +105,7 @@ fun SwitchPreference(
                 modifier = Modifier
                     .height(24.dp),
                 checked = checkedState.value,
-                onCheckedChange = onCheckedChange?.let {
+                onCheckedChange = onCheckedChange.let {
                     { checkedState.value = it }
                 },
                 enabled = isEnabled,
@@ -119,6 +119,7 @@ fun SwitchPreference(
 fun SwitchPreferencePreview() {
     SwitchPreference(
         title = "Ocultar de Drawer",
-        summary = "Oculta el icono del menu principal"
+        summary = "Oculta el icono del menu principal",
+        onCheckedChange = { newValue ->}
     )
 }
