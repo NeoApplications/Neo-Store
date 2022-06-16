@@ -8,10 +8,11 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
+import com.android.launcher3.icons.BuildConfig
 
 val Context.prefs
     get() = applicationContext.getSharedPreferences(
-        "com.saggitt.omega.alpha_preferences",
+        getPrefName(),
         Context.MODE_PRIVATE
     )!!
 
@@ -48,4 +49,13 @@ fun drawableToBitmap(drawable: Drawable): Bitmap {
     drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
     return bitmap
+}
+
+private fun getPrefName():String{
+    return if(BuildConfig.BUILD_TYPE.contains("debug")){
+        "com.saggitt.omega.debug_preferences"
+    }
+    else{
+        "com.saggitt.omega_preferences"
+    }
 }
