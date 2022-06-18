@@ -219,7 +219,7 @@ dependencies {
     // Libs
     implementation("com.github.farmerbb:libtaskbar:2.2.0")
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
-    implementation("com.github.saulhdev:colorpickerx:1.5.2")
+    implementation("com.github.saulhdev:colorpickerx:1.5.3")
     implementation("io.github.hokofly:hoko-blur:1.3.7")
     implementation("com.luckycatlabs:SunriseSunsetCalculator:1.2")
     implementation("com.mikepenz:fastadapter:5.6.0")
@@ -251,7 +251,6 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-
     //Room Components
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")

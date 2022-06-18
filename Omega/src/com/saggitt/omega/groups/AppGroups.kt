@@ -31,13 +31,13 @@ import androidx.appcompat.widget.SwitchCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.colorpickerx.ColorSelectorPresets
-import com.saggitt.colorpickerx.OnChooseColorListener
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.*
+import com.shlabs.colorpickerx.ColorPickerTab
+import com.shlabs.colorpickerx.OnChooseColorListener
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -78,8 +78,8 @@ abstract class AppGroups<T : AppGroups.Group>(
             }
 
             return groups
-        } catch (e: IllegalArgumentException) {
-        } catch (e: JSONException) {
+        } catch (_: IllegalArgumentException) {
+        } catch (_: JSONException) {
         }
 
         try {
@@ -401,9 +401,9 @@ abstract class AppGroups<T : AppGroups.Group>(
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
 
                 view.setOnClickListener {
-                    val colorPicker = ColorSelectorPresets(themedContext)
-                    colorPicker.setTitle(context.getString(R.string.tab_color))
+                    val colorPicker = ColorPickerTab(themedContext)
                     colorPicker.setRoundColorButton(true)
+                    colorPicker.showAlpha(false)
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
                     if (value == null) {
