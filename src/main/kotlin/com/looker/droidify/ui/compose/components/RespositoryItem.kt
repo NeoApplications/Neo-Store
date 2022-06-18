@@ -17,6 +17,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,8 +34,11 @@ fun RepositoryItem(
     onClick: (Repository) -> Unit = {},
     onLongClick: (Repository) -> Unit = {}
 ) {
+    var (isEnabled, enable) = remember(repository.enabled) {
+        mutableStateOf(repository.enabled)
+    }
     val backgroundColor by animateColorAsState(
-        targetValue = if (repository.enabled) MaterialTheme.colorScheme.primaryContainer
+        targetValue = if (isEnabled) MaterialTheme.colorScheme.primaryContainer
         else MaterialTheme.colorScheme.background
     )
 
@@ -43,7 +48,10 @@ fun RepositoryItem(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .combinedClickable(
-                onClick = { onClick(repository) },
+                onClick = {
+                    enable(!isEnabled)
+                    onClick(repository.copy(enabled = !repository.enabled))
+                },
                 onLongClick = { onLongClick(repository) }
             ),
         color = backgroundColor,
@@ -61,7 +69,7 @@ fun RepositoryItem(
                 repositoryName = repository.name,
                 repositoryDescription = repository.description
             )
-            AnimatedVisibility(visible = repository.enabled) {
+            AnimatedVisibility(visible = isEnabled) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "Repository Enabled"

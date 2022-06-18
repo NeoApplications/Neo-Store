@@ -119,7 +119,6 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
                     RepositoriesRecycler(
                         repositoriesList = repos?.sortedBy { repo -> !repo.enabled },
                         onClick = { repo ->
-                            repo.enabled = !repo.enabled
                             GlobalScope.launch(Dispatchers.IO) {
                                 syncConnection.binder?.setEnabled(repo, repo.enabled)
                             }
