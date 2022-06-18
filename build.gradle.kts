@@ -217,13 +217,14 @@ dependencies {
     implementation("com.jaredrummler:colorpicker:1.1.0")
 
     // Libs
+    implementation("com.github.farmerbb:libtaskbar:2.2.0")
+    implementation("com.github.ChickenHook:RestrictionBypass:2.2")
+    implementation("com.github.saulhdev:colorpickerx:1.5.2")
     implementation("io.github.hokofly:hoko-blur:1.3.7")
     implementation("com.luckycatlabs:SunriseSunsetCalculator:1.2")
-    implementation("com.github.farmerbb:libtaskbar:2.2.0")
     implementation("com.mikepenz:fastadapter:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-diff:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-binding:5.6.0")
-    implementation("com.github.otakuhqz.colorpickerx:colorpickerx:1.4.6")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
@@ -231,7 +232,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
     implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
-    implementation("com.github.ChickenHook:RestrictionBypass:2.2")
 
     //Compose
     implementation("androidx.compose.compiler:compiler:${composeVersion}")
@@ -241,10 +241,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:${composeVersion}")
     implementation("androidx.compose.foundation:foundation:${composeVersion}")
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
     implementation("androidx.navigation:navigation-compose:2.4.2")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-insets-ui:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
