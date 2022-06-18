@@ -25,9 +25,10 @@ object Converters {
     fun toPairStringList(byteArray: ByteArray): List<Pair<String, String>> {
         val string = String(byteArray)
         return if (string == "") emptyList()
-        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty).map {
+        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty).mapNotNull {
             val pairs = it.split("|")
-            Pair(pairs[0], pairs[1])
+            if (pairs.size == 2) Pair(pairs[0], pairs[1])
+            else null
         }
     }
 
