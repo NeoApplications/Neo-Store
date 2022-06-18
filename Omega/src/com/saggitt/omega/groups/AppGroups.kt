@@ -399,16 +399,20 @@ abstract class AppGroups<T : AppGroups.Group>(
                 updateColor(view)
 
                 val themedContext = ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
-
+                val colors: ArrayList<String> = arrayListOf()
+                if (value == null) {
+                    value = context.omegaPrefs.accentColor
+                }
+                val currentColor = java.lang.String.format("#%06X", 0xFFFFFF and value!!)
+                colors.add(currentColor)
+                colors.addAll(context.resources.getStringArray(R.array.tab_colors))
                 view.setOnClickListener {
                     val colorPicker = ColorPickerTab(themedContext)
                     colorPicker.setRoundColorButton(true)
                     colorPicker.showAlpha(false)
                     colorPicker.setColorButtonSize(48, 48)
                     colorPicker.setColumns(4)
-                    if (value == null) {
-                        value = context.omegaPrefs.accentColor
-                    }
+                    colorPicker.setColors(colors)
                     colorPicker.setDefaultColorButton(value!!)
                     colorPicker.positiveButton.applyColor(context.omegaPrefs.accentColor)
                     colorPicker.show()

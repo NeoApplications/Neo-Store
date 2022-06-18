@@ -392,4 +392,26 @@
         <item>reaumur</item>
         <item>romer</item>
     </string-array>
+
+    <string-array name="tab_colors">
+        <item>#FFF44336</item>
+        <item>#FFE91E63</item>
+        <item>#FFFF2C93</item>
+        <item>#FF9C27B0</item>
+        <item>#FF673AB7</item>
+        <item>#FF3F51B5</item>
+        <item>#FF2196F3</item>
+        <item>#FF03A9F4</item>
+        <item>#FF00BCD4</item>
+        <item>#FF009688</item>
+        <item>#FF4CAF50</item>
+        <item>#FF8BC34A</item>
+        <item>#FFCDDC39</item>
+        <item>#FFFFEB3B</item>
+        <item>#FFFFC107</item>
+        <item>#FFFF9800</item>
+        <item>#FF795548</item>
+        <item>#FF607D8B</item>
+        <item>#FF9E9E9E</item>
+    </string-array>
 </resources>
