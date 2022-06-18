@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-beta03"
+val composeVersion = "1.2.0-rc01"
 val roomVersion = "2.4.2"
 
 plugins {
@@ -163,8 +163,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
     implementation("androidx.activity:activity-compose:1.6.0-alpha03")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc01")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc02")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc02")
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
@@ -175,7 +175,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
 
     // OkHttps
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
 
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
@@ -193,7 +193,7 @@ dependencies {
     implementation("de.charlex.compose:html-text:1.1.0")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
 
