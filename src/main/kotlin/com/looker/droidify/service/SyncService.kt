@@ -153,8 +153,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     handleNextTask(false)
                 }
             } else {
-                // TODO if disable then refresh app lists
                 cancelTasks { it.repositoryId == repository.id }
+                synchronized(tasks) { db.cleanUp(setOf(Pair(repository.id, false))) }
                 val cancelledTask = cancelCurrentTask { it.task?.repositoryId == repository.id }
                 handleNextTask(cancelledTask?.hasUpdates == true)
             }
