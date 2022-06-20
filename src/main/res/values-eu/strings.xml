@@ -15,10 +15,10 @@
     <string name="could_not_download_FORMAT">Ezin izan da %s deskargatu</string>
     <string name="could_not_sync_FORMAT">Ezin izan da %s sinkronizatu</string>
     <string name="could_not_validate_FORMAT">Ezin izan da %s balidatu</string>
-    <string name="credits">Kredituak</string>
+    <string name="credits">Laguntzaileak</string>
     <string name="dark">Iluna</string>
     <string name="delete">Ezabatu</string>
-    <string name="delete_repository_DESC">Biltegia ezabatu\?</string>
+    <string name="delete_repository_DESC">Biltegi hau ezabatu\?</string>
     <string name="description">Deskribapena</string>
     <string name="details">Xehetasunak</string>
     <string name="donate">Dohaintza egin</string>
