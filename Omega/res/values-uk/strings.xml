@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title__general_theme">Тема</string>
-    <string name="default_folder_name">Нова папка</string>
-    <string name="title__general_search">Пошук і папки</string>
+    <string name="default_folder_name">Нова тека</string>
+    <string name="title__general_search">Пошук і теки</string>
     <string name="title__general_desktop">Робочий стіл</string>
     <string name="summary__general_desktop">Налаштуйте свій робочий стіл</string>
     <string name="summary__general_dock">Іконки гарячих клавіш, панель пошуку</string>
@@ -76,7 +76,7 @@
     <string name="summary_search_hidden_apps">Показувати приховані ярлики в результатах.</string>
     <string name="summary_all_apps_google_search">Пошук веб-результатів і програм</string>
     <string name="summary__drawer_hide_apps">Приховати додаток зі списку</string>
-    <string name="summary_app_categorization_enable">Створити вкладку чи папку</string>
+    <string name="summary_app_categorization_enable">Створити вкладку чи теку</string>
     <string name="summary_all_apps_search">Показати панель пошуку</string>
     <string name="title_disable_suggestions_prompt">Відключити підказки додатків</string>
     <string name="msg_disable_suggestions_prompt">Дані про використання будуть видалені.</string>
