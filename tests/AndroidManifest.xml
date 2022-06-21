@@ -15,7 +15,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.launcher3.tests">
+    package="com.android.launcher3.test">
 
     <uses-sdk
         android:minSdkVersion="26"

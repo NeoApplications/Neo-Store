@@ -166,6 +166,7 @@ android {
         }
 
         named("androidTestDebug") {
+            java.srcDirs("tests/src_common")
             manifest.srcFile("tests/AndroidManifest.xml")
         }
 
@@ -204,11 +205,11 @@ dependencies {
     implementation(project(":searchuilib"))
 
     //UI
-    implementation("androidx.appcompat:appcompat:1.6.0-alpha04")
+    implementation("androidx.appcompat:appcompat:1.6.0-alpha05")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0-rc01")
     implementation("androidx.preference:preference-ktx:1.2.0")
@@ -228,8 +229,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
     implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
 
@@ -244,7 +245,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.2")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.12")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-insets-ui:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
@@ -285,10 +286,16 @@ dependencies {
     protobuf(files("quickstep/protos_overrides/"))
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("org.mockito:mockito-core:4.5.1")
+    implementation ("junit:junit:4.13.2")
+
+    androidTestImplementation ("androidx.test:runner:1.4.0")
+    androidTestImplementation ("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+
+    androidTestImplementation("org.mockito:mockito-core:3.12.4")
     androidTestImplementation("com.google.dexmaker:dexmaker:1.2")
     androidTestImplementation("com.google.dexmaker:dexmaker-mockito:1.2")
-    androidTestImplementation("androidx.annotation:annotation:1.3.0")
+    androidTestImplementation("androidx.annotation:annotation:1.4.0")
 }
 
 protobuf {
