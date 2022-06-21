@@ -157,7 +157,7 @@
     <string name="unknown_FORMAT">Bilinmeyen: %s</string>
     <string name="unsigned">İmzalanmamış</string>
     <string name="unstable_updates">Kararsız güncellemeler</string>
-    <string name="unstable_updates_summary">Kararsız sürümleri kurmayı öner</string>
+    <string name="unstable_updates_summary">Kararsız sürümleri kurmayı öner.</string>
     <string name="unverified">Doğrulanmamış</string>
     <string name="update">Güncelle</string>
     <string name="updates">Güncellemeler</string>
