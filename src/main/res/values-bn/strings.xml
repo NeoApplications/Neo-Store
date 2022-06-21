@@ -79,7 +79,7 @@
     <string name="target">লক্ষ্য</string>
     <string name="theme">রঙ</string>
     <string name="themes">রঙ</string>
-    <string name="tap_to_install_DESC">ব্যবহার করতে টিপ দাও</string>
+    <string name="tap_to_install_DESC">ব্যবহার করতে টিপ দাও।</string>
     <string name="syncing_FORMAT">সিঙ্করত %s…</string>
     <string name="sync_repositories_automatically">স্বয়ং হালনাগাদরত ভাণ্ডার</string>
     <string name="sync_repositories">ভাণ্ডার হালনাগাদ</string>
@@ -131,10 +131,10 @@
     <string name="could_not_sync_FORMAT">%s হালনাগাদ করা যায়নি</string>
     <string name="could_not_validate_FORMAT">%s যাচাই করা যায়নি</string>
     <string name="incompatible_api_min_DESC_FORMAT">সর্বনিম্ন এপিআই সংস্করণ %d।</string>
-    <string name="incompatible_versions_summary">এই যন্ত্রের সাথে অসামঞ্জস্যপূর্ণ সংস্করণ দেখাও</string>
+    <string name="incompatible_versions_summary">এই যন্ত্রের সাথে অসামঞ্জস্যপূর্ণ সংস্করণ দেখাও।</string>
     <string name="delete_repository_DESC">এই ভাণ্ডার মুছবে\?</string>
     <string name="not_safe_for_work">নিষিদ্ধ বস্তু (পীড়াদায়ক বস্তু থাকতে পারে)</string>
-    <string name="root_session_installer_description">সেশন ইনস্টলার আগেরটার চেয়ে একটু কম গতির, কিন্তু অ্যান্ড্রয়েড ১৩+ এ সমস্যা এড়ায়।</string>
+    <string name="root_session_installer_description">ধীরগতির, কিন্তু অ্যান্ড্রয়েড ১৩+ এ সমস্যা এড়ায়।</string>
     <string name="root_session_installer">মূল(রুট) সেশন ইনস্টলার ব্যবহার করো</string>
     <string name="downloaded_FORMAT">%s নামনো হয়েছে</string>
     <string name="downloading_FORMAT">%s নামানো হচ্ছে…</string>
@@ -142,7 +142,7 @@
     <string name="file_format_error_DESC">ভুল ফাইল ফরম্যাট(নথি অবস্থা)।</string>
     <string name="has_advertising">বিজ্ঞাপন আছে</string>
     <string name="has_security_vulnerabilities">নিরাপত্তা দুর্বলতা আছে</string>
-    <string name="http_error_DESC">ভুল সার্ভার উত্তর</string>
+    <string name="http_error_DESC">ভুল সার্ভার উত্তর।</string>
     <string name="ignore_all_updates">সব নতুন সংস্করণ উপেক্ষা করো</string>
     <string name="incompatible_api_DESC_FORMAT">তোমার %1$s (এপিআই সংস্করণ %2$d) সমর্থিত নয়। %3$s</string>
     <string name="incompatible_api_max_DESC_FORMAT">সর্বোচ্চ এপিআই সংস্করণ %d।</string>
@@ -175,10 +175,30 @@
     <string name="signed_using_unsafe_algorithm">অনিরাপদ অ্যালগোরিদম দিয়ে স্বাক্ষর করা</string>
     <string name="source_code_no_longer_available">উৎস কোড এখন অনুপলভ্য</string>
     <string name="upstream_source_code_is_not_free">উজানের কোড সম্পূর্ণ মুক্ত নয়</string>
-    <string name="unstable_updates_summary">অস্থিতিশীল সংস্করণ ইনস্টলের জন্য প্রস্তাব করো</string>
+    <string name="unstable_updates_summary">অস্থিতিশীল সংস্করণ ইনস্টলের জন্য প্রস্তাব করো।</string>
     <string name="tracks_or_reports_your_activity">তোমার ক্রিয়া অনুসরণ ও প্রতিবেৃন করে</string>
     <string name="validation_index_error_DESC">তালিকা যাচাই করা যায়নি।</string>
     <string name="has_non_free_dependencies">অমুক্ত নির্ভরতা আছে</string>
     <string name="only_compatible_with_FORMAT">শুধুমাত্র %s এর সাথে সামঞ্জস্যপূর্ণ</string>
     <string name="promotes_non_free_network_services">অমুক্ত নেটওয়ার্ক সেবা প্রচার করে</string>
+    <string name="repository_unsigned_DESC">অস্বাক্ষরিত অ্যাপ তালিকা যাচাই করা যায়নি।
+\nঅস্বাক্ষরিত ভাণ্ডার থেকে অ্যাপ নামানোর সময় সাবধানচ থাকবে।</string>
+    <string name="install_after_sync_summary">ভাণ্ডারে নতুন অ্যাপের জন্য দেখার পরে নতুন সংস্করণ ইনস্টল করো।</string>
+    <string name="repository_not_used_DESC">এই ভাণ্ডারটি এখনও ব্যবহার করা হয়নি।
+\nএতে থাকা অ্যাপগুলো দেখতে সংযুক্ত হও।</string>
+    <string name="show_screenshots">স্ক্রিনশট দেখাও</string>
+    <string name="no_permissions_identified">কোনো অনুরোধকৃত অনুমতি চিহ্নিত করা যায়নি</string>
+    <string name="root_permission_description">কোনো মিথস্ক্রিয়া ছাড়া ইনস্টল করতে রুট ব্যবহার করো</string>
+    <string name="prefs_updated_apps">\"সম্প্রতি হালনাগাদকৃত\" এর অ্যাপ সংখ্যা দেখাও</string>
+    <string name="prefs_new_apps">\"নতুন অ্যাপ\" এ অ্যাপ সংখ্যা দেখাও</string>
+    <string name="ignore_battery_optimization_message">অ্যাপটি ব্যাটারি অপ্টিমাইজেশান ছাড়া বেশি ভালো আচরণ করে এবং অ্যান্ড্রয়েড ১২+ এ ক্র্যাশ হওয়া প্রতিরোধ করে।</string>
+    <string name="ignore_battery_optimization_not_supported">তোমার অ্যান্ড্রয়েডে ব্যাটারি অপ্টিমাইজেশন(দীর্ঘায়ন) বন্ধ করা সমর্থন করে না।</string>
+    <string name="no_matching_applications_found">এ ধরনের অ্যাপ পাওয়া যায়নি</string>
+    <string name="list_animation_description">মূল পাতার তালিকা চলনশীল করো</string>
+    <string name="only_on_wifi_and_battery">শুধু চার্জরত অবস্থায় এবং ওয়াই-ফাই এ যুক্ত থাকলে</string>
+    <string name="notify_about_updates">অ্যাপের নতুন সংস্করণ নিয়ে বিজ্ঞপ্তি দাও</string>
+    <string name="parsing_index_error_DESC">সূচির নথি বিশ্লেষণ(ইনডেক্স পার্স) করা যায়নি।</string>
+    <string name="notify_about_updates_summary">নতুন সংস্করণ আসলে বিজ্ঞপ্তি দেখাও।</string>
+    <string name="no_action_possible">কোনো ক্রিয়া সম্ভব না</string>
+    <string name="show_screenshots_description">অ্যাপ পৃষ্ঠায় স্ক্রিনশট দেখাও।</string>
 </resources>
