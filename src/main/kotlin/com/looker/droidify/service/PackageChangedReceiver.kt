@@ -4,7 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.entity.Order
+import com.looker.droidify.entity.Section
 import com.looker.droidify.utility.Utils.toInstalledItem
+import com.looker.droidify.utility.displayUpdatesNotification
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.getLaunchActivities
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +38,18 @@ class PackageChangedReceiver : BroadcastReceiver() {
                         if (packageInfo != null) db.installedDao
                             .insertReplace(packageInfo.toInstalledItem(launcherActivities))
                         else db.installedDao.delete(packageName)
+
+                        // Update updates notification
+                        context.displayUpdatesNotification(
+                            db.productDao
+                                .queryObject(
+                                    installed = true,
+                                    updates = true,
+                                    searchQuery = "",
+                                    section = Section.All,
+                                    order = Order.NAME
+                                ).map { it.toItem() }
+                        )
                     }
                 }
             }
