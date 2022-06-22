@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-rc01"
+val composeVersion = "1.2.0-rc02"
 val roomVersion = "2.4.2"
 
 plugins {
@@ -157,11 +157,11 @@ dependencies {
 
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
-    implementation("androidx.core:core-ktx:1.9.0-alpha04")
+    implementation("androidx.core:core-ktx:1.9.0-alpha05")
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
-    implementation("androidx.activity:activity-compose:1.6.0-alpha03")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
+    implementation("androidx.activity:activity-compose:1.6.0-alpha05")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc02")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc02")
@@ -190,12 +190,12 @@ dependencies {
 
     // Markdown
     implementation("org.jetbrains:markdown:0.3.1")
-    implementation("de.charlex.compose:html-text:1.1.0")
+    implementation("de.charlex.compose:html-text:1.2.0")
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
 
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
