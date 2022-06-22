@@ -21,6 +21,8 @@ import com.looker.droidify.ROW_DONATES
 import com.looker.droidify.ROW_ENABLED
 import com.looker.droidify.ROW_ICON
 import com.looker.droidify.ROW_ID
+import com.looker.droidify.ROW_IGNORED_VERSION
+import com.looker.droidify.ROW_IGNORE_UPDATES
 import com.looker.droidify.ROW_LABEL
 import com.looker.droidify.ROW_LICENSES
 import com.looker.droidify.ROW_MATCH_RANK
@@ -38,6 +40,8 @@ import com.looker.droidify.TABLE_CATEGORY
 import com.looker.droidify.TABLE_CATEGORY_NAME
 import com.looker.droidify.TABLE_IGNORED
 import com.looker.droidify.TABLE_IGNORED_NAME
+import com.looker.droidify.TABLE_EXTRAS
+import com.looker.droidify.TABLE_EXTRAS_NAME
 import com.looker.droidify.TABLE_INSTALLED
 import com.looker.droidify.TABLE_INSTALLED_NAME
 import com.looker.droidify.TABLE_PRODUCT
@@ -47,6 +51,7 @@ import com.looker.droidify.TABLE_REPOSITORY_NAME
 import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.CategoryTemp
 import com.looker.droidify.database.entity.Ignored
+import com.looker.droidify.database.entity.Extras
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.ProductTemp
@@ -379,4 +384,28 @@ interface CategoryTempDao : BaseDao<CategoryTemp> {
 
     @Query("DELETE FROM temporary_category")
     fun emptyTable()
+}
+
+@Dao
+interface ExtrasDao : BaseDao<Extras> {
+    @Query("DELETE FROM extras WHERE packageName = :packageName")
+    fun delete(packageName: String)
+
+    @Query("SELECT * FROM extras WHERE packageName = :packageName")
+    operator fun get(packageName: String): Extras?
+
+    @Query("SELECT * FROM extras WHERE packageName = :packageName")
+    fun getLive(packageName: String): LiveData<Extras?>
+
+    @get:Query("SELECT * FROM extras")
+    val all: List<Extras>
+
+    @get:Query("SELECT * FROM extras")
+    val allLive: LiveData<List<Extras>>
+
+    @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
+    val favorites: Array<String>
+
+    @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
+    val favoritesLive: LiveData<Array<String>>
 }

@@ -24,6 +24,8 @@ const val TABLE_RELEASE = "release"
 const val TABLE_RELEASE_NAME = "release"
 const val TABLE_REPOSITORY = "repository"
 const val TABLE_REPOSITORY_NAME = "repository"
+const val TABLE_EXTRAS = "extras"
+const val TABLE_EXTRAS_NAME = "extras"
 
 const val ROW_REPOSITORY_ID = "repositoryId"
 const val ROW_PACKAGE_NAME = "packageName"
@@ -48,6 +50,8 @@ const val ROW_ID = "_id"
 const val ROW_ENABLED = "enabled"
 const val ROW_CAN_UPDATE = "can_update"
 const val ROW_MATCH_RANK = "match_rank"
+const val ROW_IGNORED_VERSION = "ignoredVersion"
+const val ROW_IGNORE_UPDATES = "ignoreUpdates"
 
 const val RELEASE_STATE_NONE = 0
 const val RELEASE_STATE_SUGGESTED = 1
