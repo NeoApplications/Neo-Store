@@ -12,6 +12,8 @@ import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Launch
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Tune
@@ -124,6 +126,8 @@ sealed class ActionState(
     object NoAction : ActionState(R.string.no_action_possible, Icons.Rounded.Close)
     object Expand : ActionState(R.string.show_more, Icons.Rounded.ArrowDropDown)
     object Retract : ActionState(R.string.show_less, Icons.Rounded.ArrowDropUp)
+    object Bookmark : ActionState(R.string.favorite_add, Icons.Rounded.FavoriteBorder)
+    object Bookmarked : ActionState(R.string.favorite_remove, Icons.Rounded.Favorite)
 }
 
 open class LinkType(

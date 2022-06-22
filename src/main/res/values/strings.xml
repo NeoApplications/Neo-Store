@@ -201,4 +201,6 @@
     <string name="no_action_possible">No Action Possible</string>
     <string name="show_screenshots">Show screenshots</string>
     <string name="show_screenshots_description">Display screenshots in the app page.</string>
+    <string name="favorite_remove">Remove from favorites</string>
+    <string name="favorite_add">Add to favorites</string>
 </resources>
