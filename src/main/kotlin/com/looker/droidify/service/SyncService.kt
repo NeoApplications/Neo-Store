@@ -6,9 +6,6 @@ import android.app.PendingIntent
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Intent
-import android.graphics.Color
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
@@ -25,13 +22,14 @@ import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.ProductItem
 import com.looker.droidify.entity.Section
 import com.looker.droidify.index.RepositoryUpdater
-import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.RxUtils
 import com.looker.droidify.utility.Utils
+import com.looker.droidify.utility.displayUpdatesNotification
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.notificationManager
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
+import com.looker.droidify.utility.showNotificationError
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -232,33 +230,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 null
             }
         }
-    }
-
-    private fun showNotificationError(repository: Repository, exception: Exception) {
-        notificationManager.notify(
-            "repository-${repository.id}", NOTIFICATION_ID_SYNCING, NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-                )
-                .setContentTitle(getString(R.string.could_not_sync_FORMAT, repository.name))
-                .setContentText(
-                    getString(
-                        when (exception) {
-                            is RepositoryUpdater.UpdateException -> when (exception.errorType) {
-                                RepositoryUpdater.ErrorType.NETWORK -> R.string.network_error_DESC
-                                RepositoryUpdater.ErrorType.HTTP -> R.string.http_error_DESC
-                                RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
-                                RepositoryUpdater.ErrorType.PARSING -> R.string.parsing_index_error_DESC
-                            }
-                            else -> R.string.unknown_error_DESC
-                        }
-                    )
-                )
-                .build()
-        )
     }
 
     private val stateNotificationBuilder by lazy {
@@ -487,65 +458,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     }
                 }
         }
-    }
-
-    /**
-     * Displays summary of available updates.
-     *
-     * @param productItems list of apps pending updates
-     */
-    private fun displayUpdatesNotification(productItems: List<ProductItem>) {
-        val maxUpdates = 5
-        fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
-        notificationManager.notify(
-            NOTIFICATION_ID_UPDATES, NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
-                .setSmallIcon(R.drawable.ic_new_releases)
-                .setContentTitle(getString(R.string.new_updates_available))
-                .setContentText(
-                    resources.getQuantityString(
-                        R.plurals.new_updates_DESC_FORMAT,
-                        productItems.size, productItems.size
-                    )
-                )
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-                )
-                .setContentIntent(
-                    PendingIntent.getActivity(
-                        this,
-                        0,
-                        Intent(this, MainActivityX::class.java)
-                            .setAction(MainActivityX.ACTION_UPDATES),
-                        if (Android.sdk(23))
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        else
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    )
-                )
-                .setStyle(NotificationCompat.InboxStyle().applyHack {
-                    for (productItem in productItems.take(maxUpdates)) {
-                        val builder = SpannableStringBuilder(productItem.name)
-                        builder.setSpan(
-                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
-                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        builder.append(' ').append(productItem.version)
-                        addLine(builder)
-                    }
-                    if (productItems.size > maxUpdates) {
-                        val summary =
-                            getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                        if (Android.sdk(24)) {
-                            addLine(summary)
-                        } else {
-                            setSummaryText(summary)
-                        }
-                    }
-                })
-                .build()
-        )
     }
 
     class Job : JobService() {

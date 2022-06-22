@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.net.Uri
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import com.looker.droidify.BuildConfig
@@ -17,7 +16,6 @@ import com.looker.droidify.database.entity.Release
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.Downloader
-import com.looker.droidify.ui.activities.MainActivityX
 import com.looker.droidify.utility.Utils
 import com.looker.droidify.utility.extension.android.Android
 import com.looker.droidify.utility.extension.android.notificationManager
@@ -27,6 +25,7 @@ import com.looker.droidify.utility.extension.resources.getColorFromAttr
 import com.looker.droidify.utility.extension.text.formatSize
 import com.looker.droidify.utility.extension.text.hex
 import com.looker.droidify.utility.extension.text.nullIfEmpty
+import com.looker.droidify.utility.showNotificationError
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
@@ -68,7 +67,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private val mutableStateSubject = MutableSharedFlow<State>()
 
-    private class Task(
+    class Task(
         val packageName: String, val name: String, val release: Release,
         val url: String, val authentication: String,
     ) {
@@ -181,81 +180,12 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
         }
     }
 
-    private enum class ValidationError { INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMISSIONS }
+    enum class ValidationError { INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMISSIONS }
 
-    private sealed class ErrorType {
+    sealed class ErrorType {
         object Network : ErrorType()
         object Http : ErrorType()
         class Validation(val validateError: ValidationError) : ErrorType()
-    }
-
-    private fun showNotificationError(task: Task, errorType: ErrorType) {
-        notificationManager.notify(task.notificationTag,
-            NOTIFICATION_ID_DOWNLOADING,
-            NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
-                .setAutoCancel(true)
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                        .getColorFromAttr(R.attr.colorPrimary).defaultColor
-                )
-                .setContentIntent(
-                    PendingIntent.getActivity(
-                        this,
-                        0,
-                        Intent(this, MainActivityX::class.java)
-                            .setAction(Intent.ACTION_VIEW)
-                            .setData(Uri.parse("package:${task.packageName}"))
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        if (Android.sdk(23))
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        else
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    )
-                )
-                .apply {
-                    when (errorType) {
-                        is ErrorType.Network -> {
-                            setContentTitle(
-                                getString(
-                                    R.string.could_not_download_FORMAT,
-                                    task.name
-                                )
-                            )
-                            setContentText(getString(R.string.network_error_DESC))
-                        }
-                        is ErrorType.Http -> {
-                            setContentTitle(
-                                getString(
-                                    R.string.could_not_download_FORMAT,
-                                    task.name
-                                )
-                            )
-                            setContentText(getString(R.string.http_error_DESC))
-                        }
-                        is ErrorType.Validation -> {
-                            setContentTitle(
-                                getString(
-                                    R.string.could_not_validate_FORMAT,
-                                    task.name
-                                )
-                            )
-                            setContentText(
-                                getString(
-                                    when (errorType.validateError) {
-                                        ValidationError.INTEGRITY -> R.string.integrity_check_error_DESC
-                                        ValidationError.FORMAT -> R.string.file_format_error_DESC
-                                        ValidationError.METADATA -> R.string.invalid_metadata_error_DESC
-                                        ValidationError.SIGNATURE -> R.string.invalid_signature_error_DESC
-                                        ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
-                                    }
-                                )
-                            )
-                        }
-                    }::class
-                }
-                .build())
     }
 
     private fun publishSuccess(task: Task) {
