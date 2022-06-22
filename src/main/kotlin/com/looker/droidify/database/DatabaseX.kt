@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.CategoryTemp
-import com.looker.droidify.database.entity.Ignored
+import com.looker.droidify.database.entity.Extras
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.ProductTemp
@@ -27,8 +27,8 @@ import kotlinx.coroutines.launch
         Category::class,
         CategoryTemp::class,
         Installed::class,
-        Ignored::class
-    ], version = 7
+        Extras::class
+    ], version = 8
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {
@@ -39,7 +39,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract val categoryDao: CategoryDao
     abstract val categoryTempDao: CategoryTempDao
     abstract val installedDao: InstalledDao
-    abstract val lockDao: LockDao
+    abstract val extrasDao: ExtrasDao
 
     companion object {
         @Volatile

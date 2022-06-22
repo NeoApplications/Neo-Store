@@ -38,8 +38,6 @@ import com.looker.droidify.ROW_UPDATED
 import com.looker.droidify.ROW_VERSION_CODE
 import com.looker.droidify.TABLE_CATEGORY
 import com.looker.droidify.TABLE_CATEGORY_NAME
-import com.looker.droidify.TABLE_IGNORED
-import com.looker.droidify.TABLE_IGNORED_NAME
 import com.looker.droidify.TABLE_EXTRAS
 import com.looker.droidify.TABLE_EXTRAS_NAME
 import com.looker.droidify.TABLE_INSTALLED
@@ -198,9 +196,9 @@ interface ProductDao : BaseDao<Product> {
         // Select the return fields
         builder += """SELECT $TABLE_PRODUCT.rowid AS $ROW_ID, $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
         $TABLE_PRODUCT.$ROW_PACKAGE_NAME, $TABLE_PRODUCT.$ROW_LABEL,
-        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION, 
-        (COALESCE($TABLE_IGNORED.$ROW_VERSION_CODE, -1) NOT IN (0, $TABLE_PRODUCT.$ROW_VERSION_CODE) AND
-        $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
+        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION,
+        (COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE AND
+        COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
         $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
         $signatureMatches) AS $ROW_CAN_UPDATE, $TABLE_PRODUCT.$ROW_ICON,
         $TABLE_PRODUCT.$ROW_METADATA_ICON, $TABLE_PRODUCT.$ROW_RELEASES, $TABLE_PRODUCT.$ROW_CATEGORIES,
@@ -227,9 +225,9 @@ interface ProductDao : BaseDao<Product> {
         builder += """JOIN $TABLE_REPOSITORY_NAME AS $TABLE_REPOSITORY
         ON $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID"""
 
-        // Merge the matching locks
-        builder += """LEFT JOIN $TABLE_IGNORED_NAME AS $TABLE_IGNORED
-        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_IGNORED.$ROW_PACKAGE_NAME"""
+        // Merge the matching extras
+        builder += """LEFT JOIN $TABLE_EXTRAS_NAME AS $TABLE_EXTRAS
+        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME"""
 
         // Merge the matching installed
         if (!installed && !updates) builder += "LEFT"

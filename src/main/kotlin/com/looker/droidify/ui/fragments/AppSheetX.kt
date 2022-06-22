@@ -41,13 +41,12 @@ import com.looker.droidify.RELEASE_STATE_INSTALLED
 import com.looker.droidify.RELEASE_STATE_NONE
 import com.looker.droidify.RELEASE_STATE_SUGGESTED
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.content.ProductPreferences
+import com.looker.droidify.database.entity.Extras
 import com.looker.droidify.database.entity.Release
 import com.looker.droidify.entity.ActionState
 import com.looker.droidify.entity.AntiFeature
 import com.looker.droidify.entity.DonateType
 import com.looker.droidify.entity.DownloadState
-import com.looker.droidify.entity.ProductPreference
 import com.looker.droidify.entity.Screenshot
 import com.looker.droidify.installer.AppInstaller
 import com.looker.droidify.network.CoilDownloader
@@ -144,9 +143,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
 
     override fun setupLayout() {
         viewModel._productRepos.observe(this) {
-            lifecycleScope.launch {
-                updateButtons()
-            }
+            viewModel.updateActions()
         }
     }
 
@@ -159,86 +156,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         downloadConnection.unbind(requireContext())
     }
 
-    private suspend fun updateButtons() {
-        updateButtons(ProductPreferences[packageName])
-    }
-
-    // TODO rename to updateActions
-    private suspend fun updateButtons(preference: ProductPreference) =
-        withContext(Dispatchers.Default) {
-            val installed = viewModel.installedItem.value
-            val productRepos = viewModel.productRepos
-            val product = findSuggestedProduct(productRepos, installed) { it.first }?.first
-            val compatible = product != null && product.selectedReleases.firstOrNull()
-                .let { it != null && it.incompatibilities.isEmpty() }
-            val canInstall = product != null && installed == null && compatible
-            val canUpdate =
-                product != null && compatible && product.canUpdate(installed) &&
-                        !preference.shouldIgnoreUpdate(product.versionCode)
-            val canUninstall = product != null && installed != null && !installed.isSystem
-            val canLaunch =
-                product != null && installed != null && installed.launcherActivities.isNotEmpty()
-            val canShare = product != null && productRepos[0].second.name == "F-Droid"
-
-            val actions = mutableSetOf<ActionState>()
-            launch {
-                if (canInstall) {
-                    actions += ActionState.Install
-                }
-            }
-            launch {
-                if (canUpdate) {
-                    actions += ActionState.Update
-                }
-            }
-            launch {
-                if (canLaunch) {
-                    actions += ActionState.Launch
-                }
-            }
-            launch {
-                if (installed != null) {
-                    actions += ActionState.Details
-                }
-            }
-            launch {
-                if (canUninstall) {
-                    actions += ActionState.Uninstall
-                }
-            }
-            launch {
-                if (canShare) {
-                    actions += ActionState.Share
-                }
-            }
-            // TODO prioritize actions set and choose the first for main others for extra actions
-            val primaryAction = when {
-                canUpdate -> ActionState.Update
-                canLaunch -> ActionState.Launch
-                canInstall -> ActionState.Install
-                canShare -> ActionState.Share
-                else -> null
-            }
-            val secondaryAction = when {
-                primaryAction != ActionState.Share && canShare -> ActionState.Share
-                primaryAction != ActionState.Launch && canLaunch -> ActionState.Launch
-                installed != null && canUninstall -> ActionState.Uninstall
-                else -> null
-            }
-
-            withContext(Dispatchers.Main) {
-                viewModel.actions.value = actions
-
-                if (viewModel.downloadState.value != null && viewModel.mainAction.value?.textId != viewModel.downloadState.value?.textId)
-                    viewModel.downloadState.value?.let {
-                        viewModel.mainAction.value = ActionState.Cancel(it.textId)
-                    }
-                else if (viewModel.downloadState.value == null) // && viewModel.mainAction.value != primaryAction)
-                    viewModel.mainAction.value = primaryAction
-                viewModel.secondaryAction.value = secondaryAction
-            }
-        }
-
     private suspend fun updateDownloadState(downloadState: DownloadService.State?) {
         val state = when (downloadState) {
             is DownloadService.State.Pending -> DownloadState.Pending
@@ -250,8 +167,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             else -> null
         }
         viewModel.downloadState.value = state
-        updateButtons()
         if (downloadState is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
+        viewModel.updateActions()
             withContext(Dispatchers.Default) {
                 AppInstaller.getInstance(context)?.defaultInstaller?.install(downloadState.release.cacheFileName)
             }
@@ -323,10 +240,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         shareIntent.putExtra(Intent.EXTRA_TEXT, extraText)
 
         startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
-    }
-
-    override fun onPreferenceChanged(preference: ProductPreference) {
-        lifecycleScope.launch { updateButtons(preference) }
     }
 
     override fun onPermissionsClick(group: String?, permissions: List<String>) {
@@ -422,6 +335,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
         val actions by viewModel.actions.observeAsState() // TODO add rest actions to UI
         val secondaryAction by viewModel.secondaryAction.observeAsState()
+        val extras by viewModel.extras.observeAsState(Extras(packageName))
         val productRepos = products?.mapNotNull { product ->
             repos?.firstOrNull { it.id == product.repositoryId }
                 ?.let { Pair(product, it) }
@@ -515,27 +429,23 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     item {
                         AnimatedVisibility(visible = product.canUpdate(installed)) {
                             SwitchPreference(text = stringResource(id = R.string.ignore_this_update),
-                                initSelected = ProductPreferences[product.packageName].ignoreVersionCode == product.versionCode,
+                                initSelected = extras?.ignoredVersion == product.versionCode,
                                 onCheckedChanged = {
-                                    ProductPreferences[product.packageName].let {
-                                        it.copy(
-                                            ignoreVersionCode =
-                                            if (it.ignoreVersionCode == product.versionCode) 0 else product.versionCode
-                                        )
-                                    }
+                                    viewModel.setIgnoredVersion(
+                                        product.packageName,
+                                        if (it) product.versionCode else 0
+                                    )
+                                    viewModel.updateActions()
                                 })
                         }
                     }
                     item {
                         AnimatedVisibility(visible = installed != null) {
                             SwitchPreference(text = stringResource(id = R.string.ignore_all_updates),
-                                initSelected = ProductPreferences[product.packageName].ignoreVersionCode == product.versionCode,
+                                initSelected = extras?.ignoreUpdates == true,
                                 onCheckedChanged = {
-                                    ProductPreferences[product.packageName].let {
-                                        it.copy(
-                                            ignoreUpdates = !it.ignoreUpdates
-                                        )
-                                    }
+                                    viewModel.setIgnoreUpdates(product.packageName, it)
+                                    viewModel.updateActions()
                                 })
                         }
                     }

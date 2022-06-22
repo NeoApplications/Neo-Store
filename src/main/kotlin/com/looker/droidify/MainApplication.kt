@@ -15,7 +15,6 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.looker.droidify.content.Cache
 import com.looker.droidify.content.Preferences
-import com.looker.droidify.content.ProductPreferences
 import com.looker.droidify.database.DatabaseX
 import com.looker.droidify.index.RepositoryUpdater
 import com.looker.droidify.network.CoilDownloader
@@ -45,7 +44,6 @@ class MainApplication : Application(), ImageLoaderFactory {
 
         db = DatabaseX.getInstance(applicationContext)
         Preferences.init(this)
-        ProductPreferences.init(this)
         RepositoryUpdater.init(this)
         listenApplications()
         listenPreferences()
