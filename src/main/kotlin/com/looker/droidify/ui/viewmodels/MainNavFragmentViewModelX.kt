@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.looker.droidify.content.Preferences
 import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.entity.Extras
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.Repository
@@ -126,6 +127,25 @@ class MainNavFragmentViewModelX(
                 }
             }
             installed.postValue(it.associateBy { it.packageName })
+        }
+        /*if (secondaryRequest.updates) secondaryProducts.addSource(db.extrasDao.allLive) {
+            secondaryProducts.value = secondaryProducts.value.filter { secondaryProducts.it.packageName) }
+        }*/
+    }
+
+    fun setFavorite(packageName: String, setBoolean: Boolean) {
+        viewModelScope.launch {
+            saveFavorite(packageName, setBoolean)
+        }
+    }
+
+    private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
+        withContext(Dispatchers.IO) {
+            val oldValue = db.extrasDao[packageName]
+            if (oldValue != null) db.extrasDao
+                .insertReplace(oldValue.copy(favorite = setBoolean))
+            else db.extrasDao
+                .insertReplace(Extras(packageName, favorite = setBoolean))
         }
     }
 

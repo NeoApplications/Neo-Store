@@ -139,6 +139,22 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
         }
     }
 
+    fun setFavorite(packageName: String, setBoolean: Boolean) {
+        viewModelScope.launch {
+            saveFavorite(packageName, setBoolean)
+        }
+    }
+
+    private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
+        withContext(Dispatchers.IO) {
+            val oldValue = db.extrasDao[packageName]
+            if (oldValue != null) db.extrasDao
+                .insertReplace(oldValue.copy(favorite = setBoolean))
+            else db.extrasDao
+                .insertReplace(Extras(packageName, favorite = setBoolean))
+        }
+    }
+
     class Factory(val db: DatabaseX, val packageName: String) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

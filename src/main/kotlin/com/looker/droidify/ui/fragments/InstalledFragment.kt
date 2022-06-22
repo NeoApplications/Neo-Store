@@ -8,13 +8,32 @@ import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Sync
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -68,6 +87,7 @@ class InstalledFragment : MainNavFragmentX() {
         val secondaryList by viewModel.secondaryProducts.observeAsState(null)
         val installedList by viewModel.installed.observeAsState(null)
         val searchQuery by viewModel.searchQuery.observeAsState("")
+        val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
 
         AppTheme(
             darkTheme = when (Preferences[Preferences.Key.Theme]) {
@@ -194,24 +214,30 @@ class InstalledFragment : MainNavFragmentX() {
                             }
                         )
                     }
-                    ProductsVerticalRecycler(primaryList?.sortedBy(Product::label),
-                        repositories,
+                    ProductsVerticalRecycler(
+                        productsList = primaryList?.sortedBy(Product::label),
+                        repositories = repositories,
+                        favorites = favorites,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
                         onUserClick = { item ->
                             mainActivityX.navigateProduct(item.packageName)
                         },
-                        onFavouriteClick = {},
-                        getInstalled = { installedList?.get(it.packageName) },
-                        onActionClick = { item ->
-                            val installed = installedList?.get(item.packageName)
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                requireContext().onLaunchClick(installed, childFragmentManager)
-                            else
-                                mainActivityX.syncConnection.binder?.installApps(listOf(item))
-                        }
-                    )
+                        onFavouriteClick = { item ->
+                            viewModel.setFavorite(
+                                item.packageName,
+                                !favorites.contains(item.packageName)
+                            )
+                        },
+                        getInstalled = { installedList?.get(it.packageName) }
+                    ) { item ->
+                        val installed = installedList?.get(item.packageName)
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            requireContext().onLaunchClick(installed, childFragmentManager)
+                        else
+                            mainActivityX.syncConnection.binder?.installApps(listOf(item))
+                    }
                 }
             }
         }

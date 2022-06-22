@@ -69,6 +69,7 @@ class ExploreFragment : MainNavFragmentX() {
         val categories by viewModel.categories.observeAsState(emptyList())
         val installedList by viewModel.installed.observeAsState(null)
         val searchQuery by viewModel.searchQuery.observeAsState("")
+        val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
 
         AppTheme(
             darkTheme = when (Preferences[Preferences.Key.Theme]) {
@@ -120,24 +121,29 @@ class ExploreFragment : MainNavFragmentX() {
                         )
                     }
                     ProductsVerticalRecycler(
-                        products,
-                        repositories,
-                        Modifier
+                        productsList = products,
+                        repositories = repositories,
+                        favorites = favorites,
+                        modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
                         onUserClick = { item ->
                             mainActivityX.navigateProduct(item.packageName)
                         },
-                        onFavouriteClick = {},
-                        getInstalled = { installedList?.get(it.packageName) },
-                        onActionClick = { item ->
-                            val installed = installedList?.get(item.packageName)
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                requireContext().onLaunchClick(installed, childFragmentManager)
-                            else
-                                mainActivityX.syncConnection.binder?.installApps(listOf(item))
-                        }
-                    )
+                        onFavouriteClick = { item ->
+                            viewModel.setFavorite(
+                                item.packageName,
+                                !favorites.contains(item.packageName)
+                            )
+                        },
+                        getInstalled = { installedList?.get(it.packageName) }
+                    ) { item ->
+                        val installed = installedList?.get(item.packageName)
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            requireContext().onLaunchClick(installed, childFragmentManager)
+                        else
+                            mainActivityX.syncConnection.binder?.installApps(listOf(item))
+                    }
                 }
             }
         }
