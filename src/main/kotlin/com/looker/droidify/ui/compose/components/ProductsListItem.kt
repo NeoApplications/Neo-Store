@@ -1,12 +1,24 @@
 package com.looker.droidify.ui.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.*
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.looker.droidify.R
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.entity.ActionState
@@ -29,6 +42,7 @@ import com.looker.droidify.ui.compose.utils.NetworkImage
 fun ProductsListItem(
     item: ProductItem,
     repo: Repository? = null,
+    isFavorite: Boolean = false,
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     installed: Installed? = null,
@@ -54,6 +68,7 @@ fun ProductsListItem(
             ExpandedItemContent(
                 item = product,
                 installed = installed,
+                favourite = isFavorite,
                 onFavourite = onFavouriteClick,
                 onActionClicked = onActionClick
             )
@@ -128,7 +143,7 @@ fun ExpandedItemContent(
             IconButton(onClick = { onFavourite(item) }) {
                 Icon(
                     imageVector = if (favourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Add to Favourite",
+                    contentDescription = stringResource(id = if (favourite) R.string.favorite_remove else R.string.favorite_add),
                     tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                 )
             }

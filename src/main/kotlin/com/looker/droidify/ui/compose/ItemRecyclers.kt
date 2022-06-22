@@ -31,21 +31,23 @@ import com.looker.droidify.ui.compose.components.RepositoryItem
 fun ProductsVerticalRecycler(
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
+    favorites: Array<String> = emptyArray(),
     modifier: Modifier = Modifier.fillMaxSize(),
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
-    getInstalled: (ProductItem) -> Installed? = {null},
+    getInstalled: (ProductItem) -> Installed? = { null },
     onActionClick: (ProductItem) -> Unit = {}
 ) {
     VerticalItemList(list = productsList, modifier = modifier) {
         it.toItem().let { item ->
             ProductsListItem(
-                item,
-                repositories[item.repositoryId],
-                onUserClick,
-                onFavouriteClick,
-                getInstalled.invoke(item),
-                onActionClick
+                item = item,
+                repo = repositories[item.repositoryId],
+                isFavorite = favorites?.contains(item.packageName) == true,
+                onUserClick = onUserClick,
+                onFavouriteClick = onFavouriteClick,
+                installed = getInstalled.invoke(item),
+                onActionClick = onActionClick
             )
         }
     }
