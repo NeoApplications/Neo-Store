@@ -2,7 +2,6 @@ package com.looker.droidify.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,10 +58,6 @@ class InstalledFragment : MainNavFragmentX() {
     override fun setupLayout() {
         viewModel.repositories.observe(viewLifecycleOwner) {
             repositories = it.associateBy { repo -> repo.id }
-        }
-        viewModel.installed.observe(viewLifecycleOwner) {
-            // Avoid the compiler using the same class as observer
-            Log.d(this::class.java.canonicalName, this.toString())
         }
     }
 

@@ -48,7 +48,6 @@ import com.looker.droidify.TABLE_REPOSITORY
 import com.looker.droidify.TABLE_REPOSITORY_NAME
 import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.CategoryTemp
-import com.looker.droidify.database.entity.Ignored
 import com.looker.droidify.database.entity.Extras
 import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
@@ -341,12 +340,6 @@ interface InstalledDao : BaseDao<Installed> {
 
     @Query("DELETE FROM memory_installed")
     fun emptyTable()
-}
-
-@Dao
-interface LockDao : BaseDao<Ignored> {
-    @Query("DELETE FROM memory_lock WHERE packageName = :packageName")
-    fun delete(packageName: String)
 }
 
 @Dao

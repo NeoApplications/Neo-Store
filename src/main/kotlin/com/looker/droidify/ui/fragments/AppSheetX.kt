@@ -474,10 +474,12 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 positive = true,
                                 preExpanded = true
                             ) {
-                                links.forEach { link ->
+                                links.forEach { item ->
                                     LinkItem(
-                                        linkType = link,
-                                        onClick = { it?.let { onUriClick(it, true) } },
+                                        linkType = item,
+                                        onClick = { link ->
+                                            link?.let { onUriClick(it, true) }
+                                        },
                                         onLongClick = { link ->
                                             copyLinkToClipboard(
                                                 requireActivity().window.decorView.rootView,
@@ -496,8 +498,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 positive = true,
                                 preExpanded = false
                             ) {
-                                product.donates.forEach {
-                                    LinkItem(linkType = DonateType(it, requireContext()),
+                                product.donates.forEach { item ->
+                                    LinkItem(linkType = DonateType(item, requireContext()),
                                         onClick = { link ->
                                             link?.let { onUriClick(it, true) }
                                         },
