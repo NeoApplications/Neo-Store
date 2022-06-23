@@ -22,12 +22,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -35,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import com.looker.droidify.R
 import com.looker.droidify.RELEASE_STATE_INSTALLED
 import com.looker.droidify.RELEASE_STATE_NONE
@@ -77,6 +80,7 @@ import com.looker.droidify.utility.generateLinks
 import com.looker.droidify.utility.generatePermissionGroups
 import com.looker.droidify.utility.isDarkTheme
 import com.looker.droidify.utility.onLaunchClick
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
@@ -317,11 +321,24 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    private fun copyLinkToClipboard(view: View, link: String) {
+    private fun copyLinkToClipboard(
+        coroutineScope: CoroutineScope,
+        scaffoldState: SnackbarHostState,
+        link: String
+    ) {
         val clipboardManager =
             requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.setPrimaryClip(ClipData.newPlainText(null, link))
-        Snackbar.make(view, R.string.link_copied_to_clipboard, Snackbar.LENGTH_SHORT).show()
+        coroutineScope.launch {
+            scaffoldState.showSnackbar(
+                message = getString(R.string.link_copied_to_clipboard),
+                actionLabel = getString(R.string.open)
+            ).apply {
+                if (this == SnackbarResult.ActionPerformed) {
+                    onUriClick(link.toUri(), false)
+                }
+            }
+        }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -377,6 +394,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 }
             )
         }
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+
         suggestedProductRepo?.let { (product, repo) ->
             Scaffold(
                 // TODO add the topBar to the activity instead of the fragments
@@ -387,7 +407,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         icon = imageData,
                         state = downloadState
                     )
-                }
+                },
+                snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { paddingValues ->
                 LazyColumn(
                     modifier = Modifier
@@ -417,7 +438,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 product.source.let { link ->
                                     if (link.isNotEmpty()) {
                                         copyLinkToClipboard(
-                                            requireActivity().window.decorView.rootView,
+                                            coroutineScope,
+                                            snackbarHostState,
                                             link
                                         )
                                     }
@@ -482,7 +504,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                         },
                                         onLongClick = { link ->
                                             copyLinkToClipboard(
-                                                requireActivity().window.decorView.rootView,
+                                                coroutineScope,
+                                                snackbarHostState,
                                                 link.toString()
                                             )
                                         }
@@ -505,7 +528,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                         },
                                         onLongClick = { link ->
                                             copyLinkToClipboard(
-                                                requireActivity().window.decorView.rootView,
+                                                coroutineScope,
+                                                snackbarHostState,
                                                 link.toString()
                                             )
                                         }
@@ -576,14 +600,22 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         }
                     }
 
-                    items(items = releaseItems) {
+                    items(items = releaseItems) { item ->
                         ReleaseItem(
-                            release = it.first,
-                            repository = it.second,
-                            releaseState = it.third
-                        ) { release ->
-                            onReleaseClick(release)
-                        }
+                            release = item.first,
+                            repository = item.second,
+                            releaseState = item.third,
+                            onDownloadClick = { release ->
+                                onReleaseClick(release)
+                            },
+                            onLongClick = {
+                                copyLinkToClipboard(
+                                    coroutineScope,
+                                    snackbarHostState,
+                                    it.getDownloadUrl(item.second)
+                                )
+                            }
+                        )
                     }
                 }
             }

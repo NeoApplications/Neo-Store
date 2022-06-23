@@ -5,7 +5,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,7 +57,8 @@ fun ReleaseItem(
     release: Release,
     repository: Repository,
     releaseState: Int = RELEASE_STATE_NONE,
-    onDownloadClick: (Release) -> Unit = {}
+    onDownloadClick: (Release) -> Unit = {},
+    onLongClick: (Release) -> Unit = {},
 ) {
     val currentRelease by remember { mutableStateOf(release) }
     val isInstalled = releaseState == RELEASE_STATE_INSTALLED
@@ -74,11 +77,13 @@ fun ReleaseItem(
             repository = repository,
             isSuggested = isSuggested,
             isInstalled = isInstalled,
-            onDownloadClick = onDownloadClick
+            onDownloadClick = onDownloadClick,
+            onLongClick = onLongClick
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReleaseItemContent(
     modifier: Modifier = Modifier,
@@ -86,10 +91,13 @@ fun ReleaseItemContent(
     repository: Repository,
     isSuggested: Boolean = false,
     isInstalled: Boolean = false,
-    onDownloadClick: (Release) -> Unit = {}
+    onDownloadClick: (Release) -> Unit = {},
+    onLongClick: (Release) -> Unit = {}
 ) {
     Row(
-        modifier = Modifier.padding(end = 16.dp),
+        modifier = Modifier
+            .combinedClickable(onClick = {}, onLongClick = { onLongClick(release) })
+            .padding(end = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
