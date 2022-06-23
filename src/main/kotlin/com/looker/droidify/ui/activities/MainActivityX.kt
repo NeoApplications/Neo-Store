@@ -153,7 +153,9 @@ class MainActivityX : AppCompatActivity() {
 
     private fun handleSpecialIntent(specialIntent: SpecialIntent) {
         when (specialIntent) {
-            is SpecialIntent.Updates -> navController.navigate(R.id.installedTab)
+            is SpecialIntent.Updates -> {
+                binding.bottomNavigation.selectedItemId = R.id.installedTab
+            }
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {
