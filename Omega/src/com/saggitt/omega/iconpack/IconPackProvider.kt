@@ -16,9 +16,9 @@ import com.saggitt.omega.util.Config
 
 class IconPackProvider(private val context: Context) {
     private val iconPacks = mutableMapOf<String, IconPack?>()
-    private val systemIconPack = SystemIconPack(context)
-    val systemIcon = CustomAdaptiveIconDrawable.wrapNonNull(
-        ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!
+    val systemIconPack = SystemIconPack(context)
+    private val systemIcon = CustomAdaptiveIconDrawable.wrapNonNull(
+            ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!
     )
 
     fun getIconPackOrSystem(packageName: String): IconPack? {

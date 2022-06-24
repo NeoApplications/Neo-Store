@@ -95,6 +95,7 @@ import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
 import com.saggitt.omega.OmegaAppKt;
 import com.saggitt.omega.iconpack.CustomIconEntry;
+import com.saggitt.omega.iconpack.IconPackProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -211,7 +212,7 @@ public class LoaderTask implements Runnable {
             }
 
             verifyNotStopped();
-            mResults.bindWorkspace();
+            mResults.bindWorkspace(true);
             logASplit(logger, "bindWorkspace");
 
             mModelDelegate.workspaceLoadComplete();
@@ -943,10 +944,10 @@ public class LoaderTask implements Runnable {
             // Create the ApplicationInfos
             for (int i = 0; i < apps.size(); i++) {
                 LauncherActivityInfo app = apps.get(i);
-                // This builds the icon bitmaps.
                 mBgAllAppsList.add(new AppInfo(app, user, quietMode), app);
             }
             allActivityList.addAll(apps);
+            IconPackProvider.INSTANCE.get(mApp.getContext()).getSystemIconPack().reloadAppMap();
         }
 
         if (FeatureFlags.PROMISE_APPS_IN_ALL_APPS.get()) {

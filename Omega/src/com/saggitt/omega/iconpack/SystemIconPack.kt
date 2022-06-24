@@ -19,24 +19,34 @@ import kotlinx.coroutines.flow.flowOn
 class SystemIconPack(context: Context) : IconPack(context, "") {
 
     override val label = context.getString(R.string.icon_pack_default)
-    private val appMap = run {
+    private var appMap = run {
         val profiles = UserCache.INSTANCE.get(context).userProfiles
         val launcherApps = context.getSystemService<LauncherApps>()!!
         profiles
-            .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
-            .associateBy { ComponentKey(it.componentName, it.user) }
+                .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
+                .associateBy { ComponentKey(it.componentName, it.user) }
     }
 
     init {
         startLoad()
     }
 
+    fun reloadAppMap() {
+        appMap = run {
+            val profiles = UserCache.INSTANCE.get(context).userProfiles
+            val launcherApps = context.getSystemService<LauncherApps>()!!
+            profiles
+                    .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
+                    .associateBy { ComponentKey(it.componentName, it.user) }
+        }
+    }
+
     override fun getIcon(componentName: ComponentName) =
-        IconEntry(
-            packPackageName,
-            ComponentKey(componentName, Process.myUserHandle()).toString(),
-            IconType.Normal
-        )
+            IconEntry(
+                    packPackageName,
+                    ComponentKey(componentName, Process.myUserHandle()).toString(),
+                    IconType.Normal
+            )
 
     override fun getCalendar(componentName: ComponentName): IconEntry? = null
     override fun getClock(entry: IconEntry): ClockMetadata? = null
@@ -50,14 +60,7 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         return app.getIcon(iconDpi)
     }
 
-    override fun getIcon(customIconEntry: CustomIconEntry, iconDpi: Int): Drawable? {
-        val key = ComponentKey.fromString(customIconEntry.packPackageName)
-        val app = appMap[key] ?: return null
-        return app.getIcon(iconDpi)
-    }
-
     override fun loadInternal() {
-
     }
 
     override fun getAllIcons(): Flow<List<IconPickerCategory>> = flow {

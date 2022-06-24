@@ -353,26 +353,32 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
      * @return true if the page could be bound synchronously.
      */
     public boolean startLoader() {
+        return startLoader(new Callbacks[0]);
+    }
+
+    public boolean startLoader(Callbacks[] newCallbacks) {
         // Enable queue before starting loader. It will get disabled in Launcher#finishBindingItems
         ItemInstallQueue.INSTANCE.get(mApp.getContext())
                 .pauseModelPush(ItemInstallQueue.FLAG_LOADER_RUNNING);
         synchronized (mLock) {
-            // Don't bother to start the thread if we know it's not going to do anything
-            final Callbacks[] callbacksList = getCallbacks();
+            // If there is already one running, tell it to stop.
+            boolean wasRunning = stopLoader();
+            boolean bindDirectly = mModelLoaded && !mIsLoaderTaskRunning;
+            boolean bindAllCallbacks = wasRunning || !bindDirectly || newCallbacks.length == 0;
+            final Callbacks[] callbacksList = bindAllCallbacks ? getCallbacks() : newCallbacks;
+
             if (callbacksList.length > 0) {
                 // Clear any pending bind-runnables from the synchronized load process.
                 for (Callbacks cb : callbacksList) {
                     MAIN_EXECUTOR.execute(cb::clearPendingBinds);
                 }
 
-                // If there is already one running, tell it to stop.
-                stopLoader();
                 LoaderResults loaderResults = new LoaderResults(
                         mApp, mBgDataModel, mBgAllAppsList, callbacksList);
-                if (mModelLoaded && !mIsLoaderTaskRunning) {
+                if (bindDirectly) {
                     // Divide the set of loaded items into those that we are binding synchronously,
                     // and everything else that is to be bound normally (asynchronously).
-                    loaderResults.bindWorkspace();
+                    loaderResults.bindWorkspace(bindAllCallbacks);
                     // For now, continue posting the binding of AllApps as there are other
                     // issues that arise from that.
                     loaderResults.bindAllApps();
@@ -380,7 +386,13 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
                     loaderResults.bindWidgets();
                     return true;
                 } else {
-                    startLoaderForResults(loaderResults);
+                    stopLoader();
+                    mLoaderTask = new LoaderTask(
+                            mApp, mBgAllAppsList, mBgDataModel, mModelDelegate, loaderResults);
+
+                    // Always post the loader task, instead of running directly
+                    // (even on same thread) so that we exit any nested synchronized blocks
+                    MODEL_EXECUTOR.post(mLoaderTask);
                 }
             }
         }

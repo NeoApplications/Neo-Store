@@ -71,7 +71,7 @@ public abstract class BaseLoaderResults {
     /**
      * Binds all loaded data to actual views on the main thread.
      */
-    public void bindWorkspace() {
+    public void bindWorkspace(boolean incrementBindId) {
         // Save a copy of all the bg-thread collections
         ArrayList<ItemInfo> workspaceItems = new ArrayList<>();
         ArrayList<LauncherAppWidgetInfo> appWidgets = new ArrayList<>();
@@ -84,6 +84,9 @@ public abstract class BaseLoaderResults {
             orderedScreenIds.addAll(mBgDataModel.collectWorkspaceScreens());
             mBgDataModel.extraItems.forEach(extraItems::add);
             mBgDataModel.lastBindId++;
+            if (incrementBindId) {
+                mBgDataModel.lastBindId++;
+            }
             mMyBindingId = mBgDataModel.lastBindId;
         }
 
