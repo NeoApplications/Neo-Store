@@ -48,10 +48,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0-alpha05")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
-    implementation("androidx.annotation:annotation:1.3.0")
+    implementation("androidx.annotation:annotation:1.4.0")
 }
 
 fun Project.addFrameworkJar(path: String) {

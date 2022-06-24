@@ -39,5 +39,5 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core:1.8.0")
+    implementation("androidx.core:core:1.9.0-alpha05")
 }

@@ -8,9 +8,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.*
 
-val composeVersion = "1.2.0-beta02"
+val composeVersion = "1.2.0-rc01"
 val accompanistVersion = "0.24.10-beta"
-val roomVersion = "2.4.2"
+val roomVersion = "2.5.0-alpha02"
 
 plugins {
     id("com.android.application").version("7.2.1")
@@ -226,8 +226,8 @@ dependencies {
     implementation("com.mikepenz:fastadapter:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-diff:5.6.0")
     implementation("com.mikepenz:fastadapter-extensions-binding:5.6.0")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
