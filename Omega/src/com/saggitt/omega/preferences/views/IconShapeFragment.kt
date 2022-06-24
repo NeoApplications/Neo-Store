@@ -18,47 +18,61 @@
 
 package com.saggitt.omega.preferences.views
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.databinding.FragmentIconCustomizationBinding
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.saggitt.omega.icons.IconShape
+import com.saggitt.omega.icons.IconShapeItem
 import com.saggitt.omega.icons.IconShapeManager
-import com.saggitt.omega.icons.ItemIconShape
 import com.saggitt.omega.icons.ShapeModel
 import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.util.recreate
 
 class IconShapeFragment : Fragment() {
-
     private lateinit var prefs: OmegaPreferences
     private lateinit var binding: FragmentIconCustomizationBinding
-    private val fastItemAdapter = ItemAdapter<ItemIconShape>()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentIconCustomizationBinding.inflate(inflater, container, false)
+        binding.shapeView.setContent {
+            IconShapesPage()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = Utilities.getOmegaPrefs(context)
-        val context: Context? = activity
+    }
 
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = requireActivity().getString(R.string.title_theme_customize_icons)
+    }
+
+    @Composable
+    fun IconShapesPage() {
         val systemShape = IconShapeManager.getSystemIconShape(context!!)
         val iconShapes = arrayOf(
             systemShape,
@@ -71,43 +85,36 @@ class IconShapeFragment : Fragment() {
             IconShape.Cylinder,
             IconShape.Cupertino
         )
-        val iconShapeItems = iconShapes.map {
-            ItemIconShape(
-                    context, ShapeModel(
-                    it.toString(),
-                    Utilities.getOmegaPrefs(context).iconShape == it
-                )
-            )
-        }
-        val fastAdapter = FastAdapter.with(fastItemAdapter)
-        fastAdapter.setHasStableIds(true)
-        fastItemAdapter.set(iconShapeItems)
-        fastAdapter.addEventHook(OnIconClickHook())
-        fastAdapter.notifyAdapterDataSetChanged()
 
-        //Load Shapes
-        binding.shapeView.layoutManager = GridLayoutManager(context, 4)
-        binding.shapeView.adapter = fastAdapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().title = requireActivity().getString(R.string.title_theme_customize_icons)
-    }
-
-    inner class OnIconClickHook : ClickEventHook<ItemIconShape>() {
-        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-            return viewHolder.itemView.findViewById(R.id.root)
-        }
-
-        override fun onClick(
-                v: View,
-                position: Int,
-                fastAdapter: FastAdapter<ItemIconShape>,
-                item: ItemIconShape
-        ) {
-            prefs.iconShape = IconShape.fromString(item.item.shapeName)!!
-            this@IconShapeFragment.recreate()
+        OmegaAppTheme {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                columns = GridCells.Fixed(4),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                itemsIndexed(
+                    items = iconShapes.map {
+                        ShapeModel(
+                            it.toString(),
+                            Utilities.getOmegaPrefs(context).iconShape == it
+                        )
+                    },
+                    span = { _, _ -> GridItemSpan(1) },
+                    key = { _: Int, item: ShapeModel -> item.shapeName }) { _, item ->
+                    IconShapeItem(
+                        item = item,
+                        checked = item.isSelected,
+                        onClick = {
+                            prefs.iconShape = IconShape.fromString(item.shapeName)!!
+                            this@IconShapeFragment.recreate()
+                        }
+                    )
+                }
+            }
         }
     }
 }

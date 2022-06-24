@@ -17,8 +17,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -34,18 +32,12 @@
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/shape_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
             android:clipChildren="true"
-            android:clipToPadding="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="4"
-            tools:listitem="@layout/item_icon_shape" />
+            android:clipToPadding="true" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/icon_preferences"
