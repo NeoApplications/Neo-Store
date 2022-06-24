@@ -34,7 +34,7 @@ fun DashPage() {
 
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(lineSize), // TODO Add to prefs
+        columns = GridCells.Fixed(lineSize),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(4.dp)

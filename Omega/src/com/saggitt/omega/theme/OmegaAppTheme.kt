@@ -27,8 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.omegaPrefs
 
-// TODO create working themes parallel to the xml ones
-// TODO migrate the color palettes to Material3
 @Composable
 fun OmegaAppTheme(
     content: @Composable () -> Unit
