@@ -22,7 +22,6 @@ import com.android.launcher3.R
 import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
-import com.saggitt.omega.iconpack.CustomIconEntry
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.omegaPrefs
@@ -49,14 +48,14 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
         info.setTitle(title ?: "", modelWriter)
     }
 
-    override fun setIcon(info: FolderInfo, entry: CustomIconEntry?) {
+    /*override fun setIcon(info: FolderInfo, entry: CustomIconEntry?) {
         prefs.customAppIcon[info.toComponentKey()] = entry
         info.onIconChanged()
     }
 
     override fun getIcon(info: FolderInfo): CustomIconEntry? =
         prefs.customAppIcon[info.toComponentKey()]
-
+*/
     override fun supportsSwipeUp(info: FolderInfo) = info.container != ItemInfo.NO_ID
 
     override fun supportsIcon() = true

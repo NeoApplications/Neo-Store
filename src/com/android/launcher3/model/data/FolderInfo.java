@@ -43,7 +43,6 @@ import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.FolderNameInfos;
 import com.android.launcher3.icons.BitmapRenderer;
-import com.android.launcher3.icons.FastBitmapDrawable;
 import com.android.launcher3.logger.LauncherAtom;
 import com.android.launcher3.logger.LauncherAtom.Attribute;
 import com.android.launcher3.logger.LauncherAtom.FromState;
@@ -51,12 +50,7 @@ import com.android.launcher3.logger.LauncherAtom.ToState;
 import com.android.launcher3.model.ModelWriter;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.ContentWriter;
-import com.saggitt.omega.OmegaLauncher;
 import com.saggitt.omega.folder.FirstItemProvider;
-import com.saggitt.omega.iconpack.CustomIconEntry;
-import com.saggitt.omega.iconpack.IconPack;
-import com.saggitt.omega.iconpack.IconPackProvider;
-import com.saggitt.omega.override.CustomInfoProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -451,21 +445,21 @@ public class FolderInfo extends ItemInfo {
     }
 
     public boolean useIconMode(Context context) {
-        return isCoverMode() || hasCustomIcon(context);
+        return isCoverMode();
     }
 
-    private boolean hasCustomIcon(Context context) {
+    /*private boolean hasCustomIcon(Context context) {
         Launcher launcher = OmegaLauncher.getLauncher(context);
         return getIconInternal(launcher) != null;
-    }
+    }*/
 
     public boolean usingCustomIcon(Context context) {
-        return !isCoverMode() && hasCustomIcon(context);
+        return !isCoverMode();
     }
 
     private Drawable getIconInternal(Launcher launcher) {
-        CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
-        CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
+        /*CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
+        //CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
         if (entry != null) {
             entry.getIcon();
             if (!entry.getIcon().equals(cachedIcon)) {
@@ -479,7 +473,7 @@ public class FolderInfo extends ItemInfo {
             if (cached != null) {
                 return cached.mutate();
             }
-        }
+        }*/
         return null;
     }
 

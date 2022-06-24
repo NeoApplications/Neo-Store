@@ -65,9 +65,9 @@ class AppInfoProvider(context: Context) : CustomInfoProvider<AppInfo>(context) {
         )
     }
 
-    override fun setIcon(info: AppInfo, entry: CustomIconEntry?) {
+    /*override fun setIcon(info: AppInfo, entry: CustomIconEntry?) {
         setIcon(info.toComponentKey(), entry)
-    }
+    }*/
 
     fun setIcon(key: ComponentKey, entry: CustomIconEntry?) {
         prefs.customAppIcon[key] = entry
@@ -89,9 +89,9 @@ class AppInfoProvider(context: Context) : CustomInfoProvider<AppInfo>(context) {
         return prefs.customAppIcon[key]
     }
 
-    override fun getIcon(info: AppInfo): CustomIconEntry? {
+    /*override fun getIcon(info: AppInfo): CustomIconEntry? {
         return getCustomIconEntry(info.toComponentKey())
-    }
+    }*/
 
     private fun getComponentKey(app: LauncherActivityInfo) =
         ComponentKey(app.componentName, app.user)

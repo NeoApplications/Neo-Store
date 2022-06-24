@@ -21,15 +21,11 @@ package com.saggitt.omega.override
 import android.content.Context
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
-import android.os.Build
-import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT
 import com.android.launcher3.Utilities
-import com.android.launcher3.icons.LauncherIcons
 import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.WorkspaceItemInfo
-import com.saggitt.omega.iconpack.CustomIconEntry
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.useApplicationContext
@@ -54,7 +50,7 @@ class ShortcutInfoProvider(context: Context) : CustomInfoProvider<WorkspaceItemI
         info.setTitle(title, modelWriter)
     }
 
-    override fun setIcon(info: WorkspaceItemInfo, entry: CustomIconEntry?) {
+    /*override fun setIcon(info: WorkspaceItemInfo, entry: CustomIconEntry?) {
         info.setIconEntry(context, entry)
         if (entry != null) {
             val launcherActivityInfo = getLauncherActivityInfo(info)
@@ -66,11 +62,11 @@ class ShortcutInfoProvider(context: Context) : CustomInfoProvider<WorkspaceItemI
         } else {
             info.setIcon(context, null)
         }
-    }
+    }*/
 
-    override fun getIcon(info: WorkspaceItemInfo): CustomIconEntry? {
+    /*override fun getIcon(info: WorkspaceItemInfo): CustomIconEntry? {
         return info.customIconEntry
-    }
+    }*/
 
     override fun supportsSwipeUp(info: WorkspaceItemInfo) = false
 

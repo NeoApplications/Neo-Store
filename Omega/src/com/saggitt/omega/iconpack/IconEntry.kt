@@ -28,10 +28,6 @@ data class IconEntry(
         if (type != IconType.Calendar) throw IllegalStateException("type is not calendar")
         return IconEntry(packPackageName, "$name${day + 1}", IconType.Normal)
     }
-
-    fun toCustomEntry(): CustomIconEntry {
-        return CustomIconEntry(packPackageName, name)
-    }
 }
 
 enum class IconType {

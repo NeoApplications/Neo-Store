@@ -62,20 +62,6 @@ class CustomIconPack(context: Context, packPackageName: String) :
         }
     }
 
-    override fun getIcon(customIconEntry: CustomIconEntry, iconDpi: Int): Drawable? {
-        val id = getDrawableId(customIconEntry.packPackageName)
-        if (id == 0) return null
-        return try {
-            ExtendedBitmapDrawable.wrap(
-                packResources,
-                packResources.getDrawableForDensity(id, iconDpi, null),
-                true
-            )
-        } catch (e: Resources.NotFoundException) {
-            null
-        }
-    }
-
     fun createFromExternalPicker(icon: Intent.ShortcutIconResource): IconPickerItem? {
         val id = packResources.getIdentifier(icon.resourceName, null, null)
         if (id == 0) return null

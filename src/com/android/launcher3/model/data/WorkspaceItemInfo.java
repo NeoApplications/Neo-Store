@@ -94,7 +94,6 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
 
     public CharSequence customTitle;
     public Bitmap customIcon;
-    public CustomIconEntry customIconEntry;
     public String swipeUpAction;
 
     /**
@@ -225,9 +224,10 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
     }
 
     private void updateDatabase(Context context, boolean updateIcon, boolean reload) {
-        if (updateIcon)
-            ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
-                    , customIconEntry, customIcon, true, reload);
+        if (updateIcon) {
+        }
+            /*ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
+                    , customIconEntry, customIcon, true, reload);*/
         else
             ModelWriter.modifyItemInDatabase(context, this, (String) customTitle, swipeUpAction
                     , null, null, false, reload);
@@ -237,15 +237,14 @@ public class WorkspaceItemInfo extends ItemInfoWithIcon {
             String titleAlias, String swipeUpAction, CustomIconEntry customIcon, Bitmap icon
     ) {
         customTitle = titleAlias;
-        customIconEntry = customIcon;
         this.customIcon = icon;
         this.swipeUpAction = swipeUpAction;
     }
 
-    public void setIconEntry(@NotNull Context context, @Nullable CustomIconEntry iconEntry) {
+    /*public void setIconEntry(@NotNull Context context, @Nullable CustomIconEntry iconEntry) {
         customIconEntry = iconEntry;
         updateDatabase(context, true, false);
-    }
+    }*/
 
     public void setIcon(@NotNull Context context, @Nullable Bitmap icon) {
         customIcon = icon;

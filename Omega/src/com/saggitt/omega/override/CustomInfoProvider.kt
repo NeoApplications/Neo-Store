@@ -22,7 +22,6 @@ import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.model.data.WorkspaceItemInfo
-import com.saggitt.omega.iconpack.CustomIconEntry
 
 abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
 
@@ -36,9 +35,9 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
 
     open fun supportsIcon() = true
 
-    abstract fun setIcon(info: T, entry: CustomIconEntry?)
+    //abstract fun setIcon(info: T, entry: CustomIconEntry?)
 
-    abstract fun getIcon(info: T): CustomIconEntry?
+    //abstract fun getIcon(info: T): CustomIconEntry?
 
     open fun supportsSwipeUp(info: T) = false
 

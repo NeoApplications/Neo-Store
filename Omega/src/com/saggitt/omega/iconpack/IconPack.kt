@@ -49,8 +49,6 @@ abstract class IconPack(
 
     abstract fun getIcon(iconEntry: IconEntry, iconDpi: Int): Drawable?
 
-    abstract fun getIcon(entry: CustomIconEntry, iconDpi: Int): Drawable?
-
     abstract fun getAllIcons(): Flow<List<IconPickerCategory>>
 
     @Suppress("BlockingMethodInNonBlockingContext")
