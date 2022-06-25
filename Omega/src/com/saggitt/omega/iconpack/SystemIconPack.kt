@@ -57,7 +57,7 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
     override fun getIcon(iconEntry: IconEntry, iconDpi: Int): Drawable? {
         val key = ComponentKey.fromString(iconEntry.name)
         val app = appMap[key] ?: return null
-        return app.getIcon(iconDpi)
+        return Drawable.createFromPath("android.resource://${app.applicationInfo.packageName}/${app.applicationInfo.icon}")
     }
 
     override fun loadInternal() {
