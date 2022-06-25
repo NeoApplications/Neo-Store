@@ -15,6 +15,7 @@ fun AppTheme(
 ) {
     MaterialTheme(
         colorScheme = when {
+            //dynamicTheme -> dynamicDarkColorScheme(LocalContext.current)
             darkTheme && blackTheme -> BlackColors
             darkTheme -> DarkColors
             else -> LightColors
@@ -73,7 +74,7 @@ private val DarkColors = darkColorScheme(
     onErrorContainer = md_theme_dark_onErrorContainer,
     background = md_theme_dark_background,
     onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
+    surface = GreyDark,
     onSurface = md_theme_dark_onSurface,
     surfaceVariant = md_theme_dark_surfaceVariant,
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
@@ -102,7 +103,7 @@ private val BlackColors = darkColorScheme(
     onErrorContainer = md_theme_dark_onErrorContainer,
     background = PitchBlack,
     onBackground = md_theme_dark_onBackground,
-    surface = PitchBlack,
+    surface = md_theme_dark_surface,
     onSurface = md_theme_dark_onSurface,
     surfaceVariant = md_theme_dark_surfaceVariant,
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
