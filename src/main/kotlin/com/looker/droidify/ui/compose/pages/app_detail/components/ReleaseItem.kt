@@ -97,20 +97,14 @@ fun ReleaseItemContent(
     Row(
         modifier = Modifier
             .combinedClickable(onClick = {}, onLongClick = { onLongClick(release) })
-            .padding(end = 16.dp),
+            .padding(start = 16.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
-        IconButton(onClick = { onDownloadClick(release) }) {
-            Icon(
-                imageVector = Icons.Rounded.Download,
-                contentDescription = "Download this version"
-            )
-        }
         Column(
             modifier = modifier
                 .height(76.dp)
-                .fillMaxWidth(),
+                .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
@@ -146,6 +140,12 @@ fun ReleaseItemContent(
                 size = release.size.formatSize()
             )
             Spacer(modifier = Modifier.width(Dp.Hairline))
+        }
+        IconButton(onClick = { onDownloadClick(release) }) {
+            Icon(
+                imageVector = Icons.Rounded.Download,
+                contentDescription = stringResource(id = R.string.install)
+            )
         }
     }
 }
