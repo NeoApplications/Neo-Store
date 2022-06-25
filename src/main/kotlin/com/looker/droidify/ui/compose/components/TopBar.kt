@@ -21,9 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import com.looker.droidify.R
-import com.looker.droidify.ui.compose.theme.surfaceColorAtElevation
 import com.looker.droidify.ui.compose.utils.HorizontalExpandingVisibility
 
 @Composable
@@ -37,7 +35,7 @@ fun TopBar(
             Text(text = title, style = MaterialTheme.typography.headlineSmall)
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         actions = actions
     )
