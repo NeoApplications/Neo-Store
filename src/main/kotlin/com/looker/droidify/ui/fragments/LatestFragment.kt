@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Sync
@@ -38,8 +38,8 @@ import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.PrefsActivityX
 import com.looker.droidify.ui.compose.ProductsHorizontalRecycler
-import com.looker.droidify.ui.compose.ProductsVerticalRecycler
 import com.looker.droidify.ui.compose.components.ExpandableSearchAction
+import com.looker.droidify.ui.compose.components.ProductsListItem
 import com.looker.droidify.ui.compose.components.TopBar
 import com.looker.droidify.ui.compose.components.TopBarAction
 import com.looker.droidify.ui.compose.theme.AppTheme
@@ -109,69 +109,73 @@ class LatestFragment : MainNavFragmentX() {
                     }
                 }
             ) { padding ->
-                Column(
+                LazyColumn(
                     Modifier
                         .padding(padding)
                         .background(MaterialTheme.colorScheme.background)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.new_applications),
-                        modifier = Modifier.padding(8.dp)
-                    )
-                    ProductsHorizontalRecycler(secondaryList, repositories) { item ->
-                        mainActivityX.navigateProduct(item.packageName)
-                    }
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    item {
                         Text(
-                            text = stringResource(id = R.string.recently_updated),
-                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.new_applications),
+                            modifier = Modifier.padding(8.dp)
                         )
-                        SuggestionChip(
-                            shape = MaterialTheme.shapes.medium,
-                            colors = SuggestionChipDefaults.suggestionChipColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                labelColor = MaterialTheme.colorScheme.onSurface,
-                            ),
-                            onClick = { }, // TODO add sort & filter
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    painter = painterResource(id = R.drawable.ic_sort),
-                                    contentDescription = stringResource(id = R.string.sort_filter)
+                        ProductsHorizontalRecycler(secondaryList, repositories) { item ->
+                            mainActivityX.navigateProduct(item.packageName)
+                        }
+                    }
+                    item {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.recently_updated),
+                                modifier = Modifier.weight(1f),
+                            )
+                            SuggestionChip(
+                                shape = MaterialTheme.shapes.medium,
+                                colors = SuggestionChipDefaults.suggestionChipColors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    labelColor = MaterialTheme.colorScheme.onSurface,
+                                ),
+                                onClick = { }, // TODO add sort & filter
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(18.dp),
+                                        painter = painterResource(id = R.drawable.ic_sort),
+                                        contentDescription = stringResource(id = R.string.sort_filter)
+                                    )
+                                },
+                                label = {
+                                    Text(text = stringResource(id = R.string.sort_filter))
+                                }
+                            )
+                        }
+                    }
+                    items(
+                        items = primaryList?.map { it.toItem() } ?: emptyList(),
+                    ) { item ->
+                        ProductsListItem(
+                            item = item,
+                            repo = repositories[item.repositoryId],
+                            isFavorite = favorites.contains(item.packageName),
+                            onUserClick = { mainActivityX.navigateProduct(it.packageName) },
+                            onFavouriteClick = {
+                                viewModel.setFavorite(
+                                    it.packageName,
+                                    !favorites.contains(it.packageName)
                                 )
                             },
-                            label = {
-                                Text(text = stringResource(id = R.string.sort_filter))
+                            installed = installedList?.get(item.packageName),
+                            onActionClick = {
+                                val installed = installedList?.get(it.packageName)
+                                if (installed != null && installed.launcherActivities.isNotEmpty())
+                                    requireContext().onLaunchClick(installed, childFragmentManager)
+                                else
+                                    mainActivityX.syncConnection.binder?.installApps(listOf(it))
                             }
                         )
-                    }
-                    ProductsVerticalRecycler(
-                        productsList = primaryList,
-                        repositories = repositories,
-                        favorites = favorites,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        onUserClick = { item ->
-                            mainActivityX.navigateProduct(item.packageName)
-                        },
-                        onFavouriteClick = { item ->
-                            viewModel.setFavorite(
-                                item.packageName,
-                                !favorites.contains(item.packageName)
-                            )
-                        },
-                        getInstalled = { installedList?.get(it.packageName) }
-                    ) { item ->
-                        val installed = installedList?.get(item.packageName)
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            requireContext().onLaunchClick(installed, childFragmentManager)
-                        else
-                            mainActivityX.syncConnection.binder?.installApps(listOf(item))
                     }
                 }
             }
