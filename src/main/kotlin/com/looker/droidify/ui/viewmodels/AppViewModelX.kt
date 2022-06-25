@@ -30,7 +30,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
         }
     val downloadState = MutableLiveData<DownloadState>()
     val mainAction = MutableLiveData<ActionState>()
-    val actions = MutableLiveData<Set<ActionState>>()
+    val actions = MediatorLiveData<Set<ActionState>>()
     val secondaryAction = MutableLiveData<ActionState>()
     val extras = MediatorLiveData<Extras>()
 
@@ -39,6 +39,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
         installedItem.addSource(db.installedDao.getLive(packageName), installedItem::setValue)
         extras.addSource(db.extrasDao.getLive(packageName), extras::setValue)
+        actions.addSource(extras) { updateActions() }
     }
 
     fun updateActions() {

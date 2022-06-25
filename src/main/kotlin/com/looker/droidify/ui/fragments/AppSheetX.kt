@@ -227,6 +227,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             ActionState.Share -> {
                 shareIntent(packageName, productRepos[0].first.label)
             }
+            ActionState.Bookmark,
+            ActionState.Bookmarked -> {
+                viewModel.setFavorite(packageName, action is ActionState.Bookmark)
+            }
             else -> Unit
         }::class
     }
@@ -457,7 +461,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                         product.packageName,
                                         if (it) product.versionCode else 0
                                     )
-                                    viewModel.updateActions()
                                 })
                         }
                     }
@@ -467,7 +470,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 initSelected = extras?.ignoreUpdates == true,
                                 onCheckedChanged = {
                                     viewModel.setIgnoreUpdates(product.packageName, it)
-                                    viewModel.updateActions()
                                 })
                         }
                     }
