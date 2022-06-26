@@ -27,10 +27,10 @@
     <string name="could_not_download_FORMAT">No se pudo descargar %s</string>
     <string name="could_not_sync_FORMAT">No se pudo sincronizar %s</string>
     <string name="could_not_validate_FORMAT">No se pudo validar %s</string>
-    <string name="credits">Créditos</string>
+    <string name="credits">Colaboradores</string>
     <string name="dark">Oscuro</string>
     <string name="delete">Eliminar</string>
-    <string name="delete_repository_DESC">¿Eliminar repositorio\?</string>
+    <string name="delete_repository_DESC">¿Eliminar este repositorio\?</string>
     <string name="description">Descripción</string>
     <string name="details">Detalles</string>
     <string name="donate">Donar</string>
@@ -53,10 +53,11 @@
     <string name="incompatible_features_DESC">Características faltantes.</string>
     <string name="incompatible_older_DESC">Esta versión es más antigua que la del dispositivo. Desinstale esa primero.</string>
     <string name="incompatible_platforms_DESC_FORMAT">No se admite su plataforma %1$s. Plataformas admitidas: %2$s.</string>
-    <string name="incompatible_signature_DESC">Esta versión está firmada con un certificado diferente que la instalada en el dispositivo. Desinstale esa primero.</string>
+    <string name="incompatible_signature_DESC">Esta versión está firmada con un certificado diferente que el de la instalada en el dispositivo.
+\nDesinstale esa primero.</string>
     <string name="incompatible_version">Versión incompatible</string>
     <string name="incompatible_versions">Versiones incompatibles</string>
-    <string name="incompatible_versions_summary">Mostrar versiones de aplicaciones incompatibles con el dispositivo</string>
+    <string name="incompatible_versions_summary">Mostrar versiones incompatibles con el dispositivo.</string>
     <string name="incompatible_with_FORMAT">Incompatible con %s</string>
     <string name="install">Instalar</string>
     <string name="install_types">Tipos de instalación</string>
@@ -76,7 +77,7 @@
     <string name="links">Enlaces</string>
     <string name="list_animation">Animaciones de lista</string>
     <string name="list_animation_description">Animar la lista en la página principal</string>
-    <string name="merging_FORMAT">Combinando %s</string>
+    <string name="merging_FORMAT">Combinando %s…</string>
     <string name="name">Nombre</string>
     <string name="network_error_DESC">Error de red.</string>
     <string name="never">Nunca</string>
@@ -186,4 +187,14 @@
     <string name="default_tab">Pestaña por defecto</string>
     <string name="installing">Instalando</string>
     <string name="pending">Pendientes</string>
+    <string name="not_safe_for_work">Censurable (puede contener contenido perturbador)</string>
+    <string name="ignore_battery_optimization_title">Optimización de Batería</string>
+    <string name="ignore_battery_optimization_message">La aplicación funciona mejor sin optimización de batería, y previene cierres inesperados en Android 12+.</string>
+    <string name="ignore_battery_optimization_not_supported">Tu instalación de Android no soporta desactivar la optimización de batería.</string>
+    <string name="dialog_approve">Desactivar</string>
+    <string name="root_session_installer">Usar el instalador de sesión de root</string>
+    <string name="root_session_installer_description">Más lento, pero evita problemas con las aplicaciones instaladas en Android 13+.</string>
+    <string name="no_permissions_identified">No se han identificado permisos requeridos</string>
+    <string name="no_action_possible">Sin acción posible</string>
+    <string name="dialog_refuse">Mantener</string>
 </resources>
