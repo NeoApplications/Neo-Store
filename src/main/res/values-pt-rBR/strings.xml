@@ -30,7 +30,7 @@
     <string name="credits">Contribuintes</string>
     <string name="dark">Escuro</string>
     <string name="delete">Excluir</string>
-    <string name="delete_repository_DESC">Eliminar este repositório\?</string>
+    <string name="delete_repository_DESC">Excluir este repositório\?</string>
     <string name="description">Descrição</string>
     <string name="details">Detalhes</string>
     <string name="donate">Doar</string>
@@ -39,7 +39,7 @@
     <string name="downloading_FORMAT">Baixando %s…</string>
     <string name="edit_repository">Editar repositório</string>
     <string name="file_format_error_DESC">Formato de arquivo inválido.</string>
-    <string name="fingerprint">Fingerprint</string>
+    <string name="fingerprint">Impressão digital</string>
     <string name="has_advertising">Contém anúncio</string>
     <string name="has_non_free_dependencies">Possui dependências não livres</string>
     <string name="has_security_vulnerabilities">Possui vulnerabilidades de segurança</string>
@@ -47,12 +47,11 @@
     <string name="http_proxy">Proxy HTTP</string>
     <string name="ignore_all_updates">Ignorar todas as novas versões</string>
     <string name="ignore_this_update">Ignorar esta versão</string>
-    <string name="incompatible_api_DESC_FORMAT">Sua %1$s (Versão da API %2$d) não é suportado. %3$s</string>
+    <string name="incompatible_api_DESC_FORMAT">Sua %1$s (versão da API %2$d) não é suportada. %3$s</string>
     <string name="incompatible_api_max_DESC_FORMAT">A versão máxima da API é %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">A versão mínima da API é %d.</string>
     <string name="incompatible_features_DESC">Funcionalidades que estão faltando.</string>
-    <string name="incompatible_older_DESC">Esta versão é mais antiga que a instalada no seu dispositivo.
-    Desinstale a primeiro.</string>
+    <string name="incompatible_older_DESC">Esta versão é mais antiga que a instalada no seu dispositivo. Desinstale-a primeiro.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Sua %1$s plataforma não é suportada.
     Plataformas suportadas: %2$s.</string>
     <string name="incompatible_signature_DESC">Esta versão é assinada com um certificado diferente daquele instalado no seu dispositivo.
@@ -66,9 +65,9 @@
     <string name="installed">Instalado</string>
     <string name="integrity_check_error_DESC">Não foi possível verificar a integridade.</string>
     <string name="invalid_address">Endereço inválido</string>
-    <string name="invalid_fingerprint_format">Formato de fingerprint inválido</string>
-    <string name="invalid_metadata_error_DESC">Metadado inválido.</string>
-    <string name="invalid_permissions_error_DESC">Permissão inválida.</string>
+    <string name="invalid_fingerprint_format">Formato de impressão digital inválido</string>
+    <string name="invalid_metadata_error_DESC">Metadados inválidos.</string>
+    <string name="invalid_permissions_error_DESC">Permissões inválidas.</string>
     <string name="invalid_signature_error_DESC">Assinatura inválida.</string>
     <string name="invalid_username_format">Formato de nome do usuário inválido</string>
     <string name="launch">Abrir</string>
@@ -90,7 +89,7 @@
     </plurals>
     <string name="no_applications_available">Nenhum aplicativo disponível</string>
     <string name="no_applications_installed">Nenhum aplicativo instalado</string>
-    <string name="no_description_available_DESC">Nenhuma descrição.</string>
+    <string name="no_description_available_DESC">Sem descrição.</string>
     <string name="no_matching_applications_found">Não foi possível encontrar nenhum desses aplicativos</string>
     <string name="no_proxy">Sem proxy</string>
     <string name="notify_about_updates">Notificar sobre novas versões de aplicativos</string>
@@ -116,7 +115,7 @@
     <string name="proxy_host">Host</string>
     <string name="proxy_port">Porta</string>
     <string name="proxy_type">Tipo</string>
-    <string name="recently_updated">Atualização recente</string>
+    <string name="recently_updated">Atualizado recentemente</string>
     <string name="repositories">Repositórios</string>
     <string name="repository">Repositório</string>
     <string name="repository_not_used_DESC">Este repositório ainda não foi usado.
@@ -141,13 +140,13 @@
     <string name="socks_proxy">proxy SOCKS</string>
     <string name="sorting_order">Ordenar por</string>
     <string name="source_code">Código fonte</string>
-    <string name="source_code_no_longer_available">Código fonte não está mais disponível</string>
+    <string name="source_code_no_longer_available">Código fonte indisponível</string>
     <string name="suggested">Sugerido</string>
     <string name="sync_repositories">Sincronizar repositórios</string>
     <string name="sync_repositories_automatically">Sincronizar repositórios automaticamente</string>
     <string name="syncing">Sincronizando</string>
     <string name="syncing_FORMAT">Sincronizando %s…</string>
-    <string name="system">Seguir o do sistema</string>
+    <string name="system">Sistema</string>
     <string name="tap_to_install_DESC">Toque para instalar.</string>
     <string name="target">Meta</string>
     <string name="theme">Tema</string>
@@ -155,7 +154,7 @@
     <string name="tracks_or_reports_your_activity">Rastreia ou relata sua atividade</string>
     <string name="uninstall">Desinstalar</string>
     <string name="unknown">Desconhecido</string>
-    <string name="unknown_error_DESC">Error desconhecido.</string>
+    <string name="unknown_error_DESC">Erro desconhecido.</string>
     <string name="unknown_FORMAT">Desconhecido: %s</string>
     <string name="unsigned">Sem assinatura</string>
     <string name="unstable_updates">Atualizações instáveis</string>
@@ -163,7 +162,7 @@
     <string name="unverified">Não verificado</string>
     <string name="update">Atualizar</string>
     <string name="updates">Atualizações</string>
-    <string name="upstream_source_code_is_not_free">O código-fonte upstream não é livre</string>
+    <string name="upstream_source_code_is_not_free">O código fonte upstream não é livre</string>
     <string name="username">Nome de usuário</string>
     <string name="username_missing">Falta o nome de usuário</string>
     <string name="validation_index_error_DESC">Não foi possível validar o índice.</string>
@@ -171,8 +170,8 @@
     <string name="version_FORMAT">Versão %s</string>
     <string name="versions">Versões</string>
     <string name="waiting_to_start_download">Baixando…</string>
-    <string name="whats_new">O que há de novo</string>
-    <string name="website">Página web</string>
+    <string name="whats_new">Novidades</string>
+    <string name="website">Página da web</string>
     <string name="prefs_language_title">Idioma</string>
     <string name="prefs_personalization">Personalização</string>
     <string name="show_less">Mostrar menos</string>
@@ -184,7 +183,7 @@
     <string name="installed_applications">Instalado</string>
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
     <string name="install_after_sync">Atualização automática</string>
-    <string name="install_after_sync_summary">Instale todas as novas versões depois de procurar nos repositórios por novos aplicativos.</string>
+    <string name="install_after_sync_summary">Instale todas as novas versões após buscar nos repositórios por novos aplicativos.</string>
     <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\"</string>
     <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"Novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
