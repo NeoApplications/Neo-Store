@@ -203,4 +203,7 @@
     <string name="no_action_possible">Nessuna azione possibile</string>
     <string name="show_screenshots">Mostra catture schermata</string>
     <string name="show_screenshots_description">Mostra le catture schermata nella pagina dell\'app.</string>
+    <string name="open">Apri</string>
+    <string name="favorite_remove">Rimuovi dai preferiti</string>
+    <string name="favorite_add">Aggiungi ai preferiti</string>
 </resources>
