@@ -202,4 +202,7 @@
     <string name="no_action_possible">Nenhuma Ação Possível</string>
     <string name="show_screenshots_description">Exibir capturas de tela na página do aplicativo.</string>
     <string name="show_screenshots">Mostrar capturas de tela</string>
+    <string name="favorite_remove">Remover dos favoritos</string>
+    <string name="open">Abrir</string>
+    <string name="favorite_add">Adicionar aos favoritos</string>
 </resources>
