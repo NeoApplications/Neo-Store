@@ -202,4 +202,7 @@
     <string name="no_action_possible">Není možná žádná akce</string>
     <string name="show_screenshots">Zobrazit snímky obrazovky</string>
     <string name="show_screenshots_description">Zobrazit screenshoty na stránce aplikace.</string>
+    <string name="favorite_remove">Odebrat z oblíbených</string>
+    <string name="favorite_add">Přidat k oblíbeným</string>
+    <string name="open">Otevřít</string>
 </resources>
