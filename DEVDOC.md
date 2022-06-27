@@ -2,7 +2,7 @@
 
 - [x] Rebase on A12
 
-- [ ] Port the features back from 0.8.2
+- [X] Port the features back from 0.8.2
 
 - [X] Restructure settings (less complex and sharper separation)
 
@@ -10,7 +10,7 @@
 
 - [x] Theming
 
-- [ ] Gestures
+- [X] Gestures
 
   - [x] All except swipe ups
 
@@ -40,11 +40,11 @@
 
 - [X] Search engines
 
-- [ ] Edit app's icons
+- [X] Edit app's icons
 
 - [x] Use icon packs
 
-- [ ] Folder cover mode
+- [X] Folder cover mode
 
 - [X] Categories
 
@@ -71,7 +71,5 @@
   - [X] Tabs & Folders
 
 - [X] Backup & restore
-
-  - [ ] Backward compatibility?
 
 - [ ] Simpler coloring themes
