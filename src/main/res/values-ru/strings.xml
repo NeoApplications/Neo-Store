@@ -204,4 +204,7 @@
     <string name="no_action_possible">Действия невозможны</string>
     <string name="show_screenshots">Показывать скриншоты</string>
     <string name="show_screenshots_description">Отображать скриншоты на странице приложения.</string>
+    <string name="favorite_add">Добавить в избранное</string>
+    <string name="favorite_remove">Удалить из избранного</string>
+    <string name="open">Открыть</string>
 </resources>
