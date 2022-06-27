@@ -211,7 +211,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.11")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.13")
 
     debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
