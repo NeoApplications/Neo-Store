@@ -86,7 +86,7 @@
     <string name="unknown_error_DESC">Ukjent feil.</string>
     <string name="unknown_FORMAT">Ukjent: %s</string>
     <string name="unsigned">Usignert</string>
-    <string name="unstable_updates_summary">Foreslå installasjon av ustabile versjoner</string>
+    <string name="unstable_updates_summary">Foreslå installasjon av ustabile versjoner.</string>
     <string name="unverified">Ubekreftet</string>
     <string name="username">Brukernavn</string>
     <string name="upstream_source_code_is_not_free">Kildekoden oppstrøms er ikke helt fri</string>
@@ -94,10 +94,10 @@
     <string name="validation_index_error_DESC">Kunne ikke bekrefte indeksen.</string>
     <string name="version_FORMAT">Versjon %s</string>
     <string name="waiting_to_start_download">Laster ned …</string>
-    <string name="action_failed">Åtgärden misslyckades</string>
+    <string name="action_failed">Handlingen mislyktes</string>
     <string name="all_applications_up_to_date">Alla appar är uppdaterade</string>
     <string name="launch">Kjør</string>
-    <string name="notify_about_updates_summary">Vis en merknad når nye versjoner er tilgjengelig</string>
+    <string name="notify_about_updates_summary">Vis en merknad når nye versjoner er tilgjengelig.</string>
     <string name="add_repository">Lägg till arkiv</string>
     <string name="credits">Bidragsytere</string>
     <string name="downloading_FORMAT">Laster ned %s…</string>
@@ -116,7 +116,7 @@
     <string name="description">Beskrivelse</string>
     <string name="donate">Doner</string>
     <string name="edit_repository">Rediger pakkebrønn</string>
-    <string name="incompatible_versions_summary">Vis versjoner som er ukompatible med enheten</string>
+    <string name="incompatible_versions_summary">Vis versjoner som er ukompatible med enheten.</string>
     <string name="installed">Installert</string>
     <string name="invalid_metadata_error_DESC">Ugyldig metadata.</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -140,7 +140,7 @@
     <string name="address">Adress</string>
     <string name="anti_features">Anti-funktioner</string>
     <string name="application">Program</string>
-    <string name="available">Tillgänglig</string>
+    <string name="available">Tilgjengelig</string>
     <string name="could_not_validate_FORMAT">Kunne ikke bekrefte %s</string>
     <string name="delete">Slett</string>
     <string name="file_format_error_DESC">Ugyldig filformat.</string>
@@ -160,7 +160,8 @@
     <string name="uninstall">Avinstaller</string>
     <string name="signature_FORMAT">%s-signatur</string>
     <string name="unstable_updates">Ustabile oppgraderinger</string>
-    <string name="incompatible_signature_DESC">Denne versjonen er signert med et annet sertifikat enn det som er installert på enheten din. Avinstaller det først.</string>
+    <string name="incompatible_signature_DESC">Denne versjonen er signert med et annet sertifikat enn det som er installert på enheten din.
+\nAvinstaller det først.</string>
     <string name="ok">OK</string>
     <string name="parsing_index_error_DESC">Kunne ikke tolke indeksfilen.</string>
     <string name="promotes_non_free_software">Promoterer ufri programvare</string>
@@ -176,11 +177,11 @@
     <string name="latest">Siste</string>
     <string name="explore">Utforsk</string>
     <string name="update_all">Installer alle</string>
-    <string name="installed_applications">Installerte</string>
+    <string name="installed_applications">Installert</string>
     <string name="sort_filter">Sorter og filtrer</string>
     <string name="new_applications">Nye programmer</string>
     <string name="only_on_wifi_and_battery">Kun på Wi-Fi tilkoblet lading</string>
-    <string name="install_after_sync_summary">Installer alle nye versjoner etter å ha sett etter nye programmer i pakkebrønner</string>
+    <string name="install_after_sync_summary">Installer alle nye versjoner etter å ha sett etter nye programmer i pakkebrønner.</string>
     <string name="install_after_sync">Oppgrader automatisk</string>
     <string name="prefs_updated_apps">Antall programmer å vise i «Nylig oppdatert»</string>
     <string name="prefs_new_apps">Antall nye programmer å vise i «Nye programmer»</string>
@@ -197,7 +198,10 @@
     <string name="root_session_installer_description">Dårligere ytelse, men unngår problemer med programmer på Android 13+.</string>
     <string name="no_action_possible">Ingen mulige handlinger</string>
     <string name="show_screenshots">Vis skjermavbildninger</string>
-    <string name="show_screenshots_description">Hvorvidt skjermavbildninger skal vises i programarket eller ei.</string>
+    <string name="show_screenshots_description">Vis skjermavbildninger på programsiden.</string>
     <string name="not_safe_for_work">Sensurerbart innhold</string>
     <string name="no_permissions_identified">Fant ingen forespurte tilganger</string>
+    <string name="favorite_add">Legg til i favoritter</string>
+    <string name="open">Åpne</string>
+    <string name="favorite_remove">Fjern fra favoritter</string>
 </resources>
