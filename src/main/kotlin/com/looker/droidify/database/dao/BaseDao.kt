@@ -1,7 +1,6 @@
 package com.looker.droidify.database.dao
 
 import androidx.room.*
-import com.looker.droidify.database.entity.Ignored
 
 interface BaseDao<T> {
     @Insert
@@ -15,10 +14,4 @@ interface BaseDao<T> {
 
     @Delete
     fun delete(obj: T)
-}
-
-@Dao
-interface LockDao : BaseDao<Ignored> {
-    @Query("DELETE FROM memory_lock WHERE packageName = :packageName")
-    fun delete(packageName: String)
 }
