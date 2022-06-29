@@ -201,4 +201,7 @@
     <string name="notify_about_updates_summary">নতুন সংস্করণ আসলে বিজ্ঞপ্তি দেখাও।</string>
     <string name="no_action_possible">কোনো ক্রিয়া সম্ভব না</string>
     <string name="show_screenshots_description">অ্যাপ পৃষ্ঠায় স্ক্রিনশট দেখাও।</string>
+    <string name="open">খুলো</string>
+    <string name="favorite_add">পছন্দে যোগ করো</string>
+    <string name="favorite_remove">পছন্দ থেকে সরাও</string>
 </resources>
