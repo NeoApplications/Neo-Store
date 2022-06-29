@@ -13,8 +13,8 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -47,7 +47,7 @@ fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     actions: @Composable (RowScope.() -> Unit)
 ) {
-    LargeTopAppBar(
+    SmallTopAppBar(
         modifier = Modifier.wrapContentHeight(),
         title = {
             Text(text = title, style = MaterialTheme.typography.headlineSmall)
