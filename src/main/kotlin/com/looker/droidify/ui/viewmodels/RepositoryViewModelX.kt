@@ -12,8 +12,8 @@ import kotlinx.coroutines.withContext
 
 class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewModel() {
 
-    val repo = MediatorLiveData<Repository>()
-    val appsCount = MediatorLiveData<Long>()
+    val repo: MediatorLiveData<Repository> = MediatorLiveData()
+    val appsCount: MediatorLiveData<Long> = MediatorLiveData()
 
     init {
         repo.addSource(db.repositoryDao.getLive(repositoryId), repo::setValue)

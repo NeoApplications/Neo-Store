@@ -13,8 +13,8 @@ import kotlinx.coroutines.withContext
 
 class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
 
-    val repositories = MediatorLiveData<List<Repository>>()
-    val toLaunch = MediatorLiveData<Pair<Boolean, Long>?>()
+    val repositories: MediatorLiveData<List<Repository>> = MediatorLiveData()
+    val toLaunch: MediatorLiveData<Pair<Boolean, Long>?> = MediatorLiveData()
 
     init {
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)

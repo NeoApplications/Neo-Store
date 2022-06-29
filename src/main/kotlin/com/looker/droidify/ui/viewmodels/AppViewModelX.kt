@@ -19,20 +19,20 @@ import kotlinx.coroutines.withContext
 
 class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
 
-    val products = MediatorLiveData<List<Product>>()
-    val repositories = MediatorLiveData<List<Repository>>()
-    val installedItem = MediatorLiveData<Installed?>()
-    val _productRepos = MutableLiveData<List<Pair<Product, Repository>>>()
+    val products: MediatorLiveData<List<Product>> = MediatorLiveData()
+    val repositories: MediatorLiveData<List<Repository>> = MediatorLiveData()
+    val installedItem: MediatorLiveData<Installed?> = MediatorLiveData()
+    val _productRepos: MutableLiveData<List<Pair<Product, Repository>>> = MutableLiveData()
     var productRepos: List<Pair<Product, Repository>>
         get() = _productRepos.value ?: emptyList()
         set(value) {
             _productRepos.value = value
         }
-    val downloadState = MutableLiveData<DownloadState>()
-    val mainAction = MutableLiveData<ActionState>()
-    val actions = MediatorLiveData<Set<ActionState>>()
-    val secondaryAction = MutableLiveData<ActionState>()
-    val extras = MediatorLiveData<Extras>()
+    val downloadState: MutableLiveData<DownloadState> = MutableLiveData()
+    val mainAction: MutableLiveData<ActionState> = MutableLiveData()
+    val actions: MediatorLiveData<Set<ActionState>> = MediatorLiveData()
+    val secondaryAction: MutableLiveData<ActionState> = MutableLiveData()
+    val extras: MediatorLiveData<Extras> = MediatorLiveData()
 
     init {
         products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }
@@ -81,7 +81,8 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
                 canLaunch -> ActionState.Launch
                 canInstall -> ActionState.Install
                 canShare -> ActionState.Share
-                else -> null
+                bookmarked == true -> ActionState.Bookmarked
+                else -> ActionState.Bookmark
             }
             val secondaryAction = when {
                 primaryAction != ActionState.Share && canShare -> ActionState.Share

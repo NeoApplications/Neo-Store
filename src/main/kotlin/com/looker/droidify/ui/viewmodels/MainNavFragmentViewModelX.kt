@@ -27,11 +27,11 @@ class MainNavFragmentViewModelX(
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
-    var order = MutableLiveData(Order.LAST_UPDATE)
+    var order: MutableLiveData<Order> = MutableLiveData(Order.LAST_UPDATE)
         private set
-    var sections = MutableLiveData<Section>(Section.All)
+    var sections: MutableLiveData<Section> = MutableLiveData(Section.All)
         private set
-    var searchQuery = MutableLiveData("")
+    var searchQuery: MutableLiveData<String> = MutableLiveData("")
         private set
 
     fun request(source: Source): Request {
