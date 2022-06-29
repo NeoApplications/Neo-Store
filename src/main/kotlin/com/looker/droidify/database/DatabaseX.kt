@@ -5,6 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.looker.droidify.database.dao.CategoryDao
+import com.looker.droidify.database.dao.CategoryTempDao
+import com.looker.droidify.database.dao.ExtrasDao
+import com.looker.droidify.database.dao.InstalledDao
+import com.looker.droidify.database.dao.ProductDao
+import com.looker.droidify.database.dao.ProductTempDao
+import com.looker.droidify.database.dao.ReleaseDao
+import com.looker.droidify.database.dao.RepositoryDao
 import com.looker.droidify.database.entity.Category
 import com.looker.droidify.database.entity.CategoryTemp
 import com.looker.droidify.database.entity.Extras

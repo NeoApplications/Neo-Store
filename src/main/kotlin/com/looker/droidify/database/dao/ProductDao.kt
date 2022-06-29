@@ -1,14 +1,11 @@
-package com.looker.droidify.database
+package com.looker.droidify.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
-import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.looker.droidify.ROW_ADDED
@@ -46,71 +43,16 @@ import com.looker.droidify.TABLE_PRODUCT
 import com.looker.droidify.TABLE_PRODUCT_NAME
 import com.looker.droidify.TABLE_REPOSITORY
 import com.looker.droidify.TABLE_REPOSITORY_NAME
-import com.looker.droidify.database.entity.Category
+import com.looker.droidify.database.QueryBuilder
 import com.looker.droidify.database.entity.CategoryTemp
 import com.looker.droidify.database.entity.Extras
-import com.looker.droidify.database.entity.Installed
 import com.looker.droidify.database.entity.Product
 import com.looker.droidify.database.entity.ProductTemp
-import com.looker.droidify.database.entity.Release
-import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.database.entity.asProductTemp
 import com.looker.droidify.entity.Order
 import com.looker.droidify.entity.Section
 import com.looker.droidify.entity.UpdateCategory
 import com.looker.droidify.ui.fragments.Request
-
-interface BaseDao<T> {
-    @Insert
-    fun insert(vararg product: T)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReplace(vararg product: T)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg obj: T): Int
-
-    @Delete
-    fun delete(obj: T)
-}
-
-@Dao
-interface RepositoryDao : BaseDao<Repository> {
-    @get:Query("SELECT COUNT(_id) FROM repository")
-    val count: Int
-
-    fun put(repository: Repository): Repository {
-        repository.let { item ->
-            val newId = if (item.id > 0L) update(item).toLong() else returnInsert(item)
-            return if (newId != repository.id) repository.copy(id = newId) else repository
-        }
-    }
-
-    @Insert
-    fun returnInsert(product: Repository): Long
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
-    fun get(id: Long): Repository?
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
-    fun getLive(id: Long): LiveData<Repository?>
-
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val all: List<Repository>
-
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val allLive: LiveData<List<Repository>>
-
-    @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
-    val allDisabled: List<Long>
-
-    // TODO clean up products and other tables afterwards
-    @Query("DELETE FROM repository WHERE _id = :id")
-    fun deleteById(id: Long): Int
-
-    @Query("SELECT MAX(_id) FROM repository")
-    fun latestAddedId(): Long
-}
 
 @Dao
 interface ProductDao : BaseDao<Product> {
@@ -285,64 +227,6 @@ interface ProductDao : BaseDao<Product> {
 }
 
 @Dao
-interface ReleaseDao : BaseDao<Release> {
-    // This one for the mode combining releases of different sources
-    @Query("SELECT * FROM `release` WHERE packageName = :packageName")
-    fun get(packageName: String): List<Release?>
-
-    // This one for the separating releases of different sources
-    @Query("SELECT * FROM `release` WHERE packageName = :packageName AND signature = :signature")
-    fun get(packageName: String, signature: String): List<Release?>
-}
-
-@Dao
-interface CategoryDao : BaseDao<Category> {
-    @get:Query(
-        """SELECT DISTINCT category.label
-        FROM category AS category
-        JOIN repository AS repository
-        ON category.repositoryId = repository._id
-        WHERE repository.enabled != 0"""
-    )
-    val allNames: List<String>
-
-    @get:Query(
-        """SELECT DISTINCT category.label
-        FROM category AS category
-        JOIN repository AS repository
-        ON category.repositoryId = repository._id
-        WHERE repository.enabled != 0"""
-    )
-    val allNamesLive: LiveData<List<String>>
-
-    @Query("DELETE FROM category WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
-}
-
-// TODO make sure that apps that not uninstalled by Droid-ify still get removed
-@Dao
-interface InstalledDao : BaseDao<Installed> {
-    fun put(vararg installed: Installed) {
-        installed.forEach { insertReplace(it) }
-    }
-
-    @get:Query("SELECT * FROM memory_installed")
-    val allLive: LiveData<List<Installed>>
-
-    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
-    fun get(packageName: String): Installed?
-
-    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
-    fun getLive(packageName: String): LiveData<Installed?>
-
-    @Query("DELETE FROM memory_installed WHERE packageName = :packageName")
-    fun delete(packageName: String)
-
-    @Query("DELETE FROM memory_installed")
-    fun emptyTable()
-}
-
-@Dao
 interface ProductTempDao : BaseDao<ProductTemp> {
     @get:Query("SELECT * FROM temporary_product")
     val all: Array<ProductTemp>
@@ -356,7 +240,7 @@ interface ProductTempDao : BaseDao<ProductTemp> {
     @Transaction
     fun putTemporary(products: List<Product>) {
         products.forEach {
-            insert(it.let { it.asProductTemp() })
+            insert(it.asProductTemp())
             it.categories.forEach { category ->
                 insertCategory(CategoryTemp().apply {
                     repositoryId = it.repositoryId
@@ -366,15 +250,6 @@ interface ProductTempDao : BaseDao<ProductTemp> {
             }
         }
     }
-}
-
-@Dao
-interface CategoryTempDao : BaseDao<CategoryTemp> {
-    @get:Query("SELECT * FROM temporary_category")
-    val all: Array<CategoryTemp>
-
-    @Query("DELETE FROM temporary_category")
-    fun emptyTable()
 }
 
 @Dao
