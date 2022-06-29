@@ -25,7 +25,11 @@ import com.android.launcher3.Utilities
 import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.PREFS_DESKTOP_MODE_SETTINGS
 import com.saggitt.omega.PREFS_KILL
+import com.saggitt.omega.compose.ComposeActivity
 import com.saggitt.omega.theme.ThemeOverride
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PrefsDevFragment :
     BasePreferenceFragment(R.xml.preferences_dev, R.string.developer_options_title) {
@@ -37,9 +41,22 @@ class PrefsDevFragment :
         }
         findPreference<Preference>(PREFS_DESKTOP_MODE_SETTINGS)?.setOnPreferenceClickListener {
             Taskbar.openSettings(
-                requireContext(),
-                ThemeOverride.Settings().getTheme(requireContext())
+                    requireContext(),
+                    ThemeOverride.Settings().getTheme(requireContext())
             )
+            true
+        }
+
+        findPreference<Preference>("pref_gesture_selector")?.setOnPreferenceClickListener {
+            val scope = CoroutineScope(Dispatchers.Main)
+            scope.launch {
+                requireContext().startActivity(
+                        ComposeActivity.createIntent(
+                                requireContext(),
+                                "gesture_selector/"
+                        )
+                )
+            }
             true
         }
     }

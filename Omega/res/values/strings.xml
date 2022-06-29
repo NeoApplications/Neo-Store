@@ -551,6 +551,9 @@
     <string name="folder_cover_mode_desc">Tap to open first app. Swipe upwards to view all.</string>
     <string name="loading">Loading…</string>
     <string name="uninstall_failed">Could not uninstall the app</string>
+    <string name="tab_launcher">Launcher</string>
+    <string name="tab_shortcuts">Shortcuts</string>
+
     <!-- WIDGET FEED -->
     <string name="button_organize_screens">Arrange Pages</string>
     <string name="modify_system_settings">Modify system settings</string>

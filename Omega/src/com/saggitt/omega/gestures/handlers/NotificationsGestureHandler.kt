@@ -36,9 +36,9 @@ class NotificationsOpenGestureHandler(context: Context, config: JSONObject?) :
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         try {
             Class.forName("android.app.StatusBarManager")
-                .getMethod("expandNotificationsPanel")
-                .invoke(controller.launcher.getSystemService("statusbar"))
-        } catch (ex: ClassNotFoundException) {
+                    .getMethod("expandNotificationsPanel")
+                    .invoke(controller.launcher.getSystemService("statusbar"))
+        } catch (_: ClassNotFoundException) {
         } catch (ex: NoSuchMethodException) {
         } catch (ex: IllegalAccessException) {
         } catch (ex: InvocationTargetException) {

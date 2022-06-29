@@ -17,6 +17,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.screens.aboutGraph
 import com.saggitt.omega.compose.screens.editIconGraph
+import com.saggitt.omega.compose.screens.gestureGraph
 import com.saggitt.omega.compose.screens.iconPickerGraph
 import soup.compose.material.motion.materialSharedAxisX
 
@@ -24,6 +25,7 @@ object Routes {
     const val ABOUT = "about"
     const val EDIT_ICON = "edit_icon"
     const val ICON_PICKER = "icon_picker"
+    const val GESTURE_SELECTOR = "gesture_selector"
 }
 
 val LocalNavController = staticCompositionLocalOf<NavController> {
@@ -51,6 +53,7 @@ fun DefaultComposeView(navController: NavHostController) {
                 aboutGraph(route = subRoute(Routes.ABOUT))
                 editIconGraph(route = subRoute(Routes.EDIT_ICON))
                 iconPickerGraph(route = subRoute(Routes.ICON_PICKER))
+                gestureGraph(route = subRoute(Routes.GESTURE_SELECTOR))
             }
         }
     }
@@ -60,8 +63,8 @@ fun DefaultComposeView(navController: NavHostController) {
 fun BlankScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight()
+                .fillMaxSize()
+                .fillMaxHeight()
     ) {
     }
 }

@@ -35,7 +35,7 @@ android {
     compileSdk = 32
 
     val name = "0.9.0"
-    val code = 918
+    val code = 920
 
     defaultConfig {
         minSdk = 26
@@ -242,13 +242,18 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.2")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.12")
+
+    //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-insets-ui:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
-    implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
+    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
+
     //Room Components
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
@@ -257,9 +262,9 @@ dependencies {
     // Recents lib dependency
     "withQuickstepImplementation"(project(":SystemUIShared"))
     implementation(
-        fileTree(
-            baseDir = "${prebuiltsDir}/libs"
-        ).include(
+            fileTree(
+                    baseDir = "${prebuiltsDir}/libs"
+            ).include(
             "wm_shell-aidls.jar"
         )
     )
