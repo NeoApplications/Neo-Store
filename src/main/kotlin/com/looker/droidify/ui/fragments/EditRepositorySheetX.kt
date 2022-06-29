@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
@@ -33,9 +34,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
@@ -138,12 +138,14 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
                 .show(childFragmentManager)
         }
 
-        GlobalScope.launch {
-            val list = viewModel.db.repositoryDao.all
-            takenAddresses = list.asSequence().filter { it.id != repositoryId }
-                .flatMap { (it.mirrors + it.address).asSequence() }
-                .map { it.withoutKnownPath }.toSet()
-            MainScope().launch { invalidateAddress() }
+        lifecycleScope.launchWhenStarted {
+            val reposFlow = viewModel.db.repositoryDao.getAllRepositories()
+            reposFlow.collectLatest { list ->
+                takenAddresses = list.asSequence().filter { it.id != repositoryId }
+                    .flatMap { (it.mirrors + it.address).asSequence() }
+                    .map { it.withoutKnownPath }.toSet()
+                MainScope().launch { invalidateAddress() }
+            }
         }
     }
 
@@ -389,7 +391,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
         address: String,
         fingerprint: String,
         authentication: String,
-    ) = GlobalScope.launch {
+    ) = lifecycleScope.launch {
         val binder = syncConnection.binder
         if (binder != null) {
             if (binder.isCurrentlySyncing(repositoryId)) {
@@ -435,7 +437,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
     }
 
     override fun onDeleteConfirm() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             if (syncConnection.binder?.deleteRepository(repositoryId) == true)
                 dismissAllowingStateLoss()
         }

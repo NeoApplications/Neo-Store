@@ -13,6 +13,7 @@ import com.looker.droidify.service.SyncService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -30,7 +31,9 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _repositories.emit(repositoryDao.all)
+            repositoryDao.getAllRepositories().collectLatest {
+                _repositories.emit(it)
+            }
         }
         toLaunch.value = null
     }
@@ -40,13 +43,11 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
     }
 
     fun showRepositorySheet(repositoryId: Long) {
-        viewModelScope.launch {
-            _showSheet.emit(repositoryId)
-        }
+        viewModelScope.launch { _showSheet.emit(repositoryId) }
     }
 
     fun toggleRepository(repository: Repository, isEnabled: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             syncConnection.binder?.setEnabled(repository, isEnabled)
         }
     }

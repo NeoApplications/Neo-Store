@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
@@ -117,7 +118,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         fun installApps(products: List<ProductItem>) = batchUpdate(products, true)
 
         fun sync(request: SyncRequest) {
-            GlobalScope.launch {
+            scope.launch {
                 val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList()
                 sync(ids, request)
             }
@@ -143,29 +144,30 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             }
         }
 
-        fun setEnabled(repository: Repository, enabled: Boolean): Boolean {
-            db.repositoryDao.put(repository.enable(enabled))
-            if (enabled) {
-                if (repository.id != currentTask?.task?.repositoryId && !tasks.any { it.repositoryId == repository.id }) {
-                    synchronized(tasks) { tasks += Task(repository.id, true) }
-                    handleNextTask(false)
+        suspend fun setEnabled(repository: Repository, enabled: Boolean): Boolean =
+            withContext(Dispatchers.IO) {
+                db.repositoryDao.put(repository.enable(enabled))
+                if (enabled) {
+                    if (repository.id != currentTask?.task?.repositoryId && !tasks.any { it.repositoryId == repository.id }) {
+                        synchronized(tasks) { tasks += Task(repository.id, true) }
+                        handleNextTask(false)
+                    }
+                } else {
+                    cancelTasks { it.repositoryId == repository.id }
+                    synchronized(tasks) { db.cleanUp(setOf(Pair(repository.id, false))) }
+                    val cancelledTask = cancelCurrentTask { it.task?.repositoryId == repository.id }
+                    handleNextTask(cancelledTask?.hasUpdates == true)
                 }
-            } else {
-                cancelTasks { it.repositoryId == repository.id }
-                synchronized(tasks) { db.cleanUp(setOf(Pair(repository.id, false))) }
-                val cancelledTask = cancelCurrentTask { it.task?.repositoryId == repository.id }
-                handleNextTask(cancelledTask?.hasUpdates == true)
+                true
             }
-            return true
+
+        suspend fun isCurrentlySyncing(repositoryId: Long): Boolean = withContext(Dispatchers.IO) {
+            currentTask?.task?.repositoryId == repositoryId
         }
 
-        fun isCurrentlySyncing(repositoryId: Long): Boolean {
-            return currentTask?.task?.repositoryId == repositoryId
-        }
-
-        fun deleteRepository(repositoryId: Long): Boolean {
+        suspend fun deleteRepository(repositoryId: Long): Boolean = withContext(Dispatchers.IO) {
             val repository = db.repositoryDao.get(repositoryId)
-            return repository != null && run {
+            repository != null && run {
                 setEnabled(repository, false)
                 db.repositoryDao.deleteById(repository.id)
                 true
@@ -325,7 +327,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private fun handleNextTask(hasUpdates: Boolean) {
         if (currentTask == null) {
-            GlobalScope.launch {
+            scope.launch {
                 if (tasks.isNotEmpty()) {
                     val task = tasks.removeAt(0)
                     val repository = db.repositoryDao.get(task.repositoryId)
@@ -425,7 +427,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @see SyncService.displayUpdatesNotification
      */
     private fun batchUpdate(productItems: List<ProductItem>, install: Boolean = false) {
-        if (Preferences[Preferences.Key.InstallAfterSync]) GlobalScope.launch {
+        if (Preferences[Preferences.Key.InstallAfterSync]) scope.launch {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Triple(

@@ -32,7 +32,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         savedInstanceState: Bundle?,
     ): View {
         super.onCreate(savedInstanceState)
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenStarted {
             viewModel.showSheet.collectLatest {
                 it?.let {
                     RepositorySheetX(it).showNow(childFragmentManager, "Repository $it")

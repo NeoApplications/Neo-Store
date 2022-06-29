@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.looker.droidify.database.entity.Repository
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
@@ -27,6 +28,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository WHERE _id = :id")
     fun getLive(id: Long): LiveData<Repository?>
 
+    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    fun getAllRepositories(): Flow<List<Repository>>
+
     @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val all: List<Repository>
 
@@ -38,7 +42,7 @@ interface RepositoryDao : BaseDao<Repository> {
 
     // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE _id = :id")
-    fun deleteById(id: Long): Int
+    fun deleteById(id: Long)
 
     @Query("SELECT MAX(_id) FROM repository")
     fun latestAddedId(): Long

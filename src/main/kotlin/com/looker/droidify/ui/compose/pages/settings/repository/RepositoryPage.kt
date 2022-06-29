@@ -29,7 +29,7 @@ fun RepositoryPage(viewModel: RepositoriesViewModelX) {
             }
         }
     ) {
-        val sortedRepoList = remember { repos.sortedBy { !it.enabled } }
+        val sortedRepoList = remember(repos) { repos.sortedBy { !it.enabled } }
         RepositoriesRecycler(
             repositoriesList = sortedRepoList,
             onClick = { viewModel.toggleRepository(it, it.enabled) },

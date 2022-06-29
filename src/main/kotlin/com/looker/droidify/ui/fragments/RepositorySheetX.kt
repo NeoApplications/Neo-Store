@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.looker.droidify.EXTRA_REPOSITORY_ID
 import com.looker.droidify.R
 import com.looker.droidify.RepoManager
@@ -19,8 +20,6 @@ import com.looker.droidify.service.SyncService
 import com.looker.droidify.ui.activities.PrefsActivityX
 import com.looker.droidify.ui.viewmodels.RepositoryViewModelX
 import com.looker.droidify.utility.extension.resources.getColorFromAttr
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -140,7 +139,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
     }
 
     override fun onDeleteConfirm() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             if (syncConnection.binder?.deleteRepository(repositoryId) == true)
                 dismissAllowingStateLoss()
         }
