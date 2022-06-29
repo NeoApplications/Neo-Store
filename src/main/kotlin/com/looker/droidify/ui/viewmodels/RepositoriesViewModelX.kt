@@ -1,24 +1,54 @@
 package com.looker.droidify.ui.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.looker.droidify.database.DatabaseX
+import com.looker.droidify.database.dao.RepositoryDao
 import com.looker.droidify.database.entity.Repository
 import com.looker.droidify.database.entity.Repository.Companion.newRepository
+import com.looker.droidify.service.Connection
+import com.looker.droidify.service.SyncService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
+class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
-    val repositories: MediatorLiveData<List<Repository>> = MediatorLiveData()
     val toLaunch: MediatorLiveData<Pair<Boolean, Long>?> = MediatorLiveData()
 
+    val syncConnection = Connection(SyncService::class.java)
+
+    private val _showSheet = MutableStateFlow<Long?>(null)
+    val showSheet = _showSheet.asStateFlow()
+
+    private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
+    val repositories = _repositories.asStateFlow()
+
     init {
-        repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
+        viewModelScope.launch(Dispatchers.IO) {
+            _repositories.emit(repositoryDao.all)
+        }
         toLaunch.value = null
+    }
+
+    fun bindConnection(context: Context) {
+        viewModelScope.launch { syncConnection.bind(context) }
+    }
+
+    fun showRepositorySheet(repositoryId: Long) {
+        viewModelScope.launch {
+            _showSheet.emit(repositoryId)
+        }
+    }
+
+    fun toggleRepository(repository: Repository, isEnabled: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            syncConnection.binder?.setEnabled(repository, isEnabled)
+        }
     }
 
     fun addRepository() {
@@ -28,19 +58,19 @@ class RepositoriesViewModelX(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
-        db.repositoryDao.insert(newRepository(address = "new.Repository"))
-        db.repositoryDao.latestAddedId()
+        repositoryDao.insert(newRepository())
+        repositoryDao.latestAddedId()
     }
 
     fun emptyToLaunch() {
         toLaunch.value = null
     }
 
-    class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
+    class Factory(private val repoDao: RepositoryDao) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(RepositoriesViewModelX::class.java)) {
-                return RepositoriesViewModelX(db) as T
+                return RepositoriesViewModelX(repoDao) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
