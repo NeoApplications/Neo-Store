@@ -34,9 +34,7 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenStarted {
             viewModel.showSheet.collectLatest {
-                it?.let {
-                    RepositorySheetX(it).showNow(childFragmentManager, "Repository $it")
-                }
+                RepositorySheetX(it).showNow(childFragmentManager, "Repository $it")
             }
         }
         return ComposeView(requireContext()).apply {

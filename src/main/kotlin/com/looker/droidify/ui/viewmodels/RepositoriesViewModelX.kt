@@ -11,7 +11,9 @@ import com.looker.droidify.database.entity.Repository.Companion.newRepository
 import com.looker.droidify.service.Connection
 import com.looker.droidify.service.SyncService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,8 +25,8 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
     val syncConnection = Connection(SyncService::class.java)
 
-    private val _showSheet = MutableStateFlow<Long?>(null)
-    val showSheet = _showSheet.asStateFlow()
+    private val _showSheet = MutableSharedFlow<Long>()
+    val showSheet: SharedFlow<Long> = _showSheet
 
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()

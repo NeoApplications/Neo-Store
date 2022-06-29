@@ -34,7 +34,7 @@ fun RepositoryItem(
     onClick: (Repository) -> Unit = {},
     onLongClick: (Repository) -> Unit = {}
 ) {
-    var (isEnabled, enable) = remember(repository.enabled) {
+    val (isEnabled, enable) = remember(repository.enabled) {
         mutableStateOf(repository.enabled)
     }
     val backgroundColor by animateColorAsState(
@@ -44,7 +44,7 @@ fun RepositoryItem(
 
     Surface(
         modifier = modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .combinedClickable(
@@ -55,7 +55,7 @@ fun RepositoryItem(
                 onLongClick = { onLongClick(repository) }
             ),
         color = backgroundColor,
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.extraLarge
     ) {
         Row(
             modifier = Modifier.padding(
@@ -104,16 +104,4 @@ private fun RepositoryItemText(
             )
         }
     }
-}
-
-//@Preview
-@Composable
-fun RepositoryItemPreview() {
-    RepositoryItem(
-        repository = Repository(
-            name = "Test Repo",
-            description = "Test Repo description written by looker, You are welcome"
-        ),
-        onClick = {}
-    )
 }
