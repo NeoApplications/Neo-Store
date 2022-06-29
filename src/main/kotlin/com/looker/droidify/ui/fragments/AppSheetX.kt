@@ -453,23 +453,27 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     }
                     item {
                         AnimatedVisibility(visible = product.canUpdate(installed)) {
-                            SwitchPreference(text = stringResource(id = R.string.ignore_this_update),
-                                initSelected = extras?.ignoredVersion == product.versionCode,
+                            SwitchPreference(
+                                text = stringResource(id = R.string.ignore_this_update),
+                                initSelected = { extras?.ignoredVersion == product.versionCode },
                                 onCheckedChanged = {
                                     viewModel.setIgnoredVersion(
                                         product.packageName,
                                         if (it) product.versionCode else 0
                                     )
-                                })
+                                }
+                            )
                         }
                     }
                     item {
                         AnimatedVisibility(visible = installed != null) {
-                            SwitchPreference(text = stringResource(id = R.string.ignore_all_updates),
-                                initSelected = extras?.ignoreUpdates == true,
+                            SwitchPreference(
+                                text = stringResource(id = R.string.ignore_all_updates),
+                                initSelected = { extras?.ignoreUpdates == true },
                                 onCheckedChanged = {
                                     viewModel.setIgnoreUpdates(product.packageName, it)
-                                })
+                                }
+                            )
                         }
                     }
                     if (Preferences[Preferences.Key.ShowScreenshots]) {
