@@ -391,7 +391,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         .subscribe { result, throwable ->
                             throwable?.printStackTrace()
                             currentTask = null
-                            handleNextTask(false)
                             if (result.isNotEmpty()) {
                                 if (Preferences[Preferences.Key.InstallAfterSync])
                                     batchUpdate(result)
@@ -400,6 +399,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 )
                                     displayUpdatesNotification(result)
                             }
+                            handleNextTask(false)
                         }
                     if (hasUpdates) {
                         currentTask = CurrentTask(null, disposable, true, State.Finishing)

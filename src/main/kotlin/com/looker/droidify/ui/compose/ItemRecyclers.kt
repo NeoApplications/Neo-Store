@@ -43,7 +43,7 @@ fun ProductsVerticalRecycler(
             ProductsListItem(
                 item = item,
                 repo = repositories[item.repositoryId],
-                isFavorite = favorites?.contains(item.packageName) == true,
+                isFavorite = favorites.contains(item.packageName),
                 onUserClick = onUserClick,
                 onFavouriteClick = onFavouriteClick,
                 installed = getInstalled.invoke(item),

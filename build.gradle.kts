@@ -213,8 +213,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.13")
 
-    debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
-    debugImplementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs

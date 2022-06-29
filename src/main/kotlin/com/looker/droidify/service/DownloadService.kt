@@ -194,12 +194,12 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
             consumed = true
         }
-        if (!consumed) {
-            scope.launch {
-                AppInstaller.getInstance(this@DownloadService)
-                    ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
-            }
+        //if (!consumed) { TODO investigate if there's resulting issues
+        scope.launch {
+            AppInstaller.getInstance(this@DownloadService)
+                ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
         }
+        //}
     }
 
     private fun validatePackage(task: Task, file: File): ValidationError? {

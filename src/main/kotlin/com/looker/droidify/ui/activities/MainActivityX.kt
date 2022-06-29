@@ -35,6 +35,7 @@ class MainActivityX : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
         const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
+        const val EXTRA_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.extra.UPDATES"
         const val EXTRA_CACHE_FILE_NAME =
             "${BuildConfig.APPLICATION_ID}.intent.extra.CACHE_FILE_NAME"
     }
@@ -154,6 +155,7 @@ class MainActivityX : AppCompatActivity() {
     private fun handleSpecialIntent(specialIntent: SpecialIntent) {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
+                // TODO directly update the apps??
                 binding.bottomNavigation.selectedItemId = R.id.installedTab
             }
             is SpecialIntent.Install -> {

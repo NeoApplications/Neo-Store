@@ -171,8 +171,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             else -> null
         }
         viewModel.downloadState.value = state
-        if (downloadState is DownloadService.State.Success && isResumed && !rootInstallerEnabled) {
         viewModel.updateActions()
+        if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed
             withContext(Dispatchers.Default) {
                 AppInstaller.getInstance(context)?.defaultInstaller?.install(downloadState.release.cacheFileName)
             }
@@ -256,7 +256,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         )
     }
 
-    // TODO fix in compose implementation
     override fun onScreenshotClick(screenshot: Screenshot) {
         val pair = viewModel.productRepos.asSequence()
             .map { it ->
@@ -354,7 +353,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val repos by viewModel.repositories.observeAsState()
         val downloadState by viewModel.downloadState.observeAsState(null)
         val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
-        val actions by viewModel.actions.observeAsState() // TODO add rest actions to UI
+        val actions by viewModel.actions.observeAsState()
         val secondaryAction by viewModel.secondaryAction.observeAsState()
         val extras by viewModel.extras.observeAsState(Extras(packageName))
         val productRepos = products?.mapNotNull { product ->
