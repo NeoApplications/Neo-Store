@@ -206,7 +206,7 @@ class InstalledFragment : MainNavFragmentX() {
                             text = stringResource(id = R.string.installed_applications),
                             modifier = Modifier.weight(1f),
                         )
-                        SuggestionChip(
+                        /*SuggestionChip(
                             shape = MaterialTheme.shapes.medium,
                             colors = SuggestionChipDefaults.suggestionChipColors(
                                 containerColor = MaterialTheme.colorScheme.surface,
@@ -223,7 +223,7 @@ class InstalledFragment : MainNavFragmentX() {
                             label = {
                                 Text(text = stringResource(id = R.string.sort_filter))
                             }
-                        )
+                        )*/
                     }
                     ProductsVerticalRecycler(
                         productsList = primaryList?.sortedBy(Product::label),

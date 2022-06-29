@@ -144,7 +144,7 @@ class LatestFragment : MainNavFragmentX() {
                                 text = stringResource(id = R.string.recently_updated),
                                 modifier = Modifier.weight(1f),
                             )
-                            SuggestionChip(
+                            /*SuggestionChip(
                                 shape = MaterialTheme.shapes.medium,
                                 colors = SuggestionChipDefaults.suggestionChipColors(
                                     containerColor = MaterialTheme.colorScheme.surface,
@@ -161,7 +161,7 @@ class LatestFragment : MainNavFragmentX() {
                                 label = {
                                     Text(text = stringResource(id = R.string.sort_filter))
                                 }
-                            )
+                            )*/
                         }
                     }
                     items(
