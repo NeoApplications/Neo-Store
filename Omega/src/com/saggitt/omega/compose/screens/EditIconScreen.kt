@@ -51,7 +51,6 @@ import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.compose.navigation.OnResult
 import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.preferences.preferenceGraph
-import com.saggitt.omega.compose.preferences.subRoute
 import com.saggitt.omega.data.IconOverrideRepository
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.IconPack
@@ -204,7 +203,6 @@ fun EditIconScreen(
 
         //Icon Packs
         iconPacks.forEach {
-            val route = subRoute(name = "/${Routes.ICON_PICKER}/${it.packageName}")
             ListItemWithIcon(
                 title = it.name,
                 modifier = Modifier
