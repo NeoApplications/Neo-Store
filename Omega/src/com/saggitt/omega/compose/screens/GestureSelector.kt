@@ -102,7 +102,7 @@ fun LauncherScreen() {
             ListItemWithIcon(
                     title = item.displayName,
                     modifier = Modifier.clickable {
-                        onOptionSelected(item.displayName)
+                        onOptionSelected(item.javaClass.name)
                     },
                     summary = "",
                     startIcon = {
@@ -119,9 +119,9 @@ fun LauncherScreen() {
                     },
                     endCheckbox = {
                         RadioButton(
-                                selected = (item.displayName == selectedOption),
+                                selected = (item.javaClass.name == selectedOption),
                                 onClick = {
-                                    onOptionSelected(item.displayName)
+                                    onOptionSelected(item.javaClass.name)
                                 },
                                 colors = colors
                         )
