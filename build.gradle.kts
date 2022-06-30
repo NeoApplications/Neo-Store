@@ -155,6 +155,7 @@ dependencies {
 
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.0-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0-alpha05")
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.fragment:fragment-ktx:1.5.0")

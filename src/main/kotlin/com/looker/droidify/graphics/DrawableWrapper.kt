@@ -51,6 +51,6 @@ open class DrawableWrapper(val drawable: Drawable) : Drawable() {
         drawable.colorFilter = colorFilter
     }
 
-    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java", ReplaceWith("drawable.opacity"))
     override fun getOpacity(): Int = drawable.opacity
 }
