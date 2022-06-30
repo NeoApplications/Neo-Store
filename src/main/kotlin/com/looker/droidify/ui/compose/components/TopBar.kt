@@ -152,6 +152,8 @@ fun ExpandedSearchView(
             icon = Icons.Rounded.Close,
             description = stringResource(id = R.string.cancel),
             onClick = {
+                textFieldValue = TextFieldValue(text = "")
+                focusManager.clearFocus()
                 onExpanded(false)
                 onClose()
             }
