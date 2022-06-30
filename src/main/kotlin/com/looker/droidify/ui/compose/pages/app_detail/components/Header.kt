@@ -44,7 +44,6 @@ fun AppInfoHeader(
     appSize: String,
     appDev: String,
     mainAction: ActionState?,
-    secondaryAction: ActionState? = null,
     possibleActions: Set<ActionState>,
     onSource: () -> Unit = { },
     onSourceLong: () -> Unit = { },
@@ -74,8 +73,8 @@ fun AppInfoHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (possibleActions.size == 1) {
-                    SecondaryActionButton(packageState = secondaryAction, onClick = {
-                        onAction(secondaryAction)
+                    SecondaryActionButton(packageState = possibleActions.first(), onClick = {
+                        onAction(possibleActions.first())
                     })
                 } else if (possibleActions.size > 1) {
                     SecondaryActionButton(

@@ -354,7 +354,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val downloadState by viewModel.downloadState.observeAsState(null)
         val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
         val actions by viewModel.actions.observeAsState()
-        val secondaryAction by viewModel.secondaryAction.observeAsState()
         val extras by viewModel.extras.observeAsState(Extras(packageName))
         val productRepos = products?.mapNotNull { product ->
             repos?.firstOrNull { it.id == product.repositoryId }
@@ -425,7 +424,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             appSize = product.displayRelease?.size?.formatSize().orEmpty(),
                             appDev = product.author.name.replaceFirstChar { it.titlecase() },
                             mainAction = mainAction,
-                            secondaryAction = secondaryAction,
                             possibleActions = actions?.filter { it != mainAction }?.toSet()
                                 ?: emptySet(),
                             onSource = {

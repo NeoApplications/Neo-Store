@@ -31,7 +31,6 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
     val downloadState: MutableLiveData<DownloadState> = MutableLiveData()
     val mainAction: MutableLiveData<ActionState> = MutableLiveData()
     val actions: MediatorLiveData<Set<ActionState>> = MediatorLiveData()
-    val secondaryAction: MutableLiveData<ActionState> = MutableLiveData()
     val extras: MediatorLiveData<Extras> = MediatorLiveData()
 
     init {
@@ -63,7 +62,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
             val canLaunch =
                 product != null && installed != null && installed.launcherActivities.isNotEmpty()
             val canShare = product != null && productRepos[0].second.name == "F-Droid"
-            val bookmarked = extras.value?.favorite
+            val bookmarked = extras.value?.favorite ?: false
 
             val actions = mutableSetOf<ActionState>()
             launch {
@@ -73,7 +72,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
                 if (installed != null) actions += ActionState.Details
                 if (canUninstall) actions += ActionState.Uninstall
                 if (canShare) actions += ActionState.Share
-                if (bookmarked == true) actions += ActionState.Bookmarked
+                if (bookmarked) actions += ActionState.Bookmarked
                 else actions += ActionState.Bookmark
             }
             val primaryAction = when {
@@ -81,14 +80,8 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
                 canLaunch -> ActionState.Launch
                 canInstall -> ActionState.Install
                 canShare -> ActionState.Share
-                bookmarked == true -> ActionState.Bookmarked
+                bookmarked -> ActionState.Bookmarked
                 else -> ActionState.Bookmark
-            }
-            val secondaryAction = when {
-                primaryAction != ActionState.Share && canShare -> ActionState.Share
-                primaryAction != ActionState.Launch && canLaunch -> ActionState.Launch
-                installed != null && canUninstall -> ActionState.Uninstall
-                else -> null
             }
 
             withContext(Dispatchers.Main) {
@@ -100,7 +93,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
                     }
                 else if (downloadState.value == null)
                     mainAction.value = primaryAction
-                this@AppViewModelX.secondaryAction.value = secondaryAction
+                true
             }
         }
     }
