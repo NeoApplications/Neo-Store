@@ -3,6 +3,7 @@ package com.saggitt.omega.iconpack
 import android.content.ComponentName
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.UserHandle
 import com.android.launcher3.compat.AlphabeticIndexCompat
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.icons.ClockMetadata
@@ -40,7 +41,7 @@ abstract class IconPack(
         }
     }
 
-    abstract fun getIcon(componentName: ComponentName): IconEntry?
+    abstract fun getIcon(componentName: ComponentName, user: UserHandle): IconEntry?
     abstract fun getCalendar(componentName: ComponentName): IconEntry?
     abstract fun getClock(entry: IconEntry): ClockMetadata?
 

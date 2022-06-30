@@ -159,7 +159,7 @@ fun EditIconScreen(
                     val pack: IconPack? = ip.getIconPackOrSystem(it.packageName)
                     if (pack != null) {
                         pack.loadBlocking()
-                        val iconEntry = pack.getIcon(componentKey.componentName)
+                        val iconEntry = pack.getIcon(componentKey.componentName, componentKey.user)
                         if (iconEntry != null) {
                             val mIcon: Drawable? = ip.getDrawable(
                                 iconEntry,

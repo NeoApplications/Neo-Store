@@ -41,12 +41,13 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         }
     }
 
-    override fun getIcon(componentName: ComponentName) =
-            IconEntry(
-                    packPackageName,
-                    ComponentKey(componentName, Process.myUserHandle()).toString(),
-                    IconType.Normal
-            )
+    override fun getIcon(componentName: ComponentName, user: UserHandle) =
+        IconEntry(
+            packPackageName,
+            componentName,
+            user,
+            IconType.Normal
+        )
 
     override fun getCalendar(componentName: ComponentName): IconEntry? = null
     override fun getClock(entry: IconEntry): ClockMetadata? = null
