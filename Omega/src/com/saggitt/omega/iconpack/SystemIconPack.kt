@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
-import android.os.Process
+import android.os.UserHandle
 import androidx.core.content.getSystemService
 import com.android.launcher3.R
 import com.android.launcher3.pm.UserCache
@@ -23,8 +23,8 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         val profiles = UserCache.INSTANCE.get(context).userProfiles
         val launcherApps = context.getSystemService<LauncherApps>()!!
         profiles
-                .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
-                .associateBy { ComponentKey(it.componentName, it.user) }
+            .flatMap { launcherApps.getActivityList(null, it) }
+            .associateBy { ComponentKey(it.componentName, it.user) }
     }
 
     init {
@@ -36,8 +36,8 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
             val profiles = UserCache.INSTANCE.get(context).userProfiles
             val launcherApps = context.getSystemService<LauncherApps>()!!
             profiles
-                    .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
-                    .associateBy { ComponentKey(it.componentName, it.user) }
+                .flatMap { launcherApps.getActivityList(null, it) }
+                .associateBy { ComponentKey(it.componentName, it.user) }
         }
     }
 
