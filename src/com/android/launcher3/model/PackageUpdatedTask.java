@@ -127,6 +127,11 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                                 packages[i], appsList.updatePackage(context, packages[i], mUser));
                         app.getWidgetCache().removePackage(packages[i], mUser);
 
+                        //Reload SystemIconPack map
+                        if (Utilities.getOmegaPrefs(context).getIconPackPackage() == "") {
+                            Utilities.getOmegaPrefs(context).reloadApps();
+                        }
+
                         // The update may have changed which shortcuts/widgets are available.
                         // Refresh the widgets for the package if we have an activity running.
                         Launcher launcher = Launcher.ACTIVITY_TRACKER.getCreatedActivity();
