@@ -21,7 +21,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -111,7 +111,7 @@ fun ExpandedSearchView(
 ) {
     val focusManager = LocalFocusManager.current
     val textFieldFocusRequester = remember { FocusRequester() }
-    SideEffect { textFieldFocusRequester.requestFocus() }
+    LaunchedEffect(textFieldFocusRequester) { textFieldFocusRequester.requestFocus() }
 
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(query, TextRange(query.length)))
