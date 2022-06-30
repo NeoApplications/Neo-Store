@@ -56,7 +56,8 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
     override fun getClocks(): MutableSet<ComponentName> = mutableSetOf()
 
     override fun getIcon(iconEntry: IconEntry, iconDpi: Int): Drawable? {
-        val key = ComponentKey.fromString(iconEntry.name)
+        val key = if (iconEntry.componentKey != null) iconEntry.componentKey
+        else ComponentKey.fromString(iconEntry.name)
         val app = appMap[key] ?: return null
         if (app.componentName.packageName.contains("com.google.android.deskclock"))
             return Drawable.createFromPath("android.resource://${app.applicationInfo.packageName}/${app.applicationInfo.icon}")

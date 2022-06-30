@@ -76,7 +76,7 @@ public class ComponentKey {
         }
         try {
             return new ComponentKey(componentName,
-                    UserHandle.getUserHandleForUid(Integer.parseInt(str.substring(sep + 1))));
+                    UserHandle.getUserHandleForUid(Integer.parseInt(str.substring(sep + 1)))); // TODO (Solution 1) get the user from the profile id string (it's not a uid)
         } catch (NumberFormatException ex) {
             return null;
         }
