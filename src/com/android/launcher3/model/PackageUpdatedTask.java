@@ -128,7 +128,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                         app.getWidgetCache().removePackage(packages[i], mUser);
 
                         //Reload SystemIconPack map
-                        if (Utilities.getOmegaPrefs(context).getIconPackPackage() == "") {
+                        if (Utilities.getOmegaPrefs(context).getIconPackPackage().equals("")) {
                             Utilities.getOmegaPrefs(context).reloadApps();
                         }
 
