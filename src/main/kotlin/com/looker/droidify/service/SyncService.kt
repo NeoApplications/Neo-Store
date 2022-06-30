@@ -35,7 +35,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -397,7 +396,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 if (Preferences[Preferences.Key.InstallAfterSync])
                                     batchUpdate(result)
                                 if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
-                                    updateNotificationBlockerFragment?.get()?.isAdded != true
+                                    updateNotificationBlockerFragment?.get()?.isAdded != true &&
+                                    result.isNotEmpty()
                                 )
                                     displayUpdatesNotification(result)
                             }
