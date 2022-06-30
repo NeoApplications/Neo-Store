@@ -65,9 +65,9 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
             val bookmarked = extras.value?.favorite ?: false
 
             val actions = mutableSetOf<ActionState>()
-            launch {
-                if (canInstall) actions += ActionState.Install
+            synchronized(actions) {
                 if (canUpdate) actions += ActionState.Update
+                if (canInstall && !canUpdate) actions += ActionState.Install
                 if (canLaunch) actions += ActionState.Launch
                 if (installed != null) actions += ActionState.Details
                 if (canUninstall) actions += ActionState.Uninstall
@@ -85,7 +85,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
             }
 
             withContext(Dispatchers.Main) {
-                this@AppViewModelX.actions.value = actions
+                synchronized(actions) { this@AppViewModelX.actions.value = actions }
 
                 if (downloadState.value != null && mainAction.value?.textId != downloadState.value?.textId)
                     downloadState.value?.let {
