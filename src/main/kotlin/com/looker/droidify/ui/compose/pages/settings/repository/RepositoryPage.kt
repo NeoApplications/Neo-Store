@@ -23,7 +23,7 @@ fun RepositoryPage(viewModel: RepositoriesViewModelX) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = { viewModel.addRepository() }) {
+            ExtendedFloatingActionButton(onClick = { viewModel.showRepositorySheet(editMode = true) }) {
                 Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add Repository")
                 Text(text = "Add Repository")
             }

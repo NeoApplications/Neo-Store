@@ -1,7 +1,6 @@
 package com.looker.droidify.ui.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -21,12 +20,10 @@ import kotlinx.coroutines.withContext
 
 class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
-    val toLaunch: MediatorLiveData<Pair<Boolean, Long>?> = MediatorLiveData()
-
     val syncConnection = Connection(SyncService::class.java)
 
-    private val _showSheet = MutableSharedFlow<Long>()
-    val showSheet: SharedFlow<Long> = _showSheet
+    private val _showSheet = MutableSharedFlow<SheetNavigationData>()
+    val showSheet: SharedFlow<SheetNavigationData> = _showSheet
 
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()
@@ -37,15 +34,22 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
                 _repositories.emit(it)
             }
         }
-        toLaunch.value = null
     }
 
     fun bindConnection(context: Context) {
         viewModelScope.launch { syncConnection.bind(context) }
     }
 
-    fun showRepositorySheet(repositoryId: Long) {
-        viewModelScope.launch { _showSheet.emit(repositoryId) }
+    fun showRepositorySheet(repositoryId: Long = 0L, editMode: Boolean = false) {
+        viewModelScope.launch {
+            _showSheet.emit(
+                if (editMode) {
+                    SheetNavigationData(repositoryId, editMode)
+                } else {
+                    SheetNavigationData(addNewRepository(), editMode)
+                }
+            )
+        }
     }
 
     fun toggleRepository(repository: Repository, isEnabled: Boolean) {
@@ -54,19 +58,9 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
         }
     }
 
-    fun addRepository() {
-        viewModelScope.launch {
-            toLaunch.value = Pair(true, addNewRepository())
-        }
-    }
-
     private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
         repositoryDao.insert(newRepository())
         repositoryDao.latestAddedId()
-    }
-
-    fun emptyToLaunch() {
-        toLaunch.value = null
     }
 
     class Factory(private val repoDao: RepositoryDao) : ViewModelProvider.Factory {
@@ -79,3 +73,8 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
         }
     }
 }
+
+data class SheetNavigationData(
+    val repositoryId: Long = 0L,
+    val editMode: Boolean = false
+)

@@ -34,7 +34,17 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenStarted {
             viewModel.showSheet.collectLatest {
-                RepositorySheetX(it).showNow(childFragmentManager, "Repository $it")
+                if (it.editMode) {
+                    EditRepositorySheetX(it.repositoryId).showNow(
+                        childFragmentManager,
+                        "Repository ${it.repositoryId}"
+                    )
+                } else {
+                    RepositorySheetX(it.repositoryId).showNow(
+                        childFragmentManager,
+                        "Repository $it"
+                    )
+                }
             }
         }
         return ComposeView(requireContext()).apply {
@@ -44,13 +54,6 @@ class PrefsRepositoriesFragment : BaseNavFragment() {
 
     override fun setupLayout() {
         viewModel.bindConnection(requireContext())
-        viewModel.toLaunch.observe(viewLifecycleOwner) {
-            if (it?.first == true) {
-                EditRepositorySheetX(it.second)
-                    .showNow(parentFragmentManager, "Repository ${it.second}")
-                viewModel.emptyToLaunch()
-            }
-        }
     }
 
     override fun onDestroyView() {
