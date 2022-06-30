@@ -35,11 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
 import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
@@ -123,15 +119,13 @@ class BackupFile(context: Context, val uri: Uri) {
         }
     }
 
-    fun restore(contents: Int): Boolean { // TODO FIX: doesn't restore all backed up DBs
+    fun restore(contents: Int): Boolean {
         try {
             val contextWrapper = ContextWrapper(mContext)
             val dbFile2 = contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2)
-            //val widgets = contextWrapper.getDatabasePath(LauncherFiles.WIDGET_PREVIEWS_DB)
-            //val appIcons = contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB)
             val dir = contextWrapper.cacheDir.parent
             val settingsFile =
-                File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
+                    File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
 
             val pfd = mContext.contentResolver.openFileDescriptor(uri, "r")
             val inStream = FileInputStream(pfd?.fileDescriptor)
@@ -151,12 +145,12 @@ class BackupFile(context: Context, val uri: Uri) {
                     } else if (entry.name == dbFile2.name) {
                         if (contents and INCLUDE_HOME_SCREEN == 0) continue
                         dbFile2
-                        /*} else if (entry.name == widgets.name) {
-                            if (contents and INCLUDE_HOME_SCREEN == 0) continue
-                            widgets
-                        } else if (entry.name == appIcons.name) {
-                            if (contents and INCLUDE_HOME_SCREEN == 0) continue
-                            appIcons*/
+                    } else if (entry.name == "NeoLauncher.db-shm") {
+                        if (contents and INCLUDE_HOME_SCREEN == 0) continue
+                        contextWrapper.getDatabasePath("NeoLauncher.db-shm")
+                    } else if (entry.name == "NeoLauncher.db-wal") {
+                        if (contents and INCLUDE_HOME_SCREEN == 0) continue
+                        contextWrapper.getDatabasePath("NeoLauncher.db-wal")
                     } else if (entry.name == settingsFile.name) {
                         if (contents and INCLUDE_SETTINGS == 0) continue
                         settingsFile
@@ -342,9 +336,11 @@ class BackupFile(context: Context, val uri: Uri) {
             val files: MutableList<File> = ArrayList()
             if (contents or INCLUDE_HOME_SCREEN != 0) {
                 contextWrapper.databaseList()
-                    .filter { it.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM)) }
-                    .forEach { files.add(contextWrapper.getDatabasePath(it)) }
+                        .filter { it.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM)) }
+                        .forEach { files.add(contextWrapper.getDatabasePath(it)) }
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2))
+                files.add(contextWrapper.getDatabasePath("NeoLauncher.db-shm"))
+                files.add(contextWrapper.getDatabasePath("NeoLauncher.db-wal"))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.WIDGET_PREVIEWS_DB))
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.APP_ICONS_DB))
             }
