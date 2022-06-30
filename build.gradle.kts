@@ -2,19 +2,16 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-rc02"
+val composeVersion = "1.2.0-rc03"
+val composeCompilerVersion = "1.2.0"
 val roomVersion = "2.4.2"
 
 plugins {
-    id("com.android.application").version("7.2.1")
-    kotlin("android").version("1.6.21")
-    kotlin("kapt").version("1.6.21")
-    kotlin("plugin.serialization").version("1.6.21")
+    id("com.android.application") version ("7.2.1")
+    kotlin("android") version ("1.7.0")
+    kotlin("plugin.serialization") version ("1.7.0")
+    id("com.google.devtools.ksp") version ("1.7.0-1.0.6")
 }
-
-apply(plugin = "com.android.application")
-apply(plugin = "kotlin-android")
-apply(plugin = "kotlin-kapt")
 
 android {
     namespace = "com.looker.droidify"
@@ -40,9 +37,9 @@ android {
         }
     }
 
-    sourceSets.forEach {
-        val javaDir = it.java.srcDirs.find { it.name == "java" }
-        it.java {
+    sourceSets.forEach { source ->
+        val javaDir = source.java.srcDirs.find { it.name == "java" }
+        source.java {
             srcDir(File(javaDir?.parentFile, "kotlin"))
         }
     }
@@ -63,7 +60,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
 
     buildTypes {
@@ -157,15 +154,15 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
     implementation("androidx.core:core-ktx:1.9.0-alpha05")
     implementation("androidx.appcompat:appcompat:1.4.2")
-    implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
-    implementation("androidx.activity:activity-compose:1.6.0-alpha05")
+    implementation("androidx.fragment:fragment-ktx:1.5.0")
+    implementation("androidx.activity:activity-ktx:1.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0-rc02")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc02")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
@@ -194,7 +191,7 @@ dependencies {
     implementation("de.charlex.compose:html-text:1.2.0")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
 
@@ -202,14 +199,14 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-rxjava3:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     // Compose
     implementation("androidx.compose.runtime:runtime:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.13")
