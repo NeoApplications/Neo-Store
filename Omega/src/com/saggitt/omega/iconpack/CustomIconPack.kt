@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.content.res.XmlResourceParser
 import android.graphics.drawable.Drawable
+import android.os.UserHandle
 import android.util.Xml
 import com.android.launcher3.R
 import com.saggitt.omega.data.IconPickerItem
@@ -41,7 +42,9 @@ class CustomIconPack(context: Context, packPackageName: String) :
         startLoad()
     }
 
-    override fun getIcon(componentName: ComponentName) = componentMap[componentName]
+    override fun getIcon(componentName: ComponentName, user: UserHandle) =
+        componentMap[componentName]
+
     override fun getCalendar(componentName: ComponentName) = calendarMap[componentName]
     override fun getClock(entry: IconEntry) = clockMetas[entry]
 

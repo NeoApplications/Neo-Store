@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
-import android.os.Process
+import android.os.UserHandle
 import androidx.core.content.getSystemService
 import com.android.launcher3.R
 import com.android.launcher3.pm.UserCache
@@ -23,8 +23,8 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         val profiles = UserCache.INSTANCE.get(context).userProfiles
         val launcherApps = context.getSystemService<LauncherApps>()!!
         profiles
-                .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
-                .associateBy { ComponentKey(it.componentName, it.user) }
+            .flatMap { launcherApps.getActivityList(null, it) }
+            .associateBy { ComponentKey(it.componentName, it.user) }
     }
 
     init {
@@ -36,17 +36,18 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
             val profiles = UserCache.INSTANCE.get(context).userProfiles
             val launcherApps = context.getSystemService<LauncherApps>()!!
             profiles
-                    .flatMap { launcherApps.getActivityList(null, Process.myUserHandle()) }
-                    .associateBy { ComponentKey(it.componentName, it.user) }
+                .flatMap { launcherApps.getActivityList(null, it) }
+                .associateBy { ComponentKey(it.componentName, it.user) }
         }
     }
 
-    override fun getIcon(componentName: ComponentName) =
-            IconEntry(
-                    packPackageName,
-                    ComponentKey(componentName, Process.myUserHandle()).toString(),
-                    IconType.Normal
-            )
+    override fun getIcon(componentName: ComponentName, user: UserHandle) =
+        IconEntry(
+            packPackageName,
+            componentName,
+            user,
+            IconType.Normal
+        )
 
     override fun getCalendar(componentName: ComponentName): IconEntry? = null
     override fun getClock(entry: IconEntry): ClockMetadata? = null
@@ -55,7 +56,8 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
     override fun getClocks(): MutableSet<ComponentName> = mutableSetOf()
 
     override fun getIcon(iconEntry: IconEntry, iconDpi: Int): Drawable? {
-        val key = ComponentKey.fromString(iconEntry.name)
+        val key = if (iconEntry.componentKey != null) iconEntry.componentKey
+        else ComponentKey.fromString(iconEntry.name)
         val app = appMap[key] ?: return null
         if (app.componentName.packageName.contains("com.google.android.deskclock"))
             return Drawable.createFromPath("android.resource://${app.applicationInfo.packageName}/${app.applicationInfo.icon}")

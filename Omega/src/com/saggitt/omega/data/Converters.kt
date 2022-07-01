@@ -29,6 +29,6 @@ class Converters {
 
     @TypeConverter
     fun toComponentKey(value: String?): ComponentKey? {
-        return value?.let { ComponentKey.fromString(it) }
+        return value?.let { ComponentKey.fromString(it) } // TODO (Solution 2) make ComponentKey serializable (including converters for its fields)
     }
 }

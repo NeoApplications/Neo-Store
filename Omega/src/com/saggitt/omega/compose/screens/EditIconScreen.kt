@@ -19,12 +19,25 @@
 package com.saggitt.omega.compose.screens
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +56,7 @@ import androidx.core.content.getSystemService
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
@@ -55,6 +69,7 @@ import com.saggitt.omega.data.IconOverrideRepository
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
+import com.saggitt.omega.util.getUserForProfileId
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -68,9 +83,11 @@ fun NavGraphBuilder.editIconGraph(route: String) {
             )
         ) { backStackEntry ->
             val args = backStackEntry.arguments!!
-            val packageName = args.getString("packageName")
-            val nameAndUser = args.getString("nameAndUser")
-            val key = ComponentKey.fromString("$packageName/$nameAndUser")!!
+            val packageName = args.getString("packageName") ?: ""
+            val nameAndUser = (args.getString("nameAndUser") ?: "#0").split("#")
+            val user = UserCache.INSTANCE.get(LocalContext.current)
+                .getUserForProfileId(nameAndUser[1].toInt())
+            val key = ComponentKey(ComponentName(packageName, nameAndUser[0]), user)
             EditIconScreen(key)
         }
     }
@@ -87,7 +104,7 @@ fun EditIconScreen(
     val launcherApps = context.getSystemService<LauncherApps>()!!
     val intent = Intent().setComponent(componentKey.componentName)
     val activity = launcherApps.resolveActivity(intent, componentKey.user)
-    val originalIcon: Drawable = activity.getIcon(context.resources.displayMetrics.densityDpi)
+    val originalIcon: Drawable? = activity.getIcon(context.resources.displayMetrics.densityDpi)
 
     val title = remember(componentKey) {
         activity.label.toString()
@@ -159,7 +176,7 @@ fun EditIconScreen(
                     val pack: IconPack? = ip.getIconPackOrSystem(it.packageName)
                     if (pack != null) {
                         pack.loadBlocking()
-                        val iconEntry = pack.getIcon(componentKey.componentName)
+                        val iconEntry = pack.getIcon(componentKey.componentName, componentKey.user)
                         if (iconEntry != null) {
                             val mIcon: Drawable? = ip.getDrawable(
                                 iconEntry,

@@ -83,7 +83,7 @@ class CustomIconProvider @JvmOverloads constructor(
             return calendarEntry
         }
         // finally, look for normal icon
-        return iconPack.getIcon(componentName)
+        return iconPack.getIcon(componentName, user)
     }
 
     override fun getIconWithOverrides(

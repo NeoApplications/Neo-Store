@@ -52,6 +52,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
+import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.views.OptionsPopupView
@@ -292,8 +293,6 @@ fun View.runOnAttached(runnable: Runnable) {
 
 fun Float.ceilToInt() = ceil(this).toInt()
 
-
-
 fun dpToPx(size: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
@@ -415,3 +414,6 @@ fun PackageManager.isAppEnabled(packageName: String?, flags: Int): Boolean {
         false
     }
 }
+
+fun UserCache.getUserForProfileId(profileId: Int) =
+    userProfiles.find { it.toString() == "UserHandle{$profileId}" }
