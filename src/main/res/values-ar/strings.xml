@@ -205,4 +205,7 @@
     <string name="no_action_possible">لا يوجد إجراء ممكن</string>
     <string name="show_screenshots">عرض لقطات الشاشة</string>
     <string name="show_screenshots_description">عرض لقطات الشاشة في صفحة التطبيق.</string>
+    <string name="favorite_remove">إزالة من المفضلة</string>
+    <string name="favorite_add">إضافة إلى المفضلة</string>
+    <string name="open">فتح</string>
 </resources>
