@@ -294,7 +294,8 @@ public class BaseIconFactory implements AutoCloseable {
                                                     boolean shrinkNonAdaptiveIcons, RectF outIconBounds, float[] outScale) {
         if (shrinkNonAdaptiveIcons) {
             boolean isFromIconPack = ExtendedBitmapDrawable.isFromIconPack(icon);
-            shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
+            //shrinkNonAdaptiveIcons = !isFromIconPack && IconPreferencesKt.shouldWrapAdaptive(mContext);
+            shrinkNonAdaptiveIcons = IconPreferencesKt.shouldWrapAdaptive(mContext);
         }
 
         if (icon == null) {
