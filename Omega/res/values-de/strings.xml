@@ -4,7 +4,7 @@
     <string name="title__general_about">Über</string>
     <string name="title__general_notifications">Gesten und Benachrichtigungen</string>
     <string name="title__general_advanced">Erweiterte Einstellungen</string>
-    <string name="title__general_search">Suchen</string>
+    <string name="title__general_search">Suche und Ordner</string>
     <string name="smartspace_in_time">in %1$s</string>
     <string name="smartspace_now">jetzt</string>
     <string name="smartspace_setup_text">Antippen zum einrichten</string>
@@ -49,12 +49,12 @@
     <string name="icon_shape_circle">Kreis</string>
     <string name="icon_shape_squircle">Eckiger Kreis</string>
     <string name="icon_shape_square">Quadrat</string>
-    <string name="icon_shape_system_default">Systemstandard</string>
+    <string name="icon_shape_system_default">System</string>
     <string name="icon_shape_override_label_location">auf dem Startbildschirm</string>
     <string name="icon_shape_override_label">Ändere die Symbol-Form</string>
     <string name="icon_shape_override_progress">Wende Symbol-Form Änderungen an</string>
     <string name="menu_icon_shape">Benutzerdefinierte Symbol-Form</string>
-    <string name="get_more_icon_packs">Mehr…</string>
+    <string name="get_more_icon_packs">Neues Icon-Pack herunterladen</string>
     <string name="icon_pack">Symbol-Paket</string>
     <string name="title_default">Standard</string>
     <string name="theme_use_dark_text">Nutze dunklen Text</string>
@@ -69,7 +69,7 @@
     <string name="theme_with_dark_text">Dunkler Text</string>
     <string name="theme_light">Hell</string>
     <string name="theme_based">Vom Thema eingestellt</string>
-    <string name="theme_auto_night_mode">Folge dem Systemthema</string>
+    <string name="theme_auto_night_mode">System</string>
     <string name="theme_auto">Hintergrundbild folgen</string>
     <string name="summary__theme_blur">Verwische die Seitenhindergründe</string>
     <string name="title_theme_icon_packs">Symbol Pakete</string>
@@ -77,10 +77,10 @@
     <string name="title__theme_blur_radius">Unschärfe Intensität</string>
     <string name="title__theme_blur">Unschärfe</string>
     <string name="title__theme_accent_color">Akzentfarbe</string>
-    <string name="msg_missing_usage_access">Um App-Vorschläge anzuzeigen, erteilen Sie den Nutzungszugriff für <xliff:g id="name" example="My App">%1$s</xliff:g></string>
+    <string name="msg_missing_usage_access">Erteilen Sie den Nutzungszugriff für <xliff:g example="My App" id="name">%1$s</xliff:g> um App-Vorschläge anzuzeigen.</string>
     <string name="needs_usage_access">Nutzungzugriff erforderlich</string>
     <string name="hide_app_reset">Versteckte Anwendungen zurücksetzen</string>
-    <string name="hide_app_selected">  versteckt</string>
+    <string name="hide_app_selected"> versteckt</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Versteckt</item>
         <item quantity="other"/>
@@ -116,9 +116,9 @@
     <string name="title__sort_by_color">Nach Farbe</string>
     <string name="title__sort_most_used">Meist verwendet</string>
     <string name="title__sort_last_installed">Zuletzt installiert</string>
-    <string name="title__sort_alphabetical_za">Alphabetisch Z-A</string>
-    <string name="title__sort_alphabetical_az">Alphabetisch A-Z</string>
-    <string name="title__sort_mode">App sortieren</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
+    <string name="title__sort_mode">App-Sortierung</string>
     <string name="title_drawer_row_height">Zeilenhöhe</string>
     <string name="title_drawer_enable_background">Benutzerdefinierte Hintergrundfarbe verwenden</string>
     <string name="title__drawer_columns">Anzahl der Spalten</string>
@@ -131,7 +131,7 @@
     <string name="title__drawer_all_apps">Alle App Beschriftungen anzeigen</string>
     <string name="title__drawer_sort">Apps sortieren</string>
     <string name="num_hotseat_icons_pref_title">Symbol Anzahl</string>
-    <string name="title_disabled">Deaktiviert</string>
+    <string name="title_disabled">Aus</string>
     <string name="hotseat_show_page_indicator">Seitenindikator anzeigen</string>
     <string name="title_opacity">Deckkraft</string>
     <string name="dock_colored_google">Farbige Symbole</string>
@@ -153,7 +153,7 @@
     <string name="title_desktop_icon_popup_menu">Dialogfenster-Menüelemente</string>
     <string name="title__multiline_labels">Mehrzeilige App-Namen</string>
     <string name="title_desktop_lock_desktop">Desktop sperren</string>
-    <string name="title_desktop_overlap_placement">Erlaube Überschneidungen</string>
+    <string name="title_desktop_overlap_placement">Erlaube Überschneidungen von Widgets</string>
     <string name="title__desktop_hide_icon_labels">Symbol-Beschriftung auf dem Startbildschirm verstecken</string>
     <string name="title__desktop_grid_size">Rastergröße</string>
     <string name="title__desktop_icon_size">Symbolgröße</string>
@@ -161,8 +161,8 @@
     <string name="allow_rotation_blocked_desc">Aktuelle Display-Einstellung erlaubt keine Drehung</string>
     <string name="pref_category__others">Anderes</string>
     <string name="pref_category__inputs">Gesten und Suche</string>
-    <string name="pref_category__interfaces">Oberflächen</string>
-    <string name="summary__general_about">Mehr Informationen über den Neo Launcher</string>
+    <string name="pref_category__interfaces">Benutzeroberfläche</string>
+    <string name="summary__general_about">Mehr über den Omega Launcher</string>
     <string name="summary__general_advanced">Sprache, Sicherung, Einstellungssuche</string>
     <string name="summary__general_notifications">Abzeichen-Anzahl, Abzeichen-Farbe, Gesten</string>
     <string name="summary__general_smartspace">Datum, Uhrzeit, Home-Widget</string>
@@ -187,7 +187,7 @@
     <string name="weather_provider_oneplus_weather">OnePlus Wetter</string>
     <string name="weather_provider_pe">Pixel-Erlebnis</string>
     <string name="onbording">Onboarding</string>
-    <string name="event_provider_missing_notification_access">Um <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g> zu nutzen, aktiviere die Benachrichtigungen von <xliff:g example="My App" id="name">“%2$s”.</xliff:g></string>
+    <string name="event_provider_missing_notification_access">Schalte Benachrichtigungen von <xliff:g example="My App" id="name">“%2$s” an, um </xliff:g><xliff:g example="My Provider" id="providerName">“%1$s” zu nutzen.</xliff:g></string>
     <string name="action_open_drawer">App-Übersicht öffnen</string>
     <string name="action_none">Nichts tun</string>
     <string name="pref_category__gestures">Gesten</string>
@@ -200,7 +200,7 @@
     <string name="event_provider_unread_notifications">Benachrichtigungen</string>
     <string name="event_provider_now_playing">Jetzt spielt</string>
     <string name="onboarding_swipe_up">Nach oben wischen um die App-Liste zu öffnen.</string>
-    <string name="onbording_settings_summary">Tippe &amp; halte auf dem Desktop.</string>
+    <string name="onbording_settings_summary">Tippe und halte auf dem Desktop.</string>
     <string name="onbording_settings_title">Einstellen von %s</string>
     <string name="personality_provider">Begrüßungen</string>
     <string name="action_open_recents">Öffne kürzliche Applikationen</string>
@@ -210,7 +210,7 @@
     <string name="allow">Erlauben</string>
     <string name="permission_iplocate_twilight_explanation">Erlaube Zugriff auf deinen ungefähren Standort\? Dies erlaubt eine genauere Tageslicht Berechnung.</string>
     <string name="permission_iplocate">Ungefährer Standort</string>
-    <string name="event_provider_missing_notification_dots"><xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g>, aktiviere Benachrichtigungs Punkte.</string>
+    <string name="event_provider_missing_notification_dots">Aktiviere Benachrichtigungspunkte, um <xliff:g example="My Provider" id="providerName">“%1$s”</xliff:g> zu nutzen.</string>
     <string name="battery_low">Batterie niedrig</string>
     <string name="battery_full">Aufgeladen</string>
     <string name="battery_charging">Lädt auf</string>
@@ -224,7 +224,7 @@
     <string name="feed_widget">Widgets</string>
     <string name="feed_add_widget">Widget hinzufügen</string>
     <string name="loading">Lädt…</string>
-    <string name="folder_cover_mode_desc">Antippen, um die erste App zu öffnen, nach oben wischen um alle anzuzeigen.</string>
+    <string name="folder_cover_mode_desc">Antippen, um die erste App zu öffnen. Nach oben wischen, um alle anzuzeigen.</string>
     <string name="folder_cover_mode">Nutze Cover Modus</string>
     <string name="hide_app">Verstecke Verknüpfung</string>
     <string name="debug_component_name_copied">In den Zwischenspeicher kopiert.</string>
@@ -245,18 +245,18 @@
     <string name="label_voice_search">Sprachsuche</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Auf Standard zurücksetzen</string>
-    <string name="drag_to_enable_packs">Nach oben ziehen, um zu aktivieren</string>
-    <string name="drag_to_disable_packs">Nach unten ziehen zum deaktivieren</string>
+    <string name="drag_to_enable_packs">Zum Ausschalten nach oben ziehen</string>
+    <string name="drag_to_disable_packs">Zum Einschalten nach unten ziehen</string>
     <string name="wallpaper_pick">Bildschirmhintergrund auswählen</string>
     <string name="edit_dash">Bearbeite Dash</string>
-    <string name="content_storage_permission_required">Um einen Bildschirmhintergrund festzulegen, weise die Speicherberechtigung zu.</string>
+    <string name="content_storage_permission_required">Gewähren Sie Speicherzugriff, um ein Hintergrundbild festzulegen.</string>
     <string name="title_storage_permission_required">Speicherzugriff benötigt</string>
     <string name="category__about_licenses">Lizenz</string>
     <string name="about_source">Quelltext</string>
-    <string name="about_team">Familienmitglieder</string>
+    <string name="about_team">Teammitglieder</string>
     <string name="title__about_changelog">Änderungslog</string>
     <string name="title__about_donate">Spenden</string>
-    <string name="about_build_information">Build Informationen</string>
+    <string name="about_build_information">Build-Infos</string>
     <string name="change_default_home">Als Start-App festlegen</string>
     <string name="summary__dev_restart">Es kann hilfreich sein, wenn einige Einstellungen nicht richtig angewandt wurden</string>
     <string name="title__restart_launcher">Neu starten</string>
@@ -265,9 +265,9 @@
     <string name="developer_options_title">Entwickleroptionen</string>
     <string name="failed">Etwas ist schief gelaufen.</string>
     <string name="search_menu">Finde Einstellungen</string>
-    <string name="developer_options_enabled">Entwickleroptionen aktiviert</string>
+    <string name="developer_options_enabled">Entwickleroptionen an</string>
     <string name="local_backups">Im Speicher</string>
-    <string name="read_external_storage_required">Um eine Sicherung zu erstellen, weise die Speicherberechtigung zu.</string>
+    <string name="read_external_storage_required">Erlaube Speicherzugriff, um eine Sicherung zu erstellen.</string>
     <string name="backup_location_device_storage">Omega Ordner</string>
     <string name="backup_location">Ort</string>
     <string name="backup_share_text">Omega Sicherungsdatei</string>
@@ -275,7 +275,7 @@
     <string name="restore_read_meta_fail">Ungültige Sicherungsdatei</string>
     <string name="restore_failed">Wiederherstellung fehlgeschlagen</string>
     <string name="backup_failed">Sicherung fehlgeschlagen</string>
-    <string name="restore_success">Wiederherstellung erfolgreich</string>
+    <string name="restore_success">Wiederhergestellt</string>
     <string name="restore_contents">Inhalte wiederherstellen</string>
     <string name="backup_restarting">Starte neu</string>
     <string name="backup_restoring">Stelle Sicherung wieder her</string>
@@ -285,7 +285,7 @@
     <string name="no_recent_backups">Keine kürzlichen Sicherungen</string>
     <string name="backup_creating">Erstelle Sicherung</string>
     <string name="backup_error_blank_contents">Inhalte dürfen nicht leer sein</string>
-    <string name="backup_error_blank_name">Name darf nicht leer sein</string>
+    <string name="backup_error_blank_name">Name muss ausgefüllt sein</string>
     <string name="backup_wallpaper">Bildschirmhintergrund</string>
     <string name="backup_settings">Einstellungen</string>
     <string name="backup_contents">Sicherungsinhalte</string>
@@ -300,7 +300,7 @@
     <string name="title__advanced_setting_search">Zeige Einstellungssuche</string>
     <string name="summary__advanced_language">Ändere die Sprache dieser App</string>
     <string name="summary__advanced_setting_search">Zeige Einstellungssuche in der Aktionsleiste</string>
-    <string name="error_no_browser">Keine Aktivität gefunden um Urls zu händeln</string>
+    <string name="error_no_browser">Installiere als erstes eine App, um URLs zu öffnen</string>
     <string name="search_provider_appsearch">App Suche</string>
     <string name="search_no_results">Keine Ergebnisse</string>
     <string name="cat_search_bar">Suchleiste</string>
@@ -310,12 +310,12 @@
     <string name="title__search_show_assistant">Zeige Sprachsuchtaste</string>
     <string name="title__search_action_assistant">Assistent öffnen</string>
     <string name="title__search_bubble_searchbar">Zeige zwei Blasen</string>
-    <string name="dt2s_admin_warning">Doppeltippen zum schlafen wird deaktiviert.</string>
-    <string name="dt2s_admin_hint">Um Doppeltippen zum schlafen zu aktivieren, weise die Adminberechtigung zu.</string>
+    <string name="dt2s_admin_warning">Doppeltippen zum Schlafen wird deaktiviert.</string>
+    <string name="dt2s_admin_hint">Um Doppeltippen zu verwenden, um in den Ruhezustand zu wechseln und Administratorberechtigungen zu erteilen.</string>
     <string name="omega_actions">Aktionen</string>
     <string name="gesture_dock_swipe_up">Vom Dock nach oben wischen</string>
     <string name="gesture_swipe_up">Nach oben wischen</string>
-    <string name="gesture_long_press">Tippen &amp; halten</string>
+    <string name="gesture_long_press">Tippen und halten</string>
     <string name="gesture_double_tap">Doppeltippen</string>
     <string name="action_sleep_timeout">Schlafe mit der Bildschirmauszeit</string>
     <string name="action_sleep">Schlafen</string>
@@ -339,7 +339,7 @@
     <string name="title_separate_work_apps">Zweiter Tab für Arbeitsapps</string>
     <string name="pref_category__incubating">Inkubieren</string>
     <string name="button_organize_screens">Seiten ordnen</string>
-    <string name="uninstall_failed">Deinstallieren der App fehlgeschlagen</string>
+    <string name="uninstall_failed">Die App konnte nicht deinstalliert werden</string>
     <string name="dash_device_settings_summary">Geräteeinstellungen öffnen</string>
     <string name="dash_volume_summary">Geräte Audioauswahl anzeigen</string>
     <string name="dash_launcher_settings_summary">Launchereinstellungen anzeigen</string>
@@ -357,7 +357,7 @@
     <string name="about_translators">Übersetzer</string>
     <string name="title_feed_provider">Feed-Anbieter</string>
     <string name="fonts_change_global_font">Ändern</string>
-    <string name="fonts_global_font">Globale Schriftart</string>
+    <string name="fonts_global_font">Schriftart</string>
     <string name="folder_radius">Radius der Ordner-Ecken</string>
     <string name="folder_background">Orderhintergrundfarbe</string>
     <string name="folder_custom_background">Nutze benutzerdefinierten Ordnerhintergrund</string>
@@ -365,19 +365,73 @@
     <string name="action_overlay">Google-Feed öffnen</string>
     <string name="action_open_drawer_or_recents">Öffne kürzliche Apps/App Übersicht</string>
     <string name="notification_custom_color">Benutzerdefinierte Farbe verwenden</string>
-    <string name="disable_protected_apps_message">Das Deaktivieren geschützter Anwendungen erfordert Authentifizierung</string>
+    <string name="disable_protected_apps_message">Deaktivieren Sie geschützte Anwendungen, die eine Authentifizierung erfordern</string>
     <string name="disable_protected_apps">Geschützte Anwendungen deaktivieren</string>
     <string name="enable_protected_apps">Geschützte Anwendungen aktivieren</string>
-    <string name="trust_apps_manager_name">Versteckte &amp; Geschützte Anwendungen</string>
+    <string name="trust_apps_manager_name">Versteckte und geschützte Anwendungen</string>
     <string name="trust_apps_no_lock_error">Bitte richten Sie eine sichere Bildschirmsperre ein, um App-Zugriff einzuschränken</string>
     <string name="protected_app_reset">Geschützte Anwendungen zurücksetzen</string>
     <string name="add_new_tab">Hinzufügen</string>
     <string name="cat_drawer_icons">Symbole</string>
     <string name="cat_drawer_grid">Gitter</string>
-    <string name="dialog_message_change_sort">Apps alphabetisch sortieren\?</string>
+    <string name="dialog_message_change_sort">Wechseln zu alphabetischer Anwensungssortierung\?</string>
     <string name="title_drawer_vertical_list">Vertikale Liste</string>
     <string name="title_drawer_vertical">Vertikal</string>
     <string name="title_drawer_layout">Layoutart</string>
     <string name="title_dock_two_row">Zweite Reihe anzeigen</string>
     <string name="title_desktop_keep_empty">Leere Seiten erlauben</string>
+    <string name="about_community">Gemeinschaft</string>
+    <string name="dash_wifi">WLAN</string>
+    <string name="dash_torch">Taschenlampe</string>
+    <string name="pref_desktop_mode_settings">Desktop Modus Einstellungen</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="title_smartspace">Smartspace anzeigen</string>
+    <string name="summary_legacy_treatment">Adaptive Icons für alle Shortcuts erstellen.</string>
+    <string name="dash_torch_summary">Taschenlampe ein-/ausschalten.</string>
+    <string name="about_copyright">Copyright © 2020-2021</string>
+    <string name="dash_volume_title">Lautstärkedialog</string>
+    <string name="pref_desktop_mode_summary">Androids Desktop Modus aktivieren</string>
+    <string name="folder_name_format">Ordner: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
+    <string name="summary_force_shapeless">Versuche für alle Apps veraltete Icons zu verwenden.</string>
+    <string name="summary_all_apps_search">Zeige die Suchleiste</string>
+    <string name="summary_app_suggestions">Für alle Anwendungen und den Startbildschirm</string>
+    <string name="theme_auto_night_mode_black">System (Schwarz)</string>
+    <string name="theme_dark_theme_mode_follow_daylight_black">Tageslicht folgen (Schwarz)</string>
+    <string name="summary_colored_backgrounds">Für Hintergründe von adaptiven Icons.</string>
+    <string name="summary_white_only_treatment">Färben Sie die Hintergründe aller adaptiven Symbole ein.</string>
+    <string name="dash_wifi_summary">WLAN Status und Verbindung</string>
+    <string name="pref_desktop_mode">Desktop Modus</string>
+    <string name="app_widget_name">Uhr-Widget</string>
+    <string name="label_search">Suche</string>
+    <string name="title_dock_search">Dock-Suchleiste</string>
+    <string name="summary_dock_search">Im unteren Dock anzeigen</string>
+    <string name="title_theme_customize_icons">Icons anpassen</string>
+    <string name="web_search_metager">Metager (Web)</string>
+    <string name="web_search_searx">Searx (Web)</string>
+    <string name="folder_columns">Ordnerspalten</string>
+    <string name="folder_rows">Ordnerreihen</string>
+    <string name="dash_bluetooth">Bluetooth</string>
+    <string name="dash_sync">Synchronisieren</string>
+    <string name="gesture_launch_assistant">Startassistent (durch Knopfdruck oder Geste)</string>
+    <string name="modify_system_settings">Systemeinstellungen ändern</string>
+    <string name="modify_system_settings_message">Gewähren Sie die Möglichkeit, Systemeinstellungen zu ändern, damit dies funktioniert</string>
+    <string name="backup_delete_failed">Etwas ist schiefgelaufen</string>
+    <string name="backup_name">Backup Name</string>
+    <string name="backup_create_new">Neue Sicherung erstellen</string>
+    <string name="permission_denied">Leseberechtigung abgelehnt!</string>
+    <string name="about_translators_group">Mitwirkende und Übersetzer</string>
+    <string name="about_open_source">Quelloffene Bibliotheken</string>
+    <string name="about_channel">Kanal</string>
+    <string name="enabled_events">Aktiviert</string>
+    <string name="dash_bluetooth_summary">Bluetooth ein- oder ausschalten</string>
+    <string name="launch_assistant">Startassistent</string>
+    <string name="dash_auto_rotation_summary">Automatische Drehung ein-/ausschalten.</string>
+    <string name="dash_sync_summary">Synchronisation ein-/ausschalten.</string>
+    <string name="dash_location">Standort</string>
+    <string name="dash_location_summary">Standorteinstellungen ändern</string>
+    <string name="dash_auto_rotation">automatische Drehung</string>
+    <string name="summary_app_categorize">Wähle zwischen Tabs und Ordnern</string>
+    <string name="cat_desktop_grid">Raster und Layout</string>
+    <string name="title_app_categorization_enable">Aktivieren von App-Kategorien</string>
+    <string name="summary_app_categorization_enable">Erstelle Tabs oder Ordner</string>
 </resources>
