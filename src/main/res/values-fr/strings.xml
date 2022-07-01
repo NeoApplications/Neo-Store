@@ -201,4 +201,7 @@
     <string name="no_action_possible">Aucune action possible</string>
     <string name="show_screenshots">Afficher les captures d\'écran</string>
     <string name="show_screenshots_description">Afficher les captures d\'écran dans la page de l\'application.</string>
+    <string name="favorite_remove">Retirer des favoris</string>
+    <string name="favorite_add">Ajouter aux favoris</string>
+    <string name="open">Ouvrir</string>
 </resources>
