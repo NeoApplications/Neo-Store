@@ -201,4 +201,7 @@
     <string name="no_action_possible">Keine Aktion möglich</string>
     <string name="show_screenshots">Bildschirmfotos anzeigen</string>
     <string name="show_screenshots_description">Bildschirmfotos auf der App-Seite anzeigen.</string>
+    <string name="favorite_remove">Aus Favoriten entfernen</string>
+    <string name="favorite_add">Zu Favoriten hinzufügen</string>
+    <string name="open">Öffnen</string>
 </resources>
