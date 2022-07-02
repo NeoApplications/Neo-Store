@@ -328,7 +328,7 @@ public class FloatingHeaderView extends LinearLayout implements
         }
 
         mTabLayout.setTranslationY(mTranslationY);
-        int clipHeight = mHeaderTopPadding - getPaddingBottom();
+        int clipHeight = mHeaderTopPadding - getPaddingBottom() * 2;
         mRVClip.top = mTabsHidden ? clipHeight : 0;
         mHeaderClip.top = clipHeight;
         // clipping on a draw might cause additional redraw
@@ -459,7 +459,7 @@ public class FloatingHeaderView extends LinearLayout implements
         if (mTabsHidden || !mHeaderCollapsed) {
             return 0;
         }
-        return Math.max(getHeight() - getPaddingTop() + mTranslationY, 0);
+        return Math.max(getHeight() - getPaddingTop() + mTranslationY + getPaddingBottom(), 0);
     }
 }
 
