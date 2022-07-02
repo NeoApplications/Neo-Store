@@ -87,15 +87,6 @@
             android:title="@string/title_app_categorize"
             app:iconSpaceReserved="false" />
 
-        <Preference
-            android:key="pref_suggestions"
-            android:persistent="false"
-            android:title="@string/title_app_suggestions"
-            android:summary="@string/summary_app_suggestions"
-            app:iconSpaceReserved="false">
-            <intent android:action="android.settings.ACTION_CONTENT_SUGGESTIONS_SETTINGS" />
-        </Preference>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_all_apps_search">

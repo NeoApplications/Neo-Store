@@ -61,11 +61,20 @@
             android:key="pref_desktop_mode_settings"
             android:title="@string/pref_desktop_mode_settings"
             app:iconSpaceReserved="false" />
-        <!--
-               <Preference
-                   android:icon="@drawable/ic_gesture"
-                   android:key="pref_gesture_selector"
-                   android:layout="@layout/home_preference"
-                   android:title="@string/pref_category__gestures" /> -->
+
+        <Preference
+            android:icon="@drawable/ic_gesture"
+            android:key="pref_gesture_selector"
+            android:layout="@layout/home_preference"
+            android:title="@string/pref_category__gestures" />
+
+        <Preference
+            android:key="pref_suggestions"
+            android:persistent="false"
+            android:title="@string/title_app_suggestions"
+            android:summary="@string/summary_app_suggestions"
+            app:iconSpaceReserved="false">
+            <intent android:action="android.settings.ACTION_CONTENT_SUGGESTIONS_SETTINGS" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
