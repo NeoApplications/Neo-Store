@@ -19,6 +19,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -125,5 +126,17 @@ public class FolderNameEditText extends ExtendedEditText {
             mEnteredCompose = true;
             return super.setComposingText(cs, newCursorPos);
         }
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        if (isFocused()) {
+            View nextFocus = focusSearch(View.FOCUS_DOWN);
+            if (nextFocus != null) {
+                nextFocus.requestFocus();
+            }
+        }
+        hideKeyboard();
     }
 }

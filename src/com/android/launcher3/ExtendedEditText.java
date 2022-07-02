@@ -22,11 +22,9 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.DragEvent;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.views.ActivityContext;
 
 
@@ -152,15 +150,5 @@ public class ExtendedEditText extends EditText {
         if (!TextUtils.isEmpty(getText())) {
             setText("");
         }
-        if (FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
-            return;
-        }
-        if (isFocused()) {
-            View nextFocus = focusSearch(View.FOCUS_DOWN);
-            if (nextFocus != null) {
-                nextFocus.requestFocus();
-            }
-        }
-        hideKeyboard();
     }
 }
