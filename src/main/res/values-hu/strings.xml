@@ -67,7 +67,7 @@
     <string name="incompatible_features_DESC">Hiányzó funkciók.</string>
     <string name="incompatible_version">Nem kompatibilis verzió</string>
     <string name="incompatible_versions">Nem kompatibilis verziók</string>
-    <string name="incompatible_versions_summary">Az eszközzel nem kompatibilis verziók megjelenítése</string>
+    <string name="incompatible_versions_summary">Az eszközzel nem kompatibilis verziók megjelenítése.</string>
     <string name="incompatible_with_FORMAT">Nem kompatibilis ezzel: %s</string>
     <string name="install">Telepítés</string>
     <string name="installed">Telepített</string>
@@ -84,7 +84,7 @@
     <string name="light">Világos</string>
     <string name="link_copied_to_clipboard">Hivatkozás a vágólapra másolva</string>
     <string name="links">Hivatkozások</string>
-    <string name="merging_FORMAT">Egyesítés: %s</string>
+    <string name="merging_FORMAT">Egyesítés: %s…</string>
     <string name="name">Név</string>
     <string name="network_error_DESC">Hálózati hiba.</string>
     <string name="never">Soha</string>
@@ -95,7 +95,7 @@
     <string name="no_matching_applications_found">Nem találhatók ilyen alkalmazások</string>
     <string name="no_proxy">Nincs proxy</string>
     <string name="notify_about_updates">Értesítés az alkalmazások új verzióiról</string>
-    <string name="notify_about_updates_summary">Értesítés megjelenítése, ha új verziók érhetők el</string>
+    <string name="notify_about_updates_summary">Értesítés megjelenítése, ha új verziók érhetők el.</string>
     <string name="number_of_applications">Alkalmazások száma</string>
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Csak ezzel kompatibilis: %s</string>
@@ -145,7 +145,7 @@
     <string name="unknown_FORMAT">Ismeretlen: %s</string>
     <string name="unsigned">Nem aláírt</string>
     <string name="unstable_updates">Nem stabil frissítések</string>
-    <string name="unstable_updates_summary">Nem stabil verziófrissítések javaslata</string>
+    <string name="unstable_updates_summary">Nem stabil verziófrissítések javaslata.</string>
     <string name="unverified">Nem ellenőrzött</string>
     <string name="update">Frissítés</string>
     <string name="upstream_source_code_is_not_free">Az upstream forráskód nem szabad</string>
@@ -165,11 +165,14 @@
     <string name="incompatible_platforms_DESC_FORMAT">A platform nem támogatott: %1$s. Támogatott platformok: %2$s.</string>
     <string name="saving_details">Részletek mentése…</string>
     <string name="waiting_to_start_download">Letöltés indítása…</string>
-    <string name="incompatible_signature_DESC">Ez a verzió a jelenleg az eszközére telepített verziójától eltérő tanúsítvánnyal rendelkezik. Előbb távolítsa el azt.</string>
+    <string name="incompatible_signature_DESC">Ez a verzió a jelenleg az eszközére telepített verziójától eltérő tanúsítvánnyal rendelkezik.
+\nElőbb távolítsa el azt.</string>
     <string name="processing_FORMAT">%1$s feldolgozása…</string>
     <string name="syncing_FORMAT">%s szinkronizálása…</string>
-    <string name="repository_not_used_DESC">Ez a tároló még nem volt használva. Kapcsolja be, hogy megtekintse a benne lévő alkalmazásokat.</string>
-    <string name="repository_unsigned_DESC">Nincs aláírva. Nem sikerült ellenőrizni az alkalmazáslistát. Legyen óvatos amikor nem aláírt tárolókból tölt le alkalmazásokat.</string>
+    <string name="repository_not_used_DESC">Ez a tároló még nem volt használva.
+\nKapcsolja be, hogy megtekintse a benne lévő alkalmazásokat.</string>
+    <string name="repository_unsigned_DESC">Nem sikerült ellenőrizni a nem aláírt alkalmazáslistát.
+\nLegyen óvatos amikor nem aláírt tárolókból tölt le alkalmazásokat.</string>
     <string name="show_less">Kevesebb megjelenítése</string>
     <string name="latest">Legfrissebb</string>
     <string name="explore">Felfedezés</string>
@@ -179,10 +182,26 @@
     <string name="sort_filter">Rendezés és szűrés</string>
     <string name="new_applications">Új alkalmazások</string>
     <string name="install_after_sync">Frissítések automatikus telepítése</string>
-    <string name="install_after_sync_summary">Alkalmazásfrissítések automatikus telepítése a tárolók szinkronizálása után</string>
+    <string name="install_after_sync_summary">Alkalmazásfrissítések automatikus telepítése a tárolók szinkronizálása után.</string>
     <string name="prefs_updated_apps">Megjelenítendő frissített alkalmazások száma</string>
     <string name="prefs_new_apps">Megjelenítendő új alkalmazások száma</string>
     <string name="new_repository">Új tárolóhely</string>
     <string name="default_tab">Alapértelmezett lap</string>
     <string name="pending">Függőben</string>
+    <string name="ignore_battery_optimization_not_supported">Az Android telepítése nem támogatja az akkumulátoroptimalizálás kikapcsolását.</string>
+    <string name="dialog_refuse">Megtartás</string>
+    <string name="dialog_approve">Kikapcsolás</string>
+    <string name="root_session_installer_description">Lassabb, de elkerüli a telepített alkalmazások problémáit Android 13+ esetén.</string>
+    <string name="no_action_possible">Nincs lehetséges művelet</string>
+    <string name="show_screenshots">Képernyőképek megjelenítése</string>
+    <string name="favorite_add">Hozzáadás a kedvencekhez</string>
+    <string name="open">Megnyitás</string>
+    <string name="no_permissions_identified">Nincsenek kért engedélyek azonosítva</string>
+    <string name="installing">Telepítés</string>
+    <string name="not_safe_for_work">Cenzúrázható (zavaró tartalmat tartalmazhat)</string>
+    <string name="ignore_battery_optimization_title">Akkumulátoroptimalizálás</string>
+    <string name="ignore_battery_optimization_message">Az alkalmazás jobban működik az akkumulátoroptimalizálás kikapcsolásakor, és Android 12+ esetén megakadályozza az összeomlást.</string>
+    <string name="root_session_installer">Rendszergazdaként futó telepítő használata</string>
+    <string name="show_screenshots_description">Képernyőképek megjelenítése az alkalmazások oldalán.</string>
+    <string name="favorite_remove">Eltávolítás a kedvencek közül</string>
 </resources>
