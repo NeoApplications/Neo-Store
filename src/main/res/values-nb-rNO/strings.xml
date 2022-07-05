@@ -193,7 +193,7 @@
     <string name="dialog_approve">Skru av</string>
     <string name="ignore_battery_optimization_not_supported">Android-installasjonen din støtter ikke å slå av batterioptimalisering.</string>
     <string name="dialog_refuse">Behold</string>
-    <string name="ignore_battery_optimization_message">"Programmet fungerer bedre uten  batterioptimalisering, og forhindrer krasj på Android 12+."</string>
+    <string name="ignore_battery_optimization_message">Programmet fungerer bedre uten batterioptimalisering, og forhindrer krasj på Android 12+.</string>
     <string name="root_session_installer">Installer med rot-tilgang</string>
     <string name="root_session_installer_description">Dårligere ytelse, men unngår problemer med programmer på Android 13+.</string>
     <string name="no_action_possible">Ingen mulige handlinger</string>
