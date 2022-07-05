@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/exploreTab">
 
     <fragment
         android:id="@+id/exploreTab"
-        android:name="com.looker.droidify.ui.fragments.ExploreFragment"
-        tools:layout="@layout/fragment_explore_x" />
+        android:name="com.machiav3lli.fdroid.ui.fragments.ExploreFragment" />
 
     <fragment
         android:id="@+id/latestTab"
-        android:name="com.looker.droidify.ui.fragments.LatestFragment"
-        tools:layout="@layout/fragment_latest_x" />
+        android:name="com.machiav3lli.fdroid.ui.fragments.LatestFragment" />
 
     <fragment
         android:id="@+id/installedTab"
-        android:name="com.looker.droidify.ui.fragments.InstalledFragment"
-        tools:layout="@layout/fragment_installed_x" />
+        android:name="com.machiav3lli.fdroid.ui.fragments.InstalledFragment" />
 </navigation>

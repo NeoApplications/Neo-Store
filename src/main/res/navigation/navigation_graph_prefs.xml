@@ -6,21 +6,20 @@
 
     <fragment
         android:id="@+id/userTab"
-        android:name="com.looker.droidify.ui.fragments.PrefsUserFragment"
+        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsUserFragment"
         tools:layout="@layout/fragment_prefs" />
 
     <fragment
         android:id="@+id/updateTab"
-        android:name="com.looker.droidify.ui.fragments.PrefsUpdatesFragment"
+        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsUpdatesFragment"
         tools:layout="@layout/fragment_prefs" />
 
     <fragment
         android:id="@+id/reposTab"
-        android:name="com.looker.droidify.ui.fragments.PrefsRepositoriesFragment"
-        tools:layout="@layout/fragment_repositories_x" />
+        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsRepositoriesFragment" />
 
     <fragment
         android:id="@+id/otherTab"
-        android:name="com.looker.droidify.ui.fragments.PrefsOtherFragment"
+        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsOtherFragment"
         tools:layout="@layout/fragment_prefs" />
 </navigation>

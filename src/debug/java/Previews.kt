@@ -1,12 +1,12 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.looker.droidify.ui.compose.pages.app_detail.components.AntiFeaturesGrid
-import com.looker.droidify.ui.compose.pages.app_detail.components.PermissionGrid
-import com.looker.droidify.ui.compose.pages.app_detail.components.ReleaseItem
-import com.looker.droidify.ui.compose.theme.AppTheme
-import com.looker.droidify.ui.compose.utils.CustomChip
-import com.looker.droidify.utility.SampleData
+import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.AntiFeaturesGrid
+import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.PermissionGrid
+import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.ReleaseItem
+import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
+import com.machiav3lli.fdroid.ui.compose.utils.CustomChip
+import com.machiav3lli.fdroid.utility.SampleData
 
 @Preview
 @Composable

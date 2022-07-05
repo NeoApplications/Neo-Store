@@ -5,7 +5,7 @@
         android:id="@+id/toolbar_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:actionViewClass="com.looker.droidify.widget.FocusSearchView"
+        app:actionViewClass="com.machiav3lli.fdroid.widget.FocusSearchView"
         app:showAsAction="always|collapseActionView" />
 
     <item

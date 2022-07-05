@@ -14,11 +14,11 @@ plugins {
 }
 
 android {
-    namespace = "com.looker.droidify"
+    namespace = "com.machiav3lli.fdroid"
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.looker.droidify"
+        applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
         targetSdk = 32
         versionCode = 907
