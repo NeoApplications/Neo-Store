@@ -204,4 +204,5 @@
     <string name="ignore_battery_optimization_title">Оптимизация на батерията</string>
     <string name="ignore_battery_optimization_not_supported">Вашата инсталация на Android не поддържа изключване на оптимизацията на батерията.</string>
     <string name="favorite_remove">Премахни от любими</string>
+    <string name="loading_list">Зареждане на списък…</string>
 </resources>
