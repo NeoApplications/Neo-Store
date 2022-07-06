@@ -427,7 +427,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @see SyncService.displayUpdatesNotification
      */
     private fun batchUpdate(productItems: List<ProductItem>, install: Boolean = false) {
-        if (Preferences[Preferences.Key.InstallAfterSync]) scope.launch {
+        scope.launch {
             // run startUpdate on every item
             productItems.map { productItem ->
                 Triple(
