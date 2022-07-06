@@ -205,4 +205,5 @@
     <string name="favorite_add">Add to favorites</string>
     <string name="open">Open</string>
     <string name="loading_list">Loading list…</string>
+    <string name="releases">Releases</string>
 </resources>
