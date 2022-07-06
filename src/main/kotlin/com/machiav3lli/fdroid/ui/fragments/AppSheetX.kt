@@ -426,7 +426,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             versionCode = product.versionCode.toString(),
                             appSize = product.displayRelease?.size?.formatSize().orEmpty(),
                             repoHost = "@${
-                                URI(product.source).host.removePrefix("www.")
+                                (URI(product.source)?.host ?: stringResource(id = R.string.unknown))
+                                    .removePrefix("www.")
                                     .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                             }",
                             mainAction = mainAction,
