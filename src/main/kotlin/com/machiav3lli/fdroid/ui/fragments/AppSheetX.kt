@@ -88,6 +88,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URI
+import java.util.*
 
 // TODO clean up and replace dropped functions from AppDetailFragment
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
@@ -422,7 +424,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         AppInfoHeader(
                             versionCode = product.versionCode.toString(),
                             appSize = product.displayRelease?.size?.formatSize().orEmpty(),
-                            appDev = product.author.name.replaceFirstChar { it.titlecase() },
+                            repoHost = "@${
+                                URI(product.source).host.removePrefix("www.")
+                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                            }",
                             mainAction = mainAction,
                             possibleActions = actions?.filter { it != mainAction }?.toSet()
                                 ?: emptySet(),

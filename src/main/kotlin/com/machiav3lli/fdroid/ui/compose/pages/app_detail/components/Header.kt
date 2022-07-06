@@ -42,7 +42,7 @@ fun AppInfoHeader(
     modifier: Modifier = Modifier,
     versionCode: String,
     appSize: String,
-    appDev: String,
+    repoHost: String,
     mainAction: ActionState?,
     possibleActions: Set<ActionState>,
     onSource: () -> Unit = { },
@@ -64,7 +64,7 @@ fun AppInfoHeader(
             HeaderExtra(
                 versionCode = versionCode,
                 appSize = appSize,
-                appDev = appDev,
+                repoHost = repoHost,
                 onSource = onSource,
                 onSourceLong = onSourceLong
             )
@@ -158,7 +158,7 @@ fun HeaderExtra(
     modifier: Modifier = Modifier,
     versionCode: String,
     appSize: String,
-    appDev: String,
+    repoHost: String,
     onSource: () -> Unit,
     onSourceLong: () -> Unit
 ) {
@@ -181,7 +181,7 @@ fun HeaderExtra(
         HeaderExtrasCard(
             modifier = Modifier.weight(1f),
             title = stringResource(id = R.string.source_code),
-            text = appDev,
+            text = repoHost,
             onClick = onSource,
             onLongClick = onSourceLong
         )
