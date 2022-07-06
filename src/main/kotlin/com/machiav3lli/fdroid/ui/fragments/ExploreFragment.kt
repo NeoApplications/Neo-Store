@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import com.machiav3lli.fdroid.R
@@ -87,11 +86,11 @@ class ExploreFragment : MainNavFragmentX() {
         ) {
             Scaffold(
                 // TODO add the topBar to the activity instead of the fragments
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                //modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     TopBar(
                         title = stringResource(id = R.string.application_name),
-                        scrollBehavior = scrollBehavior
+                        //scrollBehavior = scrollBehavior
                     ) {
                         ExpandableSearchAction(
                             query = searchQuery.orEmpty(),
