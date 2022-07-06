@@ -21,7 +21,7 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
         targetSdk = 32
-        versionCode = 907
+        versionCode = 908
         versionName = "0.9.0"
         vectorDrawables.useSupportLibrary = true
 
@@ -68,7 +68,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-rc1"
+            versionNameSuffix = "-rc2"
             resValue("string", "application_name", "Neo Store-Debug")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
@@ -77,7 +77,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
-            versionNameSuffix = "-rc1"
+            versionNameSuffix = "-rc2"
             resValue("string", "application_name", "Neo Store-beta")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
@@ -85,7 +85,7 @@ android {
         named("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            versionNameSuffix = "-rc1"
+            versionNameSuffix = "-rc2"
             resValue("string", "application_name", "Neo Store")
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round"
