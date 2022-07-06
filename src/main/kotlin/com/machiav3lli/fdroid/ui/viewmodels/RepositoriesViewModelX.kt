@@ -40,13 +40,17 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
         viewModelScope.launch { syncConnection.bind(context) }
     }
 
-    fun showRepositorySheet(repositoryId: Long = 0L, editMode: Boolean = false) {
+    fun showRepositorySheet(
+        repositoryId: Long = 0L,
+        editMode: Boolean = false,
+        addNew: Boolean = false
+    ) {
         viewModelScope.launch {
             _showSheet.emit(
-                if (editMode) {
-                    SheetNavigationData(repositoryId, editMode)
-                } else {
+                if (addNew) {
                     SheetNavigationData(addNewRepository(), editMode)
+                } else {
+                    SheetNavigationData(repositoryId, editMode)
                 }
             )
         }
@@ -59,7 +63,7 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
     }
 
     private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
-        repositoryDao.insert(newRepository())
+        repositoryDao.insert(newRepository(address = "new repository"))
         repositoryDao.latestAddedId()
     }
 

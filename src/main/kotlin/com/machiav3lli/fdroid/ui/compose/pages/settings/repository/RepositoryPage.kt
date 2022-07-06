@@ -13,6 +13,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 
@@ -23,9 +25,17 @@ fun RepositoryPage(viewModel: RepositoriesViewModelX) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = { viewModel.showRepositorySheet(editMode = true) }) {
-                Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add Repository")
-                Text(text = "Add Repository")
+            ExtendedFloatingActionButton(onClick = {
+                viewModel.showRepositorySheet(
+                    editMode = true,
+                    addNew = true
+                )
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = stringResource(id = R.string.add_repository)
+                )
+                Text(text = stringResource(id = R.string.add_repository))
             }
         }
     ) {
