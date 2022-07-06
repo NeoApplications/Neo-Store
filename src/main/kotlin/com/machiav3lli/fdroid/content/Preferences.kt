@@ -26,7 +26,6 @@ object Preferences {
         Key.AutoSync,
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
-        Key.ListAnimation,
         Key.ShowScreenshots,
         Key.UpdatedApps,
         Key.NewApps,
@@ -145,9 +144,6 @@ object Preferences {
 
         object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
-
-        object ListAnimation :
-            Key<Boolean>("list_animation", Value.BooleanValue(false))
 
         object ShowScreenshots :
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))

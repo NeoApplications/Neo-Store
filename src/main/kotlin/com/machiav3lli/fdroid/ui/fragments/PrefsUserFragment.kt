@@ -45,10 +45,6 @@ class PrefsUserFragment : PrefsNavFragmentX() {
                 }
             }
             addSwitch(
-                Preferences.Key.ListAnimation, getString(R.string.list_animation),
-                getString(R.string.list_animation_description)
-            )
-            addSwitch(
                 Preferences.Key.ShowScreenshots, getString(R.string.show_screenshots),
                 getString(R.string.show_screenshots_description)
             )
