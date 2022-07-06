@@ -1,0 +1,7 @@
+- Fully new UI/UX with Material Design 3
+- Add: Update all button
+- Add: Language preference
+- Add: Favorite (further features to come later)
+- Fix: Auto updating installed/updates lists
+- Fix: Crash on A12+ (gotta disable battery optimization)
+- Fix: Root installer
