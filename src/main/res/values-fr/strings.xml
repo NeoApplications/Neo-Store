@@ -204,4 +204,5 @@
     <string name="favorite_remove">Retirer des favoris</string>
     <string name="favorite_add">Ajouter aux favoris</string>
     <string name="open">Ouvrir</string>
+    <string name="loading_list">Chargement de la liste…</string>
 </resources>
