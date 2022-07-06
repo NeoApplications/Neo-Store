@@ -101,13 +101,20 @@ fun <T> VerticalItemList(
             .background(backgroundColor),
         contentAlignment = if (list.isNullOrEmpty()) Alignment.Center else Alignment.TopStart
     ) {
-        if (!list.isNullOrEmpty()) {
-            LazyColumn(verticalArrangement = spacedBy(4.dp)) {
-                items(items = list, key = itemKey, itemContent = itemContent)
+        when {
+            list == null -> Text(
+                text = stringResource(id = R.string.loading_list),
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            !list.isNullOrEmpty() -> {
+                LazyColumn(verticalArrangement = spacedBy(4.dp)) {
+                    items(items = list, key = itemKey, itemContent = itemContent)
+                }
             }
-        } else Text(
-            text = stringResource(id = R.string.no_applications_available),
-            color = MaterialTheme.colorScheme.onBackground
-        )
+            else -> Text(
+                text = stringResource(id = R.string.no_applications_available),
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
     }
 }
