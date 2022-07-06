@@ -206,4 +206,5 @@
     <string name="open">Apri</string>
     <string name="favorite_remove">Rimuovi dai preferiti</string>
     <string name="favorite_add">Aggiungi ai preferiti</string>
+    <string name="loading_list">Caricamento dell\'elenco…</string>
 </resources>
