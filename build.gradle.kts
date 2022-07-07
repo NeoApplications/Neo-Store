@@ -2,15 +2,15 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.*
 
-val composeVersion = "1.2.0-rc01"
-val accompanistVersion = "0.24.10-beta"
-val roomVersion = "2.5.0-alpha02"
+val vCompose = "1.2.0-rc03"
+val vComposeCompiler = "1.2.0"
+val vAccompanist = "0.24.13-rc"
+val vRoom = "2.5.0-alpha02"
 
 plugins {
     id("com.android.application").version("7.2.1")
@@ -104,7 +104,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = vComposeCompiler
     }
 
     kotlinOptions {
@@ -210,8 +210,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
-    implementation("androidx.fragment:fragment-ktx:1.5.0-rc01")
-    implementation("androidx.savedstate:savedstate-ktx:1.2.0-rc01")
+    implementation("androidx.fragment:fragment-ktx:1.5.0")
+    implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.google.android.material:material:1.7.0-alpha02")
@@ -226,45 +226,45 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
     implementation(kotlin("stdlib", "1.7.0"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
 
     //Compose
-    implementation("androidx.compose.compiler:compiler:${composeVersion}")
-    implementation("androidx.compose.runtime:runtime:${composeVersion}")
-    implementation("androidx.compose.ui:ui:${composeVersion}")
-    implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${composeVersion}")
-    implementation("androidx.compose.foundation:foundation:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
-    implementation("androidx.navigation:navigation-compose:2.4.2")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.compose.compiler:compiler:$vComposeCompiler")
+    implementation("androidx.compose.runtime:runtime:$vCompose")
+    implementation("androidx.compose.ui:ui:$vCompose")
+    implementation("androidx.compose.ui:ui-tooling:$vCompose")
+    implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
+    implementation("androidx.compose.foundation:foundation:$vCompose")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.12")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.13")
 
     //Accompanist
-    implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-insets-ui:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-insets-ui:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-navigation-animation:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-drawablepainter:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-pager:$vAccompanist")
+    implementation("com.google.accompanist:accompanist-pager-indicators:$vAccompanist")
 
     //Room Components
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:$vRoom")
+    implementation("androidx.room:room-ktx:$vRoom")
+    kapt("androidx.room:room-compiler:$vRoom")
 
     // Recents lib dependency
     "withQuickstepImplementation"(project(":SystemUIShared"))
     implementation(
-            fileTree(
-                    baseDir = "${prebuiltsDir}/libs"
-            ).include(
+        fileTree(
+            baseDir = "${prebuiltsDir}/libs"
+        ).include(
             "wm_shell-aidls.jar"
         )
     )
@@ -288,10 +288,10 @@ dependencies {
     protobuf(files("quickstep/protos_overrides/"))
 
     testImplementation("junit:junit:4.13.2")
-    implementation ("junit:junit:4.13.2")
+    implementation("junit:junit:4.13.2")
 
-    androidTestImplementation ("androidx.test:runner:1.4.0")
-    androidTestImplementation ("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.4.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
     androidTestImplementation("org.mockito:mockito-core:3.12.4")
