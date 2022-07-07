@@ -23,20 +23,15 @@
 
 ## :framed_picture: Screenshots
 
-### :sun_with_face: Light theme
+### :sun_with_face:, :last_quarter_moon_with_face: & :waxing_crescent_moon: Themes
 
-| <img src="metadata/en-US/images/phoneScreenshots/home-light.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-light.png" width="500" align="center"/> |
-|:---------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
+| <img title="" src="metadata/en-US/images/phoneScreenshots/light.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/dark.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/amoled.png" alt="" width="330" align="center"> |
+|:-------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
 
-### :last_quarter_moon_with_face: Dark theme
+### :toolbox: Full app details, latest apps & pre-setup repositories
 
-| <img src="metadata/en-US/images/phoneScreenshots/home-dark.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-dark.png" width="500" align="center"/> |
-|:--------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------:|
-
-### :waxing_crescent_moon: Black theme
-
-| <img src="metadata/en-US/images/phoneScreenshots/home-amoled.png" width="500" align="center"/> | <img src="metadata/en-US/images/phoneScreenshots/app-amoled.png" width="500" align="center"/> |
-|:----------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| <img title="" src="metadata/en-US/images/phoneScreenshots/app.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/latest.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
+|:-----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:| -------------------------------------------------------------------------------------------------------:|
 
 ## :building_construction: Building from source
 
