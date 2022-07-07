@@ -20,8 +20,11 @@ import android.app.Person;
 import android.content.pm.ShortcutInfo;
 import android.view.Display;
 
+import androidx.annotation.Keep;
+
 import com.android.launcher3.Utilities;
 
+@Keep
 public class ApiWrapper {
 
     public static final boolean TASKBAR_DRAWN_IN_PROCESS = true;
