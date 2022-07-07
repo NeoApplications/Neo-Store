@@ -49,7 +49,7 @@
 \nДеинсталирайте първо нея.</string>
     <string name="incompatible_version">Несъвместима версия</string>
     <string name="incompatible_with_FORMAT">Несъвместим с %s</string>
-    <string name="installed">Инсталирано</string>
+    <string name="installed">Инсталирани</string>
     <string name="integrity_check_error_DESC">Не може да се провери целостта.</string>
     <string name="license_FORMAT">%s лиценз</string>
     <string name="light">Светла</string>
