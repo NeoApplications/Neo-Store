@@ -205,4 +205,6 @@
     <string name="favorite_remove">Odebrat z oblíbených</string>
     <string name="favorite_add">Přidat k oblíbeným</string>
     <string name="open">Otevřít</string>
+    <string name="releases">Vydání</string>
+    <string name="loading_list">Načítání seznamu…</string>
 </resources>
