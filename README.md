@@ -1,6 +1,6 @@
 # Neo Store <img title="" src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" align="left" width="64">
 
-### A quick material F-Droid client.
+### The material F-Droid client for everyone!
 
 [![GitHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat)](https://github.com/NeoApplications/Neo-Store/stargazers)
 [![GitHub License](https://img.shields.io/github/license/NeoApplications/Neo-Store)](https://github.com/NeoApplications/Neo-Store/blob/master/COPYING)
@@ -16,10 +16,11 @@
 
 ## :book: Features
 
-* :art: Material F-Droid style
-* :dart: No cards or inappropriate animations
+* :art: Material Design 3
 * :airplane: Fast repository syncing
-* :wrench: Standard Android components and minimal dependencies
+* :fountain: Pre-setup repositories
+* :mag: Easy exploration of new apps
+* :dart: KISS-Minimalism
 
 ## :framed_picture: Screenshots
 
