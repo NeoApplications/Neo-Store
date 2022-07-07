@@ -125,7 +125,7 @@
     <string name="version_FORMAT">Versiune %s</string>
     <string name="waiting_to_start_download">Descărcare…</string>
     <string name="prefs_personalization">Personalizare</string>
-    <string name="latest">Ultima</string>
+    <string name="latest">Cele mai recente</string>
     <string name="explore">Explorează</string>
     <string name="update_all">Instalează tot</string>
     <string name="installed_applications">Instalate</string>
@@ -205,4 +205,6 @@
     <string name="no_action_possible">Nicio acțiune posibilă</string>
     <string name="show_screenshots">Afișare capturi de ecran</string>
     <string name="show_screenshots_description">Afișare capturi de ecran în pagina aplicației.</string>
+    <string name="releases">Lansări</string>
+    <string name="loading_list">Se încarcă lista…</string>
 </resources>
