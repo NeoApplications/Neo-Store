@@ -1,0 +1,3 @@
+<p>Lansatorul tău liber puternic, cu o mulțime de funcții inteligente.</p>
+<br>
+<p>Stare: Beta</p>
