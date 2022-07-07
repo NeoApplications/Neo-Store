@@ -1,0 +1,7 @@
+- Přidána ikona pro otevření Podrobností
+- Zvýraznění rozdílů na horním panelu aplikací
+- Oprávnění ke kořenovému systému bude vyžadováno pouze při použití
+- Opravy viditelnosti přepínače
+- Přidán arabský překlad
+- Dlouhým stisknutím ikony zdroje zkopírujete odkaz
+- Nahrazení Toastu Snackbarem

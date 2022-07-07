@@ -1,0 +1,7 @@
+- Zcela nové UI/UX s Material Designem 3
+- Přidat: Tlačítko Aktualizovat vše
+- Přidat: Předvolba jazyka
+- Přidat: Oblíbené (další funkce přibudou později)
+- Oprava: Automatická aktualizace nainstalovaných/aktualizovaných seznamů
+- Oprava: Pád na A12+ (je třeba vypnout optimalizaci baterie)
+- Oprava: Instalace kořenového programu

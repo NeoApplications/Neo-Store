@@ -1,0 +1,6 @@
+- Aktualizace: Nová ikona aplikace
+- Aktualizace: Uživatelské rozhraní na stránce aplikace
+- Aktualizace: Animace seznamu je volitelná
+- Oprava: Zobrazení skutečné velikosti APK
+- Oprava: Odkaz na projekt v předvolbách
+- Oprava: Úvodní obrazovka v závislosti na motivu systému

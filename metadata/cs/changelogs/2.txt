@@ -1,0 +1,4 @@
+* Různé změny rozhraní
+* Reformátován všechen kód
+* Aktualizovány závislosti
+* Přejmenovány Předvolby na Nastavení

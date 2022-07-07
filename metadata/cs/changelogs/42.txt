@@ -1,0 +1,6 @@
+- Další informace o Material Designu 3
+- Oprava: Kořenový a výchozí instalátor
+- Oprava: Odstranění souboru v mezipaměti po odinstalaci
+- Oprava: Pád při stisknutí stahování v režimu offline
+- Aktualizace překladů více než 17 jazyků
+- Mnoho drobných oprav a vylepšení…

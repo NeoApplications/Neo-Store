@@ -1,0 +1,5 @@
+- Přidáno: Preference jazyka
+- Aktualizace: horizontální rolování snímků obrazovky
+- Oprava: Instalace kořenového adresáře na pozadí
+- Přidáno: Požádat o root pouze v případě, že je vybráno
+- Tuny úprav uživatelského rozhraní a uživatelské příručky

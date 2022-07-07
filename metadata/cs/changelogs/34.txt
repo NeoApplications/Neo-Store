@@ -1,0 +1,6 @@
+- Aktualizace: Sbalení panelu nástrojů
+- Aktualizace: Vylepšení instalátorů (root i neroot)
+- Aktualizace: Nová ikona aplikace (opět)
+- Aktualizace: Design bloků s informacemi o vydání
+- Aktualizace: Zpracování chybějících jmen a ikon autorů
+- Další opravy, vylepšení a vyčištění

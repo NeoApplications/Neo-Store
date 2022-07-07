@@ -1,0 +1,1 @@
+- Oprava pádu normální instalace

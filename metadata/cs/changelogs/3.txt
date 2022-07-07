@@ -1,0 +1,5 @@
+* Přidáno Amoled téma
+* Přidána tichá root instalace
+* Přidány následující jazyky:
+    * Portugalština
+    * Čínština

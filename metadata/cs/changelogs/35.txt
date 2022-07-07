@@ -1,0 +1,3 @@
+- Staré ikony nahrazeny ikonami Material
+- Opraveny problémy s horním panelem aplikací
+- Přidání ikon k tlačítkům Instalace a Zrušit pro zlepšení přístupnosti

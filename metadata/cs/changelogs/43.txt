@@ -1,0 +1,4 @@
+- Oprava: Ikona zástupného prvku snímku obrazovky
+- Oprava: Měkký pád při spuštění aplikace AppDetails
+- Oprava: Spuštění pouze jedné instance kořenového instalátoru
+- Oprava: Instalace kořenového programu
