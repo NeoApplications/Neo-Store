@@ -204,4 +204,6 @@
     <string name="favorite_add">Legg til i favoritter</string>
     <string name="open">Åpne</string>
     <string name="favorite_remove">Fjern fra favoritter</string>
+    <string name="releases">Utgivelser</string>
+    <string name="loading_list">Laster inn lister …</string>
 </resources>
