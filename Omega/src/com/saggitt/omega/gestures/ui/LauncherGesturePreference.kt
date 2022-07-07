@@ -48,6 +48,7 @@ class LauncherGesturePreference(context: Context, attrs: AttributeSet?) :
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onSetInitialValue(restorePersistedValue: Boolean, defaultValue: Any?) {
         value = if (restorePersistedValue) {
             getPersistedString(defaultValue as String?) ?: ""

@@ -43,6 +43,9 @@ class IconShapeDrawable(private val size: Int, iconShape: IconShape) : Drawable(
         paint.alpha = alpha
     }
 
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.TRANSLUCENT", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int {
         return PixelFormat.TRANSLUCENT
     }

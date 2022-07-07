@@ -72,6 +72,7 @@ class SettingsDragLayer(context: Context, attrs: AttributeSet? = null) :
         return super.drawChild(canvas, child, drawingTime)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun fitSystemWindows(insets: Rect): Boolean {
         setInsets(insets)
         return true

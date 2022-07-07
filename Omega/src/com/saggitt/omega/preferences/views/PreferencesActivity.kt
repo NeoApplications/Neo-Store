@@ -241,6 +241,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             }
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
             inflater.inflate(R.menu.menu_settings, menu)
             if (BuildConfig.APPLICATION_ID != DEFAULT_HOME) {
@@ -248,6 +249,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             }
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
                 R.id.action_change_default_home -> changeDefaultHome(requireContext())

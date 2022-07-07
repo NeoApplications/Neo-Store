@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -57,7 +55,7 @@ dependencies {
             )
         ).include("wm_shell-aidls.jar")
     )
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
     implementation(project(":CompatLib"))
     implementation(project(":CompatLibVR"))
     implementation(project(":CompatLibVS"))

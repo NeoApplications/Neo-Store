@@ -115,15 +115,15 @@
             android:name="com.saggitt.omega.OmegaLauncher"
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density"
+            android:enabled="true"
+            android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:resumeWhilePausing="true"
             android:screenOrientation="unspecified"
             android:stateNotNeeded="true"
             android:taskAffinity=""
-            android:windowSoftInputMode="adjustPan"
-            android:enabled="true"
-            android:exported="true">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -218,10 +218,10 @@
 
         <!-- DT2S using device admin -->
         <receiver
-            android:description="@string/dt2s_admin_hint"
             android:name="com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin$SleepDeviceAdmin"
-            android:permission="android.permission.BIND_DEVICE_ADMIN"
-            android:exported="true">
+            android:description="@string/dt2s_admin_hint"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/sleep_admin_policy" />
@@ -270,8 +270,8 @@
 
         <receiver
             android:name="com.google.android.apps.nexuslauncher.qsb.OPAStatusReceiver"
-            android:permission="android.permission.CAPTURE_AUDIO_HOTWORD"
-            android:exported="false">
+            android:exported="false"
+            android:permission="android.permission.CAPTURE_AUDIO_HOTWORD">
             <intent-filter>
                 <action android:name="com.google.android.systemui.OPA_ENABLED" />
             </intent-filter>

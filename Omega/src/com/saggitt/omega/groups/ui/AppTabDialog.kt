@@ -20,16 +20,30 @@ package com.saggitt.omega.groups.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -37,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
@@ -45,23 +60,27 @@ import com.saggitt.omega.preferences.views.AppCategorizationFragment
 import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.util.addOrRemove
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AppTabDialog(
-        componentKey: ComponentKey,
-        openDialogCustom: MutableState<Boolean>
+    componentKey: ComponentKey,
+    openDialogCustom: MutableState<Boolean>
 ) {
-    Dialog(onDismissRequest = { openDialogCustom.value = false }) {
+    Dialog(
+        onDismissRequest = { openDialogCustom.value = false },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         AppTabDialogUI(
-                componentKey = componentKey,
-                openDialogCustom = openDialogCustom
+            componentKey = componentKey,
+            openDialogCustom = openDialogCustom
         )
     }
 }
 
 @Composable
 fun AppTabDialogUI(
-        componentKey: ComponentKey,
-        openDialogCustom: MutableState<Boolean>
+    componentKey: ComponentKey,
+    openDialogCustom: MutableState<Boolean>
 ) {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
@@ -73,14 +92,14 @@ fun AppTabDialogUI(
     val cornerRadius by remember { mutableStateOf(radius) }
 
     Card(
-            shape = RoundedCornerShape(cornerRadius),
-            modifier = Modifier.padding(8.dp),
-            elevation = 8.dp,
-            backgroundColor = MaterialTheme.colorScheme.background
+        shape = RoundedCornerShape(cornerRadius),
+        modifier = Modifier.padding(8.dp),
+        elevation = 8.dp,
+        backgroundColor = MaterialTheme.colorScheme.background
     ) {
         Column {
             val tabs: List<DrawerTabs.CustomTab> =
-                    prefs.drawerTabs.getGroups().mapNotNull { it as? DrawerTabs.CustomTab }
+                prefs.drawerTabs.getGroups().mapNotNull { it as? DrawerTabs.CustomTab }
             val entries = tabs.map { it.title }.toList()
             val checkedEntries = tabs.map {
                 it.contents.value().contains(componentKey)
@@ -88,29 +107,29 @@ fun AppTabDialogUI(
 
             val selectedItems = checkedEntries.toMutableList()
             LazyColumn(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
             ) {
                 itemsIndexed(entries) { index, tabName ->
                     var isSelected by rememberSaveable { mutableStateOf(selectedItems[index]) }
                     Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    isSelected = !isSelected
-                                    selectedItems[index] = isSelected
-                                },
-                            verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                isSelected = !isSelected
+                                selectedItems[index] = isSelected
+                            },
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
-                                checked = isSelected,
-                                onCheckedChange = {
-                                    isSelected = !isSelected
-                                    selectedItems[index] = isSelected
-                                },
-                                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                                colors = CheckboxDefaults.colors(
-                                        checkedColor = MaterialTheme.colorScheme.primary,
-                                )
+                            checked = isSelected,
+                            onCheckedChange = {
+                                isSelected = !isSelected
+                                selectedItems[index] = isSelected
+                            },
+                            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = MaterialTheme.colorScheme.primary,
+                            )
                         )
                         Text(text = tabName, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
@@ -124,67 +143,68 @@ fun AppTabDialogUI(
                     .padding(16.dp)
             ) {
                 OutlinedButton(
-                        shape = RoundedCornerShape(cornerRadius),
-                        onClick = {
-                            openDialogCustom.value = false
-                            PreferencesActivity.startFragment(
-                                    context, AppCategorizationFragment::class.java.name,
-                                    context.resources.getString(R.string.title__drawer_categorization)
-                            )
-                        },
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                        colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                                contentColor = MaterialTheme.colorScheme.surface
+                    shape = RoundedCornerShape(cornerRadius),
+                    onClick = {
+                        openDialogCustom.value = false
+                        PreferencesActivity.startFragment(
+                            context, AppCategorizationFragment::class.java.name,
+                            context.resources.getString(R.string.title__drawer_categorization)
                         )
+                    },
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        contentColor = MaterialTheme.colorScheme.surface
+                    )
                 ) {
                     Text(
-                            text = stringResource(id = R.string.tabs_manage),
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        text = stringResource(id = R.string.tabs_manage),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
 
                 Spacer(Modifier.weight(1f))
 
                 OutlinedButton(
-                        shape = RoundedCornerShape(cornerRadius),
-                        onClick = {
-                            openDialogCustom.value = false
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.surface.copy(0.15f),
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                        )
+                    shape = RoundedCornerShape(cornerRadius),
+                    onClick = {
+                        openDialogCustom.value = false
+                    },
+                    modifier = Modifier.padding(start = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.surface.copy(0.15f),
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 ) {
                     Text(
-                            text = stringResource(id = android.R.string.cancel),
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        text = stringResource(id = android.R.string.cancel),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
 
                 OutlinedButton(
-                        shape = RoundedCornerShape(cornerRadius),
-                        onClick = {
-                            tabs.forEachIndexed { index, tab ->
-                                tab.contents.value().addOrRemove(componentKey, selectedItems[index])
-                            }
-                            tabs.hashCode()
-                            prefs.appGroupsManager.drawerTabs.saveToJson()
-                            openDialogCustom.value = false
-                        },
-                        modifier = Modifier.padding(start = 16.dp),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                        colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                                contentColor = MaterialTheme.colorScheme.surface
-                        )
+                    shape = RoundedCornerShape(cornerRadius),
+                    onClick = {
+                        tabs.forEachIndexed { index, tab ->
+                            tab.contents.value().addOrRemove(componentKey, selectedItems[index])
+                        }
+                        tabs.hashCode()
+                        prefs.appGroupsManager.drawerTabs.saveToJson()
+                        openDialogCustom.value = false
+                    },
+                    modifier = Modifier.padding(start = 16.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        contentColor = MaterialTheme.colorScheme.surface
+                    )
                 ) {
                     Text(
-                            text = stringResource(id = android.R.string.ok),
-                            fontWeight = FontWeight.ExtraBold,
-                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        text = stringResource(id = android.R.string.ok),
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
             }
