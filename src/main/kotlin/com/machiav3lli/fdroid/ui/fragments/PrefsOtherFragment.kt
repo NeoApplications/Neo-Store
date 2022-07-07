@@ -38,7 +38,7 @@ class PrefsOtherFragment : PrefsNavFragmentX() {
             addText(
                 title = getString(R.string.application_name),
                 summary = "v ${BuildConfig.VERSION_NAME}",
-                url = "https://github.com/iamlooker/Droid-ify/"
+                url = "https://github.com/NeoApplications/Neo-Store/"
             )
         }
     }
