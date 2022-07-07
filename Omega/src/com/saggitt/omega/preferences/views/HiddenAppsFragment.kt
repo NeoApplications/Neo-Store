@@ -73,11 +73,13 @@ class HiddenAppsFragment : Fragment(), ProtectedAppsAdapter.Callback {
         setHasOptionsMenu(true)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_hide_apps, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_reset -> {

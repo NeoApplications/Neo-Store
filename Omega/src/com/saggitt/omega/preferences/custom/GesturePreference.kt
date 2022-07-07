@@ -59,6 +59,7 @@ class GesturePreference(context: Context, attrs: AttributeSet?) :
 
     override fun getSummary() = handler.displayName
 
+    @Deprecated("Deprecated in Java")
     override fun onSetInitialValue(restorePersistedValue: Boolean, defaultValue: Any?) {
         value = if (restorePersistedValue) {
             getPersistedString(defaultValue as String?) ?: ""
