@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -50,7 +48,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0-alpha05")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation(kotlin("stdlib", "1.7.0"))
     implementation("androidx.annotation:annotation:1.4.0")
 }
 

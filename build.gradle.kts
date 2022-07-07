@@ -14,9 +14,9 @@ val roomVersion = "2.5.0-alpha02"
 
 plugins {
     id("com.android.application").version("7.2.1")
-    kotlin("android").version("1.6.21")
-    kotlin("kapt").version("1.6.21")
-    kotlin("plugin.parcelize").version("1.6.21")
+    kotlin("android").version("1.7.0")
+    kotlin("kapt").version("1.7.0")
+    kotlin("plugin.parcelize").version("1.7.0")
     id("com.google.protobuf").version("0.8.18")
 }
 
@@ -228,7 +228,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02")
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation(kotlin("stdlib", "1.7.0"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
 
     //Compose
