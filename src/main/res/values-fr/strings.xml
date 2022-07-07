@@ -205,4 +205,5 @@
     <string name="favorite_add">Ajouter aux favoris</string>
     <string name="open">Ouvrir</string>
     <string name="loading_list">Chargement de la liste…</string>
+    <string name="releases">Versions</string>
 </resources>
