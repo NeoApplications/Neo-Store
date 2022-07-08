@@ -119,6 +119,16 @@ fun ReleaseItemContent(
                 } else ""
             ) {
                 AnimatedVisibility(
+                    visible = release.platforms.size == 1,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    ReleaseBadge(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = release.platforms.first()
+                    )
+                }
+                AnimatedVisibility(
                     visible = isSuggested or isInstalled,
                     enter = fadeIn(),
                     exit = fadeOut()
