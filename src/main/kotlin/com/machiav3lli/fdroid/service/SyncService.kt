@@ -391,7 +391,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { result, throwable ->
                             throwable?.printStackTrace()
-                            currentTask = null
                             if (result.isNotEmpty()) {
                                 if (Preferences[Preferences.Key.InstallAfterSync])
                                     batchUpdate(result)
@@ -399,8 +398,12 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     updateNotificationBlockerFragment?.get()?.isAdded != true &&
                                     result.isNotEmpty()
                                 )
-                                    displayUpdatesNotification(result)
+                                    displayUpdatesNotification(
+                                        result,
+                                        currentTask?.task?.manual == true
+                                    )
                             }
+                            currentTask = null
                             handleNextTask(false)
                         }
                     if (hasUpdates) {
