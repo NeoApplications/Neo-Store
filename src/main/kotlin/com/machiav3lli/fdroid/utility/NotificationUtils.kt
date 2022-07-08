@@ -35,62 +35,69 @@ import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
  *
  * @param productItems list of apps pending updates
  */
-fun Context.displayUpdatesNotification(productItems: List<ProductItem>) {
+fun Context.displayUpdatesNotification(
+    productItems: List<ProductItem>,
+    enforceNotify: Boolean = false
+) {
     val maxUpdates = 5
     fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
-    notificationManager.notify(
-        NOTIFICATION_ID_UPDATES, NotificationCompat
-            .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
-            .setSmallIcon(R.drawable.ic_new_releases)
-            .setContentTitle(getString(R.string.new_updates_available))
-            .setContentText(
-                resources.getQuantityString(
-                    R.plurals.new_updates_DESC_FORMAT,
-                    productItems.size, productItems.size
+    if (productItems.isNotEmpty() || enforceNotify)
+        notificationManager.notify(
+            NOTIFICATION_ID_UPDATES, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
+                .setSmallIcon(R.drawable.ic_new_releases)
+                .setContentTitle(getString(if (productItems.isNotEmpty()) R.string.new_updates_available else R.string.no_updates_available))
+                .setContentText(
+                    if (productItems.isNotEmpty())
+                        resources.getQuantityString(
+                            R.plurals.new_updates_DESC_FORMAT,
+                            productItems.size, productItems.size
+                        )
+                    else null
                 )
-            )
-            .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Light)
-                    .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-            )
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    this,
-                    0,
-                    Intent(this, MainActivityX::class.java)
-                        .setAction(MainActivityX.ACTION_UPDATES)
-                        .putExtra(
-                            MainActivityX.EXTRA_UPDATES,
-                            productItems.map { it.packageName }.toTypedArray()
-                        ),
-                    if (Android.sdk(23))
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    else
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                .setColor(
+                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
                 )
-            )
-            .setStyle(NotificationCompat.InboxStyle().applyHack {
-                for (productItem in productItems.take(maxUpdates)) {
-                    val builder = SpannableStringBuilder(productItem.name)
-                    builder.setSpan(
-                        ForegroundColorSpan(Color.BLACK), 0, builder.length,
-                        SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                .setContentIntent(
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        Intent(this, MainActivityX::class.java)
+                            .setAction(MainActivityX.ACTION_UPDATES)
+                            .putExtra(
+                                MainActivityX.EXTRA_UPDATES,
+                                productItems.map { it.packageName }.toTypedArray()
+                            ),
+                        if (Android.sdk(23))
+                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                        else
+                            PendingIntent.FLAG_UPDATE_CURRENT
                     )
-                    builder.append(' ').append(productItem.version)
-                    addLine(builder)
-                }
-                if (productItems.size > maxUpdates) {
-                    val summary =
-                        getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                    if (Android.sdk(24)) {
-                        addLine(summary)
-                    } else {
-                        setSummaryText(summary)
+                )
+                .setStyle(NotificationCompat.InboxStyle().applyHack {
+                    for (productItem in productItems.take(maxUpdates)) {
+                        val builder = SpannableStringBuilder(productItem.name)
+                        builder.setSpan(
+                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
+                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        builder.append(' ').append(productItem.version)
+                        addLine(builder)
                     }
-                }
-            })
-            .build()
-    )
+                    if (productItems.size > maxUpdates) {
+                        val summary =
+                            getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
+                        if (Android.sdk(24)) {
+                            addLine(summary)
+                        } else {
+                            setSummaryText(summary)
+                        }
+                    }
+                })
+                .build()
+        )
+    else notificationManager.cancel(NOTIFICATION_ID_UPDATES)
 }
 
 fun Context.showNotificationError(repository: Repository, exception: Exception) {

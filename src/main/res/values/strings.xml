@@ -206,4 +206,5 @@
     <string name="open">Open</string>
     <string name="loading_list">Loading list…</string>
     <string name="releases">Releases</string>
+    <string name="no_updates_available">No versions available</string>
 </resources>
