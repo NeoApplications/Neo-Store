@@ -151,7 +151,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
 
     override fun updateSheet() {
         val repository = viewModel.repo.value
-        if (repository == null) {
+        if (repository == null || repository.address == "") {
             val clipboardManager =
                 requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val text = clipboardManager.primaryClip

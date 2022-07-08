@@ -63,7 +63,7 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
     }
 
     private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
-        repositoryDao.insert(newRepository(address = "new repository"))
+        repositoryDao.insert(newRepository(fallbackName = "new repository"))
         repositoryDao.latestAddedId()
     }
 

@@ -66,13 +66,14 @@ data class Repository(
 
         fun newRepository(
             address: String = "",
+            fallbackName: String = "",
             fingerprint: String = "",
             authentication: String = "",
         ): Repository {
             val name = try {
                 URL(address).let { "${it.host}${it.path}" }
             } catch (e: Exception) {
-                address
+                fallbackName
             }
             return Repository(
                 address = address,
