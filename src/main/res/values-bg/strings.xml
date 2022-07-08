@@ -5,12 +5,12 @@
     <string name="downloading_FORMAT">Изтегля се %s…</string>
     <string name="delete_repository_DESC">Изтриване на хранилището\?</string>
     <string name="downloading">Изтегля се</string>
-    <string name="edit_repository">Редактирай хранилището</string>
+    <string name="edit_repository">Редактирай</string>
     <string name="incompatible_api_max_DESC_FORMAT">Максималната АПИ версия е %d.</string>
     <string name="all_applications">Всички Приложения</string>
     <string name="all_applications_up_to_date">Всички приложения са актуални</string>
     <string name="already_exists">Вече съществува</string>
-    <string name="amoled">Черенa</string>
+    <string name="amoled">Чернa</string>
     <string name="anti_features">Антифункции</string>
     <string name="author_email">Ел. поща на автора</string>
     <string name="author_website">Уебстраница на автора</string>
@@ -31,9 +31,9 @@
     <string name="delete">Изтрий</string>
     <string name="description">Описание</string>
     <string name="details">Детайли</string>
-    <string name="donate">Дарете</string>
+    <string name="donate">Дарения</string>
     <string name="file_format_error_DESC">Невалиден файлов формат.</string>
-    <string name="fingerprint">Пръстов отпечатък</string>
+    <string name="fingerprint">Отпечатък</string>
     <string name="has_advertising">Има реклами</string>
     <string name="has_non_free_dependencies">Има несвободни зависимости</string>
     <string name="has_security_vulnerabilities">Има уязвимости в сигурността</string>
@@ -99,9 +99,9 @@
     <string name="requires_FORMAT">Изисква %s</string>
     <string name="save">Запази</string>
     <string name="saving_details">Запазване на подробности…</string>
-    <string name="select_mirror">Изберете източник</string>
+    <string name="select_mirror">Избери източник</string>
     <string name="show_more">Покажи повече</string>
-    <string name="show_older_versions">Покажете по -стари версии</string>
+    <string name="show_older_versions">Покажи по-стари версии</string>
     <string name="signature_FORMAT">Подпис %s</string>
     <string name="signed_using_unsafe_algorithm">Подписано с несигурен алгоритъм</string>
     <string name="socks_proxy">SOCKS прокси</string>
@@ -111,7 +111,7 @@
     <string name="sync_repositories">Синхронизирай хранилищата</string>
     <string name="sync_repositories_automatically">Автоматично синхронизиране на хранилищата</string>
     <string name="syncing_FORMAT">Синхронизиране на %s…</string>
-    <string name="system">Система</string>
+    <string name="system">Системна</string>
     <string name="tap_to_install_DESC">Докосни за инсталиране.</string>
     <string name="target">Цел</string>
     <string name="theme">Тема</string>
@@ -121,7 +121,7 @@
     <string name="unknown_FORMAT">Неизвестно: %s</string>
     <string name="unsigned">Неподписано</string>
     <string name="unstable_updates">Нестабилни актуализации</string>
-    <string name="unstable_updates_summary">Предлага се инсталирането на нестабилни версии.</string>
+    <string name="unstable_updates_summary">Предложи инсталирането на нестабилни версии.</string>
     <string name="unverified">Непроверено</string>
     <string name="upstream_source_code_is_not_free">Актуалният програмен код вече не е със свободен лиценз</string>
     <string name="not_safe_for_work">Цензурируемо (може да съдържа смущаващо съдържание)</string>
@@ -153,7 +153,7 @@
     <string name="add_repository">Добави хранилище</string>
     <string name="address">Адрес</string>
     <string name="always">Винаги</string>
-    <string name="cant_edit_sync_DESC">Не може да се редактирар синхронизиращи се хранилища…</string>
+    <string name="cant_edit_sync_DESC">Не може да се редактират синхронизиращи се хранилища…</string>
     <string name="dark">Тъмнa</string>
     <string name="license">Лиценз</string>
     <string name="install">Инсталиране</string>
@@ -194,7 +194,7 @@
     <string name="update">Актуализация</string>
     <string name="sort_filter">Сортиране и филтриране</string>
     <string name="updates">Актуализации</string>
-    <string name="validation_index_error_DESC">Не може да валидира индекса.</string>
+    <string name="validation_index_error_DESC">Не може да валидира индексът.</string>
     <string name="version">Версия</string>
     <string name="show_screenshots_description">Показване на екрани снимки в страницата на приложението.</string>
     <string name="show_screenshots">Показване на екранни снимки</string>
@@ -205,4 +205,5 @@
     <string name="ignore_battery_optimization_not_supported">Вашата инсталация на Android не поддържа изключване на оптимизацията на батерията.</string>
     <string name="favorite_remove">Премахни от любими</string>
     <string name="loading_list">Зареждане на списък…</string>
+    <string name="releases">Издания</string>
 </resources>
