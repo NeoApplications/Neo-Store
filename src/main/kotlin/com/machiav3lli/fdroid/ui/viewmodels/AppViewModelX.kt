@@ -99,7 +99,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private fun shouldIgnore(appVersionCode: Long): Boolean =
-        extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates != false
+        extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true
 
     fun setIgnoredVersion(packageName: String, versionCode: Long) {
         viewModelScope.launch {
