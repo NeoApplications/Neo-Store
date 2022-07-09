@@ -350,7 +350,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun AppSheet() {
-        val incompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val installed by viewModel.installedItem.observeAsState()
         val products by viewModel.products.observeAsState()
         val repos by viewModel.repositories.observeAsState()
@@ -367,7 +367,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val compatibleReleasePairs = productRepos.asSequence()
             .flatMap { (product, repository) ->
                 product.releases.asSequence()
-                    .filter { incompatible || it.incompatibilities.isEmpty() }
+                    .filter { includeIncompatible || it.incompatibilities.isEmpty() }
                     .map { Pair(it, repository) }
             }
             .toList()
