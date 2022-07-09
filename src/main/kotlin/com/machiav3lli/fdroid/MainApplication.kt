@@ -13,6 +13,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.google.android.material.color.DynamicColors
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
@@ -51,6 +52,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
         appRef = WeakReference(this)
 
         db = DatabaseX.getInstance(applicationContext)

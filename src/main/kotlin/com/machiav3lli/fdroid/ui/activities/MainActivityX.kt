@@ -27,6 +27,7 @@ import com.machiav3lli.fdroid.ui.fragments.MainNavFragmentX
 import com.machiav3lli.fdroid.ui.fragments.Source
 import com.machiav3lli.fdroid.ui.viewmodels.MainActivityViewModelX
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -71,7 +72,7 @@ class MainActivityX : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
         currentTab = Preferences[Preferences.Key.DefaultTab].getResId(resources.configuration)
-        setTheme(currentTheme)
+        if (!isDynamicColorsTheme) setTheme(currentTheme)
         super.onCreate(savedInstanceState)
         binding = ActivityMainXBinding.inflate(layoutInflater)
 
