@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,13 +59,15 @@ fun LinkItem(
                 maxLines = 1,
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
-                text = linkType.link.toString(),
-                style = MaterialTheme.typography.bodySmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            if(linkType.link!=null){
+                Text(
+                    text = linkType.link.toString(),
+                    style = MaterialTheme.typography.bodySmall,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
@@ -74,7 +77,10 @@ fun LinkItem(
 fun LinkItemPreview() {
     AppTheme(blackTheme = false) {
         LinkItem(
-            linkType = LinkType(R.drawable.ic_email, "R.string.author_email")
+            linkType = LinkType(
+                R.drawable.ic_email,
+                stringResource(id = R.string.author_email),
+                Uri.parse("neostore@neoapps.com"))
         )
     }
 }
