@@ -272,6 +272,56 @@ data class Repository(
                 "A companion repository to microG's installer.",
                 21, false, "862ED9F13A3981432BF86FE93D14596B381D75BE83A1D616E2D44A12654AD015", ""
             )
+        }, run {
+            defaultRepository(
+                "https://fdroid.fluffychat.im/", "FluffyChat",
+                "A repository to easily distribute the cute matrix messanger client.",
+                21, false, "8E2637AEF6697CC6DD486AF044A6EE45B1A742AE3EF56566E748CDE8BC65C1FB", ""
+            )
+        }, run {
+            defaultRepository(
+                "https://fdroid.krombel.de/element-dev-fdroid/fdroid/repo/",
+                "Unofficial Element-FDroid-dev",
+                "An unofficial repository with Element-dev builds for devices with F-Droid.",
+                21,
+                false,
+                "FD146EF30FA9F8F075BDCD9F02F069D22061B1DF7CC90E90821750A7184BF53D",
+                ""
+            )
+        }, run {
+            defaultRepository(
+                "https://fdroid.krombel.de/element-dev-gplay/fdroid/repo/",
+                "Unofficial Element-GPlay-dev",
+                "An unofficial repository with Element-dev builds for devices with Google Service.",
+                21,
+                false,
+                "5564AB4D4BF9461AF7955449246F12D7E792A8D65165EBB2C0E90E65E77D5095",
+                ""
+            )
+        }, run {
+            defaultRepository(
+                "https://fdroid.frostnerd.com/fdroid/repo/", "Frostnerd",
+                "A repository with a group of apps with public code.",
+                21, false, "74BB580F263EC89E15C207298DEC861B5069517550FE0F1D852F16FA611D2D26", ""
+            )
+        }, run {
+            defaultRepository(
+                "https://fdroidarchive.frostnerd.com/", "Frostnerd Archive",
+                "An archive repository of Frostnerd.",
+                21, false, "74BB580F263EC89E15C207298DEC861B5069517550FE0F1D852F16FA611D2D26", ""
+            )
+        }, run {
+            defaultRepository(
+                "https://app.simplex.chat/fdroid/repo/", "SimpleX Chat",
+                "SimpleX Chat official F-Droid repository.",
+                21, false, "9F358FF284D1F71656A2BFAF0E005DEAE6AA14143720E089F11FF2DDCFEB01BA", ""
+            )
+        }, run {
+            defaultRepository(
+                "https://f-droid.i2p.io/repo/", "i2p",
+                "A repository of I2P apps.",
+                21, false, "22658CC69F48D63F63C3D64E2041C81714E2749F3F6E5445C825297A00DDC5B6", ""
+            )
         })
     }
 
