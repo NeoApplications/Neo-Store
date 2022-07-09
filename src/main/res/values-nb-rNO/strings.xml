@@ -37,7 +37,7 @@
     <string name="link_copied_to_clipboard">Lenke kopiert til utklippstavle</string>
     <string name="list_animation">Listeanimasjoner</string>
     <string name="list_animation_description">Animer listen på hovedsiden</string>
-    <string name="new_updates_available">Nye versjoner er tilgjengelig</string>
+    <string name="new_updates_available">Nye versjoner tilgjengelig</string>
     <string name="no_applications_available">Ingen programmer er tilgjengelige</string>
     <string name="no_applications_installed">Ingen programmer installert</string>
     <string name="no_description_available_DESC">Ingen beskrivelse.</string>
@@ -171,7 +171,7 @@
     <string name="repository_not_used_DESC">Denne pakkebrønnen har ikke blitt brukt enda.
 \nKoble til den for å vise programmene den tilbyr.</string>
     <string name="update">Oppgrader</string>
-    <string name="prefs_language_title">Språ</string>
+    <string name="prefs_language_title">Språk</string>
     <string name="prefs_personalization">Personalisering</string>
     <string name="show_less">Vis mindre</string>
     <string name="latest">Siste</string>
