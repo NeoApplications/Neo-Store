@@ -42,7 +42,6 @@ import kotlin.math.roundToInt
 class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     AbstractQsbLayout(context, attrs), SearchUiManager, Insettable {
 
-    private var mUseFallbackSearch = false
     var mDoNotRemoveFallback = false
     private val mVerticalOffset =
         resources.getDimensionPixelSize(R.dimen.all_apps_search_vertical_offset)
@@ -157,7 +156,6 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun setInsets(insets: Rect?) {
-        removeFallBack()
         val mlp = layoutParams as MarginLayoutParams
         mlp.topMargin = insets!!.top
         requestLayout()
@@ -180,9 +178,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun resetSearch() {
-        if (mUseFallbackSearch) {
-            resetFallbackView()
-        } else if (!mDoNotRemoveFallback) {
+        if (!mDoNotRemoveFallback) {
             removeFallbackView()
         }
     }
@@ -220,20 +216,6 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
             mFallback!!.allAppsQsbLayout = this
             mFallback!!.initializeSearch(allAppsContainerView)
             addView(mFallback)
-        }
-    }
-
-    private fun resetFallbackView() {
-        if (mFallback != null) {
-            mFallback!!.reset()
-            mFallback!!.clearSearchResult()
-        }
-    }
-
-    private fun removeFallBack() {
-        if (mUseFallbackSearch) {
-            removeFallbackView()
-            mUseFallbackSearch = false
         }
     }
 
