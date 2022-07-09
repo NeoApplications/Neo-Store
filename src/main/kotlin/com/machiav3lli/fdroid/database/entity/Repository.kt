@@ -306,5 +306,11 @@ data class Repository(
             FROSTNERD, FROSTNERD_ARCHIVE,
             UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA, ALEFVANOON
         )
+
+        val addedReposV9 = listOf(
+            FLUFFY_CHAT, SIMPLEX_CHAT, I2P,
+            ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
+            FROSTNERD, FROSTNERD_ARCHIVE
+        )
     }
 }

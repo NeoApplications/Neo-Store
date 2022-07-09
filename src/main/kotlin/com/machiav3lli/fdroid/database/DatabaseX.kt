@@ -1,10 +1,13 @@
 package com.machiav3lli.fdroid.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.database.dao.CategoryDao
 import com.machiav3lli.fdroid.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.database.dao.ExtrasDao
@@ -21,6 +24,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -36,7 +40,14 @@ import kotlinx.coroutines.launch
         CategoryTemp::class,
         Installed::class,
         Extras::class
-    ], version = 8
+    ],
+    version = 9,
+    exportSchema = true,
+    autoMigrations = [AutoMigration(
+        from = 8,
+        to = 9,
+        spec = DatabaseX.Companion.MigrationSpec8to9::class
+    )]
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {
@@ -75,19 +86,32 @@ abstract class DatabaseX : RoomDatabase() {
                 return INSTANCE!!
             }
         }
+
+        class MigrationSpec8to9 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                val preRepos = if (db.version < 9) addedReposV9
+                else emptyList()
+                GlobalScope.launch(Dispatchers.IO) {
+                    preRepos.forEach {
+                        INSTANCE?.repositoryDao?.put(it)
+                    }
+                }
+            }
+        }
     }
 
     fun cleanUp(pairs: Set<Pair<Long, Boolean>>) {
         runInTransaction {
             pairs.windowed(10, 10, true).map {
-                it.map { it.first }
+                it.map { pair -> pair.first }
                     .toLongArray()
                     .forEach { id ->
                         productDao.deleteById(id)
                         categoryDao.deleteById(id)
                     }
-                it.filter { it.second }
-                    .map { it.first }
+                it.filter { pair -> pair.second }
+                    .map { pair -> pair.first }
                     .toLongArray()
                     .forEach { id -> repositoryDao.deleteById(id) }
             }

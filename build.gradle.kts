@@ -33,6 +33,10 @@ android {
                         "room.incremental" to "true"
                     )
                 )
+                ksp {
+                    arg("room.schemaLocation", "$projectDir/schemas")
+                    arg("room.incremental", "true")
+                }
             }
         }
     }
