@@ -84,7 +84,7 @@
     <string name="incompatible_versions_summary">Mostrar versões incompatíveis com o dispositivo.</string>
     <string name="incompatible_with_FORMAT">Incompatível com %s</string>
     <string name="install">Instalar</string>
-    <string name="installed">Instalada</string>
+    <string name="installed">Instaladas</string>
     <string name="invalid_address">Endereço inválido</string>
     <string name="integrity_check_error_DESC">Não foi possível verificar a integridade.</string>
     <string name="invalid_fingerprint_format">Formato de impressão digital inválido</string>
@@ -201,4 +201,9 @@
     <string name="root_session_installer">Utilizar instalação no modo \'root\'</string>
     <string name="root_session_installer_description">Mais lento mas é a melhor opção para Android 13+.</string>
     <string name="show_screenshots">Mostrar imagens</string>
+    <string name="releases">Versões</string>
+    <string name="favorite_remove">Remover dos favoritos</string>
+    <string name="favorite_add">Adicionar aos favoritos</string>
+    <string name="open">Abrir</string>
+    <string name="loading_list">A carregar lista…</string>
 </resources>
