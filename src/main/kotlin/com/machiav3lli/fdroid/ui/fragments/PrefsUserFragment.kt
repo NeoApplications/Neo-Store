@@ -32,6 +32,7 @@ class PrefsUserFragment : PrefsNavFragmentX() {
                     is Preferences.Theme.AmoledSystem -> getString(R.string.system) + " " + getString(
                         R.string.amoled
                     )
+                    is Preferences.Theme.Dynamic -> getString(R.string.dynamic)
                     is Preferences.Theme.Light -> getString(R.string.light)
                     is Preferences.Theme.Dark -> getString(R.string.dark)
                     is Preferences.Theme.Amoled -> getString(R.string.amoled)

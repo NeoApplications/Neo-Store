@@ -219,7 +219,8 @@ object Preferences {
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
         override val values: List<Theme>
-            get() = if (Android.sdk(29)) listOf(System, AmoledSystem, Light, Dark, Amoled)
+            get() = if (Android.sdk(31)) listOf(Dynamic, System, AmoledSystem, Light, Dark, Amoled)
+            else if (Android.sdk(29)) listOf(System, AmoledSystem, Light, Dark, Amoled)
             else listOf(Light, Dark, Amoled)
 
         abstract fun getResId(configuration: Configuration): Int
@@ -235,6 +236,12 @@ object Preferences {
             override fun getResId(configuration: Configuration): Int {
                 return if ((configuration.uiMode and Configuration.UI_MODE_NIGHT_YES) != 0)
                     R.style.Theme_Main_Amoled else R.style.Theme_Main_Light
+            }
+        }
+
+        object Dynamic : Theme("dynamic-system") {
+            override fun getResId(configuration: Configuration): Int {
+                return -1
             }
         }
 

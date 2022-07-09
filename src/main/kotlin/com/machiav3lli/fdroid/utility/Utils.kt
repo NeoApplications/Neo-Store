@@ -241,6 +241,12 @@ val isBlackTheme: Boolean
         else -> false
     }
 
+val isDynamicColorsTheme: Boolean
+    get() = when (Preferences[Preferences.Key.Theme]) {
+        is Preferences.Theme.Dynamic -> true
+        else -> false
+    }
+
 fun Context.showBatteryOptimizationDialog() {
     AlertDialog.Builder(this)
         .setTitle(R.string.ignore_battery_optimization_title)
