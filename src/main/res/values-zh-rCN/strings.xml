@@ -189,7 +189,7 @@
     <string name="pending">待定</string>
     <string name="installing">安装</string>
     <string name="ignore_battery_optimization_title">电池优化</string>
-    <string name="ignore_battery_optimization_message">在没有电池优化的情况下该应用程序表现更好，并且可以防止在 Android 12+上崩溃</string>
+    <string name="ignore_battery_optimization_message">在没有电池优化的情况下该应用程序表现更好，并且可以防止在 Android 12+上崩溃。</string>
     <string name="ignore_battery_optimization_not_supported">您的Android不支持关闭电池优化。</string>
     <string name="dialog_refuse">保持</string>
     <string name="dialog_approve">关闭</string>
@@ -199,4 +199,12 @@
     <string name="no_permissions_identified">没有请求的权限标识</string>
     <string name="no_action_possible">无法采取任何行动</string>
     <string name="show_screenshots">显示屏幕截图</string>
+    <string name="releases">发布</string>
+    <string name="no_updates_available">没有可用的版本</string>
+    <string name="dynamic">系统动态</string>
+    <string name="favorite_remove">从收藏夹中删除</string>
+    <string name="show_screenshots_description">在应用页面中显示屏幕截图。</string>
+    <string name="favorite_add">添加到收藏夹</string>
+    <string name="open">打开</string>
+    <string name="loading_list">正在加载列表…</string>
 </resources>
