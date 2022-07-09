@@ -1,0 +1,8 @@
+- Add: System dynamic theme (aka. Material You)
+- Add: 7 new preset repositories
+- Add: Architecture label on releases for specific architecture
+- Remove: UnifiedPush repo (dead)
+- Fix: Annoying 0 updates notification
+- Fix: Hide Author's website link when unavailable
+- Fix: Parsing clipboard's content for repo URI
+- Fix: Links in settings
