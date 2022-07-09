@@ -3,9 +3,13 @@ package com.machiav3lli.fdroid.ui.compose.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import com.machiav3lli.fdroid.utility.isBlackTheme
+import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
 
 @Composable
 fun AppTheme(
@@ -15,7 +19,8 @@ fun AppTheme(
 ) {
     MaterialTheme(
         colorScheme = when {
-            //dynamicTheme -> dynamicDarkColorScheme(LocalContext.current)
+            isDynamicColorsTheme && isSystemInDarkTheme() -> dynamicDarkColorScheme(LocalContext.current)
+            isDynamicColorsTheme -> dynamicLightColorScheme(LocalContext.current)
             darkTheme && blackTheme -> BlackColors
             darkTheme -> DarkColors
             else -> LightColors
