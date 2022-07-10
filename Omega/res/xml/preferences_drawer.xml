@@ -87,6 +87,13 @@
             android:title="@string/title_app_categorize"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:key="pref_separate_work_apps"
+            android:title="@string/title_separate_work_apps"
+            android:defaultValue="false"
+            android:persistent="true"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_all_apps_search">

@@ -38,7 +38,7 @@ const val PREFS_DRAWER_ICON_TEXT_SCALE = "pref_allapps_icon_text_scale"
 const val PREFS_DRAWER_HIDE_LABEL = "pref_hide_allapps_app_label"
 const val PREFS_DRAWER_ICON_LABEL_TWOLINES = "pref_apps_icon_labels_two_lines"
 const val PREFS_DRAWER_HEIGHT_MULTIPLIER = "pref_allAppsCellHeightMultiplier"
-const val PREFS_WORK_PROFILE_SEPARATED = "pref_separateWorkApps"
+const val PREFS_WORK_PROFILE_SEPARATED = "pref_separate_work_apps"
 const val PREFS_KEEP_SCROLL_STATE = "pref_keep_scroll_state"
 
 // THEME PREFS
