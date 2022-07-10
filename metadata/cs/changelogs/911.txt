@@ -1,0 +1,9 @@
+- Přidáno: systémové dynamické téma (aka. Material You)
+- Přidáno: 7 nových předvolených repozitářů
+- Přidáno: štítek architektury
+- Odebráno: repozitář UnifiedPush (mrtvý)
+- Opraveno: otravné oznámení o 0 aktualizacích
+- Opraveno: skrytí odkazu na web autora, když není dostupný
+- Opraveno: parsování obsahu schránky pro URI repozitáře
+- Opraveno: odkazy v nastavení
+- Opraveno: neukazování akce k aktualizaci
