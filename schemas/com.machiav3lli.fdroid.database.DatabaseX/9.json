@@ -1,0 +1,752 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 9,
+    "identityHash": "ed2dcdf8bdd52f32eb386464b735e06c",
+    "entities": [
+      {
+        "tableName": "repository",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `address` TEXT NOT NULL, `mirrors` BLOB NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `version` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, `fingerprint` TEXT NOT NULL, `lastModified` TEXT NOT NULL, `entityTag` TEXT NOT NULL, `updated` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `authentication` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mirrors",
+            "columnName": "mirrors",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fingerprint",
+            "columnName": "fingerprint",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModified",
+            "columnName": "lastModified",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityTag",
+            "columnName": "entityTag",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authentication",
+            "columnName": "authentication",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "product",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "metadataIcon",
+            "columnName": "metadataIcon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "releases",
+            "columnName": "releases",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categories",
+            "columnName": "categories",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "antiFeatures",
+            "columnName": "antiFeatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "licenses",
+            "columnName": "licenses",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "donates",
+            "columnName": "donates",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "screenshots",
+            "columnName": "screenshots",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "suggestedVersionCode",
+            "columnName": "suggestedVersionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signatures",
+            "columnName": "signatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "compatible",
+            "columnName": "compatible",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "web",
+            "columnName": "web",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tracker",
+            "columnName": "tracker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changelog",
+            "columnName": "changelog",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "whatsNew",
+            "columnName": "whatsNew",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "repositoryId",
+            "packageName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "release",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, PRIMARY KEY(`packageName`, `versionCode`, `signature`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selected",
+            "columnName": "selected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minSdkVersion",
+            "columnName": "minSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetSdkVersion",
+            "columnName": "targetSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSdkVersion",
+            "columnName": "maxSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "release",
+            "columnName": "release",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hash",
+            "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hashType",
+            "columnName": "hashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMain",
+            "columnName": "obbMain",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHash",
+            "columnName": "obbMainHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHashType",
+            "columnName": "obbMainHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatch",
+            "columnName": "obbPatch",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHash",
+            "columnName": "obbPatchHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHashType",
+            "columnName": "obbPatchHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "permissions",
+            "columnName": "permissions",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "features",
+            "columnName": "features",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platforms",
+            "columnName": "platforms",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incompatibilities",
+            "columnName": "incompatibilities",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "packageName",
+            "versionCode",
+            "signature"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temporary_product",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "metadataIcon",
+            "columnName": "metadataIcon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "releases",
+            "columnName": "releases",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categories",
+            "columnName": "categories",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "antiFeatures",
+            "columnName": "antiFeatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "licenses",
+            "columnName": "licenses",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "donates",
+            "columnName": "donates",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "screenshots",
+            "columnName": "screenshots",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "suggestedVersionCode",
+            "columnName": "suggestedVersionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signatures",
+            "columnName": "signatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "compatible",
+            "columnName": "compatible",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "web",
+            "columnName": "web",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tracker",
+            "columnName": "tracker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changelog",
+            "columnName": "changelog",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "whatsNew",
+            "columnName": "whatsNew",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "repositoryId",
+            "packageName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "category",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`, `label`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "repositoryId",
+            "packageName",
+            "label"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temporary_category",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`, `label`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "repositoryId",
+            "packageName",
+            "label"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "memory_installed",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `signature` TEXT NOT NULL, `isSystem` INTEGER NOT NULL, `launcherActivities` BLOB NOT NULL, PRIMARY KEY(`packageName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSystem",
+            "columnName": "isSystem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "launcherActivities",
+            "columnName": "launcherActivities",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "packageName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "extras",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `ignoreUpdates` INTEGER NOT NULL, `ignoredVersion` INTEGER NOT NULL, PRIMARY KEY(`packageName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ignoreUpdates",
+            "columnName": "ignoreUpdates",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ignoredVersion",
+            "columnName": "ignoredVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "packageName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed2dcdf8bdd52f32eb386464b735e06c')"
+    ]
+  }
+}
