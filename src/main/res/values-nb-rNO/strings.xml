@@ -206,4 +206,6 @@
     <string name="favorite_remove">Fjern fra favoritter</string>
     <string name="releases">Utgivelser</string>
     <string name="loading_list">Laster inn lister …</string>
+    <string name="no_updates_available">Ingen tilgjengelige versjoner</string>
+    <string name="dynamic">System-dynamisk</string>
 </resources>
