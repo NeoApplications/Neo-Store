@@ -206,4 +206,6 @@
     <string name="favorite_remove">Премахни от любими</string>
     <string name="loading_list">Зареждане на списък…</string>
     <string name="releases">Издания</string>
+    <string name="no_updates_available">Няма налични версии</string>
+    <string name="dynamic">Динамична система</string>
 </resources>
