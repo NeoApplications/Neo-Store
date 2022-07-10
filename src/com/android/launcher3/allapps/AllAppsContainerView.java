@@ -292,10 +292,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private void resetWorkProfile() {
         boolean isEnabled = !mAllAppsStore.hasModelFlag(FLAG_QUIET_MODE_ENABLED);
         for (AdapterHolder adapterHolder : mAH) {
-            if (adapterHolder.mIsWork) {
-                mWorkModeSwitch.updateCurrentState(isEnabled);
-                adapterHolder.applyPadding();
-            }
+           if (adapterHolder.mIsWork) {
+               mWorkModeSwitch.updateCurrentState(isEnabled);
+               adapterHolder.applyPadding();
+           }
         }
         mWorkAdapterProvider.updateCurrentState(isEnabled);
     }
@@ -655,7 +655,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
         reset(true /* animate */);
         if (mWorkModeSwitch != null) {
-            mWorkModeSwitch.setWorkTabVisible(currentActivePage == AdapterHolder.WORK
+            mWorkModeSwitch.setWorkTabVisible(mAH[currentActivePage].isWork()
                     && mAllAppsStore.hasModelFlag(
                     FLAG_HAS_SHORTCUT_PERMISSION | FLAG_QUIET_MODE_CHANGE_PERMISSION));
         }
