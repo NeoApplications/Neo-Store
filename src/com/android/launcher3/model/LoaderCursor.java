@@ -28,8 +28,6 @@ import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.provider.BaseColumns;
@@ -213,21 +211,6 @@ public class LoaderCursor extends CursorWrapper {
                 Log.e(TAG, "Failed to decode byte array for info " + info, e);
                 return false;
             }
-        }
-    }
-
-    public Bitmap loadCustomIcon(WorkspaceItemInfo info) {
-        byte[] data = getBlob(customIconIndex);
-        try {
-            if (data != null) {
-                return LauncherIcons.obtain(mContext).createIconBitmap(
-                        BitmapFactory.decodeByteArray(data, 0, data.length)).icon;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to load custom icon for info " + info, e);
-            return null;
         }
     }
 

@@ -25,7 +25,6 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.model.ModelWriter
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
-import com.saggitt.omega.iconpack.CustomIconEntry
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.omegaPrefs
@@ -65,33 +64,9 @@ class AppInfoProvider(context: Context) : CustomInfoProvider<AppInfo>(context) {
         )
     }
 
-    /*override fun setIcon(info: AppInfo, entry: CustomIconEntry?) {
-        setIcon(info.toComponentKey(), entry)
-    }*/
-
-    fun setIcon(key: ComponentKey, entry: CustomIconEntry?) {
-        prefs.customAppIcon[key] = entry
-        LauncherAppState.getInstance(context).iconCache.updateIconsForPkg(
-            key.componentName.packageName,
-            key.user
-        )
-    }
-
     private fun getLauncherActivityInfo(info: AppInfo): LauncherActivityInfo? {
         return launcherApps.resolveActivity(info.getIntent(), info.user)
     }
-
-    fun getCustomIconEntry(app: LauncherActivityInfo): CustomIconEntry? {
-        return getCustomIconEntry(getComponentKey(app))
-    }
-
-    private fun getCustomIconEntry(key: ComponentKey): CustomIconEntry? {
-        return prefs.customAppIcon[key]
-    }
-
-    /*override fun getIcon(info: AppInfo): CustomIconEntry? {
-        return getCustomIconEntry(info.toComponentKey())
-    }*/
 
     private fun getComponentKey(app: LauncherActivityInfo) =
         ComponentKey(app.componentName, app.user)

@@ -58,7 +58,6 @@ import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.views.OptionsPopupView
 import org.json.JSONArray
 import org.json.JSONObject
-import org.xmlpull.v1.XmlPullParser
 import java.lang.reflect.Field
 import java.util.*
 import java.util.concurrent.Callable
@@ -258,13 +257,6 @@ fun Int.setFlag(flag: Int, value: Boolean): Int {
         removeFlag(flag)
     }
 }
-
-operator fun XmlPullParser.get(index: Int): String? = getAttributeValue(index)
-operator fun XmlPullParser.get(namespace: String?, key: String): String? =
-    getAttributeValue(namespace, key)
-
-operator fun XmlPullParser.get(key: String): String? = this[null, key]
-
 inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
     val count = childCount
     for (i in (0 until count)) {

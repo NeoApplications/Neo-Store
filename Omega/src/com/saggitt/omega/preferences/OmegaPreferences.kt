@@ -31,7 +31,6 @@ import com.android.launcher3.util.Themes
 import com.saggitt.omega.*
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
-import com.saggitt.omega.iconpack.CustomIconEntry
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
@@ -280,16 +279,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val desktopPopupRemove by BooleanPref(PREFS_DESKTOP_POPUP_REMOVE, false, doNothing)
     val drawerPopupEdit by BooleanPref(PREFS_DRAWER_POPUP_EDIT, true, doNothing)
     val drawerPopupUninstall by BooleanPref(PREFS_DRAWER_POPUP_UNINSTALL, false, doNothing)
-
-    // ITEMS CUSTOM PREFERENCES
-    val customAppIcon = object : MutableMapPref<ComponentKey, CustomIconEntry>(
-        PREFS_APP_ICON_MAP, reloadAll
-    ) {
-        override fun flattenKey(key: ComponentKey) = key.toString()
-        override fun unflattenKey(key: String) = makeComponentKey(context, key)
-        override fun flattenValue(value: CustomIconEntry) = value.toString()
-        override fun unflattenValue(value: String) = CustomIconEntry.fromString(value)
-    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         onChangeMap[key]?.invoke()

@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
-import android.os.UserHandle
+import android.os.Process
 import androidx.core.content.getSystemService
 import com.android.launcher3.R
 import com.android.launcher3.pm.UserCache
@@ -41,11 +41,10 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         }
     }
 
-    override fun getIcon(componentName: ComponentName, user: UserHandle) =
+    override fun getIcon(componentName: ComponentName) =
         IconEntry(
             packPackageName,
-            componentName,
-            user,
+            ComponentKey(componentName, Process.myUserHandle()).toString(),
             IconType.Normal
         )
 
@@ -59,8 +58,6 @@ class SystemIconPack(context: Context) : IconPack(context, "") {
         val key = if (iconEntry.componentKey != null) iconEntry.componentKey
         else ComponentKey.fromString(iconEntry.name)
         val app = appMap[key] ?: return null
-        if (app.componentName.packageName.contains("com.google.android.deskclock"))
-            return Drawable.createFromPath("android.resource://${app.applicationInfo.packageName}/${app.applicationInfo.icon}")
         return app.getIcon(iconDpi)
     }
 

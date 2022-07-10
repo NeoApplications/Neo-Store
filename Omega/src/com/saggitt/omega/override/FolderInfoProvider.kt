@@ -24,12 +24,9 @@ import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
-import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.useApplicationContext
 
 class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(context) {
-
-    private val prefs = context.omegaPrefs
 
     override fun getTitle(info: FolderInfo): String {
         return if (info.title == null || info.title == "")
@@ -48,14 +45,6 @@ class FolderInfoProvider(context: Context) : CustomInfoProvider<FolderInfo>(cont
         info.setTitle(title ?: "", modelWriter)
     }
 
-    /*override fun setIcon(info: FolderInfo, entry: CustomIconEntry?) {
-        prefs.customAppIcon[info.toComponentKey()] = entry
-        info.onIconChanged()
-    }
-
-    override fun getIcon(info: FolderInfo): CustomIconEntry? =
-        prefs.customAppIcon[info.toComponentKey()]
-*/
     override fun supportsSwipeUp(info: FolderInfo) = info.container != ItemInfo.NO_ID
 
     override fun supportsIcon() = true

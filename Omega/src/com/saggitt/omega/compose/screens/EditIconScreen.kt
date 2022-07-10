@@ -24,20 +24,8 @@ import android.content.Intent
 import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -176,7 +164,7 @@ fun EditIconScreen(
                     val pack: IconPack? = ip.getIconPackOrSystem(it.packageName)
                     if (pack != null) {
                         pack.loadBlocking()
-                        val iconEntry = pack.getIcon(componentKey.componentName, componentKey.user)
+                        val iconEntry = pack.getIcon(componentKey.componentName)
                         if (iconEntry != null) {
                             val mIcon: Drawable? = ip.getDrawable(
                                 iconEntry,

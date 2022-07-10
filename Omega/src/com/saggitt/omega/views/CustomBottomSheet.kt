@@ -40,7 +40,6 @@ import com.android.launcher3.touch.SingleAxisSwipeDetector
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.PackageManagerHelper
 import com.android.launcher3.widget.WidgetsBottomSheet
-import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.PREFS_APP_HIDE
 import com.saggitt.omega.PREFS_APP_SHOW_IN_TABS
 import com.saggitt.omega.PREFS_FOLDER_COVER_MODE
@@ -91,22 +90,6 @@ class CustomBottomSheet @JvmOverloads constructor(
                 // Drawer folder
                 if (itemInfo.container == ItemInfo.NO_ID) {
                     allowTitleEdit = false
-                }
-            }
-
-            if (mInfoProvider != null) {
-                val launcher = OmegaLauncher.getLauncher(context)
-                icon.setOnClickListener {
-                    val editItem: ItemInfo? =
-                        if (mItemInfo is FolderInfo && (mItemInfo as FolderInfo).isCoverMode) {
-                            (mItemInfo as FolderInfo).coverInfo
-                        } else {
-                            mItemInfo
-                        }
-                    val editProvider = CustomInfoProvider.forItem<ItemInfo>(context, editItem)
-                    if (editProvider != null) {
-                        //launcher.startEditIcon(editItem!!, editProvider)
-                    }
                 }
             }
         }

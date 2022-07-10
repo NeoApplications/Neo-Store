@@ -7,13 +7,11 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.content.res.XmlResourceParser
 import android.graphics.drawable.Drawable
-import android.os.UserHandle
 import android.util.Xml
 import com.android.launcher3.R
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.icons.ClockMetadata
 import com.saggitt.omega.icons.ExtendedBitmapDrawable
-import com.saggitt.omega.util.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,6 +20,16 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
+import kotlin.collections.ArrayList
+import kotlin.collections.List
+import kotlin.collections.MutableSet
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.forEach
+import kotlin.collections.getOrPut
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 
 class CustomIconPack(context: Context, packPackageName: String) :
     IconPack(context, packPackageName) {
@@ -42,7 +50,7 @@ class CustomIconPack(context: Context, packPackageName: String) :
         startLoad()
     }
 
-    override fun getIcon(componentName: ComponentName, user: UserHandle) =
+    override fun getIcon(componentName: ComponentName) =
         componentMap[componentName]
 
     override fun getCalendar(componentName: ComponentName) = calendarMap[componentName]
@@ -215,3 +223,5 @@ class CustomIconPack(context: Context, packPackageName: String) :
         return null
     }
 }
+
+private operator fun XmlPullParser.get(key: String): String? = this.getAttributeValue(null, key)

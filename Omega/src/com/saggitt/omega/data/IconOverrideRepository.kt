@@ -5,7 +5,6 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 class IconOverrideRepository(private val context: Context) {
@@ -52,6 +51,7 @@ class IconOverrideRepository(private val context: Context) {
     }
 
     companion object {
+        @JvmField
         val INSTANCE = MainThreadInitializedObject(::IconOverrideRepository)
     }
 }

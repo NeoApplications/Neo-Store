@@ -18,8 +18,6 @@
 
 package com.saggitt.omega.iconpack
 
-import android.content.ComponentName
-import android.os.UserHandle
 import com.android.launcher3.util.ComponentKey
 
 data class IconEntry(
@@ -28,18 +26,6 @@ data class IconEntry(
     val type: IconType
 ) {
     var componentKey: ComponentKey? = null
-
-    constructor(
-        packPackageName: String,
-        componentName: ComponentName,
-        user: UserHandle,
-        type: IconType
-    ) : this(
-        packPackageName,
-        ComponentKey(componentName, user).toString(), type
-    ) {
-        componentKey = ComponentKey(componentName, user)
-    }
 
     fun resolveDynamicCalendar(day: Int): IconEntry {
         if (type != IconType.Calendar) throw IllegalStateException("type is not calendar")

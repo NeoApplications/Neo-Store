@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-
 /**
  * Represents a folder containing shortcuts or apps.
  */
@@ -249,7 +248,7 @@ public class FolderInfo extends ItemInfo {
 
     public void setSwipeUpAction(@NonNull Context context, @Nullable String action) {
         swipeUpAction = action;
-        ModelWriter.modifyItemInDatabase(context, this, null, swipeUpAction, null, null, false, true);
+        ModelWriter.modifyItemInDatabase(context, this, swipeUpAction, true);
     }
 
     public CharSequence getIconTitle(Folder folder) {

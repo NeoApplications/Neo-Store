@@ -19,8 +19,6 @@
 package com.saggitt.omega.override
 
 import android.content.Context
-import android.content.pm.LauncherActivityInfo
-import android.content.pm.LauncherApps
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT
 import com.android.launcher3.Utilities
@@ -31,8 +29,6 @@ import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.useApplicationContext
 
 class ShortcutInfoProvider(context: Context) : CustomInfoProvider<WorkspaceItemInfo>(context) {
-
-    private val launcherApps by lazy { context.getSystemService(LauncherApps::class.java) }
 
     override fun getTitle(info: WorkspaceItemInfo): String {
         return (info.customTitle ?: info.title).toString()
@@ -50,24 +46,6 @@ class ShortcutInfoProvider(context: Context) : CustomInfoProvider<WorkspaceItemI
         info.setTitle(title, modelWriter)
     }
 
-    /*override fun setIcon(info: WorkspaceItemInfo, entry: CustomIconEntry?) {
-        info.setIconEntry(context, entry)
-        if (entry != null) {
-            val launcherActivityInfo = getLauncherActivityInfo(info)
-            val iconCache = LauncherAppState.getInstance(context).iconCache
-            val drawable = iconCache.getFullResIcon(launcherActivityInfo)
-            val bitmap = LauncherIcons.obtain(context)
-                .createBadgedIconBitmap(drawable, info.user, Build.VERSION_CODES.O_MR1)
-            info.setIcon(context, bitmap.icon)
-        } else {
-            info.setIcon(context, null)
-        }
-    }*/
-
-    /*override fun getIcon(info: WorkspaceItemInfo): CustomIconEntry? {
-        return info.customIconEntry
-    }*/
-
     override fun supportsSwipeUp(info: WorkspaceItemInfo) = false
 
     override fun setSwipeUpAction(info: WorkspaceItemInfo, action: String?) {
@@ -83,10 +61,6 @@ class ShortcutInfoProvider(context: Context) : CustomInfoProvider<WorkspaceItemI
             Utilities.getOmegaPrefs(context).notificationCount
         }
         else -> false
-    }
-
-    private fun getLauncherActivityInfo(info: WorkspaceItemInfo): LauncherActivityInfo? {
-        return launcherApps.resolveActivity(info.getIntent(), info.user)
     }
 
     companion object : SingletonHolder<ShortcutInfoProvider, Context>(

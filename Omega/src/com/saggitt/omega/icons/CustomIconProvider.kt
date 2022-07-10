@@ -66,7 +66,15 @@ class CustomIconProvider @JvmOverloads constructor(
             }
             return _themeMap!!
         }
-    val supportsIconTheme get() = themeMap != DISABLED_MAP
+    private val supportsIconTheme get() = themeMap != DISABLED_MAP
+
+    init {
+        setIconThemeSupported(supportsIconTheme)
+    }
+
+    override fun setIconThemeSupported(isSupported: Boolean) {
+        _themeMap = if (isSupported) null else DISABLED_MAP
+    }
 
     private fun resolveIconEntry(componentName: ComponentName, user: UserHandle): IconEntry? {
         val componentKey = ComponentKey(componentName, user)
@@ -83,7 +91,7 @@ class CustomIconProvider @JvmOverloads constructor(
             return calendarEntry
         }
         // finally, look for normal icon
-        return iconPack.getIcon(componentName, user)
+        return iconPack.getIcon(componentName)
     }
 
     override fun getIconWithOverrides(
@@ -141,6 +149,14 @@ class CustomIconProvider @JvmOverloads constructor(
         return super.getIconWithOverrides(packageName, component, user, iconDpi, fallback)
     }
 
+    override fun isThemeEnabled(): Boolean {
+        return _themeMap != DISABLED_MAP
+    }
+
+    override fun getThemeData(componentName: ComponentName): ThemedIconDrawable.ThemeData? {
+        return themeMap[componentName] ?: themeMap[ComponentName(componentName.packageName, "")]
+    }
+
     override fun getIcon(info: ActivityInfo?): Drawable {
         return CustomAdaptiveIconDrawable.wrapNonNull(super.getIcon(info))
     }
@@ -151,6 +167,10 @@ class CustomIconProvider @JvmOverloads constructor(
 
     override fun getIcon(info: LauncherActivityInfo?, iconDpi: Int): Drawable {
         return CustomAdaptiveIconDrawable.wrapNonNull(super.getIcon(info, iconDpi))
+    }
+
+    override fun getSystemStateForPackage(systemState: String, packageName: String): String {
+        return super.getSystemStateForPackage(systemState, packageName)
     }
 
     override fun registerIconChangeListener(
@@ -175,7 +195,17 @@ class CustomIconProvider @JvmOverloads constructor(
                 field = value
             }
 
+        private var iconState = systemIconState
         private val iconPackPref = prefs.iconPackPackage
+
+        private val subscription = Runnable {
+            val newState = systemIconState
+            if (iconState != newState) {
+                iconState = newState
+                callback.onSystemIconStateChanged(iconState)
+                recreateCalendarAndClockChangeReceiver()
+            }
+        }
 
         init {
             recreateCalendarAndClockChangeReceiver()
@@ -269,5 +299,9 @@ class CustomIconProvider @JvmOverloads constructor(
         )
 
         return map
+    }
+
+    companion object {
+        val DISABLED_MAP = emptyMap<ComponentName, ThemedIconDrawable.ThemeData>()
     }
 }

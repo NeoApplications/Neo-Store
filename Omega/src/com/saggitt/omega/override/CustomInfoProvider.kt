@@ -34,11 +34,6 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
     abstract fun setTitle(info: T, title: String?, modelWriter: ModelWriter)
 
     open fun supportsIcon() = true
-
-    //abstract fun setIcon(info: T, entry: CustomIconEntry?)
-
-    //abstract fun getIcon(info: T): CustomIconEntry?
-
     open fun supportsSwipeUp(info: T) = false
 
     open fun setSwipeUpAction(info: T, action: String?) {}
@@ -59,11 +54,6 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
                 is FolderInfo -> FolderInfoProvider.getInstance(context)
                 else -> null
             } as CustomInfoProvider<T>?
-        }
-
-        fun isEditable(info: ItemInfo): Boolean {
-            return info is AppInfo || (info is WorkspaceItemInfo && !info.hasPromiseIconUi())
-                    || info is FolderInfo
         }
     }
 }
