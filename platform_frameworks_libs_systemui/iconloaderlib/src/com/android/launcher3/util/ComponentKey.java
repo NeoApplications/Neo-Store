@@ -71,12 +71,14 @@ public class ComponentKey {
             return null;
         }
         ComponentName componentName = ComponentName.unflattenFromString(str.substring(0, sep));
+        int userId = Integer.parseInt(str.substring(sep + 1));
         if (componentName == null) {
             return null;
         }
         try {
-            return new ComponentKey(componentName,
-                    UserHandle.getUserHandleForUid(Integer.parseInt(str.substring(sep + 1)))); // TODO (Solution 1) get the user from the profile id string (it's not a uid)
+            //return new ComponentKey(componentName,
+            //        UserHandle.getUserHandleForUid(Integer.parseInt(str.substring(sep + 1))));
+            return new ComponentKey(componentName, UserHandle.of(userId));
         } catch (NumberFormatException ex) {
             return null;
         }
