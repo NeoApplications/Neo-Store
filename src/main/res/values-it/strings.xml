@@ -208,4 +208,6 @@
     <string name="favorite_add">Aggiungi ai preferiti</string>
     <string name="loading_list">Caricamento dell\'elenco…</string>
     <string name="releases">Rilasci</string>
+    <string name="no_updates_available">Nessuna versione disponibile</string>
+    <string name="dynamic">Dinamico di sistema</string>
 </resources>
