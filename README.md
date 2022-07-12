@@ -1,6 +1,11 @@
 # Neo Launcher <img title="" src="./fastlane/metadata/android/en-US/images/icon.png" align="left" width="64">
 
 **Free and Open Source Launcher**
+[![GitHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Launcher?style=flat)](https://github.com/NeoApplications/Neo-Launcher/stargazers)
+[![GitHub License](https://img.shields.io/github/license/NeoApplications/Neo-Launcher)](https://github.com/NeoApplications/Neo-Launcher/blob/A-12/LICENSE)
+[![GitHub All Releases](https://img.shields.io/github/downloads/NeoApplications/Neo-Launcher/total.svg)](https://github.com/NeoApplications/Neo-Launcher/releases/)
+[![GitHub release](https://img.shields.io/github/v/release/NeoApplications/Neo-Launcher?display_name=tag)](https://github.com/NeoApplications/Neo-Launcher/releases/latest)
+[![Small translation badge](https://hosted.weblate.org/widgets/omegalauncher/-/omegalauncher/svg-badge.svg)](https://hosted.weblate.org/engage/omegalauncher/?utm_source=widget)
 
 ![](neo_banner.png)
 
