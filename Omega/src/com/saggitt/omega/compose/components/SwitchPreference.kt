@@ -19,7 +19,13 @@
 package com.saggitt.omega.compose.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -52,11 +58,11 @@ fun SwitchPreference(
     verticalPadding: Dp = 16.dp,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically
 ) {
-    val checkedState = remember { mutableStateOf(isChecked) }
+    val (checked, check) = remember { mutableStateOf(isChecked) }
     Column(
         modifier = Modifier.clickable(enabled = isEnabled) {
-            checkedState.value = !checkedState.value
-            onCheckedChange.invoke(checkedState.value)
+            check(!checked)
+            onCheckedChange(!checked)
         }
     ) {
         if (showDivider) {
@@ -104,9 +110,10 @@ fun SwitchPreference(
             Switch(
                 modifier = Modifier
                     .height(24.dp),
-                checked = checkedState.value,
-                onCheckedChange = onCheckedChange.let {
-                    { checkedState.value = it }
+                checked = checked,
+                onCheckedChange = {
+                    check(it)
+                    onCheckedChange(it)
                 },
                 enabled = isEnabled,
             )
@@ -120,6 +127,6 @@ fun SwitchPreferencePreview() {
     SwitchPreference(
         title = "Ocultar de Drawer",
         summary = "Oculta el icono del menu principal",
-        onCheckedChange = { newValue ->}
+        onCheckedChange = { }
     )
 }
