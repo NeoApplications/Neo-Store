@@ -25,7 +25,7 @@
     <string name="could_not_download_FORMAT">Αδυναμία λήψης %s</string>
     <string name="could_not_sync_FORMAT">Αδυναμία συγχρονισμού %s</string>
     <string name="could_not_validate_FORMAT">Αδυναμία επικύρωσης %s</string>
-    <string name="credits">Ευχαριστίες</string>
+    <string name="credits">Συνεισφέροντες</string>
     <string name="dark">Σκούρο</string>
     <string name="delete_repository_DESC">Διαγραφή αποθετηρίου;</string>
     <string name="description">Περιγραφή</string>
@@ -40,7 +40,7 @@
     <string name="has_advertising">Περιέχει διαφημίσεις</string>
     <string name="has_non_free_dependencies">Έχει μη ελεύθερες εξαρτήσεις</string>
     <string name="http_error_DESC">Μη έγκυρη απόκριση διακομιστή.</string>
-    <string name="http_proxy">HTTP διαμεσολαβητής</string>
+    <string name="http_proxy">HTTP διακομιστής μεσολάβησης</string>
     <string name="ignore_all_updates">Αγνόησε όλες τις ενημερώσεις</string>
     <string name="ignore_this_update">Αγνόησε αυτή την έκδοση</string>
     <string name="incompatible_api_max_DESC_FORMAT">Η μεγίστη έκδοση API είναι %d.</string>
@@ -207,4 +207,5 @@
     <string name="favorite_add">Προσθήκη στα αγαπημένα</string>
     <string name="open">Άνοιγμα</string>
     <string name="loading_list">Φόρτωση λίστας…</string>
+    <string name="dynamic">Δυναμική συστήματος</string>
 </resources>
