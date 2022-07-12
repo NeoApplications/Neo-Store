@@ -201,4 +201,11 @@
     <string name="no_action_possible">Geen actie mogelijk</string>
     <string name="show_screenshots">Schermafdrukken tonen</string>
     <string name="show_screenshots_description">Of schermafdrukken op app-pagina\'s getoond moeten worden.</string>
+    <string name="releases">Uitgaven</string>
+    <string name="no_updates_available">Geen versies beschikbaar</string>
+    <string name="dynamic">Systeemstandaard</string>
+    <string name="open">Openen</string>
+    <string name="favorite_add">Toevoegen aan lievelingen</string>
+    <string name="favorite_remove">Verwijderen van lievelingen</string>
+    <string name="loading_list">Lijst laden…</string>
 </resources>
