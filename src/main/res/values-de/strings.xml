@@ -43,7 +43,7 @@
     <string name="integrity_check_error_DESC">Die Intaktheit konnte nicht überprüft werden.</string>
     <string name="invalid_metadata_error_DESC">Ungültige Metadaten.</string>
     <string name="invalid_signature_error_DESC">Ungültige Signatur.</string>
-    <string name="launch">Starten</string>
+    <string name="launch">Öffnen</string>
     <string name="light">Hell</string>
     <string name="list_animation_description">Listenanimation auf der Hauptseite anzeigen</string>
     <string name="new_updates_available">Neue Versionen von Anwendungen verfügbar</string>
@@ -205,4 +205,7 @@
     <string name="favorite_add">Zu Favoriten hinzufügen</string>
     <string name="open">Öffnen</string>
     <string name="loading_list">Liste wird geladen …</string>
+    <string name="dynamic">Systemstandard</string>
+    <string name="releases">Veröffentlichungen</string>
+    <string name="no_updates_available">Keine Versionen verfügbar</string>
 </resources>
