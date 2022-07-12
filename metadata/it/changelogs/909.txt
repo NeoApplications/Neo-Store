@@ -1,0 +1,7 @@
+- Nuova UI/UX in Material Design 3
+- Aggiunto: Tasto Aggiorna Tutto
+- Aggiunto: Preferenze Lingua
+- Aggiunto: Preferiti (ulteriori funzionalità in arrivo)
+- Risolto: Aggiornamento automatico degli elenchi installati/aggiornati
+- Risolto: Crash con A12+ (occorre disabilitare le ottimizzazioni batteria)
+- Risolto: Root installer
