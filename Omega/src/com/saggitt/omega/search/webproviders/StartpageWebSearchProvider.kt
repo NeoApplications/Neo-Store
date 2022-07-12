@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.R
 import com.saggitt.omega.search.WebSearchProvider
+import com.saggitt.omega.util.locale
 
 class StartpageWebSearchProvider(context: Context) : WebSearchProvider(context) {
     override val iconRes: Int
@@ -32,7 +33,7 @@ class StartpageWebSearchProvider(context: Context) : WebSearchProvider(context) 
         get() = "https://www.startpage.com/rvd/search?query=%s&language=auto"
 
     override val suggestionsUrl: String
-        get() = "https://www.startpage.com/cgi-bin/csuggest?query=%s&limit=\$MAX_SUGGESTIONS&format=json"
+        get() = "https://www.startpage.com/suggestions?q=%s&segment=startpage.udog&lui=" + context.locale.language + "&limit=\$MAX_SUGGESTIONS&format=json"
 
     override val name: String
         get() = context.getString(R.string.web_search_startpage)
