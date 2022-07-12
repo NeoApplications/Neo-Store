@@ -52,7 +52,7 @@ import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.compose.navigation.OnResult
 import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.compose.preferences.preferenceGraph
+import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.data.IconOverrideRepository
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.IconPack

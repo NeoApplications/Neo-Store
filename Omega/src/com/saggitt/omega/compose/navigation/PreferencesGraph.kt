@@ -1,4 +1,4 @@
-package com.saggitt.omega.compose.preferences
+package com.saggitt.omega.compose.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable

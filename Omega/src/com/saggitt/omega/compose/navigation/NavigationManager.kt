@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.saggitt.omega.compose.preferences.preferenceGraph
 import com.saggitt.omega.compose.screens.aboutGraph
 import com.saggitt.omega.compose.screens.editIconGraph
 import com.saggitt.omega.compose.screens.gestureGraph

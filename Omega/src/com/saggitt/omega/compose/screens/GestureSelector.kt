@@ -49,7 +49,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.components.ViewWithActionBar
-import com.saggitt.omega.compose.preferences.preferenceGraph
+import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.gestures.actions.BlankGestureAction
 import com.saggitt.omega.gestures.actions.GestureAction
 import kotlinx.coroutines.launch
@@ -63,9 +63,9 @@ fun GestureSelector(title: String) {
         val pagerState = rememberPagerState()
         Column(
                 modifier = Modifier
-                        .padding(top = 56.dp, start = 8.dp, end = 8.dp)
-                        .verticalScroll(rememberScrollState())
-                        .background(MaterialTheme.colorScheme.background),
+                    .padding(top = 56.dp, start = 8.dp, end = 8.dp)
+                    .verticalScroll(rememberScrollState())
+                    .background(MaterialTheme.colorScheme.background),
 
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -110,11 +110,11 @@ fun LauncherScreen() {
                                 painter = rememberDrawablePainter(drawable = item.icon),
                                 contentDescription = null,
                                 modifier = Modifier
-                                        .clip(CircleShape)
-                                        .size(36.dp)
-                                        .background(
-                                                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05F)
-                                        )
+                                    .clip(CircleShape)
+                                    .size(36.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05F)
+                                    )
                         )
                     },
                     endCheckbox = {
@@ -153,8 +153,8 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
-                    .clip(RoundedCornerShape(50)),
+                .padding(vertical = 4.dp, horizontal = 8.dp)
+                .clip(RoundedCornerShape(50)),
             indicator = {
                 Box {}
             }
@@ -163,14 +163,14 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
             val selected = selectedIndex == index
             Tab(
                     modifier = if (selected) Modifier
-                            .padding(1.dp)
-                            .clip(RoundedCornerShape(50))
-                            .background(
-                                    Color.White
-                            )
+                        .padding(1.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(
+                            Color.White
+                        )
                     else Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.primary),
+                        .clip(RoundedCornerShape(50))
+                        .background(MaterialTheme.colorScheme.primary),
                     selected = selected,
                     onClick = {
                         scope.launch {
