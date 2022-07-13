@@ -1,0 +1,12 @@
+<ul>
+  <li>Adicionado: Motor Brave Search</li>
+  <li>Adicionado: Preferências do botão voltar</li>
+  <li>Adicionado: Preferências do botão Ínicio</li>
+  <li>Adicionado: Modo Área de Trabalho</li>
+  <li>Corrigido: Cor do texto no seletor de widget para tema claro</li>
+  <li>Corrigido: Pesquisar aplicativos ocultos</li>
+  <li>Corrigido: Ícone de pasta no modo de capa</li>
+  <li>Restaurado widget de espaço inteligente</li>
+  <li>Restaurado ícone de relógio adaptável (Google)</li>
+  <li>Restaurado ícone de calendário adaptável (Google)</li>
+</ul>
