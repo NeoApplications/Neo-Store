@@ -49,7 +49,7 @@ class ClockWidgetCreator(val context: Context, val widgetId: Int) {
                 Intent(AlarmClock.ACTION_SHOW_ALARMS).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 },
-                0
+                PendingIntent.FLAG_MUTABLE
             )
             views.setOnClickPendingIntent(R.id.appwidget_clock, clockIntent)
 
@@ -64,7 +64,7 @@ class ClockWidgetCreator(val context: Context, val widgetId: Int) {
             context,
             widgetId,
             WidgetIntents.getCalendarIntent(),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE
         )
         views.setOnClickPendingIntent(R.id.appwidget_date, calendarIntent)
         views.setTextViewText(R.id.appwidget_date, getFormattedDate())
@@ -72,7 +72,8 @@ class ClockWidgetCreator(val context: Context, val widgetId: Int) {
         // Weather
         val intent = Intent(context, WeatherClickListenerReceiver::class.java)
         intent.action = "com.saggitt.omega.ACTION_OPEN_WEATHER_INTENT"
-        val weatherIntent = PendingIntent.getBroadcast(context, widgetId, intent, 0)
+        val weatherIntent =
+            PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_MUTABLE)
 
         if (prefs.weatherProvider == SmartSpaceDataWidget::class.java.name) {
             //TODO: Change to visible when there is a weather provider
@@ -87,7 +88,7 @@ class ClockWidgetCreator(val context: Context, val widgetId: Int) {
             context,
             appWidgetId,
             WidgetIntents.getWidgetUpdateIntent(context),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE
         )
         views.setOnClickPendingIntent(R.id.main_layout, refreshIntent)
 
