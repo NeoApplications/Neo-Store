@@ -203,4 +203,11 @@
     <string name="no_permissions_identified">Запрошені дозволи не виявлено</string>
     <string name="show_screenshots">Показувати скріншоти</string>
     <string name="show_screenshots_description">Відображати скріншоти на сторінці додатку.</string>
+    <string name="releases">Випуски</string>
+    <string name="no_updates_available">Нема доступних версій</string>
+    <string name="dynamic">Динамічна система</string>
+    <string name="favorite_remove">Вилучити з вибраних</string>
+    <string name="favorite_add">Додати до вибраних</string>
+    <string name="open">Відкрити</string>
+    <string name="loading_list">Завантажується список…</string>
 </resources>
