@@ -128,7 +128,7 @@
     <string name="pref_category__others">أخرى</string>
     <string name="pref_category__inputs">الأيماءات والبحث</string>
     <string name="pref_category__interfaces">واجهة المستخدم</string>
-    <string name="summary__general_about">المزيد حول مشغل أوميغا</string>
+    <string name="summary__general_about">المزيد حول Neo Launcher</string>
     <string name="summary__general_advanced">اللغة, النسخ الأحتياطي, بحث الأعدادات</string>
     <string name="summary__general_smartspace">الزمن, الوقت, أدوات سطح المكتب</string>
     <string name="summary__general_drawer">خصص الدرج</string>
@@ -443,4 +443,15 @@
     <string name="permission_denied">تم رفض إذن القراءة!</string>
     <string name="summary_all_apps_search">إظهار شريط البحث</string>
     <string name="summary_app_suggestions">لجميع التطبيقات والشاشة الرئيسية</string>
+    <string name="title_search_action_lens">إظهار أيقونة العدسة</string>
+    <string name="summary_search_show_lens_summary">عند تثبيت تطبيق Google</string>
+    <string name="tab_shortcuts">الاختصارات</string>
+    <string name="app_name">اسم التطبيق</string>
+    <string name="icon_picker_default_category">الأيقونات</string>
+    <string name="title_fuzzy_search">بحث غامض</string>
+    <string name="summary_fuzzy_search">المطابقة التقريبية لعمليات البحث عن التطبيقات.</string>
+    <string name="icon_picker_load_failed">تعذر تحميل المزيد من الايقونات.</string>
+    <string name="debug_options_title">معلومات التصحيح</string>
+    <string name="accessibility_undo">تراجع</string>
+    <string name="tab_launcher">المشغل</string>
 </resources>
