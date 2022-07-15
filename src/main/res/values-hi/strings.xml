@@ -124,4 +124,16 @@
     <string name="root_permission_description">बिना इंटरेक्शन के इंस्टॉल के लिए रूट का उपयोग करें</string>
     <string name="proxy_host">छद्म मेजबान</string>
     <string name="requires_FORMAT">%s . की आवश्यकता है</string>
+    <string name="search">खोज</string>
+    <string name="share">साझा करना</string>
+    <string name="show_more">और दिखाओ</string>
+    <string name="show_older_versions">पुराने संस्करण दिखाओ</string>
+    <string name="signature_FORMAT">हस्ताक्षर</string>
+    <string name="size">आकार</string>
+    <string name="skip">छोड़ें</string>
+    <string name="sorting_order">छँटाई क्रम</string>
+    <string name="suggested">सुझाव दिया</string>
+    <string name="system">व्यवस्था</string>
+    <string name="target">लक्ष्य</string>
+    <string name="unknown">अनजान</string>
 </resources>
