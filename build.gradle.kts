@@ -214,7 +214,7 @@ dependencies {
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.7.0-alpha02")
+    implementation("com.google.android.material:material:1.7.0-alpha03")
     implementation("com.jaredrummler:colorpicker:1.1.0")
 
     // Libs
@@ -243,7 +243,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.5.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.13")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.14")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
