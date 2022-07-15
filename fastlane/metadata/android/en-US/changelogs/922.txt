@@ -1,0 +1,7 @@
+Note 1: incompatible with backups from older versions
+- Rebase on Android 12/L's launcher
+- Add: Smartspace
+- Add: Direct editing of tabs/categories
+- Add: Fuzzy Search option
+- Update: Revamp Dash, icons & UI
+Note 2: missed features from older versions may be added at later releases
