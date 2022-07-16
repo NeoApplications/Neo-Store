@@ -82,7 +82,7 @@ public class FolderInfo extends ItemInfo {
 
     public static final int FLAG_MANUAL_FOLDER_NAME = 0x00000008;
 
-    public static final int FLAG_COVER_MODE = 0x00000016;
+    public static final int FLAG_COVER_MODE = 0x00000010;
 
     /**
      * Different states of folder label.
