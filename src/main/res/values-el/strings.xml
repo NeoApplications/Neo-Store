@@ -173,7 +173,7 @@
     <string name="amoled">Μαύρο</string>
     <string name="prefs_personalization">Εξατομίκευση</string>
     <string name="prefs_language_title">Γλώσσα</string>
-    <string name="explore">Εξερεύνησε</string>
+    <string name="explore">Εξερεύνηση</string>
     <string name="sort_filter">Ταξινόμηση και φιλτράρισμα</string>
     <string name="new_applications">Νέες εφαρμογές</string>
     <string name="pending">Εν αναμονή</string>
@@ -182,7 +182,7 @@
     <string name="prefs_updated_apps">Αριθμός εφαρμογών που θα φανεί στα «ενημερώθηκαν πρόσφατα»</string>
     <string name="prefs_new_apps">Αριθμός εφαρμογών που θα φανούν στις «Νέες εφαρμογές»</string>
     <string name="not_safe_for_work">Λογοκριμένο (ίσως περιέχει ενοχλητικό περιεχόμενο)</string>
-    <string name="show_less">Δείξε λιγότερα</string>
+    <string name="show_less">Εμφάνιση λιγότερων</string>
     <string name="latest">Τελευταία</string>
     <string name="installed_applications">Εγκατεστημένα</string>
     <string name="install_after_sync_summary">Εγκατέστησε τις καινούργιες εκδόσεις εφόσον ελεγχθούν τα αποθετήρια για νέες εφαρμογές.</string>
@@ -190,7 +190,7 @@
     <string name="ignore_battery_optimization_title">Βελτιστοποίηση Μπαταρίας</string>
     <string name="ignore_battery_optimization_message">Η εφαρμογή λειτουργεί καλύτερα χωρίς την βελτιστοποίηση μπαταρίας και αποτρέπει σφάλματα στις εκδόσεις Android 12+.</string>
     <string name="ignore_battery_optimization_not_supported">Η εγκατάσταση Android σας δεν υποστηρίζει την απενεργοποίηση της βελτιστοποίησης μπαταρίας.</string>
-    <string name="dialog_refuse">Διατήρησε</string>
+    <string name="dialog_refuse">Διατήρηση</string>
     <string name="dialog_approve">Απενεργοποίηση</string>
     <string name="root_session_installer">Χρησιμοποίησε δικαιώματα υπερχρήστη σε συνεδρία εγκατάστασης</string>
     <string name="root_session_installer_description">Πιο αργό, αλλά αποτρέπει προβλήματα με εγκατεστημένες εφαρμογές σε εκδόσεις Android 13+.</string>
@@ -200,7 +200,7 @@
     <string name="no_permissions_identified">Δεν βρέθηκαν ζητούμενες άδειες</string>
     <string name="no_action_possible">Καμία δυνατή ενέργεια</string>
     <string name="show_screenshots">Εμφάνιση στιγμιότυπων</string>
-    <string name="show_screenshots_description">Εμφάνισε στιγμιότυπα στην σελίδα εφαρμογής.</string>
+    <string name="show_screenshots_description">Να εμφανίζονται στιγμιότυπα στην σελίδα εφαρμογής.</string>
     <string name="releases">Εκδόσεις</string>
     <string name="no_updates_available">Δεν υπάρχουν διαθέσιμες ενημερώσεις</string>
     <string name="favorite_remove">Αφαίρεση από τα αγαπημένα</string>
