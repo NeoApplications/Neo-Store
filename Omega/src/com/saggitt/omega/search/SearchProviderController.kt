@@ -121,9 +121,9 @@ class SearchProviderController(private val context: Context) {
     ) {
         fun getSearchProviders(context: Context) = listOf(
                 AppsSearchProvider(context),
-                GoogleSearchProvider(context),
+                //GoogleSearchProvider(context),
                 SFinderSearchProvider(context),
-                GoogleGoSearchProvider(context),
+            //GoogleGoSearchProvider(context),
                 FirefoxSearchProvider(context),
                 DuckDuckGoSearchProvider(context),
                 BingSearchProvider(context),
