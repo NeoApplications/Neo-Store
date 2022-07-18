@@ -204,4 +204,8 @@
     <string name="open">খুলো</string>
     <string name="favorite_add">পছন্দে যোগ করো</string>
     <string name="favorite_remove">পছন্দ থেকে সরাও</string>
+    <string name="releases">রিলিজ</string>
+    <string name="no_updates_available">কোন সংস্করণ উপলব্ধ নেই</string>
+    <string name="dynamic">সিস্টেম গতিশীল</string>
+    <string name="loading_list">তালিকা লোড হচ্ছে…</string>
 </resources>
