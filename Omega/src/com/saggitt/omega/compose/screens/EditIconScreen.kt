@@ -26,6 +26,8 @@ import android.graphics.drawable.Drawable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -207,33 +209,37 @@ fun EditIconScreen(
         )
 
         //Icon Packs
-        iconPacks.forEach {
-            ListItemWithIcon(
-                title = it.name,
-                modifier = Modifier
-                    .clickable {
-                        if (it.packageName == "") {
-                            navController.navigate("/${Routes.ICON_PICKER}/")
-                        } else {
-                            navController.navigate("/${Routes.ICON_PICKER}/${it.packageName}/")
-                        }
-                    }
-                    .padding(start = 16.dp),
-                startIcon = {
-                    Image(
-                        painter = rememberDrawablePainter(drawable = it.icon),
-                        contentDescription = null,
+        Column {
+            LazyColumn {
+                itemsIndexed(iconPacks) { _, iconPack ->
+                    ListItemWithIcon(
+                        title = iconPack.name,
                         modifier = Modifier
-                            .clip(CircleShape)
-                            .size(44.dp)
-                            .background(
-                                MaterialTheme.colorScheme.background.copy(alpha = 0.12F)
+                            .clickable {
+                                if (iconPack.packageName == "") {
+                                    navController.navigate("/${Routes.ICON_PICKER}/")
+                                } else {
+                                    navController.navigate("/${Routes.ICON_PICKER}/${iconPack.packageName}/")
+                                }
+                            }
+                            .padding(start = 16.dp),
+                        startIcon = {
+                            Image(
+                                painter = rememberDrawablePainter(drawable = iconPack.icon),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .size(44.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.background.copy(alpha = 0.12F)
+                                    )
                             )
+                        },
+                        horizontalPadding = 8.dp,
+                        verticalPadding = 8.dp
                     )
-                },
-                horizontalPadding = 8.dp,
-                verticalPadding = 8.dp
-            )
+                }
+            }
         }
     }
 }
