@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
+import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.search.providers.AppsSearchProvider
 import com.saggitt.omega.util.Config
 import kotlin.math.roundToInt
@@ -55,6 +57,17 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
+        findViewById<ImageButton?>(R.id.settings_button).apply {
+            setOnClickListener {
+                val fragment = "com.saggitt.omega.preferences.views.PrefsSearchFragment"
+                PreferencesActivity.startFragment(
+                    context,
+                    fragment,
+                    context.resources.getString(R.string.title__general_search)
+                )
+            }
+        }
 
         findViewById<ImageView?>(R.id.mic_icon).apply {
             if (!prefs.allAppsGlobalSearch) {

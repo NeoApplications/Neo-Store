@@ -18,6 +18,7 @@
 
 <com.saggitt.omega.search.AllAppsQsbLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_container_all_apps"
     android:layout_width="match_parent"
     android:layout_height="@dimen/qsb_widget_height"
@@ -53,7 +54,7 @@
             android:contentDescription="@string/label_voice_search"
             android:layout_gravity="start|center"
             android:padding="8dp"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             tools:src="@drawable/ic_mic_color" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -70,6 +71,16 @@
             android:visibility="gone"
             tools:src="@drawable/ic_lens_color"
             tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/pill_ripple"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/dots_vertical"
+            android:contentDescription="@string/title_change_settings"
+            app:tint="?colorAccent" />
     </LinearLayout>
 
 </com.saggitt.omega.search.AllAppsQsbLayout>
