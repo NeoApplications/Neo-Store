@@ -25,7 +25,7 @@
     android:focusableInTouchMode="true"
     android:gravity="start|center"
     android:imeOptions="actionSearch|flagNoExtractUi"
-    android:inputType="textCapWords|textNoSuggestions"
+    android:inputType="text|textNoSuggestions|textCapSentences"
     android:maxLines="1"
     android:scrollHorizontally="true"
     android:singleLine="true"
