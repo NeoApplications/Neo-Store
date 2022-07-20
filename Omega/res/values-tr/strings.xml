@@ -17,7 +17,7 @@
     <string name="title_desktop_full_width_widgets">Tam genişlikte widget\'lar</string>
     <string name="allow_rotation_blocked_desc">Geçerli görüntü ayarı döndürmeye izin vermiyor</string>
     <string name="pref_category__inputs">Hareketler ve Arama</string>
-    <string name="summary__general_about">Omega Launcher hakkında daha fazlası</string>
+    <string name="summary__general_about">Neo Launcher hakkında daha fazlası</string>
     <string name="summary__general_advanced">Dil, yedek, ayar arama</string>
     <string name="summary__general_notifications">Rozet sayısı, rozet rengi, hareketler</string>
     <string name="summary__general_search">Arama Sağlayıcısı, stil, simgeler</string>
@@ -435,4 +435,15 @@
     <string name="backup_name">Yedekleme adı</string>
     <string name="summary_all_apps_search">Arama çubuğunu göster</string>
     <string name="summary_app_suggestions">Tüm uygulamalar ve Ana ekran için</string>
+    <string name="title_fuzzy_search">Bulanık Arama</string>
+    <string name="summary_fuzzy_search">Uygulama aramaları için yaklaşık eşleşme.</string>
+    <string name="icon_picker_default_category">Simgeler</string>
+    <string name="icon_picker_load_failed">Daha fazla simge yüklenemedi.</string>
+    <string name="summary_search_show_lens_summary">Google uygulaması kurulu olduğunda</string>
+    <string name="accessibility_undo">Geri al</string>
+    <string name="app_name">Uygulama adı</string>
+    <string name="tab_launcher">Başlatıcı</string>
+    <string name="tab_shortcuts">Kısayollar</string>
+    <string name="title_search_action_lens">Lens Simgesini Göster</string>
+    <string name="debug_options_title">Hata ayıklama bilgileri</string>
 </resources>

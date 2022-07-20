@@ -420,4 +420,5 @@
     <string name="summary_legacy_treatment">Criar ícones adaptáveis para todos os atalhos.</string>
     <string name="summary_white_only_treatment">Colorir os fundos de todos os ícones adaptáveis.</string>
     <string name="title_dock_search">Barra de pesquisa do dock</string>
+    <string name="summary_dock_search">Mostrar botão do dock</string>
 </resources>
