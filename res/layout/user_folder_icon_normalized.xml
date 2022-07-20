@@ -65,6 +65,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:selectableItemBackgroundBorderless"
             android:layout_marginEnd="-8dp"
+            launcher:tint="?colorAccent"
             android:src="@drawable/dots_vertical" />
     </LinearLayout>
 
