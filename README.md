@@ -14,21 +14,11 @@
 
 Our builds are available on:
 
-- **Github:** Releases or Actions (usually).
+- **Github**: [Releases](https://github.com/NeoApplications/Neo-Launcher/releases).
 
-- **F-Droid**: Either IzzyOnDroid or our own repo.
+- **F-Droid**: On **[IzzyOnDroid repo](https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A)** or **[our own repo (only for test)](https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo)**.
 
-- **Telegram**.
-
-### *Links*
-
-**Github Releases**: [here](https://github.com/otakuhqz/Omega/releases)
-
-**F-Droid** Add the links below into your F-Droid client:
-
-- **[IzzyOnDroid repo link](https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A)**
-
-- **[Our own repo link](https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo)**
+- **Telegram**: [Community group](https://t.me/neo_launcher).
 
 ## *Community*
 
@@ -36,39 +26,21 @@ You can join [our Telegram group](https://t.me/neo_launcher) to make suggestions
 
 ## *App features:*
 
-### **Working**
+### **Some of the main features**
 
-- Sorting apps Alphabetically and by Usage.
-- Google feed integration.
-- Theme support.
-- Customize search engine.
-- Gesture support.
-- Notification configuration.
-- Categorize apps in the drawer.
-- Icon Shape support.
-- Quick action shortcuts (dash).
-- Hide and Protect apps using security PIN or biometric.
-- Dock search.
-- Drawer search.
-- Drawer grid preference.
+- Rich themes support.
+- The Dash.
+- Custom search engines.
+- Gestures support.
+- A unique custom-widget.
+- Categories or folders in the app drawer.
+- Icon shapes and packs support.
 - Customize app icons.
-- All apps icon scaling.
-- Dock icon scaling.
-- Workspace icon scaling.
 - Desktop grid preference.
-- App predictions (v8 - v9 only).
-- Icon pack support.
-- Back up and restore preferences.
+- Hide apps.
 - Vertical Apps Lists.
-
-### **TODOs**
-
-- Turn off "auto remove empty screen".
-- Add desktop screen manually.
-- Reorder empty screens.
-- Horizontal drawer.
-- Add auto tab mode for drawer.
-- Animations.
+- Icons' scaling.
+- Back up and restore preferences.
 
 There's also a [devloper's document](DEVDOC.md), where the maintainer and collaborators communicate their TODOs and plans.
 

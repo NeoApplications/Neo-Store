@@ -1,4 +1,5 @@
 Neo Launcher is a fork of AOSP's launcher for power-users. It is highly configurable, and offers you a lot of functionality. Some are:
+
 - The _Dash_.
 - Rich themes support.
 - Custom search engines.
