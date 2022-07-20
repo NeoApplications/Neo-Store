@@ -75,11 +75,11 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
             }
         }
 
-        findViewById<ImageView?>(R.id.lens_icon).apply {
+        /*findViewById<ImageView?>(R.id.lens_icon).apply {
             if (!prefs.allAppsGlobalSearch) {
                 visibility = View.GONE
             }
-        }
+        }*/
 
         setOnClickListener {
             val provider = controller.searchProvider

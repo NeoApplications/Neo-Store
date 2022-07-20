@@ -38,13 +38,14 @@
         android:title="@string/title__search_action_assistant"
         app:iconSpaceReserved="false" />
 
+    <!--
     <SwitchPreference
         android:defaultValue="true"
         android:key="show_lens_icon"
         android:persistent="true"
         android:summary="@string/summary_search_show_lens_summary"
         android:title="@string/title_search_action_lens"
-        app:iconSpaceReserved="false" />
+        app:iconSpaceReserved="false" /> -->
 
     <com.saggitt.omega.preferences.custom.AutoModeSeekbarPreference
         android:key="pref_searchbar_radius"

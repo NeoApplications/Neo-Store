@@ -18,7 +18,6 @@
 
 package com.saggitt.omega.search
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -27,9 +26,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.*
-import android.net.Uri
-import android.os.Bundle
-import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -45,7 +41,6 @@ import com.android.launcher3.icons.ShadowGenerator.Builder
 import com.android.launcher3.views.ActivityContext
 import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.preferences.OmegaPreferences
-import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
 
@@ -111,7 +106,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             }
         }
 
-        lensIconView = findViewById<ImageView?>(R.id.lens_icon).apply {
+        /*lensIconView = findViewById<ImageView?>(R.id.lens_icon).apply {
 
             visibility =
                 if (searchProvider.packageName == Config.GOOGLE_QSB
@@ -144,7 +139,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                 } else {
                     View.GONE
                 }
-        }
+        }*/
 
         setOnClickListener {
             val provider = controller.searchProvider
