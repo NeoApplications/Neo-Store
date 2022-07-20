@@ -1,3 +1,11 @@
-<p>Your powerful libre launcher with a lot of smart features.</p>
-<br>
-<p>Status: Beta</p>
+Neo Launcher is a fork of AOSP's launcher for power-users. It is highly configurable, and offers you a lot of functionality. Some are:
+- The _Dash_.
+- Rich themes support.
+- Custom search engines.
+- Gestures support.
+- A unique custom-widget.
+- Categories or folders in the app drawer.
+- Icon shapes and packs support.
+- Hide apps.
+
+There's always new features in the pipeline, so stay tuned…
