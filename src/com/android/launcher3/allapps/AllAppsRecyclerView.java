@@ -116,6 +116,7 @@ public class AllAppsRecyclerView extends BaseRecyclerView {
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_EMPTY_SEARCH, 1);
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_ALL_APPS_DIVIDER, 1);
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_SEARCH_MARKET, 1);
+        pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_SECTION_HEADER, 1);
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_ICON, approxRows * (mNumAppsPerRow + 1));
         pool.setMaxRecycledViews(AllAppsGridAdapter.VIEW_TYPE_FOLDER, approxRows * (mNumAppsPerRow + 1));
 
