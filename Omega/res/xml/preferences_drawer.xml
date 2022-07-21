@@ -105,25 +105,9 @@
             app:iconSpaceReserved="false" />
 
         <SwitchPreference
-            android:defaultValue="true"
-            android:dependency="pref_all_apps_search"
-            android:disableDependentsState="true"
-            android:key="pref_all_apps_global_search"
-            android:summary="@string/summary_all_apps_google_search"
-            android:title="@string/title_all_apps_google_search"
-            app:iconSpaceReserved="false" />
-
-        <SwitchPreference
             android:key="pref_search_hidden_apps"
             android:title="@string/title_search_hidden_apps"
             android:summary="@string/summary_search_hidden_apps"
-            android:defaultValue="false"
-            app:iconSpaceReserved="false" />
-
-        <SwitchPreference
-            android:key="pref_fuzzy_search"
-            android:title="@string/title_fuzzy_search"
-            android:summary="@string/summary_fuzzy_search"
             android:defaultValue="false"
             app:iconSpaceReserved="false" />
 
