@@ -156,9 +156,22 @@ class OmegaShortcuts {
 
     companion object {
         val CUSTOMIZE = SystemShortcut.Factory<OmegaLauncher> { activity, itemInfo ->
-            getAppInfo(activity, itemInfo)?.let {
-                Customize(activity, it, itemInfo)
+            val prefs = Utilities.getOmegaPrefs(activity)
+            var customize: Customize? = null
+            if (Launcher.getLauncher(activity).isInState(LauncherState.NORMAL)) {
+                if (prefs.desktopPopupEdit && !prefs.lockDesktop) {
+                    getAppInfo(activity, itemInfo)?.let {
+                        customize = Customize(activity, it, itemInfo)
+                    }
+                }
+            } else {
+                if (prefs.drawerPopupEdit) {
+                    getAppInfo(activity, itemInfo)?.let {
+                        customize = Customize(activity, it, itemInfo)
+                    }
+                }
             }
+            customize
         }
 
         private fun getAppInfo(launcher: OmegaLauncher, itemInfo: ItemInfo): ModelAppInfo? {
