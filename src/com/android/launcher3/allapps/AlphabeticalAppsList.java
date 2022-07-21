@@ -26,6 +26,7 @@ import android.graphics.Color;
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
+import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem;
 import com.android.launcher3.config.FeatureFlags;
@@ -326,13 +327,6 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         // Recreate the filtered and sectioned apps (for convenience for the grid layout) from the
         // ordered set of sections
 
-        // Search suggestions should be all the way to the top
-        if (hasFilter() && hasSuggestions()) {
-            for (String suggestion : mSearchSuggestions) {
-                mAdapterItems.add(AdapterItem.asSearchSuggestion(position++, suggestion));
-            }
-        }
-
         if (!hasFilter()) {
             mAccessibilityResultsCount = mApps.size();
             if (mWorkAdapterProvider != null) {
@@ -390,7 +384,22 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         if (hasFilter()) {
+            if (mSearchResults.size() > 0 && prefs.getAllAppsGlobalSearch())
+                mAdapterItems.add(AdapterItem.asSectionHeader(position++, mLauncher.getString(R.string.section_apps)));
             updateSearchAdapterItems(mSearchResults, 0);
+
+            if (mSearchResults.size() > 0 && prefs.getAllAppsGlobalSearch())
+                mAdapterItems.add(AdapterItem.asAllAppsDivider(position++));
+
+            if (hasSuggestions()) {
+                mAdapterItems.add(AdapterItem.asSectionHeader(position++, mLauncher.getString(R.string.section_web)));
+                for (String suggestion : mSearchSuggestions) {
+                    mAdapterItems.add(AdapterItem.asSearchSuggestion(position++, suggestion));
+                }
+
+                mAdapterItems.add(AdapterItem.asAllAppsDivider(position++));
+            }
+
             if (!FeatureFlags.ENABLE_DEVICE_SEARCH.get()) {
                 // Append the search market item
                 if (hasNoFilteredResults()) {

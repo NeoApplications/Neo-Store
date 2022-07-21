@@ -82,6 +82,7 @@ public class AllAppsGridAdapter extends
 
     // Web search suggestions
     public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
+    public static final int VIEW_TYPE_SECTION_HEADER = 1 << 8;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -136,6 +137,7 @@ public class AllAppsGridAdapter extends
          * Search suggestion-only properties
          */
         public String suggestion;
+        public String sectionHeader;
 
         /**
          * Factory method for AppIcon AdapterItem
@@ -197,6 +199,14 @@ public class AllAppsGridAdapter extends
             item.viewType = VIEW_TYPE_SEARCH_SUGGESTION;
             item.position = pos;
             item.suggestion = suggestion;
+            return item;
+        }
+
+        public static AdapterItem asSectionHeader(int pos, String sectionHeader) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = VIEW_TYPE_SECTION_HEADER;
+            item.position = pos;
+            item.sectionHeader = sectionHeader;
             return item;
         }
 
@@ -425,6 +435,10 @@ public class AllAppsGridAdapter extends
 
             case VIEW_TYPE_SEARCH_SUGGESTION:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_suggestion, parent, false));
+
+            case VIEW_TYPE_SECTION_HEADER:
+                return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_section, parent, false));
+
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(viewType);
                 if (adapterProvider != null) {
@@ -486,6 +500,14 @@ public class AllAppsGridAdapter extends
                         ((WebSearchProvider) provider).openResults(suggestion);
                     }
                 });
+                break;
+
+            case VIEW_TYPE_SECTION_HEADER:
+                container = (ViewGroup) holder.itemView;
+                TextView sectionTitle = container.findViewById(R.id.section_header);
+                String title = mApps.getAdapterItems().get(position).sectionHeader;
+                sectionTitle.setText(title);
+
                 break;
 
             default:

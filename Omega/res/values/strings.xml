@@ -407,6 +407,8 @@
     <string name="folder_radius">Folder corner radius</string>
     <string name="folder_rows">Folder Rows</string>
     <string name="folder_columns">Folder Columns</string>
+    <string name="section_apps">apps</string>
+    <string name="section_web">Web</string>
     <!-- FONT -->
     <string name="fonts_global_font">Font</string>
     <string name="fonts_change_global_font">Change</string>
