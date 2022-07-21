@@ -30,7 +30,6 @@
         android:layout_height="24dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_search"
-        app:tint="?colorAccent"
         android:contentDescription="@string/label_search" />
 
     <TextView
