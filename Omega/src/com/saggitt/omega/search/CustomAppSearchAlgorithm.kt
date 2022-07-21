@@ -60,10 +60,10 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
     }
 
     private fun getSearchResult(apps: MutableList<AppInfo>, query: String): ArrayList<AdapterItem> {
-        if (prefs.fuzzySearch) {
-            return getFuzzySearchResult(apps, query)
+        return if (prefs.fuzzySearch) {
+            getFuzzySearchResult(apps, query)
         } else {
-            return getTitleMatchResult(apps, query)
+            getTitleMatchResult(apps, query)
         }
     }
 
@@ -130,7 +130,7 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
         } else emptyList<String>()
     }
 
-    fun getApps(
+    private fun getApps(
         context: Context,
         defaultApps: List<AppInfo?>?,
         filter: AppFilter
