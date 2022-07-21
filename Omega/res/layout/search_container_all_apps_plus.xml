@@ -45,6 +45,19 @@
         android:orientation="horizontal"
         tools:ignore="RtlSymmetry">
 
+        <ImageButton
+            android:id="@+id/search_cancel_button"
+            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
+            android:padding="12dp"
+            android:src="@drawable/ic_remove_no_shadow"
+            android:background="@drawable/full_rounded_transparent_ripple"
+            android:layout_gravity="center"
+            android:contentDescription="@string/widgets_full_sheet_cancel_button_description"
+            android:visibility="gone" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mic_icon"
             android:layout_width="@dimen/qsb_mic_width"

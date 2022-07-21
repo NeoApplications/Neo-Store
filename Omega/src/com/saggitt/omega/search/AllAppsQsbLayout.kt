@@ -50,7 +50,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     private var mFallback: AllAppsQsbFallback? = null
     private lateinit var mAppsView: AllAppsContainerView
-
+    private var mCancelButton: ImageButton? = null
     init {
         visibility = (if (prefs.allAppsSearch) View.VISIBLE else View.GONE)
     }
@@ -95,6 +95,8 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
                 searchFallback("")
             }
         }
+
+        mCancelButton = findViewById(R.id.search_cancel_button)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -227,6 +229,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
                 ) as AllAppsQsbFallback
             val allAppsContainerView: AllAppsContainerView = mAppsView
             mFallback!!.allAppsQsbLayout = this
+            mFallback!!.setCancelButton(mCancelButton!!)
             mFallback!!.initializeSearch(allAppsContainerView)
             addView(mFallback)
         }

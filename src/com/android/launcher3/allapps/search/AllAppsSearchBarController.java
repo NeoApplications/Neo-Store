@@ -15,6 +15,8 @@
  */
 package com.android.launcher3.allapps.search;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_ALLAPPS_FOCUSED_ITEM_SELECTED_WITH_IME;
 
 import android.text.Editable;
@@ -26,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -49,8 +52,8 @@ public class AllAppsSearchBarController
     protected ExtendedEditText mInput;
     protected String mQuery;
     private String[] mTextConversions;
-
     protected SearchAlgorithm<AdapterItem> mSearchAlgorithm;
+    protected ImageButton mCancelButton;
 
     public void setVisibility(int visibility) {
         mInput.setVisibility(visibility);
@@ -61,6 +64,7 @@ public class AllAppsSearchBarController
      */
     public final void initialize(
             SearchAlgorithm<AdapterItem> searchAlgorithm, ExtendedEditText input,
+            ImageButton cancelButton,
             BaseDraggingActivity launcher, SearchCallback<AdapterItem> callback) {
         mCallback = callback;
         mLauncher = launcher;
@@ -70,6 +74,8 @@ public class AllAppsSearchBarController
         mInput.setOnEditorActionListener(this);
         mInput.setOnBackKeyListener(this);
         mInput.setOnFocusChangeListener(this);
+        mCancelButton = cancelButton;
+        mCancelButton.setOnClickListener(v -> reset());
         mSearchAlgorithm = searchAlgorithm;
     }
 
@@ -103,9 +109,11 @@ public class AllAppsSearchBarController
         if (mQuery.isEmpty()) {
             mSearchAlgorithm.cancel(true);
             mCallback.clearSearchResult();
+            mCancelButton.setVisibility(GONE);
         } else {
             mSearchAlgorithm.cancel(false);
             mSearchAlgorithm.doSearch(mQuery, mTextConversions, mCallback);
+            mCancelButton.setVisibility(VISIBLE);
         }
     }
 
