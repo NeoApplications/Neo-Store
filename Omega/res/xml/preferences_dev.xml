@@ -38,16 +38,6 @@
         app:iconSpaceReserved="false" />
 
     <PreferenceCategory android:title="@string/pref_category__incubating">
-        <!--
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/entries_layout_mode"
-            android:entryValues="@array/values_layout_mode"
-            android:key="pref_drawer_layout"
-            android:persistent="true"
-            android:summary="%s"
-            android:title="@string/title_drawer_layout"
-            app:iconSpaceReserved="false" /> -->
 
         <SwitchPreference
             android:defaultValue="true"
@@ -62,11 +52,23 @@
             android:title="@string/pref_desktop_mode_settings"
             app:iconSpaceReserved="false" />
 
+        <!--
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/entries_layout_mode"
+            android:entryValues="@array/values_layout_mode"
+            android:key="pref_drawer_layout"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/title_drawer_layout"
+            app:iconSpaceReserved="false" />
+
         <Preference
             android:icon="@drawable/ic_gesture"
             android:key="pref_gesture_selector"
             android:layout="@layout/home_preference"
-            android:title="@string/pref_category__gestures" />
+            android:title="@string/pref_category__gestures" />-->
+
 
         <Preference
             android:key="pref_suggestions"
