@@ -259,7 +259,7 @@ fun IconPreview(
 ) {
     val drawable by produceState<Drawable?>(initialValue = null, iconPack, iconItem) {
         launch(Dispatchers.IO) {
-            value = iconPack.getIcon(iconItem.toIconEntry(), 0) // TODO fix for system icon pack
+            value = iconPack.getIcon(iconItem.toIconEntry(), 0)
         }
     }
     Box(
