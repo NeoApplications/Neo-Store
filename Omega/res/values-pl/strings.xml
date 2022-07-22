@@ -137,4 +137,15 @@
     <string name="pref_appcategorization_flowerpot_title">Kategorie aplikacji</string>
     <string name="icon_shape_override_label">Zmień kształt ikon</string>
     <string name="smartspace_hours_mins">%1$s %2$s</string>
+    <string name="title_app_categorize">Kategoryzuj aplikacje</string>
+    <string name="cat_drawer_grid">Siatka</string>
+    <string name="tab_type_custom_desc">Wybierz skróty ręcznie.</string>
+    <string name="title_theme_icon_packs">Pakiety ikon</string>
+    <string name="title_theme_customize_icons">Dostosuj ikony</string>
+    <string name="theme_based">Ustaw według motywu</string>
+    <string name="summary__general_advanced">Język, kopia zapasowa, ustawienia wyszukiwania</string>
+    <string name="title_drawer_enable_background">Użyj własnego koloru tła</string>
+    <string name="pref_appcategorization_flowerpot_summary">Wybieraj skróty automatycznie.</string>
+    <string name="summary_app_categorize">Wybierz pomiędzy zakładkami a folderami</string>
+    <string name="theme_dark_theme_mode_follow_daylight">Podążaj za światłem dziennym</string>
 </resources>
