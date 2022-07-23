@@ -90,19 +90,6 @@ public class AllAppsSearchBarController
         mTextConversions = extractTextConversions(s);
     }
 
-    private static String[] extractTextConversions(CharSequence text) {
-        if (text instanceof SpannableStringBuilder) {
-            SpannableStringBuilder spanned = (SpannableStringBuilder) text;
-            SuggestionSpan[] suggestionSpans =
-                    spanned.getSpans(0, text.length(), SuggestionSpan.class);
-            if (suggestionSpans != null && suggestionSpans.length > 0) {
-                spanned.removeSpan(suggestionSpans[0]);
-                return suggestionSpans[0].getSuggestions();
-            }
-        }
-        return null;
-    }
-
     @Override
     public void afterTextChanged(final Editable s) {
         mQuery = s.toString();
@@ -115,6 +102,19 @@ public class AllAppsSearchBarController
             mSearchAlgorithm.doSearch(mQuery, mTextConversions, mCallback);
             mCancelButton.setVisibility(VISIBLE);
         }
+    }
+
+    private static String[] extractTextConversions(CharSequence text) {
+        if (text instanceof SpannableStringBuilder) {
+            SpannableStringBuilder spanned = (SpannableStringBuilder) text;
+            SuggestionSpan[] suggestionSpans =
+                    spanned.getSpans(0, text.length(), SuggestionSpan.class);
+            if (suggestionSpans != null && suggestionSpans.length > 0) {
+                spanned.removeSpan(suggestionSpans[0]);
+                return suggestionSpans[0].getSuggestions();
+            }
+        }
+        return null;
     }
 
     public void refreshSearchResult() {
