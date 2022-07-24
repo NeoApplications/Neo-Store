@@ -25,14 +25,11 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.android.launcher3.Launcher
-import com.android.launcher3.LauncherAppState
 import com.android.launcher3.Utilities
 import com.saggitt.omega.preferences.OmegaPreferences
 import java.util.*
 
 val Context.omegaPrefs: OmegaPreferences get() = Utilities.getOmegaPrefs(this)
-
-val Context.launcherAppState: LauncherAppState get() = LauncherAppState.getInstance(this)
 
 fun Context.getLauncherOrNull(): Launcher? {
     return try {
@@ -62,13 +59,6 @@ fun Context.getThemeAttr(attr: Int): Int {
     val theme = ta.getResourceId(0, 0)
     ta.recycle()
     return theme
-}
-
-fun Context.getDimenAttr(attr: Int): Int {
-    val ta = obtainStyledAttributes(intArrayOf(attr))
-    val size = ta.getDimensionPixelSize(0, 0)
-    ta.recycle()
-    return size
 }
 
 fun Context.getIcon(): Drawable = packageManager.getApplicationIcon(applicationInfo)

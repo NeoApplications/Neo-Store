@@ -447,11 +447,6 @@ public class FolderInfo extends ItemInfo {
         return isCoverMode();
     }
 
-    /*private boolean hasCustomIcon(Context context) {
-        Launcher launcher = OmegaLauncher.getLauncher(context);
-        return getIconInternal(launcher) != null;
-    }*/
-
     public boolean usingCustomIcon(Context context) {
         return !isCoverMode();
     }
