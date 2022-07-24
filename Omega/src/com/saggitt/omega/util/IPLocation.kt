@@ -30,7 +30,6 @@ class IPLocation(
     private val context: Context,
     private val cacheValidityMs: Long = TimeUnit.MINUTES.toMillis(30)
 ) {
-    private val permissionManager = CustomPermissionManager.getInstance(context)
     private val client = OkHttpClientBuilder().build(context)
 
     private val cacheValid get() = cache != null && timeLast + cacheValidityMs > SystemClock.uptimeMillis()
