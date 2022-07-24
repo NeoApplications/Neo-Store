@@ -34,7 +34,7 @@
     <string name="description">描述</string>
     <string name="details">详情</string>
     <string name="donate">捐助</string>
-    <string name="downloaded_FORMAT">已下载 %s</string>
+    <string name="downloaded_FORMAT">%s 已下载</string>
     <string name="downloading">下载中</string>
     <string name="downloading_FORMAT">正在下载 %s…</string>
     <string name="edit_repository">编辑存储库</string>
@@ -55,8 +55,8 @@
     <string name="incompatible_platforms_DESC_FORMAT">你的 %1$s 平台不受支持。 支持的平台：%2$s。</string>
     <string name="incompatible_signature_DESC">此版本和你设备上安装的版本使用了不同的证书来签名。
 \n请先卸载你已有的版本。</string>
-    <string name="incompatible_version">版本不兼容</string>
-    <string name="incompatible_versions">版本不兼容</string>
+    <string name="incompatible_version">不兼容的版本</string>
+    <string name="incompatible_versions">不兼容的版本</string>
     <string name="incompatible_versions_summary">显示与设备不兼容的版本。</string>
     <string name="incompatible_with_FORMAT">与 %s 不兼容</string>
     <string name="install">安装</string>
@@ -79,7 +79,7 @@
     <string name="list_animation_description">在主页呈现列表动画效果</string>
     <string name="merging_FORMAT">合并 %s…</string>
     <string name="name">名称</string>
-    <string name="network_error_DESC">网络错误.</string>
+    <string name="network_error_DESC">网络错误。</string>
     <string name="never">从不</string>
     <string name="new_updates_available">有新版本可用</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -132,7 +132,7 @@
     <string name="show_more">展开更多内容</string>
     <string name="show_older_versions">显示旧版本</string>
     <string name="signature_FORMAT">签名 %s</string>
-    <string name="signed_using_unsafe_algorithm">使用不安全的算法签名</string>
+    <string name="signed_using_unsafe_algorithm">使用的签名算法不安全</string>
     <string name="size">大小</string>
     <string name="skip">跳过</string>
     <string name="socks_proxy">SOCKS 代理</string>
@@ -149,7 +149,7 @@
     <string name="target">目标</string>
     <string name="theme">主题</string>
     <string name="themes">主题</string>
-    <string name="tracks_or_reports_your_activity">跟踪或报告你的活动</string>
+    <string name="tracks_or_reports_your_activity">跟踪或回报你的活动</string>
     <string name="uninstall">卸载</string>
     <string name="unknown">未知</string>
     <string name="unknown_error_DESC">未知错误。</string>
@@ -179,7 +179,7 @@
     <string name="update_all">安装全部</string>
     <string name="new_applications">新应用</string>
     <string name="installed_applications">已安装</string>
-    <string name="only_on_wifi_and_battery">仅在使用Wi-Fi且同时充电的情况下</string>
+    <string name="only_on_wifi_and_battery">仅在使用 Wi-Fi 且同时充电的情况下</string>
     <string name="install_after_sync">自动更新</string>
     <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本。</string>
     <string name="prefs_updated_apps">在“最近更新”下显示的应用数量</string>
@@ -190,11 +190,11 @@
     <string name="installing">安装</string>
     <string name="ignore_battery_optimization_title">电池优化</string>
     <string name="ignore_battery_optimization_message">在没有电池优化的情况下该应用程序表现更好，并且可以防止在 Android 12+上崩溃。</string>
-    <string name="ignore_battery_optimization_not_supported">您的Android不支持关闭电池优化。</string>
-    <string name="dialog_refuse">保持</string>
+    <string name="ignore_battery_optimization_not_supported">您的 Android 不支持关闭电池优化。</string>
+    <string name="dialog_refuse">不变</string>
     <string name="dialog_approve">关闭</string>
-    <string name="root_session_installer_description">会话安装程序的性能比传统安装程序稍差，但避免了在 Android 13+ 中安装应用程序时出现问题。</string>
-    <string name="root_session_installer">使用root会话安装程序</string>
+    <string name="root_session_installer_description">会话安装程序的性能比默认安装程序稍差，但避免了在 Android 13+ 中安装应用程序时出现问题。</string>
+    <string name="root_session_installer">使用 root 会话安装程序</string>
     <string name="not_safe_for_work">NSFW (可能包含令人不安的内容）</string>
     <string name="no_permissions_identified">没有请求的权限标识</string>
     <string name="no_action_possible">无法采取任何行动</string>
