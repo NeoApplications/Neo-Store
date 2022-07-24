@@ -76,6 +76,7 @@ import com.android.quickstep.views.SplitPlaceholderView;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.ActivityOptionsCompat;
 import com.android.systemui.shared.system.RemoteAnimationTargetCompat;
+import com.saggitt.omega.OmegaApp;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -450,7 +451,7 @@ public abstract class BaseQuickstepLauncher extends Launcher
             ActivityOptionsCompat.setLauncherSourceInfo(
                     activityOptions.options, mLastTouchUpTime);
         }
-        if (Utilities.ATLEAST_S) {
+        if (Utilities.ATLEAST_S && OmegaApp.isRecentsEnabled()) {
             activityOptions.options.setSplashscreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
             addLaunchCookie(item, activityOptions.options);
         }

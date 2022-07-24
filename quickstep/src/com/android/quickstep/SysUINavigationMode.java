@@ -137,6 +137,8 @@ public class SysUINavigationMode {
     }
 
     private void initializeMode() {
+        mMode = Mode.THREE_BUTTONS;
+
         int modeInt = ResourceUtils.getIntegerByName(NAV_BAR_INTERACTION_MODE_RES_NAME,
                 mContext.getResources(), INVALID_RESOURCE_HANDLE);
         mNavBarGesturalHeight = ResourceUtils.getDimenByName(
