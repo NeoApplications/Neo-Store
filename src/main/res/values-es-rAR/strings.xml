@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_failed">Accion fallida</string>
+    <string name="add_repository">Agregar repositorio</string>
+    <string name="address">Direccion</string>
+    <string name="all_applications">Todas las Aplicaciones</string>
+    <string name="all_applications_up_to_date">Todas las aplicaciones are up to date</string>
+    <string name="already_exists">Ya existe</string>
+</resources>
