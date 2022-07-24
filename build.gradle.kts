@@ -318,7 +318,7 @@ task("detectAndroidLocals") {
     val langsList: MutableSet<String> = HashSet()
 
     // in /res are (almost) all languages that have a translated string is saved. this is safer and saves some time
-    fileTree("src/main/res").visit {
+    fileTree("res").visit {
         if (this.file.path.endsWith("strings.xml")
             && this.file.canonicalFile.readText().contains("<string")
         ) {
