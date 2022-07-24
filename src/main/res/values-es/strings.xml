@@ -197,4 +197,9 @@
     <string name="no_permissions_identified">No se han identificado permisos requeridos</string>
     <string name="no_action_possible">Sin acción posible</string>
     <string name="dialog_refuse">Mantener</string>
+    <string name="show_screenshots">Mostras capturas de pantalla</string>
+    <string name="favorite_remove">Remover de favoritos</string>
+    <string name="favorite_add">Agregar a favoritos</string>
+    <string name="open">Abrir</string>
+    <string name="loading_list">Cargando lista…</string>
 </resources>
