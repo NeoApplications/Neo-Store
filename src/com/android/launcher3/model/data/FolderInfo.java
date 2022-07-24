@@ -456,30 +456,8 @@ public class FolderInfo extends ItemInfo {
         return !isCoverMode();
     }
 
-    private Drawable getIconInternal(Launcher launcher) {
-        /*CustomInfoProvider<FolderInfo> infoProvider = CustomInfoProvider.Companion.forItem(launcher, this);
-        //CustomIconEntry entry = infoProvider == null ? null : infoProvider.getIcon(this);
-        if (entry != null) {
-            entry.getIcon();
-            if (!entry.getIcon().equals(cachedIcon)) {
-                IconPack pack = IconPackProvider.INSTANCE.get(launcher)
-                        .getIconPackOrSystem(entry.getPackPackageName());
-                if (pack != null) {
-                    cached = pack.getIcon(entry, launcher.getDeviceProfile().inv.fillResIconDpi);
-                    cachedIcon = entry.getIcon();
-                }
-            }
-            if (cached != null) {
-                return cached.mutate();
-            }
-        }*/
-        return null;
-    }
-
     public Drawable getIcon(Context context) {
         Launcher launcher = Launcher.getLauncher(context);
-        Drawable icn = getIconInternal(launcher);
-        if (icn != null) return icn;
         if (isCoverMode()) return getCoverInfo().newIcon(context);
         return getFolderIcon(launcher);
     }
