@@ -2,11 +2,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="title__general_about">Acerca de</string>
     <string name="title__general_desktop">Escritorio</string>
-    <string name="title__general_dock">Muelle</string>
+    <string name="title__general_dock">Dock</string>
     <string name="title__general_drawer">Aplicaciones</string>
     <string name="title__general_theme">Temas</string>
     <string name="title__general_search">Búsqueda y Carpetas</string>
-    <string name="title__general_advanced">Avanzados</string>
+    <string name="title__general_advanced">Configuracion Avanzada</string>
     <string name="pref_category__others">Otras</string>
     <string name="title__dock_hide">Ocultar Dock</string>
     <string name="title__dock_hide_labels">Ocultar Nombres</string>
