@@ -27,25 +27,4 @@
         android:key="pref_swipe_up_gesture"
         android:title="@string/gesture_swipe_up" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="pref_app_hide"
-        android:title="@string/hide_app" />
-
-    <com.saggitt.omega.preferences.custom.MultiSelectTabPreference
-        android:key="pref_show_in_tabs"
-        android:title="@string/app_categorization_tabs" />
-
-    <PreferenceCategory
-        android:key="debug"
-        android:title="@string/developer_options_title">
-
-        <Preference
-            android:key="componentName"
-            android:title="@string/debug_component_name" />
-
-        <Preference
-            android:key="versionName"
-            android:title="Version" />
-    </PreferenceCategory>
 </PreferenceScreen>

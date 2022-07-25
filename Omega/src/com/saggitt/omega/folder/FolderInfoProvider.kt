@@ -15,7 +15,7 @@
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.override
+package com.saggitt.omega.folder
 
 import android.content.Context
 import com.android.launcher3.R

@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Lawnchair Launcher.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.saggitt.omega.override
+package com.saggitt.omega.folder
 
 import android.content.Context
 import com.android.launcher3.model.ModelWriter
-import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
-import com.android.launcher3.model.data.WorkspaceItemInfo
 
 abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
 
@@ -49,8 +47,6 @@ abstract class CustomInfoProvider<in T : ItemInfo>(val context: Context) {
         @Suppress("UNCHECKED_CAST")
         fun <T : ItemInfo> forItem(context: Context, info: ItemInfo?): CustomInfoProvider<T>? {
             return when (info) {
-                is AppInfo -> AppInfoProvider.getInstance(context)
-                is WorkspaceItemInfo -> ShortcutInfoProvider.getInstance(context)
                 is FolderInfo -> FolderInfoProvider.getInstance(context)
                 else -> null
             } as CustomInfoProvider<T>?
