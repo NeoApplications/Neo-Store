@@ -101,9 +101,9 @@ import com.android.launcher3.views.ActivityContext;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.views.ClipPathView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.saggitt.omega.folder.FolderShortcut;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
-import com.saggitt.omega.views.CustomBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -311,7 +311,8 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
                 if (mInfo instanceof DrawerFolderInfo) {
                     ((DrawerFolderInfo) mInfo).showEdit(mLauncher);
                 } else {
-                    CustomBottomSheet.show(mLauncher, mInfo);
+                    FolderShortcut fc = new FolderShortcut(mLauncher, mInfo);
+                    fc.show();
                 }
             });
         }

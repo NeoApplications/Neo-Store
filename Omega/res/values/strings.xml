@@ -21,6 +21,7 @@
     <string name="app_build" translatable="false">Build</string>
     <string name="app_id" translatable="false">Package</string>
     <string name="default_folder_name">New Folder</string>
+    <string name="folder_name">Folder Name</string>
 
     <!-- PREFERENCES GENERAL -->
     <string name="title__general_about">About</string>
