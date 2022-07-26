@@ -42,7 +42,8 @@ You can join [our Telegram group](https://t.me/neo_launcher) to make suggestions
 - Icons' scaling.
 - Back up and restore preferences.
 
-There's also a [devloper's document](DEVDOC.md), where the maintainer and collaborators communicate their TODOs and plans.
+There's also a [developer's document](DEVDOC.md), where the maintainer and collaborators communicate
+their TODOs and plans.
 
 ## *Screenshots*
 
