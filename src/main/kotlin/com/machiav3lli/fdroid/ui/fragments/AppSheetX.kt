@@ -33,8 +33,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -347,7 +350,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     fun AppSheet() {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
@@ -400,6 +403,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             )
         }
         val snackbarHostState = remember { SnackbarHostState() }
+        val nestedScrollConnection = rememberNestedScrollInteropConnection()
         val coroutineScope = rememberCoroutineScope()
 
         suggestedProductRepo?.let { (product, repo) ->
@@ -417,7 +421,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             ) { paddingValues ->
                 LazyColumn(
                     modifier = Modifier
-                        .padding(paddingValues),
+                        .padding(paddingValues)
+                        .nestedScroll(nestedScrollConnection),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(8.dp)
                 ) {
