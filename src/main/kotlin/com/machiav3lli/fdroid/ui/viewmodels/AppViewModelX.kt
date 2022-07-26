@@ -54,7 +54,8 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
             val product = findSuggestedProduct(productRepos, installed) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
-            val canInstall = product != null && installed == null && compatible
+            val canInstall =
+                product != null && installed == null && compatible && downloadState.value == null
             val canUpdate =
                 product != null && compatible && product.canUpdate(installed) &&
                         !shouldIgnore(product.versionCode)
