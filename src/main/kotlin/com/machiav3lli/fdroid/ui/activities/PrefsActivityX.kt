@@ -16,7 +16,6 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.databinding.ActivityPrefsXBinding
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
@@ -24,7 +23,7 @@ import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.fragments.MainNavFragmentX
 import com.machiav3lli.fdroid.ui.fragments.Source
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
-import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
+import com.machiav3lli.fdroid.utility.setCustomTheme
 import kotlinx.coroutines.launch
 
 // TODO clean up the bloat
@@ -61,7 +60,7 @@ class PrefsActivityX : AppCompatActivity() {
         get() = (application as MainApplication).db
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+        setCustomTheme()
         super.onCreate(savedInstanceState)
 
         binding = ActivityPrefsXBinding.inflate(layoutInflater)

@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.utility
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.core.text.util.LinkifyCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentManager
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
@@ -521,5 +523,14 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
                 end
             )
         }
+    }
+}
+
+fun Activity.setCustomTheme() {
+    if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+    else {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        WindowInsetsControllerCompat(window, window.decorView)
+            .isAppearanceLightStatusBars = currentNightMode == Configuration.UI_MODE_NIGHT_NO
     }
 }
