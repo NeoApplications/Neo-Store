@@ -1,0 +1,4 @@
+* Varie modifiche all'interfaccia utente
+* Intera base di codice riformattata
+* Dipendenze aggiornate
+* Rinominato Preferenze in Impostazioni

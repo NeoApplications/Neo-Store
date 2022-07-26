@@ -1,9 +1,8 @@
-- Aggiunto: Tema dinamico di sistema (alias. Material You)
-- Aggiunti: 7 nuovi repository pre impostati
-- Aggiunta: Etichetta architettura su rilasci di specifiche architetture
-- Rimosso: UnifiedPush repo (cancellato)
-- Fix : Notifica fastidiosa 0 aggiornamenti disponibili
-- Fix: Nascosto link a sito web dell'autore quando non disponibile
-- Fix: Parsing contenuto degli appunti per l'URI delle repo
-- Fix: Collegamenti nelle impostazioni
-- Fix: Aggiornamenti in esecuzione non mostrati
+- Aggiunto: tema dinamico di sistema
+- Aggiunti: 7 nuovi repository preimpostati
+- Aggiunta: etichetta dell'architettura sui rilasci per un'architettura specifica
+- Rimosso: repository UnifiedPush
+- Corretto: fastidiosa notifica di 0 aggiornamenti
+- Corretto: nascondi il collegamento al sito Web dell'autore quando non è disponibile
+- Corretto: analisi del contenuto degli appunti per l'URI del repository
+- Corretto: collegamenti nelle impostazioni
