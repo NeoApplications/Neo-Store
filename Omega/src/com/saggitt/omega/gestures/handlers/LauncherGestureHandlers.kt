@@ -168,7 +168,7 @@ class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
         controller.launcher.startActivity(
             Intent(Intent.ACTION_MAIN).setClassName(
                 Config.GOOGLE_QSB,
-                "$Config.GOOGLE_QSB.SearchActivity"
+                "${Config.GOOGLE_QSB}.SearchActivity"
             )
         )
     }
