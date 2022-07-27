@@ -1,3 +1,0 @@
-<p>Trình khởi chạy miễn phí mạnh mẽ với nhiều tính năng thông minh.</p>
-<br>
-<p>Trạng thái: Beta</p>
