@@ -21,8 +21,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
         targetSdk = 32
-        versionCode = 911
-        versionName = "0.9.1"
+        versionCode = 912
+        versionName = "0.9.2"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -168,7 +168,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
-    implementation("com.google.android.material:material:1.7.0-alpha02")
+    implementation("com.google.android.material:material:1.7.0-alpha03")
 
     // Coil
     implementation("io.coil-kt:coil:2.1.0")

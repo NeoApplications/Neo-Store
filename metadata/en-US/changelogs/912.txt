@@ -1,0 +1,6 @@
+Fix: Setting ignore updates doesn't hide from updates
+Fix: Alphabetical sorting of Installed
+Fix: Nested scrolling of AppSheet
+Fix: Showing install action while download is running
+Fix: StatusBar icons visibility on dynamic colors' theme
+Update: Translations
