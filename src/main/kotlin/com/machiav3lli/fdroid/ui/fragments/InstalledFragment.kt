@@ -225,7 +225,7 @@ class InstalledFragment : MainNavFragmentX() {
                         )*/
                     }
                     ProductsVerticalRecycler(
-                        productsList = primaryList?.sortedBy(Product::label),
+                        productsList = primaryList?.sortedBy { it.label.lowercase() },
                         repositories = repositories,
                         favorites = favorites,
                         modifier = Modifier
