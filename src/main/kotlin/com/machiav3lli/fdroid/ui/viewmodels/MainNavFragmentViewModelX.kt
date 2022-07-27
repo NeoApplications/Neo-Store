@@ -128,9 +128,13 @@ class MainNavFragmentViewModelX(
             }
             installed.postValue(it.associateBy { it.packageName })
         }
-        /*if (secondaryRequest.updates) secondaryProducts.addSource(db.extrasDao.allLive) {
-            secondaryProducts.value = secondaryProducts.value.filter { secondaryProducts.it.packageName) }
-        }*/
+        if (secondaryRequest.updates) secondaryProducts.addSource(db.extrasDao.allLive) {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    secondaryProducts.postValue(db.productDao.queryObject(secondaryRequest))
+                }
+            }
+        }
     }
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
