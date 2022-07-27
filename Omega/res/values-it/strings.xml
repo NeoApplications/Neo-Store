@@ -91,7 +91,7 @@
     <string name="debug_component_name">Nome componente</string>
     <string name="dismiss_drop_target_label">Non mostrare</string>
     <string name="drag_to_enable_packs">Trascina verso l\'alto per disattivare</string>
-    <string name="dash_device_settings_summary">Apri impostazioni dispositivo</string>
+    <string name="dash_device_settings_summary">Apri Impostazioni dispositivo</string>
     <string name="dash_volume_summary">Visualizza il selettore audio del dispositivo</string>
     <string name="dash_launcher_settings_summary">Visualizza impostazioni launcher</string>
     <string name="wallpaper_pick_summary">Apri il selettore di sfondi</string>
@@ -308,7 +308,7 @@
     <string name="title__theme_icon_shape">Cambia forma icona</string>
     <string name="title__theme_blur_radius">Intensità sfocatura</string>
     <string name="title__theme_blur">Sfocatura</string>
-    <string name="title__theme_accent_color">Colore complementare</string>
+    <string name="title__theme_accent_color">Colore d\'accento</string>
     <string name="disable_protected_apps_message">Disattiva le app protette che richiedono l\'autenticazione</string>
     <string name="disable_protected_apps">Disattiva app protette</string>
     <string name="enable_protected_apps">Abilita app protette</string>
