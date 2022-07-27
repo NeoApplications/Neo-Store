@@ -128,6 +128,7 @@ public class FolderInfo extends ItemInfo {
     public FolderInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_FOLDER;
         user = Process.myUserHandle();
+        swipeUpAction = "";
     }
 
     /**
