@@ -1,3 +1,0 @@
-<p>Moćan pokretač s puno pametnih funkcija..</p>
-<br>
-<p>Stanje: Beta</p>

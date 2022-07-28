@@ -1,3 +1,0 @@
-<p>Din kraftfulla fria launcher med många smarta funktioner.</p>
-<br>
-<p>Status: Beta</p>

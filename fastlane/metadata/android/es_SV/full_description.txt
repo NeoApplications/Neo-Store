@@ -1,3 +1,0 @@
-<p>Tu Launcher Libre con muchas opciones de configuración.</p>
-<br>
-<p>Estado: Beta</p>

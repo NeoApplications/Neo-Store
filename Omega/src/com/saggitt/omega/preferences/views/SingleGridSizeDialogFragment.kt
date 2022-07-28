@@ -35,8 +35,8 @@ class SingleGridSizeDialogFragment : PreferenceDialogFragmentCompat(),
 
     private var numRows = 0
 
-    private val minValue = 3
-    private val maxValue = 9
+    private val minValue = 2
+    private val maxValue = 16
 
     private lateinit var numRowsPicker: SeekBar
     private lateinit var numRowsLabel: TextView

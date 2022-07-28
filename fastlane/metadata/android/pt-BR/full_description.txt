@@ -1,3 +1,0 @@
-<p>Seu poderoso e livre Launcher(lançador de apps) com um punhado de recursos bons.</p>
-<br>
-<p>Situação atual: Fase Beta</p>

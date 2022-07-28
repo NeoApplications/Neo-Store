@@ -20,7 +20,11 @@ import com.android.launcher3.LauncherState
 import com.android.launcher3.LauncherState.ALL_APPS
 import com.saggitt.omega.gestures.Gesture
 import com.saggitt.omega.gestures.GestureController
-import com.saggitt.omega.gestures.handlers.*
+import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
+import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
+import com.saggitt.omega.gestures.handlers.StateChangeGestureHandler
+import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
 
 class VerticalSwipeGesture(controller: GestureController) : Gesture(controller) {
 
@@ -43,8 +47,8 @@ class VerticalSwipeGesture(controller: GestureController) : Gesture(controller) 
     val customDockSwipeUp get() = dockSwipeUpHandler !is VerticalSwipeGestureHandler
     val customSwipeDown get() = swipeDownHandler !is NotificationsOpenGestureHandler
 
-    val swipeUpAppsSearch get() = swipeUpHandler is StartAppSearchGestureHandler
-    val dockSwipeUpAppsSearch get() = dockSwipeUpHandler is StartAppSearchGestureHandler
+    val swipeUpAppsSearch get() = swipeUpHandler is StartGlobalSearchGestureHandler
+    val dockSwipeUpAppsSearch get() = dockSwipeUpHandler is StartGlobalSearchGestureHandler
 
     fun onSwipeUp() {
         swipeUpHandler.onGestureTrigger(controller)

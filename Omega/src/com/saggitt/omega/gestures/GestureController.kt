@@ -25,8 +25,24 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import com.android.launcher3.util.TouchController
 import com.saggitt.omega.OmegaLauncher
-import com.saggitt.omega.gestures.gestures.*
-import com.saggitt.omega.gestures.handlers.*
+import com.saggitt.omega.gestures.gestures.DoubleTapGesture
+import com.saggitt.omega.gestures.gestures.LaunchAssistantGesture
+import com.saggitt.omega.gestures.gestures.LongPressGesture
+import com.saggitt.omega.gestures.gestures.PressBackGesture
+import com.saggitt.omega.gestures.gestures.PressHomeGesture
+import com.saggitt.omega.gestures.gestures.VerticalSwipeGesture
+import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDashGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenOverlayGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenSettingsGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenWidgetsGestureHandler
+import com.saggitt.omega.gestures.handlers.PressBackGestureHandler
+import com.saggitt.omega.gestures.handlers.SleepGestureHandler
+import com.saggitt.omega.gestures.handlers.SleepGestureHandlerTimeout
+import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
+import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.util.omegaPrefs
 import org.json.JSONException
 import org.json.JSONObject
@@ -171,7 +187,6 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
                 OpenOverlayGestureHandler(context, null),
                 OpenOverviewGestureHandler(context, null),
                 StartGlobalSearchGestureHandler(context, null),
-                StartAppSearchGestureHandler(context, null),
                 StartAppGestureHandler(context, null),
                 OpenSettingsGestureHandler(context, null)
             ).apply {

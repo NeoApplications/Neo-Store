@@ -134,25 +134,6 @@ class StartGlobalSearchGestureHandler(context: Context, config: JSONObject?) :
 }
 
 @Keep
-class StartAppSearchGestureHandler(context: Context, config: JSONObject?) :
-    OpenDrawerGestureHandler(context, config) {
-
-    override val displayName: String = context.getString(R.string.action_app_search)
-    override val requiresForeground = false
-    override val iconResource: Intent.ShortcutIconResource
-            by lazy {
-                Intent.ShortcutIconResource.fromContext(
-                    context,
-                    R.drawable.ic_search
-                )
-            }
-
-    override fun getOnCompleteRunnable(controller: GestureController): Runnable {
-        return Runnable { controller.launcher.appsView.searchUiManager.startSearch() }
-    }
-}
-
-@Keep
 class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
     GestureHandler(context, config) {
 
@@ -168,7 +149,7 @@ class OpenOverlayGestureHandler(context: Context, config: JSONObject?) :
         controller.launcher.startActivity(
             Intent(Intent.ACTION_MAIN).setClassName(
                 Config.GOOGLE_QSB,
-                "$Config.GOOGLE_QSB.SearchActivity"
+                "${Config.GOOGLE_QSB}.SearchActivity"
             )
         )
     }

@@ -51,10 +51,10 @@ class GridSizeDialogFragment : PreferenceDialogFragmentCompat() {
         numRowsPicker = view.findViewById(R.id.rowsPicker)
         numColumnsPicker = view.findViewById(R.id.columnsPicker)
 
-        numRowsPicker.minValue = 3
-        numRowsPicker.maxValue = 8
-        numColumnsPicker.minValue = 3
-        numColumnsPicker.maxValue = 8
+        numRowsPicker.minValue = 2
+        numRowsPicker.maxValue = 16
+        numColumnsPicker.minValue = 2
+        numColumnsPicker.maxValue = 16
 
         numRowsPicker.value = numRows
         numColumnsPicker.value = numColumns
