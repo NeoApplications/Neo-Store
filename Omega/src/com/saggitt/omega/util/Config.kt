@@ -21,11 +21,14 @@ package com.saggitt.omega.util
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
+import android.net.Uri
 import android.os.Build
 import android.os.CancellationSignal
 import android.os.Process
@@ -43,6 +46,7 @@ import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.theme.ThemeOverride
 import java.util.*
+
 
 class Config(val context: Context) {
 
@@ -78,15 +82,29 @@ class Config(val context: Context) {
         }
     }
 
+    fun feedProviderList(context: Context): List<ApplicationInfo> {
+        val packageManager = context.packageManager
+        val intent = Intent("com.android.launcher3.WINDOW_OVERLAY")
+            .setData(Uri.parse("app://" + context.packageName))
+        val feedList: MutableList<ApplicationInfo> = ArrayList()
+        for (resolveInfo in packageManager.queryIntentServices(
+            intent,
+            PackageManager.GET_RESOLVED_FILTER
+        )) {
+            if (resolveInfo.serviceInfo != null) {
+                val applicationInfo = resolveInfo.serviceInfo.applicationInfo
+                feedList.add(applicationInfo)
+            }
+        }
+        return feedList
+    }
+
     companion object {
         //PERMISSION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
-        const val CODE_EDIT_ICON = 100
 
         const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
-        const val LENS_URI = "google://lens"
-        const val LENS_ACTIVITY = "com.google.android.apps.lens.MainActivity"
         const val DPS_PACKAGE = "com.google.android.as"
 
         //APP DRAWER SORT MODE
@@ -187,36 +205,36 @@ class Config(val context: Context) {
         }
 
         private val PLACE_HOLDERS = arrayOf(
-                "com.android.phone",
-                "com.samsung.android.dialer",
-                "com.whatsapp",
-                "com.android.chrome",
-                "com.instagram.android",
-                "com.google.android.gm",
-                "com.facebook.orca",
-                "com.google.android.youtube",
-                "com.twitter.android",
-                "com.facebook.katana",
-                "com.google.android.calendar",
-                "com.yodo1.crossyroad",
-                "com.spotify.music",
-                "com.skype.raider",
-                "com.snapchat.android",
-                "com.viber.voip",
-                "com.google.android.deskclock",
-                "com.google.android.apps.photos",
-                "com.google.android.music",
-                "com.google.android.apps.genie.geniewidget",
-                "com.netflix.mediaclient",
-                "com.google.android.apps.maps",
-                "bbc.iplayer.android",
-                "com.android.settings",
-                "com.google.android.videos",
-                "com.amazon.mShop.android.shopping",
-                "com.microsoft.office.word",
-                "com.google.android.apps.docs",
-                "com.google.android.keep",
-                "com.google.android.talk"
+            "com.android.phone",
+            "com.samsung.android.dialer",
+            "com.whatsapp",
+            "com.android.chrome",
+            "com.instagram.android",
+            "com.google.android.gm",
+            "com.facebook.orca",
+            "com.google.android.youtube",
+            "com.twitter.android",
+            "com.facebook.katana",
+            "com.google.android.calendar",
+            "com.yodo1.crossyroad",
+            "com.spotify.music",
+            "com.skype.raider",
+            "com.snapchat.android",
+            "com.viber.voip",
+            "com.google.android.deskclock",
+            "com.google.android.apps.photos",
+            "com.google.android.music",
+            "com.google.android.apps.genie.geniewidget",
+            "com.netflix.mediaclient",
+            "com.google.android.apps.maps",
+            "bbc.iplayer.android",
+            "com.android.settings",
+            "com.google.android.videos",
+            "com.amazon.mShop.android.shopping",
+            "com.microsoft.office.word",
+            "com.google.android.apps.docs",
+            "com.google.android.keep",
+            "com.google.android.talk"
         )
 
         fun getPreviewAppInfos(context: Context): List<AppInfo> {

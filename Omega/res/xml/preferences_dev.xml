@@ -78,5 +78,10 @@
             app:iconSpaceReserved="false">
             <intent android:action="android.settings.ACTION_CONTENT_SUGGESTIONS_SETTINGS" />
         </Preference>
+
+        <com.saggitt.omega.preferences.custom.FeedPreference
+            android:key="pref_feed_provider"
+            android:title="@string/title_feed_provider" />
+
     </PreferenceCategory>
 </PreferenceScreen>
