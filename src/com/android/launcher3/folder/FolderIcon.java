@@ -33,7 +33,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -873,8 +872,6 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
         if (info.isCoverMode()) {
             mSwipeUpHandler = new RunnableGestureHandler(getContext(), () -> ItemClickHandler.INSTANCE.onClick(this));
         } else {
-            Log.d("FolderIcon", "swipe up from not cover mode");
-            Log.d("FolderIcon", info.swipeUpAction);
             mSwipeUpHandler = GestureController.Companion.createGestureHandler(
                     getContext(), info.swipeUpAction, new BlankGestureHandler(getContext(), null));
         }
