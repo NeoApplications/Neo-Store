@@ -70,8 +70,7 @@ their TODOs and plans.
 
 ## *Support*
 
-<a href="https://www.paypal.com/paypalme/omegalauncher"><img src="https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal" alt="Donate via PayPal"/></a>
-<a href="https://www.patreon.com/omegalauncher"><img src="https://img.shields.io/badge/Patreon-Donate-blue?style=for-the-badge&logo=patreon" alt="Donate via Patreon"/></a>
+<a href="https://www.paypal.com/paypalme/saulhdev"><img src="https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal" alt="Donate via PayPal"/></a>
 
 ## *FAQ*
 
