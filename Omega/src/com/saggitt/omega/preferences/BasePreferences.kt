@@ -21,6 +21,7 @@ package com.saggitt.omega.preferences
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
 import com.saggitt.omega.util.dpToPx
@@ -180,8 +181,10 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    abstract inner class PrefDelegate<T : Any>(
+    abstract inner class PrefDelegate<T : Any>( // TODO Add iconId
         val key: String,
+        @StringRes val titleId: Int,
+        @StringRes val summaryId: Int = -1,
         val defaultValue: T,
         private val onChange: () -> Unit
     ) {
@@ -238,9 +241,11 @@ abstract class BasePreferences(context: Context) :
 
     open inner class BooleanPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Boolean = false,
         onChange: () -> Unit = doNothing
-    ) : PrefDelegate<Boolean>(key, defaultValue, onChange) {
+    ) : PrefDelegate<Boolean>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Boolean = sharedPrefs.getBoolean(getKey(), defaultValue)
 
         override fun onSetValue(value: Boolean) {
@@ -250,9 +255,11 @@ abstract class BasePreferences(context: Context) :
 
     open inner class FloatPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Float = 0f,
         onChange: () -> Unit = doNothing
-    ) : PrefDelegate<Float>(key, defaultValue, onChange) {
+    ) : PrefDelegate<Float>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
 
         override fun onSetValue(value: Float) {
@@ -262,10 +269,12 @@ abstract class BasePreferences(context: Context) :
 
     open inner class DimensionPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Float = 0f,
         onChange: () -> Unit = doNothing
     ) :
-        PrefDelegate<Float>(key, defaultValue, onChange) {
+        PrefDelegate<Float>(key, titleId, summaryId, defaultValue, onChange) {
 
         override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
 
@@ -274,8 +283,13 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class IntPref(key: String, defaultValue: Int = 0, onChange: () -> Unit = doNothing) :
-        PrefDelegate<Int>(key, defaultValue, onChange) {
+    open inner class IntPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: Int = 0, onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
 
         override fun onSetValue(value: Int) {
@@ -285,9 +299,11 @@ abstract class BasePreferences(context: Context) :
 
     inner class IdpIntPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         private val selectDefaultValue: InvariantDeviceProfile.GridOption.() -> Int,
         onChange: () -> Unit = doNothing
-    ) : IntPref(key, -1, onChange) {
+    ) : IntPref(key, titleId, summaryId, -1, onChange) {
 
         override fun onGetValue(): Int {
             error("unsupported")
@@ -321,10 +337,12 @@ abstract class BasePreferences(context: Context) :
 
     open inner class AlphaPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Int = 0,
         onChange: () -> Unit = doNothing
     ) :
-        PrefDelegate<Int>(key, defaultValue, onChange) {
+        PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Int =
             (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
 
@@ -334,20 +352,26 @@ abstract class BasePreferences(context: Context) :
     }
 
     inline fun <reified T : Enum<T>> EnumPref(
-        key: String, defaultValue: T,
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: T,
         noinline onChange: () -> Unit = doNothing
     ): PrefDelegate<T> {
-        return IntBasedPref(key, defaultValue, onChange, { value ->
+        return IntBasedPref(key, titleId, summaryId, defaultValue, onChange, { value ->
             enumValues<T>().firstOrNull { item -> item.ordinal == value } ?: defaultValue
         }, { it.ordinal }, { })
     }
 
     open inner class IntBasedPref<T : Any>(
-        key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: T, onChange: () -> Unit = doNothing,
         private val fromInt: (Int) -> T,
         private val toInt: (T) -> Int,
         private val dispose: (T) -> Unit
-    ) : PrefDelegate<T>(key, defaultValue, onChange) {
+    ) : PrefDelegate<T>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): T {
             return if (sharedPrefs.contains(key)) {
                 fromInt(sharedPrefs.getInt(getKey(), toInt(defaultValue)))
@@ -365,9 +389,11 @@ abstract class BasePreferences(context: Context) :
 
     open inner class StringPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: String = "",
         onChange: () -> Unit = doNothing
-    ) : PrefDelegate<String>(key, defaultValue, onChange) {
+    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
 
         override fun onSetValue(value: String) {
@@ -376,12 +402,15 @@ abstract class BasePreferences(context: Context) :
     }
 
     inner class StringBasedPref<T : Any>(
-        key: String, defaultValue: T, onChange: () -> Unit = doNothing,
+        key: String, defaultValue: T,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        onChange: () -> Unit = doNothing,
         private val fromString: (String) -> T,
         private val toString: (T) -> String,
         private val dispose: (T) -> Unit
     ) :
-        PrefDelegate<T>(key, defaultValue, onChange) {
+        PrefDelegate<T>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): T = sharedPrefs.getString(getKey(), null)?.run(fromString)
             ?: defaultValue
 
@@ -396,9 +425,11 @@ abstract class BasePreferences(context: Context) :
 
     open inner class StringIntPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Int = 0,
         onChange: () -> Unit = doNothing
-    ) : PrefDelegate<Int>(key, defaultValue, onChange) {
+    ) : PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Int = try {
             sharedPrefs.getString(getKey(), "$defaultValue")!!.toInt()
         } catch (e: Exception) {
@@ -412,10 +443,12 @@ abstract class BasePreferences(context: Context) :
 
     open inner class StringSetPref(
         key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         defaultValue: Set<String>,
         onChange: () -> Unit = doNothing
     ) :
-        PrefDelegate<Set<String>>(key, defaultValue, onChange) {
+        PrefDelegate<Set<String>>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
 
         override fun onSetValue(value: Set<String>) {
@@ -425,22 +458,30 @@ abstract class BasePreferences(context: Context) :
 
     open inner class StringListPref(
         prefKey: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
         default: List<String> = emptyList(),
         onChange: () -> Unit = doNothing
-    ) : MutableListPref<String>(prefKey, onChange, default) {
+    ) : MutableListPref<String>(prefKey, titleId, summaryId, onChange, default) {
         override fun unflattenValue(value: String) = value
         override fun flattenValue(value: String) = value
     }
 
     abstract inner class MutableListPref<T>(
-        private val prefs: SharedPreferences, private val prefKey: String,
+        private val prefs: SharedPreferences,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        private val prefKey: String,
         onChange: () -> Unit = doNothing,
         default: List<T> = emptyList()
-    ) : PrefDelegate<List<T>>(prefKey, default, onChange) {
+    ) : PrefDelegate<List<T>>(prefKey, titleId, summaryId, default, onChange) {
         constructor(
-            prefKey: String, onChange: () -> Unit = doNothing,
+            prefKey: String,
+            @StringRes titleId: Int,
+            @StringRes summaryId: Int = -1,
+            onChange: () -> Unit = doNothing,
             default: List<T> = emptyList()
-        ) : this(sharedPrefs, prefKey, onChange, default)
+        ) : this(sharedPrefs, titleId, summaryId, prefKey, onChange, default)
 
         private val valueList = arrayListOf<T>()
         private val listeners = mutableSetOf<OmegaPreferences.MutableListPrefChangeListener>()

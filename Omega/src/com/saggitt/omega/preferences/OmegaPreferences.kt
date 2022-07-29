@@ -28,7 +28,94 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
-import com.saggitt.omega.*
+import com.saggitt.omega.PREFS_ACCENT
+import com.saggitt.omega.PREFS_BLUR
+import com.saggitt.omega.PREFS_BLUR_RADIUS
+import com.saggitt.omega.PREFS_COLORED_BACKGROUND
+import com.saggitt.omega.PREFS_COLUMNS
+import com.saggitt.omega.PREFS_DASH_LINESIZE
+import com.saggitt.omega.PREFS_DASH_PROVIDERS
+import com.saggitt.omega.PREFS_DEBUG_MODE
+import com.saggitt.omega.PREFS_DESKTOP_HIDE_LABEL
+import com.saggitt.omega.PREFS_DESKTOP_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DESKTOP_ICON_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_LOCK
+import com.saggitt.omega.PREFS_DESKTOP_MODE
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_EDIT
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_MENU
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
+import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND_COLOR
+import com.saggitt.omega.PREFS_DOCK_HIDE
+import com.saggitt.omega.PREFS_DOCK_ICON_SCALE
+import com.saggitt.omega.PREFS_DOCK_OPACITY
+import com.saggitt.omega.PREFS_DOCK_SCALE
+import com.saggitt.omega.PREFS_DRAWER_HEIGHT_MULTIPLIER
+import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
+import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
+import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
+import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
+import com.saggitt.omega.PREFS_EMPTY_SCREENS
+import com.saggitt.omega.PREFS_FEED_PROVIDER
+import com.saggitt.omega.PREFS_FEED_PROVIDER_ALLOW_ALL
+import com.saggitt.omega.PREFS_FIRST_RUN
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_FOLDER_COLUMNS
+import com.saggitt.omega.PREFS_FOLDER_RADIUS
+import com.saggitt.omega.PREFS_FOLDER_ROWS
+import com.saggitt.omega.PREFS_FORCE_ADAPTIVE
+import com.saggitt.omega.PREFS_FORCE_SHAPELESS
+import com.saggitt.omega.PREFS_GESTURE_ASSISTANT
+import com.saggitt.omega.PREFS_GESTURE_BACK
+import com.saggitt.omega.PREFS_GESTURE_DOUBLE_TAP
+import com.saggitt.omega.PREFS_GESTURE_HOME
+import com.saggitt.omega.PREFS_GESTURE_LONG_PRESS
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_DOWN
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
+import com.saggitt.omega.PREFS_HIDDEN_PREDICTION_SET
+import com.saggitt.omega.PREFS_HIDDEN_SET
+import com.saggitt.omega.PREFS_ICON_PACK
+import com.saggitt.omega.PREFS_ICON_SHAPE
+import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
+import com.saggitt.omega.PREFS_LANGUAGE
+import com.saggitt.omega.PREFS_LEGACY_TREATMENT
+import com.saggitt.omega.PREFS_LOW_PREFORMANCE
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT_FOLDER
+import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.PREFS_PROTECTED_SET
+import com.saggitt.omega.PREFS_RECENT_BACKUP
+import com.saggitt.omega.PREFS_RESTORE_SUCCESS
+import com.saggitt.omega.PREFS_ROWS
+import com.saggitt.omega.PREFS_SEARCH_BAR_RADIUS
+import com.saggitt.omega.PREFS_SEARCH_FUZZY
+import com.saggitt.omega.PREFS_SEARCH_GLOBAL
+import com.saggitt.omega.PREFS_SEARCH_HIDDEN_APPS
+import com.saggitt.omega.PREFS_SEARCH_PROVIDER
+import com.saggitt.omega.PREFS_SEARCH_SHOW_LENS_ICON
+import com.saggitt.omega.PREFS_SMARTSPACE_DATE
+import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
+import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.PREFS_STATUSBAR_HIDE
+import com.saggitt.omega.PREFS_THEME
+import com.saggitt.omega.PREFS_TIME_24H
+import com.saggitt.omega.PREFS_TORCH
+import com.saggitt.omega.PREFS_WHITE_TREATMENT
+import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
+import com.saggitt.omega.PREFS_WINDOWCORNER
+import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
+import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
+import com.saggitt.omega.PREF_PILL_QSB
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
@@ -60,6 +147,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
     }
 
+    // TODO add the rest of keys to @Constants
+    // TODO sort and filter the prefs we need
+    // TODO add iconId to the respective prefs
+    // TODO bring string names in line with pref names
     // DESKTOP
     private var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
@@ -68,90 +159,286 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val desktopGridSize by desktopGridSizeDelegate
-    val workspaceColumns = IdpIntPref("pref_${PREFS_COLUMNS}", { numColumns }, reloadGrid)
-    val workspaceRows = IdpIntPref("pref_${PREFS_ROWS}", { numRows }, reloadGrid)
-
-    val desktopIconScale by FloatPref(PREFS_DESKTOP_ICON_SCALE, 1f, reloadGrid)
-    val usePopupMenuView by BooleanPref(PREFS_DESKTOP_POPUP_MENU, true, doNothing)
-    var dashLineSize by FloatPref(PREFS_DASH_LINESIZE, 6f, doNothing)
-    var dashProviders = StringListPref(
-        PREFS_DASH_PROVIDERS,
-        listOf("17", "15", "4", "6", "8", "5"), doNothing
+    val workspaceColumns = IdpIntPref(
+        key = "pref_${PREFS_COLUMNS}",
+        titleId = R.string.grid_size_width,
+        selectDefaultValue = { numColumns },
+        onChange = reloadGrid
     )
-    val lockDesktop by BooleanPref(PREFS_DESKTOP_LOCK, false, reloadAll)
-    val hideStatusBar by BooleanPref(PREFS_STATUSBAR_HIDE, false, doNothing)
-    var allowEmptyScreens by BooleanPref(PREFS_EMPTY_SCREENS, false)
-    val hideAppLabels by BooleanPref(PREFS_DESKTOP_HIDE_LABEL, false, reloadApps)
-    val desktopTextScale by FloatPref(PREFS_DESKTOP_ICON_TEXT_SCALE, 1f, reloadApps)
-    val allowFullWidthWidgets by BooleanPref(PREFS_WIDGETS_FULL_WIDTH, false, restart)
+    val workspaceRows = IdpIntPref(
+        key = "pref_${PREFS_ROWS}",
+        titleId = R.string.grid_size_height,
+        selectDefaultValue = { numRows },
+        onChange = reloadGrid
+    )
+
+    val desktopIconScale by FloatPref(
+        key = PREFS_DESKTOP_ICON_SCALE,
+        titleId = R.string.title__desktop_icon_size,
+        defaultValue = 1f,
+        onChange = reloadGrid
+    )
+    val usePopupMenuView by BooleanPref(
+        key = PREFS_DESKTOP_POPUP_MENU,
+        titleId = R.string.title_desktop_icon_popup_menu,
+        defaultValue = true,
+        onChange = doNothing
+    )
+    var dashLineSize by FloatPref(
+        key = PREFS_DASH_LINESIZE,
+        titleId = R.string.dash_linesize,
+        defaultValue = 6f,
+        onChange = doNothing
+    )
+    var dashProviders = StringListPref(
+        prefKey = PREFS_DASH_PROVIDERS,
+        titleId = R.string.edit_dash,
+        summaryId = R.string.edit_dash_summary,
+        default = listOf("17", "15", "4", "6", "8", "5"),
+        onChange = doNothing
+    )
+    val lockDesktop by BooleanPref(
+        key = PREFS_DESKTOP_LOCK,
+        titleId = R.string.title_desktop_lock_desktop,
+        defaultValue = false,
+        onChange = reloadAll
+    )
+    val hideStatusBar by BooleanPref(
+        key = PREFS_STATUSBAR_HIDE,
+        titleId = R.string.title_desktop_hide_statusbar,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var allowEmptyScreens by BooleanPref(
+        key = PREFS_EMPTY_SCREENS,
+        titleId = R.string.title_desktop_keep_empty,
+        defaultValue = false
+    )
+    val hideAppLabels by BooleanPref(
+        key = PREFS_DESKTOP_HIDE_LABEL,
+        titleId = R.string.title__desktop_hide_icon_labels,
+        defaultValue = false,
+        onChange = reloadApps
+    )
+    val desktopTextScale by FloatPref(
+        key = PREFS_DESKTOP_ICON_TEXT_SCALE,
+        titleId = R.string.title_desktop_text_size,
+        defaultValue = 1f,
+        onChange = reloadApps
+    )
+    val allowFullWidthWidgets by BooleanPref(
+        key = PREFS_WIDGETS_FULL_WIDTH,
+        titleId = R.string.title_desktop_full_width_widgets,
+        summaryId = R.string.summary_full_width_widgets,
+        defaultValue = false,
+        onChange = restart
+    )
     private val homeMultilineLabel by BooleanPref(
-        PREFS_DESKTOP_ICON_LABEL_TWOLINES,
-        false,
-        reloadApps
+        key = PREFS_DESKTOP_ICON_LABEL_TWOLINES,
+        titleId = R.string.title__multiline_labels,
+        defaultValue = false,
+        onChange = reloadApps
     )
     val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
-    var folderRadius by DimensionPref(PREFS_FOLDER_RADIUS, -1f, recreate) // TODO add
+    var folderRadius by DimensionPref(
+        key = PREFS_FOLDER_RADIUS,
+        titleId = R.string.folder_radius,
+        defaultValue = -1f,
+        onChange = recreate
+    ) // TODO add
     val customFolderBackground by BooleanPref(
-        PREFS_FOLDER_BACKGROUND_CUSTOM,
-        false,
-        recreate
+        key = PREFS_FOLDER_BACKGROUND_CUSTOM,
+        titleId = R.string.folder_custom_background,
+        defaultValue = false,
+        onChange = recreate
     ) // TODO add
     val folderBackground by IntPref( // TODO add
-        PREFS_FOLDER_BACKGROUND,
-        Themes.getAttrColor(context, R.attr.folderFillColor),
-        restart
+        key = PREFS_FOLDER_BACKGROUND,
+        titleId = R.string.folder_background,
+        defaultValue = Themes.getAttrColor(context, R.attr.folderFillColor),
+        onChange = restart
     )
-    val folderColumns by FloatPref(PREFS_FOLDER_COLUMNS, 4f, reloadGrid) // TODO add
-    val folderRows by FloatPref(PREFS_FOLDER_ROWS, 4f, reloadGrid) // TODO add
+    val folderColumns by FloatPref(
+        key = PREFS_FOLDER_COLUMNS,
+        titleId = R.string.folder_columns,
+        defaultValue = 4f,
+        onChange = reloadGrid
+    ) // TODO add
+    val folderRows by FloatPref(
+        key = PREFS_FOLDER_ROWS,
+        titleId = R.string.folder_rows,
+        defaultValue = 4f,
+        onChange = reloadGrid
+    ) // TODO add
+
 
     // DOCK
-    var dockHide by BooleanPref(PREFS_DOCK_HIDE, false, restart)
-    val dockIconScale by FloatPref(PREFS_DOCK_ICON_SCALE, 1f, recreate)
-    var dockScale by FloatPref(PREFS_DOCK_SCALE, 1f, restart)
-    val dockBackground by BooleanPref(PREFS_DOCK_BACKGROUND, false, recreate)
-    val dockBackgroundColor by IntPref(PREFS_DOCK_BACKGROUND_COLOR, 0x101010, recreate)
-    var dockOpacity by AlphaPref(PREFS_DOCK_OPACITY, -1, recreate)
-    var dockSearchBar by BooleanPref("pref_dock_search", false, restart)
+    var dockHide by BooleanPref(
+        key = PREFS_DOCK_HIDE,
+        titleId = R.string.title__dock_hide,
+        defaultValue = false,
+        onChange = restart
+    )
+    val dockIconScale by FloatPref(
+        key = PREFS_DOCK_ICON_SCALE,
+        titleId = R.string.title__dock_icon_size,
+        defaultValue = 1f,
+        onChange = recreate
+    )
+    var dockScale by FloatPref(
+        key = PREFS_DOCK_SCALE,
+        titleId = R.string.title__dock_scale,
+        defaultValue = 1f,
+        onChange = restart
+    )
+    val dockBackground by BooleanPref(
+        key = PREFS_DOCK_BACKGROUND,
+        titleId = R.string.title_dock_fill,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val dockBackgroundColor by IntPref(
+        key = PREFS_DOCK_BACKGROUND_COLOR,
+        titleId = R.string.title_dock_background_color,
+        defaultValue = 0x101010,
+        onChange = recreate
+    )
+    var dockOpacity by AlphaPref(
+        key = PREFS_DOCK_OPACITY,
+        titleId = R.string.title_opacity,
+        defaultValue = -1,
+        onChange = recreate
+    )
+    var dockSearchBar by BooleanPref(
+        key = "pref_dock_search",
+        titleId = R.string.title__dock_search_bar,
+        summaryId = R.string.summary_dock_search,
+        defaultValue = false,
+        onChange = restart
+    )
     private val dockGridSizeDelegate = ResettableLazy {
-        GridSize(this, "numHotseatIcons", LauncherAppState.getIDP(context), reloadIcons)
+        GridSize(
+            prefs = this,
+            rowsKey = "numHotseatIcons",
+            targetObject = LauncherAppState.getIDP(context),
+            onChangeListener = reloadIcons
+        )
     }
     val dockGridSize by dockGridSizeDelegate
-    val numHotseatIcons = IdpIntPref("pref_numHotseatIcons", { numHotseatIcons }, reloadGrid)
+    val numHotseatIcons = IdpIntPref(
+        key = "pref_numHotseatIcons",
+        titleId = R.string.num_hotseat_icons_pref_title,
+        selectDefaultValue = { numHotseatIcons },
+        onChange = reloadGrid
+    )
+
 
     // DRAWER
-    val allAppsSearch by BooleanPref("pref_all_apps_search", true, recreate)
-    var allAppsGlobalSearch by BooleanPref("pref_all_apps_global_search", true, doNothing)
-    var sortMode by StringIntPref(PREFS_SORT, 0, recreate)
-    var hiddenAppSet by StringSetPref(PREFS_HIDDEN_SET, setOf(), reloadApps)
-    var hiddenPredictionAppSet by StringSetPref(PREFS_HIDDEN_PREDICTION_SET, setOf(), doNothing)
-    var protectedAppsSet by StringSetPref(PREFS_PROTECTED_SET, setOf(), reloadApps)
-    var enableProtectedApps by BooleanPref(PREFS_PROTECTED_APPS, false)
-    var allAppsIconScale by FloatPref(PREFS_DRAWER_ICON_SCALE, 1f, reloadApps)
-    val allAppsTextScale by FloatPref(PREFS_DRAWER_ICON_TEXT_SCALE, 1f)
-    val hideAllAppsAppLabels by BooleanPref(PREFS_DRAWER_HIDE_LABEL, false, reloadApps)
+    val allAppsSearch by BooleanPref(
+        key = "pref_all_apps_search",
+        titleId = R.string.title_all_apps_search,
+        summaryId = R.string.summary_all_apps_search,
+        defaultValue = true,
+        onChange = recreate
+    )
+    var sortMode by StringIntPref(
+        key = PREFS_SORT,
+        titleId = R.string.title__sort_mode,
+        defaultValue = 0,
+        onChange = recreate
+    )
+    var hiddenAppSet by StringSetPref(
+        key = PREFS_HIDDEN_SET,
+        titleId = R.string.title_search_hidden_apps,
+        summaryId = R.string.summary_all_apps_search,
+        defaultValue = setOf(),
+        onChange = reloadApps
+    )
+    var hiddenPredictionAppSet by StringSetPref(
+        key = PREFS_HIDDEN_PREDICTION_SET,
+        titleId = -1,
+        defaultValue = setOf(),
+        onChange = doNothing
+    )
+    var protectedAppsSet by StringSetPref(
+        key = PREFS_PROTECTED_SET,
+        titleId = -1,
+        defaultValue = setOf(),
+        onChange = reloadApps
+    )
+    var enableProtectedApps by BooleanPref(
+        key = PREFS_PROTECTED_APPS,
+        titleId = R.string.enable_protected_apps,
+        defaultValue = false
+    )
+    var allAppsIconScale by FloatPref(
+        key = PREFS_DRAWER_ICON_SCALE,
+        titleId = R.string.title__drawer_icon_size,
+        defaultValue = 1f,
+        onChange = reloadApps
+    )
+    val allAppsTextScale by FloatPref(
+        key = PREFS_DRAWER_ICON_TEXT_SCALE,
+        titleId = R.string.title_desktop_text_size,
+        defaultValue = 1f
+    )
+    val hideAllAppsAppLabels by BooleanPref(
+        key = PREFS_DRAWER_HIDE_LABEL,
+        titleId = R.string.title__drawer_hide_icon_labels,
+        defaultValue = false,
+        onChange = reloadApps
+    )
     private val drawerMultilineLabel by BooleanPref(
-        PREFS_DRAWER_ICON_LABEL_TWOLINES,
-        false,
-        reloadApps
+        key = PREFS_DRAWER_ICON_LABEL_TWOLINES,
+        titleId = R.string.title__multiline_labels,
+        defaultValue = false,
+        onChange = reloadApps
     )
     val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
-    val allAppsCellHeightMultiplier by FloatPref(PREFS_DRAWER_HEIGHT_MULTIPLIER, 1F, restart)
-    val separateWorkApps by BooleanPref(PREFS_WORK_PROFILE_SEPARATED, false, recreate)
+    val allAppsCellHeightMultiplier by FloatPref(
+        key = PREFS_DRAWER_HEIGHT_MULTIPLIER,
+        titleId = R.string.title_drawer_row_height,
+        defaultValue = 1F,
+        onChange = restart
+    )
+    val separateWorkApps by BooleanPref(
+        key = PREFS_WORK_PROFILE_SEPARATED,
+        titleId = R.string.title_separate_work_apps,
+        defaultValue = false,
+        onChange = recreate
+    )
     val appGroupsManager by lazy { AppGroupsManager(this) }
     val drawerTabs get() = appGroupsManager.drawerTabs
     val currentTabsModel
         get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
 
-    val saveScrollPosition by BooleanPref(PREFS_KEEP_SCROLL_STATE, false, doNothing)
-
-    val drawerLayout by StringIntPref("pref_drawer_layout", 0, recreate)
+    val saveScrollPosition by BooleanPref(
+        key = PREFS_KEEP_SCROLL_STATE,
+        titleId = R.string.title_all_apps_keep_scroll_state,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    val drawerLayout by StringIntPref(
+        key = "pref_drawer_layout",
+        titleId = R.string.title_drawer_layout,
+        defaultValue = 0,
+        onChange = recreate
+    )
     private val drawerGridSizeDelegate = ResettableLazy {
-        GridSize(this, "numAllAppsColumns", LauncherAppState.getIDP(context), reloadIcons)
+        GridSize(
+            prefs = this,
+            rowsKey = "numAllAppsColumns",
+            targetObject = LauncherAppState.getIDP(context),
+            onChangeListener = reloadIcons
+        )
     }
     val drawerGridSize by drawerGridSizeDelegate
-
-    val numAllAppsColumns = IdpIntPref("pref_numAllAppsColumns", { numAllAppsColumns }, reloadGrid)
-
+    val numAllAppsColumns = IdpIntPref(
+        key = "pref_numAllAppsColumns",
+        titleId = R.string.title__drawer_columns,
+        selectDefaultValue = { numAllAppsColumns },
+        onChange = reloadGrid
+    )
     val customAppName =
         object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
             override fun flattenKey(key: ComponentKey) = key.toString()
@@ -160,125 +447,401 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             override fun unflattenValue(value: String) = value
         }
 
+
     // THEME
     var launcherTheme by StringIntPref(
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref(PREFS_ACCENT, (0xffff1744).toInt(), doNothing)
-    var enableBlur by BooleanPref(PREFS_BLUR, false, updateBlur)
-    var blurRadius by IntPref(PREFS_BLUR_RADIUS, 75, updateBlur)
-    var customWindowCorner by BooleanPref(PREFS_WINDOWCORNER, false, doNothing)
-    var windowCornerRadius by FloatPref(PREFS_WINDOWCORNER_RADIUS, 8f, updateBlur)
-    var iconPackPackage by StringPref(PREFS_ICON_PACK, "", reloadIcons)
-
+    val accentColor by IntPref(
+        key = PREFS_ACCENT,
+        titleId = R.string.title__theme_accent_color,
+        defaultValue = (0xffff1744).toInt(),
+        onChange = doNothing
+    )
+    var enableBlur by BooleanPref(
+        key = PREFS_BLUR,
+        titleId = R.string.title__theme_blur,
+        summaryId = R.string.summary__theme_blur,
+        defaultValue = false,
+        onChange = updateBlur
+    )
+    var blurRadius by IntPref(
+        key = PREFS_BLUR_RADIUS,
+        titleId = R.string.title__theme_blur_radius,
+        defaultValue = 75,
+        onChange = updateBlur
+    )
+    var customWindowCorner by BooleanPref(
+        key = PREFS_WINDOWCORNER,
+        titleId = R.string.title_override_corner_radius,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var windowCornerRadius by FloatPref(
+        key = PREFS_WINDOWCORNER_RADIUS,
+        titleId = R.string.title_override_corner_radius_value,
+        defaultValue = 8f,
+        onChange = updateBlur
+    )
+    var iconPackPackage by StringPref(
+        key = PREFS_ICON_PACK,
+        titleId = R.string.title_theme_icon_packs,
+        defaultValue = "",
+        onChange = reloadIcons
+    )
     var iconShape by StringBasedPref(
-        PREFS_ICON_SHAPE, IconShape.Circle, onIconShapeChanged,
-        {
+        key = PREFS_ICON_SHAPE,
+        titleId = R.string.title__theme_icon_shape,
+        defaultValue = IconShape.Circle,
+        onChange = onIconShapeChanged,
+        fromString = {
             IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
-        }, IconShape::toString
-    ) { /* no dispose */ }
-    var coloredBackground by BooleanPref(PREFS_COLORED_BACKGROUND, false, doNothing)
-    var enableWhiteOnlyTreatment by BooleanPref(PREFS_WHITE_TREATMENT, false, doNothing)
-    var enableLegacyTreatment by BooleanPref(PREFS_LEGACY_TREATMENT, false, doNothing)
-    var adaptifyIconPacks by BooleanPref(PREFS_FORCE_ADAPTIVE, false, doNothing)
-    var forceShapeless by BooleanPref(PREFS_FORCE_SHAPELESS, false, doNothing)
+        },
+        toString = IconShape::toString,
+        dispose = { /* no dispose */ }
+    )
+    var coloredBackground by BooleanPref(
+        key = PREFS_COLORED_BACKGROUND,
+        titleId = R.string.title_colored_backgrounds,
+        summaryId = R.string.summary_colored_backgrounds,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var enableWhiteOnlyTreatment by BooleanPref(
+        key = PREFS_WHITE_TREATMENT,
+        titleId = R.string.title_white_only_treatment,
+        summaryId = R.string.summary_white_only_treatment,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var enableLegacyTreatment by BooleanPref(
+        key = PREFS_LEGACY_TREATMENT,
+        titleId = R.string.title_legacy_treatment,
+        summaryId = R.string.summary_legacy_treatment,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var adaptifyIconPacks by BooleanPref(
+        key = PREFS_FORCE_ADAPTIVE,
+        titleId = R.string.title_adaptify_pack,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    var forceShapeless by BooleanPref(
+        key = PREFS_FORCE_SHAPELESS,
+        titleId = R.string.title_force_shapeless,
+        summaryId = R.string.summary_force_shapeless,
+        defaultValue = false,
+        onChange = doNothing
+    )
+
 
     // SEARCH & FOLDER
-    var searchBarRadius by DimensionPref("pref_searchbar_radius", -1f, recreate)
-    var showLensIcon by BooleanPref("show_lens_icon", true, recreate)
-    var searchProvider by StringPref(PREFS_SEARCH_PROVIDER, "") {
-        SearchProviderController.getInstance(context).onSearchProviderChanged()
-    }
-    val searchHiddenApps by BooleanPref("pref_search_hidden_apps", false)
-    val fuzzySearch by BooleanPref("pref_fuzzy_search", true)
+    var searchBarRadius by DimensionPref(
+        key = PREFS_SEARCH_BAR_RADIUS,
+        titleId = R.string.title__search_bar_radius,
+        defaultValue = -1f,
+        onChange = recreate
+    )
+    var showLensIcon by BooleanPref(
+        key = PREFS_SEARCH_SHOW_LENS_ICON,
+        titleId = R.string.title_search_action_lens,
+        summaryId = R.string.summary_search_show_lens_summary,
+        defaultValue = true,
+        onChange = recreate
+    )
+    var searchProvider by StringPref(
+        key = PREFS_SEARCH_PROVIDER,
+        titleId = R.string.title_search_provider,
+        defaultValue = "",
+        onChange = { SearchProviderController.getInstance(context).onSearchProviderChanged() }
+    )
+    val searchHiddenApps by BooleanPref(
+        key = PREFS_SEARCH_HIDDEN_APPS,
+        titleId = R.string.title_search_hidden_apps,
+        summaryId = R.string.summary_search_hidden_apps,
+        defaultValue = false
+    )
+    val fuzzySearch by BooleanPref(
+        key = PREFS_SEARCH_FUZZY,
+        titleId = R.string.title_fuzzy_search,
+        summaryId = R.string.summary_fuzzy_search,
+        defaultValue = true
+    )
+    var allAppsGlobalSearch by BooleanPref(
+        key = PREFS_SEARCH_GLOBAL,
+        titleId = R.string.title_all_apps_google_search,
+        summaryId = R.string.summary_all_apps_google_search,
+        defaultValue = true,
+        onChange = doNothing
+    )
+
 
     // GESTURES & NOTIFICATION
-    val notificationCount: Boolean by BooleanPref(PREFS_NOTIFICATION_COUNT, false, recreate)
+    val notificationCount: Boolean by BooleanPref(
+        key = PREFS_NOTIFICATION_COUNT,
+        titleId = R.string.title__notification_count,
+        defaultValue = false,
+        onChange = recreate
+    )
     val notificationCustomColor: Boolean by BooleanPref(
-        PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
-        false,
-        recreate
+        key = PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
+        titleId = R.string.notification_custom_color,
+        defaultValue = false,
+        onChange = recreate
     )
     val notificationBackground by IntPref(
-        PREFS_NOTIFICATION_BACKGROUND,
-        R.color.notification_background,
-        recreate
+        key = PREFS_NOTIFICATION_BACKGROUND,
+        titleId = R.string.title__notification_background,
+        defaultValue = R.color.notification_background,
+        onChange = recreate
     )
-    val folderBadgeCount by BooleanPref(PREFS_NOTIFICATION_COUNT_FOLDER, true, recreate)
+    val folderBadgeCount by BooleanPref(
+        key = PREFS_NOTIFICATION_COUNT_FOLDER,
+        titleId = R.string.title__folder_badge_count,
+        defaultValue = true,
+        onChange = recreate
+    )
+
 
     /*
     * Preferences not used. Added to register the change and restart only
     */
-    var doubleTapGesture by StringPref(PREFS_GESTURE_DOUBLE_TAP, "", restart)
-    var longPressGesture by StringPref(PREFS_GESTURE_LONG_PRESS, "", restart)
-    var homePressGesture by StringPref(PREFS_GESTURE_HOME, "", restart)
-    var backPressGesture by StringPref(PREFS_GESTURE_BACK, "", restart)
-    var swipeDownGesture by StringPref(PREFS_GESTURE_SWIPE_DOWN, "", restart)
-    var swipeUpGesture by StringPref(PREFS_GESTURE_SWIPE_UP, "", restart)
-    var dockSwipeUpGesture by StringPref(PREFS_GESTURE_SWIPE_UP_DOCK, "", restart)
-    var launchAssistantGesture by StringPref(PREFS_GESTURE_ASSISTANT, "", restart)
+    var doubleTapGesture by StringPref(
+        key = PREFS_GESTURE_DOUBLE_TAP,
+        titleId = R.string.gesture_double_tap,
+        defaultValue = "",
+        onChange = restart
+    )
+    var longPressGesture by StringPref(
+        key = PREFS_GESTURE_LONG_PRESS,
+        titleId = R.string.gesture_long_press,
+        defaultValue = "",
+        onChange = restart
+    )
+    var homePressGesture by StringPref(
+        key = PREFS_GESTURE_HOME,
+        titleId = R.string.gesture_press_home,
+        defaultValue = "",
+        onChange = restart
+    )
+    var backPressGesture by StringPref(
+        key = PREFS_GESTURE_BACK,
+        titleId = R.string.gesture_press_back,
+        defaultValue = "",
+        onChange = restart
+    )
+    var swipeDownGesture by StringPref(
+        key = PREFS_GESTURE_SWIPE_DOWN,
+        titleId = R.string.title__gesture_swipe_down,
+        defaultValue = "",
+        onChange = restart
+    )
+    var swipeUpGesture by StringPref(
+        key = PREFS_GESTURE_SWIPE_UP,
+        titleId = R.string.gesture_swipe_up,
+        defaultValue = "",
+        onChange = restart
+    )
+    var dockSwipeUpGesture by StringPref(
+        key = PREFS_GESTURE_SWIPE_UP_DOCK,
+        titleId = R.string.gesture_dock_swipe_up,
+        defaultValue = "",
+        onChange = restart
+    )
+    var launchAssistantGesture by StringPref(
+        key = PREFS_GESTURE_ASSISTANT,
+        titleId = R.string.gesture_launch_assistant,
+        defaultValue = "",
+        onChange = restart
+    )
+
 
     // ADVANCED
-    var language by StringPref(PREFS_LANGUAGE, "", recreate)
-    var firstRun by BooleanPref(PREFS_FIRST_RUN, true)
-    var restoreSuccess by BooleanPref(PREFS_RESTORE_SUCCESS, false)
+    var language by StringPref(
+        key = PREFS_LANGUAGE,
+        titleId = R.string.title__advanced_language,
+        defaultValue = "",
+        onChange = recreate
+    )
+    var firstRun by BooleanPref(
+        key = PREFS_FIRST_RUN,
+        titleId = -1,
+        defaultValue = true
+    )
+    var restoreSuccess by BooleanPref(
+        key = PREFS_RESTORE_SUCCESS,
+        titleId = R.string.restore_success,
+        defaultValue = false
+    )
     val recentBackups = object : MutableListPref<Uri>(
-        Utilities.getDevicePrefs(context), PREFS_RECENT_BACKUP
+        prefs = Utilities.getDevicePrefs(context),
+        prefKey = PREFS_RECENT_BACKUP,
+        titleId = -1,
     ) {
         override fun unflattenValue(value: String) = Uri.parse(value)
     }
 
+
     // DEVELOPER PREFERENCES
-    var developerOptionsEnabled by BooleanPref(PREFS_DEV_PREFS_SHOW, false, recreate)
-    var desktopModeEnabled by BooleanPref(PREFS_DESKTOP_MODE, true, recreate)
-    private val lowPerformanceMode by BooleanPref(PREFS_LOW_PREFORMANCE, false, restart) // TODO Add
+    var developerOptionsEnabled by BooleanPref(
+        key = PREFS_DEV_PREFS_SHOW,
+        titleId = R.string.title__dev_show_Dev,
+        defaultValue = false,
+        onChange = recreate
+    )
+    var desktopModeEnabled by BooleanPref(
+        key = PREFS_DESKTOP_MODE,
+        titleId = R.string.pref_desktop_mode,
+        summaryId = R.string.pref_desktop_mode_summary,
+        defaultValue = true,
+        onChange = recreate
+    )
+    private val lowPerformanceMode by BooleanPref(
+        key = PREFS_LOW_PREFORMANCE,
+        titleId = -1,
+        defaultValue = false,
+        onChange = restart
+    ) // TODO Add
     val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref(PREFS_DEBUG_MODE, false, doNothing)
+    val showDebugInfo by BooleanPref(
+        key = PREFS_DEBUG_MODE,
+        titleId = R.string.title__dev_show_debug_info,
+        defaultValue = false,
+        onChange = doNothing
+    )
+
 
     // FEED
-    var feedProvider by StringPref(PREFS_FEED_PROVIDER, "", restart)
-    val ignoreFeedWhitelist by BooleanPref(PREFS_FEED_PROVIDER_ALLOW_ALL, true, restart)
+    var feedProvider by StringPref(
+        key = PREFS_FEED_PROVIDER,
+        titleId = R.string.title_feed_provider,
+        defaultValue = "",
+        onChange = restart
+    )
+    val ignoreFeedWhitelist by BooleanPref(
+        key = PREFS_FEED_PROVIDER_ALLOW_ALL,
+        titleId = -1,
+        defaultValue = true,
+        onChange = restart
+    )
 
     // SMARTSPACE
-    var usePillQsb by BooleanPref(PREF_PILL_QSB, false, recreate)
-    val enableSmartspace by BooleanPref(PREFS_SMARTSPACE_ENABLE, false, recreate)
-    val smartspaceTime by BooleanPref(PREFS_SMARTSPACE_TIME, false, recreate)
-    val smartspaceDate by BooleanPref(PREFS_SMARTSPACE_DATE, true, recreate)
-    val smartspaceTimeAbove by BooleanPref(PREFS_SMARTSPACE_TIME_ABOVE, false, recreate)
-    val smartspaceTime24H by BooleanPref(PREFS_TIME_24H, false, recreate)
+    var usePillQsb by BooleanPref(
+        key = PREF_PILL_QSB,
+        titleId = R.string.title_use_pill_qsb,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val enableSmartspace by BooleanPref(
+        key = PREFS_SMARTSPACE_ENABLE,
+        titleId = R.string.title_smartspace,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val smartspaceTime by BooleanPref(
+        key = PREFS_SMARTSPACE_TIME,
+        titleId = R.string.title_smartspace_time,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val smartspaceDate by BooleanPref(
+        key = PREFS_SMARTSPACE_DATE,
+        titleId = R.string.title_smartspace_date,
+        defaultValue = true,
+        onChange = recreate
+    )
+    val smartspaceTimeAbove by BooleanPref(
+        key = PREFS_SMARTSPACE_TIME_ABOVE,
+        titleId = R.string.title_smartspace_time_above,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val smartspaceTime24H by BooleanPref(
+        key = PREFS_TIME_24H,
+        titleId = R.string.title_smartspace_time_24_h,
+        defaultValue = false,
+        onChange = recreate
+    )
     val weatherUnit by StringBasedPref(
-        "pref_weather_units", Temperature.Unit.Celsius, ::updateSmartspaceProvider,
-        Temperature.Companion::unitFromString, Temperature.Companion::unitToString
-    ) { }
-    var smartspaceWidgetId by IntPref("smartspace_widget_id", -1, doNothing)
-    var weatherIconPack by StringPref("pref_weatherIcons", "", doNothing)
+        key = "pref_weather_units",
+        titleId = R.string.title_smartspace_weather_units,
+        defaultValue = Temperature.Unit.Celsius,
+        onChange = ::updateSmartspaceProvider,
+        fromString = Temperature.Companion::unitFromString,
+        toString = Temperature.Companion::unitToString,
+        dispose = { }
+    )
+    var smartspaceWidgetId by IntPref(
+        key = "smartspace_widget_id",
+        titleId = -1,
+        defaultValue = -1,
+        onChange = doNothing
+    )
+    var weatherIconPack by StringPref(
+        key = "pref_weatherIcons",
+        titleId = -1,
+        defaultValue = "",
+        onChange = doNothing
+    )
     var weatherProvider by StringPref(
-        "pref_smartspace_widget_provider",
-        SmartSpaceDataWidget::class.java.name, ::updateSmartspaceProvider
+        key = "pref_smartspace_widget_provider",
+        titleId = R.string.title_smartspace_widget_provider,
+        defaultValue = SmartSpaceDataWidget::class.java.name,
+        onChange = ::updateSmartspaceProvider
     )
     var eventProvider by StringPref(
-        "pref_smartspace_event_provider",
-        SmartSpaceDataWidget::class.java.name, ::updateSmartspaceProvider
+        key = "pref_smartspace_event_provider",
+        titleId = -1,
+        defaultValue = SmartSpaceDataWidget::class.java.name,
+        onChange = ::updateSmartspaceProvider
     )
     var eventProviders = StringListPref(
-        "pref_smartspace_event_providers", listOf(
+        prefKey = "pref_smartspace_event_providers",
+        titleId = R.string.title_smartspace_event_providers,
+        default = listOf(
             eventProvider,
             NotificationUnreadProvider::class.java.name,
             NowPlayingProvider::class.java.name,
             BatteryStatusProvider::class.java.name,
             PersonalityProvider::class.java.name
         ),
-        ::updateSmartspaceProvider
+        onChange = ::updateSmartspaceProvider
     )
 
-    var torchState by BooleanPref(PREFS_TORCH, false, doNothing)
+    var torchState by BooleanPref(
+        key = PREFS_TORCH,
+        titleId = R.string.dash_torch,
+        defaultValue = false,
+        onChange = doNothing
+    )
 
     // POPUP DIALOG PREFERENCES
-    val desktopPopupEdit by BooleanPref(PREFS_DESKTOP_POPUP_EDIT, true, doNothing)
-    val desktopPopupRemove by BooleanPref(PREFS_DESKTOP_POPUP_REMOVE, false, doNothing)
-    val drawerPopupEdit by BooleanPref(PREFS_DRAWER_POPUP_EDIT, true, doNothing)
-    val drawerPopupUninstall by BooleanPref(PREFS_DRAWER_POPUP_UNINSTALL, false, doNothing)
+    val desktopPopupEdit by BooleanPref(
+        key = PREFS_DESKTOP_POPUP_EDIT,
+        titleId = R.string.action_preferences,
+        defaultValue = true,
+        onChange = doNothing
+    )
+    val desktopPopupRemove by BooleanPref(
+        key = PREFS_DESKTOP_POPUP_REMOVE,
+        titleId = R.string.remove_drop_target_label,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    val drawerPopupEdit by BooleanPref(
+        key = PREFS_DRAWER_POPUP_EDIT,
+        titleId = R.string.action_preferences,
+        defaultValue = true,
+        onChange = doNothing
+    )
+    val drawerPopupUninstall by BooleanPref(
+        key = PREFS_DRAWER_POPUP_UNINSTALL,
+        titleId = R.string.uninstall_drop_target_label,
+        defaultValue = false,
+        onChange = doNothing
+    )
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         onChangeMap[key]?.invoke()

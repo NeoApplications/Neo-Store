@@ -24,12 +24,24 @@ import com.saggitt.omega.util.OmegaSingletonHolder
 import com.saggitt.omega.util.omegaPrefs
 
 class CustomPermissionManager private constructor(private val context: Context) {
-    private var grantedPerms by context.omegaPrefs.StringSetPref("pref_grantedCustomPerms", emptySet())
-    private var deniedPerms by context.omegaPrefs.StringSetPref("pref_deniedCustomPerms", emptySet())
+    private var grantedPerms by context.omegaPrefs.StringSetPref(
+        key = "pref_grantedCustomPerms",
+        titleId = -1,
+        defaultValue = emptySet()
+    )
+    private var deniedPerms by context.omegaPrefs.StringSetPref(
+        key = "pref_deniedCustomPerms",
+        titleId = -1,
+        defaultValue = emptySet()
+    )
 
     fun checkPermission(permission: String) = grantedPerms.contains(permission)
 
-    fun checkOrRequestPermission(permission: String, @StringRes explanation: Int?, callback: (allowed: Boolean) -> Unit) {
+    fun checkOrRequestPermission(
+        permission: String,
+        @StringRes explanation: Int?,
+        callback: (allowed: Boolean) -> Unit
+    ) {
         if (!DEBUG_PROMPT_ALWAYS) {
             if (deniedPerms.contains(permission)) {
                 callback(false)
@@ -41,16 +53,16 @@ class CustomPermissionManager private constructor(private val context: Context) 
         }
         val uiValues = MAP[permission]!!
         CustomPermissionRequestDialog
-                .create(context, uiValues.first, uiValues.second, explanation)
-                .onResult { allowed ->
-                    if (allowed) {
-                        grantedPerms = grantedPerms + permission
-                    } else {
-                        deniedPerms = deniedPerms + permission
-                    }
+            .create(context, uiValues.first, uiValues.second, explanation)
+            .onResult { allowed ->
+                if (allowed) {
+                    grantedPerms = grantedPerms + permission
+                } else {
+                    deniedPerms = deniedPerms + permission
                 }
-                .onResult(callback)
-                .show()
+            }
+            .onResult(callback)
+            .show()
     }
 
     // TODO: add ui to allow resetting permissions
@@ -66,11 +78,12 @@ class CustomPermissionManager private constructor(private val context: Context) 
         const val PERMISSION_IPLOCATE = "PERMISSION_IPLOCATE"
 
         private val MAP = mapOf(
-                PERMISSION_IPLOCATE to Pair(R.string.permission_iplocate, R.drawable.ic_location)
+            PERMISSION_IPLOCATE to Pair(R.string.permission_iplocate, R.drawable.ic_location)
         )
 
         private const val DEBUG_PROMPT_ALWAYS = false
     }
 }
 
-fun Context.checkCustomPermission(permission: String) = CustomPermissionManager.getInstance(this).checkPermission(permission)
+fun Context.checkCustomPermission(permission: String) =
+    CustomPermissionManager.getInstance(this).checkPermission(permission)

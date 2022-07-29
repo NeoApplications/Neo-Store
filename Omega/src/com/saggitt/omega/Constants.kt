@@ -58,6 +58,11 @@ const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
 
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
+const val PREFS_SEARCH_SHOW_LENS_ICON = "show_lens_icon"
+const val PREFS_SEARCH_BAR_RADIUS = "pref_searchbar_radius"
+const val PREFS_SEARCH_HIDDEN_APPS = "pref_search_hidden_apps"
+const val PREFS_SEARCH_FUZZY = "pref_fuzzy_search"
+const val PREFS_SEARCH_GLOBAL = "pref_all_apps_global_search"
 
 // GESTURES PREFS
 const val PREFS_NOTIFICATION_COUNT = "pref_notification_count"

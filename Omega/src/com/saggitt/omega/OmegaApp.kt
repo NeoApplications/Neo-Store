@@ -85,7 +85,11 @@ class OmegaApp : Application() {
         if (dbFile.exists()) return
         val prefs = Utilities.getOmegaPrefs(this)
         val dbJournalFile = getJournalFile(dbFile)
-        val oldDbSlot = prefs.StringPref("pref_currentDbSlot", "a").onGetValue()
+        val oldDbSlot = prefs.StringPref(
+            key = "pref_currentDbSlot",
+            titleId = -1,
+            defaultValue = "a"
+        ).onGetValue()
         val oldDbName = if (oldDbSlot == "a") "launcher.db" else "launcher.db_b"
         val oldDbFile = getDatabasePath(oldDbName)
         val oldDbJournalFile = getJournalFile(oldDbFile)
@@ -108,15 +112,15 @@ class OmegaApp : Application() {
     }
 
     private fun getJournalFile(file: File): File =
-            File(file.parentFile, "${file.name}-journal")
+        File(file.parentFile, "${file.name}-journal")
 
     fun performGlobalAction(action: Int): Boolean {
         return if (accessibilityService != null) {
             accessibilityService!!.performGlobalAction(action)
         } else {
             startActivity(
-                    Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             false
         }

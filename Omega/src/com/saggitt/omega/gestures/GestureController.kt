@@ -113,12 +113,13 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
 
     fun createHandlerPref(key: String, defaultValue: GestureHandler = blankGestureHandler) =
         prefs.StringBasedPref(
-            key,
-            defaultValue,
-            prefs.doNothing,
-            ::createGestureHandler,
-            GestureHandler::toString,
-            GestureHandler::onDestroy
+            key = key,
+            defaultValue = defaultValue,
+            titleId = -1,
+            onChange = prefs.doNothing,
+            fromString = ::createGestureHandler,
+            toString = GestureHandler::toString,
+            dispose = GestureHandler::onDestroy
         )
 
     private fun createGestureHandler(jsonString: String) =

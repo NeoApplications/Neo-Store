@@ -18,12 +18,24 @@
 
 package com.saggitt.omega.groups
 
+import com.android.launcher3.R
 import com.saggitt.omega.preferences.OmegaPreferences
 
 class AppGroupsManager(val prefs: OmegaPreferences) {
 
-    var categorizationEnabled by prefs.BooleanPref("pref_apps_categorization_enabled", false, ::onPrefsChanged)
-    var categorizationType by prefs.EnumPref("pref_apps_categorization_type", CategorizationType.Tabs, ::onPrefsChanged)
+    var categorizationEnabled by prefs.BooleanPref(
+        key = "pref_apps_categorization_enabled",
+        titleId = R.string.title_app_categorization_enable,
+        summaryId = R.string.summary_app_categorization_enable,
+        defaultValue = false,
+        onChange = ::onPrefsChanged
+    )
+    var categorizationType by prefs.EnumPref(
+        key = "pref_apps_categorization_type",
+        titleId = R.string.pref_appcategorization_style_text,
+        defaultValue = CategorizationType.Tabs,
+        onChange = ::onPrefsChanged
+    )
 
     val drawerTabs by lazy { CustomTabs(this) }
     val flowerpotTabs by lazy { FlowerpotTabs(this) }
