@@ -26,4 +26,27 @@
     <string name="application_not_found">Det gick inte att hitta den appen</string>
     <string name="changes">Ändringar</string>
     <string name="checking_repository">Kontrollerar arkivet…</string>
+    <string name="could_not_validate_FORMAT">Kunde inte validera %s</string>
+    <string name="credits">Medverkare</string>
+    <string name="dark">Mörk</string>
+    <string name="delete">Radera</string>
+    <string name="delete_repository_DESC">Radera databasen\?</string>
+    <string name="description">Beskrivning</string>
+    <string name="details">Detaljer</string>
+    <string name="donate">Donera</string>
+    <string name="downloaded_FORMAT">Laddade ner %s</string>
+    <string name="downloading">Laddar ner</string>
+    <string name="downloading_FORMAT">Laddar ner %s…</string>
+    <string name="edit_repository">Redigera repo</string>
+    <string name="file_format_error_DESC">Felaktigt filformat.</string>
+    <string name="fingerprint">Fingeravtryck</string>
+    <string name="has_advertising">Innehåller reklam</string>
+    <string name="has_non_free_dependencies">Har kostnadsbelagda beroenden</string>
+    <string name="has_security_vulnerabilities">Innehåller säkerhetsproblem</string>
+    <string name="http_error_DESC">Felaktigt svar från servern</string>
+    <string name="http_proxy">HTTP proxy</string>
+    <string name="ignore_all_updates">Ignorera nya versioner</string>
+    <string name="ignore_this_update">Ignorera denna versionen</string>
+    <string name="incompatible_api_DESC_FORMAT">Din %1$s (API version %2$d) saknar stöd. %3$s</string>
+    <string name="incompatible_api_max_DESC_FORMAT">Högsta tillåtna API version är %d.</string>
 </resources>
