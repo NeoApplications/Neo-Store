@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.*
 
-val vCompose = "1.2.0-rc03"
+val vCompose = "1.2.0"
 val vComposeCompiler = "1.2.0"
 val vAccompanist = "0.24.13-rc"
 val vRoom = "2.5.0-alpha02"
