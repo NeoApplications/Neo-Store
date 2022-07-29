@@ -6,13 +6,13 @@
 [![GitHub License](https://img.shields.io/github/license/NeoApplications/Neo-Store)](https://github.com/NeoApplications/Neo-Store/blob/master/COPYING)
 [![GitHub All Releases](https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg)](https://github.com/NeoApplications/Neo-Store/releases/)
 [![GitHub release](https://img.shields.io/github/v/release/NeoApplications/Neo-Store?display_name=tag)](https://github.com/NeoApplications/Neo-Store/releases/latest)
-[![Small translation badge](https://hosted.weblate.org/widgets/neo-store/-/strings/svg-badge.svg)](https://hosted.weblate.org/engage/neo-store/?utm_source=widget)
+[![Small translation badge](https://hosted.weblate.org/widgets/neo-store/-/svg-badge.svg)](https://hosted.weblate.org/engage/neo-store/?utm_source=widget)
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyDroid" width="38%" align="center">](https://android.izzysoft.de/repo/apk/com.machiav3lli.fdroid)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" width="38%" align="center">](https://f-droid.org/packages/com.machiav3lli.fdroid)
 [<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Join Telegram Channel" width="13%" align="center">](https://t.me/neo_android_store)
 
-![](neo_banner.png)
+![Neo Applications Banner](neo_banner.png)
 
 ## :book: Features
 
@@ -33,6 +33,10 @@
 
 | <img title="" src="metadata/en-US/images/phoneScreenshots/app.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/latest.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
 |:-----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:| -------------------------------------------------------------------------------------------------------:|
+
+## :speech_balloon: Community
+
+You can join either our [Telegram](https://t.me/neo_android_store) or [Matrix](https://matrix.to/#/#neo-store:matrix.org) groups to make suggestions, ask questions, receive news, or just chat.
 
 ## :building_construction: Building from source
 
