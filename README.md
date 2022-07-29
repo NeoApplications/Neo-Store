@@ -8,7 +8,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/NeoApplications/Neo-Launcher?display_name=tag)](https://github.com/NeoApplications/Neo-Launcher/releases/latest)
 [![Small translation badge](https://hosted.weblate.org/widgets/omegalauncher/-/omegalauncher/svg-badge.svg)](https://hosted.weblate.org/engage/omegalauncher/?utm_source=widget)
 
-![](neo_banner.png)
+![Neo Applications Banner](neo_banner.png)
 
 ## *Installation & Download*
 
@@ -18,11 +18,11 @@ Our builds are available on:
 
 - **F-Droid**: On **[IzzyOnDroid repo](https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A)** or **[our own repo (only for test)](https://raw.githubusercontent.com/nonaybay/newomega/master/fdroid/repo)**.
 
-- **Telegram**: [Community group](https://t.me/neo_launcher).
+- **Telegram**: [Neo Applications channel](https://t.me/neo_applications).
 
 ## *Community*
 
-You can join [our Telegram group](https://t.me/neo_launcher) to make suggestions, ask questions, receive news and chat.
+You can join either our [Telegram](https://t.me/neo_launcher) or [Matrix](https://matrix.to/#/#neo-launcher:matrix.org) groups to make suggestions, ask questions, receive news, or just chat.
 
 ## *App features:*
 
