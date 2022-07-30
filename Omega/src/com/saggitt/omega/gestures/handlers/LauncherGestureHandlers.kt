@@ -313,7 +313,7 @@ class OpenOverviewGestureHandler(context: Context, config: JSONObject?) :
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         Log.d("OpenOverviewGestureHandler", "onGestureTrigger from $view")
-        if (context.omegaPrefs.desktopUsePopupMenuView) {
+        if (context.omegaPrefs.desktopUsePopupMenuView.onGetValue()) {
             OptionsPopupView.showDefaultOptions(
                 controller.launcher,
                 controller.touchDownPoint.x, controller.touchDownPoint.y

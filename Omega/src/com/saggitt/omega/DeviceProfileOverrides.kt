@@ -38,12 +38,12 @@ class DeviceProfileOverrides(context: Context) {
             numRows = prefs.desktopRows.get(defaultGrid),
             numColumns = prefs.desktopColumns.get(defaultGrid),
             numAllAppsColumns = prefs.numAllAppsColumns.get(defaultGrid),
-            numFolderRows = prefs.desktopFolderRows.toInt(),
-            numFolderColumns = prefs.desktopFolderColumns.toInt(),
+            numFolderRows = prefs.desktopFolderRows.onGetValue().toInt(),
+            numFolderColumns = prefs.desktopFolderColumns.onGetValue().toInt(),
 
-            iconSizeFactor = prefs.desktopIconScale,
-            enableIconText = !prefs.desktopHideAppLabels,
-            iconTextSizeFactor = prefs.desktopTextScale,
+            iconSizeFactor = prefs.desktopIconScale.onGetValue(),
+            enableIconText = !prefs.desktopHideAppLabels.onGetValue(),
+            iconTextSizeFactor = prefs.desktopTextScale.onGetValue(),
 
             allAppsIconSizeFactor = prefs.allAppsIconScale,
             enableAllAppsIconText = !prefs.hideAllAppsAppLabels,

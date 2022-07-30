@@ -340,7 +340,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         if (key == "pref_hideStatusBar") {
-            if (prefs.desktopHideStatusBar) {
+            if (prefs.desktopHideStatusBar.onGetValue()) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             } else if (!force) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)

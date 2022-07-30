@@ -173,7 +173,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = reloadGrid
     )
 
-    val desktopIconScale by FloatPref(
+    val desktopIconScale = FloatPref(
         key = PREFS_DESKTOP_ICON_SCALE,
         titleId = R.string.title__desktop_icon_size,
         defaultValue = 1f,
@@ -183,13 +183,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadGrid
     )
-    val desktopUsePopupMenuView by BooleanPref(
+    val desktopUsePopupMenuView = BooleanPref(
         key = PREFS_DESKTOP_POPUP_MENU,
         titleId = R.string.title_desktop_icon_popup_menu,
         defaultValue = true,
         onChange = doNothing
     )
-    var desktopDashLineSize by FloatPref(
+    var desktopDashLineSize = FloatPref(
         key = PREFS_DASH_LINESIZE,
         titleId = R.string.dash_linesize,
         defaultValue = 6f,
@@ -206,30 +206,30 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         default = listOf("17", "15", "4", "6", "8", "5"),
         onChange = doNothing
     )
-    val desktopLock by BooleanPref(
+    val desktopLock = BooleanPref(
         key = PREFS_DESKTOP_LOCK,
         titleId = R.string.title_desktop_lock_desktop,
         defaultValue = false,
         onChange = reloadAll
     )
-    val desktopHideStatusBar by BooleanPref(
+    val desktopHideStatusBar = BooleanPref(
         key = PREFS_STATUSBAR_HIDE,
         titleId = R.string.title_desktop_hide_statusbar,
         defaultValue = false,
         onChange = doNothing
     )
-    var desktopAllowEmptyScreens by BooleanPref(
+    var desktopAllowEmptyScreens = BooleanPref(
         key = PREFS_EMPTY_SCREENS,
         titleId = R.string.title_desktop_keep_empty,
         defaultValue = false
     )
-    val desktopHideAppLabels by BooleanPref(
+    val desktopHideAppLabels = BooleanPref(
         key = PREFS_DESKTOP_HIDE_LABEL,
         titleId = R.string.title__desktop_hide_icon_labels,
         defaultValue = false,
         onChange = reloadApps
     )
-    val desktopTextScale by FloatPref(
+    val desktopTextScale = FloatPref(
         key = PREFS_DESKTOP_ICON_TEXT_SCALE,
         titleId = R.string.title_desktop_text_size,
         defaultValue = 1f,
@@ -239,21 +239,21 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadApps
     )
-    val desktopAllowFullWidthWidgets by BooleanPref(
+    val desktopAllowFullWidthWidgets = BooleanPref(
         key = PREFS_WIDGETS_FULL_WIDTH,
         titleId = R.string.title_desktop_full_width_widgets,
         summaryId = R.string.summary_full_width_widgets,
         defaultValue = false,
         onChange = restart
     )
-    val desktopMultilineLabel by BooleanPref(
+    val desktopMultilineLabel = BooleanPref(
         key = PREFS_DESKTOP_ICON_LABEL_TWOLINES,
         titleId = R.string.title__multiline_labels,
         defaultValue = false,
         onChange = reloadApps
     )
-    val desktopLabelRows get() = if (desktopMultilineLabel) 2 else 1
-    var desktopFolderRadius by DimensionPref(
+    val desktopLabelRows get() = if (desktopMultilineLabel.onGetValue()) 2 else 1
+    var desktopFolderRadius = DimensionPref(
         key = PREFS_FOLDER_RADIUS,
         titleId = R.string.folder_radius,
         defaultValue = -1f,
@@ -268,19 +268,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = recreate
     ) // TODO add
-    val desktopCustomFolderBackground by BooleanPref(
+    val desktopCustomFolderBackground = BooleanPref(
         key = PREFS_FOLDER_BACKGROUND_CUSTOM,
         titleId = R.string.folder_custom_background,
         defaultValue = false,
         onChange = recreate
     ) // TODO add
-    val desktopFolderBackground by IntPref( // TODO add
+    val desktopFolderBackground = IntPref( // TODO add
         key = PREFS_FOLDER_BACKGROUND,
         titleId = R.string.folder_background,
         defaultValue = Themes.getAttrColor(context, R.attr.folderFillColor),
         onChange = restart
     )
-    val desktopFolderColumns by FloatPref(
+    val desktopFolderColumns = FloatPref(
         key = PREFS_FOLDER_COLUMNS,
         titleId = R.string.folder_columns,
         defaultValue = 4f,
@@ -290,7 +290,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
-    val desktopFolderRows by FloatPref(
+    val desktopFolderRows = FloatPref(
         key = PREFS_FOLDER_ROWS,
         titleId = R.string.folder_rows,
         defaultValue = 4f,

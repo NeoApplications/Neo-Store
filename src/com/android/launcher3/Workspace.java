@@ -695,7 +695,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         if (hasExtraEmptyScreen() || mScreenOrder.size() == 0) return;
 
-        if (prefs.getDesktopAllowEmptyScreens()) {
+        if (prefs.getDesktopAllowEmptyScreens().onGetValue()) {
             return;
         }
 
@@ -821,7 +821,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             return;
         }
 
-        if (prefs.getDesktopAllowEmptyScreens()) {
+        if (prefs.getDesktopAllowEmptyScreens().onGetValue()) {
             return;
         }
 
@@ -1540,7 +1540,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             }
         }
 
-        if (Utilities.getOmegaPrefs(mLauncher).getDesktopLock()) {
+        if (Utilities.getOmegaPrefs(mLauncher).getDesktopLock().onGetValue()) {
             child.setVisibility(View.VISIBLE);
 
             if (dragOptions.preDragCondition != null) {

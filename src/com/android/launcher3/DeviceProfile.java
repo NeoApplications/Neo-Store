@@ -220,7 +220,7 @@ public class DeviceProfile {
                   boolean useTwoPanels) {
 
         prefs = Utilities.getOmegaPrefs(context);
-        boolean fullWidthWidgets = prefs.getDesktopAllowFullWidthWidgets();
+        boolean fullWidthWidgets = prefs.getDesktopAllowFullWidthWidgets().onGetValue();
         allAppsCellHeightMultiplier = prefs.getAllAppsCellHeightMultiplier();
         this.inv = inv;
         this.isLandscape = windowBounds.isLandscape();
@@ -833,7 +833,7 @@ public class DeviceProfile {
                 }
             } else {
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
-                int horizontalPadding = prefs.getDesktopAllowFullWidthWidgets() ? 0 : desiredWorkspaceLeftRightMarginPx;
+                int horizontalPadding = prefs.getDesktopAllowFullWidthWidgets().onGetValue() ? 0 : desiredWorkspaceLeftRightMarginPx;
 
                 // Pad the top and bottom of the workspace with search/hotseat bar sizes
                 padding.set(horizontalPadding,

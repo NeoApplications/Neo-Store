@@ -77,7 +77,7 @@ class OmegaShortcuts {
                     }
                 }
             } else if (launcher.isInState(LauncherState.NORMAL)) {
-                if (prefs.desktopPopupEdit && !prefs.desktopLock) {
+                if (prefs.desktopPopupEdit && !prefs.desktopLock.onGetValue()) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
                     ComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
@@ -159,7 +159,7 @@ class OmegaShortcuts {
             val prefs = Utilities.getOmegaPrefs(activity)
             var customize: Customize? = null
             if (Launcher.getLauncher(activity).isInState(LauncherState.NORMAL)) {
-                if (prefs.desktopPopupEdit && !prefs.desktopLock) {
+                if (prefs.desktopPopupEdit && !prefs.desktopLock.onGetValue()) {
                     getAppInfo(activity, itemInfo)?.let {
                         customize = Customize(activity, it, itemInfo)
                     }
@@ -190,7 +190,7 @@ class OmegaShortcuts {
                     || itemInfo is FolderInfo
                 ) {
                     if (prefs.desktopPopupRemove
-                        && !prefs.desktopLock
+                        && !prefs.desktopLock.onGetValue()
                     ) {
                         appRemove = AppRemove(launcher, itemInfo)
                     }

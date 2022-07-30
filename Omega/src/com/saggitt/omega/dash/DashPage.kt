@@ -20,6 +20,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.compose.components.ActionDashItem
 import com.saggitt.omega.compose.components.ControlDashItem
 import com.saggitt.omega.compose.components.MusicBar
+import kotlin.math.roundToInt
 
 // TODO add better support for horizontal
 @Composable
@@ -30,7 +31,7 @@ fun DashPage() {
     val allControlItems = DashEditAdapter.getDashControlProviders(context)
     val activeDashProviders = prefs.desktopDashProviders.getAll()
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    val lineSize = prefs.desktopDashLineSize.toInt()
+    val lineSize = prefs.desktopDashLineSize.onGetValue().roundToInt()
 
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
