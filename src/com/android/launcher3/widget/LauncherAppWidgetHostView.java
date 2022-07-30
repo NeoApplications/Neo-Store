@@ -154,7 +154,7 @@ public class LauncherAppWidgetHostView extends BaseLauncherAppWidgetHostView
     @Override
     public void setAppWidget(int appWidgetId, AppWidgetProviderInfo info) {
         super.setAppWidget(appWidgetId, info);
-        if (info != null && Utilities.getOmegaPrefs(getContext()).getAllowFullWidthWidgets()) {
+        if (info != null && Utilities.getOmegaPrefs(getContext()).getDesktopAllowFullWidthWidgets()) {
             setPadding(0, 0, 0, 0);
         } else if (info instanceof CustomAppWidgetProviderInfo) {
             if (((CustomAppWidgetProviderInfo) info).noPadding) {

@@ -35,14 +35,14 @@ class DeviceProfileOverrides(context: Context) {
             defaultGrid: InvariantDeviceProfile.GridOption,
         ) : this(
             numHotseatColumns = prefs.numHotseatIcons.get(defaultGrid),
-            numRows = prefs.workspaceRows.get(defaultGrid),
-            numColumns = prefs.workspaceColumns.get(defaultGrid),
+            numRows = prefs.desktopRows.get(defaultGrid),
+            numColumns = prefs.desktopColumns.get(defaultGrid),
             numAllAppsColumns = prefs.numAllAppsColumns.get(defaultGrid),
-            numFolderRows = prefs.folderRows.toInt(),
-            numFolderColumns = prefs.folderColumns.toInt(),
+            numFolderRows = prefs.desktopFolderRows.toInt(),
+            numFolderColumns = prefs.desktopFolderColumns.toInt(),
 
             iconSizeFactor = prefs.desktopIconScale,
-            enableIconText = !prefs.hideAppLabels,
+            enableIconText = !prefs.desktopHideAppLabels,
             iconTextSizeFactor = prefs.desktopTextScale,
 
             allAppsIconSizeFactor = prefs.allAppsIconScale,

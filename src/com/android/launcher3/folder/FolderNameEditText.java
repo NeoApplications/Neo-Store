@@ -82,7 +82,7 @@ public class FolderNameEditText extends ExtendedEditText {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (Utilities.getOmegaPrefs(getContext()).getLockDesktop())
+        if (Utilities.getOmegaPrefs(getContext()).getDesktopLock())
             return true;
         return super.onTouchEvent(event);
     }

@@ -152,20 +152,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     // TODO add iconId to the respective prefs
     // TODO bring string names in line with pref names
     // DESKTOP
-    private var desktopGridSizeDelegate = ResettableLazy {
+    var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
             this, PREFS_ROWS, PREFS_COLUMNS,
             LauncherAppState.getIDP(context), reloadIcons
         )
     }
     val desktopGridSize by desktopGridSizeDelegate
-    val workspaceColumns = IdpIntPref(
+    val desktopColumns = IdpIntPref(
         key = "pref_${PREFS_COLUMNS}",
         titleId = R.string.grid_size_width,
         selectDefaultValue = { numColumns },
         onChange = reloadGrid
     )
-    val workspaceRows = IdpIntPref(
+    val desktopRows = IdpIntPref(
         key = "pref_${PREFS_ROWS}",
         titleId = R.string.grid_size_height,
         selectDefaultValue = { numRows },
@@ -178,43 +178,43 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 1f,
         onChange = reloadGrid
     )
-    val usePopupMenuView by BooleanPref(
+    val desktopUsePopupMenuView by BooleanPref(
         key = PREFS_DESKTOP_POPUP_MENU,
         titleId = R.string.title_desktop_icon_popup_menu,
         defaultValue = true,
         onChange = doNothing
     )
-    var dashLineSize by FloatPref(
+    var desktopDashLineSize by FloatPref(
         key = PREFS_DASH_LINESIZE,
         titleId = R.string.dash_linesize,
         defaultValue = 6f,
         onChange = doNothing
     )
-    var dashProviders = StringListPref(
+    var desktopDashProviders = StringListPref(
         prefKey = PREFS_DASH_PROVIDERS,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
         default = listOf("17", "15", "4", "6", "8", "5"),
         onChange = doNothing
     )
-    val lockDesktop by BooleanPref(
+    val desktopLock by BooleanPref(
         key = PREFS_DESKTOP_LOCK,
         titleId = R.string.title_desktop_lock_desktop,
         defaultValue = false,
         onChange = reloadAll
     )
-    val hideStatusBar by BooleanPref(
+    val desktopHideStatusBar by BooleanPref(
         key = PREFS_STATUSBAR_HIDE,
         titleId = R.string.title_desktop_hide_statusbar,
         defaultValue = false,
         onChange = doNothing
     )
-    var allowEmptyScreens by BooleanPref(
+    var desktopAllowEmptyScreens by BooleanPref(
         key = PREFS_EMPTY_SCREENS,
         titleId = R.string.title_desktop_keep_empty,
         defaultValue = false
     )
-    val hideAppLabels by BooleanPref(
+    val desktopHideAppLabels by BooleanPref(
         key = PREFS_DESKTOP_HIDE_LABEL,
         titleId = R.string.title__desktop_hide_icon_labels,
         defaultValue = false,
@@ -226,45 +226,45 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 1f,
         onChange = reloadApps
     )
-    val allowFullWidthWidgets by BooleanPref(
+    val desktopAllowFullWidthWidgets by BooleanPref(
         key = PREFS_WIDGETS_FULL_WIDTH,
         titleId = R.string.title_desktop_full_width_widgets,
         summaryId = R.string.summary_full_width_widgets,
         defaultValue = false,
         onChange = restart
     )
-    private val homeMultilineLabel by BooleanPref(
+    val desktopMultilineLabel by BooleanPref(
         key = PREFS_DESKTOP_ICON_LABEL_TWOLINES,
         titleId = R.string.title__multiline_labels,
         defaultValue = false,
         onChange = reloadApps
     )
-    val homeLabelRows get() = if (homeMultilineLabel) 2 else 1
-    var folderRadius by DimensionPref(
+    val desktopLabelRows get() = if (desktopMultilineLabel) 2 else 1
+    var desktopFolderRadius by DimensionPref(
         key = PREFS_FOLDER_RADIUS,
         titleId = R.string.folder_radius,
         defaultValue = -1f,
         onChange = recreate
     ) // TODO add
-    val customFolderBackground by BooleanPref(
+    val desktopCustomFolderBackground by BooleanPref(
         key = PREFS_FOLDER_BACKGROUND_CUSTOM,
         titleId = R.string.folder_custom_background,
         defaultValue = false,
         onChange = recreate
     ) // TODO add
-    val folderBackground by IntPref( // TODO add
+    val desktopFolderBackground by IntPref( // TODO add
         key = PREFS_FOLDER_BACKGROUND,
         titleId = R.string.folder_background,
         defaultValue = Themes.getAttrColor(context, R.attr.folderFillColor),
         onChange = restart
     )
-    val folderColumns by FloatPref(
+    val desktopFolderColumns by FloatPref(
         key = PREFS_FOLDER_COLUMNS,
         titleId = R.string.folder_columns,
         defaultValue = 4f,
         onChange = reloadGrid
     ) // TODO add
-    val folderRows by FloatPref(
+    val desktopFolderRows by FloatPref(
         key = PREFS_FOLDER_ROWS,
         titleId = R.string.folder_rows,
         defaultValue = 4f,

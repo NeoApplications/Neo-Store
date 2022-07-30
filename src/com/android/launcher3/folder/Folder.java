@@ -303,7 +303,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
         }
 
         View settingsButton = findViewById(R.id.settings_button);
-        if (Utilities.getOmegaPrefs(mLauncher).getLockDesktop()) {
+        if (Utilities.getOmegaPrefs(mLauncher).getDesktopLock()) {
             settingsButton.setVisibility(View.GONE);
         } else {
             settingsButton.setOnClickListener(v -> {
@@ -327,7 +327,7 @@ public class Folder extends AbstractFloatingView implements ClipPathView, DragSo
     }
 
     public float getCornerRadius() {
-        float radius = round(prefs.getFolderRadius());
+        float radius = round(prefs.getDesktopFolderRadius());
         if (radius > 0f) {
             return radius;
         }

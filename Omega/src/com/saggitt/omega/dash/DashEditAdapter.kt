@@ -45,7 +45,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
     private val handler = Executors.MAIN_EXECUTOR.handler
     private var dividerIndex = 0
     private val adapterItems = ArrayList<Item>()
-    private val activeProviders: MutableList<String> = prefs.dashProviders.getAll().toMutableList()
+    private val activeProviders: MutableList<String> = prefs.desktopDashProviders.getAll().toMutableList()
     private val otherItems = ArrayList<ProviderItem>()
 
     private val divider = DividerItem()

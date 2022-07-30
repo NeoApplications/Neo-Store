@@ -28,9 +28,9 @@ fun DashPage() {
     val prefs = Utilities.getOmegaPrefs(context)
     val allActionItems = DashEditAdapter.getDashActionProviders(context)
     val allControlItems = DashEditAdapter.getDashControlProviders(context)
-    val activeDashProviders = prefs.dashProviders.getAll()
+    val activeDashProviders = prefs.desktopDashProviders.getAll()
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    val lineSize = prefs.dashLineSize.toInt()
+    val lineSize = prefs.desktopDashLineSize.toInt()
 
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
