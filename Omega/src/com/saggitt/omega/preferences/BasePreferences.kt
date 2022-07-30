@@ -276,13 +276,22 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: Float = 0f,
-        val minValue: Float,
-        val maxValue: Float,
-        val steps: Int,
-        val specialOutputs: ((Float) -> String) = Float::toString,
+        minValue: Float,
+        maxValue: Float,
+        steps: Int,
+        specialOutputs: ((Float) -> String) = Float::toString,
         onChange: () -> Unit = doNothing
-    ) :
-        PrefDelegate<Float>(key, titleId, summaryId, defaultValue, onChange) {
+    ) : FloatPref(
+        key,
+        titleId,
+        summaryId,
+        defaultValue,
+        minValue,
+        maxValue,
+        steps,
+        specialOutputs,
+        onChange
+    ) {
 
         override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
 
