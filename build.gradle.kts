@@ -184,6 +184,7 @@ android {
         named("omega") {
             res.srcDirs(listOf("Omega/res"))
             java.srcDirs(listOf("Omega/src", "Omega/src_ui_overrides"))
+            aidl.srcDirs(listOf("Omega/aidl"))
             manifest.srcFile("Omega/AndroidManifest.xml")
         }
     }
@@ -279,7 +280,6 @@ dependencies {
             "plugin_core.jar"
         )
     )
-    implementation(fileTree(baseDir = "${prebuiltsDir}/libs").include(listOf("libGoogleFeed.jar")))
 
     protobuf(files("protos/"))
     protobuf(files("quickstep/protos_overrides/"))

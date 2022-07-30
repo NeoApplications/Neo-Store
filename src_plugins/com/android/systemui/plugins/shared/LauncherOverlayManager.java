@@ -19,7 +19,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import com.google.android.libraries.gsa.launcherclient.LauncherClient;
+import com.google.android.libraries.launcherclient.LauncherClient;
 import com.google.systemui.smartspace.SmartSpaceView;
 
 import java.io.PrintWriter;
