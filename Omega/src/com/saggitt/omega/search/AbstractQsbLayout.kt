@@ -349,9 +349,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     open fun getMicIcon(): Drawable? {
         return if (searchProvider.supportsAssistant && mShowAssistant) {
-            searchProvider.getAssistantIcon(true)
+            searchProvider.assistantIcon
         } else if (searchProvider.supportsVoiceSearch) {
-            searchProvider.getVoiceIcon(true)
+            searchProvider.voiceIcon
         } else {
             micIconView?.visibility = GONE
             ColorDrawable(Color.TRANSPARENT)
@@ -359,7 +359,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     }
 
     open fun getIcon(): Drawable {
-        return searchProvider.getIcon(true)
+        return searchProvider.icon
     }
 
     open fun getLauncher(): OmegaLauncher {

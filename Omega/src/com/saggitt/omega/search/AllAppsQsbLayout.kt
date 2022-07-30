@@ -149,9 +149,9 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     override fun getMicIcon(): Drawable? {
         return if (prefs.allAppsGlobalSearch) {
             if (searchProvider.supportsAssistant && mShowAssistant) {
-                searchProvider.getAssistantIcon(true)
+                searchProvider.assistantIcon
             } else if (searchProvider.supportsVoiceSearch) {
-                searchProvider.getVoiceIcon(true)
+                searchProvider.voiceIcon
             } else {
                 micIconView?.visibility = View.GONE
                 ColorDrawable(Color.TRANSPARENT)
@@ -166,7 +166,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         return if (prefs.allAppsGlobalSearch) {
             super.getIcon()
         } else {
-            AppsSearchProvider(mContext).getIcon(true)
+            AppsSearchProvider(mContext).icon
         }
     }
 

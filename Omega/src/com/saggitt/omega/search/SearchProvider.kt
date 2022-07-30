@@ -58,11 +58,5 @@ abstract class SearchProvider(protected val context: Context) {
         if (supportsFeed) throw RuntimeException("Feed supported but not implemented")
     }
 
-    fun getIcon(colored: Boolean) = icon // maybe consider coloring
-
-    fun getVoiceIcon(colored: Boolean) = voiceIcon // maybe consider coloring
-
-    fun getAssistantIcon(colored: Boolean) = assistantIcon // maybe consider coloring
-
     override fun toString(): String = this::class.java.name
 }

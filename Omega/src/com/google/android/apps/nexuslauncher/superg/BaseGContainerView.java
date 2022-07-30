@@ -254,7 +254,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
             SearchProvider provider = SearchProviderController.Companion.getInstance(getContext())
                     .getSearchProvider();
             ImageView gIcon = mQsbView.findViewById(R.id.g_icon);
-            gIcon.setImageDrawable(provider.getIcon(true));
+            gIcon.setImageDrawable(provider.getIcon());
         }
     }
 }
