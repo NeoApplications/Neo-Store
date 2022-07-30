@@ -129,7 +129,7 @@
     <string name="recently_updated">Nyligen uppdaterad</string>
     <string name="repositories">Repos</string>
     <string name="repository">Repo</string>
-    <string name="repository_not_used_DESC">Detta repo har inte använts ännu. 
+    <string name="repository_not_used_DESC">Detta repo har inte använts ännu.
 \nAnslut till det för att se tillgängliga appar.</string>
     <string name="repository_unsigned_DESC">Kunde inte verifiera osignerad applista.
 \nVar försiktig när du laddar ner appar från osignerade repos.</string>
