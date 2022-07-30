@@ -131,6 +131,7 @@ import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Temperature
+import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
@@ -176,6 +177,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DESKTOP_ICON_SCALE,
         titleId = R.string.title__desktop_icon_size,
         defaultValue = 1f,
+        maxValue = 2f,
+        minValue = 0.5f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadGrid
     )
     val desktopUsePopupMenuView by BooleanPref(
@@ -188,6 +193,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DASH_LINESIZE,
         titleId = R.string.dash_linesize,
         defaultValue = 6f,
+        maxValue = 6f,
+        minValue = 4f,
+        steps = 2,
+        specialOutputs = { it.roundToInt().toString() },
         onChange = doNothing
     )
     var desktopDashProviders = StringListPref(
@@ -224,6 +233,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DESKTOP_ICON_TEXT_SCALE,
         titleId = R.string.title_desktop_text_size,
         defaultValue = 1f,
+        maxValue = 2f,
+        minValue = 0.5f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadApps
     )
     val desktopAllowFullWidthWidgets by BooleanPref(
@@ -244,6 +257,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_FOLDER_RADIUS,
         titleId = R.string.folder_radius,
         defaultValue = -1f,
+        maxValue = 24f,
+        minValue = -1f,
+        steps = 24,
+        specialOutputs = {
+            when {
+                it < 0f -> context.getString(R.string.automatic_short)
+                else -> "${it.roundToInt()}dp"
+            }
+        },
         onChange = recreate
     ) // TODO add
     val desktopCustomFolderBackground by BooleanPref(
@@ -262,12 +284,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_FOLDER_COLUMNS,
         titleId = R.string.folder_columns,
         defaultValue = 4f,
+        maxValue = 5f,
+        minValue = 2f,
+        steps = 4,
+        specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
     val desktopFolderRows by FloatPref(
         key = PREFS_FOLDER_ROWS,
         titleId = R.string.folder_rows,
         defaultValue = 4f,
+        maxValue = 5f,
+        minValue = 2f,
+        steps = 4,
+        specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
 
@@ -283,12 +313,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DOCK_ICON_SCALE,
         titleId = R.string.title__dock_icon_size,
         defaultValue = 1f,
+        maxValue = 2f,
+        minValue = 0.5f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = recreate
     )
     var dockScale by FloatPref(
         key = PREFS_DOCK_SCALE,
         titleId = R.string.title__dock_scale,
         defaultValue = 1f,
+        maxValue = 1.75f,
+        minValue = 0.70f,
+        steps = 100,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = restart
     )
     val dockBackground by BooleanPref(
@@ -375,12 +413,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DRAWER_ICON_SCALE,
         titleId = R.string.title__drawer_icon_size,
         defaultValue = 1f,
+        maxValue = 2f,
+        minValue = 0.5f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadApps
     )
     val allAppsTextScale by FloatPref(
         key = PREFS_DRAWER_ICON_TEXT_SCALE,
         titleId = R.string.title_desktop_text_size,
-        defaultValue = 1f
+        defaultValue = 1f,
+        maxValue = 1.8f,
+        minValue = 0.3f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
     )
     val hideAllAppsAppLabels by BooleanPref(
         key = PREFS_DRAWER_HIDE_LABEL,
@@ -399,6 +445,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DRAWER_HEIGHT_MULTIPLIER,
         titleId = R.string.title_drawer_row_height,
         defaultValue = 1F,
+        maxValue = 2f,
+        minValue = 0.5f,
+        steps = 150,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = restart
     )
     val separateWorkApps by BooleanPref(
@@ -482,6 +532,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_WINDOWCORNER_RADIUS,
         titleId = R.string.title_override_corner_radius_value,
         defaultValue = 8f,
+        maxValue = 24f,
+        minValue = -1f,
+        steps = 24,
+        specialOutputs = {
+            when {
+                it < 0f -> context.getString(R.string.automatic_short)
+                else -> "${it.roundToInt()}dp"
+            }
+        },
         onChange = updateBlur
     )
     var iconPackPackage by StringPref(
@@ -542,6 +601,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_SEARCH_BAR_RADIUS,
         titleId = R.string.title__search_bar_radius,
         defaultValue = -1f,
+        maxValue = 24f,
+        minValue = -1f,
+        steps = 24,
+        specialOutputs = {
+            when {
+                it < 0f -> context.getString(R.string.automatic_short)
+                else -> "${it.roundToInt()}dp"
+            }
+        },
         onChange = recreate
     )
     var showLensIcon by BooleanPref(

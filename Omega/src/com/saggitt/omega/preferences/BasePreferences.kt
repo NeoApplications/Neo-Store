@@ -186,7 +186,7 @@ abstract class BasePreferences(context: Context) :
         @StringRes val titleId: Int,
         @StringRes val summaryId: Int = -1,
         val defaultValue: T,
-        private val onChange: () -> Unit
+        val onChange: () -> Unit
     ) {
 
         private var cached = false
@@ -258,6 +258,10 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: Float = 0f,
+        val minValue: Float,
+        val maxValue: Float,
+        val steps: Int,
+        val specialOutputs: ((Float) -> String) = Float::toString,
         onChange: () -> Unit = doNothing
     ) : PrefDelegate<Float>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
@@ -272,6 +276,10 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: Float = 0f,
+        val minValue: Float,
+        val maxValue: Float,
+        val steps: Int,
+        val specialOutputs: ((Float) -> String) = Float::toString,
         onChange: () -> Unit = doNothing
     ) :
         PrefDelegate<Float>(key, titleId, summaryId, defaultValue, onChange) {
