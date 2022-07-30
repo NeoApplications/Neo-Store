@@ -1,0 +1,33 @@
+Sürətli material F-Droid müştərisi
+
+Xüsusiyyətlər:
+
+* Material F-Droid üslubu
+* Kartlar və ya uyğun olmayan animasiyalar yoxdur
+* Sürətli depo sinxronizasiyası
+* Standart Android komponentləri və minimal asılılıqlar
+
+Mövcuddur:
+
+- Braziliya Portuqal dili
+- İngilis dili
+- Fin dili
+- Fransız dili
+- Alman dili
+- Yunan dili
+- Macarıstan
+- Italian
+- Norwegian Bokmål
+- Ərəbistan Yarımadası
+- Polyak
+- Rus
+- Sadələşdirilmiş Çin
+- İspan
+- Türk,Azərbaycan
+- Ukrayna
+
+Foxy-Droid-in birbaşa uyğunlaşması/modifikasiyası
+
+Kopyalanmış pulsuz proqram təminatı, GPLv3+. \ lisenziyalı
+
+İstifadə edin, öyrənin, dəyişdirin və paylaşın; birlikdə.
