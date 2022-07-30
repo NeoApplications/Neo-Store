@@ -349,7 +349,7 @@
     <string name="summary_all_apps_google_search">Trova tra risultati web e app</string>
     <string name="title_search_hidden_apps">Trova scorciatoie nascoste</string>
     <string name="title_all_apps_keep_scroll_state">Ricorda posizione</string>
-    <string name="title_all_apps_google_search">Ricerca globale</string>
+    <string name="title_all_apps_google_search">Risultati web</string>
     <string name="title_all_apps_search">Barra di ricerca nel cassetto</string>
     <string name="title__sort_by_color">Per colore</string>
     <string name="title__sort_most_used">Più usate</string>
@@ -461,4 +461,7 @@
     <string name="dash_wifi_summary">Stato e connessione Wi-Fi</string>
     <string name="summary_fuzzy_search">Corrispondenza approssimativa per ricerche app.</string>
     <string name="summary_force_shapeless">Prova ad utilizzare icone compatibili per tutte le app.</string>
+    <string name="section_web">Web</string>
+    <string name="folder_name">Nome della cartella</string>
+    <string name="section_apps">app</string>
 </resources>
