@@ -195,7 +195,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 6f,
         maxValue = 6f,
         minValue = 4f,
-        steps = 2,
+        steps = 1,
         specialOutputs = { it.roundToInt().toString() },
         onChange = doNothing
     )
@@ -286,7 +286,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 4f,
         maxValue = 5f,
         minValue = 2f,
-        steps = 4,
+        steps = 2,
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
@@ -296,7 +296,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 4f,
         maxValue = 5f,
         minValue = 2f,
-        steps = 4,
+        steps = 2,
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add

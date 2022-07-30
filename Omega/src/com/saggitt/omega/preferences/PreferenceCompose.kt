@@ -16,14 +16,17 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saggitt.omega.util.addIf
@@ -126,7 +129,7 @@ fun SeekBarPreference(
     isEnabled: Boolean = true,
     onValueChange: ((Float) -> Unit) = {},
 ) {
-    val (currentValue, setCurrentValue) = remember(pref) { mutableStateOf(pref.onGetValue()) }
+    var currentValue by remember(pref) { mutableStateOf(pref.onGetValue()) }
 
     BasePreference(
         modifier = modifier,
@@ -137,7 +140,8 @@ fun SeekBarPreference(
             Row {
                 Text(
                     text = pref.specialOutputs(currentValue),
-                    modifier = Modifier.widthIn(min = 72.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.widthIn(min = 52.dp)
                 )
                 Spacer(modifier = Modifier.requiredWidth(8.dp))
                 Slider(
@@ -146,10 +150,10 @@ fun SeekBarPreference(
                         .weight(1f),
                     value = currentValue,
                     valueRange = pref.minValue..pref.maxValue,
-                    onValueChange = { setCurrentValue(it) },
+                    onValueChange = { currentValue = it },
+                    steps = pref.steps,
                     onValueChangeFinished = {
                         pref.onSetValue(currentValue)
-                        pref.onChange()
                         onValueChange(currentValue)
                     },
                     enabled = isEnabled
