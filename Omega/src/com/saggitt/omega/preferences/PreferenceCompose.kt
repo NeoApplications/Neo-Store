@@ -2,11 +2,13 @@ package com.saggitt.omega.preferences
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -45,9 +47,10 @@ fun BasePreference(
     Column(
         modifier = Modifier
             .clip(MaterialTheme.shapes.medium)
+            .heightIn(min = 64.dp)
             .addIf(onClick != null) {
                 clickable(enabled = isEnabled, onClick = onClick!!)
-            }
+            }, verticalArrangement = Arrangement.Center
     ) {
         Row(
             modifier = modifier
