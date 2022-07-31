@@ -1,7 +1,7 @@
-* merge android-11.0.0_r31
+* Unito con android-11.0.0_r31
 * Aggiunto: Mantieni la preferenza dello schermo vuoto
 * Aggiunto: Selettore colore per schede
-* Aggiunto: controlli aggiuntivi dash
+* Aggiunto: Controlli aggiuntivi dash
 * Aggiunto: Personalizzazione Dash
 * Aggiunto: Supporto QuickSwitch
 * Aggiunto: FiveSecs KLWP

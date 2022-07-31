@@ -1,9 +1,9 @@
 <ul>
-  <li>Aggiunto: Brave web search</li>
-  <li>Aggiunto: Prefenza gesto premi indietro</li>
-  <li>Aggiunto: Preferenza premi gesto Home</li>
+  <li>Aggiunto: Ricerca web con Brave</li>
+  <li>Aggiunto: Preferenza gesto premi indietro</li>
+  <li>Aggiunto: Preferenza gesto premi Home</li>
   <li>Aggiunto: Modalità Desktop</li>
-  <li>Risolto: Colore testo selettore widget per il tema chiaro</li>
+  <li>Risolto: Colore testo widget per il tema chiaro</li>
   <li>Risolto: Cerca apps nascoste</li>
   <li>Risolto: Icone cartella in modalità cover</li>
   <li>Ripristino widget smartspace</li>

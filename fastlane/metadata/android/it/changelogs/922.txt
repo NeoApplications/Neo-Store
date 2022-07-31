@@ -1,0 +1,7 @@
+Nota 1: incompatibile con i backup di versioni precedenti
+- Basato sul launcher di Android 12/L
+- Aggiunto: Smartspace
+- Aggiunto: Modifica diretta di schede/categorie
+- Aggiunto: Opzione di ricerca sfocata
+- Aggiornamento: Rinnovata la Dash, le icone e l'interfaccia utente
+Nota 2: le funzionalità perse dalle versioni precedenti potrebbero essere aggiunte nelle versioni successive

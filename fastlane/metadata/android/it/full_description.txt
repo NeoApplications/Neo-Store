@@ -1,0 +1,12 @@
+Neo Launcher è un fork del launcher di AOSP per utenti esperti. È altamente configurabile e offre molte funzionalità. Alcune sono:
+
+- Il _trattino_basso_.
+- Supporto per temi ricchi.
+- Motori di ricerca personalizzati.
+- Supporto dei gesti.
+- Un widget personalizzato unico.
+- Categorie o cartelle nel cassetto delle app.
+- Supporto per forme e pacchetti di icone.
+- Nascondi app.
+
+Ci sono sempre nuove funzionalità in cantiere, quindi resta sintonizzato…
