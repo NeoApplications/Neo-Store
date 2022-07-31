@@ -60,7 +60,7 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
     }
 
     private fun getSearchResult(apps: MutableList<AppInfo>, query: String): ArrayList<AdapterItem> {
-        return if (prefs.fuzzySearch) {
+        return if (prefs.searchFuzzy.onGetValue()) {
             getFuzzySearchResult(apps, query)
         } else {
             getTitleMatchResult(apps, query)
@@ -120,7 +120,7 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
     }
 
     private fun getSuggestions(query: String): List<String?> {
-        if (!Utilities.getOmegaPrefs(context).allAppsGlobalSearch) {
+        if (!Utilities.getOmegaPrefs(context).searchGlobal.onGetValue()) {
             return emptyList<String>()
         }
         val provider = SearchProviderController
@@ -135,7 +135,7 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
         defaultApps: List<AppInfo?>?,
         filter: AppFilter
     ): List<AppInfo?>? {
-        if (!Utilities.getOmegaPrefs(context).searchHiddenApps) {
+        if (!Utilities.getOmegaPrefs(context).searchHiddenApps.onGetValue()) {
             return defaultApps
         }
         val apps: MutableList<AppInfo?> = ArrayList()

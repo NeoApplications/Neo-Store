@@ -31,7 +31,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.*
+import com.android.launcher3.BaseRecyclerView
+import com.android.launcher3.DeviceProfile
+import com.android.launcher3.Insettable
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
@@ -51,6 +56,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     private var mFallback: AllAppsQsbFallback? = null
     private lateinit var mAppsView: AllAppsContainerView
     private var mCancelButton: ImageButton? = null
+
     init {
         visibility = (if (prefs.allAppsSearch) View.VISIBLE else View.GONE)
     }
@@ -70,7 +76,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         }
 
         findViewById<ImageView?>(R.id.mic_icon).apply {
-            if (!prefs.allAppsGlobalSearch) {
+            if (!prefs.searchGlobal.onGetValue()) {
                 visibility = View.GONE
             }
         }
@@ -83,7 +89,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
         setOnClickListener {
             val provider = controller.searchProvider
-            if (prefs.allAppsGlobalSearch) {
+            if (prefs.searchGlobal.onGetValue()) {
                 provider.startSearch { intent: Intent? ->
                     mContext.startActivity(
                         intent,
@@ -147,7 +153,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun getMicIcon(): Drawable? {
-        return if (prefs.allAppsGlobalSearch) {
+        return if (prefs.searchGlobal.onGetValue()) {
             if (searchProvider.supportsAssistant && mShowAssistant) {
                 searchProvider.getAssistantIcon(true)
             } else if (searchProvider.supportsVoiceSearch) {
@@ -163,7 +169,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun getIcon(): Drawable {
-        return if (prefs.allAppsGlobalSearch) {
+        return if (prefs.searchGlobal.onGetValue()) {
             super.getIcon()
         } else {
             AppsSearchProvider(mContext).getIcon(true)
@@ -244,7 +250,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun shouldUseFallbackSearch(provider: SearchProvider) =
-        !prefs.allAppsGlobalSearch
+        !prefs.searchGlobal.onGetValue()
                 || provider is AppsSearchProvider
                 || provider is WebSearchProvider
 }

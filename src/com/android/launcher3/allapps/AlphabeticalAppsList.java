@@ -384,11 +384,11 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         if (hasFilter()) {
-            if (mSearchResults.size() > 0 && prefs.getAllAppsGlobalSearch())
+            if (mSearchResults.size() > 0 && prefs.getSearchGlobal().onGetValue())
                 mAdapterItems.add(AdapterItem.asSectionHeader(position++, mLauncher.getString(R.string.section_apps)));
             updateSearchAdapterItems(mSearchResults, 0);
 
-            if (mSearchResults.size() > 0 && prefs.getAllAppsGlobalSearch())
+            if (mSearchResults.size() > 0 && prefs.getSearchGlobal().onGetValue())
                 mAdapterItems.add(AdapterItem.asAllAppsDivider(position++));
 
             if (hasSuggestions()) {

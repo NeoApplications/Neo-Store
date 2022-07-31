@@ -597,7 +597,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // SEARCH & FOLDER
-    var searchBarRadius by DimensionPref(
+    var searchBarRadius = DimensionPref(
         key = PREFS_SEARCH_BAR_RADIUS,
         titleId = R.string.title__search_bar_radius,
         defaultValue = -1f,
@@ -612,32 +612,32 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = recreate
     )
-    var showLensIcon by BooleanPref(
+    var searchShowLensIcon = BooleanPref(
         key = PREFS_SEARCH_SHOW_LENS_ICON,
         titleId = R.string.title_search_action_lens,
         summaryId = R.string.summary_search_show_lens_summary,
         defaultValue = true,
         onChange = recreate
     )
-    var searchProvider by StringPref(
+    var searchProvider = StringPref(
         key = PREFS_SEARCH_PROVIDER,
         titleId = R.string.title_search_provider,
         defaultValue = "",
         onChange = { SearchProviderController.getInstance(context).onSearchProviderChanged() }
     )
-    val searchHiddenApps by BooleanPref(
+    val searchHiddenApps = BooleanPref(
         key = PREFS_SEARCH_HIDDEN_APPS,
         titleId = R.string.title_search_hidden_apps,
         summaryId = R.string.summary_search_hidden_apps,
         defaultValue = false
     )
-    val fuzzySearch by BooleanPref(
+    val searchFuzzy = BooleanPref(
         key = PREFS_SEARCH_FUZZY,
         titleId = R.string.title_fuzzy_search,
         summaryId = R.string.summary_fuzzy_search,
         defaultValue = true
     )
-    var allAppsGlobalSearch by BooleanPref(
+    var searchGlobal = BooleanPref(
         key = PREFS_SEARCH_GLOBAL,
         titleId = R.string.title_all_apps_google_search,
         summaryId = R.string.summary_all_apps_google_search,
