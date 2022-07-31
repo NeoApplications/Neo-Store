@@ -108,6 +108,7 @@ fun SwitchPreference(
         isEnabled = isEnabled,
         onClick = {
             onCheckedChange(!checked)
+            pref.onSetValue(!checked)
             check(!checked)
         },
         endWidget = {
@@ -117,6 +118,7 @@ fun SwitchPreference(
                 checked = checked,
                 onCheckedChange = {
                     onCheckedChange(it)
+                    pref.onSetValue(it)
                     check(it)
                 },
                 enabled = isEnabled,
