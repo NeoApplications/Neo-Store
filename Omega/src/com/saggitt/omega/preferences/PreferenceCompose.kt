@@ -141,6 +141,7 @@ fun SeekBarPreference(
                 Text(
                     text = pref.specialOutputs(currentValue),
                     textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.widthIn(min = 52.dp)
                 )
                 Spacer(modifier = Modifier.requiredWidth(8.dp))
