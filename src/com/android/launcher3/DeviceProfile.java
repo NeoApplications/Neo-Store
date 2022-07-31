@@ -336,14 +336,14 @@ public class DeviceProfile {
                 isTwoPanels ? inv.numDatabaseAllAppsColumns : inv.numAllAppsColumns;
         hotseatBarSizeExtraSpacePx = 0;
         hotseatBarTopPaddingPx =
-                res.getDimensionPixelSize(prefs.getDockSearchBar()
+                res.getDimensionPixelSize(prefs.getDockSearchBar().onGetValue()
                         ? R.dimen.dynamic_grid_hotseat_top_padding_widget
                         : R.dimen.dynamic_grid_hotseat_top_padding);
         hotseatBarBottomPaddingPx = (isTallDevice ? 0
-                : res.getDimensionPixelSize(prefs.getDockSearchBar()
+                : res.getDimensionPixelSize(prefs.getDockSearchBar().onGetValue()
                 ? R.dimen.dynamic_grid_hotseat_bottom_non_tall_padding_widget
                 : R.dimen.dynamic_grid_hotseat_bottom_non_tall_padding))
-                + res.getDimensionPixelSize(prefs.getDockSearchBar() ?
+                + res.getDimensionPixelSize(prefs.getDockSearchBar().onGetValue() ?
                 R.dimen.dynamic_grid_hotseat_bottom_padding_widget
                 : R.dimen.dynamic_grid_hotseat_bottom_padding);
         hotseatBarSidePaddingEndPx =
@@ -351,7 +351,7 @@ public class DeviceProfile {
         // Add a bit of space between nav bar and hotseat in vertical bar layout.
         hotseatBarSidePaddingStartPx = isVerticalBarLayout() ? workspacePageIndicatorHeight : 0;
         hotseatExtraVerticalSize =
-                res.getDimensionPixelSize(prefs.getDockSearchBar()
+                res.getDimensionPixelSize(prefs.getDockSearchBar().onGetValue()
                         ? R.dimen.dynamic_grid_hotseat_extra_vertical_size_widget
                         : R.dimen.dynamic_grid_hotseat_extra_vertical_size);
         updateHotseatIconSize(pxFromDp(inv.iconSize, mMetrics, 1f));
@@ -424,11 +424,11 @@ public class DeviceProfile {
             updateAvailableDimensions(res);
         }*/
 
-        float targetDockScale = prefs.getDockScale();
+        float targetDockScale = prefs.getDockScale().onGetValue();
 
         int previousDockSize = hotseatBarSizePx;
         int previousDockBottomPadding = hotseatBarBottomPaddingPx;
-        if (prefs.getDockHide()) {
+        if (prefs.getDockHide().onGetValue()) {
             hotseatBarSizePx = 0;
             updateAvailableDimensions(res);
         } else if (targetDockScale > 0f && !isVerticalBarLayout()) {
@@ -454,7 +454,7 @@ public class DeviceProfile {
 
         // This is done last, after iconSizePx is calculated above.
         float dotSize = 0.38f;
-        if (!Utilities.getOmegaPrefs(context).getNotificationCount()) {
+        if (!Utilities.getOmegaPrefs(context).getNotificationCount().onGetValue()) {
             dotSize = 0.228f;
         }
 
@@ -469,7 +469,7 @@ public class DeviceProfile {
     private void updateHotseatIconSize(int hotseatIconSizePx) {
         // Ensure there is enough space for folder icons, which have a slightly larger radius.
         hotseatCellHeightPx = (int) Math.ceil(hotseatIconSizePx * ICON_OVERLAP_FACTOR);
-        if (prefs.getDockHide()) {
+        if (prefs.getDockHide().onGetValue()) {
             hotseatBarSizePx = 0;
         } else {
             if (isVerticalBarLayout()) {

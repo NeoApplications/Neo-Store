@@ -31,7 +31,7 @@ class SearchProviderPreference(context: Context, attrs: AttributeSet? = null) :
     private val prefs = Utilities.getOmegaPrefs(context)
     private val mProviders = SearchProviderController.getSearchProviders(context)
     private val current
-        get() = mProviders.firstOrNull { it::class.java.name == prefs.searchProvider }
+        get() = mProviders.firstOrNull { it::class.java.name == prefs.searchProvider.onGetValue() }
             ?: mProviders[0]
 
     init {

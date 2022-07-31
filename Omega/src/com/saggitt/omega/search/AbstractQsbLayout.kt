@@ -25,7 +25,11 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.*
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -34,7 +38,11 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import com.android.launcher3.*
+import com.android.launcher3.DeviceProfile
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.ResourceUtils
+import com.android.launcher3.Utilities
 import com.android.launcher3.graphics.IconShape
 import com.android.launcher3.graphics.NinePatchDrawHelper
 import com.android.launcher3.icons.ShadowGenerator.Builder
@@ -339,7 +347,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     protected open fun getCornerRadius(): Float {
         val defaultRadius = ResourceUtils.pxFromDp(100f, resources.displayMetrics).toFloat()
-        val radius: Float = round(Utilities.getOmegaPrefs(context).searchBarRadius)
+        val radius: Float = round(Utilities.getOmegaPrefs(context).searchBarRadius.onGetValue())
         if (radius >= 0f) {
             return radius
         }

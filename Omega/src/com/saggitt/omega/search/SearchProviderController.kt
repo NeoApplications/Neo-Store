@@ -20,8 +20,30 @@ package com.saggitt.omega.search
 import android.content.Context
 import android.view.ContextThemeWrapper
 import com.android.launcher3.Utilities
-import com.saggitt.omega.search.providers.*
-import com.saggitt.omega.search.webproviders.*
+import com.saggitt.omega.search.providers.AppsSearchProvider
+import com.saggitt.omega.search.providers.BaiduSearchProvider
+import com.saggitt.omega.search.providers.BingSearchProvider
+import com.saggitt.omega.search.providers.CoolSearchSearchProvider
+import com.saggitt.omega.search.providers.DuckDuckGoSearchProvider
+import com.saggitt.omega.search.providers.EdgeSearchProvider
+import com.saggitt.omega.search.providers.FirefoxSearchProvider
+import com.saggitt.omega.search.providers.GoogleSearchProvider
+import com.saggitt.omega.search.providers.QwantSearchProvider
+import com.saggitt.omega.search.providers.SFinderSearchProvider
+import com.saggitt.omega.search.providers.SearchLiteSearchProvider
+import com.saggitt.omega.search.providers.YandexSearchProvider
+import com.saggitt.omega.search.webproviders.BaiduWebSearchProvider
+import com.saggitt.omega.search.webproviders.BingWebSearchProvider
+import com.saggitt.omega.search.webproviders.BraveWebSearchProvider
+import com.saggitt.omega.search.webproviders.DDGWebSearchProvider
+import com.saggitt.omega.search.webproviders.EcosiaWebSearchProvider
+import com.saggitt.omega.search.webproviders.GoogleWebSearchProvider
+import com.saggitt.omega.search.webproviders.MetagerWebSearchProvider
+import com.saggitt.omega.search.webproviders.QwantWebSearchProvider
+import com.saggitt.omega.search.webproviders.SearxWebSearchProvider
+import com.saggitt.omega.search.webproviders.StartpageWebSearchProvider
+import com.saggitt.omega.search.webproviders.YahooWebSearchProvider
+import com.saggitt.omega.search.webproviders.YandexWebSearchProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.SingletonHolder
@@ -64,14 +86,14 @@ class SearchProviderController(private val context: Context) {
 
     val searchProvider: SearchProvider
         get() {
-            val curr = prefs.searchProvider
+            val curr = prefs.searchProvider.onGetValue()
             if (cache == null || cached != curr) {
-                cache = createProvider(prefs.searchProvider) {
+                cache = createProvider(prefs.searchProvider.onGetValue()) {
                     AppsSearchProvider(context)
                 }
                 cached = cache!!::class.java.name
-                if (prefs.searchProvider != cached) {
-                    prefs.searchProvider = cached
+                if (prefs.searchProvider.onGetValue() != cached) {
+                    prefs.searchProvider.onSetValue(cached)
                 }
                 notifyProviderChanged()
             }
@@ -79,8 +101,8 @@ class SearchProviderController(private val context: Context) {
         }
 
     private fun createProvider(
-            providerName: String,
-            fallback: () -> SearchProvider
+        providerName: String,
+        fallback: () -> SearchProvider
     ): SearchProvider {
         try {
             val constructor = Class.forName(providerName).getConstructor(Context::class.java)
@@ -115,38 +137,38 @@ class SearchProviderController(private val context: Context) {
     }
 
     companion object : SingletonHolder<SearchProviderController, Context>(
-            ensureOnMainThread(
-                    useApplicationContext(::SearchProviderController)
-            )
+        ensureOnMainThread(
+            useApplicationContext(::SearchProviderController)
+        )
     ) {
         fun getSearchProviders(context: Context) = listOf(
-                AppsSearchProvider(context),
-                //GoogleSearchProvider(context),
-                SFinderSearchProvider(context),
+            AppsSearchProvider(context),
+            //GoogleSearchProvider(context),
+            SFinderSearchProvider(context),
             //GoogleGoSearchProvider(context),
-                FirefoxSearchProvider(context),
-                DuckDuckGoSearchProvider(context),
-                BingSearchProvider(context),
-                BaiduSearchProvider(context),
-                YandexSearchProvider(context),
-                QwantSearchProvider(context),
-                SearchLiteSearchProvider(context),
-                CoolSearchSearchProvider(context),
-                EdgeSearchProvider(context),
+            FirefoxSearchProvider(context),
+            DuckDuckGoSearchProvider(context),
+            BingSearchProvider(context),
+            BaiduSearchProvider(context),
+            YandexSearchProvider(context),
+            QwantSearchProvider(context),
+            SearchLiteSearchProvider(context),
+            CoolSearchSearchProvider(context),
+            EdgeSearchProvider(context),
 
-                /*Web Providers*/
-                BaiduWebSearchProvider(context),
-                BraveWebSearchProvider(context),
-                BingWebSearchProvider(context),
-                DDGWebSearchProvider(context),
-                EcosiaWebSearchProvider(context),
-                MetagerWebSearchProvider(context),
-                GoogleWebSearchProvider(context),
-                QwantWebSearchProvider(context),
-                StartpageWebSearchProvider(context),
-                SearxWebSearchProvider(context),
-                YahooWebSearchProvider(context),
-                YandexWebSearchProvider(context)
+            /*Web Providers*/
+            BaiduWebSearchProvider(context),
+            BraveWebSearchProvider(context),
+            BingWebSearchProvider(context),
+            DDGWebSearchProvider(context),
+            EcosiaWebSearchProvider(context),
+            MetagerWebSearchProvider(context),
+            GoogleWebSearchProvider(context),
+            QwantWebSearchProvider(context),
+            StartpageWebSearchProvider(context),
+            SearxWebSearchProvider(context),
+            YahooWebSearchProvider(context),
+            YandexWebSearchProvider(context)
         ).filter { it.isAvailable }
     }
 }

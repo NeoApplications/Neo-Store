@@ -526,9 +526,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
                 OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
                 mDotParams.count = mDotInfo.getNotificationCount();
                 mDotParams.notificationKeys = mDotInfo.getNotificationKeys().size();
-                mDotParams.showCount = prefs.getNotificationCount();
-                if (prefs.getNotificationCustomColor()) {
-                    mDotParams.color = prefs.getNotificationBackground();
+                mDotParams.showCount = prefs.getNotificationCount().onGetValue();
+                if (prefs.getNotificationCustomColor().onGetValue()) {
+                    mDotParams.color = prefs.getNotificationBackground().onGetValue();
                 }
             }
             mDotRenderer.draw(canvas, mDotParams);

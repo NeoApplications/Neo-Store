@@ -680,14 +680,14 @@ public class FolderIcon extends FrameLayout implements FolderListener, IconLabel
 
             // If we are animating to the accepting state, animate the dot out.
             mDotParams.scale = Math.max(0, mDotScale - mBackground.getScaleProgress());
-            if (prefs.getNotificationCustomColor()) {
-                mDotParams.color = prefs.getNotificationBackground();
+            if (prefs.getNotificationCustomColor().onGetValue()) {
+                mDotParams.color = prefs.getNotificationBackground().onGetValue();
             } else {
                 mDotParams.color = mBackground.getDotColor();
             }
 
             mDotParams.count = mDotInfo.getNotificationCount();
-            if (prefs.getNotificationCount())
+            if (prefs.getNotificationCount().onGetValue())
                 mDotParams.showCount = true;
             mDotRenderer.draw(canvas, mDotParams);
         }

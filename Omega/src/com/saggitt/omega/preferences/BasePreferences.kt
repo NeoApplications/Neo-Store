@@ -356,15 +356,25 @@ abstract class BasePreferences(context: Context) :
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
-        defaultValue: Int = 0,
+        defaultValue: Float = 0f,
+        steps: Int = 100,
+        specialOutputs: ((Float) -> String) = { "${(it * steps).roundToInt()}%" },
         onChange: () -> Unit = doNothing
-    ) :
-        PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
-        override fun onGetValue(): Int =
-            (sharedPrefs.getFloat(getKey(), defaultValue.toFloat() / 255) * 255).roundToInt()
+    ) : FloatPref(
+        key,
+        titleId,
+        summaryId,
+        defaultValue,
+        minValue = 0f,
+        maxValue = 1f,
+        steps,
+        specialOutputs,
+        onChange
+    ) {
+        override fun onGetValue(): Float = sharedPrefs.getFloat(getKey(), defaultValue)
 
-        override fun onSetValue(value: Int) {
-            edit { putFloat(getKey(), value.toFloat() / 255) }
+        override fun onSetValue(value: Float) {
+            edit { putFloat(getKey(), value) }
         }
     }
 

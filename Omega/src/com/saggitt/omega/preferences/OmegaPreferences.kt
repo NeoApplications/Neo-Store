@@ -303,13 +303,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // DOCK
-    var dockHide by BooleanPref(
+    var dockHide = BooleanPref(
         key = PREFS_DOCK_HIDE,
         titleId = R.string.title__dock_hide,
         defaultValue = false,
         onChange = restart
     )
-    val dockIconScale by FloatPref(
+    val dockIconScale = FloatPref(
         key = PREFS_DOCK_ICON_SCALE,
         titleId = R.string.title__dock_icon_size,
         defaultValue = 1f,
@@ -319,7 +319,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = recreate
     )
-    var dockScale by FloatPref(
+    var dockScale = FloatPref(
         key = PREFS_DOCK_SCALE,
         titleId = R.string.title__dock_scale,
         defaultValue = 1f,
@@ -329,32 +329,32 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = restart
     )
-    val dockBackground by BooleanPref(
+    val dockBackground = BooleanPref(
         key = PREFS_DOCK_BACKGROUND,
         titleId = R.string.title_dock_fill,
         defaultValue = false,
         onChange = recreate
     )
-    val dockBackgroundColor by IntPref(
+    val dockBackgroundColor = IntPref(
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = 0x101010,
         onChange = recreate
     )
-    var dockOpacity by AlphaPref(
+    var dockOpacity = AlphaPref(
         key = PREFS_DOCK_OPACITY,
         titleId = R.string.title_opacity,
-        defaultValue = -1,
+        defaultValue = 0f,
         onChange = recreate
     )
-    var dockSearchBar by BooleanPref(
+    var dockSearchBar = BooleanPref(
         key = "pref_dock_search",
         titleId = R.string.title__dock_search_bar,
         summaryId = R.string.summary_dock_search,
         defaultValue = false,
         onChange = restart
     )
-    private val dockGridSizeDelegate = ResettableLazy {
+    val dockGridSizeDelegate = ResettableLazy {
         GridSize(
             prefs = this,
             rowsKey = "numHotseatIcons",
@@ -363,7 +363,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val dockGridSize by dockGridSizeDelegate
-    val numHotseatIcons = IdpIntPref(
+    val dockNumIcons = IdpIntPref(
         key = "pref_numHotseatIcons",
         titleId = R.string.num_hotseat_icons_pref_title,
         selectDefaultValue = { numHotseatIcons },
@@ -597,7 +597,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // SEARCH & FOLDER
-    var searchBarRadius by DimensionPref(
+    var searchBarRadius = DimensionPref(
         key = PREFS_SEARCH_BAR_RADIUS,
         titleId = R.string.title__search_bar_radius,
         defaultValue = -1f,
@@ -612,32 +612,32 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = recreate
     )
-    var showLensIcon by BooleanPref(
+    var searchShowLensIcon = BooleanPref(
         key = PREFS_SEARCH_SHOW_LENS_ICON,
         titleId = R.string.title_search_action_lens,
         summaryId = R.string.summary_search_show_lens_summary,
         defaultValue = true,
         onChange = recreate
     )
-    var searchProvider by StringPref(
+    var searchProvider = StringPref(
         key = PREFS_SEARCH_PROVIDER,
         titleId = R.string.title_search_provider,
         defaultValue = "",
         onChange = { SearchProviderController.getInstance(context).onSearchProviderChanged() }
     )
-    val searchHiddenApps by BooleanPref(
+    val searchHiddenApps = BooleanPref(
         key = PREFS_SEARCH_HIDDEN_APPS,
         titleId = R.string.title_search_hidden_apps,
         summaryId = R.string.summary_search_hidden_apps,
         defaultValue = false
     )
-    val fuzzySearch by BooleanPref(
+    val searchFuzzy = BooleanPref(
         key = PREFS_SEARCH_FUZZY,
         titleId = R.string.title_fuzzy_search,
         summaryId = R.string.summary_fuzzy_search,
         defaultValue = true
     )
-    var allAppsGlobalSearch by BooleanPref(
+    var searchGlobal = BooleanPref(
         key = PREFS_SEARCH_GLOBAL,
         titleId = R.string.title_all_apps_google_search,
         summaryId = R.string.summary_all_apps_google_search,
@@ -646,79 +646,74 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // GESTURES & NOTIFICATION
-    val notificationCount: Boolean by BooleanPref(
+    // NOTIFICATION & GESTURES
+    val notificationCount = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT,
         titleId = R.string.title__notification_count,
         defaultValue = false,
         onChange = recreate
     )
-    val notificationCustomColor: Boolean by BooleanPref(
+    val notificationCustomColor = BooleanPref(
         key = PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
         titleId = R.string.notification_custom_color,
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground by IntPref(
+    val notificationBackground = IntPref(
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
         defaultValue = R.color.notification_background,
         onChange = recreate
     )
-    val folderBadgeCount by BooleanPref(
+    val notificationCountFolder = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT_FOLDER,
         titleId = R.string.title__folder_badge_count,
         defaultValue = true,
         onChange = recreate
     )
-
-
-    /*
-    * Preferences not used. Added to register the change and restart only
-    */
-    var doubleTapGesture by StringPref(
+    var gestureDoubleTap = StringPref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
         defaultValue = "",
         onChange = restart
     )
-    var longPressGesture by StringPref(
+    var gestureLongPress = StringPref(
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
         defaultValue = "",
         onChange = restart
     )
-    var homePressGesture by StringPref(
+    var gestureHomePress = StringPref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
         onChange = restart
     )
-    var backPressGesture by StringPref(
+    var gestureBackPress = StringPref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
         onChange = restart
     )
-    var swipeDownGesture by StringPref(
+    var gestureSwipeDown = StringPref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
         defaultValue = "",
         onChange = restart
     )
-    var swipeUpGesture by StringPref(
+    var gestureSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
         defaultValue = "",
         onChange = restart
     )
-    var dockSwipeUpGesture by StringPref(
+    var gestureDockSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
         defaultValue = "",
         onChange = restart
     )
-    var launchAssistantGesture by StringPref(
+    var gestureLaunchAssistant = StringPref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
         defaultValue = "",
