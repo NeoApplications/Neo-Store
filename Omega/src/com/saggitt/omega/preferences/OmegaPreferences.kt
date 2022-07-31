@@ -344,7 +344,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var dockOpacity by AlphaPref(
         key = PREFS_DOCK_OPACITY,
         titleId = R.string.title_opacity,
-        defaultValue = -1,
+        defaultValue = 0f,
         onChange = recreate
     )
     var dockSearchBar by BooleanPref(
