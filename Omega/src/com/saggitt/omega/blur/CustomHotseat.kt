@@ -34,7 +34,11 @@ import com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound
 import com.android.launcher3.icons.ShadowGenerator
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.preferences.OmegaPreferences
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.dpToPx
+import com.saggitt.omega.util.getWindowCornerRadius
+import com.saggitt.omega.util.isVisible
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.runOnMainThread
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -49,7 +53,7 @@ class CustomHotseat @JvmOverloads constructor(
     private val prefs by lazy { Utilities.getOmegaPrefs(context) }
     private val prefsToWatch = arrayOf("pref_dockBackground", "pref_dockOpacity")
 
-    private var bgEnabled = prefs.dockBackground
+    private var bgEnabled = prefs.dockBackground.onGetValue()
     private var radius = getWindowCornerRadius(context)
 
     private var shadow = true
@@ -95,7 +99,7 @@ class CustomHotseat @JvmOverloads constructor(
         }
     }
 
-    private val hotseatDisabled = context.omegaPrefs.dockHide
+    private val hotseatDisabled = context.omegaPrefs.dockHide.onGetValue()
 
     init {
         if (hotseatDisabled) {
@@ -129,10 +133,10 @@ class CustomHotseat @JvmOverloads constructor(
     }
 
     private fun reloadPrefs() {
-        bgEnabled = prefs.dockBackground
+        bgEnabled = prefs.dockBackground.onGetValue()
         radius = dpToPx(getWindowCornerRadius(context))
         shadow = true //prefs.dockShadow
-        bgAlpha = (prefs.dockOpacity.takeIf { it >= 0 }
+        bgAlpha = (prefs.dockOpacity.onGetValue().takeIf { it >= 0 }?.times(255)
             ?: Themes.getAttrInteger(context, R.attr.allAppsInterimScrimAlpha)).toFloat() / 255f
         shadowBitmap = generateShadowBitmap()
         setWillNotDraw(!bgEnabled || launcher.useVerticalBarLayout())
@@ -185,7 +189,11 @@ class CustomHotseat @JvmOverloads constructor(
     }
 
     private fun setBgColor() {
-        bgColor = setColorAlphaBound(noAlphaBgColor, (bgAlpha * viewAlpha * 255).toInt())
+        bgColor =
+            setColorAlphaBound(
+                noAlphaBgColor.onGetValue(),
+                (bgAlpha * viewAlpha * 255).roundToInt()
+            )
         paint.color = bgColor
         invalidate()
     }

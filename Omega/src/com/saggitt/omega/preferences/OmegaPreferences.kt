@@ -303,13 +303,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // DOCK
-    var dockHide by BooleanPref(
+    var dockHide = BooleanPref(
         key = PREFS_DOCK_HIDE,
         titleId = R.string.title__dock_hide,
         defaultValue = false,
         onChange = restart
     )
-    val dockIconScale by FloatPref(
+    val dockIconScale = FloatPref(
         key = PREFS_DOCK_ICON_SCALE,
         titleId = R.string.title__dock_icon_size,
         defaultValue = 1f,
@@ -319,7 +319,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = recreate
     )
-    var dockScale by FloatPref(
+    var dockScale = FloatPref(
         key = PREFS_DOCK_SCALE,
         titleId = R.string.title__dock_scale,
         defaultValue = 1f,
@@ -329,32 +329,32 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = restart
     )
-    val dockBackground by BooleanPref(
+    val dockBackground = BooleanPref(
         key = PREFS_DOCK_BACKGROUND,
         titleId = R.string.title_dock_fill,
         defaultValue = false,
         onChange = recreate
     )
-    val dockBackgroundColor by IntPref(
+    val dockBackgroundColor = IntPref(
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = 0x101010,
         onChange = recreate
     )
-    var dockOpacity by AlphaPref(
+    var dockOpacity = AlphaPref(
         key = PREFS_DOCK_OPACITY,
         titleId = R.string.title_opacity,
         defaultValue = 0f,
         onChange = recreate
     )
-    var dockSearchBar by BooleanPref(
+    var dockSearchBar = BooleanPref(
         key = "pref_dock_search",
         titleId = R.string.title__dock_search_bar,
         summaryId = R.string.summary_dock_search,
         defaultValue = false,
         onChange = restart
     )
-    private val dockGridSizeDelegate = ResettableLazy {
+    val dockGridSizeDelegate = ResettableLazy {
         GridSize(
             prefs = this,
             rowsKey = "numHotseatIcons",
@@ -363,7 +363,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val dockGridSize by dockGridSizeDelegate
-    val numHotseatIcons = IdpIntPref(
+    val dockNumIcons = IdpIntPref(
         key = "pref_numHotseatIcons",
         titleId = R.string.num_hotseat_icons_pref_title,
         selectDefaultValue = { numHotseatIcons },

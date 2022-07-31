@@ -62,7 +62,7 @@ public class Hotseat extends CellLayout implements Insettable {
     public Hotseat(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        if (Utilities.getOmegaPrefs(context).getDockSearchBar()) {
+        if (Utilities.getOmegaPrefs(context).getDockSearchBar().onGetValue()) {
             mQsb = LayoutInflater.from(context).inflate(R.layout.search_container_hotseat, this, false);
         } else {
             mQsb = LayoutInflater.from(context).inflate(R.layout.empty_view, this, false);
