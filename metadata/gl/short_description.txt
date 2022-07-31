@@ -1,0 +1,1 @@
+Un cliente F-Droid moderno con Material Design.
