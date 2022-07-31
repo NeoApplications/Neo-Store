@@ -24,7 +24,11 @@ import android.content.IntentSender
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.graphics.Rect
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -32,7 +36,9 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -194,7 +200,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.hiddenAppSet) }
 
         mOverlayManager = defaultOverlay
-        showFolderNotificationCount = prefs.folderBadgeCount
+        showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
         if (prefs.customWindowCorner) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
             QuickStepContract.sCustomCornerRadius = prefs.windowCornerRadius

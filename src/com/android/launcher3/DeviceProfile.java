@@ -454,7 +454,7 @@ public class DeviceProfile {
 
         // This is done last, after iconSizePx is calculated above.
         float dotSize = 0.38f;
-        if (!Utilities.getOmegaPrefs(context).getNotificationCount()) {
+        if (!Utilities.getOmegaPrefs(context).getNotificationCount().onGetValue()) {
             dotSize = 0.228f;
         }
 

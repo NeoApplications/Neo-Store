@@ -646,79 +646,74 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // GESTURES & NOTIFICATION
-    val notificationCount: Boolean by BooleanPref(
+    // NOTIFICATION & GESTURES
+    val notificationCount = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT,
         titleId = R.string.title__notification_count,
         defaultValue = false,
         onChange = recreate
     )
-    val notificationCustomColor: Boolean by BooleanPref(
+    val notificationCustomColor = BooleanPref(
         key = PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
         titleId = R.string.notification_custom_color,
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground by IntPref(
+    val notificationBackground = IntPref(
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
         defaultValue = R.color.notification_background,
         onChange = recreate
     )
-    val folderBadgeCount by BooleanPref(
+    val notificationCountFolder = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT_FOLDER,
         titleId = R.string.title__folder_badge_count,
         defaultValue = true,
         onChange = recreate
     )
-
-
-    /*
-    * Preferences not used. Added to register the change and restart only
-    */
-    var doubleTapGesture by StringPref(
+    var gestureDoubleTap = StringPref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
         defaultValue = "",
         onChange = restart
     )
-    var longPressGesture by StringPref(
+    var gestureLongPress = StringPref(
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
         defaultValue = "",
         onChange = restart
     )
-    var homePressGesture by StringPref(
+    var gestureHomePress = StringPref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
         onChange = restart
     )
-    var backPressGesture by StringPref(
+    var gestureBackPress = StringPref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
         onChange = restart
     )
-    var swipeDownGesture by StringPref(
+    var gestureSwipeDown = StringPref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
         defaultValue = "",
         onChange = restart
     )
-    var swipeUpGesture by StringPref(
+    var gestureSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
         defaultValue = "",
         onChange = restart
     )
-    var dockSwipeUpGesture by StringPref(
+    var gestureDockSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
         defaultValue = "",
         onChange = restart
     )
-    var launchAssistantGesture by StringPref(
+    var gestureLaunchAssistant = StringPref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
         defaultValue = "",
