@@ -402,7 +402,7 @@
     <string name="dialog_message_change_sort">Changer l\'ordre des applications en alphabétique \?</string>
     <string name="trust_apps_manager_name">Applications cachées et protégées</string>
     <string name="disable_protected_apps">Désactiver les applications protégées</string>
-    <string name="title_smartspace">Afficher Smartspace</string>
+    <string name="title_smartspace">Afficher l\'Espaceintelligent</string>
     <string name="about_translators">Traducteurs</string>
     <string name="dash_bluetooth_summary">Dés/activer Bluetooth</string>
     <string name="modify_system_settings">Modifier les préférences système</string>
@@ -448,4 +448,6 @@
     <string name="app_name">Nom de l\'app</string>
     <string name="tab_launcher">Lanceur</string>
     <string name="tab_shortcuts">Raccourcis</string>
+    <string name="title_fuzzy_search">Recherche approximative</string>
+    <string name="summary_fuzzy_search">Correspondance approximative pour les recherches d\'applications.</string>
 </resources>
