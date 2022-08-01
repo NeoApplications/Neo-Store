@@ -192,7 +192,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private boolean isPagedView(){
-        return prefs.getDrawerLayout() == Config.DRAWER_PAGED;
+        return prefs.getDrawerLayout().onGetValue() == Config.DRAWER_PAGED;
     }
 
     @Override
@@ -270,7 +270,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         boolean force = false;
         boolean hasWorkApps = false;
 
-        if (Utilities.getOmegaPrefs(getContext()).getSeparateWorkApps()) {
+        if (Utilities.getOmegaPrefs(getContext()).getDrawerSeparateWorkApps().onGetValue()) {
             for (AppInfo app : mAllAppsStore.getApps()) {
                 if (mWorkMatcher.matches(app, null)) {
                     hasWorkApps = true;
@@ -394,7 +394,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     public void reset(boolean animate, boolean force) {
-        if (force || !Utilities.getOmegaPrefs(getContext()).getSaveScrollPosition()) {
+        if (force || !Utilities.getOmegaPrefs(getContext()).getDrawerSaveScrollPosition().onGetValue()) {
             for (AdapterHolder adapterHolder : mAH) {
                 if (adapterHolder.recyclerView != null) {
                     adapterHolder.recyclerView.scrollToTop();

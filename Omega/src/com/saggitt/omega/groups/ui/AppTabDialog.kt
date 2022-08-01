@@ -191,7 +191,7 @@ fun AppTabDialogUI(
                             tab.contents.value().addOrRemove(componentKey, selectedItems[index])
                         }
                         tabs.hashCode()
-                        prefs.appGroupsManager.drawerTabs.saveToJson()
+                        prefs.drawerAppGroupsManager.drawerTabs.saveToJson()
                         openDialogCustom.value = false
                     },
                     modifier = Modifier.padding(start = 16.dp),

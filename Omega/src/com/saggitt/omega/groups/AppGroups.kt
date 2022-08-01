@@ -518,7 +518,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                 updateCount(view)
 
                 view.setOnClickListener {
-                    if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).enableProtectedApps) {
+                    if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).drawerEnableProtectedApps.onGetValue()) {
                         Config.showLockScreen(
                             context,
                             context.getString(R.string.trust_apps_manager_name)

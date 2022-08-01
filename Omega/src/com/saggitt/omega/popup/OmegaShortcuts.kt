@@ -26,11 +26,19 @@ import android.content.pm.LauncherApps
 import android.net.Uri
 import android.view.View
 import android.widget.Toast
-import com.android.launcher3.*
+import com.android.launcher3.AbstractFloatingView
+import com.android.launcher3.Launcher
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
+import com.android.launcher3.LauncherState
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.icons.BitmapInfo
-import com.android.launcher3.model.data.*
+import com.android.launcher3.model.data.FolderInfo
+import com.android.launcher3.model.data.ItemInfo
+import com.android.launcher3.model.data.ItemInfoWithIcon
 import com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_SYSTEM_YES
+import com.android.launcher3.model.data.LauncherAppWidgetInfo
+import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.OmegaLauncher
@@ -65,7 +73,7 @@ class OmegaShortcuts {
             val defaultTitle = launcherActivityInfo.label.toString()
 
             if (launcher.isInState(LauncherState.ALL_APPS)) {
-                if (prefs.drawerPopupEdit) {
+                if (prefs.drawerPopupEdit.onGetValue()) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
                     ComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
@@ -77,7 +85,7 @@ class OmegaShortcuts {
                     }
                 }
             } else if (launcher.isInState(LauncherState.NORMAL)) {
-                if (prefs.desktopPopupEdit && !prefs.desktopLock.onGetValue()) {
+                if (prefs.desktopPopupEdit.onGetValue() && !prefs.desktopLock.onGetValue()) {
                     AbstractFloatingView.closeAllOpenViews(mTarget)
                     ComposeBottomSheet.show(launcher, true) {
                         CustomizeIconSheet(
@@ -159,13 +167,13 @@ class OmegaShortcuts {
             val prefs = Utilities.getOmegaPrefs(activity)
             var customize: Customize? = null
             if (Launcher.getLauncher(activity).isInState(LauncherState.NORMAL)) {
-                if (prefs.desktopPopupEdit && !prefs.desktopLock.onGetValue()) {
+                if (prefs.desktopPopupEdit.onGetValue() && !prefs.desktopLock.onGetValue()) {
                     getAppInfo(activity, itemInfo)?.let {
                         customize = Customize(activity, it, itemInfo)
                     }
                 }
             } else {
-                if (prefs.drawerPopupEdit) {
+                if (prefs.drawerPopupEdit.onGetValue()) {
                     getAppInfo(activity, itemInfo)?.let {
                         customize = Customize(activity, it, itemInfo)
                     }
@@ -189,7 +197,7 @@ class OmegaShortcuts {
                     || itemInfo is LauncherAppWidgetInfo
                     || itemInfo is FolderInfo
                 ) {
-                    if (prefs.desktopPopupRemove
+                    if (prefs.desktopPopupRemove.onGetValue()
                         && !prefs.desktopLock.onGetValue()
                     ) {
                         appRemove = AppRemove(launcher, itemInfo)
@@ -203,7 +211,7 @@ class OmegaShortcuts {
             val prefs = Utilities.getOmegaPrefs(launcher)
             var appUninstall: AppUninstall? = null
 
-            if (prefs.drawerPopupUninstall && launcher.isInState(LauncherState.ALL_APPS)) {
+            if (prefs.drawerPopupUninstall.onGetValue() && launcher.isInState(LauncherState.ALL_APPS)) {
 
                 if (itemInfo is ItemInfoWithIcon) {
                     if (!itemInfo.runtimeStatusFlags.hasFlags(FLAG_SYSTEM_YES)) {

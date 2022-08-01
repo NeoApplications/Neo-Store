@@ -44,7 +44,7 @@ class DrawerFolderInfo(private val drawerFolder: DrawerFolders.Folder) : FolderI
     fun onCloseComplete() {
         if (changed) {
             changed = false
-            drawerFolder.context.omegaPrefs.appGroupsManager.drawerFolders.saveToJson()
+            drawerFolder.context.omegaPrefs.drawerAppGroupsManager.drawerFolders.saveToJson()
         }
     }
 

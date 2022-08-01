@@ -197,7 +197,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
         //Load hidden apps to use with hidden apps preference
-        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.hiddenAppSet) }
+        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.drawerHiddenAppSet.onGetValue()) }
 
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()

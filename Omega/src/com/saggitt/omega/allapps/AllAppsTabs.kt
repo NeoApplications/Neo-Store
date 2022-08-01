@@ -49,7 +49,7 @@ class AllAppsTabs(private val context: Context) : Iterable<AllAppsTabs.Tab> {
     fun reloadTabs() {
         addedApps.clear()
         tabs.clear()
-        context.omegaPrefs.currentTabsModel.getGroups().mapNotNullTo(tabs) {
+        context.omegaPrefs.drawerTabsModelCurrent.getGroups().mapNotNullTo(tabs) {
             when {
                 it is DrawerTabs.ProfileTab -> {
                     if (hasWorkApps != it.profile.matchesAll) {

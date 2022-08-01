@@ -32,11 +32,11 @@ import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS
 import com.saggitt.omega.PREFS_COLORED_BACKGROUND
-import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
-import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DASH_LINESIZE
 import com.saggitt.omega.PREFS_DASH_PROVIDERS
 import com.saggitt.omega.PREFS_DEBUG_MODE
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DESKTOP_HIDE_LABEL
 import com.saggitt.omega.PREFS_DESKTOP_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DESKTOP_ICON_SCALE
@@ -46,6 +46,8 @@ import com.saggitt.omega.PREFS_DESKTOP_MODE
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_EDIT
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_MENU
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
+import com.saggitt.omega.PREFS_DESKTOP_ROWS
+import com.saggitt.omega.PREFS_DESKTOP_ROWS_RAW
 import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
 import com.saggitt.omega.PREFS_DOCK_BACKGROUND
 import com.saggitt.omega.PREFS_DOCK_BACKGROUND_COLOR
@@ -102,8 +104,6 @@ import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_PROTECTED_SET
 import com.saggitt.omega.PREFS_RECENT_BACKUP
 import com.saggitt.omega.PREFS_RESTORE_SUCCESS
-import com.saggitt.omega.PREFS_DESKTOP_ROWS
-import com.saggitt.omega.PREFS_DESKTOP_ROWS_RAW
 import com.saggitt.omega.PREFS_SEARCH_BAR_RADIUS
 import com.saggitt.omega.PREFS_SEARCH_FUZZY
 import com.saggitt.omega.PREFS_SEARCH_GLOBAL
@@ -315,6 +315,18 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
+    val desktopPopupEdit = BooleanPref(
+        key = PREFS_DESKTOP_POPUP_EDIT,
+        titleId = R.string.action_preferences,
+        defaultValue = true,
+        onChange = doNothing
+    )
+    val desktopPopupRemove = BooleanPref(
+        key = PREFS_DESKTOP_POPUP_REMOVE,
+        titleId = R.string.remove_drop_target_label,
+        defaultValue = false,
+        onChange = doNothing
+    )
 
 
     // DOCK
@@ -387,44 +399,46 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // DRAWER
-    val allAppsSearch by BooleanPref(
+    val drawerSearch = BooleanPref(
         key = PREFS_DRAWER_SEARCH,
         titleId = R.string.title_all_apps_search,
         summaryId = R.string.summary_all_apps_search,
         defaultValue = true,
         onChange = recreate
     )
-    var sortMode by StringIntPref(
+    var drawerSortMode = StringIntPref(
         key = PREFS_SORT,
         titleId = R.string.title__sort_mode,
         defaultValue = 0,
         onChange = recreate
     )
-    var hiddenAppSet by StringSetPref(
+    var drawerHiddenAppSet = StringSetPref(
         key = PREFS_HIDDEN_SET,
         titleId = R.string.title_search_hidden_apps,
         summaryId = R.string.summary_all_apps_search,
         defaultValue = setOf(),
         onChange = reloadApps
     )
-    var hiddenPredictionAppSet by StringSetPref(
+    var drawerHiddenApps by drawerHiddenAppSet
+    var drawerHiddenPredictionAppSet = StringSetPref(
         key = PREFS_HIDDEN_PREDICTION_SET,
         titleId = -1,
         defaultValue = setOf(),
         onChange = doNothing
     )
-    var protectedAppsSet by StringSetPref(
+    var drawerProtectedAppsSet = StringSetPref(
         key = PREFS_PROTECTED_SET,
         titleId = -1,
         defaultValue = setOf(),
         onChange = reloadApps
     )
-    var enableProtectedApps by BooleanPref(
+    var drawerProtectedApps by drawerProtectedAppsSet
+    var drawerEnableProtectedApps = BooleanPref(
         key = PREFS_PROTECTED_APPS,
         titleId = R.string.enable_protected_apps,
         defaultValue = false
     )
-    var allAppsIconScale by FloatPref(
+    var drawerIconScale = FloatPref(
         key = PREFS_DRAWER_ICON_SCALE,
         titleId = R.string.title__drawer_icon_size,
         defaultValue = 1f,
@@ -434,7 +448,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadApps
     )
-    val allAppsTextScale by FloatPref(
+    val drawerTextScale = FloatPref(
         key = PREFS_DRAWER_ICON_TEXT_SCALE,
         titleId = R.string.title_desktop_text_size,
         defaultValue = 1f,
@@ -443,20 +457,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         steps = 150,
         specialOutputs = { "${(it * 100).roundToInt()}%" },
     )
-    val hideAllAppsAppLabels by BooleanPref(
+    val drawerHideAppLabels = BooleanPref(
         key = PREFS_DRAWER_HIDE_LABEL,
         titleId = R.string.title__drawer_hide_icon_labels,
         defaultValue = false,
         onChange = reloadApps
     )
-    private val drawerMultilineLabel by BooleanPref(
+    val drawerMultilineLabel = BooleanPref(
         key = PREFS_DRAWER_ICON_LABEL_TWOLINES,
         titleId = R.string.title__multiline_labels,
         defaultValue = false,
         onChange = reloadApps
     )
-    val drawerLabelRows get() = if (drawerMultilineLabel) 2 else 1
-    val allAppsCellHeightMultiplier by FloatPref(
+    val drawerLabelRows get() = if (drawerMultilineLabel.onGetValue()) 2 else 1
+    val drawerCellHeightMultiplier = FloatPref(
         key = PREFS_DRAWER_HEIGHT_MULTIPLIER,
         titleId = R.string.title_drawer_row_height,
         defaultValue = 1F,
@@ -466,24 +480,25 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = restart
     )
-    val separateWorkApps by BooleanPref(
+    val drawerSeparateWorkApps = BooleanPref(
         key = PREFS_WORK_PROFILE_SEPARATED,
         titleId = R.string.title_separate_work_apps,
         defaultValue = false,
         onChange = recreate
     )
-    val appGroupsManager by lazy { AppGroupsManager(this) }
-    val drawerTabs get() = appGroupsManager.drawerTabs
-    val currentTabsModel
-        get() = appGroupsManager.getEnabledModel() as? DrawerTabs ?: appGroupsManager.drawerTabs
+    val drawerAppGroupsManager by lazy { AppGroupsManager(this) }
+    val drawerTabs get() = drawerAppGroupsManager.drawerTabs
+    val drawerTabsModelCurrent
+        get() = drawerAppGroupsManager.getEnabledModel() as? DrawerTabs
+            ?: drawerAppGroupsManager.drawerTabs
 
-    val saveScrollPosition by BooleanPref(
+    val drawerSaveScrollPosition = BooleanPref(
         key = PREFS_KEEP_SCROLL_STATE,
         titleId = R.string.title_all_apps_keep_scroll_state,
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerLayout by StringIntPref(
+    val drawerLayout = StringIntPref(
         key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,
@@ -498,19 +513,24 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         )
     }
     val drawerGridSize by drawerGridSizeDelegate
-    val numAllAppsColumns = IdpIntPref(
+    val drawerColumns = IdpIntPref(
         key = PREFS_DRAWER_COLUMNS,
         titleId = R.string.title__drawer_columns,
         selectDefaultValue = { numAllAppsColumns },
         onChange = reloadGrid
     )
-    val customAppName =
-        object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
-            override fun flattenKey(key: ComponentKey) = key.toString()
-            override fun unflattenKey(key: String) = makeComponentKey(context, key)
-            override fun flattenValue(value: String) = value
-            override fun unflattenValue(value: String) = value
-        }
+    val drawerPopupEdit = BooleanPref(
+        key = PREFS_DRAWER_POPUP_EDIT,
+        titleId = R.string.action_preferences,
+        defaultValue = true,
+        onChange = doNothing
+    )
+    val drawerPopupUninstall = BooleanPref(
+        key = PREFS_DRAWER_POPUP_UNINSTALL,
+        titleId = R.string.uninstall_drop_target_label,
+        defaultValue = false,
+        onChange = doNothing
+    )
 
 
     // THEME
@@ -888,35 +908,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = ::updateSmartspaceProvider
     )
 
+    // MISC
+    val customAppName =
+        object : MutableMapPref<ComponentKey, String>("pref_appNameMap", reloadAll) {
+            override fun flattenKey(key: ComponentKey) = key.toString()
+            override fun unflattenKey(key: String) = makeComponentKey(context, key)
+            override fun flattenValue(value: String) = value
+            override fun unflattenValue(value: String) = value
+        }
     var torchState by BooleanPref(
         key = PREFS_TORCH,
         titleId = R.string.dash_torch,
-        defaultValue = false,
-        onChange = doNothing
-    )
-
-    // POPUP DIALOG PREFERENCES
-    val desktopPopupEdit by BooleanPref(
-        key = PREFS_DESKTOP_POPUP_EDIT,
-        titleId = R.string.action_preferences,
-        defaultValue = true,
-        onChange = doNothing
-    )
-    val desktopPopupRemove by BooleanPref(
-        key = PREFS_DESKTOP_POPUP_REMOVE,
-        titleId = R.string.remove_drop_target_label,
-        defaultValue = false,
-        onChange = doNothing
-    )
-    val drawerPopupEdit by BooleanPref(
-        key = PREFS_DRAWER_POPUP_EDIT,
-        titleId = R.string.action_preferences,
-        defaultValue = true,
-        onChange = doNothing
-    )
-    val drawerPopupUninstall by BooleanPref(
-        key = PREFS_DRAWER_POPUP_UNINSTALL,
-        titleId = R.string.uninstall_drop_target_label,
         defaultValue = false,
         onChange = doNothing
     )

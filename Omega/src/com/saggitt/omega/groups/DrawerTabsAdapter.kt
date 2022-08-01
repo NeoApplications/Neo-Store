@@ -33,7 +33,7 @@ open class DrawerTabsAdapter(context: Context) :
     override val groupsModel: DrawerTabs = manager.drawerTabs
     override val headerText = R.string.app_categorization_tabs
 
-    private val hasWorkApps = context.omegaPrefs.separateWorkApps &&
+    private val hasWorkApps = context.omegaPrefs.drawerSeparateWorkApps.onGetValue() &&
             UserCache.INSTANCE.get(context).userProfiles.size > 1
 
     override fun createGroup(callback: (DrawerTabs.Tab, Boolean) -> Unit) {

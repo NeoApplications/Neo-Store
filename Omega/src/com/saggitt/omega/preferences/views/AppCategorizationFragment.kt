@@ -45,7 +45,7 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
 
     private val mContext by lazy { activity as Context }
     private val prefs by lazy { Utilities.getOmegaPrefs(mContext) }
-    private val manager by lazy { prefs.appGroupsManager }
+    private val manager by lazy { prefs.drawerAppGroupsManager }
 
     private var groupAdapter: AppGroupsAdapter<*, *>? = null
         set(value) {

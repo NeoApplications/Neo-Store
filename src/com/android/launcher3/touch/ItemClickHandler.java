@@ -96,7 +96,7 @@ public class ItemClickHandler {
                 onClickFolderIcon(v);
             }
         } else if (tag instanceof AppInfo) {
-            if (Utilities.getOmegaPrefs(launcher).getSortMode() == Config.SORT_MOST_USED) {
+            if (Utilities.getOmegaPrefs(launcher).getDrawerSortMode().onGetValue() == Config.SORT_MOST_USED) {
                 Utilities.getOmegaPrefs(launcher).reloadApps();
             }
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher);
@@ -339,7 +339,7 @@ public class ItemClickHandler {
             }
             isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
                     new ComponentKey(si.getTargetComponent(), si.user)) &&
-                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
+                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getDrawerEnableProtectedApps().onGetValue();
         }
         if (v != null && launcher.supportsAdaptiveIconAnimation(v)) {
             // Preload the icon to reduce latency b/w swapping the floating view with the original.
@@ -351,7 +351,7 @@ public class ItemClickHandler {
 
             isProtected = Config.Companion.isAppProtected(launcher.getApplicationContext(),
                     ((AppInfo) item).toComponentKey()) &&
-                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getEnableProtectedApps();
+                    Utilities.getOmegaPrefs(launcher.getApplicationContext()).getDrawerEnableProtectedApps().onGetValue();
         }
 
         if (isProtected && Utilities.ATLEAST_R) {

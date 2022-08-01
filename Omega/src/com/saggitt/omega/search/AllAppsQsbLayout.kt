@@ -58,7 +58,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
     private var mCancelButton: ImageButton? = null
 
     init {
-        visibility = (if (prefs.allAppsSearch) View.VISIBLE else View.GONE)
+        visibility = (if (prefs.drawerSearch.onGetValue()) View.VISIBLE else View.GONE)
     }
 
     override fun onFinishInflate() {
@@ -138,7 +138,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         translationX = shift.toFloat()
 
         var containerTopMargin = 0
-        if (!prefs.allAppsSearch) {
+        if (!prefs.drawerSearch.onGetValue()) {
             val mlp = layoutParams as MarginLayoutParams
             containerTopMargin = -(mlp.topMargin + mlp.height)
         }
@@ -192,7 +192,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
                 }
                 val currentScrollY = (recyclerView as BaseRecyclerView).currentScrollY
                 val elevationScale = Utilities.boundToRange(currentScrollY / 255f, 0f, 1f)
-                if (prefs.drawerLayout != Config.DRAWER_PAGED)
+                if (prefs.drawerLayout.onGetValue() != Config.DRAWER_PAGED)
                     mFallback?.elevation = initialElevation + elevationScale * initialElevation
             }
         })

@@ -37,7 +37,7 @@ class DeviceProfileOverrides(context: Context) {
             numHotseatColumns = prefs.dockNumIcons.get(defaultGrid),
             numRows = prefs.desktopRows.get(defaultGrid),
             numColumns = prefs.desktopColumns.get(defaultGrid),
-            numAllAppsColumns = prefs.numAllAppsColumns.get(defaultGrid),
+            numAllAppsColumns = prefs.drawerColumns.get(defaultGrid),
             numFolderRows = prefs.desktopFolderRows.onGetValue().toInt(),
             numFolderColumns = prefs.desktopFolderColumns.onGetValue().toInt(),
 
@@ -45,9 +45,9 @@ class DeviceProfileOverrides(context: Context) {
             enableIconText = !prefs.desktopHideAppLabels.onGetValue(),
             iconTextSizeFactor = prefs.desktopTextScale.onGetValue(),
 
-            allAppsIconSizeFactor = prefs.allAppsIconScale,
-            enableAllAppsIconText = !prefs.hideAllAppsAppLabels,
-            allAppsIconTextSizeFactor = prefs.allAppsTextScale
+            allAppsIconSizeFactor = prefs.drawerIconScale.onGetValue(),
+            enableAllAppsIconText = !prefs.drawerHideAppLabels.onGetValue(),
+            allAppsIconTextSizeFactor = prefs.drawerTextScale.onGetValue()
         )
 
         fun apply(idp: InvariantDeviceProfile) {

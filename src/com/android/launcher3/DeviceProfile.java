@@ -221,7 +221,7 @@ public class DeviceProfile {
 
         prefs = Utilities.getOmegaPrefs(context);
         boolean fullWidthWidgets = prefs.getDesktopAllowFullWidthWidgets().onGetValue();
-        allAppsCellHeightMultiplier = prefs.getAllAppsCellHeightMultiplier();
+        allAppsCellHeightMultiplier = prefs.getDrawerCellHeightMultiplier().onGetValue();
         this.inv = inv;
         this.isLandscape = windowBounds.isLandscape();
         this.isMultiWindowMode = isMultiWindowMode;

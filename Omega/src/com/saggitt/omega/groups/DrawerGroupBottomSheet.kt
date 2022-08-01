@@ -107,7 +107,7 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
         fun editFolder(launcher: Launcher, group: DrawerFolders.Folder) {
             val config = AppGroups.Group.CustomizationMap(group.customizations)
             edit(launcher, config, group, true) {
-                launcher.omegaPrefs.appGroupsManager.drawerFolders.saveToJson()
+                launcher.omegaPrefs.drawerAppGroupsManager.drawerFolders.saveToJson()
             }
         }
 

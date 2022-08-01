@@ -195,7 +195,7 @@ class Config(val context: Context) {
         fun isAppProtected(context: Context, componentKey: ComponentKey): Boolean {
             var result = false
             val protectedApps = ArrayList(
-                    Utilities.getOmegaPrefs(context).protectedAppsSet
+                    Utilities.getOmegaPrefs(context).drawerProtectedAppsSet.onGetValue()
                             .map { Utilities.makeComponentKey(context, it) })
 
             if (protectedApps.contains(componentKey)) {

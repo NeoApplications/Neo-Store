@@ -19,7 +19,12 @@
 package com.saggitt.omega.preferences.views
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,11 +52,11 @@ class HiddenAppsFragment : Fragment(), ProtectedAppsAdapter.Callback {
     }
 
     private fun onRecyclerViewCreated(recyclerView: RecyclerView) {
-        val hiddenApps = Utilities.getOmegaPrefs(requireContext())::hiddenAppSet
-        val protectedApps = Utilities.getOmegaPrefs(requireContext())::protectedAppsSet
+        val hiddenApps = Utilities.getOmegaPrefs(requireContext())::drawerHiddenApps
+        val protectedApps = Utilities.getOmegaPrefs(requireContext())::drawerProtectedApps
         adapter = ProtectedAppsAdapter.ofProperty(
-                requireContext(),
-                hiddenApps, protectedApps, this, OmegaAppFilter(requireContext())
+            requireContext(),
+            hiddenApps, protectedApps, this, OmegaAppFilter(requireContext())
         )
 
         (recyclerView.itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = false

@@ -339,7 +339,7 @@ public class RecyclerViewFastScroller extends View {
             performHapticFeedback(CLOCK_TICK);
         }
         int color = thumbInfo.color;
-        if (color != 0 && prefs.getSortMode() == Config.SORT_BY_COLOR) {
+        if (color != 0 && prefs.getDrawerSortMode().onGetValue() == Config.SORT_BY_COLOR) {
             setColor(color, Color.WHITE);
             if (!prefs.getShowDebugInfo()) {
                 mPopupSectionName = "";

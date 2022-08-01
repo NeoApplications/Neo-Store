@@ -21,7 +21,6 @@ package com.saggitt.omega.allapps
 import android.content.ComponentName
 import android.content.Context
 import android.os.UserHandle
-import android.util.Log
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 
@@ -49,11 +48,11 @@ class CustomAppFilter(private val mContext: Context) : OmegaAppFilter(mContext) 
         }
 
         private fun getHiddenApps(context: Context): MutableSet<String> {
-            return HashSet(Utilities.getOmegaPrefs(context).hiddenAppSet)
+            return HashSet(Utilities.getOmegaPrefs(context).drawerHiddenAppSet.onGetValue())
         }
 
         fun setHiddenApps(context: Context, hiddenApps: Set<String>?) {
-            Utilities.getOmegaPrefs(context).hiddenAppSet = hiddenApps!!
+            Utilities.getOmegaPrefs(context).drawerHiddenAppSet.onSetValue(hiddenApps!!)
         }
     }
 }

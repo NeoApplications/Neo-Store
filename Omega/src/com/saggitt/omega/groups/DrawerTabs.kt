@@ -146,7 +146,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
 
         override val summary: String?
             get() {
-                val hidden = context.omegaPrefs.hiddenAppSet
+                val hidden = context.omegaPrefs.drawerHiddenAppSet.onGetValue()
                         .map { Utilities.makeComponentKey(context, it) }
                         .filter(getWorkFilter(profile))
                 val size = hidden.size
@@ -178,7 +178,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             updateCount(view)
 
             view.setOnClickListener {
-                if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).enableProtectedApps) {
+                if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).drawerEnableProtectedApps.onGetValue()) {
                     Config.showLockScreen(
                             context,
                             context.getString(R.string.trust_apps_manager_name)
@@ -226,18 +226,18 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         }
 
         private fun filteredValue(context: Context): Collection<ComponentKey> {
-            return context.omegaPrefs.hiddenAppSet
+            return context.omegaPrefs.drawerHiddenAppSet.onGetValue()
                     .map { Utilities.makeComponentKey(context, it) }
                     .filter(predicate)
         }
 
         private fun setHiddenApps(context: Context, hidden: Collection<ComponentKey>) {
             val prefs = context.omegaPrefs
-            val hiddenSet = ArrayList(prefs.hiddenAppSet
+            val hiddenSet = ArrayList(prefs.drawerHiddenAppSet.onGetValue()
                     .map { Utilities.makeComponentKey(context, it) }
                     .filter { !predicate(it) })
             hiddenSet.addAll(hidden)
-            prefs.hiddenAppSet = hiddenSet.map(ComponentKey::toString).toSet()
+            prefs.drawerHiddenAppSet.onSetValue(hiddenSet.map(ComponentKey::toString).toSet())
         }
 
         override fun clone(): Group.Customization<Collection<ComponentKey>, Boolean> {

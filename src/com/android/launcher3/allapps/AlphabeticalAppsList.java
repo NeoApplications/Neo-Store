@@ -118,7 +118,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         // Sort the list of apps
-        sortApps(prefs.getSortMode());
+        sortApps(prefs.getDrawerSortMode().onGetValue());
 
         // As a special case for some languages (currently only Simplified Chinese), we may need to
         // coalesce sections
@@ -494,7 +494,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         LauncherModel model = app.getModel();
         ModelWriter modelWriter = model.getWriter(false, true);
         return Utilities.getOmegaPrefs(mLauncher)
-                .getAppGroupsManager()
+                .getDrawerAppGroupsManager()
                 .getDrawerFolders()
                 .getFolderInfos(this, modelWriter);
     }
@@ -502,7 +502,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
     private Set<ComponentKey> getFolderFilteredApps() {
 
         return Utilities.getOmegaPrefs(mLauncher)
-                .getAppGroupsManager()
+                .getDrawerAppGroupsManager()
                 .getDrawerFolders()
                 .getHiddenComponents();
     }

@@ -39,7 +39,7 @@ class PrefsDrawerFragment :
         findPreference<SwitchPreference>(PREFS_PROTECTED_APPS)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.enableProtectedApps = newValue as Boolean
+                    requireActivity().omegaPrefs.drawerEnableProtectedApps.onSetValue(newValue as Boolean)
                     true
                 }
 
@@ -49,7 +49,7 @@ class PrefsDrawerFragment :
         findPreference<Preference>(PREFS_TRUST_APPS)?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 if (
-                    Utilities.getOmegaPrefs(requireContext()).enableProtectedApps &&
+                    Utilities.getOmegaPrefs(requireContext()).drawerEnableProtectedApps.onGetValue() &&
                     Utilities.ATLEAST_R
                 ) {
                     Config.showLockScreen(

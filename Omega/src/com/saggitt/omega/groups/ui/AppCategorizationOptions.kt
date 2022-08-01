@@ -43,7 +43,7 @@ fun AppCategorizationOptions() {
     val prefs = Utilities.getOmegaPrefs(context)
 
     val (selectedOption, onOptionSelected) = remember {
-        mutableStateOf(prefs.appGroupsManager.categorizationType)
+        mutableStateOf(prefs.drawerAppGroupsManager.categorizationType)
     }
 
     Column(
@@ -60,7 +60,7 @@ fun AppCategorizationOptions() {
                 type = it,
                 selected = selectedOption == it
             ) {
-                prefs.appGroupsManager.categorizationType = it
+                prefs.drawerAppGroupsManager.categorizationType = it
                 onOptionSelected(it)
             }
         }

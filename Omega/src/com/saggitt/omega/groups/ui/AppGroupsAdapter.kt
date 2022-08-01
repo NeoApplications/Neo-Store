@@ -42,7 +42,7 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     private var saved = true
 
-    protected val manager = context.omegaPrefs.appGroupsManager
+    protected val manager = context.omegaPrefs.drawerAppGroupsManager
     protected val items = ArrayList<Item>()
     protected val accent = context.omegaPrefs.accentColor
     protected abstract val groupsModel: AppGroups<T>
