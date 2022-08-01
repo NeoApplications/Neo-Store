@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
@@ -72,6 +73,18 @@ fun ExpandableListItem(
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(start = 16.dp)
+                    .weight(1f)
+            )
+
+            val arrow =
+                if (isContentVisible) R.drawable.ic_expand_less else R.drawable.ic_expand_more
+
+            Image(
+                painter = painterResource(id = arrow),
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(24.dp)
             )
         }
         AnimatedVisibility(visible = isContentVisible) {
