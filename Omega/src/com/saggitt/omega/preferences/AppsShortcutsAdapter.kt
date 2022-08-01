@@ -264,7 +264,7 @@ open class AppsShortcutsAdapter(
         init {
             val progressBar = itemView.findViewById<ProgressBar>(R.id.progress)
             progressBar.indeterminateTintList =
-                ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
+                ColorStateList.valueOf(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
         }
     }
 
@@ -301,7 +301,7 @@ open class AppsShortcutsAdapter(
         private const val TYPE_SHORTCUT = 2
 
         private var iconProvider: IconProvider? =
-                null // TODO maybe use a custom icon provider in the future
+            null // TODO maybe use a custom icon provider in the future
     }
 
 }

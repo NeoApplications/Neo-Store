@@ -34,7 +34,7 @@ class WeatherIconPackProviderImpl(
     private val pack: WeatherIconManager.WeatherIconPack
 ) : WeatherIconManager.IconProvider {
     private val res = context.packageManager.getResourcesForApplication(pkgName)
-    private val tintColor get() = context.omegaPrefs.accentColor
+    private val tintColor get() = context.omegaPrefs.themeAccentColor.onGetValue()
 
     override fun getIcon(which: WeatherIconManager.Icon, night: Boolean): Bitmap {
         val resId = res.getIdentifier(getResName(which, night), "drawable", pkgName)

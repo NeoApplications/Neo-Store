@@ -374,7 +374,7 @@ abstract class AppGroups<T : AppGroups.Group>(
 
                 val switch = view.findViewById<SwitchCompat>(R.id.switch_widget).apply {
                     isChecked = value()
-                    applyColor(context.omegaPrefs.accentColor)
+                    applyColor(context.omegaPrefs.themeAccentColor.onGetValue())
                 }
 
                 view.setOnClickListener {
@@ -416,7 +416,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                     ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
                 val colors: ArrayList<String> = arrayListOf()
                 if (value == null) {
-                    value = context.omegaPrefs.accentColor
+                    value = context.omegaPrefs.themeAccentColor.onGetValue()
                 }
                 val currentColor = java.lang.String.format("#%06X", 0xFFFFFF and value!!)
                 colors.add(currentColor)
@@ -429,7 +429,7 @@ abstract class AppGroups<T : AppGroups.Group>(
                     colorPicker.setColumns(4)
                     colorPicker.setColors(colors)
                     colorPicker.setDefaultColorButton(value!!)
-                    colorPicker.positiveButton.applyColor(context.omegaPrefs.accentColor)
+                    colorPicker.positiveButton.applyColor(context.omegaPrefs.themeAccentColor.onGetValue())
                     colorPicker.show()
                     colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
                         override fun onCancel() {
@@ -611,13 +611,13 @@ abstract class AppGroups<T : AppGroups.Group>(
 
 class AppGroupsUtils(context: Context) {
 
-    val defaultColor = Utilities.getOmegaPrefs(context).accentColor
+    val defaultColor = Utilities.getOmegaPrefs(context).themeAccentColor
 
     fun getTabColor(color: String): Int {
         return if (color != "null") {
             color.toInt()
         } else {
-            defaultColor
+            defaultColor.onGetValue()
         }
     }
 

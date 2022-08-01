@@ -37,37 +37,37 @@ import com.saggitt.omega.views.SettingsBottomSheet
 
 @SuppressLint("ViewConstructor")
 class DrawerTabTypeSelectionBottomSheet constructor(
-        context: Context,
-        selectionItems: Map<String, Array<Int>>,
-        callback: (which: String) -> Unit
+    context: Context,
+    selectionItems: Map<String, Array<Int>>,
+    callback: (which: String) -> Unit
 ) : FrameLayout(context) {
     init {
         View.inflate(context, R.layout.drawer_tab_select_type_bottom_sheet, this)
 
-        val accent = Utilities.getOmegaPrefs(context).accentColor
+        val accent = Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue()
         val container = findViewById<ViewGroup>(R.id.types_container)
 
         val tintNormal = ColorUtils
-                .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
+            .setAlphaComponent(context.getColorAttr(android.R.attr.colorControlHighlight), 255)
         val tintList = ColorStateList(
-                arrayOf(
-                        intArrayOf(android.R.attr.state_selected),
-                        intArrayOf()
-                ),
-                intArrayOf(
-                        accent,
-                        tintNormal
-                )
+            arrayOf(
+                intArrayOf(android.R.attr.state_selected),
+                intArrayOf()
+            ),
+            intArrayOf(
+                accent,
+                tintNormal
+            )
         )
         val rippleTintList = ColorStateList(
-                arrayOf(
-                        intArrayOf(android.R.attr.state_selected),
-                        intArrayOf()
-                ),
-                intArrayOf(
-                        ColorUtils.setAlphaComponent(accent, 31),
-                        ColorUtils.setAlphaComponent(tintNormal, 31)
-                )
+            arrayOf(
+                intArrayOf(android.R.attr.state_selected),
+                intArrayOf()
+            ),
+            intArrayOf(
+                ColorUtils.setAlphaComponent(accent, 31),
+                ColorUtils.setAlphaComponent(tintNormal, 31)
+            )
         )
 
         for (item in selectionItems) {
@@ -97,9 +97,9 @@ class DrawerTabTypeSelectionBottomSheet constructor(
 
     companion object {
         fun show(
-                context: Context,
-                selectionItems: Map<String, Array<Int>>,
-                callback: (which: String) -> Unit
+            context: Context,
+            selectionItems: Map<String, Array<Int>>,
+            callback: (which: String) -> Unit
         ) {
             val sheet = SettingsBottomSheet.inflate(context)
             sheet.show(DrawerTabTypeSelectionBottomSheet(context, selectionItems) {

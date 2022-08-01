@@ -33,7 +33,7 @@ class IconPackPreference(context: Context, attrs: AttributeSet? = null) :
     private val prefs = Utilities.getOmegaPrefs(context)
     val packs = IconPackProvider.INSTANCE.get(context).getIconPackList()
     private val current
-        get() = packs.firstOrNull { it.packageName == prefs.iconPackPackage }
+        get() = packs.firstOrNull { it.packageName == prefs.themeIconPackGlobal.onGetValue() }
             ?: packs[0]
 
     init {

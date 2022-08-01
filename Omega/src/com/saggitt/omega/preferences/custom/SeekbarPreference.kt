@@ -85,7 +85,8 @@ open class SeekbarPreference(context: Context, attrs: AttributeSet?) :
         mSeekbar!!.max = steps
 
         mSeekbar!!.setOnSeekBarChangeListener(mSeekBarChangeListener)
-        val stateList = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
+        val stateList =
+            ColorStateList.valueOf(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
         mSeekbar!!.thumbTintList = stateList
         mSeekbar!!.progressTintList = stateList
         mSeekbar!!.progressBackgroundTintList = stateList

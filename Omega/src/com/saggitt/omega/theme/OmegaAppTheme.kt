@@ -43,8 +43,8 @@ fun OmegaAppTheme(
                 OmegaLightColors
             }
         }.copy(
-            primary = Color(LocalContext.current.omegaPrefs.accentColor),
-            surfaceTint = Color(LocalContext.current.omegaPrefs.accentColor)
+            primary = Color(LocalContext.current.omegaPrefs.themeAccentColor.onGetValue()),
+            surfaceTint = Color(LocalContext.current.omegaPrefs.themeAccentColor.onGetValue())
         ),
         content = content
     )

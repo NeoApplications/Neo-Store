@@ -41,7 +41,7 @@ abstract class ProtectedAppsAdapter(
     private val hiddenApps = HashSet<ComponentKey>()
     private val protectedApps = HashSet<ComponentKey>()
     private val accentTintList =
-        ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
+        ColorStateList.valueOf(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
 
     override val comparator = comparing<App, Int> { if (isSelected(it.key)) 0 else 1 }
         .then { it.info.label.toString().lowercase() }

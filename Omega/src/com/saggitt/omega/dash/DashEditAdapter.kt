@@ -30,8 +30,23 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.util.Executors
-import com.saggitt.omega.dash.actionprovider.*
-import com.saggitt.omega.dash.controlprovider.*
+import com.saggitt.omega.dash.actionprovider.AllAppsShortcut
+import com.saggitt.omega.dash.actionprovider.AudioPlayer
+import com.saggitt.omega.dash.actionprovider.ChangeWallpaper
+import com.saggitt.omega.dash.actionprovider.DeviceSettings
+import com.saggitt.omega.dash.actionprovider.EditDash
+import com.saggitt.omega.dash.actionprovider.LaunchAssistant
+import com.saggitt.omega.dash.actionprovider.ManageApps
+import com.saggitt.omega.dash.actionprovider.ManageVolume
+import com.saggitt.omega.dash.actionprovider.OmegaSettings
+import com.saggitt.omega.dash.actionprovider.SleepDevice
+import com.saggitt.omega.dash.actionprovider.Torch
+import com.saggitt.omega.dash.controlprovider.AutoRotation
+import com.saggitt.omega.dash.controlprovider.Bluetooth
+import com.saggitt.omega.dash.controlprovider.Location
+import com.saggitt.omega.dash.controlprovider.MobileData
+import com.saggitt.omega.dash.controlprovider.Sync
+import com.saggitt.omega.dash.controlprovider.Wifi
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
 
@@ -45,7 +60,8 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
     private val handler = Executors.MAIN_EXECUTOR.handler
     private var dividerIndex = 0
     private val adapterItems = ArrayList<Item>()
-    private val activeProviders: MutableList<String> = prefs.desktopDashProviders.getAll().toMutableList()
+    private val activeProviders: MutableList<String> =
+        prefs.desktopDashProviders.getAll().toMutableList()
     private val otherItems = ArrayList<ProviderItem>()
 
     private val divider = DividerItem()
@@ -236,7 +252,7 @@ class DashEditAdapter(context: Context) : RecyclerView.Adapter<DashEditAdapter.H
         val text: TextView = itemView.findViewById(android.R.id.text1)
 
         init {
-            text.setTextColor(text.context.omegaPrefs.accentColor)
+            text.setTextColor(text.context.omegaPrefs.themeAccentColor.onGetValue())
         }
 
         override fun bind(item: Item) {

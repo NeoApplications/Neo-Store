@@ -128,7 +128,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                         app.getWidgetCache().removePackage(packages[i], mUser);
 
                         //Reload SystemIconPack map
-                        if (Utilities.getOmegaPrefs(context).getIconPackPackage().equals("")) {
+                        if (Utilities.getOmegaPrefs(context).getThemeIconPackGlobal().equals("")) {
                             Utilities.getOmegaPrefs(context).reloadApps();
                         }
 
@@ -149,8 +149,8 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
                     OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-                    if (packages[i].equals(prefs.getIconPackPackage())) {
-                        prefs.setIconPackPackage("");
+                    if (packages[i].equals(prefs.getThemeIconPackGlobal())) {
+                        prefs.getThemeIconPackGlobal().onSetValue("");
                     }
                 }
                 // Fall through
@@ -343,7 +343,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
         } else if (mOp == OP_UPDATE) {
             // Mark disabled packages in the broadcast to be removed
             final LauncherApps launcherApps = context.getSystemService(LauncherApps.class);
-            for (int i=0; i<N; i++) {
+            for (int i = 0; i < N; i++) {
                 if (!launcherApps.isPackageEnabled(packages[i], mUser)) {
                     removedPackages.add(packages[i]);
                 }
@@ -373,10 +373,11 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
 
     /**
      * Updates {@param si}'s intent to point to a new ComponentName.
+     *
      * @return Whether the shortcut intent was changed.
      */
     private boolean updateWorkspaceItemIntent(Context context,
-            WorkspaceItemInfo si, String packageName) {
+                                              WorkspaceItemInfo si, String packageName) {
         if (si.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             // Do not update intent for deep shortcuts as they contain additional information
             // about the shortcut.

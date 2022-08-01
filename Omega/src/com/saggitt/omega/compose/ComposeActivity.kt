@@ -50,7 +50,7 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
         super.onCreate(savedInstanceState)
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
-        currentAccent = omegaPrefs.accentColor
+        currentAccent = omegaPrefs.themeAccentColor.onGetValue()
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
             resources.getIdentifier(

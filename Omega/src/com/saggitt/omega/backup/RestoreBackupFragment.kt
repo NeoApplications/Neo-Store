@@ -64,7 +64,7 @@ class RestoreBackupFragment : Fragment(), BackupFile.MetaLoader.Callback {
         super.onViewCreated(view, savedInstanceState)
 
         prefs = Utilities.getOmegaPrefs(requireContext())
-        val color = ColorStateList.valueOf(prefs.accentColor)
+        val color = ColorStateList.valueOf(prefs.themeAccentColor.onGetValue())
 
         binding.restoreButton.backgroundTintList = color
         binding.restoreButton.setOnClickListener {

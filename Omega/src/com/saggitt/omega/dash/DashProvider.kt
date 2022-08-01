@@ -25,7 +25,7 @@ import androidx.annotation.ColorInt
 import com.android.launcher3.Utilities
 
 abstract class DashProvider(protected val context: Context) {
-    val accentColor = Utilities.getOmegaPrefs(context).accentColor
+    val accentColor = Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue()
     abstract val itemId: Int
     abstract val name: String
     abstract val description: String

@@ -38,13 +38,13 @@ import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.tintDrawable
 
 abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : AppGroups.Group>(val context: Context) :
-        RecyclerView.Adapter<AppGroupsAdapter.Holder>() {
+    RecyclerView.Adapter<AppGroupsAdapter.Holder>() {
 
     private var saved = true
 
     protected val manager = context.omegaPrefs.drawerAppGroupsManager
     protected val items = ArrayList<Item>()
-    protected val accent = context.omegaPrefs.accentColor
+    protected val accent = context.omegaPrefs.themeAccentColor.onGetValue()
     protected abstract val groupsModel: AppGroups<T>
     protected abstract val headerText: Int
 
@@ -63,12 +63,12 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = when (viewType) {
         TYPE_HEADER -> HeaderHolder(
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.app_groups_adapter_header, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.app_groups_adapter_header, parent, false)
         )
         TYPE_ADD -> AddHolder(
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.app_groups_adapter_add, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.app_groups_adapter_add, parent, false)
         )
         TYPE_GROUP -> createGroupHolder(parent)
         else -> throw IllegalStateException("Unknown view type $viewType")
@@ -183,12 +183,13 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
         private var deleted = false
 
         init {
-            itemView.findViewById<AppCompatImageView>(R.id.drag_handle).setOnTouchListener { _, event ->
-                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(this)
+            itemView.findViewById<AppCompatImageView>(R.id.drag_handle)
+                .setOnTouchListener { _, event ->
+                    if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                        itemTouchHelper.startDrag(this)
+                    }
+                    false
                 }
-                false
-            }
             itemView.setOnClickListener { startEdit() }
             delete.setOnClickListener { delete() }
             delete.tintDrawable(accent)
@@ -233,17 +234,17 @@ abstract class AppGroupsAdapter<VH : AppGroupsAdapter<VH, T>.GroupHolder, T : Ap
     inner class TouchHelperCallback : ItemTouchHelper.Callback() {
 
         override fun getMovementFlags(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
         ): Int {
             if (viewHolder !is AppGroupsAdapter<*, *>.GroupHolder) return 0
             return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
         }
 
         override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
         ): Boolean {
             return move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         }

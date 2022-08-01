@@ -34,12 +34,14 @@ import com.saggitt.omega.util.comparing
 import com.saggitt.omega.util.then
 import kotlin.reflect.KMutableProperty0
 
-abstract class SelectableAppsAdapter(context: Context,
-                                     private val callback: Callback? = null,
-                                     filter: AppFilter? = null
+abstract class SelectableAppsAdapter(
+    context: Context,
+    private val callback: Callback? = null,
+    filter: AppFilter? = null
 ) : AppsAdapter(context, null, filter) {
     private val selections = HashSet<ComponentKey>()
-    private val accentTintList = ColorStateList.valueOf(Utilities.getOmegaPrefs(context).accentColor)
+    private val accentTintList =
+        ColorStateList.valueOf(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
 
     init {
         postLoadApps()
@@ -59,7 +61,7 @@ abstract class SelectableAppsAdapter(context: Context,
     }
 
     override val comparator = comparing<App, Int> { if (isSelected(it.key)) 0 else 1 }
-            .then { it.info.label.toString().lowercase() }
+        .then { it.info.label.toString().lowercase() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -126,13 +128,13 @@ abstract class SelectableAppsAdapter(context: Context,
     companion object {
 
         fun ofProperty(
-                context: Context,
-                property: KMutableProperty0<Set<String>>,
-                callback: Callback? = null,
-                filter: AppFilter? = null
+            context: Context,
+            property: KMutableProperty0<Set<String>>,
+            callback: Callback? = null,
+            filter: AppFilter? = null
         ) = object : SelectableAppsAdapter(context, callback, filter) {
             override fun getInitialSelections() =
-                    HashSet(property.get().map { Utilities.makeComponentKey(context, it) })
+                HashSet(property.get().map { Utilities.makeComponentKey(context, it) })
 
             override fun setSelections(selections: Set<ComponentKey>) {
                 property.set(HashSet(selections.map { it.toString() }))

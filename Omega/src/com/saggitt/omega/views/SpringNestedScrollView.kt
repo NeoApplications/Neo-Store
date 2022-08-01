@@ -28,14 +28,14 @@ import com.saggitt.omega.util.omegaPrefs
 import java.lang.reflect.Field
 
 open class SpringNestedScrollView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : NestedScrollView(context, attrs, defStyleAttr) {
 
     private val springManager = SpringEdgeEffect.Manager(this)
     private val scrollBarColor by lazy {
         val colorControlNormal = context.getColorAttr(android.R.attr.colorControlNormal)
-        val useAccentColor = colorControlNormal == context.omegaPrefs.accentColor
-        if (useAccentColor) context.omegaPrefs.accentColor else colorControlNormal
+        val useAccentColor = colorControlNormal == context.omegaPrefs.themeAccentColor.onGetValue()
+        if (useAccentColor) context.omegaPrefs.themeAccentColor.onGetValue() else colorControlNormal
     }
 
     open var shouldTranslateSelf = true
@@ -43,8 +43,14 @@ open class SpringNestedScrollView @JvmOverloads constructor(
     var isTopFadingEdgeEnabled = true
 
     init {
-        getField<NestedScrollView>("mEdgeGlowTop").set(this, springManager.createEdgeEffect(DIRECTION_BOTTOM, true))
-        getField<NestedScrollView>("mEdgeGlowBottom").set(this, springManager.createEdgeEffect(DIRECTION_BOTTOM))
+        getField<NestedScrollView>("mEdgeGlowTop").set(
+            this,
+            springManager.createEdgeEffect(DIRECTION_BOTTOM, true)
+        )
+        getField<NestedScrollView>("mEdgeGlowBottom").set(
+            this,
+            springManager.createEdgeEffect(DIRECTION_BOTTOM)
+        )
         overScrollMode = View.OVER_SCROLL_ALWAYS
     }
 

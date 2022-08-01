@@ -85,7 +85,8 @@ class NewBackupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.name.setText(getTimestamp())
 
-        val color = ColorStateList.valueOf(Utilities.getOmegaPrefs(requireContext()).accentColor)
+        val color =
+            ColorStateList.valueOf(Utilities.getOmegaPrefs(requireContext()).themeAccentColor.onGetValue())
         binding.createButton.backgroundTintList = color
         binding.createButton.setOnClickListener {
             onStartBackup()

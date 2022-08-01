@@ -45,7 +45,7 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity,
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         currentTheme = themeOverride.getTheme(this)
-        currentAccent = omegaPrefs.accentColor
+        currentAccent = omegaPrefs.themeAccentColor.onGetValue()
 
         setContentView(R.layout.preference_insettable_recyclerview)
 

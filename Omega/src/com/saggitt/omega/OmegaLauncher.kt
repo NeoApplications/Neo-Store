@@ -176,7 +176,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
-        currentAccent = prefs.accentColor
+        currentAccent = prefs.themeAccentColor.onGetValue()
         currentTheme = themeOverride.getTheme(this)
         val config = Config(this)
         config.setAppLanguage(prefs.language)
@@ -201,9 +201,9 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
-        if (prefs.customWindowCorner) {
+        if (prefs.themeCornerRadiusOverride.onGetValue()) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
-            QuickStepContract.sCustomCornerRadius = prefs.windowCornerRadius
+            QuickStepContract.sCustomCornerRadius = prefs.themeCornerRadius.onGetValue()
         }
     }
 
@@ -245,7 +245,10 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     override fun onResume() {
         super.onResume()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        if (currentAccent != prefs.accentColor || currentTheme != themeOverride.getTheme(this)) onThemeChanged()
+        if (currentAccent != prefs.themeAccentColor.onGetValue() || currentTheme != themeOverride.getTheme(
+                this
+            )
+        ) onThemeChanged()
         restartIfPending()
         paused = false
     }

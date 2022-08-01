@@ -18,8 +18,14 @@
 
 package com.saggitt.omega.icons
 
-import android.content.*
-import android.content.Intent.*
+import android.content.BroadcastReceiver
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_DATE_CHANGED
+import android.content.Intent.ACTION_TIMEZONE_CHANGED
+import android.content.Intent.ACTION_TIME_CHANGED
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.LauncherActivityInfo
 import android.content.res.Resources
@@ -56,7 +62,7 @@ class CustomIconProvider @JvmOverloads constructor(
     private val mContext = context
     private val iconPackProvider = IconPackProvider.INSTANCE.get(context)
     private val overrideRepo = IconOverrideRepository.INSTANCE.get(context)
-    private val iconPack get() = iconPackProvider.getIconPackOrSystem(prefs.iconPackPackage)
+    private val iconPack get() = iconPackProvider.getIconPackOrSystem(prefs.themeIconPackGlobal.onGetValue())
 
     private var _themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>? = null
     private val themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>
@@ -196,7 +202,7 @@ class CustomIconProvider @JvmOverloads constructor(
             }
 
         private var iconState = systemIconState
-        private val iconPackPref = prefs.iconPackPackage
+        private val iconPackPref = prefs.themeIconPackGlobal
 
         private val subscription = Runnable {
             val newState = systemIconState
@@ -213,7 +219,8 @@ class CustomIconProvider @JvmOverloads constructor(
 
         private fun recreateCalendarAndClockChangeReceiver() {
             val iconPack =
-                IconPackProvider.INSTANCE.get(context).getIconPackOrSystem(iconPackPref)
+                IconPackProvider.INSTANCE.get(context)
+                    .getIconPackOrSystem(iconPackPref.onGetValue())
             calendarAndClockChangeReceiver = if (iconPack != null) {
                 CalendarAndClockChangeReceiver(context, handler, iconPack, callback)
             } else {

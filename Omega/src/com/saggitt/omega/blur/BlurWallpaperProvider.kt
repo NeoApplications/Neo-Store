@@ -20,7 +20,12 @@ package com.saggitt.omega.blur
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
+import android.graphics.Path
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
@@ -29,7 +34,14 @@ import android.widget.Toast
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.SingletonHolder
+import com.saggitt.omega.util.ceilToInt
+import com.saggitt.omega.util.ensureOnMainThread
+import com.saggitt.omega.util.hasStoragePermission
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.runOnMainThread
+import com.saggitt.omega.util.safeForEach
+import com.saggitt.omega.util.useApplicationContext
 
 class BlurWallpaperProvider(val context: Context) {
 
@@ -78,7 +90,8 @@ class BlurWallpaperProvider(val context: Context) {
         updateAsync()
     }
 
-    private fun getEnabledStatus() = mWallpaperManager.wallpaperInfo == null && prefs.enableBlur
+    private fun getEnabledStatus() =
+        mWallpaperManager.wallpaperInfo == null && prefs.themeBlurEnable.onGetValue()
 
     @SuppressLint("MissingPermission")
     private fun updateWallpaper() {
@@ -87,7 +100,7 @@ class BlurWallpaperProvider(val context: Context) {
             return
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 && !context.hasStoragePermission) {
-            prefs.enableBlur = false
+            prefs.themeBlurEnable.onSetValue(false)
             return
         }
         val enabled = getEnabledStatus()
@@ -109,7 +122,7 @@ class BlurWallpaperProvider(val context: Context) {
         var wallpaper = try {
             Utilities.drawableToBitmap(mWallpaperManager.drawable, true) as Bitmap
         } catch (e: Exception) {
-            prefs.enableBlur = false
+            prefs.themeBlurEnable.onSetValue(false)
             runOnMainThread {
                 val msg = "${context.getString(R.string.failed)}: ${e.message}"
                 Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
@@ -139,7 +152,7 @@ class BlurWallpaperProvider(val context: Context) {
                 wallpaper.recycle()
             } else {
                 if (error is OutOfMemoryError) {
-                    prefs.enableBlur = false
+                    prefs.themeBlurEnable.onSetValue(false)
                     runOnMainThread {
                         Toast.makeText(context, R.string.failed, Toast.LENGTH_LONG).show()
                         notifyWallpaperChanged()

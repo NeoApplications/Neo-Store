@@ -93,7 +93,7 @@ class AppCategorizationFragment : Fragment(), OmegaPreferences.OnPreferenceChang
 
     private fun setupEnableToggle(enableToggle: View) {
         val switch = enableToggle.findViewById<SwitchCompat>(R.id.switchWidget)
-        switch.applyColor(prefs.accentColor)
+        switch.applyColor(prefs.themeAccentColor.onGetValue())
         val syncSwitch = {
             switch.isChecked = manager.categorizationEnabled
             updateGroupAdapter()

@@ -33,16 +33,16 @@ import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.wallpaper.WallpaperPreviewProvider
 
 class CustomizeIconsPreview @JvmOverloads constructor(
-        context: Context?,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context?,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), OmegaPreferences.OnPreferenceChangeListener {
     private val wallpaper: Drawable
     private val viewLocation = IntArray(2)
     private val icons = arrayOfNulls<ImageView>(4)
     private val prefs: OmegaPreferences
     private val prefsToWatch = arrayOf(
-            "pref_colored_background", "pref_adaptive_icon_pack"
+        "pref_colored_background", "pref_adaptive_icon_pack"
     )
     private var count = 2
     private var isFirstLoad = true
@@ -56,7 +56,7 @@ class CustomizeIconsPreview @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         loadIcons()
-        loadBackground(prefs.forceShapeless)
+        loadBackground(prefs.themeIconForceShapeless.onGetValue())
     }
 
     override fun onAttachedToWindow() {
@@ -71,11 +71,12 @@ class CustomizeIconsPreview @JvmOverloads constructor(
     }
 
     private fun getShapeDrawable(): Drawable {
-        val drawable = if (prefs.iconShape == IconShapeManager.getSystemIconShape(context)) {
-            IconShapeDrawable(IconShapeManager.getSystemIconShape(context))
-        } else {
-            IconShapeDrawable(fromString(prefs.iconShape.toString())!!)
-        }
+        val drawable =
+            if (prefs.themeIconShape.onGetValue() == IconShapeManager.getSystemIconShape(context)) {
+                IconShapeDrawable(IconShapeManager.getSystemIconShape(context))
+            } else {
+                IconShapeDrawable(fromString(prefs.themeIconShape.onGetValue().toString())!!)
+            }
 
         return drawable
     }
@@ -83,29 +84,29 @@ class CustomizeIconsPreview @JvmOverloads constructor(
     private fun loadBackground(shapeless: Boolean) {
 
         if (!shapeless) {
-            if (prefs.coloredBackground) {
+            if (prefs.themeIconColoredBackground.onGetValue()) {
                 /*Omega*/
                 val drawable1: Drawable = getShapeDrawable()
                 drawable1.colorFilter =
-                        PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
+                    PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
                 icons[0]!!.background = drawable1
 
                 /*NewPipe*/
                 val drawable2: Drawable = getShapeDrawable()
                 drawable2.colorFilter =
-                        PorterDuffColorFilter(Color.rgb(0xbf, 0x19, 0x19), PorterDuff.Mode.SRC_IN)
+                    PorterDuffColorFilter(Color.rgb(0xbf, 0x19, 0x19), PorterDuff.Mode.SRC_IN)
                 icons[1]!!.background = drawable2
 
                 /*Signal*/
                 val drawable3: Drawable = getShapeDrawable()
                 drawable3.colorFilter =
-                        PorterDuffColorFilter(Color.parseColor("#FF568AF4"), PorterDuff.Mode.SRC_IN)
+                    PorterDuffColorFilter(Color.parseColor("#FF568AF4"), PorterDuff.Mode.SRC_IN)
                 icons[2]!!.background = drawable3
 
                 /*Photos*/
                 val drawable4: Drawable = getShapeDrawable()
                 drawable4.colorFilter =
-                        PorterDuffColorFilter(Color.parseColor("#FFFFB969"), PorterDuff.Mode.SRC_IN)
+                    PorterDuffColorFilter(Color.parseColor("#FFFFB969"), PorterDuff.Mode.SRC_IN)
                 icons[3]!!.background = drawable4
             } else {
                 val drawable = getShapeDrawable()
@@ -152,7 +153,7 @@ class CustomizeIconsPreview @JvmOverloads constructor(
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         if (!isFirstLoad && count == 0) {
             loadIcons()
-            loadBackground(prefs.forceShapeless)
+            loadBackground(prefs.themeIconForceShapeless.onGetValue())
             invalidate()
         } else {
             isFirstLoad = false

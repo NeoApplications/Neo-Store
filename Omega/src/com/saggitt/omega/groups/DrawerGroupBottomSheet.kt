@@ -32,8 +32,10 @@ import com.saggitt.omega.views.SettingsBottomSheet
 
 /* Crea la vista principal para crear Folders o Tabs */
 @SuppressLint("ViewConstructor")
-class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.CustomizationMap,
-                             private val callback: (Boolean) -> Unit) : FrameLayout(context), View.OnClickListener {
+class DrawerGroupBottomSheet(
+    context: Context, config: AppGroups.Group.CustomizationMap,
+    private val callback: (Boolean) -> Unit
+) : FrameLayout(context), View.OnClickListener {
 
     init {
         View.inflate(context, R.layout.drawer_folder_bottom_sheet, this)
@@ -44,8 +46,8 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
         }
 
         findViewById<AppCompatButton>(R.id.save).apply {
-            applyColor(context.omegaPrefs.accentColor)
-            setTextColor(context.omegaPrefs.accentColor)
+            applyColor(context.omegaPrefs.themeAccentColor.onGetValue())
+            setTextColor(context.omegaPrefs.themeAccentColor.onGetValue())
             setOnClickListener(this@DrawerGroupBottomSheet)
         }
         findViewById<AppCompatButton>(R.id.cancel).apply {
@@ -62,7 +64,12 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
 
     companion object {
 
-        fun show(context: Context, config: AppGroups.Group.CustomizationMap, animate: Boolean, callback: () -> Unit) {
+        fun show(
+            context: Context,
+            config: AppGroups.Group.CustomizationMap,
+            animate: Boolean,
+            callback: () -> Unit
+        ) {
             val sheet = SettingsBottomSheet.inflate(context)
             sheet.show(DrawerGroupBottomSheet(context, config) {
                 if (it) {
@@ -72,7 +79,12 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
             }, animate)
         }
 
-        fun show(launcher: Launcher, config: AppGroups.Group.CustomizationMap, animate: Boolean, callback: () -> Unit) {
+        fun show(
+            launcher: Launcher,
+            config: AppGroups.Group.CustomizationMap,
+            animate: Boolean,
+            callback: () -> Unit
+        ) {
             val sheet = BaseBottomSheet.inflate(launcher)
             sheet.show(DrawerGroupBottomSheet(launcher, config) {
                 if (it) {
@@ -82,7 +94,12 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
             }, animate)
         }
 
-        fun newGroup(context: Context, emptyGroup: AppGroups.Group, animate: Boolean, callback: (AppGroups.Group.CustomizationMap) -> Unit) {
+        fun newGroup(
+            context: Context,
+            emptyGroup: AppGroups.Group,
+            animate: Boolean,
+            callback: (AppGroups.Group.CustomizationMap) -> Unit
+        ) {
             val config = emptyGroup.customizations
             show(context, config, animate) {
                 callback(config)
@@ -111,8 +128,10 @@ class DrawerGroupBottomSheet(context: Context, config: AppGroups.Group.Customiza
             }
         }
 
-        fun edit(launcher: Launcher, config: AppGroups.Group.CustomizationMap,
-                 group: AppGroups.Group, animate: Boolean = true, callback: () -> Unit) {
+        fun edit(
+            launcher: Launcher, config: AppGroups.Group.CustomizationMap,
+            group: AppGroups.Group, animate: Boolean = true, callback: () -> Unit
+        ) {
             show(launcher, config, animate) {
                 group.customizations.applyFrom(config)
                 callback()

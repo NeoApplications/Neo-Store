@@ -101,7 +101,7 @@ class CustomPermissionRequestDialog private constructor(
             val binding = PermRequestDialogBinding.inflate(LayoutInflater.from(context))
             binding.message.setText(string)
             binding.icon.setImageResource(icn)
-            binding.icon.tintDrawable(context.omegaPrefs.accentColor)
+            binding.icon.tintDrawable(context.omegaPrefs.themeAccentColor.onGetValue())
             binding.iconInfo.isVisible = explanation != null
             if (explanation != null) {
                 binding.textExplanation.setText(explanation)

@@ -157,7 +157,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     }
 
     fun initializeIconShape() {
-        val shape = iconShape
+        val shape = themeIconShape.onGetValue()
         CustomAdaptiveIconDrawable.sInitialized = true
         CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
         CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
@@ -534,36 +534,36 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // THEME
-    var launcherTheme by StringIntPref(
+    var themePref = StringIntPref(
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val accentColor by IntPref(
+    val themeAccentColor = IntPref(
         key = PREFS_ACCENT,
         titleId = R.string.title__theme_accent_color,
         defaultValue = (0xffff1744).toInt(),
         onChange = doNothing
     )
-    var enableBlur by BooleanPref(
+    var themeBlurEnable = BooleanPref(
         key = PREFS_BLUR,
         titleId = R.string.title__theme_blur,
         summaryId = R.string.summary__theme_blur,
         defaultValue = false,
         onChange = updateBlur
     )
-    var blurRadius by IntPref(
+    var themeBlurRadius = IntPref(
         key = PREFS_BLUR_RADIUS,
         titleId = R.string.title__theme_blur_radius,
         defaultValue = 75,
         onChange = updateBlur
     )
-    var customWindowCorner by BooleanPref(
+    var themeCornerRadiusOverride = BooleanPref(
         key = PREFS_WINDOWCORNER,
         titleId = R.string.title_override_corner_radius,
         defaultValue = false,
         onChange = doNothing
     )
-    var windowCornerRadius by FloatPref(
+    var themeCornerRadius = FloatPref(
         key = PREFS_WINDOWCORNER_RADIUS,
         titleId = R.string.title_override_corner_radius_value,
         defaultValue = 8f,
@@ -578,13 +578,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = updateBlur
     )
-    var iconPackPackage by StringPref(
+    var themeIconPackGlobal = StringPref(
         key = PREFS_ICON_PACK,
         titleId = R.string.title_theme_icon_packs,
         defaultValue = "",
         onChange = reloadIcons
     )
-    var iconShape by StringBasedPref(
+    var themeIconShape = StringBasedPref(
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
         defaultValue = IconShape.Circle,
@@ -595,34 +595,34 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         toString = IconShape::toString,
         dispose = { /* no dispose */ }
     )
-    var coloredBackground by BooleanPref(
+    var themeIconColoredBackground = BooleanPref(
         key = PREFS_COLORED_BACKGROUND,
         titleId = R.string.title_colored_backgrounds,
         summaryId = R.string.summary_colored_backgrounds,
         defaultValue = false,
         onChange = doNothing
     )
-    var enableWhiteOnlyTreatment by BooleanPref(
+    var themeIconWhiteOnlyTreatment = BooleanPref(
         key = PREFS_WHITE_TREATMENT,
         titleId = R.string.title_white_only_treatment,
         summaryId = R.string.summary_white_only_treatment,
         defaultValue = false,
         onChange = doNothing
     )
-    var enableLegacyTreatment by BooleanPref(
+    var themeIconLegacyTreatment = BooleanPref(
         key = PREFS_LEGACY_TREATMENT,
         titleId = R.string.title_legacy_treatment,
         summaryId = R.string.summary_legacy_treatment,
         defaultValue = false,
         onChange = doNothing
     )
-    var adaptifyIconPacks by BooleanPref(
+    var themeIconAdaptify = BooleanPref(
         key = PREFS_FORCE_ADAPTIVE,
         titleId = R.string.title_adaptify_pack,
         defaultValue = false,
         onChange = doNothing
     )
-    var forceShapeless by BooleanPref(
+    var themeIconForceShapeless = BooleanPref(
         key = PREFS_FORCE_SHAPELESS,
         titleId = R.string.title_force_shapeless,
         summaryId = R.string.summary_force_shapeless,

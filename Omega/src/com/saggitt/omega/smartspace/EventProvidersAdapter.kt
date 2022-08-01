@@ -29,7 +29,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.launcher3.R
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.smartspace.eventprovider.*
+import com.saggitt.omega.smartspace.eventprovider.AlarmEventProvider
+import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
+import com.saggitt.omega.smartspace.eventprovider.CalendarEventProvider
+import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
+import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
+import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.util.isVisible
 import com.saggitt.omega.util.omegaPrefs
@@ -184,7 +189,7 @@ class EventProvidersAdapter(private val context: Context) :
         init {
             itemView.findViewById<TextView>(android.R.id.text1).apply {
                 setText(R.string.enabled_events)
-                setTextColor(context.omegaPrefs.accentColor)
+                setTextColor(context.omegaPrefs.themeAccentColor.onGetValue())
             }
         }
     }
@@ -242,7 +247,7 @@ class EventProvidersAdapter(private val context: Context) :
         val text: TextView = itemView.findViewById(android.R.id.text1)
 
         init {
-            text.setTextColor(text.context.omegaPrefs.accentColor)
+            text.setTextColor(text.context.omegaPrefs.themeAccentColor.onGetValue())
         }
 
         override fun bind(item: Item) {

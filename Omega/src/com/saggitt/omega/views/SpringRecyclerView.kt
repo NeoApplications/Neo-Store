@@ -35,8 +35,8 @@ open class SpringRecyclerView @JvmOverloads constructor(
     private val springManager = SpringEdgeEffect.Manager(this)
     private val scrollBarColor by lazy {
         val colorControlNormal = context.getColorAttr(android.R.attr.colorControlNormal)
-        val useAccentColor = colorControlNormal == context.omegaPrefs.accentColor
-        if (useAccentColor) Utilities.getOmegaPrefs(context).accentColor else colorControlNormal
+        val useAccentColor = colorControlNormal == context.omegaPrefs.themeAccentColor.onGetValue()
+        if (useAccentColor) Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue() else colorControlNormal
     }
 
     open var shouldTranslateSelf = true
@@ -89,7 +89,14 @@ open class SpringRecyclerView @JvmOverloads constructor(
      * Called by Android [android.view.View.onDrawScrollBars]
      */
     @Keep
-    protected fun onDrawVerticalScrollBar( canvas: Canvas, scrollBar: Drawable, l: Int, t: Int, r: Int, b: Int) {
+    protected fun onDrawVerticalScrollBar(
+        canvas: Canvas,
+        scrollBar: Drawable,
+        l: Int,
+        t: Int,
+        r: Int,
+        b: Int
+    ) {
         springManager.withSpringNegative(canvas, shouldTranslateSelf) {
             scrollBar.setColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP)
             scrollBar.setBounds(l, t, r, b)

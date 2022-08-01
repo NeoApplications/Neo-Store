@@ -34,7 +34,7 @@ import com.android.launcher3.Utilities
 import com.android.systemui.shared.system.QuickStepContract
 
 fun AlertDialog.applyAccent() {
-    val color = Utilities.getOmegaPrefs(context).accentColor
+    val color = Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue()
     val buttons = listOf(
         getButton(DialogInterface.BUTTON_NEGATIVE),
         getButton(DialogInterface.BUTTON_NEUTRAL),
@@ -79,15 +79,15 @@ val Int.isDark get() = luminance < 0.5f
 
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)
-    if (prefs.customWindowCorner) {
-        return prefs.windowCornerRadius
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        return prefs.themeCornerRadius.onGetValue()
     }
     return QuickStepContract.getWindowCornerRadius(context.resources)
 }
 
 fun supportsRoundedCornersOnWindows(context: Context): Boolean {
     val pref = Utilities.getOmegaPrefs(context)
-    if (!Utilities.ATLEAST_R || pref.customWindowCorner) {
+    if (!Utilities.ATLEAST_R || pref.themeCornerRadiusOverride.onGetValue()) {
         return true
     }
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)

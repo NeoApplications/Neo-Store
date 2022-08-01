@@ -86,8 +86,8 @@ fun AppTabDialogUI(
     val prefs = Utilities.getOmegaPrefs(context)
 
     var radius = 16.dp
-    if (prefs.customWindowCorner) {
-        radius = prefs.windowCornerRadius.dp
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
 

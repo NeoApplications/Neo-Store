@@ -10,8 +10,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -55,8 +63,8 @@ fun FolderListDialogUI(
     val prefs = Utilities.getOmegaPrefs(context)
 
     var radius = 16.dp
-    if (prefs.customWindowCorner) {
-        radius = prefs.windowCornerRadius.dp
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
     val colors = RadioButtonDefaults.colors(

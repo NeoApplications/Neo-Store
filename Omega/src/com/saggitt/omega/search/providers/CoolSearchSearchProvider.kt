@@ -49,5 +49,5 @@ class CoolSearchSearchProvider(context: Context) : SearchProvider(context) {
         get() = R.drawable.ic_search
     override val icon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
-            .mutate().apply { setTint(prefs.accentColor) }
+            .mutate().apply { setTint(prefs.themeAccentColor.onGetValue()) }
 }

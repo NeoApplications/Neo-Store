@@ -29,8 +29,14 @@ import com.saggitt.omega.omegaApp
 import com.saggitt.omega.twilight.TwilightListener
 import com.saggitt.omega.twilight.TwilightManager
 import com.saggitt.omega.twilight.TwilightState
-import com.saggitt.omega.util.*
 import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
+import com.saggitt.omega.util.SingletonHolder
+import com.saggitt.omega.util.ensureOnMainThread
+import com.saggitt.omega.util.hasFlag
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.removeFlag
+import com.saggitt.omega.util.useApplicationContext
+import com.saggitt.omega.util.usingNightMode
 
 class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
 
@@ -72,7 +78,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
     private var isDuringNight = false
         set(value) {
             field = value
-            if (!prefs.launcherTheme.hasFlag(THEME_FOLLOW_DAYLIGHT)) return
+            if (!prefs.themePref.onGetValue().hasFlag(THEME_FOLLOW_DAYLIGHT)) return
             if (themeFlags.hasFlag(THEME_DARK) != value) {
                 updateTheme()
             }
@@ -116,7 +122,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
     }
 
     fun updateTheme() {
-        val theme = updateTwilightState(prefs.launcherTheme)
+        val theme = updateTwilightState(prefs.themePref.onGetValue())
         val isBlack = isBlack(theme)
         val isDark = when {
             theme.hasFlag(THEME_FOLLOW_NIGHT_MODE) -> usingNightMode
@@ -158,7 +164,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             if (granted) {
                 listenToTwilight = true
             } else {
-                prefs.launcherTheme = theme.removeFlag(THEME_DARK_MASK)
+                prefs.themePref.onSetValue(theme.removeFlag(THEME_DARK_MASK))
             }
         }
 

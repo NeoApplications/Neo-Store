@@ -48,5 +48,5 @@ class SearchLiteSearchProvider(context: Context) : SearchProvider(context) {
         get() = R.drawable.ic_search
     override val icon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
-            .mutate().apply { setTint(Utilities.getOmegaPrefs(context).accentColor) }
+            .mutate().apply { setTint(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue()) }
 }

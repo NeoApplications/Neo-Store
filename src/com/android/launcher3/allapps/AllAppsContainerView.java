@@ -531,7 +531,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                 AllAppsRecyclerView recyclerView = mAH[AdapterHolder.MAIN].recyclerView;
                 if (recyclerView != null) {
                     OmegaUtilsKt.runOnAttached(recyclerView, () ->
-                            recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor()));
+                            recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getThemeAccentColor().onGetValue()));
                 }
             }
         }
@@ -641,7 +641,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mHeader.setCurrentActive(pos);
         if (mAH[pos].recyclerView != null) {
             mAH[pos].recyclerView.bindFastScrollbar();
-            mAH[pos].recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getAccentColor());
+            mAH[pos].recyclerView.setScrollbarColor(Utilities.getOmegaPrefs(getContext()).getThemeAccentColor().onGetValue());
             mTabsController.bindButtons(findViewById(R.id.tabs), mViewPager);
         }
         reset(true, true);

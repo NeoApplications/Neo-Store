@@ -62,13 +62,13 @@ class SFinderSearchProvider(context: Context) : SearchProvider(context) {
         get() = R.drawable.ic_search
     override val icon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
-            .mutate().apply { setTint(Utilities.getOmegaPrefs(context).accentColor) }
+            .mutate().apply { setTint(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue()) }
 
     override val voiceIcon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_mic, null)!!
             .mutate()
             .apply {
-                setTint(Utilities.getOmegaPrefs(context).accentColor)
+                setTint(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
             }
 
     companion object {

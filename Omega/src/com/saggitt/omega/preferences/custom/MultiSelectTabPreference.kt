@@ -33,12 +33,12 @@ import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.omegaPrefs
 
 class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
-        Preference(context, attrs) {
+    Preference(context, attrs) {
 
     lateinit var componentKey: ComponentKey
     lateinit var activity: Activity
     private val tabs: List<DrawerTabs.CustomTab> =
-            context.omegaPrefs.drawerTabs.getGroups().mapNotNull { it as? DrawerTabs.CustomTab }
+        context.omegaPrefs.drawerTabs.getGroups().mapNotNull { it as? DrawerTabs.CustomTab }
     var edited = false
         private set
 
@@ -58,13 +58,15 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
 
     fun updateSummary() {
         summary = tabs
-                .filter { it.contents.value?.contains(componentKey) == true }
-                .joinToString(", ") { it.title }
+            .filter { it.contents.value?.contains(componentKey) == true }
+            .joinToString(", ") { it.title }
     }
 
-    private fun multiSelectDialog(componentKey: ComponentKey,
-                                  tabs: List<DrawerTabs.CustomTab>,
-                                  updatePref: () -> Unit) {
+    private fun multiSelectDialog(
+        componentKey: ComponentKey,
+        tabs: List<DrawerTabs.CustomTab>,
+        updatePref: () -> Unit
+    ) {
 
         val entries = tabs.map { it.title }.toTypedArray()
         val checkedEntries = tabs.map {
@@ -89,8 +91,8 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
 
             setNeutralButton(R.string.tabs_manage) { _, _ ->
                 PreferencesActivity.startFragment(
-                        context, AppCategorizationFragment::class.java.name,
-                        context.resources.getString(R.string.title__drawer_categorization)
+                    context, AppCategorizationFragment::class.java.name,
+                    context.resources.getString(R.string.title__drawer_categorization)
                 )
             }
         }
@@ -98,14 +100,14 @@ class MultiSelectTabPreference(context: Context, attrs: AttributeSet?) :
         val alertDialog = builder.create()
         alertDialog.setOnShowListener {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                applyColor(context.omegaPrefs.accentColor)
-                setTextColor(context.omegaPrefs.accentColor)
+                applyColor(context.omegaPrefs.themeAccentColor.onGetValue())
+                setTextColor(context.omegaPrefs.themeAccentColor.onGetValue())
             }
             alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).apply {
-                setTextColor(context.omegaPrefs.accentColor)
+                setTextColor(context.omegaPrefs.themeAccentColor.onGetValue())
             }
             alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
-                setTextColor(context.omegaPrefs.accentColor)
+                setTextColor(context.omegaPrefs.themeAccentColor.onGetValue())
             }
         }
         alertDialog.show()

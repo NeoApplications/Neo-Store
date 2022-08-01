@@ -25,7 +25,12 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.os.ResultReceiver
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -46,7 +51,11 @@ import com.saggitt.omega.compose.ComposeActivity
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.getBooleanAttr
+import com.saggitt.omega.util.isAppEnabled
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.recreateAnimated
 import com.saggitt.omega.views.DecorLayout
 import com.saggitt.omega.views.SettingsDragLayer
 import kotlinx.coroutines.CoroutineScope
@@ -69,7 +78,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         val config = Config(this)
         config.setAppLanguage(omegaPrefs.language)
 
-        currentAccent = omegaPrefs.accentColor
+        currentAccent = omegaPrefs.themeAccentColor.onGetValue()
         currentTheme = themeOverride.getTheme(this)
         theme.applyStyle(
             resources.getIdentifier(

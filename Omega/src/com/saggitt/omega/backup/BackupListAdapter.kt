@@ -110,7 +110,7 @@ class BackupListAdapter(val context: Context) : RecyclerView.Adapter<BackupListA
             itemView.findViewById<View>(R.id.action_new_backup).setOnClickListener(this)
             itemView.findViewById<View>(R.id.action_restore_backup).setOnClickListener(this)
             itemView.findViewById<TextView>(R.id.local_backup_title)
-                .setTextColor(Utilities.getOmegaPrefs(context).accentColor)
+                .setTextColor(Utilities.getOmegaPrefs(context).themeAccentColor.onGetValue())
         }
 
         override fun onClick(v: View) {

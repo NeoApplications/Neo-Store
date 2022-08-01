@@ -8,10 +8,21 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.android.launcher3.R
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-import com.saggitt.omega.*
+import com.saggitt.omega.BlankActivity
+import com.saggitt.omega.PREFS_ACCENT
+import com.saggitt.omega.PREFS_BLUR
+import com.saggitt.omega.PREFS_BLUR_RADIUS
+import com.saggitt.omega.PREFS_THEME
+import com.saggitt.omega.PREFS_WINDOWCORNER
+import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.theme.ThemeManager
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.checkLocationAccess
+import com.saggitt.omega.util.hasFlag
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.recreateAnimated
+import com.saggitt.omega.util.removeFlag
 
 class PrefsThemeFragment :
     BasePreferenceFragment(R.xml.preferences_theme, R.string.title__general_theme) {
@@ -30,7 +41,9 @@ class PrefsThemeFragment :
                                 newTheme = newTheme.removeFlag(ThemeManager.THEME_DARK_MASK)
                         }
                     this.value = newTheme.toString()
-                    requireActivity().omegaPrefs.launcherTheme = newValue.toString().toInt()
+                    requireActivity().omegaPrefs.themePref.onSetValue(
+                        newValue.toString().toInt()
+                    )
                     true
                 }
         }
@@ -44,28 +57,28 @@ class PrefsThemeFragment :
         findPreference<SwitchPreference>(PREFS_BLUR)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.enableBlur = newValue as Boolean
+                    requireActivity().omegaPrefs.themeBlurEnable.onSetValue(newValue as Boolean)
                     true
                 }
         }
         findPreference<SeekBarPreference>(PREFS_BLUR_RADIUS)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.blurRadius = newValue as Int
+                    requireActivity().omegaPrefs.themeBlurRadius.onSetValue(newValue as Int)
                     true
                 }
         }
         findPreference<SwitchPreference>(PREFS_WINDOWCORNER)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.customWindowCorner = newValue as Boolean
+                    requireActivity().omegaPrefs.themeCornerRadiusOverride.onSetValue(newValue as Boolean)
                     true
                 }
         }
         findPreference<SeekbarPreference>(PREFS_WINDOWCORNER_RADIUS)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.windowCornerRadius = newValue as Float
+                    requireActivity().omegaPrefs.themeCornerRadius.onSetValue(newValue as Float)
                     true
                 }
         }

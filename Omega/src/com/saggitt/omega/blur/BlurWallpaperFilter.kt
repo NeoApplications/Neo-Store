@@ -28,7 +28,7 @@ class BlurWallpaperFilter(private val context: Context) : WallpaperFilter {
     private var blurRadius = 25
 
     override fun applyPrefs(prefs: OmegaPreferences) {
-        blurRadius = prefs.blurRadius / BlurWallpaperProvider.DOWNSAMPLE_FACTOR
+        blurRadius = prefs.themeBlurRadius.onGetValue() / BlurWallpaperProvider.DOWNSAMPLE_FACTOR
         blurRadius = blurRadius.coerceAtLeast(1).coerceAtMost(25)
     }
 

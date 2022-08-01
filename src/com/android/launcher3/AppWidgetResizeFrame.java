@@ -170,7 +170,7 @@ public class AppWidgetResizeFrame extends AbstractFloatingView implements View.O
         mDragHandles[INDEX_RIGHT] = findViewById(R.id.widget_resize_right_handle);
         mDragHandles[INDEX_BOTTOM] = findViewById(R.id.widget_resize_bottom_handle);
 
-        int workspaceAccentColor = Utilities.getOmegaPrefs(getContext()).getAccentColor();
+        int workspaceAccentColor = Utilities.getOmegaPrefs(getContext()).getThemeAccentColor().onGetValue();
         for (int i = 0; i < HANDLE_COUNT; i++) {
             ((ImageView) mDragHandles[i]).setColorFilter(workspaceAccentColor);
         }
