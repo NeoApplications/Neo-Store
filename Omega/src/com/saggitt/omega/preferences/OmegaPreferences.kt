@@ -32,7 +32,8 @@ import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS
 import com.saggitt.omega.PREFS_COLORED_BACKGROUND
-import com.saggitt.omega.PREFS_COLUMNS
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DASH_LINESIZE
 import com.saggitt.omega.PREFS_DASH_PROVIDERS
 import com.saggitt.omega.PREFS_DEBUG_MODE
@@ -48,17 +49,24 @@ import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
 import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
 import com.saggitt.omega.PREFS_DOCK_BACKGROUND
 import com.saggitt.omega.PREFS_DOCK_BACKGROUND_COLOR
+import com.saggitt.omega.PREFS_DOCK_COLUMNS
+import com.saggitt.omega.PREFS_DOCK_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DOCK_HIDE
 import com.saggitt.omega.PREFS_DOCK_ICON_SCALE
 import com.saggitt.omega.PREFS_DOCK_OPACITY
 import com.saggitt.omega.PREFS_DOCK_SCALE
+import com.saggitt.omega.PREFS_DOCK_SEARCH
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DRAWER_HEIGHT_MULTIPLIER
 import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
 import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
 import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
+import com.saggitt.omega.PREFS_DRAWER_SEARCH
 import com.saggitt.omega.PREFS_EMPTY_SCREENS
 import com.saggitt.omega.PREFS_FEED_PROVIDER
 import com.saggitt.omega.PREFS_FEED_PROVIDER_ALLOW_ALL
@@ -94,7 +102,8 @@ import com.saggitt.omega.PREFS_PROTECTED_APPS
 import com.saggitt.omega.PREFS_PROTECTED_SET
 import com.saggitt.omega.PREFS_RECENT_BACKUP
 import com.saggitt.omega.PREFS_RESTORE_SUCCESS
-import com.saggitt.omega.PREFS_ROWS
+import com.saggitt.omega.PREFS_DESKTOP_ROWS
+import com.saggitt.omega.PREFS_DESKTOP_ROWS_RAW
 import com.saggitt.omega.PREFS_SEARCH_BAR_RADIUS
 import com.saggitt.omega.PREFS_SEARCH_FUZZY
 import com.saggitt.omega.PREFS_SEARCH_GLOBAL
@@ -103,8 +112,14 @@ import com.saggitt.omega.PREFS_SEARCH_PROVIDER
 import com.saggitt.omega.PREFS_SEARCH_SHOW_LENS_ICON
 import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
+import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
 import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.PREFS_STATUSBAR_HIDE
 import com.saggitt.omega.PREFS_THEME
@@ -155,19 +170,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     // DESKTOP
     var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
-            this, PREFS_ROWS, PREFS_COLUMNS,
+            this, PREFS_DESKTOP_ROWS_RAW, PREFS_DESKTOP_COLUMNS_RAW,
             LauncherAppState.getIDP(context), reloadIcons
         )
     }
     val desktopGridSize by desktopGridSizeDelegate
     val desktopColumns = IdpIntPref(
-        key = "pref_${PREFS_COLUMNS}",
+        key = PREFS_DESKTOP_COLUMNS,
         titleId = R.string.grid_size_width,
         selectDefaultValue = { numColumns },
         onChange = reloadGrid
     )
     val desktopRows = IdpIntPref(
-        key = "pref_${PREFS_ROWS}",
+        key = PREFS_DESKTOP_ROWS,
         titleId = R.string.grid_size_height,
         selectDefaultValue = { numRows },
         onChange = reloadGrid
@@ -348,7 +363,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = recreate
     )
     var dockSearchBar = BooleanPref(
-        key = "pref_dock_search",
+        key = PREFS_DOCK_SEARCH,
         titleId = R.string.title__dock_search_bar,
         summaryId = R.string.summary_dock_search,
         defaultValue = false,
@@ -357,14 +372,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val dockGridSizeDelegate = ResettableLazy {
         GridSize(
             prefs = this,
-            rowsKey = "numHotseatIcons",
+            rowsKey = PREFS_DOCK_COLUMNS_RAW,
             targetObject = LauncherAppState.getIDP(context),
             onChangeListener = reloadIcons
         )
     }
     val dockGridSize by dockGridSizeDelegate
     val dockNumIcons = IdpIntPref(
-        key = "pref_numHotseatIcons",
+        key = PREFS_DOCK_COLUMNS,
         titleId = R.string.num_hotseat_icons_pref_title,
         selectDefaultValue = { numHotseatIcons },
         onChange = reloadGrid
@@ -373,7 +388,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     // DRAWER
     val allAppsSearch by BooleanPref(
-        key = "pref_all_apps_search",
+        key = PREFS_DRAWER_SEARCH,
         titleId = R.string.title_all_apps_search,
         summaryId = R.string.summary_all_apps_search,
         defaultValue = true,
@@ -469,7 +484,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = doNothing
     )
     val drawerLayout by StringIntPref(
-        key = "pref_drawer_layout",
+        key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,
         onChange = recreate
@@ -477,14 +492,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     private val drawerGridSizeDelegate = ResettableLazy {
         GridSize(
             prefs = this,
-            rowsKey = "numAllAppsColumns",
+            rowsKey = PREFS_DRAWER_COLUMNS_RAW,
             targetObject = LauncherAppState.getIDP(context),
             onChangeListener = reloadIcons
         )
     }
     val drawerGridSize by drawerGridSizeDelegate
     val numAllAppsColumns = IdpIntPref(
-        key = "pref_numAllAppsColumns",
+        key = PREFS_DRAWER_COLUMNS,
         titleId = R.string.title__drawer_columns,
         selectDefaultValue = { numAllAppsColumns },
         onChange = reloadGrid
@@ -828,7 +843,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = recreate
     )
     val weatherUnit by StringBasedPref(
-        key = "pref_weather_units",
+        key = PREFS_SMARTSPACE_WEATHER_UNITS,
         titleId = R.string.title_smartspace_weather_units,
         defaultValue = Temperature.Unit.Celsius,
         onChange = ::updateSmartspaceProvider,
@@ -837,31 +852,31 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         dispose = { }
     )
     var smartspaceWidgetId by IntPref(
-        key = "smartspace_widget_id",
+        key = PREFS_SMARTSPACE_WIDGET_ID,
         titleId = -1,
         defaultValue = -1,
         onChange = doNothing
     )
     var weatherIconPack by StringPref(
-        key = "pref_weatherIcons",
+        key = PREFS_SMARTSPACE_WEATHER_ICONS,
         titleId = -1,
         defaultValue = "",
         onChange = doNothing
     )
     var weatherProvider by StringPref(
-        key = "pref_smartspace_widget_provider",
+        key = PREFS_SMARTSPACE_WEATHER_PROVIDER,
         titleId = R.string.title_smartspace_widget_provider,
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
     var eventProvider by StringPref(
-        key = "pref_smartspace_event_provider",
+        key = PREFS_SMARTSPACE_EVENT_PROVIDER,
         titleId = -1,
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
     var eventProviders = StringListPref(
-        prefKey = "pref_smartspace_event_providers",
+        prefKey = PREFS_SMARTSPACE_EVENT_PROVIDERS,
         titleId = R.string.title_smartspace_event_providers,
         default = listOf(
             eventProvider,
