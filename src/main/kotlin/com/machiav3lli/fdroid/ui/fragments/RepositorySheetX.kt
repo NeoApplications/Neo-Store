@@ -52,6 +52,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
 
     override fun setupLayout() {
         viewModel.repo.observe(viewLifecycleOwner) { updateSheet() }
+        viewModel.appsCount.observe(viewLifecycleOwner) { updateSheet() }
         binding.delete.setOnClickListener {
             MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm).show(
                 childFragmentManager
