@@ -30,6 +30,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -194,12 +195,12 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
             consumed = true
         }
-        //if (!consumed) { TODO investigate if there's resulting issues
-        scope.launch {
-            AppInstaller.getInstance(this@DownloadService)
-                ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+        if (!consumed) { //TODO investigate if there's resulting issues
+            MainScope().launch {
+                AppInstaller.getInstance(this@DownloadService)
+                    ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+            }
         }
-        //}
     }
 
     private fun validatePackage(task: Task, file: File): ValidationError? {
