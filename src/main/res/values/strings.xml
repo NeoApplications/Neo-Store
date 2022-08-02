@@ -208,4 +208,5 @@
     <string name="releases">Releases</string>
     <string name="no_updates_available">No versions available</string>
     <string name="dynamic">System dynamic</string>
+    <string name="favorite_applications">Favorites</string>
 </resources>

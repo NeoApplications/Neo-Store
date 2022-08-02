@@ -120,12 +120,14 @@ class ExploreFragment : MainNavFragmentX() {
                     CategoryChipList(
                         list = listOf(
                             stringResource(id = R.string.all_applications),
+                            stringResource(id = R.string.favorite_applications),
                             *categories.sorted().toTypedArray()
                         )
                     ) {
                         viewModel.sections.postValue(
                             when (it) {
                                 getString(R.string.all_applications) -> Section.All
+                                getString(R.string.favorite_applications) -> Section.FAVORITE
                                 else -> Section.Category(it)
                             }
                         )

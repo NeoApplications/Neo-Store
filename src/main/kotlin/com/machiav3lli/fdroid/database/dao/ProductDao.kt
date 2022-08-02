@@ -16,6 +16,7 @@ import com.machiav3lli.fdroid.ROW_COMPATIBLE
 import com.machiav3lli.fdroid.ROW_DESCRIPTION
 import com.machiav3lli.fdroid.ROW_DONATES
 import com.machiav3lli.fdroid.ROW_ENABLED
+import com.machiav3lli.fdroid.ROW_FAVORITE
 import com.machiav3lli.fdroid.ROW_ICON
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.ROW_IGNORED_VERSION
@@ -191,6 +192,8 @@ interface ProductDao : BaseDao<Product> {
         } else if (section is Section.Repository) {
             builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?"
             builder %= section.id.toString()
+        } else if (section is Section.FAVORITE) {
+            builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
         }
 
         // Filter only apps that have some  matching score to the search query

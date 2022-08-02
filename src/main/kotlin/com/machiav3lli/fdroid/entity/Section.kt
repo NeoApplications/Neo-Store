@@ -10,6 +10,12 @@ sealed class Section : KParcelable {
         val CREATOR = KParcelable.creator { All }
     }
 
+    object FAVORITE : Section() {
+        @Suppress("unused")
+        @JvmField
+        val CREATOR = KParcelable.creator { FAVORITE }
+    }
+
     data class Category(val name: String) : Section() {
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeString(name)

@@ -50,6 +50,7 @@ const val ROW_CAN_UPDATE = "can_update"
 const val ROW_MATCH_RANK = "match_rank"
 const val ROW_IGNORED_VERSION = "ignoredVersion"
 const val ROW_IGNORE_UPDATES = "ignoreUpdates"
+const val ROW_FAVORITE = "favorite"
 
 const val RELEASE_STATE_NONE = 0
 const val RELEASE_STATE_SUGGESTED = 1
