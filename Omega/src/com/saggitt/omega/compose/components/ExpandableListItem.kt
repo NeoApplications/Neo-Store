@@ -78,7 +78,6 @@ fun ExpandableListItem(
 
             val arrow =
                 if (isContentVisible) R.drawable.ic_expand_less else R.drawable.ic_expand_more
-
             Image(
                 painter = painterResource(id = arrow),
                 contentDescription = null,
@@ -86,6 +85,7 @@ fun ExpandableListItem(
                     .clip(CircleShape)
                     .size(24.dp)
             )
+            Spacer(modifier = Modifier.requiredWidth(12.dp))
         }
         AnimatedVisibility(visible = isContentVisible) {
             Column {
