@@ -117,32 +117,38 @@ class MainApplication : Application(), ImageLoaderFactory {
         var lastLanguage = Preferences[Preferences.Key.Language]
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
-                if (it == Preferences.Key.ProxyType || it == Preferences.Key.ProxyHost || it == Preferences.Key.ProxyPort) {
-                    updateProxy()
-                } else if (it == Preferences.Key.AutoSync) {
-                    val autoSync = Preferences[Preferences.Key.AutoSync]
-                    if (lastAutoSync != autoSync) {
-                        lastAutoSync = autoSync
-                        updateSyncJob(true)
+                when (it) {
+                    Preferences.Key.ProxyType, Preferences.Key.ProxyHost, Preferences.Key.ProxyPort -> {
+                        updateProxy()
                     }
-                } else if (it == Preferences.Key.UpdateUnstable) {
-                    val updateUnstable = Preferences[Preferences.Key.UpdateUnstable]
-                    if (lastUpdateUnstable != updateUnstable) {
-                        lastUpdateUnstable = updateUnstable
-                        forceSyncAll()
+                    Preferences.Key.AutoSync, Preferences.Key.AutoSyncInterval -> {
+                        val autoSync = Preferences[Preferences.Key.AutoSync]
+                        if (lastAutoSync != autoSync) {
+                            lastAutoSync = autoSync
+                            updateSyncJob(true)
+                        }
                     }
-                } else if (it == Preferences.Key.Language) {
-                    val language = Preferences[Preferences.Key.Language]
-                    if (language != lastLanguage) {
-                        lastLanguage = language
-                        val refresh = Intent.makeRestartActivityTask(
-                            ComponentName(
-                                baseContext,
-                                MainActivityX::class.java
+                    Preferences.Key.UpdateUnstable -> {
+                        val updateUnstable = Preferences[Preferences.Key.UpdateUnstable]
+                        if (lastUpdateUnstable != updateUnstable) {
+                            lastUpdateUnstable = updateUnstable
+                            forceSyncAll()
+                        }
+                    }
+                    Preferences.Key.Language -> {
+                        val language = Preferences[Preferences.Key.Language]
+                        if (language != lastLanguage) {
+                            lastLanguage = language
+                            val refresh = Intent.makeRestartActivityTask(
+                                ComponentName(
+                                    baseContext,
+                                    MainActivityX::class.java
+                                )
                             )
-                        )
-                        applicationContext.startActivity(refresh)
+                            applicationContext.startActivity(refresh)
+                        }
                     }
+                    else -> return@collect
                 }
             }
         }
@@ -183,7 +189,7 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun autoSync(jobScheduler: JobScheduler, connectionType: Int) {
-        val period = 5.minutes.inWholeMilliseconds
+        val period = Preferences[Preferences.Key.AutoSyncInterval].minutes.inWholeMilliseconds
         jobScheduler.schedule(
             JobInfo
                 .Builder(

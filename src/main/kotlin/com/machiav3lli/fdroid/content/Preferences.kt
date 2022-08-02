@@ -138,6 +138,7 @@ object Preferences {
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
+        object AutoSyncInterval : Key<Int>("auto_sync_interval", Value.IntValue(60))
 
         object InstallAfterSync :
             Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))

@@ -29,6 +29,11 @@ class PrefsUpdatesFragment : PrefsNavFragmentX() {
                     Preferences.AutoSync.Always -> getString(R.string.always)
                 }
             }
+            addEditInt(
+                Preferences.Key.AutoSyncInterval,
+                getString(R.string.auto_sync_interval),
+                1..1440
+            )
             addSwitch(
                 Preferences.Key.InstallAfterSync, getString(R.string.install_after_sync),
                 getString(R.string.install_after_sync_summary)
