@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.FileInputStream
 import java.util.*
 
-val composeVersion = "1.2.0-rc03"
+val composeVersion = "1.2.0"
 val composeCompilerVersion = "1.2.0"
 val roomVersion = "2.4.2"
 
@@ -158,13 +158,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
     implementation("com.google.devtools.ksp:symbol-processing-api:1.7.0-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0-alpha05")
-    implementation("androidx.appcompat:appcompat:1.4.2")
-    implementation("androidx.fragment:fragment-ktx:1.5.0")
-    implementation("androidx.activity:activity-ktx:1.5.0")
-    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation("androidx.appcompat:appcompat:1.5.0-beta01")
+    implementation("androidx.fragment:fragment-ktx:1.5.1")
+    implementation("androidx.activity:activity-ktx:1.5.1")
+    implementation("androidx.activity:activity-compose:1.5.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Material3
@@ -190,12 +190,12 @@ dependencies {
 
     // Markdown
     implementation("org.jetbrains:markdown:0.3.1")
-    implementation("de.charlex.compose:html-text:1.2.0")
+    implementation("de.charlex.compose:html-text:1.3.0")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
@@ -208,14 +208,14 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.14")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.15")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.customview:customview-poolingcontainer:1.0.0-rc01")
+    debugImplementation("androidx.customview:customview-poolingcontainer:1.0.0")
     debugImplementation("androidx.customview:customview:1.2.0-alpha01")
 }
 
