@@ -20,7 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -77,7 +77,7 @@ class LatestFragment : MainNavFragmentX() {
         val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
 
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
-            rememberTopAppBarScrollState()
+            rememberTopAppBarState()
         ) { true }
 
         AppTheme(

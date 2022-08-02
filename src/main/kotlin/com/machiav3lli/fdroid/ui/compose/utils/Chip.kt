@@ -1,7 +1,10 @@
 package com.machiav3lli.fdroid.ui.compose.utils
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
+import androidx.compose.material3.ElevatedAssistChip
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,7 +16,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Basically a OutlineChip without spamming "ExperimentalMaterialApi"
  */
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomChip(
     modifier: Modifier = Modifier,
@@ -25,7 +28,7 @@ fun CustomChip(
 ) {
     ElevatedAssistChip(
         modifier = modifier,
-        shape = Shapes.Full,
+        shape = ShapeDefaults.Large,
         onClick = { onClick(text) },
         label = { Text(text = text, color = borderColor) }
     )

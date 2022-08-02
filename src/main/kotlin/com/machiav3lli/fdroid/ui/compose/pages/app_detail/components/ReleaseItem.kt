@@ -23,7 +23,7 @@ import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -208,7 +208,7 @@ fun ReleaseBadge(
 ) {
     Surface(
         modifier = modifier
-            .background(color, Shapes.Full)
+            .background(color, ShapeDefaults.Large)
             .padding(6.dp, 2.dp),
         color = color
     ) {

@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -230,7 +230,7 @@ fun DownloadProgress(
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(Shapes.Full),
+                    .clip(ShapeDefaults.Large),
             )
         } else {
             Text(
@@ -240,7 +240,7 @@ fun DownloadProgress(
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(Shapes.Full),
+                    .clip(ShapeDefaults.Large),
                 progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
             )
         }
