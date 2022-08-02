@@ -69,6 +69,7 @@ android {
             applicationIdSuffix = ".debug"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
             manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
+            signingConfig = signingConfigs.getByName("debug")
         }
         create("neo") {
             isMinifyEnabled = false
@@ -86,6 +87,12 @@ android {
     }
 
     signingConfigs {
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
         create("primary") {
             storeFile = file("debug.keystore")
             storePassword = "android"
