@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -48,16 +49,18 @@ fun HtmlTextBlock(
                 targetValue = if (isExpanded) Int.MAX_VALUE else 12,
                 animationSpec = tween(durationMillis = 200)
             )
-            HtmlText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .animateContentSize(),
-                text = description,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = maxLines,
-                overflow = TextOverflow.Ellipsis
-            )
+            SelectionContainer {
+                HtmlText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .animateContentSize(),
+                    text = description,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = maxLines,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
         if (description.length >= 290 && isExpandable) {
             FilledTonalButton(onClick = { isExpanded = !isExpanded }) {
