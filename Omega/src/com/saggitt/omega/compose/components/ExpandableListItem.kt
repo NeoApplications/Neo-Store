@@ -70,6 +70,7 @@ fun ExpandableListItem(
             )
             Text(
                 text = title,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(start = 16.dp)
