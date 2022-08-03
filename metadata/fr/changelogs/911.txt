@@ -1,0 +1,9 @@
+Ajout : Thème dynamique du système (aka. Material You)
+- Ajout : 7 nouveaux dépôts préenregistrer
+- Ajout : Label d'architecture sur les versions pour architecture spécifique
+- Suppression : Repo UnifiedPush (mort)
+- Correction : Notification ennuyeuse de 0 mise à jour
+- Correction : Le lien du site web de l'auteur est masquer lorsqu'il n'est pas disponible
+- Correction : Analyse du contenu du presse-papiers pour l'URI du repo
+- Fix : Liens dans les paramètres
+- Fix : Ne pas afficher l'action de mise à jour
