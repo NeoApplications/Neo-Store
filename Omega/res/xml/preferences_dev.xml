@@ -61,13 +61,13 @@
             android:persistent="true"
             android:summary="%s"
             android:title="@string/title_drawer_layout"
-            app:iconSpaceReserved="false" />
+            app:iconSpaceReserved="false" />-->
 
         <Preference
             android:icon="@drawable/ic_gesture"
             android:key="pref_gesture_selector"
             android:layout="@layout/home_preference"
-            android:title="@string/pref_category__gestures" />-->
+            android:title="@string/pref_category__gestures" />
 
 
         <Preference
@@ -78,10 +78,6 @@
             app:iconSpaceReserved="false">
             <intent android:action="android.settings.ACTION_CONTENT_SUGGESTIONS_SETTINGS" />
         </Preference>
-
-        <com.saggitt.omega.preferences.custom.FeedPreference
-            android:key="pref_feed_provider"
-            android:title="@string/title_feed_provider" />
 
     </PreferenceCategory>
 </PreferenceScreen>
