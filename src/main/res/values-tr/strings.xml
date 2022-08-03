@@ -200,4 +200,12 @@
     <string name="no_permissions_identified">İstenen izinler tanımlanmadı</string>
     <string name="show_screenshots">Ekran görüntülerini göster</string>
     <string name="show_screenshots_description">Ekran görüntülerini uygulama sayfasında görüntüleyin.</string>
+    <string name="releases">Sürümler</string>
+    <string name="no_updates_available">Uygun sürüm yok</string>
+    <string name="dynamic">Sistem dinamik</string>
+    <string name="no_action_possible">Eylem Mümkün Değil</string>
+    <string name="favorite_remove">Favorilerden Kaldır</string>
+    <string name="favorite_add">Favorilere Ekle</string>
+    <string name="open">Aç</string>
+    <string name="loading_list">Liste yükleniyor…</string>
 </resources>
