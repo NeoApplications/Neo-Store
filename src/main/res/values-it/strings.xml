@@ -210,4 +210,6 @@
     <string name="releases">Rilasci</string>
     <string name="no_updates_available">Nessuna versione disponibile</string>
     <string name="dynamic">Dinamico di sistema</string>
+    <string name="auto_sync_interval">Intervallo di sincronizzazione automatica (in minuti)</string>
+    <string name="favorite_applications">Preferiti</string>
 </resources>
