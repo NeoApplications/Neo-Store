@@ -172,7 +172,7 @@ public final class WidgetsListHeader extends LinearLayout implements ItemInfoUpd
 
     private void setIcon(PackageItemInfo info) {
         Drawable icon;
-        switch (info.category) {
+        switch (info.widgetCategory) {
             case PackageItemInfo.CONVERSATIONS:
                 icon = getContext().getDrawable(R.drawable.ic_conversations_widget_category);
                 break;

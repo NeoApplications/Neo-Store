@@ -260,7 +260,7 @@ public class IconCache extends BaseIconCache {
             getTitleAndIcon(appInfo, false);
             return appInfo.bitmap;
         } else {
-            PackageItemInfo pkgInfo = new PackageItemInfo(shortcutInfo.getPackage());
+            PackageItemInfo pkgInfo = new PackageItemInfo(shortcutInfo.getPackage(), shortcutInfo.getUserHandle());
             getTitleAndIconForApp(pkgInfo, false);
             return pkgInfo.bitmap;
         }
@@ -313,7 +313,7 @@ public class IconCache extends BaseIconCache {
         CacheEntry entry = getEntryForPackageLocked(
                 infoInOut.packageName, infoInOut.user, useLowResIcon);
         applyCacheEntry(entry, infoInOut);
-        if (infoInOut.category == PackageItemInfo.CONVERSATIONS) {
+        if (infoInOut.widgetCategory == PackageItemInfo.CONVERSATIONS) {
             infoInOut.title = mContext.getString(R.string.widget_category_conversations);
             infoInOut.contentDescription = mPackageManager.getUserBadgedLabel(
                     infoInOut.title, infoInOut.user);
