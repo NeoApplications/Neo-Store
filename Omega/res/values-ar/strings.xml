@@ -73,7 +73,7 @@
     <string name="summary_search_hidden_apps">أظهر الأختصارات المخفية في البحث.</string>
     <string name="title_search_hidden_apps">جد أختصارات مخفية</string>
     <string name="title_all_apps_keep_scroll_state">تذكر الوضعية</string>
-    <string name="title_all_apps_google_search">بحث عالمي</string>
+    <string name="title_all_apps_google_search">نتائج الويب</string>
     <string name="title_all_apps_search">درج شريط البحث</string>
     <string name="title__sort_by_color">عن طريق اللون</string>
     <string name="title__sort_most_used">مستعمل بكثرة</string>
@@ -454,4 +454,7 @@
     <string name="debug_options_title">معلومات التصحيح</string>
     <string name="accessibility_undo">تراجع</string>
     <string name="tab_launcher">المشغل</string>
+    <string name="folder_name">اسم المجلد</string>
+    <string name="section_apps">التطبيقات</string>
+    <string name="section_web">الويب</string>
 </resources>

@@ -153,7 +153,7 @@
     <string name="title_disable_suggestions_prompt">Désactiver les suggestions d\'application</string>
     <string name="summary__drawer_hide_apps">Masquer l\'application du tiroir d\'applications</string>
     <string name="summary_all_apps_google_search">Rechercher des résultats sur le Web et des applications</string>
-    <string name="title_all_apps_google_search">Recherche globale</string>
+    <string name="title_all_apps_google_search">Résultats web</string>
     <string name="title__sort_by_color">Par couleur</string>
     <string name="title__sort_most_used">Les plus utilisées</string>
     <string name="title__sort_last_installed">Installé récemment</string>
@@ -450,4 +450,7 @@
     <string name="tab_shortcuts">Raccourcis</string>
     <string name="title_fuzzy_search">Recherche approximative</string>
     <string name="summary_fuzzy_search">Correspondance approximative pour les recherches d\'applications.</string>
+    <string name="folder_name">Nom du dossier</string>
+    <string name="section_apps">applications</string>
+    <string name="section_web">Web</string>
 </resources>
