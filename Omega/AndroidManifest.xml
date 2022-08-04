@@ -12,6 +12,8 @@
         android:name="${packageName}.permission.HOTSEAT_EDU"
         tools:node="remove" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -35,13 +37,15 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
     <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.QSB" />
     <uses-permission
         android:name="android.permission.MANAGE_ACTIVITY_TASKS"
@@ -64,11 +68,12 @@
     <uses-permission
         android:name="android.permission.MONITOR_INPUT"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ALLOW_SLIPPERY_TOUCHES" />
+    <uses-permission
+        android:name="android.permission.ALLOW_SLIPPERY_TOUCHES"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.CONTROL_REMOTE_APP_TRANSITION_ANIMATIONS"
         tools:ignore="ProtectedPermissions" />
-
     <uses-permission
         android:name="android.permission.SYSTEM_APPLICATION_OVERLAY"
         tools:ignore="ProtectedPermissions" />
