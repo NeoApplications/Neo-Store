@@ -235,6 +235,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
     implementation(kotlin("stdlib", "1.7.0"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
+    implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
+
 
     //Compose
     implementation("androidx.compose.compiler:compiler:$vComposeCompiler")
