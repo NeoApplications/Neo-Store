@@ -13,7 +13,7 @@ val vAccompanist = "0.24.13-rc"
 val vRoom = "2.5.0-alpha02"
 
 plugins {
-    id("com.android.application").version("7.2.1")
+    id("com.android.application").version("7.2.2")
     kotlin("android").version("1.7.0")
     kotlin("kapt").version("1.7.0")
     kotlin("plugin.parcelize").version("1.7.0")
