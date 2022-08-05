@@ -50,5 +50,15 @@ public interface SearchCallback<T> {
      * @return whether the event was handled
      */
     boolean onSubmitSearch(String query);
+
+    /*
+     * Used to avoid multiples calls of web search
+     */
+    default boolean showWebResult() {
+        return false;
+    }
+
+    default void setShowWebResult(boolean show) {
+    }
 }
 

@@ -40,6 +40,9 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.search.SearchAlgorithm;
 import com.android.launcher3.search.SearchCallback;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * An interface to a search box that AllApps can command.
  */
@@ -54,7 +57,6 @@ public class AllAppsSearchBarController
     private String[] mTextConversions;
     protected SearchAlgorithm<AdapterItem> mSearchAlgorithm;
     protected ImageButton mCancelButton;
-
     public void setVisibility(int visibility) {
         mInput.setVisibility(visibility);
     }
@@ -77,7 +79,11 @@ public class AllAppsSearchBarController
         mCancelButton = cancelButton;
         mCancelButton.setOnClickListener(v -> reset());
         mSearchAlgorithm = searchAlgorithm;
+
     }
+
+    private final long DELAY = 250;
+    private Timer timer = new Timer();
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -88,8 +94,9 @@ public class AllAppsSearchBarController
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         // Do nothing
         mTextConversions = extractTextConversions(s);
+        if (timer != null)
+            timer.cancel();
     }
-
     @Override
     public void afterTextChanged(final Editable s) {
         mQuery = s.toString();
@@ -101,6 +108,16 @@ public class AllAppsSearchBarController
             mSearchAlgorithm.cancel(false);
             mSearchAlgorithm.doSearch(mQuery, mTextConversions, mCallback);
             mCancelButton.setVisibility(VISIBLE);
+
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mCallback.setShowWebResult(true);
+                    mSearchAlgorithm.doSearch(mQuery, mTextConversions, mCallback);
+                }
+
+            }, DELAY);
         }
     }
 

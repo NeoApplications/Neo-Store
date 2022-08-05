@@ -55,6 +55,7 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
     var allAppsQsbLayout: AllAppsQsbLayout? = null
     var mCancelButton: ImageButton? = null
 
+    private var webResult = false
     init {
         Selection.setSelection(mSearchQueryBuilder, 0)
     }
@@ -174,5 +175,13 @@ class AllAppsQsbFallback(context: Context, attrs: AttributeSet? = null) :
 
     override fun getEditText(): ExtendedEditText {
         return this
+    }
+
+    override fun showWebResult(): Boolean {
+        return webResult
+    }
+
+    override fun setShowWebResult(show: Boolean) {
+        webResult = show
     }
 }

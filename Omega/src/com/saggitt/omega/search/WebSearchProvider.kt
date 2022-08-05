@@ -65,7 +65,7 @@ abstract class WebSearchProvider(context: Context) : SearchProvider(context) {
                 .take(MAX_SUGGESTIONS)
             response.close()
 
-            Log.e("WebSearchProvider", "Websearch Query: $result")
+            Log.d("WebSearchProvider", "Websearch Query: $query")
             return result
         } catch (ex: Exception) {
             Log.e("WebSearchProvider", ex.message ?: "", ex)

@@ -47,9 +47,13 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
         mAppState.model.enqueueModelUpdateTask(object : BaseModelUpdateTask() {
             override fun execute(app: LauncherAppState, dataModel: BgDataModel, apps: AllAppsList) {
                 val result = getSearchResult(apps.data, query)
-                val suggestions = getSuggestions(query)
+                var suggestions = emptyList<String?>()
+                if (callback!!.showWebResult()) {
+                    suggestions = getSuggestions(query)
+                    callback.setShowWebResult(false)
+                }
                 mResultHandler.post {
-                    callback!!.onSearchResult(
+                    callback.onSearchResult(
                         query,
                         result,
                         suggestions
