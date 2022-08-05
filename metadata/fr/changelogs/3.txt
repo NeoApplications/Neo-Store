@@ -1,0 +1,5 @@
+* Ajout d'un theme Amoled
+* Ajout d'une installation Root silencieuse
+* Ajout des languages suivant :-
+....* Portugais
+....* Chinois
