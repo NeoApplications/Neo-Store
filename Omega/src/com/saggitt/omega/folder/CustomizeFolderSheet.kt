@@ -86,7 +86,7 @@ fun CustomizeFolderSheet(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CustomizeFolderView(
     launcher: Launcher,
