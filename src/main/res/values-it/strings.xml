@@ -192,10 +192,10 @@
     <string name="pending">In attesa</string>
     <string name="installing">Installando</string>
     <string name="ignore_battery_optimization_not_supported">La tua installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
-    <string name="dialog_approve">Spegni</string>
+    <string name="dialog_approve">Spegnere</string>
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
-    <string name="dialog_refuse">Mantieni</string>
+    <string name="dialog_refuse">Mantenere</string>
     <string name="root_session_installer">Usa l\'installatore della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
