@@ -13,7 +13,7 @@ val vAccompanist = "0.24.13-rc"
 val vRoom = "2.5.0-alpha02"
 
 plugins {
-    id("com.android.application").version("7.2.1")
+    id("com.android.application").version("7.2.2")
     kotlin("android").version("1.7.0")
     kotlin("kapt").version("1.7.0")
     kotlin("plugin.parcelize").version("1.7.0")
@@ -215,7 +215,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
-    implementation("androidx.fragment:fragment-ktx:1.5.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.1")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -231,8 +231,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation(kotlin("stdlib", "1.7.0"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
 
@@ -243,12 +243,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$vCompose")
     implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
     implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
-    implementation("androidx.navigation:navigation-compose:2.5.0")
-    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
+    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation("androidx.activity:activity-compose:1.5.1")
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.14")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.15")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")

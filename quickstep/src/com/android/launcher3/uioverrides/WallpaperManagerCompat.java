@@ -164,8 +164,13 @@ public class WallpaperManagerCompat {
     }
 
     private static final int getWallpaperId(Context context) {
-        @SuppressLint("MissingPermission")
-        Drawable wallpaper = WallpaperManager.getInstance(context).getDrawable();
+        Drawable wallpaper = null;
+        try {
+            @SuppressLint("MissingPermission")
+            Drawable mWallpaper = WallpaperManager.getInstance(context).getDrawable();
+            wallpaper = mWallpaper;
+        } catch (SecurityException e) {
+        }
         if (wallpaper != null) {
             Bitmap bm = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             Canvas cv = new Canvas(bm);

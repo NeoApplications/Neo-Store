@@ -39,6 +39,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,9 +48,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PreferenceGroup(
     heading: String? = null,
+    textAlignment: Alignment.Horizontal = Alignment.Start,
     content: @Composable () -> Unit
 ) {
-    PreferenceGroupHeading(heading)
+    PreferenceGroupHeading(heading, textAlignment)
     val columnModifier = Modifier
     CompositionLocalProvider(
         LocalContentColor provides MaterialTheme.colorScheme.primary
@@ -69,7 +71,8 @@ fun PreferenceGroup(
 
 @Composable
 fun PreferenceGroupHeading(
-    heading: String? = null
+    heading: String? = null,
+    textAlignment: Alignment.Horizontal = Alignment.Start
 ) {
     var spacerHeight = 0
     if (heading == null) spacerHeight += 8
@@ -80,7 +83,8 @@ fun PreferenceGroupHeading(
             modifier = Modifier
                 .height(48.dp)
                 .padding(horizontal = 32.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            horizontalAlignment = textAlignment
         ) {
             CompositionLocalProvider(
                 LocalContentColor provides MaterialTheme.colorScheme.onBackground

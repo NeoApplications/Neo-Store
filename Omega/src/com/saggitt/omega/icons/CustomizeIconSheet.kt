@@ -97,7 +97,7 @@ fun CustomizeIconSheet(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CustomizeIconView(
     icon: Drawable,
