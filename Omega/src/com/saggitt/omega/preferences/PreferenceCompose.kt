@@ -1,5 +1,6 @@
 package com.saggitt.omega.preferences
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,7 @@ fun BasePreference(
     @StringRes summaryId: Int = -1,
     summary: String? = null,
     isEnabled: Boolean = true,
+    startWidget: (@Composable () -> Unit)? = null,
     endWidget: (@Composable () -> Unit)? = null,
     bottomWidget: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
@@ -58,6 +62,10 @@ fun BasePreference(
                 .padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            startWidget?.let {
+                startWidget()
+                Spacer(modifier = Modifier.requiredWidth(8.dp))
+            }
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -166,5 +174,31 @@ fun SeekBarPreference(
                 )
             }
         }
+    )
+}
+
+@Composable
+fun PagePreference(
+    modifier: Modifier = Modifier,
+    @StringRes titleId: Int,
+    @DrawableRes iconId: Int = -1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = titleId,
+        startWidget =
+        if (iconId != -1) {
+            {
+                Icon(
+                    painter = painterResource(id = iconId),
+                    contentDescription = stringResource(id = titleId),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        } else null,
+        isEnabled = isEnabled,
+        onClick = onClick // TODO add Composable annotation
     )
 }
