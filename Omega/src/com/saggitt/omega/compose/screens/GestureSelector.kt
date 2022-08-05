@@ -118,7 +118,7 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
         tabs.forEachIndexed { index, tab ->
             LeadingIconTab(
                 icon = { Icon(painter = painterResource(id = tab.icon), contentDescription = "") },
-                text = { Text(stringResource(id = tab.title)) },
+                text = { },
                 selected = pagerState.currentPage == index,
                 onClick = {
                     scope.launch {
@@ -377,9 +377,14 @@ fun ShortcutsScreen() {
 typealias ComposableFun = @Composable () -> Unit
 
 sealed class TabItem(var icon: Int, var title: Int, var screen: ComposableFun) {
-    object Launcher : TabItem(R.drawable.ic_edit_dash, R.string.tab_launcher, { LauncherScreen() })
-    object Apps : TabItem(R.drawable.ic_apps, R.string.apps_label, { AppsScreen() })
-    object Shortcuts : TabItem(R.drawable.ic_widget, R.string.tab_shortcuts, { ShortcutsScreen() })
+    object Launcher :
+        TabItem(R.drawable.ic_assistant, R.string.tab_launcher, { LauncherScreen() })
+
+    object Apps :
+        TabItem(R.drawable.ic_apps, R.string.apps_label, { AppsScreen() })
+
+    object Shortcuts :
+        TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts, { ShortcutsScreen() })
 }
 
 @OptIn(ExperimentalAnimationApi::class)
