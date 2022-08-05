@@ -30,15 +30,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.TabRow
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LeadingIconTab
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,11 +55,7 @@ import com.android.launcher3.shortcuts.ShortcutKey
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import com.saggitt.omega.compose.components.ExpandableListItem
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.components.PreferenceGroup
@@ -86,13 +74,13 @@ fun GestureSelector(title: String) {
     ViewWithActionBar(
         title = title
     ) {
-        MainScreen()
+        MainGesturesScreen()
     }
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainGesturesScreen() {
     val tabs = listOf(TabItem.Launcher, TabItem.Apps, TabItem.Shortcuts)
     val pagerState = rememberPagerState()
     Scaffold(
@@ -164,6 +152,7 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LauncherScreen() {
     Column(
@@ -224,6 +213,7 @@ fun LauncherScreen() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppsScreen() {
     Column(
@@ -234,7 +224,6 @@ fun AppsScreen() {
         val context = LocalContext.current
         val prefs = Utilities.getOmegaPrefs(context)
         val apps = Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
-        val appGestureHandler = StartAppGestureHandler(context, null)
         val colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.onPrimary,
             unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -310,6 +299,7 @@ fun AppsScreen() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutsScreen() {
     Column(
