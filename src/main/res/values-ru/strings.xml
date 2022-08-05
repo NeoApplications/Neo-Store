@@ -211,4 +211,6 @@
     <string name="loading_list">Загружаем список…</string>
     <string name="no_updates_available">Нет доступных версий</string>
     <string name="dynamic">Динамическая системная</string>
+    <string name="auto_sync_interval">Интервал синхронизации (в минутах)</string>
+    <string name="favorite_applications">Избранное</string>
 </resources>
