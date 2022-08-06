@@ -25,10 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import de.charlex.compose.HtmlText
 
-/*
-* Annotate String in this way https://stackoverflow.com/questions/65567412/jetpack-compose-text-hyperlink-some-section-of-the-text/69549929#69549929
-* TODO REMOVE usage of HtmlText
-* */
 @Composable
 fun HtmlTextBlock(
     modifier: Modifier = Modifier,

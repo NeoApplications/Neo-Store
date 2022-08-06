@@ -31,7 +31,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
         <item name="android:statusBarColor">@color/md_theme_light_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
 
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>

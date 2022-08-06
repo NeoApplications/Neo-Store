@@ -1,7 +1,12 @@
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.AntiFeaturesGrid
+import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.LinkItem
 import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.PermissionGrid
 import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
@@ -24,6 +29,20 @@ fun ReleaseItemPreview() {
 fun CustomChipPrev() {
     AppTheme(blackTheme = false, darkTheme = true) {
         CustomChip(text = "Test Chip")
+    }
+}
+
+@Preview
+@Composable
+fun LinkItemPreview() {
+    AppTheme(blackTheme = false) {
+        LinkItem(
+            linkType = LinkType(
+                R.drawable.ic_email,
+                stringResource(id = R.string.author_email),
+                Uri.parse("neostore@neoapps.com")
+            )
+        )
     }
 }
 
