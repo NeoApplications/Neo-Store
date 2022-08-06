@@ -26,11 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.PagePreference
-import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.BlankScreen
+import com.saggitt.omega.compose.navigation.Routes
+import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -85,5 +89,22 @@ fun MainPrefsPage() {
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+fun NavGraphBuilder.mainPrefsGraph(route: String) {
+    preferenceGraph(route, { MainPrefsPage() }) { subRoute ->
+        preferenceGraph(route = subRoute(Routes.PREFS_PROFILE), { ProfilePrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_DESKTOP), { DesktopPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_DOCK), { DockPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_DRAWER), { DrawerPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_WIDGETS), { WidgetsPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_SEARCH), { SearchPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_GESTURES), { GesturesPrefsPage() })
+        preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BlankScreen() }) // TODO
+        preferenceGraph(route = subRoute(Routes.PREFS_DM), { BlankScreen() }) // TODO
+        preferenceGraph(route = subRoute(Routes.PREFS_DEV), { BlankScreen() }) // TODO
+        preferenceGraph(route = subRoute(Routes.ABOUT), { AboutScreen() })
     }
 }
