@@ -21,7 +21,8 @@ import com.saggitt.omega.theme.OmegaAppTheme
 fun ThemePrefsPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val notificationsPrefs = listOf(
+    val profilePrefs = listOf(
+        prefs.language,
         prefs.themePref, // TODO
         prefs.themeAccentColor, // TODO
         // TODO Missing icon package pref page
@@ -48,8 +49,8 @@ fun ThemePrefsPage() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
-                PreferenceGroup(stringResource(id = R.string.title__general_theme)) {
-                    notificationsPrefs.forEach { composer(it) }
+                PreferenceGroup(stringResource(id = R.string.title__general_profile)) {
+                    profilePrefs.forEach { composer(it) }
                 }
             }
             item {

@@ -179,7 +179,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         currentAccent = prefs.themeAccentColor.onGetValue()
         currentTheme = themeOverride.getTheme(this)
         val config = Config(this)
-        config.setAppLanguage(prefs.language)
+        config.setAppLanguage(prefs.language.onGetValue())
 
         theme.applyStyle(
             resources.getIdentifier(

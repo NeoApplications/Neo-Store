@@ -533,7 +533,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // THEME
+    // PROFILE: LANGUAGE & THEME
+    var language = StringPref(
+        key = PREFS_LANGUAGE,
+        titleId = R.string.title__advanced_language,
+        defaultValue = "",
+        onChange = recreate
+    )
     var themePref = StringIntPref(
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
@@ -757,12 +763,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // ADVANCED
-    var language by StringPref(
-        key = PREFS_LANGUAGE,
-        titleId = R.string.title__advanced_language,
-        defaultValue = "",
-        onChange = recreate
-    )
     var firstRun by BooleanPref(
         key = PREFS_FIRST_RUN,
         titleId = -1,

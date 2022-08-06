@@ -76,7 +76,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)
         val config = Config(this)
-        config.setAppLanguage(omegaPrefs.language)
+        config.setAppLanguage(omegaPrefs.language.onGetValue())
 
         currentAccent = omegaPrefs.themeAccentColor.onGetValue()
         currentTheme = themeOverride.getTheme(this)
