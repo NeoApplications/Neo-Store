@@ -204,7 +204,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = doNothing
     )
-    var desktopDashLineSize = FloatPref(
+    var dashLineSize = FloatPref(
         key = PREFS_DASH_LINESIZE,
         titleId = R.string.dash_linesize,
         defaultValue = 6f,
@@ -214,7 +214,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { it.roundToInt().toString() },
         onChange = doNothing
     )
-    var desktopDashProviders = StringListPref(
+    var dashProviders = StringListPref(
         prefKey = PREFS_DASH_PROVIDERS,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,

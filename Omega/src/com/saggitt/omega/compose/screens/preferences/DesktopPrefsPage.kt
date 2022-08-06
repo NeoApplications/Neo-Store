@@ -42,9 +42,7 @@ fun DesktopPrefsPage() {
     )
     val otherPrefs = listOf(
         prefs.desktopHideStatusBar,
-        prefs.desktopLock,
-        prefs.desktopDashLineSize,
-        prefs.desktopDashProviders // TODO
+        prefs.desktopLock
     )
 
     val composer = @Composable { pref: Any ->

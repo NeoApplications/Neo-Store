@@ -21,12 +21,6 @@ import com.saggitt.omega.theme.OmegaAppTheme
 fun GesturesPrefsPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val notificationsPrefs = listOf(
-        // TODO Missing enable notification badge
-        prefs.notificationCount,
-        prefs.notificationCustomColor,
-        prefs.notificationBackground //TODO
-    )
     val gesturesPrefs = listOf(
         prefs.gestureDoubleTap, //TODO
         prefs.gestureLongPress, //TODO
@@ -36,6 +30,10 @@ fun GesturesPrefsPage() {
         prefs.gestureHomePress, //TODO
         prefs.gestureBackPress, //TODO
         prefs.gestureLaunchAssistant, //TODO
+    )
+    val dashPrefs = listOf(
+        prefs.dashLineSize,
+        prefs.dashProviders // TODO
     )
 
     val composer = @Composable { pref: Any ->
@@ -52,13 +50,13 @@ fun GesturesPrefsPage() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__notifications)) {
-                    notificationsPrefs.forEach { composer(it) }
+                PreferenceGroup(stringResource(id = R.string.pref_category__gestures)) {
+                    gesturesPrefs.forEach { composer(it) }
                 }
             }
             item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__gestures)) {
-                    gesturesPrefs.forEach { composer(it) }
+                PreferenceGroup(stringResource(id = R.string.pref_category__dash)) {
+                    dashPrefs.forEach { composer(it) }
                 }
             }
         }

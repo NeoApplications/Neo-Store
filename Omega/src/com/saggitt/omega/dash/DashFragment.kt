@@ -58,7 +58,7 @@ class DashFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        requireContext().omegaPrefs.desktopDashProviders.setAll(adapter.saveSpecs())
+        requireContext().omegaPrefs.dashProviders.setAll(adapter.saveSpecs())
     }
 
     override fun onResume() {

@@ -343,6 +343,7 @@
     <string name="title__gesture_swipe_down">Swipe down</string>
     <string name="pref_category__notifications">Notifications</string>
     <string name="pref_category__gestures">Gestures</string>
+    <string name="pref_category__dash">Dash</string>
     <string name="action_none">Do Nothing</string>
     <string name="action_open_drawer">Open app drawer</string>
     <string name="action_open_drawer_or_recents">Open recents/app drawer</string>
