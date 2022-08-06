@@ -32,7 +32,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 
 @ExperimentalCoilApi
 @Composable
@@ -58,11 +59,11 @@ fun ContributorRow(
         summary = contributorRole,
         startWidget = {
             Image(
-                painter = rememberImagePainter(
-                    data = photoUrl,
-                    builder = {
-                        crossfade(true)
-                    }
+                painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current).data(data = photoUrl)
+                        .apply(block = fun ImageRequest.Builder.() {
+                            crossfade(true)
+                        }).build()
                 ),
                 contentDescription = null,
                 modifier = Modifier
