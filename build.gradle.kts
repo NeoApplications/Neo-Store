@@ -7,7 +7,7 @@ val composeCompilerVersion = "1.2.0"
 val roomVersion = "2.4.2"
 
 plugins {
-    id("com.android.application") version ("7.2.1")
+    id("com.android.application") version ("7.2.2")
     kotlin("android") version ("1.7.0")
     kotlin("plugin.serialization") version ("1.7.0")
     id("com.google.devtools.ksp") version ("1.7.0-1.0.6")
