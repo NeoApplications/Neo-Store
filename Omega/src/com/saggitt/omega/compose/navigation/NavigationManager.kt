@@ -21,6 +21,18 @@ import com.saggitt.omega.compose.screens.iconPickerGraph
 import soup.compose.material.motion.materialSharedAxisX
 
 object Routes {
+    const val PREFS_MAIN = "prefs_main"
+    const val PREFS_PROFILE = "prefs_profile"
+    const val PREFS_DESKTOP = "prefs_desktop"
+    const val PREFS_DOCK = "prefs_dock"
+    const val PREFS_DRAWER = "prefs_drawer"
+    const val PREFS_WIDGETS = "prefs_widgets"
+    const val PREFS_SEARCH = "prefs_search"
+    const val PREFS_GESTURES = "prefs_gestures"
+    const val PREFS_BACKUPS = "prefs_backups"
+    const val PREFS_DM = "prefs_desktop_mode"
+    const val PREFS_DEV = "prefs_developer"
+
     const val ABOUT = "about"
     const val EDIT_ICON = "edit_icon"
     const val ICON_PICKER = "icon_picker"
