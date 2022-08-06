@@ -26,6 +26,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentManager
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.saggitt.omega.compose.navigation.DefaultComposeView
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -85,6 +86,10 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
             val uri = "android-app://androidx.navigation//$destination".toUri()
             Log.d("ComposeActivity", "Creating intent for $uri")
             return Intent(Intent.ACTION_VIEW, uri, context, ComposeActivity::class.java)
+        }
+
+        fun getFragmentManager(context: Context): FragmentManager {
+            return (context as ComposeActivity).supportFragmentManager
         }
     }
 }
