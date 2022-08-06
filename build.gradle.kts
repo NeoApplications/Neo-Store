@@ -4,7 +4,7 @@ import java.util.*
 
 val composeVersion = "1.2.0"
 val composeCompilerVersion = "1.2.0"
-val roomVersion = "2.4.2"
+val roomVersion = "2.4.3"
 
 plugins {
     id("com.android.application") version ("7.2.2")
@@ -160,10 +160,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
     implementation("com.google.devtools.ksp:symbol-processing-api:1.7.0-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0-alpha05")
-    implementation("androidx.appcompat:appcompat:1.5.0-beta01")
-    implementation("androidx.fragment:fragment-ktx:1.5.1")
-    implementation("androidx.activity:activity-ktx:1.5.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
+    implementation("androidx.appcompat:appcompat:1.6.0-alpha05")
+    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha01")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
+    implementation("androidx.activity:activity-compose:1.6.0-alpha05")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
