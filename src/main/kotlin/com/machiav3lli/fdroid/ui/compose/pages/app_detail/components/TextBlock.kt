@@ -46,7 +46,7 @@ fun HtmlTextBlock(
             color = Color.Transparent
         ) {
             val maxLines by animateIntAsState(
-                targetValue = if (isExpanded) Int.MAX_VALUE else 12,
+                targetValue = if (isExpanded || !isExpandable) Int.MAX_VALUE else 12,
                 animationSpec = tween(durationMillis = 200)
             )
             SelectionContainer {
