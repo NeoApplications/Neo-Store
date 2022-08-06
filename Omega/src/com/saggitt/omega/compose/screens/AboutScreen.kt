@@ -31,7 +31,14 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -55,10 +62,13 @@ import androidx.navigation.NavGraphBuilder
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.saggitt.omega.compose.components.*
+import com.saggitt.omega.compose.components.ContributorRow
+import com.saggitt.omega.compose.components.ItemLink
+import com.saggitt.omega.compose.components.NavigationActionPreference
+import com.saggitt.omega.compose.components.PreferenceGroup
+import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.navigation.subRoute
-import com.saggitt.omega.compose.screens.preferences.DockPrefsPage
 import com.saggitt.omega.theme.kaushanScript
 import com.saggitt.omega.util.Config
 import java.io.InputStream
@@ -77,9 +87,7 @@ fun NavGraphBuilder.licenseGraph(route: String) {
 }
 
 fun NavGraphBuilder.translatorsGraph(route: String) {
-    preferenceGraph(
-        route,
-        { DockPrefsPage() })
+    preferenceGraph(route, { TranslatorsScreen() })
 }
 
 fun NavGraphBuilder.changelogGraph(route: String) {
