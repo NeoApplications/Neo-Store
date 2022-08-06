@@ -53,7 +53,7 @@ public class OverlayCallbackImpl
 
     public OverlayCallbackImpl(Launcher launcher) {
         OmegaPreferences preferences = Utilities.getOmegaPrefs(launcher);
-        boolean enableFeed = !preferences.getFeedProvider().equals("");
+        boolean enableFeed = !preferences.getFeedProvider().onGetValue().equals("");
 
         mLauncher = launcher;
         mClient = new LauncherClient(mLauncher, this, new StaticInteger(

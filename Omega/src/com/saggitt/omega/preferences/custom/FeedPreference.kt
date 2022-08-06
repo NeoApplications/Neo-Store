@@ -27,7 +27,7 @@ class FeedPreference(context: Context, attrs: AttributeSet?) :
             }
 
     private val current
-        get() = feeds.firstOrNull { it.packageName == prefs.feedProvider }
+        get() = feeds.firstOrNull { it.packageName == prefs.feedProvider.onGetValue() }
             ?: feeds[0]
 
     init {

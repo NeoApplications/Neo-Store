@@ -637,7 +637,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // SEARCH & FOLDER
+    // SEARCH & FEED
     var searchBarRadius = DimensionPref(
         key = PREFS_SEARCH_BAR_RADIUS,
         titleId = R.string.title__search_bar_radius,
@@ -685,33 +685,21 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = doNothing
     )
+    var feedProvider = StringPref(
+        key = PREFS_FEED_PROVIDER,
+        titleId = R.string.title_feed_provider,
+        defaultValue = "",
+        onChange = restart
+    )
+    val feedProviderAllowAll = BooleanPref(
+        key = PREFS_FEED_PROVIDER_ALLOW_ALL,
+        titleId = -1,
+        defaultValue = true,
+        onChange = restart
+    )
 
 
     // NOTIFICATION & GESTURES
-    val notificationCount = BooleanPref(
-        key = PREFS_NOTIFICATION_COUNT,
-        titleId = R.string.title__notification_count,
-        defaultValue = false,
-        onChange = recreate
-    )
-    val notificationCustomColor = BooleanPref(
-        key = PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
-        titleId = R.string.notification_custom_color,
-        defaultValue = false,
-        onChange = recreate
-    )
-    val notificationBackground = IntPref(
-        key = PREFS_NOTIFICATION_BACKGROUND,
-        titleId = R.string.title__notification_background,
-        defaultValue = R.color.notification_background,
-        onChange = recreate
-    )
-    val notificationCountFolder = BooleanPref(
-        key = PREFS_NOTIFICATION_COUNT_FOLDER,
-        titleId = R.string.title__folder_badge_count,
-        defaultValue = true,
-        onChange = recreate
-    )
     var gestureDoubleTap = StringPref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
@@ -762,70 +750,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // ADVANCED
-    var firstRun by BooleanPref(
-        key = PREFS_FIRST_RUN,
-        titleId = -1,
-        defaultValue = true
-    )
-    var restoreSuccess by BooleanPref(
-        key = PREFS_RESTORE_SUCCESS,
-        titleId = R.string.restore_success,
-        defaultValue = false
-    )
-    val recentBackups = object : MutableListPref<Uri>(
-        prefs = Utilities.getDevicePrefs(context),
-        prefKey = PREFS_RECENT_BACKUP,
-        titleId = -1,
-    ) {
-        override fun unflattenValue(value: String) = Uri.parse(value)
-    }
-
-
-    // DEVELOPER PREFERENCES
-    var developerOptionsEnabled by BooleanPref(
-        key = PREFS_DEV_PREFS_SHOW,
-        titleId = R.string.title__dev_show_Dev,
-        defaultValue = false,
-        onChange = recreate
-    )
-    var desktopModeEnabled by BooleanPref(
-        key = PREFS_DESKTOP_MODE,
-        titleId = R.string.pref_desktop_mode,
-        summaryId = R.string.pref_desktop_mode_summary,
-        defaultValue = true,
-        onChange = recreate
-    )
-    private val lowPerformanceMode by BooleanPref(
-        key = PREFS_LOW_PREFORMANCE,
-        titleId = -1,
-        defaultValue = false,
-        onChange = restart
-    ) // TODO Add
-    val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref(
-        key = PREFS_DEBUG_MODE,
-        titleId = R.string.title__dev_show_debug_info,
-        defaultValue = false,
-        onChange = doNothing
-    )
-
-
-    // FEED
-    var feedProvider by StringPref(
-        key = PREFS_FEED_PROVIDER,
-        titleId = R.string.title_feed_provider,
-        defaultValue = "",
-        onChange = restart
-    )
-    val ignoreFeedWhitelist by BooleanPref(
-        key = PREFS_FEED_PROVIDER_ALLOW_ALL,
-        titleId = -1,
-        defaultValue = true,
-        onChange = restart
-    )
-
-    // WIDGETS: SMARTSPACE
+    // WIDGETS (SMARTSPACE) & NOTIFICATIONS
     var smartspaceUsePillQsb = BooleanPref(
         key = PREF_PILL_QSB,
         titleId = R.string.title_use_pill_qsb,
@@ -907,6 +832,75 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         ),
         onChange = ::updateSmartspaceProvider
     )
+    val notificationCount = BooleanPref(
+        key = PREFS_NOTIFICATION_COUNT,
+        titleId = R.string.title__notification_count,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val notificationCustomColor = BooleanPref(
+        key = PREFS_NOTIFICATION_BACKGROUND_CUSTOM,
+        titleId = R.string.notification_custom_color,
+        defaultValue = false,
+        onChange = recreate
+    )
+    val notificationBackground = IntPref(
+        key = PREFS_NOTIFICATION_BACKGROUND,
+        titleId = R.string.title__notification_background,
+        defaultValue = R.color.notification_background,
+        onChange = recreate
+    )
+    val notificationCountFolder = BooleanPref(
+        key = PREFS_NOTIFICATION_COUNT_FOLDER,
+        titleId = R.string.title__folder_badge_count,
+        defaultValue = true,
+        onChange = recreate
+    )
+
+
+    // ADVANCED
+    var restoreSuccess by BooleanPref(
+        key = PREFS_RESTORE_SUCCESS,
+        titleId = R.string.restore_success,
+        defaultValue = false
+    )
+    val recentBackups = object : MutableListPref<Uri>(
+        prefs = Utilities.getDevicePrefs(context),
+        prefKey = PREFS_RECENT_BACKUP,
+        titleId = -1,
+    ) {
+        override fun unflattenValue(value: String) = Uri.parse(value)
+    }
+
+
+    // DEVELOPER
+    var developerOptionsEnabled by BooleanPref(
+        key = PREFS_DEV_PREFS_SHOW,
+        titleId = R.string.title__dev_show_Dev,
+        defaultValue = false,
+        onChange = recreate
+    )
+    var desktopModeEnabled by BooleanPref(
+        key = PREFS_DESKTOP_MODE,
+        titleId = R.string.pref_desktop_mode,
+        summaryId = R.string.pref_desktop_mode_summary,
+        defaultValue = true,
+        onChange = recreate
+    )
+    private val lowPerformanceMode by BooleanPref(
+        key = PREFS_LOW_PREFORMANCE,
+        titleId = -1,
+        defaultValue = false,
+        onChange = restart
+    ) // TODO Add
+    val enablePhysics get() = !lowPerformanceMode
+    val showDebugInfo by BooleanPref(
+        key = PREFS_DEBUG_MODE,
+        titleId = R.string.title__dev_show_debug_info,
+        defaultValue = false,
+        onChange = doNothing
+    )
+
 
     // MISC
     val customAppName =
@@ -916,6 +910,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             override fun flattenValue(value: String) = value
             override fun unflattenValue(value: String) = value
         }
+    var firstRun by BooleanPref(
+        key = PREFS_FIRST_RUN,
+        titleId = -1,
+        defaultValue = true
+    )
     var torchState by BooleanPref(
         key = PREFS_TORCH,
         titleId = R.string.dash_torch,

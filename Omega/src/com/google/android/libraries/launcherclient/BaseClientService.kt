@@ -17,7 +17,7 @@ open class BaseClientService(context: Context, flags: Int) : ServiceConnection {
         if (!mConnected) {
             try {
                 val prefs = getInstance(mContext)
-                if (prefs.feedProvider != "") {
+                if (prefs.feedProvider.onGetValue() != "") {
                     mConnected = mContext.bindService(
                         LauncherClient.getIntent(mContext, false),
                         mBridge,

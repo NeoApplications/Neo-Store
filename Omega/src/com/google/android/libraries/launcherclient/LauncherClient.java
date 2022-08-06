@@ -390,7 +390,7 @@ public class LauncherClient {
         String pkg = context.getPackageName();
         OmegaPreferences prefs = OmegaPreferences.getInstance(context);
         return new Intent("com.android.launcher3.WINDOW_OVERLAY")
-                .setPackage(prefs.getFeedProvider())
+                .setPackage(prefs.getFeedProvider().onGetValue())
                 .setData(Uri.parse("app://" +
                                 pkg +
                                 ":" +
