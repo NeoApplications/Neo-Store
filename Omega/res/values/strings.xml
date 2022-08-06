@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Saul Henriquez
   ~
@@ -15,7 +14,8 @@
   ~
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  --><resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="derived_app_name" translatable="false">Neo Launcher</string>
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
@@ -33,6 +33,10 @@
     <string name="title__general_smartspace">Home Widget</string>
     <string name="title__general_advanced">Advanced Settings</string>
     <string name="title__general_notifications">Gestures and Notifications</string>
+    <string name="title__general_profile">Profile</string>
+    <string name="title__general_gestures_dash">Gestures &amp; Dash</string>
+    <string name="title__general_search_feed">Search &amp; Feed</string>
+    <string name="title__general_widgets_notifications">Widgets &amp; Notifications</string>
     <string name="summary__general_desktop">Customize your desktop</string>
     <string name="summary__general_dock">Hotseat icons, search bar</string>
     <string name="summary__general_drawer">Customize your drawer</string>
@@ -43,6 +47,7 @@
     <string name="summary__general_advanced">Language, back up, setting search</string>
     <string name="summary__general_about">More about Neo Launcher</string>
     <string name="pref_category__interfaces">User Interface</string>
+    <string name="pref_category__features">Features</string>
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>
     <string name="pref_category__incubating">Incubating</string>
