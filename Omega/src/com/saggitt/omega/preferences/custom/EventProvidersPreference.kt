@@ -36,14 +36,14 @@ class EventProvidersPreference(context: Context, attrs: AttributeSet?) :
     DialogPreference(context, attrs),
     OmegaPreferences.MutableListPrefChangeListener {
 
-    private val providersPref = context.omegaPrefs.eventProviders
+    private val providersPref = context.omegaPrefs.smartspaceEventProviders
 
     init {
         updateSummary()
     }
 
     fun setProviders(providers: List<String>) {
-        context.omegaPrefs.eventProviders.setAll(providers)
+        context.omegaPrefs.smartspaceEventProviders.setAll(providers)
         context.omegaApp.smartspace.onProviderChanged()
     }
 

@@ -53,7 +53,7 @@ public final class FeatureFlags {
      */
     //public static final boolean QSB_ON_FIRST_SCREEN = true;
     public static boolean showQSbOnFirstScreen(Context context) {
-        return Utilities.getOmegaPrefs(context).getEnableSmartspace();
+        return Utilities.getOmegaPrefs(context).getSmartspaceEnable().onGetValue();
     }
 
     /**

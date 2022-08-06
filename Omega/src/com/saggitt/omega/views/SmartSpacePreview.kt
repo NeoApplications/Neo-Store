@@ -33,7 +33,7 @@ class SmartSpacePreview(context: Context, attrs: AttributeSet?) : FrameLayout(co
     OmegaPreferences.OnPreferenceChangeListener {
 
     private val prefs = Utilities.getOmegaPrefs(context)
-    private val usePillQsb = prefs::usePillQsb
+    private val usePillQsb = prefs::smartspaceUsePillQsb
     private val prefsToWatch = arrayOf(
         PREFS_SMARTSPACE_TIME, PREFS_SMARTSPACE_TIME_ABOVE,
         PREFS_TIME_24H, PREFS_SMARTSPACE_DATE, PREF_PILL_QSB
@@ -65,7 +65,8 @@ class SmartSpacePreview(context: Context, attrs: AttributeSet?) : FrameLayout(co
 
     private fun inflateCurrentView() {
         val layout =
-            if (usePillQsb.get()) R.layout.qsb_container_preview else R.layout.search_container_workspace
+            if (usePillQsb.get().onGetValue())
+                R.layout.qsb_container_preview else R.layout.search_container_workspace
         addView(inflateView(layout))
     }
 

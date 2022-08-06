@@ -43,7 +43,11 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.omegaApp
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.Temperature
+import com.saggitt.omega.util.applyAccent
+import com.saggitt.omega.util.getAllChilds
+import com.saggitt.omega.util.runOnMainThread
 
 @Keep
 class SmartSpaceDataWidget(controller: OmegaSmartSpaceController) :
@@ -52,7 +56,7 @@ class SmartSpaceDataWidget(controller: OmegaSmartSpaceController) :
     private val prefs = Utilities.getOmegaPrefs(context)
     private val smartspaceWidgetHost = SmartspaceWidgetHost()
     private var smartspaceView: SmartspaceWidgetHostView? = null
-    private val widgetIdPref = prefs::smartspaceWidgetId
+    private val widgetIdPref = prefs.smartspaceWidgetId
     private val providerInfo = getSmartspaceWidgetProvider(context)
     private var isWidgetBound = false
     private val pendingIntentTagId =
@@ -79,7 +83,7 @@ class SmartSpaceDataWidget(controller: OmegaSmartSpaceController) :
     private fun bindWidget(onSetupComplete: () -> Unit) {
         val widgetManager = AppWidgetManager.getInstance(context)
 
-        var widgetId = widgetIdPref.get()
+        var widgetId = widgetIdPref.onGetValue()
         val widgetInfo = widgetManager.getAppWidgetInfo(widgetId)
         isWidgetBound = widgetInfo != null && widgetInfo.provider == providerInfo.provider
         val opts: Bundle = createBindOptions()
@@ -115,14 +119,14 @@ class SmartSpaceDataWidget(controller: OmegaSmartSpaceController) :
                 } else {
                     smartspaceWidgetHost.deleteAppWidgetId(widgetId)
                     widgetId = -1
-                    widgetIdPref.set(-1)
+                    widgetIdPref.onSetValue(-1)
                     onSetupComplete()
                 }
             }
         }
 
         if (oldWidgetId != widgetId) {
-            widgetIdPref.set(widgetId)
+            widgetIdPref.onSetValue(widgetId)
         }
     }
 

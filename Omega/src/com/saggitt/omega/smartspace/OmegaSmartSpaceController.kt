@@ -42,20 +42,55 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.notification.NotificationListener
 import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.NOTIFICATION_BADGING
-import com.saggitt.omega.smartspace.eventprovider.*
+import com.saggitt.omega.smartspace.eventprovider.AlarmEventProvider
+import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
+import com.saggitt.omega.smartspace.eventprovider.CalendarEventProvider
+import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
+import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
+import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
 import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
-import com.saggitt.omega.util.*
+import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.Temperature
+import com.saggitt.omega.util.checkPackagePermission
+import com.saggitt.omega.util.hasFlag
+import com.saggitt.omega.util.isAppEnabled
+import com.saggitt.omega.util.omegaPrefs
+import com.saggitt.omega.util.openURLinBrowser
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.List
+import kotlin.collections.all
+import kotlin.collections.any
+import kotlin.collections.asSequence
+import kotlin.collections.associateByTo
+import kotlin.collections.emptyList
+import kotlin.collections.filter
+import kotlin.collections.filterTo
+import kotlin.collections.first
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.getOrPut
+import kotlin.collections.listOf
+import kotlin.collections.map
+import kotlin.collections.mapOf
+import kotlin.collections.minus
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.plus
+import kotlin.collections.set
+import kotlin.collections.setOf
+import kotlin.collections.toSet
+import kotlin.collections.toTypedArray
 
 class OmegaSmartSpaceController(val context: Context) {
 
     private var weatherData: WeatherData? = null
     private var cardData: CardData? = null
     private val listeners = ArrayList<Listener>()
-    private val weatherProviderPref = Utilities.getOmegaPrefs(context)::weatherProvider
-    private val eventProvidersPref = context.omegaPrefs.eventProviders
+    private val weatherProviderPref = Utilities.getOmegaPrefs(context).smartspaceWeatherProvider
+    private val eventProvidersPref = context.omegaPrefs.smartspaceEventProviders
     private var weatherDataProvider = BlankDataProvider(this) as DataProvider
     private val eventDataProviders = mutableListOf<DataProvider>()
     private val eventDataMap = mutableMapOf<DataProvider, CardData?>()
@@ -89,7 +124,7 @@ class OmegaSmartSpaceController(val context: Context) {
                     forceUpdate()
                 } else {
                     if (weatherDataProvider == provider) {
-                        weatherProviderPref.set(BlankDataProvider::class.java.name)
+                        weatherProviderPref.onSetValue(BlankDataProvider::class.java.name)
                     }
                     if (eventDataProviders.contains(provider)) {
                         eventProvidersPref.setAll(eventDataProviders
@@ -151,7 +186,7 @@ class OmegaSmartSpaceController(val context: Context) {
     }
 
     fun onProviderChanged() {
-        val weatherClass = weatherProviderPref.get()
+        val weatherClass = weatherProviderPref.onGetValue()
         val eventClasses = eventProvidersPref.getAll()
         if (weatherClass == weatherDataProvider::class.java.name
             && eventClasses == eventDataProviders.map { it::class.java.name }
@@ -188,7 +223,7 @@ class OmegaSmartSpaceController(val context: Context) {
             }
         }
 
-        weatherProviderPref.set(weatherDataProvider::class.java.name)
+        weatherProviderPref.onSetValue(weatherDataProvider::class.java.name)
         eventProvidersPref.setAll(eventDataProviders.map { it::class.java.name })
 
         needsUpdate.forEach {

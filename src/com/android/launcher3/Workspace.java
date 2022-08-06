@@ -564,7 +564,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             // edges, we do not need a full width QSB.
             int layout = 0;
 
-            if (Utilities.getOmegaPrefs(getContext()).getUsePillQsb()) {
+            if (Utilities.getOmegaPrefs(getContext()).getSmartspaceUsePillQsb().onGetValue()) {
                 layout = R.layout.qsb_container_preview;
             } else {
                 layout = R.layout.search_container_workspace;

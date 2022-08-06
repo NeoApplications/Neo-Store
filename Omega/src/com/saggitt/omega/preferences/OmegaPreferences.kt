@@ -825,44 +825,44 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = restart
     )
 
-    // SMARTSPACE
-    var usePillQsb by BooleanPref(
+    // WIDGETS: SMARTSPACE
+    var smartspaceUsePillQsb = BooleanPref(
         key = PREF_PILL_QSB,
         titleId = R.string.title_use_pill_qsb,
         defaultValue = false,
         onChange = recreate
     )
-    val enableSmartspace by BooleanPref(
+    val smartspaceEnable = BooleanPref(
         key = PREFS_SMARTSPACE_ENABLE,
         titleId = R.string.title_smartspace,
         defaultValue = false,
         onChange = recreate
     )
-    val smartspaceTime by BooleanPref(
+    val smartspaceTime = BooleanPref(
         key = PREFS_SMARTSPACE_TIME,
         titleId = R.string.title_smartspace_time,
         defaultValue = false,
         onChange = recreate
     )
-    val smartspaceDate by BooleanPref(
+    val smartspaceDate = BooleanPref(
         key = PREFS_SMARTSPACE_DATE,
         titleId = R.string.title_smartspace_date,
         defaultValue = true,
         onChange = recreate
     )
-    val smartspaceTimeAbove by BooleanPref(
+    val smartspaceTimeAbove = BooleanPref(
         key = PREFS_SMARTSPACE_TIME_ABOVE,
         titleId = R.string.title_smartspace_time_above,
         defaultValue = false,
         onChange = recreate
     )
-    val smartspaceTime24H by BooleanPref(
+    val smartspaceTime24H = BooleanPref(
         key = PREFS_TIME_24H,
         titleId = R.string.title_smartspace_time_24_h,
         defaultValue = false,
         onChange = recreate
     )
-    val weatherUnit by StringBasedPref(
+    val smartspaceWeatherUnit = StringBasedPref(
         key = PREFS_SMARTSPACE_WEATHER_UNITS,
         titleId = R.string.title_smartspace_weather_units,
         defaultValue = Temperature.Unit.Celsius,
@@ -871,35 +871,35 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         toString = Temperature.Companion::unitToString,
         dispose = { }
     )
-    var smartspaceWidgetId by IntPref(
+    var smartspaceWidgetId = IntPref(
         key = PREFS_SMARTSPACE_WIDGET_ID,
         titleId = -1,
         defaultValue = -1,
         onChange = doNothing
     )
-    var weatherIconPack by StringPref(
+    var smartspaceWeatherIconPack = StringPref(
         key = PREFS_SMARTSPACE_WEATHER_ICONS,
         titleId = -1,
         defaultValue = "",
         onChange = doNothing
     )
-    var weatherProvider by StringPref(
+    var smartspaceWeatherProvider = StringPref(
         key = PREFS_SMARTSPACE_WEATHER_PROVIDER,
         titleId = R.string.title_smartspace_widget_provider,
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
-    var eventProvider by StringPref(
+    var smartspaceEventProvider = StringPref(
         key = PREFS_SMARTSPACE_EVENT_PROVIDER,
         titleId = -1,
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
-    var eventProviders = StringListPref(
+    var smartspaceEventProviders = StringListPref(
         prefKey = PREFS_SMARTSPACE_EVENT_PROVIDERS,
         titleId = R.string.title_smartspace_event_providers,
         default = listOf(
-            eventProvider,
+            smartspaceEventProvider.onGetValue(),
             NotificationUnreadProvider::class.java.name,
             NowPlayingProvider::class.java.name,
             BatteryStatusProvider::class.java.name,

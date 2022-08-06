@@ -293,7 +293,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     private void bindClockAndSeparator(boolean forced) {
-        if (mPrefs.getSmartspaceDate() || mPrefs.getSmartspaceTime()) {
+        if (mPrefs.getSmartspaceDate().onGetValue() || mPrefs.getSmartspaceTime().onGetValue()) {
             mClockView.setVisibility(View.VISIBLE);
             mClockView.setOnClickListener(mCalendarClickListener);
             if (forced)
@@ -305,7 +305,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
     }
 
     private void bindClockAbove(boolean forced) {
-        if (mPrefs.getSmartspaceTime() && mPrefs.getSmartspaceTimeAbove()) {
+        if (mPrefs.getSmartspaceTime().onGetValue() && mPrefs.getSmartspaceTimeAbove().onGetValue()) {
             mClockAboveView.setVisibility(View.VISIBLE);
             mClockAboveView.setOnClickListener(mClockClickListener);
             if (forced)
@@ -322,7 +322,7 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
             container.setOnClickListener(mWeatherClickListener);
             container.setOnLongClickListener(co());
             title.setText(weather.getTitle(
-                    Utilities.getOmegaPrefs(getContext()).getWeatherUnit()));
+                    Utilities.getOmegaPrefs(getContext()).getSmartspaceWeatherUnit().onGetValue()));
             icon.setImageBitmap(addShadowToBitmap(weather.getIcon()));
         } else {
             container.setVisibility(View.GONE);

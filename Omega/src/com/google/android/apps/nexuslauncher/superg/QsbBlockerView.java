@@ -114,7 +114,7 @@ public class QsbBlockerView extends FrameLayout implements OmegaSmartSpaceContro
         final int oldState = mState;
         final View oldView = mView;
 
-        if (!Utilities.getOmegaPrefs(getContext()).getUsePillQsb()) {
+        if (!Utilities.getOmegaPrefs(getContext()).getSmartspaceUsePillQsb().onGetValue()) {
             return;
         }
 
@@ -155,7 +155,7 @@ public class QsbBlockerView extends FrameLayout implements OmegaSmartSpaceContro
         weatherIcon.setImageBitmap(weather.getIcon());
         TextView weatherTemperature = view.findViewById(R.id.weather_widget_temperature);
         weatherTemperature.setText(weather.getTitle(
-                Utilities.getOmegaPrefs(getContext()).getWeatherUnit()));
+                Utilities.getOmegaPrefs(getContext()).getSmartspaceWeatherUnit().onGetValue()));
     }
 
     @Override

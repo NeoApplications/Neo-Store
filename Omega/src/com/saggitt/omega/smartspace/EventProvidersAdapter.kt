@@ -58,7 +58,7 @@ class EventProvidersAdapter(private val context: Context) :
 
     init {
         allProviders.addAll(getEventProviders(context).map { ProviderItem(ProviderInfo(it)) })
-        currentSpecs.addAll(prefs.eventProviders.getAll())
+        currentSpecs.addAll(prefs.smartspaceEventProviders.getAll())
 
         fillItems()
     }

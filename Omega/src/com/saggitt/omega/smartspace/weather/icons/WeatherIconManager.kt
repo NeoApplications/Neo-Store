@@ -63,13 +63,13 @@ class WeatherIconManager(private val context: Context) {
     fun getIcon(which: Icon, night: Boolean) = getProvider().getIcon(which, night)
 
     fun getPack(): WeatherIconPack =
-        getIconPacks().firstOrNull { it.pkgName == prefs.weatherIconPack }
+        getIconPacks().firstOrNull { it.pkgName == prefs.smartspaceWeatherIconPack.onGetValue() }
             ?: defaultPack
 
-    fun getProvider(): IconProvider = if (prefs.weatherIconPack == "")
+    fun getProvider(): IconProvider = if (prefs.smartspaceWeatherIconPack.onGetValue() == "")
         DefaultIconProvider(context)
     else
-        getIconPacks().firstOrNull { it.pkgName == prefs.weatherIconPack }?.provider
+        getIconPacks().firstOrNull { it.pkgName == prefs.smartspaceWeatherIconPack.onGetValue() }?.provider
             ?: DefaultIconProvider(context)
 
 

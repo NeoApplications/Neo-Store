@@ -465,7 +465,7 @@ public class LauncherPreviewRenderer extends ContextWrapper
         if (FeatureFlags.showQSbOnFirstScreen(mContext)) {
             int layout = 0;
 
-            if (Utilities.getOmegaPrefs(mContext).getUsePillQsb()) {
+            if (Utilities.getOmegaPrefs(mContext).getSmartspaceUsePillQsb().onGetValue()) {
                 layout = R.layout.qsb_container_preview;
             } else {
                 layout = R.layout.search_container_workspace;

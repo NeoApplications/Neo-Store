@@ -47,10 +47,10 @@ public class IcuDateTextView extends DoubleShadowTextView {
                     .setContext(DisplayContext.CAPITALIZATION_FOR_STANDALONE);
         }
         OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-        boolean showTime = prefs.getSmartspaceTime();
-        boolean timeAbove = prefs.getSmartspaceTimeAbove();
-        boolean show24h = prefs.getSmartspaceTime24H();
-        boolean showDate = prefs.getSmartspaceDate();
+        boolean showTime = prefs.getSmartspaceTime().onGetValue();
+        boolean timeAbove = prefs.getSmartspaceTimeAbove().onGetValue();
+        boolean show24h = prefs.getSmartspaceTime24H().onGetValue();
+        boolean showDate = prefs.getSmartspaceDate().onGetValue();
         if ((showTime && !timeAbove) || isTimeAbove) {
             String format = context.getString(show24h ? R.string.icu_abbrev_time : R.string.icu_abbrev_time_12h);
             if (showDate && !isTimeAbove)
