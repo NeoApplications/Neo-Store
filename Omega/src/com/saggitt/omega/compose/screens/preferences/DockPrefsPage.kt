@@ -10,9 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.Utilities
-import com.saggitt.omega.preferences.BasePreferences
-import com.saggitt.omega.preferences.SeekBarPreference
-import com.saggitt.omega.preferences.SwitchPreference
+import com.saggitt.omega.compose.components.PreferenceBuilder
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
@@ -22,19 +20,12 @@ fun DockPrefsPage() {
     val dockPrefs = listOf(
         prefs.dockHide,
         prefs.dockBackground,
-        prefs.dockBackgroundColor, //TODO
+        prefs.dockBackgroundColor,
         prefs.dockOpacity,
         prefs.dockScale,
         prefs.dockNumIcons, //TODO
         prefs.dockSearchBar,
     )
-
-    val composer = @Composable { pref: Any ->
-        when (pref) {
-            is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-            is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        }
-    }
 
     OmegaAppTheme {
         LazyColumn(
@@ -43,7 +34,7 @@ fun DockPrefsPage() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items = dockPrefs) {
-                composer(it)
+                PreferenceBuilder(it)
             }
         }
     }
