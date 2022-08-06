@@ -1,6 +1,4 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import java.io.FileInputStream
-import java.util.*
 
 val composeVersion = "1.2.0"
 val composeCompilerVersion = "1.2.0"
@@ -118,39 +116,9 @@ android {
         }
     }
 
-
-    val keystorePropertiesFile = rootProject.file("keystore.properties")
     lint {
         disable += "InvalidVectorPath"
         warning += "InvalidPackage"
-    }
-    if (keystorePropertiesFile.exists()) {
-        val keystoreProperties = Properties()
-        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
-        val signing = object {
-            val storeFile = keystoreProperties.getProperty("store.file")
-            val storePassword = keystoreProperties.getProperty("store.password")
-            val keyAlias = keystoreProperties.getProperty("key.alias")
-            val keyPassword = keystoreProperties.getProperty("key.password")
-        }
-
-        if (signing.takeIf { it.storeFile != null && it.storePassword != null && it.keyAlias != null && it.keyPassword != null } != null) {
-            signingConfigs {
-                create("primary") {
-                    storeFile = file(signing.storeFile)
-                    storePassword = signing.storePassword
-                    keyAlias = signing.keyAlias
-                    keyPassword = signing.keyPassword
-                    enableV2Signing = false
-                }
-            }
-
-            buildTypes {
-                named("debug") { signingConfig = signingConfigs["primary"] }
-                named("release") { signingConfig = signingConfigs["primary"] }
-            }
-        }
     }
 }
 
