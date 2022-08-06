@@ -26,10 +26,10 @@ fun DesktopPrefsPage() {
         prefs.desktopHideAppLabels,
         prefs.desktopMultilineLabel,
         prefs.desktopTextScale,
-        prefs.desktopUsePopupMenuView, //TODO
+        //prefs.desktopUsePopupMenuView, TODO
     )
     val gridPrefs = listOf(
-        prefs.desktopGridSize,
+        prefs.desktopGridSize, // TODO
         // TODO Missing add app icon on install
         // TODO Missing allow desktop rotation
         prefs.desktopAllowFullWidthWidgets,

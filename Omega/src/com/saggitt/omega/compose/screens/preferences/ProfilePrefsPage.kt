@@ -18,11 +18,11 @@ import com.saggitt.omega.preferences.SwitchPreference
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
-fun ThemePrefsPage() {
+fun ProfilePrefsPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
     val profilePrefs = listOf(
-        prefs.language,
+        prefs.language, // TODO
         prefs.themePref, // TODO
         prefs.themeAccentColor, // TODO
         // TODO Missing icon package pref page
@@ -30,7 +30,7 @@ fun ThemePrefsPage() {
     )
     val others = listOf(
         prefs.themeBlurEnable,
-        prefs.themeBlurRadius,
+        prefs.themeBlurRadius, // TODO convert to FloatPref
         prefs.themeCornerRadiusOverride,
         prefs.themeCornerRadius,
     )

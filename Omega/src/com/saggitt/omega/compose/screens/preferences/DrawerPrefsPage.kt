@@ -24,20 +24,20 @@ fun DrawerPrefsPage() {
     val iconPrefs = listOf(
         prefs.drawerIconScale,
         prefs.drawerHideAppLabels,
-        prefs.drawerMultilineLabel, //TODO
+        prefs.drawerMultilineLabel,
         prefs.drawerTextScale,
         // prefs.drawerPopupEdit, prefs.drawerPopupUninstall, TODO add popup dialog pref
     )
     val gridPrefs = listOf(
-        prefs.drawerColumns,
-        prefs.drawerSortMode,
+        prefs.drawerColumns, // TODO
+        prefs.drawerSortMode, // TODO
         // TODO missing categorization pref page
         prefs.drawerSeparateWorkApps
     )
     val searchPrefs = listOf(
         // TODO move to Search?
         prefs.drawerSearch,
-        prefs.searchHiddenApps, // TODO move to Search
+        prefs.searchHiddenApps, // TODO move to Search?
     )
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,

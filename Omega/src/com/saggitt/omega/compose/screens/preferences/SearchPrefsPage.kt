@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +18,7 @@ import com.saggitt.omega.preferences.SwitchPreference
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
-fun SerchPrefsPage() {
+fun SearchPrefsPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
     val searchPrefs = listOf(
@@ -32,7 +31,7 @@ fun SerchPrefsPage() {
     )
     val feedPrefs = listOf(
         prefs.feedProvider, // TODO
-        prefs.feedProviderAllowAll // TODO is it needed?
+        //prefs.feedProviderAllowAll TODO fix titleId if this is needed
     )
 
     val composer = @Composable { pref: Any ->
@@ -48,11 +47,8 @@ fun SerchPrefsPage() {
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = searchPrefs) {
-                composer(it)
-            }
             item {
-                PreferenceGroup(stringResource(id = R.string.title__feed)) {
+                PreferenceGroup(stringResource(id = R.string.title__general_search)) {
                     searchPrefs.forEach { composer(it) }
                 }
             }
