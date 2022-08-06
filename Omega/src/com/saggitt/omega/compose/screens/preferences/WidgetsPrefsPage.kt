@@ -11,10 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.saggitt.omega.compose.components.PreferenceBuilder
 import com.saggitt.omega.compose.components.PreferenceGroup
-import com.saggitt.omega.preferences.BasePreferences
-import com.saggitt.omega.preferences.SeekBarPreference
-import com.saggitt.omega.preferences.SwitchPreference
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
@@ -39,13 +37,6 @@ fun WidgetsPrefsPage() {
         prefs.notificationBackground
     )
 
-    val composer = @Composable { pref: Any ->
-        when (pref) {
-            is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-            is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        }
-    }
-
     OmegaAppTheme {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -55,12 +46,12 @@ fun WidgetsPrefsPage() {
             // TODO Add Smartspace preview
             item {
                 PreferenceGroup(stringResource(id = R.string.title__general_smartspace)) {
-                    smartspacePrefs.forEach { composer(it) }
+                    smartspacePrefs.forEach { PreferenceBuilder(it) }
                 }
             }
             item {
                 PreferenceGroup(stringResource(id = R.string.pref_category__notifications)) {
-                    notificationsPrefs.forEach { composer(it) }
+                    notificationsPrefs.forEach { PreferenceBuilder(it) }
                 }
             }
         }
