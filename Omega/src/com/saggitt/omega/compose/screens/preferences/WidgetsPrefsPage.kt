@@ -36,7 +36,7 @@ fun WidgetsPrefsPage() {
         // TODO Missing enable notification badge
         prefs.notificationCount,
         prefs.notificationCustomColor,
-        prefs.notificationBackground //TODO
+        prefs.notificationBackground
     )
 
     val composer = @Composable { pref: Any ->

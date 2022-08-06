@@ -742,7 +742,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground = IntPref(
+    val notificationBackground = ColorIntPref(
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
         defaultValue = R.color.notification_background,
