@@ -58,6 +58,7 @@ import com.android.launcher3.R
 import com.saggitt.omega.compose.components.*
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.navigation.subRoute
+import com.saggitt.omega.compose.screens.preferences.DockPrefsPage
 import com.saggitt.omega.theme.kaushanScript
 import com.saggitt.omega.util.Config
 import java.io.InputStream
@@ -78,7 +79,7 @@ fun NavGraphBuilder.licenseGraph(route: String) {
 fun NavGraphBuilder.translatorsGraph(route: String) {
     preferenceGraph(
         route,
-        { TranslatorsScreen() })
+        { DockPrefsPage() })
 }
 
 fun NavGraphBuilder.changelogGraph(route: String) {

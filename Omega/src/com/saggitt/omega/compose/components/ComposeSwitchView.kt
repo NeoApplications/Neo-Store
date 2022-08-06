@@ -19,13 +19,7 @@
 package com.saggitt.omega.compose.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -36,14 +30,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saggitt.omega.util.addIf
 
 @Composable
-fun SwitchPreference(
+fun ComposeSwitchView(
     title: String,
     modifier: Modifier = Modifier,
     summary: String = "",
@@ -119,14 +112,4 @@ fun SwitchPreference(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun SwitchPreferencePreview() {
-    SwitchPreference(
-        title = "Ocultar de Drawer",
-        summary = "Oculta el icono del menu principal",
-        onCheckedChange = { }
-    )
 }

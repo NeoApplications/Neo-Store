@@ -41,8 +41,8 @@ import com.android.launcher3.R
 import com.android.launcher3.model.data.FolderInfo
 import com.android.launcher3.model.data.ItemInfo
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.PreferenceItem
-import com.saggitt.omega.compose.components.SwitchPreference
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController.Companion.createGestureHandler
 
@@ -167,7 +167,7 @@ fun CustomizeFolderView(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SwitchPreference(
+        ComposeSwitchView(
             title = stringResource(R.string.folder_cover_mode),
             summary = stringResource(R.string.folder_cover_mode_desc),
             isChecked = folder.isCoverMode,

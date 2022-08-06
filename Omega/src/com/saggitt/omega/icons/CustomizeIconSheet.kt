@@ -46,9 +46,9 @@ import com.android.launcher3.util.PackageManagerHelper
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.compose.ComposeActivity
+import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.PreferenceItem
-import com.saggitt.omega.compose.components.SwitchPreference
 import com.saggitt.omega.groups.ui.AppTabDialog
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.addIfNotNull
@@ -179,7 +179,7 @@ fun CustomizeIconView(
 
         PreferenceGroup {
             if (!componentKey.componentName.equals("com.saggitt.omega.folder")) {
-                SwitchPreference(
+                ComposeSwitchView(
                     title = stringResource(R.string.hide_app),
                     isChecked = CustomAppFilter.isHiddenApp(context, componentKey),
                     onCheckedChange = { newValue ->
