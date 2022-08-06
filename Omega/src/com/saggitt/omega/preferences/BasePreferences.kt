@@ -327,15 +327,19 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         private val selectDefaultValue: InvariantDeviceProfile.GridOption.() -> Int,
+        val specialOutputs: ((Int) -> String) = Int::toString,
+        val minValue: Float,
+        val maxValue: Float,
+        val steps: Int,
         onChange: () -> Unit = doNothing
     ) : IntPref(key, titleId, summaryId, -1, onChange) {
 
         override fun onGetValue(): Int {
-            error("unsupported")
+            return sharedPrefs.getInt(getKey(), defaultValue)
         }
 
         override fun onSetValue(value: Int) {
-            error("unsupported")
+            edit { putInt(getKey(), value) }
         }
 
         fun defaultValue(defaultGrid: InvariantDeviceProfile.GridOption): Int {

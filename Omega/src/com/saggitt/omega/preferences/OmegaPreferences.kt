@@ -77,13 +77,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DESKTOP_COLUMNS,
         titleId = R.string.grid_size_width,
         selectDefaultValue = { numColumns },
-        onChange = reloadGrid
+        onChange = reloadGrid,
+        minValue = 2f,
+        maxValue = 16f,
+        steps = 15
     )
     val desktopRows = IdpIntPref(
         key = PREFS_DESKTOP_ROWS,
         titleId = R.string.grid_size_height,
         selectDefaultValue = { numRows },
-        onChange = reloadGrid
+        onChange = reloadGrid,
+        minValue = 2f,
+        maxValue = 16f,
+        steps = 15
     )
 
     val desktopIconScale = FloatPref(
@@ -292,7 +298,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DOCK_COLUMNS,
         titleId = R.string.num_hotseat_icons_pref_title,
         selectDefaultValue = { numHotseatIcons },
-        onChange = reloadGrid
+        onChange = reloadGrid,
+        minValue = 2f,
+        maxValue = 16f,
+        steps = 15
     )
 
 
@@ -415,7 +424,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DRAWER_COLUMNS,
         titleId = R.string.title__drawer_columns,
         selectDefaultValue = { numAllAppsColumns },
-        onChange = reloadGrid
+        onChange = reloadGrid,
+        minValue = 2f,
+        maxValue = 16f,
+        steps = 15
     )
     val drawerPopupEdit = BooleanPref(
         key = PREFS_DRAWER_POPUP_EDIT,

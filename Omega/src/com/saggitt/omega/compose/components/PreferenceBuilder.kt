@@ -10,5 +10,6 @@ val PreferenceBuilder = @Composable { pref: Any ->
         is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
         is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
         is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
+        is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
     }
 }

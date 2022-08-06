@@ -23,7 +23,7 @@ fun DockPrefsPage() {
         prefs.dockBackgroundColor,
         prefs.dockOpacity,
         prefs.dockScale,
-        prefs.dockNumIcons, //TODO
+        prefs.dockNumIcons,
         prefs.dockSearchBar,
     )
 
