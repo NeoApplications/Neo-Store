@@ -51,6 +51,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.util.addIf
 
@@ -201,8 +203,10 @@ fun PagePreference(
     @StringRes titleId: Int,
     @DrawableRes iconId: Int = -1,
     isEnabled: Boolean = true,
-    onClick: (() -> Unit) = {},
+    route: String
 ) {
+    val navController = LocalNavController.current
+    val destination = subRoute(route)
     BasePreference(
         modifier = modifier,
         titleId = titleId,
@@ -217,6 +221,6 @@ fun PagePreference(
             }
         } else null,
         isEnabled = isEnabled,
-        onClick = onClick // TODO add Composable annotation
+        onClick = { navController.navigate(destination) }
     )
 }

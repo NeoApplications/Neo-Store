@@ -41,7 +41,6 @@ import com.saggitt.omega.theme.OmegaAppTheme
 @Composable
 fun MainPrefsPage() {
     val context = LocalContext.current
-    val navController = LocalNavController.current
     val prefs = Utilities.getOmegaPrefs(context)
     val uiPrefs = listOf(
         PageItem.PrefsProfile,
@@ -58,13 +57,12 @@ fun MainPrefsPage() {
         PageItem.PrefsBackup,
         PageItem.PrefsDesktopMode,
         if (prefs.developerOptionsEnabled) PageItem.PrefsDeveloper
-        else null
+        else null,
+        PageItem.PrefsAbout
     )
 
     val composer = @Composable { page: PageItem ->
-        PagePreference(titleId = page.titleId, iconId = page.iconId) {
-            navController.navigate(page.route)
-        }
+        PagePreference(titleId = page.titleId, iconId = page.iconId, route = page.route)
     }
 
     OmegaAppTheme {
