@@ -312,7 +312,8 @@ abstract class BasePreferences(context: Context) :
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
-        defaultValue: Int = 0, onChange: () -> Unit = doNothing
+        defaultValue: Int = 0,
+        onChange: () -> Unit = doNothing
     ) :
         PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
@@ -331,7 +332,7 @@ abstract class BasePreferences(context: Context) :
         val minValue: Float,
         val maxValue: Float,
         val steps: Int,
-        onChange: () -> Unit = doNothing
+        onChange: () -> Unit = doNothing,
     ) : IntPref(key, titleId, summaryId, -1, onChange) {
 
         override fun onGetValue(): Int {

@@ -36,6 +36,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.android.launcher3.AppFilter
+import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.AppInfo
@@ -43,6 +44,7 @@ import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.PackageManagerHelper
+import com.saggitt.omega.PREFS_DOCK_COLUMNS
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.theme.ThemeOverride
 import java.util.*
@@ -98,6 +100,7 @@ class Config(val context: Context) {
         }
         return feedList
     }
+
 
     companion object {
         //PERMISSION FLAGS
@@ -263,6 +266,16 @@ class Config(val context: Context) {
                 currentTheme = THEME_BLACK
             }
             return currentTheme
+        }
+
+        fun getIdpDefaultValue(context: Context, key: String): Int {
+            var originalIdp = 0
+            val idp = LauncherAppState.getIDP(context)
+            if (key == PREFS_DOCK_COLUMNS) {
+                originalIdp = idp.numColumnsOriginal
+            }
+
+            return originalIdp
         }
 
     }
