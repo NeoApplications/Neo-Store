@@ -271,6 +271,14 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
+    open inner class ColorIntPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: Int = 0,
+        onChange: () -> Unit = doNothing
+    ) : IntPref(key, titleId, summaryId, defaultValue, onChange)
+
     open inner class DimensionPref(
         key: String,
         @StringRes titleId: Int,
