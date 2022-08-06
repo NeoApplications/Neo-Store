@@ -158,7 +158,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
                 ?.let { if (it.itemCount > 0) it else null }
                 ?.getItemAt(0)?.text?.toString().orEmpty()
             val (addressText, fingerprintText) = try {
-                val uri = Uri.parse(URL(text).toString())
+                val uri = Uri.parse(URL(text.replaceFirst("fdroidrepos:", "https:")).toString())
                 val fingerprintText = uri.getQueryParameter("fingerprint")?.nullIfEmpty()
                     ?: uri.getQueryParameter("FINGERPRINT")?.nullIfEmpty()
                 Pair(
