@@ -21,6 +21,7 @@ package com.saggitt.omega.compose.components
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -34,25 +35,32 @@ import com.android.launcher3.R
 @Composable
 fun ViewWithActionBar(
     title: String,
-    content: @Composable (PaddingValues) -> Unit,
+    showBackButton: Boolean = true,
+    actions: @Composable RowScope.() -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit
 ) {
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(text = title, style = MaterialTheme.typography.titleMedium)
                 },
+
                 navigationIcon = {
-                    IconButton(
-                        onClick = { backDispatcher?.onBackPressed() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.gesture_press_back),
-                        )
+                    val backDispatcher =
+                        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+                    if (showBackButton) {
+                        IconButton(
+                            onClick = { backDispatcher?.onBackPressed() }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = stringResource(id = R.string.gesture_press_back),
+                            )
+                        }
                     }
                 },
+                actions = actions,
                 backgroundColor = MaterialTheme.colorScheme.background,
                 elevation = 0.dp
             )

@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,11 +32,11 @@ import androidx.navigation.NavGraphBuilder
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.saggitt.omega.compose.components.OverflowMenu
 import com.saggitt.omega.compose.components.PreferenceGroup
+import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PagePreference
-import com.saggitt.omega.compose.navigation.BlankScreen
-import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.compose.navigation.preferenceGraph
+import com.saggitt.omega.compose.navigation.*
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -64,26 +66,50 @@ fun MainPrefsPage() {
     val composer = @Composable { page: PageItem ->
         PagePreference(titleId = page.titleId, iconId = page.iconId, route = page.route)
     }
-
+    val navController = LocalNavController.current
+    val destination = subRoute(Routes.PREFS_DEV)
     OmegaAppTheme {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ViewWithActionBar(
+            title = stringResource(R.string.settings_button_text),
+            showBackButton = false,
+            actions = {
+                OverflowMenu {
+                    DropdownMenuItem(
+                        onClick = {
+                            Utilities.killLauncher()
+                            hideMenu()
+                        },
+                        text = { Text(text = stringResource(id = R.string.title__restart_launcher)) }
+                    )
+                    DropdownMenuItem(
+                        onClick = {
+                            navController.navigate(destination)
+                            hideMenu()
+                        },
+                        text = { Text(text = stringResource(id = R.string.developer_options_title)) }
+                    )
+                }
+            }
         ) {
-            item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__interfaces)) {
-                    uiPrefs.forEach { composer(it) }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    PreferenceGroup(stringResource(id = R.string.pref_category__interfaces)) {
+                        uiPrefs.forEach { composer(it) }
+                    }
                 }
-            }
-            item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__features)) {
-                    featuresPrefs.forEach { composer(it) }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.pref_category__features)) {
+                        featuresPrefs.forEach { composer(it) }
+                    }
                 }
-            }
-            item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
-                    otherPrefs.forEach { composer(it) }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
+                        otherPrefs.forEach { composer(it) }
+                    }
                 }
             }
         }
