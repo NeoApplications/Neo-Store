@@ -258,7 +258,7 @@ class NewBackupFragment : Fragment() {
     }
 
     private fun getTimestamp(): String {
-        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US)
+        val simpleDateFormat = SimpleDateFormat("neo_launcher_backup_yyyy-MM-dd_HH.mm.ss", Locale.US)
         return simpleDateFormat.format(Date())
     }
 }
