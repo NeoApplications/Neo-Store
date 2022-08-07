@@ -69,6 +69,11 @@
             android:layout="@layout/home_preference"
             android:title="@string/pref_category__gestures" />
 
+        <Preference
+            android:icon="@drawable/ic_omega_settings"
+            android:key="prefs_main"
+            android:layout="@layout/home_preference"
+            android:title="New Preferences" />
 
         <Preference
             android:key="pref_suggestions"

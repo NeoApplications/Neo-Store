@@ -15,22 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package com.saggitt.omega.compose.components.preferences
 
 package com.saggitt.omega.compose.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
-import com.saggitt.omega.PREFS_DOCK_COLUMNS
 import com.saggitt.omega.preferences.BasePreference
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.util.Config
@@ -45,10 +41,6 @@ fun IntSeekBarPreference(
 ) {
     var currentValue by remember(pref) { mutableStateOf(pref.onGetValue()) }
     var defaultValue = Config.getIdpDefaultValue(LocalContext.current, pref.key)
-    if (pref.key == PREFS_DOCK_COLUMNS) {
-        val idp = LauncherAppState.getIDP(LocalContext.current)
-        defaultValue = idp.numColumnsOriginal
-    }
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,

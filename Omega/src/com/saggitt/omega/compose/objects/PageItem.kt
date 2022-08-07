@@ -3,6 +3,7 @@ package com.saggitt.omega.compose.objects
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.android.launcher3.R
+import com.saggitt.omega.compose.navigation.Routes
 
 open class PageItem(
     @StringRes val titleId: Int,
@@ -13,54 +14,59 @@ open class PageItem(
         val PrefsProfile = PageItem(
             R.string.title__general_profile,
             R.drawable.ic_style,
-            "prefs_profile"
+            Routes.PREFS_PROFILE
         )
         val PrefsDesktop = PageItem(
             R.string.title__general_desktop,
             R.drawable.ic_desktop,
-            "prefs_desktop"
+            Routes.PREFS_DESKTOP
         )
         val PrefsDock = PageItem(
             R.string.title__general_dock,
             R.drawable.ic_dock,
-            "prefs_dock"
+            Routes.PREFS_DOCK
         )
         val PrefsDrawer = PageItem(
             R.string.title__general_drawer,
             R.drawable.ic_apps_colored,
-            "prefs_drawer"
+            Routes.PREFS_DRAWER
         )
 
         val PrefsWidgetsNotifications = PageItem(
             R.string.title__general_widgets_notifications,
             R.drawable.ic_widgets,
-            "prefs_widgets"
+            Routes.PREFS_WIDGETS
         )
         val PrefsSearchFeed = PageItem(
             R.string.title__general_search_feed,
             R.drawable.ic_search_colored,
-            "prefs_search"
+            Routes.PREFS_SEARCH
         )
         val PrefsGesturesDash = PageItem(
             R.string.title__general_gestures_dash,
             R.drawable.ic_gesture,
-            "prefs_gestures"
+            Routes.PREFS_GESTURES
         )
 
         val PrefsBackup = PageItem(
             R.string.backups,
             R.drawable.ic_import_export,
-            "prefs_backup"
+            Routes.PREFS_BACKUPS
         )
         val PrefsDesktopMode = PageItem(
             R.string.pref_desktop_mode,
             R.drawable.ic_desktop,
-            "prefs_desktop_mode"
+            Routes.PREFS_DM
         )
         val PrefsDeveloper = PageItem(
             R.string.developer_options_title,
             R.drawable.ic_code,
-            "prefs_developer"
+            Routes.PREFS_DEV
+        )
+        val PrefsAbout = PageItem(
+            R.string.title__general_about,
+            R.drawable.ic_info,
+            Routes.ABOUT
         )
     }
 }

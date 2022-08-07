@@ -26,6 +26,7 @@ import com.farmerbb.taskbar.lib.Taskbar
 import com.saggitt.omega.PREFS_DESKTOP_MODE_SETTINGS
 import com.saggitt.omega.PREFS_KILL
 import com.saggitt.omega.compose.ComposeActivity
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.theme.ThemeOverride
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,8 +54,21 @@ class PrefsDevFragment :
                 requireContext().startActivity(
                         ComposeActivity.createIntent(
                                 requireContext(),
-                                "gesture_selector/"
+                                "${Routes.GESTURE_SELECTOR}/"
                         )
+                )
+            }
+            true
+        }
+
+        findPreference<Preference>(Routes.PREFS_MAIN)?.setOnPreferenceClickListener {
+            val scope = CoroutineScope(Dispatchers.Main)
+            scope.launch {
+                requireContext().startActivity(
+                    ComposeActivity.createIntent(
+                        requireContext(),
+                        "${Routes.PREFS_MAIN}/"
+                    )
                 )
             }
             true
