@@ -30,14 +30,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -61,11 +54,7 @@ import androidx.navigation.NavGraphBuilder
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.saggitt.omega.compose.components.ContributorRow
-import com.saggitt.omega.compose.components.ItemLink
-import com.saggitt.omega.compose.components.NavigationActionPreference
-import com.saggitt.omega.compose.components.PreferenceGroup
-import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.*
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.theme.kaushanScript
@@ -74,7 +63,7 @@ import java.io.InputStream
 
 @OptIn(ExperimentalCoilApi::class)
 fun NavGraphBuilder.aboutGraph(route: String) {
-    preferenceGraph(route, { AboutScreen() }) { subRoute ->
+    preferenceGraph(route, { AboutPage() }) { subRoute ->
         licenseGraph(route = subRoute("license"))
         translatorsGraph(route = subRoute("translators"))
         changelogGraph(route = subRoute("changelog"))
@@ -95,7 +84,7 @@ fun NavGraphBuilder.changelogGraph(route: String) {
 
 @ExperimentalCoilApi
 @Composable
-fun AboutScreen() {
+fun AboutPage() {
     ViewWithActionBar(
         title = stringResource(R.string.title__general_about),
     ) {
