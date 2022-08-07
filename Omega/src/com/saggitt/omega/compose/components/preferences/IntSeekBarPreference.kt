@@ -40,7 +40,7 @@ fun IntSeekBarPreference(
     onValueChange: ((Float) -> Unit) = {}
 ) {
     var currentValue by remember(pref) { mutableStateOf(pref.onGetValue()) }
-    var defaultValue = Config.getIdpDefaultValue(LocalContext.current, pref.key)
+    val defaultValue = Config.getIdpDefaultValue(LocalContext.current, pref.key)
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,
