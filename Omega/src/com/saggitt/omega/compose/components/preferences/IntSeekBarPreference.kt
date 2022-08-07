@@ -17,17 +17,17 @@
  */
 package com.saggitt.omega.compose.components.preferences
 
-package com.saggitt.omega.compose.components
-
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.saggitt.omega.preferences.BasePreference
+import com.android.launcher3.R
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.util.Config
 
