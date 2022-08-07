@@ -29,9 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.PreferenceGroup
-import com.saggitt.omega.compose.components.preferences.SeekBarPreference
-import com.saggitt.omega.compose.components.preferences.SwitchPreference
-import com.saggitt.omega.preferences.BasePreferences
+import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
@@ -46,7 +44,7 @@ fun DrawerPrefsPage() {
         // prefs.drawerPopupEdit, prefs.drawerPopupUninstall, TODO add popup dialog pref
     )
     val gridPrefs = listOf(
-        prefs.drawerColumns, // TODO
+        prefs.drawerColumns,
         prefs.drawerSortMode, // TODO
         // TODO missing categorization pref page
         prefs.drawerSeparateWorkApps
@@ -59,14 +57,8 @@ fun DrawerPrefsPage() {
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,
         // TODO missing trust apps pref page
+        prefs.drawerOpacity
     )
-
-    val composer = @Composable { pref: Any ->
-        when (pref) {
-            is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-            is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        }
-    }
 
     OmegaAppTheme {
         LazyColumn(
@@ -76,22 +68,22 @@ fun DrawerPrefsPage() {
         ) {
             item {
                 PreferenceGroup(stringResource(id = R.string.cat_drawer_icons)) {
-                    iconPrefs.forEach { composer(it) }
+                    iconPrefs.forEach { PreferenceBuilder(it) }
                 }
             }
             item {
                 PreferenceGroup(stringResource(id = R.string.cat_drawer_grid)) {
-                    gridPrefs.forEach { composer(it) }
+                    gridPrefs.forEach { PreferenceBuilder(it) }
                 }
             }
             item {
                 PreferenceGroup(stringResource(id = R.string.label_search)) {
-                    searchPrefs.forEach { composer(it) }
+                    searchPrefs.forEach { PreferenceBuilder(it) }
                 }
             }
             item {
                 PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
-                    otherPrefs.forEach { composer(it) }
+                    otherPrefs.forEach { PreferenceBuilder(it) }
                 }
             }
         }

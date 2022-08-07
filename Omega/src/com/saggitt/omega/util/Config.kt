@@ -45,6 +45,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.PackageManagerHelper
 import com.saggitt.omega.PREFS_DOCK_COLUMNS
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.theme.ThemeOverride
 import java.util.*
@@ -198,8 +199,8 @@ class Config(val context: Context) {
         fun isAppProtected(context: Context, componentKey: ComponentKey): Boolean {
             var result = false
             val protectedApps = ArrayList(
-                    Utilities.getOmegaPrefs(context).drawerProtectedAppsSet.onGetValue()
-                            .map { Utilities.makeComponentKey(context, it) })
+                Utilities.getOmegaPrefs(context).drawerProtectedAppsSet.onGetValue()
+                    .map { Utilities.makeComponentKey(context, it) })
 
             if (protectedApps.contains(componentKey)) {
                 result = true
@@ -245,7 +246,7 @@ class Config(val context: Context) {
             val user = Process.myUserHandle()
             val appFilter = CustomAppFilter(context)
             val predefined = PLACE_HOLDERS
-                    .filter { PackageManagerHelper(context).isAppInstalled(it, user) }
+                .filter { PackageManagerHelper(context).isAppInstalled(it, user) }
                 .mapNotNull { launcherApps.getActivityList(it, user).firstOrNull() }
                 .asSequence()
             val randomized = launcherApps.getActivityList(null, Process.myUserHandle())
@@ -273,8 +274,9 @@ class Config(val context: Context) {
             val idp = LauncherAppState.getIDP(context)
             if (key == PREFS_DOCK_COLUMNS) {
                 originalIdp = idp.numColumnsOriginal
+            } else if (key == PREFS_DRAWER_COLUMNS) {
+                originalIdp = idp.numAllAppsColumnsOriginal
             }
-
             return originalIdp
         }
 
