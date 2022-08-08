@@ -19,18 +19,13 @@
 package com.saggitt.omega.gestures.actions
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import android.view.View
-import androidx.annotation.Keep
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.SleepGestureHandler
 import com.saggitt.omega.gestures.handlers.SleepMethodDeviceAdmin
 import com.saggitt.omega.gestures.handlers.SleepMethodPieAccessibility
-import com.saggitt.omega.gestures.handlers.SleepTimeoutActivity
 import org.json.JSONObject
 
 class SleepAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
@@ -50,24 +45,4 @@ class SleepAction(context: Context, config: JSONObject?) : GestureAction(context
     }
 
     override val isAvailable = true // At least the device admin method is always going to work
-}
-
-@Keep
-class SleepActionTimeout(context: Context, config: JSONObject?) :
-        GestureAction(context, config) {
-
-    override val displayName: String = context.getString(R.string.action_sleep_timeout)
-
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_sleep)
-
-    override fun onGestureTrigger(controller: GestureController, view: View?) {
-        val launcher = controller.launcher
-        if (Settings.System.canWrite(launcher)) {
-            launcher.startActivity(Intent(launcher, SleepTimeoutActivity::class.java))
-        } else {
-            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-            intent.data = Uri.parse("package:${launcher.packageName}")
-            launcher.startActivity(intent)
-        }
-    }
 }

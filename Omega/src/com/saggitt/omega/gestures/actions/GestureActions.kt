@@ -71,7 +71,6 @@ abstract class GestureAction(val context: Context, val config: JSONObject?) {
                         StartAppSearchAction(context, null),
                         OpenOverviewAction(context, null),
                         SleepAction(context, null),
-                        SleepActionTimeout(context, null)
                 ).apply {
                     if (hasBlank) {
                         add(0, BlankGestureAction(context, null))
