@@ -24,9 +24,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import android.view.View
 import androidx.annotation.Keep
 import com.android.launcher3.R
@@ -101,24 +99,6 @@ class SleepMethodDeviceAdmin(context: Context) : SleepGestureHandler.SleepMethod
 
         override fun onDisableRequested(context: Context, intent: Intent): CharSequence {
             return context.getString(R.string.dt2s_admin_warning)
-        }
-    }
-}
-
-@Keep
-class SleepGestureHandlerTimeout(context: Context, config: JSONObject?) :
-    GestureHandler(context, config) {
-
-    override val displayName: String = context.getString(R.string.action_sleep_timeout)
-
-    override fun onGestureTrigger(controller: GestureController, view: View?) {
-        val launcher = controller.launcher
-        if (Settings.System.canWrite(launcher)) {
-            launcher.startActivity(Intent(launcher, SleepTimeoutActivity::class.java))
-        } else {
-            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-            intent.data = Uri.parse("package:${launcher.packageName}")
-            launcher.startActivity(intent)
         }
     }
 }

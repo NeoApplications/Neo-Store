@@ -40,7 +40,6 @@ import com.saggitt.omega.gestures.handlers.OpenSettingsGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenWidgetsGestureHandler
 import com.saggitt.omega.gestures.handlers.PressBackGestureHandler
 import com.saggitt.omega.gestures.handlers.SleepGestureHandler
-import com.saggitt.omega.gestures.handlers.SleepGestureHandlerTimeout
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
 import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.util.omegaPrefs
@@ -180,7 +179,6 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
             mutableListOf(
                 PressBackGestureHandler(context, null),
                 SleepGestureHandler(context, null),
-                SleepGestureHandlerTimeout(context, null),
                 OpenDashGestureHandler(context, null),
                 OpenDrawerGestureHandler(context, null),
                 OpenWidgetsGestureHandler(context, null),
