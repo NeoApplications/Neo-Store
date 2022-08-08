@@ -47,7 +47,8 @@ fun DrawerPrefsPage() {
         prefs.drawerColumns,
         prefs.drawerSortMode, // TODO
         // TODO missing categorization pref page
-        prefs.drawerSeparateWorkApps
+        prefs.drawerSeparateWorkApps,
+        prefs.drawerCellHeightMultiplier
     )
     val searchPrefs = listOf(
         // TODO move to Search?
