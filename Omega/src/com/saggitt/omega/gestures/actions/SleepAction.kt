@@ -20,7 +20,6 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.SleepGestureHandler
@@ -30,7 +29,7 @@ import org.json.JSONObject
 
 class SleepAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
     override val displayName: String = context.getString(R.string.action_sleep)
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_sleep)
+    override val icon = R.drawable.ic_sleep
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         method!!.sleep(controller)
@@ -39,8 +38,8 @@ class SleepAction(context: Context, config: JSONObject?) : GestureAction(context
     // Preferred methods should appear earlier in the list
     private val method: SleepGestureHandler.SleepMethod? by lazy {
         listOf(
-                SleepMethodPieAccessibility(context),
-                SleepMethodDeviceAdmin(context)
+            SleepMethodPieAccessibility(context),
+            SleepMethodDeviceAdmin(context)
         ).firstOrNull { it.supported }
     }
 

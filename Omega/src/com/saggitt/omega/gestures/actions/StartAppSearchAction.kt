@@ -20,20 +20,20 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import org.json.JSONObject
 
-class StartAppSearchAction(context: Context, config: JSONObject?) : OpenDrawerAction(context, config) {
+class StartAppSearchAction(context: Context, config: JSONObject?) :
+    OpenDrawerAction(context, config) {
     override val displayName: String = context.getString(R.string.action_app_search)
     override val requiresForeground = false
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_search)
+    override val icon = R.drawable.ic_search
     override val iconResource: Intent.ShortcutIconResource
             by lazy {
                 Intent.ShortcutIconResource.fromContext(
-                        context,
-                        R.drawable.ic_search
+                    context,
+                    R.drawable.ic_search
                 )
             }
 

@@ -20,10 +20,8 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
 import com.android.launcher3.views.OptionsPopupView
@@ -33,11 +31,11 @@ import org.json.JSONObject
 
 class OpenOverviewAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
     override val displayName: String = context.getString(R.string.action_open_overview)
-    override val icon: Drawable? = AppCompatResources.getDrawable(context, R.drawable.ic_drag_handle)
+    override val icon = R.drawable.ic_drag_handle
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
-                context,
-                R.drawable.ic_drag_handle
+            context,
+            R.drawable.ic_drag_handle
         )
     }
     override val requiresForeground = false
@@ -46,8 +44,8 @@ class OpenOverviewAction(context: Context, config: JSONObject?) : GestureAction(
         Log.d("OpenOverviewGestureHandler", "onGestureTrigger from $view")
         if (context.omegaPrefs.desktopUsePopupMenuView.onGetValue()) {
             OptionsPopupView.showDefaultOptions(
-                    controller.launcher,
-                    controller.touchDownPoint.x, controller.touchDownPoint.y
+                controller.launcher,
+                controller.touchDownPoint.x, controller.touchDownPoint.y
             )
         } else {
             controller.launcher.stateManager.goToState(LauncherState.OPTIONS)
