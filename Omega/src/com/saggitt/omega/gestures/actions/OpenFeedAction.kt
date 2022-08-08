@@ -21,7 +21,6 @@ package com.saggitt.omega.gestures.actions
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.util.Config
@@ -29,20 +28,20 @@ import org.json.JSONObject
 
 class OpenFeedAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
     override val displayName: String = context.getString(R.string.action_overlay)
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_super_g_color)
+    override val icon = R.drawable.ic_super_g_color
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
-                context,
-                R.drawable.ic_super_g_color
+            context,
+            R.drawable.ic_super_g_color
         )
     }
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         controller.launcher.startActivity(
-                Intent(Intent.ACTION_MAIN).setClassName(
-                        Config.GOOGLE_QSB,
-                        "${Config.GOOGLE_QSB}.SearchActivity"
-                )
+            Intent(Intent.ACTION_MAIN).setClassName(
+                Config.GOOGLE_QSB,
+                "${Config.GOOGLE_QSB}.SearchActivity"
+            )
         )
     }
 }

@@ -9,7 +9,7 @@ import java.util.*
 
 val vCompose = "1.2.0"
 val vComposeCompiler = "1.2.0"
-val vAccompanist = "0.24.13-rc"
+val vAccompanist = "0.25.0"
 val vRoom = "2.5.0-alpha02"
 
 plugins {
@@ -35,7 +35,7 @@ android {
     compileSdk = 32
 
     val name = "0.9.1"
-    val code = 924
+    val code = 925
 
     defaultConfig {
         minSdk = 26
@@ -228,8 +228,8 @@ dependencies {
     implementation("com.github.saulhdev:colorpickerx:1.5.3")
     implementation("io.github.hokofly:hoko-blur:1.3.7")
     implementation("com.luckycatlabs:SunriseSunsetCalculator:1.2")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")

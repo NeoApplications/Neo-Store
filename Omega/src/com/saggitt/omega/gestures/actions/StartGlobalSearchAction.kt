@@ -20,7 +20,6 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,10 +28,11 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.search.SearchProviderController
 import org.json.JSONObject
 
-class StartGlobalSearchAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
+class StartGlobalSearchAction(context: Context, config: JSONObject?) :
+    GestureAction(context, config) {
     private val searchProvider get() = SearchProviderController.getInstance(context).searchProvider
     override val displayName: String = context.getString(R.string.action_global_search)
-    override val icon: Drawable? by lazy { searchProvider.icon }
+    override val icon: Int by lazy { searchProvider.iconRes }
     override val requiresForeground = false
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {

@@ -19,15 +19,13 @@
 package com.saggitt.omega.gestures.actions
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import org.json.JSONObject
 
 class BlankGestureAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
     override val displayName: String = context.getString(R.string.action_none)
-    override val icon: Drawable? = AppCompatResources.getDrawable(context, R.drawable.close_icon)
+    override val icon = R.drawable.close_icon
     override fun onGestureTrigger(controller: GestureController, view: View?) {}
 }

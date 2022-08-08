@@ -20,16 +20,15 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import org.json.JSONObject
 
-class LauncherSettingsAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
+class LauncherSettingsAction(context: Context, config: JSONObject?) :
+    GestureAction(context, config) {
     override val displayName = context.getString(R.string.action_open_settings)
-    override val icon: Drawable? = AppCompatResources.getDrawable(context, R.drawable.ic_omega_settings)
+    override val icon = R.drawable.ic_omega_settings
 
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(context, R.drawable.ic_omega_settings)

@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.annotation.DrawableRes
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import org.json.JSONObject
@@ -32,7 +33,7 @@ abstract class GestureAction(val context: Context, val config: JSONObject?) {
     open val hasConfig = false
     open val configIntent: Intent? = null
     open val isAvailable: Boolean = true
-    open val icon: Drawable? = null
+    @DrawableRes open val icon: Int = -1
     open val iconResource: Intent.ShortcutIconResource
             by lazy { Intent.ShortcutIconResource.fromContext(context, R.mipmap.ic_launcher) }
 
@@ -59,23 +60,22 @@ abstract class GestureAction(val context: Context, val config: JSONObject?) {
 
     companion object {
         fun getLauncherActions(context: Context, hasBlank: Boolean) =
-                mutableListOf(
-                        LauncherSettingsAction(context, null),
-                        DeviceSettingsAction(context, null),
-                        OpenDashAction(context, null),
-                        OpenDrawerAction(context, null),
-                        NotificationsOpenAction(context, null),
-                        OpenFeedAction(context, null),
-                        OpenWidgetsAction(context, null),
-                        StartGlobalSearchAction(context, null),
-                        StartAppSearchAction(context, null),
-                        OpenOverviewAction(context, null),
-                        SleepAction(context, null),
-                        SleepActionTimeout(context, null)
-                ).apply {
-                    if (hasBlank) {
-                        add(0, BlankGestureAction(context, null))
-                    }
+            mutableListOf(
+                LauncherSettingsAction(context, null),
+                DeviceSettingsAction(context, null),
+                OpenDashAction(context, null),
+                OpenDrawerAction(context, null),
+                NotificationsOpenAction(context, null),
+                OpenFeedAction(context, null),
+                OpenWidgetsAction(context, null),
+                StartGlobalSearchAction(context, null),
+                StartAppSearchAction(context, null),
+                OpenOverviewAction(context, null),
+                SleepAction(context, null)
+            ).apply {
+                if (hasBlank) {
+                    add(0, BlankGestureAction(context, null))
                 }
+            }
     }
 }

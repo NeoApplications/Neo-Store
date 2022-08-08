@@ -21,23 +21,23 @@ package com.saggitt.omega.gestures.actions
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import org.json.JSONObject
 import java.lang.reflect.InvocationTargetException
 
-class NotificationsOpenAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
+class NotificationsOpenAction(context: Context, config: JSONObject?) :
+    GestureAction(context, config) {
 
     override val displayName = context.getString(R.string.action_open_notifications)
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.hotseat_edu_notification_icon)
+    override val icon = R.drawable.hotseat_edu_notification_icon
 
     @SuppressLint("PrivateApi", "WrongConstant")
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         try {
             Class.forName("android.app.StatusBarManager")
-                    .getMethod("expandNotificationsPanel")
-                    .invoke(controller.launcher.getSystemService("statusbar"))
+                .getMethod("expandNotificationsPanel")
+                .invoke(controller.launcher.getSystemService("statusbar"))
         } catch (_: ClassNotFoundException) {
         } catch (_: NoSuchMethodException) {
         } catch (_: IllegalAccessException) {

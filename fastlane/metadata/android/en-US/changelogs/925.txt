@@ -1,0 +1,7 @@
+Add: Swipe up gesture to folders
+Add: Feed-Provider setting
+Fix: Language preference
+Update: Increase grid/column range to 2-16
+Remove: Google App and Google GO as search providers
+Remove: StartAppSearch, StartApp and TimeoutSleep gestures
+Many crash fixes

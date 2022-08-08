@@ -21,7 +21,6 @@ package com.saggitt.omega.gestures.actions
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
 import com.android.quickstep.SysUINavigationMode
@@ -31,14 +30,14 @@ import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
 import org.json.JSONObject
 
 open class OpenDrawerAction(context: Context, config: JSONObject?) : GestureAction(context, config),
-        VerticalSwipeGestureHandler, StateChangeGestureHandler {
+    VerticalSwipeGestureHandler, StateChangeGestureHandler {
 
     override val displayName: String = context.getString(getNameRes())
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_apps)
+    override val icon = R.drawable.ic_apps
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
-                context,
-                R.drawable.ic_apps
+            context,
+            R.drawable.ic_apps
         )
     }
     override val requiresForeground = false

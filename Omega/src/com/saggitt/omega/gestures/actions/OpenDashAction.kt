@@ -20,7 +20,6 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashSheet
 import com.saggitt.omega.gestures.GestureController
@@ -30,7 +29,7 @@ class OpenDashAction(context: Context, config: JSONObject?) : GestureAction(cont
 
     override val displayName = context.getString(R.string.action_open_dash)
 
-    override val icon = AppCompatResources.getDrawable(context, R.drawable.ic_edit_dash)
+    override val icon = R.drawable.ic_edit_dash
 
     override val requiresForeground = true
 

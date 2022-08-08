@@ -20,9 +20,7 @@ package com.saggitt.omega.gestures.actions
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.android.launcher3.widget.picker.WidgetsFullSheet
 import com.saggitt.omega.gestures.GestureController
@@ -30,11 +28,11 @@ import org.json.JSONObject
 
 class OpenWidgetsAction(context: Context, config: JSONObject?) : GestureAction(context, config) {
     override val displayName: String = context.getString(R.string.action_open_widgets)
-    override val icon: Drawable? = AppCompatResources.getDrawable(context, R.drawable.ic_widget)
+    override val icon = R.drawable.ic_widget
     override val iconResource: Intent.ShortcutIconResource by lazy {
         Intent.ShortcutIconResource.fromContext(
-                context,
-                R.drawable.ic_widget
+            context,
+            R.drawable.ic_widget
         )
     }
     override val requiresForeground = false
