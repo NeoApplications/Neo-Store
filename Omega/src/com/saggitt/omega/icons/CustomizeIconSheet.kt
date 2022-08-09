@@ -47,8 +47,8 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.compose.ComposeActivity
 import com.saggitt.omega.compose.components.ComposeSwitchView
-import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.PreferenceItem
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.groups.ui.AppTabDialog
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.addIfNotNull

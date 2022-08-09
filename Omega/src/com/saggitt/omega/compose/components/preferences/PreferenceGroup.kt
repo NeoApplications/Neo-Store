@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.saggitt.omega.compose.components
+package com.saggitt.omega.compose.components.preferences
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically

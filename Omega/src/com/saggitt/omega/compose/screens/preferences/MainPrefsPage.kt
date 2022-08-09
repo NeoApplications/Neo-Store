@@ -33,10 +33,10 @@ import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.OverflowMenu
-import com.saggitt.omega.compose.components.PreferenceGroup
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PagePreference
 import com.saggitt.omega.compose.navigation.*
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.theme.OmegaAppTheme
 
