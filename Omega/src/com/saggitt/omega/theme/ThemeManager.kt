@@ -23,22 +23,15 @@ import android.content.res.Configuration
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.uioverrides.WallpaperColorInfo
-import com.android.launcher3.util.Executors.MAIN_EXECUTOR
-import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.omegaApp
-import com.saggitt.omega.twilight.TwilightListener
-import com.saggitt.omega.twilight.TwilightManager
-import com.saggitt.omega.twilight.TwilightState
-import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.removeFlag
 import com.saggitt.omega.util.useApplicationContext
 import com.saggitt.omega.util.usingNightMode
 
-class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, TwilightListener {
+class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
 
     private val app = context.omegaApp
     private val wallpaperColorInfo = WallpaperColorInfo.getInstance(context)!!
@@ -60,28 +53,6 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             val strings = context.resources.getStringArray(R.array.themes)
             val index = values.indexOf(themeFlags)
             return strings.getOrNull(index) ?: context.resources.getString(R.string.theme_auto)
-        }
-    private val twilightManager by lazy { TwilightManager.getInstance(context) }
-    private val handler = MAIN_EXECUTOR.handler
-    private var listenToTwilight = false
-        set(value) {
-            if (field != value) {
-                field = value
-                if (value) {
-                    twilightManager.registerListener(this, handler)
-                    onTwilightStateChanged(twilightManager.lastTwilightState)
-                } else {
-                    twilightManager.unregisterListener(this)
-                }
-            }
-        }
-    private var isDuringNight = false
-        set(value) {
-            field = value
-            if (!prefs.themePref.onGetValue().hasFlag(THEME_FOLLOW_DAYLIGHT)) return
-            if (themeFlags.hasFlag(THEME_DARK) != value) {
-                updateTheme()
-            }
         }
 
     var themeIsDark = false
@@ -122,12 +93,11 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
     }
 
     fun updateTheme() {
-        val theme = updateTwilightState(prefs.themePref.onGetValue())
+        val theme = prefs.themePref.onGetValue()
         val isBlack = isBlack(theme)
         val isDark = when {
             theme.hasFlag(THEME_FOLLOW_NIGHT_MODE) -> usingNightMode
             theme.hasFlag(THEME_FOLLOW_WALLPAPER) -> wallpaperColorInfo.isDark
-            theme.hasFlag(THEME_FOLLOW_DAYLIGHT) -> isDuringNight
             else -> theme.hasFlag(THEME_DARK)
         }
 
@@ -145,34 +115,6 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
             removeDeadListeners()
             listeners.forEach { it.onThemeChanged(themeFlags) }
         }
-    }
-
-    private fun updateTwilightState(theme: Int): Int {
-        if (!theme.hasFlag(THEME_FOLLOW_DAYLIGHT)) {
-            listenToTwilight = false
-            return theme
-        }
-        if (twilightManager.isAvailable) {
-            listenToTwilight = true
-            return theme
-        }
-
-        BlankActivity.requestPermission(
-            context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            REQUEST_PERMISSION_LOCATION_ACCESS
-        ) { granted ->
-            if (granted) {
-                listenToTwilight = true
-            } else {
-                prefs.themePref.onSetValue(theme.removeFlag(THEME_DARK_MASK))
-            }
-        }
-
-        return theme.removeFlag(THEME_DARK_MASK)
-    }
-
-    override fun onTwilightStateChanged(state: TwilightState?) {
-        isDuringNight = state?.isNight == true
     }
 
     private fun reloadActivities() {
@@ -203,10 +145,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener, 
         const val THEME_USE_BLACK = 0b00010           // 2
         const val THEME_FOLLOW_WALLPAPER = 0b00100    // 4
         const val THEME_FOLLOW_NIGHT_MODE = 0b01000   // 8
-        const val THEME_FOLLOW_DAYLIGHT = 0b10000     // 16
 
-        const val THEME_AUTO_MASK =
-            THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE or THEME_FOLLOW_DAYLIGHT
+        const val THEME_AUTO_MASK = THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE
         const val THEME_DARK_MASK = THEME_DARK or THEME_AUTO_MASK
 
         fun isDark(flags: Int) = (flags and THEME_DARK_MASK) != 0
