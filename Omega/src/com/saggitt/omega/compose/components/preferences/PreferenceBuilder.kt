@@ -20,11 +20,12 @@ package com.saggitt.omega.compose.components.preferences
 import androidx.compose.runtime.Composable
 import com.saggitt.omega.preferences.BasePreferences
 
-val PreferenceBuilder = @Composable { pref: Any ->
+val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit ->
     when (pref) {
         is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
         is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
         is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
         is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
+        is BasePreferences.SelectionPref -> SelectionPreference(pref = pref) { onDialogPref(pref) }
     }
 }
