@@ -160,6 +160,10 @@ public class LauncherAppState {
         }
     }
 
+    public void reloadIcons() {
+        refreshAndReloadLauncher();
+    }
+
     private void refreshAndReloadLauncher() {
         LauncherIcons.clearPool();
         mIconCache.updateIconParams(
