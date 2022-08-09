@@ -420,7 +420,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = recreate
     )
-    var drawerSortMode = StringIntPref(
+    var drawerSortMode = StringIntPref( // TODO migrate to SelectionPref
         key = PREFS_SORT,
         titleId = R.string.title__sort_mode,
         defaultValue = 0,
@@ -512,7 +512,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerLayout = StringIntPref(
+    val drawerLayout = StringIntPref( // TODO migrate to SelectionPref
         key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,

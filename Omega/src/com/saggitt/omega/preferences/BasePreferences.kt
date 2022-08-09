@@ -308,7 +308,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class IntPref(
+    open inner class IntPref( // TODO migrate to ?
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -391,7 +391,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    inline fun <reified T : Enum<T>> EnumPref(
+    inline fun <reified T : Enum<T>> EnumPref( // TODO migrate to ?
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -443,7 +443,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringPref(
+    open inner class StringPref( // TODO migrate to SelectionPreference (mostly)
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -457,7 +457,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    inner class StringBasedPref<T : Any>(
+    inner class StringBasedPref<T : Any>( // TODO migrate to SelectionPreference
         key: String, defaultValue: T,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -479,7 +479,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringIntPref(
+    open inner class StringIntPref( // TODO remove when done migration
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -497,7 +497,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringSetPref(
+    open inner class StringSetPref( // TODO migrate to MultiSelectionPreference
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -512,7 +512,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringListPref(
+    open inner class StringListPref( // TODO migrate to MultiSelectionPreference
         prefKey: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -523,7 +523,7 @@ abstract class BasePreferences(context: Context) :
         override fun flattenValue(value: String) = value
     }
 
-    abstract inner class MutableListPref<T>(
+    abstract inner class MutableListPref<T>( // TODO re-evaluate if needed
         private val prefs: SharedPreferences,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
