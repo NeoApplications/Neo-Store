@@ -49,7 +49,6 @@ import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
 import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.smartspace.weather.FakeDataProvider
-import com.saggitt.omega.smartspace.weather.OnePlusWeatherDataProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
@@ -615,10 +614,6 @@ class OmegaSmartSpaceController(val context: Context) {
             Pair(BlankDataProvider::class.java.name, R.string.title_disabled),
             Pair(SmartSpaceDataWidget::class.java.name, R.string.google_app),
             Pair(PEWeatherDataProvider::class.java.name, R.string.weather_provider_pe),
-            Pair(
-                OnePlusWeatherDataProvider::class.java.name,
-                R.string.weather_provider_oneplus_weather
-            ),
             Pair(NowPlayingProvider::class.java.name, R.string.event_provider_now_playing),
             Pair(
                 NotificationUnreadProvider::class.java.name,
