@@ -1,5 +1,8 @@
 package com.saggitt.omega
 
+import com.android.launcher3.R
+import com.saggitt.omega.theme.ThemeManager
+
 // DESKTOP PREFS
 const val PREFS_DESKTOP_ROWS = "pref_numRows"
 const val PREFS_DESKTOP_ROWS_RAW = "numRows"
@@ -54,6 +57,7 @@ const val PREFS_DRAWER_LAYOUT = "pref_drawer_layout"
 
 // THEME PREFS
 const val PREFS_THEME = "pref_launcherTheme"
+const val PREFS_THEME_X = "pref_launcherTheme_x"
 const val PREFS_ACCENT = "pref_accent_color"
 const val PREFS_BLUR = "pref_enableBlur"
 const val PREFS_BLUR_RADIUS = "pref_blurRadius"
@@ -66,6 +70,25 @@ const val PREFS_WHITE_TREATMENT = "pref_white_only_treatment"
 const val PREFS_LEGACY_TREATMENT = "pref_legacy_treatment"
 const val PREFS_FORCE_ADAPTIVE = "pref_adaptive_icon_pack"
 const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
+
+const val THEME_LIGHT = 0
+const val THEME_DARK = ThemeManager.THEME_DARK
+const val THEME_BLACK = ThemeManager.THEME_DARK or ThemeManager.THEME_USE_BLACK
+const val THEME_WALLPAPER = ThemeManager.THEME_FOLLOW_WALLPAPER
+const val THEME_WALLPAPER_BLACK =
+    ThemeManager.THEME_FOLLOW_WALLPAPER or ThemeManager.THEME_USE_BLACK
+const val THEME_SYSTEM = ThemeManager.THEME_FOLLOW_NIGHT_MODE
+const val THEME_SYSTEM_BLACK = ThemeManager.THEME_FOLLOW_NIGHT_MODE or ThemeManager.THEME_USE_BLACK
+
+val themeItems = mutableMapOf(
+    THEME_LIGHT to R.string.theme_light,
+    THEME_DARK to R.string.theme_dark,
+    THEME_BLACK to R.string.theme_black,
+    THEME_SYSTEM to R.string.theme_auto_night_mode,
+    THEME_SYSTEM_BLACK to R.string.theme_auto_night_mode_black,
+    THEME_WALLPAPER to R.string.theme_dark_theme_mode_follow_wallpaper,
+    THEME_WALLPAPER_BLACK to R.string.theme_dark_theme_mode_follow_wallpaper_black,
+)
 
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
