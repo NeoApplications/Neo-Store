@@ -224,3 +224,20 @@ fun PagePreference(
         onClick = { navController.navigate(destination) }
     )
 }
+
+@Composable
+fun SelectionPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.SelectionPref,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        summary = pref.entries[pref.onGetValue()]?.let { stringResource(id = it) },
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
