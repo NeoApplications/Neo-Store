@@ -227,7 +227,6 @@ dependencies {
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
     implementation("com.github.saulhdev:colorpickerx:1.5.3")
     implementation("io.github.hokofly:hoko-blur:1.3.7")
-    implementation("com.luckycatlabs:SunriseSunsetCalculator:1.2")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
