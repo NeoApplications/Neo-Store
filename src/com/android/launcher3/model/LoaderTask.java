@@ -941,9 +941,6 @@ public class LoaderTask implements Runnable {
             }
             allActivityList.addAll(apps);
             IconPackProvider.INSTANCE.get(mApp.getContext()).getSystemIconPack().reloadAppMap();
-            if (Utilities.getOmegaPrefs(mApp.getContext()).getThemeIconPackGlobal().onGetValue().equals("")) {
-                LauncherAppState.getIDP(mApp.getContext()).onPreferencesChanged(mApp.getContext());
-            }
         }
 
         if (FeatureFlags.PROMISE_APPS_IN_ALL_APPS.get()) {
