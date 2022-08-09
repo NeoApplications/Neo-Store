@@ -83,7 +83,8 @@ class NewBackupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.name.setText(getTimestamp())
+        val backupTitle = "NL_backup_" + getTimestamp()
+        binding.name.setText(backupTitle)
 
         val color =
             ColorStateList.valueOf(Utilities.getOmegaPrefs(requireContext()).themeAccentColor.onGetValue())
@@ -258,7 +259,7 @@ class NewBackupFragment : Fragment() {
     }
 
     private fun getTimestamp(): String {
-        val simpleDateFormat = SimpleDateFormat("neo_launcher_backup_yyyy-MM-dd_HH.mm.ss", Locale.US)
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_hh.mm.ss", Locale.US)
         return simpleDateFormat.format(Date())
     }
 }
