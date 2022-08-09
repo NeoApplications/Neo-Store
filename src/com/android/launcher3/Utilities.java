@@ -139,6 +139,7 @@ public final class Utilities {
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
     public static final Person[] EMPTY_PERSON_ARRAY = new Person[0];
 
+    // TODO replace usage with  OmegApp.sdk
     public static final boolean ATLEAST_OREO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     public static final boolean ATLEAST_OREO_MR1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1;
     public static final boolean ATLEAST_P = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
