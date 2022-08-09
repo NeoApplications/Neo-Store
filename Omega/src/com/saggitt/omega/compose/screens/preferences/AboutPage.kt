@@ -55,6 +55,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
 import com.saggitt.omega.compose.components.*
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.theme.kaushanScript

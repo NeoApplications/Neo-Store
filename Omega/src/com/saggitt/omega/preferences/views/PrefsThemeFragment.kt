@@ -8,7 +8,6 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.android.launcher3.R
 import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-import com.saggitt.omega.BlankActivity
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS
@@ -16,13 +15,8 @@ import com.saggitt.omega.PREFS_THEME
 import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.preferences.custom.SeekbarPreference
-import com.saggitt.omega.theme.ThemeManager
-import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.checkLocationAccess
-import com.saggitt.omega.util.hasFlag
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.recreateAnimated
-import com.saggitt.omega.util.removeFlag
 
 class PrefsThemeFragment :
     BasePreferenceFragment(R.xml.preferences_theme, R.string.title__general_theme) {
@@ -32,14 +26,6 @@ class PrefsThemeFragment :
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                     var newTheme = (newValue as String).toInt()
-                    if (newTheme.hasFlag(ThemeManager.THEME_FOLLOW_DAYLIGHT) && !requireContext().checkLocationAccess())
-                        BlankActivity.requestPermission(
-                            context, android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Config.REQUEST_PERMISSION_LOCATION_ACCESS
-                        ) {
-                            if (!it)
-                                newTheme = newTheme.removeFlag(ThemeManager.THEME_DARK_MASK)
-                        }
                     this.value = newTheme.toString()
                     requireActivity().omegaPrefs.themePref.onSetValue(
                         newValue.toString().toInt()

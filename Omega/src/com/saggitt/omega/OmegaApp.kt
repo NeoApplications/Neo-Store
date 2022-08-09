@@ -208,6 +208,10 @@ class OmegaApp : Application() {
         @JvmStatic
         val isRecentsEnabled: Boolean
             get() = instance?.recentsEnabled == true
+
+        fun minSDK(sdk: Int): Boolean {
+            return Build.VERSION.SDK_INT >= sdk
+        }
     }
 }
 

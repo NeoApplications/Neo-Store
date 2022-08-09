@@ -15,17 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.saggitt.omega.compose.components.preferences
+package com.saggitt.omega.compose.components
 
 import androidx.compose.runtime.Composable
-import com.saggitt.omega.preferences.BasePreferences
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 
-val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit ->
-    when (pref) {
-        is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-        is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
-        is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
-        is BasePreferences.SelectionPref -> SelectionPreference(pref = pref) { onDialogPref(pref) }
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun BaseDialog(
+    openDialogCustom: MutableState<Boolean>,
+    dialogUI: @Composable (() -> Unit)
+) {
+    Dialog(
+        onDismissRequest = { openDialogCustom.value = false },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        dialogUI()
     }
 }

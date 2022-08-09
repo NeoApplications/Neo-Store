@@ -178,6 +178,7 @@
     <string name="title_theme_customize_icons">Customize Icons</string>
     <string name="summary__theme_blur">Blur page backgrounds</string>
     <string name="theme_auto">Follow wallpaper</string>
+    <string name="theme_auto_black">Follow wallpaper (Black)</string>
     <string name="theme_auto_night_mode">System</string>
     <string name="theme_auto_night_mode_black">System (Black)</string>
     <string name="theme_based">Set by Theme</string>
@@ -190,6 +191,7 @@
     <string name="theme_dark_dark_text">Dark with dark text</string>
     <string name="theme_dark_theme_mode">Dark theme</string>
     <string name="theme_dark_theme_mode_follow_wallpaper" translatable="false">@string/theme_auto</string>
+    <string name="theme_dark_theme_mode_follow_wallpaper_black" translatable="false">@string/theme_auto_black</string>
     <string name="theme_dark_theme_mode_follow_system" translatable="false">@string/theme_auto_night_mode</string>
     <string name="theme_dark_theme_mode_follow_daylight">Follow daylight</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Follow daylight (Black)</string>

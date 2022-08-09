@@ -70,7 +70,7 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.saggitt.omega.compose.components.ExpandableListItem
 import com.saggitt.omega.compose.components.ListItemWithIcon
-import com.saggitt.omega.compose.components.PreferenceGroup
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.data.AppItemWithShortcuts
