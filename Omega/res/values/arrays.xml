@@ -32,6 +32,7 @@
         <item>@string/theme_auto_night_mode_black</item>
         <item>@string/theme_dark_theme_mode_follow_daylight</item>
         <item>@string/theme_dark_theme_mode_follow_daylight_black</item>
+        <item>@string/theme_dark_theme_mode_follow_wallpaper_black</item>
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
         <item>@string/theme_black</item>
@@ -43,6 +44,7 @@
         <item>10</item> <!-- 01010 -->
         <item>16</item> <!-- 10000 -->
         <item>18</item> <!-- 10010 -->
+        <item>6</item>  <!-- 00110 -->
         <item>0</item>  <!-- 00000 -->
         <item>1</item>  <!-- 00001 -->
         <item>2</item>  <!-- 00010 -->
