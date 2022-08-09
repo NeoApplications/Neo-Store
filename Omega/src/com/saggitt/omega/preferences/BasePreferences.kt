@@ -403,6 +403,22 @@ abstract class BasePreferences(context: Context) :
         }, { it.ordinal }, { })
     }
 
+    open inner class SelectionPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: Int = 0,
+        val entries: Map<Int, Int>,
+        onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Int>(key, titleId, summaryId, defaultValue, onChange) {
+        override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
+
+        override fun onSetValue(value: Int) {
+            edit { putInt(getKey(), value) }
+        }
+    }
+
     open inner class IntBasedPref<T : Any>(
         key: String,
         @StringRes titleId: Int,
