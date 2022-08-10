@@ -1,0 +1,7 @@
+Aggiunto: scorri verso l'alto verso le cartelle
+Aggiunto: impostazione del fornitore di feed
+Corretta: preferenza della lingua
+Aggiornamento: aumenta l'intervallo della griglia/colonna a 2-16
+Rimossi: Google App e Google GO come provider di ricerca
+Rimossi: gesti StartAppSearch, StartApp e TimeoutSleep
+Corretti molti crash
