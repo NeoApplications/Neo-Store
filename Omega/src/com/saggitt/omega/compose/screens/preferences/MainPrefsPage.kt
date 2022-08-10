@@ -36,11 +36,7 @@ import com.saggitt.omega.compose.components.OverflowMenu
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PagePreference
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
-import com.saggitt.omega.compose.navigation.BlankScreen
-import com.saggitt.omega.compose.navigation.LocalNavController
-import com.saggitt.omega.compose.navigation.Routes
-import com.saggitt.omega.compose.navigation.preferenceGraph
-import com.saggitt.omega.compose.navigation.subRoute
+import com.saggitt.omega.compose.navigation.*
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -97,7 +93,12 @@ fun MainPrefsPage() {
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
+                contentPadding = PaddingValues(
+                    start = 8.dp,
+                    end = 8.dp,
+                    top = 48.dp,
+                    bottom = 8.dp
+                ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
