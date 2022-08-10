@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
+import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.SelectionPrefDialogUI
@@ -73,33 +74,41 @@ fun DrawerPrefsPage() {
     )
 
     OmegaAppTheme {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ViewWithActionBar(
+            title = stringResource(R.string.title__general_drawer)
         ) {
-            item {
-                PreferenceGroup(stringResource(id = R.string.cat_drawer_icons)) {
-                    iconPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    start = 8.dp,
+                    end = 8.dp,
+                    top = 48.dp,
+                    bottom = 8.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    PreferenceGroup(stringResource(id = R.string.cat_drawer_icons)) {
+                        iconPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
                 }
-            }
-            item {
-                PreferenceGroup(stringResource(id = R.string.cat_drawer_grid)) {
-                    gridPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.cat_drawer_grid)) {
+                        gridPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
                 }
-            }
-            item {
-                PreferenceGroup(stringResource(id = R.string.label_search)) {
-                    searchPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.label_search)) {
+                        searchPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
                 }
-            }
-            item {
-                PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
-                    otherPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
+                        otherPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
                 }
             }
         }
-
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref) {
