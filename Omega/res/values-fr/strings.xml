@@ -441,8 +441,6 @@
     <string name="title_app_categorization_enable">Activer les catégories d\'apps</string>
     <string name="icon_picker_default_category">Icônes</string>
     <string name="icon_picker_load_failed">Échec de chargement de plus d\'icônes.</string>
-    <string name="title_search_action_lens">Afficher l\'icône de la lentille</string>
-    <string name="summary_search_show_lens_summary">Quand l\'application Google est installée</string>
     <string name="debug_options_title">Informations de débogage</string>
     <string name="accessibility_undo">Annuler</string>
     <string name="app_name">Nom de l\'app</string>

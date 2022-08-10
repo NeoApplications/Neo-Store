@@ -443,8 +443,6 @@
     <string name="permission_denied">تم رفض إذن القراءة!</string>
     <string name="summary_all_apps_search">إظهار شريط البحث</string>
     <string name="summary_app_suggestions">لجميع التطبيقات والشاشة الرئيسية</string>
-    <string name="title_search_action_lens">إظهار أيقونة العدسة</string>
-    <string name="summary_search_show_lens_summary">عند تثبيت تطبيق Google</string>
     <string name="tab_shortcuts">الاختصارات</string>
     <string name="app_name">اسم التطبيق</string>
     <string name="icon_picker_default_category">الأيقونات</string>

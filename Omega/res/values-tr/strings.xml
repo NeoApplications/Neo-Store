@@ -439,11 +439,9 @@
     <string name="summary_fuzzy_search">Uygulama aramaları için yaklaşık eşleşme.</string>
     <string name="icon_picker_default_category">Simgeler</string>
     <string name="icon_picker_load_failed">Daha fazla simge yüklenemedi.</string>
-    <string name="summary_search_show_lens_summary">Google uygulaması kurulu olduğunda</string>
     <string name="accessibility_undo">Geri al</string>
     <string name="app_name">Uygulama adı</string>
     <string name="tab_launcher">Başlatıcı</string>
     <string name="tab_shortcuts">Kısayollar</string>
-    <string name="title_search_action_lens">Lens Simgesini Göster</string>
     <string name="debug_options_title">Hata ayıklama bilgileri</string>
 </resources>
