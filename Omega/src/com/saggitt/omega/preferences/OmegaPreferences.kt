@@ -28,7 +28,117 @@ import com.android.launcher3.Utilities.makeComponentKey
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
-import com.saggitt.omega.*
+import com.saggitt.omega.OmegaApp
+import com.saggitt.omega.PREFS_ACCENT
+import com.saggitt.omega.PREFS_BLUR
+import com.saggitt.omega.PREFS_BLUR_RADIUS
+import com.saggitt.omega.PREFS_COLORED_BACKGROUND
+import com.saggitt.omega.PREFS_DASH_LINESIZE
+import com.saggitt.omega.PREFS_DASH_PROVIDERS
+import com.saggitt.omega.PREFS_DEBUG_MODE
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DESKTOP_HIDE_LABEL
+import com.saggitt.omega.PREFS_DESKTOP_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DESKTOP_ICON_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_LOCK
+import com.saggitt.omega.PREFS_DESKTOP_MODE
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_EDIT
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_MENU
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
+import com.saggitt.omega.PREFS_DESKTOP_ROWS
+import com.saggitt.omega.PREFS_DESKTOP_ROWS_RAW
+import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND_COLOR
+import com.saggitt.omega.PREFS_DOCK_COLUMNS
+import com.saggitt.omega.PREFS_DOCK_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DOCK_HIDE
+import com.saggitt.omega.PREFS_DOCK_ICON_SCALE
+import com.saggitt.omega.PREFS_DOCK_OPACITY
+import com.saggitt.omega.PREFS_DOCK_SCALE
+import com.saggitt.omega.PREFS_DOCK_SEARCH
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DRAWER_HEIGHT_MULTIPLIER
+import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
+import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
+import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
+import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
+import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
+import com.saggitt.omega.PREFS_DRAWER_SEARCH
+import com.saggitt.omega.PREFS_EMPTY_SCREENS
+import com.saggitt.omega.PREFS_FEED_PROVIDER
+import com.saggitt.omega.PREFS_FEED_PROVIDER_ALLOW_ALL
+import com.saggitt.omega.PREFS_FIRST_RUN
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_FOLDER_COLUMNS
+import com.saggitt.omega.PREFS_FOLDER_RADIUS
+import com.saggitt.omega.PREFS_FOLDER_ROWS
+import com.saggitt.omega.PREFS_FORCE_ADAPTIVE
+import com.saggitt.omega.PREFS_FORCE_SHAPELESS
+import com.saggitt.omega.PREFS_GESTURE_ASSISTANT
+import com.saggitt.omega.PREFS_GESTURE_BACK
+import com.saggitt.omega.PREFS_GESTURE_DOUBLE_TAP
+import com.saggitt.omega.PREFS_GESTURE_HOME
+import com.saggitt.omega.PREFS_GESTURE_LONG_PRESS
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_DOWN
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
+import com.saggitt.omega.PREFS_HIDDEN_PREDICTION_SET
+import com.saggitt.omega.PREFS_HIDDEN_SET
+import com.saggitt.omega.PREFS_ICON_PACK
+import com.saggitt.omega.PREFS_ICON_SHAPE
+import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
+import com.saggitt.omega.PREFS_LANGUAGE
+import com.saggitt.omega.PREFS_LEGACY_TREATMENT
+import com.saggitt.omega.PREFS_LOW_PREFORMANCE
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT_FOLDER
+import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.PREFS_PROTECTED_SET
+import com.saggitt.omega.PREFS_RECENT_BACKUP
+import com.saggitt.omega.PREFS_RESTORE_SUCCESS
+import com.saggitt.omega.PREFS_SEARCH_BAR_RADIUS
+import com.saggitt.omega.PREFS_SEARCH_FUZZY
+import com.saggitt.omega.PREFS_SEARCH_GLOBAL
+import com.saggitt.omega.PREFS_SEARCH_HIDDEN_APPS
+import com.saggitt.omega.PREFS_SEARCH_PROVIDER
+import com.saggitt.omega.PREFS_SEARCH_SHOW_LENS_ICON
+import com.saggitt.omega.PREFS_SMARTSPACE_DATE
+import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
+import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
+import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.PREFS_SORT_X
+import com.saggitt.omega.PREFS_STATUSBAR_HIDE
+import com.saggitt.omega.PREFS_THEME
+import com.saggitt.omega.PREFS_THEME_X
+import com.saggitt.omega.PREFS_TIME_24H
+import com.saggitt.omega.PREFS_TORCH
+import com.saggitt.omega.PREFS_WHITE_TREATMENT
+import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
+import com.saggitt.omega.PREFS_WINDOWCORNER
+import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
+import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
+import com.saggitt.omega.PREF_PILL_QSB
+import com.saggitt.omega.THEME_SYSTEM
+import com.saggitt.omega.THEME_WALLPAPER
+import com.saggitt.omega.drawerLayoutOptions
+import com.saggitt.omega.drawerSortOptions
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
@@ -315,7 +425,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = recreate
     )
-    var drawerSortMode = StringIntPref( // TODO migrate to SelectionPref
+    var drawerSortMode = StringIntPref( // TODO replace usages with the new one
         key = PREFS_SORT,
         titleId = R.string.title__sort_mode,
         defaultValue = 0,
@@ -414,7 +524,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerLayout = StringIntPref( // TODO migrate to SelectionPref
+    val drawerLayout = StringIntPref( // TODO replace usages with the new one
         key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,
@@ -466,7 +576,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = "",
         onChange = recreate
     )
-    var themePref = StringIntPref(
+    var themePref = StringIntPref( // TODO replace usages with the new one
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
