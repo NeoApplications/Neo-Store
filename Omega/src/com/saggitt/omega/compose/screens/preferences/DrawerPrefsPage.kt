@@ -54,11 +54,12 @@ fun DrawerPrefsPage() {
     )
     val gridPrefs = listOf(
         prefs.drawerColumns,
-        prefs.drawerSortMode, // TODO
+        prefs.drawerSortModeNew,
         // TODO missing categorization pref page
         prefs.drawerSeparateWorkApps,
         prefs.drawerCellHeightMultiplier,
-        prefs.drawerSaveScrollPosition
+        prefs.drawerSaveScrollPosition,
+        prefs.drawerLayoutNew
     )
     val searchPrefs = listOf(
         // TODO move to Search?
