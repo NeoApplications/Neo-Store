@@ -2,6 +2,7 @@ package com.saggitt.omega
 
 import com.android.launcher3.R
 import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.util.Config
 
 // DESKTOP PREFS
 const val PREFS_DESKTOP_ROWS = "pref_numRows"
@@ -38,6 +39,7 @@ const val PREFS_DOCK_COLUMNS_RAW = "numHotseatIcons"
 
 // DRAWER PREFS
 const val PREFS_SORT = "pref_sortMode"
+const val PREFS_SORT_X = "pref_sortMode_x"
 const val PREFS_PROTECTED_APPS = "pref_protected_apps"
 const val PREFS_TRUST_APPS = "pref_trust_apps"
 const val PREFS_HIDDEN_SET = "hidden_app_set"
@@ -54,6 +56,7 @@ const val PREFS_KEEP_SCROLL_STATE = "pref_keep_scroll_state"
 const val PREFS_DRAWER_COLUMNS = "pref_numAllAppsColumns"
 const val PREFS_DRAWER_COLUMNS_RAW = "numAllAppsColumns"
 const val PREFS_DRAWER_LAYOUT = "pref_drawer_layout"
+const val PREFS_DRAWER_LAYOUT_X = "pref_drawer_layout_x"
 
 // THEME PREFS
 const val PREFS_THEME = "pref_launcherTheme"
@@ -88,6 +91,18 @@ val themeItems = mutableMapOf(
     THEME_SYSTEM_BLACK to R.string.theme_auto_night_mode_black,
     THEME_WALLPAPER to R.string.theme_dark_theme_mode_follow_wallpaper,
     THEME_WALLPAPER_BLACK to R.string.theme_dark_theme_mode_follow_wallpaper_black,
+)
+
+val drawerLayoutOptions = mutableMapOf(
+    Config.DRAWER_VERTICAL to R.string.title_drawer_vertical,
+    Config.DRAWER_PAGED to R.string.title_drawer_paged,
+)
+
+val drawerSortOptions = mutableMapOf(
+    Config.SORT_AZ to R.string.title__sort_alphabetical_az,
+    Config.SORT_ZA to R.string.title__sort_alphabetical_za,
+    Config.SORT_MOST_USED to R.string.title__sort_most_used,
+    Config.SORT_BY_COLOR to R.string.title__sort_by_color,
 )
 
 // SEARCH PREFS

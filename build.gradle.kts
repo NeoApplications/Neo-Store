@@ -216,6 +216,7 @@ dependencies {
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
     implementation("androidx.fragment:fragment-ktx:1.5.1")
+    implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
