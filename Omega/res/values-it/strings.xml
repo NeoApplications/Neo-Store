@@ -464,4 +464,12 @@
     <string name="section_web">Web</string>
     <string name="folder_name">Nome della cartella</string>
     <string name="section_apps">app</string>
+    <string name="title__general_profile">Profilo</string>
+    <string name="title__general_search_feed">Cerca &amp; Feed</string>
+    <string name="title__general_widgets_notifications">Widgets &amp; Notifiche</string>
+    <string name="pref_category__features">Caratteristiche</string>
+    <string name="title__general_gestures_dash">Gesti &amp; Pannello</string>
+    <string name="pref_category__dash">Pannello</string>
+    <string name="title__feed">Feed</string>
+    <string name="theme_auto_black">Segui lo sfondo (nero)</string>
 </resources>
