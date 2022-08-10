@@ -569,13 +569,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = recreate
     )
-    var searchShowLensIcon = BooleanPref(
-        key = PREFS_SEARCH_SHOW_LENS_ICON,
-        titleId = R.string.title_search_action_lens,
-        summaryId = R.string.summary_search_show_lens_summary,
-        defaultValue = true,
-        onChange = recreate
-    )
+
     var searchProvider = StringPref(
         key = PREFS_SEARCH_PROVIDER,
         titleId = R.string.title_search_provider,
@@ -601,6 +595,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = doNothing
     )
+
+    var searchContacts = BooleanPref(
+        key = PREFS_SEARCH_CONTACTS,
+        titleId = R.string.title_search_contacts,
+        defaultValue = false,
+        onChange = recreate
+    )
+
     var feedProvider = StringPref(
         key = PREFS_FEED_PROVIDER,
         titleId = R.string.title_feed_provider,
