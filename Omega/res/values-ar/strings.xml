@@ -457,4 +457,12 @@
     <string name="folder_name">اسم المجلد</string>
     <string name="section_apps">التطبيقات</string>
     <string name="section_web">الويب</string>
+    <string name="title__general_profile">ملف التعريف</string>
+    <string name="title__general_gestures_dash">الإيماءات و السحب</string>
+    <string name="title__general_widgets_notifications">القطع الذكية والإشعارات</string>
+    <string name="pref_category__features">المميزات</string>
+    <string name="pref_category__dash">السحب</string>
+    <string name="theme_auto_black">اتبع الخلفية (أسود)</string>
+    <string name="title__feed">التغذية</string>
+    <string name="title__general_search_feed">البحث والخلاصة</string>
 </resources>
