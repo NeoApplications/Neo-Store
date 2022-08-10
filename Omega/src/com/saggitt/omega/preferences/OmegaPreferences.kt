@@ -43,6 +43,8 @@ import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
 import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.themeItems
+import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
 import kotlin.math.roundToInt
 
@@ -319,6 +321,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 0,
         onChange = recreate
     )
+    var drawerSortModeNew = SelectionPref(
+        key = PREFS_SORT_X,
+        titleId = R.string.title__sort_mode,
+        defaultValue = Config.SORT_AZ,
+        entries = drawerSortOptions,
+        onChange = recreate
+    )
     var drawerHiddenAppSet = StringSetPref(
         key = PREFS_HIDDEN_SET,
         titleId = R.string.title_search_hidden_apps,
@@ -409,6 +418,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,
+        onChange = recreate
+    )
+    val drawerLayoutNew = SelectionPref(
+        key = PREFS_DRAWER_LAYOUT_X,
+        titleId = R.string.title_drawer_layout,
+        defaultValue = Config.DRAWER_VERTICAL,
+        entries = drawerLayoutOptions,
         onChange = recreate
     )
     private val drawerGridSizeDelegate = ResettableLazy {
