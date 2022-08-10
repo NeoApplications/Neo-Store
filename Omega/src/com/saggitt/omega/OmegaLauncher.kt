@@ -24,11 +24,7 @@ import android.content.IntentSender
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
 import android.graphics.Rect
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.PersistableBundle
+import android.os.*
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -36,12 +32,9 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -97,7 +90,6 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     val hiddenApps = ArrayList<AppInfo>()
-    private val insetsController by lazy { WindowInsetsControllerCompat(window, rootView) }
 
     private val activityResultRegistry = object : ActivityResultRegistry() {
         override fun <I : Any?, O : Any?> onLaunch(
@@ -196,15 +188,15 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
 
-        //Load hidden apps to use with hidden apps preference
-        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.drawerHiddenAppSet.onGetValue()) }
-
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
         if (prefs.themeCornerRadiusOverride.onGetValue()) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
             QuickStepContract.sCustomCornerRadius = prefs.themeCornerRadius.onGetValue()
         }
+
+        //Load hidden apps to use with hidden apps preference
+        MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.drawerHiddenAppSet.onGetValue()) }
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {
@@ -348,7 +340,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     }
 
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
-        if (key == "pref_hideStatusBar") {
+        if (key == PREFS_STATUSBAR_HIDE) {
             if (prefs.desktopHideStatusBar.onGetValue()) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             } else if (!force) {
