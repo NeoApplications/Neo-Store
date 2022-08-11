@@ -55,13 +55,12 @@
             tools:text="Saul Henriquez" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/contact_info"
+            android:id="@+id/contact_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp"
-            android:visibility="gone"
             tools:text="7217 9700"
             tools:visibility="visible" />
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -81,7 +80,7 @@
         android:contentDescription="@string/label_search" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/action_icon"
+        android:id="@+id/action_message"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"
