@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_READ_CONTACTS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
 import android.annotation.TargetApi;
@@ -942,6 +943,11 @@ public final class Utilities {
     public static void requestStoragePermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                 REQUEST_PERMISSION_STORAGE_ACCESS);
+    }
+
+    public static void requestPeoplePermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_CONTACTS},
+                REQUEST_PERMISSION_READ_CONTACTS);
     }
 
     /**
