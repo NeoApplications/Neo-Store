@@ -42,6 +42,7 @@ import com.saggitt.omega.data.AppTracker;
 import com.saggitt.omega.data.AppTrackerRepository;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.OmegaUtilsKt;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         // Sort the list of apps
-        sortApps(prefs.getDrawerSortMode().onGetValue());
+        OmegaUtilsKt.sortApps(mApps, mLauncher, prefs.getDrawerSortMode().onGetValue());
 
         // As a special case for some languages (currently only Simplified Chinese), we may need to
         // coalesce sections

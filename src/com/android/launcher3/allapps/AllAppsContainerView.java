@@ -822,7 +822,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     public void drawOnScrim(Canvas canvas) {
         mHeaderPaint.setColor(mHeaderColor);
         mHeaderPaint.setAlpha((int) (getAlpha() * Color.alpha(mHeaderColor)));
-        if (mHeaderPaint.getColor() != mScrimColor && mHeaderPaint.getColor() != 0) {
+        /*if (mHeaderPaint.getColor() != mScrimColor && mHeaderPaint.getColor() != 0) {
             int bottom = (int) (mSearchContainer.getBottom() + getTranslationY());
             canvas.drawRect(0, 0, canvas.getWidth(), bottom, mHeaderPaint);
             int tabsHeight = getFloatingHeaderView().getPeripheralProtectionHeight();
@@ -835,7 +835,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                     mSearchUiManager.getEditText().setBackground(null);
                 }
             }
-        }
+        }*/
     }
 
     public AdapterHolder createHolder(boolean isWork) {

@@ -50,12 +50,18 @@ import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import com.android.launcher3.BaseDraggingActivity
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
+import com.android.launcher3.allapps.AppInfoComparator
+import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
 import com.android.launcher3.views.OptionsPopupView
+import com.saggitt.omega.allapps.AppColorComparator
+import com.saggitt.omega.allapps.AppUsageComparator
+import com.saggitt.omega.data.AppTrackerRepository
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
@@ -257,6 +263,7 @@ fun Int.setFlag(flag: Int, value: Boolean): Int {
         removeFlag(flag)
     }
 }
+
 inline fun ViewGroup.forEachChildIndexed(action: (View, Int) -> Unit) {
     val count = childCount
     for (i in (0 until count)) {
@@ -409,3 +416,18 @@ fun PackageManager.isAppEnabled(packageName: String?, flags: Int): Boolean {
 
 fun UserCache.getUserForProfileId(profileId: Int) =
     userProfiles.find { it.toString() == "UserHandle{$profileId}" }
+
+fun MutableList<AppInfo>.sortApps(context: Context, sortType: Int) {
+    when (sortType) {
+        Config.SORT_ZA -> sortByDescending { it.title.toString().lowercase() }
+        Config.SORT_MOST_USED -> {
+            val repository = AppTrackerRepository.INSTANCE[context]
+            val appsCounter = repository.getAppsCount()
+            val mostUsedComparator = AppUsageComparator(appsCounter)
+            sortWith(mostUsedComparator)
+        }
+        Config.SORT_BY_COLOR -> sortWith(AppColorComparator(context))
+        Config.SORT_AZ -> sortBy { it.title.toString().lowercase() }
+        else -> sortWith(AppInfoComparator(context))
+    }
+}

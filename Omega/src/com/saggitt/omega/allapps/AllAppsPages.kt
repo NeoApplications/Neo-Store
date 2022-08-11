@@ -25,7 +25,9 @@ import com.android.launcher3.LauncherAppState
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.groups.CustomFilter
+import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.sortApps
 
 class AllAppsPages(
     val context: Context
@@ -40,9 +42,9 @@ class AllAppsPages(
     private val config = Config(context)
 
     init {
-        activityInfoList = config.getAppsList(AppFilter()).sortedBy { it.label.toString() }
+        activityInfoList = config.getAppsList(AppFilter())
 
-        activityInfoList.map {
+        activityInfoList.forEach {
             appList.add(AppInfo(it, it.user, false))
         }
         reloadPages()
@@ -56,6 +58,7 @@ class AllAppsPages(
             pageCount++
         }
 
+        appList.sortApps(context, OmegaPreferences.getInstance(context).drawerSortMode.onGetValue())
         var initialApp = 0
         var endApp = appsPerPage
         for (page in 0 until pageCount) {
