@@ -435,4 +435,12 @@
     <string name="backup_delete_failed">Algo fue mal</string>
     <string name="summary_app_suggestions">Para todas las apps y pantallas Inicio</string>
     <string name="home_widget">At a Glance</string>
+    <string name="folder_name">Nombre de Carpeta</string>
+    <string name="title_fuzzy_search">Busqueda Aproximada</string>
+    <string name="summary_fuzzy_search">Coincidencia aproximada para la búsqueda de aplicaciones.</string>
+    <string name="title__general_profile">Perfil</string>
+    <string name="title__general_widgets_notifications">Widgets &amp; Notificaciones</string>
+    <string name="pref_category__features">Caracteristicas</string>
+    <string name="title__general_gestures_dash">Gestos &amp; Dash</string>
+    <string name="title__general_search_feed">Busqueda &amp; Feed</string>
 </resources>
