@@ -73,13 +73,13 @@ class Config(val context: Context) {
         } else Resources.getSystem().configuration.locales[0]
     }
 
-    fun getAppsList(filter: AppFilter?): List<LauncherActivityInfo> {
+    fun getAppsList(filter: AppFilter?): MutableList<LauncherActivityInfo> {
         val apps = ArrayList<LauncherActivityInfo>()
         val profiles = UserCache.INSTANCE.get(context).userProfiles
         val launcherApps = context.getSystemService(LauncherApps::class.java)
         profiles.forEach { apps += launcherApps.getActivityList(null, it) }
         return if (filter != null) {
-            apps.filter { filter.shouldShowApp(it.componentName, it.user) }
+            apps.filter { filter.shouldShowApp(it.componentName, it.user) }.toMutableList()
         } else {
             apps
         }
