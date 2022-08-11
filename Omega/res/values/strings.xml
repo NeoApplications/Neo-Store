@@ -418,6 +418,7 @@
     <string name="folder_columns">Folder Columns</string>
     <string name="section_apps">apps</string>
     <string name="section_web">Web</string>
+    <string name="section_contacts">Contacts</string>
     <!-- FONT -->
     <string name="fonts_global_font">Font</string>
     <string name="fonts_change_global_font">Change</string>
