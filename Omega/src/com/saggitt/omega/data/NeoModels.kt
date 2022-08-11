@@ -54,3 +54,10 @@ data class AppTracker(
     @PrimaryKey val packageName: String,
     val count: Int
 )
+
+@Entity
+data class PeopleInfo(
+    @PrimaryKey val contactId: String,
+    val contactName: String,
+    val contactPhone: String
+)
