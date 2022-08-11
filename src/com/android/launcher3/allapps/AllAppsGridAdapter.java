@@ -20,6 +20,8 @@ import static com.android.launcher3.touch.ItemLongClickListener.INSTANCE_ALL_APP
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +49,7 @@ import com.android.launcher3.R;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.data.AppInfo;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.saggitt.omega.data.PeopleInfo;
 import com.saggitt.omega.groups.DrawerFolderInfo;
 import com.saggitt.omega.groups.DrawerFolderItem;
 import com.saggitt.omega.search.SearchProvider;
@@ -83,6 +86,7 @@ public class AllAppsGridAdapter extends
     // Web search suggestions
     public static final int VIEW_TYPE_SEARCH_SUGGESTION = 1 << 7;
     public static final int VIEW_TYPE_SECTION_HEADER = 1 << 8;
+    public static final int VIEW_TYPE_SECTION_CONTACT = 1 << 9;
 
     // Common view type masks
     public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
@@ -137,6 +141,7 @@ public class AllAppsGridAdapter extends
          * Search suggestion-only properties
          */
         public String suggestion;
+        public PeopleInfo peopleInfo;
         public String sectionHeader;
 
         /**
@@ -207,6 +212,14 @@ public class AllAppsGridAdapter extends
             item.viewType = VIEW_TYPE_SECTION_HEADER;
             item.position = pos;
             item.sectionHeader = sectionHeader;
+            return item;
+        }
+
+        public static AdapterItem asContact(int pos, PeopleInfo peopleInfo) {
+            AdapterItem item = new AdapterItem();
+            item.viewType = VIEW_TYPE_SECTION_CONTACT;
+            item.position = pos;
+            item.peopleInfo = peopleInfo;
             return item;
         }
 
@@ -439,6 +452,10 @@ public class AllAppsGridAdapter extends
             case VIEW_TYPE_SECTION_HEADER:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_search_section, parent, false));
 
+            case VIEW_TYPE_SECTION_CONTACT:
+                View contactView = mLayoutInflater.inflate(R.layout.all_apps_search_contact, parent, false);
+                return new ViewHolder(contactView);
+
             default:
                 BaseAdapterProvider adapterProvider = getAdapterProvider(viewType);
                 if (adapterProvider != null) {
@@ -507,6 +524,43 @@ public class AllAppsGridAdapter extends
                 TextView sectionTitle = container.findViewById(R.id.section_header);
                 String title = mApps.getAdapterItems().get(position).sectionHeader;
                 sectionTitle.setText(title);
+
+                break;
+
+            case VIEW_TYPE_SECTION_CONTACT:
+                container = (ViewGroup) holder.itemView;
+                TextView contactName = container.findViewById(R.id.contact_name);
+                contactName.setText(mApps.getAdapterItems().get(position).peopleInfo.getContactName());
+                TextView contactPhone = container.findViewById(R.id.contact_phone);
+                contactPhone.setText(mApps.getAdapterItems().get(position).peopleInfo.getContactPhone());
+                container.setOnClickListener(v -> {
+                    //create contact uri
+                    Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI,
+                            mApps.getAdapterItems().get(position).peopleInfo.getContactId());
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, contactUri);
+                    if (intent.resolveActivity(mLauncher.getPackageManager()) != null) {
+                        mLauncher.startActivitySafely(v, intent, null);
+                    }
+                });
+
+                ImageView messageIcon = container.findViewById(R.id.action_message);
+                messageIcon.setOnClickListener(v -> {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("smsto:" + mApps.getAdapterItems().get(position).peopleInfo.getContactPhone()));
+                    if (intent.resolveActivity(mLauncher.getPackageManager()) != null) {
+                        mLauncher.startActivitySafely(v, intent, null);
+                    }
+                });
+
+                ImageView callIcon = container.findViewById(R.id.action_call);
+                callIcon.setOnClickListener(view -> {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + mApps.getAdapterItems().get(position).peopleInfo.getContactPhone()));
+                    if (intent.resolveActivity(mLauncher.getPackageManager()) != null) {
+                        mLauncher.startActivitySafely(view, intent, null);
+                    }
+                });
 
                 break;
 

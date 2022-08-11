@@ -59,13 +59,16 @@ import com.android.systemui.plugins.shared.LauncherOverlayManager
 import com.android.systemui.shared.system.QuickStepContract
 import com.farmerbb.taskbar.lib.Taskbar
 import com.google.systemui.smartspace.SmartSpaceView
+import com.saggitt.omega.data.PeopleRepository
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.popup.OmegaShortcuts
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
+import com.saggitt.omega.search.PeopleItems
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
+import kotlinx.coroutines.*
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwner,
@@ -127,7 +130,6 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
                 optionsBundle = options.toBundle()
             }
             if (RequestMultiplePermissions.ACTION_REQUEST_PERMISSIONS == intent.action) {
-                // requestPermissions path
                 var permissions =
                     intent.getStringArrayExtra(RequestMultiplePermissions.EXTRA_PERMISSIONS)
                 if (permissions == null) {
@@ -165,6 +167,26 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
             && !Utilities.hasStoragePermission(this)
         ) Utilities.requestStoragePermission(this)
+
+        //Load People Info and request permission if needed
+        if (prefs.searchContacts.onGetValue()) {
+            if (!Utilities.hasPermission(this, android.Manifest.permission.READ_CONTACTS)) {
+                Utilities.requestPeoplePermission(this)
+            }
+        }
+        if (Utilities.hasPermission(this, android.Manifest.permission.READ_CONTACTS)) {
+            val peopleItems = PeopleItems(this)
+            val scope = CoroutineScope(Dispatchers.IO) + CoroutineName("PeopleRepository")
+            val repository = PeopleRepository.INSTANCE.get(this)
+            scope.launch {
+                repository.deleteAll()
+                val list = peopleItems.getPeopleInformation()
+                list.map { repository.insert(it) }
+            }
+
+        } else {
+            prefs.searchContacts.onSetValue(false)
+        }
 
         themeOverride = ThemeOverride(themeSet, this)
         themeOverride.applyTheme(this)

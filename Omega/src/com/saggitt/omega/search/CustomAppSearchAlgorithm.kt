@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.pm.LauncherApps
 import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.AllAppsGridAdapter.AdapterItem
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm
@@ -34,6 +35,7 @@ import com.android.launcher3.pm.UserCache
 import com.android.launcher3.search.SearchCallback
 import com.android.launcher3.search.StringMatcherUtility
 import com.saggitt.omega.allapps.OmegaAppFilter
+import com.saggitt.omega.data.PeopleRepository
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import me.xdrop.fuzzywuzzy.algorithms.WeightedRatio
 import java.util.*
@@ -48,6 +50,28 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
             override fun execute(app: LauncherAppState, dataModel: BgDataModel, apps: AllAppsList) {
                 val result = getSearchResult(apps.data, query)
                 var suggestions = emptyList<String?>()
+
+                if (prefs.searchContacts.onGetValue()) {
+                    val repository = PeopleRepository.INSTANCE.get(app.context)
+                    val contacts = repository.findPeople(query)
+                    val total = result.size
+                    var position = total + 1
+                    if (contacts.isNotEmpty()) {
+                        result.add(AdapterItem.asAllAppsDivider(position))
+                        position++
+                        result.add(
+                            AdapterItem.asSectionHeader(
+                                position,
+                                context.getString(R.string.section_contacts)
+                            )
+                        )
+                        position++
+                        contacts.forEach {
+                            result.add(AdapterItem.asContact(position, it))
+                            position++
+                        }
+                    }
+                }
                 if (callback!!.showWebResult()) {
                     suggestions = getSuggestions(query)
                     callback.setShowWebResult(false)
