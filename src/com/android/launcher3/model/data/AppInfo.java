@@ -87,6 +87,7 @@ public class AppInfo extends ItemInfoWithIcon {
                 .generate()
                 .getDominantColor(0);
         intent = makeLaunchIntent(info);
+        title = info.getLabel();
 
         if (quietModeEnabled) {
             runtimeStatusFlags |= FLAG_DISABLED_QUIET_USER;
@@ -119,6 +120,7 @@ public class AppInfo extends ItemInfoWithIcon {
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         setProgressLevel(installInfo);
+        title = installInfo.packageName;
         user = installInfo.user;
     }
 
