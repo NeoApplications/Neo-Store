@@ -1,0 +1,7 @@
+Add: Sort apps by color option
+Add: Follow Wallpaper (Black) theme
+Fix: Crash on opening backup/restore
+Fix: Tinting Drawer's top bar on exiting an app
+Fix: Icons not being updated when using custom icon shape
+Remove: Follow Daylight theme
+Remove: OnePlus weather data provider
