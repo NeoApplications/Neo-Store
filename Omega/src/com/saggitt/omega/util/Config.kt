@@ -50,7 +50,6 @@ import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.theme.ThemeOverride
 import java.util.*
 
-
 class Config(val context: Context) {
 
     //TODO: Use ContextWrapper instead of UpdateConfiguration
@@ -102,11 +101,11 @@ class Config(val context: Context) {
         return feedList
     }
 
-
     companion object {
         //PERMISSION FLAGS
         const val REQUEST_PERMISSION_STORAGE_ACCESS = 666
         const val REQUEST_PERMISSION_LOCATION_ACCESS = 667
+        const val REQUEST_PERMISSION_READ_CONTACTS = 668
 
         const val GOOGLE_QSB = "com.google.android.googlequicksearchbox"
         const val DPS_PACKAGE = "com.google.android.as"
