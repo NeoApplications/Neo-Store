@@ -27,8 +27,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.android.launcher3.util.MainThreadInitializedObject
 
 @Database(
-    entities = [IconOverride::class, AppTracker::class],
-    version = 2,
+    entities = [IconOverride::class, AppTracker::class, PeopleInfo::class],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -36,6 +36,7 @@ abstract class NeoLauncherDb : RoomDatabase() {
 
     abstract fun iconOverrideDao(): IconOverrideDao
     abstract fun appTrackerDao(): AppTrackerDao
+    abstract fun peopleDao(): PeopleDao
 
     companion object {
 
@@ -45,11 +46,18 @@ abstract class NeoLauncherDb : RoomDatabase() {
             }
         }
 
+        /*
+        * Add Migration for Contacts
+        */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE PeopleInfo (contactId TEXT NOT NULL, contactName TEXT not Null, contactPhone TEXT not Null, PRIMARY KEY(contactId))")
+            }
+        }
+
         val INSTANCE = MainThreadInitializedObject { context ->
-            Room.databaseBuilder(
-                context,
-                NeoLauncherDb::class.java, "NeoLauncher.db"
-            ).addMigrations(MIGRATION_1_2)
+            Room.databaseBuilder(context, NeoLauncherDb::class.java, "NeoLauncher.db")
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
         }
     }
