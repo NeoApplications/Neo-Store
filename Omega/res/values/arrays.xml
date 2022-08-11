@@ -362,12 +362,14 @@
         <item>@string/title__sort_alphabetical_az</item>
         <item>@string/title__sort_alphabetical_za</item>
         <item>@string/title__sort_most_used</item>
+        <item>@string/title__sort_by_color</item>
     </string-array>
 
     <string-array name="sortModeValues" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="unitsTexts">
