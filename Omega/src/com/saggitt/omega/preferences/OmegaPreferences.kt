@@ -906,9 +906,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     }
 
     companion object {
-
-        @JvmField
-        val INSTANCE = MainThreadInitializedObject(::OmegaPreferences)
+        private val INSTANCE = MainThreadInitializedObject(::OmegaPreferences)
 
         @JvmStatic
         fun getInstance(context: Context) = INSTANCE.get(context)!!
