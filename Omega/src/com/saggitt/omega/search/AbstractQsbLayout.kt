@@ -25,11 +25,7 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.RippleDrawable
+import android.graphics.drawable.*
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -38,16 +34,14 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import com.android.launcher3.DeviceProfile
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
-import com.android.launcher3.ResourceUtils
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.graphics.IconShape
 import com.android.launcher3.graphics.NinePatchDrawHelper
 import com.android.launcher3.icons.ShadowGenerator.Builder
 import com.android.launcher3.views.ActivityContext
 import com.saggitt.omega.OmegaLauncher
+import com.saggitt.omega.PREFS_SEARCH_ASSISTANT
+import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.getColorAttr
 import kotlin.math.round
@@ -185,9 +179,8 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when (key) {
-            "opa_enabled",
-            "opa_assistant",
-            "show_lens_icon",
+            PREFS_SEARCH_SHOW_ASSISTANT,
+            PREFS_SEARCH_ASSISTANT,
             ->
                 reloadPreferences(sharedPreferences)
         }
@@ -332,8 +325,9 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             searchProvider = SearchProviderController.getInstance(mContext).searchProvider
             val providerSupported =
                 searchProvider.supportsAssistant || searchProvider.supportsVoiceSearch
-            val showMic = sharedPreferences.getBoolean("opa_enabled", true) && providerSupported
-            mShowAssistant = sharedPreferences.getBoolean("opa_assistant", true)
+            val showMic =
+                sharedPreferences.getBoolean(PREFS_SEARCH_SHOW_ASSISTANT, true) && providerSupported
+            mShowAssistant = sharedPreferences.getBoolean(PREFS_SEARCH_ASSISTANT, true)
             searchLogoView?.setImageDrawable(getIcon())
             if (showMic) {
                 micIconView?.visibility = View.VISIBLE
