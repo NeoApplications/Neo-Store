@@ -73,6 +73,8 @@ their TODOs and plans.
 <a href="https://www.paypal.com/paypalme/saulhdev"><img src="https://img.shields.io/badge/Paypal-Donate-blue?style=for-the-badge&logo=paypal" alt="Donate via PayPal"/></a>
 
 ## *FAQ*
+Is QuickSwitch available?
+No, it's not, and there is no plans to add it.
 
 ## *Credits*
 
