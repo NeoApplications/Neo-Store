@@ -403,7 +403,7 @@ abstract class BasePreferences(context: Context) :
         }, { it.ordinal }, { })
     }
 
-    open inner class SelectionPref(
+    open inner class IntSelectionPref(
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,

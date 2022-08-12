@@ -55,7 +55,7 @@ import com.saggitt.omega.preferences.BasePreferences
 
 @Composable
 fun SelectionPrefDialogUI(
-    pref: BasePreferences.SelectionPref,
+    pref: BasePreferences.IntSelectionPref,
     openDialogCustom: MutableState<Boolean>
 ) {
     val context = LocalContext.current

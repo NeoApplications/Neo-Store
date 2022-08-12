@@ -228,7 +228,7 @@ fun PagePreference(
 @Composable
 fun SelectionPreference(
     modifier: Modifier = Modifier,
-    pref: BasePreferences.SelectionPref,
+    pref: BasePreferences.IntSelectionPref,
     isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {

@@ -85,8 +85,8 @@ fun GesturesPrefsPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref) {
-                    is BasePreferences.SelectionPref -> SelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.SelectionPref,
+                    is BasePreferences.IntSelectionPref -> SelectionPrefDialogUI(
+                        pref = dialogPref as BasePreferences.IntSelectionPref,
                         openDialogCustom = openDialog
                     )
                 }
