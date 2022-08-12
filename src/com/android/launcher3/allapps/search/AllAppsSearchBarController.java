@@ -136,6 +136,7 @@ public class AllAppsSearchBarController
 
     public void refreshSearchResult() {
         if (TextUtils.isEmpty(mQuery)) {
+            mCancelButton.setVisibility(GONE);
             return;
         }
         // If play store continues auto updating an app, we want to show partial result.
@@ -181,6 +182,7 @@ public class AllAppsSearchBarController
         mCallback.clearSearchResult();
         mInput.reset();
         mQuery = null;
+        mCancelButton.setVisibility(GONE);
     }
 
     /**
