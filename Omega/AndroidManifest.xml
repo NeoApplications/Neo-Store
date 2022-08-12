@@ -78,9 +78,6 @@
         android:name="android.permission.SYSTEM_APPLICATION_OVERLAY"
         tools:ignore="ProtectedPermissions" />
     <uses-permission
-        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission
         android:name="android.permission.STATUS_BAR"
         tools:ignore="ProtectedPermissions" />
     <uses-permission
