@@ -320,7 +320,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 0,
         onChange = recreate
     )
-    var drawerSortModeNew = SelectionPref(
+    var drawerSortModeNew = IntSelectionPref(
         key = PREFS_SORT_X,
         titleId = R.string.title__sort_mode,
         defaultValue = Config.SORT_AZ,
@@ -419,7 +419,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 0,
         onChange = recreate
     )
-    val drawerLayoutNew = SelectionPref(
+    val drawerLayoutNew = IntSelectionPref(
         key = PREFS_DRAWER_LAYOUT_X,
         titleId = R.string.title_drawer_layout,
         defaultValue = Config.DRAWER_VERTICAL,
@@ -469,7 +469,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }
-    var themePrefNew = SelectionPref(
+    var themePrefNew = IntSelectionPref(
         key = PREFS_THEME_X,
         titleId = R.string.title__general_theme,
         defaultValue = if (OmegaApp.minSDK(31)) THEME_SYSTEM else THEME_WALLPAPER,

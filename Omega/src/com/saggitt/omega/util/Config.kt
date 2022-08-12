@@ -112,7 +112,7 @@ class Config(val context: Context) {
 
         //APP DRAWER SORT MODE
         const val SORT_AZ = 0
-        const val SORT_ZA = 1 // TODO Fix using it in combination with paged drawer
+        const val SORT_ZA = 1
         const val SORT_MOST_USED = 2
         const val SORT_BY_COLOR = 3
 

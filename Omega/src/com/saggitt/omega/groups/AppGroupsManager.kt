@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.groups
 
+import androidx.annotation.StringRes
 import com.android.launcher3.R
 import com.saggitt.omega.preferences.OmegaPreferences
 
@@ -34,6 +35,14 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
         key = "pref_apps_categorization_type",
         titleId = R.string.pref_appcategorization_style_text,
         defaultValue = CategorizationType.Tabs,
+        onChange = ::onPrefsChanged
+    )
+    var categorizationTypeNew by prefs.EnumSelectionPref(
+        key = "pref_apps_categorization_type",
+        titleId = R.string.pref_appcategorization_style_text,
+        defaultValue = CategorizationType.Tabs,
+        entries = CategorizationType.values()
+            .associateBy(CategorizationType::ordinal, CategorizationType::nameId),
         onChange = ::onPrefsChanged
     )
 
@@ -65,9 +74,9 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
         }
     }
 
-    enum class CategorizationType(val prefsKey: String) {
-        Tabs("pref_drawer_tabs"),
-        Folders("pref_drawer_folders"),
-        Flowerpot("pref_drawer_flowerpot")
+    enum class CategorizationType(val prefsKey: String, @StringRes val nameId: Int) {
+        Tabs("pref_drawer_tabs", R.string.app_categorization_tabs),
+        Folders("pref_drawer_folders", R.string.app_categorization_tabs),
+        Flowerpot("pref_drawer_flowerpot", R.string.pref_appcategorization_flowerpot_title)
     }
 }

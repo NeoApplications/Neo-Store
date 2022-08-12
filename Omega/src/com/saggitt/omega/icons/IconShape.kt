@@ -23,7 +23,7 @@ import android.graphics.PointF
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 
-open class IconShape(
+open class IconShape( // TODO migrate to Compose?
     val topLeft: Corner,
     val topRight: Corner,
     val bottomLeft: Corner,

@@ -403,7 +403,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    inline fun <reified T : Enum<T>> EnumPref( // TODO migrate to ?
+    inline fun <reified T : Enum<T>> EnumPref( // TODO remove when done migration
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -415,7 +415,22 @@ abstract class BasePreferences(context: Context) :
         }, { it.ordinal }, { })
     }
 
-    open inner class SelectionPref(
+    open inner class EnumSelectionPref<T : Enum<T>>(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: T,
+        entries: Map<Int, Int>,
+        onChange: () -> Unit = doNothing
+    ) : IntSelectionPref(key, titleId, summaryId, defaultValue.ordinal, entries, onChange) {
+        override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
+
+        override fun onSetValue(value: Int) {
+            edit { putInt(getKey(), value) }
+        }
+    }
+
+    open inner class IntSelectionPref(
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -428,6 +443,37 @@ abstract class BasePreferences(context: Context) :
 
         override fun onSetValue(value: Int) {
             edit { putInt(getKey(), value) }
+        }
+    }
+
+    open inner class StringSelectionPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: String = "",
+        val entries: Map<String, Int>,
+        onChange: () -> Unit = doNothing
+    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
+
+        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
+        override fun onSetValue(value: String) {
+            edit { putString(getKey(), value) }
+        }
+    }
+
+    open inner class StringMultiSelectionPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: Set<String>,
+        val entries: Map<String, Int>,
+        onChange: () -> Unit = doNothing
+    ) :
+        PrefDelegate<Set<String>>(key, titleId, summaryId, defaultValue, onChange) {
+        override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
+
+        override fun onSetValue(value: Set<String>) {
+            edit { putStringSet(getKey(), value) }
         }
     }
 
@@ -455,7 +501,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringPref( // TODO migrate to SelectionPreference (mostly)
+    open inner class StringPref( // TODO migrate to @StringSelectionPref
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -469,7 +515,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    inner class StringBasedPref<T : Any>( // TODO migrate to SelectionPreference
+    inner class StringBasedPref<T : Any>( // TODO migrate to @StringSelectionPref
         key: String, defaultValue: T,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -509,7 +555,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringSetPref( // TODO migrate to MultiSelectionPreference
+    open inner class StringSetPref( // TODO migrate to @StringMultiSelectionPref
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -524,7 +570,7 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringListPref( // TODO migrate to MultiSelectionPreference
+    open inner class StringListPref( // TODO migrate to @StringMultiSelectionPref
         prefKey: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
@@ -542,7 +588,7 @@ abstract class BasePreferences(context: Context) :
         private val prefKey: String,
         onChange: () -> Unit = doNothing,
         default: List<T> = emptyList()
-    ) : PrefDelegate<List<T>>(prefKey, titleId, summaryId, default, onChange) {
+    ) : BasePreferences.PrefDelegate<List<T>>(prefKey, titleId, summaryId, default, onChange) {
         constructor(
             prefKey: String,
             @StringRes titleId: Int,
