@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
+import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.SelectionPrefDialogUI
@@ -60,30 +61,34 @@ fun SearchPrefsPage() {
     )
 
     OmegaAppTheme {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ViewWithActionBar(
+            title = stringResource(R.string.title__general_search_feed)
         ) {
-            item {
-                PreferenceGroup(stringResource(id = R.string.title__general_search)) {
-                    searchPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    PreferenceGroup(stringResource(id = R.string.title__general_search)) {
+                        searchPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
+                }
+                item {
+                    PreferenceGroup(stringResource(id = R.string.title_feed_provider)) {
+                        feedPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
+                    }
                 }
             }
-            item {
-                PreferenceGroup(stringResource(id = R.string.title_feed_provider)) {
-                    feedPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                }
-            }
-        }
 
-        if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref) {
-                    is BasePreferences.SelectionPref -> SelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.SelectionPref,
-                        openDialogCustom = openDialog
-                    )
+            if (openDialog.value) {
+                BaseDialog(openDialogCustom = openDialog) {
+                    when (dialogPref) {
+                        is BasePreferences.SelectionPref -> SelectionPrefDialogUI(
+                            pref = dialogPref as BasePreferences.SelectionPref,
+                            openDialogCustom = openDialog
+                        )
+                    }
                 }
             }
         }
