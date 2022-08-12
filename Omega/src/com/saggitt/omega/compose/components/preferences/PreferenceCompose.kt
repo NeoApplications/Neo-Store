@@ -241,3 +241,20 @@ fun IntSelectionPreference(
         onClick = onClick
     )
 }
+
+@Composable
+fun StringSelectionPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringSelectionPref,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        summary = pref.entries[pref.onGetValue()]?.let { stringResource(id = it) },
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}

@@ -33,6 +33,7 @@ import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -91,6 +92,10 @@ fun WidgetsPrefsPage() {
                     when (dialogPref) {
                         is BasePreferences.IntSelectionPref -> IntSelectionPrefDialogUI(
                             pref = dialogPref as BasePreferences.IntSelectionPref,
+                            openDialogCustom = openDialog
+                        )
+                        is BasePreferences.StringSelectionPref -> StringSelectionPrefDialogUI(
+                            pref = dialogPref as BasePreferences.StringSelectionPref,
                             openDialogCustom = openDialog
                         )
                     }

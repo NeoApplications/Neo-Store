@@ -160,3 +160,111 @@ fun IntSelectionPrefDialogUI(
         }
     }
 }
+
+@Composable
+fun StringSelectionPrefDialogUI(
+    pref: BasePreferences.StringSelectionPref,
+    openDialogCustom: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+    val prefs = Utilities.getOmegaPrefs(context)
+    var selected by remember { mutableStateOf(pref.onGetValue()) }
+    val entryPairs = pref.entries.toList()
+
+    var radius = 16.dp
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        radius = prefs.themeCornerRadius.onGetValue().dp
+    }
+    val cornerRadius by remember { mutableStateOf(radius) }
+
+    Card(
+        shape = RoundedCornerShape(cornerRadius),
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(text = stringResource(pref.titleId), style = MaterialTheme.typography.titleLarge)
+            LazyColumn(
+                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+            ) {
+                items(items = entryPairs) {
+                    val isSelected = rememberSaveable(selected) {
+                        mutableStateOf(selected == it.first)
+                    }
+                    Row( // TODO abstract to SingleSelectionListItem
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                selected = it.first
+                            },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = isSelected.value,
+                            onClick = {
+                                selected = it.first
+                            },
+                            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = MaterialTheme.colorScheme.primary,
+                                unselectedColor = MaterialTheme.colorScheme.onSurface
+                            )
+                        )
+                        Text(
+                            text = stringResource(id = it.second),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                OutlinedButton( // TODO abstract to DialogButton
+                    shape = RoundedCornerShape(cornerRadius),
+                    onClick = {
+                        openDialogCustom.value = false
+                    },
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        contentColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = android.R.string.cancel),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                    )
+                }
+                Spacer(Modifier.weight(1f))
+                OutlinedButton(
+                    shape = RoundedCornerShape(cornerRadius),
+                    onClick = {
+                        pref.onSetValue(selected)
+                        openDialogCustom.value = false
+                    },
+                    modifier = Modifier.padding(start = 16.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        contentColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = android.R.string.ok),
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                    )
+                }
+            }
+        }
+    }
+}
