@@ -434,6 +434,21 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
+    open inner class StringSelectionPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: String = "",
+        val entries: Map<String, Int>,
+        onChange: () -> Unit = doNothing
+    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
+
+        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
+        override fun onSetValue(value: String) {
+            edit { putString(getKey(), value) }
+        }
+    }
+
     open inner class IntBasedPref<T : Any>(
         key: String,
         @StringRes titleId: Int,
