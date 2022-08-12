@@ -59,10 +59,22 @@ abstract class BasePreferences(context: Context) :
         val dir = mContext.cacheDir.parent
         val oldFile = File(dir, "shared_prefs/" + LauncherFiles.OLD_SHARED_PREFERENCES_KEY + ".xml")
         val newFile = File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
+
+        //Migrate old preferences to new file name
+        val oldNeoFile = File(dir, "shared_prefs/com.saggitt.omega.neo_preferences.xml")
+        val oldDebugFile = File(dir, "shared_prefs/com.saggitt.omega.debug_preferences.xml")
+
         if (oldFile.exists() && !newFile.exists()) {
             oldFile.renameTo(newFile)
             oldFile.delete()
+        } else if (oldNeoFile.exists() && !newFile.exists()) {
+            oldNeoFile.renameTo(newFile)
+            oldNeoFile.delete()
+        } else if (oldDebugFile.exists() && !newFile.exists()) {
+            oldDebugFile.renameTo(newFile)
+            oldDebugFile.delete()
         }
+
         return mContext.applicationContext
             .getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
     }

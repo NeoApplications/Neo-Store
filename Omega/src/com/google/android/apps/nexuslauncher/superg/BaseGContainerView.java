@@ -1,5 +1,7 @@
 package com.google.android.apps.nexuslauncher.superg;
 
+import static com.saggitt.omega.ConstantsKt.PREFS_SEARCH_PROVIDER;
+
 import android.animation.ObjectAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -239,7 +241,7 @@ public abstract class BaseGContainerView extends FrameLayout implements View.OnC
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if ("pref_globalSearchProvider".equals(s)) {
+        if (PREFS_SEARCH_PROVIDER.equals(s)) {
             loadIcon();
         }
     }
