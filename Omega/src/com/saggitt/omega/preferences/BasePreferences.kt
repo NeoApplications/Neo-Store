@@ -403,6 +403,21 @@ abstract class BasePreferences(context: Context) :
         }, { it.ordinal }, { })
     }
 
+    open inner class EnumSelectionPref<T : Enum<T>>( // TODO migrate to ?
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: T,
+        entries: Map<Int, Int>,
+        onChange: () -> Unit = doNothing
+    ) : IntSelectionPref(key, titleId, summaryId, defaultValue.ordinal, entries, onChange) {
+        override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
+
+        override fun onSetValue(value: Int) {
+            edit { putInt(getKey(), value) }
+        }
+    }
+
     open inner class IntSelectionPref(
         key: String,
         @StringRes titleId: Int,
