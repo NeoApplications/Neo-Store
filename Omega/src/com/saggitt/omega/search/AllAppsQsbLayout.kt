@@ -31,16 +31,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.BaseRecyclerView
-import com.android.launcher3.DeviceProfile
-import com.android.launcher3.Insettable
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.R
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
+import com.saggitt.omega.PREFS_SEARCH_GLOBAL
 import com.saggitt.omega.preferences.views.PreferencesActivity
 import com.saggitt.omega.search.providers.AppsSearchProvider
 import com.saggitt.omega.util.Config
@@ -80,12 +76,6 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
                 visibility = View.GONE
             }
         }
-
-        /*findViewById<ImageView?>(R.id.lens_icon).apply {
-            if (!prefs.allAppsGlobalSearch) {
-                visibility = View.GONE
-            }
-        }*/
 
         setOnClickListener {
             val provider = controller.searchProvider
@@ -147,7 +137,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         super.onSharedPreferenceChanged(sharedPreferences, key)
-        if (key == "pref_all_apps_global_search") {
+        if (key == PREFS_SEARCH_GLOBAL) {
             reloadPreferences(sharedPreferences)
         }
     }
