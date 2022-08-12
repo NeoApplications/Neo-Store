@@ -20,17 +20,11 @@ package com.saggitt.omega.preferences.views
 
 import android.os.Bundle
 import android.view.View
-import androidx.preference.SwitchPreference
 import com.android.launcher3.R
-import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.isAppEnabled
 
 class PrefsDesktopFragment :
     BasePreferenceFragment(R.xml.preferences_desktop, R.string.title__general_desktop) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findPreference<SwitchPreference>("pref_enable_minus_one")?.apply {
-            isVisible = context.packageManager.isAppEnabled(Config.GOOGLE_QSB, 0)
-        }
     }
 }
