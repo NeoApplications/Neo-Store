@@ -106,16 +106,16 @@ fun DesktopPrefsPage() {
                 }
             }
 
-        if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref) {
-                    is BasePreferences.IntSelectionPref -> SelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.IntSelectionPref,
-                        openDialogCustom = openDialog
-                    )
+            if (openDialog.value) {
+                BaseDialog(openDialogCustom = openDialog) {
+                    when (dialogPref) {
+                        is BasePreferences.IntSelectionPref -> SelectionPrefDialogUI(
+                            pref = dialogPref as BasePreferences.IntSelectionPref,
+                            openDialogCustom = openDialog
+                        )
+                    }
                 }
             }
         }
     }
-
 }
