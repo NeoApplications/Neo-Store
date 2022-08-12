@@ -1017,7 +1017,7 @@ public final class Utilities {
     }
 
     public static OmegaPreferences getOmegaPrefs(Context context) {
-        return OmegaPreferences.Companion.getInstance(context);
+        return OmegaPreferences.getInstance(context);
     }
 
     /**
