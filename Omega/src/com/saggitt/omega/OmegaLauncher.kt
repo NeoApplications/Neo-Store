@@ -17,11 +17,7 @@
  */
 package com.saggitt.omega
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.IntentSender
-import android.content.pm.LauncherActivityInfo
+import android.content.*
 import android.content.pm.LauncherApps
 import android.graphics.Rect
 import android.os.*
@@ -43,10 +39,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.android.launcher3.LauncherAppState
-import com.android.launcher3.LauncherRootView
-import com.android.launcher3.R
-import com.android.launcher3.Utilities
+import com.android.launcher3.*
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.popup.SystemShortcut
@@ -93,6 +86,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     val prefs: OmegaPreferences by lazy { Utilities.getOmegaPrefs(this) }
 
     val hiddenApps = ArrayList<AppInfo>()
+    val allApps = ArrayList<AppInfo>()
 
     private val activityResultRegistry = object : ActivityResultRegistry() {
         override fun <I : Any?, O : Any?> onLaunch(
@@ -208,7 +202,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         prefs.registerCallback(prefCallback)
-        prefs.addOnPreferenceChangeListener("pref_hideStatusBar", this)
+        prefs.addOnPreferenceChangeListener(PREFS_STATUSBAR_HIDE, this)
 
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
@@ -222,20 +216,30 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {
-
-        val apps = ArrayList<LauncherActivityInfo>()
-        val iconCache = LauncherAppState.getInstance(this).iconCache
-        val profiles = UserCache.INSTANCE.get(this).userProfiles
-        val launcherApps: LauncherApps = applicationContext.getSystemService(
-            LauncherApps::class.java
-        )
-        profiles.forEach { apps += launcherApps.getActivityList(null, it) }
-        for (info in apps) {
-            val key = ComponentKey(info.componentName, info.user)
-            if (hiddenAppsSet.contains(key.toString())) {
-                val appInfo = AppInfo(info, info.user, false)
-                iconCache.getTitleAndIcon(appInfo, false)
-                hiddenApps.add(appInfo)
+        val mContext = this
+        CoroutineScope(Dispatchers.IO).launch {
+            val appFilter = AppFilter()
+            for (user in UserCache.INSTANCE[mContext].userProfiles) {
+                val duplicatePreventionCache: MutableList<ComponentName> = ArrayList()
+                for (info in getSystemService(
+                    LauncherApps::class.java
+                ).getActivityList(null, user)) {
+                    val key = ComponentKey(info.componentName, info.user)
+                    if (hiddenAppsSet.contains(key.toString())) {
+                        val appInfo = AppInfo(info, info.user, false)
+                        hiddenApps.add(appInfo)
+                    }
+                    if (prefs.searchHiddenApps.onGetValue()) {
+                        if (!appFilter.shouldShowApp(info.componentName, user)) {
+                            continue
+                        }
+                        if (!duplicatePreventionCache.contains(info.componentName)) {
+                            duplicatePreventionCache.add(info.componentName)
+                            val appInfo = AppInfo(mContext, info, user)
+                            allApps.add(appInfo)
+                        }
+                    }
+                }
             }
         }
     }
@@ -282,7 +286,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         super.onDestroy()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 
-        prefs.removeOnPreferenceChangeListener("pref_hideStatusBar", this)
+        prefs.removeOnPreferenceChangeListener(PREFS_STATUSBAR_HIDE, this)
         prefs.unregisterCallback()
         if (sRestart) {
             sRestart = false

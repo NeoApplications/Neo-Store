@@ -18,10 +18,7 @@
 
 package com.saggitt.omega.search
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.pm.LauncherApps
-import com.android.launcher3.AppFilter
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -31,10 +28,9 @@ import com.android.launcher3.model.AllAppsList
 import com.android.launcher3.model.BaseModelUpdateTask
 import com.android.launcher3.model.BgDataModel
 import com.android.launcher3.model.data.AppInfo
-import com.android.launcher3.pm.UserCache
 import com.android.launcher3.search.SearchCallback
 import com.android.launcher3.search.StringMatcherUtility
-import com.saggitt.omega.allapps.OmegaAppFilter
+import com.saggitt.omega.OmegaLauncher
 import com.saggitt.omega.data.PeopleRepository
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import me.xdrop.fuzzywuzzy.algorithms.WeightedRatio
@@ -42,7 +38,6 @@ import java.util.*
 
 class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm(context) {
 
-    private val mBaseFilter: AppFilter = OmegaAppFilter(context)
     private val prefs = Utilities.getOmegaPrefs(context)
 
     override fun doSearch(query: String, callback: SearchCallback<AdapterItem>?) {
@@ -72,6 +67,15 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
                         }
                     }
                 }
+
+                mResultHandler.post {
+                    callback?.onSearchResult(
+                        query,
+                        result,
+                        suggestions
+                    )
+                }
+
                 if (callback!!.showWebResult()) {
                     suggestions = getSuggestions(query)
                     callback.setShowWebResult(false)
@@ -97,7 +101,11 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
 
     private fun getFuzzySearchResult(apps: List<AppInfo>, query: String): ArrayList<AdapterItem> {
         val result = ArrayList<AdapterItem>()
-        val mApps = getApps(context, apps, mBaseFilter)
+        val mApps = if (prefs.searchHiddenApps.onGetValue()) {
+            OmegaLauncher.getLauncher(context).allApps
+        } else {
+            apps
+        }
 
         val matcher = FuzzySearch.extractSorted(
             query.lowercase(Locale.getDefault()), mApps,
@@ -131,12 +139,16 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
 
         var resultCount = 0
         val total = apps.size
-        val mApps = getApps(context, apps, mBaseFilter)
+        val mApps = if (prefs.searchHiddenApps.onGetValue()) {
+            OmegaLauncher.getLauncher(context).allApps
+        } else {
+            apps
+        }
         var i = 0
 
         while (i < total && resultCount < MAX_RESULTS_COUNT) {
-            val info = mApps!![i]
-            if (StringMatcherUtility.matches(queryTextLower, info!!.title.toString(), matcher)) {
+            val info = mApps[i]
+            if (StringMatcherUtility.matches(queryTextLower, info.title.toString(), matcher)) {
                 val appItem = AdapterItem.asApp(resultCount, "", info, resultCount)
                 result.add(appItem)
                 resultCount++
@@ -156,34 +168,5 @@ class CustomAppSearchAlgorithm(val context: Context) : DefaultAppSearchAlgorithm
         return if (provider is WebSearchProvider) {
             provider.getSuggestions(query)
         } else emptyList<String>()
-    }
-
-    private fun getApps(
-        context: Context,
-        defaultApps: List<AppInfo?>?,
-        filter: AppFilter
-    ): List<AppInfo?>? {
-        if (!Utilities.getOmegaPrefs(context).searchHiddenApps.onGetValue()) {
-            return defaultApps
-        }
-        val apps: MutableList<AppInfo?> = ArrayList()
-        val iconCache = LauncherAppState.getInstance(context).iconCache
-        for (user in UserCache.INSTANCE[context].userProfiles) {
-            val duplicatePreventionCache: MutableList<ComponentName> = ArrayList()
-            for (info in context.getSystemService(
-                LauncherApps::class.java
-            ).getActivityList(null, user)) {
-                if (!filter.shouldShowApp(info.componentName, user)) {
-                    continue
-                }
-                if (!duplicatePreventionCache.contains(info.componentName)) {
-                    duplicatePreventionCache.add(info.componentName)
-                    val appInfo = AppInfo(context, info, user)
-                    iconCache.getTitleAndIcon(appInfo, false)
-                    apps.add(appInfo)
-                }
-            }
-        }
-        return apps
     }
 }
