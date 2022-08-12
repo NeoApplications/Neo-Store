@@ -470,4 +470,6 @@
     <string name="pref_category__dash">Pannello</string>
     <string name="title__feed">Feed</string>
     <string name="theme_auto_black">Segui lo sfondo (nero)</string>
+    <string name="title_search_contacts">Cerca contatti</string>
+    <string name="section_contacts">Contatti</string>
 </resources>
