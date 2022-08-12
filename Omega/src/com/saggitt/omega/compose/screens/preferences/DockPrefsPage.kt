@@ -32,7 +32,7 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
-import com.saggitt.omega.compose.components.preferences.SelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -79,7 +79,7 @@ fun DockPrefsPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref) {
-                    is BasePreferences.IntSelectionPref -> SelectionPrefDialogUI(
+                    is BasePreferences.IntSelectionPref -> IntSelectionPrefDialogUI(
                         pref = dialogPref as BasePreferences.IntSelectionPref,
                         openDialogCustom = openDialog
                     )

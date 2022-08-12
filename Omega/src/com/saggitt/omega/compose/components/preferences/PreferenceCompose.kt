@@ -226,7 +226,7 @@ fun PagePreference(
 }
 
 @Composable
-fun SelectionPreference(
+fun IntSelectionPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.IntSelectionPref,
     isEnabled: Boolean = true,

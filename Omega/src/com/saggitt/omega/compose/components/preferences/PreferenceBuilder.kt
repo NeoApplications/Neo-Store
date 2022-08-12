@@ -26,6 +26,7 @@ val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit ->
         is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
         is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
         is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
-        is BasePreferences.IntSelectionPref -> SelectionPreference(pref = pref) { onDialogPref(pref) }
+        is BasePreferences.IntSelectionPref ->
+            IntSelectionPreference(pref = pref) { onDialogPref(pref) }
     }
 }

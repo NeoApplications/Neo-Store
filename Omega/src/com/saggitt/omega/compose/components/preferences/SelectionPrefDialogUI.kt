@@ -54,7 +54,7 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.preferences.BasePreferences
 
 @Composable
-fun SelectionPrefDialogUI(
+fun IntSelectionPrefDialogUI(
     pref: BasePreferences.IntSelectionPref,
     openDialogCustom: MutableState<Boolean>
 ) {
