@@ -1,0 +1,5 @@
+- Hinzugefügt: Sprachpräferenz
+- Update: Screenshots für horizontales Scrollen
+- Fix: background root Installer
+- Hinzugefügt: root wird nur abgefragt, wenn ausgewählt
+- Viele UX/UI Verbesserungen

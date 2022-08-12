@@ -1,0 +1,32 @@
+Ein schneller material F-Droid Client
+
+Features:
+
+* Material F-Droid Style
+* Keine Cards oder unpassende Animationen
+* Schneller Repository Sync
+* Standard Android Komponenten und minimale Dependencies
+
+Verfügbar in:
+
+- Portugisisch (Brasilien)
+- Englisch
+- Finnisch
+- Französisch
+- Deutsch
+- Griechisch
+- Ungarisch
+- Italienisch
+- Norwegisch (Buchsprache)
+- Arabisch (Peninsular)
+- Polnisch
+- Russisch
+- Chinesisch (vereinfacht)
+- Spanisch
+- Türkisch
+- Ukrainisch
+
+Eine direkte Anpassung/Modifizierung von Foxy-Droid
+
+Copylefted libre software, licensed GPLv3+.
+Use, study, change, and share; with all.
