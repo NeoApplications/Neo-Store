@@ -22,6 +22,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.preference.Preference
 import com.android.launcher3.R
+import com.saggitt.omega.PREFS_SEARCH_ASSISTANT
+import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.search.SearchProvider
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.search.WebSearchProvider
@@ -46,22 +48,16 @@ class PrefsSearchFragment :
     }
 
     private fun reloadPreferences() {
-        findPreference<Preference>("opa_enabled")?.apply {
+        findPreference<Preference>(PREFS_SEARCH_SHOW_ASSISTANT)?.apply {
             val provider: SearchProvider =
                 SearchProviderController.getInstance(requireContext()).searchProvider
             isEnabled = provider !is WebSearchProvider
         }
 
-        findPreference<Preference>("opa_assistant")?.apply {
+        findPreference<Preference>(PREFS_SEARCH_ASSISTANT)?.apply {
             val provider: SearchProvider =
                 SearchProviderController.getInstance(requireContext()).searchProvider
             isEnabled = provider !is WebSearchProvider
         }
-
-        /*findPreference<Preference>("show_lens_icon")?.apply {
-            val provider: SearchProvider =
-                SearchProviderController.getInstance(requireContext()).searchProvider
-            isEnabled = provider.packageName == Config.GOOGLE_QSB
-        }*/
     }
 }
