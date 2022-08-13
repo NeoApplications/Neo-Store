@@ -94,6 +94,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         steps = 15
     )
 
+    val desktopAddIconsToHome = BooleanPref(
+        key = PREFS_DESKTOP_ADD_ICONS_TO_HOME,
+        titleId = R.string.auto_add_shortcuts_label,
+        defaultValue = false,
+        onChange = doNothing
+    )
+
+
     val desktopIconScale = FloatPref(
         key = PREFS_DESKTOP_ICON_SCALE,
         titleId = R.string.title__desktop_icon_size,
