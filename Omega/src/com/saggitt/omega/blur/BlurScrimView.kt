@@ -84,7 +84,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet?) : ScrimView(context,
     }
 
     override fun isScrimDark() = if (drawerOpacity <= 0.3f) {
-        Themes.getAttrBoolean(context, R.attr.isWorkspaceDarkText)
+        !Themes.getAttrBoolean(context, R.attr.isWorkspaceDarkText)
     } else {
         super.isScrimDark()
     }
