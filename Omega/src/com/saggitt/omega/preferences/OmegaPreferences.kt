@@ -624,10 +624,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = recreate
     )
 
-    var searchProvider = StringPref(
+    var searchProvider = StringSelectionPref(
         key = PREFS_SEARCH_PROVIDER,
         titleId = R.string.title_search_provider,
         defaultValue = "",
+        entries = SearchProviderController.getSearchProvidersMap(context),
         onChange = { SearchProviderController.getInstance(context).onSearchProviderChanged() }
     )
     val searchHiddenApps = BooleanPref(

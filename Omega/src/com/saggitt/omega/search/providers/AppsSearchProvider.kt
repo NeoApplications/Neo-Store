@@ -26,10 +26,9 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.LauncherState
 import com.android.launcher3.R
-import com.android.launcher3.Utilities
 import com.android.launcher3.anim.AnimatorListeners
-import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.search.SearchProvider
+import com.saggitt.omega.util.omegaPrefs
 
 @Keep
 class AppsSearchProvider(context: Context) : SearchProvider(context) {
@@ -40,7 +39,6 @@ class AppsSearchProvider(context: Context) : SearchProvider(context) {
     override val supportsFeed = false
     override val packageName: String
         get() = "AppsSearchProvider"
-    var prefs: OmegaPreferences = Utilities.getOmegaPrefs(context)
 
     override fun startSearch(callback: (intent: Intent) -> Unit) {
         val launcher = LauncherAppState.getInstanceNoCreate().launcher
@@ -55,5 +53,5 @@ class AppsSearchProvider(context: Context) : SearchProvider(context) {
         get() = R.drawable.ic_search
     override val icon: Drawable
         get() = ResourcesCompat.getDrawable(context.resources, iconRes, null)!!
-            .mutate().apply { setTint(prefs.themeAccentColor.onGetValue()) }
+            .mutate().apply { setTint(context.omegaPrefs.themeAccentColor.onGetValue()) }
 }
