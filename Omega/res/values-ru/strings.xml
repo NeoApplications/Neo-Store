@@ -22,7 +22,7 @@
     <string name="summary__general_notifications">Количество и цвет иконок, жесты</string>
     <string name="summary__general_desktop">Настройте свой рабочий стол</string>
     <string name="title__general_notifications">Жесты и уведомления</string>
-    <string name="title__general_search">Поиск</string>
+    <string name="title__general_search">Поиск и папки</string>
     <string name="title__general_theme">Тема</string>
     <string name="title__general_desktop">Рабочий стол</string>
     <string name="title__general_about">О программе</string>
@@ -351,7 +351,7 @@
     <string name="title__drawer_paged_apps">Постраничный вид приложений</string>
     <string name="title_dock_two_row">Показать вторую строку</string>
     <string name="title_desktop_keep_empty">Разрешить пустые страницы</string>
-    <string name="title_desktop_overlap_placement">Разрешить перекрытия</string>
+    <string name="title_desktop_overlap_placement">Разрешить перекрытие виджетов</string>
     <string name="title_smartspace_feed_theme">Тема ленты</string>
     <string name="gesture_press_back">Нажатие кнопки Назад</string>
     <string name="gesture_press_home">Нажатие кнопки Домой</string>
@@ -401,4 +401,9 @@
     <string name="summary_force_shapeless">Попробовать использовать устаревшие значки для всех приложений.</string>
     <string name="trust_apps_no_lock_error">Установите защиту на экране блокировки, чтобы ограничить доступ к приложению</string>
     <string name="summary_legacy_treatment">Создание адаптивных иконок для всех ярлыков.</string>
+    <string name="folder_name">Имя папки</string>
+    <string name="title__general_profile">Профиль</string>
+    <string name="title__general_search_feed">Поиск и лента</string>
+    <string name="pref_category__features">Особенности</string>
+    <string name="title__general_widgets_notifications">Виджеты и уведомления</string>
 </resources>
