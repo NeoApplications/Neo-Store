@@ -451,7 +451,7 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: String = "",
-        val entries: Map<String, Int>,
+        val entries: Map<String, String>,
         onChange: () -> Unit = doNothing
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
 

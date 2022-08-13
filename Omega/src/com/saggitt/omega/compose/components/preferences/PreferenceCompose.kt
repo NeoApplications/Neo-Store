@@ -253,7 +253,7 @@ fun StringSelectionPreference(
         modifier = modifier,
         titleId = pref.titleId,
         summaryId = pref.summaryId,
-        summary = pref.entries[pref.onGetValue()]?.let { stringResource(id = it) },
+        summary = pref.entries[pref.onGetValue()],
         isEnabled = isEnabled,
         onClick = onClick
     )

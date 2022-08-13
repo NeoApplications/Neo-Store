@@ -216,7 +216,7 @@ fun StringSelectionPrefDialogUI(
                             )
                         )
                         Text(
-                            text = stringResource(id = it.second),
+                            text = it.second,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
