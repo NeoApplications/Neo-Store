@@ -30,9 +30,9 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
-import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -71,7 +71,9 @@ fun DrawerPrefsPage() {
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,
         // TODO missing trust apps pref page
-        //prefs.drawerOpacity
+        prefs.drawerBackground,
+        prefs.drawerBackgroundColor,
+        prefs.drawerOpacity
     )
 
     OmegaAppTheme {

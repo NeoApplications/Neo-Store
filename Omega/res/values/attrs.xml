@@ -18,6 +18,7 @@
 
 <resources>
     <attr name="allAppsInterimScrimAlpha" format="integer" />
+    <attr name="allAppsAlternateTextColor" format="color" />
     <attr name="colorAccentPrimary" format="color" />
     <attr name="textColorOnAccent" format="color" />
     <declare-styleable name="SubPreference">

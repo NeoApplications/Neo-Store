@@ -30,6 +30,7 @@
         <item name="popupShadeThird">@color/settings_background_light_8dp</item>
         <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Light</item>
         <item name="folderIconBorderColor">@color/settings_background_light_8dp</item>
+        <item name="allAppsAlternateTextColor">@color/dark_drawer_text_color</item>
 
         <item name="allAppsInterimScrimAlpha">46</item>
         <item name="qsbFillColor">#f0f0f0</item>
@@ -47,6 +48,7 @@
         <item name="popupShadeThird">@color/settings_background_dark_8dp</item>
         <item name="bottomSheetDialogTheme">@style/SettingsTheme.BottomSheetDialog.Dark</item>
         <item name="folderIconBorderColor">#FF80868B</item>
+        <item name="allAppsAlternateTextColor">?android:textColorSecondary</item>
 
         <item name="allAppsInterimScrimAlpha">102</item>
         <item name="qsbFillColor">@color/settings_background_black</item>
@@ -62,6 +64,7 @@
         <item name="popupShadeFirst">@color/settings_background_black</item>
         <item name="popupShadeSecond">@color/settings_background_black_2dp</item>
         <item name="popupShadeThird">@color/settings_background_black_8dp</item>
+        <item name="allAppsAlternateTextColor">@color/light_drawer_text_color</item>
 
         <item name="android:colorPrimary">#000000</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>

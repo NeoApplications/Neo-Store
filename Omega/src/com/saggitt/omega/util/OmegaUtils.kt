@@ -43,9 +43,11 @@ import android.util.Property
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
@@ -58,12 +60,14 @@ import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.Executors.MAIN_EXECUTOR
 import com.android.launcher3.util.Executors.UI_HELPER_EXECUTOR
+import com.android.launcher3.util.Themes
 import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.PREFS_LANGUAGE_DEFAULT_CODE
 import com.saggitt.omega.PREFS_LANGUAGE_DEFAULT_NAME
 import com.saggitt.omega.allapps.AppColorComparator
 import com.saggitt.omega.allapps.AppUsageComparator
 import com.saggitt.omega.data.AppTrackerRepository
+import com.saggitt.omega.preferences.OmegaPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
@@ -71,6 +75,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
@@ -384,6 +389,25 @@ fun <T> JSONArray.toArrayList(): ArrayList<T> {
         arrayList.add(get(i) as T)
     }
     return arrayList
+}
+
+fun overrideAllAppsTextColor(textView: TextView) {
+    val context = textView.context
+    val opacity = OmegaPreferences.getInstance(context).drawerOpacity.onGetValue()
+    if (opacity <= 0.3f) {
+        textView.setTextColor(Themes.getAttrColor(context, R.attr.allAppsAlternateTextColor))
+    }
+}
+
+fun getAllAppsScrimColor(context: Context): Int {
+    val opacity = OmegaPreferences.getInstance(context).drawerOpacity.onGetValue()
+    val scrimColor = if (context.omegaPrefs.drawerBackground.onGetValue()) {
+        context.omegaPrefs.drawerBackgroundColor.onGetValue()
+    } else {
+        Themes.getAttrColor(context, R.attr.allAppsScrimColor)
+    }
+    val alpha = (opacity * 255).roundToInt()
+    return ColorUtils.setAlphaComponent(scrimColor, alpha)
 }
 
 fun openURLinBrowser(context: Context, url: String?) {

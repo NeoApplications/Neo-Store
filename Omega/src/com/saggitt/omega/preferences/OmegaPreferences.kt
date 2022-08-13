@@ -457,6 +457,28 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
+    val drawerBackground = BooleanPref(
+        key = PREFS_DRAWER_CUSTOM_BACKGROUND,
+        titleId = R.string.title_drawer_enable_background,
+        defaultValue = false,
+        onChange = doNothing
+    )
+    val drawerBackgroundColor = ColorIntPref(
+        key = PREFS_DRAWER_BACKGROUND_COLOR,
+        titleId = R.string.title_dock_background_color,
+        defaultValue = 0x101010,
+        onChange = recreate
+    )
+    val drawerOpacity = FloatPref(
+        key = PREFS_DRAWER_OPACITY,
+        titleId = R.string.title_opacity,
+        defaultValue = 1f,
+        maxValue = 1f,
+        minValue = 0f,
+        steps = 100,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
+        onChange = recreate
+    )
 
 
     // PROFILE: LANGUAGE & THEME

@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:clipChildren="false">
 
-        <com.android.launcher3.views.ScrimView
+        <com.saggitt.omega.blur.BlurScrimView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrim_view"

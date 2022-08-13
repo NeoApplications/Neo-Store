@@ -38,13 +38,13 @@ import java.util.ArrayList;
  * Simple scrim which draws a flat color
  */
 public class ScrimView extends View implements Insettable {
-    private static final float STATUS_BAR_COLOR_FORCE_UPDATE_THRESHOLD = 0.9f;
+    protected static final float STATUS_BAR_COLOR_FORCE_UPDATE_THRESHOLD = 0.9f;
 
     private final ArrayList<Runnable> mOpaquenessListeners = new ArrayList<>(1);
     private SystemUiController mSystemUiController;
 
     private ScrimDrawingController mDrawingController;
-    private int mBackgroundColor;
+    protected int mBackgroundColor;
     private boolean mIsVisible = true;
     private boolean mLastDispatchedOpaqueness;
 
@@ -89,7 +89,7 @@ public class ScrimView extends View implements Insettable {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawingController != null) {
             mDrawingController.drawOnScrim(canvas);
@@ -102,7 +102,7 @@ public class ScrimView extends View implements Insettable {
         updateSysUiColors();
     }
 
-    private void updateSysUiColors() {
+    protected void updateSysUiColors() {
         // Use a light system UI (dark icons) if all apps is behind at least half of the
         // status bar.
         final float threshold = STATUS_BAR_COLOR_FORCE_UPDATE_THRESHOLD;
@@ -127,14 +127,14 @@ public class ScrimView extends View implements Insettable {
         }
     }
 
-    private SystemUiController getSystemUiController() {
+    protected SystemUiController getSystemUiController() {
         if (mSystemUiController == null) {
             mSystemUiController = BaseActivity.fromContext(getContext()).getSystemUiController();
         }
         return mSystemUiController;
     }
 
-    private boolean isScrimDark() {
+    protected boolean isScrimDark() {
         if (!(getBackground() instanceof ColorDrawable)) {
             throw new IllegalStateException(
                     "ScrimView must have a ColorDrawable background, this one has: "

@@ -144,6 +144,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private final OmegaPreferences prefs;
     public int mCurrentPage;
     public AllAppsPagedView mHorizontalViewPager;
+    private final boolean mScrimIsTranslucent;
 
     public AllAppsContainerView(Context context) {
         this(context, null);
@@ -159,7 +160,15 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mLauncher = BaseDraggingActivity.fromContext(context);
         prefs = Utilities.getOmegaPrefs(context);
 
-        mScrimColor = Themes.getAttrColor(context, R.attr.allAppsScrimColor);
+        float drawerOpacity = prefs.getDrawerOpacity().onGetValue();
+        mScrimIsTranslucent = drawerOpacity < 1f;
+
+        if (prefs.getDrawerBackground().onGetValue()) {
+            mScrimColor = prefs.getDrawerBackgroundColor().onGetValue();
+        } else {
+            mScrimColor = Themes.getAttrColor(context, R.attr.allAppsScrimColor);
+        }
+
         mHeaderThreshold = getResources().getDimensionPixelSize(
                 R.dimen.dynamic_grid_cell_border_spacing);
         mHeaderProtectionColor = Themes.getAttrColor(context, R.attr.allappsHeaderProtectionColor);
@@ -927,9 +936,16 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     protected void updateHeaderScroll(int scrolledOffset) {
         float prog = Utilities.boundToRange((float) scrolledOffset / mHeaderThreshold, 0f, 1f);
-        int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
-        int headerColor = ColorUtils.setAlphaComponent(viewBG,
-                (int) (getSearchView().getAlpha() * 255));
+        int headerColor;
+        if (mScrimIsTranslucent) {
+            headerColor = ColorUtils.setAlphaComponent(mHeaderProtectionColor,
+                    (int) (getSearchView().getAlpha() * prog * 255));
+        } else {
+            int viewBG = ColorUtils.blendARGB(mScrimColor, mHeaderProtectionColor, prog);
+            headerColor = ColorUtils.setAlphaComponent(viewBG,
+                    (int) (getSearchView().getAlpha() * 255));
+        }
+
         int tabsAlpha = mHeader.getPeripheralProtectionHeight() == 0 ? 0
                 : (int) (Utilities.boundToRange(
                 (scrolledOffset + mHeader.mSnappedScrolledY) / mHeaderThreshold, 0f, 1f)

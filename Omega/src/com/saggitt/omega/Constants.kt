@@ -57,6 +57,9 @@ const val PREFS_DRAWER_COLUMNS = "pref_numAllAppsColumns"
 const val PREFS_DRAWER_COLUMNS_RAW = "numAllAppsColumns"
 const val PREFS_DRAWER_LAYOUT = "pref_drawer_layout"
 const val PREFS_DRAWER_LAYOUT_X = "pref_drawer_layout_x"
+const val PREFS_DRAWER_OPACITY = "pref_drawer_opacity"
+const val PREFS_DRAWER_CUSTOM_BACKGROUND = "pref_drawer_background"
+const val PREFS_DRAWER_BACKGROUND_COLOR = "pref_drawer_background_color"
 
 // THEME PREFS
 const val PREFS_THEME = "pref_launcherTheme"
