@@ -47,6 +47,7 @@ import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
+import com.saggitt.omega.util.feedProviders
 import com.saggitt.omega.util.languageOptions
 import kotlin.math.roundToInt
 
@@ -658,19 +659,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = recreate
     )
 
-    var feedProvider = StringPref(
+    var feedProvider = StringSelectionPref(
         key = PREFS_FEED_PROVIDER,
         titleId = R.string.title_feed_provider,
         defaultValue = "",
+        entries = context.feedProviders(),
         onChange = restart
     )
-    val feedProviderAllowAll = BooleanPref(
-        key = PREFS_FEED_PROVIDER_ALLOW_ALL,
-        titleId = -1,
-        defaultValue = true,
-        onChange = restart
-    )
-
 
     // NOTIFICATION & GESTURES
     var gestureDoubleTap = StringPref(

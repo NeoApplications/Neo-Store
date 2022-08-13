@@ -167,7 +167,6 @@ const val PREFS_KILL = "kill"
 
 // EXTRA PREFS
 const val PREFS_FEED_PROVIDER = "pref_feed_provider"
-const val PREFS_FEED_PROVIDER_ALLOW_ALL = "pref_feedProviderAllowAll"
 const val PREFS_TORCH = "pref_torch"
 const val PREFS_DESKTOP_POPUP_EDIT = "desktop_popup_edit"
 const val PREFS_DESKTOP_POPUP_REMOVE = "desktop_popup_remove"

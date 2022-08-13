@@ -57,8 +57,7 @@ fun SearchPrefsPage() {
         prefs.searchBarRadius
     )
     val feedPrefs = listOf(
-        prefs.feedProvider, // TODO
-        //prefs.feedProviderAllowAll TODO fix titleId if this is needed
+        prefs.feedProvider,
     )
 
     OmegaAppTheme {

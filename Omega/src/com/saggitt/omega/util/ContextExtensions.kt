@@ -26,10 +26,12 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.Launcher
+import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.PREFS_LANGUAGE_DEFAULT_CODE
 import com.saggitt.omega.PREFS_LANGUAGE_DEFAULT_NAME
 import com.saggitt.omega.preferences.OmegaPreferences
+import com.saggitt.omega.preferences.custom.ProviderInfo
 import java.util.*
 
 val Context.omegaPrefs: OmegaPreferences get() = Utilities.getOmegaPrefs(this)
@@ -160,4 +162,26 @@ private fun summarizeLocale(locale: Locale, localeAndroidCode: String): String {
         ) + "Traditional" + ret.substring(ret.indexOf(" "))
     }
     return ret
+}
+
+
+/*
+* Feed Provider map
+* */
+fun Context.feedProviders(): Map<String, String> {
+    val config = Config(this)
+    val feeds = listOf(
+        ProviderInfo(getString(R.string.none), "", getIcon())
+    ) +
+            config.feedProviderList(this).map {
+                ProviderInfo(
+                    it.loadLabel(packageManager).toString(),
+                    it.packageName,
+                    it.loadIcon(packageManager)
+                )
+            }
+
+    val entries = feeds.map { it.displayName }.toTypedArray()
+    val entryValues = feeds.map { it.packageName }.toTypedArray()
+    return entryValues.zip(entries).toMap()
 }
