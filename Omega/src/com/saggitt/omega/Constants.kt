@@ -148,6 +148,8 @@ const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
 
 // ADVANCED PREFS
 const val PREFS_LANGUAGE = "pref_language"
+const val PREFS_LANGUAGE_DEFAULT_NAME = "System"
+const val PREFS_LANGUAGE_DEFAULT_CODE = "en"
 const val PREFS_FIRST_RUN = "pref_first_run"
 const val PREFS_RESTORE_SUCCESS = "pref_restore_success"
 const val PREFS_RECENT_BACKUP = "pref_recent_backups"
