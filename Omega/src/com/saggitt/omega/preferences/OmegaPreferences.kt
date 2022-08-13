@@ -23,8 +23,10 @@ import android.content.SharedPreferences
 import android.net.Uri
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
+import com.android.launcher3.SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY
 import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
@@ -93,15 +95,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         maxValue = 16f,
         steps = 15
     )
-
     val desktopAddIconsToHome = BooleanPref(
-        key = PREFS_DESKTOP_ADD_ICONS_TO_HOME,
+        key = ADD_ICON_PREFERENCE_KEY,
         titleId = R.string.auto_add_shortcuts_label,
+        summaryId = R.string.auto_add_shortcuts_description,
         defaultValue = false,
         onChange = doNothing
     )
-
-
+    val desktopAllowRotation = BooleanPref(
+        key = ALLOW_ROTATION_PREFERENCE_KEY,
+        titleId = R.string.allow_rotation_title,
+        summaryId = R.string.allow_rotation_desc,
+        defaultValue = false,
+        onChange = doNothing
+    )
     val desktopIconScale = FloatPref(
         key = PREFS_DESKTOP_ICON_SCALE,
         titleId = R.string.title__desktop_icon_size,

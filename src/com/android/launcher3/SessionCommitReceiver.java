@@ -40,7 +40,7 @@ public class SessionCommitReceiver extends BroadcastReceiver {
     private static final String LOG = "SessionCommitReceiver";
 
     // Preference key for automatically adding icon to homescreen.
-    //public static final String ADD_ICON_PREFERENCE_KEY = "pref_add_icon_to_home";
+    public static final String ADD_ICON_PREFERENCE_KEY = "pref_add_icon_to_home";
 
     @Override
     public void onReceive(Context context, Intent intent) {
