@@ -48,7 +48,7 @@ fun ProfilePrefsPage() {
         openDialog.value = true
     }
     val profilePrefs = listOf(
-        prefs.language, // TODO
+        prefs.language,
         prefs.themePrefNew,
         prefs.themeAccentColor, // TODO
         // TODO Missing icon package pref page

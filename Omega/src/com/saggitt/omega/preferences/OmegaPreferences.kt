@@ -45,6 +45,7 @@ import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
+import com.saggitt.omega.util.languageOptions
 import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
@@ -459,10 +460,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // PROFILE: LANGUAGE & THEME
-    var language = StringPref(
+    var language = StringSelectionPref(
         key = PREFS_LANGUAGE,
         titleId = R.string.title__advanced_language,
         defaultValue = "",
+        entries = context.languageOptions(),
         onChange = recreate
     )
     var themePref = StringIntPref( // TODO replace usages with the new one
