@@ -52,6 +52,7 @@ fun SearchPrefsPage() {
         // TODO missing show assistant
         // TODO missing launch assistant instead
         prefs.searchGlobal,
+        prefs.searchHiddenApps,
         prefs.searchContacts,
         prefs.searchFuzzy,
         prefs.searchBarRadius

@@ -114,7 +114,7 @@
     <string name="title_all_apps_search">Drawer search bar</string>
     <string name="title_all_apps_google_search">Web results</string>
     <string name="title_all_apps_keep_scroll_state">Remember Position</string>
-    <string name="title_search_hidden_apps">Find Hidden Shortcuts</string>
+    <string name="title_search_hidden_apps">Find hidden apps</string>
     <string name="title_fuzzy_search">Fuzzy Search</string>
     <string name="summary_fuzzy_search">Approximate matching for app searches.</string>
     <string name="title_app_categorize">Categorize Apps</string>

@@ -65,8 +65,7 @@ fun DrawerPrefsPage() {
     )
     val searchPrefs = listOf(
         // TODO move to Search?
-        prefs.drawerSearch,
-        prefs.searchHiddenApps, // TODO move to Search?
+        prefs.drawerSearch
     )
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,
