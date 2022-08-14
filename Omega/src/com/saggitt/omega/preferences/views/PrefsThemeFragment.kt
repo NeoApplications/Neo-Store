@@ -50,7 +50,7 @@ class PrefsThemeFragment :
         findPreference<SeekBarPreference>(PREFS_BLUR_RADIUS)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.themeBlurRadius.onSetValue(newValue as Int)
+                    requireActivity().omegaPrefs.themeBlurRadius.onSetValue(newValue as Float)
                     true
                 }
         }

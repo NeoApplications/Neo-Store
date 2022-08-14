@@ -526,10 +526,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = updateBlur
     )
-    var themeBlurRadius = IntPref(
+    var themeBlurRadius = FloatPref(
         key = PREFS_BLUR_RADIUS,
         titleId = R.string.title__theme_blur_radius,
-        defaultValue = 75,
+        defaultValue = 0.75f,
+        maxValue = 1.5f,
+        minValue = 0.1f,
+        steps = 27,
+        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = updateBlur
     )
     var themeCornerRadiusOverride = BooleanPref(
