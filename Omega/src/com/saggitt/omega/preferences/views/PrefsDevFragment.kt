@@ -48,19 +48,6 @@ class PrefsDevFragment :
             true
         }
 
-        findPreference<Preference>("pref_gesture_selector")?.setOnPreferenceClickListener {
-            val scope = CoroutineScope(Dispatchers.Main)
-            scope.launch {
-                requireContext().startActivity(
-                        ComposeActivity.createIntent(
-                                requireContext(),
-                                "${Routes.GESTURE_SELECTOR}/"
-                        )
-                )
-            }
-            true
-        }
-
         findPreference<Preference>(Routes.PREFS_MAIN)?.setOnPreferenceClickListener {
             val scope = CoroutineScope(Dispatchers.Main)
             scope.launch {
