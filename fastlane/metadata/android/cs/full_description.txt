@@ -1,0 +1,12 @@
+Neo Launcher je odnož launcheru z AOSP pro náročné uživatele. Je vysoce konfigurovatelný a nabízí mnoho funkcí. Některé z nich jsou:
+
+- _Dash_.
+- Bohatá podpora témat.
+- Vlastní vyhledávače.
+- Podpora gest.
+- Unikátní vlastní widget.
+- Kategorie nebo složky v seznamu aplikací.
+- Podpora tvarů a balíčků ikon.
+- Skrývání aplikací.
+
+Vždy připravujeme nové funkce, takže se těšte…

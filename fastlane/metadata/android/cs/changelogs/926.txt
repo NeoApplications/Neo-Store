@@ -1,0 +1,7 @@
+Přidáno: Možnost seřadit aplikace podle barvy
+Přidáno: Sledovat wallpaper (Black) téma
+Oprava: Pád při otevření zálohování / obnovení
+Oprava: Tónování horní lišty zásuvky při ukončení aplikace
+Oprava: Ikony nejsou aktualizovány při použití vlastního tvaru ikony
+Odstranit: Sledovat motiv Denní světlo
+Odebrat: Poskytovatel dat o počasí OnePlus

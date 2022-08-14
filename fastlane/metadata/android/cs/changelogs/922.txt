@@ -1,0 +1,7 @@
+Poznámka 1: nekompatibilní se zálohami starších verzí
+- Obnovení v launcheru systému Android 12/L
+- Přidáno: Smartspace
+- Přidáno: Přímá editace karet/kategorií
+- Přidáno: Možnost fuzzy vyhledávání
+- Aktualizace: Přepracování pomlčky, ikon a uživatelského rozhraní
+Poznámka 2: chybějící funkce ze starších verzí mohou být přidány v pozdějších verzích

@@ -1,0 +1,12 @@
+<ul>
+  <li>Přidáno: Brave web search</li>
+  <li>Přidáno: Předvolba gesta Stisknout zpět</li>
+  <li>Přidáno: Předvolba gesta Stisknout domů</li>
+  <li>Přidáno:</li>
+  <li>Oprava: Barva textu na voliči widgetů pro světlé téma</li>
+  <li>Oprava: Hledání skrytých aplikací</li>
+  <li>Oprava: Ikona složky v režimu krytu</li>
+  <li>Obnovení widgetu smartspace</li>
+  <li>Obnovení ikony adaptivních hodin (Google)</li>
+  <li>Obnovení ikony adaptivního kalendáře (Google)</li>
+</ul>
