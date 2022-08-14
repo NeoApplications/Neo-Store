@@ -485,14 +485,10 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 0x101010,
         onChange = recreate
     )
-    val drawerOpacity = FloatPref(
+    val drawerOpacity = AlphaPref(
         key = PREFS_DRAWER_OPACITY,
         titleId = R.string.title_opacity,
         defaultValue = 1f,
-        maxValue = 1f,
-        minValue = 0f,
-        steps = 100,
-        specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = recreate
     )
 
