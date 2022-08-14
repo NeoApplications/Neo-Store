@@ -1,0 +1,3 @@
+*Incluyóse l'estilu Amoled
+*Incluyóse la instalación de superusuariu silenciosa
+*Incluyéronse estes llingües: portugués y chinu

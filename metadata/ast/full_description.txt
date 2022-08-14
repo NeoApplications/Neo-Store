@@ -1,0 +1,13 @@
+Un veceru rápidu pa F-Droid qu'usa'l diseñu Material
+
+Carauterístiques:
+
+* Nin tarxetes nin animaciones que nun son apropiaes
+* Sincronización de depósitos rápida
+* Componentes estándar d'Android y poques dependencies
+* Ta disponible en más de 30 llingües
+
+Una adautación/modificación direuta de Foxy-Droid
+
+Aplicación copyleft llibre, llicenciao baxo la GPLv3+. \
+Úsala, estúdiala, modifícala y compártila con tol mundu.
