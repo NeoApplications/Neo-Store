@@ -842,7 +842,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // DEVELOPER
-    var developerOptionsEnabled by BooleanPref(
+    var developerOptionsEnabled = BooleanPref(
         key = PREFS_DEV_PREFS_SHOW,
         titleId = R.string.title__dev_show_Dev,
         defaultValue = false,
@@ -862,7 +862,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = restart
     ) // TODO Add
     val enablePhysics get() = !lowPerformanceMode
-    val showDebugInfo by BooleanPref(
+    val showDebugInfo = BooleanPref(
         key = PREFS_DEBUG_MODE,
         titleId = R.string.title__dev_show_debug_info,
         defaultValue = false,

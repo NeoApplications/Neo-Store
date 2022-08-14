@@ -208,7 +208,7 @@ fun CustomizeIconView(
                 }
             }
         }
-        if (prefs.showDebugInfo) {
+        if (prefs.showDebugInfo.onGetValue()) {
             val appInfo =
                 componentKey.componentName.packageName + "/" + componentKey.componentName.className
             Divider(

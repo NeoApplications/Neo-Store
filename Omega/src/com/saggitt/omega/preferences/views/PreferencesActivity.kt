@@ -25,12 +25,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.os.ResultReceiver
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -51,11 +46,7 @@ import com.saggitt.omega.compose.ComposeActivity
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
-import com.saggitt.omega.util.Config
-import com.saggitt.omega.util.getBooleanAttr
-import com.saggitt.omega.util.isAppEnabled
-import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.recreateAnimated
+import com.saggitt.omega.util.*
 import com.saggitt.omega.views.DecorLayout
 import com.saggitt.omega.views.SettingsDragLayer
 import kotlinx.coroutines.CoroutineScope
@@ -213,11 +204,11 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
+            mShowDevOptions = Utilities.getOmegaPrefs(activity).developerOptionsEnabled.onGetValue()
             setHasOptionsMenu(true)
 
             findPreference<Preference>(PREFS_DEV_PREFS_SHOW)?.apply {
-                isVisible = Utilities.getOmegaPrefs(context).developerOptionsEnabled
+                isVisible = Utilities.getOmegaPrefs(context).developerOptionsEnabled.onGetValue()
             }
 
             findPreference<Preference>(PREFS_SMARTSPACE_SHOW)?.apply {
@@ -245,7 +236,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             super.onResume()
             requireActivity().title = requireActivity().getString(R.string.settings_button_text)
             val dev = Utilities.getOmegaPrefs(activity).developerOptionsEnabled
-            if (dev != mShowDevOptions) {
+            if (dev.onGetValue() != mShowDevOptions) {
                 activity?.recreate()
             }
         }

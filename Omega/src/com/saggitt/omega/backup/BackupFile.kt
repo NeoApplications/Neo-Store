@@ -319,14 +319,14 @@ class BackupFile(context: Context, val uri: Uri) {
         private fun prepareConfig(context: Context) {
             Utilities.getOmegaPrefs(context).blockingEdit {
                 restoreSuccess = true
-                developerOptionsEnabled = false
+                developerOptionsEnabled.onSetValue(false)
             }
         }
 
         private fun cleanupConfig(context: Context, devOptionsEnabled: Boolean) {
             Utilities.getOmegaPrefs(context).blockingEdit {
                 restoreSuccess = false
-                developerOptionsEnabled = devOptionsEnabled
+                developerOptionsEnabled.onSetValue(devOptionsEnabled)
             }
         }
 
@@ -404,7 +404,7 @@ class BackupFile(context: Context, val uri: Uri) {
                 out.close()
                 outStream.close()
                 pfd?.close()
-                cleanupConfig(context, devOptionsEnabled)
+                cleanupConfig(context, devOptionsEnabled.onGetValue())
             }
         }
 

@@ -341,7 +341,7 @@ public class RecyclerViewFastScroller extends View {
         int color = thumbInfo.color;
         if (color != 0 && prefs.getDrawerSortMode().onGetValue() == Config.SORT_BY_COLOR) {
             setColor(color, Color.WHITE);
-            if (!prefs.getShowDebugInfo()) {
+            if (!prefs.getShowDebugInfo().onGetValue()) {
                 mPopupSectionName = "";
                 mPopupView.setText("");
             }

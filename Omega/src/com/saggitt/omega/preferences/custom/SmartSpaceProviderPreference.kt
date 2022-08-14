@@ -47,7 +47,7 @@ class SmartSpaceProviderPreference(context: Context, attrs: AttributeSet?) :
         list.add(SmartSpaceDataWidget::class.java.name)
         if (PEWeatherDataProvider.isAvailable(context))
             list.add(PEWeatherDataProvider::class.java.name)
-        if (prefs.showDebugInfo)
+        if (prefs.showDebugInfo.onGetValue())
             list.add(FakeDataProvider::class.java.name)
         return list
     }

@@ -138,7 +138,7 @@ class ComposeBottomSheet(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun updateContentShift() {
-        if (!Utilities.getOmegaPrefs(context).showDebugInfo) {
+        if (!Utilities.getOmegaPrefs(context).showDebugInfo.onGetValue()) {
             mContent.translationY = mTranslationShift * mContent.height + imeShift
         }
     }
