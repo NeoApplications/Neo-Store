@@ -21,6 +21,7 @@ package com.saggitt.omega.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import androidx.core.net.toUri
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY
@@ -31,6 +32,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.*
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
@@ -663,53 +665,62 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = restart
     )
 
+
     // NOTIFICATION & GESTURES
-    var gestureDoubleTap = StringPref(
+    var gestureDoubleTap = StringNavPref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
         defaultValue = "",
+        navRoute = "gesture_selector/${R.string.gesture_double_tap}/$PREFS_GESTURE_DOUBLE_TAP",
         onChange = restart
     )
-    var gestureLongPress = StringPref(
+    var gestureLongPress = StringNavPref(
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_long_press}/$PREFS_GESTURE_LONG_PRESS",
         onChange = restart
     )
-    var gestureHomePress = StringPref(
+    var gestureHomePress = StringNavPref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_press_home}/$PREFS_GESTURE_HOME",
         onChange = restart
     )
-    var gestureBackPress = StringPref(
+    var gestureBackPress = StringNavPref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_press_back}/$PREFS_GESTURE_BACK",
         onChange = restart
     )
-    var gestureSwipeDown = StringPref(
+    var gestureSwipeDown = StringNavPref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.title__gesture_swipe_down}/$PREFS_GESTURE_SWIPE_DOWN",
         onChange = restart
     )
-    var gestureSwipeUp = StringPref(
+    var gestureSwipeUp = StringNavPref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_swipe_up}/$PREFS_GESTURE_SWIPE_UP",
         onChange = restart
     )
-    var gestureDockSwipeUp = StringPref(
+    var gestureDockSwipeUp = StringNavPref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_dock_swipe_up}/$PREFS_GESTURE_SWIPE_UP_DOCK",
         onChange = restart
     )
-    var gestureLaunchAssistant = StringPref(
+    var gestureLaunchAssistant = StringNavPref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
         defaultValue = "",
+            navRoute = "gesture_selector/${R.string.gesture_launch_assistant}/$PREFS_GESTURE_ASSISTANT",
         onChange = restart
     )
 

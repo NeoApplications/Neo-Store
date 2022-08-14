@@ -30,15 +30,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.TabRow
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LeadingIconTab
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,16 +55,14 @@ import com.android.launcher3.shortcuts.ShortcutKey
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import com.saggitt.omega.compose.components.ExpandableListItem
 import com.saggitt.omega.compose.components.ListItemWithIcon
-import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.navigation.preferenceGraph
+import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
 import com.saggitt.omega.gestures.actions.BlankGestureAction
 import com.saggitt.omega.gestures.actions.GestureAction
@@ -81,10 +71,33 @@ import com.saggitt.omega.util.Config
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
+fun NavGraphBuilder.gesturePageGraph(route: String) {
+    preferenceGraph(route, { GesturesPrefsPage() }) {subRoute ->
+        gesturePrefGraph(route = subRoute(Routes.GESTURE_SELECTOR))
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.gesturePrefGraph(route: String) {
+    preferenceGraph(route, { }) { subRoute ->
+        composable(
+                route = subRoute("{titleId}/{key}"),
+                arguments = listOf(
+                        navArgument("titleId") { type = NavType.IntType },
+                        navArgument("key") { type = NavType.StringType }
+                )
+        ) {backStackEntry ->
+            val args = backStackEntry.arguments!!
+            val title = args.getInt("titleId")
+            val key = args.getString("key")?: ""
+            GestureSelector(titleId = title, key = key)
+        }
+    }
+}
 @Composable
-fun GestureSelector(title: String) {
+fun GestureSelector(titleId: Int, key: String) {
     ViewWithActionBar(
-        title = title
+        title = stringResource(titleId),
     ) {
         MainGesturesScreen()
     }
@@ -131,7 +144,7 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
         tabs.forEachIndexed { index, tab ->
             LeadingIconTab(
                 icon = { Icon(painter = painterResource(id = tab.icon), contentDescription = "") },
-                text = { },
+                text = { Text(text = stringResource(id = tab.title)) },
                 selected = pagerState.currentPage == index,
                 onClick = {
                     scope.launch {
@@ -164,13 +177,12 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LauncherScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .fillMaxSize()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val launcherItems = GestureAction.getLauncherActions(context, true)
@@ -183,23 +195,20 @@ fun LauncherScreen() {
             mutableStateOf(BlankGestureAction::class.java.name)
         }
 
-        PreferenceGroup(
-            stringResource(id = R.string.tab_launcher),
-            textAlignment = Alignment.Start
-        ) {
+        PreferenceGroup {
             LazyColumn {
                 itemsIndexed(launcherItems) { _, item ->
                     ListItemWithIcon(
                         title = item.displayName,
                         modifier = Modifier
-                            .background(
-                                color = if (item.javaClass.name == selectedOption)
-                                    MaterialTheme.colorScheme.primary.copy(0.65f)
-                                else Color.Transparent
-                            )
-                            .clickable {
-                                onOptionSelected(item.javaClass.name)
-                            },
+                                .background(
+                                        color = if (item.javaClass.name == selectedOption)
+                                            MaterialTheme.colorScheme.primary.copy(0.65f)
+                                        else Color.Transparent
+                                )
+                                .clickable {
+                                    onOptionSelected(item.javaClass.name)
+                                },
                         summary = "",
                         startIcon = {
                             Image(
@@ -225,13 +234,12 @@ fun LauncherScreen() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppsScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .fillMaxSize()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val prefs = Utilities.getOmegaPrefs(context)
@@ -243,10 +251,7 @@ fun AppsScreen() {
         val (selectedOption, onOptionSelected) = remember {
             mutableStateOf("")
         }
-        PreferenceGroup(
-            heading = stringResource(id = R.string.apps_label),
-            textAlignment = Alignment.CenterHorizontally
-        ) {
+        PreferenceGroup{
             LazyColumn {
                 itemsIndexed(apps) { _, item ->
                     val config = JSONObject("{}")
@@ -264,22 +269,22 @@ fun AppsScreen() {
                     ListItemWithIcon(
                         title = item.label.toString(),
                         modifier = Modifier
-                            .background(
-                                color = if (item.componentName.packageName == selectedOption)
-                                    MaterialTheme.colorScheme.primary.copy(0.65f)
-                                else Color.Transparent
-                            )
-                            .clickable {
-                                onOptionSelected(item.componentName.packageName)
+                                .background(
+                                        color = if (item.componentName.packageName == selectedOption)
+                                            MaterialTheme.colorScheme.primary.copy(0.65f)
+                                        else Color.Transparent
+                                )
+                                .clickable {
+                                    onOptionSelected(item.componentName.packageName)
 
-                                prefs.sharedPrefs
-                                    .edit()
-                                    .putString(
-                                        "gesture_action",
-                                        appGestureHandler.toString()
-                                    )
-                                    .apply()
-                            },
+                                    prefs.sharedPrefs
+                                            .edit()
+                                            .putString(
+                                                    "gesture_action",
+                                                    appGestureHandler.toString()
+                                            )
+                                            .apply()
+                                },
                         summary = "",
                         startIcon = {
                             Image(
@@ -311,13 +316,12 @@ fun AppsScreen() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutsScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .fillMaxSize()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val prefs = Utilities.getOmegaPrefs(context)
@@ -333,10 +337,7 @@ fun ShortcutsScreen() {
         val (selectedOption, onOptionSelected) = remember {
             mutableStateOf("")
         }
-        PreferenceGroup(
-            stringResource(id = R.string.tab_shortcuts),
-            textAlignment = Alignment.End
-        ) {
+        PreferenceGroup {
             LazyColumn {
                 itemsIndexed(apps) { _, app ->
                     if (app.hasShortcuts) {
@@ -362,22 +363,22 @@ fun ShortcutsScreen() {
                                 ListItemWithIcon(
                                     title = it.label.toString(),
                                     modifier = Modifier
-                                        .clip(MaterialTheme.shapes.medium)
-                                        .background(
-                                            color = if (appGestureHandler.toString() == selectedOption)
-                                                MaterialTheme.colorScheme.primary.copy(0.65f)
-                                            else Color.Transparent
-                                        )
-                                        .clickable {
-                                            onOptionSelected(appGestureHandler.toString())
-                                            prefs.sharedPrefs
-                                                .edit()
-                                                .putString(
-                                                    "gesture_action",
-                                                    appGestureHandler.toString()
-                                                )
-                                                .apply()
-                                        },
+                                            .clip(MaterialTheme.shapes.medium)
+                                            .background(
+                                                    color = if (appGestureHandler.toString() == selectedOption)
+                                                        MaterialTheme.colorScheme.primary.copy(0.65f)
+                                                    else Color.Transparent
+                                            )
+                                            .clickable {
+                                                onOptionSelected(appGestureHandler.toString())
+                                                prefs.sharedPrefs
+                                                        .edit()
+                                                        .putString(
+                                                                "gesture_action",
+                                                                appGestureHandler.toString()
+                                                        )
+                                                        .apply()
+                                            },
                                     summary = "",
                                     startIcon = {
                                         Image(
@@ -424,20 +425,4 @@ sealed class TabItem(var icon: Int, var title: Int, var screen: ComposableFun) {
 
     object Shortcuts :
         TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts, { ShortcutsScreen() })
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.gestureGraph(route: String) {
-    preferenceGraph(route, { GestureSelector("") }) { subRoute ->
-        composable(
-            route = subRoute("{title}"),
-            arguments = listOf(
-                navArgument("title") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val args = backStackEntry.arguments!!
-            val title = args.getString("title")!!
-            GestureSelector(title = title)
-        }
-    }
 }

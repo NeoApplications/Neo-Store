@@ -21,6 +21,7 @@ package com.saggitt.omega.preferences
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
@@ -507,6 +508,21 @@ abstract class BasePreferences(context: Context) :
         @StringRes summaryId: Int = -1,
         defaultValue: String = "",
         onChange: () -> Unit = doNothing
+    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
+        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
+
+        override fun onSetValue(value: String) {
+            edit { putString(getKey(), value) }
+        }
+    }
+
+    open inner class StringNavPref(
+            key: String,
+            @StringRes titleId: Int,
+            @StringRes summaryId: Int = -1,
+            defaultValue: String = "",
+            val navRoute: String= "",
+            onChange: () -> Unit = doNothing
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
 

@@ -18,18 +18,27 @@
 package com.saggitt.omega.compose.components.preferences
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.preferences.BasePreferences
 
-val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit ->
-    when (pref) {
-        is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-        is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
-        is BasePreferences.StringNavPref -> StringNavPreference(pref = pref)
-        is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
-        is BasePreferences.IntSelectionPref ->
-            IntSelectionPreference(pref = pref) { onDialogPref(pref) }
-        is BasePreferences.StringSelectionPref ->
-            StringSelectionPreference(pref = pref) { onDialogPref(pref) }
-    }
+@Composable
+fun StringNavPreference(
+        modifier: Modifier = Modifier,
+        pref: BasePreferences.StringNavPref,
+        isEnabled: Boolean = true,
+        onValueChange: ((Float) -> Unit) = {}
+) {
+    val navController = LocalNavController.current
+    val route=subRoute(pref.navRoute)
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        isEnabled = isEnabled,
+        onClick = {
+            navController.navigate(route)
+        }
+    )
 }

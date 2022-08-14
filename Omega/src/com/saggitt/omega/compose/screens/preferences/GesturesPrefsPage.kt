@@ -48,14 +48,15 @@ fun GesturesPrefsPage() {
         openDialog.value = true
     }
     val gesturesPrefs = listOf(
-        prefs.gestureDoubleTap, //TODO
-        prefs.gestureLongPress, //TODO
-        prefs.gestureSwipeDown, //TODO
-        prefs.gestureSwipeUp, //TODO
-        prefs.gestureDockSwipeUp, //TODO
-        prefs.gestureHomePress, //TODO
-        prefs.gestureBackPress, //TODO
-        prefs.gestureLaunchAssistant, //TODO
+        prefs.gestureDoubleTap,
+        prefs.gestureLongPress,
+        prefs.gestureSwipeDown,
+        prefs.gestureSwipeUp,
+        prefs.gestureDockSwipeUp,
+        prefs.gestureHomePress,
+        prefs.gestureBackPress,
+        prefs.gestureLaunchAssistant
+        //TODO: add Summary to each preference
     )
     val dashPrefs = listOf(
         prefs.dashLineSize,

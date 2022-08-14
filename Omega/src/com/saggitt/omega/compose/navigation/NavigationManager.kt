@@ -16,7 +16,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.saggitt.omega.compose.screens.preferences.aboutGraph
 import com.saggitt.omega.compose.screens.editIconGraph
-import com.saggitt.omega.compose.screens.gestureGraph
 import com.saggitt.omega.compose.screens.iconPickerGraph
 import com.saggitt.omega.compose.screens.preferences.mainPrefsGraph
 import soup.compose.material.motion.materialSharedAxisX
@@ -66,7 +65,6 @@ fun DefaultComposeView(navController: NavHostController) {
                 mainPrefsGraph(route = subRoute(Routes.PREFS_MAIN))
                 editIconGraph(route = subRoute(Routes.EDIT_ICON))
                 iconPickerGraph(route = subRoute(Routes.ICON_PICKER))
-                gestureGraph(route = subRoute(Routes.GESTURE_SELECTOR))
             }
         }
     }
