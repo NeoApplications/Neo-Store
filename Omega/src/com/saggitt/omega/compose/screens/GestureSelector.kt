@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.compose.screens
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,21 +33,11 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LeadingIconTab
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -124,6 +115,9 @@ fun MainGesturesScreen(key: String) {
     val selectedOption = remember {
         mutableStateOf(prefs.sharedPrefs.getString(key, "")) // TODO pass it to pages
     }
+
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
     Scaffold(
         topBar = { TopBar() },
         floatingActionButton = {
@@ -134,7 +128,7 @@ fun MainGesturesScreen(key: String) {
                     prefs.sharedPrefs.edit()
                         .putString(key, selectedOption.value)
                         .apply()
-
+                    backDispatcher?.onBackPressed()
                 }
             ) {
                 Icon(
@@ -215,8 +209,8 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
 fun LauncherScreen() {
     Column(
         modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val launcherItems = GestureAction.getLauncherActions(context, true)
@@ -235,14 +229,14 @@ fun LauncherScreen() {
                     ListItemWithIcon(
                         title = item.displayName,
                         modifier = Modifier
-                                .background(
-                                        color = if (item.javaClass.name == selectedOption)
-                                            MaterialTheme.colorScheme.primary.copy(0.65f)
-                                        else Color.Transparent
-                                )
-                                .clickable {
-                                    onOptionSelected(item.javaClass.name)
-                                },
+                            .background(
+                                color = if (item.javaClass.name == selectedOption)
+                                    MaterialTheme.colorScheme.primary.copy(0.65f)
+                                else Color.Transparent
+                            )
+                            .clickable {
+                                onOptionSelected(item.javaClass.name)
+                            },
                         summary = "",
                         startIcon = {
                             Image(
@@ -272,8 +266,8 @@ fun LauncherScreen() {
 fun AppsScreen() {
     Column(
         modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val prefs = Utilities.getOmegaPrefs(context)
@@ -303,22 +297,22 @@ fun AppsScreen() {
                     ListItemWithIcon(
                         title = item.label.toString(),
                         modifier = Modifier
-                                .background(
-                                        color = if (item.componentName.packageName == selectedOption)
-                                            MaterialTheme.colorScheme.primary.copy(0.65f)
-                                        else Color.Transparent
-                                )
-                                .clickable {
-                                    onOptionSelected(item.componentName.packageName)
+                            .background(
+                                color = if (item.componentName.packageName == selectedOption)
+                                    MaterialTheme.colorScheme.primary.copy(0.65f)
+                                else Color.Transparent
+                            )
+                            .clickable {
+                                onOptionSelected(item.componentName.packageName)
 
-                                    prefs.sharedPrefs
-                                            .edit()
-                                            .putString(
-                                                    "gesture_action",
-                                                    appGestureHandler.toString()
-                                            )
-                                            .apply()
-                                },
+                                prefs.sharedPrefs
+                                    .edit()
+                                    .putString(
+                                        "gesture_action",
+                                        appGestureHandler.toString()
+                                    )
+                                    .apply()
+                            },
                         summary = "",
                         startIcon = {
                             Image(
