@@ -30,7 +30,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.TabRow
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -94,22 +105,45 @@ fun NavGraphBuilder.gesturePrefGraph(route: String) {
         }
     }
 }
+
 @Composable
 fun GestureSelector(titleId: Int, key: String) {
     ViewWithActionBar(
         title = stringResource(titleId),
     ) {
-        MainGesturesScreen()
+        MainGesturesScreen(key)
     }
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainGesturesScreen() {
+fun MainGesturesScreen(key: String) {
     val tabs = listOf(TabItem.Launcher, TabItem.Apps, TabItem.Shortcuts)
     val pagerState = rememberPagerState()
+    val prefs = Utilities.getOmegaPrefs(LocalContext.current)
+    val selectedOption = remember {
+        mutableStateOf(prefs.sharedPrefs.getString(key, "")) // TODO pass it to pages
+    }
     Scaffold(
         topBar = { TopBar() },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                onClick = {
+                    prefs.sharedPrefs.edit()
+                        .putString(key, selectedOption.value)
+                        .apply()
+
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Check,
+                    contentDescription = stringResource(id = R.string.tab_bottom_sheet_save)
+                )
+                Text(text = stringResource(id = R.string.tab_bottom_sheet_save))
+            }
+        }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             Tabs(tabs = tabs, pagerState = pagerState)
