@@ -48,4 +48,5 @@ class ViewSwipeUpGestureHandler(private val view: View, private val handler: Ges
     }
 
     override val displayName = ""
+    override val displayNameRes = R.string.action_none
 }

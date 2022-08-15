@@ -26,6 +26,7 @@ import org.json.JSONObject
 abstract class GestureHandler(val context: Context, val config: JSONObject?) {
 
     abstract val displayName: String
+    abstract val displayNameRes: Int
     open val requiresForeground: Boolean = false
     open val hasConfig = false
     open val configIntent: Intent? = null
@@ -55,12 +56,14 @@ abstract class GestureHandler(val context: Context, val config: JSONObject?) {
 
 class BlankGestureHandler(context: Context, config: JSONObject?) : GestureHandler(context, config) {
     override val displayName: String = context.getString(R.string.action_none)
+    override val displayNameRes: Int = R.string.action_none
     override fun onGestureTrigger(controller: GestureController, view: View?) {}
 }
 
 class RunnableGestureHandler(context: Context, private val onTrigger: Runnable) :
     GestureHandler(context, null) {
     override val displayName: String = context.getString(R.string.action_none)
+    override val displayNameRes: Int = R.string.action_none
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         onTrigger.run()
     }

@@ -37,6 +37,7 @@ import org.json.JSONObject
 @Keep
 class SleepGestureHandler(context: Context, config: JSONObject?) : GestureHandler(context, config) {
     override val displayName: String = context.getString(R.string.action_sleep)
+    override val displayNameRes = R.string.action_sleep
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         method!!.sleep(controller)

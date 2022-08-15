@@ -30,10 +30,12 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
-import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
+import com.saggitt.omega.gestures.BlankGestureHandler
+import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
 
@@ -47,6 +49,8 @@ fun GesturesPrefsPage() {
         dialogPref = pref
         openDialog.value = true
     }
+
+    val blankGestureHandler = BlankGestureHandler(context, null)
     val gesturesPrefs = listOf(
         prefs.gestureDoubleTap,
         prefs.gestureLongPress,
@@ -56,8 +60,16 @@ fun GesturesPrefsPage() {
         prefs.gestureHomePress,
         prefs.gestureBackPress,
         prefs.gestureLaunchAssistant
-        //TODO: add Summary to each preference
     )
+    //Set summary for each preference
+
+    gesturesPrefs.forEach {
+        val handler =
+            GestureController.createGestureHandler(context, it.onGetValue(), blankGestureHandler)
+        it.summaryId = handler.displayNameRes
+    }
+
+
     val dashPrefs = listOf(
         prefs.dashLineSize,
         prefs.dashProviders // TODO

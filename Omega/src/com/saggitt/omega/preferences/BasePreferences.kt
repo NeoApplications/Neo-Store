@@ -21,7 +21,6 @@ package com.saggitt.omega.preferences
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
@@ -197,7 +196,7 @@ abstract class BasePreferences(context: Context) :
     abstract inner class PrefDelegate<T : Any>( // TODO Add iconId
         val key: String,
         @StringRes val titleId: Int,
-        @StringRes val summaryId: Int = -1,
+        @StringRes var summaryId: Int = -1,
         val defaultValue: T,
         val onChange: () -> Unit
     ) {

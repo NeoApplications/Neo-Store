@@ -37,6 +37,7 @@ open class OpenRecentsGestureHandler(context: Context, config: JSONObject?) :
     VerticalSwipeGestureHandler, StateChangeGestureHandler {
 
     override val displayName: String = context.getString(R.string.action_open_recents)
+    override val displayNameRes = R.string.action_open_recents
     override val isAvailable: Boolean
         get() = TouchInteractionService.isConnected()
     override val iconResource: Intent.ShortcutIconResource by lazy {
@@ -63,6 +64,7 @@ open class PressBackGestureHandler(context: Context, config: JSONObject?) :
     GestureHandler(context, config) {
 
     override val displayName: String = context.getString(R.string.action_press_back)
+    override val displayNameRes = R.string.action_press_back
 
     override fun onGestureTrigger(controller: GestureController, view: View?) {
 
