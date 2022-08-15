@@ -527,7 +527,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = updateBlur
     )
     var themeBlurRadius = FloatPref(
-        key = PREFS_BLUR_RADIUS,
+        key = PREFS_BLUR_RADIUS_X,
         titleId = R.string.title__theme_blur_radius,
         defaultValue = 0.75f,
         maxValue = 1.5f,
