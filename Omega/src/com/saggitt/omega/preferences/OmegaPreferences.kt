@@ -557,10 +557,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = updateBlur
     )
-    var themeIconPackGlobal = StringPref(
+    var themeIconPackGlobal = StringSelectionPref(
         key = PREFS_ICON_PACK,
         titleId = R.string.title_theme_icon_packs,
         defaultValue = "",
+        entries = IconPackProvider.INSTANCE.get(context)
+            .getIconPackList()
+            .associateBy(IconPackInfo::packageName, IconPackInfo::name),
         onChange = reloadIcons
     )
     var themeIconShape = StringBasedPref(
