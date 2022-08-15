@@ -790,10 +790,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = "",
         onChange = doNothing
     )
-    var smartspaceWeatherProvider = StringPref(
+    var smartspaceWeatherProvider = StringSelectionPref(
         key = PREFS_SMARTSPACE_WEATHER_PROVIDER,
         titleId = R.string.title_smartspace_widget_provider,
         defaultValue = SmartSpaceDataWidget::class.java.name,
+        entries = listOfNotNull(
+            BlankDataProvider::class.java.name,
+            SmartSpaceDataWidget::class.java.name,
+            if (PEWeatherDataProvider.isAvailable(context)) PEWeatherDataProvider::class.java.name else null,
+            //    if (this.showDebugInfo) FakeDataProvider::class.java.name else null
+        ).associateBy(
+            keySelector = { it },
+            valueTransform = { OmegaSmartSpaceController.getDisplayName(context, it) }
+        ),
         onChange = ::updateSmartspaceProvider
     )
     var smartspaceEventProvider = StringPref(
