@@ -34,7 +34,6 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.OverflowMenu
 import com.saggitt.omega.compose.components.ViewWithActionBar
-import com.saggitt.omega.compose.components.preferences.PagePreference
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.navigation.BlankScreen
 import com.saggitt.omega.compose.navigation.LocalNavController
@@ -67,10 +66,6 @@ fun MainPrefsPage() {
         else null,
         PageItem.PrefsAbout
     )
-
-    val composer = @Composable { page: PageItem ->
-        PagePreference(titleId = page.titleId, iconId = page.iconId, route = page.route)
-    }
     val navController = LocalNavController.current
     val destination = subRoute(Routes.PREFS_DEV)
 

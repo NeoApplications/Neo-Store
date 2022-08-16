@@ -30,7 +30,119 @@ import com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
-import com.saggitt.omega.*
+import com.saggitt.omega.OmegaApp
+import com.saggitt.omega.PREFS_ACCENT
+import com.saggitt.omega.PREFS_BLUR
+import com.saggitt.omega.PREFS_BLUR_RADIUS_X
+import com.saggitt.omega.PREFS_COLORED_BACKGROUND
+import com.saggitt.omega.PREFS_DASH_LINESIZE
+import com.saggitt.omega.PREFS_DASH_PROVIDERS
+import com.saggitt.omega.PREFS_DEBUG_MODE
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
+import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DESKTOP_HIDE_LABEL
+import com.saggitt.omega.PREFS_DESKTOP_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DESKTOP_ICON_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DESKTOP_LOCK
+import com.saggitt.omega.PREFS_DESKTOP_MODE
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_EDIT
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_MENU
+import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
+import com.saggitt.omega.PREFS_DESKTOP_ROWS
+import com.saggitt.omega.PREFS_DESKTOP_ROWS_RAW
+import com.saggitt.omega.PREFS_DEV_PREFS_SHOW
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND
+import com.saggitt.omega.PREFS_DOCK_BACKGROUND_COLOR
+import com.saggitt.omega.PREFS_DOCK_COLUMNS
+import com.saggitt.omega.PREFS_DOCK_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DOCK_HIDE
+import com.saggitt.omega.PREFS_DOCK_ICON_SCALE
+import com.saggitt.omega.PREFS_DOCK_OPACITY
+import com.saggitt.omega.PREFS_DOCK_SCALE
+import com.saggitt.omega.PREFS_DOCK_SEARCH
+import com.saggitt.omega.PREFS_DRAWER_BACKGROUND_COLOR
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS
+import com.saggitt.omega.PREFS_DRAWER_COLUMNS_RAW
+import com.saggitt.omega.PREFS_DRAWER_CUSTOM_BACKGROUND
+import com.saggitt.omega.PREFS_DRAWER_HEIGHT_MULTIPLIER
+import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
+import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
+import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
+import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
+import com.saggitt.omega.PREFS_DRAWER_OPACITY
+import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
+import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
+import com.saggitt.omega.PREFS_DRAWER_SEARCH
+import com.saggitt.omega.PREFS_EMPTY_SCREENS
+import com.saggitt.omega.PREFS_FEED_PROVIDER
+import com.saggitt.omega.PREFS_FIRST_RUN
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND
+import com.saggitt.omega.PREFS_FOLDER_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_FOLDER_COLUMNS
+import com.saggitt.omega.PREFS_FOLDER_RADIUS
+import com.saggitt.omega.PREFS_FOLDER_ROWS
+import com.saggitt.omega.PREFS_FORCE_ADAPTIVE
+import com.saggitt.omega.PREFS_FORCE_SHAPELESS
+import com.saggitt.omega.PREFS_GESTURE_ASSISTANT
+import com.saggitt.omega.PREFS_GESTURE_BACK
+import com.saggitt.omega.PREFS_GESTURE_DOUBLE_TAP
+import com.saggitt.omega.PREFS_GESTURE_HOME
+import com.saggitt.omega.PREFS_GESTURE_LONG_PRESS
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_DOWN
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP
+import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
+import com.saggitt.omega.PREFS_HIDDEN_PREDICTION_SET
+import com.saggitt.omega.PREFS_HIDDEN_SET
+import com.saggitt.omega.PREFS_ICON_PACK
+import com.saggitt.omega.PREFS_ICON_SHAPE
+import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
+import com.saggitt.omega.PREFS_LANGUAGE
+import com.saggitt.omega.PREFS_LEGACY_TREATMENT
+import com.saggitt.omega.PREFS_LOW_PREFORMANCE
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND
+import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND_CUSTOM
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT
+import com.saggitt.omega.PREFS_NOTIFICATION_COUNT_FOLDER
+import com.saggitt.omega.PREFS_PROTECTED_APPS
+import com.saggitt.omega.PREFS_PROTECTED_SET
+import com.saggitt.omega.PREFS_RECENT_BACKUP
+import com.saggitt.omega.PREFS_RESTORE_SUCCESS
+import com.saggitt.omega.PREFS_SEARCH_BAR_RADIUS
+import com.saggitt.omega.PREFS_SEARCH_CONTACTS
+import com.saggitt.omega.PREFS_SEARCH_FUZZY
+import com.saggitt.omega.PREFS_SEARCH_GLOBAL
+import com.saggitt.omega.PREFS_SEARCH_HIDDEN_APPS
+import com.saggitt.omega.PREFS_SEARCH_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_DATE
+import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME
+import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
+import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
+import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
+import com.saggitt.omega.PREFS_SORT
+import com.saggitt.omega.PREFS_SORT_X
+import com.saggitt.omega.PREFS_STATUSBAR_HIDE
+import com.saggitt.omega.PREFS_THEME
+import com.saggitt.omega.PREFS_THEME_X
+import com.saggitt.omega.PREFS_TIME_24H
+import com.saggitt.omega.PREFS_TORCH
+import com.saggitt.omega.PREFS_WHITE_TREATMENT
+import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
+import com.saggitt.omega.PREFS_WINDOWCORNER
+import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
+import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
+import com.saggitt.omega.PREF_PILL_QSB
+import com.saggitt.omega.THEME_SYSTEM
+import com.saggitt.omega.THEME_WALLPAPER
+import com.saggitt.omega.drawerLayoutOptions
+import com.saggitt.omega.drawerSortOptions
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackInfo
@@ -50,6 +162,7 @@ import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
 import com.saggitt.omega.theme.ThemeManager
+import com.saggitt.omega.themeItems
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.feedProviders
@@ -569,7 +682,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             .associateBy(IconPackInfo::packageName, IconPackInfo::name),
         onChange = reloadIcons
     )
-    var themeIconShape = StringBasedPref(
+    var themeIconShape = StringBasedPref( // TODO convert to StringSelectionPref?
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
         defaultValue = IconShape.Circle,
@@ -688,49 +801,49 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_long_press}/$PREFS_GESTURE_LONG_PRESS",
+        navRoute = "gesture_selector/${R.string.gesture_long_press}/$PREFS_GESTURE_LONG_PRESS",
         onChange = restart
     )
     var gestureHomePress = StringNavPref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_press_home}/$PREFS_GESTURE_HOME",
+        navRoute = "gesture_selector/${R.string.gesture_press_home}/$PREFS_GESTURE_HOME",
         onChange = restart
     )
     var gestureBackPress = StringNavPref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_press_back}/$PREFS_GESTURE_BACK",
+        navRoute = "gesture_selector/${R.string.gesture_press_back}/$PREFS_GESTURE_BACK",
         onChange = restart
     )
     var gestureSwipeDown = StringNavPref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.title__gesture_swipe_down}/$PREFS_GESTURE_SWIPE_DOWN",
+        navRoute = "gesture_selector/${R.string.title__gesture_swipe_down}/$PREFS_GESTURE_SWIPE_DOWN",
         onChange = restart
     )
     var gestureSwipeUp = StringNavPref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_swipe_up}/$PREFS_GESTURE_SWIPE_UP",
+        navRoute = "gesture_selector/${R.string.gesture_swipe_up}/$PREFS_GESTURE_SWIPE_UP",
         onChange = restart
     )
     var gestureDockSwipeUp = StringNavPref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_dock_swipe_up}/$PREFS_GESTURE_SWIPE_UP_DOCK",
+        navRoute = "gesture_selector/${R.string.gesture_dock_swipe_up}/$PREFS_GESTURE_SWIPE_UP_DOCK",
         onChange = restart
     )
     var gestureLaunchAssistant = StringNavPref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
         defaultValue = "",
-            navRoute = "gesture_selector/${R.string.gesture_launch_assistant}/$PREFS_GESTURE_ASSISTANT",
+        navRoute = "gesture_selector/${R.string.gesture_launch_assistant}/$PREFS_GESTURE_ASSISTANT",
         onChange = restart
     )
 
@@ -787,10 +900,12 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = -1,
         onChange = doNothing
     )
-    var smartspaceWeatherIconPack = StringPref(
+    var smartspaceWeatherIconPack = StringPref( // TODO convert to StringSelectionPref
         key = PREFS_SMARTSPACE_WEATHER_ICONS,
         titleId = -1,
         defaultValue = "",
+        //entries = WeatherIconManager(context).getIconPacks()
+        //    .associateBy({ it::class.java.name }, WeatherIconManager.WeatherIconPack::name),
         onChange = doNothing
     )
     var smartspaceWeatherProvider = StringSelectionPref(

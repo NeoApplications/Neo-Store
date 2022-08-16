@@ -171,7 +171,7 @@ fun AboutPage() {
 
             Spacer(modifier = Modifier.requiredHeight(8.dp))
 
-            PreferenceGroup(heading = stringResource(id = R.string.about_team)) {
+            PreferenceGroup(heading = stringResource(id = R.string.about_team)) { // TODO fix invisible background
                 contributors.forEach {
                     ContributorRow(
                         contributorName = stringResource(it.name),
@@ -184,7 +184,7 @@ fun AboutPage() {
 
             Spacer(modifier = Modifier.requiredHeight(8.dp))
 
-            PreferenceGroup(heading = stringResource(id = R.string.about_translators_group)) {
+            PreferenceGroup(heading = stringResource(id = R.string.about_translators_group)) { // TODO fix invisible background
                 ContributorRow(
                     contributorName = stringResource(id = R.string.contributor2),
                     contributorRole = stringResource(id = R.string.contributor_role),
@@ -201,7 +201,7 @@ fun AboutPage() {
 
             Spacer(modifier = Modifier.requiredHeight(8.dp))
 
-            PreferenceGroup(heading = stringResource(id = R.string.category__about_licenses)) {
+            PreferenceGroup(heading = stringResource(id = R.string.category__about_licenses)) { // TODO fix invisible background
                 NavigationActionPreference(
                     title = stringResource(id = R.string.category__about_licenses),
                     destination = subRoute(name = "license"),
