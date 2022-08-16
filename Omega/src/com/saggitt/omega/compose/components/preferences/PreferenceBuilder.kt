@@ -18,18 +18,32 @@
 package com.saggitt.omega.compose.components.preferences
 
 import androidx.compose.runtime.Composable
+import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.preferences.BasePreferences
 
-val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit ->
+val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit, index: Int, size: Int ->
     when (pref) {
-        is BasePreferences.BooleanPref -> SwitchPreference(pref = pref)
-        is BasePreferences.FloatPref -> SeekBarPreference(pref = pref)
-        is BasePreferences.ColorIntPref -> ColorIntPreference(pref = pref)
-        is BasePreferences.StringNavPref -> StringNavPreference(pref = pref)
-        is BasePreferences.IdpIntPref -> IntSeekBarPreference(pref = pref)
+        is BasePreferences.BooleanPref ->
+            SwitchPreference(pref = pref, index = index, groupSize = size)
+        is BasePreferences.FloatPref ->
+            SeekBarPreference(pref = pref, index = index, groupSize = size)
+        is BasePreferences.ColorIntPref ->
+            ColorIntPreference(pref = pref, index = index, groupSize = size)
+        is BasePreferences.StringNavPref ->
+            StringNavPreference(pref = pref, index = index, groupSize = size)
+        is BasePreferences.IdpIntPref ->
+            IntSeekBarPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.IntSelectionPref ->
-            IntSelectionPreference(pref = pref) { onDialogPref(pref) }
+            IntSelectionPreference(pref = pref, index = index, groupSize = size) { onDialogPref(pref) }
         is BasePreferences.StringSelectionPref ->
-            StringSelectionPreference(pref = pref) { onDialogPref(pref) }
+            StringSelectionPreference(pref = pref, index = index, groupSize = size) { onDialogPref(pref) }
+        is PageItem ->
+            PagePreference(
+                titleId = pref.titleId,
+                iconId = pref.iconId,
+                route = pref.route,
+                index = index,
+                groupSize = size
+            )
     }
 }

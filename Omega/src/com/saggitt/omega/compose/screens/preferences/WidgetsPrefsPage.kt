@@ -21,7 +21,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,9 +34,8 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
-import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
-import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -67,7 +70,7 @@ fun WidgetsPrefsPage() {
 
     OmegaAppTheme {
         ViewWithActionBar(
-            title = stringResource(R.string.title__general_smartspace)
+            title = stringResource(R.string.title__general_widgets_notifications)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -76,14 +79,18 @@ fun WidgetsPrefsPage() {
             ) {
                 // TODO Add Smartspace preview
                 item {
-                    PreferenceGroup(stringResource(id = R.string.title__general_smartspace)) {
-                        smartspacePrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.title__general_smartspace),
+                        prefs = smartspacePrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__notifications)) {
-                        notificationsPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.pref_category__notifications),
+                        prefs = notificationsPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
             }
 

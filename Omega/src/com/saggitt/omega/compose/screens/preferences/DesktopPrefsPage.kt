@@ -21,7 +21,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -31,7 +35,6 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
-import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
@@ -86,24 +89,32 @@ fun DesktopPrefsPage() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    PreferenceGroup(stringResource(id = R.string.cat_drawer_icons)) {
-                        iconPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.cat_drawer_icons),
+                        prefs = iconPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.cat_desktop_grid)) {
-                        gridPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.cat_desktop_grid),
+                        prefs = gridPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.app_categorization_folders)) {
-                        folderPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.app_categorization_folders),
+                        prefs = folderPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
-                        otherPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.pref_category__others),
+                        prefs = otherPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
             }
 

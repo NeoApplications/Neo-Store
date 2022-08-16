@@ -57,7 +57,11 @@ import com.android.launcher3.shortcuts.ShortcutKey
 import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.saggitt.omega.compose.components.ExpandableListItem
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.components.ViewWithActionBar
@@ -74,7 +78,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 fun NavGraphBuilder.gesturePageGraph(route: String) {
-    preferenceGraph(route, { GesturesPrefsPage() }) {subRoute ->
+    preferenceGraph(route, { GesturesPrefsPage() }) { subRoute ->
         gesturePrefGraph(route = subRoute(Routes.GESTURE_SELECTOR))
     }
 }
@@ -83,15 +87,15 @@ fun NavGraphBuilder.gesturePageGraph(route: String) {
 fun NavGraphBuilder.gesturePrefGraph(route: String) {
     preferenceGraph(route, { }) { subRoute ->
         composable(
-                route = subRoute("{titleId}/{key}"),
-                arguments = listOf(
-                        navArgument("titleId") { type = NavType.IntType },
-                        navArgument("key") { type = NavType.StringType }
-                )
-        ) {backStackEntry ->
+            route = subRoute("{titleId}/{key}"),
+            arguments = listOf(
+                navArgument("titleId") { type = NavType.IntType },
+                navArgument("key") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
             val args = backStackEntry.arguments!!
             val title = args.getInt("titleId")
-            val key = args.getString("key")?: ""
+            val key = args.getString("key") ?: ""
             GestureSelector(titleId = title, key = key)
         }
     }
@@ -148,7 +152,7 @@ fun MainGesturesScreen(key: String) {
 
 @Composable
 fun TopBar() {
-    TopAppBar(
+    TopAppBar( // TODO migrate to M3
         title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
         backgroundColor = colorResource(id = R.color.colorPrimary),
         contentColor = Color.White
@@ -172,7 +176,7 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
         tabs.forEachIndexed { index, tab ->
             LeadingIconTab(
                 icon = { Icon(painter = painterResource(id = tab.icon), contentDescription = "") },
-                text = { Text(text = stringResource(id = tab.title)) },
+                text = { Text(text = stringResource(id = tab.title)) }, // TODO Needs better layout for longer words
                 selected = pagerState.currentPage == index,
                 onClick = {
                     scope.launch {
@@ -279,7 +283,7 @@ fun AppsScreen() {
         val (selectedOption, onOptionSelected) = remember {
             mutableStateOf("")
         }
-        PreferenceGroup{
+        PreferenceGroup {
             LazyColumn {
                 itemsIndexed(apps) { _, item ->
                     val config = JSONObject("{}")
@@ -348,8 +352,8 @@ fun AppsScreen() {
 fun ShortcutsScreen() {
     Column(
         modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
         val prefs = Utilities.getOmegaPrefs(context)
@@ -391,22 +395,22 @@ fun ShortcutsScreen() {
                                 ListItemWithIcon(
                                     title = it.label.toString(),
                                     modifier = Modifier
-                                            .clip(MaterialTheme.shapes.medium)
-                                            .background(
-                                                    color = if (appGestureHandler.toString() == selectedOption)
-                                                        MaterialTheme.colorScheme.primary.copy(0.65f)
-                                                    else Color.Transparent
-                                            )
-                                            .clickable {
-                                                onOptionSelected(appGestureHandler.toString())
-                                                prefs.sharedPrefs
-                                                        .edit()
-                                                        .putString(
-                                                                "gesture_action",
-                                                                appGestureHandler.toString()
-                                                        )
-                                                        .apply()
-                                            },
+                                        .clip(MaterialTheme.shapes.medium)
+                                        .background(
+                                            color = if (appGestureHandler.toString() == selectedOption)
+                                                MaterialTheme.colorScheme.primary.copy(0.65f)
+                                            else Color.Transparent
+                                        )
+                                        .clickable {
+                                            onOptionSelected(appGestureHandler.toString())
+                                            prefs.sharedPrefs
+                                                .edit()
+                                                .putString(
+                                                    "gesture_action",
+                                                    appGestureHandler.toString()
+                                                )
+                                                .apply()
+                                        },
                                     summary = "",
                                     startIcon = {
                                         Image(

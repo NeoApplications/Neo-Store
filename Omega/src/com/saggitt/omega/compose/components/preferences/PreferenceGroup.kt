@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,14 +58,26 @@ fun PreferenceGroup(
         LocalContentColor provides MaterialTheme.colorScheme.primary
     ) {
 
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 8.dp
-        ) {
+        Surface(color = Color.Transparent) {
             Column(modifier = columnModifier) {
                 content()
             }
+        }
+    }
+}
+
+@Composable
+fun PreferenceGroup(
+    heading: String? = null,
+    textAlignment: Alignment.Horizontal = Alignment.Start,
+    prefs: List<Any>,
+    onPrefDialog: (Any) -> Unit = {}
+) {
+    PreferenceGroup(heading = heading, textAlignment = textAlignment) {
+        val size = prefs.size
+        prefs.forEachIndexed { i, it ->
+            PreferenceBuilder(it, onPrefDialog, i, size)
+            if (i + 1 < size) Spacer(modifier = Modifier.height(2.dp))
         }
     }
 }
