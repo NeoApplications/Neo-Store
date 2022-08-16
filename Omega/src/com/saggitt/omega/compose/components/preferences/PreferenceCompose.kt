@@ -19,6 +19,7 @@ package com.saggitt.omega.compose.components.preferences
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,14 +66,27 @@ fun BasePreference(
     @StringRes summaryId: Int = -1,
     summary: String? = null,
     isEnabled: Boolean = true,
+    index: Int = 1,
+    groupSize: Int = 1,
     startWidget: (@Composable () -> Unit)? = null,
     endWidget: (@Composable () -> Unit)? = null,
     bottomWidget: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
 ) {
+    val base = index.toFloat() / groupSize
+    val rank = (index + 1f) / groupSize
+
     Column(
         modifier = Modifier
-            .clip(MaterialTheme.shapes.medium)
+            .clip(
+                RoundedCornerShape(
+                    topStart = if (base == 0f) 16.dp else 6.dp,
+                    topEnd = if (base == 0f) 16.dp else 6.dp,
+                    bottomStart = if (rank == 1f) 16.dp else 6.dp,
+                    bottomEnd = if (rank == 1f) 16.dp else 6.dp
+                )
+            )
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation((rank * 16).dp))
             .heightIn(min = 64.dp)
             .addIf(onClick != null) {
                 clickable(enabled = isEnabled, onClick = onClick!!)
@@ -123,6 +139,8 @@ fun BasePreference(
 fun SwitchPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.BooleanPref,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     onCheckedChange: ((Boolean) -> Unit) = {},
 ) {
@@ -133,6 +151,8 @@ fun SwitchPreference(
         modifier = modifier,
         titleId = pref.titleId,
         summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = {
             onCheckedChange(!checked)
@@ -159,6 +179,8 @@ fun SwitchPreference(
 fun SeekBarPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.FloatPref,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     onValueChange: ((Float) -> Unit) = {},
 ) {
@@ -168,6 +190,8 @@ fun SeekBarPreference(
         modifier = modifier,
         titleId = pref.titleId,
         summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         bottomWidget = {
             Row {
@@ -202,6 +226,8 @@ fun PagePreference(
     modifier: Modifier = Modifier,
     @StringRes titleId: Int,
     @DrawableRes iconId: Int = -1,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     route: String
 ) {
@@ -220,6 +246,8 @@ fun PagePreference(
                 )
             }
         } else null,
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = { navController.navigate(destination) }
     )
@@ -229,6 +257,8 @@ fun PagePreference(
 fun IntSelectionPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.IntSelectionPref,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
@@ -237,6 +267,8 @@ fun IntSelectionPreference(
         titleId = pref.titleId,
         summaryId = pref.summaryId,
         summary = pref.entries[pref.onGetValue()]?.let { stringResource(id = it) },
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = onClick
     )
@@ -246,6 +278,8 @@ fun IntSelectionPreference(
 fun StringSelectionPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.StringSelectionPref,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
@@ -254,6 +288,8 @@ fun StringSelectionPreference(
         titleId = pref.titleId,
         summaryId = pref.summaryId,
         summary = pref.entries[pref.onGetValue()],
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = onClick
     )

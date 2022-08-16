@@ -38,6 +38,8 @@ import com.saggitt.omega.preferences.BasePreferences
 fun ColorIntPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.ColorIntPref,
+    index: Int = 1,
+    groupSize: Int = 1,
     isEnabled: Boolean = true,
     onValueChange: ((Float) -> Unit) = {},
 ) {
@@ -47,6 +49,8 @@ fun ColorIntPreference(
         modifier = modifier,
         titleId = pref.titleId,
         summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = {
             val dialog = ColorPickerDialog.newBuilder()
