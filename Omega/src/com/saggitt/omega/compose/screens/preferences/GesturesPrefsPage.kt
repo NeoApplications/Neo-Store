@@ -21,7 +21,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,9 +34,8 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
-import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
-import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -78,14 +81,18 @@ fun GesturesPrefsPage() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__gestures)) {
-                        gesturesPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.pref_category__gestures),
+                        prefs = gesturesPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__dash)) {
-                        dashPrefs.forEach { PreferenceBuilder(it, onPrefDialog) }
-                    }
+                    PreferenceGroup(
+                        stringResource(id = R.string.pref_category__dash),
+                        prefs = dashPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
                 }
             }
 

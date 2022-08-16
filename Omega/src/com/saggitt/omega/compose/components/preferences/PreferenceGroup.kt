@@ -67,6 +67,22 @@ fun PreferenceGroup(
 }
 
 @Composable
+fun PreferenceGroup(
+    heading: String? = null,
+    textAlignment: Alignment.Horizontal = Alignment.Start,
+    prefs: List<Any>,
+    onPrefDialog: (Any) -> Unit = {}
+) {
+    PreferenceGroup(heading = heading, textAlignment = textAlignment) {
+        val size = prefs.size
+        prefs.forEachIndexed { i, it ->
+            PreferenceBuilder(it, onPrefDialog, i, size)
+            if (i + 1 < size) Spacer(modifier = Modifier.height(2.dp))
+        }
+    }
+}
+
+@Composable
 fun PreferenceGroupHeading(
     heading: String? = null,
     textAlignment: Alignment.Horizontal = Alignment.Start

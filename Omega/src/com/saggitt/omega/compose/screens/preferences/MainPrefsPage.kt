@@ -36,7 +36,11 @@ import com.saggitt.omega.compose.components.OverflowMenu
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PagePreference
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
-import com.saggitt.omega.compose.navigation.*
+import com.saggitt.omega.compose.navigation.BlankScreen
+import com.saggitt.omega.compose.navigation.LocalNavController
+import com.saggitt.omega.compose.navigation.Routes
+import com.saggitt.omega.compose.navigation.preferenceGraph
+import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.compose.screens.gesturePageGraph
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -69,6 +73,7 @@ fun MainPrefsPage() {
     }
     val navController = LocalNavController.current
     val destination = subRoute(Routes.PREFS_DEV)
+
     OmegaAppTheme {
         ViewWithActionBar(
             title = stringResource(R.string.settings_button_text),
@@ -103,19 +108,22 @@ fun MainPrefsPage() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__interfaces)) {
-                        uiPrefs.forEach { composer(it) }
-                    }
+                    PreferenceGroup(
+                        heading = stringResource(id = R.string.pref_category__interfaces),
+                        prefs = uiPrefs
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__features)) {
-                        featuresPrefs.forEach { composer(it) }
-                    }
+                    PreferenceGroup(
+                        heading = stringResource(id = R.string.pref_category__features),
+                        prefs = featuresPrefs
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.pref_category__others)) {
-                        otherPrefs.forEach { composer(it) }
-                    }
+                    PreferenceGroup(
+                        heading = stringResource(id = R.string.pref_category__others),
+                        prefs = otherPrefs
+                    )
                 }
             }
         }

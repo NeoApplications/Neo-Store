@@ -25,17 +25,21 @@ import com.saggitt.omega.preferences.BasePreferences
 
 @Composable
 fun StringNavPreference(
-        modifier: Modifier = Modifier,
-        pref: BasePreferences.StringNavPref,
-        isEnabled: Boolean = true,
-        onValueChange: ((Float) -> Unit) = {}
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringNavPref,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onValueChange: ((Float) -> Unit) = {}
 ) {
     val navController = LocalNavController.current
-    val route=subRoute(pref.navRoute)
+    val route = subRoute(pref.navRoute)
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,
         summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = {
             navController.navigate(route)
