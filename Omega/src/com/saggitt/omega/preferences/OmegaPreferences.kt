@@ -78,7 +78,6 @@ import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
 import com.saggitt.omega.PREFS_DRAWER_SEARCH
 import com.saggitt.omega.PREFS_EMPTY_SCREENS
 import com.saggitt.omega.PREFS_FEED_PROVIDER
-import com.saggitt.omega.PREFS_FIRST_RUN
 import com.saggitt.omega.PREFS_FOLDER_BACKGROUND
 import com.saggitt.omega.PREFS_FOLDER_BACKGROUND_CUSTOM
 import com.saggitt.omega.PREFS_FOLDER_COLUMNS
@@ -167,22 +166,17 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.feedProviders
 import com.saggitt.omega.util.languageOptions
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
-    private val onIconShapeChanged = {
+    /*private val onIconShapeChanged = {
         initializeIconShape()
         com.android.launcher3.graphics.IconShape.init(context)
         LauncherAppState.getInstance(context).reloadIcons()
-    }
-
-    fun initializeIconShape() {
-        val shape = themeIconShape.onGetValue()
-        CustomAdaptiveIconDrawable.sInitialized = true
-        CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
-        CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
-    }
+    }*/
 
     // TODO add the rest of keys to @Constants
     // TODO sort and filter the prefs we need
@@ -686,7 +680,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
         defaultValue = IconShape.Circle,
-        onChange = onIconShapeChanged,
+        onChange = restart,
         fromString = {
             IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
         },
@@ -1019,11 +1013,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             override fun flattenValue(value: String) = value
             override fun unflattenValue(value: String) = value
         }
-    var firstRun by BooleanPref(
-        key = PREFS_FIRST_RUN,
-        titleId = -1,
-        defaultValue = true
-    )
+
     var torchState by BooleanPref(
         key = PREFS_TORCH,
         titleId = R.string.dash_torch,
@@ -1079,6 +1069,22 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         beginBlockingEdit()
         body(this)
         endBlockingEdit()
+    }
+
+    private val scope = MainScope()
+
+    init {
+        scope.launch {
+            initializeIconShape(themeIconShape.onGetValue())
+            com.android.launcher3.graphics.IconShape.init(context)
+            LauncherAppState.getInstance(context).reloadIcons()
+        }
+    }
+
+    fun initializeIconShape(shape: IconShape) {
+        CustomAdaptiveIconDrawable.sInitialized = true
+        CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
+        CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
     }
 
     companion object {

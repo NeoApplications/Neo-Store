@@ -23,7 +23,6 @@ import com.android.launcher3.graphics.BitmapCreationCheck;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.util.ResourceBasedOverride;
-import com.saggitt.omega.icons.IconShapeManager;
 import com.saggitt.omega.preferences.OmegaPreferences;
 
 /**
@@ -32,20 +31,16 @@ import com.saggitt.omega.preferences.OmegaPreferences;
 public class MainProcessInitializer implements ResourceBasedOverride {
 
     public static void initialize(Context context) {
+        OmegaPreferences.getInstance(context);
         Overrides.getObject(
-                MainProcessInitializer.class, context, R.string.main_process_initializer_class)
+                        MainProcessInitializer.class, context, R.string.main_process_initializer_class)
                 .init(context);
     }
 
     protected void init(Context context) {
         FileLog.setDir(context.getApplicationContext().getFilesDir());
-        IconShapeManager.Companion.getSystemIconShape(context);
         FeatureFlags.initialize(context);
-        OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-        if (prefs.getFirstRun()) {
-            prefs.setFirstRun(false);
-        }
-        prefs.initializeIconShape();
+
         IconShape.init(context);
 
         if (BitmapCreationCheck.ENABLED) {
