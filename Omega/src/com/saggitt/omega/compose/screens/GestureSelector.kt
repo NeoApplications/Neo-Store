@@ -30,10 +30,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.TabRow
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,6 +78,7 @@ import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
+import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.actions.BlankGestureAction
 import com.saggitt.omega.gestures.actions.GestureAction
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
@@ -116,8 +125,14 @@ fun MainGesturesScreen(key: String) {
     val tabs = listOf(TabItem.Launcher, TabItem.Apps, TabItem.Shortcuts)
     val pagerState = rememberPagerState()
     val prefs = Utilities.getOmegaPrefs(LocalContext.current)
+    val blankGestureHandler = BlankGestureHandler(LocalContext.current, null)
     val selectedOption = remember {
-        mutableStateOf(prefs.sharedPrefs.getString(key, "")) // TODO pass it to pages
+        mutableStateOf(
+            prefs.sharedPrefs.getString(
+                key,
+                blankGestureHandler.toString()
+            )
+        ) // TODO pass it to pages
     }
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -150,12 +165,11 @@ fun MainGesturesScreen(key: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar() {
-    TopAppBar( // TODO migrate to M3
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
-        backgroundColor = colorResource(id = R.color.colorPrimary),
-        contentColor = Color.White
+    MediumTopAppBar(
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
     )
 }
 
