@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.TabRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -37,13 +38,14 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -53,7 +55,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
@@ -79,9 +80,9 @@ import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
 import com.saggitt.omega.gestures.BlankGestureHandler
-import com.saggitt.omega.gestures.actions.BlankGestureAction
 import com.saggitt.omega.gestures.actions.GestureAction
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
+import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -122,7 +123,7 @@ fun GestureSelector(titleId: Int, key: String) {
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainGesturesScreen(key: String) {
-    val tabs = listOf(TabItem.Launcher, TabItem.Apps, TabItem.Shortcuts)
+
     val pagerState = rememberPagerState()
     val prefs = Utilities.getOmegaPrefs(LocalContext.current)
     val blankGestureHandler = BlankGestureHandler(LocalContext.current, null)
@@ -132,13 +133,23 @@ fun MainGesturesScreen(key: String) {
                 key,
                 blankGestureHandler.toString()
             )
-        ) // TODO pass it to pages
+        )
     }
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
+    val tabs = listOf(
+        TabItem(R.drawable.ic_assistant, R.string.tab_launcher) { LauncherScreen(selectedOption) },
+        TabItem(R.drawable.ic_apps, R.string.apps_label) { AppsScreen(prefs, key) },
+        TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts) { ShortcutsScreen(prefs, key) }
+    )
+
     Scaffold(
-        topBar = { TopBar() },
+        topBar = {
+            SmallTopAppBar(
+                title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
+            )
+        },
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -163,14 +174,6 @@ fun MainGesturesScreen(key: String) {
             TabsContent(tabs = tabs, pagerState = pagerState)
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar() {
-    MediumTopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
-    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -203,19 +206,6 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 }
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview(showBackground = true)
-@Composable
-fun TabsPreview() {
-    val tabs = listOf(
-        TabItem.Launcher,
-        TabItem.Apps,
-        TabItem.Shortcuts
-    )
-    val pagerState = rememberPagerState()
-    Tabs(tabs = tabs, pagerState = pagerState)
-}
-
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
@@ -224,7 +214,7 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
 }
 
 @Composable
-fun LauncherScreen() {
+fun LauncherScreen(selectedOption: MutableState<String?>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -237,10 +227,6 @@ fun LauncherScreen() {
             unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        val (selectedOption, onOptionSelected) = remember {
-            mutableStateOf(BlankGestureAction::class.java.name)
-        }
-
         PreferenceGroup {
             LazyColumn {
                 itemsIndexed(launcherItems) { _, item ->
@@ -248,12 +234,12 @@ fun LauncherScreen() {
                         title = item.displayName,
                         modifier = Modifier
                             .background(
-                                color = if (item.javaClass.name == selectedOption)
+                                color = if (item.toString() == selectedOption.value)
                                     MaterialTheme.colorScheme.primary.copy(0.65f)
                                 else Color.Transparent
                             )
                             .clickable {
-                                onOptionSelected(item.javaClass.name)
+                                selectedOption.value = item.toString()
                             },
                         summary = "",
                         startIcon = {
@@ -265,9 +251,9 @@ fun LauncherScreen() {
                         },
                         endCheckbox = {
                             RadioButton(
-                                selected = (item.javaClass.name == selectedOption),
+                                selected = (item.toString() == selectedOption.value),
                                 onClick = {
-                                    onOptionSelected(item.javaClass.name)
+                                    selectedOption.value = item.toString()
                                 },
                                 colors = colors
                             )
@@ -281,7 +267,7 @@ fun LauncherScreen() {
 }
 
 @Composable
-fun AppsScreen() {
+fun AppsScreen(prefs: OmegaPreferences, key: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -363,14 +349,13 @@ fun AppsScreen() {
 }
 
 @Composable
-fun ShortcutsScreen() {
+fun ShortcutsScreen(prefs: OmegaPreferences, key: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
-        val prefs = Utilities.getOmegaPrefs(context)
         val apps = Config(context).getAppsList(filter = null)
             .sortedBy { it.label.toString() }
             .map { AppItemWithShortcuts(context, it) }
@@ -462,13 +447,4 @@ fun ShortcutsScreen() {
 
 typealias ComposableFun = @Composable () -> Unit
 
-sealed class TabItem(var icon: Int, var title: Int, var screen: ComposableFun) {
-    object Launcher :
-        TabItem(R.drawable.ic_assistant, R.string.tab_launcher, { LauncherScreen() })
-
-    object Apps :
-        TabItem(R.drawable.ic_apps, R.string.apps_label, { AppsScreen() })
-
-    object Shortcuts :
-        TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts, { ShortcutsScreen() })
-}
+class TabItem(var icon: Int, var title: Int, var screen: ComposableFun)
