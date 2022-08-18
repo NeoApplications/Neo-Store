@@ -17,7 +17,6 @@
 
 package com.saggitt.omega
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -25,9 +24,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.view.ContextThemeWrapper
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.saggitt.omega.theme.ThemeOverride
+import com.saggitt.omega.util.Config.Companion.REQUEST_PERMISSION_LOCATION_ACCESS
 import com.saggitt.omega.util.applyAccent
 
 class BlankActivity : AppCompatActivity() {
@@ -92,6 +93,8 @@ class BlankActivity : AppCompatActivity() {
             })
             resultSent = true
             finish()
+        } else if (requestCode == REQUEST_PERMISSION_LOCATION_ACCESS) {
+            omegaApp.smartspace.updateWeatherData()
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
