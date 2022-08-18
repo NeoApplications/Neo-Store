@@ -30,6 +30,16 @@ class PrefsUpdatesFragment : PrefsNavFragmentX() {
                 }
             }
             addEditInt(
+                Preferences.Key.ImagesCacheRetention,
+                getString(R.string.images_cache_retention),
+                1..365
+            )
+            addEditInt(
+                Preferences.Key.ReleasesCacheRetention,
+                getString(R.string.releases_cache_retention),
+                0..365
+            )
+            addEditInt(
                 Preferences.Key.AutoSyncInterval,
                 getString(R.string.auto_sync_interval),
                 1..1440

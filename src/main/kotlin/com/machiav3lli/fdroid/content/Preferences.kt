@@ -24,6 +24,9 @@ object Preferences {
     private val keys = sequenceOf(
         Key.Language,
         Key.AutoSync,
+        Key.AutoSyncInterval,
+        Key.ReleasesCacheRetention,
+        Key.ImagesCacheRetention,
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
         Key.ShowScreenshots,
@@ -138,6 +141,11 @@ object Preferences {
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
+
+        object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
+
+        object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
+
         object AutoSyncInterval : Key<Int>("auto_sync_interval", Value.IntValue(60))
 
         object InstallAfterSync :
