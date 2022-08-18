@@ -1,0 +1,8 @@
+- Hinzugefügt: Dynamisches System Theme (aka Material You)
+- Hinzugefügt: 7 neue Voreinstellungen Repositories
+- Hinzugefügt: Architektur-Label bei Releases für spezifische Architekturen
+- Entfernt: UnifiedPush Repository (ist tot)
+- Fix: Nervige "0 Updates" Benachrichtigung
+- Fix: Link zu Website des Autors wird nicht angezeigt, wenn nicht verfügbar
+- Fix: Clipboard Content Parsing für Repository URI
+- Fix: Links in Einstellungen

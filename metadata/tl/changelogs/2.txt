@@ -1,0 +1,4 @@
+* Iba't ibang pagbabago sa UI
+* Na-reformat ang buong codebase
+* Updated Dependencies
+* Pinalitan ng pangalan ang Mga Kagustuhan upang maging Mga Setting

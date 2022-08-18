@@ -93,7 +93,7 @@
     <string name="no_description_available_DESC">Nessuna descrizione.</string>
     <string name="no_matching_applications_found">Impossibile trovare tali app</string>
     <string name="no_proxy">Senza proxy</string>
-    <string name="notify_about_updates">Notifica sulle nuove versioni delle app</string>
+    <string name="notify_about_updates">Notifica nuove versioni app</string>
     <string name="notify_about_updates_summary">Mostra una notifica quando ci sono nuove versioni disponibili.</string>
     <string name="number_of_applications">Numero di app</string>
     <string name="ok">OK</string>
@@ -116,7 +116,7 @@
     <string name="proxy_host">Host</string>
     <string name="proxy_port">Porta</string>
     <string name="proxy_type">Tipo</string>
-    <string name="recently_updated">Aggiornato di recente</string>
+    <string name="recently_updated">Aggiornate di recente</string>
     <string name="repositories">Repository</string>
     <string name="repository">Repository</string>
     <string name="repository_not_used_DESC">Questo repository non è stato ancora utilizzato.
@@ -128,7 +128,7 @@
     <string name="root_permission_description">Usa root per installazioni senza interazione</string>
     <string name="save">Salva</string>
     <string name="saving_details">Salvataggio dei dettagli…</string>
-    <string name="screenshots">Immagini</string>
+    <string name="screenshots">Screenshot</string>
     <string name="search">Cerca</string>
     <string name="select_mirror">Seleziona alternativa</string>
     <string name="share">Condividi</string>
@@ -174,7 +174,7 @@
     <string name="whats_new">Novità</string>
     <string name="website">Sito web</string>
     <string name="prefs_language_title">Lingua</string>
-    <string name="prefs_personalization">Personalizzazione</string>
+    <string name="prefs_personalization">Personalizza</string>
     <string name="show_less">Mostra meno</string>
     <string name="explore">Esplora</string>
     <string name="update_all">Installa tutto</string>
@@ -185,24 +185,24 @@
     <string name="only_on_wifi_and_battery">Solo su Wi-Fi e in carica</string>
     <string name="install_after_sync">Aggiornamento automatico</string>
     <string name="install_after_sync_summary">Installa tutte le nuove versioni dopo aver esaminato i repository per le nuove app.</string>
-    <string name="prefs_updated_apps">Numero di app da mostrare in «Aggiornate di recente»</string>
-    <string name="prefs_new_apps">Numero di app da mostrare in «Nuove app»</string>
+    <string name="prefs_updated_apps">Numero app in «Aggiornate di recente»</string>
+    <string name="prefs_new_apps">Numero app in «Nuove app»</string>
     <string name="new_repository">Nuovo repository</string>
     <string name="default_tab">Scheda predefinita</string>
     <string name="pending">In attesa</string>
     <string name="installing">Installando</string>
     <string name="ignore_battery_optimization_not_supported">La tua installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
-    <string name="dialog_approve">Spegni</string>
+    <string name="dialog_approve">Spegnere</string>
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
-    <string name="dialog_refuse">Mantieni</string>
+    <string name="dialog_refuse">Mantenere</string>
     <string name="root_session_installer">Usa l\'installatore della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
     <string name="not_safe_for_work">Censurabile (potrebbe contenere contenuti sensibili)</string>
     <string name="no_action_possible">Nessuna azione possibile</string>
-    <string name="show_screenshots">Mostra catture schermata</string>
-    <string name="show_screenshots_description">Mostra le catture schermata nella pagina dell\'app.</string>
+    <string name="show_screenshots">Mostra screenshot</string>
+    <string name="show_screenshots_description">Mostra screenshot nella pagina dell\'app.</string>
     <string name="open">Apri</string>
     <string name="favorite_remove">Rimuovi dai preferiti</string>
     <string name="favorite_add">Aggiungi ai preferiti</string>
@@ -210,4 +210,6 @@
     <string name="releases">Rilasci</string>
     <string name="no_updates_available">Nessuna versione disponibile</string>
     <string name="dynamic">Dinamico di sistema</string>
+    <string name="auto_sync_interval">Intervallo di sincronizzazione automatica (in minuti)</string>
+    <string name="favorite_applications">Preferiti</string>
 </resources>

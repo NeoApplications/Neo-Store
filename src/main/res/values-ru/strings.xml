@@ -145,7 +145,7 @@
     <string name="source_code_no_longer_available">Исходный код больше не доступен</string>
     <string name="suggested">Рекомендуется</string>
     <string name="sync_repositories">Синхронизация репозиториев</string>
-    <string name="sync_repositories_automatically">Авто-синхронизация репозиториев</string>
+    <string name="sync_repositories_automatically">Автосинхронизация репозиториев</string>
     <string name="syncing">Синхронизация</string>
     <string name="syncing_FORMAT">Синхронизация %s…</string>
     <string name="system">Системная</string>
@@ -211,4 +211,6 @@
     <string name="loading_list">Загружаем список…</string>
     <string name="no_updates_available">Нет доступных версий</string>
     <string name="dynamic">Динамическая системная</string>
+    <string name="auto_sync_interval">Интервал синхронизации (в минутах)</string>
+    <string name="favorite_applications">Избранное</string>
 </resources>

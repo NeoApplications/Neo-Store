@@ -208,4 +208,6 @@
     <string name="loading_list">Laster inn lister …</string>
     <string name="no_updates_available">Ingen tilgjengelige versjoner</string>
     <string name="dynamic">System-dynamisk</string>
+    <string name="auto_sync_interval">Antall minutter mellom synkroniseringer</string>
+    <string name="favorite_applications">Favoritter</string>
 </resources>

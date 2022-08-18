@@ -1,0 +1,8 @@
+- Ajout : systeme de thème dynamique (aka. Material You)
+- Ajout : 7 nouveaux référentiels prédéfinis
+- Ajout : étiquette d'architecture sur les versions pour les architecture spécifique
+- Suppression : dépôt UnifiedPush (mort)
+- Correction : Notification de 0 mise à jour ennuyeuse
+- Correction : le lien du site Web de l'auteur est masquer lorsqu'il n'est pas disponible
+- Correction : analyse du contenu du presse-papiers pour l'URI du référentiel
+- Correction : Liens dans les paramètres

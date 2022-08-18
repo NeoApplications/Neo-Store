@@ -1,0 +1,32 @@
+Un client F-Droid rapide avec matériel3
+
+Fonctionnalités :
+
+* F-Droid avec style material3
+* Pas de cartes ou d'animations inappropriées
+* Synchronisation rapide des référentiels
+* Composants Android standard et dépendances minimales
+
+Disponible en :
+
+- Portugais Brésilien
+- Allemand
+- Anglais
+- Arabe péninsulaire
+- bokmål Norvégien
+- Chinois simplifié
+- Espagnol
+- Finnois
+- Français
+- Grec
+- Hongrois
+- Italien
+- Polonais
+- Russe
+- Turc
+- Ukrainien
+
+Ceci est un adaptation/modification directe de Foxy-Droid
+
+Logiciel libre sous copyright, sous licence GPLv3+. \
+Utiliser, étudier, modifier et partager ; avec tous.

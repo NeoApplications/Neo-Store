@@ -7,7 +7,7 @@
     <string name="amoled">أموليد (أسود)</string>
     <string name="all_applications_up_to_date">جميع التطبيقات محدثة</string>
     <string name="already_exists">متوفر مسبقا</string>
-    <string name="add_repository">إضافة مستودع</string>
+    <string name="add_repository">أضف مستودعًا</string>
     <string name="anti_features">مميزات غير مرغوبة</string>
     <string name="application">تطبيق</string>
     <string name="application_not_found">تعذر العثور على هذا التطبيق</string>
@@ -208,4 +208,10 @@
     <string name="favorite_remove">إزالة من المفضلة</string>
     <string name="favorite_add">إضافة إلى المفضلة</string>
     <string name="open">فتح</string>
+    <string name="no_updates_available">لا يوجد إصدارات متاحة</string>
+    <string name="dynamic">ديناميكية النظام</string>
+    <string name="auto_sync_interval">فترة التزامن التلقائي (بالدقائق)</string>
+    <string name="favorite_applications">المفضلات</string>
+    <string name="releases">إصدارات</string>
+    <string name="loading_list">جاري تحميل القائمة…</string>
 </resources>

@@ -209,4 +209,6 @@
     <string name="loading_list">Načítání seznamu…</string>
     <string name="no_updates_available">Nejsou dostupné žádné verze</string>
     <string name="dynamic">Systémový dynamický</string>
+    <string name="auto_sync_interval">Interval automatické synchronizace (v minutách)</string>
+    <string name="favorite_applications">Oblíbené</string>
 </resources>

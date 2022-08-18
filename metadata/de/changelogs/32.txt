@@ -1,0 +1,6 @@
+- Update: Design auf MD3
+- Update: Verbesserung der Screenshot UX
+- Fix: Einfrieren während der Installation mit root Methode
+- Update: Erneuerung der Theming Profile
+- Hinzugefügt: Sharing Links (aktuell nur für offizielles F-Droid)
+- Weitere kleine UI/UX fixes

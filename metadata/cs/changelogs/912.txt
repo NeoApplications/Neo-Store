@@ -1,0 +1,6 @@
+Oprava: Nastavení ignorovat aktualizace je neskrývá z aktualizací
+Oprava: Abecední řazení Nainstalovaných
+Oprava: Vnořené rolování AppSheetu
+Oprava: Zobrazení akce instalace během stahování:
+Oprava: viditelnost stavové lišty u motivu s dynamickou barvou
+Aktualizace: Překlady

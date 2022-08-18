@@ -1,0 +1,32 @@
+Un'aplicatzione cliente pro F-Droid lestra e in material design
+
+Funtzionalidades:
+
+* Istile materiale de F-Droid
+* Peruna carta o animatzione no apropriada
+* Sincronizatzione lestra de sos depòsitos
+* Cumponentes Android istandard e dipendèntzias mìnimas
+
+A disponimentu in:
+
+- Àrabu peninsulare
+- Finlandesu
+- Frantzesu
+- Grecu
+- Inglesu
+- Ispagnolu
+- Italianu
+- Norvegesu Bokmål
+- Polacu
+- Portoghesu Brasilianu
+- Russu
+- Tedescu
+- Turcu
+- Tzinesu semplificadu
+- Ucràinu
+- Ungheresu
+
+Un'adatamentu/modìfica direta de Foxy-Droid
+
+Programma lìberu "copylefted", cun lissèntzia GPLv3+.
+Imprea, istùdia, modìfica e cumpartzi·lu cun totus.

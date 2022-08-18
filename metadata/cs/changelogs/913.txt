@@ -1,0 +1,7 @@
+Přidáno: Kategorie Oblíbené
+Přidáno: Možnost intervalu synchronizace
+Přidáno: Podpora automatického importování repozitářů ze schránky
+Opraveno: Vložené skrolování AppSheetu
+Opraveno: Počet aplikací v repozitáři
+Opraveno: Povolení uchování apk do "konzumace"
+Aktualizováno: Text popisu/seznamu změn aplikace udělán vybíratelným

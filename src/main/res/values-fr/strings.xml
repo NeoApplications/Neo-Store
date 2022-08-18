@@ -206,4 +206,8 @@
     <string name="open">Ouvrir</string>
     <string name="loading_list">Chargement de la liste…</string>
     <string name="releases">Versions</string>
+    <string name="dynamic">Système dynamique</string>
+    <string name="no_updates_available">Aucune version disponible</string>
+    <string name="favorite_applications">Favoris</string>
+    <string name="auto_sync_interval">Intervalle de synchronisation automatique (en minutes)</string>
 </resources>

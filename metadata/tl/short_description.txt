@@ -1,0 +1,1 @@
+Isang modernong F-Droid client na gumagamit ng Material Design.

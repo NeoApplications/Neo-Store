@@ -1,0 +1,6 @@
+- Update: neues App Icon
+- Update: UI in app page
+- Update: List Animation ist nun optional
+- Fix: Echte Größe des apk anzeigen
+- Fix: Projekt-Link in preferences
+- Fix: Splash Screen hängt von Systeme Themeeinstellung ab
