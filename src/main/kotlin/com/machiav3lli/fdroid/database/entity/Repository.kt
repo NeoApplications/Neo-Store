@@ -172,8 +172,8 @@ data class Repository(
             "The official nightly repository for KDE Android apps.",
             21, false, "B3EBE10AFA6C5C400379B34473E843D686C61AE6AD33F423C98AF903F056523F", ""
         )
-        private val CALYX_OS = defaultRepository(
-            "https://calyxos.gitlab.io/calyx-fdroid-repo/fdroid/repo", "Calyx OS Repo",
+        private val CALYX_OS_TEST = defaultRepository(
+            "https://calyxos.gitlab.io/calyx-fdroid-repo/fdroid/repo", "Calyx OS Repo - Testing",
             "The official Calyx Labs F-Droid repository.",
             21, false, "C44D58B4547DE5096138CB0B34A1CC99DAB3B4274412ED753FCCBFC11DC1B7B6", ""
         )
@@ -290,6 +290,32 @@ data class Repository(
             "5564AB4D4BF9461AF7955449246F12D7E792A8D65165EBB2C0E90E65E77D5095",
             ""
         )
+        private val SESSION = defaultRepository(
+            "https://fdroid.getsession.org/fdroid/repo/",
+            "Session Messenger",
+            "A mirror repository for Session messenger.",
+            21,
+            false,
+            "DB0E5297EB65CC22D6BD93C869943BDCFCB6A07DC69A48A0DD8C7BA698EC04E6",
+            ""
+        )
+        private val CALYX_OS = defaultRepository(
+            "https://fdroid-repo.calyxinstitute.org/fdroid/repo", "Calyx OS Repo",
+            "The official Calyx Labs F-Droid repository.",
+            21,
+            false,
+            "5DA90117C91B0011AE44314CCC456CDFE406FBCE3BF880072FD7C0B073E20DF3",
+            ""
+        )
+        private val THREEMA = defaultRepository(
+            "https://releases.threema.ch/fdroid/repo",
+            "Official Threema repository.",
+            "The official repository to get Threema's builds.",
+            21,
+            false,
+            "5734E753899B25775D90FE85362A49866E05AC4F83C05BEF5A92880D2910639E",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -298,9 +324,9 @@ data class Repository(
             MICRO_G,
             BROMITE, UNGOOGLED_CHROMIUM,
             NEWPIPE, LIBRETRO, BITWARDEN,
-            CALYX_OS, DIVEST_OS, KDE, NANODROID,
+            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
             NETSYMS, FEDILAB, NETHUNTER,
-            MOLLY, BRIAR, FLUFFY_CHAT, SIMPLEX_CHAT,
+            THREEMA, SESSION, MOLLY, BRIAR, FLUFFY_CHAT, SIMPLEX_CHAT,
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
@@ -311,6 +337,10 @@ data class Repository(
             FLUFFY_CHAT, SIMPLEX_CHAT, I2P,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE
+        )
+
+        val addedReposV10 = listOf(
+            SESSION, THREEMA, CALYX_OS
         )
     }
 }
