@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller.SessionParams
 import android.util.Log
 import com.machiav3lli.fdroid.content.Cache
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -111,7 +112,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
         if (!hasErrors) {
             session.commit(PendingIntent.getService(context, id, intent, flags).intentSender)
-            cacheFile.delete()
+            if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) cacheFile.delete()
         }
     }
 

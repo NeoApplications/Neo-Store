@@ -116,7 +116,10 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
             } else {
                 Shell.su(cacheFile.install)
-                    .submit { if (it.isSuccess) Shell.su(cacheFile.deletePackage).submit() }
+                    .submit {
+                        if (it.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
+                            Shell.su(cacheFile.deletePackage).submit()
+                    }
             }
         }
     }
