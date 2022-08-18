@@ -72,7 +72,7 @@ data class Release(
     }
 
     val cacheFileName: String
-        get() = "${hash.replace('/', '-')}.apk"
+        get() = "${packageName}_${hash.replace('/', '-')}.apk"
 
     fun toJSON() = Json.encodeToString(this)
 
