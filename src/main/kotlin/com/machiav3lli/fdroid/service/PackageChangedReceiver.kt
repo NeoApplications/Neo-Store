@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.Section
@@ -40,7 +41,7 @@ class PackageChangedReceiver : BroadcastReceiver() {
                         else db.installedDao.delete(packageName)
 
                         // Update updates notification
-                        context.displayUpdatesNotification(
+                        if (Preferences[Preferences.Key.UpdateNotify]) context.displayUpdatesNotification(
                             db.productDao
                                 .queryObject(
                                     installed = true,
