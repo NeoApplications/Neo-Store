@@ -3,11 +3,11 @@ package com.machiav3lli.fdroid.installer
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.os.IBinder
-import androidx.lifecycle.LifecycleService
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
@@ -20,7 +20,7 @@ import com.machiav3lli.fdroid.utility.notifyStatus
  * Runs during or after a PackageInstaller session in order to handle completion, failure, or
  * interruptions requiring user intervention, such as the package installer prompt.
  */
-class InstallerService : LifecycleService() {
+class InstallerService : Service() {
     companion object {
         const val KEY_ACTION = "installerAction"
         const val KEY_APP_NAME = "appName"
@@ -66,7 +66,7 @@ class InstallerService : LifecycleService() {
     }
 
     override fun onBind(intent: Intent): IBinder? {
-        super.onBind(intent)
+        //super.onBind(intent)
         return null
     }
 
