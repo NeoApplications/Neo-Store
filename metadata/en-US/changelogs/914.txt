@@ -1,7 +1,5 @@
-Add: Favorites category
-Add: Option to set sync interval
-Add: Supporting auto-importing fdroidrepos: repo addresses from clipboard
-Fix: Nested scrolling of AppSheet
-Fix: Repository apps count
-Fix: Allow retention of apk till "consumed"
-Update: Make app description/changelog text selectable
+Fix: Showing updates notification even when disabled
+Add: Threema, Stable Calyx OS and Session to preset-repositories
+Fix(try): Background installer
+Add: Release apks and images cache retention options
+Update translation
