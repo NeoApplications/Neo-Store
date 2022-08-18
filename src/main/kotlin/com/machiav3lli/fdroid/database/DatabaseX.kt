@@ -24,6 +24,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import kotlinx.coroutines.Dispatchers
@@ -41,12 +42,16 @@ import kotlinx.coroutines.launch
         Installed::class,
         Extras::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = true,
     autoMigrations = [AutoMigration(
         from = 8,
         to = 9,
         spec = DatabaseX.Companion.MigrationSpec8to9::class
+    ), AutoMigration(
+        from = 9,
+        to = 10,
+        spec = DatabaseX.Companion.MigrationSpec9to10::class
     )]
 )
 @TypeConverters(Converters::class)
@@ -90,12 +95,24 @@ abstract class DatabaseX : RoomDatabase() {
         class MigrationSpec8to9 : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
-                val preRepos = if (db.version < 9) addedReposV9
-                else emptyList()
-                GlobalScope.launch(Dispatchers.IO) {
-                    preRepos.forEach {
-                        INSTANCE?.repositoryDao?.put(it)
-                    }
+                onPostMigrate(8)
+            }
+        }
+
+        class MigrationSpec9to10 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(9)
+            }
+        }
+
+        fun onPostMigrate(from: Int) {
+            val preRepos = mutableListOf<Repository>()
+            if (from == 8) preRepos.addAll(addedReposV9)
+            if (from == 9) preRepos.addAll(addedReposV10)
+            GlobalScope.launch(Dispatchers.IO) {
+                preRepos.forEach {
+                    INSTANCE?.repositoryDao?.put(it)
                 }
             }
         }
