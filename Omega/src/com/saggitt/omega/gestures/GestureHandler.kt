@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.android.launcher3.R
 import org.json.JSONObject
 
@@ -57,6 +58,7 @@ abstract class GestureHandler(val context: Context, val config: JSONObject?) {
 class BlankGestureHandler(context: Context, config: JSONObject?) : GestureHandler(context, config) {
     override val displayName: String = context.getString(R.string.action_none)
     override val displayNameRes: Int = R.string.action_none
+    override val icon = ContextCompat.getDrawable(context, R.drawable.close_icon)
     override fun onGestureTrigger(controller: GestureController, view: View?) {}
 }
 

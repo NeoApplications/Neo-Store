@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
 import com.android.launcher3.R
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.GestureHandler
@@ -33,6 +34,7 @@ class NotificationsOpenGestureHandler(context: Context, config: JSONObject?) :
     override val displayName = context.getString(R.string.action_open_notifications)
     override val displayNameRes = R.string.action_open_notifications
 
+    override val icon = ContextCompat.getDrawable(context, R.drawable.ic_assistant)
     @SuppressLint("PrivateApi", "WrongConstant")
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         try {

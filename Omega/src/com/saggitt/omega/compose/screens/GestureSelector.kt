@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.TabRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -80,7 +79,7 @@ import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
 import com.saggitt.omega.gestures.BlankGestureHandler
-import com.saggitt.omega.gestures.actions.GestureAction
+import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
@@ -221,7 +220,7 @@ fun LauncherScreen(selectedOption: MutableState<String?>) {
             .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
-        val launcherItems = GestureAction.getLauncherActions(context, true)
+        val launcherItems = GestureController.getGestureHandlers(context, true, true)
         val colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.onPrimary,
             unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -244,7 +243,7 @@ fun LauncherScreen(selectedOption: MutableState<String?>) {
                         summary = "",
                         startIcon = {
                             Image(
-                                painter = painterResource(id = item.icon),
+                                painter = rememberDrawablePainter(drawable = item.icon),
                                 contentDescription = null,
                                 modifier = Modifier.size(36.dp)
                             )
@@ -274,7 +273,6 @@ fun AppsScreen(prefs: OmegaPreferences, key: String) {
             .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
-        val prefs = Utilities.getOmegaPrefs(context)
         val apps = Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
         val colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.onPrimary,

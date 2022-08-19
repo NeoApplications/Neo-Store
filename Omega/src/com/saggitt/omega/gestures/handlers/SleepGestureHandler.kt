@@ -27,6 +27,7 @@ import android.content.Intent
 import android.os.Build
 import android.view.View
 import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.gestures.GestureController
@@ -39,6 +40,7 @@ class SleepGestureHandler(context: Context, config: JSONObject?) : GestureHandle
     override val displayName: String = context.getString(R.string.action_sleep)
     override val displayNameRes = R.string.action_sleep
 
+    override val icon = ContextCompat.getDrawable(context, R.drawable.ic_sleep)
     override fun onGestureTrigger(controller: GestureController, view: View?) {
         method!!.sleep(controller)
     }

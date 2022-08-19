@@ -185,7 +185,6 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
                 OpenOverlayGestureHandler(context, null),
                 OpenOverviewGestureHandler(context, null),
                 StartGlobalSearchGestureHandler(context, null),
-                //StartAppGestureHandler(context, null),
                 OpenSettingsGestureHandler(context, null)
             ).apply {
                 if (hasBlank) {
