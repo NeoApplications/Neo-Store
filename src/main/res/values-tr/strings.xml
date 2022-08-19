@@ -208,4 +208,8 @@
     <string name="favorite_add">Favorilere Ekle</string>
     <string name="open">Aç</string>
     <string name="loading_list">Liste yükleniyor…</string>
+    <string name="images_cache_retention">Görüntülerin önbellekte tutulması</string>
+    <string name="releases_cache_retention">İndirilen APK\'ların önbellekte tutulması</string>
+    <string name="auto_sync_interval">Otomatik senkronizasyon aralığı (dakika olarak)</string>
+    <string name="favorite_applications">Favoriler</string>
 </resources>
