@@ -35,8 +35,6 @@ public class SmartSpaceBroadcastReceiver extends BroadcastReceiver {
         if (byteArrayExtra != null) {
             SmartSpaceUpdate smartspaceUpdate = SmartSpaceUpdate.newBuilder().build();
             try {
-                //TODO: revisar el uso de MessageNano
-                //MessageNano.mergeFrom(smartspaceUpdate, byteArrayExtra);
                 for (SmartSpaceUpdate.SmartSpaceCard smartspaceCard : smartspaceUpdate.getCardList()) {
                     boolean isPrimary = smartspaceCard.getCardPriority() == 1;
                     boolean z2 = smartspaceCard.getCardPriority() == 2;
