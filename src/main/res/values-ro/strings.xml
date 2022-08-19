@@ -207,4 +207,10 @@
     <string name="show_screenshots_description">Afișare capturi de ecran în pagina aplicației.</string>
     <string name="releases">Lansări</string>
     <string name="loading_list">Se încarcă lista…</string>
+    <string name="images_cache_retention">Păstrarea memoriei cache a imaginilor</string>
+    <string name="releases_cache_retention">Reținerea cache-ului APK descărcat</string>
+    <string name="no_updates_available">Nu există versiuni disponibile</string>
+    <string name="dynamic">Sistem dinamic</string>
+    <string name="auto_sync_interval">Interval de sincronizare automată (în minute)</string>
+    <string name="favorite_applications">Favorite</string>
 </resources>
