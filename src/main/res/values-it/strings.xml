@@ -212,4 +212,6 @@
     <string name="dynamic">Dinamico di sistema</string>
     <string name="auto_sync_interval">Intervallo di sincronizzazione automatica (in minuti)</string>
     <string name="favorite_applications">Preferiti</string>
+    <string name="images_cache_retention">Conservazione cache immagini</string>
+    <string name="releases_cache_retention">Conservazione cache APK scaricato</string>
 </resources>
