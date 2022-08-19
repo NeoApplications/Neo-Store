@@ -171,7 +171,7 @@
     <string name="version">Версия</string>
     <string name="version_FORMAT">Версия %s</string>
     <string name="versions">Версии</string>
-    <string name="waiting_to_start_download">Загрузка…</string>
+    <string name="waiting_to_start_download">Скачивание…</string>
     <string name="whats_new">Что нового</string>
     <string name="website">Веб-сайт</string>
     <string name="prefs_language_title">Язык</string>
@@ -213,4 +213,6 @@
     <string name="dynamic">Динамическая системная</string>
     <string name="auto_sync_interval">Интервал синхронизации (в минутах)</string>
     <string name="favorite_applications">Избранное</string>
+    <string name="images_cache_retention">Хранение изображений в кэше</string>
+    <string name="releases_cache_retention">Хранение скачанных APK в кэше</string>
 </resources>
