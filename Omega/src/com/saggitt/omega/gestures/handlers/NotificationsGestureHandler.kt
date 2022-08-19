@@ -46,26 +46,3 @@ class NotificationsOpenGestureHandler(context: Context, config: JSONObject?) :
         }
     }
 }
-
-// TODO not used class, should be removed?
-@Keep
-class NotificationsCloseGestureHandler(context: Context, config: JSONObject?) :
-    GestureHandler(context, config) {
-
-    override val displayName = context.getString(R.string.action_close_notifications)
-    override val displayNameRes = R.string.action_close_notifications
-
-    @SuppressLint("PrivateApi", "WrongConstant")
-    override fun onGestureTrigger(controller: GestureController, view: View?) {
-        try {
-            Class.forName("android.app.StatusBarManager")
-                .getMethod("collapsePanels")
-                .invoke(controller.launcher.getSystemService("statusbar"))
-        } catch (ex: ClassNotFoundException) {
-        } catch (ex: NoSuchMethodException) {
-        } catch (ex: IllegalAccessException) {
-        } catch (ex: InvocationTargetException) {
-        }
-
-    }
-}
