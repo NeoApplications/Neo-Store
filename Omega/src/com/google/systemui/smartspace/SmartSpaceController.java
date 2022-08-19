@@ -6,6 +6,7 @@ import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -90,14 +91,11 @@ public class SmartSpaceController implements Handler.Callback {
             mBackgroundHandler.post(() -> {
                 final CardWrapper wrapper = newCardInfo.toWrapper(mContext);
                 if (!mHidePrivateData) {
-                    ProtoStore protoStore = mProtoStore;
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("smartspace_");
-                    sb.append(mCurrentUserId);
-                    sb.append("_");
-                    sb.append(newCardInfo.isPrimary());
-                    //TODO Revisar el Uso de MessageNano
-                    //protoStore.store(wrapper, sb.toString());
+                    String sb = "smartspace_" +
+                            mCurrentUserId +
+                            "_" +
+                            newCardInfo.isPrimary();
+                    mProtoStore.store(wrapper, sb);
                 }
                 mUiHandler.post(() -> {
                     SmartSpaceCardView smartSpaceCard = newCardInfo.shouldDiscard() ? null :
@@ -116,13 +114,12 @@ public class SmartSpaceController implements Handler.Callback {
 
     private SmartSpaceCardView loadSmartSpaceData(boolean z) {
         CardWrapper cardWrapper = CardWrapper.newBuilder().build();
-        ProtoStore protoStore = mProtoStore;
         StringBuilder sb = new StringBuilder();
         sb.append("smartspace_");
         sb.append(mCurrentUserId);
         sb.append("_");
         sb.append(z);
-        if (protoStore.load(sb.toString(), cardWrapper)) {
+        if (mProtoStore.load(sb.toString(), cardWrapper)) {
             return SmartSpaceCardView.fromWrapper(mContext, cardWrapper, !z);
         }
         return null;
@@ -166,11 +163,11 @@ public class SmartSpaceController implements Handler.Callback {
         }
     }
 
-    public void setHideSensitiveData(boolean z) {
-        mHidePrivateData = z;
+    public void setHideSensitiveData(boolean hide) {
+        mHidePrivateData = hide;
         ArrayList<SmartSpaceUpdateListener> arrayList = new ArrayList<>(mListeners);
         for (int i = 0; i < arrayList.size(); i++) {
-            arrayList.get(i).onSensitiveModeChanged(z);
+            arrayList.get(i).onSensitiveModeChanged(hide);
         }
         if (mHidePrivateData) {
             clearStore();
@@ -178,13 +175,11 @@ public class SmartSpaceController implements Handler.Callback {
     }
 
     private void clearStore() {
-        ProtoStore protoStore = mProtoStore;
         String str = "smartspace_";
         String sb = "smartspace_" + mCurrentUserId + "_true";
-        protoStore.store(null, sb);
-        ProtoStore protoStore2 = mProtoStore;
+        mProtoStore.store(null, sb);
         String sb2 = str + mCurrentUserId + "_false";
-        protoStore2.store(null, sb2);
+        mProtoStore.store(null, sb2);
     }
 
     private void update() {
@@ -244,7 +239,7 @@ public class SmartSpaceController implements Handler.Callback {
         return true;
     }
 
-    private Intent db() {
+    private Intent getIntent() {
         return new Intent("com.google.android.apps.gsa.smartspace.SETTINGS")
                 .setPackage(Config.GOOGLE_QSB)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -276,16 +271,16 @@ public class SmartSpaceController implements Handler.Callback {
         Message.obtain(this.mWorker, 1).sendToTarget();
     }
 
-    public void cX(final String s, final PrintWriter printWriter) {
+    public void printWriter(final String s, final PrintWriter printWriter) {
         printWriter.println();
         printWriter.println(s + "SmartspaceController");
-        printWriter.println(s + "  weather " + this.mData.mCurrentCard);
-        printWriter.println(s + "  current " + this.mData.mWeatherCard);
+        printWriter.println(s + "  weather " + mData.mCurrentCard);
+        printWriter.println(s + "  current " + mData.mWeatherCard);
     }
 
     public boolean cY() {
         boolean b = false;
-        final List queryBroadcastReceivers = this.mContext.getPackageManager().queryBroadcastReceivers(db(), 0);
+        final List<ResolveInfo> queryBroadcastReceivers = mContext.getPackageManager().queryBroadcastReceivers(getIntent(), 0);
         if (queryBroadcastReceivers != null) {
             b = !queryBroadcastReceivers.isEmpty();
         }
