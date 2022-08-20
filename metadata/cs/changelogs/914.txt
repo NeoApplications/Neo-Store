@@ -1,0 +1,5 @@
+Oprava: Zobrazování oznámení o aktualizacích, i když je zakázáno
+Přidáno: Threema, Stable Calyx OS a Session do přednastavených repozitářů
+Oprava (pokus): Instalační program na pozadí
+Přidáno: Vydání apk a možnosti uchovávání obrázků v mezipaměti
+Aktualizace překladů
