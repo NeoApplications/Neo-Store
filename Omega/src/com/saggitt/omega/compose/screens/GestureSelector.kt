@@ -30,10 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.TabRow
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
@@ -122,7 +119,6 @@ fun GestureSelector(titleId: Int, key: String) {
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainGesturesScreen(key: String) {
-
     val pagerState = rememberPagerState()
     val prefs = Utilities.getOmegaPrefs(LocalContext.current)
     val blankGestureHandler = BlankGestureHandler(LocalContext.current, null)
@@ -135,12 +131,22 @@ fun MainGesturesScreen(key: String) {
         )
     }
 
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
     val tabs = listOf(
-        TabItem(R.drawable.ic_assistant, R.string.tab_launcher) { LauncherScreen(selectedOption) },
-        TabItem(R.drawable.ic_apps, R.string.apps_label) { AppsScreen(prefs, key) },
-        TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts) { ShortcutsScreen(prefs, key) }
+        TabItem(R.drawable.ic_assistant, R.string.tab_launcher) {
+            LauncherScreen(
+                prefs,
+                selectedOption,
+                key
+            )
+        },
+        TabItem(R.drawable.ic_apps, R.string.apps_label) { AppsScreen(prefs, selectedOption, key) },
+        TabItem(R.drawable.ic_edit_dash, R.string.tab_shortcuts) {
+            ShortcutsScreen(
+                prefs,
+                selectedOption,
+                key
+            )
+        }
     )
 
     Scaffold(
@@ -148,29 +154,250 @@ fun MainGesturesScreen(key: String) {
             SmallTopAppBar(
                 title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
             )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                onClick = {
-                    prefs.sharedPrefs.edit()
-                        .putString(key, selectedOption.value)
-                        .apply()
-                    backDispatcher?.onBackPressed()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Check,
-                    contentDescription = stringResource(id = R.string.tab_bottom_sheet_save)
-                )
-                Text(text = stringResource(id = R.string.tab_bottom_sheet_save))
-            }
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             Tabs(tabs = tabs, pagerState = pagerState)
             TabsContent(tabs = tabs, pagerState = pagerState)
+        }
+    }
+}
+
+@Composable
+fun LauncherScreen(prefs: OmegaPreferences, selectedOption: MutableState<String?>, key: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+    ) {
+        val context = LocalContext.current
+        val launcherItems = GestureController.getGestureHandlers(context, true, true)
+        val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+        val colors = RadioButtonDefaults.colors(
+            selectedColor = MaterialTheme.colorScheme.onPrimary,
+            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        PreferenceGroup {
+            LazyColumn {
+                itemsIndexed(launcherItems) { _, item ->
+                    ListItemWithIcon(
+                        title = item.displayName,
+                        modifier = Modifier
+                            .background(
+                                color = if (item.toString() == selectedOption.value)
+                                    MaterialTheme.colorScheme.primary.copy(0.65f)
+                                else Color.Transparent
+                            )
+                            .clickable {
+                                selectedOption.value = item.toString()
+                                prefs.sharedPrefs
+                                    .edit()
+                                    .putString(key, selectedOption.value)
+                                    .apply()
+                                backDispatcher?.onBackPressed()
+                            },
+                        summary = "",
+                        startIcon = {
+                            Image(
+                                painter = rememberDrawablePainter(drawable = item.icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
+                        endCheckbox = {
+                            RadioButton(
+                                selected = (item.toString() == selectedOption.value),
+                                onClick = {
+                                    selectedOption.value = item.toString()
+                                    prefs.sharedPrefs.edit()
+                                        .putString(key, selectedOption.value)
+                                        .apply()
+                                    backDispatcher?.onBackPressed()
+                                },
+                                colors = colors
+                            )
+                        },
+                        verticalPadding = 4.dp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AppsScreen(prefs: OmegaPreferences, selectedHandler: MutableState<String?>, key: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+    ) {
+        val context = LocalContext.current
+        val apps = Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
+        val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+        val colors = RadioButtonDefaults.colors(
+            selectedColor = MaterialTheme.colorScheme.onPrimary,
+            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        val selectedOption = remember {
+            mutableStateOf(selectedHandler.value)
+        }
+        PreferenceGroup {
+            LazyColumn {
+                itemsIndexed(apps) { _, item ->
+                    val config = JSONObject("{}")
+                    config.apply {
+                        put("appName", item.label.toString())
+                        put("packageName", item.componentName.packageName)
+                        put("target", ComponentKey(item.componentName, item.user))
+                        put("type", "app")
+                    }
+
+                    val appGestureHandler = StartAppGestureHandler(context, config)
+                    appGestureHandler.apply {
+                        appName = item.label.toString()
+                    }
+                    ListItemWithIcon(
+                        title = item.label.toString(),
+                        modifier = Modifier
+                            .background(
+                                color = if (appGestureHandler.toString() == selectedOption.value)
+                                    MaterialTheme.colorScheme.primary.copy(0.65f)
+                                else Color.Transparent
+                            )
+                            .clickable {
+                                selectedOption.value = appGestureHandler.toString()
+                                prefs.sharedPrefs
+                                    .edit()
+                                    .putString(key, selectedOption.value)
+                                    .apply()
+                                backDispatcher?.onBackPressed()
+                            },
+                        summary = "",
+                        startIcon = {
+                            Image(
+                                painter = rememberDrawablePainter(
+                                    drawable = item.getIcon(LocalContext.current.resources.displayMetrics.densityDpi)
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
+                        endCheckbox = {
+                            RadioButton(
+                                selected = (appGestureHandler.toString() == selectedOption.value),
+                                onClick = {
+                                    selectedOption.value = appGestureHandler.toString()
+                                    prefs.sharedPrefs.edit()
+                                        .putString(key, selectedOption.value)
+                                        .apply()
+                                    backDispatcher?.onBackPressed()
+                                },
+                                colors = colors
+                            )
+                        },
+                        verticalPadding = 4.dp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ShortcutsScreen(prefs: OmegaPreferences, selectedHandler: MutableState<String?>, key: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+    ) {
+        val context = LocalContext.current
+        val apps = Config(context).getAppsList(filter = null)
+            .sortedBy { it.label.toString() }
+            .map { AppItemWithShortcuts(context, it) }
+        val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+        val colors = RadioButtonDefaults.colors(
+            selectedColor = MaterialTheme.colorScheme.onPrimary,
+            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        val selectedOption = remember {
+            mutableStateOf(selectedHandler.value)
+        }
+
+        PreferenceGroup {
+            LazyColumn {
+                itemsIndexed(apps) { _, app ->
+                    if (app.hasShortcuts) {
+                        ExpandableListItem(
+                            title = app.info.label.toString(),
+                            icon = app.info.getIcon(LocalContext.current.resources.displayMetrics.densityDpi)
+                        ) {
+                            app.shortcuts.forEach {
+
+                                val config = JSONObject("{}")
+                                config.apply {
+                                    put("appName", it.label.toString())
+                                    put("packageName", it.info.`package`)
+                                    put("intent", ShortcutKey.makeIntent(it.info).toUri(0))
+                                    put("user", 0)
+                                    put("id", it.info.id)
+                                    put("type", "shortcut")
+                                }
+                                val appGestureHandler = StartAppGestureHandler(context, config)
+                                appGestureHandler.apply {
+                                    appName = it.label.toString()
+                                }
+                                ListItemWithIcon(
+                                    title = it.label.toString(),
+                                    modifier = Modifier
+                                        .clip(MaterialTheme.shapes.medium)
+                                        .background(
+                                            color = if (appGestureHandler.toString() == selectedOption.value)
+                                                MaterialTheme.colorScheme.primary.copy(0.65f)
+                                            else Color.Transparent
+                                        )
+                                        .clickable {
+                                            selectedOption.value = appGestureHandler.toString()
+                                            prefs.sharedPrefs
+                                                .edit()
+                                                .putString(key, selectedOption.value)
+                                                .apply()
+                                            backDispatcher?.onBackPressed()
+                                        },
+                                    summary = "",
+                                    startIcon = {
+                                        Image(
+                                            painter = rememberDrawablePainter(
+                                                drawable = it.iconDrawable
+                                            ),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(36.dp)
+                                        )
+                                    },
+                                    verticalPadding = 4.dp,
+                                    horizontalPadding = 0.dp,
+                                    endCheckbox = {
+                                        RadioButton(
+                                            selected = (appGestureHandler.toString() == selectedOption.value),
+                                            onClick = {
+                                                selectedOption.value = appGestureHandler.toString()
+                                                prefs.sharedPrefs.edit()
+                                                    .putString(key, selectedOption.value)
+                                                    .apply()
+                                                backDispatcher?.onBackPressed()
+                                            },
+                                            colors = colors
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -209,237 +436,6 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         tabs[page].screen()
-    }
-}
-
-@Composable
-fun LauncherScreen(selectedOption: MutableState<String?>) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-    ) {
-        val context = LocalContext.current
-        val launcherItems = GestureController.getGestureHandlers(context, true, true)
-        val colors = RadioButtonDefaults.colors(
-            selectedColor = MaterialTheme.colorScheme.onPrimary,
-            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        PreferenceGroup {
-            LazyColumn {
-                itemsIndexed(launcherItems) { _, item ->
-                    ListItemWithIcon(
-                        title = item.displayName,
-                        modifier = Modifier
-                            .background(
-                                color = if (item.toString() == selectedOption.value)
-                                    MaterialTheme.colorScheme.primary.copy(0.65f)
-                                else Color.Transparent
-                            )
-                            .clickable {
-                                selectedOption.value = item.toString()
-                            },
-                        summary = "",
-                        startIcon = {
-                            Image(
-                                painter = rememberDrawablePainter(drawable = item.icon),
-                                contentDescription = null,
-                                modifier = Modifier.size(36.dp)
-                            )
-                        },
-                        endCheckbox = {
-                            RadioButton(
-                                selected = (item.toString() == selectedOption.value),
-                                onClick = {
-                                    selectedOption.value = item.toString()
-                                },
-                                colors = colors
-                            )
-                        },
-                        verticalPadding = 4.dp
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun AppsScreen(prefs: OmegaPreferences, key: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-    ) {
-        val context = LocalContext.current
-        val apps = Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
-        val colors = RadioButtonDefaults.colors(
-            selectedColor = MaterialTheme.colorScheme.onPrimary,
-            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        val (selectedOption, onOptionSelected) = remember {
-            mutableStateOf("")
-        }
-        PreferenceGroup {
-            LazyColumn {
-                itemsIndexed(apps) { _, item ->
-                    val config = JSONObject("{}")
-                    config.apply {
-                        put("appName", item.label.toString())
-                        put("packageName", item.componentName.packageName)
-                        put("target", ComponentKey(item.componentName, item.user))
-                        put("type", "app")
-                    }
-
-                    val appGestureHandler = StartAppGestureHandler(context, config)
-                    appGestureHandler.apply {
-                        appName = item.label.toString()
-                    }
-                    ListItemWithIcon(
-                        title = item.label.toString(),
-                        modifier = Modifier
-                            .background(
-                                color = if (item.componentName.packageName == selectedOption)
-                                    MaterialTheme.colorScheme.primary.copy(0.65f)
-                                else Color.Transparent
-                            )
-                            .clickable {
-                                onOptionSelected(item.componentName.packageName)
-
-                                prefs.sharedPrefs
-                                    .edit()
-                                    .putString(
-                                        "gesture_action",
-                                        appGestureHandler.toString()
-                                    )
-                                    .apply()
-                            },
-                        summary = "",
-                        startIcon = {
-                            Image(
-                                painter = rememberDrawablePainter(
-                                    drawable = item.getIcon(LocalContext.current.resources.displayMetrics.densityDpi)
-                                ),
-                                contentDescription = null,
-                                modifier = Modifier.size(36.dp)
-                            )
-                        },
-                        endCheckbox = {
-                            RadioButton(
-                                selected = (item.componentName.packageName == selectedOption),
-                                onClick = {
-                                    onOptionSelected(item.componentName.packageName)
-                                    prefs.sharedPrefs.edit().putString(
-                                        "gesture_action",
-                                        appGestureHandler.toString()
-                                    ).apply()
-                                },
-                                colors = colors
-                            )
-                        },
-                        verticalPadding = 4.dp
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ShortcutsScreen(prefs: OmegaPreferences, key: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-    ) {
-        val context = LocalContext.current
-        val apps = Config(context).getAppsList(filter = null)
-            .sortedBy { it.label.toString() }
-            .map { AppItemWithShortcuts(context, it) }
-
-        val colors = RadioButtonDefaults.colors(
-            selectedColor = MaterialTheme.colorScheme.onPrimary,
-            unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        val (selectedOption, onOptionSelected) = remember {
-            mutableStateOf("")
-        }
-        PreferenceGroup {
-            LazyColumn {
-                itemsIndexed(apps) { _, app ->
-                    if (app.hasShortcuts) {
-                        ExpandableListItem(
-                            title = app.info.label.toString(),
-                            icon = app.info.getIcon(LocalContext.current.resources.displayMetrics.densityDpi)
-                        ) {
-                            app.shortcuts.forEach {
-
-                                val config = JSONObject("{}")
-                                config.apply {
-                                    put("appName", it.label.toString())
-                                    put("packageName", it.info.`package`)
-                                    put("intent", ShortcutKey.makeIntent(it.info).toUri(0))
-                                    put("user", 0)
-                                    put("id", it.info.id)
-                                    put("type", "shortcut")
-                                }
-                                val appGestureHandler = StartAppGestureHandler(context, config)
-                                appGestureHandler.apply {
-                                    appName = it.label.toString()
-                                }
-                                ListItemWithIcon(
-                                    title = it.label.toString(),
-                                    modifier = Modifier
-                                        .clip(MaterialTheme.shapes.medium)
-                                        .background(
-                                            color = if (appGestureHandler.toString() == selectedOption)
-                                                MaterialTheme.colorScheme.primary.copy(0.65f)
-                                            else Color.Transparent
-                                        )
-                                        .clickable {
-                                            onOptionSelected(appGestureHandler.toString())
-                                            prefs.sharedPrefs
-                                                .edit()
-                                                .putString(
-                                                    "gesture_action",
-                                                    appGestureHandler.toString()
-                                                )
-                                                .apply()
-                                        },
-                                    summary = "",
-                                    startIcon = {
-                                        Image(
-                                            painter = rememberDrawablePainter(
-                                                drawable = it.iconDrawable
-                                            ),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(36.dp)
-                                        )
-                                    },
-                                    verticalPadding = 4.dp,
-                                    horizontalPadding = 0.dp,
-                                    endCheckbox = {
-                                        RadioButton(
-                                            selected = (appGestureHandler.toString() == selectedOption),
-                                            onClick = {
-                                                onOptionSelected(appGestureHandler.toString())
-                                                prefs.sharedPrefs.edit().putString(
-                                                    "gesture_action",
-                                                    appGestureHandler.toString()
-                                                ).apply()
-                                            },
-                                            colors = colors
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
