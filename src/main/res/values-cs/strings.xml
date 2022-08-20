@@ -211,4 +211,6 @@
     <string name="dynamic">Systémový dynamický</string>
     <string name="auto_sync_interval">Interval automatické synchronizace (v minutách)</string>
     <string name="favorite_applications">Oblíbené</string>
+    <string name="images_cache_retention">Uchovávání obrázků v mezipaměti</string>
+    <string name="releases_cache_retention">Uchovávání staženého APK v mezipaměti</string>
 </resources>
