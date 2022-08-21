@@ -143,6 +143,8 @@ fun StringPreference(
     groupSize: Int = 1,
     isEnabled: Boolean = true,
 ) {
+    val navController = LocalNavController.current
+    val route = subRoute(pref.navRoute)
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,
@@ -151,7 +153,11 @@ fun StringPreference(
         groupSize = groupSize,
         isEnabled = isEnabled,
         onClick = {
-            pref.onClick?.invoke()
+            if (pref.navRoute != "") {
+                navController.navigate(route)
+            } else {
+                pref.onClick?.invoke()
+            }
         }
     )
 }

@@ -507,22 +507,8 @@ abstract class BasePreferences(context: Context) :
         @StringRes summaryId: Int = -1,
         defaultValue: String = "",
         val onClick: (() -> Unit)? = null,
-        onChange: () -> Unit = doNothing
-    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
-        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
-
-        override fun onSetValue(value: String) {
-            edit { putString(getKey(), value) }
-        }
-    }
-
-    open inner class StringNavPref(
-            key: String,
-            @StringRes titleId: Int,
-            @StringRes summaryId: Int = -1,
-            defaultValue: String = "",
-            val navRoute: String= "",
-            onChange: () -> Unit = doNothing
+        onChange: () -> Unit = doNothing,
+        val navRoute: String = ""
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
 

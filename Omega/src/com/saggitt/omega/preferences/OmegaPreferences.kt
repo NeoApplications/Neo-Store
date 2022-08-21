@@ -782,56 +782,56 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // NOTIFICATION & GESTURES
-    var gestureDoubleTap = StringNavPref(
+    var gestureDoubleTap = StringPref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_double_tap}/$PREFS_GESTURE_DOUBLE_TAP",
         onChange = restart
     )
-    var gestureLongPress = StringNavPref(
+    var gestureLongPress = StringPref(
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_long_press}/$PREFS_GESTURE_LONG_PRESS",
         onChange = restart
     )
-    var gestureHomePress = StringNavPref(
+    var gestureHomePress = StringPref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_press_home}/$PREFS_GESTURE_HOME",
         onChange = restart
     )
-    var gestureBackPress = StringNavPref(
+    var gestureBackPress = StringPref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_press_back}/$PREFS_GESTURE_BACK",
         onChange = restart
     )
-    var gestureSwipeDown = StringNavPref(
+    var gestureSwipeDown = StringPref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.title__gesture_swipe_down}/$PREFS_GESTURE_SWIPE_DOWN",
         onChange = restart
     )
-    var gestureSwipeUp = StringNavPref(
+    var gestureSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_swipe_up}/$PREFS_GESTURE_SWIPE_UP",
         onChange = restart
     )
-    var gestureDockSwipeUp = StringNavPref(
+    var gestureDockSwipeUp = StringPref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
         defaultValue = "",
         navRoute = "gesture_selector/${R.string.gesture_dock_swipe_up}/$PREFS_GESTURE_SWIPE_UP_DOCK",
         onChange = restart
     )
-    var gestureLaunchAssistant = StringNavPref(
+    var gestureLaunchAssistant = StringPref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
         defaultValue = "",

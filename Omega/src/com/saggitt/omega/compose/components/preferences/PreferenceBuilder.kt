@@ -31,8 +31,6 @@ val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit, in
             SeekBarPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.ColorIntPref ->
             ColorIntPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.StringNavPref ->
-            StringNavPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.IdpIntPref ->
             IntSeekBarPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.IntSelectionPref ->
