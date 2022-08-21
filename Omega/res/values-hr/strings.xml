@@ -400,7 +400,6 @@
     <string name="app_widget_name">Programčić sata</string>
     <string name="pref_desktop_mode_summary">Aktiviraj Androidovu radnu površinu</string>
     <string name="title__search_show_assistant">Prikaži gumb za govornu pretragu</string>
-    <string name="title__dock_search_bar">Prikaži traku pretrage</string>
     <string name="pref_desktop_mode">Radna površina</string>
     <string name="pref_desktop_mode_settings">Postavke radne površine</string>
     <string name="action_open_widgets">Otvori ladicu programčića</string>

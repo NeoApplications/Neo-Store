@@ -193,7 +193,6 @@
     <string name="title__desktop_hide_icon_labels">Skjul ikonetiketter på hjemmeskjermen</string>
     <string name="title__desktop_grid_size">Ruttenettstørrelse</string>
     <string name="title__desktop_icon_size">Ikonstørrelse</string>
-    <string name="title_app_suggestions">Programmer</string>
     <string name="summary_search_hidden_apps">Vis skjulte snarveier i resultatene.</string>
     <string name="title_search_hidden_apps">Finn skjulte snarveier</string>
     <string name="hotseat_show_page_indicator">Vis sideindikator</string>

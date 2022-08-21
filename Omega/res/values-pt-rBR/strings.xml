@@ -159,7 +159,6 @@
     <string name="msg_missing_usage_access">Ative o acesso de uso para <xliff:g example="My App" id="name">%1$s</xliff:g> para mostrar sugestões de apps</string>
     <string name="needs_usage_access">É necessário acesso ao uso</string>
     <string name="title_text_color">Cor do Texto</string>
-    <string name="title_app_suggestions">Aplicativos</string>
     <string name="summary_search_hidden_apps">Mostrar atalhos ocultos nos resultados.</string>
     <string name="title_search_hidden_apps">Encontre atalhos ocultos</string>
     <string name="title_drawer_row_height">Altura da linha</string>
