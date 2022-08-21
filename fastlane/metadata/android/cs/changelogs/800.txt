@@ -1,0 +1,12 @@
+* Sloučení android-11.0.0_r31
+* Přidat: Zachovat předvolbu Prázdná obrazovka
+* Přidat: Výběr barvy pro karty
+* Přidat: další ovládací prvky pomlčky
+* Přidat: Přizpůsobení pomlčky
+* Přidat: Podpora QuickSwitch
+* Přidat: FiveSecs KLWP
+* Přidat: Searx provider
+* Přidat: Spánkový asistent
+* Přidat: Vertikální seznam aplikací (experimentální)
+* Oprava: Velikost doku na dlouhých obrazovkách
+* Oprava: Pád při otevření aplikace Google Assistant

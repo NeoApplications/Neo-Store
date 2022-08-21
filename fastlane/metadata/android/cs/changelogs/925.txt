@@ -1,0 +1,7 @@
+Přidáno: Gesto přejetí nahoru do složek
+Přidáno: Nastavení Feed-Provider
+Oprava: Předvolba jazyka
+Aktualizace: zvětšení rozsahu mřížky/sloupců na 2-16
+Odstranění: Aplikace Google a Google GO jako poskytovatelé vyhledávání
+Odstranění: StartAppSearch, StartApp a gesta TimeoutSleep: odstranit gesta StartAppSearch, StartApp a TimeoutSleep.
+Opravy mnoha pádů
