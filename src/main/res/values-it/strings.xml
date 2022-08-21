@@ -63,7 +63,7 @@
     <string name="incompatible_with_FORMAT">Non compatibile con %s</string>
     <string name="install">Installa</string>
     <string name="install_types">Tipi di installazione</string>
-    <string name="installed">Installato</string>
+    <string name="installed">Installate</string>
     <string name="integrity_check_error_DESC">Impossibile verificare l\'integrità.</string>
     <string name="invalid_address">Indirizzo non valido</string>
     <string name="invalid_fingerprint_format">Fingerprint in un formato non valido</string>
@@ -196,7 +196,7 @@
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
     <string name="dialog_refuse">Mantenere</string>
-    <string name="root_session_installer">Usa l\'installatore della sessione root</string>
+    <string name="root_session_installer">Usa installatore della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
     <string name="not_safe_for_work">Censurabile (potrebbe contenere contenuti sensibili)</string>
