@@ -449,4 +449,13 @@
     <string name="folder_name">Nom du dossier</string>
     <string name="section_apps">applications</string>
     <string name="section_web">Web</string>
+    <string name="title__general_profile">Profil</string>
+    <string name="title__feed">Flux</string>
+    <string name="title_search_contacts">Rechercher dans les contacts</string>
+    <string name="title__general_gestures_dash">Gestes et Dash</string>
+    <string name="title__general_search_feed">Recherche et flux</string>
+    <string name="pref_category__features">Fonctionnalités</string>
+    <string name="section_contacts">Contacts</string>
+    <string name="title__general_widgets_notifications">Gadgets et notifications</string>
+    <string name="theme_auto_black">Suivant l\'arrière-fond (noir)</string>
 </resources>

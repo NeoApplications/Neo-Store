@@ -461,4 +461,6 @@
     <string name="theme_auto_black">اتبع الخلفية (أسود)</string>
     <string name="title__feed">التغذية</string>
     <string name="title__general_search_feed">البحث والخلاصة</string>
+    <string name="title_search_contacts">البحث في جهات الاتصال</string>
+    <string name="section_contacts">جهات الاتصال</string>
 </resources>

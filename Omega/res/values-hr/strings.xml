@@ -8,7 +8,7 @@
     <string name="pref_category__interfaces">Korisničko sučelje</string>
     <string name="summary__general_about">Više informacija o Neo Launcheru</string>
     <string name="summary__general_advanced">Jezik, sigurnosna kopija, postavljanje postavki</string>
-    <string name="summary__general_notifications">Bedž brojač, boja bedža, geste</string>
+    <string name="summary__general_notifications">Broj bedževa, boja bedža, geste</string>
     <string name="summary__general_smartspace">Datum, vrijeme, programčić za početni ekran</string>
     <string name="summary__general_search">Davatelj usluga pretrage, stil, ikone</string>
     <string name="summary__general_theme">Promijeni boje, paket ikona, oblik ikona</string>
@@ -55,10 +55,10 @@
     <string name="title_separate_work_apps">Druga kartica za programe za rad</string>
     <string name="title__drawer_categorization">Kategorije</string>
     <string name="title__sort_mode">Razvrstavanje programa</string>
-    <string name="title_all_apps_google_search">Globalna pretraga</string>
+    <string name="title_all_apps_google_search">Web rezultati</string>
     <string name="title_all_apps_keep_scroll_state">Zapamti poziciju</string>
     <string name="summary__drawer_hide_apps">Sakrij program u ladici programa</string>
-    <string name="title_all_apps_search">Traka za pretraživanje u ladici</string>
+    <string name="title_all_apps_search">Ladica trake pretrage</string>
     <string name="summary_search_hidden_apps">Prikaži prečace skrivenih programa u rezultatu.</string>
     <string name="summary_all_apps_google_search">Pronađi internetske rezultate i programe</string>
     <string name="backup_restoring">Obnavljanje pomoću sigurnosne kopije</string>
@@ -96,7 +96,7 @@
     <string name="title_smartspace">Prikaži pametno područje</string>
     <string name="automatic_short">Automatski</string>
     <string name="customize">Prilagodi</string>
-    <string name="summary__general_dock">Ikone najvažnijih programa, traka za pretraživanje</string>
+    <string name="summary__general_dock">Ikone najvažnijih programa, traka pretrage</string>
     <string name="default_folder_name">Nova mapa</string>
     <string name="title__general_about">Informacije</string>
     <string name="title__dock_colored_icons">Obojene ikone</string>
@@ -126,7 +126,7 @@
     <string name="dash_media_player">Audio player</string>
     <string name="summary_full_width_widgets">Dozvoli programčićima da se protežu po cijeloj širini bez rubova</string>
     <string name="label_search">Pretraga</string>
-    <string name="title_dock_search">Traka za pretraživanje u traci za brzi pristup</string>
+    <string name="title_dock_search">Traka pretrage u traci za brzi pristup</string>
     <string name="summary_dock_search">Prikaži u traci za brzi pristup</string>
     <string name="msg_disable_suggestions_prompt">Podaci o korištenju će se izbrisati.</string>
     <string name="tab_type_custom_desc">Odaberi prečace ručno.</string>
@@ -157,7 +157,7 @@
     <string name="onbording">Postavljanje</string>
     <string name="onbording_settings_summary">Dodirni i zadrži pritisnuto na radnoj površini.</string>
     <string name="full_wday_month_day_no_year">EEEE, d. MMMM</string>
-    <string name="title__gesture_swipe_down">Povuci prema dolje</string>
+    <string name="title__gesture_swipe_down">Povuci prstom prema dolje</string>
     <string name="action_open_settings">Otvori postavke pokretača</string>
     <string name="action_open_overview">Prikaži pregled radne površine</string>
     <string name="action_open_dash">Otvori kontrolnu ploču</string>
@@ -168,7 +168,7 @@
     <string name="dt2s_admin_warning">Dvostruki dodir za stanje mirovanja će se isključiti.</string>
     <string name="action_sleep">Stanje mirovanja</string>
     <string name="summary__search_show_as_assistant_summary">Otvori pomoćnika umjesto govorne pretrage</string>
-    <string name="cat_search_bar">Traka za pretraživanje</string>
+    <string name="cat_search_bar">Traka pretrage</string>
     <string name="folder_custom_background">Koristi prilagođenu pozadinu mape</string>
     <string name="summary__advanced_setting_search">Prikaži postavke pretraživanja u traci radnji</string>
     <string name="folder_background">Boja pozadine mape</string>
@@ -220,7 +220,7 @@
     <string name="title_smartspace_time_above">Prikaži veliki sat</string>
     <string name="gesture_press_home">Dodir gumba za početni ekran</string>
     <string name="dt2s_admin_hint">Za korištenje dvostrukog dodira za stanje mirovanja i dodjelu administratorske dozvole.</string>
-    <string name="gesture_dock_swipe_up">Povuci prema gore iz ploče za brzi pristup</string>
+    <string name="gesture_dock_swipe_up">Povuci prstom prema gore iz ploče za brzi pristup</string>
     <string name="error_no_browser">Za otvaranje URL-ova najprije instaliraj jedan program</string>
     <string name="title_create">Stvori</string>
     <string name="restore_backup">Obnovi</string>
@@ -330,7 +330,7 @@
     <string name="action_open_recents">Otvori nedavne</string>
     <string name="personality_provider">Pozdrav</string>
     <string name="onbording_settings_title">Postavi %s</string>
-    <string name="onboarding_swipe_up">Povuci prema gore za otvaranje ladice.</string>
+    <string name="onboarding_swipe_up">Povuci prstom prema gore za otvaranje ladice.</string>
     <string name="weather_provider_testing">Otklanjanje grešaka</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_oneplus_weather">OnePlus Weather</string>
@@ -359,7 +359,7 @@
     <string name="action_overlay">Otvori Google Feed</string>
     <string name="action_close_notifications">Zatvori obavijesti</string>
     <string name="gesture_double_tap">Dvostruki dodir</string>
-    <string name="gesture_swipe_up">Povuci prema gore</string>
+    <string name="gesture_swipe_up">Povuci prstom prema gore</string>
     <string name="gesture_press_back">Gumb za natrag</string>
     <string name="omega_actions">Radnje</string>
     <string name="title__search_bubble_searchbar">Prikaži dva mjehurića</string>
@@ -400,6 +400,7 @@
     <string name="app_widget_name">Programčić sata</string>
     <string name="pref_desktop_mode_summary">Aktiviraj Androidovu radnu površinu</string>
     <string name="title__search_show_assistant">Prikaži gumb za govornu pretragu</string>
+    <string name="title__dock_search_bar">Prikaži traku pretrage</string>
     <string name="pref_desktop_mode">Radna površina</string>
     <string name="pref_desktop_mode_settings">Postavke radne površine</string>
     <string name="action_open_widgets">Otvori ladicu programčića</string>
@@ -435,4 +436,24 @@
     <string name="backup_delete_failed">Dogodila se greška</string>
     <string name="summary_app_suggestions">Za sve programe i početni ekran</string>
     <string name="permission_denied">Dozvola za čitanje je odbijena!</string>
+    <string name="folder_name">Ime mape</string>
+    <string name="section_apps">programi</string>
+    <string name="section_web">Web</string>
+    <string name="debug_options_title">Informacije za otklanjanje grešaka</string>
+    <string name="accessibility_undo">Poništi</string>
+    <string name="tab_shortcuts">Prečaci</string>
+    <string name="title__general_profile">Profil</string>
+    <string name="title__general_widgets_notifications">Programčići i obavijesti</string>
+    <string name="title__general_search_feed">Pretraga i feedovi</string>
+    <string name="pref_category__features">Funkcije</string>
+    <string name="title_fuzzy_search">Fuzzy-pretraga</string>
+    <string name="summary_fuzzy_search">Približno podudaranje za traženje programa.</string>
+    <string name="theme_auto_black">Prati sliku pozadine ekrana (crna)</string>
+    <string name="icon_picker_default_category">Ikone</string>
+    <string name="icon_picker_load_failed">Nije bilo moguće učitati još ikona.</string>
+    <string name="title__feed">Feed</string>
+    <string name="app_name">Ime programa</string>
+    <string name="tab_launcher">Pokretač</string>
+    <string name="title_search_contacts">Traži kontakte</string>
+    <string name="section_contacts">Kontakti</string>
 </resources>
