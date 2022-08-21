@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="title__dock_show_arrow">Oku Göster</string>
-    <string name="title__dock_search_bar">Arama Çubuğunu Göster</string>
     <string name="title__dock_hide_labels">Etiketleri Gizle</string>
     <string name="title_dock_background_color">Arkaplan Rengi</string>
     <string name="title_dock_fill">Arkaplanı Göster</string>
@@ -433,7 +432,6 @@
     <string name="backup_delete_failed">Bir şeyler yanlış gitti</string>
     <string name="permission_denied">Okuma izni reddedildi!</string>
     <string name="backup_name">Yedekleme adı</string>
-    <string name="summary_all_apps_search">Arama çubuğunu göster</string>
     <string name="summary_app_suggestions">Tüm uygulamalar ve Ana ekran için</string>
     <string name="title_fuzzy_search">Bulanık Arama</string>
     <string name="summary_fuzzy_search">Uygulama aramaları için yaklaşık eşleşme.</string>

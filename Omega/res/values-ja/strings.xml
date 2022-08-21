@@ -36,7 +36,6 @@
     <string name="title_dock_fill">背景の表示</string>
     <string name="title_dock_background_color">背景の色</string>
     <string name="title__dock_hide_labels">ラベルの非表示</string>
-    <string name="title__dock_search_bar">検索バーの表示</string>
     <string name="title__dock_hotseat_icons">アイコンの数</string>
     <string name="title_opacity">不透明度</string>
     <string name="hotseat_show_page_indicator">ページインジケーターを表示</string>

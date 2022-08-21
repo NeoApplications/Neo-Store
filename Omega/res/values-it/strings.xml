@@ -371,7 +371,6 @@
     <string name="dock_colored_google">Colore icone</string>
     <string name="title__dock_show_arrow">Mostra freccia</string>
     <string name="title__dock_hotseat_icons">Conteggio icone</string>
-    <string name="title__dock_search_bar">Mostra barra di ricerca</string>
     <string name="title__dock_colored_icons">Icone colorate</string>
     <string name="title__dock_hide_labels">Nascondi etichette</string>
     <string name="title_dock_two_row">Mostra seconda riga</string>
@@ -451,7 +450,6 @@
     <string name="dash_location">Posizione</string>
     <string name="pref_desktop_mode">Modalità Desktop</string>
     <string name="dash_torch_summary">Accendi o spegni la luce del flash.</string>
-    <string name="summary_all_apps_search">Mostra barra di ricerca</string>
     <string name="enabled_events">Abilitato</string>
     <string name="title_app_categorization_enable">Abilita categorie per le app</string>
     <string name="cat_desktop_grid">Griglia e disposizione</string>

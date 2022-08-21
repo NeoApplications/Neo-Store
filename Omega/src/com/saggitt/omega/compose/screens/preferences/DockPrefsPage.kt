@@ -56,8 +56,7 @@ fun DockPrefsPage() {
         prefs.dockBackgroundColor,
         prefs.dockOpacity,
         prefs.dockScale,
-        prefs.dockNumIcons,
-        prefs.dockSearchBar,
+        prefs.dockNumIcons
     )
 
     OmegaAppTheme {

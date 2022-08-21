@@ -400,7 +400,6 @@
     <string name="app_widget_name">Programčić sata</string>
     <string name="pref_desktop_mode_summary">Aktiviraj Androidovu radnu površinu</string>
     <string name="title__search_show_assistant">Prikaži gumb za govornu pretragu</string>
-    <string name="title__dock_search_bar">Prikaži traku za pretraživanje</string>
     <string name="pref_desktop_mode">Radna površina</string>
     <string name="pref_desktop_mode_settings">Postavke radne površine</string>
     <string name="action_open_widgets">Otvori ladicu programčića</string>
@@ -433,7 +432,6 @@
     <string name="backup_location">Mjesto</string>
     <string name="backup_create_new">Stvori novu sigurnosnu kopiju</string>
     <string name="backup_name">Ime sigurnosne kopije</string>
-    <string name="summary_all_apps_search">Prikaži traku pretrage</string>
     <string name="backup_delete_failed">Dogodila se greška</string>
     <string name="summary_app_suggestions">Za sve programe i početni ekran</string>
     <string name="permission_denied">Dozvola za čitanje je odbijena!</string>

@@ -43,7 +43,6 @@
     <string name="title__dock_hide">Piilota telakka</string>
     <string name="title__dock_hide_labels">Piilota merkinnät</string>
     <string name="title__dock_colored_icons">Värilliset kuvakkeet</string>
-    <string name="title__dock_search_bar">Näytä hakupalkki</string>
     <string name="title__dock_hotseat_icons">Kuvakkeiden määrä</string>
     <string name="title__dock_show_arrow">Näytä nuoli</string>
     <string name="dock_colored_google">Värikuvakkeet</string>
@@ -71,7 +70,6 @@
     <string name="title_app_categorize">Luokittele sovellukset</string>
     <string name="summary_app_categorize">Valitse välilehdet tai kansiot</string>
     <string name="summary_all_apps_google_search">Etsi verkkotuloksia ja sovelluksia</string>
-    <string name="summary_all_apps_search">Näytä hakupalkki</string>
     <string name="summary_app_suggestions">Kaikille sovelluksille ja aloitusnäytölle</string>
     <string name="title_disable_suggestions_prompt">Poista sovellusehdotukset käytöstä</string>
     <string name="msg_disable_suggestions_prompt">Käyttötiedot poistetaan.</string>

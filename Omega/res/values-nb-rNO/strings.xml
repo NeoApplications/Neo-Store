@@ -25,7 +25,6 @@
     <string name="summary__general_about">Mer om Neo-oppstarteren</string>
     <string name="summary__general_advanced">Språk, sikkerhetskopi, innstillingssøk</string>
     <string name="title__dock_colored_icons">Fargede ikoner</string>
-    <string name="title__dock_search_bar">Vis søkefelt</string>
     <string name="title__drawer_hide_icon_labels">Skjul programnavn</string>
     <string name="title__drawer_paged_apps">Sideinndelt programoversikt</string>
     <string name="title__drawer_all_apps">Vis alle programetiketter</string>
@@ -429,7 +428,6 @@
     <string name="backup_name">Sikkerhetskopinavn</string>
     <string name="folder_rows">Mapperader</string>
     <string name="folder_columns">Mappekolonner</string>
-    <string name="summary_all_apps_search">Vis søkefelt</string>
     <string name="backup_delete_failed">Noe gikk galt</string>
     <string name="backup_create_new">Opprett ny sikkerhetskopi</string>
     <string name="permission_denied">Lesetilgang nektet.</string>

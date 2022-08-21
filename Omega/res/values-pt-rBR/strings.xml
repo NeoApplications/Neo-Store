@@ -70,7 +70,6 @@
     <string name="title__drawer_sort">Classificação dos apps</string>
     <string name="title_disabled">Desativado</string>
     <string name="title__dock_hotseat_icons">Quantidade de ícones</string>
-    <string name="title__dock_search_bar">Mostrar a barra de pesquisa</string>
     <string name="title__dock_colored_icons">Ícones coloridos</string>
     <string name="title__dock_hide_labels">Esconder os rótulos</string>
     <string name="title__dock_hide">Esconder a dock</string>

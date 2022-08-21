@@ -66,10 +66,6 @@ fun DrawerPrefsPage() {
         prefs.drawerSaveScrollPosition,
         prefs.drawerLayoutNew
     )
-    val searchPrefs = listOf(
-        // TODO move to Search?
-        prefs.drawerSearch
-    )
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,
         // TODO missing trust apps pref page
@@ -103,13 +99,6 @@ fun DrawerPrefsPage() {
                     PreferenceGroup(
                         stringResource(id = R.string.cat_drawer_grid),
                         prefs = gridPrefs,
-                        onPrefDialog = onPrefDialog
-                    )
-                }
-                item {
-                    PreferenceGroup(
-                        stringResource(id = R.string.label_search),
-                        prefs = searchPrefs,
                         onPrefDialog = onPrefDialog
                     )
                 }

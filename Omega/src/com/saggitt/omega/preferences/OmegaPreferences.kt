@@ -411,8 +411,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     var dockSearchBar = BooleanPref(
         key = PREFS_DOCK_SEARCH,
-        titleId = R.string.title__dock_search_bar,
-        summaryId = R.string.summary_dock_search,
+        titleId = R.string.title_dock_search,
         defaultValue = false,
         onChange = restart
     )
@@ -440,7 +439,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val drawerSearch = BooleanPref(
         key = PREFS_DRAWER_SEARCH,
         titleId = R.string.title_all_apps_search,
-        summaryId = R.string.summary_all_apps_search,
         defaultValue = true,
         onChange = recreate
     )
@@ -460,7 +458,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var drawerHiddenAppSet = StringSetPref(
         key = PREFS_HIDDEN_SET,
         titleId = R.string.title_search_hidden_apps,
-        summaryId = R.string.summary_all_apps_search,
         defaultValue = setOf(),
         onChange = reloadApps
     )

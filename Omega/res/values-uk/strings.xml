@@ -22,7 +22,6 @@
     <string name="title__general_about">Про програму</string>
     <string name="title__dock_icon_size">Розмір значків</string>
     <string name="title_desktop_hide_statusbar">Сховати статусбар</string>
-    <string name="title__dock_search_bar">Показати пошук</string>
     <string name="hotseat_show_page_indicator">Показати індикатор сторінки</string>
     <string name="allow_rotation_blocked_desc">Поточна опція дисплею не дозволяє обертання</string>
     <string name="title_desktop_keep_empty">Дозволити пусті сторінки</string>
@@ -77,7 +76,6 @@
     <string name="summary_all_apps_google_search">Пошук веб-результатів і програм</string>
     <string name="summary__drawer_hide_apps">Приховати додаток зі списку</string>
     <string name="summary_app_categorization_enable">Створити вкладку чи теку</string>
-    <string name="summary_all_apps_search">Показати панель пошуку</string>
     <string name="title_disable_suggestions_prompt">Відключити підказки додатків</string>
     <string name="msg_disable_suggestions_prompt">Дані про використання будуть видалені.</string>
     <string name="label_turn_off_suggestions">Відключити</string>

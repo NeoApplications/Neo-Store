@@ -78,7 +78,6 @@
     <string name="title__dock_hide">Dock Hide</string>
     <string name="title__dock_hide_labels">Hide Labels</string>
     <string name="title__dock_colored_icons">Colored icons</string>
-    <string name="title__dock_search_bar">Show Search Bar</string>
     <string name="title__dock_hotseat_icons">Icon Count</string>
     <string name="title__dock_show_arrow">Show Arrow</string>
     <string name="dock_colored_google">Color Icons</string>
@@ -90,6 +89,7 @@
     <string name="title_dock_search">Dock search bar</string>
     <string name="summary_dock_search">Show in the bottom dock</string>
     <string name="label_search">Search</string>
+    <string name="cat_dock_search">Drawer and dock</string>
     <string name="label_lens" translatable="false">Google Lens</string>
 
     <!-- PREFERENCES DRAWER -->
@@ -123,7 +123,6 @@
     <string name="summary_all_apps_google_search">Find web results and apps</string>
     <string name="summary__drawer_hide_apps">Hide app from the app drawer</string>
     <string name="summary_app_categorization_enable">Create tabs or folders</string>
-    <string name="summary_all_apps_search">Show search bar</string>
     <string name="summary_app_suggestions">For all apps and Home screen</string>
     <string name="title_disable_suggestions_prompt">Turn off app suggestions</string>
     <string name="msg_disable_suggestions_prompt">"Usage data will be deleted."</string>

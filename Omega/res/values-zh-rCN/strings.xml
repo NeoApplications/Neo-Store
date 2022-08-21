@@ -35,7 +35,6 @@
     <string name="title_opacity">不透明度</string>
     <string name="title__dock_show_arrow">显示箭头</string>
     <string name="title__dock_hotseat_icons">图标数量</string>
-    <string name="title__dock_search_bar">显示搜索栏</string>
     <string name="title__dock_colored_icons">彩色图标</string>
     <string name="title__dock_hide_labels">隐藏标签</string>
     <string name="title__dock_hide">隐藏快捷启动栏</string>
@@ -431,5 +430,4 @@
     <string name="backup_create_new">创建新备份</string>
     <string name="backup_delete_failed">出错了</string>
     <string name="summary_app_suggestions">为所有应用和主屏幕</string>
-    <string name="summary_all_apps_search">显示搜索栏</string>
 </resources>

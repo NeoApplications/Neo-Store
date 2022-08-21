@@ -56,7 +56,6 @@
     <string name="title_dock_two_row">Hiển thị hàng thứ hai</string>
     <string name="title__dock_hide_labels">Ẩn nhãn</string>
     <string name="title__dock_colored_icons">Biểu tượng màu</string>
-    <string name="title__dock_search_bar">Hiển thị thanh tìm kiếm</string>
     <string name="title__dock_hotseat_icons">Số lượng biểu tượng</string>
     <string name="title__dock_show_arrow">Hiển thị mũi tên</string>
     <string name="dock_colored_google">Màu biểu tượng</string>
@@ -309,7 +308,6 @@
     <string name="event_provider_now_playing">Đang chơi</string>
     <string name="summary_all_apps_google_search">Tìm kết quả web và ứng dụng</string>
     <string name="summary_app_categorization_enable">Tạo tab hoặc thư mục</string>
-    <string name="summary_all_apps_search">Hiển thị thanh tìm kiếm</string>
     <string name="title__sort_most_used">Được dùng nhiều nhất</string>
     <string name="title__sort_alphabetical_az">A→Z</string>
     <string name="fonts_global_font">Phông</string>

@@ -170,7 +170,6 @@
     <string name="title__drawer_all_apps">Afficher le nom des applications</string>
     <string name="title__drawer_sort">Tri des applications</string>
     <string name="title_disabled">Inactif</string>
-    <string name="title__dock_search_bar">Afficher la barre de recherche</string>
     <string name="title__dock_colored_icons">Icônes colorées</string>
     <string name="title__dock_hide_labels">Masquer les noms</string>
     <string name="title__dock_hide">Masquer le dock</string>
@@ -421,7 +420,6 @@
     <string name="summary_colored_backgrounds">Pour les arrière-plans prévus pour Adaptive Icons.</string>
     <string name="summary_legacy_treatment">Créer des Adaptive Icons pour tous les raccourcis.</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
-    <string name="summary_all_apps_search">Afficher la barre de recherche</string>
     <string name="summary_app_suggestions">Pour toutes les apps et l\'écran d\'accueil</string>
     <string name="title_dock_search">Barre de recherche du dock</string>
     <string name="summary_dock_search">Afficher en bas du dock</string>

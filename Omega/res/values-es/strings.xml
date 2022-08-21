@@ -10,7 +10,6 @@
     <string name="pref_category__others">Otras</string>
     <string name="title__dock_hide">Ocultar Dock</string>
     <string name="title__dock_hide_labels">Ocultar Nombres</string>
-    <string name="title__dock_search_bar">Mostrar barra de búsqueda</string>
     <string name="title__drawer_sort">Ordenar Aplicaciones</string>
     <string name="title__dock_scale">Tamaño del Dock</string>
     <string name="title__drawer_categorization">Categorías</string>
@@ -428,7 +427,6 @@
     <string name="cat_desktop_grid">Rejilla y Disposición</string>
     <string name="title_app_categorization_enable">Habilitar categorías de apps</string>
     <string name="summary_app_categorization_enable">Crear lengüetas o carpetas</string>
-    <string name="summary_all_apps_search">Muestra barra de búsqueda</string>
     <string name="permission_denied">Permiso denegado para lectura</string>
     <string name="backup_name">Nombre del respaldo</string>
     <string name="backup_create_new">Crea un respaldo nuevo</string>

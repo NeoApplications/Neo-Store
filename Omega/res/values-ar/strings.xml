@@ -100,7 +100,6 @@
     <string name="dock_colored_google">لون الايقونات</string>
     <string name="title__dock_show_arrow">أظهر السهم</string>
     <string name="title__dock_hotseat_icons">عدد الايقونات</string>
-    <string name="title__dock_search_bar">أظهر شريط البحث</string>
     <string name="title__dock_colored_icons">ايقونات ملونة</string>
     <string name="title__dock_hide_labels">اخفاء الأسماء</string>
     <string name="title__dock_hide">أخفاء الرصيف</string>
@@ -441,7 +440,6 @@
     <string name="backup_delete_failed">حدث خطأ ما</string>
     <string name="backup_name">اسم النسخة الاحتياطية</string>
     <string name="permission_denied">تم رفض إذن القراءة!</string>
-    <string name="summary_all_apps_search">إظهار شريط البحث</string>
     <string name="summary_app_suggestions">لجميع التطبيقات والشاشة الرئيسية</string>
     <string name="tab_shortcuts">الاختصارات</string>
     <string name="app_name">اسم التطبيق</string>

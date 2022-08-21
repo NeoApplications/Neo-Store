@@ -35,7 +35,6 @@ import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
-import com.saggitt.omega.compose.components.preferences.PreferenceBuilder
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
@@ -61,6 +60,10 @@ fun SearchPrefsPage() {
         prefs.searchFuzzy,
         prefs.searchBarRadius
     )
+    val showPrefs = listOf(
+        prefs.drawerSearch,
+        prefs.dockSearchBar
+    )
     val feedPrefs = listOf(
         prefs.feedProvider,
     )
@@ -75,13 +78,22 @@ fun SearchPrefsPage() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    PreferenceGroup(stringResource(id = R.string.title__general_search),
+                    PreferenceGroup(
+                        stringResource(id = R.string.title__general_search),
                         prefs = searchPrefs,
                         onPrefDialog = onPrefDialog
-                    )/**/
+                    )
                 }
                 item {
-                    PreferenceGroup(stringResource(id = R.string.title_feed_provider),
+                    PreferenceGroup(
+                        stringResource(id = R.string.cat_dock_search),
+                        prefs = showPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
+                }
+                item {
+                    PreferenceGroup(
+                        stringResource(id = R.string.title_feed_provider),
                         prefs = feedPrefs,
                         onPrefDialog = onPrefDialog
                     )

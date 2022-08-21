@@ -27,7 +27,6 @@
     <string name="title_desktop_hide_statusbar">Ukryj pasek stanu</string>
     <string name="title_desktop_lock_desktop">Zablokuj pulpit</string>
     <string name="title_desktop_keep_empty">Zezwól na puste strony</string>
-    <string name="title__dock_search_bar">Pokaż pasek wyszukiwania</string>
     <string name="title__drawer_sort">Sortowanie aplikacji</string>
     <string name="title__drawer_columns">Liczba kolumn</string>
     <string name="title__sort_last_installed">Zainstalowane ostatnio</string>
@@ -120,7 +119,6 @@
     <string name="title__drawer_hide_icon_labels">Ukryj nazwy aplikacji</string>
     <string name="title__drawer_categorization">Kategorie</string>
     <string name="title__sort_mode">Sortowanie aplikacji</string>
-    <string name="summary_all_apps_search">Pokaż pasek wyszukiwania</string>
     <string name="title_smartspace_time_above">Pokaż duży zegar</string>
     <string name="category__behavior_weather">Pogoda</string>
     <string name="battery_low">Niski poziom baterii</string>

@@ -270,7 +270,6 @@
     <string name="dock_colored_google">Цвет иконок</string>
     <string name="title__dock_show_arrow">Показать стрелку</string>
     <string name="title__dock_hotseat_icons">Количество иконок</string>
-    <string name="title__dock_search_bar">Показать панель поиска</string>
     <string name="title__dock_hide_labels">Скрыть ярлыки</string>
     <string name="title__dock_hide">Скрыть панель быстрого запуска</string>
     <string name="title_dock_background_color">Цвет фона</string>
@@ -365,7 +364,6 @@
     <string name="disable_protected_apps">Отключить защищенные приложения</string>
     <string name="label_search">Поиск</string>
     <string name="title_app_categorization_enable">Включить категории приложений</string>
-    <string name="summary_all_apps_search">Показать строку поиска</string>
     <string name="summary_app_suggestions">Для всех приложений и главного экрана</string>
     <string name="trust_apps_manager_name">Скрытые и защищенные приложения</string>
     <string name="enable_protected_apps">Включить защищенные приложения</string>

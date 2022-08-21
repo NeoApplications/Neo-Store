@@ -137,7 +137,6 @@
     <string name="dock_colored_google">Farbige Symbole</string>
     <string name="title__dock_show_arrow">Pfeil anzeigen</string>
     <string name="title__dock_hotseat_icons">Symbol Anzahl</string>
-    <string name="title__dock_search_bar">Suchleiste anzeigen</string>
     <string name="title__dock_colored_icons">Farbige Symbole</string>
     <string name="title__dock_hide_labels">Beschriftungen ausblenden</string>
     <string name="title__dock_hide">Dock ausblenden</string>
@@ -393,7 +392,6 @@
     <string name="pref_desktop_mode_summary">Androids Desktop Modus aktivieren</string>
     <string name="folder_name_format">Ordner: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
     <string name="summary_force_shapeless">Versuche für alle Apps veraltete Icons zu verwenden.</string>
-    <string name="summary_all_apps_search">Zeige die Suchleiste</string>
     <string name="summary_app_suggestions">Für alle Anwendungen und den Startbildschirm</string>
     <string name="theme_auto_night_mode_black">System (Schwarz)</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Tageslicht folgen (Schwarz)</string>

@@ -30,6 +30,5 @@
     <string name="title_dock_background_color">Achtergrondkleur</string>
     <string name="title__dock_hide_labels">Verberg labels</string>
     <string name="title__dock_colored_icons">Gekleurde iconen</string>
-    <string name="title__dock_search_bar">Toon zoekbalk</string>
     <string name="title__dock_hotseat_icons">Icoon hoeveelheid</string>
 </resources>
