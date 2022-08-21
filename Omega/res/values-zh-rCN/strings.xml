@@ -263,7 +263,7 @@
     <string name="summary__drawer_hide_apps">在抽屉中隐藏应用</string>
     <string name="summary_all_apps_google_search">搜索网页结果和应用</string>
     <string name="summary_search_hidden_apps">在搜索结果中显示隐藏的快捷方式。</string>
-    <string name="title_search_hidden_apps">搜索隐藏的快捷方式</string>
+    <string name="title_search_hidden_apps">查找隐藏应用</string>
     <string name="title_all_apps_keep_scroll_state">记住位置</string>
     <string name="title_all_apps_google_search">网络搜索</string>
     <string name="title_all_apps_search">抽屉搜索栏</string>
