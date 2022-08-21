@@ -98,6 +98,7 @@ import com.saggitt.omega.PREFS_HIDDEN_SET
 import com.saggitt.omega.PREFS_ICON_PACK
 import com.saggitt.omega.PREFS_ICON_SHAPE
 import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
+import com.saggitt.omega.PREFS_KILL
 import com.saggitt.omega.PREFS_LANGUAGE
 import com.saggitt.omega.PREFS_LEGACY_TREATMENT
 import com.saggitt.omega.PREFS_LOW_PREFORMANCE
@@ -977,6 +978,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // DEVELOPER
+    var restartLauncher = StringPref(
+        key = PREFS_KILL,
+        titleId = R.string.title__restart_launcher,
+        summaryId = R.string.summary__dev_restart,
+        onClick = { Utilities.killLauncher() },
+        onChange = doNothing
+    )
     var developerOptionsEnabled = BooleanPref(
         key = PREFS_DEV_PREFS_SHOW,
         titleId = R.string.title__dev_show_Dev,

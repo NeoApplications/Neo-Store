@@ -136,6 +136,27 @@ fun BasePreference(
 }
 
 @Composable
+fun StringPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringPref,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = {
+            pref.onClick?.invoke()
+        }
+    )
+}
+
+@Composable
 fun SwitchPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.BooleanPref,

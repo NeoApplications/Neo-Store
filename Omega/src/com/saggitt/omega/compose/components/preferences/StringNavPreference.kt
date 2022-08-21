@@ -30,7 +30,6 @@ fun StringNavPreference(
     index: Int = 1,
     groupSize: Int = 1,
     isEnabled: Boolean = true,
-    onValueChange: ((Float) -> Unit) = {}
 ) {
     val navController = LocalNavController.current
     val route = subRoute(pref.navRoute)

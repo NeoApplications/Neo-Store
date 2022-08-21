@@ -501,11 +501,12 @@ abstract class BasePreferences(context: Context) :
         }
     }
 
-    open inner class StringPref( // TODO migrate to @StringSelectionPref
+    open inner class StringPref(
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: String = "",
+        val onClick: (() -> Unit)? = null,
         onChange: () -> Unit = doNothing
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!

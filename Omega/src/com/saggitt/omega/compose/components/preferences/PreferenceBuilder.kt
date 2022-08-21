@@ -25,6 +25,8 @@ val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit, in
     when (pref) {
         is BasePreferences.BooleanPref ->
             SwitchPreference(pref = pref, index = index, groupSize = size)
+        is BasePreferences.StringPref ->
+            StringPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.FloatPref ->
             SeekBarPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.ColorIntPref ->
@@ -34,7 +36,11 @@ val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit, in
         is BasePreferences.IdpIntPref ->
             IntSeekBarPreference(pref = pref, index = index, groupSize = size)
         is BasePreferences.IntSelectionPref ->
-            IntSelectionPreference(pref = pref, index = index, groupSize = size) { onDialogPref(pref) }
+            IntSelectionPreference(
+                pref = pref,
+                index = index,
+                groupSize = size
+            ) { onDialogPref(pref) }
         is BasePreferences.StringSelectionPref ->
             StringSelectionPreference(pref = pref, index = index, groupSize = size) { onDialogPref(pref) }
         is PageItem ->

@@ -48,7 +48,7 @@ fun DevPrefPage() {
     }
 
     val developerPrefs = listOf(
-        //pref.restartLauncher TODO
+        prefs.restartLauncher,
         prefs.developerOptionsEnabled,
         prefs.showDebugInfo
     )
