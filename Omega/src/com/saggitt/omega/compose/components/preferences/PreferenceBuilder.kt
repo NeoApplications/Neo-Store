@@ -21,33 +21,43 @@ import androidx.compose.runtime.Composable
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.preferences.BasePreferences
 
-val PreferenceBuilder = @Composable { pref: Any, onDialogPref: (Any) -> Unit, index: Int, size: Int ->
-    when (pref) {
-        is BasePreferences.BooleanPref ->
-            SwitchPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.StringPref ->
-            StringPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.FloatPref ->
-            SeekBarPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.ColorIntPref ->
-            ColorIntPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.IdpIntPref ->
-            IntSeekBarPreference(pref = pref, index = index, groupSize = size)
-        is BasePreferences.IntSelectionPref ->
-            IntSelectionPreference(
+val PreferenceBuilder =
+    @Composable { pref: Any, onDialogPref: (Any) -> Unit, index: Int, size: Int ->
+        when (pref) {
+            is BasePreferences.BooleanPref ->
+                SwitchPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.StringPref ->
+                StringPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.FloatPref ->
+                SeekBarPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.ColorIntPref ->
+                ColorIntPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.IdpIntPref ->
+                IntSeekBarPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.IntSelectionPref ->
+                IntSelectionPreference(
+                    pref = pref,
+                    index = index,
+                    groupSize = size
+                ) { onDialogPref(pref) }
+            is BasePreferences.StringSelectionPref ->
+                StringSelectionPreference(
+                    pref = pref,
+                    index = index,
+                    groupSize = size
+                ) { onDialogPref(pref) }
+            is BasePreferences.StringMultiSelectionPref -> StringMultiSelectionPreference(
                 pref = pref,
                 index = index,
                 groupSize = size
             ) { onDialogPref(pref) }
-        is BasePreferences.StringSelectionPref ->
-            StringSelectionPreference(pref = pref, index = index, groupSize = size) { onDialogPref(pref) }
-        is PageItem ->
-            PagePreference(
-                titleId = pref.titleId,
-                iconId = pref.iconId,
-                route = pref.route,
-                index = index,
-                groupSize = size
-            )
+            is PageItem ->
+                PagePreference(
+                    titleId = pref.titleId,
+                    iconId = pref.iconId,
+                    route = pref.route,
+                    index = index,
+                    groupSize = size
+                )
+        }
     }
-}
