@@ -32,6 +32,7 @@ import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
+import com.saggitt.omega.compose.components.preferences.StringMultiSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
 import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController
@@ -113,6 +114,10 @@ fun GesturesPrefsPage() {
                         )
                         is BasePreferences.StringSelectionPref -> StringSelectionPrefDialogUI(
                             pref = dialogPref as BasePreferences.StringSelectionPref,
+                            openDialogCustom = openDialog
+                        )
+                        is BasePreferences.StringMultiSelectionPref -> StringMultiSelectionPrefDialogUI(
+                            pref = dialogPref as BasePreferences.StringMultiSelectionPref,
                             openDialogCustom = openDialog
                         )
                     }
