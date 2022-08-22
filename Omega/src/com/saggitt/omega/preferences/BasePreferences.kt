@@ -465,16 +465,12 @@ abstract class BasePreferences(context: Context) :
         key: String,
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
-        defaultValue: Set<String>,
+        defaultValue: List<String>,
         val entries: Map<String, Int>,
         onChange: () -> Unit = doNothing
-    ) :
-        PrefDelegate<Set<String>>(key, titleId, summaryId, defaultValue, onChange) {
-        override fun onGetValue(): Set<String> = sharedPrefs.getStringSet(getKey(), defaultValue)!!
-
-        override fun onSetValue(value: Set<String>) {
-            edit { putStringSet(getKey(), value) }
-        }
+    ) : MutableListPref<String>(key, titleId, summaryId, onChange, defaultValue) {
+        override fun unflattenValue(value: String) = value
+        override fun flattenValue(value: String) = value
     }
 
     open inner class IntBasedPref<T : Any>(
