@@ -29,6 +29,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -215,8 +217,88 @@ fun StringSelectionPrefDialogUI(
                         openDialogCustom.value = false
                     }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun StringMultiSelectionPrefDialogUI(
+    pref: BasePreferences.StringMultiSelectionPref,
+    openDialogCustom: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+    val prefs = Utilities.getOmegaPrefs(context)
+    var selected by remember { mutableStateOf(pref.onGetValue()) }
+    val entryPairs = pref.entries.toList()
+
+    var radius = 16.dp
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        radius = prefs.themeCornerRadius.onGetValue().dp
+    }
+    val cornerRadius by remember { mutableStateOf(radius) }
+
+    Card(
+        shape = RoundedCornerShape(cornerRadius),
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(text = stringResource(pref.titleId), style = MaterialTheme.typography.titleLarge)
+            LazyColumn(
+                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+            ) {
+                items(items = entryPairs) { item ->
+                    val isSelected = rememberSaveable(selected) {
+                        mutableStateOf(selected.contains(item.first))
+                    }
+                    Row( // TODO abstract to SingleSelectionListItem
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                selected = if (isSelected.value) selected.minus(item.first)
+                                else selected.plus(item.first)
+                            },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = isSelected.value,
+                            onCheckedChange = {
+                                selected = if (it) selected.plus(item.first)
+                                else selected.minus(item.first)
+                            },
+                            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = MaterialTheme.colorScheme.primary,
+                                uncheckedColor = MaterialTheme.colorScheme.onSurface
+                            )
+                        )
+                        Text(
+                            text = stringResource(id = item.second),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
+            }
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                DialogNegativeButton(
+                    cornerRadius = cornerRadius,
+                    onClick = {
+                        openDialogCustom.value = false
+                    }
+                )
                 Spacer(Modifier.weight(1f))
+                DialogPositiveButton(
+                    cornerRadius = cornerRadius,
                     onClick = {
                         pref.onSetValue(selected)
                         openDialogCustom.value = false
