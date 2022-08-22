@@ -321,3 +321,28 @@ fun StringSelectionPreference(
         onClick = onClick
     )
 }
+
+@Composable
+fun StringMultiSelectionPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringMultiSelectionPref,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        summary = pref.entries
+            .filter { pref.onGetValue().contains(it.key) }
+            .values.let {
+                it.map { stringResource(id = it) }.joinToString(separator = ",")
+            },
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
