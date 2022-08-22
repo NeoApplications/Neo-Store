@@ -28,11 +28,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -126,7 +126,7 @@ fun IntSelectionPrefDialogUI(
                     },
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
@@ -146,7 +146,7 @@ fun IntSelectionPrefDialogUI(
                     modifier = Modifier.padding(start = 16.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
@@ -234,7 +234,7 @@ fun StringSelectionPrefDialogUI(
                     },
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
@@ -254,7 +254,7 @@ fun StringSelectionPrefDialogUI(
                     modifier = Modifier.padding(start = 16.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
