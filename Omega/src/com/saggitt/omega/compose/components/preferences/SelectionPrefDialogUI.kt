@@ -17,7 +17,6 @@
  */
 package com.saggitt.omega.compose.components.preferences
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,11 +27,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -51,6 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.launcher3.Utilities
+import com.saggitt.omega.compose.components.DialogNegativeButton
+import com.saggitt.omega.compose.components.DialogPositiveButton
 import com.saggitt.omega.preferences.BasePreferences
 
 @Composable
@@ -119,43 +118,19 @@ fun IntSelectionPrefDialogUI(
             Row(
                 Modifier.fillMaxWidth()
             ) {
-                OutlinedButton( // TODO abstract to DialogButton
-                    shape = RoundedCornerShape(cornerRadius),
-                    onClick = {
-                        openDialogCustom.value = false
-                    },
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.cancel),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                DialogNegativeButton(
+                    cornerRadius = cornerRadius,
+                    onClick = { openDialogCustom.value = false }
+                )
                 Spacer(Modifier.weight(1f))
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
+                DialogPositiveButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    cornerRadius = cornerRadius,
                     onClick = {
                         pref.onSetValue(selected)
                         openDialogCustom.value = false
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.ok),
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                    }
+                )
             }
         }
     }
@@ -227,43 +202,26 @@ fun StringSelectionPrefDialogUI(
             Row(
                 Modifier.fillMaxWidth()
             ) {
-                OutlinedButton( // TODO abstract to DialogButton
-                    shape = RoundedCornerShape(cornerRadius),
-                    onClick = {
-                        openDialogCustom.value = false
-                    },
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.cancel),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                DialogNegativeButton(
+                    cornerRadius = cornerRadius,
+                    onClick = { openDialogCustom.value = false }
+                )
                 Spacer(Modifier.weight(1f))
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
+                DialogPositiveButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    cornerRadius = cornerRadius,
                     onClick = {
                         pref.onSetValue(selected)
                         openDialogCustom.value = false
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.ok),
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
+                    }
+                )
                 }
+                Spacer(Modifier.weight(1f))
+                    onClick = {
+                        pref.onSetValue(selected)
+                        openDialogCustom.value = false
+                    }
+                )
             }
         }
     }
