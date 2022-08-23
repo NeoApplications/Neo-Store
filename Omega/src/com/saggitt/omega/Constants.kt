@@ -1,6 +1,30 @@
 package com.saggitt.omega
 
 import com.android.launcher3.R
+import com.saggitt.omega.dash.actionprovider.AllAppsShortcut
+import com.saggitt.omega.dash.actionprovider.AudioPlayer
+import com.saggitt.omega.dash.actionprovider.ChangeWallpaper
+import com.saggitt.omega.dash.actionprovider.DeviceSettings
+import com.saggitt.omega.dash.actionprovider.EditDash
+import com.saggitt.omega.dash.actionprovider.LaunchAssistant
+import com.saggitt.omega.dash.actionprovider.ManageApps
+import com.saggitt.omega.dash.actionprovider.ManageVolume
+import com.saggitt.omega.dash.actionprovider.OmegaSettings
+import com.saggitt.omega.dash.actionprovider.SleepDevice
+import com.saggitt.omega.dash.actionprovider.Torch
+import com.saggitt.omega.dash.controlprovider.AutoRotation
+import com.saggitt.omega.dash.controlprovider.Bluetooth
+import com.saggitt.omega.dash.controlprovider.Location
+import com.saggitt.omega.dash.controlprovider.MobileData
+import com.saggitt.omega.dash.controlprovider.Sync
+import com.saggitt.omega.dash.controlprovider.Wifi
+import com.saggitt.omega.smartspace.SmartSpaceDataWidget
+import com.saggitt.omega.smartspace.eventprovider.AlarmEventProvider
+import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
+import com.saggitt.omega.smartspace.eventprovider.CalendarEventProvider
+import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
+import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
+import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.util.Config
 
@@ -25,6 +49,7 @@ const val PREFS_FOLDER_BACKGROUND_CUSTOM = "pref_custom_folder_background"
 const val PREFS_STATUSBAR_HIDE = "pref_hideStatusBar"
 const val PREFS_DASH_LINESIZE = "pref_dash_linesize"
 const val PREFS_DASH_PROVIDERS = "pref_dash_providers"
+const val PREFS_DASH_PROVIDERS_X = "pref_dash_providers_x"
 
 // DOCK PREFS
 const val PREFS_DOCK_HIDE = "pref_hideHotseat"
@@ -109,6 +134,37 @@ val drawerSortOptions = mutableMapOf(
     Config.SORT_BY_COLOR to R.string.title__sort_by_color,
 )
 
+val smartspaceProviderOptions = mapOf(
+    //smartspaceEventProvider.onGetValue() to XY, TODO
+    NotificationUnreadProvider::class.java.name to R.string.event_provider_unread_notifications,
+    NowPlayingProvider::class.java.name to R.string.event_provider_now_playing,
+    BatteryStatusProvider::class.java.name to R.string.battery_status,
+    PersonalityProvider::class.java.name to R.string.personality_provider,
+    CalendarEventProvider::class.java.name to R.string.smartspace_provider_calendar,
+    SmartSpaceDataWidget::class.java.name to R.string.title_smartspace_widget_provider,
+    AlarmEventProvider::class.java.name to R.string.name_provider_alarm_events
+)
+
+val dashProviderOptions = mapOf(
+    EditDash::class.java.name to R.string.edit_dash,
+    ChangeWallpaper::class.java.name to R.string.wallpaper_pick,
+    OmegaSettings::class.java.name to R.string.settings_button_text,
+    ManageVolume::class.java.name to R.string.dash_volume_title,
+    DeviceSettings::class.java.name to R.string.dash_device_settings_title,
+    ManageApps::class.java.name to R.string.tab_manage_apps,
+    AllAppsShortcut::class.java.name to R.string.dash_all_apps_title,
+    SleepDevice::class.java.name to R.string.action_sleep,
+    LaunchAssistant::class.java.name to R.string.launch_assistant,
+    Torch::class.java.name to R.string.dash_torch,
+    AudioPlayer::class.java.name to R.string.dash_media_player,
+    Wifi::class.java.name to R.string.dash_wifi,
+    MobileData::class.java.name to R.string.dash_mobile_network_title,
+    Location::class.java.name to R.string.dash_location,
+    Bluetooth::class.java.name to R.string.dash_bluetooth,
+    AutoRotation::class.java.name to R.string.dash_auto_rotation,
+    Sync::class.java.name to R.string.dash_sync
+)
+
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
 const val PREFS_SEARCH_BAR_RADIUS = "pref_searchbar_radius"
@@ -147,6 +203,7 @@ const val PREFS_SMARTSPACE_WEATHER_ICONS = "pref_weatherIcons"
 const val PREFS_SMARTSPACE_WEATHER_PROVIDER = "pref_smartspace_widget_provider"
 const val PREFS_SMARTSPACE_EVENT_PROVIDER = "pref_smartspace_event_provider"
 const val PREFS_SMARTSPACE_EVENT_PROVIDERS = "pref_smartspace_event_providers"
+const val PREFS_SMARTSPACE_EVENT_PROVIDERS_X = "pref_smartspace_event_providers_x"
 const val PREF_PILL_QSB = "pref_use_pill_qsb"
 const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
 
