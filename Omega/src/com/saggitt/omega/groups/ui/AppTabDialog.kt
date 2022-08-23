@@ -107,7 +107,9 @@ fun AppTabDialogUI(
 
             val selectedItems = checkedEntries.toMutableList()
             LazyColumn(
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 16.dp)
+                    .weight(1f, false)
             ) {
                 itemsIndexed(entries) { index, tabName ->
                     var isSelected by rememberSaveable { mutableStateOf(selectedItems[index]) }

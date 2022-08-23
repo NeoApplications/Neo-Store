@@ -88,7 +88,9 @@ fun FolderListDialogUI(
                     mutableStateOf(folder.swipeUpAction)
                 }
                 LazyColumn(
-                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                    modifier = Modifier
+                        .padding(top = 8.dp, bottom = 8.dp)
+                        .weight(1f, false)
                 ) {
                     itemsIndexed(gestures) { _, item ->
                         ListItemWithIcon(

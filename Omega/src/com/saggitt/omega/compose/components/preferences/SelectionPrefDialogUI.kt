@@ -83,7 +83,9 @@ fun IntSelectionPrefDialogUI(
         ) {
             Text(text = stringResource(pref.titleId), style = MaterialTheme.typography.titleLarge)
             LazyColumn(
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(1f, false)
             ) {
                 items(items = entryPairs) {
                     val isSelected = rememberSaveable(selected) {
@@ -167,7 +169,9 @@ fun StringSelectionPrefDialogUI(
         ) {
             Text(text = stringResource(pref.titleId), style = MaterialTheme.typography.titleLarge)
             LazyColumn(
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(1f, false)
             ) {
                 items(items = entryPairs) {
                     val isSelected = rememberSaveable(selected) {
@@ -251,7 +255,9 @@ fun StringMultiSelectionPrefDialogUI(
         ) {
             Text(text = stringResource(pref.titleId), style = MaterialTheme.typography.titleLarge)
             LazyColumn(
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(1f, false)
             ) {
                 items(items = entryPairs) { item ->
                     val isSelected = rememberSaveable(selected) {
