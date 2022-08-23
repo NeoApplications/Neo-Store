@@ -60,7 +60,7 @@ fun WidgetsPrefsPage() {
         prefs.smartspaceUsePillQsb,
         prefs.smartspaceWeatherProvider, // TODO
         prefs.smartspaceWeatherUnit, // TODO
-        prefs.smartspaceEventProviders // TODO
+        prefs.smartspaceEventProvidersNew
     )
     val notificationsPrefs = listOf(
         // TODO Missing enable notification badge
