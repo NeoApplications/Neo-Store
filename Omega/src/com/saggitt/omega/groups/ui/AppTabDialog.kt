@@ -18,7 +18,6 @@
 
 package com.saggitt.omega.groups.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,11 +27,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +51,8 @@ import androidx.compose.ui.window.DialogProperties
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
+import com.saggitt.omega.compose.components.DialogNegativeButton
+import com.saggitt.omega.compose.components.DialogPositiveButton
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.preferences.views.AppCategorizationFragment
 import com.saggitt.omega.preferences.views.PreferencesActivity
@@ -144,8 +142,9 @@ fun AppTabDialogUI(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
+                DialogPositiveButton(
+                    cornerRadius = cornerRadius,
+                    textId = R.string.tabs_manage,
                     onClick = {
                         openDialogCustom.value = false
                         PreferencesActivity.startFragment(
@@ -153,41 +152,21 @@ fun AppTabDialogUI(
                             context.resources.getString(R.string.title__drawer_categorization)
                         )
                     },
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.tabs_manage),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                )
 
                 Spacer(Modifier.weight(1f))
 
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
+                DialogNegativeButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    cornerRadius = cornerRadius,
                     onClick = {
                         openDialogCustom.value = false
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.surface.copy(0.15f),
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.cancel),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                    }
+                )
 
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
+                DialogPositiveButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    cornerRadius = cornerRadius,
                     onClick = {
                         tabs.forEachIndexed { index, tab ->
                             tab.contents.value().addOrRemove(componentKey, selectedItems[index])
@@ -195,20 +174,8 @@ fun AppTabDialogUI(
                         tabs.hashCode()
                         prefs.drawerAppGroupsManager.drawerTabs.saveToJson()
                         openDialogCustom.value = false
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f)),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(0.65f),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.ok),
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                    }
+                )
             }
         }
     }

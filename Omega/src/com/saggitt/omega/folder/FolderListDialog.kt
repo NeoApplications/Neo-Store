@@ -7,14 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -25,14 +21,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.FolderInfo
 import com.google.accompanist.flowlayout.FlowRow
+import com.saggitt.omega.compose.components.DialogNegativeButton
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.gestures.GestureController
 
@@ -53,7 +48,6 @@ fun FolderListDialog(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FolderListDialogUI(
     folder: FolderInfo,
@@ -125,23 +119,11 @@ fun FolderListDialogUI(
                     .padding(16.dp)
                     .align(Alignment.End)
             ) {
-                OutlinedButton(
-                    shape = RoundedCornerShape(cornerRadius),
-                    onClick = {
-                        openDialogCustom.value = false
-                    },
+                DialogNegativeButton(
                     modifier = Modifier.padding(start = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colorScheme.surface.copy(0.15f),
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
-                ) {
-                    Text(
-                        text = stringResource(id = android.R.string.cancel),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+                    cornerRadius = cornerRadius,
+                    onClick = { openDialogCustom.value = false }
+                )
             }
         }
     }
