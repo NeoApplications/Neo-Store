@@ -37,6 +37,7 @@ import com.saggitt.omega.PREFS_BLUR_RADIUS_X
 import com.saggitt.omega.PREFS_COLORED_BACKGROUND
 import com.saggitt.omega.PREFS_DASH_LINESIZE
 import com.saggitt.omega.PREFS_DASH_PROVIDERS
+import com.saggitt.omega.PREFS_DASH_PROVIDERS_X
 import com.saggitt.omega.PREFS_DEBUG_MODE
 import com.saggitt.omega.PREFS_DESKTOP_COLUMNS
 import com.saggitt.omega.PREFS_DESKTOP_COLUMNS_RAW
@@ -120,6 +121,7 @@ import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
 import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
 import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS_X
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
@@ -141,6 +143,13 @@ import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
 import com.saggitt.omega.PREF_PILL_QSB
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
+import com.saggitt.omega.dash.actionprovider.DeviceSettings
+import com.saggitt.omega.dash.actionprovider.EditDash
+import com.saggitt.omega.dash.actionprovider.LaunchAssistant
+import com.saggitt.omega.dash.actionprovider.ManageVolume
+import com.saggitt.omega.dash.controlprovider.MobileData
+import com.saggitt.omega.dash.controlprovider.Wifi
+import com.saggitt.omega.dashProviderOptions
 import com.saggitt.omega.drawerLayoutOptions
 import com.saggitt.omega.drawerSortOptions
 import com.saggitt.omega.groups.AppGroupsManager
@@ -161,6 +170,7 @@ import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
 import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
+import com.saggitt.omega.smartspaceProviderOptions
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.themeItems
 import com.saggitt.omega.util.Config
@@ -254,6 +264,21 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
         default = listOf("17", "15", "4", "6", "8", "5"),
+        onChange = doNothing
+    )
+    var dashProvidersNew = StringMultiSelectionPref( // TODO make it draggable dialog
+        key = PREFS_DASH_PROVIDERS_X,
+        titleId = R.string.edit_dash,
+        summaryId = R.string.edit_dash_summary,
+        defaultValue = listOf(
+            Wifi::class.java.name,
+            MobileData::class.java.name,
+            DeviceSettings::class.java.name,
+            LaunchAssistant::class.java.name,
+            ManageVolume::class.java.name,
+            EditDash::class.java.name,
+        ),
+        entries = dashProviderOptions,
         onChange = doNothing
     )
     val desktopLock = BooleanPref(
@@ -921,7 +946,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
-    var smartspaceEventProviders = StringListPref(
+    var smartspaceEventProviders = StringListPref(  // TODO replace usages with the new one
         prefKey = PREFS_SMARTSPACE_EVENT_PROVIDERS,
         titleId = R.string.title_smartspace_event_providers,
         default = listOf(
@@ -933,6 +958,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         ),
         onChange = ::updateSmartspaceProvider
     )
+    var smartspaceEventProvidersNew =
+        StringMultiSelectionPref( // TODO does order have a function? if so, customize dialog to respect it
+            key = PREFS_SMARTSPACE_EVENT_PROVIDERS_X,
+            titleId = R.string.title_smartspace_event_providers,
+            defaultValue = listOf(
+                smartspaceEventProvider.onGetValue(),
+                NotificationUnreadProvider::class.java.name,
+                NowPlayingProvider::class.java.name,
+                BatteryStatusProvider::class.java.name,
+                PersonalityProvider::class.java.name
+            ),
+            entries = smartspaceProviderOptions,
+            onChange = ::updateSmartspaceProvider
+        )
     val notificationCount = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT,
         titleId = R.string.title__notification_count,
