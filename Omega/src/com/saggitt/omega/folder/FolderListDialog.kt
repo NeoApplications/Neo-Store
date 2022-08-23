@@ -1,13 +1,16 @@
 package com.saggitt.omega.folder
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -16,7 +19,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +28,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.FolderInfo
-import com.google.accompanist.flowlayout.FlowRow
 import com.saggitt.omega.compose.components.DialogNegativeButton
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.gestures.GestureController
@@ -69,8 +70,8 @@ fun FolderListDialogUI(
     Card(
         shape = RoundedCornerShape(cornerRadius),
         modifier = Modifier.padding(8.dp),
-        elevation = 8.dp,
-        backgroundColor = MaterialTheme.colorScheme.background
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column {
             Column(
@@ -113,14 +114,13 @@ fun FolderListDialogUI(
             }
 
             //Button Rows
-            FlowRow(
+            Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .align(Alignment.End)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.End
             ) {
                 DialogNegativeButton(
-                    modifier = Modifier.padding(start = 16.dp),
                     cornerRadius = cornerRadius,
                     onClick = { openDialogCustom.value = false }
                 )
