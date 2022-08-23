@@ -338,7 +338,7 @@ fun StringMultiSelectionPreference(
         summary = pref.entries
             .filter { pref.onGetValue().contains(it.key) }
             .values.let {
-                it.map { stringResource(id = it) }.joinToString(separator = ",")
+                it.map { stringResource(id = it) }.joinToString(separator = ", ")
             },
         index = index,
         groupSize = groupSize,
