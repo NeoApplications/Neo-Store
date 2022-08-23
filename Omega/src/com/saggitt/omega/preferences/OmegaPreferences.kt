@@ -136,6 +136,7 @@ import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
 import com.saggitt.omega.PREFS_WHITE_TREATMENT
+import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
 import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
@@ -320,6 +321,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         summaryId = R.string.summary_full_width_widgets,
         defaultValue = false,
         onChange = restart
+    )
+    var desktopWidgetRadius = DimensionPref(
+        key = PREFS_WIDGET_RADIUS,
+        titleId = R.string.title_desktop_widget_radius,
+        defaultValue = 16f,
+        maxValue = 24f,
+        minValue = 0f,
+        steps = 12,
+        onChange = recreate
     )
     val desktopMultilineLabel = BooleanPref(
         key = PREFS_DESKTOP_ICON_LABEL_TWOLINES,

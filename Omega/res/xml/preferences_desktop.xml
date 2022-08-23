@@ -115,6 +115,15 @@
             android:title="@string/title_desktop_keep_empty"
             app:iconSpaceReserved="false" />
 
+        <com.saggitt.omega.preferences.custom.SeekbarPreference
+            android:defaultValue="16"
+            android:key="pref_widget_radius"
+            android:title="@string/title_desktop_widget_radius"
+            app:maxValue="24"
+            app:minValue="0"
+            app:steps="24"
+            app:summaryFormat="%.0fdp" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app_categorization_folders">
