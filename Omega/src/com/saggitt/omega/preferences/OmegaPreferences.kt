@@ -324,7 +324,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     var desktopWidgetRadius = DimensionPref(
         key = PREFS_WIDGET_RADIUS,
-        titleId = R.string.title_desktop_widget_radius,
+        titleId = R.string.title_desktop_widget_corner_radius,
         defaultValue = 16f,
         maxValue = 24f,
         minValue = 0f,

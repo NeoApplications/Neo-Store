@@ -118,7 +118,7 @@
         <com.saggitt.omega.preferences.custom.SeekbarPreference
             android:defaultValue="16"
             android:key="pref_widget_radius"
-            android:title="@string/title_desktop_widget_radius"
+            android:title="@string/title_desktop_widget_corner_radius"
             app:maxValue="24"
             app:minValue="0"
             app:steps="24"
