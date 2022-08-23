@@ -48,7 +48,7 @@ class OmegaShortcutActivity : AppCompatActivity() {
     private fun onSelectHandler(handler: GestureHandler) {
         selectedHandler = handler
         if (handler.configIntent != null) {
-            startActivityForResult(handler.configIntent, REQUEST_CODE)
+            startActivityForResult(handler.configIntent as Intent, REQUEST_CODE)
         } else {
             saveChanges()
         }

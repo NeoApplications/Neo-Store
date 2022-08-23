@@ -281,12 +281,12 @@ fun View.runOnAttached(runnable: Runnable) {
     } else {
         addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
 
-            override fun onViewAttachedToWindow(v: View?) {
+            override fun onViewAttachedToWindow(v: View) {
                 runnable.run()
                 removeOnAttachStateChangeListener(this)
             }
 
-            override fun onViewDetachedFromWindow(v: View?) {
+            override fun onViewDetachedFromWindow(v: View) {
                 removeOnAttachStateChangeListener(this)
             }
         })
