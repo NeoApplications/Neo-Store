@@ -210,17 +210,17 @@ dependencies {
     implementation(project(":searchuilib"))
 
     //UI
-    implementation("androidx.appcompat:appcompat:1.6.0-alpha05")
+    implementation("androidx.appcompat:appcompat:1.6.0-beta01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha05")
-    implementation("androidx.fragment:fragment-ktx:1.5.1")
+    implementation("androidx.activity:activity-ktx:1.6.0-beta01")
+    implementation("androidx.fragment:fragment-ktx:1.5.2")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.7.0-alpha03")
+    implementation("com.google.android.material:material:1.7.0-beta01")
     implementation("com.jaredrummler:colorpicker:1.1.0")
 
     // Libs
@@ -243,12 +243,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$vCompose")
     implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
     implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
     implementation("androidx.navigation:navigation-compose:2.5.1")
     implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.0")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.15")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.16")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
