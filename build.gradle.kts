@@ -32,7 +32,7 @@ val prebuiltsDir: String = "prebuilts/"
 
 android {
     namespace = "com.android.launcher3"
-    compileSdk = 32
+    compileSdk = 33
 
     val name = "0.9.2"
     val code = 926
