@@ -1,0 +1,5 @@
+Behoben: Updatebenachrichtigung trotz Deaktivierung angezeigt
+Hinzugefügt: Threema, Stable Calyx OS und Session in den voreingestellten Repositories
+Behoben (versucht): Hintergrundinstaller
+Hinzugefügt: Option für Zwischenspeicherung der Release APKs und Bilder
+Übersetzungen aktualisiert
