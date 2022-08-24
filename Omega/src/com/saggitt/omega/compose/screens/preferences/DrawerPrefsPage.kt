@@ -72,7 +72,6 @@ fun DrawerPrefsPage() {
         // TODO missing trust apps pref page
         prefs.drawerBackground,
         prefs.drawerBackgroundColor,
-        prefs.drawerOpacity
     )
 
     OmegaAppTheme {

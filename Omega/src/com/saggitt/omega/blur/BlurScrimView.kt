@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import androidx.core.graphics.alpha
 import com.android.launcher3.R
 import com.android.launcher3.util.SystemUiController
 import com.android.launcher3.util.Themes
@@ -34,7 +35,7 @@ import kotlin.math.roundToInt
 class BlurScrimView(context: Context, attrs: AttributeSet?) : ScrimView(context, attrs),
     OmegaPreferences.OnPreferenceChangeListener, BlurWallpaperProvider.Listener {
     private val prefs = OmegaPreferences.getInstance(context)
-    private var drawerOpacity = prefs.drawerOpacity.onGetValue()
+    private var drawerOpacity = prefs.drawerBackgroundColor.onGetValue().alpha / 255f
 
     private val prefsToWatch = arrayOf(PREFS_DRAWER_OPACITY)
     private val blurDrawableCallback by lazy {
@@ -106,7 +107,9 @@ class BlurScrimView(context: Context, attrs: AttributeSet?) : ScrimView(context,
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         when (key) {
             PREFS_DRAWER_OPACITY -> {
-                mEndAlpha = prefs.drawerOpacity.onGetValue().roundToInt().takeIf { it > 0 }
+                mEndAlpha = (prefs.drawerBackgroundColor.onGetValue().alpha / 255f)
+                    .roundToInt()
+                    .takeIf { it > 0 }
                     ?: defaultEndAlpha
                 updateSysUiColors()
             }

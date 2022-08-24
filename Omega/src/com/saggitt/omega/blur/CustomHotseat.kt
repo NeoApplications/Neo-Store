@@ -25,6 +25,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.alpha
 import com.android.launcher3.Hotseat
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
@@ -136,7 +137,7 @@ class CustomHotseat @JvmOverloads constructor(
         bgEnabled = prefs.dockBackground.onGetValue()
         radius = dpToPx(getWindowCornerRadius(context))
         shadow = true //prefs.dockShadow
-        bgAlpha = (prefs.dockOpacity.onGetValue().takeIf { it >= 0 }?.times(255)
+        bgAlpha = (prefs.dockBackgroundColor.onGetValue().alpha.takeIf { it >= 0 }
             ?: Themes.getAttrInteger(context, R.attr.allAppsInterimScrimAlpha)).toFloat() / 255f
         shadowBitmap = generateShadowBitmap()
         setWillNotDraw(!bgEnabled || launcher.useVerticalBarLayout())

@@ -436,19 +436,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val dockBackgroundColor = ColorIntPref( // TODO consider merging opacity in this
+    val dockBackgroundColor = ColorIntPref(
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = (0xff101010).toInt(),
-        withAlpha = false,
+        withAlpha = true,
         onChange = recreate
     )
-    var dockOpacity = AlphaPref(
-        key = PREFS_DOCK_OPACITY,
-        titleId = R.string.title_opacity,
-        defaultValue = 0f,
-        onChange = recreate
-    )
+    var dockOpacity =
+        AlphaPref( // TODO consider if it has a use in the upcoming Compose ColorSelector Dialog
+            key = PREFS_DOCK_OPACITY,
+            titleId = R.string.title_opacity,
+            defaultValue = 0f,
+            onChange = recreate
+        )
     var dockSearchBar = BooleanPref(
         key = PREFS_DOCK_SEARCH,
         titleId = R.string.title_dock_search,
@@ -629,19 +630,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerBackgroundColor = ColorIntPref( // TODO consider merging opacity in this
+    val drawerBackgroundColor = ColorIntPref(
         key = PREFS_DRAWER_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = (0xff101010).toInt(),
-        withAlpha = false,
+        withAlpha = true,
         onChange = recreate
     )
-    val drawerOpacity = AlphaPref(
-        key = PREFS_DRAWER_OPACITY,
-        titleId = R.string.title_opacity,
-        defaultValue = 1f,
-        onChange = recreate
-    )
+    val drawerOpacity =
+        AlphaPref( // TODO consider if it has a use in the upcoming Compose ColorSelector Dialog
+            key = PREFS_DRAWER_OPACITY,
+            titleId = R.string.title_opacity,
+            defaultValue = 1f,
+            onChange = recreate
+        )
 
 
     // PROFILE: LANGUAGE & THEME

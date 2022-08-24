@@ -25,6 +25,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -158,7 +159,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mLauncher = BaseDraggingActivity.fromContext(context);
         prefs = Utilities.getOmegaPrefs(context);
 
-        float drawerOpacity = prefs.getDrawerOpacity().onGetValue();
+        float drawerOpacity = ((float) Color.alpha(prefs.getDrawerBackgroundColor().onGetValue())) / 255;
         mScrimIsTranslucent = drawerOpacity < 1f;
 
         if (prefs.getDrawerBackground().onGetValue()) {
@@ -198,7 +199,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mAllAppsStore.addUpdateListener(this::onAppsUpdated);
     }
 
-    private boolean isPagedView(){
+    private boolean isPagedView() {
         return prefs.getDrawerLayout().onGetValue() == Config.DRAWER_PAGED;
     }
 
@@ -299,10 +300,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private void resetWorkProfile() {
         boolean isEnabled = !mAllAppsStore.hasModelFlag(FLAG_QUIET_MODE_ENABLED);
         for (AdapterHolder adapterHolder : mAH) {
-           if (adapterHolder.mIsWork) {
-               mWorkModeSwitch.updateCurrentState(isEnabled);
-               adapterHolder.applyPadding();
-           }
+            if (adapterHolder.mIsWork) {
+                mWorkModeSwitch.updateCurrentState(isEnabled);
+                adapterHolder.applyPadding();
+            }
         }
         mWorkAdapterProvider.updateCurrentState(isEnabled);
     }
@@ -611,13 +612,13 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             Log.d(TestProtocol.WORK_PROFILE_REMOVED, "should show tabs:" + showTabs,
                     new Exception());
         }
-        if(isPagedView()) {
+        if (isPagedView()) {
             mHorizontalViewPager = (AllAppsPagedView) newView;
             mHorizontalViewPager.addTabs(mPagesController.getPagesCount());
             mHorizontalViewPager.initParentViews(this);
             mHorizontalViewPager.getPageIndicator().setOnActivePageChangedListener(this);
             removeWorkToggle();
-        }else{
+        } else {
             if (showTabs) {
                 mViewPager = (AllAppsPagedView) newView;
                 mViewPager.addTabs(mTabsController.getTabsCount());
@@ -965,10 +966,11 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             editText.setBackgroundVisibility(bgVisible, 1 - prog);
         }
     }
+
     /*
      * redraws header protection
      */
-    public void invalidateHeader(){
+    public void invalidateHeader() {
         if (mScrimView != null && mHeader.isHeaderProtectionSupported()) {
             mScrimView.invalidate();
         }
