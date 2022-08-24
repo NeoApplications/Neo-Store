@@ -55,6 +55,7 @@
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
     <string name="title_desktop_full_width_widgets">Full width widgets</string>
+    <string name="title_desktop_widget_corner_radius">Widget corner radius</string>
     <string name="title__desktop_icon_size">Icon size</string>
     <string name="title__desktop_grid_size">Grid size</string>
     <string name="title__desktop_hide_icon_labels">Hide icon labels on home screen</string>
