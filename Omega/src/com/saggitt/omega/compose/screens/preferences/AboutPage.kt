@@ -30,7 +30,15 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -54,10 +62,14 @@ import androidx.navigation.NavGraphBuilder
 import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.R
-import com.saggitt.omega.compose.components.*
+import com.saggitt.omega.compose.components.ContributorRow
+import com.saggitt.omega.compose.components.ItemLink
+import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.PagePreference
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.navigation.preferenceGraph
-import com.saggitt.omega.compose.navigation.subRoute
+import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.theme.kaushanScript
 import com.saggitt.omega.util.Config
 import java.io.InputStream
@@ -65,9 +77,9 @@ import java.io.InputStream
 @OptIn(ExperimentalCoilApi::class)
 fun NavGraphBuilder.aboutGraph(route: String) {
     preferenceGraph(route, { AboutPage() }) { subRoute ->
-        licenseGraph(route = subRoute("license"))
-        translatorsGraph(route = subRoute("translators"))
-        changelogGraph(route = subRoute("changelog"))
+        licenseGraph(route = subRoute(Routes.LICENSE))
+        translatorsGraph(route = subRoute(Routes.TRANSLATORS))
+        changelogGraph(route = subRoute(Routes.CHANGELOG))
     }
 }
 
@@ -88,15 +100,15 @@ fun NavGraphBuilder.changelogGraph(route: String) {
 fun AboutPage() {
     ViewWithActionBar(
         title = stringResource(R.string.title__general_about),
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(top = 64.dp, start = 16.dp, end = 16.dp)
+                .padding(paddingValues)
+                .padding(horizontal = 8.dp)
                 .verticalScroll(rememberScrollState())
                 .background(MaterialTheme.colorScheme.background),
-
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -152,8 +164,6 @@ fun AboutPage() {
                 )
             }
 
-            Spacer(modifier = Modifier.requiredHeight(16.dp))
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -169,52 +179,44 @@ fun AboutPage() {
                 }
             }
 
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
-
-            PreferenceGroup(heading = stringResource(id = R.string.about_team)) { // TODO fix invisible background
-                contributors.forEach {
+            PreferenceGroup(heading = stringResource(id = R.string.about_team)) {
+                val size = contributors.size
+                contributors.forEachIndexed { i, it ->
                     ContributorRow(
-                        contributorName = stringResource(it.name),
-                        contributorRole = stringResource(it.descriptionRes),
+                        nameId = it.name,
+                        roleId = it.descriptionRes,
                         photoUrl = it.photoUrl,
-                        url = it.webpage
+                        url = it.webpage,
+                        index = i,
+                        groupSize = size
                     )
+                    if (i + 1 < size) Spacer(modifier = Modifier.height(2.dp))
                 }
             }
 
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
-
-            PreferenceGroup(heading = stringResource(id = R.string.about_translators_group)) { // TODO fix invisible background
+            PreferenceGroup(heading = stringResource(id = R.string.about_translators_group)) {
                 ContributorRow(
-                    contributorName = stringResource(id = R.string.contributor2),
-                    contributorRole = stringResource(id = R.string.contributor_role),
+                    nameId = R.string.contributor2,
+                    roleId = R.string.contributor_role,
                     photoUrl = "https://avatars.githubusercontent.com/u/69337602",
-                    url = "https://github.com/nonaybay"
+                    url = "https://github.com/nonaybay",
+                    index = 0,
+                    groupSize = 2
                 )
-
-                NavigationActionPreference(
-                    title = stringResource(id = R.string.about_translators),
-                    destination = subRoute(name = "translators"),
-                    icon = R.drawable.ic_language
-                )
-            }
-
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
-
-            PreferenceGroup(heading = stringResource(id = R.string.category__about_licenses)) { // TODO fix invisible background
-                NavigationActionPreference(
-                    title = stringResource(id = R.string.category__about_licenses),
-                    destination = subRoute(name = "license"),
-                    icon = R.drawable.ic_copyright
-                )
-
-                NavigationActionPreference(
-                    title = stringResource(id = R.string.title__about_changelog),
-                    destination = subRoute(name = "changelog"),
-                    icon = R.drawable.ic_list
+                Spacer(modifier = Modifier.height(2.dp))
+                PagePreference(
+                    titleId = PageItem.AboutTranslators.titleId,
+                    iconId = PageItem.AboutTranslators.iconId,
+                    route = PageItem.AboutTranslators.route,
+                    index = 1,
+                    groupSize = 2
                 )
             }
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
+
+            PreferenceGroup(
+                heading = stringResource(id = R.string.category__about_licenses),
+                prefs = listOf(PageItem.AboutLicense, PageItem.AboutChangelog)
+            )
         }
     }
 }
