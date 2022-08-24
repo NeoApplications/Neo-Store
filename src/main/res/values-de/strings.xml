@@ -208,4 +208,8 @@
     <string name="dynamic">Systemstandard</string>
     <string name="releases">Veröffentlichungen</string>
     <string name="no_updates_available">Keine Versionen verfügbar</string>
+    <string name="images_cache_retention">Aufbewahrungszeit der Bilder</string>
+    <string name="releases_cache_retention">Aufbewahrungszeit heruntergeladener APK</string>
+    <string name="auto_sync_interval">Auto-Sync Intervall (in Minuten)</string>
+    <string name="favorite_applications">Favoriten</string>
 </resources>
