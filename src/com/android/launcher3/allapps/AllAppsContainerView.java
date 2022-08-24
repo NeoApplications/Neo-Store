@@ -25,7 +25,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -48,7 +47,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -829,9 +827,9 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     @Override
     public void drawOnScrim(Canvas canvas) {
-        mHeaderPaint.setColor(mHeaderColor);
+        /*mHeaderPaint.setColor(mHeaderColor);
         mHeaderPaint.setAlpha((int) (getAlpha() * Color.alpha(mHeaderColor)));
-        /*if (mHeaderPaint.getColor() != mScrimColor && mHeaderPaint.getColor() != 0) {
+        if (mHeaderPaint.getColor() != mScrimColor && mHeaderPaint.getColor() != 0) {
             int bottom = (int) (mSearchContainer.getBottom() + getTranslationY());
             canvas.drawRect(0, 0, canvas.getWidth(), bottom, mHeaderPaint);
             int tabsHeight = getFloatingHeaderView().getPeripheralProtectionHeight();
@@ -936,7 +934,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     protected void updateHeaderScroll(int scrolledOffset) {
         float prog = Utilities.boundToRange((float) scrolledOffset / mHeaderThreshold, 0f, 1f);
-        int headerColor;
+        /*int headerColor;
         if (mScrimIsTranslucent) {
             headerColor = ColorUtils.setAlphaComponent(mHeaderProtectionColor,
                     (int) (getSearchView().getAlpha() * prog * 255));
@@ -955,7 +953,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
             mTabsProtectionAlpha = tabsAlpha;
             invalidateHeader();
 
-        }
+        }*/
         if (mSearchUiManager.getEditText() != null) {
             ExtendedEditText editText = mSearchUiManager.getEditText();
             boolean bgVisible = editText.getBackgroundVisibility();
