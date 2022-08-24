@@ -33,6 +33,7 @@ import com.android.launcher3.util.Themes
 import com.saggitt.omega.ALL_MATERIAL_COLORS
 import com.saggitt.omega.KEY_A400
 import com.saggitt.omega.OmegaApp
+import com.saggitt.omega.PINK
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS_X
@@ -138,8 +139,8 @@ import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
 import com.saggitt.omega.PREFS_WHITE_TREATMENT
-import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
+import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
@@ -435,10 +436,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val dockBackgroundColor = ColorIntPref(
+    val dockBackgroundColor = ColorIntPref( // TODO consider merging opacity in this
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
-        defaultValue = 0x101010,
+        defaultValue = (0xff101010).toInt(),
+        withAlpha = false,
         onChange = recreate
     )
     var dockOpacity = AlphaPref(
@@ -627,10 +629,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerBackgroundColor = ColorIntPref(
+    val drawerBackgroundColor = ColorIntPref( // TODO consider merging opacity in this
         key = PREFS_DRAWER_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
-        defaultValue = 0x101010,
+        defaultValue = (0xff101010).toInt(),
+        withAlpha = false,
         onChange = recreate
     )
     val drawerOpacity = AlphaPref(
@@ -927,7 +930,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         toString = Temperature.Companion::unitToString,
         dispose = { }
     )
-    var smartspaceWidgetId = IntPref(
+    var smartspaceWidgetId = IntPref( // TODO abstract into it's own
         key = PREFS_SMARTSPACE_WIDGET_ID,
         titleId = -1,
         defaultValue = -1,
@@ -1000,10 +1003,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground = ColorIntPref(
+    val notificationBackground = ColorIntPref( // TODO workout alpha/shades/custom
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
-        defaultValue = R.color.notification_background,
+        defaultValue = PINK.getValue(KEY_A400).toInt(),
+        withAlpha = true,
         onChange = recreate
     )
     val notificationCountFolder = BooleanPref(

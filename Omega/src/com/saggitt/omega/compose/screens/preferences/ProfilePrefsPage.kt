@@ -54,7 +54,7 @@ fun ProfilePrefsPage() {
     val profilePrefs = listOf(
         prefs.language,
         prefs.themePrefNew,
-        prefs.themeAccentColor, // TODO
+        prefs.themeAccentColor,
         prefs.themeIconPackGlobal // TODO make more sophisticated
         // TODO Missing icon shape pref page
     )

@@ -50,7 +50,7 @@ open class GridSize(
         onChangeListener.invoke()
     }
 
-    var numRowsPref by prefs.IntPref(
+    var numRowsPref by prefs.IntPref(  // TODO migrate to FloatPref
         key = "pref_$rowsKey",
         titleId = -1,
         defaultValue = 0,
@@ -82,7 +82,7 @@ class GridSize2D(
 ) : GridSize(prefs, rowsKey, targetObject, onChangeListener) {
     var numColumns by JavaField<Int>(targetObject, columnsKey)
     val numColumnsOriginal by JavaField<Int>(targetObject, "${columnsKey}Original")
-    var numColumnsPref by prefs.IntPref(
+    var numColumnsPref by prefs.IntPref(   // TODO migrate to FloatPref
         key = "pref_$columnsKey",
         titleId = -1,
         defaultValue = 0,
