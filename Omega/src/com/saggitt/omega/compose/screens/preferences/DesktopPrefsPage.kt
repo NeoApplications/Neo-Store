@@ -63,7 +63,8 @@ fun DesktopPrefsPage() {
         prefs.desktopAddIconsToHome,
         prefs.desktopAllowRotation,
         prefs.desktopAllowFullWidthWidgets,
-        prefs.desktopAllowEmptyScreens
+        prefs.desktopAllowEmptyScreens,
+        prefs.desktopWidgetRadius
     )
     val folderPrefs = listOf(
         prefs.desktopFolderRadius,
