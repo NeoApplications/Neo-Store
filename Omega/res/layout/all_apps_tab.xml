@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_button_tab"
+    android:layout_marginHorizontal="4dp"
     android:padding="8dp"
     android:textAllCaps="false"
     android:textColor="@color/all_apps_tab_text"
