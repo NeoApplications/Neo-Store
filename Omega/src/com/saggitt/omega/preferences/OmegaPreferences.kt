@@ -136,8 +136,8 @@ import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
 import com.saggitt.omega.PREFS_WHITE_TREATMENT
-import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
+import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
@@ -328,7 +328,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = 16f,
         maxValue = 24f,
         minValue = 0f,
-        steps = 12,
+        steps = 24,
+        specialOutputs = {
+            when {
+                it < 0f -> context.getString(R.string.automatic_short)
+                else -> "${it.roundToInt()}dp"
+            }
+        },
         onChange = recreate
     )
     val desktopMultilineLabel = BooleanPref(
