@@ -30,6 +30,8 @@ import com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.ALL_MATERIAL_COLORS
+import com.saggitt.omega.KEY_A400
 import com.saggitt.omega.OmegaApp
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
@@ -142,6 +144,7 @@ import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
 import com.saggitt.omega.PREF_PILL_QSB
+import com.saggitt.omega.RED
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
 import com.saggitt.omega.dash.actionprovider.DeviceSettings
@@ -656,10 +659,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = if (OmegaApp.minSDK(31)) THEME_SYSTEM else THEME_WALLPAPER,
         entries = themeItems,
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val themeAccentColor = IntPref(
+    val themeAccentColor = ColorIntPref(
         key = PREFS_ACCENT,
         titleId = R.string.title__theme_accent_color,
-        defaultValue = (0xffff1744).toInt(),
+        defaultValue = RED.getValue(KEY_A400).toInt(),
+        entries = ALL_MATERIAL_COLORS.map { it.toInt() }.toIntArray(),
+        allowCustom = false,
+        withShades = false,
         onChange = doNothing
     )
     var themeBlurEnable = BooleanPref(
