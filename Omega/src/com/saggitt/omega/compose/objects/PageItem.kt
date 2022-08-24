@@ -68,5 +68,20 @@ open class PageItem(
             R.drawable.ic_info,
             Routes.ABOUT
         )
+        val AboutTranslators = PageItem(
+            titleId = R.string.about_translators,
+            iconId = R.drawable.ic_language,
+            route = Routes.TRANSLATORS,
+        )
+        val AboutLicense = PageItem(
+            titleId = R.string.category__about_licenses,
+            iconId = R.drawable.ic_copyright,
+            route = Routes.LICENSE,
+        )
+        val AboutChangelog = PageItem(
+            titleId = R.string.title__about_changelog,
+            iconId = R.drawable.ic_list,
+            route = Routes.CHANGELOG,
+        )
     }
 }

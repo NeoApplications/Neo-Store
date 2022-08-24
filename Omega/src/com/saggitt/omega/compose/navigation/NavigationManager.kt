@@ -34,6 +34,9 @@ object Routes {
     const val PREFS_DEV = "prefs_developer"
 
     const val ABOUT = "about"
+    const val TRANSLATORS = "translators"
+    const val LICENSE = "license"
+    const val CHANGELOG = "changelog"
     const val EDIT_ICON = "edit_icon"
     const val ICON_PICKER = "icon_picker"
     const val GESTURE_SELECTOR = "gesture_selector"
