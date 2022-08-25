@@ -19,11 +19,11 @@ package com.saggitt.omega.views
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
 import com.android.launcher3.R
+import com.google.android.material.button.MaterialButton
 import com.saggitt.omega.util.getColorAttr
 
-class ColoredButton(context: Context, attrs: AttributeSet) : AppCompatButton(context, attrs) {
+class ColoredButton(context: Context, attrs: AttributeSet) : MaterialButton(context, attrs) {
     var color: Int = 0
 
     private val defaultColor = context.getColorAttr(R.attr.colorOnSurface)

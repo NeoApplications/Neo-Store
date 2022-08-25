@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
@@ -288,6 +289,10 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: Int = 0,
+        val entries: IntArray = ColorPickerDialog.MATERIAL_COLORS,
+        val allowCustom: Boolean = true,
+        val withAlpha: Boolean = false,
+        val withShades: Boolean = true,
         onChange: () -> Unit = doNothing
     ) : IntPref(key, titleId, summaryId, defaultValue, onChange)
 

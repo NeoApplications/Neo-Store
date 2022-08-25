@@ -1,2 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_folder_name">پوشه جدید</string>
+    <string name="folder_name">نام پوشه</string>
+    <string name="title__general_about">درباره ی</string>
+    <string name="title__general_desktop">دسکتاپ</string>
+    <string name="title__general_drawer">کشو</string>
+    <string name="title__general_theme">پوسته</string>
+    <string name="title__general_search">جستجو و پوشه ها</string>
+    <string name="title__general_smartspace">ابزارک صفحه اصلی</string>
+    <string name="title__general_profile">نمایه</string>
+    <string name="title__general_search_feed">جستجو و خبرخوان</string>
+    <string name="title__general_widgets_notifications">ابزارکها و هشدارها</string>
+    <string name="summary__general_desktop">شخصی سازی دسکتاپتان</string>
+    <string name="summary__general_drawer">شخصی سازی کشویتان</string>
+    <string name="summary__general_theme">تغییر رنگها، بسته آیکونها، شکل آیکونها</string>
+    <string name="summary__general_smartspace">تاریخ، زمان، ابزارک صفحه اصلی</string>
+    <string name="summary__general_notifications">نشان شمارش، رنگ نشان، ژست‌های حرکتی</string>
+    <string name="summary__general_advanced">زبان، پشتیبان گیری، جستجوی تنظیمات</string>
+    <string name="summary__general_about">بیشتر درباره ی Neo Launcher</string>
+    <string name="summary__general_search">ارائه دهنده جستجو، سبک، نگارکها</string>
+    <string name="pref_category__interfaces">رابط کاربری</string>
+    <string name="pref_category__features">قابلیت ها</string>
+    <string name="pref_category__inputs">ژست‌های حرکتی و جستجو</string>
+    <string name="pref_category__others">سایر</string>
+    <string name="title__desktop_grid_size">اندازه شبکه</string>
+    <string name="title__desktop_hide_icon_labels">پنهانسازی برچسب آیکون در صفحه اصلی</string>
+    <string name="title_desktop_overlap_placement">اجازه دادن به همپوشانی ابزارکها</string>
+    <string name="title_desktop_keep_empty">اجازه دادن به خالی ماندن صفحه</string>
+    <string name="title__multiline_labels">جندخطی بودن نام برنامه</string>
+    <string name="title_desktop_icon_popup_menu">موارد فهرست بازشو</string>
+    <string name="title_desktop_hide_statusbar">پنهانسازی نوار وضعیت</string>
+    <string name="title__desktop_icon_size">اندازه نگارک</string>
+    <string name="title__general_notifications">ژست‌های حرکتی و هشدارها</string>
+    <string name="title__general_advanced">تنظیمات پیشرفته</string>
+    <string name="allow_rotation_blocked_desc">تنظیمات نمایش فعلی اجازه چرخش را نمی‌دهد</string>
+    <string name="title_desktop_lock_desktop">قفل دسکتاپ</string>
+    <string name="title_desktop_full_width_widgets">ابزارکهای عریض کامل</string>
+</resources>

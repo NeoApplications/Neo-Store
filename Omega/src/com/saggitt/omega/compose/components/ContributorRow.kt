@@ -20,9 +20,9 @@ package com.saggitt.omega.compose.components
 
 import android.content.Intent
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -34,29 +34,32 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.saggitt.omega.compose.components.preferences.BasePreference
 
 @ExperimentalCoilApi
 @Composable
 fun ContributorRow(
-    contributorName: String,
-    contributorRole: String,
+    @StringRes nameId: Int,
+    @StringRes roleId: Int,
     photoUrl: String,
     url: String,
-    showDivider: Boolean = false
+    index: Int = 0,
+    groupSize: Int = 1
 ) {
     val context = LocalContext.current
 
-    PreferenceItem(
-        title = contributorName,
-        modifier = Modifier
-            .clickable {
-                val webpage = Uri.parse(url)
-                val intent = Intent(Intent.ACTION_VIEW, webpage)
-                if (intent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(intent)
-                }
-            },
-        summary = contributorRole,
+    BasePreference(
+        titleId = nameId,
+        onClick = {
+            val webpage = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
+        },
+        summaryId = roleId,
+        index = index,
+        groupSize = groupSize,
         startWidget = {
             Image(
                 painter = rememberAsyncImagePainter(
@@ -71,7 +74,6 @@ fun ContributorRow(
                     .size(32.dp)
                     .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12F))
             )
-        },
-        showDivider = showDivider
+        }
     )
 }

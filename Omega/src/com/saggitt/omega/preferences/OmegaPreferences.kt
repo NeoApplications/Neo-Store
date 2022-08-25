@@ -30,7 +30,10 @@ import com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
 import com.android.launcher3.util.Themes
+import com.saggitt.omega.ALL_MATERIAL_COLORS
+import com.saggitt.omega.KEY_A400
 import com.saggitt.omega.OmegaApp
+import com.saggitt.omega.PINK
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS_X
@@ -142,6 +145,7 @@ import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
 import com.saggitt.omega.PREF_PILL_QSB
+import com.saggitt.omega.RED
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
 import com.saggitt.omega.dash.actionprovider.DeviceSettings
@@ -441,15 +445,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val dockBackgroundColor = ColorIntPref(
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
-        defaultValue = 0x101010,
+        defaultValue = (0xff101010).toInt(),
+        withAlpha = true,
         onChange = recreate
     )
-    var dockOpacity = AlphaPref(
-        key = PREFS_DOCK_OPACITY,
-        titleId = R.string.title_opacity,
-        defaultValue = 0f,
-        onChange = recreate
-    )
+    var dockOpacity =
+        AlphaPref( // TODO consider if it has a use in the upcoming Compose ColorSelector Dialog
+            key = PREFS_DOCK_OPACITY,
+            titleId = R.string.title_opacity,
+            defaultValue = 0f,
+            onChange = recreate
+        )
     var dockSearchBar = BooleanPref(
         key = PREFS_DOCK_SEARCH,
         titleId = R.string.title_dock_search,
@@ -633,15 +639,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     val drawerBackgroundColor = ColorIntPref(
         key = PREFS_DRAWER_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
-        defaultValue = 0x101010,
+        defaultValue = (0xff101010).toInt(),
+        withAlpha = true,
         onChange = recreate
     )
-    val drawerOpacity = AlphaPref(
-        key = PREFS_DRAWER_OPACITY,
-        titleId = R.string.title_opacity,
-        defaultValue = 1f,
-        onChange = recreate
-    )
+    val drawerOpacity =
+        AlphaPref( // TODO consider if it has a use in the upcoming Compose ColorSelector Dialog
+            key = PREFS_DRAWER_OPACITY,
+            titleId = R.string.title_opacity,
+            defaultValue = 1f,
+            onChange = recreate
+        )
 
 
     // PROFILE: LANGUAGE & THEME
@@ -662,10 +670,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = if (OmegaApp.minSDK(31)) THEME_SYSTEM else THEME_WALLPAPER,
         entries = themeItems,
     ) { ThemeManager.getInstance(context).updateTheme() }
-    val themeAccentColor = IntPref(
+    val themeAccentColor = ColorIntPref(
         key = PREFS_ACCENT,
         titleId = R.string.title__theme_accent_color,
-        defaultValue = (0xffff1744).toInt(),
+        defaultValue = RED.getValue(KEY_A400).toInt(),
+        entries = ALL_MATERIAL_COLORS.map { it.toInt() }.toIntArray(),
+        allowCustom = false,
+        withShades = false,
         onChange = doNothing
     )
     var themeBlurEnable = BooleanPref(
@@ -927,7 +938,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         toString = Temperature.Companion::unitToString,
         dispose = { }
     )
-    var smartspaceWidgetId = IntPref(
+    var smartspaceWidgetId = IntPref( // TODO abstract into it's own
         key = PREFS_SMARTSPACE_WIDGET_ID,
         titleId = -1,
         defaultValue = -1,
@@ -1000,10 +1011,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground = ColorIntPref(
+    val notificationBackground = ColorIntPref( // TODO workout alpha/shades/custom
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
-        defaultValue = R.color.notification_background,
+        defaultValue = PINK.getValue(KEY_A400).toInt(),
+        withAlpha = true,
         onChange = recreate
     )
     val notificationCountFolder = BooleanPref(

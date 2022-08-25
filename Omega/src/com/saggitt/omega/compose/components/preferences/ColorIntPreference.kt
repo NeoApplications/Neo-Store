@@ -41,10 +41,11 @@ fun ColorIntPreference(
     index: Int = 1,
     groupSize: Int = 1,
     isEnabled: Boolean = true,
-    onValueChange: ((Float) -> Unit) = {},
+    onValueChange: ((Int) -> Unit) = {},
 ) {
     val context = LocalContext.current
     var currentColor by remember(pref) { mutableStateOf(pref.onGetValue()) }
+    if (!pref.withAlpha) currentColor = currentColor or (0xff000000).toInt()
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,
@@ -52,20 +53,21 @@ fun ColorIntPreference(
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
-        onClick = {
+        onClick = { // TODO replace with a custom ColorSelector Dialog
             val dialog = ColorPickerDialog.newBuilder()
                 .setColor(currentColor)
-                .setShowAlphaSlider(true)
                 .setDialogType(ColorPickerDialog.TYPE_PRESETS)
-                .setAllowCustom(true)
-                .setShowAlphaSlider(true)
+                .setPresets(pref.entries)
+                .setAllowCustom(pref.allowCustom)
+                .setShowAlphaSlider(pref.withAlpha)
+                .setShowColorShades(pref.withShades)
                 .create()
 
             dialog.setColorPickerDialogListener(object : ColorPickerDialogListener {
                 override fun onColorSelected(dialogId: Int, color: Int) {
                     currentColor = color
                     pref.onSetValue(color)
-                    onValueChange(color.toFloat())
+                    onValueChange(color)
                 }
 
                 override fun onDialogDismissed(dialogId: Int) {}

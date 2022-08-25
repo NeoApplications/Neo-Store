@@ -71,7 +71,7 @@
     <string name="summary__drawer_hide_apps">أخفاء التطبيقات من درج التطبيقات</string>
     <string name="summary_all_apps_google_search">جد نتائج الويب والتطبيقات</string>
     <string name="summary_search_hidden_apps">أظهر الأختصارات المخفية في البحث.</string>
-    <string name="title_search_hidden_apps">جد أختصارات مخفية</string>
+    <string name="title_search_hidden_apps">البحث عن التطبيقات المخفية</string>
     <string name="title_all_apps_keep_scroll_state">تذكر الوضعية</string>
     <string name="title_all_apps_google_search">نتائج الويب</string>
     <string name="title_all_apps_search">درج شريط البحث</string>
@@ -463,4 +463,5 @@
     <string name="title__general_search_feed">البحث والخلاصة</string>
     <string name="title_search_contacts">البحث في جهات الاتصال</string>
     <string name="section_contacts">جهات الاتصال</string>
+    <string name="cat_dock_search">درج التطبيقات وشريط الارساء</string>
 </resources>

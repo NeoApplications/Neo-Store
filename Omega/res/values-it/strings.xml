@@ -41,7 +41,7 @@
     <string name="summary__general_desktop">Personalizza il tuo Desktop</string>
     <string name="title__general_smartspace">Widget Home</string>
     <string name="title__general_drawer">Cassetto</string>
-    <string name="title__general_dock">Barra delle applicazioni</string>
+    <string name="title__general_dock">Barra app</string>
     <string name="title__general_desktop">Desktop</string>
     <string name="trust_apps_no_lock_error">Imposta una schermata di blocco sicura per limitare l\'accesso alle app</string>
     <string name="title_desktop_lock_desktop">Blocca Desktop</string>
@@ -250,7 +250,7 @@
     <string name="title_smartspace_event_providers">Fonti eventi</string>
     <string name="title_smartspace_weather_units">Unità di temperatura</string>
     <string name="title_smartspace_time_above">Mostra orologio grande</string>
-    <string name="title_smartspace_time_24_h">Usa il formato 24 ore</string>
+    <string name="title_smartspace_time_24_h">Usa formato 24 ore</string>
     <string name="title_smartspace_date">Mostra data</string>
     <string name="title_smartspace_time">Mostra ora</string>
     <string name="title_smartspace">Mostra Smartspace</string>
@@ -347,7 +347,7 @@
     <string name="title_disable_suggestions_prompt">Disattiva suggerimenti app</string>
     <string name="summary__drawer_hide_apps">Nascondi app dal cassetto delle app</string>
     <string name="summary_all_apps_google_search">Trova tra risultati web e app</string>
-    <string name="title_search_hidden_apps">Trova scorciatoie nascoste</string>
+    <string name="title_search_hidden_apps">Trova app nascoste</string>
     <string name="title_all_apps_keep_scroll_state">Ricorda posizione</string>
     <string name="title_all_apps_google_search">Risultati web</string>
     <string name="title_all_apps_search">Barra di ricerca nel cassetto</string>
@@ -470,4 +470,5 @@
     <string name="theme_auto_black">Segui lo sfondo (nero)</string>
     <string name="title_search_contacts">Cerca contatti</string>
     <string name="section_contacts">Contatti</string>
+    <string name="cat_dock_search">Cassetto e barra app</string>
 </resources>

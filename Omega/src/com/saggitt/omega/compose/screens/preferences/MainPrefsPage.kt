@@ -138,6 +138,6 @@ fun NavGraphBuilder.mainPrefsGraph(route: String) {
         preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BlankScreen() }) // TODO
         preferenceGraph(route = subRoute(Routes.PREFS_DM), { BlankScreen() }) // TODO
         preferenceGraph(route = subRoute(Routes.PREFS_DEV), { DevPrefPage() })
-        preferenceGraph(route = subRoute(Routes.ABOUT), { AboutPage() })
+        aboutGraph(route = subRoute(Routes.ABOUT))
     }
 }
