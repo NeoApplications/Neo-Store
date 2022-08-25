@@ -320,7 +320,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         }
     }
 
-    override fun onThemeChanged() = recreate()
+    override fun onThemeChanged(forceUpdate: Boolean) = recreate()
 
     fun shouldRecreate() = !sRestart
 

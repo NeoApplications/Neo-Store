@@ -71,8 +71,8 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
         }
     }
 
-    override fun onThemeChanged() {
-        if (currentTheme == themeOverride.getTheme(this)) return
+    override fun onThemeChanged(forceUpdate: Boolean) {
+        if (currentTheme == themeOverride.getTheme(this) && !forceUpdate) return
         if (paused) {
             recreate()
         } else {

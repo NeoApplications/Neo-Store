@@ -190,7 +190,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         }
     }
 
-    override fun onThemeChanged() {
+    override fun onThemeChanged(forceUpdate: Boolean) {
         if (currentTheme == themeOverride.getTheme(this)) return
         if (paused) {
             recreate()

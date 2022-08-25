@@ -682,8 +682,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         entries = ALL_MATERIAL_COLORS.map { it.toInt() }.toIntArray(),
         allowCustom = false,
         withShades = false,
-        onChange = doNothing
-    )
+    ) { ThemeManager.getInstance(context).updateTheme(true) }
     var themeBlurEnable = BooleanPref(
         key = PREFS_BLUR,
         titleId = R.string.title__theme_blur,

@@ -86,7 +86,7 @@ class SelectAppActivity : AppCompatActivity(), ThemeManager.ThemeableActivity,
         finish()
     }
 
-    override fun onThemeChanged() {
+    override fun onThemeChanged(forceUpdate: Boolean) {
         if (currentTheme == themeOverride.getTheme(this)) return
         if (paused) {
             recreate()

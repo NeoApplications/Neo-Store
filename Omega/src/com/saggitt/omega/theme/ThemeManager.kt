@@ -92,8 +92,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
         updateTheme()
     }
 
-    fun updateTheme() {
-        val theme = prefs.themePref.onGetValue()
+    fun updateTheme(accentUpdated: Boolean = false) {
         val theme = prefs.themePrefNew.onGetValue()
         val isBlack = isBlack(theme)
         val isDark = when {
@@ -108,20 +107,20 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
         var newFlags = 0
         if (isDark) newFlags = newFlags or THEME_DARK
         if (isBlack) newFlags = newFlags or THEME_USE_BLACK
-        if (newFlags == themeFlags) return
+        if (newFlags == themeFlags && !accentUpdated) return
         themeFlags = newFlags
         // TODO no listeners are added for now, either we keep this logic and use it in all classes or just use reloadActivities
-        reloadActivities()
+        reloadActivities(forceUpdate = accentUpdated)
         synchronized(listeners) {
             removeDeadListeners()
             listeners.forEach { it.onThemeChanged(themeFlags) }
         }
     }
 
-    private fun reloadActivities() {
+    private fun reloadActivities(forceUpdate: Boolean) {
         HashSet(app.activityHandler.activities).forEach {
             if (it is ThemeableActivity) {
-                it.onThemeChanged()
+                it.onThemeChanged(forceUpdate)
             } else {
                 it.recreate()
             }
@@ -136,7 +135,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
     interface ThemeableActivity {
         var currentTheme: Int
         var currentAccent: Int
-        fun onThemeChanged()
+        fun onThemeChanged(forceUpdate: Boolean = false)
     }
 
     companion object :
