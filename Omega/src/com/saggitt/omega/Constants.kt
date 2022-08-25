@@ -38,6 +38,9 @@ const val PREFS_DESKTOP_HIDE_LABEL = "pref_hide_app_label"
 const val PREFS_DESKTOP_ICON_LABEL_TWOLINES = "pref_icon_labels_two_lines"
 const val PREFS_DESKTOP_ICON_TEXT_SCALE = "pref_icon_text_scale"
 const val PREFS_DESKTOP_POPUP_MENU = "pref_desktopUsePopupMenuView"
+const val PREFS_DESKTOP_POPUP = "pref_desktop_icon_popup_menu"
+const val PREFS_DESKTOP_POPUP_EDIT = "desktop_popup_edit"
+const val PREFS_DESKTOP_POPUP_REMOVE = "desktop_popup_remove"
 const val PREFS_DESKTOP_LOCK = "pref_lock_desktop"
 const val PREFS_WIDGETS_FULL_WIDTH = "pref_full_width_widgets"
 const val PREFS_WIDGET_RADIUS = "pref_widget_radius"
@@ -77,6 +80,9 @@ const val PREFS_DRAWER_ICON_TEXT_SCALE = "pref_allapps_icon_text_scale"
 const val PREFS_DRAWER_HIDE_LABEL = "pref_hide_allapps_app_label"
 const val PREFS_DRAWER_ICON_LABEL_TWOLINES = "pref_apps_icon_labels_two_lines"
 const val PREFS_DRAWER_HEIGHT_MULTIPLIER = "pref_allAppsCellHeightMultiplier"
+const val PREFS_DRAWER_POPUP = "pref_drawer_icon_popup_menu"
+const val PREFS_DRAWER_POPUP_EDIT = "drawer_popup_edit"
+const val PREFS_DRAWER_POPUP_UNINSTALL = "drawer_popup_uninstall"
 const val PREFS_WORK_PROFILE_SEPARATED = "pref_separate_work_apps"
 const val PREFS_KEEP_SCROLL_STATE = "pref_keep_scroll_state"
 const val PREFS_DRAWER_COLUMNS = "pref_numAllAppsColumns"
@@ -103,6 +109,70 @@ const val PREFS_WHITE_TREATMENT = "pref_white_only_treatment"
 const val PREFS_LEGACY_TREATMENT = "pref_legacy_treatment"
 const val PREFS_FORCE_ADAPTIVE = "pref_adaptive_icon_pack"
 const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
+
+// SEARCH PREFS
+const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
+const val PREFS_SEARCH_BAR_RADIUS = "pref_searchbar_radius"
+const val PREFS_SEARCH_HIDDEN_APPS = "pref_search_hidden_apps"
+const val PREFS_SEARCH_FUZZY = "pref_fuzzy_search"
+const val PREFS_SEARCH_GLOBAL = "pref_all_apps_global_search"
+const val PREFS_SEARCH_SHOW_ASSISTANT = "opa_enabled"
+const val PREFS_SEARCH_ASSISTANT = "opa_assistant"
+const val PREFS_SEARCH_CONTACTS = "search_contacts"
+
+// GESTURES PREFS
+const val PREFS_NOTIFICATION_COUNT = "pref_notification_count"
+const val PREFS_NOTIFICATION_BACKGROUND_CUSTOM = "pref_custom_background"
+const val PREFS_NOTIFICATION_BACKGROUND = "pref_notification_background"
+const val PREFS_NOTIFICATION_COUNT_FOLDER = "pref_folder_badge_count"
+const val NOTIFICATION_BADGING = "notification_badging"
+const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
+const val PREFS_GESTURE_DOUBLE_TAP = "pref_gesture_double_tap"
+const val PREFS_GESTURE_LONG_PRESS = "pref_gesture_long_press"
+const val PREFS_GESTURE_HOME = "pref_gesture_press_home"
+const val PREFS_GESTURE_BACK = "pref_gesture_press_back"
+const val PREFS_GESTURE_SWIPE_DOWN = "pref_gesture_swipe_down"
+const val PREFS_GESTURE_SWIPE_UP = "pref_gesture_swipe_up"
+const val PREFS_GESTURE_SWIPE_UP_DOCK = "pref_gesture_dock_swipe_up"
+const val PREFS_GESTURE_ASSISTANT = "pref_gesture_launch_assistant"
+
+//SMARTSPACE PREFS
+const val PREFS_SMARTSPACE_SHOW = "pref_show_smartspace"
+const val PREFS_SMARTSPACE_ENABLE = "enable_smartspace"
+const val PREFS_SMARTSPACE_DATE = "pref_smartspace_date"
+const val PREFS_SMARTSPACE_TIME = "pref_smartspace_time"
+const val PREFS_SMARTSPACE_WIDGET_ID = "smartspace_widget_id"
+const val PREFS_SMARTSPACE_TIME_ABOVE = "pref_smartspace_time_above"
+const val PREFS_SMARTSPACE_WEATHER_UNITS = "pref_weather_units"
+const val PREFS_SMARTSPACE_WEATHER_ICONS = "pref_weatherIcons"
+const val PREFS_SMARTSPACE_WEATHER_PROVIDER = "pref_smartspace_widget_provider"
+const val PREFS_SMARTSPACE_EVENT_PROVIDER = "pref_smartspace_event_provider"
+const val PREFS_SMARTSPACE_EVENT_PROVIDERS = "pref_smartspace_event_providers"
+const val PREFS_SMARTSPACE_EVENT_PROVIDERS_X = "pref_smartspace_event_providers_x"
+const val PREF_PILL_QSB = "pref_use_pill_qsb"
+const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
+
+// ADVANCED PREFS
+const val PREFS_LANGUAGE = "pref_language"
+const val PREFS_LANGUAGE_DEFAULT_NAME = "System"
+const val PREFS_LANGUAGE_DEFAULT_CODE = "en"
+const val PREFS_FIRST_RUN = "pref_first_run"
+const val PREFS_RESTORE_SUCCESS = "pref_restore_success"
+const val PREFS_RECENT_BACKUP = "pref_recent_backups"
+
+// DEVELOPER PREFS
+const val PREFS_DEV_PREFS_SHOW = "pref_showDevOptions"
+const val PREFS_DESKTOP_MODE = "pref_desktop_mode"
+const val PREFS_DESKTOP_MODE_SETTINGS = "pref_desktop_mode_settings"
+const val PREFS_LOW_PREFORMANCE = "pref_lowPerformanceMode"
+const val PREFS_DEBUG_MODE = "pref_showDebugInfo"
+const val PREFS_KILL = "kill"
+
+// EXTRA PREFS
+const val PREFS_FEED_PROVIDER = "pref_feed_provider"
+const val PREFS_TORCH = "pref_torch"
+const val PREFS_FOLDER_COVER_MODE = "pref_cover_mode"
+const val PREFS_FOLDER_SWIPE_UP = "pref_swipe_up_gesture"
 
 const val THEME_LIGHT = 0
 const val THEME_DARK = ThemeManager.THEME_DARK
@@ -166,70 +236,12 @@ val dashProviderOptions = mapOf(
     Sync::class.java.name to R.string.dash_sync
 )
 
-// SEARCH PREFS
-const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"
-const val PREFS_SEARCH_BAR_RADIUS = "pref_searchbar_radius"
-const val PREFS_SEARCH_HIDDEN_APPS = "pref_search_hidden_apps"
-const val PREFS_SEARCH_FUZZY = "pref_fuzzy_search"
-const val PREFS_SEARCH_GLOBAL = "pref_all_apps_global_search"
-const val PREFS_SEARCH_SHOW_ASSISTANT = "opa_enabled"
-const val PREFS_SEARCH_ASSISTANT = "opa_assistant"
-const val PREFS_SEARCH_CONTACTS = "search_contacts"
+val desktopPopupOptions = mutableMapOf(
+    PREFS_DESKTOP_POPUP_REMOVE to R.string.remove_drop_target_label,
+    PREFS_DESKTOP_POPUP_EDIT to R.string.action_preferences,
+)
 
-// GESTURES PREFS
-const val PREFS_NOTIFICATION_COUNT = "pref_notification_count"
-const val PREFS_NOTIFICATION_BACKGROUND_CUSTOM = "pref_custom_background"
-const val PREFS_NOTIFICATION_BACKGROUND = "pref_notification_background"
-const val PREFS_NOTIFICATION_COUNT_FOLDER = "pref_folder_badge_count"
-const val NOTIFICATION_BADGING = "notification_badging"
-const val NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging"
-const val PREFS_GESTURE_DOUBLE_TAP = "pref_gesture_double_tap"
-const val PREFS_GESTURE_LONG_PRESS = "pref_gesture_long_press"
-const val PREFS_GESTURE_HOME = "pref_gesture_press_home"
-const val PREFS_GESTURE_BACK = "pref_gesture_press_back"
-const val PREFS_GESTURE_SWIPE_DOWN = "pref_gesture_swipe_down"
-const val PREFS_GESTURE_SWIPE_UP = "pref_gesture_swipe_up"
-const val PREFS_GESTURE_SWIPE_UP_DOCK = "pref_gesture_dock_swipe_up"
-const val PREFS_GESTURE_ASSISTANT = "pref_gesture_launch_assistant"
-
-//SMARTSPACE PREFS
-const val PREFS_SMARTSPACE_SHOW = "pref_show_smartspace"
-const val PREFS_SMARTSPACE_ENABLE = "enable_smartspace"
-const val PREFS_SMARTSPACE_DATE = "pref_smartspace_date"
-const val PREFS_SMARTSPACE_TIME = "pref_smartspace_time"
-const val PREFS_SMARTSPACE_WIDGET_ID = "smartspace_widget_id"
-const val PREFS_SMARTSPACE_TIME_ABOVE = "pref_smartspace_time_above"
-const val PREFS_SMARTSPACE_WEATHER_UNITS = "pref_weather_units"
-const val PREFS_SMARTSPACE_WEATHER_ICONS = "pref_weatherIcons"
-const val PREFS_SMARTSPACE_WEATHER_PROVIDER = "pref_smartspace_widget_provider"
-const val PREFS_SMARTSPACE_EVENT_PROVIDER = "pref_smartspace_event_provider"
-const val PREFS_SMARTSPACE_EVENT_PROVIDERS = "pref_smartspace_event_providers"
-const val PREFS_SMARTSPACE_EVENT_PROVIDERS_X = "pref_smartspace_event_providers_x"
-const val PREF_PILL_QSB = "pref_use_pill_qsb"
-const val PREFS_TIME_24H = "pref_smartspace_time_24_h"
-
-// ADVANCED PREFS
-const val PREFS_LANGUAGE = "pref_language"
-const val PREFS_LANGUAGE_DEFAULT_NAME = "System"
-const val PREFS_LANGUAGE_DEFAULT_CODE = "en"
-const val PREFS_FIRST_RUN = "pref_first_run"
-const val PREFS_RESTORE_SUCCESS = "pref_restore_success"
-const val PREFS_RECENT_BACKUP = "pref_recent_backups"
-
-// DEVELOPER PREFS
-const val PREFS_DEV_PREFS_SHOW = "pref_showDevOptions"
-const val PREFS_DESKTOP_MODE = "pref_desktop_mode"
-const val PREFS_DESKTOP_MODE_SETTINGS = "pref_desktop_mode_settings"
-const val PREFS_LOW_PREFORMANCE = "pref_lowPerformanceMode"
-const val PREFS_DEBUG_MODE = "pref_showDebugInfo"
-const val PREFS_KILL = "kill"
-
-// EXTRA PREFS
-const val PREFS_FEED_PROVIDER = "pref_feed_provider"
-const val PREFS_TORCH = "pref_torch"
-const val PREFS_DESKTOP_POPUP_EDIT = "desktop_popup_edit"
-const val PREFS_DESKTOP_POPUP_REMOVE = "desktop_popup_remove"
-const val PREFS_DRAWER_POPUP_EDIT = "drawer_popup_edit"
-const val PREFS_DRAWER_POPUP_UNINSTALL = "drawer_popup_uninstall"
-const val PREFS_FOLDER_COVER_MODE = "pref_cover_mode"
-const val PREFS_FOLDER_SWIPE_UP = "pref_swipe_up_gesture"
+val drawerPopupOptions = mutableMapOf(
+    PREFS_DRAWER_POPUP_UNINSTALL to R.string.uninstall_drop_target_label,
+    PREFS_DRAWER_POPUP_EDIT to R.string.action_preferences,
+)
