@@ -56,7 +56,7 @@ fun DrawerPrefsPage() {
         prefs.drawerHideAppLabels,
         prefs.drawerMultilineLabel,
         prefs.drawerTextScale,
-        // prefs.drawerPopupEdit, prefs.drawerPopupUninstall, TODO add popup dialog pref
+        prefs.drawerPopup,
     )
     val gridPrefs = listOf(
         prefs.drawerColumns,

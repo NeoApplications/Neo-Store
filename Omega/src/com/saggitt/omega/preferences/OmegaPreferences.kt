@@ -50,6 +50,7 @@ import com.saggitt.omega.PREFS_DESKTOP_ICON_SCALE
 import com.saggitt.omega.PREFS_DESKTOP_ICON_TEXT_SCALE
 import com.saggitt.omega.PREFS_DESKTOP_LOCK
 import com.saggitt.omega.PREFS_DESKTOP_MODE
+import com.saggitt.omega.PREFS_DESKTOP_POPUP
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_EDIT
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_MENU
 import com.saggitt.omega.PREFS_DESKTOP_POPUP_REMOVE
@@ -77,6 +78,7 @@ import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
 import com.saggitt.omega.PREFS_DRAWER_LAYOUT
 import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
 import com.saggitt.omega.PREFS_DRAWER_OPACITY
+import com.saggitt.omega.PREFS_DRAWER_POPUP
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
 import com.saggitt.omega.PREFS_DRAWER_SEARCH
@@ -155,7 +157,9 @@ import com.saggitt.omega.dash.actionprovider.ManageVolume
 import com.saggitt.omega.dash.controlprovider.MobileData
 import com.saggitt.omega.dash.controlprovider.Wifi
 import com.saggitt.omega.dashProviderOptions
+import com.saggitt.omega.desktopPopupOptions
 import com.saggitt.omega.drawerLayoutOptions
+import com.saggitt.omega.drawerPopupOptions
 import com.saggitt.omega.drawerSortOptions
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
@@ -395,18 +399,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
     ) // TODO add
-    val desktopPopupEdit = BooleanPref(
-        key = PREFS_DESKTOP_POPUP_EDIT,
-        titleId = R.string.action_preferences,
-        defaultValue = true,
+    var desktopPopup = StringMultiSelectionPref(
+        key = PREFS_DESKTOP_POPUP,
+        titleId = R.string.title_desktop_icon_popup_menu,
+        defaultValue = listOf(PREFS_DESKTOP_POPUP_EDIT),
+        entries = desktopPopupOptions,
         onChange = doNothing
     )
-    val desktopPopupRemove = BooleanPref(
-        key = PREFS_DESKTOP_POPUP_REMOVE,
-        titleId = R.string.remove_drop_target_label,
-        defaultValue = false,
-        onChange = doNothing
-    )
+    val desktopPopupEdit: Boolean
+        get() = desktopPopup.onGetValue().contains(PREFS_DESKTOP_POPUP_EDIT)
+    val desktopPopupRemove: Boolean
+        get() = desktopPopup.onGetValue().contains(PREFS_DESKTOP_POPUP_REMOVE)
 
 
     // DOCK
@@ -618,18 +621,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         maxValue = 16f,
         steps = 15
     )
-    val drawerPopupEdit = BooleanPref(
-        key = PREFS_DRAWER_POPUP_EDIT,
-        titleId = R.string.action_preferences,
-        defaultValue = true,
+    var drawerPopup = StringMultiSelectionPref(
+        key = PREFS_DRAWER_POPUP,
+        titleId = R.string.title__drawer_icon_popup_menu,
+        defaultValue = listOf(PREFS_DRAWER_POPUP_EDIT),
+        entries = drawerPopupOptions,
         onChange = doNothing
     )
-    val drawerPopupUninstall = BooleanPref(
-        key = PREFS_DRAWER_POPUP_UNINSTALL,
-        titleId = R.string.uninstall_drop_target_label,
-        defaultValue = false,
-        onChange = doNothing
-    )
+    val drawerPopupUninstall: Boolean
+        get() = drawerPopup.onGetValue().contains(PREFS_DRAWER_POPUP_UNINSTALL)
+    val drawerPopupEdit: Boolean
+        get() = drawerPopup.onGetValue().contains(PREFS_DRAWER_POPUP_EDIT)
     val drawerBackground = BooleanPref(
         key = PREFS_DRAWER_CUSTOM_BACKGROUND,
         titleId = R.string.title_drawer_enable_background,

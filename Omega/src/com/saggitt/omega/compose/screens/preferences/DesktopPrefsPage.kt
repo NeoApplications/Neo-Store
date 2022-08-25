@@ -56,7 +56,7 @@ fun DesktopPrefsPage() {
         prefs.desktopHideAppLabels,
         prefs.desktopMultilineLabel,
         prefs.desktopTextScale,
-        //prefs.desktopUsePopupMenuView, TODO
+        prefs.desktopPopup,
     )
     val gridPrefs = listOf(
         prefs.desktopGridSize, // TODO
