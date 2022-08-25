@@ -94,6 +94,7 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
 
     fun updateTheme() {
         val theme = prefs.themePref.onGetValue()
+        val theme = prefs.themePrefNew.onGetValue()
         val isBlack = isBlack(theme)
         val isDark = when {
             theme.hasFlag(THEME_FOLLOW_NIGHT_MODE) -> usingNightMode
